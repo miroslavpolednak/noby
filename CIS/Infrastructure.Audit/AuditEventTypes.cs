@@ -22,7 +22,19 @@ public enum AuditEventTypes
 
     [AuditEventTypeDescriptor("IdentifiedClientAssignedToSalesArrangement", "NOBY_006")]
     Noby006 = 6,
+    
+    [AuditEventTypeDescriptor("DocumentMarkedAsSigned", "NOBY_007")]
+    Noby007 = 7,
+    
+    [AuditEventTypeDescriptor("SignedDocumentCancelled", "NOBY_008")]
+    Noby008 = 8,
 
     [AuditEventTypeDescriptor("AccessToUnownedCase", "NOBY_009")]
     Noby009 = 9,
+    
+    [AuditEventTypeDescriptor("DocumentPreviewBeforeSigning", "NOBY_010")]
+    Noby010 = 10,
+    
+    [AuditEventTypeDescriptor("DocumentSendToClientBeforeSigning", "NOBY_011")]
+    Noby011 = 11,
 }

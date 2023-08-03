@@ -1,8 +1,8 @@
 ﻿using CIS.Core;
 using CIS.Core.Security;
 using CIS.Foms.Enums;
+using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Api.Common;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
@@ -28,10 +28,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly IEasClient _easClient;
     private readonly ISulmClientHelper _sulmClientHelper;
-    private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly IProductServiceClient _productServiceClient;
+    private readonly IAuditLogger _auditLogger;
     private readonly ISalesArrangementStateManager _salesArrangementStateManager;
 
     public SignDocumentHandler(
@@ -41,10 +41,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         ISalesArrangementServiceClient arrangementServiceClient,
         IEasClient easClient,
         ISulmClientHelper sulmClientHelper,
-        ICodebookServiceClient codebookServiceClient,
         IHouseholdServiceClient householdClient,
         ICustomerOnSAServiceClient customerOnSAServiceClient,
         IProductServiceClient productServiceClient,
+        IAuditLogger auditLogger,
         ISalesArrangementStateManager salesArrangementStateManager)
     {
         _dbContext = dbContext;
@@ -53,10 +53,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         _arrangementServiceClient = arrangementServiceClient;
         _easClient = easClient;
         _sulmClientHelper = sulmClientHelper;
-        _codebookServiceClient = codebookServiceClient;
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
         _productServiceClient = productServiceClient;
+        _auditLogger = auditLogger;
         _salesArrangementStateManager = salesArrangementStateManager;
     }
 
@@ -93,7 +93,16 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             await SumlCall(documentOnSa, cancellationToken);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-
+        
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby007,
+            "Dokument byl označen za podepsaný",
+            products: new List<AuditLoggerHeaderItem>
+            {
+                new("documentOnSA", documentOnSa.DocumentOnSAId),
+            }
+        );
+        
         // SA state
         if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
         {
@@ -103,7 +112,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
         }
-
+        
         return new Empty();
     }
 
@@ -116,7 +125,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             SalesArrangementId = salesArrangement.SalesArrangementId,
             Mortgage = salesArrangement.Mortgage
         },
-                                                                         cancellationToken);
+            cancellationToken);
 
         //KonsDb 
         var mortgageResponse = await _productServiceClient.GetMortgage(salesArrangement.CaseId, cancellationToken);
