@@ -47,15 +47,9 @@ internal sealed class IndividualPricingProcessChangedConsumer
         };
 
         var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, token);
-        var salesArrangementTypes = await _codebookService.SalesArrangementTypes(token);
-
-        foreach (var salesArrangement in salesArrangementResponse.SalesArrangements)
+        foreach (var salesArrangement in salesArrangementResponse.SalesArrangements.Where(t => t.IsProductSalesArrangement()))
         {
-            var salesArrangementType = salesArrangementTypes.Single(t => t.Id == salesArrangement.SalesArrangementTypeId);
-            if (salesArrangementType.SalesArrangementCategory == (int) SalesArrangementCategories.ProductRequest)
-            {
-                await _salesArrangementService.SetFlowSwitches(salesArrangement.SalesArrangementId, new() { flowSwitch }, token);
-            }
+            await _salesArrangementService.SetFlowSwitches(salesArrangement.SalesArrangementId, new() { flowSwitch }, token);
         }
     }
 

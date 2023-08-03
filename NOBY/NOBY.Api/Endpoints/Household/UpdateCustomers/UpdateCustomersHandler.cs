@@ -4,7 +4,7 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using __HO = DomainServices.HouseholdService.Contracts;
-using DomainServices.CodebookService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
@@ -17,7 +17,7 @@ internal sealed class UpdateCustomersHandler
         var householdInstance = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
         // potrebuju i caseId
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(householdInstance.SalesArrangementId, cancellationToken);
-        bool isProductSA = (await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == salesArrangement.SalesArrangementTypeId)?.SalesArrangementCategory == 1;
+        bool isProductSA = salesArrangement.IsProductSalesArrangement();
 
         // zkontrolovat, zda neni customer jiz v jine domacnosti
         var allCustomers = await checkDoubledCustomers(householdInstance.SalesArrangementId, request, cancellationToken);
@@ -235,7 +235,6 @@ internal sealed class UpdateCustomersHandler
         }
     }
 
-    private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
@@ -245,7 +244,6 @@ internal sealed class UpdateCustomersHandler
 
     public UpdateCustomersHandler(
         ILogger<UpdateCustomersHandler> logger,
-        ICodebookServiceClient codebookService,
         IHouseholdServiceClient householdService,
         ICustomerOnSAServiceClient customerOnSAService,
         IProductServiceClient productService,
@@ -253,7 +251,6 @@ internal sealed class UpdateCustomersHandler
         ISalesArrangementServiceClient salesArrangementService)
     {
         _logger = logger;
-        _codebookService = codebookService;
         _productService = productService;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;

@@ -121,10 +121,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     private async Task SumlCall(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
     {
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-        var salesArrangementTypes = await _codebookServiceClient.SalesArrangementTypes(cancellationToken);
-        var salesArrangementType = salesArrangementTypes.Single(r => r.Id == salesArrangement.SalesArrangementTypeId);
-
-        if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
+        if (salesArrangement.IsProductSalesArrangement())
         {
             var houseHold = await _householdClient.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken);
             await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId1!.Value, cancellationToken);

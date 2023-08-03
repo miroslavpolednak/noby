@@ -1,5 +1,4 @@
 ﻿using CIS.Foms.Enums;
-using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
@@ -8,15 +7,12 @@ namespace NOBY.Api.Endpoints.SalesArrangement.UpdateComment;
 internal sealed  class UpdateCommentHandler : IRequestHandler<UpdateCommentRequest>
 {
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
 
     public async Task Handle(UpdateCommentRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-        var salesArrangementTypes = await _codebookService.SalesArrangementTypes(cancellationToken);
-        var salesArrangementType = salesArrangementTypes.Single(t => t.Id == salesArrangement.SalesArrangementTypeId);
         
-        if (salesArrangementType.SalesArrangementCategory != (int)SalesArrangementCategories.ProductRequest)
+        if (!salesArrangement.IsProductSalesArrangement())
         {
             throw new NobyValidationException($"Invalid SalesArrangement id = {request.SalesArrangementId}, must be of type {SalesArrangementCategories.ProductRequest}");
         }
@@ -46,11 +42,8 @@ internal sealed  class UpdateCommentHandler : IRequestHandler<UpdateCommentReque
         await _salesArrangementService.UpdateSalesArrangementParameters(updateParametersRequest, cancellationToken);
     }
     
-    public UpdateCommentHandler(
-        ISalesArrangementServiceClient salesArrangementService,
-        ICodebookServiceClient codebookService)
+    public UpdateCommentHandler(ISalesArrangementServiceClient salesArrangementService)
     {
         _salesArrangementService = salesArrangementService;
-        _codebookService = codebookService;
     }
 }
