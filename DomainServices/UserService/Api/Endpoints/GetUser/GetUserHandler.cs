@@ -52,7 +52,7 @@ internal class GetUserHandler
                 Email = dbAttributes?.email,
                 PhoneNumber = dbAttributes?.phone,
                 IsUserVIP = !string.IsNullOrEmpty(dbAttributes?.VIPFlag),
-                ChannelId = dbAttributes?.distributionChannelId ?? 0,
+                ChannelId = dbAttributes?.distributionChannelId ?? 4,
             }
         };
 
