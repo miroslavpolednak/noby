@@ -303,8 +303,9 @@ public class DocumentController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<IActionResult> GetCancelConfirmationDocument([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
     {
-        // todo:
-        return null;
+        var input = _documentManager.GetCustomerOnSaInput(customerOnSAId);
+        
+        return GenerateGeneralDocument(DocumentTypes.ODSTOUP, input, cancellationToken);
     }
     
     /// <summary>

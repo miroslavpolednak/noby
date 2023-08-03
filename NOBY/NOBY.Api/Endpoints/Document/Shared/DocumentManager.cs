@@ -35,6 +35,13 @@ public class DocumentManager
             UserId = UserId
         };
 
+    internal InputParameters GetCustomerOnSaInput(int customerOnSaId) =>
+        new()
+        {
+            CustomerOnSaId = customerOnSaId,
+            UserId = UserId
+        };
+    
     internal byte[] GetByteArray(ReadOnlyMemory<byte> memory)
     {
         if (!MemoryMarshal.TryGetArray(memory, out var arraySegment))
