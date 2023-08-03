@@ -50,6 +50,7 @@ try
             // add grpc infrastructure
             .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
             .AddGrpcReflection()
+            .AddDocumentOnSAService()
             .AddGrpc(options =>
             {
                 options.Interceptors.Add<GenericServerExceptionInterceptor>();

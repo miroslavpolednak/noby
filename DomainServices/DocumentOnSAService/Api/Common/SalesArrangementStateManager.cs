@@ -57,9 +57,5 @@ public class SalesArrangementStateManager : ISalesArrangementStateManager
         {
             await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangementId, SalesArrangementStates.InProgress.ToByte(), cancellationToken); // 1
         }
-        else
-        {
-            await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangementId, SalesArrangementStates.InSigning.ToByte(), cancellationToken); // 7
-        }
     }
 }
