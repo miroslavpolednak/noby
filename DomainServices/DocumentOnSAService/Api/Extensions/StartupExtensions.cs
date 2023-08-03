@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices;
+using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
 using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using ExternalServices;
@@ -46,7 +47,9 @@ internal static class StartupExtensions
         // registrace background jobu
         builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
         builder.AddCisBackgroundServiceCustomConfiguration<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
-       
+
+        builder.AddCisBackgroundService<UpdateDocumentStatusJob>();
+
         return builder;
     }
 }
