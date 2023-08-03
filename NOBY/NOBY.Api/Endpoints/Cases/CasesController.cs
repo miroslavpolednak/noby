@@ -11,6 +11,25 @@ public class CasesController : ControllerBase
     public CasesController(IMediator mediator) => _mediator = mediator;
 
     /// <summary>
+    /// Stornování case-u
+    /// </summary>
+    /// <returns>
+    /// Stornování case-u. Slouží k stornování obchodního případu, který je ještě ve fázi žádosti v NOBY. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B13A9B30-5896-4319-A96E-0982FE5A9045"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </returns>
+    [HttpPost("{caseId:long}/cancel")]
+    // [AuthorizeCaseOwner]
+    // [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Case" })]
+    [ProducesResponseType(typeof(CancelCase.CancelCaseResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<CancelCase.CancelCaseResponse> CancelCase([FromRoute] long caseId)
+        => await _mediator.Send(new CancelCase.CancelCaseRequest(caseId));
+
+    /// <summary>
     /// Vytvoření servisního SalesArrangement-u
     /// </summary>
     /// <remarks>
