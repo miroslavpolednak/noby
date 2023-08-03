@@ -22,7 +22,7 @@ internal sealed class RealCremClient
         return result.Items;
     }
 
-    public async Task<long> RequestNewDocumentId(int? katuzId, int? deedOfOwnershipNumber, long? deedOfOwnershipId, CancellationToken cancellationToken = default)
+    public async Task<(long CremDeedOfOwnershipDocumentId, int DeedOfOwnershipNumber)> RequestNewDocumentId(int? katuzId, int? deedOfOwnershipNumber, long? deedOfOwnershipId, CancellationToken cancellationToken = default)
     {
         var request1 = new Contracts.RequestDownloadDeedOfOwnership
         {
@@ -35,7 +35,7 @@ internal sealed class RealCremClient
             .PostAsJsonAsync(_httpClient.BaseAddress + "/deed-of-ownership-document", request1, cancellationToken)
             .ConfigureAwait(false))
             .EnsureSuccessStatusAndReadJson<Contracts.DeedOfOwnershipDocument>(StartupExtensions.ServiceName, cancellationToken);
-
+        
         for (int i = 1; i <= _requestNewDocumentIterations; i++)
         {
             var result2 = await (await _httpClient
@@ -64,7 +64,7 @@ internal sealed class RealCremClient
             .ConfigureAwait(false))
             .EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
 
-        return result1.DocumentId;
+        return (result1.DocumentId, result1.DeedOfOwnershipNumber);
     }
 
     public async Task<ICollection<Contracts.DeedOfOwnershipOwnerDTO>> GetOwners(long documentId, CancellationToken cancellationToken = default)
