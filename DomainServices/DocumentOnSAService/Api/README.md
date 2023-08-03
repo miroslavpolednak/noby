@@ -24,9 +24,9 @@ grpcurl -insecure -d "{\"SalesArrangementId\":11}" -H "Authorization: Basic WFhf
 ```
 grpcurl -insecure -d "{\"DocumentOnSAId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetDocumentOnSAData
 ```
-### SignDocumentManually
+### SignDocument
 ```
-grpcurl -insecure -d "{\"DocumentOnSAId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 1" -H "noby-user-ident: 990614w" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/SignDocumentManually
+grpcurl -insecure -d "{\"DocumentOnSAId\":1492, \"SignatureTypeId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 1" -H "noby-user-ident: 990614w" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/SignDocument
 ```
 ### UpdateDocumentOnSa
 ```

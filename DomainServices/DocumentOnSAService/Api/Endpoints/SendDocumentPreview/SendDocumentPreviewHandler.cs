@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.Audit;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
 using ExternalServices.ESignatures.V1;
@@ -11,6 +12,7 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
 {
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IESignaturesClient _signaturesClient;
+    private readonly IAuditLogger _auditLogger;
 
     public async Task<Empty> Handle(SendDocumentPreviewRequest request, CancellationToken cancellationToken)
     {
@@ -25,14 +27,28 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
         }
         
         var (code, message) = await _signaturesClient.SendDocumentPreview(documentOnSa.ExternalId ?? string.Empty, cancellationToken);
+        
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby011,
+            "Dokument byl odeslán klientovi k náhledu",
+            products: new List<AuditLoggerHeaderItem>
+            {
+                // new("case", todo),
+                new("salesArrangement", documentOnSa.SalesArrangementId),
+                new("form", documentOnSa.FormId)
+            }
+        );
+        
         return new Empty();
     }
 
     public SendDocumentPreviewHandler(
         DocumentOnSAServiceDbContext dbContext,
-        IESignaturesClient signaturesClient)
+        IESignaturesClient signaturesClient,
+        IAuditLogger auditLogger)
     {
         _dbContext = dbContext;
         _signaturesClient = signaturesClient;
+        _auditLogger = auditLogger;
     }
 }

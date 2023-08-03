@@ -3,7 +3,8 @@ using _CIS = CIS.Infrastructure.gRPC.CisTypes;
 
 namespace DomainServices.UserService.Clients.Services;
 
-public class MockUserService : IUserServiceClient
+public class MockUserService 
+    : IUserServiceClient
 {
     public Task<User> GetUser(string loginWithScheme, CancellationToken cancellationToken = default(CancellationToken))
     {
@@ -69,6 +70,9 @@ public class MockUserService : IUserServiceClient
             PersonSurname = "Surname"
         });
     }
+
+    public async Task<User> GetCurrentUser(CancellationToken cancellationToken = default)
+        => await GetUser(1, cancellationToken);
 
     public const int DefaultUserId = 3048;
 }

@@ -76,6 +76,11 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         // Evaluate eletronic signature status 
         await EvaluateElectronicDocumentStatus(documentOnSaEntities, cancellationToken);
 
+        if (!response.DocumentsOnSAToSign.Any())
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.NoDocumentsToSignForSa, salesArrangement.SalesArrangementId);
+        }
+
         return response;
     }
 
@@ -181,7 +186,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
                     await _mediator.Send(new SignDocumentRequest { DocumentOnSAId = docOnSa.DocumentOnSAId, SignatureTypeId = docOnSa.SignatureTypeId }, cancellationToken);
                     break;
                 case EDocumentStatuses.DELETED:
-                    docOnSa.IsValid = false;
+                    await _mediator.Send(new StopSigningRequest { DocumentOnSAId = docOnSa.DocumentOnSAId }, cancellationToken);
                     break;
                 case EDocumentStatuses.NEW or EDocumentStatuses.IN_PROGRESS or EDocumentStatuses.APPROVED:
                     // Ignore
