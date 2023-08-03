@@ -182,7 +182,7 @@ internal static class CaseExtensions
         {
             (6, _) => null,
             (_, 1) => SignatureTypes.Paper.ToByte(),
-            (_, 2) => SignatureTypes.Electronic.ToByte(),
+            (_, 3) => SignatureTypes.Electronic.ToByte(),
             _ => null
         };
     }
