@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Exceptions;
 using System.ComponentModel;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
+using CIS.InternalServices.DocumentGeneratorService.Api.Extensions;
 using TextAlign = CIS.InternalServices.DocumentGeneratorService.Contracts.TextAlign;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
@@ -27,6 +28,8 @@ public class BasicAcroFormWriter : IAcroFormWriter
         {
             var field = document.Form.Fields[value.Key] ?? throw new CisValidationException(400, $"Unknown key {value.Key} for selected template.");
 
+            field.Font = field.Font.ParseOpenTypeFont();
+
             if (value.TextAlign != TextAlign.Unkwnon)
             {
                 CreateAlignedText(pdfDocument, document, value);
@@ -46,7 +49,7 @@ public class BasicAcroFormWriter : IAcroFormWriter
         var pdfFormField = pdfDocument.Form.Fields[data.Key];
         var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
 
-        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), GeneratorVariables.Helvetica, pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
+        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), GeneratorVariables.Arial, pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
         label.Width -= 2;
     }
 

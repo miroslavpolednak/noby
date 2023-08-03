@@ -6,7 +6,6 @@ using CIS.InternalServices;
 using CIS.InternalServices.DocumentGeneratorService.Api;
 using CIS.InternalServices.DocumentGeneratorService.Api.Services;
 using DomainServices;
-using Serilog;
 
 var runAsWinSvc = args.Any(t => t.Equals("winsvc"));
 

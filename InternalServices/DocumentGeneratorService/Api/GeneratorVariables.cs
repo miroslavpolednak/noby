@@ -10,9 +10,13 @@ public static class GeneratorVariables
 
     public static OutputIntent ColorScheme { get; private set; } = null!;
 
-    public static OpenTypeFont Helvetica { get; private set; } = null!;
+    public static OpenTypeFont Arial { get; private set; } = null!;
 
-    public static OpenTypeFont HelveticaBold { get; private set; } = null!;
+    public static OpenTypeFont ArialBold { get; private set; } = null!;
+
+    public static OpenTypeFont ArialItalic { get; private set; } = null!;
+
+    public static OpenTypeFont ArialBoldItalic { get; private set; } = null!;
 
     public static void Init(GeneratorConfiguration config)
     {
@@ -20,8 +24,10 @@ public static class GeneratorVariables
 
         SetColorScheme(StoragePath);
 
-        Helvetica = new OpenTypeFont(Path.Combine(StoragePath, FontsFolder, "Helvetica.ttf"));
-        HelveticaBold = new OpenTypeFont(Path.Combine(StoragePath, FontsFolder, "Helvetica-Bold.ttf"));
+        Arial = GetOpenTypeFont("arial");
+        ArialBold = GetOpenTypeFont("arial_bold");
+        ArialItalic = GetOpenTypeFont("arial_italic");
+        ArialBoldItalic = GetOpenTypeFont("arial_bold_italic");
     }
 
     private static void SetColorScheme(string storagePath)
@@ -33,4 +39,11 @@ public static class GeneratorVariables
             Version = OutputIntentVersion.PDF_A
         };
     }
+
+    private static OpenTypeFont GetOpenTypeFont(string name) =>
+        new(Path.Combine(StoragePath, FontsFolder, $"{name}.ttf"))
+        {
+            Embed = true,
+            Subset = false
+        };
 }
