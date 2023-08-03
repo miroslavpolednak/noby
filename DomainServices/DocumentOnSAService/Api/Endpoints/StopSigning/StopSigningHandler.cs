@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using CIS.Infrastructure.Audit;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
 using ExternalServices.ESignatures.V1;
@@ -11,13 +12,16 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
 {
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IESignaturesClient _eSignaturesClient;
+    private readonly IAuditLogger _auditLogger;
 
     public StopSigningHandler(
         DocumentOnSAServiceDbContext dbContext,
-        IESignaturesClient eSignaturesClient)
+        IESignaturesClient eSignaturesClient,
+        IAuditLogger auditLogger)
     {
         _dbContext = dbContext;
         _eSignaturesClient = eSignaturesClient;
+        _auditLogger = auditLogger;
     }
 
     public async Task<Empty> Handle(StopSigningRequest request, CancellationToken cancellationToken)
@@ -32,6 +36,15 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby008,
+            "Podpis dokumentu byl stornován.",
+            products: new List<AuditLoggerHeaderItem>
+            {
+                new("documentOnSA", documentOnSa.DocumentOnSAId),
+            }
+        );
+        
         return new Empty();
     }
 }

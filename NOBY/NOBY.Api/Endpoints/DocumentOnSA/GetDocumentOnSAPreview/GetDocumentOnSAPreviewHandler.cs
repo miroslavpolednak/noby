@@ -2,6 +2,7 @@
 using System.Net.Mime;
 using CIS.Core;
 using CIS.Foms.Enums;
+using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.CodebookService.Clients;
@@ -22,13 +23,24 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
         {
             throw new CisNotFoundException(90001, "DocumentOnSA does not exist on provided sales arrangement.");
         }
-
-        return documentOnSA.Source switch
+        
+        var response = documentOnSA.Source switch
         {
             _Domain.Source.Noby => await HandleSourceNoby(documentOnSA, cancellationToken),
             _Domain.Source.Workflow => await HandleSourceWorkflow(documentOnSA, cancellationToken),
             _ => throw new NobyValidationException("Unsupported kind of document source")
         };
+        
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby010,
+            "Náhled dokumentu byl odeslán ke stažení.",
+            products: new List<AuditLoggerHeaderItem>
+            {
+                new("documentOnSA", documentOnSA.DocumentOnSAId!.Value)
+            }
+        );
+
+        return response;
     }
 
     private async Task<GetDocumentOnSAPreviewResponse> HandleSourceNoby(
@@ -94,17 +106,20 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
     private readonly IDateTime _dateTime;
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
-    
+    private readonly IAuditLogger _auditLogger;
+
 
     public GetDocumentOnSAPreviewHandler(
         ICodebookServiceClient codebookService,
         IDateTime dateTime,
         IDocumentOnSAServiceClient documentOnSaService,
-        IDocumentGeneratorServiceClient documentGeneratorService)
+        IDocumentGeneratorServiceClient documentGeneratorService,
+        IAuditLogger auditLogger)
     {
         _codebookService = codebookService;
         _dateTime = dateTime;
         _documentOnSaService = documentOnSaService;
         _documentGeneratorService = documentGeneratorService;
+        _auditLogger = auditLogger;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Core.Security;
 using CIS.Foms.Enums;
+using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database;
@@ -36,6 +37,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly IProductServiceClient _productServiceClient;
+    private readonly IAuditLogger _auditLogger;
 
     public SignDocumentHandler(
         DocumentOnSAServiceDbContext dbContext,
@@ -47,7 +49,8 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         ICodebookServiceClient codebookServiceClient,
         IHouseholdServiceClient householdClient,
         ICustomerOnSAServiceClient customerOnSAServiceClient,
-        IProductServiceClient productServiceClient)
+        IProductServiceClient productServiceClient,
+        IAuditLogger auditLogger)
     {
         _dbContext = dbContext;
         _dateTime = dateTime;
@@ -59,6 +62,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
         _productServiceClient = productServiceClient;
+        _auditLogger = auditLogger;
     }
 
     public async Task<Empty> Handle(SignDocumentRequest request, CancellationToken cancellationToken)
@@ -97,6 +101,15 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby007,
+            "Dokument byl podepsán.",
+            products: new List<AuditLoggerHeaderItem>
+            {
+                new("documentOnSA", documentOnSa.DocumentOnSAId),
+            }
+        );
+        
         return new Empty();
     }
 
