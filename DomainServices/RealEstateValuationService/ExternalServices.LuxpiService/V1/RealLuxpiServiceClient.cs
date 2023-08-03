@@ -30,7 +30,7 @@ internal sealed class RealLuxpiServiceClient
             return new Dto.CreateKbmodelFlatResponse
             {
                 ResultPrice = Convert.ToInt32(model.ResultPrice!.Value),
-                ValuationId = model.ValuationId!.Value
+                ValuationId = model.Id
             };
         }
     }
