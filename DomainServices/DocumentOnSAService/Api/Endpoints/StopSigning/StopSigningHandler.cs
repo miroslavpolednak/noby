@@ -50,7 +50,9 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
             "Podepsaný dokument byl stornován",
             products: new List<AuditLoggerHeaderItem>
             {
-                new("documentOnSA", documentOnSa.DocumentOnSAId),
+                // new("case", todo),
+                new("salesArrangement", documentOnSa.SalesArrangementId),
+                new("form", documentOnSa.FormId),
             }
         );
         

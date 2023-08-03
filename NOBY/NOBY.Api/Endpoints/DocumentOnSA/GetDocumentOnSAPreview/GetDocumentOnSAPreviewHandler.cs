@@ -36,7 +36,9 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
             "Dokument byl zobrazen v aplikaci",
             products: new List<AuditLoggerHeaderItem>
             {
-                new("documentOnSA", documentOnSA.DocumentOnSAId!.Value)
+                // new("case", todo),
+                new("salesArrangement", documentOnSA.SalesArrangementId),
+                new("form", documentOnSA.FormId)
             }
         );
 

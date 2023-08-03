@@ -99,7 +99,9 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             "Dokument byl označen za podepsaný",
             products: new List<AuditLoggerHeaderItem>
             {
-                new("documentOnSA", documentOnSa.DocumentOnSAId),
+                new("case", salesArrangement.CaseId),
+                new("salesArrangement", salesArrangement.SalesArrangementId),
+                new("form", documentOnSa.FormId)
             }
         );
         

@@ -33,7 +33,9 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
             "Dokument byl odeslán klientovi k náhledu",
             products: new List<AuditLoggerHeaderItem>
             {
-                new("documentOnSA", documentOnSa.DocumentOnSAId)
+                // new("case", todo),
+                new("salesArrangement", documentOnSa.SalesArrangementId),
+                new("form", documentOnSa.FormId)
             }
         );
         
