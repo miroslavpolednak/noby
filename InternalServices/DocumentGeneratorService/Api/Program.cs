@@ -20,14 +20,15 @@ var log = builder.CreateStartupLogger();
 
 try
 {
+    var config = builder.Configuration.GetRequiredSection("GeneratorConfiguration").Get<GeneratorConfiguration>()!;
+
+    GeneratorVariables.Init(config);
+
     builder.AddCisEnvironmentConfiguration(); // globalni nastaveni prostredi
-    builder
-           .AddCisCoreFeatures()
+    builder.AddCisCoreFeatures()
            .AddCisLogging()
            .AddCisTracing()
            .AddCisServiceAuthentication();
-
-    builder.Services.Configure<GeneratorConfiguration>(builder.Configuration.GetRequiredSection("GeneratorConfiguration"));
 
     builder.Services
            .AddCisServiceDiscovery()

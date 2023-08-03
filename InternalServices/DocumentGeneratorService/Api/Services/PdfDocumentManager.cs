@@ -4,7 +4,6 @@ using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using Google.Protobuf;
-using Path = System.IO.Path;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
 
@@ -61,30 +60,23 @@ internal class PdfDocumentManager
         return finalDocument.Document;
     }
 
-    private void ArchiveDocument(Document document)
+    private static void ArchiveDocument(Document document)
     {
         var xmp = new XmpMetadata();
-
-        xmp.AddSchema(new PdfASchema(PdfAStandard.PdfA2a));
+        xmp.AddSchema(new PdfASchema(PdfAStandard.PdfA2b));
 
         xmp.DublinCore.Title.DefaultText = document.Title;
         xmp.DublinCore.Creators.Add(document.Author);
-        xmp.DublinCore.Title.AddLang("cs-cz", "PDF/A1 Dokument");
+        xmp.DublinCore.Title.AddLang("cs-cz", "PDF/A2b Dokument");
 
         document.XmpMetadata = xmp;
-        
-        var iccProfile = new IccProfile(Path.Combine(_templateManager.StoragePath, "ICC\\CoatedFOGRA27.icc"));
-        var outputIntents = new OutputIntent("", "CoatedFOGRA27", "https://www.adobe.com/", "CMYK", iccProfile)
-        {
-            Version = OutputIntentVersion.PDF_A
-        };
 
-        document.OutputIntents.Add(outputIntents);
+        document.OutputIntents.Add(GeneratorVariables.ColorScheme);
     }
 
     private static void AddWatermark(Document document)
     {
-        var textWatermark = new TextWatermark("Pouze pro informaci", Font.Helvetica, 68)
+        var textWatermark = new TextWatermark("Pouze pro informaci", GeneratorVariables.Helvetica, 68)
         {
             TextColor = new RgbColor(192, 192, 192),
             Angle = -45,
