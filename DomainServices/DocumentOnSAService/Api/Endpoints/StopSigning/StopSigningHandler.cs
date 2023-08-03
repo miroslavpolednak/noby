@@ -45,19 +45,20 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         
+        var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
+        
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby008,
             "Podepsaný dokument byl stornován",
             products: new List<AuditLoggerHeaderItem>
             {
-                // new("case", todo),
+                new("case", salesArrangement.CaseId),
                 new("salesArrangement", documentOnSa.SalesArrangementId),
                 new("form", documentOnSa.FormId),
             }
         );
         
         // SA state
-        var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
         if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
         {
             await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
