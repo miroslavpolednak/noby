@@ -5,6 +5,16 @@
 /// </summary>
 public sealed class GetDeedOfOwnershipDocumentContentResponse
 {
+    /// <summary>
+    /// Číslo listu vlastnictví (LV)
+    /// </summary>
+    public int? DeedOfOwnershipNumber { get; set; }
+
+    /// <summary>
+    /// CREM ID staženého dokumentu listu vlastnictví (LV)
+    /// </summary>
+    public long CremDeedOfOwnershipDocumentId { get; set; }
+
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public List<GetDeedOfOwnershipDocumentContentResponseOwners>? Owners { get; set; }
 

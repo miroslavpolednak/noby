@@ -32,7 +32,7 @@ internal static class CaseExtensions
             _ => throw new ArgumentOutOfRangeException("PhaseTypeId can not be set")
         };
 
-        task.SignatureTypeId = (task.TaskTypeId, taskData.GetInteger("ukol_podpis_dokument_metoda")) switch
+        task.SignatureTypeId = (task.TaskTypeId, taskData.GetNInteger("ukol_podpis_dokument_metoda")) switch
         {
             (6, 1) => SignatureTypes.Paper.ToByte(),
             (6, 2) => SignatureTypes.Electronic.ToByte(),
