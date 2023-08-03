@@ -41,7 +41,8 @@ internal sealed class CreateTaskHandler
 
         if (attachments?.Any() ?? false)
         {
-            documentIds.AddRange(await _uploadDocumentToArchive.Upload(caseInstance.CaseId, caseInstance.Data?.ContractNumber, attachments, cancellationToken));
+            var uploadResult = await _uploadDocumentToArchive.Upload(caseInstance.CaseId, caseInstance.Data?.ContractNumber, attachments, cancellationToken);
+            documentIds.AddRange(uploadResult);
         }
 
         var dsRequest = new DomainServices.CaseService.Contracts.CreateTaskRequest

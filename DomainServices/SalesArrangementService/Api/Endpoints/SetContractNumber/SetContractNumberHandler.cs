@@ -37,7 +37,10 @@ internal class SetContractNumberHandler : IRequestHandler<SetContractNumberReque
     {
         var salesArrangement = await LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
 
-        await CheckSalesArrangementCategory(salesArrangement, cancellationToken);
+        if (!salesArrangement.IsProductSalesArrangement())
+        {
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SATypeNotSupported, salesArrangement.SalesArrangementTypeId);
+        }
         CheckIfContractNumberIsAlreadySet(salesArrangement);
 
         var contractNumber = await GetContractNumber(request.CustomerOnSaId, salesArrangement.CaseId, cancellationToken);
@@ -64,18 +67,6 @@ internal class SetContractNumberHandler : IRequestHandler<SetContractNumberReque
             return;
 
         throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.ContractNumberIsAlreadySet, salesArrangement.SalesArrangementId);
-    }
-
-    private async Task CheckSalesArrangementCategory(SalesArrangement salesArrangement, CancellationToken cancellationToken)
-    {
-        var types = await _codebookService.SalesArrangementTypes(cancellationToken);
-
-        var category = types.First(t => t.Id == salesArrangement.SalesArrangementTypeId).SalesArrangementCategory;
-
-        if (category == (int)SalesArrangementCategories.ProductRequest)
-            return;
-
-        throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SATypeNotSupported, salesArrangement.SalesArrangementTypeId);
     }
 
     private async Task<string> GetContractNumber(int customerOnSaId, long caseId, CancellationToken cancellationToken)

@@ -26,7 +26,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IMediator _mediator;
     private readonly IHouseholdServiceClient _householdClient;
-    private readonly ISalesArrangementServiceClient _arrangementServiceClient;
+    private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
     private readonly IDataAggregatorServiceClient _dataAggregatorServiceClient;
     private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly StartSigningMapper _startSigningMapper;
@@ -38,7 +38,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         DocumentOnSAServiceDbContext dbContext,
         IMediator mediator,
         IHouseholdServiceClient householdClient,
-        ISalesArrangementServiceClient arrangementServiceClient,
+        ISalesArrangementServiceClient salesArrangementServiceClient,
         IDataAggregatorServiceClient dataAggregatorServiceClient,
         ICodebookServiceClient codebookServiceClient,
         StartSigningMapper startSigningMapper,
@@ -49,7 +49,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         _dbContext = dbContext;
         _mediator = mediator;
         _householdClient = householdClient;
-        _arrangementServiceClient = arrangementServiceClient;
+        _salesArrangementServiceClient = salesArrangementServiceClient;
         _dataAggregatorServiceClient = dataAggregatorServiceClient;
         _codebookServiceClient = codebookServiceClient;
         _startSigningMapper = startSigningMapper;
@@ -62,7 +62,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     {
         ArgumentNullException.ThrowIfNull(nameof(request));
 
-        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+        var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
 
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
@@ -168,10 +168,10 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             case (int)SalesArrangementStates.InSigning://(7 Podepisování)
                 break; // Skip state change
             case (int)SalesArrangementStates.InProgress://(1 Rozpracováno)
-                await _arrangementServiceClient.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
+                await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
                 break;
             default:
-                throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidSalesArrangementState);
+                throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
         }
     }
 

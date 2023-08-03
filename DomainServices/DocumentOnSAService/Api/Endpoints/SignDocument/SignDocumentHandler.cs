@@ -3,7 +3,7 @@ using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Clients;
+using DomainServices.DocumentOnSAService.Api.Common;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -22,22 +22,17 @@ namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocument;
 
 public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, Empty>
 {
-    /// <summary>
-    /// Form 3601
-    /// </summary>
-    private const int DocumentType = 4;
-
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserAccessor _currentUser;
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly IEasClient _easClient;
     private readonly ISulmClientHelper _sulmClientHelper;
-    private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly IProductServiceClient _productServiceClient;
     private readonly IAuditLogger _auditLogger;
+    private readonly ISalesArrangementStateManager _salesArrangementStateManager;
 
     public SignDocumentHandler(
         DocumentOnSAServiceDbContext dbContext,
@@ -46,11 +41,11 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         ISalesArrangementServiceClient arrangementServiceClient,
         IEasClient easClient,
         ISulmClientHelper sulmClientHelper,
-        ICodebookServiceClient codebookServiceClient,
         IHouseholdServiceClient householdClient,
         ICustomerOnSAServiceClient customerOnSAServiceClient,
         IProductServiceClient productServiceClient,
-        IAuditLogger auditLogger)
+        IAuditLogger auditLogger,
+        ISalesArrangementStateManager salesArrangementStateManager)
     {
         _dbContext = dbContext;
         _dateTime = dateTime;
@@ -58,11 +53,11 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         _arrangementServiceClient = arrangementServiceClient;
         _easClient = easClient;
         _sulmClientHelper = sulmClientHelper;
-        _codebookServiceClient = codebookServiceClient;
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
         _productServiceClient = productServiceClient;
         _auditLogger = auditLogger;
+        _salesArrangementStateManager = salesArrangementStateManager;
     }
 
     public async Task<Empty> Handle(SignDocumentRequest request, CancellationToken cancellationToken)
@@ -75,13 +70,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         if (documentOnSa.IsSigned)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AlreadySignedDocumentOnSA, request.DocumentOnSAId!.Value);
 
-        if (request.SignatureTypeId != documentOnSa.SignatureTypeId)
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SignatureTypeIdHasToBeSame);
-
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
         if (salesArrangement.State != SalesArrangementStates.InSigning.ToByte())
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidSalesArrangementState);
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
 
         if (documentOnSa.IsValid == false || documentOnSa.IsSigned || documentOnSa.IsFinal)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidDocument);
@@ -97,10 +89,11 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             await UpdateFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
 
         // SUML call
-        await SumlCall(documentOnSa, cancellationToken);
+        if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()) // 4 
+            await SumlCall(documentOnSa, cancellationToken);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-
+        
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby007,
             "Dokument byl označen za podepsaný",
@@ -110,6 +103,16 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             }
         );
         
+        // SA state
+        if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
+        {
+            await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
+        }
+        else
+        {
+            throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
+        }
+        
         return new Empty();
     }
 
@@ -118,11 +121,11 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         //SalesArrangement parameters
         salesArrangement.Mortgage.FirstSignatureDate = signatureDate;
         await _arrangementServiceClient.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
-                                                                         {
-                                                                             SalesArrangementId = salesArrangement.SalesArrangementId,
-                                                                             Mortgage = salesArrangement.Mortgage
-                                                                         },
-                                                                         cancellationToken);
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            Mortgage = salesArrangement.Mortgage
+        },
+            cancellationToken);
 
         //KonsDb 
         var mortgageResponse = await _productServiceClient.GetMortgage(salesArrangement.CaseId, cancellationToken);
@@ -134,10 +137,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     private async Task SumlCall(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
     {
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-        var salesArrangementTypes = await _codebookServiceClient.SalesArrangementTypes(cancellationToken);
-        var salesArrangementType = salesArrangementTypes.Single(r => r.Id == salesArrangement.SalesArrangementTypeId);
-
-        if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
+        if (salesArrangement.IsProductSalesArrangement())
         {
             var houseHold = await _householdClient.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken);
             await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId1!.Value, cancellationToken);
@@ -158,7 +158,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, DateTime signatureDate, CancellationToken cancellationToken)
     {
-        if (documentOnSa.DocumentTypeId == DocumentType
+        if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()
             && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => r.IsSigned == false, cancellationToken))
         {
             var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, signatureDate, cancellationToken);

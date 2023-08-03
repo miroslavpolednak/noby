@@ -1,6 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.CreateHousehold;
@@ -11,8 +12,7 @@ internal sealed class CreateHouseholdHandler
     public async Task<Dto.HouseholdInList> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == saInstance.SalesArrangementTypeId)?.SalesArrangementCategory;
-        if (saCategory != (int)SalesArrangementCategories.ProductRequest && !request.HardCreate)
+        if (!saInstance.IsProductSalesArrangement() && !request.HardCreate)
         {
             throw new NobyValidationException("SalesArrangementTypeId is Service SA");
         }
