@@ -33,7 +33,7 @@ public class BasicAcroFormWriter : IAcroFormWriter
             if (value.TextAlign != TextAlign.Unkwnon)
             {
                 CreateAlignedText(pdfDocument, document, value);
-                field.Value = string.Empty;
+                field.Output = FormFieldOutput.Remove;
 
                 continue;
             }
@@ -49,7 +49,7 @@ public class BasicAcroFormWriter : IAcroFormWriter
         var pdfFormField = pdfDocument.Form.Fields[data.Key];
         var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
 
-        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), GeneratorVariables.Arial, pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
+        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), pdfFormField.Font.ParseOpenTypeFont(), pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
         label.Width -= 2;
     }
 
