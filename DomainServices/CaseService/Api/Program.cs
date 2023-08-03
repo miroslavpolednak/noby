@@ -43,6 +43,7 @@ var log = builder.CreateStartupLogger();
         // add BE services
         .Services
             // add CIS services
+            .AddRiskIntegrationService()
             .AddSalesArrangementService()
             .AddDocumentOnSAService()
             .AddCodebookService()
