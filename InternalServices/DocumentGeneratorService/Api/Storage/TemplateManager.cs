@@ -17,8 +17,6 @@ public class TemplateManager : IDisposable
         _codebookService = codebookService;
     }
 
-    public string StoragePath => _fileStorage.StoragePath;
-
     public async Task<PdfDocument> LoadTemplate(int documentTypeId, int templateVersionId, int? templateVariantId)
     {
         var templateTypeName = await LoadTemplateTypeName(documentTypeId);

@@ -25,10 +25,7 @@ public class BasicAcroFormWriter : IAcroFormWriter
 
         foreach (var value in _values)
         {
-            var field = document.Form.Fields[value.Key];
-
-            if (field is null)
-                throw new CisValidationException(400, $"Unknown key {value.Key} for selected template.");
+            var field = document.Form.Fields[value.Key] ?? throw new CisValidationException(400, $"Unknown key {value.Key} for selected template.");
 
             if (value.TextAlign != TextAlign.Unkwnon)
             {
@@ -49,7 +46,7 @@ public class BasicAcroFormWriter : IAcroFormWriter
         var pdfFormField = pdfDocument.Form.Fields[data.Key];
         var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
 
-        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), Font.Helvetica, pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
+        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), GeneratorVariables.Helvetica, pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
         label.Width -= 2;
     }
 
