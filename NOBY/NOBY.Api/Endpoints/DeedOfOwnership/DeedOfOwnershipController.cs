@@ -33,6 +33,10 @@ public sealed class DeedOfOwnershipController : ControllerBase
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B4B2F8E-17B5-48af-A01D-49E60B53E5BA"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
+    /// <param name="katuzId">KATUZ ID, pětimístné číslo katastrálního území, Id RUIAN katastrálního území</param>
+    /// <param name="deedOfOwnershipNumber">Číslo listu vlastnictví (LV)</param>
+    /// <param name="deedOfOwnershipId">ISKN ID listu vlastnictví (LV), technický identifikátor katastru</param>
+    /// <param name="deedOfOwnershipDocumentId">Noby ID daného záznamu. Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</param>
     [HttpGet("document/content")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "List vlastnictví" })]
@@ -41,10 +45,10 @@ public sealed class DeedOfOwnershipController : ControllerBase
     public async Task<GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse> GetDeedOfOwnershipDocumentContent(
         int katuzId,
         int deedOfOwnershipNumber,
-        long cremDeedOfOwnershipDocumentId,
+        long deedOfOwnershipId,
         int deedOfOwnershipDocumentId,
         CancellationToken cancellationToken)
-        => await _mediator.Send(new GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentRequest(katuzId, deedOfOwnershipNumber, cremDeedOfOwnershipDocumentId, deedOfOwnershipDocumentId), cancellationToken);
+        => await _mediator.Send(new GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentRequest(katuzId, deedOfOwnershipNumber, deedOfOwnershipId, deedOfOwnershipDocumentId), cancellationToken);
 
     private readonly IMediator _mediator;
     public DeedOfOwnershipController(IMediator mediator) => _mediator = mediator;

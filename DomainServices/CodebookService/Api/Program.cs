@@ -59,6 +59,7 @@ try {
     var app = builder.Build();
     log.ApplicationBuilt();
 
+    app.UseServiceDiscovery();
     app.UseRouting();
 
     app.UseAuthentication();
