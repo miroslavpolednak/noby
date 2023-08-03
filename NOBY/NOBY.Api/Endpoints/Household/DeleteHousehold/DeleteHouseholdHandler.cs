@@ -17,9 +17,8 @@ internal sealed class DeleteHouseholdHandler
         await _householdService.DeleteHousehold(request.HouseholdId, cancellationToken: cancellationToken);
 
         // smazat vazbu klient-produkt
-        var customers = await _customerOnSAService.GetCustomerList(household.SalesArrangementId, cancellationToken);
-        await deleteRelationship(household.CustomerOnSAId1, household.CaseId, customers, cancellationToken);
-        await deleteRelationship(household.CustomerOnSAId2, household.CaseId, customers, cancellationToken);
+        await deleteRelationship(household.CustomerOnSAId1, household.CaseId, cancellationToken);
+        await deleteRelationship(household.CustomerOnSAId2, household.CaseId, cancellationToken);
 
         // HFICH-5233
         if (household.HouseholdTypeId == (int)HouseholdTypes.Codebtor)
@@ -36,19 +35,22 @@ internal sealed class DeleteHouseholdHandler
         return request.HouseholdId;
     }
 
-    private async Task deleteRelationship(int? customerOnSA, long caseId, List<CustomerOnSA> customers, CancellationToken cancellationToken)
+    private async Task deleteRelationship(int? customerOnSA, long caseId, CancellationToken cancellationToken)
     {
         if (!customerOnSA.HasValue) return;
 
-        var partnerId = customers
-            .First(t => t.CustomerOnSAId == customerOnSA.Value)
-            ?.CustomerIdentifiers
+        var customer = await _customerOnSAService.GetCustomer(customerOnSA.Value, cancellationToken);
+
+        var partnerId = customer
+            .CustomerIdentifiers
             .FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)
             ?.IdentityId;
 
         if (partnerId.HasValue)
         {
-            await _productService.DeleteContractRelationship(Convert.ToInt32(partnerId.Value), caseId, cancellationToken);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _productService.DeleteContractRelationship(Convert.ToInt32(partnerId.Value), caseId, cancellationToken);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
     }
 
