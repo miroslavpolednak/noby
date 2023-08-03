@@ -61,6 +61,7 @@ public static class StartupExtensions
             {
                 options.Address = provider.GetRequiredService<Configuration.IGrpcServiceUriSettings<TServiceUriSettings>>().ServiceUrl;
             })
+            .ConfigureChannel(c => c.MaxReceiveMessageSize = 10 * 1024 * 1024)
             .EnableCallContextPropagation(o => o.SuppressContextNotFoundErrors = true)
             .AddInterceptor<GenericClientExceptionInterceptor>()
             .AddCisCallCredentials();

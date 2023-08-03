@@ -1,4 +1,6 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.DocumentOnSAService.Clients;
+using DomainServices.DocumentOnSAService.Contracts;
+using DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteCustomer;
@@ -45,6 +47,11 @@ internal sealed class DeleteCustomerHandler
             await _sulmClient.StopUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
         }
 
+        // Invalidate DocumentsOnSa Crs
+        var documentsOnSaToSing = await _documentOnSAServiceClient.GetDocumentsToSignList(customer.SalesArrangementId, cancellationToken);
+        var documentsOnSaCrs = documentsOnSaToSing.DocumentsOnSAToSign.Where(r => r.DocumentOnSAId is not null && r.CustomerOnSAId == request.CustomerOnSAId);
+        await StopSigning(documentsOnSaCrs, cancellationToken);
+
         // smazat customer + prijmy + obligations + identities
         await deleteEntities(request.CustomerOnSAId, cancellationToken);
 
@@ -80,6 +87,15 @@ internal sealed class DeleteCustomerHandler
             .ExecuteDeleteAsync(cancellationToken);
     }
 
+    private async Task StopSigning(IEnumerable<DocumentOnSAToSign> documentOnSAToSigns, CancellationToken cancellationToken)
+    {
+        foreach (var doc in documentOnSAToSigns)
+        {
+            // Have to be call one by one
+            await _documentOnSAServiceClient.StopSigning(doc.DocumentOnSAId!.Value, cancellationToken);
+        }
+    }
+
     private async Task deleteAgentFromSalesArrangement(_SA.SalesArrangement saInstance, int salesArrangementId, CancellationToken cancellationToken)
     {
         // ziskat ID hlavniho customera
@@ -101,14 +117,17 @@ internal sealed class DeleteCustomerHandler
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly SulmService.ISulmClientHelper _sulmClient;
     private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
 
     public DeleteCustomerHandler(
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         SulmService.ISulmClientHelper sulmClient,
-        Database.HouseholdServiceDbContext dbContext)
+        Database.HouseholdServiceDbContext dbContext,
+        IDocumentOnSAServiceClient documentOnSAServiceClient)
     {
         _salesArrangementService = salesArrangementService;
         _sulmClient = sulmClient;
         _dbContext = dbContext;
+        _documentOnSAServiceClient = documentOnSAServiceClient;
     }
 }
