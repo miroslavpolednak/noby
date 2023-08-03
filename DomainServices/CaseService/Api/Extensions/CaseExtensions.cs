@@ -23,8 +23,21 @@ internal static class CaseExtensions
             PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel") ?? ""
         };
 
-        task.PhaseTypeId = getPhaseTypeId(task.TaskTypeId, taskData);
-        task.SignatureTypeId = getSignatureTypeId(task.TaskTypeId, taskData);
+        task.PhaseTypeId = task.TaskTypeId switch
+        {
+            1 => taskData.GetInteger("ukol_dozadani_stav"),
+            2 => taskData.GetInteger("ukol_overeni_ic_stav"),
+            6 => taskData.GetInteger("ukol_podpis_stav"),
+            3 or 4 or 7 or 8 => 1,
+            _ => throw new ArgumentOutOfRangeException("PhaseTypeId can not be set")
+        };
+
+        task.SignatureTypeId = (task.TaskTypeId, taskData.GetInteger("ukol_podpis_dokument_metoda")) switch
+        {
+            (6, 1) => SignatureTypes.Paper.ToByte(),
+            (6, 2) => SignatureTypes.Electronic.ToByte(),
+            _ => null
+        };
 
         return task;
     }
@@ -173,17 +186,6 @@ internal static class CaseExtensions
             6 => taskData.GetInteger("ukol_podpis_stav"),
             3 or 4 or 7 or 8 => 1,
             _ => throw new ArgumentOutOfRangeException(nameof(taskTypeId), taskTypeId, null)
-        };
-    }
-
-    private static int? getSignatureTypeId(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
-    {
-        return (taskTypeId, taskData.GetInteger("ukol_podpis_dokument_metoda")) switch
-        {
-            (6, _) => null,
-            (_, 1) => SignatureTypes.Paper.ToByte(),
-            (_, 2) => SignatureTypes.Electronic.ToByte(),
-            _ => null
         };
     }
 
