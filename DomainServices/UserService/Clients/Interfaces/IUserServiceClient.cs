@@ -2,6 +2,8 @@
 
 public interface IUserServiceClient
 {
+    Task<Contracts.User> GetCurrentUser(CancellationToken cancellationToken = default);
+
     Task<Contracts.User> GetUser(string loginWithScheme, CancellationToken cancellationToken = default(CancellationToken));
 
     Task<Contracts.User> GetUser(int userId, CancellationToken cancellationToken = default(CancellationToken));

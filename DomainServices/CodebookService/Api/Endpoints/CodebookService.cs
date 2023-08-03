@@ -245,7 +245,7 @@ internal partial class CodebookService
             var extensions = _db.GetDynamicList(nameof(Channels), 2);
             items.ForEach(item =>
             {
-                item.RdmCbChannelCode = extensions.FirstOrDefault(t => t.ChannelId == item.Id)?.RdmCbChannelCode;
+                item.RdmCbChannelCode = extensions.FirstOrDefault(t => t.ChannelId == item.Id)?.RdmCbChannelCode ?? "CH0001";
             });
             return (new ChannelsResponse()).AddItems(items);
         });
@@ -276,14 +276,14 @@ internal partial class CodebookService
         => Helpers.GetItems(() => (new IdentitySchemesResponse()).AddItems(
             new List<IdentitySchemesResponse.Types.IdentitySchemeItem>
             {
-                new() { Id = 1, Code = "KBID", Name = "Identifikátor KB klienta v Customer managementu", MandantId = 2, Category = "Customer", ChannelId = null },
-                new() { Id = 2, Code = "MPSBID", Name = "PartnerId ve Starbuildu", MandantId = 1, Category = "Customer", ChannelId = null },
-                new() { Id = 3, Code = "MPEKID", Name = "KlientId v eKmenu", MandantId = 1, Category = "Customer", ChannelId = null },
-                new() { Id = 4, Code = "KBUID", MandantId = 2, Category = "User", ChannelId = 4 },
-                new() { Id = 5, Code = "M04ID", MandantId = 1, Category = "User", ChannelId = 1 },
-                new() { Id = 6, Code = "M17ID", MandantId = 1, Category = "User", ChannelId = 1 },
-                new() { Id = 7, Code = "BrokerId", MandantId = 2, Category = "User", ChannelId = 6 },
-                new() { Id = 8, Code = "MPAD", MandantId = 1, Category = "User", ChannelId = 1 }
+                new() { Id = 1, Code = "KBID", Name = "Identifikátor KB klienta v Customer managementu", MandantId = 2, Category = "Customer" },
+                new() { Id = 2, Code = "MPSBID", Name = "PartnerId ve Starbuildu", MandantId = 1, Category = "Customer" },
+                new() { Id = 3, Code = "MPEKID", Name = "KlientId v eKmenu", MandantId = 1, Category = "Customer" },
+                new() { Id = 4, Code = "KBUID", MandantId = 2, Category = "User" },
+                new() { Id = 5, Code = "M04ID", MandantId = 1, Category = "User" },
+                new() { Id = 6, Code = "M17ID", MandantId = 1, Category = "User" },
+                new() { Id = 7, Code = "BrokerId", MandantId = 2, Category = "User" },
+                new() { Id = 8, Code = "MPAD", MandantId = 1, Category = "User" }
             })
         );
 
