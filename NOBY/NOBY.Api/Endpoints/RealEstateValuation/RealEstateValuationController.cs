@@ -279,6 +279,30 @@ public sealed class RealEstateValuationController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Předobjednávka online ocenění
+    /// </summary>
+    /// <remarks>
+    /// Předobjednávka online ocenění
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CA6B233C-6BE0-45ff-B5F6-F47F9A3ABA62"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/preorder-online")]
+    [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> PreorderOnlineValuation(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] PreorderOnlineValuation.PreorderOnlineValuationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
+
     private readonly IMediator _mediator;
     public RealEstateValuationController(IMediator mediator) => _mediator = mediator;
 }
