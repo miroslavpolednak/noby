@@ -16,8 +16,8 @@ grpcurl -insecure -d "{\"SalesArrangementId\":1,\"Mortgage\":{\"IncomeCurrencyCo
 grpcurl -insecure -d "{\"SalesArrangementId\":2,\"LoanApplicationAssessmentId\":222,\"RiskSegment\":\"xxxxx\"}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/UpdateLoanAssessmentParameters
 
 grpcurl -insecure -d "{\"SalesArrangementId\":26}" -H "Authorization: Basic YTph" 127.0.0.1:5010 DomainServices.SalesArrangementService.v1.SalesArrangementService/SendToCmp
-grpcurl -insecure -d "{\"SalesArrangementId\":26}" -H "Authorization: Basic YTph" 127.0.0.1:5090 DomainServices.SalesArrangementService.v1.SalesArrangementService/ValidateSalesArrangement
-grpcurl -insecure -d "{\"SalesArrangementId\":705}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30009 DomainServices.SalesArrangementService.v1.SalesArrangementService/ValidateSalesArrangement
+grpcurl -insecure -d "{\"SalesArrangementId\":25473}" -H "Authorization: Basic YTph" 127.0.0.1:30009 DomainServices.SalesArrangementService.v1.SalesArrangementService/ValidateSalesArrangement
+grpcurl -insecure -d "{\"SalesArrangementId\":25473}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30009 DomainServices.SalesArrangementService.v1.SalesArrangementService/ValidateSalesArrangement
 
 grpcurl -insecure -d "{\"SalesArrangementId\":23990}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30009 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetFlowSwitches
 grpcurl -insecure -d "{\"SalesArrangementId\":20000,\"FlowSwitches\":[{\"FlowSwitchId\":1,\"Value\":true},{\"FlowSwitchId\":2,\"Value\":false}]}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30009 DomainServices.SalesArrangementService.v1.SalesArrangementService/SetFlowSwitches
