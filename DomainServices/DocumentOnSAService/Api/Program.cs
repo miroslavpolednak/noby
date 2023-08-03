@@ -1,3 +1,4 @@
+using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.Security;
 using CIS.Infrastructure.StartupExtensions;
@@ -39,7 +40,8 @@ appConfiguration.CheckAppConfiguration();
     // logging 
     builder
         .AddCisLogging()
-        .AddCisTracing();
+        .AddCisTracing()
+        .AddCisAudit();
 
     // authentication
     builder.AddCisServiceAuthentication();
