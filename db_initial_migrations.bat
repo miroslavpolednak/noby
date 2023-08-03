@@ -23,3 +23,5 @@
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=NOBY;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\NOBY\DatabaseMigrations"
 
 .\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=NobyAudit;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\NOBY\AuditDatabaseMigrations"
+
+.\DatabaseMigrations\bin\Debug\net7.0\DatabaseMigrations.exe -c "server=adpra173.vsstest.local;database=RealEstateValuationService;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;" -f "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\RealEstateValuationService\DatabaseMigrations"
