@@ -105,9 +105,12 @@ internal sealed class LinkModelationToSalesArrangementHandler
             var fee1 = offerInstance.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
             var fee2 = offerInstanceOld.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
 
+            var test = Equals(offerInstance.BasicParameters.GuaranteeDateTo, offerInstanceOld.BasicParameters.GuaranteeDateTo);
+            var test1 = Equals(offerInstance.SimulationInputs.InterestRateDiscount, offerInstanceOld.SimulationInputs.InterestRateDiscount);
+
             if (isSwitch8On
-                && (offerInstance.BasicParameters.GuaranteeDateTo != offerInstanceOld.BasicParameters.GuaranteeDateTo
-                || offerInstance.SimulationInputs.InterestRateDiscount != offerInstanceOld.SimulationInputs.InterestRateDiscount
+                && (!Equals(offerInstance.BasicParameters.GuaranteeDateTo, offerInstanceOld.BasicParameters.GuaranteeDateTo)
+                || !Equals(offerInstance.SimulationInputs.InterestRateDiscount, offerInstanceOld.SimulationInputs.InterestRateDiscount)
                 || fee1.Except(fee2).Union(fee2.Except(fee1)).Any()))
             {
                 flowSwitchesToSet.Add(new()
