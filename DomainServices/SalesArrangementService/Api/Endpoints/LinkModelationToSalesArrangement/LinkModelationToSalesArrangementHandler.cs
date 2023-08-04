@@ -105,9 +105,6 @@ internal sealed class LinkModelationToSalesArrangementHandler
             var fee1 = offerInstance.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
             var fee2 = offerInstanceOld.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
 
-            var test = Equals(offerInstance.BasicParameters.GuaranteeDateTo, offerInstanceOld.BasicParameters.GuaranteeDateTo);
-            var test1 = Equals(offerInstance.SimulationInputs.InterestRateDiscount, offerInstanceOld.SimulationInputs.InterestRateDiscount);
-
             if (isSwitch8On
                 && (!Equals(offerInstance.BasicParameters.GuaranteeDateTo, offerInstanceOld.BasicParameters.GuaranteeDateTo)
                 || !Equals(offerInstance.SimulationInputs.InterestRateDiscount, offerInstanceOld.SimulationInputs.InterestRateDiscount)
