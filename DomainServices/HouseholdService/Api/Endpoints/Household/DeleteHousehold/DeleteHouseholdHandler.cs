@@ -2,6 +2,7 @@
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Api.Database;
 using DomainServices.HouseholdService.Contracts;
+using FastEnumUtility;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.DeleteHousehold;
 
@@ -30,7 +31,7 @@ internal sealed class DeleteHouseholdHandler
         var documentsOnSaWithHousehold = documentsOnSaToSing.DocumentsOnSAToSign.Where(d => d.HouseholdId == request.HouseholdId && d.DocumentOnSAId is not null);
         await StopSigning(documentsOnSaWithHousehold, cancellationToken);
         // Crs
-        var documentsOnSaCrs = documentsOnSaToSing.DocumentsOnSAToSign.Where(r => r.DocumentOnSAId is not null &&
+        var documentsOnSaCrs = documentsOnSaToSing.DocumentsOnSAToSign.Where(r => r.DocumentOnSAId is not null && r.DocumentTypeId == DocumentTypes.DANRESID.ToByte() &&
                                                                             (r.CustomerOnSAId == household.CustomerOnSAId1 || r.CustomerOnSAId == household.CustomerOnSAId2));
         await StopSigning(documentsOnSaCrs, cancellationToken);
 
