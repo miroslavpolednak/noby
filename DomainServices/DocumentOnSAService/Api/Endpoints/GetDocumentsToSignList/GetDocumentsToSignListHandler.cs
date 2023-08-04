@@ -75,12 +75,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
 
         // Evaluate eletronic signature status 
         await EvaluateElectronicDocumentStatus(documentOnSaEntities, cancellationToken);
-
-        if (!response.DocumentsOnSAToSign.Any())
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.NoDocumentsToSignForSa, salesArrangement.SalesArrangementId);
-        }
-
+        
         return response;
     }
 
