@@ -5,9 +5,11 @@ using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using FastEnumUtility;
@@ -19,45 +21,25 @@ internal sealed class CancelCaseHandler
 {
     public async Task<CancelCaseResponse> Handle(CancelCaseRequest request, CancellationToken cancellationToken)
     {
-        var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
-        var salesArrangement = salesArrangementResponse.SalesArrangements.FirstOrDefault(s => s.IsProductSalesArrangement())
-            ?? throw new NobyValidationException("");
-
+        var salesArrangement = await GetProductSalesArrangement(request.CaseId, cancellationToken);
+        var documentType = await GetDocumentType(DocumentTypes.ODSTOUP, cancellationToken);
         var customerOnSas = await _customerOnSaService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
-        var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
-        var documentTypeId = DocumentTypes.ODSTOUP.ToByte();
-        var documentType = documentTypes.FirstOrDefault(t => t.Id == documentTypeId);
         
         foreach (var customerOnSa in customerOnSas)
         {
-            var getDocumentRequest = new GetDocumentDataRequest
-            {
-                DocumentTypeId = documentTypeId,
-                InputParameters = new InputParameters
-                {
-                    SalesArrangementId = salesArrangement.SalesArrangementId,
-                    CaseId = salesArrangement.CaseId,
-                    CustomerOnSaId = customerOnSa.CustomerOnSAId,
-                    // CustomerIdentity = 
-                }
-            };
-            
-            var documentResponse = await _dataAggregatorService.GetDocumentData(getDocumentRequest, cancellationToken);
-            
-            var generateDocumentRequest = new GenerateDocumentRequest
-            {
-                DocumentTypeId = documentTypeId,
-            };
+            var getDocumentRequest = CreateGetDocumentDataRequest(salesArrangement, customerOnSa, documentType);
+            var getDocumentResponse = await _dataAggregatorService.GetDocumentData(getDocumentRequest, cancellationToken);
 
-            var generateResponse = await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
-            
+            var generateDocumentRequest = CreateGenerateDocumentRequest(documentType);
+            var generateDocumentResponse = await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
+        
             var uploadRequest = new UploadDocumentRequest
             {
-                BinaryData = generateResponse.Data,
+                BinaryData = generateDocumentResponse.Data,
                 Metadata = new DocumentMetadata
                 {
-                    EaCodeMainId = documentType?.EACodeMainId,
-                    CaseId = salesArrangement.CaseId,
+                    EaCodeMainId = documentType.EACodeMainId,
+                    // CaseId = salesArrangement.CaseId,
                     //
                 }
             };
@@ -81,6 +63,39 @@ internal sealed class CancelCaseHandler
         };
     }
 
+    private async Task<DomainServices.SalesArrangementService.Contracts.SalesArrangement> GetProductSalesArrangement(long caseId, CancellationToken cancellationToken)
+    {
+        var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
+        return salesArrangementResponse.SalesArrangements.First(s => s.IsProductSalesArrangement());
+    }
+
+    private async Task<DocumentTypesResponse.Types.DocumentTypeItem> GetDocumentType(DocumentTypes documentType, CancellationToken cancellationToken)
+    {
+        var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
+        return documentTypes.First(t => t.Id == documentType.ToByte());
+    }
+
+    private static GetDocumentDataRequest CreateGetDocumentDataRequest(
+        DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement,
+        CustomerOnSA customerOnSa,
+        DocumentTypesResponse.Types.DocumentTypeItem documentType) => new()
+    {
+        DocumentTypeId = documentType.Id,
+        InputParameters = new InputParameters
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            CaseId = salesArrangement.CaseId,
+            CustomerOnSaId = customerOnSa.CustomerOnSAId,
+            // CustomerIdentity = 
+        }
+    };
+
+    private static GenerateDocumentRequest CreateGenerateDocumentRequest(
+        DocumentTypesResponse.Types.DocumentTypeItem documentType) => new()
+    {
+        DocumentTypeId = documentType.Id
+    };
+    
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSaService;
