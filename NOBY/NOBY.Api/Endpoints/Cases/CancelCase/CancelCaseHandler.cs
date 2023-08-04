@@ -1,4 +1,5 @@
-﻿using CIS.Core;
+﻿using System.Globalization;
+using CIS.Core;
 using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
@@ -18,8 +19,7 @@ using NOBY.Api.Endpoints.Document.Shared;
 
 namespace NOBY.Api.Endpoints.Cases.CancelCase;
 
-internal sealed class CancelCaseHandler
-    : IRequestHandler<CancelCaseRequest, CancelCaseResponse>
+internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, CancelCaseResponse>
 {
     const DocumentTypes _documentType = DocumentTypes.ODSTOUP;
     
@@ -46,6 +46,7 @@ internal sealed class CancelCaseHandler
             
             var generateDocumentRequest = await _documentGenerator.CreateRequest(getGeneralDocumentRequest, cancellationToken);
             var documentData = await _documentGenerator.GenerateDocument(generateDocumentRequest, cancellationToken);
+            var documentId = await _documentArchiveService.GenerateDocumentId(new (), cancellationToken);
             
             var uploadRequest = new UploadDocumentRequest
             {
@@ -56,11 +57,10 @@ internal sealed class CancelCaseHandler
                     CaseId = salesArrangement.CaseId,
                     ContractNumber = caseDetail.Data.ContractNumber,
                     CreatedOn = _dateTime.Now.Date,
-                    // DocumentId = documentId,
-                    // Description = documentInformation.DocumentInformation.Description ?? string.Empty,
+                    DocumentId = documentId,
+                    Description = documentTypeItem.Name,
                     EaCodeMainId = documentTypeItem.EACodeMainId,
-                    // Filename = documentInformation.DocumentInformation.FileName,
-                    // FormId = documentInformation.FormId ?? string.Empty
+                    Filename = $"{documentTypeItem.FileName}_{caseDetail.CaseId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
                 }
             };
 
