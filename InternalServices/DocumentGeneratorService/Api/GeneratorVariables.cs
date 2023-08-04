@@ -26,6 +26,8 @@ public static class GeneratorVariables
 
         SetColorScheme(StoragePath);
 
+        //Pokud se použije 1 statický font pro acrofieldy + vlastní např. label,
+        //tak jedna a ta samá instance fontu rozbije formátování u pár polí a pak je PDF/A nevalidní...
         Arial = new CachedFont(() => GetOpenTypeFont("arial"));
         ArialBold = new CachedFont(() => GetOpenTypeFont("arial_bold"));
         ArialItalic = new CachedFont(() => GetOpenTypeFont("arial_italic"));
@@ -58,7 +60,7 @@ public static class GeneratorVariables
         {
             _fontFactory = fontFactory;
         }
-
+        
         public OpenTypeFont GetFont([CallerMemberName] string cacheKey = "") => _fonts.GetOrAdd(cacheKey, _ => _fontFactory());
     }
 }
