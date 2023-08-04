@@ -12,13 +12,13 @@ internal sealed class DeleteHouseholdHandler
     public async Task<int> Handle(DeleteHouseholdRequest request, CancellationToken cancellationToken)
     {
         var household = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
-        
-        // smazat
-        await _householdService.DeleteHousehold(request.HouseholdId, cancellationToken: cancellationToken);
 
         // smazat vazbu klient-produkt
         await deleteRelationship(household.CustomerOnSAId1, household.CaseId, cancellationToken);
         await deleteRelationship(household.CustomerOnSAId2, household.CaseId, cancellationToken);
+
+        // smazat
+        await _householdService.DeleteHousehold(request.HouseholdId, cancellationToken: cancellationToken);
 
         // HFICH-5233
         if (household.HouseholdTypeId == (int)HouseholdTypes.Codebtor)
