@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DomainServices.CaseService.Clients;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck;
 
@@ -10,6 +11,8 @@ internal sealed class OfferGuaranteeDateToCheckJob
 {
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
+        // todo: case service Cancel Task 
+        // await _caseService.CancelTask()
         await _dbContext.Database.ExecuteSqlRawAsync(_sql, cancellationToken);
     }
 
@@ -28,9 +31,13 @@ WHEN NOT MATCHED THEN
     INSERT (FlowSwitchId, SalesArrangementId, [Value]) VALUES (S.FlowSwitchId, S.SalesArrangementId, 0);";
 
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
-
-    public OfferGuaranteeDateToCheckJob(Database.SalesArrangementServiceDbContext dbContext)
+    private readonly ICaseServiceClient _caseService;
+    
+    public OfferGuaranteeDateToCheckJob(
+        Database.SalesArrangementServiceDbContext dbContext,
+        ICaseServiceClient caseService)
     {
         _dbContext = dbContext;
+        _caseService = caseService;
     }
 }
