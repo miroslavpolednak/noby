@@ -22,7 +22,7 @@ internal sealed class RealLuxpiServiceClient
 
         Dto.CreateKbmodelFlatResponse createResponse()
         {
-            if (!model!.ResultPrice.HasValue || !model.ValuationId.HasValue)
+            if (!model!.ResultPrice.HasValue || model.Id == 0)
             {
                 throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelIncorrectResult);
             }
@@ -30,7 +30,7 @@ internal sealed class RealLuxpiServiceClient
             return new Dto.CreateKbmodelFlatResponse
             {
                 ResultPrice = Convert.ToInt32(model.ResultPrice!.Value),
-                ValuationId = model.ValuationId!.Value
+                ValuationId = model.Id
             };
         }
     }

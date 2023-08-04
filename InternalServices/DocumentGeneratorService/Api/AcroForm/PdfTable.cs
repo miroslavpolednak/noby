@@ -96,14 +96,14 @@ public class PdfTable
         table.Border.Width = 0f;
         table.CellDefault.Align = Pdf.TextAlign.Center;
         table.CellDefault.VAlign = VAlign.Center;
-        table.CellDefault.Font = GeneratorVariables.Arial;
+        table.CellDefault.Font = GeneratorVariables.Arial.GetFont();
         table.CellDefault.FontSize = placeholderField.FontSize;
         table.CellDefault.Border.Width = 0.5f;
     }
 
     private void CreateColumns(Table2 table)
     {
-        var row = table.Rows.Add(20, GeneratorVariables.ArialBold, table.CellDefault.FontSize, RgbColor.Black, RgbColor.LightGrey);
+        var row = table.Rows.Add(20, GeneratorVariables.ArialBold.GetFont(), table.CellDefault.FontSize, RgbColor.Black, RgbColor.LightGrey);
         
         foreach (var column in _tableData.Columns)
         {
@@ -154,7 +154,7 @@ public class PdfTable
 
         return new TextArea(_tableData.ConcludingParagraph, table.X, table.Y + visibleHeight + TextTopMargin, table.Width, remainingHeight - TextTopMargin)
         {
-            Font = GeneratorVariables.Arial,
+            Font = GeneratorVariables.Arial.GetFont(),
             FontSize = table.CellDefault.FontSize ?? 10,
             Align = Pdf.TextAlign.Justify
         };

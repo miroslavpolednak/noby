@@ -166,18 +166,18 @@ internal sealed class WorkflowMapperService
         };
 
     private static _Dto.SignatureType getSignatureType(_Case.WorkflowTask task) =>
-        task.SignatureTypeId switch
+        (SignatureTypes)task.SignatureTypeId! switch
         {
-            PaperSignatureTypeId => _Dto.SignatureType.Paper,
-            DigitalSignatureTypeId => _Dto.SignatureType.Digital,
+            SignatureTypes.Paper => _Dto.SignatureType.Paper,
+            SignatureTypes.Electronic => _Dto.SignatureType.Digital,
             _ => throw new ArgumentOutOfRangeException()
         };
 
     private static _Dto.WorkflowTaskStates getSignatureState(_Case.WorkflowTask task) =>
-        task.SignatureTypeId switch
+        (SignatureTypes)task.SignatureTypeId! switch
         {
-            PaperSignatureTypeId => getPaperSignatureState(task),
-            DigitalSignatureTypeId => getDigitalSignatureState(task),
+            SignatureTypes.Paper => getPaperSignatureState(task),
+            SignatureTypes.Electronic => getDigitalSignatureState(task),
             _ => throw new ArgumentOutOfRangeException()
         };
 
@@ -197,9 +197,6 @@ internal sealed class WorkflowMapperService
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    private const int PaperSignatureTypeId = 1;
-    private const int DigitalSignatureTypeId = 2;
-    
     private readonly ICurrentUserAccessor _userAccessor;
     private readonly ICodebookServiceClient _codebookService;
 

@@ -22,13 +22,24 @@ internal sealed class PreorderOnlineValuationHandler
         // deed of ownership
         var deedOfOwnerships = await _dbContext.DeedOfOwnershipDocuments
             .AsNoTracking()
-            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId && !string.IsNullOrEmpty(t.RealEstateIds))
-            .Select(t => t.RealEstateIds!)
+            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
+            .Select(t => new { t.AddressPointId, t.RealEstateIds })
             .ToListAsync(cancellationToken);
-        var realEstateIds = deedOfOwnerships.SelectMany(t =>
-        {
-            return System.Text.Json.JsonSerializer.Deserialize<long[]>(t!)!;
-        }).ToArray();
+        
+        // realestateids
+        var realEstateIds = deedOfOwnerships
+            .Where(t => !string.IsNullOrEmpty(t.RealEstateIds))
+            .SelectMany(t =>
+            {
+                return System.Text.Json.JsonSerializer.Deserialize<long[]>(t.RealEstateIds!)!;
+            })
+            .ToArray();
+
+        // id pro preorder
+        long createKbmodelId = deedOfOwnerships
+            .FirstOrDefault(t => t.AddressPointId.HasValue)
+            ?.AddressPointId
+            ?? throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AddressPointIdNotFound);
 
         SpecificDetailHouseAndFlatObject? houseAndFlat = null;
         if (realEstate.SpecificDetailBin is not null)
@@ -53,14 +64,13 @@ internal sealed class PreorderOnlineValuationHandler
             FlatSchema = request.Data.FlatSchemaCode,
             FlatArea = request.Data.FlatArea,
             AgeOfBuilding = request.Data.BuildingAgeCode,
-
             DealNumber = request.ContractNumber,
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
             ActualPurchasePrice = request.CollateralAmount,
             IsDealSubject = realEstate.IsLoanRealEstate,
             LoanAmount = request.LoanAmount
         };
-        var kbmodelReponse = await _luxpiServiceClient.CreateKbmodelFlat(kbmodelRequest, 11010525, cancellationToken);
+        var kbmodelReponse = await _luxpiServiceClient.CreateKbmodelFlat(kbmodelRequest, createKbmodelId, cancellationToken);
 
         // revaluation check
         var revaluationRequest = new ExternalServices.PreorderService.V1.Contracts.OnlineRevaluationCheckRequestDTO

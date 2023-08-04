@@ -1573,6 +1573,16 @@
             Informace z listu vlastnictví
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse.DeedOfOwnershipNumber">
+            <summary>
+            Číslo listu vlastnictví (LV)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse.CremDeedOfOwnershipDocumentId">
+            <summary>
+            CREM ID staženého dokumentu listu vlastnictví (LV)
+            </summary>
+        </member>
         <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseOwners">
             <summary>
             Popis vlastníka na listu vlastnictví

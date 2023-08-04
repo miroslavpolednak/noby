@@ -30,7 +30,7 @@ internal sealed class MockCremClient
         throw new NotImplementedException();
     }
 
-    public Task<long> RequestNewDocumentId(int? katuzId, int? deedOfOwnershipNumber, long? deedOfOwnershipId, CancellationToken cancellationToken = default)
+    public Task<(long CremDeedOfOwnershipDocumentId, int DeedOfOwnershipNumber)> RequestNewDocumentId(int? katuzId, int? deedOfOwnershipNumber, long? deedOfOwnershipId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

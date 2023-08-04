@@ -1,4 +1,6 @@
-﻿using ceTe.DynamicPDF.Text;
+﻿using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
+using ceTe.DynamicPDF.Text;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api;
 
@@ -10,13 +12,13 @@ public static class GeneratorVariables
 
     public static OutputIntent ColorScheme { get; private set; } = null!;
 
-    public static OpenTypeFont Arial { get; private set; } = null!;
+    public static CachedFont Arial { get; private set; } = null!;
 
-    public static OpenTypeFont ArialBold { get; private set; } = null!;
+    public static CachedFont ArialBold { get; private set; } = null!;
 
-    public static OpenTypeFont ArialItalic { get; private set; } = null!;
+    public static CachedFont ArialItalic { get; private set; } = null!;
 
-    public static OpenTypeFont ArialBoldItalic { get; private set; } = null!;
+    public static CachedFont ArialBoldItalic { get; private set; } = null!;
 
     public static void Init(GeneratorConfiguration config)
     {
@@ -24,10 +26,10 @@ public static class GeneratorVariables
 
         SetColorScheme(StoragePath);
 
-        Arial = GetOpenTypeFont("arial");
-        ArialBold = GetOpenTypeFont("arial_bold");
-        ArialItalic = GetOpenTypeFont("arial_italic");
-        ArialBoldItalic = GetOpenTypeFont("arial_bold_italic");
+        Arial = new CachedFont(() => GetOpenTypeFont("arial"));
+        ArialBold = new CachedFont(() => GetOpenTypeFont("arial_bold"));
+        ArialItalic = new CachedFont(() => GetOpenTypeFont("arial_italic"));
+        ArialBoldItalic = new CachedFont(() => GetOpenTypeFont("arial_bold_italic"));
     }
 
     private static void SetColorScheme(string storagePath)
@@ -46,4 +48,17 @@ public static class GeneratorVariables
             Embed = true,
             Subset = false
         };
+
+    public class CachedFont
+    {
+        private readonly Func<OpenTypeFont> _fontFactory;
+        private readonly ConcurrentDictionary<string, OpenTypeFont> _fonts = new(Environment.ProcessorCount, 2);
+
+        public CachedFont(Func<OpenTypeFont> fontFactory)
+        {
+            _fontFactory = fontFactory;
+        }
+
+        public OpenTypeFont GetFont([CallerMemberName] string cacheKey = "") => _fonts.GetOrAdd(cacheKey, _ => _fontFactory());
+    }
 }

@@ -70,6 +70,7 @@ try
 
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseCisServiceUserContext();
 
     app.MapCisGrpcHealthChecks();
 

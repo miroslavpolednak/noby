@@ -5,7 +5,7 @@ namespace ExternalServices.Crem.V1;
 public interface ICremClient
     : IExternalServiceClient
 {
-    Task<long> RequestNewDocumentId(int? katuzId, int? deedOfOwnershipNumber, long? deedOfOwnershipId, CancellationToken cancellationToken = default);
+    Task<(long CremDeedOfOwnershipDocumentId, int DeedOfOwnershipNumber)> RequestNewDocumentId(int? katuzId, int? deedOfOwnershipNumber, long? deedOfOwnershipId, CancellationToken cancellationToken = default);
 
     Task<Contracts.ResponseGetFlatsForAddressDTO> GetFlatsForAddress(long addressPointId, CancellationToken cancellationToken = default);
 

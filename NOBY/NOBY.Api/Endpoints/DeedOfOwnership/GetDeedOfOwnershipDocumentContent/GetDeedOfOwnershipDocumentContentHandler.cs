@@ -9,10 +9,13 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
     public async Task<GetDeedOfOwnershipDocumentContentResponse> Handle(GetDeedOfOwnershipDocumentContentRequest request, CancellationToken cancellationToken)
     {
         long documentId;
+        int? deedOfOwnershipNumber = null;
 
         if (request.DeedOfOwnershipDocumentId.HasValue)
         {
-            documentId = request.DeedOfOwnershipDocumentId.Value;
+            var savedDocument = await _realEstateValuation.GetDeedOfOwnershipDocument(request.DeedOfOwnershipDocumentId.Value, cancellationToken);
+            documentId = savedDocument.CremDeedOfOwnershipDocumentId;
+            deedOfOwnershipNumber = savedDocument.DeedOfOwnershipNumber;
         }
         else
         {
@@ -29,11 +32,14 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
 
             if (!foundDocuments.First().PublicDocument && DateTime.Now.Subtract(foundDocuments.First().ValidityDate).TotalDays <= 30)
             {
-                documentId = request.DeedOfOwnershipId.GetValueOrDefault();
+                documentId = foundDocuments.First().DocumentId;
+                deedOfOwnershipNumber = foundDocuments.First().DeedOfOwnershipNumber;
             }
             else
             {
-                documentId = await _cremClient.RequestNewDocumentId(request.KatuzId, request.DeedOfOwnershipNumber, request.DeedOfOwnershipId, cancellationToken);
+                var requestResult = await _cremClient.RequestNewDocumentId(request.KatuzId, request.DeedOfOwnershipNumber, request.DeedOfOwnershipId, cancellationToken);
+                documentId = requestResult.CremDeedOfOwnershipDocumentId;
+                deedOfOwnershipNumber = requestResult.DeedOfOwnershipNumber;
             }
         }
 
@@ -43,6 +49,8 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
 
         return new GetDeedOfOwnershipDocumentContentResponse
         {
+            CremDeedOfOwnershipDocumentId = documentId,
+            DeedOfOwnershipNumber = deedOfOwnershipNumber,
             Owners = owners?.Select(t => new GetDeedOfOwnershipDocumentContentResponseOwners
             {
                 OwnerDescription = t.Description,
