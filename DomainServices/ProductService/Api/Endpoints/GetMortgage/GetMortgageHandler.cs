@@ -1,4 +1,7 @@
-﻿using DomainServices.ProductService.Contracts;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.v1;
+using DomainServices.ProductService.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
@@ -8,14 +11,17 @@ internal sealed class GetMortgageHandler
 {
     private readonly Database.ProductServiceDbContext _dbContext;
     private readonly Database.LoanRepository _repository;
+    private readonly ICodebookServiceClient _codebookService;
 
     #region Construction
 
     public GetMortgageHandler(
         Database.ProductServiceDbContext dbContext,
-        Database.LoanRepository repository)
+        Database.LoanRepository repository,
+        ICodebookServiceClient codebookService)
     {
         _repository = repository;
+        _codebookService = codebookService;
         _dbContext = dbContext;
     }
     #endregion
@@ -65,6 +71,19 @@ internal sealed class GetMortgageHandler
                 AddressPointId = statements.StatPodkategorie ?? "",
                 CountryId = statements.ZemeId
             };
+
+            //Mock HFICH-6038
+            mortgage.Statement.Address.SingleLineAddressPoint = FullAddress(mortgage.Statement.Address, await _codebookService.Countries(cancellation));
+
+            static string FullAddress(GrpcAddress address, ICollection<CountriesResponse.Types.CountryItem> countries)
+            {
+                return $"{address.Street} {CombineHouseAndStreetNumber(address.HouseNumber, address.StreetNumber)}, " +
+                       $"{address.Postcode} {address.City}, " +
+                       $"{countries.Where(c => c.Id == address.CountryId).Select(c => c.LongName).FirstOrDefault("No country")}";
+            }
+
+            static string CombineHouseAndStreetNumber(string houseNumber, string streetNumber) =>
+                string.Join("/", new[] { houseNumber, streetNumber }.Where(str => !string.IsNullOrWhiteSpace(str)));
         }
 
         if (realEstates is not null && realEstates.Any())
