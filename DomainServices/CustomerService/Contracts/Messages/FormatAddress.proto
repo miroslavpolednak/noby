@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "GrpcAddress.proto";
+
+message FormatAddressRequest {
+	cis.types.GrpcAddress Address = 1;
+}
+
+message FormatAddressResponse {
+	string SingleLineAddress = 1;
+}

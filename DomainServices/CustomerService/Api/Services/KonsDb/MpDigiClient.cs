@@ -100,7 +100,8 @@ public class MpDigiClient
             BuildingIdentificationNumber = address.StreetNumber,
             LandRegistryNumber = string.IsNullOrWhiteSpace(address.EvidenceNumber) ? address.HouseNumber : address.EvidenceNumber,
             PostCode = address.Postcode,
-            City = address.City
+            City = address.City,
+            Country = _countries.FirstOrDefault(c => c.Id == address.CountryId)?.ShortName
         };
     }
 

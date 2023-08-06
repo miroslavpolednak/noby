@@ -37,8 +37,8 @@ public class KonsDbDetailProvider
             IdentificationDocument = partner.ToIdentificationDocument(),
         };
 
-        AddAddress(AddressTypes.Permanent, response.Addresses.Add, partner.Street, partner.HouseNumber, partner.StreetNumber, partner.PostCode, partner.City);
-        AddAddress(AddressTypes.Mailing, response.Addresses.Add, partner.MailingStreet, partner.MailingHouseNumber, partner.MailingStreetNumber, partner.MailingPostCode, partner.MailingCity);
+        AddAddress(AddressTypes.Permanent, response.Addresses.Add, partner.Street, partner.HouseNumber, partner.StreetNumber, partner.PostCode, partner.City, partner.CountryId);
+        AddAddress(AddressTypes.Mailing, response.Addresses.Add, partner.MailingStreet, partner.MailingHouseNumber, partner.MailingStreetNumber, partner.MailingPostCode, partner.MailingCity, partner.MailingCountryId);
 
         AddContacts(partner, response.Contacts.Add);
 
@@ -63,8 +63,8 @@ public class KonsDbDetailProvider
                 IdentificationDocument = p.ToIdentificationDocument()
             };
 
-            AddAddress(AddressTypes.Permanent, detail.Addresses.Add, p.Street, p.HouseNumber, p.StreetNumber, p.PostCode, p.City);
-            AddAddress(AddressTypes.Mailing, detail.Addresses.Add, p.MailingStreet, p.MailingHouseNumber, p.MailingStreetNumber, p.MailingPostCode, p.MailingCity);
+            AddAddress(AddressTypes.Permanent, detail.Addresses.Add, p.Street, p.HouseNumber, p.StreetNumber, p.PostCode, p.City, p.CountryId);
+            AddAddress(AddressTypes.Mailing, detail.Addresses.Add, p.MailingStreet, p.MailingHouseNumber, p.MailingStreetNumber, p.MailingPostCode, p.MailingCity, p.MailingCountryId);
 
             AddContacts(p, detail.Contacts.Add);
 
@@ -164,7 +164,7 @@ public class KonsDbDetailProvider
         return person;
     }
 
-    private static void AddAddress(AddressTypes addressType, Action<GrpcAddress> onAdd, string? street, string? houseNumber, string? streetNumber, string? postCode, string? city)
+    private static void AddAddress(AddressTypes addressType, Action<GrpcAddress> onAdd, string? street, string? houseNumber, string? streetNumber, string? postCode, string? city, int? countryId)
     {
         var parameters = new[] { street, houseNumber, streetNumber, postCode, city };
 
@@ -178,7 +178,8 @@ public class KonsDbDetailProvider
             StreetNumber = streetNumber ?? string.Empty ,
             HouseNumber = houseNumber ?? string.Empty,
             Postcode = postCode ?? string.Empty,
-            City = city ?? string.Empty
+            City = city ?? string.Empty,
+            CountryId = countryId is null or 0 ? 16 : countryId//16 = Czech
         };
 
         onAdd(address);
