@@ -157,7 +157,7 @@ public class SaveDocumentToArchiveHandler
 
         foreach (var salesArrangement in salesArrangements.SalesArrangements)
         {
-            var response = await _mediator.Send(new _DocOnSa.SearchRequest
+            var response = await _mediator.Send(new _DocOnSa.SearchDocumentsOnSaRequest
             {
                 SalesArrangementId = salesArrangement.SalesArrangementId,
                 EACodeMainId = docInfo.DocumentInformation.EaCodeMainId

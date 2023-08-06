@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.DocumentOnSA.Search;
 
-public class SearchResponse
+public class SearchDocumentsOnSaResponse
 {
     public IReadOnlyCollection<SearchResponseItem> FormIds { get; set; } = null!;
 }
