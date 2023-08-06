@@ -1,5 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
+using CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,7 +29,19 @@ public static class StartupExtensions
                 builder
                     .AddExternalServiceRestClient<Address.V2.ICustomerAddressServiceClient, Address.V2.RealCustomerAddressServiceClient>()
                     .AddExternalServicesKbHeaders()
-                    .AddExternalServicesKbPartyHeaders();
+                    .AddExternalServicesKbPartyHeaders()
+                    .ConfigureHttpMessageHandlerBuilder(builder =>
+                    {
+                        var clientHandler = builder.PrimaryHandler as HttpClientHandler;
+
+                        if (builder.PrimaryHandler is DelegatingHandler delegatingHandler)
+                            clientHandler = delegatingHandler.InnerHandler as HttpClientHandler;
+
+                        if (clientHandler is null)
+                            return;
+
+                        clientHandler.UseProxy = false;
+                    });
                 break;
 
             default:

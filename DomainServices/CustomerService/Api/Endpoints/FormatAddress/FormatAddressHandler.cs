@@ -44,18 +44,18 @@ internal class FormatAddressHandler : IRequestHandler<FormatAddressRequest, Form
     {
         return new ComponentAddressPoint
         {
-            Street = address.Street,
-            StreetNumber = address.StreetNumber,
-            HouseNumber = address.HouseNumber,
-            EvidenceNumber = address.EvidenceNumber,
+            Street = address.Street.ToCMString(),
+            StreetNumber = address.StreetNumber.ToCMString(),
+            HouseNumber = address.HouseNumber.ToCMString(),
+            EvidenceNumber = address.EvidenceNumber.ToCMString(),
             City = address.City,
-            CityDistrict = address.CityDistrict,
-            PragueDistrict = address.PragueDistrict,
-            DeliveryDetails = address.DeliveryDetails,
-            PostCode = address.Postcode,
+            CityDistrict = address.CityDistrict.ToCMString(),
+            PragueDistrict = address.PragueDistrict.ToCMString(),
+            DeliveryDetails = address.DeliveryDetails.ToCMString(),
+            PostCode = address.Postcode.ToCMString(),
             CountryCode = await CountryCode(address.CountryId, cancellationToken),
-            CountrySubdivision = address.CountrySubdivision,
-            AddressPointId = address.AddressPointId
+            CountrySubdivision = address.CountrySubdivision.ToCMString(),
+            AddressPointId = address.AddressPointId.ToCMString()
         };
     }
 
