@@ -183,12 +183,15 @@ public class KonsDbDetailProvider
             HouseNumber = houseNumber ?? string.Empty,
             Postcode = postCode ?? string.Empty,
             City = city ?? string.Empty,
-            CountryId = countryId is null or 0 ? 16 : countryId//16 = Czech
+            CountryId = countryId is null or 0 ? 16 : countryId //16 = Czech
         };
 
-        var formatAddressResponse = await _mediator.Send(new FormatAddressRequest { Address = address });
+        if (!string.IsNullOrWhiteSpace(address.City))
+        {
+            var formatAddressResponse = await _mediator.Send(new FormatAddressRequest { Address = address });
 
-        address.SingleLineAddressPoint = formatAddressResponse.SingleLineAddress;
+            address.SingleLineAddressPoint = formatAddressResponse.SingleLineAddress;
+        }
 
         onAdd(address);
     }
