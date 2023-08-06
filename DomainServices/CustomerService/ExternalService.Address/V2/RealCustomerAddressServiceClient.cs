@@ -23,14 +23,20 @@ internal class RealCustomerAddressServiceClient : ICustomerAddressServiceClient
             { "requiredAddressFormats", new[] { AddressFormat.SINGLE_LINE.ToString() } }
         };
 
-        var response = await _httpClient.PostAsJsonAsync(QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}/public/v2/address/format-address", queryBuilder!), request, cancellationToken);
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync(QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}/public/v2/address/format-address", queryBuilder!), request, cancellationToken);
 
-        if (!response.IsSuccessStatusCode) 
+            if (!response.IsSuccessStatusCode)
+                return string.Empty;
+
+            var formattedAddress = await response.Content.ReadFromJsonAsync<FormattedAddress>(cancellationToken: cancellationToken);
+
+            return formattedAddress!.SingleLineAddressPoint.Address;
+        }
+        catch (HttpRequestException)
+        {
             return string.Empty;
-
-        var formattedAddress = await response.Content.ReadFromJsonAsync<FormattedAddress>(cancellationToken: cancellationToken);
-
-        return formattedAddress!.SingleLineAddressPoint.Address;
-
+        }
     }
 }
