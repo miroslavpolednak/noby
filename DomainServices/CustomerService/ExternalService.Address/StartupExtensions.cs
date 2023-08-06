@@ -28,8 +28,7 @@ public static class StartupExtensions
                 builder
                     .AddExternalServiceRestClient<Address.V2.ICustomerAddressServiceClient, Address.V2.RealCustomerAddressServiceClient>()
                     .AddExternalServicesKbHeaders()
-                    .AddExternalServicesKbPartyHeaders()
-                    .AddExternalServicesErrorHandling(ServiceName);
+                    .AddExternalServicesKbPartyHeaders();
                 break;
 
             default:
