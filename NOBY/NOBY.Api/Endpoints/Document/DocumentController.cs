@@ -303,9 +303,9 @@ public class DocumentController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<IActionResult> GetCancelConfirmationDocument([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
     {
-        var input = _documentManager.GetCustomerOnSaInput(customerOnSAId);
+        var input = _documentManager.GetSalesArrangementInput(0, customerOnSAId);
         
-        return GenerateGeneralDocument(DocumentTypes.ODSTOUP, input, cancellationToken);
+        return GenerateGeneralDocument(DocumentTypes.ODSTOUP, input, forPreview: false, cancellationToken);
     }
     
     /// <summary>
@@ -324,9 +324,7 @@ public class DocumentController : ControllerBase
     [HttpGet("sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview")]
     public Task<IActionResult> GenerateDocumentPreview(int salesArrangementId, int documentTypeId, [FromQuery] int? customerOnSaId, CancellationToken cancellationToken)
     {
-        var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
-
-        input.CustomerOnSaId = customerOnSaId;
+        var input = _documentManager.GetSalesArrangementInput(salesArrangementId, customerOnSaId);
 
         return GenerateGeneralDocument((DocumentTypes)documentTypeId, input, cancellationToken);
     }
