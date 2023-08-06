@@ -1,6 +1,6 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.ExternalService.Address.V2;
-using DomainServices.CustomerService.ExternalService.Address.V2.Contracts;
+using DomainServices.CustomerService.ExternalServices.Address.V2;
+using DomainServices.CustomerService.ExternalServices.Address.V2.Contracts;
 
 namespace DomainServices.CustomerService.Api.Endpoints.FormatAddress;
 

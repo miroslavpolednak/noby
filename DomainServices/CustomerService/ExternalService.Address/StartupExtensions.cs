@@ -3,7 +3,7 @@ using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainServices.CustomerService.ExternalService;
+namespace DomainServices.CustomerService.ExternalServices;
 
 public static class StartupExtensions
 {

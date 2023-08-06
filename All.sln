@@ -529,7 +529,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.ExternalServices.LuxpiService", "DomainServices\RealEstateValuationService\ExternalServices.LuxpiService\DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.csproj", "{1B8FD59F-C65B-4A07-9F06-064F3E42A4D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalService.Address", "DomainServices\CustomerService\ExternalService.Address\DomainServices.CustomerService.ExternalService.Address.csproj", "{4434E904-E837-4CAC-B6F7-ED02CD9B0035}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.Address", "DomainServices\CustomerService\ExternalService.Address\DomainServices.CustomerService.ExternalServices.Address.csproj", "{4434E904-E837-4CAC-B6F7-ED02CD9B0035}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

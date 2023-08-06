@@ -1,9 +1,9 @@
 ﻿using System.Net.Http.Json;
-using DomainServices.CustomerService.ExternalService.Address.V2.Contracts;
+using DomainServices.CustomerService.ExternalServices.Address.V2.Contracts;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace DomainServices.CustomerService.ExternalService.Address.V2;
+namespace DomainServices.CustomerService.ExternalServices.Address.V2;
 
 internal class RealCustomerAddressServiceClient : ICustomerAddressServiceClient
 {

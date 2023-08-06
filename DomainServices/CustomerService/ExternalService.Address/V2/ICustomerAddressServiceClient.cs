@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
-using DomainServices.CustomerService.ExternalService.Address.V2.Contracts;
+using DomainServices.CustomerService.ExternalServices.Address.V2.Contracts;
 
-namespace DomainServices.CustomerService.ExternalService.Address.V2;
+namespace DomainServices.CustomerService.ExternalServices.Address.V2;
 
 public interface ICustomerAddressServiceClient : IExternalServiceClient
 {

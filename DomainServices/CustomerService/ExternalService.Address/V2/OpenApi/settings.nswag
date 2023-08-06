@@ -55,7 +55,7 @@
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
       "responseClass": "SwaggerResponse",
-      "namespace": "DomainServices.CustomerService.ExternalService.Address.V2.Contracts",
+      "namespace": "DomainServices.CustomerService.ExternalServices.Address.V2.Contracts",
       "requiredPropertiesMustBeDefined": false,
       "dateType": "System.DateTime",
       "jsonConverters": null,
