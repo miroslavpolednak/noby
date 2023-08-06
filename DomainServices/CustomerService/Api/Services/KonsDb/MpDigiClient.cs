@@ -174,9 +174,9 @@ public class MpDigiClient
         if (document is null)
             return;
 
-        request.IdentificationDocuments = new List<IdentificationDocument>()
+        request.IdentificationDocuments = new List<IdentificationDocument>
         {
-            new IdentificationDocument
+            new()
             {
                 Number = document.Number,
                 Type = FastEnum.Parse<IdentificationCardType>(_docTypes.First(d => d.Id == document.IdentificationDocumentTypeId).MpDigiApiCode),
