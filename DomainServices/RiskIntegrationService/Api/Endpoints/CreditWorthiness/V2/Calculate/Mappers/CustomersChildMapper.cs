@@ -27,7 +27,7 @@ internal sealed class CustomersChildMapper
                 string incomeCode = mainIncomeTypes.FirstOrDefault(t => t.Id == i.IncomeTypeId)?.Code ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.IncomeTypeIdNotFound, i.IncomeTypeId);
                 var income = incomes.First(t => t.Category == FastEnum.Parse<_C4M.LoanApplicationIncomeType>(incomeCode));
                 if (income.Amount == null)
-                    income.Amount = 0.ToAmount();
+                    income.Amount = 0.ToCreditWorthinessAmount();
                 income.Amount!.Value += i.Amount;
             });
 

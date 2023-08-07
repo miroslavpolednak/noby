@@ -45,10 +45,6 @@ internal static class StartupExtensions
         builder.AddExternalService<ExternalServices.RiskBusinessCase.V3.IRiskBusinessCaseClient>();
         builder.AddExternalService<ExternalServices.RiskCharacteristics.V2.IRiskCharacteristicsClient>();
 
-        // databases
-        builder.Services
-            .AddDapper<Data.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxv")!);
-
         return builder;
     }
 }

@@ -2,6 +2,7 @@
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3.Contracts;
 using _cl = DomainServices.RiskIntegrationService.ExternalServices.CustomerExposure.V3;
 using CIS.Core.Configuration;
+using CIS.Core.Exceptions;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomerExposure.V2.Calculate;
 
@@ -20,12 +21,20 @@ internal sealed class CalculateHandler
         // human user instance
         if (request.UserIdentity is not null)
         {
-            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-            if (userInstance != null)
+            try
             {
-                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                    requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
-            }            
+                var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
+                if (userInstance != null)
+                {
+                    if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                        requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+                }
+            }
+            catch (CisNotFoundException) { }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         
         // zavolat C4M
@@ -34,7 +43,7 @@ internal sealed class CalculateHandler
         return await response.ToServiceResponse(_codebookService, cancellation);
     }
 
-    private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
+    private readonly UserService.Clients.IUserServiceClient _userService;
     private readonly _cl.ICustomerExposureClient _client;
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly AppConfiguration _configuration;
@@ -45,15 +54,15 @@ internal sealed class CalculateHandler
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         _cl.ICustomerExposureClient client,
-        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
         CodebookService.Clients.ICodebookServiceClient codebookService,
-        ICisEnvironmentConfiguration cisEnvironment)
+        ICisEnvironmentConfiguration cisEnvironment,
+        UserService.Clients.IUserServiceClient userService)
     {
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;
         _codebookService = codebookService;
-        _xxvConnectionProvider = xxvConnectionProvider;
         _client = client;
         _cisEnvironment = cisEnvironment;
+        _userService = userService;
     }
 }

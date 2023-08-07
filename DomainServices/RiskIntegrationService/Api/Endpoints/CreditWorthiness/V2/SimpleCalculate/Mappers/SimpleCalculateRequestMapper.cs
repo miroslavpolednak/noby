@@ -2,6 +2,7 @@
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
 using DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
+using CIS.Core.Exceptions;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.SimpleCalculate.Mappers;
 
@@ -21,7 +22,7 @@ internal sealed class SimpleCalculateRequestMapper
             LoanApplicationProduct = new()
             {
                 ProductClusterCode = riskApplicationType.C4MAplCode,
-                AmountRequired = request.Product!.LoanAmount.ToAmount(),
+                AmountRequired = request.Product!.LoanAmount.ToCreditWorthinessAmount(),
                 Annuity = request.Product.LoanPaymentAmount,
                 FixationPeriod = request.Product.FixedRatePeriod,
                 InterestRate = request.Product.LoanInterestRate,
@@ -32,14 +33,22 @@ internal sealed class SimpleCalculateRequestMapper
         // human user instance
         if (request.UserIdentity is not null)
         {
-            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-            if (userInstance != null)
+            try
             {
-                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                    requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
-                else
-                    requestModel.Person = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
-            }            
+                var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
+                if (userInstance != null)
+                {
+                    if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                        requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+                    else
+                        requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
+                }
+            }
+            catch (CisNotFoundException) { }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // client
@@ -68,14 +77,22 @@ internal sealed class SimpleCalculateRequestMapper
         // human user instance
         if (request.UserIdentity is not null)
         {
-            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-            if (userInstance != null)
+            try
             {
-                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                    requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
-                else
-                    requestModel.Person = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
-            }            
+                var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
+                if (userInstance != null)
+                {
+                    if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                        requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+                    else
+                        requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
+                }
+            }
+            catch (CisNotFoundException) { }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         return requestModel;
@@ -85,29 +102,29 @@ internal sealed class SimpleCalculateRequestMapper
     private static List<_C4M.CreditLiabilitiesSummary> createCreditLiabilitiesSummary()
         => new()
         {
-            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.AD, Amount = 0.ToAmount(), AmountConsolidated = 0.ToAmount() },
-            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.CC, Amount = 0.ToAmount(), AmountConsolidated = 0.ToAmount() }
+            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.AD, Amount = 0.ToCreditWorthinessAmount(), AmountConsolidated = 0.ToCreditWorthinessAmount() },
+            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.CC, Amount = 0.ToCreditWorthinessAmount(), AmountConsolidated = 0.ToCreditWorthinessAmount() }
         };
 
     private static List<_C4M.CreditLiabilitiesSummary> createCreditLiabilitiesSummaryOut(decimal? authorizedOverdraftsTotalAmount, decimal? creditCardsTotalAmount)
         => new()
         {
-            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.AD, Amount = authorizedOverdraftsTotalAmount.GetValueOrDefault().ToAmount(), AmountConsolidated = 0.ToAmount() },
-            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.CC, Amount = creditCardsTotalAmount.GetValueOrDefault().ToAmount(), AmountConsolidated = 0.ToAmount() }
+            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.AD, Amount = authorizedOverdraftsTotalAmount.GetValueOrDefault().ToCreditWorthinessAmount(), AmountConsolidated = 0.ToCreditWorthinessAmount() },
+            new() { ProductGroup = _C4M.CreditLiabilitiesSummaryType.CC, Amount = creditCardsTotalAmount.GetValueOrDefault().ToCreditWorthinessAmount(), AmountConsolidated = 0.ToCreditWorthinessAmount() }
         };
 
     private static List<_C4M.LoanInstallmentsSummary> createInstallmentsSummary()
         => new()
         {
-            new() { ProductGroup = _C4M.InstallmentsSummaryType.CL, Amount = 0.ToAmount(), AmountConsolidated = 0.ToAmount() },
-            new() { ProductGroup = _C4M.InstallmentsSummaryType.ML, Amount = 0.ToAmount(), AmountConsolidated = 0.ToAmount() }
+            new() { ProductGroup = _C4M.InstallmentsSummaryType.CL, Amount = 0.ToCreditWorthinessAmount(), AmountConsolidated = 0.ToCreditWorthinessAmount() },
+            new() { ProductGroup = _C4M.InstallmentsSummaryType.ML, Amount = 0.ToCreditWorthinessAmount(), AmountConsolidated = 0.ToCreditWorthinessAmount() }
         };
 
     private static List<_C4M.LoanInstallmentsSummary> createInstallmentsSummaryOut(decimal? loansTotalInstallments)
         => new()
         {
-            new() { ProductGroup = _C4M.InstallmentsSummaryType.CL, Amount = loansTotalInstallments.GetValueOrDefault().ToAmount(), AmountConsolidated = 0.ToAmount() },
-            new() { ProductGroup = _C4M.InstallmentsSummaryType.ML, Amount = 0.ToAmount(), AmountConsolidated = 0.ToAmount() }
+            new() { ProductGroup = _C4M.InstallmentsSummaryType.CL, Amount = loansTotalInstallments.GetValueOrDefault().ToCreditWorthinessAmount(), AmountConsolidated = 0.ToCreditWorthinessAmount() },
+            new() { ProductGroup = _C4M.InstallmentsSummaryType.ML, Amount = 0.ToCreditWorthinessAmount(), AmountConsolidated = 0.ToCreditWorthinessAmount() }
         };
     #endregion
 
@@ -117,21 +134,20 @@ internal sealed class SimpleCalculateRequestMapper
             new() { Category = _C4M.LoanApplicationIncomeType.SALARY, Months = 1 },
             new() { Category = _C4M.LoanApplicationIncomeType.ENTERPRISE, Months = 12 },
             new() { Category = _C4M.LoanApplicationIncomeType.RENT, Months = 1 },
-            new() { Category = _C4M.LoanApplicationIncomeType.OTHER, Months = 1, Amount = totalMonthlyIncome.GetValueOrDefault().ToAmount() }
+            new() { Category = _C4M.LoanApplicationIncomeType.OTHER, Months = 1, Amount = totalMonthlyIncome.GetValueOrDefault().ToCreditWorthinessAmount() }
         };
 
-
-    private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
+    private readonly UserService.Clients.IUserServiceClient _userService;
 
     public SimpleCalculateRequestMapper(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider)
+        UserService.Clients.IUserServiceClient userService)
     {
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;
-        _xxvConnectionProvider = xxvConnectionProvider;
+        _userService = userService;
     }
 }

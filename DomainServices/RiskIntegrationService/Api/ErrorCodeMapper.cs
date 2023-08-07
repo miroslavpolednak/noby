@@ -19,6 +19,7 @@ internal sealed class ErrorCodeMapper
     public const int C4MEnumNotFound = 17013;
     public const int BankCodeNotFound = 17014;
     public const int LoanPurposeIdNotFound = 17015;
+    public const int ResourceProcessIdIsEmpty = 17016;
 
     public static IErrorCodesDictionary Init()
     {
@@ -37,7 +38,8 @@ internal sealed class ErrorCodeMapper
             { ResourceIdentifierDealerSchemeIsNull, "GetResourceIdentifierInstanceForDealer() input parameter is null" },
             { C4MEnumNotFound, "Can't cast '{PropertyValue}' to C4M enum" },
             { BankCodeNotFound, "Transformation for BankCode={PropertyValue} does not exist" },
-            { LoanPurposeIdNotFound, "Loan Purpose Id {PropertyValue} not found" }
+            { LoanPurposeIdNotFound, "Loan Purpose Id {PropertyValue} not found" },
+            { ResourceProcessIdIsEmpty, "Resource Process Id must not be empty" }
         });
 
         return Messages;

@@ -4,7 +4,7 @@ namespace DomainServices.RiskIntegrationService.Api.Endpoints.CustomerExposure.V
 
 internal static class CalculateRequestExtensions
 {
-    public static _C4M.LoanApplicationDealer ToC4mDealer(this ExternalServices.Dto.C4mUserInfoData userInfo, Contracts.Shared.Identity humanUser)
+    public static _C4M.LoanApplicationDealer ToC4mDealer(this UserService.Contracts.UserRIPAttributes userInfo, Contracts.Shared.Identity humanUser)
 #pragma warning disable CA1305 // Specify IFormatProvider
         => new()
         {

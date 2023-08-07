@@ -10,7 +10,7 @@ internal sealed class CalculateRequestValidator
     {
         RuleFor(t => t.ResourceProcessId)
             .NotEmpty()
-            .WithErrorCode("ResourceProcessId");
+            .WithErrorCode(ErrorCodeMapper.ResourceProcessIdIsEmpty);
 
         RuleFor(t => t.Product)
             .Cascade(CascadeMode.Stop)
