@@ -6,7 +6,7 @@ using NOBY.Api.Endpoints.Document.Shared;
 
 namespace NOBY.Api.Endpoints.Document.SalesArrangement;
 
-internal sealed class GetSalesArrangementHandler : IRequestHandler<GetSalesArrangementRequest, ReadOnlyMemory<byte>>
+internal sealed class GetSalesArrangementCancelConfirmationHandler : IRequestHandler<GetSalesArrangementCancelConfirmationRequest, ReadOnlyMemory<byte>>
 {
     private readonly IMediator _mediator;
     private readonly ICurrentUserAccessor _currentUser;
@@ -15,9 +15,9 @@ internal sealed class GetSalesArrangementHandler : IRequestHandler<GetSalesArran
     private readonly ICaseServiceClient _caseService;
     private readonly DocumentManager _documentManager;
 
-    public async Task<ReadOnlyMemory<byte>> Handle(GetSalesArrangementRequest request, CancellationToken cancellationToken)
+    public async Task<ReadOnlyMemory<byte>> Handle(GetSalesArrangementCancelConfirmationRequest cancelConfirmationRequest, CancellationToken cancellationToken)
     {
-        var customerOnSa = await _customerOnSaService.GetCustomer(request.InputParameters.CustomerOnSaId!.Value, cancellationToken);
+        var customerOnSa = await _customerOnSaService.GetCustomer(cancelConfirmationRequest.InputParameters.CustomerOnSaId!.Value, cancellationToken);
         var salesArrangementId = customerOnSa.SalesArrangementId;
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
         var caseId = salesArrangement.CaseId; 
@@ -31,15 +31,15 @@ internal sealed class GetSalesArrangementHandler : IRequestHandler<GetSalesArran
         
         var generalDocumentRequest = new GeneralDocument.GetGeneralDocumentRequest
         {
-            DocumentType = request.DocumentType,
-            ForPreview = request.ForPreview,
-            InputParameters = _documentManager.GetSalesArrangementInput(salesArrangementId, request.InputParameters.CustomerOnSaId)
+            DocumentType = cancelConfirmationRequest.DocumentType,
+            ForPreview = cancelConfirmationRequest.ForPreview,
+            InputParameters = _documentManager.GetSalesArrangementInput(salesArrangementId, cancelConfirmationRequest.InputParameters.CustomerOnSaId)
         };
 
         return await _mediator.Send(generalDocumentRequest, cancellationToken);
     }
 
-    public GetSalesArrangementHandler(
+    public GetSalesArrangementCancelConfirmationHandler(
         IMediator mediator,
         ICurrentUserAccessor currentUser,
         ICustomerOnSAServiceClient customerOnSaService,

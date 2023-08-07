@@ -2,6 +2,6 @@
 
 namespace NOBY.Api.Endpoints.Document.SalesArrangement;
 
-internal sealed class GetSalesArrangementRequest : GetDocumentBaseRequest
+internal sealed class GetSalesArrangementCancelConfirmationRequest : GetDocumentBaseRequest
 {
 }
