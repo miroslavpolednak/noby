@@ -127,7 +127,7 @@ public interface ICaseServiceClient
 
     Task<GetTaskDetailResponse> GetTaskDetail(int taskIdSb, CancellationToken cancellationToken = default);
     
-    Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default);
+    Task CancelTask(long caseId, int taskIdSB, CancellationToken cancellationToken = default);
     
     Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default);
 
