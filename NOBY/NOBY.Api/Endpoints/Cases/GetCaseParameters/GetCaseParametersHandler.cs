@@ -1,9 +1,6 @@
 ﻿using CIS.Core.Security;
 using CIS.Foms.Enums;
-using DomainServices.CodebookService.Contracts.v1;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
-using System.Data;
-using System.Threading;
 using cCodebookService = DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
@@ -133,15 +130,21 @@ internal sealed class GetCaseParametersHandler
             respone.Statement = new StatementDto
             {
                 TypeId = mortgageData.Statement.TypeId,
-                TypeShortName = (await _codebookService.StatementTypes(cancellationToken)).FirstOrDefault(x => x.Id == mortgageData.Statement?.TypeId)?.ShortName,
-                SubscriptionType = (await _codebookService.StatementSubscriptionTypes(cancellationToken)).FirstOrDefault(x => x.Id == mortgageData.Statement?.SubscriptionTypeId)?.Name,
+                TypeShortName = (await _codebookService.StatementTypes(cancellationToken)).FirstOrDefault(x => x.Id == mortgageData.Statement.TypeId)?.ShortName,
+                SubscriptionType = (await _codebookService.StatementSubscriptionTypes(cancellationToken)).FirstOrDefault(x => x.Id == mortgageData.Statement.SubscriptionTypeId)?.Name,
                 Frequency = (await _codebookService.StatementFrequencies(cancellationToken)).FirstOrDefault(x => x.Id == mortgageData.Statement?.FrequencyId)?.Name,
-                EmailAddress1 = mortgageData.Statement?.EmailAddress1,
-                EmailAddress2 = mortgageData.Statement?.EmailAddress2
+                EmailAddress1 = mortgageData.Statement.EmailAddress1,
+                EmailAddress2 = mortgageData.Statement.EmailAddress2
             };
-            if (mortgageData.Statement!.Address is not null)
+
+            if (mortgageData.Statement.Address is not null)
             {
-                respone.Statement.Address = (CIS.Foms.Types.Address)mortgageData.Statement!.Address!;
+                if (!string.IsNullOrWhiteSpace(mortgageData.Statement.Address.City) && mortgageData.Statement.Address.CountryId.HasValue)
+                {
+                    mortgageData.Statement.Address.SingleLineAddressPoint = await _customerService.FormatAddress(mortgageData.Statement.Address, cancellationToken);
+                }
+
+                respone.Statement.Address = (CIS.Foms.Types.Address)mortgageData.Statement.Address!;
             }
         }
 
@@ -170,6 +173,7 @@ internal sealed class GetCaseParametersHandler
     private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
+    private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
 
     public GetCaseParametersHandler(
         ICurrentUserAccessor currentUser,
@@ -178,7 +182,8 @@ internal sealed class GetCaseParametersHandler
         DomainServices.ProductService.Clients.IProductServiceClient productService,
         DomainServices.OfferService.Clients.IOfferServiceClient offerService,
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        DomainServices.UserService.Clients.IUserServiceClient userService
+        DomainServices.UserService.Clients.IUserServiceClient userService,
+        DomainServices.CustomerService.Clients.ICustomerServiceClient customerService
         )
     {
         _currentUser = currentUser;
@@ -188,5 +193,6 @@ internal sealed class GetCaseParametersHandler
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
         _userService = userService;
+        _customerService = customerService;
     }
 }
