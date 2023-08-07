@@ -1,4 +1,5 @@
-﻿using DomainServices.ProductService.Contracts;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.ProductService.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
@@ -8,14 +9,17 @@ internal sealed class GetMortgageHandler
 {
     private readonly Database.ProductServiceDbContext _dbContext;
     private readonly Database.LoanRepository _repository;
+    private readonly ICodebookServiceClient _codebookService;
 
     #region Construction
 
     public GetMortgageHandler(
         Database.ProductServiceDbContext dbContext,
-        Database.LoanRepository repository)
+        Database.LoanRepository repository,
+        ICodebookServiceClient codebookService)
     {
         _repository = repository;
+        _codebookService = codebookService;
         _dbContext = dbContext;
     }
     #endregion

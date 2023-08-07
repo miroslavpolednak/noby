@@ -189,12 +189,12 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="request"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/search")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
-    [ProducesResponseType(typeof(SearchResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SearchDocumentsOnSaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SearchDocumentsOnSa(
              [FromRoute] int salesArrangementId,
-             [FromBody] SearchRequest request)
+             [FromBody] SearchDocumentsOnSaRequest request)
     {
         var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
 

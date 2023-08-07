@@ -170,6 +170,8 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Propojí uploadnutý soubor s oceněním a doplní k souboru popisek.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B44C60EF-8521-4eec-9CE5-292C279DFE51"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="attachments">Seznam souborů k propojení</param>
     /// <response code="200">Kolekce ID uploadovaných souborů vs. nových ID příloh</response>
@@ -196,6 +198,8 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Smazání již nahrané přílohy ocenění z databáze NOBY a ACV.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4EFAC9BD-B78E-4219-A801-39E983D3EDAF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments/{realEstateValuationAttachmentId:int}")]
     [AuthorizeCaseOwner]

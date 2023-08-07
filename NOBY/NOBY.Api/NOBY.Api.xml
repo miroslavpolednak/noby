@@ -1878,7 +1878,7 @@
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSa(System.Int32,NOBY.Api.Endpoints.DocumentOnSA.Search.SearchRequest)">
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSa(System.Int32,NOBY.Api.Endpoints.DocumentOnSA.Search.SearchDocumentsOnSaRequest)">
             <summary>
             Vyhledání dokumentů na základě hlavního hesla (eArchivu)
             </summary>

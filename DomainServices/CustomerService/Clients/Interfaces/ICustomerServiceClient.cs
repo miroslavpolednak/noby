@@ -64,4 +64,12 @@ public interface ICustomerServiceClient
     /// Validace kontaktu
     /// </summary>
     Task<ValidateContactResponse> ValidateContact(ValidateContactRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Zformátování komponentové adresy do jednořádkové
+    /// </summary>
+    /// <param name="address"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<string> FormatAddress(GrpcAddress address, CancellationToken cancellationToken = default);
 }
