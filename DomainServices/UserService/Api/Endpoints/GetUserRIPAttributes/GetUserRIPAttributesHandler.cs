@@ -14,11 +14,9 @@ internal class GetUserRIPAttributesHandler
             var dbIdentity = (await _dbContext.DbUserRIPAttributes
                 .FromSqlInterpolated($"EXECUTE [dbo].[p_GetPersonHF_RIP] @identity={request.Identity}, @identityScheme={request.IdentityScheme}")
                 .ToListAsync(cancellationToken)
-                ).FirstOrDefault();
+                ).FirstOrDefault() ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.IdentityScheme}={request.Identity}"); ;
 
-            // TODO: docasne muzeme vracet null
-#pragma warning disable CS8603 // Possible null reference return.
-            return dbIdentity != null ? new UserRIPAttributes()
+            return new UserRIPAttributes()
             {
                 PersonId = dbIdentity.PersonId,
                 DealerCompanyId = dbIdentity.DealerCompanyId,
@@ -28,8 +26,7 @@ internal class GetUserRIPAttributesHandler
                 PersonSurname = dbIdentity.PersonSurname ?? "",
                 Company = dbIdentity.Company ?? "",
                 BrokerId = dbIdentity.BrokerId
-            } : null;
-#pragma warning restore CS8603 // Possible null reference return.
+            };
         }
         catch (Microsoft.Data.SqlClient.SqlException ex) when (ex.Number == 50000)
         {
