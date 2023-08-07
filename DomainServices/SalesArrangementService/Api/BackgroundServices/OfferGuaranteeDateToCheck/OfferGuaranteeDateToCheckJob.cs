@@ -31,9 +31,8 @@ internal sealed class OfferGuaranteeDateToCheckJob
             }
 
             flowSwitch.Value = false;
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private readonly IDateTime _dateTime;
