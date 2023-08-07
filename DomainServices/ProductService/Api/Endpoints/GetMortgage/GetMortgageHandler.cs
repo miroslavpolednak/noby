@@ -1,6 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.v1;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -71,19 +69,6 @@ internal sealed class GetMortgageHandler
                 AddressPointId = statements.StatPodkategorie ?? "",
                 CountryId = statements.ZemeId
             };
-
-            //Mock HFICH-6038
-            mortgage.Statement.Address.SingleLineAddressPoint = FullAddress(mortgage.Statement.Address, await _codebookService.Countries(cancellation));
-
-            static string FullAddress(GrpcAddress address, ICollection<CountriesResponse.Types.CountryItem> countries)
-            {
-                return $"{address.Street} {CombineHouseAndStreetNumber(address.HouseNumber, address.StreetNumber)}, " +
-                       $"{address.Postcode} {address.City}, " +
-                       $"{countries.Where(c => c.Id == address.CountryId).Select(c => c.LongName).FirstOrDefault("No country")}";
-            }
-
-            static string CombineHouseAndStreetNumber(string houseNumber, string streetNumber) =>
-                string.Join("/", new[] { houseNumber, streetNumber }.Where(str => !string.IsNullOrWhiteSpace(str)));
         }
 
         if (realEstates is not null && realEstates.Any())
