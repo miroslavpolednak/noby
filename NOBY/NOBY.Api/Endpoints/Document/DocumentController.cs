@@ -297,15 +297,26 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91D71957-A737-4ee8-9EFC-A3B62878153C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("document/template/cancel-confirmation/customer-on-sa/{customerOnSAId}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public Task<IActionResult> GetCancelConfirmationDocument([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetCancelConfirmationDocument([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
     {
-        var input = _documentManager.GetSalesArrangementInput(0, customerOnSAId);
+        var request = new SalesArrangement.GetSalesArrangementRequest
+        {
+            DocumentType = DocumentTypes.ODSTOUP,
+            InputParameters = new InputParameters
+            {
+                CustomerOnSaId = customerOnSAId
+            },
+            ForPreview = false
+        };
         
-        return GenerateGeneralDocument(DocumentTypes.ODSTOUP, input, forPreview: false, cancellationToken);
+        var memory = await _mediator.Send(request, cancellationToken);
+
+        return await File(request, memory, cancellationToken);
     }
     
     /// <summary>

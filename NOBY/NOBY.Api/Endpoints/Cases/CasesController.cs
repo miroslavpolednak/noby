@@ -18,8 +18,8 @@ public class CasesController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B13A9B30-5896-4319-A96E-0982FE5A9045"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/cancel")]
-    // [AuthorizeCaseOwner]
-    // [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [AuthorizeCaseOwner]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
