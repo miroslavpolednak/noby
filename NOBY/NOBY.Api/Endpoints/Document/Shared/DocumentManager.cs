@@ -28,13 +28,14 @@ public class DocumentManager
             UserId = UserId
         };
 
-    internal InputParameters GetSalesArrangementInput(int salesArrangementId) =>
+    internal InputParameters GetSalesArrangementInput(int salesArrangementId, int? customerOnSaId = default) =>
         new()
         {
             SalesArrangementId = salesArrangementId,
-            UserId = UserId
+            UserId = UserId,
+            CustomerOnSaId = customerOnSaId
         };
-
+    
     internal byte[] GetByteArray(ReadOnlyMemory<byte> memory)
     {
         if (!MemoryMarshal.TryGetArray(memory, out var arraySegment))

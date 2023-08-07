@@ -3,10 +3,10 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
-using UserIdentity = CIS.Infrastructure.gRPC.CisTypes.UserIdentity;
 using __Household = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Clients;
 using CIS.Foms.Enums;
+using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
@@ -62,6 +62,15 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         // ----- update naseho detailu instance customera
         // updatujeme CustomerChangeData a CustomerAdditionalData na nasi entite CustomerOnSA
         var delta = createDelta(originalModel, request);
+        
+        //Update SingleLine address if address was changed
+        if (((IDictionary<string, object>)delta).ContainsKey("Addresses"))
+        {
+            foreach (var requestAddress in request.Addresses!)
+            {
+                requestAddress.SingleLineAddressPoint = await _customerService.FormatAddress(requestAddress!, cancellationToken);
+            }
+        }
 
         var updateRequest = new __Household.UpdateCustomerDetailRequest
         {
@@ -179,7 +188,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     /// <summary>
     /// Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
     /// </summary>
-    private static dynamic? createDelta(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request)
+    private static dynamic createDelta(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request)
     {
         // compare objects
         dynamic delta = new System.Dynamic.ExpandoObject();
@@ -241,6 +250,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
 
     private readonly CustomerWithChangedDataService _changedDataService;
     private readonly IHouseholdServiceClient _householdService;
+    private readonly ICustomerServiceClient _customerService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ICaseServiceClient _caseService;    
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -256,7 +266,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         IUserServiceClient userServiceClient,
         IDocumentOnSAServiceClient documentOnSAService,
         ICurrentUserAccessor userAccessor,
-        IHouseholdServiceClient householdService)
+        IHouseholdServiceClient householdService,
+        ICustomerServiceClient customerService)
     {
         _documentOnSAService = documentOnSAService;
         _caseService = caseService;
@@ -266,5 +277,6 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         _userServiceClient = userServiceClient;
         _userAccessor = userAccessor;
         _householdService = householdService;
+        _customerService = customerService;
     }
 }

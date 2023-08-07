@@ -7,7 +7,6 @@ using DomainServices.HouseholdService.Contracts.Dto;
 using Google.Protobuf.Collections;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using UpdateCustomerRequest = DomainServices.CustomerService.Contracts.UpdateCustomerRequest;
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
