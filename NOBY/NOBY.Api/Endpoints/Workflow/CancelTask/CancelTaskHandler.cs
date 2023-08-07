@@ -1,6 +1,4 @@
-﻿using CIS.Foms.Enums;
-using DomainServices.CaseService.Clients;
-using DomainServices.SalesArrangementService.Clients;
+﻿using DomainServices.CaseService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.CancelTask;
 
@@ -18,7 +16,7 @@ internal sealed class CancelTaskHandler
             throw new CisAuthorizationException();
         }
         
-        await _caseService.CancelTask(request.TaskIdSB, cancellationToken);
+        await _caseService.CancelTask(request.CaseId, request.TaskIdSB, cancellationToken);
     }
 
     private static int[] _allowedTypeIds = new[] { 2, 3 };
