@@ -290,6 +290,36 @@ public class DocumentController : ControllerBase
     }
 
     /// <summary>
+    /// Vygenerování dokumentu ukončení žádosti o úvěr
+    /// </summary>
+    /// <remarks>
+    /// Vygenerování dokumentu ukončení žádosti o úvěr ze šablony podle CustomerOnSAId na vstupu. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91D71957-A737-4ee8-9EFC-A3B62878153C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("document/template/cancel-confirmation/customer-on-sa/{customerOnSAId}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCancelConfirmationDocument([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
+    {
+        var request = new SalesArrangement.GetSalesArrangementCancelConfirmationRequest
+        {
+            DocumentType = DocumentTypes.ODSTOUP,
+            InputParameters = new InputParameters
+            {
+                CustomerOnSaId = customerOnSAId
+            },
+            ForPreview = false
+        };
+        
+        var memory = await _mediator.Send(request, cancellationToken);
+
+        return await File(request, memory, cancellationToken);
+    }
+    
+    /// <summary>
     /// Vygenerování náhledu dokumentu
     /// </summary>
     /// <remarks>
@@ -305,9 +335,7 @@ public class DocumentController : ControllerBase
     [HttpGet("sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview")]
     public Task<IActionResult> GenerateDocumentPreview(int salesArrangementId, int documentTypeId, [FromQuery] int? customerOnSaId, CancellationToken cancellationToken)
     {
-        var input = _documentManager.GetSalesArrangementInput(salesArrangementId);
-
-        input.CustomerOnSaId = customerOnSaId;
+        var input = _documentManager.GetSalesArrangementInput(salesArrangementId, customerOnSaId);
 
         return GenerateGeneralDocument((DocumentTypes)documentTypeId, input, cancellationToken);
     }
