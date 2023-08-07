@@ -1,0 +1,25 @@
+USE [CIS]
+GO
+delete from [dbo].[ServiceDiscovery] where EnvironmentName in ('DEV','FAT','SIT1','UAT') and ServiceName in ('ES:EAS:R21','ES:EAS:V1','ES:EasSimulationHT:V1','ES:EasSimulationHT:V6','ES:SbWebApi:V1')
+GO
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'DEV', N'ES:EAS:R21', N'https://sb2_test_server.vsskb.cz/FAT/EAS_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'DEV', N'ES:EAS:V1', N'https://sb2_test_server.vsskb.cz/FAT/EAS_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'DEV', N'ES:EasSimulationHT:V1', N'https://sb2_test_server.vsskb.cz/FAT/HT_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'DEV', N'ES:EasSimulationHT:V6', N'https://sb2_test_server.vsskb.cz/FAT/HT_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'DEV', N'ES:SbWebApi:V1', N'https://sb2_test_server.vsskb.cz/WebApi/FAT', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT', N'ES:EAS:R21', N'https://sb2_test_server.vsskb.cz/FAT/EAS_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT', N'ES:EAS:V1', N'https://sb2_test_server.vsskb.cz/FAT/EAS_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT', N'ES:EasSimulationHT:V1', N'https://sb2_test_server.vsskb.cz/FAT/HT_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT', N'ES:EasSimulationHT:V6', N'https://sb2_test_server.vsskb.cz/FAT/HT_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT', N'ES:SbWebApi:V1', N'https://sb2_test_server.vsskb.cz/WebApi/FAT', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'SIT1', N'ES:EAS:R21', N'https://sb2_test_server.vsskb.cz/SIT/EAS_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'SIT1', N'ES:EAS:V1', N'https://sb2_test_server.vsskb.cz/SIT/EAS_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'SIT1', N'ES:EasSimulationHT:V1', N'https://sb2_test_server.vsskb.cz/SIT/HT_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'SIT1', N'ES:EasSimulationHT:V6', N'https://sb2_test_server.vsskb.cz/SIT/HT_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'SIT1', N'ES:SbWebApi:V1', N'https://sb2_test_server.vsskb.cz/WebApi/SIT', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'UAT', N'ES:EAS:R21', N'https://sb2_test_server.vsskb.cz/UAT/EAS_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'UAT', N'ES:EAS:V1', N'https://sb2_test_server.vsskb.cz/UAT/EAS_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'UAT', N'ES:EasSimulationHT:V1', N'https://sb2_test_server.vsskb.cz/UAT/HT_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'UAT', N'ES:EasSimulationHT:V6', N'https://sb2_test_server.vsskb.cz/UAT/HT_WS_SB_Services.svc', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'UAT', N'ES:SbWebApi:V1', N'https://sb2_test_server.vsskb.cz/WebApi/UAT', 3, 0)
+GO

@@ -110,27 +110,12 @@ internal sealed class LinkModelationToSalesArrangementHandler
                 || !Equals(offerInstance.SimulationInputs.InterestRateDiscount, offerInstanceOld.SimulationInputs.InterestRateDiscount)
                 || fee1.Except(fee2).Union(fee2.Except(fee1)).Any()))
             {
-                flowSwitchesToSet.Add(new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist,
-                    Value = false
-                });
-                flowSwitchesToSet.Add(new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved,
-                    Value = false
-                });
-                flowSwitchesToSet.Add(new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved,
-                    Value = false
-                });
-
                 // Pokud již existuje WFL úkol na IC (getTaskList zafiltrovat na TaskTypeId = 2 a Cancelled = false), pak dojde k jeho zrušení pomocí cancelTask (na vstup jde TaskIdSB)
-                var taskToCancel = (await _caseService.GetTaskList(caseId, cancellation)).FirstOrDefault(t => t.TaskTypeId == 2 && !t.Cancelled);
+                var taskList = await _caseService.GetTaskList(caseId, cancellation);
+                var taskToCancel = taskList.FirstOrDefault(t => t.TaskTypeId == 2 && !t.Cancelled);
                 if (taskToCancel is not null)
                 {
-                    await _caseService.CancelTask(taskToCancel.TaskIdSb, cancellation);
+                    await _caseService.CancelTask(caseId, taskToCancel.TaskIdSb, cancellation);
                 }
             }
         }
