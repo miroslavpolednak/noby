@@ -11,24 +11,29 @@ internal sealed class OfferGuaranteeDateToCheckJob
 {
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
-        // todo: case service Cancel Task 
-        // await _caseService.CancelTask()
-        await _dbContext.Database.ExecuteSqlRawAsync(_sql, cancellationToken);
-    }
+        var flowSwitches = await _dbContext.FlowSwitches
+            .Include(f => f.SalesArrangement)
+            .Where(f =>
+                f.FlowSwitchId == 1 &&
+                f.Value && new[] { 1, 5 }.Contains(f.SalesArrangement.State) &&
+                f.SalesArrangement.OfferGuaranteeDateTo < DateTime.Now)
+            .ToListAsync(cancellationToken);
+        
+        foreach (var flowSwitch in flowSwitches)
+        {
+            var taskList = await _caseService.GetTaskList(flowSwitch.SalesArrangement.CaseId, cancellationToken);
+            var task = taskList.FirstOrDefault(t => t is { TaskTypeId: 2, Cancelled: false });
 
-    private const string _sql = @"
-MERGE [dbo].[FlowSwitch] AS T
-USING (SELECT B.SalesArrangementId, ISNULL(A.FlowSwitchId, C.[Value]) 'FlowSwitchId', CASE WHEN A.FlowSwitchId IS NULL THEN 0 ELSE A.[Value] END [Value]
-	FROM dbo.SalesArrangement B
-	INNER JOIN STRING_SPLIT('1,8,9,10', ',') C ON 1=1
-	LEFT JOIN dbo.FlowSwitch A ON A.SalesArrangementId=B.SalesArrangementId AND A.FlowSwitchId IN (1,8,9,10) AND A.FlowSwitchId=C.[value]
-	WHERE B.[State] IN (1,5) AND B.OfferGuaranteeDateTo<GETDATE()
-	) AS S
-ON (T.FlowSwitchId = S.FlowSwitchId AND T.SalesArrangementId = S.SalesArrangementId)  
-WHEN MATCHED THEN
-    UPDATE SET T.[Value]=0
-WHEN NOT MATCHED THEN  
-    INSERT (FlowSwitchId, SalesArrangementId, [Value]) VALUES (S.FlowSwitchId, S.SalesArrangementId, 0);";
+            if (task is not null)
+            {
+                await _caseService.CancelTask(flowSwitch.SalesArrangement.CaseId, task.TaskIdSb, cancellationToken);
+            }
+
+            flowSwitch.Value = false;
+        }
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
 
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseService;
