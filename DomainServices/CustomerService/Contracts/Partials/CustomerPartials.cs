@@ -33,3 +33,6 @@ public partial class UpdateCustomerIdentifiersRequest
 public partial class ValidateContactRequest
     :MediatR.IRequest<ValidateContactResponse>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class FormatAddressRequest : MediatR.IRequest<FormatAddressResponse>, CIS.Core.Validation.IValidatableRequest
+{ }

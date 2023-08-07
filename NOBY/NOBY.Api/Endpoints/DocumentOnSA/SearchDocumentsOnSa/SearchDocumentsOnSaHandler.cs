@@ -3,12 +3,12 @@ using DomainServices.DocumentOnSAService.Clients;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.Search;
 
-public class SearchHandler : IRequestHandler<SearchRequest, SearchResponse>
+public class SearchDocumentsOnSaHandler : IRequestHandler<SearchDocumentsOnSaRequest, SearchDocumentsOnSaResponse>
 {
     private readonly IDocumentOnSAServiceClient _client;
     private readonly ICodebookServiceClient _codebookServiceClients;
 
-    public SearchHandler(
+    public SearchDocumentsOnSaHandler(
         IDocumentOnSAServiceClient client,
         ICodebookServiceClient codebookServiceClients)
     {
@@ -16,7 +16,7 @@ public class SearchHandler : IRequestHandler<SearchRequest, SearchResponse>
         _codebookServiceClients = codebookServiceClients;
     }
 
-    public async Task<SearchResponse> Handle(SearchRequest request, CancellationToken cancellationToken)
+    public async Task<SearchDocumentsOnSaResponse> Handle(SearchDocumentsOnSaRequest request, CancellationToken cancellationToken)
     {
         var documentsOnSa = await _client.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
 
@@ -34,7 +34,7 @@ public class SearchHandler : IRequestHandler<SearchRequest, SearchResponse>
 
         if (!documentTypesFiltered.Any())
         {
-            return new SearchResponse { FormIds = Array.Empty<SearchResponseItem>() };
+            return new SearchDocumentsOnSaResponse { FormIds = Array.Empty<SearchResponseItem>() };
         }
 
         var documentsOnSaFiltered = documentsOnSa.DocumentsOnSAToSign
@@ -43,7 +43,7 @@ public class SearchHandler : IRequestHandler<SearchRequest, SearchResponse>
                             && f.IsFinal == false 
                             && f.IsSigned == true);
 
-        return new SearchResponse
+        return new SearchDocumentsOnSaResponse
         {
             FormIds = documentsOnSaFiltered.Select(s => new SearchResponseItem
             {
@@ -52,7 +52,7 @@ public class SearchHandler : IRequestHandler<SearchRequest, SearchResponse>
         };
     }
 
-    private async Task ValidateEaCodeMain(SearchRequest request, CancellationToken cancellationToken)
+    private async Task ValidateEaCodeMain(SearchDocumentsOnSaRequest request, CancellationToken cancellationToken)
     {
         var eaCodeMains = await _codebookServiceClients.EaCodesMain(cancellationToken);
         var eaCodeMain = eaCodeMains.FirstOrDefault(r => r.Id == request.EACodeMainId);

@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Runtime.CompilerServices;
 using CIS.Core.Data;
 using CIS.Core.Exceptions;
 using CIS.Foms.Enums;
@@ -13,13 +14,15 @@ namespace DomainServices.CustomerService.Api.Services.KonsDb;
 [ScopedService, SelfService]
 public class KonsDbDetailProvider
 {
+    private readonly IMediator _mediator;
     private readonly IConnectionProvider _connectionProvider;
     private readonly ICodebookServiceClient _codebook;
 
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _titles = null!;
 
-    public KonsDbDetailProvider(IConnectionProvider connectionProvider, ICodebookServiceClient codebook)
+    public KonsDbDetailProvider(IMediator mediator, IConnectionProvider connectionProvider, ICodebookServiceClient codebook)
     {
+        _mediator = mediator;
         _connectionProvider = connectionProvider;
         _codebook = codebook;
     }
@@ -37,39 +40,40 @@ public class KonsDbDetailProvider
             IdentificationDocument = partner.ToIdentificationDocument(),
         };
 
-        AddAddress(AddressTypes.Permanent, response.Addresses.Add, partner.Street, partner.HouseNumber, partner.StreetNumber, partner.PostCode, partner.City);
-        AddAddress(AddressTypes.Mailing, response.Addresses.Add, partner.MailingStreet, partner.MailingHouseNumber, partner.MailingStreetNumber, partner.MailingPostCode, partner.MailingCity);
+        await AddAddress(AddressTypes.Permanent, response.Addresses.Add, partner.Street, partner.HouseNumber, partner.StreetNumber, partner.PostCode, partner.City, partner.CountryId);
+        await AddAddress(AddressTypes.Mailing, response.Addresses.Add, partner.MailingStreet, partner.MailingHouseNumber, partner.MailingStreetNumber, partner.MailingPostCode, partner.MailingCity, partner.MailingCountryId);
 
         AddContacts(partner, response.Contacts.Add);
 
         return response;
     }
 
-    public async Task<IEnumerable<CustomerDetailResponse>> GetList(IEnumerable<long> partnerIds, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<CustomerDetailResponse> GetList(IEnumerable<long> partnerIds, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var partners = await GetPartnerList(partnerIds, cancellationToken);
 
         if (!partnerIds.Any())
-            return Enumerable.Empty<CustomerDetailResponse>();
+            yield break;
 
         await InitializeCodebooks(cancellationToken);
 
-        return partners.Select(p =>
+        foreach (var partner in partners)
         {
             var detail = new CustomerDetailResponse
             {
-                Identities = { GetIdentities(p.PartnerId, p.KbId) },
-                NaturalPerson = CreateNaturalPerson(p),
-                IdentificationDocument = p.ToIdentificationDocument()
+                Identities = { GetIdentities(partner.PartnerId, partner.KbId) },
+                NaturalPerson = CreateNaturalPerson(partner),
+                IdentificationDocument = partner.ToIdentificationDocument()
             };
 
-            AddAddress(AddressTypes.Permanent, detail.Addresses.Add, p.Street, p.HouseNumber, p.StreetNumber, p.PostCode, p.City);
-            AddAddress(AddressTypes.Mailing, detail.Addresses.Add, p.MailingStreet, p.MailingHouseNumber, p.MailingStreetNumber, p.MailingPostCode, p.MailingCity);
+            await AddAddress(AddressTypes.Permanent, detail.Addresses.Add, partner.Street, partner.HouseNumber, partner.StreetNumber, partner.PostCode, partner.City, partner.CountryId);
+            await AddAddress(AddressTypes.Mailing, detail.Addresses.Add, partner.MailingStreet, partner.MailingHouseNumber, partner.MailingStreetNumber, partner.MailingPostCode, partner.MailingCity, partner.MailingCountryId);
 
-            AddContacts(p, detail.Contacts.Add);
+            AddContacts(partner, detail.Contacts.Add);
 
-            return detail;
-        });
+            yield return detail;
+        }
+
     }
 
     private async Task InitializeCodebooks(CancellationToken cancellationToken)
@@ -164,7 +168,7 @@ public class KonsDbDetailProvider
         return person;
     }
 
-    private static void AddAddress(AddressTypes addressType, Action<GrpcAddress> onAdd, string? street, string? houseNumber, string? streetNumber, string? postCode, string? city)
+    private async Task AddAddress(AddressTypes addressType, Action<GrpcAddress> onAdd, string? street, string? houseNumber, string? streetNumber, string? postCode, string? city, int? countryId)
     {
         var parameters = new[] { street, houseNumber, streetNumber, postCode, city };
 
@@ -178,8 +182,16 @@ public class KonsDbDetailProvider
             StreetNumber = streetNumber ?? string.Empty ,
             HouseNumber = houseNumber ?? string.Empty,
             Postcode = postCode ?? string.Empty,
-            City = city ?? string.Empty
+            City = city ?? string.Empty,
+            CountryId = countryId is null or 0 ? 16 : countryId //16 = Czech
         };
+
+        if (!string.IsNullOrWhiteSpace(address.City))
+        {
+            var formatAddressResponse = await _mediator.Send(new FormatAddressRequest { Address = address });
+
+            address.SingleLineAddressPoint = formatAddressResponse.SingleLineAddress;
+        }
 
         onAdd(address);
     }

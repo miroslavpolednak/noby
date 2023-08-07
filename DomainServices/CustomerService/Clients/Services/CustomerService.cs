@@ -54,4 +54,11 @@ internal sealed class CustomerService : ICustomerServiceClient
     {
         return _service.ValidateContactAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
+
+    public async Task<string> FormatAddress(GrpcAddress address, CancellationToken cancellationToken = default)
+    {
+        var response = await _service.FormatAddressAsync(new FormatAddressRequest { Address = address }, cancellationToken: cancellationToken).ResponseAsync;
+
+        return response.SingleLineAddress;
+    }
 }

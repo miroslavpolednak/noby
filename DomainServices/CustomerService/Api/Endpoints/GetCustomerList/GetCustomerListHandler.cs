@@ -44,7 +44,7 @@ internal sealed class GetCustomerListHandler : IRequestHandler<CustomerListReque
         if (!partnerIds.Any())
             return Enumerable.Empty<CustomerDetailResponse>();
 
-        return await _konsDbDetailProvider.GetList(partnerIds, cancellationToken);
+        return await _konsDbDetailProvider.GetList(partnerIds, cancellationToken).ToListAsync(cancellationToken);
     }
 
     private static void CheckMissingCustomers(ICollection<CustomerDetailResponse> customers, ICollection<Identity> identities)
