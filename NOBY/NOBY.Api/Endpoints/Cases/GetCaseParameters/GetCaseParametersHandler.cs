@@ -1,7 +1,6 @@
 ﻿using CIS.Core.Security;
 using CIS.Foms.Enums;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
-using cCodebookService = DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
 
@@ -11,11 +10,7 @@ internal sealed class GetCaseParametersHandler
     public async Task<GetCaseParametersResponse> Handle(GetCaseParametersRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
-        if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
-        {
-            throw new CisAuthorizationException();
-        }
-
+        
         if (caseInstance.State == (int)CaseStates.InProgress)
         {
             return await getCaseInProgress(caseInstance, cancellationToken);
@@ -166,7 +161,6 @@ internal sealed class GetCaseParametersHandler
         }
     }
 
-    private readonly ICurrentUserAccessor _currentUser;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
@@ -176,7 +170,6 @@ internal sealed class GetCaseParametersHandler
     private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
 
     public GetCaseParametersHandler(
-        ICurrentUserAccessor currentUser,
         DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         DomainServices.CaseService.Clients.ICaseServiceClient caseService,
         DomainServices.ProductService.Clients.IProductServiceClient productService,
@@ -186,7 +179,6 @@ internal sealed class GetCaseParametersHandler
         DomainServices.CustomerService.Clients.ICustomerServiceClient customerService
         )
     {
-        _currentUser = currentUser;
         _codebookService = codebookService;
         _caseService = caseService;
         _productService = productService;

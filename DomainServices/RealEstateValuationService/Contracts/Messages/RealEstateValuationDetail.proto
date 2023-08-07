@@ -9,7 +9,7 @@ import "Messages/ValuationTypes.proto";
 
 message RealEstateValuationDetail {
     int32 RealEstateValuationId = 1;
-    google.protobuf.Int32Value OrderId = 2;
+    google.protobuf.Int64Value OrderId = 2;
     int64 CaseId = 3;
     int32 RealEstateTypeId = 4;
     int32 ValuationStateId = 5;

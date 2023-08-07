@@ -42,6 +42,7 @@ try
             // add CIS services
             .AddCodebookService()
             .AddUserService()
+            .AddCustomerService()
             .AddCaseService()
             .AddCisServiceDiscovery()
             // add grpc infrastructure

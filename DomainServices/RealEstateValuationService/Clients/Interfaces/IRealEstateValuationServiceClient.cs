@@ -32,6 +32,8 @@ public interface IRealEstateValuationServiceClient
 
     Task PreorderOnlineValuation(PreorderOnlineValuationRequest request, CancellationToken cancellationToken = default);
 
+    Task OrderOnlineValuation(OrderOnlineValuationRequest request, CancellationToken cancellationToken = default);
+
     // DeedOfOwnershipDocument
     Task UpdateDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, List<long>? realEstateIds, CancellationToken cancellationToken = default);
 

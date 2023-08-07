@@ -43,7 +43,7 @@ public class CasesController : ControllerBase
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/customers")]
-    [AuthorizeCaseOwner]
+    [AuthorizeCaseOwner(true)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(List<GetCustomers.GetCustomersResponseCustomer>), StatusCodes.Status200OK)]
@@ -61,7 +61,7 @@ public class CasesController : ControllerBase
     /// <param name="caseId">ID Case-u</param>
     /// <returns>Zakladni informace o Case-u.</returns>
     [HttpGet("{caseId:long}")]
-    [AuthorizeCaseOwner]
+    [AuthorizeCaseOwner(true)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(Dto.CaseModel), StatusCodes.Status200OK)]
@@ -138,7 +138,7 @@ public class CasesController : ControllerBase
     /// </remarks>
     /// <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
     [HttpGet("{caseId:long}/parameters")]
-    [AuthorizeCaseOwner]
+    [AuthorizeCaseOwner(true)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(GetCaseParameters.GetCaseParametersResponse), StatusCodes.Status200OK)]

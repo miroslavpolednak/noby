@@ -6,6 +6,7 @@ internal sealed class ErrorCodeMapper
     : ErrorCodeMapperBase
 {
     public const int PreorderSvcUploadAttachmentNoFile = 22100;
+    public const int OrderOnlineBadRequest = 22204;
 
     public static IErrorCodesDictionary Init()
     {

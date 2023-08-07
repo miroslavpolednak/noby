@@ -22,7 +22,7 @@ internal sealed class RealEstateValuation
     public bool DeveloperApplied { get; set; }
     public int? ValuationResultFuturePrice { get; set; }
     public int? ValuationResultCurrentPrice { get; set; }
-    public int? OrderId { get; set; }
+    public long? OrderId { get; set; }
     public int? RealEstateStateId { get; set; }
     public string? Address { get; set; }
     public DateTime? ValuationSentDate { get; set; }

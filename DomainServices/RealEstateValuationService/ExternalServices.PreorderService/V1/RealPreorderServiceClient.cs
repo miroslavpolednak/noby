@@ -1,4 +1,6 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
+using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.Dto;
+using System.Net;
 
 namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 
@@ -32,6 +34,23 @@ internal sealed class RealPreorderServiceClient
                 "STANDARD" => CIS.Foms.Enums.RealEstateValuationTypes.Standard,
                 _ => throw new CisExtServiceValidationException(0, $"Unknown result '{s}'")
             };
+    }
+
+    public async Task<OrderOnlineResponse> OrderOnline(Contracts.OnlineMPRequestDTO request, CancellationToken cancellationToken)
+    {
+        var response = await _httpClient
+            .PostAsJsonAsync(_httpClient.BaseAddress + "/order/online", request, cancellationToken)
+            .ConfigureAwait(false);
+
+        var acvResponse = await response.EnsureSuccessStatusAndReadJson<Contracts.OrderDTO>(StartupExtensions.ServiceName,new Dictionary<HttpStatusCode, int>
+        {
+            { HttpStatusCode.BadRequest, ErrorCodeMapper.OrderOnlineBadRequest }
+        }, cancellationToken);
+
+        return new OrderOnlineResponse
+        {
+            OrderId = acvResponse.StatusDetails.OrderId
+        };
     }
 
     public async Task<long> UploadAttachment(string title, string category, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default)
