@@ -517,7 +517,6 @@ internal partial class CodebookService
             items.ForEach(item =>
             {
                 var ext = extensions.FirstOrDefault(x => x.RelationshipCustomerProductTypeId == item.Id);
-                item.RdmCode = ext?.RdmCode;
                 item.MpDigiApiCode = ext?.MpDigiApiCode;
                 item.NameNoby = ext?.NameNoby;
             });
