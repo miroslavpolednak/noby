@@ -2,6 +2,7 @@
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V3.Contracts;
 using _cl = DomainServices.RiskIntegrationService.ExternalServices.RiskBusinessCase.V3;
 using CIS.Core.Configuration;
+using CIS.Core.Exceptions;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.RiskBusinessCase.V2.CommitCase;
 
@@ -43,27 +44,42 @@ internal sealed class CommitCaseHandler
         // human user instance
         if (request.UserIdentity != null)
         {
-            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellationToken);
-            if (userInstance != null)
+            try
             {
-                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                    requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
-                else
-                    requestModel.Creator = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
-            }            
-        }        
+                var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellationToken);
+                if (userInstance != null)
+                {
+                    if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                        requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+                    else
+                        requestModel.Creator = userInstance.ToC4mPerson(request.UserIdentity);
+                }
+            }
+            catch (CisNotFoundException) { }
+            catch (Exception) {
+                throw;
+            }
+        }
 
         // approver
         if (request.Approver != null)
         {
-            var approverInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.Approver, cancellationToken);
-            if (approverInstance != null)
+            try
             {
-                if (Helpers.IsDealerSchema(approverInstance.DealerCompanyId))
-                    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ApproverEqualDealer);
-                else
-                    requestModel.Approver = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(approverInstance, request.Approver);
-            }            
+                var approverInstance = await _userService.GetUserRIPAttributes(request.Approver.IdentityId ?? "", request.Approver.IdentityScheme ?? "", cancellationToken);
+                if (approverInstance != null)
+                {
+                    if (Helpers.IsDealerSchema(approverInstance.DealerCompanyId))
+                        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ApproverEqualDealer);
+                    else
+                        requestModel.Approver = approverInstance.ToC4mPerson(request.Approver);
+                }
+            }
+            catch (CisNotFoundException) { }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //C4M
@@ -88,22 +104,22 @@ internal sealed class CommitCaseHandler
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
+    private readonly UserService.Clients.IUserServiceClient _userService;
 
     public CommitCaseHandler(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
         _cl.IRiskBusinessCaseClient client,
         CodebookService.Clients.ICodebookServiceClient codebookService,
-        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
-        ICisEnvironmentConfiguration cisEnvironment)
+        ICisEnvironmentConfiguration cisEnvironment,
+        UserService.Clients.IUserServiceClient userService)
     {
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;
         _client = client;
         _codebookService = codebookService;
-        _xxvConnectionProvider = xxvConnectionProvider;
         _cisEnvironment = cisEnvironment;
+        _userService = userService;
     }
 }

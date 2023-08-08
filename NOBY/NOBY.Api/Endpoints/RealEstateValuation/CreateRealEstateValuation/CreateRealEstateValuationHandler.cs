@@ -14,12 +14,6 @@ internal sealed class CreateRealEstateValuationHandler
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
-        // perm check
-        if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
-        {
-            throw new CisAuthorizationException();
-        }
-
         var revRequest = new DomainServices.RealEstateValuationService.Contracts.CreateRealEstateValuationRequest
         {
             CaseId = request.CaseId,
@@ -53,20 +47,17 @@ internal sealed class CreateRealEstateValuationHandler
 
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseService;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
     public CreateRealEstateValuationHandler(
         IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService,
-        ICurrentUserAccessor currentUserAccessor,
         IRealEstateValuationServiceClient realEstateValuationService, 
         ICaseServiceClient caseService)
     {
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
-        _currentUser = currentUserAccessor;
         _realEstateValuationService = realEstateValuationService;
         _caseService = caseService;
     }

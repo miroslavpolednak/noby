@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.Dto;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1.Contracts;
 
 namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
@@ -12,6 +13,11 @@ internal sealed class MockPreorderServiceClient
     }
 
     public Task<List<RealEstateValuationTypes>> GetValuationTypes(AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<OrderOnlineResponse> OrderOnline(OnlineMPRequestDTO request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

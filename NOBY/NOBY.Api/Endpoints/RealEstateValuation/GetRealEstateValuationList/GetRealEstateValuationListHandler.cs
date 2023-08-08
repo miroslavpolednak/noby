@@ -1,5 +1,4 @@
-﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
@@ -16,12 +15,6 @@ internal sealed class GetRealEstateValuationListHandler
     public async Task<List<RealEstateValuationListItem>> Handle(GetRealEstateValuationListRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
-
-        // perm check
-        if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
-        {
-            throw new CisAuthorizationException();
-        }
 
         // dopocitana oceneni na zaklade dat v SA
         List<RealEstateValuationListItem>? computedValuations = null;
@@ -120,7 +113,6 @@ internal sealed class GetRealEstateValuationListHandler
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseService;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
@@ -129,14 +121,12 @@ internal sealed class GetRealEstateValuationListHandler
         ISalesArrangementServiceClient salesArrangementService,
         ICodebookServiceClient codebookService,
         IRealEstateValuationServiceClient realEstateValuationService,
-        ICaseServiceClient caseService,
-        ICurrentUserAccessor currentUserAccessor)
+        ICaseServiceClient caseService)
     {
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
         _caseService = caseService;
         _codebookService = codebookService;
-        _currentUser = currentUserAccessor;
         _realEstateValuationService = realEstateValuationService;
     }
 }

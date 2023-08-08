@@ -38,6 +38,7 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
+		<ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.RiskIntegrationService.Contracts.csproj" />
 		<ProjectReference Include="..\ExternalServices.Common\DomainServices.RiskIntegrationService.ExternalServices.Common.csproj" />
 		<ProjectReference Include="..\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj" />

@@ -51,3 +51,12 @@ message OrdersOnlinePreorder {
     int32 FlatArea = 4;
     google.protobuf.Int32Value BuildingAgeCode = 5;
 }
+
+message OrdersStandard {
+    string RealEstateValuationLocalSurveyFunctionCode = 1;
+    string FirstName = 2;
+    string LastName = 3;
+    string PhoneNumber = 4;
+    string PhoneIDC = 5;
+    string Email = 6;
+}

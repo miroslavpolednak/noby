@@ -62,10 +62,10 @@ internal static class SimpleCalculateRequestExtensions
     public static List<_C4M.ExpensesSummary> ToC4M(this _V2.CreditWorthinessSimpleExpensesSummary expenses)
         => new()
         {
-            new() { Amount = expenses.Rent.GetValueOrDefault().ToAmount(), Category = _C4M.HouseholdExpenseType.RENT },
-            new() { Amount = 0.ToAmount(), Category = _C4M.HouseholdExpenseType.SAVINGS },
-            new() { Amount = 0.ToAmount(), Category = _C4M.HouseholdExpenseType.INSURANCE },
-            new() { Amount = expenses.Other.GetValueOrDefault().ToAmount(), Category = _C4M.HouseholdExpenseType.OTHER },
-            new() { Amount = 0.ToAmount(), Category = _C4M.HouseholdExpenseType.ALIMONY },
+            new() { Amount = expenses.Rent.GetValueOrDefault().ToCreditWorthinessAmount(), Category = _C4M.HouseholdExpenseType.RENT },
+            new() { Amount = 0.ToCreditWorthinessAmount(), Category = _C4M.HouseholdExpenseType.SAVINGS },
+            new() { Amount = 0.ToCreditWorthinessAmount(), Category = _C4M.HouseholdExpenseType.INSURANCE },
+            new() { Amount = expenses.Other.GetValueOrDefault().ToCreditWorthinessAmount(), Category = _C4M.HouseholdExpenseType.OTHER },
+            new() { Amount = 0.ToCreditWorthinessAmount(), Category = _C4M.HouseholdExpenseType.ALIMONY },
         };
 }

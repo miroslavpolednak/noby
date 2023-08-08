@@ -17,7 +17,7 @@ public sealed class RealEstateValuationListItem
     /// Číslo objednávky ocenění
     /// </summary>
     /// <example>123455</example>
-    public int? OrderId { get; set; }
+    public long? OrderId { get; set; }
 
     /// <summary>
     /// ID obchodního případu (caseId)

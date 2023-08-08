@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
+using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.Dto;
 
 namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 
@@ -21,4 +22,6 @@ public interface IPreorderServiceClient
     Task<long> UploadAttachment(string title, string category, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default);
 
     Task DeleteAttachment(long externalId, CancellationToken cancellationToken = default);
+
+    Task<OrderOnlineResponse> OrderOnline(Contracts.OnlineMPRequestDTO request, CancellationToken cancellationToken);
 }

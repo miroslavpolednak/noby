@@ -53,19 +53,13 @@ internal sealed class GetSalesArrangementHandler
     private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
     
     public GetSalesArrangementHandler(
         ICurrentUserAccessor currentUser,
         ICaseServiceClient caseService,
-        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
-        DomainServices.OfferService.Clients.IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService)
     {
         _currentUser = currentUser;
-        _codebookService = codebookService;
-        _offerService = offerService;
         _caseService = caseService;
         _salesArrangementService = salesArrangementService;
     }

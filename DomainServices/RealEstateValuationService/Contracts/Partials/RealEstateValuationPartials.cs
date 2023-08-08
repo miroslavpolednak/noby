@@ -77,3 +77,7 @@ public partial class GetRealEstateValuationTypesRequest
 public partial class PreorderOnlineValuationRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class OrderOnlineValuationRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }

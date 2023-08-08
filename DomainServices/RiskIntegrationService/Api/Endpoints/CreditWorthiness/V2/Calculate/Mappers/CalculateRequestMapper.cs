@@ -2,6 +2,7 @@
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
 using DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
+using CIS.Core.Exceptions;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
 
@@ -18,7 +19,7 @@ internal sealed class CalculateRequestMapper
             LoanApplicationProduct = new()
             {
                 ProductClusterCode = riskApplicationType.C4MAplCode,
-                AmountRequired = request.Product!.LoanAmount.ToAmount(),
+                AmountRequired = request.Product!.LoanAmount.ToCreditWorthinessAmount(),
                 Annuity = request.Product.LoanPaymentAmount,
                 FixationPeriod = request.Product.FixedRatePeriod,
                 InterestRate = request.Product.LoanInterestRate,
@@ -30,33 +31,41 @@ internal sealed class CalculateRequestMapper
         // human user instance
         if (request.UserIdentity is not null)
         {
-            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-            if (userInstance != null)
+            try
             {
-                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                    requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
-                else
-                    requestModel.Person = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
-            }            
+                var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
+                if (userInstance != null)
+                {
+                    if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                        requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+                    else
+                        requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
+                }
+            }
+            catch (CisNotFoundException) { }
+            catch (Exception)
+            {
+                throw;
+            }    
         }
 
         return requestModel;
     }
 
     private readonly HouseholdsChildMapper _householdMapper;
-    private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
+    private readonly UserService.Clients.IUserServiceClient _userService;
 
     public CalculateRequestMapper(
         HouseholdsChildMapper householdMapper,
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider)
+        UserService.Clients.IUserServiceClient userService)
     {
         _householdMapper = householdMapper;
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;
-        _xxvConnectionProvider = xxvConnectionProvider;
+        _userService = userService;
     }
 }
