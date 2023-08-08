@@ -74,7 +74,8 @@ public class PdfFooter
         var barcode = new Code128(footer.BarcodeText, barcodeField.GetX(page), barcodeField.GetY(page), barcodeField.Height)
         {
             TextAlign = Align.Right,
-            FontSize = 8
+            FontSize = 8,
+            Font = GeneratorVariables.Arial.GetFont()
         };
 
         barcode.X += barcodeField.Width - 2 - barcode.GetSymbolWidth();
