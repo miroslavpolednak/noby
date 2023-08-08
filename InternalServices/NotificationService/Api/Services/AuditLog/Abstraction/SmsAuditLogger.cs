@@ -12,11 +12,9 @@ public interface ISmsAuditLogger
 
     void LogHttpException(Exception exception);
 
-    void LogKafkaProducing(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer);
-
     void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer);
     
-    void LogKafkaError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer);
+    void LogKafkaError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer, string errorMessage);
 
-    void LogKafkaResultReceived(NotificationReport report);
+    void LogKafkaResultReceived(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, NotificationReport report);
 }

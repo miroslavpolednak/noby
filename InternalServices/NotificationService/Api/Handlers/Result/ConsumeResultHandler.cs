@@ -15,7 +15,7 @@ public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, Consum
     private readonly IServiceProvider _provider;
     private readonly IDateTime _dateTime;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly ISmsAuditLogger _auditLogger;
+    private readonly ISmsAuditLogger _smsAuditLogger;
     private readonly ILogger<ConsumeResultHandler> _logger;
 
     private static readonly Dictionary<string, NotificationState> _map = new()
@@ -30,13 +30,13 @@ public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, Consum
         IServiceProvider provider,
         IDateTime dateTime,
         ICodebookServiceClient codebookService,
-        ISmsAuditLogger auditLogger,
+        ISmsAuditLogger smsAuditLogger,
         ILogger<ConsumeResultHandler> logger)
     {
         _provider = provider;
         _dateTime = dateTime;
         _codebookService = codebookService;
-        _auditLogger = auditLogger;
+        _smsAuditLogger = smsAuditLogger;
         _logger = logger;
     }
 
@@ -60,12 +60,8 @@ public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, Consum
             if (result is SmsResult smsResult)
             {
                 var smsTypes = await _codebookService.SmsNotificationTypes(cancellationToken);
-                var smsType = smsTypes.FirstOrDefault(s => s.Code == smsResult.Type);
-
-                if (smsType?.IsAuditLogEnabled ?? false)
-                {
-                    _auditLogger.LogKafkaResultReceived(report);
-                }
+                var smsType = smsTypes.First(s => s.Code == smsResult.Type);
+                _smsAuditLogger.LogKafkaResultReceived(smsType, report);
             }
             
             var errorCodes = report.notificationErrors?
