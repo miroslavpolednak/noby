@@ -29,32 +29,33 @@ public sealed class CaseOwnerValidationMiddleware
         ICustomerOnSAServiceClient customerOnSAService,
         ISalesArrangementServiceClient salesArrangementService)
     {
+        var routeValues = context.GetRouteData().Values;
         var endpoint = context.GetEndpoint();
         var skipCheck = endpoint?.Metadata.OfType<NobySkipCaseOwnerValidationAttribute>().Any() ?? true;
         
-        if (!skipCheck)
+        if (!skipCheck && (routeValues?.Any() ?? false))
         {
             var cancellationToken = context.RequestAborted;
-            var routeValues = context.GetRouteData().Values;
             var preload = endpoint?.Metadata.OfType<NobyCaseOwnerValidationPreloadAttribute>().FirstOrDefault()?.Preload ?? NobyCaseOwnerValidationPreloadAttribute.LoadableEntities.None;
             long? caseId = null;
 
-            if (routeValues.ContainsKey(_customerOnSAIdKey))
+            if (isInRoute(_customerOnSAIdKey))
             {
-                int customerOnSAId = int.Parse(routeValues[_customerOnSAIdKey]!.ToString()!, CultureInfo.InvariantCulture);
-                caseId = (await customerOnSAService.ValidateCustomerOnSAId(customerOnSAId, true, cancellationToken)).CaseId;
+                caseId = (await customerOnSAService.ValidateCustomerOnSAId(getId(_customerOnSAIdKey), true, cancellationToken)).CaseId;
             }
-            else if (routeValues.ContainsKey(_householdIdKey))
+            else if (isInRoute(_householdIdKey))
             {
-                int householdId = int.Parse(routeValues[_householdIdKey]!.ToString()!, CultureInfo.InvariantCulture);
-                caseId = (await householdService.ValidateHouseholdId(householdId, true, cancellationToken)).CaseId;
+                caseId = (await householdService.ValidateHouseholdId(getId(_householdIdKey), true, cancellationToken)).CaseId;
             }
-            else if (routeValues.ContainsKey(_salesArrangementIdKey))
+            else if (isInRoute(_salesArrangementIdKey))
             {
-                int salesArrangementId = int.Parse(routeValues[_salesArrangementIdKey]!.ToString()!, CultureInfo.InvariantCulture);
-                caseId = (await salesArrangementService.ValidateSalesArrangementId(salesArrangementId, true, cancellationToken)).CaseId;
+                caseId = preload.HasFlag(NobyCaseOwnerValidationPreloadAttribute.LoadableEntities.SalesArrangement) switch
+                {
+                    true => (await salesArrangementService.GetSalesArrangement(getId(_salesArrangementIdKey), cancellationToken)).CaseId,
+                    false => (await salesArrangementService.ValidateSalesArrangementId(getId(_salesArrangementIdKey), true, cancellationToken)).CaseId,
+                };
             }
-            else if (routeValues.ContainsKey(_caseIdKey))
+            else if (isInRoute(_caseIdKey))
             {
                 caseId = long.Parse(routeValues[_caseIdKey]!.ToString()!, CultureInfo.InvariantCulture);
             }
@@ -79,5 +80,11 @@ public sealed class CaseOwnerValidationMiddleware
         }
 
         await _next.Invoke(context!);
+
+        bool isInRoute(in string key)
+            => routeValues?.ContainsKey(key) ?? false;
+
+        int getId(in string key)
+            => int.Parse(routeValues![key]!.ToString()!, CultureInfo.InvariantCulture);
     }
 }

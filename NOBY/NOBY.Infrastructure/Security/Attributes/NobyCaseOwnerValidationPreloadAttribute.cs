@@ -6,7 +6,7 @@ public sealed class NobyCaseOwnerValidationPreloadAttribute
 {
     public LoadableEntities Preload { get; init; }
 
-    public NobyCaseOwnerValidationPreloadAttribute(LoadableEntities preload = LoadableEntities.None)
+    public NobyCaseOwnerValidationPreloadAttribute(LoadableEntities preload)
     {
         Preload = preload;
     }
