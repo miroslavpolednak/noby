@@ -2,6 +2,7 @@
 using NOBY.Infrastructure.Configuration;
 using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Http.Extensions;
+using NOBY.Infrastructure.Security.Middleware;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -54,6 +55,7 @@ internal static class NobyAppBuilder
                 // autorizace
                 .UseMiddleware<NobySecurityMiddleware>()
                 .UseAuthorization()
+                //.UseMiddleware<CaseOwnerValidationMiddleware>()
                 // endpointy
                 .UseEndpoints(t =>
                 {
