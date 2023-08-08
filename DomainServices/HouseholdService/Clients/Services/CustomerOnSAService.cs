@@ -160,6 +160,21 @@ internal sealed class CustomerOnSAService
 
     #endregion Obligation
 
+    public async Task<ValidateCustomerOnSAIdResponse> ValidateCustomerOnSAId(int customerOnSAId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
+    {
+        if (_cacheValidateCustomerOnSAId is null)
+        {
+            _cacheValidateCustomerOnSAId = await _service.ValidateCustomerOnSAIdAsync(new ValidateCustomerOnSAIdRequest
+            {
+                CustomerOnSAId = customerOnSAId,
+                ThrowExceptionIfNotFound = throwExceptionIfNotFound
+            }, cancellationToken: cancellationToken);
+        }
+        return _cacheValidateCustomerOnSAId;
+    }
+
+    private ValidateCustomerOnSAIdResponse? _cacheValidateCustomerOnSAId;
+
     private readonly Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient _service;
 
     public CustomerOnSAService(Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient service) => _service = service;

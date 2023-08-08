@@ -136,4 +136,6 @@ public interface ICustomerOnSAServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16042; Obligation ID {ObligationId} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task UpdateObligation(Obligation request, CancellationToken cancellationToken = default);
+
+    Task<ValidateCustomerOnSAIdResponse> ValidateCustomerOnSAId(int customerOnSAId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
 }

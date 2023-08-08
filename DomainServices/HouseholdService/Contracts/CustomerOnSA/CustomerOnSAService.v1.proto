@@ -24,6 +24,7 @@ import "Messages/GetObligation.proto";
 import "Messages/DeleteIncome.proto";
 import "Messages/UpdateCustomerDetail.proto";
 import "Messages/GetCustomerChangeMetadata.proto";
+import "Messages/ValidateCustomerOnSAId.proto";
 
 service CustomerOnSAService {
 	rpc GetCustomerChangeMetadata (GetCustomerChangeMetadataRequest) returns (GetCustomerChangeMetadataResponse);
@@ -47,6 +48,8 @@ service CustomerOnSAService {
 	rpc UpdateCustomer (UpdateCustomerRequest) returns (UpdateCustomerResponse);
 
 	rpc UpdateCustomerDetail (UpdateCustomerDetailRequest) returns (google.protobuf.Empty);
+
+	rpc ValidateCustomerOnSAId (ValidateCustomerOnSAIdRequest) returns (ValidateCustomerOnSAIdResponse);
 
 	// income part -------------------------------------------------------
     rpc CreateIncome (CreateIncomeRequest) returns (CreateIncomeResponse);

@@ -75,3 +75,7 @@ public partial class Obligation
 public partial class UpdateCustomerDetailRequest
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class ValidateCustomerOnSAIdRequest
+    : MediatR.IRequest<ValidateCustomerOnSAIdResponse>
+{ }
