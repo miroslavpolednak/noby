@@ -18,41 +18,85 @@ internal sealed class IndividualPricingProcessChangedConsumer
         
         var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
         var caseId = long.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
-
-        await _linkTaskToCase.Link(caseId, currentTaskId, token);
-        
-        if (message.state != ProcessStateEnum.COMPLETED)
-        {
-            return;
-        }
         
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId }, token);
         var decisionId = taskDetail.TaskDetail.PriceException.DecisionId;
-        var flowSwitchId = decisionId switch
-        {
-            1 => (int)FlowSwitches.IsWflTaskForIPApproved,
-            2 => (int)FlowSwitches.IsWflTaskForIPNotApproved,
-            _ => 0
-        };
-
-        if (flowSwitchId == 0)
-        {
-            return;
-        }
         
-        var flowSwitch = new EditableFlowSwitch
-        {
-            Value = true,
-            FlowSwitchId = flowSwitchId
-        };
+        await _linkTaskToCase.Link(caseId, currentTaskId, token);
 
-        var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, token);
-        foreach (var salesArrangement in salesArrangementResponse.SalesArrangements.Where(t => t.IsProductSalesArrangement()))
+        var flowSwitches = (message.state switch
         {
-            await _salesArrangementService.SetFlowSwitches(salesArrangement.SalesArrangementId, new() { flowSwitch }, token);
+            ProcessStateEnum.COMPLETED => GetFlowSwitchesForCompleted(decisionId),
+            ProcessStateEnum.ACTIVE => GetFlowSwitchesForActive(),
+            ProcessStateEnum.TERMINATED => GetFlowSwitchesForTerminated(),
+            _ => Enumerable.Empty<EditableFlowSwitch>(),
+        }).ToList();
+        
+        if (flowSwitches.Any())
+        {
+            var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, token);
+            var productSaleArrangements = salesArrangementResponse.SalesArrangements
+                .Where(t => t.IsProductSalesArrangement())
+                .ToList();
+            
+            foreach (var salesArrangement in productSaleArrangements)
+            {
+                await _salesArrangementService.SetFlowSwitches(salesArrangement.SalesArrangementId, flowSwitches, token);
+            }
         }
     }
 
+    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForCompleted(int? decisionId)
+    {
+        if (decisionId == 1)
+        {
+            yield return  new EditableFlowSwitch
+            {
+                FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved,
+                Value = true
+            };
+        }
+
+        if (decisionId == 2)
+        {
+            yield return  new EditableFlowSwitch
+            {
+                FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved,
+                Value = true
+            };
+        }
+        
+        // else empty
+    }
+
+    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForActive()
+    {
+        yield return new EditableFlowSwitch
+        {
+            FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist,
+            Value = true
+        };
+    }
+
+    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForTerminated()
+    {
+        var flowSwitchIds = new[]
+        {
+            FlowSwitches.DoesWflTaskForIPExist,
+            FlowSwitches.IsWflTaskForIPApproved,
+            FlowSwitches.IsWflTaskForIPNotApproved
+        };
+        
+        foreach (var flowSwitchId in flowSwitchIds)
+        {
+            yield return new EditableFlowSwitch
+            {
+                FlowSwitchId = (int)flowSwitchId,
+                Value = false
+            };
+        }
+    }
+    
     private readonly IMediator _mediator;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClient _codebookService;
