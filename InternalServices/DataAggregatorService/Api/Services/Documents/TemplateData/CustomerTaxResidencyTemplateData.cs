@@ -11,13 +11,13 @@ internal class CustomerTaxResidencyTemplateData : AggregatedData
 
     public string SignerName => CustomerHelper.FullName(Customer);
 
-    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
+    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent);
 
     public string? CorrespondenceAddress
     {
         get
         {
-            var address = CustomerHelper.FullAddress(Customer, AddressTypes.Mailing, _codebookManager.Countries);
+            var address = CustomerHelper.FullAddress(Customer, AddressTypes.Mailing);
 
             return string.IsNullOrWhiteSpace(address) ? null : address;
         }

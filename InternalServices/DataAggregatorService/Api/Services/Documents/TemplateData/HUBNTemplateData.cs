@@ -11,7 +11,7 @@ internal class HUBNTemplateData : AggregatedData
 
     public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
-    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
+    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent);
 
     public IEnumerable<string> LoanPurposes => GetLoanPurposes();
 
@@ -39,7 +39,7 @@ internal class HUBNTemplateData : AggregatedData
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        configurator.Countries().DegreesBefore().LoanPurposes().RealEstateTypes().PurchaseTypes();
+        configurator.DegreesBefore().LoanPurposes().RealEstateTypes().PurchaseTypes();
     }
 
     private IEnumerable<string> GetLoanPurposes()
