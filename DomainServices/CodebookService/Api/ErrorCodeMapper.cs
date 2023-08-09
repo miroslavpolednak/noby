@@ -17,7 +17,7 @@ internal sealed class ErrorCodeMapper
             { DeveloperNotFound, "DeveloperId {PropertyValue} not found" },
             { DeveloperProjectNotFound, "DeveloperProjectId {PropertyValue} not found" },
             { OperatorNotFound, "Operator {PropertyValue} not found" },
-            { AcvRealEstateTypeNotFound, "AcvRealEstateType not found" }
+            { AcvRealEstateTypeNotFound, "AcvRealEstateType or BagmanRealEstateTypeId not found" }
         });
 
         return Messages;

@@ -1371,22 +1371,22 @@
         <member name="P:DomainServices.CodebookService.Contracts.v1.GenericCodebookReflection.Descriptor">
             <summary>File descriptor for Messages/GenericCodebook.proto</summary>
         </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeReflection">
-            <summary>Holder for reflection information generated from Messages/GetAcvRealEstateType.proto</summary>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeReflection">
+            <summary>Holder for reflection information generated from Messages/GetACVAndBagmanRealEstateType.proto</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeReflection.Descriptor">
-            <summary>File descriptor for Messages/GetAcvRealEstateType.proto</summary>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeReflection.Descriptor">
+            <summary>File descriptor for Messages/GetACVAndBagmanRealEstateType.proto</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeRequest.RealEstateTypeIdFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeRequest.RealEstateTypeIdFieldNumber">
             <summary>Field number for the "RealEstateTypeId" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeRequest.RealEstateSubtypeIdFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeRequest.RealEstateSubtypeIdFieldNumber">
             <summary>Field number for the "RealEstateSubtypeId" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeRequest.RealEstateStateIdFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeRequest.RealEstateStateIdFieldNumber">
             <summary>Field number for the "RealEstateStateId" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeResponse.AcvRealEstateTypeIdFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeResponse.AcvRealEstateTypeIdFieldNumber">
             <summary>Field number for the "AcvRealEstateTypeId" field.</summary>
         </member>
     </members>
