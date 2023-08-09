@@ -9,7 +9,7 @@ internal class DrawingTemplateData : AggregatedData
 {
     public string PersonName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
 
-    public string PersonAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
+    public string PersonAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent);
 
     public string PaymentAccount
     {
@@ -43,6 +43,6 @@ internal class DrawingTemplateData : AggregatedData
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        configurator.Countries().DegreesBefore();
+        configurator.DegreesBefore();
     }
 }

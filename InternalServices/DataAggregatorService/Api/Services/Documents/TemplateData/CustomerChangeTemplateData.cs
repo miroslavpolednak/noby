@@ -75,7 +75,7 @@ internal class CustomerChangeTemplateData : AggregatedData
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        configurator.Countries().DegreesBefore();
+        configurator.DegreesBefore();
     }
 
     public override async Task LoadAdditionalData(CancellationToken cancellationToken)
@@ -84,7 +84,7 @@ internal class CustomerChangeTemplateData : AggregatedData
 
         var customers = await _customerService.GetCustomerList(customerIdentities, SalesArrangement.SalesArrangementId, cancellationToken);
 
-        _customerDetails = customers.Select(customer => new CustomerInfo(customer, _codebookManager.DegreesBefore, _codebookManager.Countries)).ToList();
+        _customerDetails = customers.Select(customer => new CustomerInfo(customer, _codebookManager.DegreesBefore)).ToList();
     }
 
     private CustomerInfo? GetCustomerInfo(int number) => _customerDetails.ElementAtOrDefault(number - 1);

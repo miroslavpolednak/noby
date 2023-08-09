@@ -33,7 +33,7 @@ internal class LoanApplicationCustomer
 
     public string SignerName => CustomerHelper.FullName(_customer);
 
-    public string PermanentAddress => CustomerHelper.FullAddress(_customer, AddressTypes.Permanent, _countries);
+    public string PermanentAddress => CustomerHelper.FullAddress(_customer, AddressTypes.Permanent);
 
     public string ContactAddress => GetContactAddress();
 
@@ -56,12 +56,12 @@ internal class LoanApplicationCustomer
         var contactAddress = _customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Mailing);
 
         if (contactAddress is not null)
-            return CustomerHelper.FullAddress(contactAddress, _countries);
+            return contactAddress.SingleLineAddressPoint ?? string.Empty;
 
         if (_customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Permanent))
             return PermanentAddress;
 
-        return CustomerHelper.FullAddress(_customer, AddressTypes.Other, _countries);
+        return CustomerHelper.FullAddress(_customer, AddressTypes.Other);
     }
 
     private string GetIdentificationDocument()
