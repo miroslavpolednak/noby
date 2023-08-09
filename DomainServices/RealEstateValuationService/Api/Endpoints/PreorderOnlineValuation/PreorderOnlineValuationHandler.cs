@@ -41,17 +41,7 @@ internal sealed class PreorderOnlineValuationHandler
             ?.AddressPointId
             ?? throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AddressPointIdNotFound);
 
-        SpecificDetailHouseAndFlatObject? houseAndFlat = null;
-        if (realEstate.SpecificDetailBin is not null)
-        {
-            switch (Helpers.GetRealEstateType(realEstate))
-            {
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hf:
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hff:
-                    houseAndFlat = SpecificDetailHouseAndFlatObject.Parser.ParseFrom(realEstate.SpecificDetailBin);
-                    break;
-            }
-        }
+        var houseAndFlat = getHouseAndFlat(realEstate);
 
         // kontrola dat
         dataValidation(realEstate);
@@ -112,6 +102,20 @@ internal sealed class PreorderOnlineValuationHandler
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.PreorderOnlineDataValidation, nameof(realEstate.ACVRealEstateTypeId));
         }
+    }
+
+    private static SpecificDetailHouseAndFlatObject? getHouseAndFlat(Database.Entities.RealEstateValuation entity)
+    {
+        if (entity.SpecificDetailBin is not null)
+        {
+            switch (Helpers.GetRealEstateType(entity))
+            {
+                case CIS.Foms.Types.Enums.RealEstateTypes.Hf:
+                case CIS.Foms.Types.Enums.RealEstateTypes.Hff:
+                    return SpecificDetailHouseAndFlatObject.Parser.ParseFrom(entity.SpecificDetailBin);
+            }
+        }
+        return null;
     }
 
     private readonly RealEstateValuationServiceDbContext _dbContext;
