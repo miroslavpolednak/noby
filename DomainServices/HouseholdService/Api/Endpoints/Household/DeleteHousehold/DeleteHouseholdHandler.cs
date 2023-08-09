@@ -24,7 +24,6 @@ internal sealed class DeleteHouseholdHandler
         if (household.HouseholdTypeId == HouseholdTypes.Main && !request.HardDelete)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CantDeleteDebtorHousehold);
 
-
         //Invalidate DocumentOnSa (stop signing)
         var documentsOnSaToSing = await _documentOnSAServiceClient.GetDocumentsToSignList(household.SalesArrangementId, cancellationToken);
         // With household
@@ -68,6 +67,11 @@ internal sealed class DeleteHouseholdHandler
                 new()
                 {
                     FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnCodebtorHousehold,
+                    Value = null
+                },
+                new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.Was3602CodebtorChangedAfterSigning,
                     Value = null
                 }
             }, cancellationToken);

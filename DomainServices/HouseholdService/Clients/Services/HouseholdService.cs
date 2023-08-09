@@ -54,9 +54,22 @@ internal sealed class HouseholdService : IHouseholdServiceClient
         }, cancellationToken: cancellationToken);
     }
 
+    public async Task<ValidateHouseholdIdResponse> ValidateHouseholdId(int householdId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default)
+    {
+        if (_cacheValidateHouseholdId is null)
+        {
+            _cacheValidateHouseholdId = await _service.ValidateHouseholdIdAsync(new ValidateHouseholdIdRequest
+            {
+                HouseholdId = householdId,
+                ThrowExceptionIfNotFound = throwExceptionIfNotFound
+            }, cancellationToken: cancellationToken);
+        }
+        return _cacheValidateHouseholdId;
+    }
+
+    private ValidateHouseholdIdResponse? _cacheValidateHouseholdId;
+
     private readonly Contracts.v1.HouseholdService.HouseholdServiceClient _service;
 
     public HouseholdService(Contracts.v1.HouseholdService.HouseholdServiceClient service) => _service = service;
-
-    //private readonly ServiceClientResultCache<Household> _householdCache;
 }

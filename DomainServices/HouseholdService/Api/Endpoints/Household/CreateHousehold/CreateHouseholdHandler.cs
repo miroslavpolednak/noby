@@ -42,6 +42,11 @@ internal sealed class CreateHouseholdHandler
                 {
                     FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnCodebtorHousehold,
                     Value = false
+                },
+                new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.Was3602CodebtorChangedAfterSigning,
+                    Value = true
                 }
             }, cancellationToken);
         }

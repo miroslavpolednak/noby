@@ -23,3 +23,7 @@ public partial class LinkCustomerOnSAToHouseholdRequest
 public partial class UpdateHouseholdRequest
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class ValidateHouseholdIdRequest
+    : MediatR.IRequest<ValidateHouseholdIdResponse>
+{ }
