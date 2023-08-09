@@ -81,3 +81,7 @@ public partial class PreorderOnlineValuationRequest
 public partial class OrderOnlineValuationRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class OrderStandardValuationRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }

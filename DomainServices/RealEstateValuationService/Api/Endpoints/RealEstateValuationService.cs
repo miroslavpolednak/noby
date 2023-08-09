@@ -48,6 +48,9 @@ internal sealed class RealEstateValuationService
     public override async Task<Empty> OrderOnlineValuation(OrderOnlineValuationRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<Empty> OrderStandardValuation(OrderStandardValuationRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     // DeedOfOwnershipDocument
     public override async Task<Empty> UpdateDeedOfOwnershipDocument(UpdateDeedOfOwnershipDocumentRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);

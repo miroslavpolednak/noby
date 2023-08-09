@@ -1,5 +1,4 @@
-﻿using CIS.Core;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
