@@ -1389,5 +1389,8 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeResponse.AcvRealEstateTypeIdFieldNumber">
             <summary>Field number for the "AcvRealEstateTypeId" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeResponse.BagmanRealEstateTypeIdFieldNumber">
+            <summary>Field number for the "BagmanRealEstateTypeId" field.</summary>
+        </member>
     </members>
 </doc>

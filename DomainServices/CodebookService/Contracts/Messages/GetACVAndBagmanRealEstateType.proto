@@ -12,4 +12,5 @@ message GetACVAndBagmanRealEstateTypeRequest {
 
 message GetACVAndBagmanRealEstateTypeResponse {
 	string AcvRealEstateTypeId = 1;
+	string BagmanRealEstateTypeId = 2;
 }
