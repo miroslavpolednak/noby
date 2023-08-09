@@ -2,10 +2,10 @@
 using CIS.Core;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.UserService.Clients;
-using NOBY.Infrastructure.Services.TempFileManager;
+using NOBY.Services.TempFileManager;
 using Google.Protobuf;
 
-namespace NOBY.Infrastructure.Services.UploadDocumentToArchive;
+namespace NOBY.Services.UploadDocumentToArchive;
 
 [TransientService, AsImplementedInterfacesService]
 internal sealed class UploadDocumentToArchiveService

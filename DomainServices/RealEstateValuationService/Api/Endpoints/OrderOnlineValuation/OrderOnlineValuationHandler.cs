@@ -11,7 +11,7 @@ internal sealed class OrderOnlineValuationHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(OrderOnlineValuationRequest request, CancellationToken cancellationToken)
     {
-        var (entity, realEstateIds, attachments, caseInstance) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
+        var (entity, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
         // klient
         var customer = await _customerService.GetCustomerDetail(caseInstance.Customer.Identity, cancellationToken);
         // instance uzivatele

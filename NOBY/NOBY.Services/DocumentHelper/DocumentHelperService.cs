@@ -3,7 +3,7 @@ using __Contract = DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 
-namespace NOBY.Infrastructure.Services.DocumentHelper;
+namespace NOBY.Services.DocumentHelper;
 
 [TransientService, AsImplementedInterfacesService]
 internal sealed class DocumentHelperService 

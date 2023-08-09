@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace NOBY.Infrastructure.Services.TempFileManager;
+namespace NOBY.Services.TempFileManager;
 
 public interface ITempFileManagerService
 {

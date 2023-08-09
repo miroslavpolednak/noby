@@ -7,7 +7,18 @@ internal sealed class PreorderOnlineValuationHandler
 {
     public async Task Handle(PreorderOnlineValuationRequest request, CancellationToken cancellationToken)
     {
-
+        await _realEstateValuationService.PreorderOnlineValuation(new DomainServices.RealEstateValuationService.Contracts.PreorderOnlineValuationRequest
+        {
+            RealEstateValuationId = request.RealEstateValuationId,
+            Data = new DomainServices.RealEstateValuationService.Contracts.OrdersOnlinePreorder
+            {
+                BuildingTechnicalStateCode = request.BuildingTechnicalStateCode,
+                FlatSchemaCode = request.FlatSchemaCode,
+                BuildingAgeCode = request.BuildingAgeCode,
+                BuildingMaterialStructureCode = request.BuildingMaterialStructureCode,
+                FlatArea = request.FlatArea
+            }
+        }, cancellationToken);
     }
 
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;

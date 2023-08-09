@@ -1,4 +1,4 @@
-﻿namespace NOBY.Infrastructure.Services.WorkflowTask;
+﻿namespace NOBY.Services.WorkflowTask;
 
 public interface IWorkflowTaskService
 {

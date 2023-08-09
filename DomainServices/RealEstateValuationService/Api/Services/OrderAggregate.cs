@@ -3,14 +3,13 @@ using DomainServices.CaseService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
 using Google.Protobuf;
-using System.Threading;
 
 namespace DomainServices.RealEstateValuationService.Api.Services;
 
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class OrderAggregate
 {
-    public async Task<(Database.Entities.RealEstateValuation REVEntity, long[]? RealEstateIds, long[]? Attachments, CaseService.Contracts.Case Case)> GetAggregatedData(int realEstateValuationId, CancellationToken cancellationToken)
+    public async Task<(Database.Entities.RealEstateValuation REVEntity, long[]? RealEstateIds, long[]? Attachments, CaseService.Contracts.Case Case, long? AddressPointId)> GetAggregatedData(int realEstateValuationId, CancellationToken cancellationToken)
     {
         var entity = await _dbContext
             .RealEstateValuations
@@ -21,8 +20,12 @@ internal sealed class OrderAggregate
             .DeedOfOwnershipDocuments
             .AsNoTracking()
             .Where(t => t.RealEstateValuationId == realEstateValuationId)
-            .Select(t => new { t.RealEstateIds })
+            .Select(t => new { t.AddressPointId, t.RealEstateIds })
             .ToListAsync(cancellationToken);
+
+        var addressPointId = deedOfOwnerships
+            .FirstOrDefault(t => t.AddressPointId.HasValue)
+            ?.AddressPointId;
 
         var attachments = await _dbContext
             .Attachments
@@ -42,8 +45,14 @@ internal sealed class OrderAggregate
 
         // case detail
         var caseInstance = await _caseService.GetCaseDetail(entity.CaseId, cancellationToken);
-        
-        return (entity, realEstateIds, attachments, caseInstance);
+
+        // validace
+        if (string.IsNullOrEmpty(entity.ACVRealEstateTypeId))
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.OrderDataValidation, nameof(entity.ACVRealEstateTypeId));
+        }
+
+        return (entity, realEstateIds, attachments, caseInstance, addressPointId);
     }
 
     public async Task SaveResults(Database.Entities.RealEstateValuation entity, long orderId, OrdersStandard? data, CancellationToken cancellationToken)
@@ -66,6 +75,20 @@ internal sealed class OrderAggregate
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public static SpecificDetailHouseAndFlatObject? GetHouseAndFlat(Database.Entities.RealEstateValuation entity)
+    {
+        if (entity.SpecificDetailBin is not null)
+        {
+            switch (Helpers.GetRealEstateType(entity))
+            {
+                case CIS.Foms.Types.Enums.RealEstateTypes.Hf:
+                case CIS.Foms.Types.Enums.RealEstateTypes.Hff:
+                    return SpecificDetailHouseAndFlatObject.Parser.ParseFrom(entity.SpecificDetailBin);
+            }
+        }
+        return null;
     }
 
     private readonly RealEstateValuationServiceDbContext _dbContext;

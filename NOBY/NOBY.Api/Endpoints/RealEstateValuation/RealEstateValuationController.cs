@@ -300,7 +300,7 @@ public sealed class RealEstateValuationController : ControllerBase
     public async Task<IActionResult> PreorderOnlineValuation(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] PreorderOnlineValuation.PreorderOnlineValuationRequest request,
+        [FromBody] [Required] PreorderOnlineValuation.PreorderOnlineValuationRequest request,
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
@@ -324,7 +324,7 @@ public sealed class RealEstateValuationController : ControllerBase
     public async Task<IActionResult> OrderRealEstateValuation(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] OrderRealEstateValuation.OrderRealEstateValuationRequest request,
+        [FromBody] [Required] OrderRealEstateValuation.OrderRealEstateValuationRequest request,
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);

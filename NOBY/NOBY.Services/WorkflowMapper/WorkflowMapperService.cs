@@ -2,11 +2,9 @@
 using _Case = DomainServices.CaseService.Contracts;
 using _Dto = NOBY.Dto.Workflow;
 using CIS.Core.Security;
-using CIS.Foms.Enums;
-using FastEnumUtility;
 using NOBY.Infrastructure.Security;
 
-namespace NOBY.Infrastructure.Services.WorkflowMapper;
+namespace NOBY.Services.WorkflowMapper;
 
 [TransientService, AsImplementedInterfacesService]
 internal sealed class WorkflowMapperService

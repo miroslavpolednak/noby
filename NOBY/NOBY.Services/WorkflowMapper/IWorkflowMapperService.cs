@@ -1,7 +1,7 @@
 ﻿using _Case = DomainServices.CaseService.Contracts;
 using _Dto = NOBY.Dto.Workflow;
 
-namespace NOBY.Infrastructure.Services.WorkflowMapper;
+namespace NOBY.Services.WorkflowMapper;
 
 public interface IWorkflowMapperService
 {

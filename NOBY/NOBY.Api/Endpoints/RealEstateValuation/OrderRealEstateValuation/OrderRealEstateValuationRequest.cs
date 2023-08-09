@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using DomainServices.RealEstateValuationService.Contracts;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation;
 
@@ -17,7 +19,8 @@ public sealed class OrderRealEstateValuationRequest
     /// <summary>
     /// Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
     /// </summary>
-    public int ValuationTypeId { get; set; }
+    [Required]
+    public ValuationTypes ValuationTypeId { get; set; }
 
     public OrderRealEstateValuationLocalSurveyPerson? LocalSurveyPerson { get; set; }
 

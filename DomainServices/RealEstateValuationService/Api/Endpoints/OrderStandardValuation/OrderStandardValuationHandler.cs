@@ -1,4 +1,5 @@
-﻿using DomainServices.CodebookService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Contracts;
@@ -13,7 +14,7 @@ internal sealed class OrderStandardValuationHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(OrderStandardValuationRequest request, CancellationToken cancellationToken)
     {
-        var (entity, realEstateIds, attachments, caseInstance) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
+        var (entity, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
         // detail oceneni
         var houseAndFlat = getHouseAndFlat(entity);
         // instance uzivatele
@@ -46,7 +47,7 @@ internal sealed class OrderStandardValuationHandler
             IsNotUsableTechnicalState = houseAndFlat?.PoorCondition
         };
 
-        if (caseInstance.State == 1)
+        if (caseInstance.State == (int)CaseStates.InProgress)
         {
             var (_, offerId) = await _salesArrangementService.GetProductSalesArrangement(caseInstance.CaseId, cancellationToken);
             var offer = await _offerService.GetMortgageOfferDetail(offerId!.Value, cancellationToken);

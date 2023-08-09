@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "GrpcDateTime.proto";
+import "GrpcDecimal.proto";
 
 message LoanPurposeDetailsObject {
     repeated int32 LoanPurposes = 1;
@@ -48,7 +49,7 @@ message OrdersOnlinePreorder {
     google.protobuf.StringValue BuildingTechnicalStateCode = 1;
     google.protobuf.StringValue BuildingMaterialStructureCode = 2;
     google.protobuf.StringValue FlatSchemaCode = 3;
-    int32 FlatArea = 4;
+    cis.types.GrpcDecimal FlatArea = 4;
     google.protobuf.Int32Value BuildingAgeCode = 5;
 }
 
