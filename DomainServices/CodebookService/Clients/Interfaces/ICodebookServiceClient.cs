@@ -12,5 +12,5 @@ public partial interface ICodebookServiceClient
 
     Task<List<DeveloperSearchResponse.Types.DeveloperSearchItem>> DeveloperSearch(string term, CancellationToken cancellationToken = default);
 
-    Task<string> GetACVAndBagmanRealEstateType(int? realEstateStateId, int realEstateSubtypeId, int realEstateTypeId, CancellationToken cancellationToken = default);
+    Task<(string AcvRealEstateTypeId, string BagmanRealEstateTypeId)> GetACVAndBagmanRealEstateType(int? realEstateStateId, int realEstateSubtypeId, int realEstateTypeId, CancellationToken cancellationToken = default);
 }

@@ -2,7 +2,8 @@
 package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
-message SetACVRealEstateTypeByRealEstateValuationRequest {
+message SetForeignRealEstateTypesByRealEstateValuationRequest {
     int32 RealEstateValuationId = 1;
-    string ACVRealEstateType = 2;
+    string ACVRealEstateTypeId = 2;
+    string BagmanRealEstateTypeId = 3;
 }

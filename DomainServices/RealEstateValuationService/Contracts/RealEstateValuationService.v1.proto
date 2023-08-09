@@ -11,7 +11,7 @@ import "Messages/RealEstateValuationDetail.proto";
 import "Messages/GetRealEstateValuationDetail.proto";
 import "Messages/GetRealEstateValuationDetailByOrderId.proto";
 import "Messages/UpdateRealEstateValuationDetail.proto";
-import "Messages/SetACVRealEstateTypeByRealEstateValuation.proto";
+import "Messages/SetForeignRealEstateTypesByRealEstateValuation.proto";
 import "Messages/UpdateStateByRealEstateValuation.proto";
 import "Messages/AddDeedOfOwnershipDocument.proto";
 import "Messages/DeleteDeedOfOwnershipDocument.proto";
@@ -34,7 +34,7 @@ service RealEstateValuationService {
 	rpc GetRealEstateValuationDetail (GetRealEstateValuationDetailRequest) returns (RealEstateValuationDetail);
 	rpc GetRealEstateValuationDetailByOrderId (GetRealEstateValuationDetailByOrderIdRequest) returns (RealEstateValuationDetail);
 	rpc UpdateRealEstateValuationDetail (UpdateRealEstateValuationDetailRequest) returns (google.protobuf.Empty);
-	rpc SetACVRealEstateTypeByRealEstateValuation (SetACVRealEstateTypeByRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc SetForeignRealEstateTypesByRealEstateValuation (SetForeignRealEstateTypesByRealEstateValuationRequest) returns (google.protobuf.Empty);
 	rpc UpdateStateByRealEstateValuation (UpdateStateByRealEstateValuationRequest) returns (google.protobuf.Empty);
 	rpc CreateRealEstateValuationAttachment (CreateRealEstateValuationAttachmentRequest) returns (CreateRealEstateValuationAttachmentResponse);
 	rpc DeleteRealEstateValuationAttachment (DeleteRealEstateValuationAttachmentRequest) returns (google.protobuf.Empty);

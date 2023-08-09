@@ -18,7 +18,7 @@ public interface IRealEstateValuationServiceClient
 
     Task UpdateRealEstateValuationDetail(UpdateRealEstateValuationDetailRequest request, CancellationToken cancellationToken = default);
 
-    Task SetACVRealEstateTypeByRealEstateValuation(int realEstateValuationId, string ACVRealEstateTypeId, CancellationToken cancellationToken = default);
+    Task SetForeignRealEstateTypesByRealEstateValuation(int realEstateValuationId, string ACVRealEstateTypeId, string bagmanRealEstateTypeId, CancellationToken cancellationToken = default);
 
     Task UpdateStateByRealEstateValuation(int realEstateValuationId, int valuationStateId, CancellationToken cancellationToken = default);
 
