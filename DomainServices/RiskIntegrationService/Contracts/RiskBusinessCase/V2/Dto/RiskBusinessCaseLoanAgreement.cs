@@ -8,5 +8,5 @@ public sealed class RiskBusinessCaseLoanAgreement
     public int? DistributionChannelId { get; set; }
 
     [ProtoMember(2)]
-    public CIS.Foms.Enums.SignatureTypes SignatureType { get; set; }
+    public int? SignatureTypeId { get; set; }
 }
