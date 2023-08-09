@@ -49,6 +49,7 @@ internal sealed class GetRealEstateValuationDetailHandler
             ValuationResultFuturePrice = realEstate.ValuationResultFuturePrice,
             RealEstateSubtypeId = realEstate.RealEstateSubtypeId,
             ACVRealEstateTypeId = realEstate.ACVRealEstateTypeId,
+            BagmanRealEstateTypeId = realEstate.BagmanRealEstateTypeId,
             LoanPurposeDetails = realEstate.LoanPurposeDetailsBin is null ? null : LoanPurposeDetailsObject.Parser.ParseFrom(realEstate.LoanPurposeDetailsBin)
         };
         response.Attachments.AddRange(attachments);

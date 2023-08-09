@@ -48,6 +48,7 @@ CREATE TABLE [dbo].[RealEstateValuation](
 	[ValuationResultFuturePrice] [int] NULL,
 	[RealEstateSubtypeId] [int] NULL,
 	[ACVRealEstateTypeId] varchar(2) NULL,
+	[BagmanRealEstateTypeId] varchar(2) NULL,
 	[PreorderId] [bigint] NULL,
 	[LoanPurposeDetails] [nvarchar](max) NULL,
 	[LoanPurposeDetailsBin] [varbinary](max) NULL,

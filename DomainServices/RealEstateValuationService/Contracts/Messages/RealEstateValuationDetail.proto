@@ -28,6 +28,7 @@ message RealEstateValuationDetail {
     google.protobuf.StringValue ACVRealEstateTypeId = 18;
     repeated RealEstateValuationAttachment Attachments = 19;
     google.protobuf.Int64Value PreorderId = 20;
+    google.protobuf.StringValue BagmanRealEstateTypeId = 21;
 
     oneof SpecificDetail {
         SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 50;
