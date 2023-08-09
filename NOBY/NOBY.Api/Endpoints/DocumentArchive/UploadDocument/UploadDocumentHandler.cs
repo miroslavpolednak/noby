@@ -1,4 +1,4 @@
-﻿using NOBY.Infrastructure.Services.TempFileManager;
+﻿using NOBY.Services.TempFileManager;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.UploadDocument;
 

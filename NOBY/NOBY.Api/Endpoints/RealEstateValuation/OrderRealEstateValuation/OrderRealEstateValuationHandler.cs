@@ -8,7 +8,7 @@ internal sealed class OrderRealEstateValuationHandler
 {
     public async Task Handle(OrderRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
-
+            
         var revInstance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, false, cancellationToken);
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
 

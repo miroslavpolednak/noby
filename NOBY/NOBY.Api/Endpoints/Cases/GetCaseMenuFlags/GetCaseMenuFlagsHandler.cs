@@ -2,7 +2,7 @@
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.ProductService.Clients;
 using NOBY.Dto.Documents;
-using NOBY.Infrastructure.Services.DocumentHelper;
+using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 
