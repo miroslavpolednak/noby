@@ -5,12 +5,17 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using NOBY.Infrastructure.Security.Attributes;
 
 namespace NOBY.Infrastructure.Security.Middleware;
 
+/// <summary>
+/// Middleware pro kontrolu vlastníka Case.
+/// </summary>
 public sealed class CaseOwnerValidationMiddleware
 {
+    // klíče pod kterými jsou v route daná ID entit
     const string _caseIdKey = "caseId";
     const string _salesArrangementIdKey = "salesArrangementId";
     const string _customerOnSAIdKey = "_customerOnSAId";
@@ -24,10 +29,7 @@ public sealed class CaseOwnerValidationMiddleware
     public async Task Invoke(
         HttpContext context,
         ICurrentUserAccessor currentUser,
-        ICaseServiceClient caseService,
-        IHouseholdServiceClient householdService,
-        ICustomerOnSAServiceClient customerOnSAService,
-        ISalesArrangementServiceClient salesArrangementService)
+        ICaseServiceClient caseService)
     {
         var routeValues = context.GetRouteData().Values;
         var endpoint = context.GetEndpoint();
@@ -36,20 +38,31 @@ public sealed class CaseOwnerValidationMiddleware
         if (!skipCheck && (routeValues?.Any() ?? false))
         {
             var cancellationToken = context.RequestAborted;
-            var preload = endpoint?.Metadata.OfType<NobyCaseOwnerValidationPreloadAttribute>().FirstOrDefault()?.Preload ?? NobyCaseOwnerValidationPreloadAttribute.LoadableEntities.None;
+            var preload = endpoint?.Metadata.OfType<NobyAuthorizePreloadAttribute>().FirstOrDefault()?.Preload ?? NobyAuthorizePreloadAttribute.LoadableEntities.None;
             long? caseId = null;
 
             if (isInRoute(_customerOnSAIdKey))
             {
-                caseId = (await customerOnSAService.ValidateCustomerOnSAId(getId(_customerOnSAIdKey), true, cancellationToken)).CaseId;
+                var customerOnSAService = context.RequestServices.GetRequiredService<ICustomerOnSAServiceClient>();
+                caseId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.CustomerOnSA) switch
+                {
+                    //true => (await customerOnSAService.GetCustomer(getId(_customerOnSAIdKey), cancellationToken)).CaseId,
+                    false => (await customerOnSAService.ValidateCustomerOnSAId(getId(_customerOnSAIdKey), true, cancellationToken)).CaseId
+                };  
             }
             else if (isInRoute(_householdIdKey))
             {
-                caseId = (await householdService.ValidateHouseholdId(getId(_householdIdKey), true, cancellationToken)).CaseId;
+                var householdService = context.RequestServices.GetRequiredService<IHouseholdServiceClient>();
+                caseId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.Household) switch
+                {
+                    true => (await householdService.GetHousehold(getId(_householdIdKey), cancellationToken)).CaseId,
+                    false => (await householdService.ValidateHouseholdId(getId(_householdIdKey), true, cancellationToken)).CaseId
+                };
             }
             else if (isInRoute(_salesArrangementIdKey))
             {
-                caseId = preload.HasFlag(NobyCaseOwnerValidationPreloadAttribute.LoadableEntities.SalesArrangement) switch
+                var salesArrangementService = context.RequestServices.GetRequiredService<ISalesArrangementServiceClient>();
+                caseId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.SalesArrangement) switch
                 {
                     true => (await salesArrangementService.GetSalesArrangement(getId(_salesArrangementIdKey), cancellationToken)).CaseId,
                     false => (await salesArrangementService.ValidateSalesArrangementId(getId(_salesArrangementIdKey), true, cancellationToken)).CaseId,
@@ -62,15 +75,11 @@ public sealed class CaseOwnerValidationMiddleware
 
             if (caseId.HasValue)
             {
-                int? ownerUserId = null;
-                if (preload.HasFlag(NobyCaseOwnerValidationPreloadAttribute.LoadableEntities.Case))
+                int? ownerUserId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.Case) switch
                 {
-                    ownerUserId = (await caseService.GetCaseDetail(caseId.Value, cancellationToken)).CaseOwner.UserId;
-                }
-                else
-                {
-                    ownerUserId = (await caseService.ValidateCaseId(caseId.Value, true, cancellationToken)).OwnerUserId;
-                }
+                    true => (await caseService.GetCaseDetail(caseId.Value, cancellationToken)).CaseOwner.UserId,
+                    false => (await caseService.ValidateCaseId(caseId.Value, true, cancellationToken)).OwnerUserId
+                };
 
                 if (currentUser.User!.Id != ownerUserId && !currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
                 {

@@ -55,7 +55,7 @@ internal static class NobyAppBuilder
                 // autorizace
                 .UseMiddleware<NobySecurityMiddleware>()
                 .UseAuthorization()
-                //.UseMiddleware<CaseOwnerValidationMiddleware>()
+                .UseMiddleware<CaseOwnerValidationMiddleware>()
                 // endpointy
                 .UseEndpoints(t =>
                 {
