@@ -25,5 +25,20 @@ internal sealed class CommitCaseValidator
             .WithErrorCode("FinalResult")
             .NotEqual(_V2.RiskBusinessCaseFinalResults.Unknown)
             .WithErrorCode("FinalResult");
+
+        When(t => t.LoanAgreement != null, () =>
+        {
+            RuleFor(x => x.LoanAgreement)
+            .ChildRules(x2 =>
+            {
+                x2.RuleFor(x2 => x2!.DistributionChannelId)
+                .NotEmpty()
+                .WithErrorCode("LoanAgreement.DistributionChannelId");
+
+                x2.RuleFor(x2 => x2!.SignatureTypeId)
+                .NotEmpty()
+                .WithErrorCode("LoanAgreement.SignatureTypeId");
+            });
+        });
     }
 }
