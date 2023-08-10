@@ -33,14 +33,17 @@ public sealed class ErrorCodeMapper
             { 90023, new("Chyba propisu dat o novém klientovi", "Prosím vyčkejte, než bude záznam o novém klientovi vytvořen v databázi C4M. Za okamžik opakujte akci znovu") },
             { 90024, new("Chyba - pro klienta již existuje rozpracovaný obchodní případ", "Klient je účastníkem jiného obchodního případu čekajícího na schválení nebo zamítnutí. Pro více informací prosím kontaktujte tým zpracovatelů") },
             { 90025, new("Obchodní případ byl stornován.", "") },
-            { 90026, new("Vámi hledaný obchodní případ byl vytvořen v jiném systému a není možné zde zobrazit jeho detail") }
+            { 90026, new("Vámi hledaný obchodní případ byl vytvořen v jiném systému a není možné zde zobrazit jeho detail") },
+            { 90027, new("Diskvalifikace z online ocenění", "Při pokusu o online ocenění některý ze vstupních atributů přesáhl povolený rozsah pro možnost ocenění nemovitosti online.") }
+            { 90028, new("Žádost v aktuální stavu nelze měnit.") }
         };
 
         Messages = messages.AsReadOnly();
 
         var mapper = new Dictionary<int, int>()
         {
-            { 13035, 90025 }
+            { 13035, 90025 },
+            { 22202, 90027 }
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();
