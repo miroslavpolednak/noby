@@ -117,10 +117,15 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         if (request.SpecificDetails is not JsonElement jsonElement)
             return;
 
+        var jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         request.SpecificDetails = variant switch
         {
-            RealEstateVariants.HouseAndFlat or RealEstateVariants.OnlyFlat => jsonElement.Deserialize<HouseAndFlatDetails>(),
-            RealEstateVariants.Parcel => jsonElement.Deserialize<ParcelDetails>(),
+            RealEstateVariants.HouseAndFlat or RealEstateVariants.OnlyFlat => jsonElement.Deserialize<HouseAndFlatDetails>(jsonOptions),
+            RealEstateVariants.Parcel => jsonElement.Deserialize<ParcelDetails>(jsonOptions),
             _ => default
         };
     }
@@ -128,16 +133,16 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
     private static void CheckHouseAndFlatDetails(UpdateRealEstateValuationDetailRequest request)
     {
         if (request.SpecificDetails is not HouseAndFlatDetails houseAndFlatDetails)
-            throw new CisAuthorizationException("SpecificDetails does not contain the HouseAndFlatDetails object");
+            throw new NobyValidationException("SpecificDetails does not contain the HouseAndFlatDetails object");
 
         if (houseAndFlatDetails.FinishedHouseAndFlatDetails is null)
         {
             if (request.RealEstateStateId == (int)RealEstateStateId.Finished)
-                throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
+                throw new NobyValidationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
         }
         else if (request.RealEstateStateId != (int)RealEstateStateId.Finished)
         {
-            throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
+            throw new NobyValidationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
         }
     }
 
@@ -146,16 +151,16 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         CheckHouseAndFlatDetails(request);
 
         if ((request.SpecificDetails as HouseAndFlatDetails)?.FlatOnlyDetails is null)
-            throw new CisAuthorizationException("The FlatOnlyDetails is required");
+            throw new NobyValidationException("The FlatOnlyDetails is required");
     }
 
     private static void CheckParcelDetails(UpdateRealEstateValuationDetailRequest request)
     {
         if (request.SpecificDetails is not ParcelDetails)
-            throw new CisAuthorizationException("SpecificDetails does not contain the parcel object");
+            throw new NobyValidationException("SpecificDetails does not contain the parcel object");
 
         if (request.RealEstateStateId.HasValue)
-            throw new CisAuthorizationException("RealEstateStateId has to be null for the parcel variant");
+            throw new NobyValidationException("RealEstateStateId has to be null for the parcel variant");
     }
 
     private static void CheckOtherDetails(UpdateRealEstateValuationDetailRequest request)
@@ -163,6 +168,6 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         if (request.RealEstateStateId.HasValue)
             return;
 
-        throw new CisAuthorizationException("RealEstateStateId is required");
+        throw new NobyValidationException("RealEstateStateId is required");
     }
 }
