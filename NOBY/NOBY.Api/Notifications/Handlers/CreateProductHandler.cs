@@ -59,7 +59,7 @@ internal sealed class CreateProductHandler
         _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
     }
 
-    private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
+    private readonly Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
     private readonly IRollbackBag _bag;
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -67,7 +67,7 @@ internal sealed class CreateProductHandler
     private readonly ILogger<CreateProductHandler> _logger;
 
     public CreateProductHandler(
-        Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
+        Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
         IRollbackBag bag,
         IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService,

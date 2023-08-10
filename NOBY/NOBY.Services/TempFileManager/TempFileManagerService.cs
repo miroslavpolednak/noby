@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using NOBY.Database.Entities;
 using NOBY.Infrastructure.Configuration;
-using System.IO;
-using System.Threading;
 
-namespace NOBY.Infrastructure.Services.TempFileManager;
+namespace NOBY.Services.TempFileManager;
 
 [TransientService, AsImplementedInterfacesService]
 internal class TempFileManagerService

@@ -1,7 +1,7 @@
 ﻿using LazyCache;
 using Microsoft.EntityFrameworkCore;
 
-namespace NOBY.Infrastructure.Services.FlowSwitches;
+namespace NOBY.Services.FlowSwitches;
 
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.AsImplementedInterfacesService]
 internal sealed class FlowSwitchesService

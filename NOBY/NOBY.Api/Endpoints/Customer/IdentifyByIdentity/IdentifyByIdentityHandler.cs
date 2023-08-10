@@ -155,7 +155,7 @@ internal sealed class IdentifyByIdentityHandler
     }
 
     private readonly IRollbackBag _bag;
-    private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
+    private readonly Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
     private readonly IHouseholdServiceClient _householdService;
     private readonly IProductServiceClient _productService;
     private readonly IMediator _mediator;
@@ -166,7 +166,7 @@ internal sealed class IdentifyByIdentityHandler
     public IdentifyByIdentityHandler(
         IRollbackBag bag,
         IMediator mediator,
-        Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
+        Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService,

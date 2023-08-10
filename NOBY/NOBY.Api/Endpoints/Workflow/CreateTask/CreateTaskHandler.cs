@@ -29,7 +29,7 @@ internal sealed class CreateTaskHandler
         List<string>? documentIds = new();
         var attachments = request
             .Attachments?
-            .Select(t => new Infrastructure.Services.UploadDocumentToArchive.DocumentMetadata
+            .Select(t => new Services.UploadDocumentToArchive.DocumentMetadata
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
@@ -138,15 +138,15 @@ internal sealed class CreateTaskHandler
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
-    private readonly Infrastructure.Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
-    private readonly Infrastructure.Services.TempFileManager.ITempFileManagerService _tempFileManager;
+    private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
+    private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
 
     public CreateTaskHandler(
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
-        Infrastructure.Services.TempFileManager.ITempFileManagerService tempFileManager,
-        Infrastructure.Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive)
+        Services.TempFileManager.ITempFileManagerService tempFileManager,
+        Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive)
     {
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;

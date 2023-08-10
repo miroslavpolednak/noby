@@ -1,4 +1,4 @@
-﻿namespace NOBY.Infrastructure.Services.TempFileManager;
+﻿namespace NOBY.Services.TempFileManager;
 
 public struct TempFile
 {

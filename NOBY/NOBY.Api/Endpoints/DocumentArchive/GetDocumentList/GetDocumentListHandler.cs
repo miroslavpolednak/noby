@@ -2,7 +2,7 @@
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
-using NOBY.Infrastructure.Services.DocumentHelper;
+using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 

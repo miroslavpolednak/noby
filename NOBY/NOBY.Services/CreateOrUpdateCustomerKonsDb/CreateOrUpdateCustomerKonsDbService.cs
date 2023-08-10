@@ -1,10 +1,9 @@
-﻿using CIS.Core.Exceptions;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
 using Microsoft.Extensions.Logging;
 
-namespace NOBY.Infrastructure.Services.CreateOrUpdateCustomerKonsDb;
+namespace NOBY.Services.CreateOrUpdateCustomerKonsDb;
 
-[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
+[TransientService, SelfService]
 public sealed class CreateOrUpdateCustomerKonsDbService
 {
     public async Task CreateOrUpdate(IEnumerable<Identity> identities, CancellationToken cancellationToken)
@@ -54,7 +53,7 @@ public sealed class CreateOrUpdateCustomerKonsDbService
     {
         var request = new DomainServices.CustomerService.Contracts.UpdateCustomerIdentifiersRequest
         {
-            Mandant = Mandants.Mp,
+            Mandant = CIS.Infrastructure.gRPC.CisTypes.Mandants.Mp,
             CustomerIdentities = { mpIdentity, kbIdentity }
         };
 
@@ -76,7 +75,7 @@ public sealed class CreateOrUpdateCustomerKonsDbService
             },
             HardCreate = true,
             NaturalPerson = customerDetail.NaturalPerson,
-            Mandant = Mandants.Mp
+            Mandant = CIS.Infrastructure.gRPC.CisTypes.Mandants.Mp
         };
 
         if (customerDetail.IdentificationDocument is not null)

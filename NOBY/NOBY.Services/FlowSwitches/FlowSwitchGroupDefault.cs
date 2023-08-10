@@ -1,4 +1,4 @@
-﻿namespace NOBY.Infrastructure.Services.FlowSwitches;
+﻿namespace NOBY.Services.FlowSwitches;
 
 internal sealed class FlowSwitchGroupDefault
 { 

@@ -1,12 +1,12 @@
 ﻿using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
-using NOBY.Infrastructure.Services.DocumentHelper;
-using NOBY.Infrastructure.Services.WorkflowMapper;
+using NOBY.Services.DocumentHelper;
+using NOBY.Services.WorkflowMapper;
 using CIS.Core.Security;
 using NOBY.Infrastructure.Security;
 
-namespace NOBY.Infrastructure.Services.WorkflowTask;
+namespace NOBY.Services.WorkflowTask;
 
 [TransientService, AsImplementedInterfacesService]
 internal sealed class WorkflowTaskService

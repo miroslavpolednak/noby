@@ -5,7 +5,7 @@ public sealed class EmailAddressDto : IEmailAddressDto
     /// <summary>
     /// Emailová adresa
     /// </summary>
-    public string? EmailAddress { get; set; }
+    public string EmailAddress { get; set; } = string.Empty;
 
     /// <summary>
     /// Příznak potvrzeného kontaktu
@@ -20,7 +20,7 @@ public interface IEmailAddressDto
     /// <summary>
     /// Emailová adresa
     /// </summary>
-    string? EmailAddress { get; set; }
+    string EmailAddress { get; set; }
 
     /// <summary>
     /// Příznak potvrzeného kontaktu

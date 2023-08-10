@@ -300,7 +300,31 @@ public sealed class RealEstateValuationController : ControllerBase
     public async Task<IActionResult> PreorderOnlineValuation(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] PreorderOnlineValuation.PreorderOnlineValuationRequest request,
+        [FromBody] [Required] PreorderOnlineValuation.PreorderOnlineValuationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Objednání ocenění
+    /// </summary>
+    /// <remarks>
+    /// Objedná ocenění nemovitosti daného typu.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=68C49245-60DD-48a4-9681-B328C52D86F4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/order")]
+    [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> OrderRealEstateValuation(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] [Required] OrderRealEstateValuation.OrderRealEstateValuationRequest request,
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);

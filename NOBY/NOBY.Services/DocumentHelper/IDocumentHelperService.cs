@@ -1,7 +1,7 @@
 ﻿using NOBY.Dto.Documents;
 using __Contract = DomainServices.DocumentArchiveService.Contracts;
 
-namespace NOBY.Infrastructure.Services.DocumentHelper;
+namespace NOBY.Services.DocumentHelper;
 
 public interface IDocumentHelperService
 {

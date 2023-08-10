@@ -26,12 +26,12 @@ internal sealed class GetTaskDetailHandler
         };
     }
 
-    private readonly Infrastructure.Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
+    private readonly Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
     private readonly ICaseServiceClient _caseService;
     private static int[] _allowedTaskTypeIds = { 1, 2, 3, 6, 7 };
 
     public GetTaskDetailHandler(
-            Infrastructure.Services.WorkflowTask.IWorkflowTaskService workflowTaskService,
+            Services.WorkflowTask.IWorkflowTaskService workflowTaskService,
             ICaseServiceClient caseService)
     {
         _workflowTaskService = workflowTaskService;

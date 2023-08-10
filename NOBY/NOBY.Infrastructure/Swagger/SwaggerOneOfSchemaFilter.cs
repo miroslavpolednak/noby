@@ -5,7 +5,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Infrastructure.Swagger;
 
-public class SwaggerOneOfSchemaFilter : ISchemaFilter
+public sealed class SwaggerOneOfSchemaFilter : ISchemaFilter
 {
     public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {
