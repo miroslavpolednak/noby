@@ -5,6 +5,7 @@ using NOBY.Services.DocumentHelper;
 using NOBY.Services.WorkflowMapper;
 using CIS.Core.Security;
 using NOBY.Infrastructure.Security;
+using NOBY.Infrastructure.ErrorHandling;
 
 namespace NOBY.Services.WorkflowTask;
 
@@ -19,7 +20,7 @@ internal sealed class WorkflowTaskService
     {
         var taskDetails = await _caseService.GetTaskDetail(taskIdSb, cancellationToken);
         var taskDetail = taskDetails.TaskDetail
-            ?? throw new CisNotFoundException(90001, $"TaskDetail for Task {taskIdSb} not found.");
+            ?? throw new NobyValidationException($"TaskDetail for Task {taskIdSb} not found.");
 
         var taskDto = await _mapper.MapTask(taskDetails.TaskObject, cancellationToken);
         var taskDetailDto = await _mapper.MapTaskDetail(taskDetails.TaskObject, taskDetail, cancellationToken);

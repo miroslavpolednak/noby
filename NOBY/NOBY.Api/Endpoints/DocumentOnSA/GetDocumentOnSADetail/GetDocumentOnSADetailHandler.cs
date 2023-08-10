@@ -26,7 +26,7 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
 
         if (documentOnSa is null)
         {
-            throw new CisNotFoundException(90001, $"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
+            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, $"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
         }
 
         return await MapToResponse(documentOnSa, cancellationToken);

@@ -9,7 +9,7 @@ internal sealed class GetTaskDetailHandler
     {
         var taskList = await _caseService.GetTaskList(request.CaseId, cancellationToken);
         var task = taskList.FirstOrDefault(t => t.TaskId == request.TaskId)
-            ?? throw new CisNotFoundException(90001, $"Task {request.TaskId} not found.");
+            ?? throw new NobyValidationException($"Task {request.TaskId} not found.");
 
         if (!_allowedTaskTypeIds.Contains(task.TaskTypeId))
         {
