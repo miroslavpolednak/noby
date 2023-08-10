@@ -48,7 +48,7 @@ internal class GetUserHandler
                 Cin = dbIdentities.ic,
                 Cpm = dbIdentities.cpm,
                 Icp = dbIdentities.icp,
-                DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}",
+                DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}".Trim(), //Trim because some users have full name only in the Surname field
                 Email = dbAttributes?.email,
                 PhoneNumber = dbAttributes?.phone,
                 IsUserVIP = !string.IsNullOrEmpty(dbAttributes?.VIPFlag),
