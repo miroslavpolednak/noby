@@ -18,7 +18,7 @@ public sealed class CaseOwnerValidationMiddleware
     // klíče pod kterými jsou v route daná ID entit
     const string _caseIdKey = "caseId";
     const string _salesArrangementIdKey = "salesArrangementId";
-    const string _customerOnSAIdKey = "_customerOnSAId";
+    const string _customerOnSAIdKey = "customerOnSAId";
     const string _householdIdKey = "householdId";
 
     private readonly RequestDelegate _next;
