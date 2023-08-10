@@ -12,6 +12,8 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, string, Exception> _kafkaMessageIncorrectFormat;
     private static readonly Action<ILogger, long, Exception> _kafkaCaseIdNotFound;
     private static readonly Action<ILogger, long, Exception> _requestNotFoundInCache;
+    private static readonly Action<ILogger, long, int, Exception> _updateActiveTaskStart;
+    private static readonly Action<ILogger, bool, bool, Exception> _beforeUpdateActiveTasks;
 
     static LoggerExtensions()
     {
@@ -64,6 +66,16 @@ internal static class LoggerExtensions
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.RequestNotFoundInCache, nameof(RequestNotFoundInCache)),
             "Kafka message processing: Case {CaseId} not found");
+        
+        _updateActiveTaskStart = LoggerMessage.Define<long, int>(
+            LogLevel.Debug,
+            new EventId(LoggerEventIdCodes.UpdateActiveTaskStart, nameof(UpdateActiveTaskStart)),
+            "UpdateActiveTask started with CaseId = {CaseId} and TaskIdSb = {TaskIdSb}");
+        
+        _beforeUpdateActiveTasks = LoggerMessage.Define<bool, bool>(
+            LogLevel.Debug,
+            new EventId(LoggerEventIdCodes.BeforeUpdateActiveTasks, nameof(BeforeUpdateActiveTasks)),
+            "UpdateActiveTask for isActive = {IsActive} and activeTaskFound = {ActiveTaskFound}");
     }
 
     public static void NewCaseIdCreated(this ILogger logger, long caseId)
@@ -95,4 +107,11 @@ internal static class LoggerExtensions
 
     public static void RequestNotFoundInCache(this ILogger logger, long caseId)
         => _requestNotFoundInCache(logger, caseId, null!);
+    
+    public static void UpdateActiveTaskStart(this ILogger logger, long caseId, int taskIdSb)
+        => _updateActiveTaskStart(logger, caseId, taskIdSb, null!);
+    
+    public static void BeforeUpdateActiveTasks(this ILogger logger, bool isActive, bool activeTaskFound)
+        => _beforeUpdateActiveTasks(logger, isActive, activeTaskFound, null!);
+
 }

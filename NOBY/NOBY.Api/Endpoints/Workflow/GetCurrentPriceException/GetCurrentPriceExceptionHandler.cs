@@ -71,13 +71,13 @@ internal sealed class GetCurrentPriceExceptionHandler
     }
 
     private readonly ICodebookServiceClient _codebookService;
-    private readonly Infrastructure.Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
+    private readonly Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
     private readonly ICaseServiceClient _caseService;
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public GetCurrentPriceExceptionHandler(
-        Infrastructure.Services.WorkflowTask.IWorkflowTaskService workflowTaskService,
+        Services.WorkflowTask.IWorkflowTaskService workflowTaskService,
         ICodebookServiceClient codebookService,
         ICaseServiceClient caseService, 
         ISalesArrangementServiceClient salesArrangementService,

@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types.Enums;
+﻿using CIS.Foms.Enums;
 
 namespace DomainServices.SalesArrangementService.Contracts;
 

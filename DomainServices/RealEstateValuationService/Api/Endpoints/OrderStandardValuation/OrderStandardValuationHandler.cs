@@ -1,9 +1,7 @@
-﻿using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
-using DomainServices.ProductService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.RealEstateValuationService.Api.Services;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
-using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.OrderStandardValuation;
@@ -13,11 +11,20 @@ internal sealed class OrderStandardValuationHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(OrderStandardValuationRequest request, CancellationToken cancellationToken)
     {
-        var (entity, realEstateIds, attachments, caseInstance) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
+        var (entity, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
+
+        // validace
+        if (entity.OrderId.HasValue || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(entity.ValuationStateId))
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.OrderCustomValidationFailed);
+        }
+
         // detail oceneni
-        var houseAndFlat = getHouseAndFlat(entity);
+        var houseAndFlat = OrderAggregate.GetHouseAndFlat(entity);
         // instance uzivatele
         var currentUser = await _userService.GetCurrentUser(cancellationToken);
+        // info o produktu
+        var (collateralAmount, loanAmount, loanDuration, loanPurpose) = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
 
         var orderRequest = new ExternalServices.PreorderService.V1.Contracts.StandardOrderRequestDTO
         {
@@ -43,27 +50,15 @@ internal sealed class OrderStandardValuationHandler
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
             OwnershipLimitations = houseAndFlat?.OwnershipRestricted,
             IsCellarFlat = houseAndFlat?.FlatOnlyDetails?.Basement,
-            IsNotUsableTechnicalState = houseAndFlat?.PoorCondition
+            IsNotUsableTechnicalState = houseAndFlat?.PoorCondition,
+            MaturityLoan = loanDuration,
+            PurposeLoan = loanPurpose
         };
+        if (collateralAmount.HasValue)
+            orderRequest.ActualPurchasePrice = Convert.ToDouble(collateralAmount, CultureInfo.InvariantCulture);
+        if (loanAmount.HasValue)
+            orderRequest.LoanAmount = Convert.ToDouble(loanAmount, CultureInfo.InvariantCulture);
 
-        if (caseInstance.State == 1)
-        {
-            var (_, offerId) = await _salesArrangementService.GetProductSalesArrangement(caseInstance.CaseId, cancellationToken);
-            var offer = await _offerService.GetMortgageOfferDetail(offerId!.Value, cancellationToken);
-
-            orderRequest.ActualPurchasePrice = Convert.ToDouble((decimal)offer.SimulationInputs.CollateralAmount);
-            orderRequest.MaturityLoan = offer.SimulationInputs.LoanDuration;
-            orderRequest.PurposeLoan = await getLoanPurpose(offer.SimulationInputs.LoanPurposes?.FirstOrDefault()?.LoanPurposeId);
-            orderRequest.LoanAmount = Convert.ToDouble((decimal)offer.SimulationInputs.LoanAmount);
-        }
-        else
-        {
-            var mortgage = await _productService.GetMortgage(caseInstance.CaseId, cancellationToken);
-            
-            orderRequest.PurposeLoan = await getLoanPurpose(mortgage.Mortgage.LoanPurposes?.FirstOrDefault()?.LoanPurposeId);
-            orderRequest.LoanAmount = mortgage.Mortgage.LoanPaymentAmount;
-        }
-        
         var orderResponse = await _preorderService.OrderStandard(orderRequest, cancellationToken);
 
         // ulozeni vysledku
@@ -72,46 +67,15 @@ internal sealed class OrderStandardValuationHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private async Task<string?> getLoanPurpose(int? loanPurposeId)
-    {
-        return (await _codebookService.LoanPurposes()).FirstOrDefault(t => t.Id == loanPurposeId)?.AcvId;
-    }
-
-    private static SpecificDetailHouseAndFlatObject? getHouseAndFlat(Database.Entities.RealEstateValuation entity)
-    {
-        if (entity.SpecificDetailBin is not null)
-        {
-            switch (Helpers.GetRealEstateType(entity))
-            {
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hf:
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hff:
-                    return SpecificDetailHouseAndFlatObject.Parser.ParseFrom(entity.SpecificDetailBin);
-            }
-        }
-        return null;
-    }
-
     private readonly Services.OrderAggregate _aggregate;
     private readonly IPreorderServiceClient _preorderService;
     private readonly IUserServiceClient _userService;
-    private readonly IProductServiceClient _productService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-
+    
     public OrderStandardValuationHandler(
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        ICodebookServiceClient codebookService,
-        IProductServiceClient productService,
         Services.OrderAggregate aggregate,
         IPreorderServiceClient preorderService,
         IUserServiceClient userService)
     {
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _codebookService = codebookService;
-        _productService = productService;
         _aggregate = aggregate;
         _preorderService = preorderService;
         _userService = userService;

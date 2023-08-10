@@ -1,5 +1,5 @@
 ﻿using DomainServices.CaseService.Clients;
-using NOBY.Infrastructure.Services.WorkflowMapper;
+using NOBY.Services.WorkflowMapper;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskList;
 

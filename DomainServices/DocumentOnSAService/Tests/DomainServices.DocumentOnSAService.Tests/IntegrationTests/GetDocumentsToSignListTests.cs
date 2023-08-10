@@ -1,5 +1,4 @@
 ﻿using CIS.Foms.Enums;
-using CIS.Foms.Types.Enums;
 using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;

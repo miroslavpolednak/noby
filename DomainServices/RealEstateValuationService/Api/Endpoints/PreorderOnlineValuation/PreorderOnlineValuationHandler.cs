@@ -13,38 +13,15 @@ internal sealed class PreorderOnlineValuationHandler
 {
     public async Task<Empty> Handle(PreorderOnlineValuationRequest request, CancellationToken cancellationToken)
     {
-        var realEstate = await _dbContext.RealEstateValuations
-            .AsNoTracking()
-            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
-            .FirstOrDefaultAsync(cancellationToken)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
-
-        // deed of ownership
-        var deedOfOwnerships = await _dbContext.DeedOfOwnershipDocuments
-            .AsNoTracking()
-            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
-            .Select(t => new { t.AddressPointId, t.RealEstateIds })
-            .ToListAsync(cancellationToken);
-        
-        // realestateids
-        var realEstateIds = deedOfOwnerships
-            .Where(t => !string.IsNullOrEmpty(t.RealEstateIds))
-            .SelectMany(t =>
-            {
-                return System.Text.Json.JsonSerializer.Deserialize<long[]>(t.RealEstateIds!)!;
-            })
-            .ToArray();
-
-        // id pro preorder
-        long createKbmodelId = deedOfOwnerships
-            .FirstOrDefault(t => t.AddressPointId.HasValue)
-            ?.AddressPointId
-            ?? throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AddressPointIdNotFound);
-
-        var houseAndFlat = getHouseAndFlat(realEstate);
-
-        // kontrola dat
-        dataValidation(realEstate);
+        var (entity, realEstateIds, _, caseInstance, addressPointId) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
+        if (!addressPointId.HasValue) 
+        {
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AddressPointIdNotFound);
+        }
+        var houseAndFlat = Services.OrderAggregate.GetHouseAndFlat(entity);
+        // info o produktu
+        var (collateralAmount, loanAmount, _, _) = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
+        _ = int.TryParse(request.Data.BuildingAgeCode, out int ageCode);
 
         // KBModel
         var kbmodelRequest = new ExternalServices.LuxpiService.V1.Contracts.KBModelRequest
@@ -52,39 +29,45 @@ internal sealed class PreorderOnlineValuationHandler
             TechnicalState = request.Data.BuildingTechnicalStateCode,
             MaterialStructure = request.Data.BuildingMaterialStructureCode,
             FlatSchema = request.Data.FlatSchemaCode,
-            FlatArea = request.Data.FlatArea,
-            AgeOfBuilding = request.Data.BuildingAgeCode,
-            DealNumber = request.ContractNumber,
+            FlatArea = Convert.ToDouble((decimal)request.Data.FlatArea),
+            AgeOfBuilding = ageCode,
+            DealNumber = caseInstance.Data.ContractNumber,
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
-            ActualPurchasePrice = request.CollateralAmount,
-            IsDealSubject = realEstate.IsLoanRealEstate,
-            LoanAmount = request.LoanAmount
+            IsDealSubject = entity.IsLoanRealEstate    
         };
-        var kbmodelReponse = await _luxpiServiceClient.CreateKbmodelFlat(kbmodelRequest, createKbmodelId, cancellationToken);
+        if (collateralAmount.HasValue)
+            kbmodelRequest.ActualPurchasePrice = Convert.ToDouble(collateralAmount.GetValueOrDefault(), CultureInfo.InvariantCulture);
+        if (loanAmount.HasValue)
+            kbmodelRequest.LoanAmount = Convert.ToDouble(loanAmount.GetValueOrDefault(), CultureInfo.InvariantCulture);
+
+        var kbmodelReponse = await _luxpiServiceClient.CreateKbmodelFlat(kbmodelRequest, addressPointId.Value, cancellationToken);
 
         // revaluation check
         var revaluationRequest = new ExternalServices.PreorderService.V1.Contracts.OnlineRevaluationCheckRequestDTO
         {
             ValuationType = "OCENENI",
             LeasibilityRequired = houseAndFlat?.FinishedHouseAndFlatDetails?.LeaseApplicable,
-            RealEstateType = realEstate.ACVRealEstateTypeId,
-            TotalArea = request.Data.FlatArea,
+            RealEstateType = entity.ACVRealEstateTypeId,
+            TotalArea = Convert.ToDouble((decimal)request.Data.FlatArea),
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
             RealEstateIds = realEstateIds
         };
-        var revaluationResponse = await _preorderService.RevaluationCheck(revaluationRequest, cancellationToken);
+        if (!(await _preorderService.RevaluationCheck(revaluationRequest, cancellationToken)))
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.RevaluationFailed);
+        }
 
         // update databaze hlavni entity
-        realEstate.ValuationResultCurrentPrice = kbmodelReponse.ResultPrice;
-        realEstate.PreorderId = kbmodelReponse.ValuationId;
-        realEstate.ValuationTypeId = 1;
-        realEstate.IsRevaluationRequired = true;
-        realEstate.ValuationStateId = (int)RealEstateValuationStates.DoplneniDokumentu;
+        entity.ValuationResultCurrentPrice = kbmodelReponse.ResultPrice;
+        entity.PreorderId = kbmodelReponse.ValuationId;
+        entity.ValuationTypeId = (int)RealEstateValuationTypes.Online;
+        entity.IsRevaluationRequired = true;
+        entity.ValuationStateId = (int)RealEstateValuationStates.DoplneniDokumentu;
 
         // vlozeni nove order
         var order = new Database.Entities.RealEstateValuationOrder
         {
-            RealEstateValuationId = realEstate.RealEstateValuationId,
+            RealEstateValuationId = entity.RealEstateValuationId,
             RealEstateValuationOrderType = RealEstateValuationOrderTypes.OnlinePreorder,
             Data = Newtonsoft.Json.JsonConvert.SerializeObject(request.Data),
             DataBin = request.Data.ToByteArray()
@@ -96,34 +79,18 @@ internal sealed class PreorderOnlineValuationHandler
         return new Empty();
     }
 
-    private static void dataValidation(Database.Entities.RealEstateValuation realEstate)
-    {
-        if (string.IsNullOrEmpty(realEstate.ACVRealEstateTypeId))
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.PreorderOnlineDataValidation, nameof(realEstate.ACVRealEstateTypeId));
-        }
-    }
-
-    private static SpecificDetailHouseAndFlatObject? getHouseAndFlat(Database.Entities.RealEstateValuation entity)
-    {
-        if (entity.SpecificDetailBin is not null)
-        {
-            switch (Helpers.GetRealEstateType(entity))
-            {
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hf:
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hff:
-                    return SpecificDetailHouseAndFlatObject.Parser.ParseFrom(entity.SpecificDetailBin);
-            }
-        }
-        return null;
-    }
-
+    private readonly Services.OrderAggregate _aggregate;
     private readonly RealEstateValuationServiceDbContext _dbContext;
     private readonly IPreorderServiceClient _preorderService;
     private readonly ILuxpiServiceClient _luxpiServiceClient;
 
-    public PreorderOnlineValuationHandler(ILuxpiServiceClient luxpiServiceClient, IPreorderServiceClient preorderService, RealEstateValuationServiceDbContext dbContext)
+    public PreorderOnlineValuationHandler(
+        Services.OrderAggregate aggregate,
+        ILuxpiServiceClient luxpiServiceClient, 
+        IPreorderServiceClient preorderService, 
+        RealEstateValuationServiceDbContext dbContext)
     {
+        _aggregate = aggregate;
         _dbContext = dbContext;
         _preorderService = preorderService;
         _luxpiServiceClient = luxpiServiceClient;

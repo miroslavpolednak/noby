@@ -38,4 +38,7 @@ internal partial class CodebookService
 
     public override Task<GenericCodebookResponse> RealEstateValuationBuildingTechnicalStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Task.FromResult(_acvEnumService.GetItems(ExternalServices.AcvEnumService.V1.Categories.ModelTechnicalState));
+
+    public override Task<GenericCodebookResponse> RealEstateValuationLocalSurveyFunctions(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Task.FromResult(_acvEnumService.GetItems(ExternalServices.AcvEnumService.V1.Categories.LocalSurveyFunction));
 }

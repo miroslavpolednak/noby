@@ -21,8 +21,7 @@ internal sealed class IndividualPricingProcessChangedConsumer
         
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId }, token);
         var decisionId = taskDetail.TaskDetail.PriceException.DecisionId;
-        
-        await _linkTaskToCase.Link(caseId, currentTaskId, token);
+        await _activeTask.UpdateActiveTask(caseId, currentTaskId, token);
 
         var flowSwitches = (message.state switch
         {
@@ -100,15 +99,15 @@ internal sealed class IndividualPricingProcessChangedConsumer
     private readonly IMediator _mediator;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly Services.LinkTaskToCaseService _linkTaskToCase;
+    private readonly Services.ActiveTaskService _activeTask;
 
     public IndividualPricingProcessChangedConsumer(
         IMediator mediator,
-        Services.LinkTaskToCaseService linkTaskToCase,
+        Services.ActiveTaskService activeTask,
         ISalesArrangementServiceClient salesArrangementService,
         ICodebookServiceClient codebookService)
     {
-        _linkTaskToCase = linkTaskToCase;
+        _activeTask = activeTask;
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
         _codebookService = codebookService;

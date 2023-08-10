@@ -692,6 +692,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.AcvIdFieldNumber">
             <summary>Field number for the "AcvId" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.AcvIdPriorityFieldNumber">
+            <summary>Field number for the "AcvIdPriority" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>

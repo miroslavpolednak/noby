@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Types.Enums;
-using DomainServices.CodebookService.Contracts.v1;
+﻿using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.CodebookService.Clients.Services;
 
