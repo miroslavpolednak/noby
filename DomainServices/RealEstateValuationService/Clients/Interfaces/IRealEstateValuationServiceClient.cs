@@ -18,7 +18,7 @@ public interface IRealEstateValuationServiceClient
 
     Task UpdateRealEstateValuationDetail(UpdateRealEstateValuationDetailRequest request, CancellationToken cancellationToken = default);
 
-    Task SetACVRealEstateTypeByRealEstateValuation(int realEstateValuationId, string ACVRealEstateTypeId, CancellationToken cancellationToken = default);
+    Task SetForeignRealEstateTypesByRealEstateValuation(int realEstateValuationId, string ACVRealEstateTypeId, string bagmanRealEstateTypeId, CancellationToken cancellationToken = default);
 
     Task UpdateStateByRealEstateValuation(int realEstateValuationId, int valuationStateId, CancellationToken cancellationToken = default);
 
@@ -33,6 +33,8 @@ public interface IRealEstateValuationServiceClient
     Task PreorderOnlineValuation(PreorderOnlineValuationRequest request, CancellationToken cancellationToken = default);
 
     Task OrderOnlineValuation(OrderOnlineValuationRequest request, CancellationToken cancellationToken = default);
+
+    Task OrderStandardValuation(OrderStandardValuationRequest request, CancellationToken cancellationToken = default);
 
     // DeedOfOwnershipDocument
     Task UpdateDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, List<long>? realEstateIds, CancellationToken cancellationToken = default);

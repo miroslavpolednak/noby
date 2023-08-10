@@ -4,12 +4,13 @@ option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 
 import "google/protobuf/wrappers.proto";
 
-message GetAcvRealEstateTypeRequest {
+message GetACVAndBagmanRealEstateTypeRequest {
 	int32 RealEstateTypeId = 1;
 	int32 RealEstateSubtypeId = 2;
 	google.protobuf.Int32Value RealEstateStateId = 3;
 }
 
-message GetAcvRealEstateTypeResponse {
+message GetACVAndBagmanRealEstateTypeResponse {
 	string AcvRealEstateTypeId = 1;
+	string BagmanRealEstateTypeId = 2;
 }

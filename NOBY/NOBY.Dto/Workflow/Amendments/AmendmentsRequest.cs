@@ -15,5 +15,5 @@ public class AmendmentsRequest
     /// Dožádání: Číslo objednávky ocenění (Atribut je relevantní jen pro dožádání k ocenění.)
     /// </summary>
     /// <example>123556</example>
-    public int? OrderId { get; set; }
+    public long? OrderId { get; set; }
 }

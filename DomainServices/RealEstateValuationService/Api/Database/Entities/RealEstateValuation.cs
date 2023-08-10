@@ -29,6 +29,7 @@ internal sealed class RealEstateValuation
     public long? PreorderId { get; set; }
     public int? RealEstateSubtypeId { get; set; }
     public string? ACVRealEstateTypeId { get; set; }
+    public string? BagmanRealEstateTypeId { get; set; }
     public string? LoanPurposeDetails { get; set; }
     public byte[]? LoanPurposeDetailsBin { get; set; }
     public string? SpecificDetail { get; set; }

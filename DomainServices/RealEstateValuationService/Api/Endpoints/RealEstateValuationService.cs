@@ -27,7 +27,7 @@ internal sealed class RealEstateValuationService
     public override async Task<Empty> UpdateRealEstateValuationDetail(UpdateRealEstateValuationDetailRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<Empty> SetACVRealEstateTypeByRealEstateValuation(SetACVRealEstateTypeByRealEstateValuationRequest request, ServerCallContext context)
+    public override async Task<Empty> SetForeignRealEstateTypesByRealEstateValuation(SetForeignRealEstateTypesByRealEstateValuationRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<CreateRealEstateValuationAttachmentResponse> CreateRealEstateValuationAttachment(CreateRealEstateValuationAttachmentRequest request, ServerCallContext context)
@@ -46,6 +46,9 @@ internal sealed class RealEstateValuationService
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<Empty> OrderOnlineValuation(OrderOnlineValuationRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Empty> OrderStandardValuation(OrderStandardValuationRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     // DeedOfOwnershipDocument

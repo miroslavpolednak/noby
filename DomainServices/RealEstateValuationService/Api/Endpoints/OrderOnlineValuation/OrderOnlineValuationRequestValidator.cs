@@ -6,4 +6,10 @@ namespace DomainServices.RealEstateValuationService.Api.Endpoints.OrderOnlineVal
 internal sealed class OrderOnlineValuationRequestValidator
     : AbstractValidator<OrderOnlineValuationRequest>
 {
+    public OrderOnlineValuationRequestValidator()
+    {
+        RuleFor(t => t.RealEstateValuationId)
+            .GreaterThan(0)
+            .WithErrorCode(ErrorCodeMapper.RealEstateValuationIdEmpty);
+    }
 }

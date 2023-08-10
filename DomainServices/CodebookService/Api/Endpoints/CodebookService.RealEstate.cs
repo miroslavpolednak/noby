@@ -4,9 +4,9 @@ namespace DomainServices.CodebookService.Api.Endpoints;
 
 internal partial class CodebookService
 {
-    public override async Task<GetAcvRealEstateTypeResponse> GetAcvRealEstateType(GetAcvRealEstateTypeRequest request, ServerCallContext context)
+    public override async Task<GetACVAndBagmanRealEstateTypeResponse> GetACVAndBagmanRealEstateType(GetACVAndBagmanRealEstateTypeRequest request, ServerCallContext context)
     {
-        return (await _db.GetFirstOrDefault<GetAcvRealEstateTypeResponse>(new
+        return (await _db.GetFirstOrDefault<GetACVAndBagmanRealEstateTypeResponse>(new
         {
             request.RealEstateStateId,
             request.RealEstateSubtypeId,

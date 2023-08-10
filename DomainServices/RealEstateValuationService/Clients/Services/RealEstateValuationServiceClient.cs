@@ -74,12 +74,13 @@ internal sealed class RealEstateValuationServiceClient
         await _service.UpdateRealEstateValuationDetailAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task SetACVRealEstateTypeByRealEstateValuation(int realEstateValuationId, string ACVRealEstateTypeId, CancellationToken cancellationToken = default)
+    public async Task SetForeignRealEstateTypesByRealEstateValuation(int realEstateValuationId, string ACVRealEstateTypeId, string bagmanRealEstateTypeId, CancellationToken cancellationToken = default)
     {
-        await _service.SetACVRealEstateTypeByRealEstateValuationAsync(new()
+        await _service.SetForeignRealEstateTypesByRealEstateValuationAsync(new()
         {
             RealEstateValuationId = realEstateValuationId,
-            ACVRealEstateType = ACVRealEstateTypeId
+            ACVRealEstateTypeId = ACVRealEstateTypeId,
+            BagmanRealEstateTypeId = bagmanRealEstateTypeId
         }, cancellationToken: cancellationToken);
     }
 
@@ -91,6 +92,11 @@ internal sealed class RealEstateValuationServiceClient
     public async Task OrderOnlineValuation(OrderOnlineValuationRequest request, CancellationToken cancellationToken = default)
     {
         await _service.OrderOnlineValuationAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task OrderStandardValuation(OrderStandardValuationRequest request, CancellationToken cancellationToken = default)
+    {
+        await _service.OrderStandardValuationAsync(request, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateStateByRealEstateValuation(int realEstateValuationId, int valuationStateId, CancellationToken cancellationToken = default)

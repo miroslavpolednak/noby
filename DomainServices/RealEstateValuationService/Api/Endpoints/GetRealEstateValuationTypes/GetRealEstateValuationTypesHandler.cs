@@ -13,17 +13,18 @@ internal sealed class GetRealEstateValuationTypesHandler
             RealEstateValuationId = request.RealEstateValuationId
         }, cancellationToken);
 
-        var revType = await _codebookService.GetAcvRealEstateType(
+        var (acvRealEstateTypeId, bagmanRealEstateTypeId) = await _codebookService.GetACVAndBagmanRealEstateType(
             revInstance.RealEstateStateId, 
             revInstance.RealEstateSubtypeId.GetValueOrDefault(), 
             revInstance.RealEstateTypeId, 
             cancellationToken);
 
         // ulozit revType
-        await _mediator.Send(new SetACVRealEstateTypeByRealEstateValuationRequest
+        await _mediator.Send(new SetForeignRealEstateTypesByRealEstateValuationRequest
         {
             RealEstateValuationId = request.RealEstateValuationId,
-            ACVRealEstateType = revType,
+            ACVRealEstateTypeId = acvRealEstateTypeId,
+            BagmanRealEstateTypeId = bagmanRealEstateTypeId
         }, cancellationToken);
 
         // get revids
@@ -40,7 +41,7 @@ internal sealed class GetRealEstateValuationTypesHandler
         var purposes = await _codebookService.LoanPurposes(cancellationToken);
         var acvRequest = new ExternalServices.PreorderService.V1.Contracts.AvailableValuationTypesRequestDTO
         {
-            RealEstateType = revType,
+            RealEstateType = acvRealEstateTypeId,
             IsLeased = revInstance.HouseAndFlatDetails?.FinishedHouseAndFlatDetails?.Leased,
             IsCellarFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails?.Basement,
             IsNonApartmentBuildingFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails.SpecialPlacement,

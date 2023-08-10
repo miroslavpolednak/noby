@@ -49,11 +49,11 @@ message AmendmentSigning {
 
 message AmendmentRequest {
 	google.protobuf.BoolValue SentToCustomer = 1;
-	google.protobuf.Int32Value OrderId = 2;
+	google.protobuf.Int64Value OrderId = 2;
 }
 
 message AmendmentConsultationData {
-	google.protobuf.Int32Value OrderId = 1;
+	google.protobuf.Int64Value OrderId = 1;
 }
 
 message AmendmentPriceException {
@@ -78,5 +78,5 @@ message PriceExceptionFeesItem {
 }
 
 message AmendmentRealEstateValuation {
-	int32 OrderId = 1;
+	int64 OrderId = 1;
 }

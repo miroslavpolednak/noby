@@ -1,12 +1,12 @@
 ﻿using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
 
-namespace DomainServices.RealEstateValuationService.Api.Endpoints.SetACVRealEstateTypeByRealEstateValuation;
+namespace DomainServices.RealEstateValuationService.Api.Endpoints.SetForeignRealEstateTypesByRealEstateValuation;
 
-internal sealed class SetACVRealEstateTypeByRealEstateValuationHandler
-    : IRequestHandler<SetACVRealEstateTypeByRealEstateValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class SetForeignRealEstateTypesByRealEstateValuationHandler
+    : IRequestHandler<SetForeignRealEstateTypesByRealEstateValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(SetACVRealEstateTypeByRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(SetForeignRealEstateTypesByRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext
             .RealEstateValuations
@@ -14,7 +14,8 @@ internal sealed class SetACVRealEstateTypeByRealEstateValuationHandler
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
 
         // ulozit do DB
-        entity.ACVRealEstateTypeId = request.ACVRealEstateType;
+        entity.ACVRealEstateTypeId = request.ACVRealEstateTypeId;
+        entity.BagmanRealEstateTypeId = request.BagmanRealEstateTypeId;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -23,7 +24,7 @@ internal sealed class SetACVRealEstateTypeByRealEstateValuationHandler
 
     private readonly RealEstateValuationServiceDbContext _dbContext;
 
-    public SetACVRealEstateTypeByRealEstateValuationHandler(RealEstateValuationServiceDbContext dbContext)
+    public SetForeignRealEstateTypesByRealEstateValuationHandler(RealEstateValuationServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }
