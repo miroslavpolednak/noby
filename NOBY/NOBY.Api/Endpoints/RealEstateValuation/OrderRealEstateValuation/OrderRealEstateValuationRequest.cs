@@ -1,4 +1,4 @@
-﻿using DomainServices.RealEstateValuationService.Contracts;
+﻿using CIS.Foms.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -20,7 +20,7 @@ public sealed class OrderRealEstateValuationRequest
     /// Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
     /// </summary>
     [Required]
-    public ValuationTypes ValuationTypeId { get; set; }
+    public RealEstateValuationTypes ValuationTypeId { get; set; }
 
     public OrderRealEstateValuationLocalSurveyPerson? LocalSurveyPerson { get; set; }
 

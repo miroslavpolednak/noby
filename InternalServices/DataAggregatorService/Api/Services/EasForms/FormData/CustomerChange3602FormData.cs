@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types.Enums;
+﻿using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.LoanApplicationData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest;
 

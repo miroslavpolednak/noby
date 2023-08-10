@@ -20,6 +20,7 @@ internal sealed class ErrorCodeMapper
     public const int OrderDataValidation = 22012;
     public const int AddressPointIdNotFound = 22013;
     public const int RevaluationFailed = 22014;
+    public const int OrderCustomValidationFailed = 22015;
 
     public static IErrorCodesDictionary Init()
     {
@@ -39,7 +40,8 @@ internal sealed class ErrorCodeMapper
             { RealEstateValuationAttachmentIsEmpty, "RealEstateValuationAttachment is empty" },
             { OrderDataValidation, "Some of required fields are missing: '{PropertyValue}'" },
             { AddressPointIdNotFound, "AddressPointId not found in any DeedOfOwnershipDocuments" },
-            { RevaluationFailed, "Revaluation failed" }
+            { RevaluationFailed, "Revaluation failed" },
+            { OrderCustomValidationFailed, "Order Validation Failed" }
         });
 
         return Messages;

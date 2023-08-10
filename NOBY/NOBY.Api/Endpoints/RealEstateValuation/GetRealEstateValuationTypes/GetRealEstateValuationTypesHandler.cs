@@ -6,12 +6,12 @@ internal sealed class GetRealEstateValuationTypesHandler
     public async Task<List<int>> Handle(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken)
     {
         var response = await _estateValuationTypeService.GetAllowedTypes(request.RealEstateValuationId, request.CaseId, cancellationToken);
-        return response.AllowedTypes;
+        return response.Select(t => (int)t).ToList();
     }
 
-    private readonly Services.RealEstateValuationType.RealEstateValuationTypeService _estateValuationTypeService;
+    private readonly Services.RealEstateValuationType.IRealEstateValuationTypeService _estateValuationTypeService;
 
-    public GetRealEstateValuationTypesHandler(Services.RealEstateValuationType.RealEstateValuationTypeService estateValuationTypeService)
+    public GetRealEstateValuationTypesHandler(Services.RealEstateValuationType.IRealEstateValuationTypeService estateValuationTypeService)
     {
         _estateValuationTypeService = estateValuationTypeService;
     }

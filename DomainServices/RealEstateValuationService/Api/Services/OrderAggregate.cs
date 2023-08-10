@@ -1,7 +1,12 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
+using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.v1;
+using DomainServices.OfferService.Clients;
+using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 using Google.Protobuf;
 
 namespace DomainServices.RealEstateValuationService.Api.Services;
@@ -83,21 +88,61 @@ internal sealed class OrderAggregate
         {
             switch (Helpers.GetRealEstateType(entity))
             {
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hf:
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hff:
+                case CIS.Foms.Enums.RealEstateTypes.Hf:
+                case CIS.Foms.Enums.RealEstateTypes.Hff:
                     return SpecificDetailHouseAndFlatObject.Parser.ParseFrom(entity.SpecificDetailBin);
             }
         }
         return null;
     }
 
+    public async Task<(decimal? CollateralAmount, decimal? LoanAmount, int? LoanDuration, string? LoanPurpose)> GetProductProperties(int caseState, long caseId, CancellationToken cancellationToken)
+    {
+        if (caseState == (int)CaseStates.InProgress)
+        {
+            var (_, offerId) = await _salesArrangementService.GetProductSalesArrangement(caseId, cancellationToken);
+            var offer = await _offerService.GetMortgageOfferDetail(offerId!.Value, cancellationToken);
+
+            var collateralAmount = offer.SimulationInputs.CollateralAmount;
+            var loanDuration = offer.SimulationInputs.LoanDuration;
+            var purpose = await getLoanPurpose(offer.SimulationInputs.LoanPurposes?.FirstOrDefault()?.LoanPurposeId);
+            var loanAmount = offer.SimulationInputs.LoanAmount;
+            return (collateralAmount, loanAmount, loanDuration, purpose);
+        }
+        else
+        {
+            var mortgage = await _productService.GetMortgage(caseId, cancellationToken);
+
+            var purpose = await getLoanPurpose(mortgage.Mortgage.LoanPurposes?.FirstOrDefault()?.LoanPurposeId);
+            var loanAmount = mortgage.Mortgage.LoanPaymentAmount;
+            return (null, loanAmount, null, purpose);
+        }
+    }
+
+    private async Task<string?> getLoanPurpose(int? loanPurposeId)
+    {
+        return (await _codebookService.LoanPurposes()).FirstOrDefault(t => t.Id == loanPurposeId)?.AcvId;
+    }
+
+    private readonly IProductServiceClient _productService;
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IOfferServiceClient _offerService;
     private readonly RealEstateValuationServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseService;
     
     public OrderAggregate(
+        IProductServiceClient productService,
+        ICodebookServiceClient codebookService,
+        ISalesArrangementServiceClient salesArrangementService,
+        IOfferServiceClient offerService,
         RealEstateValuationServiceDbContext dbContext,
         ICaseServiceClient caseService)
     {
+        _productService = productService;
+        _codebookService = codebookService;
+        _offerService = offerService;
+        _salesArrangementService = salesArrangementService;
         _caseService = caseService;
         _dbContext = dbContext;
     }

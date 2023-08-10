@@ -7,9 +7,11 @@ using NOBY.Infrastructure.ErrorHandling;
 
 namespace NOBY.Services.RealEstateValuationType;
 
-public sealed class RealEstateValuationTypeService
+[TransientService, AsImplementedInterfacesService]
+internal sealed class RealEstateValuationTypeService
+    : IRealEstateValuationTypeService
 {
-    public async Task<(List<int> AllowedTypes, DomainServices.RealEstateValuationService.Contracts.GetRealEstateValuationTypesRequest DsRequest)> GetAllowedTypes(int realEstateValuationId, long caseId, CancellationToken cancellationToken)
+    public async Task<List<RealEstateValuationTypes>> GetAllowedTypes(int realEstateValuationId, long caseId, CancellationToken cancellationToken)
     {
         var dsRequest = new DomainServices.RealEstateValuationService.Contracts.GetRealEstateValuationTypesRequest
         {
@@ -47,7 +49,7 @@ public sealed class RealEstateValuationTypeService
 
         var result = await _realEstateValuationService.GetRealEstateValuationTypes(dsRequest, cancellationToken);
 
-        return (result.Select(t => (int)t).ToList(), dsRequest);
+        return result.Select(t => t).ToList();
     }
 
     private readonly IProductServiceClient _productService;

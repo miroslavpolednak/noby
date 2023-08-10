@@ -9,7 +9,7 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using System.Globalization;
-using CIS.Foms.Types.Enums;
+using CIS.Foms.Enums;
 using static DomainServices.DocumentOnSAService.Contracts.v1.DocumentOnSAService;
 using _DocOnSa = NOBY.Api.Endpoints.DocumentOnSA.Search;
 

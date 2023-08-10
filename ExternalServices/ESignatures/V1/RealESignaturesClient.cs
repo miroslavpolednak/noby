@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types.Enums;
+﻿using CIS.Foms.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using FastEnumUtility;
 using System.Globalization;

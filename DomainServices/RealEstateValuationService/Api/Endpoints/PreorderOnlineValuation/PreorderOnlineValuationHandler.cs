@@ -19,6 +19,8 @@ internal sealed class PreorderOnlineValuationHandler
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AddressPointIdNotFound);
         }
         var houseAndFlat = Services.OrderAggregate.GetHouseAndFlat(entity);
+        // info o produktu
+        var (collateralAmount, loanAmount, _, _) = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
 
         // KBModel
         var kbmodelRequest = new ExternalServices.LuxpiService.V1.Contracts.KBModelRequest
@@ -28,12 +30,15 @@ internal sealed class PreorderOnlineValuationHandler
             FlatSchema = request.Data.FlatSchemaCode,
             FlatArea = Convert.ToDouble((decimal)request.Data.FlatArea),
             AgeOfBuilding = request.Data.BuildingAgeCode,
-            DealNumber = request.ContractNumber,
+            DealNumber = caseInstance.Data.ContractNumber,
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
-            ActualPurchasePrice = request.CollateralAmount,
-            IsDealSubject = entity.IsLoanRealEstate,
-            LoanAmount = request.LoanAmount
+            IsDealSubject = entity.IsLoanRealEstate    
         };
+        if (collateralAmount.HasValue)
+            kbmodelRequest.ActualPurchasePrice = Convert.ToDouble(collateralAmount.GetValueOrDefault(), CultureInfo.InvariantCulture);
+        if (loanAmount.HasValue)
+            kbmodelRequest.LoanAmount = Convert.ToDouble(loanAmount.GetValueOrDefault(), CultureInfo.InvariantCulture);
+
         var kbmodelReponse = await _luxpiServiceClient.CreateKbmodelFlat(kbmodelRequest, addressPointId.Value, cancellationToken);
 
         // revaluation check
