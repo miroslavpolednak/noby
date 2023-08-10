@@ -35,11 +35,9 @@ internal sealed class RollbackBehavior<TRequest, TResponse>
             {
                 throw _action.OnOverrideException(ex);
             }
-            else
-            {
-                // rethrow exception
-                throw;
-            }
+
+            // rethrow exception
+            throw;
         }
     }
 }
