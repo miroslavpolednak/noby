@@ -11,7 +11,6 @@ internal sealed class UpdateRealEstateValuationDetailHandler
     public async Task<Empty> Handle(UpdateRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
     {
         var realEstate = await _dbContext.RealEstateValuations
-            .AsNoTracking()
             .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
@@ -19,7 +18,7 @@ internal sealed class UpdateRealEstateValuationDetailHandler
         // general detail
         realEstate.Address = request.Address;
         realEstate.IsLoanRealEstate = request.IsLoanRealEstate;
-        realEstate.RealEstateStateId = request.RealEstateValuationId;
+        realEstate.RealEstateStateId = request.RealEstateStateId;
         realEstate.RealEstateSubtypeId = request.RealEstateSubtypeId;
 
         if (request.LoanPurposeDetails is null)
