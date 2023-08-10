@@ -50,7 +50,7 @@ message OrdersOnlinePreorder {
     google.protobuf.StringValue BuildingMaterialStructureCode = 2;
     google.protobuf.StringValue FlatSchemaCode = 3;
     cis.types.GrpcDecimal FlatArea = 4;
-    google.protobuf.Int32Value BuildingAgeCode = 5;
+    google.protobuf.StringValue BuildingAgeCode = 5;
 }
 
 message OrdersStandard {

@@ -47,7 +47,7 @@ public sealed class PreorderOnlineValuationRequest
     /// </summary>
     /// <example>0</example>
     [Required]
-    public int BuildingAgeCode { get; set; }
+    public string BuildingAgeCode { get; set; } = string.Empty;
 
     internal PreorderOnlineValuationRequest InfuseId(long caseId, int realEstateValuationId)
     {

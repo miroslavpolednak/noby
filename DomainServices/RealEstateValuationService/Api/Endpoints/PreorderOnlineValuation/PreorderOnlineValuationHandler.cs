@@ -21,6 +21,7 @@ internal sealed class PreorderOnlineValuationHandler
         var houseAndFlat = Services.OrderAggregate.GetHouseAndFlat(entity);
         // info o produktu
         var (collateralAmount, loanAmount, _, _) = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
+        _ = int.TryParse(request.Data.BuildingAgeCode, out int ageCode);
 
         // KBModel
         var kbmodelRequest = new ExternalServices.LuxpiService.V1.Contracts.KBModelRequest
@@ -29,7 +30,7 @@ internal sealed class PreorderOnlineValuationHandler
             MaterialStructure = request.Data.BuildingMaterialStructureCode,
             FlatSchema = request.Data.FlatSchemaCode,
             FlatArea = Convert.ToDouble((decimal)request.Data.FlatArea),
-            AgeOfBuilding = request.Data.BuildingAgeCode,
+            AgeOfBuilding = ageCode,
             DealNumber = caseInstance.Data.ContractNumber,
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
             IsDealSubject = entity.IsLoanRealEstate    
