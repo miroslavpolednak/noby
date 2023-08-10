@@ -42,21 +42,29 @@ public sealed class OrderRealEstateValuationLocalSurveyPerson
     /// Hodnota z číselníku RealEstateValuationLocalSurveyFunction
     /// </summary>
     /// <example>PRODAV</example>
+    [Required]
+    [StringLength(1)]
     public string FunctionCode { get; set; } = string.Empty;
 
     /// <summary>
     /// Jméno
     /// </summary>
     /// <example>Jidáš</example>
+    [Required]
+    [StringLength(1)]
     public string FirstName { get; set; } = string.Empty;
 
     /// <summary>
     /// Příjmení
     /// </summary>
     /// <example>Skočdopole</example>
+    [Required]
+    [StringLength(1)]
     public string LastName { get; set; } = string.Empty;
 
+    [Required]
     public NOBY.Dto.EmailAddressDto EmailAddress { get; set; }
 
+    [Required]
     public NOBY.Dto.PhoneNumberDto MobilePhone { get; set; }
 }
