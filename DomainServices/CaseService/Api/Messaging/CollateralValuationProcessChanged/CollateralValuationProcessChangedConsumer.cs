@@ -12,14 +12,13 @@ internal sealed class CollateralValuationProcessChangedConsumer
         
         var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
         var caseId = long.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
-
-        await _linkTaskToCase.Link(caseId, currentTaskId, token);
+        await _activeTask.UpdateActiveTask(caseId, currentTaskId, token);
     }
 
-    private readonly Services.LinkTaskToCaseService _linkTaskToCase;
+    private readonly Services.ActiveTaskService _activeTask;
 
-    public CollateralValuationProcessChangedConsumer(Services.LinkTaskToCaseService linkTaskToCase)
+    public CollateralValuationProcessChangedConsumer(Services.ActiveTaskService activeTask)
     {
-        _linkTaskToCase = linkTaskToCase;
+        _activeTask = activeTask;
     }
 }
