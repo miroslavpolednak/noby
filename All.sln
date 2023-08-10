@@ -349,7 +349,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00011-NotificationService-go_live.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00011-NotificationService-go_live.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00012-REV.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00012-REV.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00013-esignatures.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00013-esignatures.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00014-NotificationService-go_live.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00014-NotificationService-go_live.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00015-SDF_PREPROD.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00015-SDF_PREPROD.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00016-PreorderService.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00016-PreorderService.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00017-ACV.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00017-ACV.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00017-Crem.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00017-Crem.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00018-HFICH-7110_CM_AddressService.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00018-HFICH-7110_CM_AddressService.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00019-MPSS2VSSKB_SB_ENDPOINTS.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00019-MPSS2VSSKB_SB_ENDPOINTS.sql
+		InternalServices\ServiceDiscovery\DatabaseMigrations\00020-release1.4.3.5_endpoint_updates.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00020-release1.4.3.5_endpoint_updates.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"
@@ -532,7 +539,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateVa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.Address", "DomainServices\CustomerService\ExternalService.Address\DomainServices.CustomerService.ExternalServices.Address.csproj", "{4434E904-E837-4CAC-B6F7-ED02CD9B0035}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NOBY.Services", "NOBY\NOBY.Services\NOBY.Services.csproj", "{C07CC4DD-A230-4FFD-825B-E22FFD3F4232}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.Services", "NOBY\NOBY.Services\NOBY.Services.csproj", "{C07CC4DD-A230-4FFD-825B-E22FFD3F4232}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

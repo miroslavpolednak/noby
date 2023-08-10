@@ -596,4 +596,10 @@ service CodebookService {
 			get: "/v1/realestate-valuation-building-technical-states"
 		};
    }
+   
+   rpc RealEstateValuationLocalSurveyFunctions (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/realestate-valuation-local-survey-functions"
+		};
+   }
 }
