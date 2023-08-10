@@ -49,7 +49,6 @@ internal sealed class RealEstateValuationTypeService
 
         var result = await _realEstateValuationService.GetRealEstateValuationTypes(dsRequest, cancellationToken);
 
-        return new List<RealEstateValuationTypes> { RealEstateValuationTypes.Online };
         return result.Select(t => t).ToList();
     }
 
