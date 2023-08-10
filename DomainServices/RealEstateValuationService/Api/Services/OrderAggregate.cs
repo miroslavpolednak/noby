@@ -121,7 +121,10 @@ internal sealed class OrderAggregate
 
     private async Task<string?> getLoanPurpose(int? loanPurposeId)
     {
-        return (await _codebookService.LoanPurposes()).FirstOrDefault(t => t.Id == loanPurposeId)?.AcvId;
+        return (await _codebookService.LoanPurposes())
+            .OrderByDescending(t => t.AcvIdPriority)
+            .FirstOrDefault(t => t.Id == loanPurposeId)
+            ?.AcvId;
     }
 
     private readonly IProductServiceClient _productService;
