@@ -17,8 +17,6 @@ internal class DrawingFormData : AggregatedData
         _productService = productService;
     }
 
-    public MockValues MockValues { get; } = new();
-
     public string? DegreeBefore
     {
         get

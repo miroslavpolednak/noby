@@ -449,6 +449,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00036-HFICH-7170_Fixed_MpIdentity.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00036-HFICH-7170_Fixed_MpIdentity.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00037-HFICH-7088_FirstSignatureDate.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00037-HFICH-7088_FirstSignatureDate.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00038-Fixed_Diacritics.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00038-Fixed_Diacritics.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00039_HFICH-5583_RemovedMocks.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00039_HFICH-5583_RemovedMocks.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
