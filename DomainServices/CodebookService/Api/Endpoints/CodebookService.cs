@@ -334,7 +334,8 @@ internal partial class CodebookService
     public override Task<LoanPurposesResponse> LoanPurposes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _db.GetDynamicList(nameof(LoanPurposes));
+            var items = _db.GetDynamicList($"{nameof(LoanPurposes)}1");
+            var orderExtension = _db.GetDynamicList($"{nameof(LoanPurposes)}2");
             return (new LoanPurposesResponse()).AddItems(items.Select(t =>
             {
                 var item = new LoanPurposesResponse.Types.LoanPurposeItem
@@ -345,7 +346,8 @@ internal partial class CodebookService
                     MandantId = t.MandantId,
                     Name = t.Name,
                     Order = t.Order,
-                    AcvId = t.AcvId
+                    AcvId = t.AcvId,
+                    AcvIdPriority = orderExtension.FirstOrDefault(o => o.AcvId == t.AcvId)?.AcvIdPriority
                 };
                 if (!string.IsNullOrEmpty(t.ProductTypeIds))
                 {
