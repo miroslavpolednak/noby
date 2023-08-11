@@ -12,4 +12,5 @@ public struct LoggerEventIdCodes
     public const int EndpointsUsersGetCurrentUser = 99008;
 
     public const int SecurityUserWithoutAccess = 99030;
+    public const int SecurityOpenIdError = 99031;
 }

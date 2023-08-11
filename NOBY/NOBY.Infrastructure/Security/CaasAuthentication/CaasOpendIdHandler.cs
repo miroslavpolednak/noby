@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Security.Policy;
 
 namespace NOBY.Infrastructure.Security.CaasAuthentication;
 
@@ -61,6 +63,21 @@ internal sealed class CaasOpendIdHandler
                     throw new CisAuthenticationException(url);
                 }
             },
+            OnAccessDenied = context =>
+            {
+                createLogger(context.HttpContext)?.OpenIdError("OnAccessDenied");
+                throw new CisAuthorizationException("OpenId: OnAccessDenied");
+            },
+            OnAuthenticationFailed = context =>
+            {
+                createLogger(context.HttpContext)?.OpenIdError("OnAuthenticationFailed");
+                throw new CisAuthorizationException("OpenId: OnAuthenticationFailed");
+            },
+            OnRemoteFailure = context =>
+            {
+                createLogger(context.HttpContext)?.OpenIdError("OnRemoteFailure");
+                throw new CisAuthorizationException("OpenId: OnRemoteFailure");
+            },
             OnTokenValidated = context =>
             {
                 context.Properties!.RedirectUri = context.ProtocolMessage.State;
@@ -76,6 +93,11 @@ internal sealed class CaasOpendIdHandler
     }
 
     public const string CallbackPath = "/oidc-signin";
+
+    private static ILogger<CaasOpendIdHandler>? createLogger(HttpContext? context)
+    {
+        return context is null ? null : context.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger<CaasOpendIdHandler>();
+    }
 
     /// <summary>
     /// Ziskej redirectUri z query stringu nebo vrat default.
