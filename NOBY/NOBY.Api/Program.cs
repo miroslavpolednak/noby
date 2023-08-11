@@ -20,7 +20,7 @@ try
     var appConfiguration = builder.AddNobyConfig();
 
     // vlozit do DI vsechny custom services
-    builder.Services.AddAttributedServices(typeof(NOBY.Infrastructure.IInfrastructureAssembly), typeof(NOBY.Api.IApiAssembly));
+    builder.Services.AddAttributedServices(typeof(NOBY.Services.IServicesAssembly), typeof(NOBY.Api.IApiAssembly));
 
     // add CIS pipeline
     builder.AddCisEnvironmentConfiguration();

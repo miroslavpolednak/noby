@@ -11,4 +11,6 @@ internal sealed class LoggerEventIdCodes
     public const int KafkaMessageIncorrectFormat = 13002;
     public const int KafkaCaseIdNotFound = 13006;
     public const int RequestNotFoundInCache = 13007;
+    public const int UpdateActiveTaskStart = 13008;
+    public const int BeforeUpdateActiveTasks = 13009;
 }

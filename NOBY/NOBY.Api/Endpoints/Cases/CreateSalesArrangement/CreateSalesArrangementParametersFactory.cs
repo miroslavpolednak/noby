@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types.Enums;
+﻿using CIS.Foms.Enums;
 using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 

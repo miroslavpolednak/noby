@@ -97,7 +97,12 @@ internal sealed class CustomerManagementSearchProvider
     private IdentificationDocument? CreateIdentificationDocument(CM.Contracts.IdentificationDocument? document)
     {
         if (document is null)
-            return null;
+            return default;
+
+        var documentType = _docTypes.FirstOrDefault(t => t.RdmCode == document.TypeCode);
+
+        if (documentType is null)
+            return default;
 
         return new IdentificationDocument
         {
@@ -107,7 +112,7 @@ internal sealed class CustomerManagementSearchProvider
             IssuedBy = document.IssuedBy ?? string.Empty,
             Number = document.DocumentNumber ?? string.Empty,
             IssuingCountryId = _countries.FirstOrDefault(t => t.ShortName == document.IssuingCountryCode)?.Id,
-            IdentificationDocumentTypeId = _docTypes.FirstOrDefault(t => t.RdmCode == document.TypeCode)?.Id ?? 0
+            IdentificationDocumentTypeId = documentType.Id
         };
     }
 

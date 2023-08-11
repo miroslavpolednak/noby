@@ -1,5 +1,4 @@
 ﻿using CIS.Foms.Enums;
-using CIS.Foms.Types.Enums;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
 using ExternalServices.ESignatures.V1;

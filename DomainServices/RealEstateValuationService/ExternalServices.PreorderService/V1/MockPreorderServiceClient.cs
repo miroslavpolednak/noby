@@ -22,6 +22,11 @@ internal sealed class MockPreorderServiceClient
         throw new NotImplementedException();
     }
 
+    public Task<OrderOnlineResponse> OrderStandard(StandardOrderRequestDTO request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<bool> RevaluationCheck(OnlineRevaluationCheckRequestDTO request, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

@@ -24,4 +24,7 @@ public enum Categories
 
     [Display(Name = "model_technical_state")]
     ModelTechnicalState,
+
+    [Display(Name = "local_survey_function")]
+    LocalSurveyFunction,
 }

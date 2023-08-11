@@ -31,14 +31,16 @@ public sealed class NobyApiExceptionMiddleware
         // neprihlaseny uzivatel
         catch (CisAuthenticationException ex)
         {
+            logger.WebApiAuthenticationException(ex.Message, ex);
             await Results.Json(
                 new ApiAuthenticationProblemDetail(ex.ProviderLoginUrl, appConfiguration.Security?.AuthenticationScheme),
                 statusCode: 401
                 ).ExecuteAsync(context);
         }
-        catch (CisAuthorizationException)
+        catch (CisAuthorizationException ex)
         {
-            await Results.Json(null, statusCode: 403).ExecuteAsync(context);
+            logger.WebApiAuthorizationException(ex.Message, ex);
+            await Results.Json(singleErrorResult(ex.Message), statusCode: 403).ExecuteAsync(context);
         }
         catch (AuthenticationException ex) // toto by nemelo nastat
         {
@@ -114,6 +116,15 @@ public sealed class NobyApiExceptionMiddleware
         {
             return createItem(errorCode);
         }
+        else if (errorCode < 90000) // jedna se o nemapovany error kod z DS, asi ho mame zahodit?
+        {
+            return new ApiErrorItem
+            {
+                Severity = ApiErrorItemServerity.Error,
+                ErrorCode = NobyValidationException.DefaultExceptionCode,
+                Message = message.ToString()
+            };
+        }
         else
         {
             return new ApiErrorItem
@@ -136,6 +147,7 @@ public sealed class NobyApiExceptionMiddleware
         }
     }
 
+    //Should be greater than the NobyValidationException.DefaultExceptionCode (so we know it is an error code for FE)
     private static int parseExceptionCode(in string exceptionCode)
-        => int.TryParse(exceptionCode, out int code) ? code : NobyValidationException.DefaultExceptionCode;
+        => int.TryParse(exceptionCode, out var code) && code >= NobyValidationException.DefaultExceptionCode ? code : NobyValidationException.DefaultExceptionCode;
 }

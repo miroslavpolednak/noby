@@ -58,12 +58,12 @@ internal sealed class GetFlowSwitchesHandler
     }
 
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly Infrastructure.Services.FlowSwitches.IFlowSwitchesService _flowSwitches;
+    private readonly Services.FlowSwitches.IFlowSwitchesService _flowSwitches;
     private readonly DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSaService;
 
     public GetFlowSwitchesHandler(
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient arrangementServiceClient,
-        Infrastructure.Services.FlowSwitches.IFlowSwitchesService flowSwitches,
+        Services.FlowSwitches.IFlowSwitchesService flowSwitches,
         DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSaService)
     {
         _flowSwitches = flowSwitches;

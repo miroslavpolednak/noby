@@ -42,8 +42,11 @@ try
             // add CIS services
             .AddCodebookService()
             .AddUserService()
+            .AddProductService()
+            .AddSalesArrangementService()
             .AddCustomerService()
             .AddCaseService()
+            .AddOfferService()
             .AddCisServiceDiscovery()
             // add grpc infrastructure
             .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())

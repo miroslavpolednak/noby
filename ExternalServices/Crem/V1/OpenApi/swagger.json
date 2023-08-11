@@ -3,33 +3,9 @@
   "info": {
     "title": "Deed of Ownership Service",
     "description": "DeedOfOwnership document management API",
-    "version": "1.0.0"
+    "version": "1.8.0"
   },
   "servers": [
-    {
-      "url": "/v1/deed-of-ownership/api",
-      "variables": {
-
-      }
-    },
-    {
-      "url": "/v1/deed-of-ownership/api",
-      "variables": {
-
-      }
-    },
-    {
-      "url": "/v1/deed-of-ownership/api",
-      "variables": {
-
-      }
-    },
-    {
-      "url": "/v1/deed-of-ownership/api",
-      "variables": {
-
-      }
-    },
     {
       "url": "/v1/deed-of-ownership/api",
       "variables": {
@@ -239,7 +215,27 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -249,7 +245,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -288,17 +284,37 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
           },
           "404": {
-            "description": "Deed of Ownership not found",
+            "description": "Deed of Ownership or real estate(s) not found in CUZK",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -308,7 +324,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -351,7 +367,27 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -361,7 +397,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -371,7 +407,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -431,7 +467,27 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -441,7 +497,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -451,7 +507,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -491,12 +547,32 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
           "500": {
             "description": "General error.",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -539,7 +615,27 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -549,7 +645,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -559,7 +655,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -593,7 +689,27 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -603,7 +719,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -613,7 +729,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -685,7 +801,27 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -695,7 +831,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -705,7 +841,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -796,7 +932,27 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -806,7 +962,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -816,7 +972,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -878,7 +1034,27 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -888,7 +1064,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -898,7 +1074,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -962,7 +1138,27 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -972,7 +1168,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -982,7 +1178,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1025,7 +1221,27 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1035,7 +1251,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1045,7 +1261,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1088,7 +1304,27 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1098,7 +1334,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1108,7 +1344,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
@@ -1251,7 +1487,8 @@
         "properties": {
           "htmlText": {
             "type": "string",
-            "description": "Html description of the legal relation record"
+            "description": "Html description of the legal relation record, replaced by plainText",
+            "deprecated": true
           },
           "legalRelationCode": {
             "type": "string",
@@ -1309,7 +1546,8 @@
           },
           "isknSubjectId": {
             "type": "integer",
-            "description": "ISKN unique ID of subject"
+            "description": "ISKN unique ID of subject",
+            "format": "int64"
           },
           "ownershipRatio": {
             "type": "string",
@@ -1354,7 +1592,8 @@
           },
           "htmlText": {
             "type": "string",
-            "description": "HTML description of the real estate"
+            "description": "Html description of the legal relation record, replaced by plainText",
+            "deprecated": true
           },
           "isknId": {
             "type": "integer",
@@ -1450,6 +1689,34 @@
         },
         "description": "Description of the document status with additional attributes"
       },
+      "ErrorModel": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "object"
+          },
+          "httpStatusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "originalCode": {
+            "type": "string"
+          },
+          "uuid": {
+            "type": "string"
+          }
+        }
+      },
       "IsknBuildingDTO": {
         "type": "object",
         "properties": {
@@ -1480,12 +1747,13 @@
           },
           "isknBuildingId": {
             "type": "integer",
-            "description": "ISKN building ID"
+            "description": "ISKN building ID",
+            "format": "int64"
           },
           "isknDeedOfOwnershipId": {
             "type": "integer",
-            "format": "int64",
-            "description": "ISKN deed of ownership ID"
+            "description": "ISKN deed of ownership ID",
+            "format": "int64"
           },
           "townPart": {
             "$ref": "#/components/schemas/TownPartDTO"
@@ -1497,19 +1765,31 @@
         "type": "object",
         "properties": {
           "flatNumber": {
-            "type": "integer",
-            "description": "flat number including house number",
-            "format": "int32"
+            "type": "string",
+            "description": "(house number/)flat number as string value"
           },
           "isknDeedOfOwnershipId": {
             "type": "integer",
-            "format": "int64",
-            "description": "Iskn deed of ownership ID (unique identifier of the deed of ownership in CUZK"
+            "description": "Iskn deed of ownership ID (unique identifier of the deed of ownership in CUZK",
+            "format": "int64"
           },
           "isknFlatId": {
             "type": "integer",
-            "format": "int64",
-            "description": "Iskn flat ID (unique identifier of the flat in CUZK"
+            "description": "Iskn flat ID (unique identifier of the flat in CUZK",
+            "format": "int64"
+          },
+          "isknFlatNumber": {
+            "type": "integer",
+            "description": "flat number in Iskn format in case a house number is defined - example=2420001 (max 6 ciphers of house number + last 4 ciphers of flat number) or if house number doesn't exist - example=1 (max 4 ciphers of flat number)",
+            "format": "int64"
+          },
+          "mannerOfUseFlatCode": {
+            "type": "string",
+            "description": "Manner of use flat enum code"
+          },
+          "mannerOfUseFlatShortName": {
+            "type": "string",
+            "description": "Manner of use flat enum short name"
           }
         },
         "description": "Iskn flat entity"
@@ -1869,8 +2149,8 @@
           },
           "isknDeedOfOwnershipId": {
             "type": "integer",
-            "format": "int64",
             "description": "Deed of ownership ISKN unique ID (an alternative to territoryNumber+deedOfOwnershipNumber)",
+            "format": "int64",
             "nullable": true
           },
           "publicDocument": {

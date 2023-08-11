@@ -1,4 +1,4 @@
-﻿namespace CIS.Foms.Types.Enums;
+﻿namespace CIS.Foms.Enums;
 
 #pragma warning disable CA1707 // Identifiers should not contain underscores
 #pragma warning disable CA1720 // Identifier contains type name

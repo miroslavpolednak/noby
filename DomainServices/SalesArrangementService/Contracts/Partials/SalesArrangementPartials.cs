@@ -66,3 +66,6 @@ public partial class SetFlowSwitchesRequest
 
 public partial class SetContractNumberRequest : MediatR.IRequest<SetContractNumberResponse> 
 { }
+
+public partial class ValidateSalesArrangementIdRequest : MediatR.IRequest<ValidateSalesArrangementIdResponse>
+{ }

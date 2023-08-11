@@ -9,18 +9,16 @@ internal class CustomerInfo
 {
     private readonly CustomerDetailResponse _customer;
     private readonly ICollection<GenericCodebookResponse.Types.GenericCodebookItem> _degreesBefore;
-    private readonly ICollection<CountriesResponse.Types.CountryItem> _countries;
 
-    public CustomerInfo(CustomerDetailResponse customer, ICollection<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore, ICollection<CountriesResponse.Types.CountryItem> countries)
+    public CustomerInfo(CustomerDetailResponse customer, ICollection<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore)
     {
         _customer = customer;
         _degreesBefore = degreesBefore;
-        _countries = countries;
     }
 
     public string FullName => CustomerHelper.FullName(_customer, _degreesBefore);
 
-    public string Address => CustomerHelper.FullAddress(_customer, AddressTypes.Permanent, _countries);
+    public string Address => CustomerHelper.FullAddress(_customer, AddressTypes.Permanent);
 
     public string? BirthNumberText => string.IsNullOrWhiteSpace(_customer.NaturalPerson.BirthNumber) ? default : "Rodné číslo:";
 

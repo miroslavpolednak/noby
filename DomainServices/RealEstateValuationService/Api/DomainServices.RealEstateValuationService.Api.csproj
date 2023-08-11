@@ -18,7 +18,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="MediatR" Version="12.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="7.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="7.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.55.0" />
 		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.55.0" />
@@ -34,6 +34,9 @@
 		<ProjectReference Include="..\..\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
 		<ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
 		<ProjectReference Include="..\..\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
+		<ProjectReference Include="..\..\OfferService\Clients\DomainServices.OfferService.Clients.csproj" />
+		<ProjectReference Include="..\..\ProductService\Clients\DomainServices.ProductService.Clients.csproj" />
+		<ProjectReference Include="..\..\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
 		<ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.RealEstateValuationService.Contracts.csproj" />
 		<ProjectReference Include="..\ExternalServices.LuxpiService\DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.csproj" />

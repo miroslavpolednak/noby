@@ -9,8 +9,7 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using System.Globalization;
-using System.Threading;
-using CIS.Foms.Types.Enums;
+using CIS.Foms.Enums;
 using static DomainServices.DocumentOnSAService.Contracts.v1.DocumentOnSAService;
 using _DocOnSa = NOBY.Api.Endpoints.DocumentOnSA.Search;
 
@@ -24,7 +23,7 @@ public class SaveDocumentToArchiveHandler
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDateTime _dateTime;
-    private readonly Infrastructure.Services.TempFileManager.ITempFileManagerService _tempFileManager;
+    private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
     private readonly IMediator _mediator;
@@ -36,7 +35,7 @@ public class SaveDocumentToArchiveHandler
         IDocumentArchiveServiceClient client,
         ICurrentUserAccessor currentUserAccessor,
         IDateTime dateTime,
-        Infrastructure.Services.TempFileManager.ITempFileManagerService tempFileManager,
+        Services.TempFileManager.ITempFileManagerService tempFileManager,
         ISalesArrangementServiceClient salesArrangementServiceClient,
         IDocumentOnSAServiceClient documentOnSAServiceClient,
         IMediator mediator,
@@ -211,7 +210,7 @@ public class SaveDocumentToArchiveHandler
         else if (_currentUserAccessor?.User?.Id is not null)
             return _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture);
         else
-            throw new CisNotFoundException(90001, "Cannot get NOBY user identifier");
+            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "Cannot get NOBY user identifier");
     }
 
     private async Task<string> GetContractNumber(long caseId, CancellationToken cancellationToken)

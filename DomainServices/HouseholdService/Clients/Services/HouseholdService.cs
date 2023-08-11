@@ -2,7 +2,8 @@
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
-internal sealed class HouseholdService : IHouseholdServiceClient
+internal sealed class HouseholdService 
+    : IHouseholdServiceClient
 {
     public async Task<int> CreateHousehold(CreateHouseholdRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
@@ -22,11 +23,15 @@ internal sealed class HouseholdService : IHouseholdServiceClient
 
     public async Task<Household> GetHousehold(int householdId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        return await _service.GetHouseholdAsync(
-            new()
-            {
-                HouseholdId = householdId,
-            }, cancellationToken: cancellationToken);
+        if (_cacheGetHousehold is null)
+        {
+            _cacheGetHousehold = await _service.GetHouseholdAsync(
+                new()
+                {
+                    HouseholdId = householdId,
+                }, cancellationToken: cancellationToken);
+        }
+        return _cacheGetHousehold;
     }
 
     public async Task<List<Household>> GetHouseholdList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
@@ -54,9 +59,23 @@ internal sealed class HouseholdService : IHouseholdServiceClient
         }, cancellationToken: cancellationToken);
     }
 
+    public async Task<ValidateHouseholdIdResponse> ValidateHouseholdId(int householdId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default)
+    {
+        if (_cacheValidateHouseholdId is null)
+        {
+            _cacheValidateHouseholdId = await _service.ValidateHouseholdIdAsync(new ValidateHouseholdIdRequest
+            {
+                HouseholdId = householdId,
+                ThrowExceptionIfNotFound = throwExceptionIfNotFound
+            }, cancellationToken: cancellationToken);
+        }
+        return _cacheValidateHouseholdId;
+    }
+
+    private Household? _cacheGetHousehold;
+    private ValidateHouseholdIdResponse? _cacheValidateHouseholdId;
+
     private readonly Contracts.v1.HouseholdService.HouseholdServiceClient _service;
 
     public HouseholdService(Contracts.v1.HouseholdService.HouseholdServiceClient service) => _service = service;
-
-    //private readonly ServiceClientResultCache<Household> _householdCache;
 }

@@ -1,5 +1,5 @@
 ﻿using DomainServices.RealEstateValuationService.Clients;
-using NOBY.Infrastructure.Services.TempFileManager;
+using NOBY.Services.TempFileManager;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments;
 

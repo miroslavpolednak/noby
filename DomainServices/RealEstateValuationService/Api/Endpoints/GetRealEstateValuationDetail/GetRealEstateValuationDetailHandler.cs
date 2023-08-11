@@ -49,6 +49,7 @@ internal sealed class GetRealEstateValuationDetailHandler
             ValuationResultFuturePrice = realEstate.ValuationResultFuturePrice,
             RealEstateSubtypeId = realEstate.RealEstateSubtypeId,
             ACVRealEstateTypeId = realEstate.ACVRealEstateTypeId,
+            BagmanRealEstateTypeId = realEstate.BagmanRealEstateTypeId,
             LoanPurposeDetails = realEstate.LoanPurposeDetailsBin is null ? null : LoanPurposeDetailsObject.Parser.ParseFrom(realEstate.LoanPurposeDetailsBin)
         };
         response.Attachments.AddRange(attachments);
@@ -57,12 +58,12 @@ internal sealed class GetRealEstateValuationDetailHandler
         {
             switch (Helpers.GetRealEstateType(response))
             {
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hf:
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hff:
+                case CIS.Foms.Enums.RealEstateTypes.Hf:
+                case CIS.Foms.Enums.RealEstateTypes.Hff:
                     response.HouseAndFlatDetails = SpecificDetailHouseAndFlatObject.Parser.ParseFrom(realEstate.SpecificDetailBin);
                     break;
 
-                case CIS.Foms.Types.Enums.RealEstateTypes.P:
+                case CIS.Foms.Enums.RealEstateTypes.P:
                     response.ParcelDetails = SpecificDetailParcelObject.Parser.ParseFrom(realEstate.SpecificDetailBin);
                     break;
             }

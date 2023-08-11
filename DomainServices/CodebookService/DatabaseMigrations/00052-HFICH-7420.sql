@@ -1,0 +1,1 @@
+UPDATE SqlQuery SET DatabaseProvider=2, SqlQueryText='SELECT [KOD] ''Id'', [TEXT] ''Name'', KB_KOD ''RdmCode'' FROM [xxdvss_hf].[SBR].HTEDM_CIS_ROLE_UCASTNIKOV' WHERE SqlQueryId='RelationshipCustomerProductTypes1';

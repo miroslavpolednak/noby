@@ -103,6 +103,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.RealEstateValuationBuildingMaterialStructures(ct));
         AddCodebook((s, ct) => s.RealEstateValuationBuildingAges(ct));
         AddCodebook((s, ct) => s.RealEstateValuationBuildingTechnicalStates(ct));
+        AddCodebook((s, ct) => s.RealEstateValuationLocalSurveyFunctions(ct));
     }
 
     private void AddCodebook<TReturn>(Expression<Func<ICodebookServiceClient, CancellationToken, TReturn>> expression, Func<IEnumerable<object>, IEnumerable<object>> customizeResult = default!) where TReturn : Task

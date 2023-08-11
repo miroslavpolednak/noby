@@ -53,6 +53,23 @@ internal sealed class RealPreorderServiceClient
         };
     }
 
+    public async Task<OrderOnlineResponse> OrderStandard(Contracts.StandardOrderRequestDTO request, CancellationToken cancellationToken)
+    {
+        var response = await _httpClient
+            .PostAsJsonAsync(_httpClient.BaseAddress + "/order/standard", request, cancellationToken)
+            .ConfigureAwait(false);
+
+        var acvResponse = await response.EnsureSuccessStatusAndReadJson<Contracts.OrderDTO>(StartupExtensions.ServiceName, new Dictionary<HttpStatusCode, int>
+        {
+            { HttpStatusCode.BadRequest, ErrorCodeMapper.OrderStandardBadRequest }
+        }, cancellationToken);
+
+        return new OrderOnlineResponse
+        {
+            OrderId = acvResponse.StatusDetails.OrderId
+        };
+    }
+
     public async Task<long> UploadAttachment(string title, string category, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default)
     {
         using var content = new MultipartFormDataContent();

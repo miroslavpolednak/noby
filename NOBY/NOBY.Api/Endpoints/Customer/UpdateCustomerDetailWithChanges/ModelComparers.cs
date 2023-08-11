@@ -59,6 +59,7 @@ internal static class ModelComparers
         _basicCompareLogic.Config.IgnoreCollectionOrder = true;
         _basicCompareLogic.Config.CompareChildren = true;
         _basicCompareLogic.Config.IgnoreProperty<CIS.Foms.Types.Address>(x => x.IsPrimary);
+        _basicCompareLogic.Config.IgnoreProperty<CIS.Foms.Types.Address>(x => x.SingleLineAddressPoint);
 
         var spec = new Dictionary<Type, IEnumerable<string>>();
         spec.Add(typeof(CIS.Foms.Types.Address), new string[] { "AddressTypeId" });

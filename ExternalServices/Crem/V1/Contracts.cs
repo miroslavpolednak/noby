@@ -266,12 +266,13 @@ namespace ExternalServices.Crem.V1.Contracts
     public partial class DeedOfOwnershipLegalRelation
     {
         /// <summary>
-        /// Html description of the legal relation record
+        /// Html description of the legal relation record, replaced by plainText
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("htmlText")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Obsolete]
         public string HtmlText { get; set; } = default!;
 
         /// <summary>
@@ -381,7 +382,7 @@ namespace ExternalServices.Crem.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("isknSubjectId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int IsknSubjectId { get; set; } = default!;
+        public long IsknSubjectId { get; set; } = default!;
 
         /// <summary>
         /// Ratio of real estate ownership
@@ -456,12 +457,13 @@ namespace ExternalServices.Crem.V1.Contracts
         public long DocumentId { get; set; } = default!;
 
         /// <summary>
-        /// HTML description of the real estate
+        /// Html description of the legal relation record, replaced by plainText
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("htmlText")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Obsolete]
         public string HtmlText { get; set; } = default!;
 
         /// <summary>
@@ -621,6 +623,56 @@ namespace ExternalServices.Crem.V1.Contracts
 
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ErrorModel
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("category")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int Category { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("code")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string Code { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("detail")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public object Detail { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("httpStatusCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public int HttpStatusCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("message")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string Message { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("originalCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string OriginalCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("uuid")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string Uuid { get; set; } = default!;
+
+        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
     /// <summary>
     /// ISKN building entity
     /// </summary>
@@ -662,7 +714,7 @@ namespace ExternalServices.Crem.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("isknBuildingId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int IsknBuildingId { get; set; } = default!;
+        public long IsknBuildingId { get; set; } = default!;
 
         /// <summary>
         /// ISKN deed of ownership ID
@@ -696,13 +748,13 @@ namespace ExternalServices.Crem.V1.Contracts
     public partial class IsknFlatDTO
     {
         /// <summary>
-        /// flat number including house number
+        /// (house number/)flat number as string value
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("flatNumber")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int FlatNumber { get; set; } = default!;
+        public string FlatNumber { get; set; } = default!;
 
         /// <summary>
         /// Iskn deed of ownership ID (unique identifier of the deed of ownership in CUZK
@@ -721,6 +773,33 @@ namespace ExternalServices.Crem.V1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public long IsknFlatId { get; set; } = default!;
+
+        /// <summary>
+        /// flat number in Iskn format in case a house number is defined - example=2420001 (max 6 ciphers of house number + last 4 ciphers of flat number) or if house number doesn't exist - example=1 (max 4 ciphers of flat number)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isknFlatNumber")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public long IsknFlatNumber { get; set; } = default!;
+
+        /// <summary>
+        /// Manner of use flat enum code
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("mannerOfUseFlatCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string MannerOfUseFlatCode { get; set; } = default!;
+
+        /// <summary>
+        /// Manner of use flat enum short name
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("mannerOfUseFlatShortName")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string MannerOfUseFlatShortName { get; set; } = default!;
 
         private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
 

@@ -33,7 +33,7 @@ internal sealed class CommitCaseHandler
             LoanAgreement = request.LoanAgreement != null ? new _C4M.LoanAgreement
             {
                 DistributionChannel = channels.FirstOrDefault(t => t.Id == request.LoanAgreement.DistributionChannelId)?.Code,
-                SignatureType = request.LoanAgreement.SignatureType.ToString()
+                SignatureType = request.LoanAgreement.SignatureTypeId.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? ""
             } : null,
             CollateralAgreements = request.CollateralAgreementsId?.Select(t => new _C4M.CollateralAgreement
             {

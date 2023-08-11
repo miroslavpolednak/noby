@@ -6,8 +6,8 @@ namespace NOBY.Api.Endpoints.Workflow.UpdateTaskDetail;
 internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetailRequest>
 {
     private readonly ICaseServiceClient _caseService;
-    private readonly Infrastructure.Services.TempFileManager.ITempFileManagerService _tempFileManager;
-    private readonly Infrastructure.Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
+    private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
+    private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
     private static int[] _allowedTaskTypeIds = { 1, 6 };
 
     public async Task Handle(UpdateTaskDetailRequest request, CancellationToken cancellationToken)
@@ -22,7 +22,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
         List<string>? documentIds = new();
         var attachments = request.Attachments?
-            .Select(t => new Infrastructure.Services.UploadDocumentToArchive.DocumentMetadata
+            .Select(t => new Services.UploadDocumentToArchive.DocumentMetadata
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
@@ -56,9 +56,9 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
     }
 
     public UpdateTaskDetailHandler(
-        Infrastructure.Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive,
+        Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive,
         ICaseServiceClient caseService,
-        Infrastructure.Services.TempFileManager.ITempFileManagerService tempFileManager)
+        Services.TempFileManager.ITempFileManagerService tempFileManager)
     {
         _uploadDocumentToArchive = uploadDocumentToArchive;
         _caseService = caseService;

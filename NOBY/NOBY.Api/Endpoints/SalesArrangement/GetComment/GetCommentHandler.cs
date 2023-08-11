@@ -4,7 +4,7 @@ using NOBY.Api.Endpoints.SalesArrangement.Dto;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetComment;
 
-internal sealed  class GetCommentHandler : IRequestHandler<GetCommentRequest, Comment>
+internal sealed class GetCommentHandler : IRequestHandler<GetCommentRequest, Comment>
 {
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     
@@ -14,7 +14,7 @@ internal sealed  class GetCommentHandler : IRequestHandler<GetCommentRequest, Co
         
         return salesArrangement.IsProductSalesArrangement()
             ? new Comment { Text = salesArrangement.Mortgage.Comment }
-            : throw new NobyValidationException(90001);
+            : throw new NobyValidationException("Sales Arrangement is not of product types");
     }
     
     public GetCommentHandler(ISalesArrangementServiceClient salesArrangementService)

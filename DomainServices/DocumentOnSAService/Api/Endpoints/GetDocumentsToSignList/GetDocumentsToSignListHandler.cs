@@ -8,7 +8,6 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
-using CIS.Foms.Types.Enums;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using ExternalServices.ESignatures.V1;
 

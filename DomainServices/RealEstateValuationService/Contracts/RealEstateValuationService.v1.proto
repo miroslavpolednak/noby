@@ -11,7 +11,7 @@ import "Messages/RealEstateValuationDetail.proto";
 import "Messages/GetRealEstateValuationDetail.proto";
 import "Messages/GetRealEstateValuationDetailByOrderId.proto";
 import "Messages/UpdateRealEstateValuationDetail.proto";
-import "Messages/SetACVRealEstateTypeByRealEstateValuation.proto";
+import "Messages/SetForeignRealEstateTypesByRealEstateValuation.proto";
 import "Messages/UpdateStateByRealEstateValuation.proto";
 import "Messages/AddDeedOfOwnershipDocument.proto";
 import "Messages/DeleteDeedOfOwnershipDocument.proto";
@@ -25,6 +25,7 @@ import "Messages/GetRealEstateValuationTypes.proto";
 import "Messages/UpdateDeedOfOwnershipDocument.proto";
 import "Messages/PreorderOnlineValuation.proto";
 import "Messages/OrderOnlineValuation.proto";
+import "Messages/OrderStandardValuation.proto";
 
 service RealEstateValuationService {
 	rpc CreateRealEstateValuation (CreateRealEstateValuationRequest) returns (CreateRealEstateValuationResponse);
@@ -34,7 +35,7 @@ service RealEstateValuationService {
 	rpc GetRealEstateValuationDetail (GetRealEstateValuationDetailRequest) returns (RealEstateValuationDetail);
 	rpc GetRealEstateValuationDetailByOrderId (GetRealEstateValuationDetailByOrderIdRequest) returns (RealEstateValuationDetail);
 	rpc UpdateRealEstateValuationDetail (UpdateRealEstateValuationDetailRequest) returns (google.protobuf.Empty);
-	rpc SetACVRealEstateTypeByRealEstateValuation (SetACVRealEstateTypeByRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc SetForeignRealEstateTypesByRealEstateValuation (SetForeignRealEstateTypesByRealEstateValuationRequest) returns (google.protobuf.Empty);
 	rpc UpdateStateByRealEstateValuation (UpdateStateByRealEstateValuationRequest) returns (google.protobuf.Empty);
 	rpc CreateRealEstateValuationAttachment (CreateRealEstateValuationAttachmentRequest) returns (CreateRealEstateValuationAttachmentResponse);
 	rpc DeleteRealEstateValuationAttachment (DeleteRealEstateValuationAttachmentRequest) returns (google.protobuf.Empty);
@@ -43,6 +44,7 @@ service RealEstateValuationService {
 
 	rpc PreorderOnlineValuation (PreorderOnlineValuationRequest) returns (google.protobuf.Empty);
 	rpc OrderOnlineValuation (OrderOnlineValuationRequest) returns (google.protobuf.Empty);
+	rpc OrderStandardValuation (OrderStandardValuationRequest) returns (google.protobuf.Empty);
 
 	// DeedOfOwnershipDocument
 	rpc UpdateDeedOfOwnershipDocument (UpdateDeedOfOwnershipDocumentRequest) returns (google.protobuf.Empty);

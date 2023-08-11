@@ -17,6 +17,7 @@ internal sealed class GetDeedOfOwnershipIdsHandler
                 .Flats?
                 .Select(t => new GetDeedOfOwnershipIdsResponseFlat
                 {
+                    MannerOfUseFlatShortName = t.MannerOfUseFlatShortName,
                     DeedOfOwnershipId = t.IsknDeedOfOwnershipId,
                     FlatNumber = t.FlatNumber
                 })

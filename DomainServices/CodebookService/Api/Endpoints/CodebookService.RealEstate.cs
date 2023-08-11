@@ -4,9 +4,9 @@ namespace DomainServices.CodebookService.Api.Endpoints;
 
 internal partial class CodebookService
 {
-    public override async Task<GetAcvRealEstateTypeResponse> GetAcvRealEstateType(GetAcvRealEstateTypeRequest request, ServerCallContext context)
+    public override async Task<GetACVAndBagmanRealEstateTypeResponse> GetACVAndBagmanRealEstateType(GetACVAndBagmanRealEstateTypeRequest request, ServerCallContext context)
     {
-        return (await _db.GetFirstOrDefault<GetAcvRealEstateTypeResponse>(new
+        return (await _db.GetFirstOrDefault<GetACVAndBagmanRealEstateTypeResponse>(new
         {
             request.RealEstateStateId,
             request.RealEstateSubtypeId,
@@ -38,4 +38,7 @@ internal partial class CodebookService
 
     public override Task<GenericCodebookResponse> RealEstateValuationBuildingTechnicalStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Task.FromResult(_acvEnumService.GetItems(ExternalServices.AcvEnumService.V1.Categories.ModelTechnicalState));
+
+    public override Task<GenericCodebookResponse> RealEstateValuationLocalSurveyFunctions(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Task.FromResult(_acvEnumService.GetItems(ExternalServices.AcvEnumService.V1.Categories.LocalSurveyFunction));
 }

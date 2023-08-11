@@ -15,7 +15,7 @@ public class SendDocumentOnSAPreviewHandler : IRequestHandler<SendDocumentOnSAPr
         
         if (documentOnSA is null)
         {
-            throw new CisNotFoundException(90001, "DocumentOnSA does not exist on provided sales arrangement.");
+            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "DocumentOnSA does not exist on provided sales arrangement.");
         }
         
         var isElectronicAndWorkflow = documentOnSA is { SignatureTypeId: (int)SignatureTypes.Electronic, Source: _Domain.Source.Workflow };

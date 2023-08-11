@@ -16,14 +16,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="CustomerOnSA\Messages\CustomerChangeMetadata.proto" />
-	  <None Remove="CustomerOnSA\Messages\GetCustomerChangeMetadata.proto" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.23.4" />
+		<PackageReference Include="Google.Protobuf" Version="3.24.0" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.55.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.56.2">
+		<PackageReference Include="Grpc.Tools" Version="2.57.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -62,6 +57,7 @@
 		<Protobuf Include="CustomerOnSA/Messages/UpdateCustomerDetail.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA/Messages/CustomerChangeMetadata.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="CustomerOnSA\Messages\GetCustomerChangeMetadata.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="CustomerOnSA\Messages\ValidateCustomerOnSAId.proto" GrpcServices="None" ProtoRoot="CustomerOnSA/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/HouseholdService.v1.proto" GrpcServices="Both" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/Messages/HouseholdExpenses.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/Messages/CreateHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
@@ -72,5 +68,6 @@
 		<Protobuf Include="Household/Messages/UpdateHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/Messages/LinkCustomerOnSAToHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 		<Protobuf Include="Household/Messages/DeleteHousehold.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="Household\Messages\ValidateHouseholdId.proto" GrpcServices="None" ProtoRoot="Household/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
 	</ItemGroup>
 </Project>

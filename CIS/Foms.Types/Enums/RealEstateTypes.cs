@@ -1,4 +1,4 @@
-﻿namespace CIS.Foms.Types.Enums;
+﻿namespace CIS.Foms.Enums;
 
 public enum RealEstateTypes
 {

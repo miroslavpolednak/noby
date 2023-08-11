@@ -1,5 +1,4 @@
 ﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 
@@ -24,20 +23,10 @@ public static class CustomerHelper
         return $"{fullName}, datum narození: {dateOfBirth.ToString("d", CultureProvider.GetProvider())}";
     }
 
-    public static string FullAddress(CustomerDetailResponse customerDetail, AddressTypes addressType, ICollection<CountriesResponse.Types.CountryItem> countries)
+    public static string FullAddress(CustomerDetailResponse customerDetail, AddressTypes addressType)
     {
         var address = customerDetail.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)addressType);
 
-        return address is null ? string.Empty : FullAddress(address, countries);
+        return address is null ? string.Empty : address.SingleLineAddressPoint;
     }
-
-    public static string FullAddress(GrpcAddress address, ICollection<CountriesResponse.Types.CountryItem> countries)
-    {
-        return $"{address.Street} {CombineHouseAndStreetNumber(address.HouseNumber, address.StreetNumber)}, " +
-               $"{address.Postcode} {address.City}, " +
-               $"{countries.Where(c => c.Id == address.CountryId).Select(c => c.LongName).FirstOrDefault("No country")}";
-    }
-
-    private static string CombineHouseAndStreetNumber(string houseNumber, string streetNumber) => 
-        string.Join("/", new[] { houseNumber, streetNumber }.Where(str => !string.IsNullOrWhiteSpace(str)));
 }
