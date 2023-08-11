@@ -167,7 +167,7 @@ public class SmsAuditLogger : ISmsAuditLogger
         }
     }
     
-    static string ToLiteral(string input) {
+    private static string ToLiteral(string input) {
         var literal = new StringBuilder(input.Length );
         foreach (var c in input) {
             switch (c) {
