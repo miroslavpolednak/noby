@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.Security;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
@@ -54,6 +55,7 @@ try
         .AddCisCoreFeatures()
         .AddCisLogging()
         .AddCisTracing()
+        .AddCisAudit()
         .AddCisServiceAuthentication()
         .Services
             .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())

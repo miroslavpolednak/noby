@@ -37,4 +37,10 @@ public enum AuditEventTypes
     
     [AuditEventTypeDescriptor("DocumentSendToClientBeforeSigning", "NOBY_011")]
     Noby011 = 11,
+    
+    [AuditEventTypeDescriptor("AuditableSMSNotificationRequestReceived", "NOBY_012")]
+    Noby012 = 12,
+    
+    [AuditEventTypeDescriptor("SMSNotificationSentThroughMCS", "NOBY_013")]
+    Noby013 = 13,
 }

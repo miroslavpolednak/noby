@@ -6,17 +6,13 @@ namespace CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstrac
 
 public interface ISmsAuditLogger
 {
-    Task LogHttpRequest();
+    Task LogHttpRequestProcessed(IActionResult? actionResult);
 
-    Task LogHttpResponse(IActionResult? actionResult);
-
-    void LogHttpException(Exception exception);
-
-    void LogKafkaProducing(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer);
+    Task LogHttpRequestError(Exception exception);
 
     void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer);
     
-    void LogKafkaError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer);
+    void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer, string errorMessage);
 
-    void LogKafkaResultReceived(NotificationReport report);
+    void LogKafkaResultReceived(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, NotificationReport report);
 }

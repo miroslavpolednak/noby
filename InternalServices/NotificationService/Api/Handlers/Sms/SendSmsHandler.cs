@@ -1,5 +1,6 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
+using CIS.Infrastructure.Audit;
 using CIS.InternalServices.NotificationService.Api.Helpers;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging.Mappers;
@@ -19,7 +20,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly ISmsAuditLogger _auditLogger;
+    private readonly ISmsAuditLogger _smsAuditLogger;
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
@@ -28,7 +29,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
         ICodebookServiceClient codebookService,
-        ISmsAuditLogger auditLogger,
+        ISmsAuditLogger smsAuditLogger,
         ILogger<SendSmsHandler> logger)
     {
         _dateTime = dateTime;
@@ -36,7 +37,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         _userAdapterService = userAdapterService;
         _repository = repository;
         _codebookService = codebookService;
-        _auditLogger = auditLogger;
+        _smsAuditLogger = smsAuditLogger;
         _logger = logger;
     }
     
@@ -89,14 +90,13 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         
         try
         {
-            _auditLogger.LogKafkaProducing(smsType, username);
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
-            _auditLogger.LogKafkaProduced(smsType, result.Id, username);
+            _smsAuditLogger.LogKafkaProduced(smsType, result.Id, username);
         }
         catch (Exception e)
         {
-            _auditLogger.LogKafkaError(smsType, username);
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
+            _smsAuditLogger.LogKafkaProduceError(smsType, username, e.Message);
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
             throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
