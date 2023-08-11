@@ -118,7 +118,7 @@ class SVC {
             BinaryPathName = $this.GetBinaryPathName()
             DependsOn = $this.GetWinSvcDependsOn()
             DisplayName = $win_svc_name
-            StartupType = "Automatic"
+            StartupType = "Automatic" # value 'AutomaticDelayedStart' is set later using 'SC.exe CONFIG ...'
             Description = $this.svc_name
           }
         
@@ -146,6 +146,15 @@ class SVC {
 
         # create
         New-Service @params
+
+        # config (start: Automatic -> AutomaticDelayedStart; cmdlet New-Service doesn´t accept this value) 
+        SC.exe CONFIG $win_svc_name start=delayed-auto
+
+        # set recovery
+        $reset_m = 60; # 60 mins
+        $restart_ms = 3 * 60000; # 3 mins in miliseconds
+        $run_ms = 1 * 60000; # 1 min in miliseconds
+        SC.exe FAILURE $win_svc_name reset=$reset_m actions= restart/$restart_ms/run/$run_ms///; # two slashs = NoAction
 
         # start
         $this.Start();
@@ -506,3 +515,5 @@ switch ($exec)
     "CREATE" {ServicesCreate($services)}    
     "REMOVE" {ServicesRemove($services)}   
 }
+
+#Cannot bind parameter 'StartupType'. Cannot convert value "AutomaticDelayedStart" to type "System.ServiceProcess.ServiceStartMode"
