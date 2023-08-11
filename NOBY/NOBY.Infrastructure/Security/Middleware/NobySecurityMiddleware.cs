@@ -2,24 +2,23 @@
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace NOBY.Infrastructure.Security;
+namespace NOBY.Infrastructure.Security.Middleware;
 
-public class NobySecurityMiddleware
+public sealed class NobySecurityMiddleware
 {
     private readonly RequestDelegate _next;
 
     public NobySecurityMiddleware(RequestDelegate next) =>
         _next = next;
 
-    public async Task Invoke(
-        HttpContext context, 
-        DomainServices.UserService.Clients.IUserServiceClient userService, 
-        Configuration.AppConfiguration configuration)
+    public async Task Invoke(HttpContext context)
     {
         if (authenticateUser())
         {
             if (context.User?.Identity is null || !context.User.Identity.IsAuthenticated)
+            {
                 throw new System.Security.Authentication.AuthenticationException("User Identity not found in HttpContext");
+            }
 
             var claimsIdentity = context.User.Identity as ClaimsIdentity;
 
@@ -30,7 +29,9 @@ public class NobySecurityMiddleware
                 .Value;
 
             if (!int.TryParse(userIdClaimValue, out int userId))
+            {
                 throw new System.Security.Authentication.AuthenticationException("User login is empty");
+            }
 
             // vlozit FOMS uzivatele do contextu
             context.User = new NobyUser(context.User.Identity, userId);

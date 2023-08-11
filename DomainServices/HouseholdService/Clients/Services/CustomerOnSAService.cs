@@ -32,11 +32,15 @@ internal sealed class CustomerOnSAService
 
     public async Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default)
     {
-        return await _service.GetCustomerAsync(
-            new()
-            {
-                CustomerOnSAId = customerOnSAId
-            }, cancellationToken: cancellationToken);
+        if (_cacheGetCustomer is null)
+        {
+            _cacheGetCustomer = await _service.GetCustomerAsync(
+                new()
+                {
+                    CustomerOnSAId = customerOnSAId
+                }, cancellationToken: cancellationToken);
+        }
+        return _cacheGetCustomer;
     }
 
     public async Task<List<CustomerOnSA>> GetCustomersByIdentity(Identity identity, CancellationToken cancellationToken = default)
@@ -173,6 +177,7 @@ internal sealed class CustomerOnSAService
         return _cacheValidateCustomerOnSAId;
     }
 
+    private CustomerOnSA? _cacheGetCustomer;
     private ValidateCustomerOnSAIdResponse? _cacheValidateCustomerOnSAId;
 
     private readonly Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient _service;

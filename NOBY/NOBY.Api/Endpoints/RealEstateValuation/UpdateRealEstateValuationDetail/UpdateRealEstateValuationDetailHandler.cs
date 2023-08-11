@@ -138,11 +138,11 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         if (houseAndFlatDetails.FinishedHouseAndFlatDetails is null)
         {
             if (request.RealEstateStateId == (int)RealEstateStateId.Finished)
-                throw new NobyValidationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
+                throw new NobyValidationException("FinishedHouseAndFlatDetails object is null and request RealEstateStateId is Finished");
         }
         else if (request.RealEstateStateId != (int)RealEstateStateId.Finished)
         {
-            throw new NobyValidationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
+            throw new NobyValidationException("FinishedHouseAndFlatDetails is not null and RealEstateStateId is not Finished");
         }
     }
 

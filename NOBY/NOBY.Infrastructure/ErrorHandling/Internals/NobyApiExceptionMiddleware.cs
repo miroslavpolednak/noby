@@ -31,14 +31,16 @@ public sealed class NobyApiExceptionMiddleware
         // neprihlaseny uzivatel
         catch (CisAuthenticationException ex)
         {
+            logger.WebApiAuthenticationException(ex.Message, ex);
             await Results.Json(
                 new ApiAuthenticationProblemDetail(ex.ProviderLoginUrl, appConfiguration.Security?.AuthenticationScheme),
                 statusCode: 401
                 ).ExecuteAsync(context);
         }
-        catch (CisAuthorizationException)
+        catch (CisAuthorizationException ex)
         {
-            await Results.Json(null, statusCode: 403).ExecuteAsync(context);
+            logger.WebApiAuthorizationException(ex.Message, ex);
+            await Results.Json(singleErrorResult(ex.Message), statusCode: 403).ExecuteAsync(context);
         }
         catch (AuthenticationException ex) // toto by nemelo nastat
         {

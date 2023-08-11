@@ -210,7 +210,7 @@ public class SaveDocumentToArchiveHandler
         else if (_currentUserAccessor?.User?.Id is not null)
             return _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture);
         else
-            throw new CisNotFoundException(90001, "Cannot get NOBY user identifier");
+            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "Cannot get NOBY user identifier");
     }
 
     private async Task<string> GetContractNumber(long caseId, CancellationToken cancellationToken)
