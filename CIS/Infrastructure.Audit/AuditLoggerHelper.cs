@@ -112,7 +112,7 @@ internal static class AuditLoggerJsonWriter
 
         // version
         output.Write(",\"version\":");
-        output.Write(loggerDefaults.EamVersion.AsSpan());
+        write(output, loggerDefaults.EamVersion.AsSpan());
 
         // eam
         output.Write(",\"eamApplication\":");
@@ -148,7 +148,7 @@ internal static class AuditLoggerJsonWriter
         output.Write("\"id\":");
         write(output, eventTypeId);
         output.Write(",\"version\":");
-        output.Write(eventTypeVersion);
+        write(output, eventTypeVersion.ToString(CultureInfo.InvariantCulture));
         output.Write("}");
 
         // source

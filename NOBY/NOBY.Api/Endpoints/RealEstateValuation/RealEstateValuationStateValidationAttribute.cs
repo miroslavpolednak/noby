@@ -13,7 +13,7 @@ internal sealed class RealEstateValuationStateValidationAttribute
     public RealEstateValuationStateValidationAttribute(params int[] valuationStateId)
         : base(typeof(RealEstateValuationStateValidationFilter))
     {
-        ValuationStateId = valuationStateId.Length == 0 ? new[] { 7 } : valuationStateId;
+        ValuationStateId = valuationStateId;
         Arguments = new object[] { ValuationStateId };
     }
 
@@ -57,7 +57,7 @@ internal sealed class RealEstateValuationStateValidationAttribute
             }
 
             // spatny stav REV
-            if (!_valuationStateId.Contains(instance.ValuationStateId.GetValueOrDefault()))
+            if (_valuationStateId.Length > 0 && !_valuationStateId.Contains(instance.ValuationStateId.GetValueOrDefault()))
             {
                 throw new CisAuthorizationException();
             }
