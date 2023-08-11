@@ -110,21 +110,16 @@ public sealed class NobyApiExceptionMiddleware
         {
             return createItem(ErrorCodeMapper.DsToApiCodeMapper[errorCode]);
         }
-        else if (errorCode != NobyValidationException.DefaultExceptionCode && ErrorCodeMapper.Messages.ContainsKey(errorCode))
+
+        if (ErrorCodeMapper.Messages.ContainsKey(errorCode))
         {
             return createItem(errorCode);
         }
-        else
-        {
-            return new ApiErrorItem
-            {
-                Severity = ApiErrorItemServerity.Error,
-                ErrorCode = errorCode,
-                Message = message.ToString()
-            };
-        }
 
-        ApiErrorItem createItem(int errorCode)
+        //Unknown exception
+        return createItem(NobyValidationException.DefaultExceptionCode);
+
+        static ApiErrorItem createItem(int errorCode)
         {
             return new()
             {
@@ -136,7 +131,6 @@ public sealed class NobyApiExceptionMiddleware
         }
     }
 
-    //Should be greater than the NobyValidationException.DefaultExceptionCode (so we know it is an error code for FE)
     private static int parseExceptionCode(in string exceptionCode)
-        => int.TryParse(exceptionCode, out var code) && code >= NobyValidationException.DefaultExceptionCode ? code : NobyValidationException.DefaultExceptionCode;
+        => int.TryParse(exceptionCode, out var code) ? code : NobyValidationException.DefaultExceptionCode;
 }

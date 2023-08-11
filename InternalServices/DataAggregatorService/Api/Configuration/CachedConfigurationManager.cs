@@ -17,7 +17,7 @@ internal class CachedConfigurationManager : IConfigurationManager
         _configurationManager = configurationManager;
         _memoryCache = memoryCache;
 
-        _cacheEntryOptions = new MemoryCacheEntryOptions { SlidingExpiration = TimeSpan.FromSeconds(configuration.CacheExpirationSeconds) };
+        _cacheEntryOptions = new MemoryCacheEntryOptions { AbsoluteExpiration = DateTime.UtcNow.AddSeconds(configuration.CacheExpirationSeconds) };
     }
 
     public Task<DocumentConfiguration> LoadDocumentConfiguration(DocumentKey documentKey, CancellationToken cancellationToken)
