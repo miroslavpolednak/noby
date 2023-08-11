@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using CIS.Infrastructure.Audit;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
@@ -45,29 +46,18 @@ public class SmsAuditLogger : ISmsAuditLogger
 
         return responseBody;
     }
-
-    public async Task LogHttpRequest()
+    
+    public async Task LogHttpRequestProcessed(IActionResult? actionResult)
     {
         var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext is null) return;
 
+        var httpHeaders = httpContext.Request.Headers
+            .ToDictionary(v => v.Key, v => v.Value);
+        
+        var rawHttpRequestHeaders = JsonConvert.SerializeObject(httpHeaders);
         var rawHttpRequestBody = await GetBodyFromRequest(httpContext.Request);
         
-        _auditLogger.LogWithCurrentUser(
-            AuditEventTypes.Noby012,
-            "Received HTTP Request",
-            bodyBefore: new Dictionary<string, string>
-            {
-                { "rawHttpRequestBody", rawHttpRequestBody }
-            }
-        );
-    }
-
-    public async Task LogHttpResponse(IActionResult? actionResult)
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
-        if (httpContext is null) return;
-
         var rawHttpResponseBody = await GetBodyFromResponse(httpContext.Response);
         
         if (actionResult is ObjectResult result)
@@ -77,25 +67,50 @@ public class SmsAuditLogger : ISmsAuditLogger
         
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby012,
-            "Sending HTTP Response",
+            "HTTP request processed",
+            bodyBefore: new Dictionary<string, string>
+            {
+                { "requestPath", httpContext.Request.Path },
+                { "requestQuery", httpContext.Request.QueryString.ToString() },
+                { "rawHttpRequestHeaders", ToLiteral(rawHttpRequestHeaders) },
+                { "rawHttpRequestBody", ToLiteral(rawHttpRequestBody) }
+            },
             bodyAfter: new Dictionary<string, string>
             {
-                { "rawHttpResponseBody", rawHttpResponseBody }
+                { "traceId", httpContext.TraceIdentifier },
+                { "responseStatus", httpContext.Response.StatusCode.ToString(CultureInfo.InvariantCulture) }, 
+                { "rawHttpResponseBody", ToLiteral(rawHttpResponseBody) }
             }
         );
     }
 
-    public void LogHttpException(Exception exception)
+    public async Task LogHttpRequestError(Exception exception)
     {
         var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext is null) return;
         
+        var httpHeaders = httpContext.Request.Headers
+            .ToDictionary(v => v.Key, v => v.Value);
+        
+        var rawHttpRequestHeaders = JsonConvert.SerializeObject(httpHeaders);
+        var rawHttpRequestBody = await GetBodyFromRequest(httpContext.Request);
+        
+        var rawException = JsonConvert.SerializeObject(exception);
+        
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby012,
-            "Sending HTTP Exception",
+            "HTTP request error",
+            bodyBefore: new Dictionary<string, string>
+            {
+                { "requestPath", httpContext.Request.Path },
+                { "requestQuery", httpContext.Request.QueryString.ToString() },
+                { "rawHttpRequestHeaders", ToLiteral(rawHttpRequestHeaders) },
+                { "rawHttpRequestBody", ToLiteral(rawHttpRequestBody) }
+            },
             bodyAfter: new Dictionary<string, string>
             {
-                { "exception", JsonConvert.SerializeObject(exception) }
+                { "traceId", httpContext.TraceIdentifier },
+                { "exception", ToLiteral(rawException) },
             }
         );
     }
@@ -119,7 +134,7 @@ public class SmsAuditLogger : ISmsAuditLogger
         }
     }
 
-    public void LogKafkaError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer, string errorMessage)
+    public void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer, string errorMessage)
     {
         if (smsType.IsAuditLogEnabled)
         {
@@ -130,11 +145,8 @@ public class SmsAuditLogger : ISmsAuditLogger
                 {
                     { "smsType", smsType.Code },
                     { "consumer", consumer }
-                },
-                bodyAfter: new Dictionary<string, string>
-                {
-                    { "errorMessage", errorMessage }
-                });
+                }
+            );
         }
     }
 
@@ -150,8 +162,37 @@ public class SmsAuditLogger : ISmsAuditLogger
                     { "smsType", smsType.Code },
                     { "id", report.id },
                     { "state", report.state },
-                    { "errors", JsonConvert.SerializeObject(report.notificationErrors) }
+                    { "errors", ToLiteral(JsonConvert.SerializeObject(report.notificationErrors)) }
                 });
         }
+    }
+    
+    static string ToLiteral(string input) {
+        var literal = new StringBuilder(input.Length );
+        foreach (var c in input) {
+            switch (c) {
+                case '\"': literal.Append("\\\""); break;
+                case '\\': literal.Append(@"\\"); break;
+                case '\0': literal.Append(@"\0"); break;
+                case '\a': literal.Append(@"\a"); break;
+                case '\b': literal.Append(@"\b"); break;
+                case '\f': literal.Append(@"\f"); break;
+                case '\n': literal.Append(@"\n"); break;
+                case '\r': literal.Append(@"\r"); break;
+                case '\t': literal.Append(@"\t"); break;
+                case '\v': literal.Append(@"\v"); break;
+                default:
+                    // ASCII printable character
+                    if (c >= 0x20 && c <= 0x7e) {
+                        literal.Append(c);
+                        // As UTF16 escaped character
+                    } else {
+                        literal.Append(@"\u");
+                        literal.Append(((int)c).ToString("x4"));
+                    }
+                    break;
+            }
+        }
+        return literal.ToString();
     }
 }
