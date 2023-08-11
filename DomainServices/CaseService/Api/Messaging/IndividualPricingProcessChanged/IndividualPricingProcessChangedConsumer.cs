@@ -1,7 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
 using DomainServices.CaseService.Contracts;
-using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using MassTransit;
@@ -16,8 +15,15 @@ internal sealed class IndividualPricingProcessChangedConsumer
         var token = context.CancellationToken;
         var message = context.Message;
         
-        var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
-        var caseId = long.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
+        if (!int.TryParse(context.Message.currentTask.id, out var currentTaskId))
+        {
+            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
+        }
+        
+        if (!long.TryParse(context.Message.@case.caseId.id, out var caseId))
+        {
+            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
+        }
         
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId }, token);
         var decisionId = taskDetail.TaskDetail.PriceException.DecisionId;
@@ -98,18 +104,18 @@ internal sealed class IndividualPricingProcessChangedConsumer
     
     private readonly IMediator _mediator;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
     private readonly Services.ActiveTaskService _activeTask;
+    private readonly ILogger<IndividualPricingProcessChangedConsumer> _logger;
 
     public IndividualPricingProcessChangedConsumer(
         IMediator mediator,
         Services.ActiveTaskService activeTask,
         ISalesArrangementServiceClient salesArrangementService,
-        ICodebookServiceClient codebookService)
+        ILogger<IndividualPricingProcessChangedConsumer> logger)
     {
         _activeTask = activeTask;
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
-        _codebookService = codebookService;
+        _logger = logger;
     }
 }
