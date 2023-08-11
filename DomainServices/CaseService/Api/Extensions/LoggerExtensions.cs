@@ -9,7 +9,8 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, int, long, Exception> _queueRequestIdSaved;
     private static readonly Action<ILogger, long, int, Exception> _starbuildStateUpdateFailed;
     private static readonly Action<ILogger, long, int, Exception> _starbuildStateUpdateSuccess;
-    private static readonly Action<ILogger, string, Exception> _kafkaMessageIncorrectFormat;
+    private static readonly Action<ILogger, string, Exception> _kafkaMessageCaseIdIncorrectFormat;
+    private static readonly Action<ILogger, string, Exception> _kafkaMessageTaskIdSbIncorrectFormat;
     private static readonly Action<ILogger, long, Exception> _kafkaCaseIdNotFound;
     private static readonly Action<ILogger, long, Exception> _requestNotFoundInCache;
     private static readonly Action<ILogger, long, int, Exception> _updateActiveTaskStart;
@@ -52,11 +53,16 @@ internal static class LoggerExtensions
             new EventId(LoggerEventIdCodes.StarbuildStateUpdateSuccess, nameof(StarbuildStateUpdateSuccess)),
             "Case state changed in Starbuild for {CaseId} by requestId {StateId}");
 
-        _kafkaMessageIncorrectFormat = LoggerMessage.Define<string>(
+        _kafkaMessageCaseIdIncorrectFormat = LoggerMessage.Define<string>(
             LogLevel.Error,
-            new EventId(LoggerEventIdCodes.KafkaMessageIncorrectFormat, nameof(KafkaMessageIncorrectFormat)),
+            new EventId(LoggerEventIdCodes.KafkaMessageCaseIdIncorrectFormat, nameof(KafkaMessageCaseIdIncorrectFormat)),
             "Message CaseId {CaseId} is not in valid format");
 
+        _kafkaMessageTaskIdSbIncorrectFormat = LoggerMessage.Define<string>(
+            LogLevel.Error,
+            new EventId(LoggerEventIdCodes.KafkaMessageTaskIdSbIncorrectFormat, nameof(KafkaMessageTaskIdSbIncorrectFormat)),
+            "Message TaskIdSb {TaskIdSb} is not in valid format");
+        
         _kafkaCaseIdNotFound = LoggerMessage.Define<long>(
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.KafkaCaseIdNotFound, nameof(KafkaCaseIdNotFound)),
@@ -99,9 +105,12 @@ internal static class LoggerExtensions
     public static void StarbuildStateUpdateSuccess(this ILogger logger, long caseId, int requestId)
         => _starbuildStateUpdateSuccess(logger, caseId, requestId, null!);
 
-    public static void KafkaMessageIncorrectFormat(this ILogger logger, string caseId)
-        => _kafkaMessageIncorrectFormat(logger, caseId, null!);
+    public static void KafkaMessageCaseIdIncorrectFormat(this ILogger logger, string caseId)
+        => _kafkaMessageCaseIdIncorrectFormat(logger, caseId, null!);
 
+    public static void KafkaMessageTaskIdSbIncorrectFormat(this ILogger logger, string caseId)
+        => _kafkaMessageTaskIdSbIncorrectFormat(logger, caseId, null!);
+    
     public static void KafkaCaseIdNotFound(this ILogger logger, long caseId)
         => _kafkaCaseIdNotFound(logger, caseId, null!);
 

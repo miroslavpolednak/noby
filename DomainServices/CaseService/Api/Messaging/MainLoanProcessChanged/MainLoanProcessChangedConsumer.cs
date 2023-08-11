@@ -24,9 +24,9 @@ internal sealed class MainLoanProcessChangedConsumer
             _ => context.Message.processData.@private.mainLoanProcessData.processPhase.code
         };
 
-        if (long.TryParse(context.Message.@case.caseId.id, out long caseId))
+        if (!long.TryParse(context.Message.@case.caseId.id, out long caseId))
         {
-            _logger.KafkaMessageIncorrectFormat(context.Message.@case.caseId.id);
+            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
         }
 
         var entity = await _dbContext.Cases
