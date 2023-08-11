@@ -160,7 +160,7 @@ public class SmsAuditLogger : ISmsAuditLogger
                 bodyBefore: new Dictionary<string, string>
                 {
                     { "smsType", smsType.Code },
-                    { "id", report.id },
+                    { "notificationId", report.id },
                     { "state", report.state },
                     { "errors", ToLiteral(JsonConvert.SerializeObject(report.notificationErrors)) }
                 });
