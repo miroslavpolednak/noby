@@ -11,6 +11,13 @@ internal sealed class RealEstateValuationStateValidationAttribute
 {
     public int[] ValuationStateId { get; init; }
 
+    public RealEstateValuationStateValidationAttribute()
+        : base(typeof(RealEstateValuationStateValidationFilter))
+    {
+        ValuationStateId = Array.Empty<int>();
+        Arguments = new object[] { ValuationStateId };
+    }
+
     public RealEstateValuationStateValidationAttribute(params int[] valuationStateId)
         : base(typeof(RealEstateValuationStateValidationFilter))
     {
