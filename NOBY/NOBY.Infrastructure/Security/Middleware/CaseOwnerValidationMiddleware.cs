@@ -83,7 +83,7 @@ public sealed class CaseOwnerValidationMiddleware
 
                 if (currentUser.User!.Id != ownerUserId && !currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
                 {
-                    throw new CisAuthorizationException();
+                    throw new CisAuthorizationException("CaseOwnerValidation: user is not owner of the Case or does not have DASHBOARD_AccessAllCases permission");
                 }
             }
         }

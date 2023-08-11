@@ -21,7 +21,7 @@ public static class SecurityExtensions
     {
         if (!principal.HasPermission(permission))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException($"User does not have permission {permission}");
         }
     }
 
@@ -29,7 +29,7 @@ public static class SecurityExtensions
     {
         if (!principal.HasPermission(permission))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException($"User does not have permission {permission}");
         }
     }
 
@@ -37,7 +37,7 @@ public static class SecurityExtensions
     {
         if (!userAccessor.HasPermission(permission))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException($"User does not have permission {permission}");
         }
     }
 
@@ -45,7 +45,7 @@ public static class SecurityExtensions
     {
         if (!userAccessor.HasPermission(permission))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException($"User does not have permission {permission}");
         }
     }
 }

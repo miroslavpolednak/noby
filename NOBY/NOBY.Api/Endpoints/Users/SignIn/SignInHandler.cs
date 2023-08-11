@@ -27,7 +27,7 @@ internal sealed class SignInHandler
         // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
         if (!permissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("APPLICATION_BasicAccess check failed");
         }
 
         var claims = new List<Claim>

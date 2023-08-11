@@ -13,7 +13,7 @@ internal sealed class PatchDeveloperOnRealEstateValuationHandler
         if (instance.CaseId != request.CaseId
             || !instance.DeveloperAllowed)
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("Case or developer check failed");
         }
 
         int? valuationStateId = null;
@@ -28,7 +28,7 @@ internal sealed class PatchDeveloperOnRealEstateValuationHandler
         }
         else
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("ValuationState check failed");
         }
 
         await _realEstateValuationService.PatchDeveloperOnRealEstateValuation(request.RealEstateValuationId, valuationStateId.Value, request.DeveloperApplied, cancellationToken);

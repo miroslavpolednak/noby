@@ -17,7 +17,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
         if (!_allowedTaskTypeIds.Contains(taskDetail.TaskObject.TaskTypeId))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("Task type not allowed");
         }
 
         List<string>? documentIds = new();

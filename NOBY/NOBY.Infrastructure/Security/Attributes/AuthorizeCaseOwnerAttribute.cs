@@ -57,7 +57,7 @@ public sealed class AuthorizeCaseOwnerAttribute
             
             if (_currentUser.User!.Id != ownerUserId && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
             {
-                throw new CisAuthorizationException();
+                throw new CisAuthorizationException("Case owner check failed");
             }
         }
     }

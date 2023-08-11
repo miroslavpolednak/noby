@@ -133,7 +133,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     {
         if (ownerUserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("Case owner check failed");
         }
     }
 

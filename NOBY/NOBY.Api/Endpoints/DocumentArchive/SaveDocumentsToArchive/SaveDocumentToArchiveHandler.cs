@@ -111,7 +111,7 @@ public class SaveDocumentToArchiveHandler
         if (_currentUserAccessor.HasPermission(UserPermissions.SIGNING_DOCUMENT_UploadDrawingDocument))
             return;
 
-        throw new CisAuthorizationException();
+        throw new CisAuthorizationException("CheckDrawingPermissionIfArrangementIsDrawing failed");
     }
 
     private async Task CheckIfFormIdRequired(DocumentsInformation docInfo, CancellationToken cancellationToken)

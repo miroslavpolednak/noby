@@ -19,7 +19,7 @@ internal sealed class SimulateMortgageHandler
         // validate permissions
         if (request.IsEmployeeBonusRequested.GetValueOrDefault() && !_userAccessor.HasPermission(UserPermissions.LOANMODELING_EmployeeMortgageAccess))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("IsEmployeeBonusRequested check failed");
         }
 
         // datum garance

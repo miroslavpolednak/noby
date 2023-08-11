@@ -17,7 +17,7 @@ internal sealed class GetSalesArrangementHandler
         // perm check
         if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("Case owner check failed");
         }
 
         return new GetSalesArrangementResponse()

@@ -10,4 +10,6 @@ public struct LoggerEventIdCodes
     public const int EndpointsCaseSearchPaginableSettings = 99006;
     public const int EndpointsUsersSigningInAs = 99007;
     public const int EndpointsUsersGetCurrentUser = 99008;
+
+    public const int SecurityUserWithoutAccess = 99030;
 }

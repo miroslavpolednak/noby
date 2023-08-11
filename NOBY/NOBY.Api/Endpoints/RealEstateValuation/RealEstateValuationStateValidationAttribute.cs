@@ -68,13 +68,13 @@ internal sealed class RealEstateValuationStateValidationAttribute
             // podvrhnute caseId
             if (instance.CaseId != caseId)
             {
-                throw new CisAuthorizationException();
+                throw new CisAuthorizationException("Case ID check failed");
             }
 
             // spatny stav REV
             if (_valuationStateId.Length > 0 && !_valuationStateId.Contains(instance.ValuationStateId.GetValueOrDefault()))
             {
-                throw new CisAuthorizationException();
+                throw new CisAuthorizationException("ValuationState check failed");
             }
         }
     }

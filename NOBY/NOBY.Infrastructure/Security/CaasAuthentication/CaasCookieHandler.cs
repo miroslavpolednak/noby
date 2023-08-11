@@ -4,6 +4,7 @@ using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
@@ -49,7 +50,8 @@ internal sealed class CaasCookieHandler
                 // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
                 if (!permissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
                 {
-                    throw new CisAuthorizationException();
+                    createLogger(context.HttpContext).UserWithoutAccess(currentLogin);
+                    throw new CisAuthorizationException("Cookie handler: user does not have APPLICATION_BasicAccess");
                 }
 
                 // vytvorit claimy
@@ -78,6 +80,11 @@ internal sealed class CaasCookieHandler
                 return Task.CompletedTask;
             }
         };
+    }
+
+    private static ILogger<CaasCookieHandler> createLogger(HttpContext context)
+    {
+        return context.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger<CaasCookieHandler>();
     }
 
     public void Configure(CookieAuthenticationOptions options)
