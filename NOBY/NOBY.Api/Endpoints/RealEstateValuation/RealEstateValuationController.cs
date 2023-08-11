@@ -42,7 +42,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
     [AuthorizeCaseOwner]
-    [RealEstateValuationStateValidation]
+    [RealEstateValuationStateValidation(7)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -151,7 +151,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents/{deedOfOwnershipDocumentId:int}")]
     [AuthorizeCaseOwner]
-    [RealEstateValuationStateValidation]
+    [RealEstateValuationStateValidation(7)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -203,7 +203,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments/{realEstateValuationAttachmentId:int}")]
     [AuthorizeCaseOwner]
-    [RealEstateValuationStateValidation]
+    [RealEstateValuationStateValidation(7, 10)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -248,7 +248,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/valuation-types")]
     [AuthorizeCaseOwner]
-    [RealEstateValuationStateValidation]
+    [RealEstateValuationStateValidation(7)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -268,7 +268,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpPut("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents/{deedOfOwnershipDocumentId:int}")]
     [AuthorizeCaseOwner]
-    [RealEstateValuationStateValidation]
+    [RealEstateValuationStateValidation(7)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -293,7 +293,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/preorder-online")]
     [AuthorizeCaseOwner]
-    [RealEstateValuationStateValidation]
+    [RealEstateValuationStateValidation(7)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

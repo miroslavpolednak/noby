@@ -112,30 +112,16 @@ public sealed class NobyApiExceptionMiddleware
         {
             return createItem(ErrorCodeMapper.DsToApiCodeMapper[errorCode]);
         }
-        else if (errorCode != NobyValidationException.DefaultExceptionCode && ErrorCodeMapper.Messages.ContainsKey(errorCode))
+
+        if (ErrorCodeMapper.Messages.ContainsKey(errorCode))
         {
             return createItem(errorCode);
         }
-        else if (errorCode < 90000) // jedna se o nemapovany error kod z DS, asi ho mame zahodit?
-        {
-            return new ApiErrorItem
-            {
-                Severity = ApiErrorItemServerity.Error,
-                ErrorCode = NobyValidationException.DefaultExceptionCode,
-                Message = message.ToString()
-            };
-        }
-        else
-        {
-            return new ApiErrorItem
-            {
-                Severity = ApiErrorItemServerity.Error,
-                ErrorCode = errorCode,
-                Message = message.ToString()
-            };
-        }
 
-        ApiErrorItem createItem(int errorCode)
+        //Unknown exception
+        return createItem(NobyValidationException.DefaultExceptionCode);
+
+        static ApiErrorItem createItem(int errorCode)
         {
             return new()
             {
@@ -147,7 +133,6 @@ public sealed class NobyApiExceptionMiddleware
         }
     }
 
-    //Should be greater than the NobyValidationException.DefaultExceptionCode (so we know it is an error code for FE)
     private static int parseExceptionCode(in string exceptionCode)
-        => int.TryParse(exceptionCode, out var code) && code >= NobyValidationException.DefaultExceptionCode ? code : NobyValidationException.DefaultExceptionCode;
+        => int.TryParse(exceptionCode, out var code) ? code : NobyValidationException.DefaultExceptionCode;
 }

@@ -21,8 +21,8 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 
 var log = builder.CreateStartupLogger();
 
-//try
-//{
+try
+{
     #region register builder
     builder.Services.AddAttributedServices(typeof(Program));
 
@@ -85,7 +85,7 @@ var log = builder.CreateStartupLogger();
 
     log.ApplicationRun();
     app.Run();
-/*}
+}
 catch (Exception ex)
 {
     log.CatchedException(ex);
@@ -93,7 +93,7 @@ catch (Exception ex)
 finally
 {
     LoggingExtensions.CloseAndFlush();
-}*/
+}
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program
