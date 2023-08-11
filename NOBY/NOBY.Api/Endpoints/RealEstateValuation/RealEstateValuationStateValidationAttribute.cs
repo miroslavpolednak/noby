@@ -1,4 +1,5 @@
-﻿using DomainServices.RealEstateValuationService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.RealEstateValuationService.Clients;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Globalization;
 
@@ -14,6 +15,13 @@ internal sealed class RealEstateValuationStateValidationAttribute
         : base(typeof(RealEstateValuationStateValidationFilter))
     {
         ValuationStateId = valuationStateId;
+        Arguments = new object[] { ValuationStateId };
+    }
+
+    public RealEstateValuationStateValidationAttribute(params RealEstateValuationStates[] valuationStateId)
+        : base(typeof(RealEstateValuationStateValidationFilter))
+    {
+        ValuationStateId = valuationStateId.Select(t => (int)t).ToArray();
         Arguments = new object[] { ValuationStateId };
     }
 

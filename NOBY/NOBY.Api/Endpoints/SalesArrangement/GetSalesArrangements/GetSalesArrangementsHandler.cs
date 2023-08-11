@@ -2,8 +2,6 @@
 using DomainServices.SalesArrangementService.Clients;
 using CIS.Core;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CaseService.Clients;
-using CIS.Core.Security;
 using CIS.Foms.Enums;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangements;
@@ -25,8 +23,8 @@ internal sealed class GetSalesArrangementsHandler
             {
                 SalesArrangementId = t.SalesArrangementId,
                 SalesArrangementTypeId = t.SalesArrangementTypeId,
-                State = (CIS.Foms.Enums.SalesArrangementStates)t.State,
-                StateText = ((CIS.Foms.Enums.SalesArrangementStates)t.State).GetAttribute<DisplayAttribute>()?.Name ?? "",
+                State = (SalesArrangementStates)t.State,
+                StateText = ((SalesArrangementStates)t.State).GetAttribute<DisplayAttribute>()?.Name ?? "",
                 OfferId = t.OfferId,
                 CreatedBy = t.Created.UserName,
                 CreatedTime = t.Created.DateTime
@@ -42,19 +40,13 @@ internal sealed class GetSalesArrangementsHandler
         return model;
     }
 
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly ICaseServiceClient _caseService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public GetSalesArrangementsHandler(
-        ICurrentUserAccessor currentUser,
-        ICaseServiceClient caseServiceClient,
         ISalesArrangementServiceClient salesArrangementService, 
         ICodebookServiceClient codebookService)
     {
-        _currentUser = currentUser;
-        _caseService = caseServiceClient;
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
     }
