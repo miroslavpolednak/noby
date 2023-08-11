@@ -111,7 +111,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         catch (Exception e)
         {
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
-            _smsAuditLogger.LogKafkaProduceError(smsType, username, e.Message);
+            _smsAuditLogger.LogKafkaProduceError(smsType, username);
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
             throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");

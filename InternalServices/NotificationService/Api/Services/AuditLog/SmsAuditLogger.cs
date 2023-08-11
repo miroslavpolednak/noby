@@ -4,7 +4,6 @@ using CIS.Infrastructure.Audit;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using DomainServices.CodebookService.Contracts.v1;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.AuditLog;
@@ -46,8 +45,8 @@ public class SmsAuditLogger : ISmsAuditLogger
 
         return responseBody;
     }
-    
-    public async Task LogHttpRequestProcessed(IActionResult? actionResult)
+
+    public async Task LogHttpRequestResponse()
     {
         var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext is null) return;
@@ -59,11 +58,6 @@ public class SmsAuditLogger : ISmsAuditLogger
         var rawHttpRequestBody = await GetBodyFromRequest(httpContext.Request);
         
         var rawHttpResponseBody = await GetBodyFromResponse(httpContext.Response);
-        
-        if (actionResult is ObjectResult result)
-        {
-            rawHttpResponseBody = JsonConvert.SerializeObject(result.Value);
-        }
         
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby012,
@@ -84,37 +78,6 @@ public class SmsAuditLogger : ISmsAuditLogger
         );
     }
 
-    public async Task LogHttpRequestError(Exception exception)
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
-        if (httpContext is null) return;
-        
-        var httpHeaders = httpContext.Request.Headers
-            .ToDictionary(v => v.Key, v => v.Value);
-        
-        var rawHttpRequestHeaders = JsonConvert.SerializeObject(httpHeaders);
-        var rawHttpRequestBody = await GetBodyFromRequest(httpContext.Request);
-        
-        var rawException = JsonConvert.SerializeObject(exception);
-        
-        _auditLogger.LogWithCurrentUser(
-            AuditEventTypes.Noby012,
-            "HTTP request error",
-            bodyBefore: new Dictionary<string, string>
-            {
-                { "requestPath", httpContext.Request.Path },
-                { "requestQuery", httpContext.Request.QueryString.ToString() },
-                { "rawHttpRequestHeaders", ToLiteral(rawHttpRequestHeaders) },
-                { "rawHttpRequestBody", ToLiteral(rawHttpRequestBody) }
-            },
-            bodyAfter: new Dictionary<string, string>
-            {
-                { "traceId", httpContext.TraceIdentifier },
-                { "exception", ToLiteral(rawException) },
-            }
-        );
-    }
-    
     public void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer)
     {
         if (smsType.IsAuditLogEnabled)
@@ -134,7 +97,7 @@ public class SmsAuditLogger : ISmsAuditLogger
         }
     }
 
-    public void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer, string errorMessage)
+    public void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer)
     {
         if (smsType.IsAuditLogEnabled)
         {
