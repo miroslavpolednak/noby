@@ -4,6 +4,18 @@ namespace DomainServices.CodebookService.Api.Endpoints;
 
 internal partial class CodebookService
 {
+    public override async Task<GetDeveloperResponse> GetDeveloper(GetDeveloperRequest request, ServerCallContext context)
+    {
+        return (await _db.GetListWithParam<GetDeveloperResponse>(new { request.DeveloperId }))
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperNotFound, request.DeveloperId);
+    }
+
+    public override async Task<GetDeveloperProjectResponse> GetDeveloperProject(GetDeveloperProjectRequest request, ServerCallContext context)
+    {
+        return (await _db.GetListWithParam<GetDeveloperProjectResponse>(new { request.DeveloperProjectId, request.DeveloperId }))
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperProjectNotFound, request.DeveloperProjectId);
+    }
+
     public override async Task<GetACVAndBagmanRealEstateTypeResponse> GetACVAndBagmanRealEstateType(GetACVAndBagmanRealEstateTypeRequest request, ServerCallContext context)
     {
         return (await _db.GetFirstOrDefault<GetACVAndBagmanRealEstateTypeResponse>(new
