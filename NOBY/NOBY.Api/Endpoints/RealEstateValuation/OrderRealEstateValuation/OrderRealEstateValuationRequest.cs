@@ -43,7 +43,7 @@ public sealed class OrderRealEstateValuationLocalSurveyPerson
     /// </summary>
     /// <example>PRODAV</example>
     [Required]
-    [StringLength(1)]
+    [MinLength(1)]
     public string FunctionCode { get; set; } = string.Empty;
 
     /// <summary>
@@ -51,7 +51,7 @@ public sealed class OrderRealEstateValuationLocalSurveyPerson
     /// </summary>
     /// <example>Jidáš</example>
     [Required]
-    [StringLength(1)]
+    [MinLength(1)]
     public string FirstName { get; set; } = string.Empty;
 
     /// <summary>
@@ -59,7 +59,7 @@ public sealed class OrderRealEstateValuationLocalSurveyPerson
     /// </summary>
     /// <example>Skočdopole</example>
     [Required]
-    [StringLength(1)]
+    [MinLength(1)]
     public string LastName { get; set; } = string.Empty;
 
     [Required]
