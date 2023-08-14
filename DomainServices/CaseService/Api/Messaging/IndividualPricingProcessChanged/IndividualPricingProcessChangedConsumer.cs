@@ -1,5 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
+using DomainServices.CaseService.Api.Services;
 using DomainServices.CaseService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
@@ -15,19 +16,19 @@ internal sealed class IndividualPricingProcessChangedConsumer
         var token = context.CancellationToken;
         var message = context.Message;
         
-        if (!int.TryParse(context.Message.currentTask.id, out var currentTaskId))
+        if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
-            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
+            _logger.KafkaMessageCaseIdIncorrectFormat(message.@case.caseId.id);
         }
         
-        if (!long.TryParse(context.Message.@case.caseId.id, out var caseId))
+        if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
-            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
+            _logger.KafkaMessageCaseIdIncorrectFormat(message.@case.caseId.id);
         }
         
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId }, token);
         var decisionId = taskDetail.TaskDetail.PriceException.DecisionId;
-        await _activeTask.UpdateActiveTask(caseId, currentTaskId, token);
+        await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, currentTaskId, token);
 
         var flowSwitches = (message.state switch
         {
@@ -104,18 +105,19 @@ internal sealed class IndividualPricingProcessChangedConsumer
     
     private readonly IMediator _mediator;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly Services.ActiveTaskService _activeTask;
+    private readonly ActiveTasksService _activeTasksService;
     private readonly ILogger<IndividualPricingProcessChangedConsumer> _logger;
 
     public IndividualPricingProcessChangedConsumer(
         IMediator mediator,
-        Services.ActiveTaskService activeTask,
         ISalesArrangementServiceClient salesArrangementService,
+        ActiveTasksService activeTasksService,
         ILogger<IndividualPricingProcessChangedConsumer> logger)
     {
-        _activeTask = activeTask;
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
+        _activeTasksService = activeTasksService;
         _logger = logger;
+        
     }
 }

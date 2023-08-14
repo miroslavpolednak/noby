@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using DomainServices.CaseService.Api.Services;
+using MassTransit;
 
 namespace DomainServices.CaseService.Api.Messaging.CollateralValuationProcessChanged;
 
@@ -20,17 +21,17 @@ internal sealed class CollateralValuationProcessChangedConsumer
             _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
         }
         
-        await _activeTask.UpdateActiveTask(caseId, currentTaskId, token);
+        await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, currentTaskId, token);
     }
 
-    private readonly Services.ActiveTaskService _activeTask;
+    private readonly ActiveTasksService _activeTasksService;
     private readonly ILogger<CollateralValuationProcessChangedConsumer> _logger;
 
     public CollateralValuationProcessChangedConsumer(
-        Services.ActiveTaskService activeTask,
+        ActiveTasksService activeTasksService,
         ILogger<CollateralValuationProcessChangedConsumer> logger)
     {
-        _activeTask = activeTask;
+        _activeTasksService = activeTasksService;
         _logger = logger;
     }
 }
