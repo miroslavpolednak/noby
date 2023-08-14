@@ -23,7 +23,7 @@ internal sealed class CreateRealEstateValuationHandler
             ValuationStateId = 7
         };
 
-        if (caseInstance.State != (int)CaseStates.InProgress)
+        if (caseInstance.State == (int)CaseStates.InProgress)
         {
             var saInstance = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
             var developer = await _offerService.GetOfferDeveloper(saInstance.OfferId!.Value, cancellationToken);
