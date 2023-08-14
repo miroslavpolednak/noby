@@ -2919,7 +2919,7 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationRequest.ValuationTypeId">
             <summary>
-            Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
+            Název typu Ocenění nemovitosti. 1 - Online, 2 - DTS, 3 - Standard
             </summary>
         </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationLocalSurveyPerson">
