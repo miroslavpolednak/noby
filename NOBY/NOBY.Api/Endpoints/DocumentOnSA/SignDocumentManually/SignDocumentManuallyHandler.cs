@@ -17,7 +17,6 @@ namespace NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocumentManuallyRequest>
 {
     private readonly IDocumentOnSAServiceClient _documentOnSaClient;
-
     private readonly ISalesArrangementServiceClient _arrangementServiceClient;
     private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IHouseholdServiceClient _householdClient;
@@ -52,7 +51,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
 
         if (!documentOnSas.DocumentsOnSAToSign.Any(d => d.DocumentOnSAId == request.DocumentOnSAId))
         {
-            throw new NobyValidationException($"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
+            throw new NobyValidationException($"DocumentOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
         }
 
         var documentOnSa = documentOnSas.DocumentsOnSAToSign.Single(r => r.DocumentOnSAId == request.DocumentOnSAId);
@@ -101,7 +100,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
             throw new CisValidationException(90002, $"Mp products not supported (mandant {mandantId})");
         }
 
-        var (household, customersOnSa) = await GetCustomersOnSa(documentOnSa, cancellationToken);
+        var customersOnSa = await GetCustomersOnSa(documentOnSa, cancellationToken);
         foreach (var customerOnSa in customersOnSa)
         {
             var customerChangeMetadata = await GetCustomerOnSaMetadata(documentOnSa, customerOnSa, cancellationToken);
@@ -116,19 +115,6 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
                 await _customerOnSAServiceClient.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithCrs), cancellationToken);
             }
         }
-
-        // HFICH-4165
-        int flowSwitchId = household.HouseholdTypeId switch
-        {
-            (int)HouseholdTypes.Main => (int)FlowSwitches.Was3601MainChangedAfterSigning,
-            (int)HouseholdTypes.Codebtor => (int)FlowSwitches.Was3602CodebtorChangedAfterSigning,
-            _ => throw new NobyValidationException("Unsupported HouseholdType")
-        };
-
-        await _arrangementServiceClient.SetFlowSwitches(household.SalesArrangementId, new()
-                    {
-                        new() { FlowSwitchId = flowSwitchId, Value = false }
-                    }, cancellationToken);
     }
 
     private static _CustomerService.UpdateCustomerRequest MapUpdateCustomerRequest(int mandantId, CustomerDetailResponse customerDetail)
@@ -169,7 +155,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
         };
     }
 
-    private async Task<(DomainServices.HouseholdService.Contracts.Household Household, List<CustomerOnSA> Customers)> GetCustomersOnSa(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
+    private async Task<List<CustomerOnSA>> GetCustomersOnSa(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
     {
         var houseHold = await _householdClient.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken);
 
@@ -183,7 +169,7 @@ internal sealed class SignDocumentManuallyHandler : IRequestHandler<SignDocument
             customers.Add(await _customerOnSAServiceClient.GetCustomer(houseHold.CustomerOnSAId2.Value, cancellationToken));
         }
 
-        return (houseHold, customers);
+        return customers;
     }
 
     private async Task<GetCustomerChangeMetadataResponseItem> GetCustomerOnSaMetadata(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CustomerOnSA customerOnSa, CancellationToken cancellationToken)
