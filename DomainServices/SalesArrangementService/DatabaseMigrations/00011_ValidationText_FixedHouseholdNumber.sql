@@ -1,0 +1,1 @@
+UPDATE FormValidationTransformation SET Text = '{0} / Domácnost' WHERE Text = '{0} / {domacnost}'
