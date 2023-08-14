@@ -17,7 +17,7 @@ public sealed class OrderRealEstateValuationRequest
     internal int RealEstateValuationId;
 
     /// <summary>
-    /// Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
+    /// Název typu Ocenění nemovitosti. 1 - Online, 2 - DTS, 3 - Standard
     /// </summary>
     [Required]
     public RealEstateValuationTypes ValuationTypeId { get; set; }

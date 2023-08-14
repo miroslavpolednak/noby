@@ -61,7 +61,7 @@ internal sealed class ErrorCodeMapper
             { SalesArrangementIdIsEmpty, "SalesArrangementId must be > 0" },
             { OfferIdIsEmpty, "OfferId must be > 0" },
             { AlreadyLinkedToOffer, "SalesArrangement {PropertyValue} is already linked to the same Offer" },
-            { AlreadyLinkedToAnotherSA, "Offer {request.OfferId} is already linked to another SA" },
+            { AlreadyLinkedToAnotherSA, "Offer {PropertyValue} is already linked to another SA" },
             { InvalidGuaranteeDateFrom, "Old offer GuaranteeDateFrom > than new GuaranteeDateFrom" },
             { FlowSwitchesIsEmpty, "FlowSwitches collection must not be empty" },
             { RealEstateTypeIdNotFound, "RealEstateTypeId not found" },
@@ -83,7 +83,7 @@ internal sealed class ErrorCodeMapper
             { FormValidation8, "Sales arrangement households contain duplicit customers [{PropertyValue}] on sales arrangement." },
             { FormValidation9, "Income mandatory fields not provided [{PropertyValue}]." },
             { FormValidation10, "Customers [{PropertyValue}] on sales arrangement don't correspond to customers on households." },
-            { ContractNumberIsAlreadySet, "Contract number on SalesArrangement {SalesArrangementId} already exists." },
+            { ContractNumberIsAlreadySet, "Contract number on SalesArrangement {PropertyValue} already exists." },
             { NotAllCustomersOnSaAreIdentified, "Some of the CustomersOnSa are not identified." },
             { ApplicantIsNotSet, "The Applicant is not set." },
         });
