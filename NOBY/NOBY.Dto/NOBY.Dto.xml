@@ -590,11 +590,11 @@
             </summary>
             <example>S00000014139920</example>
         </member>
-        <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.SignatureType">
+        <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.SignatureTypeId">
             <summary>
-            Podepisování: způsob podpisu (0 - papírové podepisování, 1 - elektronické podepisování)
+            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
             </summary>
-            <example>0</example>
+            <example>1</example>
         </member>
         <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.Expiration">
             <summary>
