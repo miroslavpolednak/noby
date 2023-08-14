@@ -82,7 +82,7 @@ internal sealed class WorkflowMapperService
 
         return new()
         {
-            SignatureType = getSignatureType(task),
+            SignatureTypeId = task.SignatureTypeId,
             Expiration = signing.Expiration,
             FormId = signing.FormId,
             DocumentForSigning = remove1 || stateId == 2 ? "" : signing.DocumentForSigning,
@@ -162,15 +162,7 @@ internal sealed class WorkflowMapperService
             2 => _Dto.WorkflowTaskStates.Completed,
             _ => throw new ArgumentOutOfRangeException()
         };
-
-    private static _Dto.SignatureType getSignatureType(_Case.WorkflowTask task) =>
-        (SignatureTypes)task.SignatureTypeId! switch
-        {
-            SignatureTypes.Paper => _Dto.SignatureType.Paper,
-            SignatureTypes.Electronic => _Dto.SignatureType.Digital,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-
+    
     private static _Dto.WorkflowTaskStates getSignatureState(_Case.WorkflowTask task) =>
         (SignatureTypes)task.SignatureTypeId! switch
         {

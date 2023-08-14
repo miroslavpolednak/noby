@@ -59,9 +59,9 @@ public class WorkflowController : ControllerBase
     [AuthorizeCaseOwner]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(StartTaskSigning.StartTaskSigningResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task StartTaskSigning([FromRoute] long caseId, [FromRoute] long taskId)
+    public async Task<StartTaskSigning.StartTaskSigningResponse> StartTaskSigning([FromRoute] long caseId, [FromRoute] long taskId)
         => await _mediator.Send(new StartTaskSigning.StartTaskSigningRequest(caseId, taskId));
     
     /// <summary>
