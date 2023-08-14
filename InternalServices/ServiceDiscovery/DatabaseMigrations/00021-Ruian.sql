@@ -1,0 +1,6 @@
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('DEV', 'ES:RuianAddress:V1', 'https://api.fat.crem.kbcloud/v1/ruian/api', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('FAT', 'ES:RuianAddress:V1', 'https://api.fat.crem.kbcloud/v1/ruian/api', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('PREPROD', 'ES:RuianAddress:V1', 'https://api.fat.crem.kbcloud/v1/ruian/api', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('SIT1', 'ES:RuianAddress:V1', 'https://api.fat.crem.kbcloud/v1/ruian/api', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('UAT', 'ES:RuianAddress:V1', 'https://api.fat.crem.kbcloud/v1/ruian/api', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('PROD', 'ES:RuianAddress:V1', 'https://api.fat.crem.kbcloud/v1/ruian/api', 3, 0);
