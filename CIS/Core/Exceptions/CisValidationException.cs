@@ -58,6 +58,7 @@ public class CisValidationException
         if (errors is null || !errors.Any())
             throw new ArgumentNullException(nameof(errors), $"No errors has been specified when creating new CisValidationException");
 
+        // zde byl puvodne distinct, ale vypada to, ze uz dokazemem zpracovat i stejne kody chyb
         this.Errors = errors.ToArray().AsReadOnly();
     }
 }

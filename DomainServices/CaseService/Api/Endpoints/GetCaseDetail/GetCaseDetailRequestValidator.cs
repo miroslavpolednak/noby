@@ -10,9 +10,5 @@ internal sealed class GetCaseDetailRequestValidator : AbstractValidator<GetCaseD
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
-
-        RuleFor(t => t.CaseId)
-            .Must(t => t > 0)
-            .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
     }
 }
