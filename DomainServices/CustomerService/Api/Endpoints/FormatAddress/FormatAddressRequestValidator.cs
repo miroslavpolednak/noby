@@ -12,8 +12,7 @@ internal class FormatAddressRequestValidator : AbstractValidator<FormatAddressRe
             .WithErrorCode("11034");
 
         RuleFor(r => r.Address.CountryId)
-            .NotNull()
-            .GreaterThan(0)
+            .NotEmpty()
             .WithMessage("City and CountryId must not be empty")
             .WithErrorCode("11034");
     }
