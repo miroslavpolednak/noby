@@ -31,22 +31,11 @@ internal sealed class CalculateRequestMapper
         // human user instance
         if (request.UserIdentity is not null)
         {
-            try
-            {
-                var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
-                if (userInstance != null)
-                {
-                    if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                        requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
-                    else
-                        requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
-                }
-            }
-            catch (CisNotFoundException) { }
-            catch (Exception)
-            {
-                throw;
-            }    
+            var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
+            if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+            else
+                requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
         }
 
         return requestModel;

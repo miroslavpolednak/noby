@@ -10,6 +10,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, long, int, Exception> _starbuildStateUpdateFailed;
     private static readonly Action<ILogger, long, int, Exception> _starbuildStateUpdateSuccess;
     private static readonly Action<ILogger, string, Exception> _kafkaMessageCaseIdIncorrectFormat;
+    private static readonly Action<ILogger, string, Exception> _kafkaMessageCurrentTaskIdIncorrectFormat;
     private static readonly Action<ILogger, string, Exception> _kafkaMessageTaskIdSbIncorrectFormat;
     private static readonly Action<ILogger, long, Exception> _kafkaCaseIdNotFound;
     private static readonly Action<ILogger, long, Exception> _requestNotFoundInCache;
@@ -58,6 +59,11 @@ internal static class LoggerExtensions
             new EventId(LoggerEventIdCodes.KafkaMessageCaseIdIncorrectFormat, nameof(KafkaMessageCaseIdIncorrectFormat)),
             "Message CaseId {CaseId} is not in valid format");
 
+        _kafkaMessageCurrentTaskIdIncorrectFormat = LoggerMessage.Define<string>(
+            LogLevel.Error,
+            new EventId(LoggerEventIdCodes.KafkaMessageCurrentTaskIdIncorrectFormat, nameof(KafkaMessageCurrentTaskIdIncorrectFormat)),
+            "Message CurrentTaskId {CurrentTaskId} is not in valid format");
+        
         _kafkaMessageTaskIdSbIncorrectFormat = LoggerMessage.Define<string>(
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.KafkaMessageTaskIdSbIncorrectFormat, nameof(KafkaMessageTaskIdSbIncorrectFormat)),
@@ -108,6 +114,9 @@ internal static class LoggerExtensions
     public static void KafkaMessageCaseIdIncorrectFormat(this ILogger logger, string caseId)
         => _kafkaMessageCaseIdIncorrectFormat(logger, caseId, null!);
 
+    public static void KafkaMessageCurrentTaskIdIncorrectFormat(this ILogger logger, string currentTaskId)
+        => _kafkaMessageCurrentTaskIdIncorrectFormat(logger, currentTaskId, null!);
+    
     public static void KafkaMessageTaskIdSbIncorrectFormat(this ILogger logger, string caseId)
         => _kafkaMessageTaskIdSbIncorrectFormat(logger, caseId, null!);
     
