@@ -9,6 +9,6 @@ internal sealed class GetAssessmentRequestValidator
     {
         RuleFor(t => t.LoanApplicationAssessmentId)
             .NotEmpty()
-            .WithErrorCode("LoanApplicationAssessmentId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
     }
 }

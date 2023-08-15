@@ -10,21 +10,21 @@ internal sealed class CommitCaseValidator
     {
         RuleFor(t => t.RiskBusinessCaseId)
             .NotEmpty()
-            .WithErrorCode("RiskBusinessCaseId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithErrorCode("SalesArrangementId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.ProductTypeId)
             .GreaterThan(0)
-            .WithErrorCode("ProductTypeId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.FinalResult)
             .IsInEnum()
-            .WithErrorCode("FinalResult")
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError)
             .NotEqual(_V2.RiskBusinessCaseFinalResults.Unknown)
-            .WithErrorCode("FinalResult");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         When(t => t.LoanAgreement != null, () =>
         {
@@ -33,11 +33,11 @@ internal sealed class CommitCaseValidator
             {
                 x2.RuleFor(x2 => x2!.DistributionChannelId)
                 .NotEmpty()
-                .WithErrorCode("LoanAgreement.DistributionChannelId");
+                .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                 x2.RuleFor(x2 => x2!.SignatureTypeId)
                 .NotEmpty()
-                .WithErrorCode("LoanAgreement.SignatureTypeId");
+                .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
             });
         });
     }

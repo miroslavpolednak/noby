@@ -21,9 +21,16 @@ internal sealed class CalculateHandler
         // human user instance
         if (request.UserIdentity is not null)
         {
-            var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
-            if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+            try
+            {
+                var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
+                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                    requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+            }
+            catch (CisNotFoundException)
+            {
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UserNotFound, $"{request.UserIdentity.IdentityScheme}={request.UserIdentity.IdentityId}");
+            }
         }
         
         // zavolat C4M
