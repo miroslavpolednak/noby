@@ -44,42 +44,21 @@ internal sealed class CommitCaseHandler
         // human user instance
         if (request.UserIdentity != null)
         {
-            try
-            {
-                var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellationToken);
-                if (userInstance != null)
-                {
-                    if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                        requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
-                    else
-                        requestModel.Creator = userInstance.ToC4mPerson(request.UserIdentity);
-                }
-            }
-            catch (CisNotFoundException) { }
-            catch (Exception) {
-                throw;
-            }
+            var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellationToken);
+            if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+            else
+                requestModel.Creator = userInstance.ToC4mPerson(request.UserIdentity);
         }
 
         // approver
         if (request.Approver != null)
         {
-            try
-            {
-                var approverInstance = await _userService.GetUserRIPAttributes(request.Approver.IdentityId ?? "", request.Approver.IdentityScheme ?? "", cancellationToken);
-                if (approverInstance != null)
-                {
-                    if (Helpers.IsDealerSchema(approverInstance.DealerCompanyId))
-                        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ApproverEqualDealer);
-                    else
-                        requestModel.Approver = approverInstance.ToC4mPerson(request.Approver);
-                }
-            }
-            catch (CisNotFoundException) { }
-            catch (Exception)
-            {
-                throw;
-            }
+            var approverInstance = await _userService.GetUserRIPAttributes(request.Approver.IdentityId ?? "", request.Approver.IdentityScheme ?? "", cancellationToken);
+            if (Helpers.IsDealerSchema(approverInstance.DealerCompanyId))
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.ApproverEqualDealer);
+            else
+                requestModel.Approver = approverInstance.ToC4mPerson(request.Approver);
         }
 
         //C4M
