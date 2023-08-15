@@ -86,10 +86,6 @@ internal sealed class ErrorCodeMapper
             { ContractNumberIsAlreadySet, "Contract number on SalesArrangement {PropertyValue} already exists." },
             { NotAllCustomersOnSaAreIdentified, "Some of the CustomersOnSa are not identified." },
             { ApplicantIsNotSet, "The Applicant is not set." },
-
-            
-
-            
         });
 
         return Messages;
