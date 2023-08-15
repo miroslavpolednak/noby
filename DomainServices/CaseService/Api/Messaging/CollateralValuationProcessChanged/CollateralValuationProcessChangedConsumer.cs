@@ -11,14 +11,14 @@ internal sealed class CollateralValuationProcessChangedConsumer
         var token = context.CancellationToken;
         var message = context.Message;
         
-        if (!int.TryParse(context.Message.currentTask.id, out var currentTaskId))
+        if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
-            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
+            _logger.KafkaMessageCurrentTaskIdIncorrectFormat(message.currentTask.id);
         }
         
-        if (!long.TryParse(context.Message.@case.caseId.id, out var caseId))
+        if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
-            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
+            _logger.KafkaMessageCaseIdIncorrectFormat(message.@case.caseId.id);
         }
         
         await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, currentTaskId, token);

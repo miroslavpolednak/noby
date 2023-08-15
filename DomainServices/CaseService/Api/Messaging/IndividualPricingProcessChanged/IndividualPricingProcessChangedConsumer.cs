@@ -18,7 +18,7 @@ internal sealed class IndividualPricingProcessChangedConsumer
         
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
-            _logger.KafkaMessageCaseIdIncorrectFormat(message.@case.caseId.id);
+            _logger.KafkaMessageCurrentTaskIdIncorrectFormat(message.currentTask.id);
         }
         
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
