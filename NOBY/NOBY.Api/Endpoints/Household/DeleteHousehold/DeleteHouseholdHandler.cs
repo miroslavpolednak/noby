@@ -1,6 +1,5 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.HouseholdService.Clients;
-using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 

@@ -8,15 +8,19 @@ internal static class Extensions
     public static GetHouseholdResponse ToApiResponse(this __Contracts.Household household)
         => new GetHouseholdResponse
         {
+            HouseholdId = household.HouseholdId,
+            SalesArrangementId = household.SalesArrangementId,
+            CaseId = household.CaseId,
             Data = household.Data?.mapData(),
-            Expenses = household.Expenses?.mapExpenses(),
-            HouseholdId = household.HouseholdId
+            Expenses = household.Expenses?.mapExpenses()
         };
 
     public static CustomerInHousehold? ToApiResponse(this __Contracts.CustomerOnSA model)
         => new CustomerInHousehold()
         {
             CustomerOnSAId = model.CustomerOnSAId,
+            SalesArrangementId = model.SalesArrangementId,
+            CaseId = model.CaseId,
             Identities = model.CustomerIdentifiers?.Select(t => new CIS.Foms.Types.CustomerIdentity(t.IdentityId, (int)t.IdentityScheme)).ToList(),
             FirstName = model.FirstNameNaturalPerson,
             LastName = model.Name,

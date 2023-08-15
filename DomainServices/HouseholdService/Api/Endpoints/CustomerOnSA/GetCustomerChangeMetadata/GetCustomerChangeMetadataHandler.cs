@@ -11,13 +11,15 @@ internal sealed class GetCustomerChangeMetadataHandler
             .Customers
             .AsNoTracking()
             .Where(t => t.SalesArrangementId == request.SalesArrangementId && t.ChangeMetadataBin != null)
-            .Select(t => new { t.CustomerOnSAId, t.ChangeMetadataBin })
+            .Select(t => new { t.CustomerOnSAId, t.SalesArrangementId, t.CaseId, t.ChangeMetadataBin })
             .ToListAsync(cancellationToken);
 
         GetCustomerChangeMetadataResponse response = new();
         response.CustomersOnSAMetadata.AddRange(customers.Select(t => new GetCustomerChangeMetadataResponse.Types.GetCustomerChangeMetadataResponseItem
         {
             CustomerOnSAId = t.CustomerOnSAId,
+            SalesArrangementId = t.SalesArrangementId,
+            CaseId = t.CaseId,
             CustomerChangeMetadata = CustomerChangeMetadata.Parser.ParseFrom(t.ChangeMetadataBin)
         }));
 

@@ -64,6 +64,8 @@ internal sealed class CreateHouseholdHandler
         return new Dto.HouseholdInList
         {
             HouseholdId = householdId,
+            SalesArrangementId = saInstance.SalesArrangementId,
+            CaseId = saInstance.CaseId,
             HouseholdTypeId = request.HouseholdTypeId,
             HouseholdTypeName = householdType.Name
         };
