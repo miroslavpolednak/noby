@@ -5,4 +5,8 @@ internal class ErrorModel
     public int? Category { get; set; }
     public string? Code { get; set; }
     public string? Message { get; set; }
+
+    public string FullMessage {
+        get => $"{Code} with Message:{Message}";
+    }
 }

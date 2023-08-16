@@ -8,8 +8,8 @@ internal sealed class RealRiskBusinessCaseClient
     public async Task<Contracts.RiskBusinessCase> CreateCase(Create request, CancellationToken cancellationToken)
     {
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + _createCaseUrl, request, cancellationToken)
-            .ConfigureAwait(false); ;
+            .PostAsJsonAsync(_httpClient.BaseAddress + _createCaseUrl, request, cancellationToken);
+            //.ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.RiskBusinessCase>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CreateCase), nameof(Contracts.RiskBusinessCase));
@@ -20,8 +20,8 @@ internal sealed class RealRiskBusinessCaseClient
     public async Task<LoanApplicationAssessment> CreateCaseAssessment(string riskBusinessCaseId, LoanApplicationAssessmentCreate request, CancellationToken cancellationToken)
     {
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + string.Format(default, _createCaseAssessmentUrl, riskBusinessCaseId), request, cancellationToken)
-            .ConfigureAwait(false); ;
+            .PostAsJsonAsync(_httpClient.BaseAddress + string.Format(default, _createCaseAssessmentUrl, riskBusinessCaseId), request, cancellationToken);
+            //.ConfigureAwait(false); ;
 
         var result = await response.Content.ReadFromJsonAsync<LoanApplicationAssessment>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(LoanApplicationAssessment));
