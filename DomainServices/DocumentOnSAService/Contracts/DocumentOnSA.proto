@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
+import "Enums.proto";
 
 message DocumentOnSA {
 
@@ -26,4 +27,8 @@ message DocumentOnSA {
 	google.protobuf.Int32Value SignatureTypeId = 8;
 
 	google.protobuf.StringValue EArchivId  = 9;
+
+	DomainServices.DocumentOnSAService.Enums.Source Source = 10;
+
+	int32 SalesArrangementId = 11;
 }

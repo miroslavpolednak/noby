@@ -113,10 +113,7 @@ public class GetDocumentsToSignListTestsPart2 : IntegrationTestBase
         response.DocumentsOnSAToSign.Where(r => r.DocumentTypeId == DocumentTypes.PRISTOUP.ToByte() && !string.IsNullOrWhiteSpace(r.FormId)).Should().HaveCount(1);
         // One real Crs request 13
         response.DocumentsOnSAToSign.Where(r => r.DocumentTypeId == DocumentTypes.DANRESID.ToByte() && !string.IsNullOrWhiteSpace(r.FormId)).Should().HaveCount(1);
-
     }
-
-
 }
 
 public class GetDocumentsToSignListTestsPart3 : IntegrationTestBase

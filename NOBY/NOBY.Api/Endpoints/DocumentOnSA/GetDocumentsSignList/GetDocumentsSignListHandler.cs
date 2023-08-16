@@ -1,7 +1,8 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
-using _CisEnum = CIS.Foms.Enums;
+using DomainServices.SalesArrangementService.Clients;
+using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
 
@@ -9,13 +10,16 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
 {
     private readonly IDocumentOnSAServiceClient _client;
     private readonly ICodebookServiceClient _codebookServiceClient;
+    private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
 
     public GetDocumentsSignListHandler(
         IDocumentOnSAServiceClient client,
-        ICodebookServiceClient codebookServiceClient)
+        ICodebookServiceClient codebookServiceClient,
+        ISalesArrangementServiceClient salesArrangementServiceClient)
     {
         _client = client;
         _codebookServiceClient = codebookServiceClient;
+        _salesArrangementServiceClient = salesArrangementServiceClient;
     }
 
     public async Task<GetDocumentsSignListResponse> Handle(GetDocumentsSignListRequest request, CancellationToken cancellationToken)
@@ -29,9 +33,15 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
         var documentTypes = await _codebookServiceClient.DocumentTypes(cancellationToken);
         var eACodeMains = await _codebookServiceClient.EaCodesMain(cancellationToken);
         var signatureStates = await _codebookServiceClient.SignatureStatesNoby(cancellationToken);
+        // All docsOnSa have same salesArrangementId
+        var salesArrangementId = result.DocumentsOnSAToSign.FirstOrDefault()?.SalesArrangementId;
+        var salesArrangement = salesArrangementId is not null 
+              ? await _salesArrangementServiceClient.GetSalesArrangement(salesArrangementId.Value, cancellationToken) 
+              : null;
 
-        var response = new GetDocumentsSignListResponse();
-        response.Data = result.DocumentsOnSAToSign
+        var response = new GetDocumentsSignListResponse
+        {
+            Data = result.DocumentsOnSAToSign
             .Select(s => new GetDocumentsSignListData
             {
                 DocumentOnSAId = s.DocumentOnSAId,
@@ -39,19 +49,23 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 FormId = s.FormId,
                 IsSigned = s.IsSigned,
                 SignatureTypeId = s.SignatureTypeId,
-                SignatureDateTime = s.SignatureDateTime is not null ? s.SignatureDateTime.ToDateTime() : null,
-                SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new() { DocumentOnSAId = s.DocumentOnSAId, EArchivId = s.EArchivId, IsSigned = s.IsSigned }, signatureStates),
+                SignatureDateTime = s.SignatureDateTime?.ToDateTime(),
+                SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
+                {
+                    DocumentOnSAId = s.DocumentOnSAId,
+                    IsSigned = s.IsSigned,
+                    Source = s.Source.MapToCisEnum(),
+                    SalesArrangementTypeId = salesArrangement?.SalesArrangementTypeId,
+                    EArchivIdsLinked = s.EArchivIdsLinked
+                },
+              signatureStates),
                 EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(s.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains),
                 CustomerOnSAId = s.CustomerOnSAId,
                 IsPreviewSentToCustomer = s.IsPreviewSentToCustomer,
                 ExternalId = s.ExternalId,
-                Source = s.Source switch
-                {
-                    Source.Noby => _CisEnum.Source.Noby,
-                    Source.Workflow => _CisEnum.Source.Workflow,
-                    _ => _CisEnum.Source.Unknown
-                }
-            }).ToList();
+                Source = s.Source.MapToCisEnum()
+            }).ToList()
+        };
 
         return response;
     }
