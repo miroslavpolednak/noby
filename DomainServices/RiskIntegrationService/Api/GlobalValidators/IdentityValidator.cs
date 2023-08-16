@@ -8,8 +8,11 @@ internal sealed class IdentityValidator
     public IdentityValidator()
     {
         RuleFor(t => t!.IdentityId)
-            .NotEmpty();
+            .NotEmpty()
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
+
         RuleFor(t => t!.IdentityScheme)
-            .NotEmpty();
+            .NotEmpty()
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
     }
 }

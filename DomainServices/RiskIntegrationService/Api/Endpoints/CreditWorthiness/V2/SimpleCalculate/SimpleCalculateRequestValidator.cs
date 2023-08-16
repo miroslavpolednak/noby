@@ -10,33 +10,32 @@ public class SimpleCalculateRequestValidator
     {
         RuleFor(t => t.ResourceProcessId)
             .NotEmpty()
-            .WithErrorCode("ResourceProcessId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.Product)
             .Cascade(CascadeMode.Stop)
             .NotNull()
-            .WithErrorCode("Product")
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError)
             .ChildRules(t =>
             {
                 t.RuleFor(t => t!.ProductTypeId)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.ProductTypeId");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 t.RuleFor(t => t!.LoanInterestRate)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.LoanInterestRate");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 t.RuleFor(t => t!.LoanAmount)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.LoanAmount");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 t.RuleFor(t => t!.LoanPaymentAmount)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.LoanPaymentAmount");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 t.RuleFor(t => t!.FixedRatePeriod)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.FixedRatePeriod");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 t.RuleFor(t => t!.LoanDuration)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.LoanDuration");
-            })
-            .WithErrorCode("Product");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
+            });
     }
 }

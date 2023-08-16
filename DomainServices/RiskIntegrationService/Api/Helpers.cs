@@ -4,14 +4,8 @@ namespace DomainServices.RiskIntegrationService.Api;
 
 internal static class Helpers
 {
-    private static string[] _kbGroupPersonValues = new[] { "KBAD", "MPAD" };
-
     public static bool IsDealerSchema(int? dealerCompanyId)
         => dealerCompanyId != null;
-
-    [Obsolete("jeste bude upresneno co s tim")]
-    public static bool IsDealerSchema(string? schemaToCheck)
-            => string.IsNullOrEmpty(schemaToCheck) ? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.DealerSchemeIsNull) : !_kbGroupPersonValues.Contains(schemaToCheck);
 
     public static string GetResourceInstanceFromMandant(int? mandantId)
         => !mandantId.HasValue || mandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS";

@@ -9,22 +9,22 @@ internal sealed class SaveRequestHouseholdValidator
     {
         RuleFor(t => t.HouseholdId)
             .GreaterThan(0)
-            .WithErrorCode("Households.HouseholdId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleForEach(t => t.Customers)
             .ChildRules(c =>
             {
                 c.RuleFor(t  => t.InternalCustomerId)
                     .GreaterThan(0)
-                    .WithErrorCode("Households.Customers.InternalCustomerId");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                 c.RuleFor(t => t.PrimaryCustomerId)
                     .NotEmpty()
-                    .WithErrorCode("Households.Customers.PrimaryCustomerId");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                 c.RuleFor(t => t.CustomerRoleId)
                     .GreaterThan(0)
-                    .WithErrorCode("Households.Customers.CustomerRoleId");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                 When(c => c.Customers is not null, () =>
                 {
