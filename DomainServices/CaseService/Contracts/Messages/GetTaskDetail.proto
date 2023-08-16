@@ -54,6 +54,7 @@ message AmendmentRequest {
 
 message AmendmentConsultationData {
 	google.protobuf.Int64Value OrderId = 1;
+	int32 TaskSubtypeId = 2;
 }
 
 message AmendmentPriceException {

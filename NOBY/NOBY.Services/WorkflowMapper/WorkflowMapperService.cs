@@ -93,7 +93,8 @@ internal sealed class WorkflowMapperService
     
     private static _Dto.AmendmentsConsultationData mapAmendmentsConsultationData(_Case.AmendmentConsultationData consultationData) => new()
     {
-        OrderId = consultationData.OrderId
+        OrderId = consultationData.OrderId,
+        TaskSubtypeId = consultationData.TaskSubtypeId
     };
 
     private async Task<_Dto.AmendmentsPriceException> mapAmendmentsPriceException(_Case.AmendmentPriceException amendmentPriceException, CancellationToken cancellationToken)
