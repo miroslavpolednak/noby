@@ -57,7 +57,7 @@ internal static class MortgageExtensions
             ContractNumber = eLoan.CisloSmlouvy,
             LoanAmount = eLoan.VyseUveru,
             LoanInterestRate = eLoan.RadnaSazba,
-            FixedRatePeriod = eLoan.DelkaFixaceUrokoveSazby,
+            FixedRatePeriod = eLoan.PeriodaFixace,
             ProductTypeId = eLoan.KodProduktyUv.GetValueOrDefault(),
             LoanPaymentAmount = eLoan.MesicniSplatka,
             CurrentAmount = eLoan.ZustatekCelkem,
@@ -76,14 +76,14 @@ internal static class MortgageExtensions
             CurrentOverdueAmount = eLoan.CelkovyDluhPoSplatnosti,
             AllOverdueFees = eLoan.PohledavkaPoplatkyPo,
             OverdueDaysNumber = eLoan.PocetBankovnichDniPoSpl,
-            ExpectedDateOfDrawing = eLoan.DatumPrvniVyplatyZUveru,
+            ExpectedDateOfDrawing = eLoan.PredpDatum1Cerpani,
             InterestInArrears = eLoan.SazbaZProdleni,
             LoanDueDate = eLoan.DatumPredpSplatnosti,
             PaymentDay = eLoan.SplatkyDen,
             LoanInterestRateRefix = null,           // ???
             LoanInterestRateValidFromRefix = null,  // ???
             FixedRatePeriodRefix = null,            // ???
-            FirstAnnuityPaymentDate = eLoan.PocatekSplaceni,
+            FirstAnnuityPaymentDate = eLoan.Datum1AnuitniSplatky,
             RepaymentAccount = new PaymentAccount
             {
                 BankCode = eLoan.InkasoBanka ?? "",

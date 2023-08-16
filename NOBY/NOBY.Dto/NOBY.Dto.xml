@@ -502,6 +502,12 @@
             </summary>
             <example>123556</example>
         </member>
+        <member name="P:NOBY.Dto.Workflow.AmendmentsConsultationData.TaskSubtypeId">
+            <summary>
+            ID typu konzultace
+            </summary>
+            <example>1</example>
+        </member>
         <member name="P:NOBY.Dto.Workflow.AmendmentsPriceException.Expiration">
             <summary>
             Cenová výjimka: Platnost cenové výjimky
