@@ -22,6 +22,7 @@ using static ExternalServices.ESignatures.Dto.PrepareDocumentRequest;
 using CIS.Foms.Types;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.Infrastructure.gRPC;
+using DomainServices.DocumentOnSAService.Api.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
@@ -261,6 +262,8 @@ public class StartSigningMapper
                 IsArchived = documentOnSaEntity.IsArchived,
                 EArchivId = documentOnSaEntity.EArchivId,
                 SignatureTypeId = documentOnSaEntity.SignatureTypeId,
+                Source = documentOnSaEntity.Source.MapToContractEnum(),
+                SalesArrangementId = documentOnSaEntity.SalesArrangementId
             }
         };
     }

@@ -91,3 +91,27 @@ public async Task Handle(T request, CancellationToken cancellationToken)
     var household = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
 }
 ```
+
+## Kešování entit
+V některých Clients projektech je implementováno velmi jednoduché kešování.
+V základu jde o to, že některé entity, mohou být v rámci jednoho scope požadovány na více místech aplikace.
+Aby se ušetřil další request na doménovou službu, Clients projekt si nakešuje danou entitu do privátní proměnné a drží ji po dobu trvání requestu (klient je implementován jako Scoped Service).
+
+Toto kešování používáme pro GET detailu hlavních entit doménové služby (zatím).
+
+Příklad implementace kešování:
+```csharp
+internal sealed class CaseServiceClient : ICaseServiceClient
+{
+    private Case? _cacheGetCaseDetail;
+
+    public async Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default)
+    {
+        if (_cacheGetCaseDetail is null || _cacheGetCaseDetail.CaseId != caseId)
+        {
+            _cacheGetCaseDetail = ...
+        }
+        return _cacheGetCaseDetail;
+    }
+}
+```
