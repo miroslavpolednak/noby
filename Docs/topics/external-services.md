@@ -164,3 +164,5 @@ static IExternalServiceConfiguration<TClient> AddExternalServiceConfiguration<TC
 [Jak implementovat proxy projekt (REST služba)?](./external-services-rest.md)
 
 [Jak implementovat proxy projekt (SOAP služba)?](./external-services-soap.md)
+
+[Implementace SOAP klienta](./soap-client.md)
