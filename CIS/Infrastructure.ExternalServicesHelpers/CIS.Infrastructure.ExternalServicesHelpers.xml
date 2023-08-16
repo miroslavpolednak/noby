@@ -42,9 +42,19 @@
         </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.RequestTimeout">
             <summary>
-            Default request timeout in seconds
+            Default single request timeout in seconds
             </summary>
             <remarks>Default is set to 10 seconds</remarks>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.RequestRetryCount">
+            <summary>
+            Pokud první request timeoutuje, zkus ještě X opakovat
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.RequestRetryTimeout">
+            <summary>
+            Mezi jednotlivými opakováními počkej X sekund
+            </summary>
         </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.ServiceUrl">
             <summary>

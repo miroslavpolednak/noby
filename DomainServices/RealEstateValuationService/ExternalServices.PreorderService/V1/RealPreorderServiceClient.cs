@@ -36,38 +36,34 @@ internal sealed class RealPreorderServiceClient
             };
     }
 
-    public async Task<OrderOnlineResponse> OrderOnline(Contracts.OnlineMPRequestDTO request, CancellationToken cancellationToken)
+    public async Task<OrderResponse> CreateOrder(object request, CancellationToken cancellationToken = default)
     {
+        var (path, errorCode) = getInfo();
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + "/order/online", request, cancellationToken)
-            .ConfigureAwait(false);
-
-        var acvResponse = await response.EnsureSuccessStatusAndReadJson<Contracts.OrderDTO>(StartupExtensions.ServiceName,new Dictionary<HttpStatusCode, int>
-        {
-            { HttpStatusCode.BadRequest, ErrorCodeMapper.OrderOnlineBadRequest }
-        }, cancellationToken);
-
-        return new OrderOnlineResponse
-        {
-            OrderId = acvResponse.StatusDetails.OrderId
-        };
-    }
-
-    public async Task<OrderOnlineResponse> OrderStandard(Contracts.StandardOrderRequestDTO request, CancellationToken cancellationToken)
-    {
-        var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + "/order/standard", request, cancellationToken)
+            .PostAsJsonAsync(_httpClient.BaseAddress + path, request, cancellationToken)
             .ConfigureAwait(false);
 
         var acvResponse = await response.EnsureSuccessStatusAndReadJson<Contracts.OrderDTO>(StartupExtensions.ServiceName, new Dictionary<HttpStatusCode, int>
         {
-            { HttpStatusCode.BadRequest, ErrorCodeMapper.OrderStandardBadRequest }
+            { HttpStatusCode.BadRequest, errorCode }
         }, cancellationToken);
 
-        return new OrderOnlineResponse
+        return new OrderResponse
         {
             OrderId = acvResponse.StatusDetails.OrderId
         };
+
+        (string Path, int ErrorCode) getInfo()
+        {
+            return request switch
+            {
+                Contracts.OnlineMPRequestDTO => ("/order/online", ErrorCodeMapper.OrderOnlineBadRequest),
+                Contracts.StandardOrderRequestDTO => ("/order/standard", ErrorCodeMapper.OrderStandardBadRequest),
+                Contracts.DtsFlatRequest => ("/order/dts/flat", ErrorCodeMapper.OrderDtsBadRequest),
+                Contracts.DtsHouseRequest => ("/order/dts/house", ErrorCodeMapper.OrderDtsBadRequest),
+                _ => throw new NotImplementedException("Unknown request DTO for Order")
+            };
+        }
     }
 
     public async Task<long> UploadAttachment(string title, string category, string fileName, string mimeType, byte[] fileData, CancellationToken cancellationToken = default)

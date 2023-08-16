@@ -23,7 +23,5 @@ public interface IPreorderServiceClient
 
     Task DeleteAttachment(long externalId, CancellationToken cancellationToken = default);
 
-    Task<OrderOnlineResponse> OrderOnline(Contracts.OnlineMPRequestDTO request, CancellationToken cancellationToken);
-
-    Task<OrderOnlineResponse> OrderStandard(Contracts.StandardOrderRequestDTO request, CancellationToken cancellationToken);
+    Task<OrderResponse> CreateOrder(object request, CancellationToken cancellationToken = default);
 }
