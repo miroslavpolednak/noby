@@ -22,6 +22,7 @@ public class GetDocumentsOnSAListHandler : IRequestHandler<GetDocumentsOnSAListR
     {
         var documentsOnSaRealEntity = await _dbContext.DocumentOnSa
                                                    .AsNoTracking()
+                                                   .Include(i => i.EArchivIdsLinkeds)
                                                    .Where(e => e.SalesArrangementId == request.SalesArrangementId)
                                                    .ToListAsync(cancellationToken);
 

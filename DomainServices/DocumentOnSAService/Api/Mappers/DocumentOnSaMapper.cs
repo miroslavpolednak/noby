@@ -2,11 +2,11 @@
 using CIS.Foms.Enums;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
+using DomainServices.DocumentOnSAService.Api.Extensions;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;
-using Source = DomainServices.DocumentOnSAService.Contracts.Source;
 
 namespace DomainServices.DocumentOnSAService.Api.Mappers;
 
@@ -47,17 +47,13 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
                 SignatureConfirmedBy = documentOnSa.SignatureConfirmedBy,
                 IsFinal = documentOnSa.IsFinal,
                 SignatureTypeId = documentOnSa.SignatureTypeId,
-                Source = documentOnSa.Source switch
-                {
-                    Database.Enums.Source.Noby => Source.Noby,
-                    Database.Enums.Source.Workflow => Source.Workflow,
-                    _ => Source.Unknown
-                },
+                Source = documentOnSa.Source.MapToContractEnum(),
                 CustomerOnSAId = documentOnSa.CustomerOnSAId1,
                 IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer,
                 TaskId = documentOnSa.TaskId,
                 CaseId = documentOnSa.CaseId,
-                ExternalId = documentOnSa.ExternalId
+                ExternalId = documentOnSa.ExternalId,
+                EArchivIdsLinked = { documentOnSa.EArchivIdsLinkeds.Select(s => s.EArchivId) },
             };
         }
     }
