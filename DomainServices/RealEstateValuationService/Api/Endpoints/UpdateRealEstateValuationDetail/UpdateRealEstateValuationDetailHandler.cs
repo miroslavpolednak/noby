@@ -21,6 +21,16 @@ internal sealed class UpdateRealEstateValuationDetailHandler
         realEstate.RealEstateStateId = request.RealEstateStateId;
         realEstate.RealEstateSubtypeId = request.RealEstateSubtypeId;
 
+        // zatim takto, v budoucnu refaktorovat s ohledem na dalsi nove pridana pole?
+        if (request.Documents?.Any() ?? false)
+        {
+            realEstate.Documents = Newtonsoft.Json.JsonConvert.SerializeObject(request.Documents);
+        }
+        else
+        {
+            realEstate.Documents = null;
+        }
+
         if (request.LoanPurposeDetails is null)
         {
             realEstate.LoanPurposeDetails = null!;
@@ -31,7 +41,7 @@ internal sealed class UpdateRealEstateValuationDetailHandler
             realEstate.LoanPurposeDetails = Newtonsoft.Json.JsonConvert.SerializeObject(request.LoanPurposeDetails);
             realEstate.LoanPurposeDetailsBin = request.LoanPurposeDetails.ToByteArray();
         }
-
+        
         switch (request.SpecificDetailCase)
         {
             case UpdateRealEstateValuationDetailRequest.SpecificDetailOneofCase.HouseAndFlatDetails:

@@ -34,4 +34,7 @@ internal sealed class RealEstateValuation
     public byte[]? LoanPurposeDetailsBin { get; set; }
     public string? SpecificDetail { get; set; }
     public byte[]? SpecificDetailBin { get; set; }
+    // zatim dam jako samostatne pole na Json data, ale casem sloucit treba s LoanPurposeDetails a nejakymi dalsimi poli, ktera pribudou
+    // tezko rict, kdyz nevime jak ten objekt ma ve finale vypadat a dostavame zadani po kouskach
+    public string? Documents { get; set; }
 }
