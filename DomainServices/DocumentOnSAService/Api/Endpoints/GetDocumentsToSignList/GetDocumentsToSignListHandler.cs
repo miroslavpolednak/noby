@@ -51,7 +51,9 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
         var documentOnSaEntities = await _dbContext.DocumentOnSa
-                                                  .Where(e => e.SalesArrangementId == request.SalesArrangementId
+            .AsNoTracking()
+            .Include(i => i.EArchivIdsLinkeds)
+            .Where(e => e.SalesArrangementId == request.SalesArrangementId
                                                               && e.IsValid
                                                               && e.IsFinal == false)
                                                   .ToListAsync(cancellationToken);
@@ -74,7 +76,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
 
         // Evaluate eletronic signature status 
         await EvaluateElectronicDocumentStatus(documentOnSaEntities, cancellationToken);
-        
+
         return response;
     }
 
@@ -189,9 +191,6 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
                     throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedStatusReturnedFromESignature, elDocumentStatus);
             }
         }
-
-        if (_dbContext.ChangeTracker.HasChanges())
-            await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private async Task<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
