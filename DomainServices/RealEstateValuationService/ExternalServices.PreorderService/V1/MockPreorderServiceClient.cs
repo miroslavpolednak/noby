@@ -7,22 +7,17 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
 internal sealed class MockPreorderServiceClient
     : IPreorderServiceClient
 {
+    public Task<OrderResponse> CreateOrder(object request, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task DeleteAttachment(long externalId, CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
     }
 
     public Task<List<RealEstateValuationTypes>> GetValuationTypes(AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<OrderOnlineResponse> OrderOnline(OnlineMPRequestDTO request, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<OrderOnlineResponse> OrderStandard(StandardOrderRequestDTO request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

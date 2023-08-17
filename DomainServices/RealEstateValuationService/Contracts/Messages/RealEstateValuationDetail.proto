@@ -29,6 +29,7 @@ message RealEstateValuationDetail {
     repeated RealEstateValuationAttachment Attachments = 19;
     google.protobuf.Int64Value PreorderId = 20;
     google.protobuf.StringValue BagmanRealEstateTypeId = 21;
+    repeated RealEstateValuationDocument Documents = 22;
 
     oneof SpecificDetail {
         SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 50;
