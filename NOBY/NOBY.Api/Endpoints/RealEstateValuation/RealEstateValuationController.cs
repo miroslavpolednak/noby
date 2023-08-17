@@ -318,7 +318,6 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/order")]
     [AuthorizeCaseOwner]
-    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano, RealEstateValuationStates.DoplneniDokumentu)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

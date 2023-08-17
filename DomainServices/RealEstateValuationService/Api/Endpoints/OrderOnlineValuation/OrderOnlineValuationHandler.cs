@@ -14,12 +14,6 @@ internal sealed class OrderOnlineValuationHandler
     {
         var (entity, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
 
-        // validace
-        if (!entity.PreorderId.HasValue || entity.OrderId.HasValue || entity.ValuationStateId != (int)RealEstateValuationStates.DoplneniDokumentu)
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.OrderCustomValidationFailed);
-        }
-
         // klient
         var customer = await _customerService.GetCustomerDetail(caseInstance.Customer.Identity, cancellationToken);
         // instance uzivatele

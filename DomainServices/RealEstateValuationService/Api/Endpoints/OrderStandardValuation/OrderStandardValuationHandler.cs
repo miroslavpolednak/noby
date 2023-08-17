@@ -14,12 +14,6 @@ internal sealed class OrderStandardValuationHandler
     {
         var (entity, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
 
-        // validace
-        if (entity.OrderId.HasValue || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(entity.ValuationStateId))
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.OrderCustomValidationFailed);
-        }
-
         // detail oceneni
         var houseAndFlat = OrderAggregate.GetHouseAndFlat(entity);
         // instance uzivatele

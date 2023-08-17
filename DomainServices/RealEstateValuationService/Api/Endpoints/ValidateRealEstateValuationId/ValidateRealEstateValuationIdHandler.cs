@@ -12,7 +12,7 @@ internal sealed class ValidateRealEstateValuationIdHandler
             .RealEstateValuations
             .AsNoTracking()
             .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
-            .Select(t => new { t.CaseId, t.ValuationStateId })
+            .Select(t => new { t.CaseId, t.ValuationStateId, t.OrderId, t.PreorderId })
             .FirstOrDefaultAsync(cancellationToken);
 
         if (request.ThrowExceptionIfNotFound && entity is null)
@@ -24,7 +24,9 @@ internal sealed class ValidateRealEstateValuationIdHandler
         {
             Exists = entity != null,
             CaseId = entity?.CaseId,
-            ValuationStateId = entity?.ValuationStateId
+            ValuationStateId = entity?.ValuationStateId,
+            OrderId = entity?.OrderId,
+            PreorderId = entity?.PreorderId
         };
     }
 
