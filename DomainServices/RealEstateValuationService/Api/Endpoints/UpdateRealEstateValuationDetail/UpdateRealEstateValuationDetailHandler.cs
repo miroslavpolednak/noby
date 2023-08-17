@@ -37,16 +37,6 @@ internal sealed class UpdateRealEstateValuationDetailHandler
         realEstate.RealEstateStateId = request.RealEstateStateId;
         realEstate.RealEstateSubtypeId = request.RealEstateSubtypeId;
 
-        // zatim takto, v budoucnu refaktorovat s ohledem na dalsi nove pridana pole?
-        if (request.Documents?.Any() ?? false)
-        {
-            realEstate.Documents = Newtonsoft.Json.JsonConvert.SerializeObject(request.Documents);
-        }
-        else
-        {
-            realEstate.Documents = null;
-        }
-
         if (request.LoanPurposeDetails is null)
         {
             realEstate.LoanPurposeDetails = null!;

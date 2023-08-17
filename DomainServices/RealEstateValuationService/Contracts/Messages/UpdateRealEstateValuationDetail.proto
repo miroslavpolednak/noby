@@ -12,7 +12,6 @@ message UpdateRealEstateValuationDetailRequest {
     google.protobuf.StringValue Address = 4;
     google.protobuf.Int32Value RealEstateSubtypeId = 5;
     LoanPurposeDetailsObject LoanPurposeDetails = 6;
-    repeated RealEstateValuationDocument Documents = 7;
     oneof SpecificDetail {
         SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 20;
         SpecificDetailParcelObject ParcelDetails = 21;
