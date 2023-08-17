@@ -57,7 +57,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
             .Single(s => s.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest);
 
         var salesArrangement = salesArrangementsResponse.SalesArrangements
-            .Single(s => s.SalesArrangementTypeId != salesArrangementType.Id);
+            .Single(s => s.SalesArrangementTypeId == salesArrangementType.Id);
 
         return salesArrangement;
     }
