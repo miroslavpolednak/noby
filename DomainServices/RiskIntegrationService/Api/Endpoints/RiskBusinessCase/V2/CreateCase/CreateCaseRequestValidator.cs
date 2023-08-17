@@ -9,6 +9,6 @@ internal sealed class CreateCaseRequestValidator
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithErrorCode("SalesArrangementId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
     }
 }

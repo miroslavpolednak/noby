@@ -53,4 +53,6 @@ message DocumentOnSAToSign {
 
 	google.protobuf.StringValue ExternalId = 22;
 
+	repeated string EArchivIdsLinked = 23;
+
 }

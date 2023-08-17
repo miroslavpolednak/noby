@@ -60,15 +60,19 @@ internal sealed class OrderAggregate
         return (entity, realEstateIds, attachments, caseInstance, addressPointId);
     }
 
-    public async Task SaveResults(Database.Entities.RealEstateValuation entity, long orderId, OrdersStandard? data, CancellationToken cancellationToken)
+    public async Task SaveResults(
+        Database.Entities.RealEstateValuation entity, 
+        long orderId,
+        RealEstateValuationStates newValuationState,
+        OrdersStandard? data, 
+        CancellationToken cancellationToken)
     {
         // ulozeni vysledku
         entity.OrderId = orderId;
         entity.ValuationSentDate = _dbContext.CisDateTime.Now;
-        entity.ValuationStateId = (int)RealEstateValuationStates.Dokonceno;
+        entity.ValuationStateId = (int)newValuationState;
 
-        // if revaluation
-        if (entity.IsRevaluationRequired && data is not null)
+        if (data is not null)
         {
             var orderEntity = new Database.Entities.RealEstateValuationOrder
             {

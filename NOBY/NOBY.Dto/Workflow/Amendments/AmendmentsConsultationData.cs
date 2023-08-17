@@ -10,4 +10,10 @@ public class AmendmentsConsultationData
     /// </summary>
     /// <example>123556</example>
     public long? OrderId { get; set; }
+
+    /// <summary>
+    /// ID typu konzultace
+    /// </summary>
+    /// <example>1</example>
+    public int TaskSubtypeId { get; set; }
 }

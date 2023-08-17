@@ -142,7 +142,8 @@ internal static class CaseExtensions
                 case 3 when _allowedConsultationTypes.Contains(taskData.GetNInteger("ukol_konzultace_oblast").GetValueOrDefault()):
                     taskDetail.ConsultationData = new()
                     {
-                        OrderId = taskData.GetNInteger("ukol_konzultace_order_id")
+                        OrderId = taskData.GetNInteger("ukol_konzultace_order_id"),
+                        TaskSubtypeId = taskData.GetInteger("ukol_konzultace_oblast")
                     };
                     break;
             }

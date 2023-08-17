@@ -14,7 +14,7 @@ internal sealed class SaveRequestHouseholdCustomerValidator
                 {
                     t.RuleFor(x => x!.IdentificationDocumentTypeId)
                         .GreaterThan(0)
-                        .WithErrorCode("Households.Customers.IdentificationDocument.IdentificationDocumentTypeId");
+                        .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 });
         });
 
@@ -25,7 +25,7 @@ internal sealed class SaveRequestHouseholdCustomerValidator
                 {
                     t.RuleFor(x => x.ObligationTypeId)
                         .GreaterThan(0)
-                        .WithErrorCode("Households.Customers.");
+                        .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 });
         });
 
@@ -43,13 +43,13 @@ internal sealed class SaveRequestHouseholdCustomerValidator
                                 {
                                     x.RuleFor(t => t.MonthlyIncomeAmount!.Amount)
                                         .GreaterThan(0)
-                                        .WithErrorCode("Households.Customers.EmploymentIncomes.MonthlyAmount.Amount");
+                                        .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                                 });
 
                                 x.RuleFor(x => x.EmployerName)
                                 .Cascade(CascadeMode.Stop)
                                 .NotEmpty()
-                                .WithErrorCode("Households.Customers.EmploymentIncomes.EmployerName");
+                                .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                             });
                     });
 
@@ -60,17 +60,17 @@ internal sealed class SaveRequestHouseholdCustomerValidator
                             {
                                 x.RuleFor(x2 => x2.IncomeOtherTypeId)
                                     .GreaterThan(0)
-                                    .WithErrorCode("Households.Customers.OtherIncomes.IncomeOtherTypeId");
+                                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                                 x.RuleFor(x2 => x2.MonthlyIncomeAmount)
                                     .Cascade(CascadeMode.Stop)
                                     .NotNull()
-                                    .WithErrorCode("Households.Customers.OtherIncomes.MonthlyAmount")
+                                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError)
                                     .ChildRules(x3 =>
                                     {
                                         x3.RuleFor(t => t.Amount)
                                             .GreaterThan(0)
-                                            .WithErrorCode("Households.Customers.OtherIncomes.MonthlyAmount.Amount");
+                                            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                                     });
                             });
                     });

@@ -32,8 +32,6 @@ internal class RealRuianAddressClient : IRuianAddressClient
 
         var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}/addresses/find", queryBuilder!), cancellationToken);
 
-        var test = await response.Content.ReadAsStringAsync(cancellationToken);
-
         var pagedResult = await response.EnsureSuccessStatusAndReadJson<Contracts.AddressDTOPagedResponse>(StartupExtensions.ServiceName, cancellationToken);
 
         return pagedResult.Items ?? new Collection<Contracts.AddressDTO>();

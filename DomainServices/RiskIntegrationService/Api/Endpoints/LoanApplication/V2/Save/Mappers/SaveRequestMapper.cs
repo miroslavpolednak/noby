@@ -58,11 +58,18 @@ internal sealed class SaveRequestMapper
         // human user instance
         if (request.UserIdentity is not null)
         {
-            var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
-            if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
-            else
-                requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
+            try
+            {
+                var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
+                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                    requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+                else
+                    requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
+            }
+            catch (CisNotFoundException)
+            {
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UserNotFound, $"{request.UserIdentity.IdentityScheme}={request.UserIdentity.IdentityId}");
+            }
         }
 
         return requestModel;

@@ -45,7 +45,7 @@ internal sealed class SalesArrangementService
 
     public async Task<SalesArrangement> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        if (_cacheGetSalesArrangement is null)
+        if (_cacheGetSalesArrangement is null || _cacheGetSalesArrangement.SalesArrangementId != salesArrangementId)
         {
             _cacheGetSalesArrangement = await _service.GetSalesArrangementAsync(
                 new()
