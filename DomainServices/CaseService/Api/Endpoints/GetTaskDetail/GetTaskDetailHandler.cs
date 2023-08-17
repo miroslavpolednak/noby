@@ -99,7 +99,7 @@ internal sealed class GetTaskDetailHandler
                 taskDetail.TaskCommunication.Add(new TaskCommunicationItem
                 {
                     TaskResponse = matches[i].Groups[1].Value.Trim(),
-                    TaskRequest = matches.Count > i + 1 ? matches[i + 1].Groups[1].Value.Trim() : string.Empty
+                    TaskRequest = matches.Count > i + 1 ? matches[i + 1].Groups[1].Value.Trim() : default
                 });
             }
         }
