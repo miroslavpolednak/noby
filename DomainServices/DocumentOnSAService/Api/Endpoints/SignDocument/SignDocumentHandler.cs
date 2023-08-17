@@ -8,6 +8,7 @@ using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
@@ -25,12 +26,12 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserAccessor _currentUser;
-    private readonly ISalesArrangementServiceClient _arrangementServiceClient;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IEasClient _easClient;
     private readonly ISulmClientHelper _sulmClientHelper;
-    private readonly IHouseholdServiceClient _householdClient;
-    private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
-    private readonly IProductServiceClient _productServiceClient;
+    private readonly IHouseholdServiceClient _householdService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly IProductServiceClient _productService;
     private readonly IAuditLogger _auditLogger;
     private readonly ISalesArrangementStateManager _salesArrangementStateManager;
 
@@ -38,24 +39,24 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         DocumentOnSAServiceDbContext dbContext,
         IDateTime dateTime,
         ICurrentUserAccessor currentUser,
-        ISalesArrangementServiceClient arrangementServiceClient,
+        ISalesArrangementServiceClient salesArrangementService,
         IEasClient easClient,
         ISulmClientHelper sulmClientHelper,
-        IHouseholdServiceClient householdClient,
-        ICustomerOnSAServiceClient customerOnSAServiceClient,
-        IProductServiceClient productServiceClient,
+        IHouseholdServiceClient householdService,
+        ICustomerOnSAServiceClient customerOnSaService,
+        IProductServiceClient productService,
         IAuditLogger auditLogger,
         ISalesArrangementStateManager salesArrangementStateManager)
     {
         _dbContext = dbContext;
         _dateTime = dateTime;
         _currentUser = currentUser;
-        _arrangementServiceClient = arrangementServiceClient;
+        _salesArrangementService = salesArrangementService;
         _easClient = easClient;
         _sulmClientHelper = sulmClientHelper;
-        _householdClient = householdClient;
-        _customerOnSAServiceClient = customerOnSAServiceClient;
-        _productServiceClient = productServiceClient;
+        _householdService = householdService;
+        _customerOnSAService = customerOnSaService;
+        _productService = productService;
         _auditLogger = auditLogger;
         _salesArrangementStateManager = salesArrangementStateManager;
     }
@@ -70,7 +71,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         if (documentOnSa.IsSigned)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AlreadySignedDocumentOnSA, request.DocumentOnSAId!.Value);
 
-        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
+        var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
         if (salesArrangement.State != SalesArrangementStates.InSigning.ToByte())
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
@@ -88,9 +89,29 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()) // 4
             await UpdateFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
 
+        var houseHold = documentOnSa.HouseholdId.HasValue
+            ? await _householdService.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken)
+            : null;
+        
         // SUML call
         if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()) // 4 
-            await SumlCall(documentOnSa, cancellationToken);
+            await SumlCall(documentOnSa, houseHold!, cancellationToken);
+
+        // set flow switches
+        if (houseHold is not null)
+        {
+            var flowSwitchId = houseHold.HouseholdTypeId switch
+            {
+                (int)HouseholdTypes.Main => FlowSwitches.Was3601MainChangedAfterSigning,
+                (int)HouseholdTypes.Codebtor => FlowSwitches.Was3602CodebtorChangedAfterSigning,
+                _ => throw new CisValidationException("Unsupported HouseholdType")
+            };
+        
+            await _salesArrangementService.SetFlowSwitches(houseHold.SalesArrangementId, new()
+            {
+                new() { FlowSwitchId = (int)flowSwitchId, Value = false }
+            }, cancellationToken);
+        }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         
@@ -122,7 +143,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     {
         //SalesArrangement parameters
         salesArrangement.Mortgage.FirstSignatureDate = signatureDate;
-        await _arrangementServiceClient.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
+        await _salesArrangementService.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
             Mortgage = salesArrangement.Mortgage
@@ -130,18 +151,17 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             cancellationToken);
 
         //KonsDb 
-        var mortgageResponse = await _productServiceClient.GetMortgage(salesArrangement.CaseId, cancellationToken);
+        var mortgageResponse = await _productService.GetMortgage(salesArrangement.CaseId, cancellationToken);
         mortgageResponse.Mortgage.FirstSignatureDate = signatureDate;
 
-        await _productServiceClient.UpdateMortgage(new UpdateMortgageRequest { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
+        await _productService.UpdateMortgage(new UpdateMortgageRequest { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
-    private async Task SumlCall(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
+    private async Task SumlCall(DocumentOnSa documentOnSa, Household houseHold, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
+        var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
         if (salesArrangement.IsProductSalesArrangement())
         {
-            var houseHold = await _householdClient.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken);
             await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId1!.Value, cancellationToken);
 
             if (houseHold.CustomerOnSAId2 is not null)
@@ -153,7 +173,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     private async Task SumlCallForSpecifiedCustomer(int customerOnSaId, CancellationToken cancellationToken)
     {
-        var customerOnSa = await _customerOnSAServiceClient.GetCustomer(customerOnSaId, cancellationToken);
+        var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
         var kbIdentity = customerOnSa.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
         await _sulmClientHelper.StartUse(kbIdentity.IdentityId, ISulmClient.PurposeMLAP, cancellationToken);
     }
