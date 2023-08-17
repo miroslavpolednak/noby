@@ -27,7 +27,7 @@ internal class Loan
     [Precision(16, 4)]
     public decimal? RadnaSazba { get; set; }
 
-    public Int16? DelkaFixaceUrokoveSazby { get; set; }
+    public Int16? PeriodaFixace { get; set; }
 
     public int? AkceUveruId { get; set; }
 
@@ -57,9 +57,7 @@ internal class Loan
 
 	public DateTime? DatumFixaceUrokoveSazby { get; set; }
 
-	public DateTime? PocatekSplaceni { get; set; }
-
-    public DateTime? DatumPrvniVyplatyZUveru { get; set; }
+	public DateTime? Datum1AnuitniSplatky { get; set; }
 
 	public DateTime? DatumPredpSplatnosti { get; set; }
 
