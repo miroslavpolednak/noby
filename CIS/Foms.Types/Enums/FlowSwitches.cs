@@ -50,5 +50,10 @@ public enum FlowSwitches : int
     /// <summary>
     /// IC: WFL úkol na IC je zamítnut
     /// </summary>
-    IsWflTaskForIPNotApproved = 10
+    IsWflTaskForIPNotApproved = 10,
+
+    /// <summary>
+    /// Došlo ke skórování
+    /// </summary>
+    ScoringPerformedAtleastOnce = 14
 }
