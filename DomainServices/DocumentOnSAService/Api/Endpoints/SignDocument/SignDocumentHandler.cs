@@ -95,7 +95,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         
         // SUML call
         if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()) // 4 
-            await SumlCall(documentOnSa, houseHold, cancellationToken);
+            await SumlCall(documentOnSa, houseHold!, cancellationToken);
 
         // set flow switches
         if (houseHold is not null)
@@ -157,10 +157,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await _productService.UpdateMortgage(new UpdateMortgageRequest { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
-    private async Task SumlCall(DocumentOnSa documentOnSa, Household? houseHold, CancellationToken cancellationToken)
+    private async Task SumlCall(DocumentOnSa documentOnSa, Household houseHold, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-        if (salesArrangement.IsProductSalesArrangement() && houseHold is not null)
+        if (salesArrangement.IsProductSalesArrangement())
         {
             await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId1!.Value, cancellationToken);
 
