@@ -33,6 +33,7 @@ internal sealed class OrderRealEstateValuationHandler
                 break;
 
             case RealEstateValuationTypes.Dts:
+                await _realEstateValuationService.OrderDTSValuation(request.RealEstateValuationId, cancellationToken);
                 break;
         }
     }

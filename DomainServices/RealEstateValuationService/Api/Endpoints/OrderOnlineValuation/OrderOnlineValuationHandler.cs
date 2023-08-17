@@ -1,5 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CustomerService.Clients;
+using DomainServices.RealEstateValuationService.Api.Extensions;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using DomainServices.UserService.Clients;
@@ -27,17 +28,10 @@ internal sealed class OrderOnlineValuationHandler
         var orderRequest = new ExternalServices.PreorderService.V1.Contracts.OnlineMPRequestDTO
         {
             ValuationRequestId = entity.PreorderId.GetValueOrDefault(),
-            DealNumber = caseInstance.Data.ContractNumber,
             ClientName = $"{customer.NaturalPerson?.FirstName} {customer.NaturalPerson?.LastName}",
             ClientEmail = customer.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email)?.Email?.EmailAddress,
-            CremRealEstateIds = realEstateIds,
-            AttachmentIds = attachments,
-            EFormId = 0,
-            CompanyCode = "02",
-            ProductCode = "02",
-            Cpm = Convert.ToInt64(currentUser.UserInfo.Cpm, CultureInfo.InvariantCulture),// nez to v ACV opravi
-            Icp = Convert.ToInt64(currentUser.UserInfo.Icp, CultureInfo.InvariantCulture)
         };
+        orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
 
         var orderResponse = await _preorderService.CreateOrder(orderRequest, cancellationToken);
 
