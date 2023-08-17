@@ -36,7 +36,7 @@ message TaskDetailItem {
 message TaskCommunicationItem {
 	google.protobuf.StringValue TaskResponse = 1;
 
-	string TaskRequest = 2;
+	google.protobuf.StringValue TaskRequest = 2;
 }
 
 message AmendmentSigning {
