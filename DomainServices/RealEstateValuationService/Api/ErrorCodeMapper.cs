@@ -20,6 +20,7 @@ internal sealed class ErrorCodeMapper
     public const int OrderDataValidation = 22012;
     public const int AddressPointIdNotFound = 22013;
     public const int UnsopportedEstateType = 22014;
+    public const int MaxValuationsForCase = 22015;
     public const int RevaluationFailed = 22016;
 
     public static IErrorCodesDictionary Init()
@@ -41,7 +42,8 @@ internal sealed class ErrorCodeMapper
             { OrderDataValidation, "Some of required fields are missing: '{PropertyValue}'" },
             { AddressPointIdNotFound, "AddressPointId not found in any DeedOfOwnershipDocuments" },
             { UnsopportedEstateType, "Unsupported RealEstateTypeId ({PropertyValue})" },
-            { RevaluationFailed, "Revaluation failed" }
+            { RevaluationFailed, "Revaluation failed" },
+            { MaxValuationsForCase, "Příliš mnoho Ocenění s isLoanRealEstate true" }
         });
 
         return Messages;
