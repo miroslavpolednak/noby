@@ -15,6 +15,22 @@ internal sealed class UpdateRealEstateValuationDetailHandler
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
 
+        // Kontrola, zda na daném CaseId nedojde k porušení limitu na maximálně 3 Ocenění, která jsou zároveň objektem úvěru
+        if (request.IsLoanRealEstate)
+        {
+            var existingRev = await _dbContext.RealEstateValuations
+                .AsNoTracking()
+                .Where(t => t.CaseId == realEstate.CaseId 
+                    && t.RealEstateValuationId != request.RealEstateValuationId
+                    && t.IsLoanRealEstate 
+                    && !_stateIdsForValidation.Contains(t.ValuationStateId))
+                .CountAsync(cancellationToken);
+            if (existingRev > 2)
+            {
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MaxValuationsForCase);
+            }
+        }
+
         // general detail
         realEstate.Address = request.Address;
         realEstate.IsLoanRealEstate = request.IsLoanRealEstate;
@@ -64,6 +80,8 @@ internal sealed class UpdateRealEstateValuationDetailHandler
 
         return new Empty();
     }
+
+    private static int[] _stateIdsForValidation = new[] { 4, 5 };
 
     private readonly RealEstateValuationServiceDbContext _dbContext;
 
