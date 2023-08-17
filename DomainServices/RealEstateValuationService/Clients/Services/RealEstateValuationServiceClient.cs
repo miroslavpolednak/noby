@@ -55,10 +55,14 @@ internal sealed class RealEstateValuationServiceClient
 
     public async Task<RealEstateValuationDetail> GetRealEstateValuationDetail(int realEstateValuationId, CancellationToken cancellationToken = default)
     {
-        return await _service.GetRealEstateValuationDetailAsync(new()
+        if (_cacheGetRealEstateValuationDetail is null)
         {
-            RealEstateValuationId = realEstateValuationId
-        }, cancellationToken: cancellationToken);
+            _cacheGetRealEstateValuationDetail = await _service.GetRealEstateValuationDetailAsync(new()
+            {
+                RealEstateValuationId = realEstateValuationId
+            }, cancellationToken: cancellationToken);
+        }
+        return _cacheGetRealEstateValuationDetail;
     }
 
     public async Task<RealEstateValuationDetail> GetRealEstateValuationDetailByOrderId(int orderId, CancellationToken cancellationToken = default)
@@ -94,6 +98,14 @@ internal sealed class RealEstateValuationServiceClient
         await _service.OrderOnlineValuationAsync(request, cancellationToken: cancellationToken);
     }
 
+    public async Task OrderDTSValuation(int realEstateValuationId, CancellationToken cancellationToken = default)
+    {
+        await _service.OrderDTSValuationAsync(new OrderDTSValuationRequest
+        {
+            RealEstateValuationId = realEstateValuationId
+        }, cancellationToken: cancellationToken);
+    }
+
     public async Task OrderStandardValuation(OrderStandardValuationRequest request, CancellationToken cancellationToken = default)
     {
         await _service.OrderStandardValuationAsync(request, cancellationToken: cancellationToken);
@@ -124,11 +136,15 @@ internal sealed class RealEstateValuationServiceClient
 
     public async Task<ValidateRealEstateValuationIdResponse> ValidateRealEstateValuationId(int realEstateValuationId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
     {
-        return await _service.ValidateRealEstateValuationIdAsync(new()
+        if (_cacheValidateRealEstateValuationId is null)
         {
-            ThrowExceptionIfNotFound = throwExceptionIfNotFound,
-            RealEstateValuationId = realEstateValuationId
-        }, cancellationToken: cancellationToken);
+            _cacheValidateRealEstateValuationId = await _service.ValidateRealEstateValuationIdAsync(new()
+            {
+                ThrowExceptionIfNotFound = throwExceptionIfNotFound,
+                RealEstateValuationId = realEstateValuationId
+            }, cancellationToken: cancellationToken);
+        }
+        return _cacheValidateRealEstateValuationId;
     }
 
     public async Task<List<CIS.Foms.Enums.RealEstateValuationTypes>> GetRealEstateValuationTypes(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken = default)
@@ -169,7 +185,11 @@ internal sealed class RealEstateValuationServiceClient
         .ToList();
     }
 
+    private RealEstateValuationDetail? _cacheGetRealEstateValuationDetail = null!;
+    private ValidateRealEstateValuationIdResponse? _cacheValidateRealEstateValuationId = null;
+
     private readonly Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient _service;
+
     public RealEstateValuationServiceClient(Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient service)
         => _service = service;
 }

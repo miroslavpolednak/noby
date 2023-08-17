@@ -39,10 +39,10 @@ internal sealed class OrderOnlineValuationHandler
             Icp = Convert.ToInt64(currentUser.UserInfo.Icp, CultureInfo.InvariantCulture)
         };
 
-        var orderResponse = await _preorderService.OrderOnline(orderRequest, cancellationToken);
+        var orderResponse = await _preorderService.CreateOrder(orderRequest, cancellationToken);
 
         // ulozeni vysledku
-        await _aggregate.SaveResults(entity, orderResponse.OrderId, request.Data, cancellationToken);
+        await _aggregate.SaveResults(entity, orderResponse.OrderId, RealEstateValuationStates.Dokonceno, entity.IsRevaluationRequired ? request.Data : null, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

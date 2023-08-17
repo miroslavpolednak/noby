@@ -32,7 +32,7 @@ internal sealed class CustomerOnSAService
 
     public async Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default)
     {
-        if (_cacheGetCustomer is null)
+        if (_cacheGetCustomer is null || _cacheGetCustomer.CustomerOnSAId != customerOnSAId)
         {
             _cacheGetCustomer = await _service.GetCustomerAsync(
                 new()
@@ -40,6 +40,7 @@ internal sealed class CustomerOnSAService
                     CustomerOnSAId = customerOnSAId
                 }, cancellationToken: cancellationToken);
         }
+
         return _cacheGetCustomer;
     }
 

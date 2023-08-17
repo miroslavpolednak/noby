@@ -36,18 +36,14 @@ internal sealed class SimpleCalculateRequestMapper
             try
             {
                 var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
-                if (userInstance != null)
-                {
-                    if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                        requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
-                    else
-                        requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
-                }
+                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                    requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+                else
+                    requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
             }
-            catch (CisNotFoundException) { }
-            catch (Exception)
+            catch (CisNotFoundException)
             {
-                throw;
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UserNotFound, $"{request.UserIdentity.IdentityScheme}={request.UserIdentity.IdentityId}");
             }
         }
 
@@ -80,18 +76,14 @@ internal sealed class SimpleCalculateRequestMapper
             try
             {
                 var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
-                if (userInstance != null)
-                {
-                    if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                        requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
-                    else
-                        requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
-                }
+                if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
+                    requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
+                else
+                    requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
             }
-            catch (CisNotFoundException) { }
-            catch (Exception)
+            catch (CisNotFoundException)
             {
-                throw;
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UserNotFound, $"{request.UserIdentity.IdentityScheme}={request.UserIdentity.IdentityId}");
             }
         }
 

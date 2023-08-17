@@ -9,7 +9,8 @@ internal sealed class LoggerEventIdCodes
     public const int StarbuildStateUpdateFailed = 13023;
     public const int StarbuildStateUpdateSuccess = 13024;
     public const int KafkaMessageCaseIdIncorrectFormat = 13002;
-    public const int KafkaMessageTaskIdSbIncorrectFormat = 13003;
+    public const int KafkaMessageCurrentTaskIdIncorrectFormat = 13003;
+    public const int KafkaMessageTaskIdSbIncorrectFormat = 13004;
     public const int KafkaCaseIdNotFound = 13006;
     public const int RequestNotFoundInCache = 13007;
     public const int UpdateActiveTaskStart = 13008;

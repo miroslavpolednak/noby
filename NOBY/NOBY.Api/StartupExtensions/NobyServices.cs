@@ -55,6 +55,7 @@ internal static class NobyServices
         // ext services
         builder.AddExternalService<ExternalServices.Crem.V1.ICremClient>();
         builder.AddExternalService<ExternalServices.AddressWhisperer.V1.IAddressWhispererClient>(CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue, CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue);
+        builder.AddExternalService<ExternalServices.RuianAddress.V1.IRuianAddressClient>();
 
         // pridat mpss cookie
         builder.AddMpssSecurityCookie();

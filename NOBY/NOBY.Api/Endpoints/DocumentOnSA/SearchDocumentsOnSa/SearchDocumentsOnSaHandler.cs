@@ -18,9 +18,9 @@ public class SearchDocumentsOnSaHandler : IRequestHandler<SearchDocumentsOnSaReq
 
     public async Task<SearchDocumentsOnSaResponse> Handle(SearchDocumentsOnSaRequest request, CancellationToken cancellationToken)
     {
-        var documentsOnSa = await _client.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
+        var documentsOnSa = await _client.GetDocumentsOnSAList(request.SalesArrangementId, cancellationToken);
 
-        if (!documentsOnSa.DocumentsOnSAToSign.Any())
+        if (!documentsOnSa.DocumentsOnSA.Any())
         {
             throw new CisNotFoundException(90100, $"No items found for SalesArrangement {request.SalesArrangementId}");
         }
@@ -37,7 +37,7 @@ public class SearchDocumentsOnSaHandler : IRequestHandler<SearchDocumentsOnSaReq
             return new SearchDocumentsOnSaResponse { FormIds = Array.Empty<SearchResponseItem>() };
         }
 
-        var documentsOnSaFiltered = documentsOnSa.DocumentsOnSAToSign
+        var documentsOnSaFiltered = documentsOnSa.DocumentsOnSA
                 .Where(f => documentTypesFiltered.Contains(f.DocumentTypeId!.Value)
                             && !string.IsNullOrWhiteSpace(f.FormId)
                             && f.IsFinal == false 

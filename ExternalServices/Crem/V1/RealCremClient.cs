@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers;
+﻿using System.Net;
+using CIS.Infrastructure.ExternalServicesHelpers;
 
 namespace ExternalServices.Crem.V1;
 
@@ -34,7 +35,7 @@ internal sealed class RealCremClient
         var result1 = await (await _httpClient
             .PostAsJsonAsync(_httpClient.BaseAddress + "/deed-of-ownership-document", request1, cancellationToken)
             .ConfigureAwait(false))
-            .EnsureSuccessStatusAndReadJson<Contracts.DeedOfOwnershipDocument>(StartupExtensions.ServiceName, cancellationToken);
+            .EnsureSuccessStatusAndReadJson<Contracts.DeedOfOwnershipDocument>(StartupExtensions.ServiceName, customErrorCodes: new Dictionary<HttpStatusCode, int> { { HttpStatusCode.NotFound, 404 } }, cancellationToken);
         
         for (int i = 1; i <= _requestNewDocumentIterations; i++)
         {

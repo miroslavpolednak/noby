@@ -26,6 +26,7 @@ import "Messages/UpdateDeedOfOwnershipDocument.proto";
 import "Messages/PreorderOnlineValuation.proto";
 import "Messages/OrderOnlineValuation.proto";
 import "Messages/OrderStandardValuation.proto";
+import "Messages/OrderDTSValuation.proto";
 
 service RealEstateValuationService {
 	rpc CreateRealEstateValuation (CreateRealEstateValuationRequest) returns (CreateRealEstateValuationResponse);
@@ -45,6 +46,7 @@ service RealEstateValuationService {
 	rpc PreorderOnlineValuation (PreorderOnlineValuationRequest) returns (google.protobuf.Empty);
 	rpc OrderOnlineValuation (OrderOnlineValuationRequest) returns (google.protobuf.Empty);
 	rpc OrderStandardValuation (OrderStandardValuationRequest) returns (google.protobuf.Empty);
+	rpc OrderDTSValuation (OrderDTSValuationRequest) returns (google.protobuf.Empty);
 
 	// DeedOfOwnershipDocument
 	rpc UpdateDeedOfOwnershipDocument (UpdateDeedOfOwnershipDocumentRequest) returns (google.protobuf.Empty);

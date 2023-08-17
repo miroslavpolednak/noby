@@ -1555,7 +1555,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D5B309D6-5B0C-4fe3-8CCE-50955423F7E4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipDocumentContent(System.Int32,System.Int32,System.Int64,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipDocumentContent(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int64},System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Informace z dokumentu listu vlastnictví
             </summary>

@@ -12,6 +12,7 @@ using System.Text.Unicode;
 using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using _DocOnSA = DomainServices.DocumentOnSAService.Contracts;
 using ValidateSalesArrangementRequest = NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement.ValidateSalesArrangementRequest;
+using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 
@@ -49,8 +50,13 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
-
-        if (salesArrangement.SalesArrangementTypeId is 1 or 6 or 10 or 11 or 12)
+        
+        if (salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Mortgage.ToByte() // 1
+            || salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() // 6
+            || salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.CustomerChange3602A.ToByte() // 10 
+            || salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.CustomerChange3602B.ToByte() // 11
+            || salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.CustomerChange3602C.ToByte() // 12
+            )
         {
             // CheckForm
             await ValidateSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
@@ -104,7 +110,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
             CustomerOnSAId2SigningIdentity = customerOnSAId2 is not null ? await MapCustomerOnSAIdentity(customerOnSAId2.Value, _signatureAnchorTwo, cancellationToken) : null
         }, cancellationToken);
 
-        return await MapToResponse(result, cancellationToken);
+        return await MapToResponse(result, salesArrangement.SalesArrangementTypeId, cancellationToken);
     }
 
     /// <summary>
@@ -128,9 +134,9 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
     }
 
     private static bool HasCategoryAnyError(ValidateCategory category) => category.ValidationMessages.Any(HasMessageError);
-    
+
     private static bool HasMessageError(ValidateMessage message) => message.Severity == MessageSeverity.Error;
-    
+
     private async Task<_DocOnSA.SigningIdentity> MapCustomerOnSAIdentity(int customerOnSAId, string signatureAnchor, CancellationToken cancellationToken)
     {
         var customerOnSa = await _customerOnSAServiceClient.GetCustomer(customerOnSAId, cancellationToken);
@@ -159,7 +165,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         return signingIdentity;
     }
 
-    private async Task<StartSigningResponse> MapToResponse(_DocOnSA.StartSigningResponse result, CancellationToken cancellationToken)
+    private async Task<StartSigningResponse> MapToResponse(_DocOnSA.StartSigningResponse result, int salesArrangementTypeId, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(result.DocumentOnSa, nameof(result.DocumentOnSa));
 
@@ -177,11 +183,12 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
             SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
             {
                 DocumentOnSAId = result.DocumentOnSa.DocumentOnSAId,
-                EArchivId = result.DocumentOnSa.EArchivId,
-                IsSigned = result.DocumentOnSa.IsSigned
+                IsSigned = result.DocumentOnSa.IsSigned,
+                Source = result.DocumentOnSa.Source.MapToCisEnum(),
+                SalesArrangementTypeId = salesArrangementTypeId,
+                EArchivIdsLinked = Array.Empty<string>()
             },
-            signatureStates
-            ),
+              signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(result.DocumentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains)
         };
     }

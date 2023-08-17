@@ -38,24 +38,24 @@ internal sealed class ErrorCodeMapper
     {
         SetMessages(new Dictionary<int, string>()
         {
-            { IdentityAlreadyExistOnCustomer, "Some of request identities already exists on CustomerOnSA with different ID" },
-            { CustomerOnSAIdIsEmpty, "CustomerOnSAId must be > 0" },
-            { IncomeTypeIdIsEmpty , "IncomeTypeId must be > 0" },
-            { EmployementCinBirthNo , "Only one of values can be set [Employement.Employer.Cin, Employement.Employer.BirthNumber]" },
-            { CustomerOnSANotFound , "Customer ID {PropertyValue} not found" },
-            { CurrencyNotValid , "CurrencyId is not valid" },
             { SalesArrangementIdIsEmpty, "SalesArrangementId must be > 0" },
-            { HouseholdTypeIdIsEmpty, "HouseholdTypeId must be > 0" },
-            { Customer2WithoutCustomer1, "CustomerOnSAId1 is not set although CustomerOnSAId2 is." },
-            { MoreDebtorHouseholds, "Only one Debtor household allowed" },
-            { HouseholdTypeIdNotFound, "HouseholdTypeId {PropertyValue} does not exist." },
-            { HouseholdNotFound, "Household ID {PropertyValue} does not exist." },
-            { CantDeleteDebtorHousehold, "Can't delete Debtor household" },
+            { IdentityAlreadyExistOnCustomer, "Some of request identities already exists on CustomerOnSA with different ID" },
             { CustomerNotOnSA, "CustomerOnSA {PropertyValue} does not exist in selected SA." },
-            { HouseholdIdIsEmpty, "HouseholdId must be > 0" },
-            { CustomerRoleIdIsEmpty, "CustomerRoleId must be > 0" },
+            { CustomerOnSANotFound , "Customer ID {PropertyValue} not found" },
             { CustomerRoleNotFound, "CustomerRoleId {PropertyValue} does not exist." },
+            { HouseholdNotFound, "Household ID {PropertyValue} does not exist." },
+            { HouseholdTypeIdNotFound, "HouseholdTypeId {PropertyValue} does not exist." },
+            { CustomerOnSAIdIsEmpty, "CustomerOnSAId must be > 0" },
+            { HouseholdTypeIdIsEmpty, "HouseholdTypeId must be > 0" },
+            { IncomeTypeIdIsEmpty , "IncomeTypeId must be > 0" },
+            { IncomeNotFound, "Income ID {PropertyValue} does not exist." },
+            { CurrencyNotValid , "CurrencyId is not valid" },
+            { MoreDebtorHouseholds, "Only one Debtor household allowed" },
+            { CantDeleteDebtorHousehold, "Can't delete Debtor household" },
             { InvalidDateOfBirth, "Date of birth is out of range" },
+            { ObligationNotFound, "Obligation ID {PropertyValue} does not exist." },
+            { CustomerRoleIdIsEmpty, "CustomerRoleId must be > 0" },
+            { EmployementCinBirthNo , "Only one of values can be set [Employement.Employer.Cin, Employement.Employer.BirthNumber]" },
             { MaxIncomesReached, "Max incomes of the type {PropertyValue} has been reached" },
             { ObligationTypeIsEmpty, "ObligationTypeId is not valid" },
             { CreditCardLimitNotAllowed, "CreditCardLimit not allowed for current ObligationTypeId" },
@@ -63,9 +63,9 @@ internal sealed class ErrorCodeMapper
             { InstallmentAmountNotAllowed, "InstallmentAmount not allowed for current ObligationTypeId" },
             { CreditorIdAndNameInSameTime, "Creditor.CreditorId and Creditor.Name can't be set in the same time" },
             { CantDeleteDebtor, "CustomerOnSA is in role=Debtor -> can't be deleted" },
-            { IncomeNotFound, "Income ID {PropertyValue} does not exist." },
-            { ObligationNotFound, "Obligation ID {PropertyValue} does not exist." },
-            { IncomeIdIsEmpty, "IncomeId must be > 0" }
+            { IncomeIdIsEmpty, "IncomeId must be > 0" },
+            { Customer2WithoutCustomer1, "CustomerOnSAId1 is not set although CustomerOnSAId2 is." },
+            { HouseholdIdIsEmpty, "HouseholdId must be > 0" }
         });
 
         return Messages;

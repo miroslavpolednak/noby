@@ -43,10 +43,10 @@ public sealed class DeedOfOwnershipController : ControllerBase
     [ProducesResponseType(typeof(GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse> GetDeedOfOwnershipDocumentContent(
-        int katuzId,
-        int deedOfOwnershipNumber,
-        long deedOfOwnershipId,
-        int deedOfOwnershipDocumentId,
+        [FromQuery] int? katuzId,
+        [FromQuery] int? deedOfOwnershipNumber,
+        [FromQuery] long? deedOfOwnershipId,
+        [FromQuery] int? deedOfOwnershipDocumentId,
         CancellationToken cancellationToken)
         => await _mediator.Send(new GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentRequest(katuzId, deedOfOwnershipNumber, deedOfOwnershipId, deedOfOwnershipDocumentId), cancellationToken);
 

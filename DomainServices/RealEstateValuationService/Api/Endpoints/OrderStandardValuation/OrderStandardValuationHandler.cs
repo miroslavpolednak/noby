@@ -59,10 +59,11 @@ internal sealed class OrderStandardValuationHandler
         if (loanAmount.HasValue)
             orderRequest.LoanAmount = Convert.ToDouble(loanAmount, CultureInfo.InvariantCulture);
 
-        var orderResponse = await _preorderService.OrderStandard(orderRequest, cancellationToken);
+        entity.ValuationTypeId = (int)RealEstateValuationTypes.Standard;
+        var orderResponse = await _preorderService.CreateOrder(orderRequest, cancellationToken);
 
         // ulozeni vysledku
-        await _aggregate.SaveResults(entity, orderResponse.OrderId, request.Data, cancellationToken);
+        await _aggregate.SaveResults(entity, orderResponse.OrderId, RealEstateValuationStates.Probiha, request.Data, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

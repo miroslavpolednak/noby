@@ -10,26 +10,26 @@ internal sealed class SaveRequestValidator
     {
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithErrorCode("SalesArrangementId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.LoanApplicationDataVersion)
             .NotEmpty()
-            .WithErrorCode("LoanApplicationDataVersion");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.Households)
             .NotEmpty()
-            .WithErrorCode("Households");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.Product)
             .Cascade(CascadeMode.Stop)
             .NotNull()
-            .WithErrorCode("Product")
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError)
             .SetValidator(new SaveRequestProductValidator());
 
         RuleFor(t => t.Households)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .WithErrorCode("Households")
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError)
             .ForEach(t => t.SetValidator(new SaveRequestHouseholdValidator()));
 
         When(t => t.UserIdentity is not null, () =>
@@ -45,27 +45,27 @@ internal sealed class SaveRequestValidator
                 {
                     x.RuleFor(x => x.RelationType)
                         .NotEmpty()
-                        .WithErrorCode("ProductRelations.");
+                        .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                     x.RuleFor(x => x.RemainingExposure)
                         .Cascade(CascadeMode.Stop)
                         .NotEmpty()
-                        .WithErrorCode("ProductRelations.RemainingExposure");
+                        .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                     x.RuleFor(x => x.Customers)
                         .NotEmpty()
-                        .WithErrorCode("ProductRelations.Customers");
+                        .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                     x.RuleForEach(x => x.Customers)
                         .ChildRules(x2 =>
                         {
                             x2.RuleFor(x2 => x2.CustomerRoleId)
                                 .NotEmpty()
-                                .WithErrorCode("ProductRelations.Customers.CustomerRoleId");
+                                .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                             x2.RuleFor(x2 => x2.CustomerId)
                                 .NotEmpty()
-                                .WithErrorCode("ProductRelations.Customers.CustomerId");
+                                .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                         });
 
                     x.When(x => x.BankAccount != null, () =>
@@ -75,15 +75,15 @@ internal sealed class SaveRequestValidator
                         {
                             x2.RuleFor(x2 => x2!.NumberPrefix)
                             .MaximumLength(6)
-                            .WithErrorCode("ProductRelations.BankAccount.NumberPrefix")
+                            .WithErrorCode(ErrorCodeMapper.GeneralValidationError)
                             .Must(x2 => x2 == null || (int.TryParse(x2, out var val) && val >= 0))
-                            .WithErrorCode("ProductRelations.BankAccount.NumberPrefix");
+                            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                             x2.RuleFor(x2 => x2!.Number)
                             .MaximumLength(10)
-                            .WithErrorCode("ProductRelations.BankAccount.Number")
+                            .WithErrorCode(ErrorCodeMapper.GeneralValidationError)
                             .Must(x2 => x2 == null || (long.TryParse(x2, out var val) && val > 0))
-                            .WithErrorCode("ProductRelations.BankAccount.Number");
+                            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                         });
                     });
                 });

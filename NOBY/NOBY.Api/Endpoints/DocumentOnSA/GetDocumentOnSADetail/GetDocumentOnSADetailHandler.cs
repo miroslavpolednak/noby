@@ -1,7 +1,8 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
-using _CisEnum = CIS.Foms.Enums;
+using DomainServices.SalesArrangementService.Clients;
+using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 
@@ -9,13 +10,16 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
 {
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
     private readonly ICodebookServiceClient _codebookServiceClient;
+    private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
 
     public GetDocumentOnSADetailHandler(
         IDocumentOnSAServiceClient documentOnSAServiceClient,
-        ICodebookServiceClient codebookServiceClient)
+        ICodebookServiceClient codebookServiceClient,
+        ISalesArrangementServiceClient salesArrangementServiceClient)
     {
         _documentOnSAServiceClient = documentOnSAServiceClient;
         _codebookServiceClient = codebookServiceClient;
+        _salesArrangementServiceClient = salesArrangementServiceClient;
     }
 
     public async Task<GetDocumentOnSADetailResponse> Handle(GetDocumentOnSADetailRequest request, CancellationToken cancellationToken)
@@ -37,6 +41,7 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
         var documentTypes = await _codebookServiceClient.DocumentTypes(cancellationToken);
         var eACodeMains = await _codebookServiceClient.EaCodesMain(cancellationToken);
         var signatureStates = await _codebookServiceClient.SignatureStatesNoby(cancellationToken);
+        var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
         return new GetDocumentOnSADetailResponse
         {
@@ -44,18 +49,21 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
             DocumentTypeId = documentOnSa.DocumentTypeId,
             FormId = documentOnSa.FormId,
             SignatureTypeId = documentOnSa.SignatureTypeId,
-            SignatureDateTime = documentOnSa.SignatureDateTime is not null ? documentOnSa.SignatureDateTime.ToDateTime() : null,
-            SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new() { DocumentOnSAId = documentOnSa.DocumentOnSAId, EArchivId = documentOnSa.EArchivId, IsSigned = documentOnSa.IsSigned }, signatureStates),
+            SignatureDateTime = documentOnSa.SignatureDateTime?.ToDateTime(),
+            SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
+            {
+                DocumentOnSAId = documentOnSa.DocumentOnSAId,
+                IsSigned = documentOnSa.IsSigned,
+                Source = documentOnSa.Source.MapToCisEnum(),
+                SalesArrangementTypeId = salesArrangement.SalesArrangementTypeId,
+                EArchivIdsLinked = documentOnSa.EArchivIdsLinked,
+            },
+              signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(documentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains),
             CustomerOnSAId = documentOnSa.CustomerOnSAId,
             IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer,
             ExternalId = documentOnSa.ExternalId,
-            Source = documentOnSa.Source switch
-            {
-                Source.Noby => _CisEnum.Source.Noby,
-                Source.Workflow => _CisEnum.Source.Workflow,
-                _ => _CisEnum.Source.Unknown
-            }
+            Source = documentOnSa.Source.MapToCisEnum()
         };
     }
 }

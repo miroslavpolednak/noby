@@ -22,7 +22,6 @@ public sealed class BadRequestHttpHandler
 
         if (response!.StatusCode == HttpStatusCode.BadRequest)
         {
-            // chyba spravne reportovana z c4m - bude to nekdy takto vypadat?
             Dto.ErrorModel? result = null;
             try
             {
@@ -33,11 +32,21 @@ public sealed class BadRequestHttpHandler
             if (result is null) // nepodarilo se deserializovat na korektni response type
             {
                 var message = await response.SafeReadAsStringAsync(cancellationToken);
-                throw new CisExtServiceValidationException($"{_serviceName} unknown error 400: {message}");
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.GeneralServiceResponseValidationError, $"{_serviceName} unknown error 400: {message}");
             }
             else
             {
-                throw new CisExtServiceValidationException(result.Code ?? "", result.Message ?? "");
+                switch (result.Code)
+                {
+                    case "RISK.LOANAPPLICATIONASSESSMENTERRORCODES.RBC_WAITING_FOR_COMMITMENT":
+                        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.C4MRBCWaitingForCommitment, result.Message);
+                    case "RISK.LOANAPPLICATIONASSESSMENTERRORCODES.CUSTOMER_NOT_FOUND":
+                        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.C4MCustomerNotFound, result.Message);
+                    case "RISK.LOANAPPLICATIONASSESSMENTERRORCODES.CORRECT_STATE_RULE":
+                        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.C4MCorrectStateRule, result.Message);
+                    default:
+                        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.GeneralServiceResponseValidationError, result.FullMessage);
+                };
             }
         }
 

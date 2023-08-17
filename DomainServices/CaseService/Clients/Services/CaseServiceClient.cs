@@ -43,7 +43,7 @@ internal sealed class CaseServiceClient
 
     public async Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default)
     {
-        if (_cacheGetCaseDetail is null)
+        if (_cacheGetCaseDetail is null || _cacheGetCaseDetail.CaseId != caseId)
         {
             _cacheGetCaseDetail = await _service.GetCaseDetailAsync(
             new()

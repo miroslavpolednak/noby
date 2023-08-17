@@ -83,10 +83,20 @@ Preferovanou variantou je *ServiceDiscovery*.
     public bool LogResponsePayload { get; set; } = true;
 
     /// <summary>
-    /// Default request timeout in seconds
+    /// Default single request timeout in seconds
     /// </summary>
     /// <remarks>Default is set to 10 seconds</remarks>
     public int? RequestTimeout { get; set; } = 10;
+
+    /// <summary>
+    /// Pokud první request timeoutuje, zkus ještě X opakovat
+    /// </summary>
+    public int? RequestRetryCount { get; set; } = 3;
+
+    /// <summary>
+    /// Mezi jednotlivými opakováními počkej X sekund
+    /// </summary>
+    public int? RequestRetryTimeout { get; set; } = 10;
 
     /// <summary>
     /// Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.
@@ -154,3 +164,5 @@ static IExternalServiceConfiguration<TClient> AddExternalServiceConfiguration<TC
 [Jak implementovat proxy projekt (REST služba)?](./external-services-rest.md)
 
 [Jak implementovat proxy projekt (SOAP služba)?](./external-services-soap.md)
+
+[Implementace SOAP klienta](./soap-client.md)

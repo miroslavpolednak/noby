@@ -61,3 +61,8 @@ message OrdersStandard {
     string PhoneIDC = 5;
     string Email = 6;
 }
+
+message RealEstateValuationDocument {
+    string DocumentInfoPrice = 1;
+    string DocumentRecommendationForClient = 2;
+}

@@ -68,7 +68,7 @@ internal sealed class GetTaskDetailHandler
         }
         else
         {
-            string? text = taskType switch
+            var text = taskType switch
             {
                 1 when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_dozadani_noby")) => taskData["ukol_dozadani_noby"],
                 3 when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_konzultace_noby")) => taskData["ukol_konzultace_noby"],
@@ -77,35 +77,35 @@ internal sealed class GetTaskDetailHandler
                 _ => null
             };
 
-            if (!string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            var matches = _messagePatternRegex.Matches(text);
+
+            for (var i = 0; i < matches.Count; i += 2)
             {
-                var matches = _messagePatternRegex.Matches(text);
-
-                for (var i = 0; i <= matches.Count - 1; i += 2)
+                if (matches[i].Groups[0].Value.Trim().StartsWith("#SeparatorRequest#"))
                 {
-                    if (matches[i].Groups[1].Value == "Request")
+                    taskDetail.TaskCommunication.Add(new TaskCommunicationItem
                     {
-                        taskDetail.TaskCommunication.Add(new TaskCommunicationItem()
-                        {
-                            TaskRequest = matches[i].Value
-                        });
-
-                        i -= 1;
-
-                        continue;
-                    }
-
-                    taskDetail.TaskCommunication.Add(new TaskCommunicationItem()
-                    {
-                        TaskResponse = matches[i].Value,
-                        TaskRequest = matches[i + 1].Value
+                        TaskRequest = matches[i].Groups[1].Value.Trim()
                     });
+
+                    i--;
+
+                    continue;
                 }
+                    
+                taskDetail.TaskCommunication.Add(new TaskCommunicationItem
+                {
+                    TaskResponse = matches[i].Groups[1].Value.Trim(),
+                    TaskRequest = matches[i + 1].Groups[1].Value.Trim()
+                });
             }
         }
     }
 
-    private static Regex _messagePatternRegex = new Regex(@"(?=#Separator(Request|Response)#|$)(.*?)(?=#Separator(Request|Response)#|$)", RegexOptions.Compiled);
+    private static readonly Regex _messagePatternRegex = new(@"#Separator(?:Response|Request)#\s*([\s\S]*?)(?=\s*#Separator(?:Response|Request)#|$)", RegexOptions.Compiled);
 
     private readonly SbWebApiCommonDataProvider _commonDataProvider;
     private readonly ISbWebApiClient _sbWebApiClient;

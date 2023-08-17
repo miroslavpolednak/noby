@@ -21,25 +21,29 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
         {
             var foundDocuments = await _cremClient.GetDocuments(request.KatuzId, request.DeedOfOwnershipNumber, request.DeedOfOwnershipId, cancellationToken);
 
-            if (foundDocuments is null || !foundDocuments.Any())
-            {
-                throw new NobyValidationException("CREM:GetDocuments nothing found");
-            }
-            else if (foundDocuments.Count > 1)
+            if (foundDocuments.Count > 1)
             {
                 throw new NobyValidationException("CREM:GetDocuments more documents found");
             }
 
-            if (!foundDocuments.First().PublicDocument && DateTime.Now.Subtract(foundDocuments.First().ValidityDate).TotalDays <= 30)
+            if (!foundDocuments.Any() || foundDocuments.First().PublicDocument || DateTime.Now.Subtract(foundDocuments.First().ValidityDate).TotalDays >= 30)
             {
-                documentId = foundDocuments.First().DocumentId;
-                deedOfOwnershipNumber = foundDocuments.First().DeedOfOwnershipNumber;
+                try
+                {
+                    var requestResult = await _cremClient.RequestNewDocumentId(request.KatuzId, request.DeedOfOwnershipNumber, request.DeedOfOwnershipId, cancellationToken);
+
+                    documentId = requestResult.CremDeedOfOwnershipDocumentId;
+                    deedOfOwnershipNumber = requestResult.DeedOfOwnershipNumber;
+                }
+                catch (CisException ex) when (ex.ExceptionCode == "404")
+                {
+                    throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "CREM:GetDocuments nothing found");
+                }
             }
             else
             {
-                var requestResult = await _cremClient.RequestNewDocumentId(request.KatuzId, request.DeedOfOwnershipNumber, request.DeedOfOwnershipId, cancellationToken);
-                documentId = requestResult.CremDeedOfOwnershipDocumentId;
-                deedOfOwnershipNumber = requestResult.DeedOfOwnershipNumber;
+                documentId = foundDocuments.First().DocumentId;
+                deedOfOwnershipNumber = foundDocuments.First().DeedOfOwnershipNumber;
             }
         }
 

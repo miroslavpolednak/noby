@@ -23,7 +23,7 @@ internal sealed class HouseholdService
 
     public async Task<Household> GetHousehold(int householdId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        if (_cacheGetHousehold is null)
+        if (_cacheGetHousehold is null || _cacheGetHousehold.HouseholdId != householdId)
         {
             _cacheGetHousehold = await _service.GetHouseholdAsync(
                 new()

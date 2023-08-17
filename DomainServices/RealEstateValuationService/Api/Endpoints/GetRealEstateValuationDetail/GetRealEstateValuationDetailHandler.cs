@@ -1,5 +1,6 @@
 ﻿using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
+using System.Threading;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.GetRealEstateValuationDetail;
 
@@ -13,21 +14,6 @@ internal sealed class GetRealEstateValuationDetailHandler
             .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
-
-        // attachments
-        var attachments = await _dbContext.Attachments
-            .AsNoTracking()
-            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
-            .Select(t => new Contracts.RealEstateValuationAttachment
-            {
-                RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
-                Title = t.Title,
-                FileName = t.FileName,
-                ExternalId = t.ExternalId,
-                AcvAttachmentCategoryId = t.AcvAttachmentCategoryId,
-                CreatedOn = t.CreatedTime
-            })
-            .ToListAsync(cancellationToken);
 
         var response = new RealEstateValuationDetail
         {
@@ -52,8 +38,17 @@ internal sealed class GetRealEstateValuationDetailHandler
             BagmanRealEstateTypeId = realEstate.BagmanRealEstateTypeId,
             LoanPurposeDetails = realEstate.LoanPurposeDetailsBin is null ? null : LoanPurposeDetailsObject.Parser.ParseFrom(realEstate.LoanPurposeDetailsBin)
         };
-        response.Attachments.AddRange(attachments);
 
+        // attachments
+        response.Attachments.AddRange(await getAttachments(request.RealEstateValuationId, cancellationToken));
+
+        // documents
+        if (!string.IsNullOrEmpty(realEstate.Documents))
+        {
+            response.Documents.AddRange(Newtonsoft.Json.JsonConvert.DeserializeObject<List<RealEstateValuationDocument>>(realEstate.Documents));
+        }
+
+        // specific details
         if (realEstate.SpecificDetailBin is not null)
         {
             switch (Helpers.GetRealEstateType(response))
@@ -70,6 +65,23 @@ internal sealed class GetRealEstateValuationDetailHandler
         }
 
         return response;
+    }
+
+    private async Task<List<RealEstateValuationAttachment>> getAttachments(int realEstateValuationId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Attachments
+            .AsNoTracking()
+            .Where(t => t.RealEstateValuationId == realEstateValuationId)
+            .Select(t => new Contracts.RealEstateValuationAttachment
+            {
+                RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
+                Title = t.Title,
+                FileName = t.FileName,
+                ExternalId = t.ExternalId,
+                AcvAttachmentCategoryId = t.AcvAttachmentCategoryId,
+                CreatedOn = t.CreatedTime
+            })
+            .ToListAsync(cancellationToken);
     }
 
     private readonly RealEstateValuationServiceDbContext _dbContext;

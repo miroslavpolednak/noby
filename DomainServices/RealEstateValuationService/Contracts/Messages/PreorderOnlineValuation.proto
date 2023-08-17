@@ -3,7 +3,6 @@ package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "Messages/Types.proto";
-import "google/protobuf/wrappers.proto";
 
 message PreorderOnlineValuationRequest {
     int32 RealEstateValuationId = 1;
