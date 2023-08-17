@@ -118,7 +118,6 @@ internal sealed class RealESignaturesClient
             throw new ArgumentNullException(nameof(request), "One of required objects has not been set");
         }
 
-        // Pokud formTypeId je null, tak formType nevyhodnocujeme 
         var formTypeId = (await _codebookService.DocumentTemplateVersions(cancellationToken))
             .First(t => t.Id == request.DocumentData.DocumentTemplateVersionId)
             .FormTypeId;
