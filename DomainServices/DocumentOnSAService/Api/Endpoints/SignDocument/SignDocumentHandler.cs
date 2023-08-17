@@ -8,6 +8,7 @@ using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
@@ -88,9 +89,29 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()) // 4
             await UpdateFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
 
+        var houseHold = documentOnSa.HouseholdId.HasValue
+            ? await _householdService.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken)
+            : null;
+        
         // SUML call
         if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()) // 4 
-            await SumlCall(documentOnSa, cancellationToken);
+            await SumlCall(documentOnSa, houseHold, cancellationToken);
+
+        // set flow switches
+        if (houseHold is not null)
+        {
+            var flowSwitchId = houseHold.HouseholdTypeId switch
+            {
+                (int)HouseholdTypes.Main => FlowSwitches.Was3601MainChangedAfterSigning,
+                (int)HouseholdTypes.Codebtor => FlowSwitches.Was3602CodebtorChangedAfterSigning,
+                _ => throw new CisValidationException("Unsupported HouseholdType")
+            };
+        
+            await _salesArrangementService.SetFlowSwitches(houseHold.SalesArrangementId, new()
+            {
+                new() { FlowSwitchId = (int)flowSwitchId, Value = false }
+            }, cancellationToken);
+        }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         
@@ -136,30 +157,17 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await _productService.UpdateMortgage(new UpdateMortgageRequest { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
-    private async Task SumlCall(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
+    private async Task SumlCall(DocumentOnSa documentOnSa, Household? houseHold, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-        if (salesArrangement.IsProductSalesArrangement())
+        if (salesArrangement.IsProductSalesArrangement() && houseHold is not null)
         {
-            var houseHold = await _householdService.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken);
             await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId1!.Value, cancellationToken);
 
             if (houseHold.CustomerOnSAId2 is not null)
             {
                 await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId2.Value, cancellationToken);
             }
-            
-            int flowSwitchId = houseHold.HouseholdTypeId switch
-            {
-                (int)HouseholdTypes.Main => (int)FlowSwitches.Was3601MainChangedAfterSigning,
-                (int)HouseholdTypes.Codebtor => (int)FlowSwitches.Was3602CodebtorChangedAfterSigning,
-                _ => throw new CisValidationException("Unsupported HouseholdType")
-            };
-        
-            await _salesArrangementService.SetFlowSwitches(houseHold.SalesArrangementId, new()
-            {
-                new() { FlowSwitchId = flowSwitchId, Value = false }
-            }, cancellationToken);
         }
     }
 
