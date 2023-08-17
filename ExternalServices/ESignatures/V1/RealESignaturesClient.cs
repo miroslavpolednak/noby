@@ -3,6 +3,7 @@ using CIS.Infrastructure.ExternalServicesHelpers;
 using FastEnumUtility;
 using System.Globalization;
 using System.Net.Http.Headers;
+using static DomainServices.CodebookService.Contracts.v1.FormTypesResponse.Types;
 
 namespace ExternalServices.ESignatures.V1;
 
@@ -117,13 +118,18 @@ internal sealed class RealESignaturesClient
             throw new ArgumentNullException(nameof(request), "One of required objects has not been set");
         }
 
+        // Pokud formTypeId je null, tak formType nevyhodnocujeme 
         var formTypeId = (await _codebookService.DocumentTemplateVersions(cancellationToken))
             .First(t => t.Id == request.DocumentData.DocumentTemplateVersionId)
             .FormTypeId;
 
-        var formType = (await _codebookService.FormTypes(cancellationToken))
-            .FirstOrDefault(t => t.Id == formTypeId) 
+        FormTypeItem? formType = null;
+        if (formTypeId is not null)
+        {
+            formType = (await _codebookService.FormTypes(cancellationToken))
+           .FirstOrDefault(t => t.Id == formTypeId)
             ?? throw new CisExtServiceValidationException(50002, "DocumentTemplateVersionId does not exist in FormTypes codebook");
+        }
 
         var docType = (await _codebookService.DocumentTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == request.DocumentData.DocumentTypeId)
@@ -146,7 +152,7 @@ internal sealed class RealESignaturesClient
             DocumentData = new()
             {
                 TypeCode = docType.ShortName,
-                TemplateVersion = formType.Version,
+                TemplateVersion = formType?.Version!,
                 Name = request.DocumentData.FileName,
                 FormId = request.DocumentData.FormId,
                 ContractNumber = request.DocumentData.ContractNumber
@@ -212,10 +218,10 @@ internal sealed class RealESignaturesClient
     }
 
     public async Task<(string ExternalId, string? TargetUrl)> UploadDocument(
-        long referenceId, 
+        long referenceId,
         string filename,
         DateTime creationDate,
-        byte[] fileData, 
+        byte[] fileData,
         CancellationToken cancellationToken = default)
     {
         using var content = new ByteArrayContent(fileData);
@@ -224,7 +230,7 @@ internal sealed class RealESignaturesClient
         var response = await _httpClient
             .PostAsync(_httpClient.BaseAddress + $"/{StartupExtensions.TenantCode}{_urlPrefix}UploadDocument?referenceId={referenceId}&filename={Uri.EscapeDataString(filename)}&creationDate={creationDate.ToString("s", CultureInfo.InvariantCulture)}", content, cancellationToken)
             .ConfigureAwait(false);
-        
+
         var result = await response.EnsureSuccessStatusAndReadJson<Contracts.ResponseUrl2>(StartupExtensions.ServiceName, cancellationToken);
 
         if ((result.Result?.Code ?? 0) != 0)
