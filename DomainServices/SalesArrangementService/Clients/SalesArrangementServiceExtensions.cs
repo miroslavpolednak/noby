@@ -5,6 +5,7 @@ using DomainServices.SalesArrangementService.Clients;
 using __Services = DomainServices.SalesArrangementService.Clients.Services;
 using __Contracts = DomainServices.SalesArrangementService.Contracts;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using DomainServices.SalesArrangementService.Clients.Services;
 
 namespace DomainServices;
 
@@ -17,6 +18,8 @@ public static class SalesArrangementServiceExtensions
 
     public static IServiceCollection AddSalesArrangementService(this IServiceCollection services)
     {
+        services.AddTransient<IFlowSwitchManager, FlowSwitchManager>();
+
         services.AddCisServiceDiscovery();
         services.TryAddTransient<ISalesArrangementServiceClient, __Services.SalesArrangementService>();
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(ServiceName);
@@ -25,6 +28,8 @@ public static class SalesArrangementServiceExtensions
 
     public static IServiceCollection AddSalesArrangementService(this IServiceCollection services, string serviceUrl)
     {
+        services.AddTransient<IFlowSwitchManager, FlowSwitchManager>();
+
         services.TryAddTransient<ISalesArrangementServiceClient, __Services.SalesArrangementService>();
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(serviceUrl);
         return services;

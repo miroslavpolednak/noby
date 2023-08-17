@@ -12,6 +12,7 @@ using DomainServices.OfferService.Contracts;
 using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
 using DomainServices.UserService.Clients;
+using CIS.Foms.Enums;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -87,6 +88,15 @@ internal sealed class GetLoanApplicationAssessmentHandler
         };
 
         var assessment = await _riskBusinessCaseService.GetAssessment(assessmentRequest, cancellationToken);
+
+        await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
+        {
+            new()
+            {
+                FlowSwitchId = (int)FlowSwitches.ScoringPerformedAtleastOnce,
+                Value = true
+            }
+        }, cancellationToken);
 
         // convert to ApiResponse
         var response = assessment.ToApiResponse(offer);

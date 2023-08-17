@@ -2330,7 +2330,7 @@
             Identita klienta, pokud se ma zalozit novy CustomerOnSA
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.setFlowSwitches(System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.setFlowSwitches(System.Int32,System.Boolean)">
             <summary>
             Nastavit flowSwitches na SalesArrangementu
             </summary>
