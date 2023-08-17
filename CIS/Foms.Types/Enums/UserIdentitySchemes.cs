@@ -22,7 +22,7 @@ public enum UserIdentitySchemes : byte
     [EnumMember]
     M17Id = 6,
 
-    [Display(Name = "BrokerId")]
+    [Display(Name = "BROKERID")]
     [EnumMember]
     BrokerId = 7,
 
