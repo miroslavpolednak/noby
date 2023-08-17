@@ -9,7 +9,9 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 using NOBY.Api.Endpoints.SalesArrangement.SendToCmp.Dto;
+using System.Threading;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CreateCustomerRequest = DomainServices.CustomerService.Contracts.CreateCustomerRequest;
 using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
@@ -61,21 +63,16 @@ internal sealed class SendToCmpHandler
 
         if (saCategory.SalesArrangementCategory == 1)
         {
-            var customersOnSa = await LoadCustomersData(saInstance.SalesArrangementId, cancellationToken);
+            var customersData = await LoadCustomersData(saInstance.SalesArrangementId, saInstance.CaseId, cancellationToken);
 
-            foreach (var customerOnSa in customersOnSa)
+            foreach (var customerOnSa in customersData.CustomersOnSa)
             {
                 await CreateCustomerMpIfNotExists(customerOnSa, cancellationToken);
+
+                await CreateContractRelationshipIfNotExists(customersData.RedundantCustomersOnProduct, customerOnSa, saInstance.CaseId, cancellationToken);
             }
 
-            var customersOnProduct = (await _productService.GetCustomersOnProduct(saInstance.CaseId, cancellationToken)).Customers;
-
-            foreach (var customerOnSa in customersOnSa)
-            {
-                await CreateContractRelationshipIfNotExists(customersOnProduct, customerOnSa, saInstance.CaseId, cancellationToken);
-            }
-
-            await DeleteRedundantContractRelationship(saInstance.CaseId, customersOnProduct, cancellationToken);
+            await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
 
             await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
 
@@ -139,11 +136,16 @@ internal sealed class SendToCmpHandler
             throw new CisValidationException("SA neni validni, nelze odeslat do SB. Provolej Validate endpoint.");
     }
 
-    private async Task<List<CustomerOnSaExtended>> LoadCustomersData(int salesArrangementId, CancellationToken cancellationToken)
+    private async Task<CustomersData> LoadCustomersData(int salesArrangementId, long caseId, CancellationToken cancellationToken)
     {
         var customersOnSa = await _customerOnSaService.GetCustomerList(salesArrangementId, cancellationToken);
+        var redundantCustomersOnProduct = (await _productService.GetCustomersOnProduct(caseId, cancellationToken)).Customers;
 
-        return customersOnSa.Select(ParseCustomerOnSaExtended).ToList();
+        return new CustomersData
+        {
+            CustomersOnSa = customersOnSa.Select(ParseCustomerOnSaExtended).ToList(),
+            RedundantCustomersOnProduct = redundantCustomersOnProduct
+        };
 
         static CustomerOnSaExtended ParseCustomerOnSaExtended(CustomerOnSA customerOnSa)
         {
