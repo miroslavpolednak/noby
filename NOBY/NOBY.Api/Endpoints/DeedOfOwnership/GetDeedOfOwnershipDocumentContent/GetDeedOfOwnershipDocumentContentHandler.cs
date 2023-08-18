@@ -68,7 +68,7 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
             {
                 RealEstateDescription = t.PlainText,
                 RealEstateId = t.RealEstateId,
-                IsActive = false
+                IsActive = t.DocumentId == request.DeedOfOwnershipDocumentId
             }).ToList()
         };
     }
