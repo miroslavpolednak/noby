@@ -52,6 +52,7 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
             SignatureDateTime = documentOnSa.SignatureDateTime?.ToDateTime(),
             SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
             {
+                IsValid = documentOnSa.IsValid,
                 DocumentOnSAId = documentOnSa.DocumentOnSAId,
                 IsSigned = documentOnSa.IsSigned,
                 Source = documentOnSa.Source.MapToCisEnum(),
