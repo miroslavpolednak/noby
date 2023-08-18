@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using DomainServices.RealEstateValuationService.Api.Extensions;
 using DomainServices.RealEstateValuationService.Api.Services;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
@@ -13,52 +14,24 @@ internal sealed class OrderStandardValuationHandler
     {
         var (entity, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
 
-        // validace
-        if (entity.OrderId.HasValue || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(entity.ValuationStateId))
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.OrderCustomValidationFailed);
-        }
-
         // detail oceneni
         var houseAndFlat = OrderAggregate.GetHouseAndFlat(entity);
         // instance uzivatele
         var currentUser = await _userService.GetCurrentUser(cancellationToken);
         // info o produktu
-        var (collateralAmount, loanAmount, loanDuration, loanPurpose) = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
+        var productProps = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
 
         var orderRequest = new ExternalServices.PreorderService.V1.Contracts.StandardOrderRequestDTO
         {
-            CompanyCode = "02",
-            ProductCode = "02",
-            ProductOwner = "02",
-            DealNumber = caseInstance.Data.ContractNumber,
-            ContactPersonName = $"{currentUser.UserInfo.FirstName} {currentUser.UserInfo.LastName}",
-            ContactPersonEmail = currentUser.UserInfo.Email,
-            ContactPersonTel = currentUser.UserInfo.PhoneNumber,
-            Cpm = Convert.ToInt64(currentUser.UserInfo.Cpm, CultureInfo.InvariantCulture),// nez to v ACV opravi
-            Icp = Convert.ToInt64(currentUser.UserInfo.Icp, CultureInfo.InvariantCulture),
             LocalSurveyPerson = $"{request.Data?.FirstName} {request.Data?.LastName}",
             LocalSurveyEmail = request.Data?.Email,
             LocalSurveyPhone = $"{request.Data?.PhoneIDC}{request.Data?.PhoneNumber}",
             LocalSurveyFunction = request.Data?.RealEstateValuationLocalSurveyFunctionCode,
-            BagmanRealEstateTypeId = entity.BagmanRealEstateTypeId,
-            RealEstateTypeId = entity.ACVRealEstateTypeId,
-            CremRealEstateIds = realEstateIds,
             LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO(),
-            AttachmentIds = attachments,
-            EFormId = 0,
-            Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
-            OwnershipLimitations = houseAndFlat?.OwnershipRestricted,
-            IsCellarFlat = houseAndFlat?.FlatOnlyDetails?.Basement,
-            IsNotUsableTechnicalState = houseAndFlat?.PoorCondition,
-            MaturityLoan = loanDuration,
-            PurposeLoan = loanPurpose
         };
-        if (collateralAmount.HasValue)
-            orderRequest.ActualPurchasePrice = Convert.ToDouble(collateralAmount, CultureInfo.InvariantCulture);
-        if (loanAmount.HasValue)
-            orderRequest.LoanAmount = Convert.ToDouble(loanAmount, CultureInfo.InvariantCulture);
-
+        orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
+        orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);
+        
         entity.ValuationTypeId = (int)RealEstateValuationTypes.Standard;
         var orderResponse = await _preorderService.CreateOrder(orderRequest, cancellationToken);
 

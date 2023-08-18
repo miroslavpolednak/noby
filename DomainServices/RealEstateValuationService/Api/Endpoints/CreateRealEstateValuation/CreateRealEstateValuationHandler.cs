@@ -11,6 +11,19 @@ internal sealed class CreateRealEstateValuationHandler
         // kontrola CaseId
         await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
 
+        // Kontrola, zda na daném CaseId nedojde k porušení limitu na maximálně 3 Ocenění, která jsou zároveň objektem úvěru
+        if (request.IsLoanRealEstate)
+        {
+            var existingRev = await _dbContext.RealEstateValuations
+                .AsNoTracking()
+                .Where(t => t.CaseId == request.CaseId && t.IsLoanRealEstate && !_stateIdsForValidation.Contains(t.ValuationStateId))
+                .CountAsync(cancellationToken);
+            if (existingRev > 2)
+            {
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MaxValuationsForCase);
+            }
+        }
+
         var entity = new Database.Entities.RealEstateValuation
         {
             CaseId = request.CaseId,
@@ -31,6 +44,8 @@ internal sealed class CreateRealEstateValuationHandler
             RealEstateValuationId = entity.RealEstateValuationId
         };
     }
+
+    private static int[] _stateIdsForValidation = new[] { 4, 5 };
 
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
     private readonly RealEstateValuationServiceDbContext _dbContext;

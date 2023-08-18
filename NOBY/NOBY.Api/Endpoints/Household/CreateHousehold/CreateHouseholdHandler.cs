@@ -1,6 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
+using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 
@@ -48,18 +49,16 @@ internal sealed class CreateHouseholdHandler
         // vlozit customera na household
         await _householdService.LinkCustomerOnSAToHousehold(householdId, customerResponse.CustomerOnSAId, null, cancellationToken);
 
+        _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
+
         // HFICH-5233
         if (request.HouseholdTypeId == (int)HouseholdTypes.Codebtor)
         {
-            await _salesArrangementService.SetFlowSwitches(request.SalesArrangementId, new()
-            {
-                new()
-                { 
-                    FlowSwitchId = (int)FlowSwitches.Was3602CodebtorChangedAfterSigning, 
-                    Value = true 
-                }
-            }, cancellationToken);
+            _flowSwitchManager.AddFlowSwitch(FlowSwitches.Was3602CodebtorChangedAfterSigning, true);
         }
+
+        // ulozit flow switches
+        await _flowSwitchManager.SaveFlowSwitches(request.SalesArrangementId, cancellationToken);
 
         return new Dto.HouseholdInList
         {
@@ -71,17 +70,20 @@ internal sealed class CreateHouseholdHandler
         };
     }
 
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly IFlowSwitchManager _flowSwitchManager;
 
     public CreateHouseholdHandler(
+        IFlowSwitchManager flowSwitchManager,
         ICustomerOnSAServiceClient customerOnSAService,
         IHouseholdServiceClient householdService,
         ICodebookServiceClient codebookService,
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService)
     {
+        _flowSwitchManager = flowSwitchManager;
         _codebookService = codebookService;
         _householdService = householdService;
         _customerOnSAService = customerOnSAService;

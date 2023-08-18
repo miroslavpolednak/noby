@@ -17,6 +17,11 @@ internal sealed class MockPreorderServiceClient
         return Task.CompletedTask;
     }
 
+    public Task<OrderResultResponse> GetOrderResult(long orderId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<RealEstateValuationTypes>> GetValuationTypes(AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

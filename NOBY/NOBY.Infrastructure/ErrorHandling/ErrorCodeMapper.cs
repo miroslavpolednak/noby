@@ -35,7 +35,8 @@ public sealed class ErrorCodeMapper
             { 90025, new("Obchodní případ byl stornován.", "") },
             { 90026, new("Vámi hledaný obchodní případ byl vytvořen v jiném systému a není možné zde zobrazit jeho detail") },
             { 90027, new("Diskvalifikace z online ocenění", "Při pokusu o online ocenění některý ze vstupních atributů přesáhl povolený rozsah pro možnost ocenění nemovitosti online.") },
-            { 90028, new("Žádost v aktuální stavu nelze měnit.") }
+            { 90028, new("Žádost v aktuální stavu nelze měnit.") },
+            { 90029, new("TODO Marťa") }
         };
 
         Messages = messages.AsReadOnly();
@@ -43,7 +44,8 @@ public sealed class ErrorCodeMapper
         var mapper = new Dictionary<int, int>()
         {
             { 13035, 90025 },
-            { 22202, 90027 }
+            { 22202, 90027 },
+            { 22015, 90029 }
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();

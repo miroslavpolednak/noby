@@ -84,7 +84,7 @@ internal sealed class GetTaskDetailHandler
 
             for (var i = 0; i < matches.Count; i += 2)
             {
-                if (matches[i].Groups[0].Value.Trim().StartsWith("#SeparatorRequest#"))
+                if (matches[i].Groups[0].Value.Trim().StartsWith("#SeparatorRequest#", StringComparison.OrdinalIgnoreCase))
                 {
                     taskDetail.TaskCommunication.Add(new TaskCommunicationItem
                     {
@@ -99,7 +99,7 @@ internal sealed class GetTaskDetailHandler
                 taskDetail.TaskCommunication.Add(new TaskCommunicationItem
                 {
                     TaskResponse = matches[i].Groups[1].Value.Trim(),
-                    TaskRequest = matches[i + 1].Groups[1].Value.Trim()
+                    TaskRequest = matches.Count > i + 1 ? matches[i + 1].Groups[1].Value.Trim() : default
                 });
             }
         }

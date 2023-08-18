@@ -8,6 +8,8 @@ internal sealed class OrderRealEstateValuationHandler
 {
     public async Task Handle(OrderRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
+        var revInstance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, true, cancellationToken);
+
         var allowedTypes = await _estateValuationTypeService.GetAllowedTypes(request.RealEstateValuationId, request.CaseId, cancellationToken);
         if (!(allowedTypes?.Contains(request.ValuationTypeId) ?? false))
         {
@@ -17,6 +19,13 @@ internal sealed class OrderRealEstateValuationHandler
         switch (request.ValuationTypeId)
         {
             case RealEstateValuationTypes.Online:
+                if (!revInstance.PreorderId.HasValue 
+                    || revInstance.OrderId.HasValue 
+                    || revInstance.ValuationStateId != (int)RealEstateValuationStates.DoplneniDokumentu)
+                {
+                    throw new CisAuthorizationException("Valuation:Online OrderId or PreorderId already set or state is out of allowed range");
+                }
+
                 await _realEstateValuationService.OrderOnlineValuation(new DomainServices.RealEstateValuationService.Contracts.OrderOnlineValuationRequest
                 {
                     RealEstateValuationId = request.RealEstateValuationId,
@@ -25,6 +34,12 @@ internal sealed class OrderRealEstateValuationHandler
                 break;
 
             case RealEstateValuationTypes.Standard:
+                if (revInstance.OrderId.HasValue 
+                    || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(revInstance.ValuationStateId.GetValueOrDefault()))
+                {
+                    throw new CisAuthorizationException("Valuation:Standard OrderId already set or state is out of allowed range");
+                }
+
                 await _realEstateValuationService.OrderStandardValuation(new DomainServices.RealEstateValuationService.Contracts.OrderStandardValuationRequest
                 {
                     RealEstateValuationId = request.RealEstateValuationId,
@@ -33,6 +48,13 @@ internal sealed class OrderRealEstateValuationHandler
                 break;
 
             case RealEstateValuationTypes.Dts:
+                if (revInstance.OrderId.HasValue 
+                    || revInstance.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
+                {
+                    throw new CisAuthorizationException("Valuation:Dts OrderId already set or state is out of allowed range");
+                }
+
+                await _realEstateValuationService.OrderDTSValuation(request.RealEstateValuationId, cancellationToken);
                 break;
         }
     }

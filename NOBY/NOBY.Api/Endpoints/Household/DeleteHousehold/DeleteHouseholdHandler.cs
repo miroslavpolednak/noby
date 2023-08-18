@@ -2,6 +2,7 @@
 using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.DeleteHousehold;
 
@@ -19,17 +20,16 @@ internal sealed class DeleteHouseholdHandler
         // smazat
         await _householdService.DeleteHousehold(request.HouseholdId, cancellationToken: cancellationToken);
 
+        _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
+
         // HFICH-5233
         if (household.HouseholdTypeId == (int)HouseholdTypes.Codebtor)
         {
-            await _salesArrangementService.SetFlowSwitches(household.SalesArrangementId, new()
-            {
-                new() {
-                    FlowSwitchId = (int)FlowSwitches.Was3602CodebtorChangedAfterSigning,
-                    Value = true
-                }
-            }, cancellationToken);
+            _flowSwitchManager.AddFlowSwitch(FlowSwitches.Was3602CodebtorChangedAfterSigning, true);
         }
+
+        // ulozit flow switches
+        await _flowSwitchManager.SaveFlowSwitches(household.SalesArrangementId, cancellationToken);
 
         return request.HouseholdId;
     }
@@ -53,20 +53,20 @@ internal sealed class DeleteHouseholdHandler
         }
     }
 
+    private readonly IFlowSwitchManager _flowSwitchManager;
     private readonly IProductServiceClient _productService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     
     public DeleteHouseholdHandler(
+        IFlowSwitchManager flowSwitchManager,
         IProductServiceClient productService,
         ICustomerOnSAServiceClient customerOnSAService,
-        IHouseholdServiceClient householdService, 
-        ISalesArrangementServiceClient salesArrangementService)
+        IHouseholdServiceClient householdService)
     {
+        _flowSwitchManager = flowSwitchManager;
         _productService = productService;
         _customerOnSAService = customerOnSAService;
-        _salesArrangementService = salesArrangementService;
         _householdService = householdService;
     }
 }

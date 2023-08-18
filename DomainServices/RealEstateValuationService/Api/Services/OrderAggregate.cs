@@ -1,7 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.OfferService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
@@ -100,7 +99,7 @@ internal sealed class OrderAggregate
         return null;
     }
 
-    public async Task<(decimal? CollateralAmount, decimal? LoanAmount, int? LoanDuration, string? LoanPurpose)> GetProductProperties(int caseState, long caseId, CancellationToken cancellationToken)
+    public async Task<GetProductPropertiesResult> GetProductProperties(int caseState, long caseId, CancellationToken cancellationToken)
     {
         if (caseState == (int)CaseStates.InProgress)
         {
@@ -111,7 +110,7 @@ internal sealed class OrderAggregate
             var loanDuration = offer.SimulationInputs.LoanDuration;
             var purpose = await getLoanPurpose(offer.SimulationInputs.LoanPurposes?.FirstOrDefault()?.LoanPurposeId);
             var loanAmount = offer.SimulationInputs.LoanAmount;
-            return (collateralAmount, loanAmount, loanDuration, purpose);
+            return new GetProductPropertiesResult(collateralAmount, loanAmount, loanDuration, purpose);
         }
         else
         {
@@ -119,7 +118,7 @@ internal sealed class OrderAggregate
 
             var purpose = await getLoanPurpose(mortgage.Mortgage.LoanPurposes?.FirstOrDefault()?.LoanPurposeId);
             var loanAmount = mortgage.Mortgage.LoanPaymentAmount;
-            return (null, loanAmount, null, purpose);
+            return new GetProductPropertiesResult(null, loanAmount, null, purpose);
         }
     }
 
@@ -129,6 +128,10 @@ internal sealed class OrderAggregate
             .OrderByDescending(t => t.AcvIdPriority)
             .FirstOrDefault(t => t.Id == loanPurposeId)
             ?.AcvId;
+    }
+
+    public sealed record GetProductPropertiesResult(decimal? CollateralAmount, decimal? LoanAmount, int? LoanDuration, string? LoanPurpose)
+    {
     }
 
     private readonly IProductServiceClient _productService;

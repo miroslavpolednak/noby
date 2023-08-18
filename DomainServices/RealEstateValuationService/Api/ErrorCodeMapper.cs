@@ -19,8 +19,9 @@ internal sealed class ErrorCodeMapper
     public const int RealEstateValuationAttachmentIsEmpty = 22011;
     public const int OrderDataValidation = 22012;
     public const int AddressPointIdNotFound = 22013;
-    public const int RevaluationFailed = 22014;
-    public const int OrderCustomValidationFailed = 22015;
+    public const int UnsopportedEstateType = 22014;
+    public const int MaxValuationsForCase = 22015;
+    public const int RevaluationFailed = 22016;
 
     public static IErrorCodesDictionary Init()
     {
@@ -40,8 +41,9 @@ internal sealed class ErrorCodeMapper
             { RealEstateValuationAttachmentIsEmpty, "RealEstateValuationAttachment is empty" },
             { OrderDataValidation, "Some of required fields are missing: '{PropertyValue}'" },
             { AddressPointIdNotFound, "AddressPointId not found in any DeedOfOwnershipDocuments" },
+            { UnsopportedEstateType, "Unsupported RealEstateTypeId ({PropertyValue})" },
             { RevaluationFailed, "Revaluation failed" },
-            { OrderCustomValidationFailed, "Order Validation Failed" }
+            { MaxValuationsForCase, "Příliš mnoho Ocenění s isLoanRealEstate true" }
         });
 
         return Messages;

@@ -18,7 +18,7 @@ internal sealed class GetSalesArrangementsHandler
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
 
         var model = result.SalesArrangements
-            //.Where(t => t.State != (int)SalesArrangementStates.NewArrangement) //TODO odstranit az rekne Franta
+            .Where(t => t.State != (int)SalesArrangementStates.NewArrangement)
             .Select(t => new Dto.SalesArrangementListItem
             {
                 SalesArrangementId = t.SalesArrangementId,

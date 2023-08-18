@@ -45,7 +45,8 @@ public class SalesArrangementStateManager : ISalesArrangementStateManager
         if (documentsToSign.DocumentsOnSAToSign.All(d =>
                                                     d.DocumentOnSAId is not null
                                                     && d.IsSigned
-                                                    && ((d.SignatureTypeId == SignatureTypes.Paper.ToByte() && archivedDocumentOnSaIds.Any(archivedDocumentOnSaId => archivedDocumentOnSaId == d.DocumentOnSAId))
+                                                    && (
+                                                        (d.SignatureTypeId == SignatureTypes.Paper.ToByte() && (archivedDocumentOnSaIds.Any(archivedDocumentOnSaId => archivedDocumentOnSaId == d.DocumentOnSAId) || d.DocumentTypeId == DocumentTypes.ZADOCERP.ToByte())) // DocumentTypes.ZADOCERP 6
                                                          || (d.SignatureTypeId == SignatureTypes.Electronic.ToByte())
                                                        )
         )

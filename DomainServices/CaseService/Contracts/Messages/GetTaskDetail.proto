@@ -36,7 +36,7 @@ message TaskDetailItem {
 message TaskCommunicationItem {
 	google.protobuf.StringValue TaskResponse = 1;
 
-	string TaskRequest = 2;
+	google.protobuf.StringValue TaskRequest = 2;
 }
 
 message AmendmentSigning {
@@ -80,4 +80,7 @@ message PriceExceptionFeesItem {
 
 message AmendmentRealEstateValuation {
 	int64 OrderId = 1;
+	google.protobuf.StringValue DocumentInfoPrice = 2;
+	google.protobuf.StringValue DocumentRecommendationForClient = 3;
+	bool OnlineValuation = 4;
 }

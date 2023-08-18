@@ -1,4 +1,6 @@
-﻿using DomainServices.CustomerService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.RealEstateValuationService.Api.Extensions;
+using DomainServices.RealEstateValuationService.Api.Services;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using DomainServices.UserService.Clients;
@@ -12,27 +14,56 @@ internal sealed class OrderDTSValuationHandler
     {
         var (entity, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
 
+        // detail oceneni
+        var houseAndFlat = OrderAggregate.GetHouseAndFlat(entity);
+        // instance uzivatele
+        var currentUser = await _userService.GetCurrentUser(cancellationToken);
+        // info o produktu
+        var productProps = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
+
+        long orderId = entity.RealEstateTypeId switch
+        {
+            1 => await getHouseResult(),
+            2 => await getFlatResult(),
+            _ => throw ErrorCodeMapper.CreateValidationException(entity.RealEstateTypeId)
+        };
 
         // ulozeni vysledku
-        //await _aggregate.SaveResults(entity, orderResponse.OrderId, request.Data, cancellationToken);
+        entity.ValuationTypeId = 2;
+        await _aggregate.SaveResults(entity, orderId, RealEstateValuationStates.Probiha, null, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
+
+        async Task<long> getFlatResult()
+        {
+            var orderRequest = new ExternalServices.PreorderService.V1.Contracts.DtsFlatRequest();
+            orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
+            orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);
+
+            return (await _preorderService.CreateOrder(orderRequest, cancellationToken)).OrderId;
+        }
+
+        async Task<long> getHouseResult()
+        {
+            var orderRequest = new ExternalServices.PreorderService.V1.Contracts.DtsHouseRequest();
+            orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
+            orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);
+
+            return (await _preorderService.CreateOrder(orderRequest, cancellationToken)).OrderId;
+        }
     }
 
     private readonly Services.OrderAggregate _aggregate;
     private readonly IPreorderServiceClient _preorderService;
     private readonly IUserServiceClient _userService;
-    private readonly ICustomerServiceClient _customerService;
 
     public OrderDTSValuationHandler(
         Services.OrderAggregate aggregate,
         IPreorderServiceClient preorderService,
-        IUserServiceClient userService,
-        ICustomerServiceClient customerService)
+        IUserServiceClient userService)
     {
         _aggregate = aggregate;
         _preorderService = preorderService;
         _userService = userService;
-        _customerService = customerService;
     }
 }
