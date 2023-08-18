@@ -10,10 +10,12 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
     {
         long documentId;
         int? deedOfOwnershipNumber = null;
+        long[]? isActiveRealEstateIds = null;
 
         if (request.DeedOfOwnershipDocumentId.HasValue)
         {
             var savedDocument = await _realEstateValuation.GetDeedOfOwnershipDocument(request.DeedOfOwnershipDocumentId.Value, cancellationToken);
+            isActiveRealEstateIds = savedDocument.RealEstateIds?.ToArray();
             documentId = savedDocument.CremDeedOfOwnershipDocumentId;
             deedOfOwnershipNumber = savedDocument.DeedOfOwnershipNumber;
         }
@@ -62,13 +64,13 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
             }).ToList(),
             LegalRelations = legalRelations?.Select(t => new GetDeedOfOwnershipDocumentContentResponseLegalRelations
             {
-                LegalRelationDescription = t.LegalRelationDesc
+                LegalRelationDescription = t.PlainText
             }).ToList(),
             RealEstates = realEstates?.Select(t => new GetDeedOfOwnershipDocumentContentResponseRealEstates
             {
                 RealEstateDescription = t.PlainText,
                 RealEstateId = t.RealEstateId,
-                IsActive = t.DocumentId == request.DeedOfOwnershipDocumentId
+                IsActive = isActiveRealEstateIds?.Contains(t.RealEstateId) ?? false
             }).ToList()
         };
     }
