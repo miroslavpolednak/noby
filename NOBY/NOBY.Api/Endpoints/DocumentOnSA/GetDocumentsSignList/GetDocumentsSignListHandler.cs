@@ -52,6 +52,7 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 SignatureDateTime = s.SignatureDateTime?.ToDateTime(),
                 SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
                 {
+                    IsValid = s.IsValid,
                     DocumentOnSAId = s.DocumentOnSAId,
                     IsSigned = s.IsSigned,
                     Source = s.Source.MapToCisEnum(),
