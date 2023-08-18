@@ -9,5 +9,5 @@ public class EmailAddress
     public string Value { get; set; } = string.Empty;
     
     [ProtoMember(2)]
-    public Party Party { get; set; } = new();
+    public Party? Party { get; set; }
 }

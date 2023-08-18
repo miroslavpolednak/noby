@@ -14,10 +14,11 @@ public class EmailAddressValidator : AbstractValidator<EmailAddress>
             .EmailAddress()
                 .WithErrorCode(ErrorHandling.ErrorCodeMapper.ValueInvalid);
 
-        RuleFor(emailAddress => emailAddress.Party)
-            .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.PartyRequired)
-            .SetValidator(new PartyValidator())
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.PartyInvalid);
+        When(emailAddress => emailAddress.Party is not null, () =>
+        {
+            RuleFor(emailAddress => emailAddress.Party!)
+                .SetValidator(new PartyValidator())
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.PartyInvalid);
+        });
     }
 }

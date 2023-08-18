@@ -11,6 +11,8 @@ import "Messages/Contacts.proto";
 
 message CustomerDetailRequest {
 	cis.types.Identity Identity = 1;
+
+	bool ForceKbCustomerLoad = 2; //Loads a KB customer if the requested identity is MP.
 }
 
 message CustomerDetailResponse {

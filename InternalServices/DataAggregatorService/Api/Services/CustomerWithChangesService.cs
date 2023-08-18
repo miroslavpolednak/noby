@@ -22,7 +22,7 @@ public class CustomerWithChangesService
 
     public async Task<(CustomerDetailResponse customer, CustomerOnSA? customerOnSA)> GetCustomerDetail(Identity identity, int salesArrangementId, CancellationToken cancellationToken)
     {
-        var customer = await _customerService.GetCustomerDetail(identity, cancellationToken);
+        var customer = await _customerService.GetCustomerDetail(identity, forceKbCustomerLoad: true, cancellationToken);
         var customerOnSaList = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellationToken);
 
         var customerOnSa = customerOnSaList.FirstOrDefault(c => c.CustomerIdentifiers.Contains(identity));
@@ -42,7 +42,7 @@ public class CustomerWithChangesService
         var customerIdentity = customerOnSa.CustomerIdentifiers.MaxBy(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
                                ?? throw new InvalidOperationException($"CustomerOnSa {customerOnSa} has no identity");
 
-        var customer = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);
+        var customer = await _customerService.GetCustomerDetail(customerIdentity, forceKbCustomerLoad: true, cancellationToken);
 
         _customerChangeDataMerger.MergeAll(customer, customerOnSa);
 
