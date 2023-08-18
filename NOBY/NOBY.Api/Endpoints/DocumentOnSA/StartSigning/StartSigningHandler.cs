@@ -182,7 +182,6 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
             SignatureTypeId = result.DocumentOnSa.SignatureTypeId,
             SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
             {
-                IsValid = result.DocumentOnSa.IsValid,
                 DocumentOnSAId = result.DocumentOnSa.DocumentOnSAId,
                 IsSigned = result.DocumentOnSa.IsSigned,
                 Source = result.DocumentOnSa.Source.MapToCisEnum(),

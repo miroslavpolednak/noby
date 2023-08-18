@@ -17,15 +17,14 @@ public static class DocumentOnSaMetadataManager
     public static SignatureState GetSignatureState(DocumentOnSAInfo docSa, List<GenericCodebookResponse.Types.GenericCodebookItem> signatureStates) => docSa switch
     {
         // ready (připraveno) 1
-        DocumentOnSAInfo doc when doc.IsValid && doc.DocumentOnSAId is null => GetSignatureState(1, signatureStates),
+        DocumentOnSAInfo doc when doc.DocumentOnSAId is null => GetSignatureState(1, signatureStates),
         // InTheProcess (v procesu) 2
-        DocumentOnSAInfo doc when doc.IsValid && doc.DocumentOnSAId is not null && doc.IsSigned == false => GetSignatureState(2, signatureStates),
+        DocumentOnSAInfo doc when doc.DocumentOnSAId is not null && doc.IsSigned == false => GetSignatureState(2, signatureStates),
         // WaitingForScan (čeká na sken) 3
-        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && !doc.EArchivIdsLinked.Any() && doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() && doc.Source != Source.Workflow => GetSignatureState(3, signatureStates),
+        DocumentOnSAInfo doc when doc.IsSigned && !doc.EArchivIdsLinked.Any() && doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() && doc.Source != Source.Workflow => GetSignatureState(3, signatureStates),
         // Signed (podepsáno) 4
-        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && (doc.EArchivIdsLinked.Any() || doc.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() || doc.Source == Source.Workflow) => GetSignatureState(4, signatureStates),
-        // Canceled (zrušeno) 5
-        _ => GetSignatureState(5, signatureStates)
+        DocumentOnSAInfo doc when doc.IsSigned && (doc.EArchivIdsLinked.Any() || doc.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() || doc.Source == Source.Workflow) => GetSignatureState(4, signatureStates),
+        _ => new SignatureState { Id = 0, Name = "Unknown" }
     };
 
     private static SignatureState GetSignatureState(int stateId, List<GenericCodebookResponse.Types.GenericCodebookItem> signatureStates)
@@ -37,8 +36,6 @@ public static class DocumentOnSaMetadataManager
 
 public class DocumentOnSAInfo
 {
-    public bool IsValid { get; set; }
-
     public int? DocumentOnSAId { get; set; }
 
     public bool IsSigned { get; set; }
