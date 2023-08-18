@@ -2,6 +2,9 @@ import uuid
 from time import sleep
 from urllib.parse import urlencode, quote
 import urllib3
+
+
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 import pytest
@@ -306,7 +309,7 @@ def test_sms_basic_alex(ns_url, auth_params, auth, json_data):
     }),
     (json_req_sms_bad_basic_without_identifier_identity, {
         'Identifier.Identity': ['The Identity field is required.']
-    }),
+    })
 ])
 def test_sms_bad_identifier(ns_url, auth_params, auth, json_data, expected_error):
     """uvodni errors test pro zakladni napln sms bez priloh
