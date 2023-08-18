@@ -34,7 +34,12 @@ internal sealed class CustomerService : ICustomerServiceClient
 
     public Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default)
     {
-        return _service.GetCustomerDetailAsync(new CustomerDetailRequest { Identity = identity }, cancellationToken: cancellationToken).ResponseAsync;
+        return GetCustomerDetail(identity, forceKbCustomerLoad: false, cancellationToken: cancellationToken);
+    }
+
+    public Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, bool forceKbCustomerLoad, CancellationToken cancellationToken = default)
+    {
+        return _service.GetCustomerDetailAsync(new CustomerDetailRequest { Identity = identity, ForceKbCustomerLoad = forceKbCustomerLoad }, cancellationToken: cancellationToken).ResponseAsync;
     }
 
     public Task<CustomerListResponse> GetCustomerList(IEnumerable<Identity> identities, CancellationToken cancellationToken = default)

@@ -20,8 +20,21 @@ internal sealed class GetCustomerDetailHandler : IRequestHandler<CustomerDetailR
         return request.Identity.IdentityScheme switch
         {
             Identity.Types.IdentitySchemes.Kb => _cmDetailProvider.GetDetail(request.Identity.IdentityId, cancellationToken),
+            Identity.Types.IdentitySchemes.Mp when request.ForceKbCustomerLoad => LoadKBCustomerByMPIdentity(request.Identity.IdentityId, cancellationToken),
             Identity.Types.IdentitySchemes.Mp => _konsDbDetailProvider.GetDetail(request.Identity.IdentityId, cancellationToken),
             _ => throw new InvalidEnumArgumentException()
         };
+    }
+
+    private async Task<CustomerDetailResponse> LoadKBCustomerByMPIdentity(long partnerId, CancellationToken cancellationToken)
+    {
+        var partner = await _konsDbDetailProvider.GetDetail(partnerId, cancellationToken);
+
+        var kbIdentity = partner.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+
+        if (kbIdentity is null)
+            return partner;
+
+        return await _cmDetailProvider.GetDetail(kbIdentity.IdentityId, cancellationToken);
     }
 }
