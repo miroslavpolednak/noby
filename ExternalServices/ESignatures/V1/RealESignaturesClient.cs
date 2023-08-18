@@ -151,7 +151,7 @@ internal sealed class RealESignaturesClient
             DocumentData = new()
             {
                 TypeCode = docType.ShortName,
-                TemplateVersion = formType?.Version!,
+                TemplateVersion = formType?.Version ?? "A",
                 Name = request.DocumentData.FileName,
                 FormId = request.DocumentData.FormId,
                 ContractNumber = request.DocumentData.ContractNumber

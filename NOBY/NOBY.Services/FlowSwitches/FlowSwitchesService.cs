@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NOBY.Services.FlowSwitches;
 
-[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.AsImplementedInterfacesService]
+[TransientService, AsImplementedInterfacesService]
 internal sealed class FlowSwitchesService
     : IFlowSwitchesService
 {
@@ -71,7 +71,7 @@ internal sealed class FlowSwitchesService
     /// <summary>
     /// Vychozi nastaveni kategorii klapek. Nastavi default pro kazdou skupinu a seznam klapek, ktere musi byt nastaveny aby byla nastavena i kategorie.
     /// </summary>
-    public FlowSwitchGroupDefault[] getFlowSwitchGroups()
+    private FlowSwitchGroupDefault[] getFlowSwitchGroups()
     {
         return _cache.GetOrAdd("FlowSwitchesGroups", () =>
         {
