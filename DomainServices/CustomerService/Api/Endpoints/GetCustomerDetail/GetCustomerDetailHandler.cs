@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using CIS.Foms.Enums;
 using DomainServices.CustomerService.Api.Services.CustomerManagement;
 using DomainServices.CustomerService.Api.Services.KonsDb;
 
@@ -35,6 +36,10 @@ internal sealed class GetCustomerDetailHandler : IRequestHandler<CustomerDetailR
         if (kbIdentity is null)
             return partner;
 
-        return await _cmDetailProvider.GetDetail(kbIdentity.IdentityId, cancellationToken);
+        var kbDetail = await _cmDetailProvider.GetDetail(kbIdentity.IdentityId, cancellationToken);
+
+        kbDetail.Identities.Add(new Identity(partnerId, IdentitySchemes.Mp));
+
+        return kbDetail;
     }
 }
