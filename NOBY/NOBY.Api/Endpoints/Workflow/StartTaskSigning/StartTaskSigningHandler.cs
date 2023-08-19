@@ -76,6 +76,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
             SignatureTypeId = documentOnSa.SignatureTypeId,
             SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
             {
+                IsValid = documentOnSa.IsValid,
                 DocumentOnSAId = documentOnSa.DocumentOnSAId,
                 IsSigned = documentOnSa.IsSigned,
                 Source = documentOnSa.Source.MapToCisEnum(),
@@ -103,6 +104,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
             SignatureTypeId = signingResponse.DocumentOnSa.SignatureTypeId,
             SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
             {
+                IsValid = signingResponse.DocumentOnSa.IsValid,
                 DocumentOnSAId = signingResponse.DocumentOnSa.DocumentOnSAId,
                 IsSigned = signingResponse.DocumentOnSa.IsSigned,
                 Source = signingResponse.DocumentOnSa.Source.MapToCisEnum(),
