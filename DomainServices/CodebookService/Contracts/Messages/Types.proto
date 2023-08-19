@@ -162,6 +162,7 @@ message DocumentTemplateVersionsResponse {
 		string DocumentVersion = 3;
 		bool IsValid = 4;
 		google.protobuf.Int32Value FormTypeId = 5;
+		string TemplateProcessingType = 6;
 	}
 }
 
