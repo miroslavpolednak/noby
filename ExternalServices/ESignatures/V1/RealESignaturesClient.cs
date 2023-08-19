@@ -118,17 +118,9 @@ internal sealed class RealESignaturesClient
             throw new ArgumentNullException(nameof(request), "One of required objects has not been set");
         }
 
-        var formTypeId = (await _codebookService.DocumentTemplateVersions(cancellationToken))
-            .First(t => t.Id == request.DocumentData.DocumentTemplateVersionId)
-            .FormTypeId;
-
-        FormTypeItem? formType = null;
-        if (formTypeId is not null)
-        {
-            formType = (await _codebookService.FormTypes(cancellationToken))
-           .FirstOrDefault(t => t.Id == formTypeId)
-            ?? throw new CisExtServiceValidationException(50002, "DocumentTemplateVersionId does not exist in FormTypes codebook");
-        }
+        var docVersion = (await _codebookService.DocumentTemplateVersions(cancellationToken))
+            .FirstOrDefault(t => t.Id == request.DocumentData.DocumentTemplateVersionId)
+            ?? throw new CisExtServiceValidationException(50002, $"DocumentTemplateVersionId {request.DocumentData.DocumentTemplateVersionId} does not exist in DocumentTemplateVersions codebook");
 
         var docType = (await _codebookService.DocumentTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == request.DocumentData.DocumentTypeId)
@@ -151,7 +143,7 @@ internal sealed class RealESignaturesClient
             DocumentData = new()
             {
                 TypeCode = docType.ShortName,
-                TemplateVersion = formType?.Version ?? "A",
+                TemplateVersion = docVersion.TemplateProcessingType,
                 Name = request.DocumentData.FileName,
                 FormId = request.DocumentData.FormId,
                 ContractNumber = request.DocumentData.ContractNumber
