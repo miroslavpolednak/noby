@@ -989,7 +989,7 @@ namespace ExternalServices.ESignatures.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class FileParameter
+    internal partial class FileParameter
     {
         public FileParameter(System.IO.Stream data)
             : this (data, null, null)
@@ -1016,7 +1016,7 @@ namespace ExternalServices.ESignatures.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class FileResponse : System.IDisposable
+    internal partial class FileResponse : System.IDisposable
     {
         private System.IDisposable? _client;
         private System.IDisposable? _response;

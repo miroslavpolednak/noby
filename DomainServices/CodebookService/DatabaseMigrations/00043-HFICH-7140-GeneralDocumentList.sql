@@ -1,0 +1,1 @@
+﻿DELETE FROM [dbo].[GeneralDocumentList] WHERE [Id] = 5 AND [Filename] = 'prohlaseni_zastavce.pdf'

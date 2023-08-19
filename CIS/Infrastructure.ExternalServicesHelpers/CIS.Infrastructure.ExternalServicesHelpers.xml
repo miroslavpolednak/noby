@@ -19,6 +19,11 @@
             Výchozí implementace IExternalServiceConfiguration.
             </summary>
         </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.UseDefaultProxy">
+            <summary>
+            Pokud je true, pouzije pro HttpClient systemovou proxy
+            </summary>
+        </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.UseLogging">
             <summary>
             Zapne logovani request a response payloadu a hlavicek. Default: true
@@ -37,9 +42,19 @@
         </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.RequestTimeout">
             <summary>
-            Default request timeout in seconds
+            Default single request timeout in seconds
             </summary>
             <remarks>Default is set to 10 seconds</remarks>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.RequestRetryCount">
+            <summary>
+            Pokud první request timeoutuje, zkus ještě X opakovat
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.RequestRetryTimeout">
+            <summary>
+            Mezi jednotlivými opakováními počkej X sekund
+            </summary>
         </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration`1.ServiceUrl">
             <summary>
@@ -108,6 +123,11 @@
             </summary>
             <remarks>Pro registraci HTTP klienta by se vždy měla používat generická verze interface.</remarks>
         </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseDefaultProxy">
+            <summary>
+            Pokud je true, pouzije pro HttpClient systemovou proxy
+            </summary>
+        </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseLogging">
             <summary>
             Zapne logovani request a response payloadu a hlavicek. Default: true
@@ -128,7 +148,19 @@
             <summary>
             Default request timeout in seconds
             </summary>
-            <remarks>Default is set to 10 seconds</remarks>
+            <remarks>Default is set to 5 seconds</remarks>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestRetryCount">
+            <summary>
+            Apply retry policy on HttpRequest with supplied retry count
+            </summary>
+            <remarks>Default is set to 3</remarks>
+        </member>
+        <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestRetryTimeout">
+            <summary>
+            Time between consequent retry requests in seconds
+            </summary>
+            <remarks>Default is set to 5s</remarks>
         </member>
         <member name="P:CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.IgnoreServerCertificateErrors">
             <summary>
@@ -214,6 +246,23 @@
             <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
             <exception cref="T:CIS.Core.Exceptions.CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
             <exception cref="T:CIS.Core.Exceptions.CisConfigurationNotFound">Konfigurace pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
+        </member>
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfigurationOfType``2(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,System.String)">
+            <summary>
+            Načtení konfigurace externí služby a její vložení do DI.
+            Přetížení se používá pro případ, že externí služba má vlastní konfigurační třídu.
+            </summary>
+            <typeparam name="TClient">Typ klienta - interface pro danou verzi proxy nad API třetí strany</typeparam>
+            <typeparam name="TConfiguration">Typ konfiguracni tridy</typeparam>
+            <param name="serviceName">Název konzumované služby třetí strany</param>
+            <param name="serviceImplementationVersion">Verze proxy nad API třetí strany</param>
+            <exception cref="T:CIS.Core.Exceptions.CisConfigurationException">Chyba v konfiguraci služby - např. špatně zadaný typ implementace.</exception>
+            <exception cref="T:CIS.Core.Exceptions.CisConfigurationNotFound">Konfigurace pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json</exception>
+        </member>
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.validateConfiguration``1(CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration{``0},System.String@,System.String@)">
+            <summary>
+            Validace konfigurace
+            </summary>
         </member>
         <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesErrorHandling(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
             <summary>

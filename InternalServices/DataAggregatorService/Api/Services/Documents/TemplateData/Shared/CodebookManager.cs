@@ -15,7 +15,7 @@ public class CodebookManager : ICodebookManagerConfigurator
 
     public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> LoanKinds { get; private set; } = null!;
 
-    public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> RealEstateTypes { get; private set; } = null!;
+    public List<Codebook.RealEstateTypesResponse.Types.RealEstateTypesResponseItem> RealEstateTypes { get; private set; } = null!;
 
     public List<Codebook.GenericCodebookResponse.Types.GenericCodebookItem> PurchaseTypes { get; private set; } = null!;
 

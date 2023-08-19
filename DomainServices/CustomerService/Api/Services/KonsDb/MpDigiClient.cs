@@ -100,7 +100,8 @@ public class MpDigiClient
             BuildingIdentificationNumber = address.StreetNumber,
             LandRegistryNumber = string.IsNullOrWhiteSpace(address.EvidenceNumber) ? address.HouseNumber : address.EvidenceNumber,
             PostCode = address.Postcode,
-            City = address.City
+            City = address.City,
+            Country = _countries.FirstOrDefault(c => c.Id == address.CountryId)?.ShortName
         };
     }
 
@@ -173,9 +174,9 @@ public class MpDigiClient
         if (document is null)
             return;
 
-        request.IdentificationDocuments = new List<IdentificationDocument>()
+        request.IdentificationDocuments = new List<IdentificationDocument>
         {
-            new IdentificationDocument
+            new()
             {
                 Number = document.Number,
                 Type = FastEnum.Parse<IdentificationCardType>(_docTypes.First(d => d.Id == document.IdentificationDocumentTypeId).MpDigiApiCode),

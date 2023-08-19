@@ -10,25 +10,25 @@ internal sealed class PatchDeveloperOnRealEstateValuationHandler
         var instance = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
         // podvrhnute caseId
-        if (instance.RealEstateValuationGeneralDetails.CaseId != request.CaseId
-            || !instance.RealEstateValuationGeneralDetails.DeveloperAllowed)
+        if (instance.CaseId != request.CaseId
+            || !instance.DeveloperAllowed)
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("Case or developer check failed");
         }
 
         int? valuationStateId = null;
 
-        if (instance.RealEstateValuationGeneralDetails.ValuationStateId == 7)
+        if (instance.ValuationStateId == 7)
         {
             valuationStateId = request.DeveloperApplied ? 4 : 7;
         }
-        else if (instance.RealEstateValuationGeneralDetails.ValuationStateId == 4 && instance.RealEstateValuationGeneralDetails.DeveloperApplied && !request.DeveloperApplied)
+        else if (instance.ValuationStateId == 4 && instance.DeveloperApplied && !request.DeveloperApplied)
         {
             valuationStateId = 7;
         }
         else
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("ValuationState check failed");
         }
 
         await _realEstateValuationService.PatchDeveloperOnRealEstateValuation(request.RealEstateValuationId, valuationStateId.Value, request.DeveloperApplied, cancellationToken);

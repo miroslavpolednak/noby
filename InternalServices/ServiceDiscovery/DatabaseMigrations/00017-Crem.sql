@@ -1,0 +1,6 @@
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('DEV', 'ES:Crem:V1', 'https://api.fat.crem.kbcloud/v1/deed-of-ownership/api', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('FAT', 'ES:Crem:V1', 'https://api.fat.crem.kbcloud/v1/deed-of-ownership/api', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('PREPROD', 'ES:Crem:V1', 'https://api.fat.crem.kbcloud/v1/deed-of-ownership/api', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('SIT1', 'ES:Crem:V1', 'https://api.fat.crem.kbcloud/v1/deed-of-ownership/api', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('UAT', 'ES:Crem:V1', 'https://api.fat.crem.kbcloud/v1/deed-of-ownership/api', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('PROD', 'ES:Crem:V1', 'https://api.fat.crem.kbcloud/v1/deed-of-ownership/api', 3, 0);

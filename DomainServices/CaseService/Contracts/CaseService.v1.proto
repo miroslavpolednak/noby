@@ -22,6 +22,7 @@ import "Messages/NotifyStarbuild.proto";
 import "Messages/CancelTask.proto";
 import "Messages/CreateTask.proto";
 import "Messages/ValidateCaseId.proto";
+import "Messages/CancelCase.proto";
 
 service CaseService {
    rpc CompleteTask (CompleteTaskRequest) returns (google.protobuf.Empty);
@@ -59,4 +60,6 @@ service CaseService {
    rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse);
 
    rpc ValidateCaseId (ValidateCaseIdRequest) returns (ValidateCaseIdResponse);
+
+   rpc CancelCase (CancelCaseRequest) returns (CancelCaseResponse);
 }

@@ -4,4 +4,5 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
 message SendToCmpRequest {
 	int32 SalesArrangementId = 1;
+	bool IsCancelled = 2;
 }

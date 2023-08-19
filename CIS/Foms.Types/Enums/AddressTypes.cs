@@ -17,7 +17,7 @@ public enum AddressTypes : byte
     [EnumMember]
     Permanent = 1,
 
-    [Display(Name = "Korespondenční")]
+    [Display(Name = "Kontaktní")]
     [EnumMember]
     Mailing = 2,
 

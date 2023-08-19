@@ -11,19 +11,47 @@ import "Messages/RealEstateValuationDetail.proto";
 import "Messages/GetRealEstateValuationDetail.proto";
 import "Messages/GetRealEstateValuationDetailByOrderId.proto";
 import "Messages/UpdateRealEstateValuationDetail.proto";
+import "Messages/SetForeignRealEstateTypesByRealEstateValuation.proto";
+import "Messages/UpdateStateByRealEstateValuation.proto";
+import "Messages/AddDeedOfOwnershipDocument.proto";
+import "Messages/DeleteDeedOfOwnershipDocument.proto";
+import "Messages/CreateRealEstateValuationAttachment.proto";
+import "Messages/DeleteRealEstateValuationAttachment.proto";
+import "Messages/ValidateRealEstateValuationId.proto";
+import "Messages/GetDeedOfOwnershipDocuments.proto";
+import "Messages/GetDeedOfOwnershipDocument.proto";
+import "Messages/DeedOfOwnershipDocument.proto";
+import "Messages/GetRealEstateValuationTypes.proto";
+import "Messages/UpdateDeedOfOwnershipDocument.proto";
+import "Messages/PreorderOnlineValuation.proto";
+import "Messages/OrderOnlineValuation.proto";
+import "Messages/OrderStandardValuation.proto";
+import "Messages/OrderDTSValuation.proto";
 
 service RealEstateValuationService {
-   rpc CreateRealEstateValuation (CreateRealEstateValuationRequest) returns (CreateRealEstateValuationResponse);
-   
-   rpc DeleteRealEstateValuation (DeleteRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc CreateRealEstateValuation (CreateRealEstateValuationRequest) returns (CreateRealEstateValuationResponse);
+	rpc DeleteRealEstateValuation (DeleteRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc GetRealEstateValuationList (GetRealEstateValuationListRequest) returns (GetRealEstateValuationListResponse);
+	rpc PatchDeveloperOnRealEstateValuation (PatchDeveloperOnRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc GetRealEstateValuationDetail (GetRealEstateValuationDetailRequest) returns (RealEstateValuationDetail);
+	rpc GetRealEstateValuationDetailByOrderId (GetRealEstateValuationDetailByOrderIdRequest) returns (RealEstateValuationDetail);
+	rpc UpdateRealEstateValuationDetail (UpdateRealEstateValuationDetailRequest) returns (google.protobuf.Empty);
+	rpc SetForeignRealEstateTypesByRealEstateValuation (SetForeignRealEstateTypesByRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc UpdateStateByRealEstateValuation (UpdateStateByRealEstateValuationRequest) returns (google.protobuf.Empty);
+	rpc CreateRealEstateValuationAttachment (CreateRealEstateValuationAttachmentRequest) returns (CreateRealEstateValuationAttachmentResponse);
+	rpc DeleteRealEstateValuationAttachment (DeleteRealEstateValuationAttachmentRequest) returns (google.protobuf.Empty);
+	rpc ValidateRealEstateValuationId (ValidateRealEstateValuationIdRequest) returns (ValidateRealEstateValuationIdResponse);
+	rpc GetRealEstateValuationTypes (GetRealEstateValuationTypesRequest) returns (GetRealEstateValuationTypesReponse);
 
-   rpc GetRealEstateValuationList (GetRealEstateValuationListRequest) returns (GetRealEstateValuationListResponse);
+	rpc PreorderOnlineValuation (PreorderOnlineValuationRequest) returns (google.protobuf.Empty);
+	rpc OrderOnlineValuation (OrderOnlineValuationRequest) returns (google.protobuf.Empty);
+	rpc OrderStandardValuation (OrderStandardValuationRequest) returns (google.protobuf.Empty);
+	rpc OrderDTSValuation (OrderDTSValuationRequest) returns (google.protobuf.Empty);
 
-   rpc PatchDeveloperOnRealEstateValuation (PatchDeveloperOnRealEstateValuationRequest) returns (google.protobuf.Empty);
-
-   rpc GetRealEstateValuationDetail (GetRealEstateValuationDetailRequest) returns (RealEstateValuationDetail);
-
-   rpc GetRealEstateValuationDetailByOrderId (GetRealEstateValuationDetailByOrderIdRequest) returns (RealEstateValuationDetail);
-
-   rpc UpdateRealEstateValuationDetail (UpdateRealEstateValuationDetailRequest) returns (google.protobuf.Empty);
-}
+	// DeedOfOwnershipDocument
+	rpc UpdateDeedOfOwnershipDocument (UpdateDeedOfOwnershipDocumentRequest) returns (google.protobuf.Empty);
+	rpc AddDeedOfOwnershipDocument (AddDeedOfOwnershipDocumentRequest) returns (AddDeedOfOwnershipDocumentResponse);
+	rpc DeleteDeedOfOwnershipDocument (DeleteDeedOfOwnershipDocumentRequest) returns (google.protobuf.Empty);
+	rpc GetDeedOfOwnershipDocuments (GetDeedOfOwnershipDocumentsRequest) returns (GetDeedOfOwnershipDocumentsResponse);
+	rpc GetDeedOfOwnershipDocument (GetDeedOfOwnershipDocumentRequest) returns (DeedOfOwnershipDocument);
+} 

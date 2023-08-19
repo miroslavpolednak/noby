@@ -1,0 +1,2740 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "KB LUXPI API",
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "/kblux"
+    }
+  ],
+  "paths": {
+    "/api/ruian/AddressPoints": {
+      "options": {
+        "tags": [
+          "AddressPoints"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "AddressPoints"
+        ],
+        "operationId": "addresspoints",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/AddressPoints/{id}": {
+      "get": {
+        "tags": [
+          "AddressPoints"
+        ],
+        "operationId": "get-addresspoint",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/AddressPoints/bystreet/{id}": {
+      "get": {
+        "tags": [
+          "AddressPoints"
+        ],
+        "operationId": "get-addresspoints-by-street",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/AddressPoints/bytownpart/{id}": {
+      "get": {
+        "tags": [
+          "AddressPoints"
+        ],
+        "operationId": "get-addresspoints-by-townpart",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/AddressPoints/byzip/{id}": {
+      "get": {
+        "tags": [
+          "AddressPoints"
+        ],
+        "operationId": "get-addresspoints-by-zip",
+        "parameters": [
+          {
+            "name": "zipCode",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/AddressPoints/byterm": {
+      "post": {
+        "tags": [
+          "AddressPoints"
+        ],
+        "operationId": "get-addresspoints-by-term",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressTermRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressTermRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressTermRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressTermRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/AddressPoints/byaddress": {
+      "post": {
+        "tags": [
+          "AddressPoints"
+        ],
+        "operationId": "get-addresspoints-by-address",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressPoint"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressPoint"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressPoint"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Authetication": {
+      "options": {
+        "tags": [
+          "Authetication"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Authetication/request-by-apikey": {
+      "post": {
+        "tags": [
+          "Authetication"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Districts": {
+      "options": {
+        "tags": [
+          "Districts"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Districts/{id}": {
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "operationId": "get-district",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Districts/byregion/{id}": {
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "operationId": "get-districts-by-region",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Enums": {
+      "options": {
+        "tags": [
+          "Enums"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Enums/category/{category}": {
+      "get": {
+        "tags": [
+          "Enums"
+        ],
+        "operationId": "get-enumitems-by-category",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Heartbeat": {
+      "get": {
+        "tags": [
+          "Heartbeat"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/KBModel": {
+      "options": {
+        "tags": [
+          "KBModel"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/KBModel/flat/address/{id}": {
+      "post": {
+        "tags": [
+          "KBModel"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KBModelRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KBModelRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KBModelRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/KBModelRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ruian/Locality": {
+      "options": {
+        "tags": [
+          "Locality"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ruian/Locality/byterritory/{id}": {
+      "get": {
+        "tags": [
+          "Locality"
+        ],
+        "operationId": "get-localities-by-territory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Locality/byaddresspoint/{id}": {
+      "get": {
+        "tags": [
+          "Locality"
+        ],
+        "operationId": "get-localities-by-addresspoints",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Locality/byflatiskn/{id}": {
+      "get": {
+        "tags": [
+          "Locality"
+        ],
+        "operationId": "get-localities-by-flatiskn",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/PriceIndex/zip/{zipCode}": {
+      "get": {
+        "tags": [
+          "PriceIndex"
+        ],
+        "parameters": [
+          {
+            "name": "zipCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "\\d\\d\\d\\d\\d",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceIndexResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceIndexResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceIndexResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ruian/Regions": {
+      "options": {
+        "tags": [
+          "Regions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Regions"
+        ],
+        "operationId": "regions",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Regions/{id}": {
+      "get": {
+        "tags": [
+          "Regions"
+        ],
+        "operationId": "get-region",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Requests": {
+      "options": {
+        "tags": [
+          "Requests"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValuationRequest"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValuationRequest"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValuationRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Requests/{id}": {
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Requests/{id}/pdf": {
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Requests/flat/territory/{id}": {
+      "post": {
+        "tags": [
+          "Requests"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Requests/flat/street/{id}": {
+      "post": {
+        "tags": [
+          "Requests"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Requests/flat/address/{id}": {
+      "post": {
+        "tags": [
+          "Requests"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Requests/flat/address/{id}/{flatNumber}": {
+      "post": {
+        "tags": [
+          "Requests"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "flatNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Requests/flat/iskn/{id}": {
+      "post": {
+        "tags": [
+          "Requests"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlatPriceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValuationRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ruian/Streets": {
+      "options": {
+        "tags": [
+          "Streets"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Streets"
+        ],
+        "operationId": "streets",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Streets/{id}": {
+      "get": {
+        "tags": [
+          "Streets"
+        ],
+        "operationId": "get-street",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Streets/bytownpart/{id}": {
+      "get": {
+        "tags": [
+          "Streets"
+        ],
+        "operationId": "get-streets-by-townpart",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Streets/bytown/{id}": {
+      "get": {
+        "tags": [
+          "Streets"
+        ],
+        "operationId": "get-streets-by-town",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Streets/byzip/{id}": {
+      "get": {
+        "tags": [
+          "Streets"
+        ],
+        "operationId": "get-streets-by-zip",
+        "parameters": [
+          {
+            "name": "zipCode",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Territories": {
+      "options": {
+        "tags": [
+          "Territories"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Territories"
+        ],
+        "operationId": "territories",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Territories/{id}": {
+      "get": {
+        "tags": [
+          "Territories"
+        ],
+        "operationId": "get-territory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Territories/bytown/{id}": {
+      "get": {
+        "tags": [
+          "Territories"
+        ],
+        "operationId": "get-territories-by-town",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Territories/byterm": {
+      "get": {
+        "tags": [
+          "Territories"
+        ],
+        "operationId": "get-territories-by-term",
+        "parameters": [
+          {
+            "name": "term",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Territories"
+        ],
+        "operationId": "post-territories-by-term",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressTermRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressTermRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressTermRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressTermRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Towns": {
+      "options": {
+        "tags": [
+          "Towns"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Towns"
+        ],
+        "operationId": "towns",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Towns/{id}": {
+      "get": {
+        "tags": [
+          "Towns"
+        ],
+        "operationId": "get-town",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/Towns/bydistrict/{id}": {
+      "get": {
+        "tags": [
+          "Towns"
+        ],
+        "operationId": "get-towns-by-district",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/TownsParts": {
+      "options": {
+        "tags": [
+          "TownsParts"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "TownsParts"
+        ],
+        "operationId": "townparts",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/TownsParts/{id}": {
+      "get": {
+        "tags": [
+          "TownsParts"
+        ],
+        "operationId": "get-townpart",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ruian/TownsParts/bytown/{id}": {
+      "get": {
+        "tags": [
+          "TownsParts"
+        ],
+        "operationId": "get-townparts-by-town",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddressPoint": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "streetId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "townPartId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressSearch": {
+            "type": "string",
+            "nullable": true
+          },
+          "gpsLat": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "gpsLon": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "streetName": {
+            "type": "string",
+            "nullable": true
+          },
+          "townName": {
+            "type": "string",
+            "nullable": true
+          },
+          "townPartName": {
+            "type": "string",
+            "nullable": true
+          },
+          "distictName": {
+            "type": "string",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddressRequest": {
+        "type": "object",
+        "properties": {
+          "districtName": {
+            "type": "string",
+            "nullable": true
+          },
+          "townName": {
+            "type": "string",
+            "nullable": true
+          },
+          "townPartName": {
+            "type": "string",
+            "nullable": true
+          },
+          "streetName": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildingNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "orientationNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddressTermRequest": {
+        "type": "object",
+        "properties": {
+          "term": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FlatPriceRequest": {
+        "type": "object",
+        "properties": {
+          "technicalState": {
+            "type": "string",
+            "nullable": true
+          },
+          "materialStructure": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatSchema": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatArea": {
+            "type": "number",
+            "format": "double"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "locality": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "dealNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "actualPurchasePrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "floorNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "balconyArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "terraceArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "loggiaArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "frontGardenArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "cellarBoxArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "distanceStation": {
+            "type": "string",
+            "nullable": true
+          },
+          "ageOfBuilding": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "metro": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "garageCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "basicInfoEstate": {
+            "type": "string",
+            "nullable": true
+          },
+          "technicalStateFlat": {
+            "type": "string",
+            "nullable": true
+          },
+          "leased": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "garret": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "reconstruction": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "reconstructionScale": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "KBModelRequest": {
+        "type": "object",
+        "properties": {
+          "technicalState": {
+            "type": "string",
+            "nullable": true
+          },
+          "materialStructure": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatSchema": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatArea": {
+            "type": "number",
+            "format": "double"
+          },
+          "dealNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "leased": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "ageOfBuilding": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "actualPurchasePrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "floorNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isDealSubject": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true
+          },
+          "rel": {
+            "type": "string",
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LuxComparableRealEstate": {
+        "type": "object",
+        "properties": {
+          "valuationNavigation": {
+            "$ref": "#/components/schemas/LuxValuation"
+          },
+          "compRealEstateId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "luxValuationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "valuationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "territoryNumber": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "streetName": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildingTechnicalStateText": {
+            "type": "string",
+            "nullable": true
+          },
+          "materialStructureText": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatSchemaText": {
+            "type": "string",
+            "nullable": true
+          },
+          "garageBoxCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "garageBoxCountText": {
+            "type": "string",
+            "nullable": true
+          },
+          "calcFloorArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "massTransport": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "highway": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "upstairsNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "cellarArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "heatingType": {
+            "type": "string",
+            "nullable": true
+          },
+          "finalApprovalYear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "wearTear": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "totalReconstructionYear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "partReconstructionYear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "negativeImpactFloads": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "buildingTermination": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "accessRisk": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "easements": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cadastralRegister": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "negativeImpactNoise": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "impurityRisk": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "otherNaturalRisk": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "socialRisk": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "foreignLand": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "electricalConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "waterConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sewerConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "gasConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "telephoneConnection": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "driveway": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "floorNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "btlTotalArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "flatTechnicalStateText": {
+            "type": "string",
+            "nullable": true
+          },
+          "standardPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "standardPrice1m": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "purchasePrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LuxValuation": {
+        "type": "object",
+        "properties": {
+          "luxValuationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "creatorRequestId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "standardPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "standardPriceDiscount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "standardPriceDiscountLux": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "unsuitable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "areaRisk": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "heterogenityRisk": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdWhen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "luxSearchId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "pdfResult": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
+          },
+          "xmlDataStaus": {
+            "type": "string",
+            "nullable": true
+          },
+          "comparableRealEstates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LuxComparableRealEstate"
+            },
+            "nullable": true
+          },
+          "valuationRequestInstances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValuationRequest"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PriceIndexResponse": {
+        "type": "object",
+        "properties": {
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "validDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "price": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ValuationRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestType": {
+            "type": "string",
+            "nullable": true
+          },
+          "luxValuationId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "luxValuation": {
+            "$ref": "#/components/schemas/LuxValuation"
+          },
+          "realEstateType": {
+            "type": "string",
+            "nullable": true
+          },
+          "territoryNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "streetId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "addressId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "flatNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isknId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "technicalStateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "materialStructureCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatSchemaCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "flatArea": {
+            "type": "number",
+            "format": "double"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdByUserId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "createdWhen": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "dealNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "actualPurchasePrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "localityId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "floorNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "balconyArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "terraceArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "loggiaArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "fontGardenArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "cellarBoxArea": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "ageOfBuilding": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "distanceStation": {
+            "type": "string",
+            "nullable": true
+          },
+          "metro": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "garageCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "basicInfoEstate": {
+            "type": "string",
+            "nullable": true
+          },
+          "technicalStateFlat": {
+            "type": "string",
+            "nullable": true
+          },
+          "leased": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "garret": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "reconstruction": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "reconstructionScale": {
+            "type": "string",
+            "nullable": true
+          },
+          "valuationId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "isDealSubject": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "modelType": {
+            "type": "string",
+            "nullable": true
+          },
+          "resultPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "priceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "passedRequestCheck": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

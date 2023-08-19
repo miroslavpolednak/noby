@@ -1,6 +1,6 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.DocumentOnSAService.Clients;
-using DomainServices.DocumentOnSAService.Contracts;
+using _Domain = DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
 
@@ -15,10 +15,10 @@ public class SendDocumentOnSAPreviewHandler : IRequestHandler<SendDocumentOnSAPr
         
         if (documentOnSA is null)
         {
-            throw new CisNotFoundException(90001, "DocumentOnSA does not exist on provided sales arrangement.");
+            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "DocumentOnSA does not exist on provided sales arrangement.");
         }
         
-        var isElectronicAndWorkflow = documentOnSA is { SignatureTypeId: (int)SignatureTypes.Electronic, Source: Source.Workflow };
+        var isElectronicAndWorkflow = documentOnSA is { SignatureTypeId: (int)SignatureTypes.Electronic, Source: _Domain.Source.Workflow };
         var isValidOrFinal = documentOnSA.IsValid || documentOnSA.IsFinal;
 
         if (isElectronicAndWorkflow && isValidOrFinal)

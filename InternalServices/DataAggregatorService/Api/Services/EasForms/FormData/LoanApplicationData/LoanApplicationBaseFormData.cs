@@ -13,8 +13,6 @@ internal abstract class LoanApplicationBaseFormData : AggregatedData
 
     public HouseholdData HouseholdData { get; }
 
-    public MockValues MockValues { get; } = new();
-
     public DefaultValues DefaultValues3601 { get; private set; } = null!;
 
     public DefaultValues DefaultValues3602 { get; private set; } = null!;

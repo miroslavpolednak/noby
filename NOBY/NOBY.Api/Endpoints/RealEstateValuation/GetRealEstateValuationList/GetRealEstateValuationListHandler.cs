@@ -1,5 +1,4 @@
-﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
@@ -16,12 +15,6 @@ internal sealed class GetRealEstateValuationListHandler
     public async Task<List<RealEstateValuationListItem>> Handle(GetRealEstateValuationListRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
-
-        // perm check
-        if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
-        {
-            throw new CisAuthorizationException();
-        }
 
         // dopocitana oceneni na zaklade dat v SA
         List<RealEstateValuationListItem>? computedValuations = null;
@@ -53,6 +46,11 @@ internal sealed class GetRealEstateValuationListHandler
         var saId = (await _salesArrangementService.GetProductSalesArrangement(caseId, cancellationToken)).SalesArrangementId;
         var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
 
+        if (saInstance.Mortgage is null)
+        {
+            throw new NobyValidationException("SA.Mortgage object is null");
+        }
+
         var developer = await _offerService.GetOfferDeveloper(saInstance.OfferId!.Value, cancellationToken);
 
         var state = (await _codebookService.WorkflowTaskStatesNoby(cancellationToken))
@@ -81,16 +79,40 @@ internal sealed class GetRealEstateValuationListHandler
     private async Task<List<RealEstateValuationListItem>> getExistingValuations(long caseId, CancellationToken cancellationToken)
     {
         var revList = await _realEstateValuationService.GetRealEstateValuationList(caseId, cancellationToken);
-
         var states = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
 
-        return revList.Select(item => item.MapToApiResponse(states)).ToList();
+        return revList.Select(t => {
+            var state = states.First(x => x.Id == t.ValuationStateId);
+
+            var model = new RealEstateValuationListItem
+            {
+                RealEstateValuationId = t.RealEstateValuationId,
+                OrderId = t.OrderId,
+                CaseId = t.CaseId,
+                RealEstateTypeId = t.RealEstateTypeId,
+                RealEstateTypeIcon = Helpers.GetRealEstateTypeIcon(t.RealEstateTypeId),
+                ValuationStateId = t.ValuationStateId,
+                ValuationStateIndicator = (ValuationStateIndicators)state.Indicator,
+                ValuationStateName = state.Name,
+                IsLoanRealEstate = t.IsLoanRealEstate,
+                RealEstateStateId = t.RealEstateStateId,
+                ValuationTypeId = t.ValuationTypeId,
+                Address = t.Address,
+                ValuationSentDate = t.ValuationSentDate,
+                ValuationResultCurrentPrice = t.ValuationResultCurrentPrice,
+                ValuationResultFuturePrice = t.ValuationResultFuturePrice,
+                IsRevaluationRequired = t.IsRevaluationRequired,
+                DeveloperAllowed = t.DeveloperAllowed,
+                DeveloperApplied = t.DeveloperApplied
+            };
+
+            return model;
+        }).ToList();
     }
 
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseService;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
@@ -99,14 +121,12 @@ internal sealed class GetRealEstateValuationListHandler
         ISalesArrangementServiceClient salesArrangementService,
         ICodebookServiceClient codebookService,
         IRealEstateValuationServiceClient realEstateValuationService,
-        ICaseServiceClient caseService,
-        ICurrentUserAccessor currentUserAccessor)
+        ICaseServiceClient caseService)
     {
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
         _caseService = caseService;
         _codebookService = codebookService;
-        _currentUser = currentUserAccessor;
         _realEstateValuationService = realEstateValuationService;
     }
 }

@@ -28,34 +28,38 @@ internal sealed class ErrorCodeMapper
     public const int TaskIdSBIsEmpty = 13030;
     public const int ContractNumberNotFound = 13032;
     public const int TaskPriceExceptionIsEmpty = 13034;
+    public const int CaseCancelled = 13035;
+    public const int UnableToCancelCase = 13036;
 
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
         {
-            { ContractNumberNotFound, "Contract number not found" },
-            { ContractNumberIsEmpty, "Contract number is empty" },
-            { ProductTypeIdIsEmpty, "ProductTypeId must be > 0" },
-            { TargetAmountIsEmpty, "Target amount must be > 0" },
-            { CaseOwnerIsEmpty, "CaseOwnerUserId must be > 0" },
-            { CustomerNameIsEmpty, "Customer Name must not be empty" },
-            { CaseAlreadyExist, "Case ID {PropertyValue} already exists" },
-            { CaseIdIsEmpty, "CaseId must be > 0" },
             { CaseNotFound, "Case ID {PropertyValue} not found" },
-            { CantDeleteCase, "Unable to delete Case – one or more SalesArrangements exists for this case" },
             { TaskProcessIdNotUnique, "TaskProcessId must be unique" },
-            { ProductTypeIdNotFound, "ProductTypeId {PropertyValue} not found" },
-            { InvalidCaseState, "Case State must be > 0" },
-            { CaseStateNotFound, "State {PropertyValue} not found" },
+            { ProductTypeIdIsEmpty, "ProductTypeId must be > 0" },
+            { CaseOwnerIsEmpty, "CaseOwnerUserId must be > 0" },
             { CaseStateAlreadySet, "Case state already set to the same value" },
             { CaseStateNotAllowed, "Case state change not allowed" },
+            { CaseStateNotFound, "State {PropertyValue} not found" },
+            { CustomerNameIsEmpty, "Customer Name must not be empty" },
+            { ContractNumberIsEmpty, "Contract number is empty" },
+            { ProductTypeIdNotFound, "ProductTypeId {PropertyValue} not found" },
+            { CaseAlreadyExist, "Case ID {PropertyValue} already exists" },
+            { CaseIdIsEmpty, "CaseId must be > 0" },
+            { InvalidCaseState, "Case State must be > 0" },
+            { TargetAmountIsEmpty, "Target amount must be > 0" },
             { AuthenticatedUserNotFound, "Authenticated user has not been passed in auth headers" },
-            { TaskIdSBIsEmpty, "TaskIdSB must be > 0" },
+            { CantDeleteCase, "Unable to delete Case – one or more SalesArrangements exists for this case" },
+            { TaskIdNotFound, "TaskId {PropertyValue} not found" },
             { TaskTypeIdIsEmpty, "TaskTypeId must be > 0" },
             { ProcessIdIsEmpty, "ProcessId must be > 0" },
             { TaskTypeIdNotAllowed, "TaskTypeId is not allowed" },
-            { TaskIdNotFound, "TaskId {PropertyValue} not found" },
-            { TaskPriceExceptionIsEmpty, "Task PriceException must not be null for task type ID 2" }
+            { TaskIdSBIsEmpty, "TaskIdSB must be > 0" },
+            { ContractNumberNotFound, "Contract number not found" },
+            { TaskPriceExceptionIsEmpty, "Task PriceException must not be null for task type ID 2" },
+            { CaseCancelled, "Case state is one of cancelled" },
+            { UnableToCancelCase, "Unable to cancel Case {PropertyValue}" }
         });
 
         return Messages;

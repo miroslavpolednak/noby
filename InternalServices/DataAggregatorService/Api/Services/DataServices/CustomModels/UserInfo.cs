@@ -22,4 +22,6 @@ internal class UserInfo
     public string Phone => _user.UserInfo.PhoneNumber;
 
     public string Email => _user.UserInfo.Email;
+
+    public bool IsExternal => !_user.UserInfo.IsInternal;
 }

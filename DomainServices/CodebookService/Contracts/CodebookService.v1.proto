@@ -6,7 +6,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "Messages/Types.proto";
 import "Messages/GenericCodebook.proto";
-import "Messages/GetAcvRealEstateType.proto";
+import "Messages/GetACVAndBagmanRealEstateType.proto";
 
 service CodebookService {
    rpc AcademicDegreesAfter (google.protobuf.Empty) returns (GenericCodebookResponse) {
@@ -24,6 +24,12 @@ service CodebookService {
    rpc AddressTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/address-types"
+		};
+   }
+
+   rpc AcvAttachmentCategories (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/acv-attachment-categories"
 		};
    }
 
@@ -189,7 +195,7 @@ service CodebookService {
 		};
    }
 
-   rpc GetAcvRealEstateType (GetAcvRealEstateTypeRequest) returns (GetAcvRealEstateTypeResponse) {
+   rpc GetACVAndBagmanRealEstateType (GetACVAndBagmanRealEstateTypeRequest) returns (GetACVAndBagmanRealEstateTypeResponse) {
 	   option (google.api.http) = {
 			get: "/v1/get-acv-real-estate-type"
 		};
@@ -423,7 +429,7 @@ service CodebookService {
 		};
    }
 
-   rpc RealEstateTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+   rpc RealEstateTypes (google.protobuf.Empty) returns (RealEstateTypesResponse) {
 	   option (google.api.http) = {
 			get: "/v1/real-estate-types"
 		};
@@ -468,12 +474,6 @@ service CodebookService {
    rpc SignatureTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/signature-types"
-		};
-   }
-
-   rpc SigningMethodsForNaturalPerson (google.protobuf.Empty) returns (SigningMethodsForNaturalPersonResponse) {
-	   option (google.api.http) = {
-			get: "/v1/signing-methods-for-natural-person"
 		};
    }
 
@@ -561,7 +561,7 @@ service CodebookService {
 		};
    }
 
-   rpc WorkflowTaskTypes (google.protobuf.Empty) returns (WorkflowTaskTypesResponse) {
+   rpc WorkflowTaskTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/workflow-task-types"
 		};
@@ -571,5 +571,35 @@ service CodebookService {
 	   option (google.api.http) = {
 			get: "/v1/work-sectors"
 		};
-   }  
+   }
+
+   rpc RealEstateValuationFlatSchemas (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/realestate-valuation-flat-schemas"
+		};
+   }
+
+   rpc RealEstateValuationBuildingMaterialStructures (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/realestate-valuation-building-material-structures"
+		};
+   }
+
+   rpc RealEstateValuationBuildingAges (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/realestate-valuation-building-ages"
+		};
+   }
+
+   rpc RealEstateValuationBuildingTechnicalStates (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/realestate-valuation-building-technical-states"
+		};
+   }
+   
+   rpc RealEstateValuationLocalSurveyFunctions (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/realestate-valuation-local-survey-functions"
+		};
+   }
 }

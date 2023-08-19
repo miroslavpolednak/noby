@@ -1,4 +1,6 @@
-﻿using DomainServices.CaseService.Contracts;
+﻿using CIS.Foms.Enums;
+using DomainServices.CaseService.Contracts;
+using FastEnumUtility;
 
 namespace DomainServices.CaseService.Api;
 
@@ -21,8 +23,21 @@ internal static class CaseExtensions
             PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel") ?? ""
         };
 
-        task.PhaseTypeId = getPhaseTypeId(task.TaskTypeId, taskData);
-        task.SignatureType = getSignatureType(task.TaskTypeId, taskData);
+        task.PhaseTypeId = task.TaskTypeId switch
+        {
+            1 => taskData.GetInteger("ukol_dozadani_stav"),
+            2 => taskData.GetInteger("ukol_overeni_ic_stav"),
+            6 => taskData.GetInteger("ukol_podpis_stav"),
+            3 or 4 or 7 or 8 => 1,
+            _ => throw new ArgumentOutOfRangeException("PhaseTypeId can not be set")
+        };
+
+        task.SignatureTypeId = (task.TaskTypeId, taskData.GetNInteger("ukol_podpis_dokument_metoda")) switch
+        {
+            (6, 1) => SignatureTypes.Paper.ToByte(),
+            (6, 2) => SignatureTypes.Electronic.ToByte(),
+            _ => null
+        };
 
         return task;
     }
@@ -94,12 +109,22 @@ internal static class CaseExtensions
 
                         taskDetail.PriceException.Fees.Add(new PriceExceptionFeesItem
                         {
-                            FeeId = taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}"),
+                            FeeId = taskData.GetInteger($"ukol_overeni_ic_popl_kodsb{i}"),
                             TariffSum = taskData.GetInteger($"ukol_overeni_ic_popl_sazeb{i}"),
                             FinalSum = taskData.GetInteger($"ukol_overeni_ic_popl_vysl{i}"),
                             DiscountPercentage = taskData.GetInteger($"ukol_overeni_ic_popl_sleva_perc{i}")
                         });
                     }
+                    break;
+
+                case 4:
+                    taskDetail.RealEstateValuation = new()
+                    {
+                        OrderId = taskData.GetInteger("ukol_odhad_order_id"),
+                        DocumentInfoPrice = taskData.GetValueOrDefault("ukol_odhad_ea_docs_infocena"),
+                        DocumentRecommendationForClient = taskData.GetValueOrDefault("ukol_odhad_ea_docs_doporuceni"),
+                        OnlineValuation = taskData.GetValueOrDefault("ukol_odhad_valuation_type ") == "OCEN_LUX"
+                    };
                     break;
 
                 case 6:
@@ -120,7 +145,8 @@ internal static class CaseExtensions
                 case 3 when _allowedConsultationTypes.Contains(taskData.GetNInteger("ukol_konzultace_oblast").GetValueOrDefault()):
                     taskDetail.ConsultationData = new()
                     {
-                        OrderId = taskData.GetNInteger("ukol_konzultace_order_id")
+                        OrderId = taskData.GetNInteger("ukol_konzultace_order_id"),
+                        TaskSubtypeId = taskData.GetInteger("ukol_konzultace_oblast")
                     };
                     break;
             }
@@ -164,21 +190,6 @@ internal static class CaseExtensions
             6 => taskData.GetInteger("ukol_podpis_stav"),
             3 or 4 or 7 or 8 => 1,
             _ => throw new ArgumentOutOfRangeException(nameof(taskTypeId), taskTypeId, null)
-        };
-    }
-
-    private static string getSignatureType(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
-    {
-        if (taskTypeId != 6)
-            return "unknown";
-
-        var signatureTypeId = taskData.GetInteger("ukol_podpis_dokument_metoda");
-
-        return signatureTypeId switch
-        {
-            1 => "paper",
-            2 => "digital",
-            _ => "unknown"
         };
     }
 

@@ -10,30 +10,30 @@ internal sealed class CreateAssessmentValidator
     {
         RuleFor(t => t.RiskBusinessCaseId)
             .NotEmpty()
-            .WithErrorCode("RiskBusinessCaseId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.SalesArrangementId)
             .GreaterThan(0)
-            .WithErrorCode("SalesArrangementId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.LoanApplicationDataVersion)
             .NotEmpty()
-            .WithErrorCode("LoanApplicationDataVersion");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.ItChannelPrevious)
             .IsInEnum()
-            .WithErrorCode("ItChannelPrevious");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.AssessmentMode)
             .IsInEnum()
-            .WithErrorCode("AssessmentMode")
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError)
             .NotEqual(_V2.RiskBusinessCaseAssessmentModes.Unknown)
-            .WithErrorCode("AssessmentMode");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.GrantingProcedureCode)
             .IsInEnum()
-            .WithErrorCode("GrantingProcedureCode")
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError)
             .NotEqual(_V2.RiskBusinessCaseGrantingProcedureCodes.Unknown)
-            .WithErrorCode("GrantingProcedureCode");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
     }
 }

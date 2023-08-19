@@ -19,6 +19,7 @@ internal sealed class ErrorCodeMapper
     public const int DataObjectIsNotValid = 18015;
     public const int SalesArrangementCantDelete = 18016;
     public const int FlowSwitchesIsEmpty = 18017;
+    public const int ProductSalesArrangementNotFound = 18018;
     public const int RealEstateTypeIdNotFound = 18037;
     public const int SendAndValidateForm1 = 18040;
     public const int SendAndValidateForm2 = 18041;
@@ -41,45 +42,50 @@ internal sealed class ErrorCodeMapper
     public const int SalesArrangementStateIsEmpty = 18079;
     public const int RepaymentAccountCantChange = 18081;
     public const int ContractNumberIsAlreadySet = 18084;
+    public const int NotAllCustomersOnSaAreIdentified = 18085;
+    public const int ApplicantIsNotSet = 18086;
     
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
         {
-            { MortgageAgentIsNotEmpty, "Agent can not be set while creating Mortgage" },
+            { SalesArrangementNotFound, "Sales arrangement ID {PropertyValue} does not exist." },
+            { SalesArrangementTypeNotFound, "SalesArrangementTypeId {PropertyValue} does not exist." },
+            { SalesArrangementStateNotFound, "SalesArrangementState {PropertyValue} does not exist." },
+            { AlreadyInSalesArrangementState, "SalesArrangement is already in state {PropertyValue}" },
             { CaseIdIsEmpty, "Case Id must be > 0" },
             { SalesArrangementTypeIdIsEmpty, "SalesArrangementTypeId must be > 0" },
-            { SalesArrangementTypeNotFound, "SalesArrangementTypeId {PropertyValue} does not exist." },
-            { DataObjectIsNotValid, "CreateSalesArrangementRequest.DataOneofCase is not valid for SalesArrangementTypeId={PropertyValue}" },
-            { SalesArrangementNotFound, "Sales arrangement ID {PropertyValue} does not exist." },
-            { SATypeNotSupported, "SalesArrangementTypeId {PropertyValue} not supported" },
-            { SalesArrangementCantDelete, "SalesArrangement cannot be updated/deleted in this state {PropertyValue}" },
             { SalesArrangementIdIsEmpty, "SalesArrangementId must be > 0" },
             { OfferIdIsEmpty, "OfferId must be > 0" },
             { AlreadyLinkedToOffer, "SalesArrangement {PropertyValue} is already linked to the same Offer" },
-            { AlreadyLinkedToAnotherSA, "Offer {request.OfferId} is already linked to another SA" },
-            { InvalidGuaranteeDateFrom, "Old offer GuaranteeDateFrom > than new GuaranteeDateFrom" },
+            { SATypeNotSupported, "SalesArrangementTypeId {PropertyValue} not supported" },
+            { MortgageAgentIsNotEmpty, "Agent can not be set while creating Mortgage" },
+            { DataObjectIsNotValid, "CreateSalesArrangementRequest.DataOneofCase is not valid for SalesArrangementTypeId={PropertyValue}" },
+            { SalesArrangementCantDelete, "SalesArrangement cannot be updated/deleted in this state {PropertyValue}" },
             { FlowSwitchesIsEmpty, "FlowSwitches collection must not be empty" },
+            { ProductSalesArrangementNotFound, "Product SA for CaseId {PropertyValue} not found" },
             { RealEstateTypeIdNotFound, "RealEstateTypeId not found" },
+            { AlreadyLinkedToAnotherSA, "Offer {PropertyValue} is already linked to another SA" },
+            { InvalidGuaranteeDateFrom, "Old offer GuaranteeDateFrom > than new GuaranteeDateFrom" },
             { IncomeCurrencyCodeNotFound, "IncomeCurrencyCode not found" },
             { ResidencyCurrencyCodeNotFound, "ResidencyCurrencyCode not found" },
             { ContractSignatureTypeNotFound, "ContractSignatureTypeId not found" },
-            { AgentNotFound, "Agent {PropertyValue} not found amoung customersOnSA for current SA" },
-            { RepaymentAccountCantChange, "Repayment account cannot be changed with IsAccountNumberMissing set to false" },
-            { SalesArrangementStateIsEmpty, "SalesArrangement State must be > 0" },
-            { SalesArrangementStateNotFound, "SalesArrangementState {PropertyValue} does not exist." },
-            { AlreadyInSalesArrangementState, "SalesArrangement is already in state {PropertyValue}" },
             { FormValidation1, "Sales arrangement mandatory fields not provided [{PropertyValue}]." },
             { FormValidation2, "Sales Arrangement #{PropertyValue} is not linked to Offer" },
+            { FormValidation9, "Income mandatory fields not provided [{PropertyValue}]." },
             { FormValidation3, "Sales arrangement customers [{PropertyValue}] don't contain both [KB,MP] identities." },
             { FormValidation4, "Sales arrangement contains duplicit household types [{PropertyValue}]." },
             { FormValidation5, "Sales arrangement must contain just one CIS.Foms.Enums.HouseholdTypes.Main household." },
             { FormValidation6, "Sales arrangement contains households [{PropertyValue}] with CustomerOnSAId2 but without CustomerOnSAId1." },
             { FormValidation7, "Main household´s CustomerOnSAId1 not defined [{PropertyValue}]." },
             { FormValidation8, "Sales arrangement households contain duplicit customers [{PropertyValue}] on sales arrangement." },
-            { FormValidation9, "Income mandatory fields not provided [{PropertyValue}]." },
             { FormValidation10, "Customers [{PropertyValue}] on sales arrangement don't correspond to customers on households." },
-            { ContractNumberIsAlreadySet, "Contract number on SalesArrangement {SalesArrangementId} already exists." }
+            { AgentNotFound, "Agent {PropertyValue} not found amoung customersOnSA for current SA" },
+            { SalesArrangementStateIsEmpty, "SalesArrangement State must be > 0" },
+            { RepaymentAccountCantChange, "Repayment account cannot be changed with IsAccountNumberMissing set to false" },
+            { ContractNumberIsAlreadySet, "Contract number on SalesArrangement {PropertyValue} already exists." },
+            { NotAllCustomersOnSaAreIdentified, "Some of the CustomersOnSa are not identified." },
+            { ApplicantIsNotSet, "The Applicant is not set." },
         });
 
         return Messages;

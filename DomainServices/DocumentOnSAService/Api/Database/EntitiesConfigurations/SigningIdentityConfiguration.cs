@@ -10,11 +10,18 @@ public class SigningIdentityConfiguration : IEntityTypeConfiguration<SigningIden
     {
         builder.HasKey(e => e.Id);
 
-        builder.OwnsOne(signingIdentity => signingIdentity.SigningIdentityJson, ownedNavigationBuilder =>
+        if (DocumentOnSAServiceDbContext.IsSqlite)
         {
-            ownedNavigationBuilder.ToJson();
-            ownedNavigationBuilder.OwnsMany(ci => ci.CustomerIdentifiers);
-            ownedNavigationBuilder.OwnsOne(mob => mob.MobilePhone);
-        });
+            builder.Ignore(e => e.SigningIdentityJson);
+        }
+        else
+        {
+            builder.OwnsOne(signingIdentity => signingIdentity.SigningIdentityJson, ownedNavigationBuilder =>
+            {
+                ownedNavigationBuilder.ToJson();
+                ownedNavigationBuilder.OwnsMany(ci => ci.CustomerIdentifiers);
+                ownedNavigationBuilder.OwnsOne(mob => mob.MobilePhone);
+            });
+        }
     }
 }

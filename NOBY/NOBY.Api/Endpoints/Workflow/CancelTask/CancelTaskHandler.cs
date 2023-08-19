@@ -1,6 +1,4 @@
-﻿using CIS.Foms.Enums;
-using DomainServices.CaseService.Clients;
-using DomainServices.SalesArrangementService.Clients;
+﻿using DomainServices.CaseService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.CancelTask;
 
@@ -13,34 +11,20 @@ internal sealed class CancelTaskHandler
         await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
 
         var task = await _caseService.GetTaskDetail(request.TaskIdSB, cancellationToken);
-        if (_allowedTypeIds.Contains(task.TaskObject?.TaskTypeId ?? 0) || task.TaskObject?.TaskIdSb == 30)
+        if (!_allowedTypeIds.Contains(task.TaskObject?.TaskTypeId ?? 0) || task.TaskObject?.TaskIdSb == 30)
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("Task type not allowed");
         }
-
-        await _caseService.CancelTask(request.TaskIdSB, cancellationToken);
-
-        // set flow switches
-        if (task.TaskObject?.TaskTypeId == 2)
-        {
-            var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
-            await _salesArrangementService.SetFlowSwitches(saId.SalesArrangementId, new()
-            {
-                new() { FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist, Value = false },
-                new() { FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved, Value = false },
-                new() { FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved, Value = false }
-            }, cancellationToken);
-        }
+        
+        await _caseService.CancelTask(request.CaseId, request.TaskIdSB, cancellationToken);
     }
 
     private static int[] _allowedTypeIds = new[] { 2, 3 };
 
     private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
 
-    public CancelTaskHandler(ICaseServiceClient caseService, ISalesArrangementServiceClient salesArrangementService)
+    public CancelTaskHandler(ICaseServiceClient caseService)
     {
-        _salesArrangementService = salesArrangementService;
         _caseService = caseService;
     }
 }

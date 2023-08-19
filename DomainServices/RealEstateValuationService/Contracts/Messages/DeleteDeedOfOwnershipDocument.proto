@@ -1,0 +1,7 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+message DeleteDeedOfOwnershipDocumentRequest {
+    int32 DeedOfOwnershipDocumentId = 1;
+}

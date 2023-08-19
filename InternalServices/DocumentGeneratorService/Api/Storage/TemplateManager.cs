@@ -17,8 +17,6 @@ public class TemplateManager : IDisposable
         _codebookService = codebookService;
     }
 
-    public string StoragePath => _fileStorage.StoragePath;
-
     public async Task<PdfDocument> LoadTemplate(int documentTypeId, int templateVersionId, int? templateVariantId)
     {
         var templateTypeName = await LoadTemplateTypeName(documentTypeId);
@@ -46,7 +44,7 @@ public class TemplateManager : IDisposable
         _documentStreams.ForEach(stream =>
         {
             var pdfDocument = new PdfDocument(stream);
-
+            
             document.Append(pdfDocument);
             finalDocument.PdfDocumentParts.Add(pdfDocument);
         });
@@ -103,7 +101,8 @@ public class TemplateManager : IDisposable
         {
             Title = $"{typeName}_{versionName}{variantName}",
             Author = nameof(DocumentGeneratorService),
-            Form = { Output = FormOutput.Flatten }
+            Form = { Output = FormOutput.Flatten },
+            PdfVersion = PdfVersion.v1_7
         };
     }
 }

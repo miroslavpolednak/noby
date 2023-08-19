@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Telemetry.AuditLog;
+﻿using CIS.Infrastructure.Audit;
 using Microsoft.AspNetCore.Authorization;
 using NOBY.Api.Endpoints.Test.Rollback;
 
@@ -31,12 +30,11 @@ public class TestController : ControllerBase
     {
         var logger = _context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
         logger.Log(
-            CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby001,
+            CIS.Infrastructure.Audit.AuditEventTypes.Noby001,
             "Nejaka fajn zprava",
-            result: "OK",
-            identities: new List<AuditLoggerHeaderItem> { new() { Id = "aaa", Type = "bbb" } },
-            products: new List<AuditLoggerHeaderItem> { new() { Id = "111", Type = "Uver" } },
-            operation: new() { Id = "111", Type = "CreateCase" },
+            identities: new List<AuditLoggerHeaderItem> { new("aaa", "bbb") },
+            products: new List<AuditLoggerHeaderItem> { new("111", "Uver") },
+            operation: new("111", "CreateCase"),
             bodyBefore: new Dictionary<string, string> { { "aaa", "bbb" }, { "ccc", "dddd" } }
         );
     }
@@ -44,13 +42,9 @@ public class TestController : ControllerBase
     [HttpGet("t3")]
     public async Task T3()
     {
-        var list = new List<CIS.Infrastructure.gRPC.CisTypes.Identity>
-        {
-            new CIS.Infrastructure.gRPC.CisTypes.Identity(951061749, CIS.Foms.Enums.IdentitySchemes.Kb),
-            new CIS.Infrastructure.gRPC.CisTypes.Identity(300522530, CIS.Foms.Enums.IdentitySchemes.Mp)
-        };
-        var notification = new Notifications.MainCustomerUpdatedNotification(2987188, 45, 60, list);
-        await _mediator.Publish(notification);
+        var client = _context.HttpContext.RequestServices.GetRequiredService<DomainServices.CaseService.Clients.ICaseServiceClient>();
+        var c = await client.GetCaseDetail(1);
+         
     }
 
     private readonly IHttpContextAccessor _context;

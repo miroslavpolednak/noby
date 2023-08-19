@@ -7,4 +7,6 @@ internal record EasFormConfiguration
     public required InputConfig InputConfig { get; init; }
 
     public required IReadOnlyCollection<EasFormSourceField> SourceFields { get; init; }
+
+    public bool IsCancelled { get; set; }
 }

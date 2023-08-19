@@ -7,12 +7,12 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 internal class DataServicesLoader
 {
     private readonly ServiceMap _serviceMap;
-    private readonly ICodebookServiceClient _codebookService;
+    private readonly IServiceProvider _serviceProvider;
 
-    public DataServicesLoader(ServiceMap serviceMap, ICodebookServiceClient codebookService)
+    public DataServicesLoader(ServiceMap serviceMap, IServiceProvider serviceProvider)
     {
         _serviceMap = serviceMap;
-        _codebookService = codebookService;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task LoadData(InputConfig inputConfig, InputParameters parameters, AggregatedData aggregatedData, CancellationToken cancellationToken = default)
@@ -24,17 +24,19 @@ internal class DataServicesLoader
             InputParameters = parameters
         };
 
+        using var serviceScope = _serviceProvider.CreateScope();
+
         while (status.RemainingDataSources.Any())
         {
-            await ProcessRemainingDataSources(status, cancellationToken);
+            await ProcessRemainingDataSources(status, serviceScope.ServiceProvider, cancellationToken);
             SetInputParameters(status);
         }
 
-        await aggregatedData.LoadCodebooks(_codebookService, cancellationToken);
+        await aggregatedData.LoadCodebooks(_serviceProvider.GetRequiredService<ICodebookServiceClient>(), cancellationToken);
         await aggregatedData.LoadAdditionalData(cancellationToken);
     }
 
-    private Task ProcessRemainingDataSources(DataLoaderStatus status, CancellationToken cancellationToken)
+    private Task ProcessRemainingDataSources(DataLoaderStatus status, IServiceProvider serviceProvider, CancellationToken cancellationToken)
     {
         var dataSources = status.GetRemainingDataSources();
 
@@ -45,7 +47,7 @@ internal class DataServicesLoader
 
         async Task Load(DataSource dataSource)
         {
-            await _serviceMap.GetServiceCallFunc(dataSource).Invoke(status.InputParameters, status.AggregatedData, cancellationToken);
+            await _serviceMap.GetServiceCallFunc(dataSource, serviceProvider).Invoke(status.InputParameters, status.AggregatedData, cancellationToken);
 
             status.MarkAsLoaded(dataSource);
         }

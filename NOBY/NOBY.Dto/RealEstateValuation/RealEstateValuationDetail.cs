@@ -30,9 +30,9 @@ public sealed class RealEstateValuationDetail
     public LoanPurposeDetail? LoanPurposeDetails { get; set; }
 
     /// <summary>
-    /// Objekty SpecificDetails jsou řízeny business logikou <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135">Ocenění nemovitosti - varianty nemovitostí</a>.<br />
-    /// Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.<br />
-    /// Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.<br />
+    /// Objekty SpecificDetails jsou řízeny business logikou <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135">Ocenění nemovitosti - varianty nemovitostí</a>.
+    /// Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.
+    /// Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.
     /// Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
     /// </summary>
     [SwaggerOneOf<SpecificDetails.HouseAndFlatDetails, SpecificDetails.ParcelDetails>]

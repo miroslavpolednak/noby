@@ -38,11 +38,11 @@ internal sealed class HouseholdsChildMapper
     private static List<_C4M.ExpensesSummary> toC4m(Contracts.Shared.V1.ExpensesSummary expenses)
         => new List<_C4M.ExpensesSummary>()
         {
-            new() { Amount = expenses.Rent.GetValueOrDefault().ToAmount(), Category = _C4M.HouseholdExpenseType.RENT },
-            new() { Amount = expenses.Saving.GetValueOrDefault().ToAmount(), Category = _C4M.HouseholdExpenseType.SAVINGS },
-            new() { Amount = expenses.Insurance.GetValueOrDefault().ToAmount(), Category = _C4M.HouseholdExpenseType.INSURANCE },
-            new() { Amount = expenses.Other.GetValueOrDefault().ToAmount(), Category = _C4M.HouseholdExpenseType.OTHER },
-            new() { Amount = 0.ToAmount(), Category = _C4M.HouseholdExpenseType.ALIMONY },
+            new() { Amount = expenses.Rent.GetValueOrDefault().ToCreditWorthinessAmount(), Category = _C4M.HouseholdExpenseType.RENT },
+            new() { Amount = expenses.Saving.GetValueOrDefault().ToCreditWorthinessAmount(), Category = _C4M.HouseholdExpenseType.SAVINGS },
+            new() { Amount = expenses.Insurance.GetValueOrDefault().ToCreditWorthinessAmount(), Category = _C4M.HouseholdExpenseType.INSURANCE },
+            new() { Amount = expenses.Other.GetValueOrDefault().ToCreditWorthinessAmount(), Category = _C4M.HouseholdExpenseType.OTHER },
+            new() { Amount = 0.ToCreditWorthinessAmount(), Category = _C4M.HouseholdExpenseType.ALIMONY },
         };
 
     #region liabilities
@@ -120,7 +120,7 @@ internal sealed class HouseholdsChildMapper
         var arr = _obligationTypes!.Where(t => t.Code == productGroup).Select(t => t.Id).ToArray();
         return (liabilitiesFlatten?
             .Where(t => t.IsObligationCreditorExternal == isObligationCreditorExternal && arr.Contains(t.ObligationTypeId))
-            .Sum(fcSum) ?? 0).ToAmount();
+            .Sum(fcSum) ?? 0).ToCreditWorthinessAmount();
     }
 
     Func<_V2.CreditWorthinessObligation, decimal> _fcSumObligationsAmount = t => t.Amount.GetValueOrDefault();

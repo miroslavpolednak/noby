@@ -1,0 +1,1 @@
+UPDATE DocumentDataField SET StringFormat = '{0}.dne v měsíci' WHERE DocumentDataFieldId = 96

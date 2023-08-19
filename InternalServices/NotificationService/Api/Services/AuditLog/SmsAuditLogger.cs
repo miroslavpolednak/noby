@@ -1,28 +1,24 @@
-﻿using System.Text;
-using CIS.Core;
+﻿using System.Globalization;
+using System.Text;
+using CIS.Infrastructure.Audit;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using DomainServices.CodebookService.Contracts.v1;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 
 public class SmsAuditLogger : ISmsAuditLogger
 {
-    // todo: change application logging to audit logging
-    private readonly IDateTime _dateTime;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogger<SmsAuditLogger> _logger;
+    private readonly IAuditLogger _auditLogger;
 
     public SmsAuditLogger(
-        IDateTime dateTime,
         IHttpContextAccessor httpContextAccessor,
-        ILogger<SmsAuditLogger> logger)
+        IAuditLogger auditLogger)
     {
-        _dateTime = dateTime;
         _httpContextAccessor = httpContextAccessor;
-        _logger = logger;
+        _auditLogger = auditLogger;
     }
 
     private async Task<string> GetBodyFromRequest(HttpRequest request, Encoding? encoding = null)
@@ -50,111 +46,116 @@ public class SmsAuditLogger : ISmsAuditLogger
         return responseBody;
     }
 
-    public async Task LogHttpRequest()
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
-        if (httpContext is null) return;
-        
-        var log = new AuditHttpRequestLog
-        {
-            TraceId = httpContext.TraceIdentifier,
-            RequestDateTimeUtc = _dateTime.Now,
-            ClientIp = httpContext.Connection.RemoteIpAddress?.ToString(),
-            RequestMethod = httpContext.Request.Method,
-            RequestPath = httpContext.Request.Path,
-            RequestQuery = httpContext.Request.QueryString.ToString(),
-            RequestHeaders = httpContext.Request.Headers.ToDictionary(v => v.Key, v => v.Value),
-            RequestBody = await GetBodyFromRequest(httpContext.Request),
-            RequestScheme = httpContext.Request.Scheme,
-            RequestHost = httpContext.Request.Host.ToString(),
-            RequestContentType = httpContext.Request.ContentType
-        };
-        
-        _logger.LogInformation("Received HTTP Request: {@log}", log);
-    }
-
-    public async Task LogHttpResponse(IActionResult? actionResult)
+    public async Task LogHttpRequestResponse()
     {
         var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext is null) return;
 
-        var log = new AuditHttpResponseLog
-        {
-            ResponseDateTimeUtc = _dateTime.Now,
-            TraceId = httpContext.TraceIdentifier,
-            ResponseContentType = httpContext.Response.ContentType,
-            ResponseStatus = httpContext.Response.StatusCode.ToString(),
-            ResponseHeaders = httpContext.Response.Headers.ToDictionary(v => v.Key, v => v.Value),
-            ResponseBody = await GetBodyFromResponse(httpContext.Response)
-        };
+        var httpHeaders = httpContext.Request.Headers
+            .ToDictionary(v => v.Key, v => v.Value);
         
-        if (actionResult is ObjectResult result)
-        {
-            log.ResponseStatus = result.StatusCode?.ToString() ?? string.Empty;
-            log.ResponseBody = JsonConvert.SerializeObject(result.Value);
-        }
-
-        _logger.LogInformation("Sending HTTP Response: {@log}", log);
-    }
-
-    public void LogHttpException(Exception exception)
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
-        if (httpContext is null) return;
-
-        var log = new AuditHttpExceptionLog
-        {
-            TraceId = httpContext.TraceIdentifier,
-            ResponseDateTimeUtc = _dateTime.Now,
-            ResponseStatus = httpContext.Response.StatusCode.ToString(),
-            Exception = exception
-        };
-
-        _logger.LogInformation("Sending HTTP Exception: {@log}", log);
-    }
-
-    public void LogKafkaProducing(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer)
-    {
-        if (smsType.IsAuditLogEnabled)
-        {
-            _logger.LogInformation("Producing message SendSMS with type '{SmsType}' to KAFKA by consumer '{Consumer}'.",
-                smsType.Code, consumer);
-        }
+        var rawHttpRequestHeaders = JsonConvert.SerializeObject(httpHeaders);
+        var rawHttpRequestBody = await GetBodyFromRequest(httpContext.Request);
+        
+        var rawHttpResponseBody = await GetBodyFromResponse(httpContext.Response);
+        
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby012,
+            "HTTP request processed",
+            bodyBefore: new Dictionary<string, string>
+            {
+                { "requestPath", httpContext.Request.Path },
+                { "requestQuery", httpContext.Request.QueryString.ToString() },
+                { "rawHttpRequestHeaders", ToLiteral(rawHttpRequestHeaders) },
+                { "rawHttpRequestBody", ToLiteral(rawHttpRequestBody) }
+            },
+            bodyAfter: new Dictionary<string, string>
+            {
+                { "traceId", httpContext.TraceIdentifier },
+                { "responseStatus", httpContext.Response.StatusCode.ToString(CultureInfo.InvariantCulture) }, 
+                { "rawHttpResponseBody", ToLiteral(rawHttpResponseBody) }
+            }
+        );
     }
 
     public void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer)
     {
         if (smsType.IsAuditLogEnabled)
         {
-            _logger.LogInformation(
-                "Produced message SendSMS with type '{SmsType}' and notification id '{NotificationId}' to KAFKA by consumer '{Consumer}'.",
-                smsType.Code, notificationId, consumer);
+            _auditLogger.LogWithCurrentUser(
+                AuditEventTypes.Noby013,
+                "Produced message SendSMS to KAFKA",
+                bodyBefore: new Dictionary<string, string>
+                {
+                    { "smsType", smsType.Code },
+                    { "consumer", consumer }
+                },
+                bodyAfter: new Dictionary<string, string>
+                {
+                    { "notificationId", notificationId.ToString() }
+                });
         }
     }
 
-    public void LogKafkaError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer)
+    public void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer)
     {
         if (smsType.IsAuditLogEnabled)
         {
-            _logger.LogInformation(
-                "Could not produce message SendSMS with type '{SmsType}' to KAFKA by consumer '{Consumer}'.",
-                smsType.Code, consumer);
+            _auditLogger.LogWithCurrentUser(
+                AuditEventTypes.Noby013,
+                "Could not produce message SendSMS to KAFKA",
+                bodyBefore: new Dictionary<string, string>
+                {
+                    { "smsType", smsType.Code },
+                    { "consumer", consumer }
+                }
+            );
         }
     }
 
-    public void LogKafkaResultReceived(NotificationReport report)
+    public void LogKafkaResultReceived(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, NotificationReport report)
     {
-        _logger.LogInformation("Received notification report {@Report}.", new
+        if (smsType.IsAuditLogEnabled)
         {
-            NotificationId = report.id,
-            State = report.state,
-            Errors = report.notificationErrors?
-                .Select(e => new
+            _auditLogger.Log(
+                AuditEventTypes.Noby013,
+                "Received notification report for sms",
+                bodyBefore: new Dictionary<string, string>
                 {
-                    Code = e.code,
-                    Message = e.message
-                })
-                .ToList()
-        });
+                    { "smsType", smsType.Code },
+                    { "notificationId", report.id },
+                    { "state", report.state },
+                    { "errors", ToLiteral(JsonConvert.SerializeObject(report.notificationErrors)) }
+                });
+        }
+    }
+    
+    private static string ToLiteral(string input) {
+        var literal = new StringBuilder(input.Length );
+        foreach (var c in input) {
+            switch (c) {
+                case '\"': literal.Append("\\\""); break;
+                case '\\': literal.Append(@"\\"); break;
+                case '\0': literal.Append(@"\0"); break;
+                case '\a': literal.Append(@"\a"); break;
+                case '\b': literal.Append(@"\b"); break;
+                case '\f': literal.Append(@"\f"); break;
+                case '\n': literal.Append(@"\n"); break;
+                case '\r': literal.Append(@"\r"); break;
+                case '\t': literal.Append(@"\t"); break;
+                case '\v': literal.Append(@"\v"); break;
+                default:
+                    // ASCII printable character
+                    if (c >= 0x20 && c <= 0x7e) {
+                        literal.Append(c);
+                        // As UTF16 escaped character
+                    } else {
+                        literal.Append(@"\u");
+                        literal.Append(((int)c).ToString("x4"));
+                    }
+                    break;
+            }
+        }
+        return literal.ToString();
     }
 }

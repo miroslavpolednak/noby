@@ -1,7 +1,7 @@
 ﻿using CIS.Foms.Enums;
 using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
+using DomainServices.CaseService.Api.Services;
 using DomainServices.CaseService.Contracts;
-using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using MassTransit;
@@ -16,63 +16,108 @@ internal sealed class IndividualPricingProcessChangedConsumer
         var token = context.CancellationToken;
         var message = context.Message;
         
-        var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
-        var caseId = long.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
-
-        await _linkTaskToCase.Link(caseId, currentTaskId, token);
-        
-        if (message.state != ProcessStateEnum.COMPLETED)
+        if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
-            return;
+            _logger.KafkaMessageCurrentTaskIdIncorrectFormat(message.currentTask.id);
+        }
+        
+        if (!long.TryParse(message.@case.caseId.id, out var caseId))
+        {
+            _logger.KafkaMessageCaseIdIncorrectFormat(message.@case.caseId.id);
         }
         
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId }, token);
         var decisionId = taskDetail.TaskDetail.PriceException.DecisionId;
-        var flowSwitchId = decisionId switch
-        {
-            1 => (int)FlowSwitches.IsWflTaskForIPApproved,
-            2 => (int)FlowSwitches.IsWflTaskForIPNotApproved,
-            _ => 0
-        };
+        await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, currentTaskId, token);
 
-        if (flowSwitchId == 0)
+        var flowSwitches = (message.state switch
         {
-            return;
-        }
+            ProcessStateEnum.COMPLETED => GetFlowSwitchesForCompleted(decisionId),
+            ProcessStateEnum.ACTIVE => GetFlowSwitchesForActive(),
+            ProcessStateEnum.TERMINATED => GetFlowSwitchesForTerminated(),
+            _ => Enumerable.Empty<EditableFlowSwitch>(),
+        }).ToList();
         
-        var flowSwitch = new EditableFlowSwitch
+        if (flowSwitches.Any())
         {
-            Value = true,
-            FlowSwitchId = flowSwitchId
-        };
-
-        var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, token);
-        var salesArrangementTypes = await _codebookService.SalesArrangementTypes(token);
-
-        foreach (var salesArrangement in salesArrangementResponse.SalesArrangements)
-        {
-            var salesArrangementType = salesArrangementTypes.Single(t => t.Id == salesArrangement.SalesArrangementTypeId);
-            if (salesArrangementType.SalesArrangementCategory == (int) SalesArrangementCategories.ProductRequest)
+            var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, token);
+            var productSaleArrangements = salesArrangementResponse.SalesArrangements
+                .Where(t => t.IsProductSalesArrangement())
+                .ToList();
+            
+            foreach (var salesArrangement in productSaleArrangements)
             {
-                await _salesArrangementService.SetFlowSwitches(salesArrangement.SalesArrangementId, new() { flowSwitch }, token);
+                await _salesArrangementService.SetFlowSwitches(salesArrangement.SalesArrangementId, flowSwitches, token);
             }
         }
     }
 
+    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForCompleted(int? decisionId)
+    {
+        if (decisionId == 1)
+        {
+            yield return  new EditableFlowSwitch
+            {
+                FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved,
+                Value = true
+            };
+        }
+
+        if (decisionId == 2)
+        {
+            yield return  new EditableFlowSwitch
+            {
+                FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved,
+                Value = true
+            };
+        }
+        
+        // else empty
+    }
+
+    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForActive()
+    {
+        yield return new EditableFlowSwitch
+        {
+            FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist,
+            Value = true
+        };
+    }
+
+    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForTerminated()
+    {
+        var flowSwitchIds = new[]
+        {
+            FlowSwitches.DoesWflTaskForIPExist,
+            FlowSwitches.IsWflTaskForIPApproved,
+            FlowSwitches.IsWflTaskForIPNotApproved
+        };
+        
+        foreach (var flowSwitchId in flowSwitchIds)
+        {
+            yield return new EditableFlowSwitch
+            {
+                FlowSwitchId = (int)flowSwitchId,
+                Value = false
+            };
+        }
+    }
+    
     private readonly IMediator _mediator;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly Services.LinkTaskToCaseService _linkTaskToCase;
+    private readonly ActiveTasksService _activeTasksService;
+    private readonly ILogger<IndividualPricingProcessChangedConsumer> _logger;
 
     public IndividualPricingProcessChangedConsumer(
         IMediator mediator,
-        Services.LinkTaskToCaseService linkTaskToCase,
         ISalesArrangementServiceClient salesArrangementService,
-        ICodebookServiceClient codebookService)
+        ActiveTasksService activeTasksService,
+        ILogger<IndividualPricingProcessChangedConsumer> logger)
     {
-        _linkTaskToCase = linkTaskToCase;
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
-        _codebookService = codebookService;
+        _activeTasksService = activeTasksService;
+        _logger = logger;
+        
     }
 }

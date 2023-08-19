@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+import "NullableGrpcDecimal.proto";
+import "google/protobuf/wrappers.proto";
+
+message GetRealEstateValuationTypesRequest {
+    int32 RealEstateValuationId = 1;
+    repeated int32 LoanPurposes = 2;
+    string DealType = 3;
+    cis.types.NullableGrpcDecimal LoanAmount = 4;
+}
+
+message GetRealEstateValuationTypesReponse {
+    repeated int32 ValuationTypeId = 1;
+}

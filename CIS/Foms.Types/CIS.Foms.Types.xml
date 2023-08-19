@@ -199,5 +199,10 @@
             IC: WFL úkol na IC je zamítnut
             </summary>
         </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.ScoringPerformedAtleastOnce">
+            <summary>
+            Došlo ke skórování
+            </summary>
+        </member>
     </members>
 </doc>

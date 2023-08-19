@@ -1,5 +1,8 @@
-﻿using DomainServices.HouseholdService.Api.Database;
+﻿using DomainServices.DocumentOnSAService.Clients;
+using DomainServices.DocumentOnSAService.Contracts;
+using DomainServices.HouseholdService.Api.Database;
 using DomainServices.HouseholdService.Contracts;
+using FastEnumUtility;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.DeleteHousehold;
 
@@ -20,6 +23,16 @@ internal sealed class DeleteHouseholdHandler
         // kontrola ze to neni main household
         if (household.HouseholdTypeId == HouseholdTypes.Main && !request.HardDelete)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CantDeleteDebtorHousehold);
+
+        //Invalidate DocumentOnSa (stop signing)
+        var documentsOnSaToSing = await _documentOnSAServiceClient.GetDocumentsToSignList(household.SalesArrangementId, cancellationToken);
+        // With household
+        var documentsOnSaWithHousehold = documentsOnSaToSing.DocumentsOnSAToSign.Where(d => d.HouseholdId == request.HouseholdId && d.DocumentOnSAId is not null);
+        await StopSigning(documentsOnSaWithHousehold, cancellationToken);
+        // Crs
+        var documentsOnSaCrs = documentsOnSaToSing.DocumentsOnSAToSign.Where(r => r.DocumentOnSAId is not null && r.DocumentTypeId == DocumentTypes.DANRESID.ToByte() &&
+                                                                            (r.CustomerOnSAId == household.CustomerOnSAId1 || r.CustomerOnSAId == household.CustomerOnSAId2));
+        await StopSigning(documentsOnSaCrs, cancellationToken);
 
         // smazat domacnost
         await _dbContext
@@ -45,7 +58,7 @@ internal sealed class DeleteHouseholdHandler
                 HardDelete = request.HardDelete
             }, cancellationToken);
         }
-        
+
         // pokud se jedna o spoludluznickou, smazat flowswitch
         if (household.HouseholdTypeId == HouseholdTypes.Codebtor)
         {
@@ -55,6 +68,11 @@ internal sealed class DeleteHouseholdHandler
                 {
                     FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnCodebtorHousehold,
                     Value = null
+                },
+                new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.Was3602CodebtorChangedAfterSigning,
+                    Value = null
                 }
             }, cancellationToken);
         }
@@ -62,13 +80,28 @@ internal sealed class DeleteHouseholdHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private async Task StopSigning(IEnumerable<DocumentOnSAToSign> documentOnSAToSigns, CancellationToken cancellationToken)
+    {
+        foreach (var doc in documentOnSAToSigns)
+        {
+            // Have to be call one by one
+            await _documentOnSAServiceClient.StopSigning(doc.DocumentOnSAId!.Value, cancellationToken);
+        }
+    }
+
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
     private readonly IMediator _mediator;
     private readonly HouseholdServiceDbContext _dbContext;
 
-    public DeleteHouseholdHandler(HouseholdServiceDbContext dbContext, IMediator mediator, SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
+    public DeleteHouseholdHandler(
+        HouseholdServiceDbContext dbContext,
+        IMediator mediator,
+        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
+        IDocumentOnSAServiceClient documentOnSAServiceClient)
     {
         _salesArrangementService = salesArrangementService;
+        _documentOnSAServiceClient = documentOnSAServiceClient;
         _dbContext = dbContext;
         _mediator = mediator;
     }

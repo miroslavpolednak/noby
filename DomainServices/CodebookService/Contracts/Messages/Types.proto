@@ -162,6 +162,7 @@ message DocumentTemplateVersionsResponse {
 		string DocumentVersion = 3;
 		bool IsValid = 4;
 		google.protobuf.Int32Value FormTypeId = 5;
+		string TemplateProcessingType = 6;
 	}
 }
 
@@ -395,7 +396,6 @@ message IdentitySchemesResponse {
 		string Code = 3;
 		string Category = 4;
 		google.protobuf.Int32Value MandantId = 5;
-		google.protobuf.Int32Value ChannelId = 6;
 	}
 }
 
@@ -411,6 +411,7 @@ message LoanPurposesResponse {
 	   google.protobuf.BoolValue IsValid = 6;
 	   repeated int32 ProductTypeIds = 7;
 	   google.protobuf.StringValue AcvId = 8;
+	   google.protobuf.Int32Value AcvIdPriority = 9;
 	}
 }
 
@@ -533,6 +534,20 @@ message RelationshipCustomerProductTypesResponse {
 	}
 }
 
+message RealEstateTypesResponse {
+	repeated RealEstateTypesResponseItem Items = 1;
+
+	message RealEstateTypesResponseItem {
+		int32 Id = 1;
+		string Name = 2;
+		google.protobuf.Int32Value MandantId = 3;
+		int32 Order = 4;
+		bool IsValid = 5;
+		bool IsDefault = 6;
+		bool Collateral = 7;
+	}
+}
+
 message RealEstateSubtypesResponse {
 	repeated RealEstateSubtypesResponseItem Items = 1;
 
@@ -581,6 +596,7 @@ message SalesArrangementTypesResponse {
 	   string Name = 2;
 	   int32 SalesArrangementCategory = 3;
 	   google.protobuf.StringValue Description = 4;
+	   bool IsFormSentToCmp = 5;
 	}
 }
 
@@ -697,15 +713,5 @@ message WorkflowTaskStatesNobyResponse {
 		string Name = 2;
 		int32 Filter = 3;
 		int32 Indicator = 4;
-	}
-}
-
-message WorkflowTaskTypesResponse {
-	repeated WorkflowTaskTypesItem Items = 1;
-
-	message WorkflowTaskTypesItem {
-		int32 Id = 1;
-		string Name = 2;
-		google.protobuf.Int32Value CategoryId = 3;
 	}
 }

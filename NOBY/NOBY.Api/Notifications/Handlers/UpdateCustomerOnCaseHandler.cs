@@ -23,16 +23,10 @@ internal sealed class UpdateCustomerOnCaseHandler
                 Name = customerInstance.Name,
                 Identity = customerInstance.CustomerIdentifiers.FirstOrDefault()
             }, cancellationToken);
-            
-            //Customer byl identifikovaný, může se nastavit ContractNumber
-            if (customerInstance.CustomerIdentifiers.Any())
-                await _salesArrangementService.SetContractNumber(notification.SalesArrangementId, notification.CustomerOnSAId, cancellationToken);
-
         }
     }
 
     private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerService;
 
     public UpdateCustomerOnCaseHandler(
@@ -42,6 +36,5 @@ internal sealed class UpdateCustomerOnCaseHandler
     {
         _customerService = customerService;
         _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
     }
 }

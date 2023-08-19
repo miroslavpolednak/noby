@@ -1,5 +1,4 @@
-﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
@@ -14,12 +13,6 @@ internal sealed class CreateRealEstateValuationHandler
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
-        // perm check
-        if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
-        {
-            throw new CisAuthorizationException();
-        }
-
         var revRequest = new DomainServices.RealEstateValuationService.Contracts.CreateRealEstateValuationRequest
         {
             CaseId = request.CaseId,
@@ -30,7 +23,7 @@ internal sealed class CreateRealEstateValuationHandler
             ValuationStateId = 7
         };
 
-        if (caseInstance.State != (int)CaseStates.InProgress)
+        if (caseInstance.State == (int)CaseStates.InProgress)
         {
             var saInstance = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
             var developer = await _offerService.GetOfferDeveloper(saInstance.OfferId!.Value, cancellationToken);
@@ -45,7 +38,7 @@ internal sealed class CreateRealEstateValuationHandler
 
         if (!revRequest.DeveloperAllowed && request.DeveloperApplied)
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("Developer check failed");
         }
 
         return await _realEstateValuationService.CreateRealEstateValuation(revRequest, cancellationToken);
@@ -53,20 +46,17 @@ internal sealed class CreateRealEstateValuationHandler
 
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseService;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
     public CreateRealEstateValuationHandler(
         IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService,
-        ICurrentUserAccessor currentUserAccessor,
         IRealEstateValuationServiceClient realEstateValuationService, 
         ICaseServiceClient caseService)
     {
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
-        _currentUser = currentUserAccessor;
         _realEstateValuationService = realEstateValuationService;
         _caseService = caseService;
     }

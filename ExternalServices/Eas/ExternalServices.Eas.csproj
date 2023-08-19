@@ -21,7 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Logging.Extensions\CIS.Infrastructure.Logging.Extensions.csproj" />
-    <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
   </ItemGroup>
 
 </Project>

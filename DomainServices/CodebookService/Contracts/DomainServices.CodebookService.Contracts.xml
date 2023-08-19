@@ -323,6 +323,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem.FormTypeIdFieldNumber">
             <summary>Field number for the "FormTypeId" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem.TemplateProcessingTypeFieldNumber">
+            <summary>Field number for the "TemplateProcessingType" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
@@ -665,9 +668,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.MandantIdFieldNumber">
             <summary>Field number for the "MandantId" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentitySchemesResponse.Types.IdentitySchemeItem.ChannelIdFieldNumber">
-            <summary>Field number for the "ChannelId" field.</summary>
-        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types">
             <summary>Container for nested types declared in the LoanPurposesResponse message type.</summary>
         </member>
@@ -694,6 +694,9 @@
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.AcvIdFieldNumber">
             <summary>Field number for the "AcvId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.Types.LoanPurposeItem.AcvIdPriorityFieldNumber">
+            <summary>Field number for the "AcvIdPriority" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.LoanPurposesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
@@ -995,6 +998,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.DescriptionFieldNumber">
             <summary>Field number for the "Description" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.IsFormSentToCmpFieldNumber">
+            <summary>Field number for the "IsFormSentToCmp" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
@@ -1190,21 +1196,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem.IndicatorFieldNumber">
             <summary>Field number for the "Indicator" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.ItemsFieldNumber">
-            <summary>Field number for the "Items" field.</summary>
-        </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types">
-            <summary>Container for nested types declared in the WorkflowTaskTypesResponse message type.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem.IdFieldNumber">
-            <summary>Field number for the "Id" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem.NameFieldNumber">
-            <summary>Field number for the "Name" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem.CategoryIdFieldNumber">
-            <summary>Field number for the "CategoryId" field.</summary>
-        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
@@ -1222,6 +1213,33 @@
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem.RealEstateTypeIdFieldNumber">
             <summary>Field number for the "RealEstateTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types">
+            <summary>Container for nested types declared in the RealEstateTypesResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.OrderFieldNumber">
+            <summary>Field number for the "Order" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.IsDefaultFieldNumber">
+            <summary>Field number for the "IsDefault" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.CollateralFieldNumber">
+            <summary>Field number for the "Collateral" field.</summary>
         </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.CodebookServiceV1Reflection">
             <summary>Holder for reflection information generated from CodebookService.v1.proto</summary>
@@ -1359,23 +1377,26 @@
         <member name="P:DomainServices.CodebookService.Contracts.v1.GenericCodebookReflection.Descriptor">
             <summary>File descriptor for Messages/GenericCodebook.proto</summary>
         </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeReflection">
-            <summary>Holder for reflection information generated from Messages/GetAcvRealEstateType.proto</summary>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeReflection">
+            <summary>Holder for reflection information generated from Messages/GetACVAndBagmanRealEstateType.proto</summary>
         </member>
-        <member name="P:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeReflection.Descriptor">
-            <summary>File descriptor for Messages/GetAcvRealEstateType.proto</summary>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeReflection.Descriptor">
+            <summary>File descriptor for Messages/GetACVAndBagmanRealEstateType.proto</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeRequest.RealEstateTypeIdFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeRequest.RealEstateTypeIdFieldNumber">
             <summary>Field number for the "RealEstateTypeId" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeRequest.RealEstateSubtypeIdFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeRequest.RealEstateSubtypeIdFieldNumber">
             <summary>Field number for the "RealEstateSubtypeId" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeRequest.RealEstateStateIdFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeRequest.RealEstateStateIdFieldNumber">
             <summary>Field number for the "RealEstateStateId" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.GetAcvRealEstateTypeResponse.AcvRealEstateTypeIdFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeResponse.AcvRealEstateTypeIdFieldNumber">
             <summary>Field number for the "AcvRealEstateTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeResponse.BagmanRealEstateTypeIdFieldNumber">
+            <summary>Field number for the "BagmanRealEstateTypeId" field.</summary>
         </member>
     </members>
 </doc>

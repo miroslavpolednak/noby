@@ -7,7 +7,7 @@ internal class RiskLoanApplicationJsonCollection : RiskLoanApplicationJsonObject
 {
     private string _collectionPath = string.Empty;
 
-    public override void Add(string[] propertyPath, string dataFieldPath)
+    public override void Add(string[] propertyPath, string dataFieldPath, bool useDefaultInsteadOfNull)
     {
         if (_collectionPath == string.Empty)
             _collectionPath = CollectionPathHelper.GetCollectionPath(dataFieldPath);
@@ -15,9 +15,9 @@ internal class RiskLoanApplicationJsonCollection : RiskLoanApplicationJsonObject
         if (_collectionPath == string.Empty || _collectionPath != CollectionPathHelper.GetCollectionPath(dataFieldPath))
             throw new InvalidOperationException();
 
-        var collectionMaxDepth = propertyPath.Take(Math.Max(Depth - 1, 0)).Count(path => path.EndsWith(ConfigurationConstants.CollectionMarker));
+        var collectionMaxDepth = propertyPath.Take(Math.Max(Depth - 1, 0)).Count(path => path.EndsWith(ConfigurationConstants.CollectionMarker, StringComparison.InvariantCultureIgnoreCase));
 
-        base.Add(propertyPath, CollectionPathHelper.GetCollectionMemberPath(dataFieldPath, collectionMaxDepth));
+        base.Add(propertyPath, CollectionPathHelper.GetCollectionMemberPath(dataFieldPath, collectionMaxDepth), useDefaultInsteadOfNull);
     }
 
     public override object? GetJsonObject(object data)

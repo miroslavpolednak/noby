@@ -25,6 +25,8 @@ public class SigningIdentityJson
 
     public string? LastName { get; set; }
 
+    public string? BirthNumber { get; set; }
+
     public MobilePhone? MobilePhone { get; set; }
 
     public string? EmailAddress { get; set; }

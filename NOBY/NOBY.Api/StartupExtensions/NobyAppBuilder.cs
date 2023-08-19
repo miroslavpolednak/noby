@@ -1,6 +1,8 @@
 ﻿using NOBY.Infrastructure.Security.Endpoints;
 using NOBY.Infrastructure.Configuration;
 using CIS.Infrastructure.WebApi;
+using Microsoft.AspNetCore.Http.Extensions;
+using NOBY.Infrastructure.Security.Middleware;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -10,6 +12,7 @@ internal static class NobyAppBuilder
         => app.MapWhen(_isSpaCall, appBuilder => 
         {
             appBuilder.UseSpaStaticFiles();
+            appBuilder.UseStaticFiles("/docs");
             appBuilder.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "wwwroot";
@@ -43,14 +46,17 @@ internal static class NobyAppBuilder
                 appBuilder.UseMiddleware<Infrastructure.ErrorHandling.Internals.NobyApiExceptionMiddleware>();
             }
 
-            // autentizace a autorizace
-            appBuilder.UseAuthentication();
-            appBuilder.UseMiddleware<NobySecurityMiddleware>();
-            appBuilder.UseAuthorization();
-            
-            // namapovani API modulu
+            // namapovani API modulu - !poradi je dulezite
             appBuilder
+                // autentizace
+                .UseAuthentication()
+                // routing
                 .UseRouting()
+                // autorizace
+                .UseMiddleware<NobySecurityMiddleware>()
+                .UseAuthorization()
+                //.UseMiddleware<CaseOwnerValidationMiddleware>() //TODO zapnout az budou upraveny DS
+                // endpointy
                 .UseEndpoints(t =>
                 {
                     t.MapControllers();
@@ -80,8 +86,23 @@ internal static class NobyAppBuilder
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "NOBY FRONTEND API");
         });
 
+    public static IApplicationBuilder UseRedirectStrategy(this IApplicationBuilder app)
+        => app
+        .UseWhen(_isRedirectCall, (appBuilder) =>
+        {
+            appBuilder.Run(async context =>
+            {
+                var url = context.Request.GetEncodedUrl();
+                var idx = url.IndexOf('/', 10);
+                context.Response.Redirect(string.Concat(url[..idx], "/#", url[idx..]));
+            });
+        });
+
     private static readonly Func<HttpContext, bool> _isApiCall = (HttpContext context) 
         => context.Request.Path.StartsWithSegments("/api");
+
+    private static readonly Func<HttpContext, bool> _isRedirectCall = (HttpContext context)
+        => context.Request.Path.StartsWithSegments("/redirect");
 
     private static readonly Func<HttpContext, bool> _isAuthCall = (HttpContext context)
         => context.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment);

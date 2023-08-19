@@ -57,11 +57,9 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
     {
         var docData = await _documentOnSaClient.GetElectronicDocumentFromQueue(new()
         {
-            DocumentOnSAId = documentOnSa.DocumentOnSAId!.Value,
-            //ToDo fill in correct (other) params
-            Attachment = new _DocOnSaSource.Attachment
+            MainDocument = new _DocOnSaSource.MainDocument
             {
-                AttachmentId = 1
+                DocumentOnSAId = documentOnSa.DocumentOnSAId!.Value,
             }
         }, cancellationToken);
 
@@ -75,7 +73,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
 
     private async Task<GetDocumentOnSADataResponse> GetDocumentFromDocumentGenerator(_DocOnSaSource.DocumentOnSAToSign documentOnSa, _DocOnSaSource.GetDocumentOnSADataResponse documentOnSaData, CancellationToken cancellationToken)
     {
-        var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSa, documentOnSaData);
+        var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSa, documentOnSaData, forPreview: false);
 
         var result = await _documentGeneratorServiceClient.GenerateDocument(generateDocumentRequest, cancellationToken);
 

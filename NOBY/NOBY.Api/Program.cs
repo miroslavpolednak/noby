@@ -6,6 +6,8 @@ using DomainServices;
 using CIS.InternalServices;
 using Microsoft.AspNetCore.HttpLogging;
 using CIS.Infrastructure.WebApi;
+using NOBY.Infrastructure.Configuration;
+using CIS.Infrastructure.Audit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +20,7 @@ try
     var appConfiguration = builder.AddNobyConfig();
 
     // vlozit do DI vsechny custom services
-    builder.Services.AddAttributedServices(typeof(NOBY.Infrastructure.IInfrastructureAssembly), typeof(NOBY.Api.IApiAssembly));
+    builder.Services.AddAttributedServices(typeof(NOBY.Services.IServicesAssembly), typeof(NOBY.Api.IApiAssembly));
 
     // add CIS pipeline
     builder.AddCisEnvironmentConfiguration();
@@ -26,8 +28,10 @@ try
         .AddCisCoreFeatures()
         .AddCisWebApiCors()
         .AddCisLogging()
+        .AddCisAudit()
         .AddCisTracing()
         .AddCisHealthChecks();
+    builder.Services.AddCisSecurityHeaders();
 
     // add .NET logging
     builder.Services.AddHttpLogging(logging =>
@@ -56,7 +60,7 @@ try
         .AddDataAggregatorService()
         .AddDocumentGeneratorService();
 
-    // FOMS services
+    // NOBY services
     builder.AddNobyServices();
 
     // init validacnich zprav
@@ -92,6 +96,8 @@ try
         .UseNobyApi(appConfiguration)
         // include authentication endpoints
         .UseNobyAuthStrategy()
+        // redirect from ZOOM
+        .UseRedirectStrategy()
         // jedna se o SPA call, pust jen tyhle middlewares
         .UseNobySpa()
         // health check call - neni treba poustet celou pipeline

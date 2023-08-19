@@ -45,11 +45,15 @@ internal sealed class SalesArrangementService
 
     public async Task<SalesArrangement> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
-        return await _service.GetSalesArrangementAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId
-            }, cancellationToken: cancellationToken);
+        if (_cacheGetSalesArrangement is null || _cacheGetSalesArrangement.SalesArrangementId != salesArrangementId)
+        {
+            _cacheGetSalesArrangement = await _service.GetSalesArrangementAsync(
+                new()
+                {
+                    SalesArrangementId = salesArrangementId
+                }, cancellationToken: cancellationToken);
+        }
+        return _cacheGetSalesArrangement;
     }
     
     public async Task<SalesArrangement?> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken))
@@ -116,12 +120,13 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default)
+    public async Task SendToCmp(int salesArrangementId, bool isCancelled, CancellationToken cancellationToken = default)
     {
          await _service.SendToCmpAsync(
             new()
             {
-                SalesArrangementId = salesArrangementId
+                SalesArrangementId = salesArrangementId,
+                IsCancelled = isCancelled
             }, cancellationToken: cancellationToken);
     }
 
@@ -178,6 +183,22 @@ internal sealed class SalesArrangementService
 
         return await _service.SetContractNumberAsync(request, cancellationToken: cancellationToken);
     }
+
+    public async Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(int salesArrangementId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default)
+    {
+        if (_cacheValidateSalesArrangementId is null)
+        {
+            _cacheValidateSalesArrangementId = await _service.ValidateSalesArrangementIdAsync(new ValidateSalesArrangementIdRequest
+            {
+                SalesArrangementId = salesArrangementId,
+                ThrowExceptionIfNotFound = throwExceptionIfNotFound,
+            }, cancellationToken: cancellationToken);
+        }
+        return _cacheValidateSalesArrangementId;
+    }
+
+    private SalesArrangement? _cacheGetSalesArrangement;
+    private ValidateSalesArrangementIdResponse? _cacheValidateSalesArrangementId;
 
     private readonly Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service;
 

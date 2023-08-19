@@ -3,6 +3,7 @@ using _C4M = DomainServices.RiskIntegrationService.ExternalServices.LoanApplicat
 using CIS.Core.Security;
 using CIS.Core.Configuration;
 using DomainServices.CodebookService.Contracts.v1;
+using CIS.Core.Exceptions;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.LoanApplication.V2.Save.Mappers;
 
@@ -57,14 +58,18 @@ internal sealed class SaveRequestMapper
         // human user instance
         if (request.UserIdentity is not null)
         {
-            var userInstance = await _xxvConnectionProvider.GetC4mUserInfo(request.UserIdentity, cancellation);
-            if (userInstance != null)
+            try
             {
+                var userInstance = await _userService.GetUserRIPAttributes(request.UserIdentity.IdentityId ?? "", request.UserIdentity.IdentityScheme ?? "", cancellation);
                 if (Helpers.IsDealerSchema(userInstance.DealerCompanyId))
-                    requestModel.LoanApplicationDealer = _C4M.C4mUserInfoDataExtensions.ToC4mDealer(userInstance, request.UserIdentity);
+                    requestModel.LoanApplicationDealer = userInstance.ToC4mDealer(request.UserIdentity);
                 else
-                    requestModel.Person = _C4M.C4mUserInfoDataExtensions.ToC4mPerson(userInstance, request.UserIdentity);
-            }            
+                    requestModel.Person = userInstance.ToC4mPerson(request.UserIdentity);
+            }
+            catch (CisNotFoundException)
+            {
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UserNotFound, $"{request.UserIdentity.IdentityScheme}={request.UserIdentity.IdentityId}");
+            }
         }
 
         return requestModel;
@@ -104,23 +109,23 @@ internal sealed class SaveRequestMapper
         return productsFromLoanKind.FirstOrDefault();
     }
 
-    private readonly CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> _xxvConnectionProvider;
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly IServiceUserAccessor _serviceUserAccessor;
     private readonly AppConfiguration _configuration;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
+    private readonly UserService.Clients.IUserServiceClient _userService;
 
     public SaveRequestMapper(
         AppConfiguration configuration,
         IServiceUserAccessor serviceUserAccessor,
-        CIS.Core.Data.IConnectionProvider<Data.IXxvDapperConnectionProvider> xxvConnectionProvider,
         CodebookService.Clients.ICodebookServiceClient codebookService,
-        ICisEnvironmentConfiguration cisEnvironment)
+        ICisEnvironmentConfiguration cisEnvironment,
+        UserService.Clients.IUserServiceClient userService)
     {
         _configuration = configuration;
         _serviceUserAccessor = serviceUserAccessor;
         _codebookService = codebookService;
-        _xxvConnectionProvider = xxvConnectionProvider;
         _cisEnvironment = cisEnvironment;
+        _userService = userService;
     }
 }

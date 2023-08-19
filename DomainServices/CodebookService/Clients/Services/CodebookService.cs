@@ -30,13 +30,17 @@ internal partial class CodebookService
             Term = term
         }, cancellationToken: cancellationToken)).Items.ToList();
 
-    public async Task<int> GetAcvRealEstateType(int realEstateStateId, int realEstateSubtypeId, int realEstateTypeId, CancellationToken cancellationToken = default)
-        => (await _service.GetAcvRealEstateTypeAsync(new GetAcvRealEstateTypeRequest
+    public async Task<(string AcvRealEstateTypeId, string BagmanRealEstateTypeId)> GetACVAndBagmanRealEstateType(int? realEstateStateId, int realEstateSubtypeId, int realEstateTypeId, CancellationToken cancellationToken = default)
+    {
+        var response = (await _service.GetACVAndBagmanRealEstateTypeAsync(new GetACVAndBagmanRealEstateTypeRequest
         {
             RealEstateTypeId = realEstateTypeId,
             RealEstateSubtypeId = realEstateSubtypeId,
-            RealEstateStateId = realEstateTypeId
-        }, cancellationToken: cancellationToken)).AcvRealEstateTypeId;
+            RealEstateStateId = realEstateStateId
+        }, cancellationToken: cancellationToken));
+        return (response.AcvRealEstateTypeId, response.BagmanRealEstateTypeId);
+    }
+        
 
     private readonly ClientsMemoryCache _cache;
     private readonly Contracts.v1.CodebookService.CodebookServiceClient _service;

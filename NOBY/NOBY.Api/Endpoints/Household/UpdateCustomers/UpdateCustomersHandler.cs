@@ -4,8 +4,7 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using __HO = DomainServices.HouseholdService.Contracts;
-using DomainServices.CustomerService.Clients;
-using DomainServices.CodebookService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
@@ -18,7 +17,7 @@ internal sealed class UpdateCustomersHandler
         var householdInstance = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
         // potrebuju i caseId
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(householdInstance.SalesArrangementId, cancellationToken);
-        bool isProductSA = (await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == salesArrangement.SalesArrangementTypeId)?.SalesArrangementCategory == 1;
+        bool isProductSA = salesArrangement.IsProductSalesArrangement();
 
         // zkontrolovat, zda neni customer jiz v jine domacnosti
         var allCustomers = await checkDoubledCustomers(householdInstance.SalesArrangementId, request, cancellationToken);
@@ -35,21 +34,25 @@ internal sealed class UpdateCustomersHandler
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.OnHouseholdCustomerOnSAId, c2.OnHouseholdCustomerOnSAId, cancellationToken);
         }
 
+        _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
+
         // zastavit podepisovani, pokud probehla zmena na customerech
         if (c1.CancelSigning || c2.CancelSigning)
         {
             var documentsToSign = await _documentOnSAService.GetDocumentsToSignList(householdInstance.SalesArrangementId, cancellationToken);
             bool onlyNotSigned = (c1.CancelSigning && !c1.OnHouseholdCustomerOnSAId.HasValue) || (c2.CancelSigning && !c2.OnHouseholdCustomerOnSAId.HasValue);
 
-            foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && (!t.IsSigned || !onlyNotSigned)))
+            foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && t.HouseholdId == request.HouseholdId && (!t.IsSigned || !onlyNotSigned)))
             {
                 await _documentOnSAService.StopSigning(document.DocumentOnSAId!.Value, cancellationToken);
             }
 
             // HFICH-4165 - nastaveni flowSwitches
             bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
-            await setFlowSwitches(householdInstance.HouseholdTypeId, householdInstance.SalesArrangementId, isSecondCustomerIdentified, cancellationToken);
+            setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
         }
+
+        await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
 
         return new UpdateCustomersResponse
         {
@@ -61,49 +64,24 @@ internal sealed class UpdateCustomersHandler
     /// <summary>
     /// Nastavit flowSwitches na SalesArrangementu
     /// </summary>
-    private async Task setFlowSwitches(int householdTypeId, int salesArrangementId, bool isSecondCustomerIdentified, CancellationToken cancellationToken)
+    private void setFlowSwitches(int householdTypeId, bool isSecondCustomerIdentified)
     {
-        // kolekce flow switches, kterou na konci ulozime na SA
-        var flowSwitchesToSet = new List<DomainServices.SalesArrangementService.Contracts.EditableFlowSwitch>();
-
         switch (householdTypeId)
         {
             case (int)HouseholdTypes.Main:
-                flowSwitchesToSet.Add(new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.Was3601MainChangedAfterSigning,
-                    Value = true
-                });
+                _flowSwitchManager.AddFlowSwitch(FlowSwitches.Was3601MainChangedAfterSigning, true);
 
                 // HFICH-5396, vezmi druhého customera z householdu a pokud existuje, tak zkontroluj, že pro identity.scheme = KBID existuje identity.id které není null
-                flowSwitchesToSet.Add(new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnMainHousehold,
-                    Value = isSecondCustomerIdentified
-                });
+                _flowSwitchManager.AddFlowSwitch(FlowSwitches.CustomerIdentifiedOnMainHousehold, isSecondCustomerIdentified);
                 break;
             case (int)HouseholdTypes.Codebtor:
-                flowSwitchesToSet.Add(new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.Was3602CodebtorChangedAfterSigning,
-                    Value = true
-                });
+                _flowSwitchManager.AddFlowSwitch(FlowSwitches.Was3602CodebtorChangedAfterSigning, true);
 
                 // HFICH-5396, vezmi druhého customera z householdu a pokud existuje, tak zkontroluj, že pro identity.scheme = KBID existuje identity.id které není null
-                flowSwitchesToSet.Add(new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.CustomerIdentifiedOnCodebtorHousehold,
-                    Value = isSecondCustomerIdentified
-                });
+                _flowSwitchManager.AddFlowSwitch(FlowSwitches.CustomerIdentifiedOnCodebtorHousehold, isSecondCustomerIdentified);
                 break;
             default:
                 throw new NobyValidationException("Unsupported HouseholdType");
-        }
-
-        // pokud jsou nejake flow switches k nastaveni
-        if (flowSwitchesToSet.Any())
-        {
-            await _salesArrangementService.SetFlowSwitches(salesArrangementId, flowSwitchesToSet, cancellationToken);
         }
     }
 
@@ -236,28 +214,25 @@ internal sealed class UpdateCustomersHandler
         }
     }
 
-    private readonly ICodebookServiceClient _codebookService;
+    private readonly IFlowSwitchManager _flowSwitchManager;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IProductServiceClient _productService;
-    private readonly ICustomerServiceClient _customerService;
     private readonly ILogger<UpdateCustomersHandler> _logger;
 
     public UpdateCustomersHandler(
         ILogger<UpdateCustomersHandler> logger,
-        ICodebookServiceClient codebookService,
+        IFlowSwitchManager flowSwitchManager,
         IHouseholdServiceClient householdService,
         ICustomerOnSAServiceClient customerOnSAService,
         IProductServiceClient productService,
         IDocumentOnSAServiceClient documentOnSAService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICustomerServiceClient customerService)
+        ISalesArrangementServiceClient salesArrangementService)
     {
         _logger = logger;
-        _codebookService = codebookService;
-        _customerService = customerService;
+        _flowSwitchManager = flowSwitchManager;
         _productService = productService;
         _customerOnSAService = customerOnSAService;
         _householdService = householdService;

@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.Security;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
@@ -11,6 +12,7 @@ using CIS.InternalServices.NotificationService.Api.Services.Smtp;
 using ProtoBuf.Grpc.Server;
 using DomainServices;
 using CIS.InternalServices;
+using CIS.InternalServices.NotificationService.Api;
 using CIS.InternalServices.NotificationService.Api.ErrorHandling;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging;
@@ -18,7 +20,6 @@ using CIS.InternalServices.NotificationService.Api.Services.User;
 using CIS.InternalServices.NotificationService.Api.Swagger;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Serilog;
 
 var winSvc = args.Any(t => t.Equals("winsvc"));
 var webAppOptions = winSvc
@@ -54,6 +55,7 @@ try
         .AddCisCoreFeatures()
         .AddCisLogging()
         .AddCisTracing()
+        .AddCisAudit()
         .AddCisServiceAuthentication()
         .Services
             .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
@@ -106,11 +108,7 @@ try
     var app = builder.Build();
     log.ApplicationBuilt();
 
-    app.Use((context, next) =>
-    {
-        context.Request.EnableBuffering();
-        return next();
-    });
+    app.UseMiddleware<AuditRequestResponseMiddleware>();
 
     app.UseHsts();
 

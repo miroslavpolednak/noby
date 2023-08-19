@@ -20,7 +20,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly ISmsAuditLogger _auditLogger;
+    private readonly ISmsAuditLogger _smsAuditLogger;
     private readonly ILogger<SendSmsFromTemplateHandler> _logger;
     
     public SendSmsFromTemplateHandler(
@@ -29,7 +29,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
         ICodebookServiceClient codebookService,
-        ISmsAuditLogger auditLogger,
+        ISmsAuditLogger smsAuditLogger,
         ILogger<SendSmsFromTemplateHandler> logger)
     {
         _dateTime = dateTime;
@@ -37,7 +37,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         _userAdapterService = userAdapterService;
         _repository = repository;
         _codebookService = codebookService;
-        _auditLogger = auditLogger;
+        _smsAuditLogger = smsAuditLogger;
         _logger = logger;
     }
     
@@ -105,14 +105,13 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         
         try
         {
-            _auditLogger.LogKafkaProducing(smsType, username);
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
-            _auditLogger.LogKafkaProduced(smsType, result.Id, username);
+            _smsAuditLogger.LogKafkaProduced(smsType, result.Id, username);
         }
         catch (Exception e)
         {
-            _auditLogger.LogKafkaError(smsType, username);
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
+            _smsAuditLogger.LogKafkaProduceError(smsType, username);
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
             throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsFromTemplateHandler), "SendSmsFromTemplate request failed due to internal server error.");

@@ -70,7 +70,8 @@ internal sealed class DocumentGenerator
             DocumentFooter = new _Document.DocumentFooter
             {
                 CaseId = request.InputParameters.CaseId,
-                OfferId = request.InputParameters.OfferId
+                OfferId = request.InputParameters.OfferId,
+                SalesArrangementId = request.InputParameters.SalesArrangementId
             }
         };
 

@@ -23,26 +23,16 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-	  <Compile Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
-	  <Compile Remove="Endpoints\DocumentArchive\_Shared\**" />
-	  <Compile Remove="wwwroot\**" />
-	  <Content Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
-	  <Content Remove="Endpoints\DocumentArchive\_Shared\**" />
-	  <Content Remove="wwwroot\**" />
-	  <EmbeddedResource Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
-	  <EmbeddedResource Remove="Endpoints\DocumentArchive\_Shared\**" />
 	  <EmbeddedResource Remove="wwwroot\**" />
-	  <None Remove="Endpoints\Codebooks\GetAll\CodebookMap\**" />
-	  <None Remove="Endpoints\DocumentArchive\_Shared\**" />
 	  <None Remove="wwwroot\**" />
 	</ItemGroup>
 	
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="7.0.0" />
     <PackageReference Include="CompareNETObjects" Version="4.79.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.9" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.54.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.10" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.55.0" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
@@ -52,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Caching\CIS.Infrastructure.Caching.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
@@ -71,11 +62,14 @@
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\..\ExternalServices\AddressWhisperer\ExternalServices.AddressWhisperer.csproj" />
+    <ProjectReference Include="..\..\ExternalServices\Crem\ExternalServices.Crem.csproj" />
+    <ProjectReference Include="..\..\ExternalServices\RuianAddress\ExternalServices.RuianAddress.csproj" />
     <ProjectReference Include="..\..\InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj" />
     <ProjectReference Include="..\..\InternalServices\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj" />
     <ProjectReference Include="..\MPSS.Security.Noby\MPSS.Security.Noby.csproj" />
     <ProjectReference Include="..\NOBY.Dto\NOBY.Dto.csproj" />
     <ProjectReference Include="..\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
+    <ProjectReference Include="..\NOBY.Services\NOBY.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -84,7 +78,6 @@
     <Folder Include="Endpoints\Document\Shared\DocumentIdManager\" />
     <Folder Include="Endpoints\Product\GetCaseIdByPcpId\" />
     <Folder Include="Endpoints\RealEstateValuation\GetRealEstateValuationDetail\" />
-    <Folder Include="Endpoints\RealEstateValuation\UpdateRealEstateValuationDetail\" />
     <Folder Include="Endpoints\SalesArrangement\SendToCmp\Dto\" />
   </ItemGroup>
 

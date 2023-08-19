@@ -39,12 +39,17 @@ internal sealed class CreateCaseHandler
             throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.CaseAlreadyExist, newCaseId);
         }
 
-        // notify SB about state change
-        await _mediator.Send(new Contracts.NotifyStarbuildRequest
+        // notify SB about state changed, nezajima nas, kdyz to nedopadne
+        try
         {
-            CaseId = newCaseId
-        }, cancellation);
-        
+            await _mediator.Send(new NotifyStarbuildRequest
+            {
+                CaseId = newCaseId,
+                SkipRiskBusinessCaseId = true
+            }, cancellation);
+        }
+        catch { }
+
         return new CreateCaseResponse()
         {
             CaseId = newCaseId

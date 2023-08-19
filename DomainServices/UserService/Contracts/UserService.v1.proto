@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "Messages/GetUserPermissions.proto";
 import "Messages/GetUser.proto";
 import "Messages/User.proto";
+import "Messages/GetUserRIPAttributes.proto";
 
 service UserService {
    rpc GetUser(GetUserRequest) returns (User) {
@@ -17,6 +18,12 @@ service UserService {
    rpc GetUserPermissions(GetUserPermissionsRequest) returns (GetUserPermissionsResponse) {
 	   option (google.api.http) = {
 			get: "/v1/user-permissions"
+		};
+   }
+
+   rpc GetUserRIPAttributes(GetUserRIPAttributesRequest) returns (UserRIPAttributes) {
+	   option (google.api.http) = {
+			get: "/v1/user-rip-attributes"
 		};
    }
 }

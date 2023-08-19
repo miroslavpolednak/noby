@@ -6,18 +6,15 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 internal class ServiceMap
 {
     public delegate Task ServiceCall(InputParameters input, AggregatedData data, CancellationToken cancellationToken);
-
-    private readonly IServiceProvider _serviceProvider;
+    
     private readonly Dictionary<DataSource, IServiceMapItem> _map = new();
 
-    public ServiceMap(IServiceProvider serviceProvider)
+    public ServiceMap()
     {
-        _serviceProvider = serviceProvider.CreateScope().ServiceProvider;
-
         ConfigureServices();
     }
 
-    public ServiceCall GetServiceCallFunc(DataSource dataSource) => _map[dataSource].GetServiceCall();
+    public ServiceCall GetServiceCallFunc(DataSource dataSource, IServiceProvider serviceProvider) => _map[dataSource].GetServiceCall(serviceProvider);
 
     private void ConfigureServices()
     {
@@ -45,7 +42,6 @@ internal class ServiceMap
     {
         var mapItem = new ServiceMapItem<TService>
         {
-            ServiceFactory = _serviceProvider.GetRequiredService<TService>,
             ServiceCallFactory = CommonServiceCall
         };
 
@@ -58,7 +54,6 @@ internal class ServiceMap
     {
         var mapItem = new ServiceMapItem<TService>
         {
-            ServiceFactory = _serviceProvider.GetRequiredService<TService>,
             ServiceCallFactory = serviceCallFactory
         };
 
@@ -67,15 +62,13 @@ internal class ServiceMap
 
     private interface IServiceMapItem
     {
-        ServiceCall GetServiceCall();
+        ServiceCall GetServiceCall(IServiceProvider serviceProvider);
     }
 
     private record ServiceMapItem<TService> : IServiceMapItem where TService : IServiceWrapper
     {
-        public required Func<TService> ServiceFactory { get; init; }
-
         public required Func<TService, ServiceCall> ServiceCallFactory { get; init; }
 
-        public ServiceCall GetServiceCall() => ServiceCallFactory(ServiceFactory());
+        public ServiceCall GetServiceCall(IServiceProvider serviceProvider) => ServiceCallFactory(serviceProvider.GetRequiredService<TService>());
     }
 }

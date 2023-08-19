@@ -1,8 +1,14 @@
-﻿using CIS.Foms.Enums;
+﻿using System.Globalization;
+using System.Net.Mime;
+using CIS.Core;
+using CIS.Foms.Enums;
+using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
+using _Domain = DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
 
@@ -15,15 +21,28 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
 
         if (documentOnSA is null)
         {
-            throw new CisNotFoundException(90001, "DocumentOnSA does not exist on provided sales arrangement.");
+            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "DocumentOnSA does not exist on provided sales arrangement.");
         }
-
-        return documentOnSA.Source switch
+        
+        var response = documentOnSA.Source switch
         {
-            Source.Noby => await HandleSourceNoby(documentOnSA, cancellationToken),
-            Source.Workflow => await HandleSourceWorkflow(documentOnSA, cancellationToken),
+            _Domain.Source.Noby => await HandleSourceNoby(documentOnSA, cancellationToken),
+            _Domain.Source.Workflow => await HandleSourceWorkflow(documentOnSA, cancellationToken),
             _ => throw new NobyValidationException("Unsupported kind of document source")
         };
+        
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby010,
+            "Dokument byl zobrazen v aplikaci",
+            products: new List<AuditLoggerHeaderItem>
+            {
+                // new("case", todo),
+                new("salesArrangement", documentOnSA.SalesArrangementId),
+                new("form", documentOnSA.FormId)
+            }
+        );
+
+        return response;
     }
 
     private async Task<GetDocumentOnSAPreviewResponse> HandleSourceNoby(
@@ -50,9 +69,14 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
         var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSA, documentOnSAData);
         var document = await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
 
+        var templates = await _codebookService.DocumentTypes(cancellationToken);
+        var fileName = templates.First(t => t.Id == (int)documentOnSA.DocumentTypeId!).FileName;
+        
         return new GetDocumentOnSAPreviewResponse
         {
-            FileData = document.Data.ToByteArray()
+            FileData = document.Data.ToByteArray(),
+            Filename = $"{fileName}_{documentOnSA.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
+            ContentType = MediaTypeNames.Application.Pdf
         };
     }
     
@@ -74,18 +98,30 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
 
         return new GetDocumentOnSAPreviewResponse
         {
-            FileData = previewResponse.BinaryData.ToArrayUnsafe()
+            FileData = previewResponse.BinaryData.ToArrayUnsafe(),
+            Filename = previewResponse.Filename,
+            ContentType = previewResponse.MimeType
         };
     }
     
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly IDateTime _dateTime;
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
+    private readonly IAuditLogger _auditLogger;
+
 
     public GetDocumentOnSAPreviewHandler(
+        ICodebookServiceClient codebookService,
+        IDateTime dateTime,
         IDocumentOnSAServiceClient documentOnSaService,
-        IDocumentGeneratorServiceClient documentGeneratorService)
+        IDocumentGeneratorServiceClient documentGeneratorService,
+        IAuditLogger auditLogger)
     {
+        _codebookService = codebookService;
+        _dateTime = dateTime;
         _documentOnSaService = documentOnSaService;
         _documentGeneratorService = documentGeneratorService;
+        _auditLogger = auditLogger;
     }
 }

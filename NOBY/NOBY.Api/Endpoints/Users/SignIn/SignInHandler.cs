@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Telemetry;
+﻿using CIS.Infrastructure.Audit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
@@ -10,9 +10,9 @@ internal sealed class SignInHandler
 {
     public async Task Handle(SignInRequest request, CancellationToken cancellationToken)
     {
-        _auditLogger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
+        _auditLogger.Log(AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
 
-        if (_configuration.Security!.AuthenticationScheme != NOBY.Infrastructure.Security.AuthenticationConstants.SimpleLoginAuthScheme)
+        if (_configuration.Security!.AuthenticationScheme != AuthenticationConstants.SimpleLoginAuthScheme)
         {
             throw new NobyValidationException($"SignIn endpoint call is not enabled for scheme {_configuration.Security!.AuthenticationScheme}");
         }
@@ -27,7 +27,7 @@ internal sealed class SignInHandler
         // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
         if (!permissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("APPLICATION_BasicAccess check failed");
         }
 
         var claims = new List<Claim>
@@ -44,8 +44,8 @@ internal sealed class SignInHandler
         await _httpContext.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
         _auditLogger.Log(
-            CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby002,
-            "Uživatel user se přihlásil do aplikace.",
+            AuditEventTypes.Noby002,
+            $"Uživatel {request.IdentityScheme}={request.IdentityId} se přihlásil do aplikace.",
             bodyAfter: new Dictionary<string, string>() { 
                 { "login", $"{request.IdentityScheme}={request.IdentityId}" },
                 { "type", AuthenticationConstants.SimpleLoginAuthScheme }

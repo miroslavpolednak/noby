@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+package DomainServices.HouseholdService;
+option csharp_namespace = "DomainServices.HouseholdService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message ValidateHouseholdIdRequest {
+    int32 HouseholdId = 1;
+    bool ThrowExceptionIfNotFound = 2;
+}
+
+message ValidateHouseholdIdResponse {
+    bool Exists = 1;
+	google.protobuf.Int32Value SalesArrangementId = 2;
+	google.protobuf.Int64Value CaseId = 3;
+}

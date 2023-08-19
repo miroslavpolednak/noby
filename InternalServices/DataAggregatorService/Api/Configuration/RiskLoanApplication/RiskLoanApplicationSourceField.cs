@@ -7,4 +7,6 @@ internal class RiskLoanApplicationSourceField
     public string FieldPath { get; init; } = null!;
 
     public string JsonPropertyName { get; init; } = null!;
+
+    public bool UseDefaultInsteadOfNull { get; init; }
 }

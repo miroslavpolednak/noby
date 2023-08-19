@@ -7,7 +7,7 @@ internal class RiskLoanApplicationJsonPrimitiveTypesCollection : RiskLoanApplica
 {
     public string DataFieldPath { get; set; } = string.Empty;
 
-    public override void Add(string[] propertyPath, string dataFieldPath)
+    public override void Add(string[] propertyPath, string dataFieldPath, bool useDefaultInsteadOfNull)
     {
         throw new NotImplementedException();
     }

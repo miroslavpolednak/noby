@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.CodebookService.Api.Endpoints;
 
 [Authorize]
-internal sealed class CodebookService
+internal partial class CodebookService
     : Contracts.v1.CodebookService.CodebookServiceBase
 {
     public override Task<GenericCodebookResponse> AcademicDegreesAfter(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
@@ -16,6 +16,9 @@ internal sealed class CodebookService
 
     public override Task<GenericCodebookResponse> AddressTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<CIS.Foms.Enums.AddressTypes>(true);
+
+    public override Task<GenericCodebookResponse> AcvAttachmentCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetGenericItems();
 
     public override Task<BankCodesResponse> BankCodes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<BankCodesResponse, BankCodesResponse.Types.BankCodeItem>();
@@ -83,8 +86,8 @@ internal sealed class CodebookService
         var developersAndProjectsQuery = _db.Sql["DeveloperSearchWithProjects"].Query.Replace("<terms>", termsValues);
         var developersQuery = _db.Sql[nameof(DeveloperSearch)].Query.Replace("<terms>", termsValues);
 
-        var developersAndProjects = await _db.Xxd.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersAndProjectsQuery);
-        var developers = await _db.Xxd.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersQuery);
+        var developersAndProjects = await _db.Xxdhf.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersAndProjectsQuery);
+        var developers = await _db.Xxdhf.ExecuteDapperRawSqlToListAsync<DeveloperSearchResponse.Types.DeveloperSearchItem>(developersQuery);
 
         return (new DeveloperSearchResponse()).AddItems(developersAndProjects.Concat(developers));
     }
@@ -186,24 +189,6 @@ internal sealed class CodebookService
             )
         );
 
-    public override async Task<GetAcvRealEstateTypeResponse> GetAcvRealEstateType(GetAcvRealEstateTypeRequest request, ServerCallContext context)
-    {
-        return (await _db.GetFirstOrDefault<GetAcvRealEstateTypeResponse>(new { request.RealEstateStateId, request.RealEstateSubtypeId, request.RealEstateTypeId }))
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AcvRealEstateTypeNotFound);
-    }
-
-    public override async Task<GetDeveloperResponse> GetDeveloper(GetDeveloperRequest request, ServerCallContext context)
-    {
-        return (await _db.GetListWithParam<GetDeveloperResponse>(new { request.DeveloperId }))
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperNotFound, request.DeveloperId);
-    }
-
-    public override async Task<GetDeveloperProjectResponse> GetDeveloperProject(GetDeveloperProjectRequest request, ServerCallContext context)
-    {
-        return (await _db.GetListWithParam<GetDeveloperProjectResponse>(new { request.DeveloperProjectId, request.DeveloperId }))
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeveloperProjectNotFound, request.DeveloperProjectId);
-    }
-
     public override Task<GetGeneralDocumentListResponse> GetGeneralDocumentList(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<GetGeneralDocumentListResponse, GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem>();
 
@@ -248,7 +233,7 @@ internal sealed class CodebookService
             var extensions = _db.GetDynamicList(nameof(Channels), 2);
             items.ForEach(item =>
             {
-                item.RdmCbChannelCode = extensions.FirstOrDefault(t => t.ChannelId == item.Id)?.RdmCbChannelCode;
+                item.RdmCbChannelCode = extensions.FirstOrDefault(t => t.ChannelId == item.Id)?.RdmCbChannelCode ?? "CH0001";
             });
             return (new ChannelsResponse()).AddItems(items);
         });
@@ -279,14 +264,14 @@ internal sealed class CodebookService
         => Helpers.GetItems(() => (new IdentitySchemesResponse()).AddItems(
             new List<IdentitySchemesResponse.Types.IdentitySchemeItem>
             {
-                new() { Id = 1, Code = "KBID", Name = "Identifikátor KB klienta v Customer managementu", MandantId = 2, Category = "Customer", ChannelId = null },
-                new() { Id = 2, Code = "MPSBID", Name = "PartnerId ve Starbuildu", MandantId = 1, Category = "Customer", ChannelId = null },
-                new() { Id = 3, Code = "MPEKID", Name = "KlientId v eKmenu", MandantId = 1, Category = "Customer", ChannelId = null },
-                new() { Id = 4, Code = "KBUID", MandantId = 2, Category = "User", ChannelId = 4 },
-                new() { Id = 5, Code = "M04ID", MandantId = 1, Category = "User", ChannelId = 1 },
-                new() { Id = 6, Code = "M17ID", MandantId = 1, Category = "User", ChannelId = 1 },
-                new() { Id = 7, Code = "BrokerId", MandantId = 2, Category = "User", ChannelId = 6 },
-                new() { Id = 8, Code = "MPAD", MandantId = 1, Category = "User", ChannelId = 1 }
+                new() { Id = 1, Code = "KBID", Name = "Identifikátor KB klienta v Customer managementu", MandantId = 2, Category = "Customer" },
+                new() { Id = 2, Code = "MPSBID", Name = "PartnerId ve Starbuildu", MandantId = 1, Category = "Customer" },
+                new() { Id = 3, Code = "MPEKID", Name = "KlientId v eKmenu", MandantId = 1, Category = "Customer" },
+                new() { Id = 4, Code = "KBUID", MandantId = 2, Category = "User" },
+                new() { Id = 5, Code = "M04ID", MandantId = 1, Category = "User" },
+                new() { Id = 6, Code = "M17ID", MandantId = 1, Category = "User" },
+                new() { Id = 7, Code = "BrokerId", MandantId = 2, Category = "User" },
+                new() { Id = 8, Code = "MPAD", MandantId = 1, Category = "User" }
             })
         );
 
@@ -337,7 +322,8 @@ internal sealed class CodebookService
     public override Task<LoanPurposesResponse> LoanPurposes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var items = _db.GetDynamicList(nameof(LoanPurposes));
+            var items = _db.GetDynamicList($"{nameof(LoanPurposes)}1");
+            var orderExtension = _db.GetDynamicList($"{nameof(LoanPurposes)}2");
             return (new LoanPurposesResponse()).AddItems(items.Select(t =>
             {
                 var item = new LoanPurposesResponse.Types.LoanPurposeItem
@@ -348,7 +334,8 @@ internal sealed class CodebookService
                     MandantId = t.MandantId,
                     Name = t.Name,
                     Order = t.Order,
-                    AcvId = t.AcvId
+                    AcvId = t.AcvId,
+                    AcvIdPriority = orderExtension.FirstOrDefault(o => o.AcvId == t.AcvId)?.AcvIdPriority
                 };
                 if (!string.IsNullOrEmpty(t.ProductTypeIds))
                 {
@@ -510,18 +497,7 @@ internal sealed class CodebookService
             );
         });
 
-    public override Task<GenericCodebookResponse> RealEstatePurchaseTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetGenericItems();
-
-    public override Task<GenericCodebookResponse> RealEstateStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetGenericItems();
-
-    public override Task<RealEstateSubtypesResponse> RealEstateSubtypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetItems<RealEstateSubtypesResponse, RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem>();
-
-    public override Task<GenericCodebookResponse> RealEstateTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetGenericItems();
-
+    
     public override Task<RelationshipCustomerProductTypesResponse> RelationshipCustomerProductTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
@@ -531,7 +507,6 @@ internal sealed class CodebookService
             items.ForEach(item =>
             {
                 var ext = extensions.FirstOrDefault(x => x.RelationshipCustomerProductTypeId == item.Id);
-                item.RdmCode = ext?.RdmCode;
                 item.MpDigiApiCode = ext?.MpDigiApiCode;
                 item.NameNoby = ext?.NameNoby;
             });
@@ -614,19 +589,6 @@ internal sealed class CodebookService
     public override Task<GenericCodebookResponse> SignatureTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<CIS.Foms.Enums.SignatureTypes>(true);
 
-    public override Task<SigningMethodsForNaturalPersonResponse> SigningMethodsForNaturalPerson(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() => (new SigningMethodsForNaturalPersonResponse()).AddItems(
-            new List<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>
-            {
-                new() { Code = "OFFERED", Order = 4, Name = "Delegovaná metoda podpisu", Description = "deprecated", IsValid = true, StarbuildEnumId = 2 },
-                new() { Code = "PHYSICAL", Order = 1, Name = "Ruční podpis", Description = "Fyzický/ruční podpis dokumentu.", IsValid = true, StarbuildEnumId = 1 },
-                new() { Code = "DELEGATE", Order = 1, Name = "Přímé bankovnictví", Description = "Přímé bankovnictví - Delegovaná metoda podpisu", IsValid = true, StarbuildEnumId = 2 },
-                new() { Code = "PAAT", Order = 1, Name = "KB klíč", IsValid = true, StarbuildEnumId = 2 },
-                new() { Code = "INT_CERT_FILE", Order = 2, Name = "Interní certifikát v souboru", IsValid = true, StarbuildEnumId = 2 },
-                new() { Code = "APOC", Order = 3, Name = "Automatizovaný Podpis Osobním Certifikátem", IsValid = true, StarbuildEnumId = 2 },
-            }
-        ));
-
     public override Task<SmsNotificationTypesResponse> SmsNotificationTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<SmsNotificationTypesResponse, SmsNotificationTypesResponse.Types.SmsNotificationTypeItem>();
 
@@ -645,78 +607,6 @@ internal sealed class CodebookService
     public override Task<TinNoFillReasonsByCountryResponse> TinNoFillReasonsByCountry(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<TinNoFillReasonsByCountryResponse, TinNoFillReasonsByCountryResponse.Types.TinNoFillReasonsByCountryItem>();
 
-    public override Task<WorkflowConsultationMatrixResponse> WorkflowConsultationMatrix(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() =>
-        {
-            var xxdResult = _db.GetList<(int Kod, string Text)>(nameof(WorkflowConsultationMatrixResponse), 1);
-            var matrix = _db.GetList<(int TaskSubtypeId, int ProcessTypeId, int ProcessPhaseId, bool IsConsultation)>(nameof(WorkflowConsultationMatrixResponse), 2);
-
-            return (new WorkflowConsultationMatrixResponse()).AddItems(
-                xxdResult.Select(t =>
-                {
-                    var item = new Contracts.v1.WorkflowConsultationMatrixResponse.Types.WorkflowConsultationMatrixItem
-                    {
-                        TaskSubtypeId = t.Kod,
-                        TaskSubtypeName = t.Text
-                    };
-                    item.IsValidFor.AddRange(matrix
-                        .Where(x => x.TaskSubtypeId == t.Kod)
-                        .Select(x => new Contracts.v1.WorkflowConsultationMatrixResponse.Types.WorkflowConsultationMatrixItem.Types.WorkflowConsultationMatrixItemValidity
-                        {
-                            ProcessPhaseId = x.ProcessPhaseId,
-                            ProcessTypeId = x.ProcessTypeId
-                        })
-                        .ToList());
-                    return item;
-                })
-            );
-        });
-
-    public override Task<GenericCodebookResponse> WorkflowPriceExceptionDecisionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetGenericItems();
-
-    public override Task<GenericCodebookResponse> WorkflowProcessType(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetGenericItems();
-
-    public override Task<GenericCodebookResponse> WorkflowTaskCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.WorkflowTaskCategory>();
-
-    public override Task<GenericCodebookResponse> WorkflowTaskConsultationTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetGenericItems();
-
-    public override Task<GenericCodebookResponse> WorkflowTaskSigningResponseTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetGenericItems();
-
-    public override Task<WorkflowTaskStatesResponse> WorkflowTaskStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() =>
-        {
-            var items = _db.GetList<WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem>(nameof(WorkflowTaskStates), 1);
-            var extensions = _db.GetDynamicList(nameof(WorkflowTaskStates), 2);
-
-            items.ForEach(item =>
-            {
-                byte? flag = extensions.FirstOrDefault(t => t.WorkflowTaskStateId == item.Id)?.Flag;
-                item.Flag = flag.HasValue ? (WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types.EWorkflowTaskStateFlag)flag : WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types.EWorkflowTaskStateFlag.None;
-            });
-            return (new WorkflowTaskStatesResponse()).AddItems(items);
-        });
-
-    public override Task<WorkflowTaskStatesNobyResponse> WorkflowTaskStatesNoby(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetItems<WorkflowTaskStatesNobyResponse, WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem>();
-
-    public override Task<WorkflowTaskTypesResponse> WorkflowTaskTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() =>
-        {
-            var items = _db.GetList<WorkflowTaskTypesResponse.Types.WorkflowTaskTypesItem>(nameof(WorkflowTaskTypes), 1);
-            var extensions = _db.GetDynamicList(nameof(WorkflowTaskTypes), 2);
-
-            items.ForEach(item =>
-            {
-                item.CategoryId = extensions.FirstOrDefault(t => t.WorkflowTaskTypeId == item.Id)?.CategoryId;
-            });
-            return (new WorkflowTaskTypesResponse()).AddItems(items);
-        });
-
     public override Task<GenericCodebookResponse> WorkSectors(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 
@@ -724,9 +614,11 @@ internal sealed class CodebookService
         => _db.GetGenericItems();
 
     private readonly Database.DatabaseAggregate _db;
+    private readonly ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient _acvEnumService;
 
-    public CodebookService(Database.DatabaseAggregate db)
+    public CodebookService(Database.DatabaseAggregate db, ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient acvEnumService)
     {
         _db = db;
+        _acvEnumService = acvEnumService;
     }
 }

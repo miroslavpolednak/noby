@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+message CancelCaseRequest {
+	int64 CaseId =  1;
+	bool IsUserInvoked = 2;
+}
+
+message CancelCaseResponse {
+	int32 CaseState = 1;
+}

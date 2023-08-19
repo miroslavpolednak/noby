@@ -10,6 +10,11 @@ public class ExternalServiceConfiguration<TClient>
     where TClient : class, IExternalServiceClient
 {
     /// <summary>
+    /// Pokud je true, pouzije pro HttpClient systemovou proxy
+    /// </summary>
+    public bool UseDefaultProxy { get; set; }
+
+    /// <summary>
     /// Zapne logovani request a response payloadu a hlavicek. Default: true
     /// </summary>
     /// <remarks>Je v konfiguraci, aby bylo možné měnit nastavení na úrovni CI/CD.</remarks>
@@ -26,10 +31,20 @@ public class ExternalServiceConfiguration<TClient>
     public bool LogResponsePayload { get; set; } = true;
 
     /// <summary>
-    /// Default request timeout in seconds
+    /// Default single request timeout in seconds
     /// </summary>
     /// <remarks>Default is set to 10 seconds</remarks>
     public int? RequestTimeout { get; set; } = 10;
+
+    /// <summary>
+    /// Pokud první request timeoutuje, zkus ještě X opakovat
+    /// </summary>
+    public int? RequestRetryCount { get; set; } = 3;
+
+    /// <summary>
+    /// Mezi jednotlivými opakováními počkej X sekund
+    /// </summary>
+    public int? RequestRetryTimeout { get; set; } = 10;
 
     /// <summary>
     /// Service URL when ServiceDiscovery is not being used. Use only when UseServiceDiscovery=false.

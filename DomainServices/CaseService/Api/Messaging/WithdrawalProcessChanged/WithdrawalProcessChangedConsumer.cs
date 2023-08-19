@@ -11,7 +11,8 @@ internal sealed class WithdrawalProcessChangedConsumer
     private readonly IMediator _mediator;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    
+    private readonly ILogger<WithdrawalProcessChangedConsumer> _logger;
+
     public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.WithdrawalProcessChanged> context)
     {
         var message = context.Message;
@@ -23,11 +24,19 @@ internal sealed class WithdrawalProcessChangedConsumer
             return;
         }
         
-        var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
+        if (!int.TryParse(context.Message.currentTask.id, out var currentTaskId))
+        {
+            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
+        }
+        
+        if (!long.TryParse(context.Message.@case.caseId.id, out var caseId))
+        {
+            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
+        }
+        
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId }, token);
         var taskDocumentIds = taskDetail.TaskDetail.TaskDocumentIds.ToHashSet();
         
-        var caseId = int.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
         var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, token);
         
         foreach (var salesArrangement in salesArrangementResponse.SalesArrangements)
@@ -55,10 +64,12 @@ internal sealed class WithdrawalProcessChangedConsumer
     public WithdrawalProcessChangedConsumer(
         IMediator mediator,
         ISalesArrangementServiceClient salesArrangementService,
-        IDocumentOnSAServiceClient documentOnSAService)
+        IDocumentOnSAServiceClient documentOnSAService,
+        ILogger<WithdrawalProcessChangedConsumer> logger)
     {
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
         _documentOnSAService = documentOnSAService;
+        _logger = logger;
     }
 }

@@ -25,23 +25,73 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
+        var deeds = await _realEstateValuationService.GetDeedOfOwnershipDocuments(request.RealEstateValuationId, cancellationToken);
 
-        if (valuationDetail.RealEstateValuationGeneralDetails.CaseId != request.CaseId)
+        if (valuationDetail.CaseId != request.CaseId)
             throw new CisAuthorizationException("The requested RealEstateValuation is not assigned to the requested Case");
 
-        var states = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
+        var state = (await _codebookService.WorkflowTaskStatesNoby(cancellationToken)).First(x => x.Id == valuationDetail.ValuationStateId);
+        var categories = await _codebookService.AcvAttachmentCategories(cancellationToken);
 
         return new GetRealEstateValuationDetailResponse
         {
-            RealEstateValuationListItem = valuationDetail.RealEstateValuationGeneralDetails.MapToApiResponse(states),
+            RealEstateValuationListItem = new RealEstateValuationListItem
+            {
+                RealEstateValuationId = valuationDetail.RealEstateValuationId,
+                OrderId = valuationDetail.OrderId,
+                CaseId = valuationDetail.CaseId,
+                RealEstateTypeId = valuationDetail.RealEstateTypeId,
+                RealEstateTypeIcon = __Contracts.Helpers.GetRealEstateTypeIcon(valuationDetail.RealEstateTypeId),
+                ValuationStateId = valuationDetail.ValuationStateId,
+                ValuationStateIndicator = (ValuationStateIndicators)state.Indicator,
+                ValuationStateName = state.Name,
+                IsLoanRealEstate = valuationDetail.IsLoanRealEstate,
+                RealEstateStateId = valuationDetail.RealEstateStateId,
+                ValuationTypeId = valuationDetail.ValuationTypeId,
+                Address = valuationDetail.Address,
+                ValuationSentDate = valuationDetail.ValuationSentDate,
+                ValuationResultCurrentPrice = valuationDetail.ValuationResultCurrentPrice,
+                ValuationResultFuturePrice = valuationDetail.ValuationResultFuturePrice,
+                IsRevaluationRequired = valuationDetail.IsRevaluationRequired,
+                DeveloperAllowed = valuationDetail.DeveloperAllowed,
+                DeveloperApplied = valuationDetail.DeveloperApplied
+            },
             RealEstateValuationDetail = new RealEstateValuationDetail
             {
                 CaseInProgress = caseInstance.State == (int)CaseStates.InProgress,
-                RealEstateVariant = GetRealEstateVariant(valuationDetail.RealEstateValuationGeneralDetails.RealEstateTypeId),
+                RealEstateVariant = GetRealEstateVariant(valuationDetail.RealEstateTypeId),
                 RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
                 LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = valuationDetail.LoanPurposeDetails.LoanPurposes.ToList() },
                 SpecificDetails = GetSpecificDetailsObject(valuationDetail)
-            }
+            },
+            Attachments = valuationDetail
+                .Attachments?
+                .OrderByDescending(t => t.CreatedOn)
+                .Select(t => new RealEstateValuationAttachment
+                {
+                    CreatedOn = t.CreatedOn,
+                    RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
+                    Title = t.Title,
+                    FileName = t.FileName,
+                    AcvAttachmentCategoryId = t.AcvAttachmentCategoryId,
+                    AcvAttachmentCategoryName = categories.FirstOrDefault(x => x.Id == t.AcvAttachmentCategoryId)?.Name ?? ""
+                })
+                .ToList(),
+            DeedOfOwnershipDocuments = deeds?.Select(t => new Dto.RealEstateValuation.DeedOfOwnershipDocumentWithId
+            {
+                DeedOfOwnershipDocumentId = t.DeedOfOwnershipDocumentId,
+                DeedOfOwnershipDocument = new()
+                {
+                    Address = t.Address,
+                    CremDeedOfOwnershipDocumentId = t.CremDeedOfOwnershipDocumentId,
+                    DeedOfOwnershipId = t.DeedOfOwnershipId,
+                    DeedOfOwnershipNumber = t.DeedOfOwnershipNumber,
+                    KatuzId = t.KatuzId,
+                    KatuzTitle = t.KatuzTitle,
+                    AddressPointId = t.AddressPointId,
+                    RealEstateIds = t.RealEstateIds?.Select(t => t).ToList()
+                }
+            }).ToList()
         };
     }
 
@@ -95,7 +145,11 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
     {
         return new ParcelDetails
         {
-            ParcelNumber = parcel.ParcelNumber
+            ParcelNumbers = parcel?.ParcelNumbers?.Select(t => new ParcelNumber
+            {
+                Number = t.Number,
+                Prefix = t.Prefix
+            }).ToList()
         };
     }
 }

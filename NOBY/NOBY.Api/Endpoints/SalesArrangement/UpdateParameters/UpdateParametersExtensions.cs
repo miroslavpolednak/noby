@@ -1,4 +1,5 @@
-﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
+using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
@@ -14,7 +15,7 @@ internal static class UpdateParametersExtensions
         };
     }
 
-    public static _SA.SalesArrangementParametersMortgage ToDomainService(this ParametersMortgage parameters)
+    public static _SA.SalesArrangementParametersMortgage ToDomainService(this ParametersMortgage parameters, _SA.SalesArrangementParametersMortgage originalParameter)
     {
         var model = new _SA.SalesArrangementParametersMortgage
         {
@@ -24,6 +25,8 @@ internal static class UpdateParametersExtensions
             ResidencyCurrencyCode = parameters.ResidencyCurrencyCode,
             Agent = parameters.Agent,
             AgentConsentWithElCom = parameters.AgentConsentWithElCom,
+            Comment = originalParameter.Comment,
+            FirstSignatureDate = originalParameter.FirstSignatureDate
         };
 
         if (parameters.LoanRealEstates is not null)
@@ -43,7 +46,7 @@ internal static class UpdateParametersExtensions
         {
             DrawingDate = parameters.DrawingDate,
             IsImmediateDrawing = parameters.IsImmediateDrawing,
-            Applicant = parameters.Applicant,
+            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             RepaymentAccount = parameters.RepaymentAccount is null ? null : new()
             {
                 BankCode = parameters.RepaymentAccount.BankCode,
@@ -87,7 +90,7 @@ internal static class UpdateParametersExtensions
     {
         var model = new _SA.SalesArrangementParametersGeneralChange()
         {
-            Applicant = parameters.Applicant,
+            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             Collateral = new()
             {
                 IsActive = parameters.Collateral.IsActive,
@@ -169,7 +172,7 @@ internal static class UpdateParametersExtensions
     {
         var model = new _SA.SalesArrangementParametersHUBN()
         {
-            Applicant = parameters.Applicant,
+            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             CollateralIdentification = new()
             {
                 RealEstateIdentification = parameters.CollateralIdentification?.RealEstateIdentification ?? ""
@@ -187,13 +190,13 @@ internal static class UpdateParametersExtensions
             ExpectedDateOfDrawing = new()
             {
                 IsActive = parameters.ExpectedDateOfDrawing?.IsActive ?? false,
-                AgreedExpectedDateOfDrawing = originalParameter.ExpectedDateOfDrawing?.AgreedExpectedDateOfDrawing,
+                AgreedExpectedDateOfDrawing = originalParameter?.ExpectedDateOfDrawing?.AgreedExpectedDateOfDrawing,
                 NewExpectedDateOfDrawing = parameters.ExpectedDateOfDrawing?.NewExpectedDateOfDrawing
             },
             DrawingDateTo = new()
             {
                 IsActive = parameters.DrawingDateTo?.IsActive ?? false,
-                AgreedDrawingDateTo = originalParameter.DrawingDateTo?.AgreedDrawingDateTo,
+                AgreedDrawingDateTo = originalParameter?.DrawingDateTo?.AgreedDrawingDateTo,
                 ExtensionDrawingDateToByMonths = parameters.DrawingDateTo?.ExtensionDrawingDateToByMonths
             },
             CommentToChangeRequest = new()

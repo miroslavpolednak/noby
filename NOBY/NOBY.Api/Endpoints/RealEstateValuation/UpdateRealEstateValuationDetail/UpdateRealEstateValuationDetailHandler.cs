@@ -21,13 +21,18 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
 
     public async Task Handle(UpdateRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
     {
-        await CheckIfRequestIsValid(request, cancellationToken);
+        var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
+
+        await CheckIfRequestIsValid(request, valuationDetail, cancellationToken);
+
+        if (valuationDetail.ValuationStateId is not 7)
+            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, 7, cancellationToken);
 
         var dsRequest = new __Contracts.UpdateRealEstateValuationDetailRequest
         {
             RealEstateValuationId = request.RealEstateValuationId,
             IsLoanRealEstate = request.IsLoanRealEstate,
-            RealEstateStateId = (int?)request.RealEstateStateId,
+            RealEstateStateId = request.RealEstateStateId,
             Address = request.Address,
             RealEstateSubtypeId = request.RealEstateSubtypeId,
             LoanPurposeDetails = request.LoanPurposeDetails is null ? null : new __Contracts.LoanPurposeDetailsObject
@@ -57,31 +62,40 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
                 };
                 break;
             case ParcelDetails parcelDetails:
-                dsRequest.ParcelDetails = new __Contracts.SpecificDetailParcelObject
+                dsRequest.ParcelDetails = new __Contracts.SpecificDetailParcelObject();
+                if (parcelDetails?.ParcelNumbers is not null)
                 {
-                    ParcelNumber = parcelDetails.ParcelNumber
-                };
+                    dsRequest.ParcelDetails.ParcelNumbers.AddRange(parcelDetails.ParcelNumbers.Select(t => new __Contracts.SpecificDetailParcelNumber
+                    {
+                        Number = t.Number,
+                        Prefix = t.Prefix
+                    }));
+                }
                 break;
         }
 
         await _realEstateValuationService.UpdateRealEstateValuationDetail(dsRequest, cancellationToken);
     }
 
-    private async Task CheckIfRequestIsValid(UpdateRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
+    private async Task CheckIfRequestIsValid(UpdateRealEstateValuationDetailRequest request, __Contracts.RealEstateValuationDetail valuationDetail, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
-        var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
-        if (valuationDetail.RealEstateValuationGeneralDetails.CaseId != request.CaseId)
+        if (valuationDetail.CaseId != request.CaseId)
             throw new CisAuthorizationException("The requested RealEstateValuation is not assigned to the requested Case");
 
-        if (valuationDetail.RealEstateValuationGeneralDetails.ValuationStateId != 7)
-            throw new CisAuthorizationException("The valuation is not in progress");
+        if (valuationDetail.ValuationStateId is not (6 or 7))
+            throw new CisAuthorizationException("The valuation has bad state");
 
         if (caseInstance.State == (int)CaseStates.InProgress && request.LoanPurposeDetails is not null)
             throw new CisAuthorizationException("The LoanPurposeDetails has to be null when the case is in progress");
 
-        var variant = RealEstateVariantHelper.GetRealEstateVariant(valuationDetail.RealEstateValuationGeneralDetails.RealEstateTypeId);
+        if (caseInstance.State == (int)CaseStates.InProgress && request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate)
+        {
+            throw new CisAuthorizationException("request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate");
+        }
+
+        var variant = RealEstateVariantHelper.GetRealEstateVariant(valuationDetail.RealEstateTypeId);
 
         ParseAndSetSpecificDetails(request, variant);
 
@@ -108,10 +122,15 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         if (request.SpecificDetails is not JsonElement jsonElement)
             return;
 
+        var jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         request.SpecificDetails = variant switch
         {
-            RealEstateVariants.HouseAndFlat or RealEstateVariants.OnlyFlat => jsonElement.Deserialize<HouseAndFlatDetails>(),
-            RealEstateVariants.Parcel => jsonElement.Deserialize<ParcelDetails>(),
+            RealEstateVariants.HouseAndFlat or RealEstateVariants.OnlyFlat => jsonElement.Deserialize<HouseAndFlatDetails>(jsonOptions),
+            RealEstateVariants.Parcel => jsonElement.Deserialize<ParcelDetails>(jsonOptions),
             _ => default
         };
     }
@@ -119,17 +138,16 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
     private static void CheckHouseAndFlatDetails(UpdateRealEstateValuationDetailRequest request)
     {
         if (request.SpecificDetails is not HouseAndFlatDetails houseAndFlatDetails)
-            throw new CisAuthorizationException("SpecificDetails does not contain the HouseAndFlatDetails object");
+            throw new NobyValidationException("SpecificDetails does not contain the HouseAndFlatDetails object");
 
         if (houseAndFlatDetails.FinishedHouseAndFlatDetails is null)
         {
-            if (request.RealEstateStateId is RealEstateStateIds.Finished)
-                throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
+            if (request.RealEstateStateId == (int)RealEstateStateId.Finished)
+                throw new NobyValidationException("FinishedHouseAndFlatDetails object is null and request RealEstateStateId is Finished");
         }
-        else
+        else if (request.RealEstateStateId != (int)RealEstateStateId.Finished)
         {
-            if (request.RealEstateStateId is not RealEstateStateIds.Finished)
-                throw new CisAuthorizationException("The RealEstate StateId has invalid value or the FinishedHouseAndFlatDetails object is invalid");
+            throw new NobyValidationException("FinishedHouseAndFlatDetails is not null and RealEstateStateId is not Finished");
         }
     }
 
@@ -138,16 +156,16 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         CheckHouseAndFlatDetails(request);
 
         if ((request.SpecificDetails as HouseAndFlatDetails)?.FlatOnlyDetails is null)
-            throw new CisAuthorizationException("The FlatOnlyDetails is required");
+            throw new NobyValidationException("The FlatOnlyDetails is required");
     }
 
     private static void CheckParcelDetails(UpdateRealEstateValuationDetailRequest request)
     {
         if (request.SpecificDetails is not ParcelDetails)
-            throw new CisAuthorizationException("SpecificDetails does not contain the parcel object");
+            throw new NobyValidationException("SpecificDetails does not contain the parcel object");
 
         if (request.RealEstateStateId.HasValue)
-            throw new CisAuthorizationException("RealEstateStateId has to be null for the parcel variant");
+            throw new NobyValidationException("RealEstateStateId has to be null for the parcel variant");
     }
 
     private static void CheckOtherDetails(UpdateRealEstateValuationDetailRequest request)
@@ -155,6 +173,6 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         if (request.RealEstateStateId.HasValue)
             return;
 
-        throw new CisAuthorizationException("RealEstateStateId is required");
+        throw new NobyValidationException("RealEstateStateId is required");
     }
 }

@@ -1,0 +1,308 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Enum Service",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "/v1/enums"
+    }
+  ],
+  "paths": {
+    "/about": {
+      "get": {
+        "tags": [
+          "About"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": null,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": null,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionResultModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/about/anonymous": {
+      "get": {
+        "tags": [
+          "About"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": null,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": null,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionResultModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/categories": {
+      "get": {
+        "tags": [
+          "Data"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumItemDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumItemDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumItemDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": null,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": null,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionResultModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data/category/{category}": {
+      "get": {
+        "tags": [
+          "Data"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "all",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumItemDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumItemDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EnumItemDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": null,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": null,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionResultModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EnumItemDTO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "arch": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExceptionResultModel": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "originalCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ParameterValidationErrorModel": {
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "rootObjectName": {
+            "type": "string",
+            "nullable": true
+          },
+          "invalidValue": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ValidationErrorModel": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "originalErrorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "validationDetail": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParameterValidationErrorModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

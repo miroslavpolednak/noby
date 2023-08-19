@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using CIS.Foms.Enums;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 
@@ -17,7 +18,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5A275F67-67AC-4851-8FE9-51F2B685B990"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations")]
-    [AuthorizeCaseOwner]
+    [AuthorizeCaseOwner(true)]
     [Consumes("application/json")]
     [Produces("text/plain")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
@@ -42,6 +43,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
     [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -83,7 +85,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0DCD023D-ACF8-4744-B198-FE4FC2A84223"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{caseId:long}/real-estate-valuations")]
-    [AuthorizeCaseOwner]
+    [AuthorizeCaseOwner(true)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(typeof(List<Dto.RealEstateValuation.RealEstateValuationListItem>), StatusCodes.Status200OK)]
@@ -134,6 +136,195 @@ public sealed class RealEstateValuationController : ControllerBase
         [FromRoute] long caseId, 
         [FromRoute] int realEstateValuationId, 
         [Required] [FromBody] PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest request, 
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Smazání již připojeného dokumentu LV
+    /// </summary>
+    /// <remarks>
+    /// Smazání/odpojení již připojeného dokumentu listu vlastnictví (LV) od existujícího Ocenění nemovitosti.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=33180E91-2CB3-4d2f-B6AD-5841EC8A836F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents/{deedOfOwnershipDocumentId:int}")]
+    [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteDeedOfOwnershipDocument(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromRoute] int deedOfOwnershipDocumentId,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new DeleteDeedOfOwnershipDocument.DeleteDeedOfOwnershipDocumentRequest(caseId, realEstateValuationId, deedOfOwnershipDocumentId), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Spojení souboru přílohy s oceněním nemovitosti
+    /// </summary>
+    /// <remarks>
+    /// Propojí uploadnutý soubor s oceněním a doplní k souboru popisek.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B44C60EF-8521-4eec-9CE5-292C279DFE51"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="attachments">Seznam souborů k propojení</param>
+    /// <response code="200">Kolekce ID uploadovaných souborů vs. nových ID příloh</response>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments")]
+    [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano, RealEstateValuationStates.DoplneniDokumentu)]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(typeof(List<SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<List<SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsResponseItem>> SaveRealEstateValuationAttachments(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] List<SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequestItem> attachments,
+        CancellationToken cancellationToken)
+        => await _mediator.Send(new SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest
+        {
+            CaseId = caseId,
+            RealEstateValuationId = realEstateValuationId,
+            Attachments = attachments,
+        }, cancellationToken);
+
+    /// <summary>
+    /// Smazání přílohy ocenění nemovitosti
+    /// </summary>
+    /// <remarks>
+    /// Smazání již nahrané přílohy ocenění z databáze NOBY a ACV.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4EFAC9BD-B78E-4219-A801-39E983D3EDAF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments/{realEstateValuationAttachmentId:int}")]
+    [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano, RealEstateValuationStates.DoplneniDokumentu)]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteRealEstateValuationAttachment(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromRoute] int realEstateValuationAttachmentId,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new DeleteRealEstateValuationAttachment.DeleteRealEstateValuationAttachmentRequest(caseId, realEstateValuationId, realEstateValuationAttachmentId), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Uložení údajů identifikace nemovitosti k danému Ocenění nemovitosti
+    /// </summary>
+    /// <remarks>
+    /// Uložení údajů identifikace nemovitosti k danému Ocenění nemovitosti.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=536CD827-3140-4a41-8AC2-AF6BB6700539"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <response code="200">DeedOfOwnershipDocumentId: Noby ID daného záznamu. Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents")]
+    [AuthorizeCaseOwner]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<int> AddDeedOfOwnershipDocument(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] [Required] AddDeedOfOwnershipDocument.AddDeedOfOwnershipDocumentRequest request,
+        CancellationToken cancellationToken)
+        => await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+
+    /// <summary>
+    /// Získání typu Ocenění
+    /// </summary>
+    /// <remarks>
+    /// Získání typu Ocenění provoláním systému ACV.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0FE0440C-1614-47b0-8136-42BF508CE369"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/valuation-types")]
+    [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<List<int>> GetRealEstateValuationTypes(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        CancellationToken cancellationToken)
+        => await _mediator.Send(new GetRealEstateValuationTypes.GetRealEstateValuationTypesRequest(caseId, realEstateValuationId), cancellationToken);
+
+    /// <summary>
+    /// Aktualizace připojeného dokumentu LV
+    /// </summary>
+    /// <remarks>
+    /// Operace edituje RealEstateIds na již připojeném dokumentu LV
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=22C309A5-60C5-4ca2-96DE-129CA8178977"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents/{deedOfOwnershipDocumentId:int}")]
+    [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateDeedOfOwnershipDocument(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromRoute] int deedOfOwnershipDocumentId,
+        [FromBody] UpdateDeedOfOwnershipDocument.UpdateDeedOfOwnershipDocumentRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId, deedOfOwnershipDocumentId), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Předobjednávka online ocenění
+    /// </summary>
+    /// <remarks>
+    /// Předobjednávka online ocenění
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CA6B233C-6BE0-45ff-B5F6-F47F9A3ABA62"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/preorder-online")]
+    [AuthorizeCaseOwner]
+    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> PreorderOnlineValuation(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] [Required] PreorderOnlineValuation.PreorderOnlineValuationRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Objednání ocenění
+    /// </summary>
+    /// <remarks>
+    /// Objedná ocenění nemovitosti daného typu.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=68C49245-60DD-48a4-9681-B328C52D86F4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/order")]
+    [AuthorizeCaseOwner]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> OrderRealEstateValuation(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] [Required] OrderRealEstateValuation.OrderRealEstateValuationRequest request,
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);

@@ -10,45 +10,44 @@ internal sealed class CalculateRequestValidator
     {
         RuleFor(t => t.ResourceProcessId)
             .NotEmpty()
-            .WithErrorCode("ResourceProcessId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.Product)
             .Cascade(CascadeMode.Stop)
             .NotNull()
-            .WithErrorCode("Product")
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError)
             .ChildRules(t =>
             {
                 t.RuleFor(t => t!.ProductTypeId)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.ProductTypeId");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 t.RuleFor(t => t!.LoanInterestRate)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.LoanInterestRate");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 t.RuleFor(t => t!.LoanAmount)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.LoanAmount");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 t.RuleFor(t => t!.LoanPaymentAmount)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.LoanPaymentAmount");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 t.RuleFor(t => t!.FixedRatePeriod)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.FixedRatePeriod");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                 t.RuleFor(t => t!.LoanDuration)
                     .GreaterThan(0)
-                    .WithErrorCode("Product.LoanDuration");
-            })
-            .WithErrorCode("Product");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
+            });
 
         RuleFor(t => t.Households)
             .NotEmpty()
-            .WithErrorCode("Households");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleForEach(t => t.Households)
             .ChildRules(t =>
             {
                 t.RuleFor(t => t!.Customers)
                     .NotEmpty()
-                    .WithErrorCode("Households.Customers");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
                 t.RuleForEach(t => t!.Customers)
                     .ChildRules(x =>
@@ -61,18 +60,15 @@ internal sealed class CalculateRequestValidator
                                     y.RuleFor(t => t!.IncomeTypeId)
                                         .GreaterThan(0);
                                 })
-                                .WithErrorCode("Households.Customers.Incomes");
+                                .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
                         });
                     })
-                    .WithErrorCode("Households.Customers");
+                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
             })
-            .WithErrorCode("Households");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
-        When(t => t.UserIdentity is not null, () =>
-        {
-            RuleFor(t => t.UserIdentity)
-                .SetValidator(new IdentityValidator())
-                .WithErrorCode("UserIdentity");
-        });
+        RuleFor(t => t.UserIdentity)
+            .SetValidator(new IdentityValidator())
+            .When(t => t.UserIdentity is not null);
     }
 }

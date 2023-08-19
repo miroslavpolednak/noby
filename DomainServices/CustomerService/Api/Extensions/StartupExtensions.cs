@@ -26,6 +26,7 @@ internal static class StartupExtensions
         builder.AddExternalService<ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient>();
         builder.AddExternalService<ExternalServices.CustomerProfile.V1.ICustomerProfileClient>();
         builder.AddExternalService<ExternalServices.Kyc.V1.IKycClient>();
+        builder.AddExternalService<ExternalServices.Address.V2.ICustomerAddressServiceClient>();
 
         // CodebookService
         builder.Services

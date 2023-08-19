@@ -12,15 +12,15 @@ public enum SignatureTypes : byte
     Unknown = 0,
     
     [EnumMember]
-    [Display(Name = "Fyzicky")]
+    [Display(Name = "fyzicky")]
     Paper = 1,
         
-    [EnumMember]
+    /*[EnumMember]
     [Display(Name = "Biometricky")]
-    Biometric = 2,
+    Biometric = 2,*/
         
     [EnumMember]
     [CisDefaultValue]
-    [Display(Name = "Elektronicky")]
+    [Display(Name = "elektronicky")]
     Electronic = 3
 }

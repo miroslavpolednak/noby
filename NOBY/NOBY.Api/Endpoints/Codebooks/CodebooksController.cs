@@ -19,6 +19,7 @@ public class CodebooksController : ControllerBase
     ///
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421388420">AcademicDegreesAfter</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=421388414">AcademicDegreesBefore</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/AcvAttachmentCategory">AcvAttachmentCategories</a>
     /// - ActionCodesSavings - obsolete
     /// - ActionCodesSavingsLoan - obsolete
     /// - <a href="https://wiki.kb.cz/confluence/display/HT/CaseState">CaseStates</a>
@@ -72,6 +73,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/ProfessionCategory+%28CB_Prof_Cat1%29+-+MOCK">ProfessionCategories</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=476967580">ProfessionTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413648025">PropertySettlements</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=664578092">RealEstateValuationLocalSurveyFunctions</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateState">RealEstateStates</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateSubtype">RealEstateSubtypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632253">RealEstateTypes</a>

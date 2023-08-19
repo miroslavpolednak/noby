@@ -19,14 +19,16 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
+	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj" />
 	  <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 	  <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
 	  <ProjectReference Include="..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
+	  <ProjectReference Include="..\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
 	</ItemGroup>
 </Project>

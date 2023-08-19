@@ -1,6 +1,5 @@
 ﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetCaseCounts;
 
@@ -11,15 +10,19 @@ internal sealed class GetCaseCountsHandler
     {
         // vytahnout data z DB
         var model = (await _dbContext.Cases
-            .Where(t => t.OwnerUserId == request.CaseOwnerUserId)
+            .Where(t => t.OwnerUserId == request.CaseOwnerUserId && !Helpers.DisallowedStates.Contains(t.State))
             .GroupBy(t => t.State)
             .AsNoTracking()
             .Select(t => new { State = t.Key, Count = t.Count() })
             .ToListAsync(cancellation))
-            .Select(t => (t.State, t.Count)).ToList();
+            .Select(t => (t.State, t.Count))
+            .ToList();
 
         var result = new GetCaseCountsResponse();
-        result.CaseCounts.AddRange(model.Select(t => new GetCaseCountsResponse.Types.CaseCountsItem { Count = t.Count, State = t.State }).ToList());
+        result.CaseCounts.AddRange(model
+            .Select(t => new GetCaseCountsResponse.Types.CaseCountsItem { Count = t.Count, State = t.State })
+            .ToList()
+        );
 
         return result;
     }

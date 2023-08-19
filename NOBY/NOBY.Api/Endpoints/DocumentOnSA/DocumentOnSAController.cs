@@ -45,7 +45,7 @@ public class DocumentOnSAController : ControllerBase
     /// Začít podepisování dokumentu
     /// </summary>
     /// <remarks>
-    /// Spustí podepisovací proces pro zvolený typ dokumentu.<br /><br />
+    /// Provede checkform pro vybrané žádosti a spustí podepisovací proces pro zvolený typ dokumentu.<br /><br />
     /// <i>DS:DocumentOnSAService/startSigning</i>
     /// </remarks>
     /// <param name="salesArrangementId"> ID Sales Arrangement </param>
@@ -121,7 +121,7 @@ public class DocumentOnSAController : ControllerBase
     /// Manuální podpis DocumentOnSA
     /// </summary>
     /// <remarks>
-    /// Provede Checkform, označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM (pokud možno)<br /><br />
+    /// Označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
@@ -189,12 +189,12 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="request"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/search")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
-    [ProducesResponseType(typeof(SearchResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SearchDocumentsOnSaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SearchDocumentsOnSa(
              [FromRoute] int salesArrangementId,
-             [FromBody] SearchRequest request)
+             [FromBody] SearchDocumentsOnSaRequest request)
     {
         var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
 

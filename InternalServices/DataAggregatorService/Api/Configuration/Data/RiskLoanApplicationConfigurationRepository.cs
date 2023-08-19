@@ -20,7 +20,8 @@ internal class RiskLoanApplicationConfigurationRepository
                                           {
                                               DataSource = (DataSource)r.DataField.DataServiceId,
                                               FieldPath = r.DataField.FieldPath,
-                                              JsonPropertyName = r.JsonPropertyName
+                                              JsonPropertyName = r.JsonPropertyName,
+                                              UseDefaultInsteadOfNull = r.UseDefaultInsteadOfNull
                                           });
 
         var specialSourceFieldsQuery = _dbContext.RiskLoanApplicationSpecialDataFields
@@ -29,7 +30,8 @@ internal class RiskLoanApplicationConfigurationRepository
                                                  {
                                                      DataSource = (DataSource)r.DataServiceId,
                                                      FieldPath = r.FieldPath,
-                                                     JsonPropertyName = r.JsonPropertyName
+                                                     JsonPropertyName = r.JsonPropertyName,
+                                                     UseDefaultInsteadOfNull = r.UseDefaultInsteadOfNull
                                                  });
 
         return await sourceFieldsQuery.Concat(specialSourceFieldsQuery).ToListAsync(cancellationToken);

@@ -13,6 +13,12 @@ internal sealed class UpdateParametersHandler
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
+        // validace stavu
+        if (_disallowedStates.Contains(saInstance.State))
+        {
+            throw new NobyValidationException(90028);
+        }
+
         var updateRequest = new _SA.UpdateSalesArrangementParametersRequest
         {
             SalesArrangementId = request.SalesArrangementId
@@ -22,9 +28,9 @@ internal sealed class UpdateParametersHandler
         {
             string dataString = ((System.Text.Json.JsonElement)request.Parameters).GetRawText();
 
-            switch ((CIS.Foms.Types.Enums.SalesArrangementTypes)saInstance.SalesArrangementTypeId)
+            switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)
             {
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.Mortgage:
+                case SalesArrangementTypes.Mortgage:
                     var o1 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersMortgage>(dataString, _jsonSerializerOptions);
                     if (o1 is not null)
                     {
@@ -32,47 +38,47 @@ internal sealed class UpdateParametersHandler
                         {
                             throw new NobyValidationException(90019);
                         }
-                        updateRequest.Mortgage = o1.ToDomainService();
+                        updateRequest.Mortgage = o1.ToDomainService(saInstance.Mortgage);
                     }
                     break;
 
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.Drawing:
+                case SalesArrangementTypes.Drawing:
                     var o2 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersDrawing>(dataString, _jsonSerializerOptions);
                     if (o2 is not null)
                         updateRequest.Drawing = o2.ToDomainService();
                     break;
 
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.GeneralChange:
+                case SalesArrangementTypes.GeneralChange:
                     var o3 = System.Text.Json.JsonSerializer.Deserialize<Dto.GeneralChangeUpdate>(dataString, _jsonSerializerOptions);
                     if (o3 is not null)
                         updateRequest.GeneralChange = o3.ToDomainService(saInstance.GeneralChange);
                     break;
 
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.HUBN:
+                case SalesArrangementTypes.HUBN:
                     var o4 = System.Text.Json.JsonSerializer.Deserialize<Dto.HUBNUpdate>(dataString, _jsonSerializerOptions);
                     if (o4 is not null)
                         updateRequest.HUBN = o4.ToDomainService(saInstance.HUBN);
                     break;
 
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.CustomerChange:
+                case SalesArrangementTypes.CustomerChange:
                     var o5 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChangeUpdate>(dataString, _jsonSerializerOptions);
                     if (o5 is not null)
                         updateRequest.CustomerChange = o5.ToDomainService(saInstance.CustomerChange);
                     break;
 
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.CustomerChange3602A:
+                case SalesArrangementTypes.CustomerChange3602A:
                     var o6 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
                     if (o6 is not null)
                         updateRequest.CustomerChange3602A = o6.ToDomainService(saInstance.CustomerChange3602A);
                     break;
 
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.CustomerChange3602B:
+                case SalesArrangementTypes.CustomerChange3602B:
                     var o7 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
                     if (o7 is not null)
                         updateRequest.CustomerChange3602B = o7.ToDomainService(saInstance.CustomerChange3602B);
                     break;
 
-                case CIS.Foms.Types.Enums.SalesArrangementTypes.CustomerChange3602C:
+                case SalesArrangementTypes.CustomerChange3602C:
                     var o8 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
                     if (o8 is not null)
                         updateRequest.CustomerChange3602C = o8.ToDomainService(saInstance.CustomerChange3602C);
@@ -129,6 +135,13 @@ internal sealed class UpdateParametersHandler
     {
         NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
         PropertyNameCaseInsensitive = true
+    };
+
+    private static int[] _disallowedStates = new[]
+    {
+        (int)SalesArrangementStates.Cancelled,
+        (int)SalesArrangementStates.Disbursed,
+        (int)SalesArrangementStates.InApproval
     };
 
     private readonly ICodebookServiceClient _codebookService;

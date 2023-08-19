@@ -10,21 +10,21 @@ internal sealed class ValidateCaseIdHandler
     {
         var instance = await _dbContext.Cases
             .Where(t => t.CaseId ==  request.CaseId)
-            .Select(t => new { t.OwnerUserId })
+            .Select(t => new { t.State, t.OwnerUserId })
             .FirstOrDefaultAsync(cancellationToken);
 
         if (request.ThrowExceptionIfNotFound && instance is null)
         {
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
         }
-        else
+        Helpers.ThrowIfCaseIsCancelled(instance?.State);
+        
+        return new ValidateCaseIdResponse
         {
-            return new ValidateCaseIdResponse
-            {
-                Exists = instance is not null,
-                OwnerUserId = instance?.OwnerUserId
-            };
-        }
+            Exists = instance is not null,
+            OwnerUserId = instance?.OwnerUserId,
+            State = instance?.State
+        };
     }
 
     private readonly CaseServiceDbContext _dbContext;

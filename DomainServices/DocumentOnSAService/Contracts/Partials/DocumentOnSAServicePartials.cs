@@ -12,7 +12,7 @@ public partial class GetDocumentsToSignListRequest : IRequest<GetDocumentsToSign
 
 public partial class GetDocumentOnSADataRequest : IRequest<GetDocumentOnSADataResponse>, CIS.Core.Validation.IValidatableRequest { }
 
-public partial class SignDocumentManuallyRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
+public partial class SignDocumentRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
 
 public partial class GetDocumentsOnSAListRequest :IRequest<GetDocumentsOnSAListResponse>, CIS.Core.Validation.IValidatableRequest { }
 

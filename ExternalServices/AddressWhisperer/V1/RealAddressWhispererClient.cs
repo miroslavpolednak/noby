@@ -47,12 +47,14 @@ internal sealed class RealAddressWhispererClient
                 XElement? baseNode;
 
                 if (country == "CZ" || country == "SK")
-                    baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:SlovakRuianAddressPointRepresentation");
+                    baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:RuianAddressPointRepresentation");
                 else
                     baseNode = nodes!.FirstOrDefault(t => t.Attribute(_ns3 + "type")?.Value == "nsDto:ComponentAddressPointRepresentation");
 
                 if (baseNode is not null)
                 {
+                    _ = int.TryParse(baseNode.Element(_ns2 + "cadastralAreaId")?.Value, out var katuzId);
+
                     return new Dto.AddressDetail
                     {
                         City = baseNode.Element(_ns2 + "city")?.Value,
@@ -65,7 +67,9 @@ internal sealed class RealAddressWhispererClient
                         EvidenceNumber = baseNode.Element(_ns2 + "evidenceNumber")?.Value,
                         DeliveryDetails = baseNode.Element(_ns2 + "deliveryDetails")?.Value,
                         PragueDistrict = baseNode.Element(_ns2 + "pragueDistrict")?.Value,
-                        AddressPointId = baseNode.Element(_ns2 + "id")?.Value
+                        AddressPointId = baseNode.Element(_ns2 + "id")?.Value,
+                        KatuzId = katuzId == 0 ? null : katuzId,
+                        KatuzTitle = baseNode.Element(_ns2 + "cadastralArea")?.Value
                     };
                 }
                 else

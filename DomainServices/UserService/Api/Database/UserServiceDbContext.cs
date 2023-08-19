@@ -12,4 +12,5 @@ internal sealed class UserServiceDbContext
     public DbSet<Entities.DbUserIdentity> UserIdentities { get; set; }
     public DbSet<Entities.DbUserAttribute> DbUserAttributes { get; set; }
     public DbSet<Entities.DbUserPermission> DbUserPermissions { get; set; }
+    public DbSet<Entities.DbUserRIPAttribute> DbUserRIPAttributes { get; set;}
 }

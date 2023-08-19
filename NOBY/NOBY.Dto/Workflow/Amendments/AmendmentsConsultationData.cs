@@ -9,5 +9,11 @@ public class AmendmentsConsultationData
     /// Konzultace: Číslo objednávky ocenění (Atribut je relevantní jen pro konzultaci Dotaz k ocenění a pro konzultaci Vyhotovení ZOV.)
     /// </summary>
     /// <example>123556</example>
-    public int? OrderId { get; set; }
+    public long? OrderId { get; set; }
+
+    /// <summary>
+    /// ID typu konzultace
+    /// </summary>
+    /// <example>1</example>
+    public int TaskSubtypeId { get; set; }
 }

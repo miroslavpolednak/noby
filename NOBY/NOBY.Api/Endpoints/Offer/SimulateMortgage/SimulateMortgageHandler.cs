@@ -13,13 +13,13 @@ internal sealed class SimulateMortgageHandler
         if ((request.Developer?.DeveloperId != null && request.Developer?.ProjectId != null && !string.IsNullOrEmpty(request.Developer?.Description))
             || (request.Developer?.DeveloperId != null && request.Developer?.ProjectId == null && string.IsNullOrEmpty(request.Developer?.Description)))
         {
-            throw new CisValidationException(90001, "Invalid developer parameters combination");
+            throw new CisValidationException("Invalid developer parameters combination");
         }
 
         // validate permissions
         if (request.IsEmployeeBonusRequested.GetValueOrDefault() && !_userAccessor.HasPermission(UserPermissions.LOANMODELING_EmployeeMortgageAccess))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("IsEmployeeBonusRequested check failed");
         }
 
         // datum garance

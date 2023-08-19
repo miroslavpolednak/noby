@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Infrastructure.Swagger;
 
-public class ApplySwaggerNobyAttributes 
+public sealed class ApplySwaggerNobyAttributes 
     : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)

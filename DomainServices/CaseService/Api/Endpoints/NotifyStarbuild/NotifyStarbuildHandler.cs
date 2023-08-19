@@ -25,7 +25,7 @@ internal sealed class NotifyStarbuildHandler
 
         // get rbcid
         // zkus se kouknout, jestli to rbcid nahodou fakt neexistuje na SA - protoze kdyby jo, tak ho musime poslat do SB
-        if (string.IsNullOrEmpty(request.RiskBusinessCaseId))
+        if (string.IsNullOrEmpty(request.RiskBusinessCaseId) && !request.SkipRiskBusinessCaseId)
         {
             var productSaId = await _salesArrangementService.GetProductSalesArrangement(caseInstance.CaseId, cancellationToken);
             var productSaInstance = await _salesArrangementService.GetSalesArrangement(productSaId.SalesArrangementId, cancellationToken);

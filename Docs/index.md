@@ -31,9 +31,11 @@
 
 [Health checks](./topics/healthcheck.md)
 
-[Implementace SOAP klienta](./topics/soap-client.md)
-
 [Unit a integrační testy](./topics/test.md)
+
+[Práce s dočasnými soubory na FE API](./topics/tempfilemanager.md)
+
+[Auditní logování](./topics/audit.md)
 
 ## Struktura solution - projekty a adresáře
 

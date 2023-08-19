@@ -1,4 +1,6 @@
-﻿using CIS.Infrastructure.Telemetry;
+﻿using CIS.Core.Security;
+using CIS.Infrastructure.Audit;
+using CIS.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -33,9 +35,13 @@ public static class MapAuthenticationEndpoints
 
             // Odhlášení přihlášeného uživatele
             t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint,
-                ([FromServices] IHttpContextAccessor context, [FromServices] AppConfiguration configuration, [FromQuery] string? redirect) =>
+                ([FromServices] IHttpContextAccessor context,
+                [FromServices] AppConfiguration configuration,
+                [FromServices] IAuditLogger logger,
+                [FromQuery] string? redirect) =>
                 {
                     string redirectUrl = Uri.TryCreate(redirect, UriKind.Absolute, out var uri) ? uri.ToString() : "/";
+                    string userLogin = context.HttpContext!.User.Claims.First(t => t.Type == SecurityConstants.ClaimTypeIdent).Value;
 
                     context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -43,6 +49,12 @@ public static class MapAuthenticationEndpoints
                     {
                         context.HttpContext!.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
                     }
+
+                    logger.Log(AuditEventTypes.Noby003, $"Uživatel {userLogin} se odhlásil z aplikace", bodyBefore: new Dictionary<string, string>
+                    {
+                        { "Login", userLogin },
+                        { "Method", "manually" }
+                    });
 
                     // redirect to root?
                     context.HttpContext!.Response.Redirect(redirectUrl);

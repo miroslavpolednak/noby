@@ -9,4 +9,6 @@ internal class RiskLoanApplicationSpecialDataField
     public string FieldPath { get; set; } = null!;
 
     public DataService DataService { get; set; } = null!;
+
+    public bool UseDefaultInsteadOfNull { get; set; }
 }

@@ -57,12 +57,7 @@ internal sealed class SendToCmpHandler
         var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
 
         // check flow switches
-        var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
-        if (saCategory.SalesArrangementCategory == 1
-            && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed && t.Value))
-        {
-            throw new NobyValidationException(90016);
-        }
+        await validateFlowSwitches(saInstance.SalesArrangementId, saCategory.SalesArrangementCategory, cancellationToken);
 
         await ValidateSalesArrangement(saInstance.SalesArrangementId, request.IgnoreWarnings, cancellationToken);
 
@@ -82,7 +77,7 @@ internal sealed class SendToCmpHandler
             await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
 
             // odeslat do SB
-            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
 
             // update case state
             await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
@@ -92,7 +87,7 @@ internal sealed class SendToCmpHandler
             await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
 
             // odeslat do SB
-            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, cancellationToken);
+            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
         }
     }
 
@@ -115,7 +110,7 @@ internal sealed class SendToCmpHandler
         }
 
         // HFICH-5191
-        if (isSet(FlowSwitches.IsOfferWithDiscount) && isSet(FlowSwitches.IsWflTaskForIPApproved, false))
+        if (salesArrangementCategory == 1 && isSet(FlowSwitches.IsOfferWithDiscount) && isSet(FlowSwitches.IsWflTaskForIPApproved, false))
         {
             throw new NobyValidationException(90018);
         }

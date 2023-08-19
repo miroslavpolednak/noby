@@ -75,7 +75,7 @@ public interface ISalesArrangementServiceClient
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID {} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement unavailable</exception>
-    Task SendToCmp(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken));
+    Task SendToCmp(int salesArrangementId, bool isCancelled, CancellationToken cancellationToken = default(CancellationToken));
 
     /// <summary>
     /// Validace žádosti (CheckForm).
@@ -102,5 +102,7 @@ public interface ISalesArrangementServiceClient
     Task SetFlowSwitches(int salesArrangementId, List<EditableFlowSwitch> flowSwitches, CancellationToken cancellationToken = default(CancellationToken));
 
     Task<SetContractNumberResponse> SetContractNumber(int salesArrangementId, int customerOnSaId, CancellationToken cancellationToken = default);
+
+    Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(int salesArrangementId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default);
 }
 

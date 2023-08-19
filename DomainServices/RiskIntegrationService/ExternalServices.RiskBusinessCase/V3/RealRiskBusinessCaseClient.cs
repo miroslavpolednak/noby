@@ -9,7 +9,7 @@ internal sealed class RealRiskBusinessCaseClient
     {
         var response = await _httpClient
             .PostAsJsonAsync(_httpClient.BaseAddress + _createCaseUrl, request, cancellationToken)
-            .ConfigureAwait(false); ;
+            .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.RiskBusinessCase>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CreateCase), nameof(Contracts.RiskBusinessCase));
@@ -21,7 +21,7 @@ internal sealed class RealRiskBusinessCaseClient
     {
         var response = await _httpClient
             .PostAsJsonAsync(_httpClient.BaseAddress + string.Format(default, _createCaseAssessmentUrl, riskBusinessCaseId), request, cancellationToken)
-            .ConfigureAwait(false); ;
+            .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<LoanApplicationAssessment>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(LoanApplicationAssessment));
@@ -33,7 +33,7 @@ internal sealed class RealRiskBusinessCaseClient
     {
         var response = await _httpClient
             .PostAsJsonAsync(_httpClient.BaseAddress + string.Format(default, _commitCaseUrl, riskBusinessCaseId), request, cancellationToken)
-            .ConfigureAwait(false); ;
+            .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<RiskBusinessCaseCommit>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
                 ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CommitCase), nameof(RiskBusinessCaseCommit));

@@ -3,6 +3,11 @@
 public sealed class AppConfigurationSecurity
 {
     /// <summary>
+    /// Domena pro kterou bude platna autentizacni cookie
+    /// </summary>
+    public string? AuthenticationCookieDomain { get; set; }
+
+    /// <summary>
     /// What kind of authentication provider to use - referes to DefaultScheme from .AddAuthentication().
     /// Possible values: FomsMockAuthentication
     /// </summary>

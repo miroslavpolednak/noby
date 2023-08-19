@@ -9,18 +9,24 @@ internal sealed class AddressSearchHandler
         string? country = null;
         if (request.CountryId.GetValueOrDefault() > 0)
             country = (await _codebookService.Countries(cancellationToken)).FirstOrDefault(t => t.Id == request.CountryId)?.ShortName;
+        try
+        {
+            var result = await _addressWhispererClient.GetSuggestions(request.SessionId, request.SearchText, request.PageSize, country, cancellationToken);
 
-        var result = await _addressWhispererClient.GetSuggestions(request.SessionId, request.SearchText, request.PageSize, country, cancellationToken);
-
-        return new AddressSearchResponse 
-        { 
-            PageSize = request.PageSize, 
-            Rows = result.Select(x => new Dto.AddressLine
+            return new AddressSearchResponse
             {
-                Id = x.AddressId,
-                Title = x.Title
-            }).ToList()
-        };
+                PageSize = request.PageSize,
+                Rows = result.Select(x => new Dto.AddressLine
+                {
+                    Id = x.AddressId,
+                    Title = x.Title
+                }).ToList()
+            };
+        }
+        catch
+        {
+            throw new NobyValidationException(90020);
+        }
     }
 
     private ExternalServices.AddressWhisperer.V1.IAddressWhispererClient _addressWhispererClient;

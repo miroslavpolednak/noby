@@ -32,8 +32,21 @@ internal sealed class GetFlowSwitchesHandler
 
         if (response.SigningSection.IsCompleted)
         {
-            var documentsToSignListResponse = await _documentOnSaService.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
-            response.SigningSection.IsCompleted = documentsToSignListResponse.DocumentsOnSAToSign.All(d => d.IsSigned);
+            var documentsToSignListResponse = (await _documentOnSaService.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken)).DocumentsOnSAToSign;
+
+            if (documentsToSignListResponse.All(t => t.IsSigned))
+            {
+                if (documentsToSignListResponse.Any(t => 
+                    t.SignatureTypeId == (int)SignatureTypes.Paper 
+                    && !(t.EArchivIdsLinked?.Any() ?? false)))
+                {
+                    response.SigningSection.IsCompleted = false;
+                }
+            }
+            else
+            {
+                response.ScoringSection.IsActive = false;
+            }
         }
         
         return response;
@@ -58,12 +71,12 @@ internal sealed class GetFlowSwitchesHandler
     }
 
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly Infrastructure.Services.FlowSwitches.IFlowSwitchesService _flowSwitches;
+    private readonly Services.FlowSwitches.IFlowSwitchesService _flowSwitches;
     private readonly DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSaService;
 
     public GetFlowSwitchesHandler(
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient arrangementServiceClient,
-        Infrastructure.Services.FlowSwitches.IFlowSwitchesService flowSwitches,
+        Services.FlowSwitches.IFlowSwitchesService flowSwitches,
         DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSaService)
     {
         _flowSwitches = flowSwitches;

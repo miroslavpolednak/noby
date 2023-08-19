@@ -58,7 +58,7 @@ public static class LoggerExtensions
     {
         using (logger.BeginScope(new Dictionary<string, object>
         {
-            { "Errors", ex.Errors.ToDictionary(k => k.ExceptionCode, v => v.Message) }
+            { "Errors", ex.Errors.Select(k => k.ToString()) }
         }))
         {
             _logValidationResults(logger, ex.Message, ex);

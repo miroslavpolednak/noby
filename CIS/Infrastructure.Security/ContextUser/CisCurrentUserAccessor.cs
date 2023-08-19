@@ -20,7 +20,7 @@ public sealed class CisCurrentContextUserAccessor
     public IEnumerable<Claim> Claims
     {
 #pragma warning disable CS8603 // Possible null reference return.
-        get => _httpContext!.HttpContext?.User.Claims;
+        get => _httpContext?.HttpContext?.User.Claims;
 #pragma warning restore CS8603 // Possible null reference return.
     }
 
@@ -61,8 +61,13 @@ public sealed class CisCurrentContextUserAccessor
 
         return _userDetails;
     }
+    
+    public CIS.Foms.Types.UserIdentity? GetMainIdentity()
+    {
+        return CurrentUserAccessorHelpers.GetUserIdentityFromHeaders(_httpContext?.HttpContext?.Request);
+    }
 
-    public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default(CancellationToken)) 
+    public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default) 
         where TDetails : ICurrentUserDetails
     {
         await EnsureDetails(cancellationToken);

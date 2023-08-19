@@ -37,7 +37,7 @@ internal class GetRiskLoanApplicationDataHandler : IRequestHandler<GetRiskLoanAp
 
         foreach (var sourceField in config.SourceFields)
         {
-            jsonObject.Add(sourceField.JsonPropertyName.Split('.'), sourceField.FieldPath);
+            jsonObject.Add(sourceField.JsonPropertyName.Split('.'), sourceField.FieldPath, sourceField.UseDefaultInsteadOfNull);
         }
 
         var jsonOptions = new JsonSerializerOptions

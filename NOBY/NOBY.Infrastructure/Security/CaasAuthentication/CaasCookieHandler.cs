@@ -1,9 +1,10 @@
-﻿using CIS.Infrastructure.Telemetry;
+﻿using CIS.Infrastructure.Audit;
 using DomainServices.UserService.Clients;
 using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
@@ -14,6 +15,10 @@ internal sealed class CaasCookieHandler
 {
     public void Configure(string? name, CookieAuthenticationOptions options)
     {
+        if (!string.IsNullOrEmpty(_configuration.AuthenticationScheme))
+        {
+            options.Cookie.Domain = _configuration.AuthenticationCookieDomain;
+        }
         options.Cookie.Path = "/";
         options.Cookie.IsEssential = true;
         //options.Cookie.SameSite = SameSiteMode.Strict;
@@ -45,13 +50,14 @@ internal sealed class CaasCookieHandler
                 // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
                 if (!permissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
                 {
-                    throw new CisAuthorizationException();
+                    createLogger(context.HttpContext).UserWithoutAccess(currentLogin);
+                    throw new CisAuthorizationException("Cookie handler: user does not have APPLICATION_BasicAccess");
                 }
 
                 // vytvorit claimy
                 var claims = new List<Claim>();
                 claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, currentLogin));
-                claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+                claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(CultureInfo.InvariantCulture)));
                 // doplnit prava uzivatele do claims
                 claims.AddRange(permissions.Select(t => new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{t}")));
 
@@ -64,8 +70,8 @@ internal sealed class CaasCookieHandler
                 // zalogovat prihlaseni uzivatele
                 var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
                 logger.Log(
-                    CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby002, 
-                    "Uživatel user se přihlásil do aplikace.",
+                    AuditEventTypes.Noby002,
+                    $"Uživatel {currentLogin} se přihlásil do aplikace.",
                     bodyAfter: new Dictionary<string, string>() { { "login", currentLogin } });
             },
             OnSignedIn = context =>
@@ -74,6 +80,11 @@ internal sealed class CaasCookieHandler
                 return Task.CompletedTask;
             }
         };
+    }
+
+    private static ILogger<CaasCookieHandler> createLogger(HttpContext context)
+    {
+        return context.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger<CaasCookieHandler>();
     }
 
     public void Configure(CookieAuthenticationOptions options)

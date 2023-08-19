@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using DomainServices.CaseService.Api.Services;
+using MassTransit;
 
 namespace DomainServices.CaseService.Api.Messaging.CollateralValuationProcessChanged;
 
@@ -10,16 +11,27 @@ internal sealed class CollateralValuationProcessChangedConsumer
         var token = context.CancellationToken;
         var message = context.Message;
         
-        var currentTaskId = int.Parse(message.currentTask.id, CultureInfo.InvariantCulture);
-        var caseId = long.Parse(message.@case.caseId.id, CultureInfo.InvariantCulture);
-
-        await _linkTaskToCase.Link(caseId, currentTaskId, token);
+        if (!int.TryParse(message.currentTask.id, out var currentTaskId))
+        {
+            _logger.KafkaMessageCurrentTaskIdIncorrectFormat(message.currentTask.id);
+        }
+        
+        if (!long.TryParse(message.@case.caseId.id, out var caseId))
+        {
+            _logger.KafkaMessageCaseIdIncorrectFormat(message.@case.caseId.id);
+        }
+        
+        await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, currentTaskId, token);
     }
 
-    private readonly Services.LinkTaskToCaseService _linkTaskToCase;
+    private readonly ActiveTasksService _activeTasksService;
+    private readonly ILogger<CollateralValuationProcessChangedConsumer> _logger;
 
-    public CollateralValuationProcessChangedConsumer(Services.LinkTaskToCaseService linkTaskToCase)
+    public CollateralValuationProcessChangedConsumer(
+        ActiveTasksService activeTasksService,
+        ILogger<CollateralValuationProcessChangedConsumer> logger)
     {
-        _linkTaskToCase = linkTaskToCase;
+        _activeTasksService = activeTasksService;
+        _logger = logger;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Exceptions;
 using System.ComponentModel;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
+using CIS.InternalServices.DocumentGeneratorService.Api.Extensions;
 using TextAlign = CIS.InternalServices.DocumentGeneratorService.Contracts.TextAlign;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
@@ -18,19 +19,21 @@ public class BasicAcroFormWriter : IAcroFormWriter
 
     public MergeDocument Write(PdfDocument pdfDocument, string? templateNameModifier = default)
     {
-        var document = new MergeDocument(pdfDocument);
+        var document = new MergeDocument(pdfDocument)
+        {
+            PdfVersion = PdfVersion.v1_7
+        };
 
         foreach (var value in _values)
         {
-            var field = document.Form.Fields[value.Key];
+            var field = document.Form.Fields[value.Key] ?? throw new CisValidationException(400, $"Unknown key {value.Key} for selected template.");
 
-            if (field is null)
-                throw new CisValidationException(400, $"Unknown key {value.Key} for selected template.");
+            field.Font = field.Font.ParseOpenTypeFont();
 
             if (value.TextAlign != TextAlign.Unkwnon)
             {
                 CreateAlignedText(pdfDocument, document, value);
-                field.Value = string.Empty;
+                field.Output = FormFieldOutput.Remove;
 
                 continue;
             }
@@ -44,10 +47,18 @@ public class BasicAcroFormWriter : IAcroFormWriter
     private void CreateAlignedText(PdfDocument pdfDocument, Document document, GenerateDocumentPartData data)
     {
         var pdfFormField = pdfDocument.Form.Fields[data.Key];
-        var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
 
-        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), Font.LoadSystemFont(pdfFormField.Font.Name), pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
-        label.Width -= 2;
+        try
+        {
+            var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
+
+            var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), pdfFormField.Font.ParseOpenTypeFont(), pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
+            label.Width -= 2;
+        }
+        catch (Exception ex) when (ex is IndexOutOfRangeException or NullReferenceException)
+        {
+            throw new CisValidationException($"AcroField {data.Key} has incorrect formatting (probably multiple Acrofields with the same name or something similar)");
+        }
     }
 
     private string GetFieldValue(GenerateDocumentPartData value)

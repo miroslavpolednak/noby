@@ -1,5 +1,6 @@
 ﻿using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
+using System.Threading;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.GetRealEstateValuationDetail;
 
@@ -11,39 +12,76 @@ internal sealed class GetRealEstateValuationDetailHandler
         var realEstate = await _dbContext.RealEstateValuations
             .AsNoTracking()
             .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
-            .Select(Mappers.RealEstateDetail())
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, request.RealEstateValuationId);
 
-        var details = await _dbContext.RealEstateValuationDetails
-            .AsNoTracking()
-            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
-            .Select(t => new { t.RealEstateSubtypeId, t.LoanPurposeDetailsBin, t.SpecificDetailBin })
-            .FirstOrDefaultAsync(cancellationToken);
-
         var response = new RealEstateValuationDetail
         {
-            RealEstateSubtypeId = details?.RealEstateSubtypeId,
-            RealEstateValuationGeneralDetails = realEstate,
-            LoanPurposeDetails = details?.LoanPurposeDetailsBin is null ? null : LoanPurposeDetailsObject.Parser.ParseFrom(details.LoanPurposeDetailsBin)
+            RealEstateTypeId = realEstate.RealEstateTypeId,
+            CaseId = realEstate.CaseId,
+            IsLoanRealEstate = realEstate.IsLoanRealEstate,
+            DeveloperApplied = realEstate.DeveloperApplied,
+            DeveloperAllowed = realEstate.DeveloperAllowed,
+            RealEstateValuationId = realEstate.RealEstateValuationId,
+            ValuationStateId = realEstate.ValuationStateId,
+            ValuationTypeId = (Contracts.ValuationTypes)realEstate.ValuationTypeId,
+            IsRevaluationRequired = realEstate.IsRevaluationRequired,
+            ValuationSentDate = realEstate.ValuationSentDate,
+            RealEstateStateId = realEstate.RealEstateStateId,
+            Address = realEstate.Address,
+            OrderId = realEstate.OrderId,
+            PreorderId = realEstate.PreorderId,
+            ValuationResultCurrentPrice = realEstate.ValuationResultCurrentPrice,
+            ValuationResultFuturePrice = realEstate.ValuationResultFuturePrice,
+            RealEstateSubtypeId = realEstate.RealEstateSubtypeId,
+            ACVRealEstateTypeId = realEstate.ACVRealEstateTypeId,
+            BagmanRealEstateTypeId = realEstate.BagmanRealEstateTypeId,
+            LoanPurposeDetails = realEstate.LoanPurposeDetailsBin is null ? null : LoanPurposeDetailsObject.Parser.ParseFrom(realEstate.LoanPurposeDetailsBin)
         };
 
-        if (details?.SpecificDetailBin is not null)
+        // attachments
+        response.Attachments.AddRange(await getAttachments(request.RealEstateValuationId, cancellationToken));
+
+        // documents
+        if (!string.IsNullOrEmpty(realEstate.Documents))
         {
-            switch (Helpers.GetRealEstateType(realEstate))
+            response.Documents.AddRange(Newtonsoft.Json.JsonConvert.DeserializeObject<List<RealEstateValuationDocument>>(realEstate.Documents));
+        }
+
+        // specific details
+        if (realEstate.SpecificDetailBin is not null)
+        {
+            switch (Helpers.GetRealEstateType(response))
             {
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hf:
-                case CIS.Foms.Types.Enums.RealEstateTypes.Hff:
-                    response.HouseAndFlatDetails = SpecificDetailHouseAndFlatObject.Parser.ParseFrom(details.SpecificDetailBin);
+                case CIS.Foms.Enums.RealEstateTypes.Hf:
+                case CIS.Foms.Enums.RealEstateTypes.Hff:
+                    response.HouseAndFlatDetails = SpecificDetailHouseAndFlatObject.Parser.ParseFrom(realEstate.SpecificDetailBin);
                     break;
 
-                case CIS.Foms.Types.Enums.RealEstateTypes.P:
-                    response.ParcelDetails = SpecificDetailParcelObject.Parser.ParseFrom(details.SpecificDetailBin);
+                case CIS.Foms.Enums.RealEstateTypes.P:
+                    response.ParcelDetails = SpecificDetailParcelObject.Parser.ParseFrom(realEstate.SpecificDetailBin);
                     break;
             }
         }
 
         return response;
+    }
+
+    private async Task<List<RealEstateValuationAttachment>> getAttachments(int realEstateValuationId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Attachments
+            .AsNoTracking()
+            .Where(t => t.RealEstateValuationId == realEstateValuationId)
+            .Select(t => new Contracts.RealEstateValuationAttachment
+            {
+                RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
+                Title = t.Title,
+                FileName = t.FileName,
+                ExternalId = t.ExternalId,
+                AcvAttachmentCategoryId = t.AcvAttachmentCategoryId,
+                CreatedOn = t.CreatedTime
+            })
+            .ToListAsync(cancellationToken);
     }
 
     private readonly RealEstateValuationServiceDbContext _dbContext;

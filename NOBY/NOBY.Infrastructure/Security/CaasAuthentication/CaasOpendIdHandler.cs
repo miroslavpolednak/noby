@@ -1,10 +1,12 @@
-﻿using CIS.Infrastructure.Telemetry;
+﻿using CIS.Infrastructure.Audit;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Security.Policy;
 
 namespace NOBY.Infrastructure.Security.CaasAuthentication;
 
@@ -50,7 +52,7 @@ internal sealed class CaasOpendIdHandler
                 if (context.HttpContext.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment))
                 {
                     var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
-                    logger.Log(CIS.Infrastructure.Telemetry.AuditLog.AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
+                    logger.Log(AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
 
                     context.ProtocolMessage.State = getRedirectUri(context.HttpContext.Request);
                     return Task.CompletedTask;
@@ -58,8 +60,23 @@ internal sealed class CaasOpendIdHandler
                 else // vsechny standardni requesty
                 {
                     var url = context.ProtocolMessage.CreateAuthenticationRequestUrl();
-                    throw new CIS.Core.Exceptions.CisAuthenticationException(url);
+                    throw new CisAuthenticationException(url);
                 }
+            },
+            OnAccessDenied = context =>
+            {
+                createLogger(context.HttpContext)?.OpenIdError("OnAccessDenied");
+                throw new CisAuthorizationException("OpenId: OnAccessDenied");
+            },
+            OnAuthenticationFailed = context =>
+            {
+                createLogger(context.HttpContext)?.OpenIdError("OnAuthenticationFailed");
+                throw new CisAuthorizationException("OpenId: OnAuthenticationFailed");
+            },
+            OnRemoteFailure = context =>
+            {
+                createLogger(context.HttpContext)?.OpenIdError("OnRemoteFailure");
+                throw new CisAuthorizationException("OpenId: OnRemoteFailure");
             },
             OnTokenValidated = context =>
             {
@@ -76,6 +93,11 @@ internal sealed class CaasOpendIdHandler
     }
 
     public const string CallbackPath = "/oidc-signin";
+
+    private static ILogger<CaasOpendIdHandler>? createLogger(HttpContext? context)
+    {
+        return context is null ? null : context.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger<CaasOpendIdHandler>();
+    }
 
     /// <summary>
     /// Ziskej redirectUri z query stringu nebo vrat default.

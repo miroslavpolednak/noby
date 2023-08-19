@@ -2,7 +2,6 @@
 using CIS.Infrastructure.Data;
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.CaseService.Api.Endpoints.SearchCases;
 
@@ -74,7 +73,7 @@ internal sealed class SearchCasesHandler
         // base query
         var query = _dbContext.Cases
             .AsNoTracking()
-            .Where(t => t.OwnerUserId == request.CaseOwnerUserId);
+            .Where(t => t.OwnerUserId == request.CaseOwnerUserId && !Helpers.DisallowedStates.Contains(t.State));
 
         // omezeni na state
         if (request.State?.Any() ?? false)

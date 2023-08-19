@@ -7,7 +7,7 @@ public class DocumentOnSa : ICreated
 {
     public int DocumentOnSAId { get; set; }
 
-    public int DocumentTypeId { get; set; }
+    public int? DocumentTypeId { get; set; }
 
     public int? DocumentTemplateVersionId { get; set; }
 
@@ -28,8 +28,6 @@ public class DocumentOnSa : ICreated
     public bool IsSigned { get; set; }
 
     public bool IsArchived { get; set; }
-
-    public string? SignatureMethodCode { get; set; } = null!;
 
     public DateTime? SignatureDateTime { get; set; }
 

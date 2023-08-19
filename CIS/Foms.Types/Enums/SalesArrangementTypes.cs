@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace CIS.Foms.Types.Enums;
+namespace CIS.Foms.Enums;
 
 [DataContract]
 public enum SalesArrangementTypes : byte

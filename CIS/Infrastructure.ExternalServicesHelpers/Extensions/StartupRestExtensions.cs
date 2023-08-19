@@ -1,5 +1,8 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using Microsoft.AspNetCore.Builder;
+using Polly;
+using Polly.Extensions.Http;
+using Polly.Timeout;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers;
 
@@ -16,17 +19,25 @@ public static class StartupRestExtensions
     public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation>(this WebApplicationBuilder builder)
         where TClient : class, IExternalServiceClient
         where TImplementation : class, TClient
-        => builder.Services
+        => builder.AddExternalServiceRestClient<TClient, TImplementation, IExternalServiceConfiguration<TClient>>();
+
+    public static IHttpClientBuilder AddExternalServiceRestClient<TClient, TImplementation, TConfiguration>(this WebApplicationBuilder builder)
+        where TClient : class, IExternalServiceClient
+        where TImplementation : class, TClient
+        where TConfiguration : IExternalServiceConfiguration
+        => builder
+            .Services
             .AddHttpClient<TClient, TImplementation>((services, client) =>
             {
-                var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
-
-                // timeout requestu
-                if (configuration.RequestTimeout.GetValueOrDefault() > 0)
-                    client.Timeout = TimeSpan.FromSeconds(configuration.RequestTimeout!.Value);
+                var configuration = services.GetRequiredService<TConfiguration>();
 
                 // service url
                 client.BaseAddress = configuration.ServiceUrl;
+                // musi byt nastaveny, jinak je default na 100
+                client.Timeout = TimeSpan.FromSeconds(
+                    (getRequestTimeout(configuration) * (configuration.RequestRetryCount.GetValueOrDefault() + 1))
+                    + (configuration.RequestRetryCount.GetValueOrDefault() * getRequestRetryTimeout(configuration))
+                    + 10);
 
                 // authentication
                 switch (configuration.Authentication)
@@ -39,13 +50,21 @@ public static class StartupRestExtensions
             })
             .ConfigurePrimaryHttpMessageHandler(services =>
             {
-                var configuration = services.GetRequiredService<IExternalServiceConfiguration<TClient>>();
-                
+                var configuration = services.GetRequiredService<TConfiguration>();
+
                 // ignorovat vadny ssl certifikat
                 var clientHandler = configuration.IgnoreServerCertificateErrors ? new HttpClientHandler
-                    {
-                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
-                    } : new HttpClientHandler();
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
+                } : new HttpClientHandler();
+
+                // pouzij proxy
+                if (configuration.UseDefaultProxy)
+                {
+                    clientHandler.Proxy = null;
+                    clientHandler.UseProxy = true;
+                    clientHandler.DefaultProxyCredentials = System.Net.CredentialCache.DefaultNetworkCredentials;
+                }
 
                 // logovat payload a hlavicku
                 if (configuration.UseLogging)
@@ -55,5 +74,41 @@ public static class StartupRestExtensions
                 }
                 else
                     return clientHandler;
+            })
+            // set retry policy
+            .AddPolicyHandler((services, req) =>
+            {
+                var configuration = services.GetRequiredService<TConfiguration>();
+                var logger = services.GetRequiredService<ILogger<TClient>>();
+
+                if (configuration.RequestRetryCount.GetValueOrDefault() == 0)
+                {
+                    return Policy.NoOpAsync<HttpResponseMessage>();
+                }
+                else
+                {
+                    return HttpPolicyExtensions
+                        .HandleTransientHttpError()
+                        .Or<TimeoutRejectedException>()
+                        .WaitAndRetryAsync(configuration.RequestRetryCount!.Value, (c) => TimeSpan.FromSeconds(getRequestRetryTimeout(configuration)), (res, timeSpan, count, context) =>
+                        {
+                            logger.HttpRequestRetry(typeof(TClient).Name, count);
+                        });
+                }
+            })
+            // set timeout requestu
+            .AddPolicyHandler((services, req) =>
+            {
+                var configuration = services.GetRequiredService<TConfiguration>();
+                return Policy.TimeoutAsync<HttpResponseMessage>(getRequestTimeout(configuration));
             });
+
+    private static int getRequestRetryTimeout(IExternalServiceConfiguration configuration)
+        => configuration.RequestRetryTimeout ?? _defaultRetryTimeout;
+
+    private static int getRequestTimeout(IExternalServiceConfiguration configuration)
+        => configuration.RequestTimeout.GetValueOrDefault() > 0 ? configuration.RequestTimeout!.Value : _defaultRequestTimeout;
+
+    private const int _defaultRequestTimeout = 10;
+    private const int _defaultRetryTimeout = 10;
 }

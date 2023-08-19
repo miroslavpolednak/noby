@@ -15,7 +15,7 @@ internal class GeneralChangeTemplateData : AggregatedData
 
     public string SignerName => CustomerHelper.FullName(Customer);
 
-    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent, _codebookManager.Countries);
+    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent);
 
     public string? RepaymentAccount
     {
@@ -67,7 +67,7 @@ internal class GeneralChangeTemplateData : AggregatedData
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        configurator.Countries().DegreesBefore().RealEstateTypes().PurchaseTypes();
+        configurator.DegreesBefore().RealEstateTypes().PurchaseTypes();
     }
 
     private IEnumerable<string> GetRealEstateTypes() =>

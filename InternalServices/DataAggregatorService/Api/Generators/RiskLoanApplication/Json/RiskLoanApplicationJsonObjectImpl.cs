@@ -4,7 +4,7 @@ internal class RiskLoanApplicationJsonObjectImpl : RiskLoanApplicationJsonObject
 {
     private readonly Dictionary<string, RiskLoanApplicationJsonObject> _jsonData = new();
 
-    public override void Add(string[] propertyPath, string dataFieldPath)
+    public override void Add(string[] propertyPath, string dataFieldPath, bool useDefaultInsteadOfNull)
     {
         if (propertyPath.Length == Depth + 1)
         {
@@ -18,7 +18,7 @@ internal class RiskLoanApplicationJsonObjectImpl : RiskLoanApplicationJsonObject
                 return;
             }
 
-            _jsonData.Add(propertyPath[Depth], CreateValue(dataFieldPath));
+            _jsonData.Add(propertyPath[Depth], CreateValue(dataFieldPath, useDefaultInsteadOfNull));
 
             return;
         }
@@ -27,7 +27,7 @@ internal class RiskLoanApplicationJsonObjectImpl : RiskLoanApplicationJsonObject
             ? GetOrAddJsonObject(propertyPath[Depth].Replace(ConfigurationConstants.CollectionMarker, ""), CreateObject<RiskLoanApplicationJsonCollection>)
             : GetOrAddJsonObject(propertyPath[Depth], CreateObject<RiskLoanApplicationJsonObjectImpl>);
 
-        jsonObject.Add(propertyPath, dataFieldPath);
+        jsonObject.Add(propertyPath, dataFieldPath, useDefaultInsteadOfNull);
     }
 
     public override object? GetJsonObject(object data)

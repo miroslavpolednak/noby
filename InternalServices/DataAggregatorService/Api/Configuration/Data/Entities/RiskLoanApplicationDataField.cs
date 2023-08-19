@@ -7,4 +7,6 @@ internal class RiskLoanApplicationDataField
     public string JsonPropertyName { get; set; } = null!;
 
     public DataField DataField { get; set; } = null!;
+
+    public bool UseDefaultInsteadOfNull { get; set; }
 }

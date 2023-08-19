@@ -1,6 +1,15 @@
+DROP TRIGGER IF EXISTS AuditEventCreated;
+GO
+DROP TRIGGER IF EXISTS AuditEventModified
+GO
+DROP SEQUENCE IF EXISTS dbo.NobyLoggerSequence
+GO
+DROP TABLE IF EXISTS dbo.AuditEvent;
+GO
+
 CREATE TABLE [dbo].[AuditEvent](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[EventID] [uniqueidentifier] NOT NULL,
+	[EventID] [varchar](max) NOT NULL,
 	[AuditEventTypeId] [varchar](20) NOT NULL,
 	[Detail] [nvarchar](max) NOT NULL,
 	[TimeStamp] [datetime] NOT NULL,
@@ -36,3 +45,11 @@ UPDATE dbo.AuditEvent SET [ModifiedBy]=SYSTEM_USER, [ModifiedTime]=GETDATE() FRO
 GO
 
 
+CREATE SEQUENCE dbo.NobyLoggerSequence
+AS bigint
+START WITH 1
+INCREMENT BY 1
+NO MAXVALUE
+NO CYCLE
+CACHE 15
+GO

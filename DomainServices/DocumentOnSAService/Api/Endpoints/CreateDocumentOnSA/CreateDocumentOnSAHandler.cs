@@ -71,7 +71,6 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
                 IsValid = documentOnSaEntity.IsValid,
                 IsSigned = documentOnSaEntity.IsSigned,
                 IsArchived = documentOnSaEntity.IsArchived,
-                SignatureMethodCode = documentOnSaEntity.SignatureMethodCode ?? string.Empty,
                 SignatureDateTime = documentOnSaEntity.SignatureDateTime is not null ? Timestamp.FromDateTime(DateTime.SpecifyKind(documentOnSaEntity.SignatureDateTime.Value, DateTimeKind.Utc)) : null,
                 SignatureConfirmedBy = documentOnSaEntity.SignatureConfirmedBy
             }

@@ -1,5 +1,6 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
+using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Contracts;
@@ -18,6 +19,8 @@ internal class AggregatedData
     {
         Custom = new CustomData(this);
     }
+
+    public StaticValues StaticValues => StaticValues.Instance;
 
     public CustomData Custom { get; }
 

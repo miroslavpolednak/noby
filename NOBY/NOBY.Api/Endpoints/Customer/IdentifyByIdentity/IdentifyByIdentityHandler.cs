@@ -7,6 +7,7 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.ProductService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
@@ -20,7 +21,9 @@ internal sealed class IdentifyByIdentityHandler
         var customerOnSaInstance = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
 
         if (customerOnSaInstance.CustomerIdentifiers is not null && customerOnSaInstance.CustomerIdentifiers.Any())
+        {
             throw new NobyValidationException("CustomerOnSA has been already identified");
+        }
 
         var (customersInSA, household, saInstance) = await fetchEntities(customerOnSaInstance.SalesArrangementId, request.CustomerOnSAId, cancellationToken);
 
@@ -29,6 +32,14 @@ internal sealed class IdentifyByIdentityHandler
         foreach (var customer in customersInSA.Where(t => t.CustomerOnSAId != customerOnSaInstance.CustomerOnSAId))
         {
             customerDetails.Add(await _customerOnSAService.GetCustomer(customer.CustomerOnSAId, cancellationToken));
+        }
+
+        //Debtor has to be identified first
+        if (saInstance.IsProductSalesArrangement()
+            && customerOnSaInstance.CustomerRoleId is not (int)CustomerRoles.Debtor 
+            && !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
+        {
+            throw new NobyValidationException("Main customer has to be identified first.");
         }
 
         // validate two same identities on household
@@ -41,30 +52,34 @@ internal sealed class IdentifyByIdentityHandler
         var updateResult = await updateCustomer(customerOnSaInstance, request.CustomerIdentity!, cancellationToken);
         _bag.Add(IdentifyByIdentityRollback.BagKeyCustomerOnSA, customerOnSaInstance);
 
-        // hlavni klient
-        if (customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Debtor)
+        // pouze pro produktovy SA
+        if (saInstance.IsProductSalesArrangement())
         {
-            var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers);
-            await _mediator.Publish(notification, cancellationToken);
-        }
-        else // vytvoreni klienta v konsDb. Pro dluznika se to dela v notification, pro ostatni se to dubluje tady
-        {
-            await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResult.CustomerIdentifiers, cancellationToken);
-
-            try
+            // hlavni klient
+            if (customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Debtor)
             {
-                var partnerId = updateResult.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
-                var relationshipTypeId = customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
-
-                await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
+                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers);
+                await _mediator.Publish(notification, cancellationToken);
             }
-            catch (CisAlreadyExistsException)
+            else // vytvoreni klienta v konsDb. Pro dluznika se to dela v notification, pro ostatni se to dubluje tady
             {
-            }
-        }
+                await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResult.CustomerIdentifiers, cancellationToken);
 
-        // HFICH-5396
-        await updateFlowSwitches(household, customerDetails, request.CustomerOnSAId, cancellationToken);
+                try
+                {
+                    var partnerId = updateResult.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
+                    var relationshipTypeId = customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
+
+                    await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
+                }
+                catch (CisAlreadyExistsException)
+                {
+                }
+            }
+
+            // HFICH-5396
+            await updateFlowSwitches(household, customerDetails, request.CustomerOnSAId, cancellationToken);
+        }
 
         return new MediatR.Unit();
     }
@@ -140,7 +155,7 @@ internal sealed class IdentifyByIdentityHandler
     }
 
     private readonly IRollbackBag _bag;
-    private readonly Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
+    private readonly Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
     private readonly IHouseholdServiceClient _householdService;
     private readonly IProductServiceClient _productService;
     private readonly IMediator _mediator;
@@ -151,7 +166,7 @@ internal sealed class IdentifyByIdentityHandler
     public IdentifyByIdentityHandler(
         IRollbackBag bag,
         IMediator mediator,
-        Infrastructure.Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
+        Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService,

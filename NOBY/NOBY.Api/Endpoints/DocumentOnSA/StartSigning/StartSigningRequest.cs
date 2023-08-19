@@ -11,17 +11,16 @@ public class StartSigningRequest : IRequest<StartSigningResponse>
     /// Typ dokumentu. Číselník DocumentType.
     /// </summary>
     public int? DocumentTypeId { get; set; }
-
-    /// <summary>
-    /// Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
-    /// </summary>
-    [Obsolete("Replaced with SignatureTypeId")]
-    public string SignatureMethodCode { get; set; } = null!;
-
+    
     /// <summary>
     /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
     /// </summary>
     public int? SignatureTypeId { get; set; }
+
+    /// <summary>
+    /// For CRS only
+    /// </summary>
+    public int? CustomerOnSAId { get; set; }
 
     internal StartSigningRequest InfuseSalesArrangementId(int salesArrangementId)
     {

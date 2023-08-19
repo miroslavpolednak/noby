@@ -3,7 +3,7 @@ using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat
 using System.Drawing;
 using ceTe.DynamicPDF.PageElements;
 using System.ComponentModel;
-using Font = ceTe.DynamicPDF.Font;
+using System.Globalization;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 
@@ -96,14 +96,14 @@ public class PdfTable
         table.Border.Width = 0f;
         table.CellDefault.Align = Pdf.TextAlign.Center;
         table.CellDefault.VAlign = VAlign.Center;
-        table.CellDefault.Font = placeholderField.Font;
+        table.CellDefault.Font = GeneratorVariables.Arial.GetFont();
         table.CellDefault.FontSize = placeholderField.FontSize;
         table.CellDefault.Border.Width = 0.5f;
     }
 
     private void CreateColumns(Table2 table)
     {
-        var row = table.Rows.Add(20, Font.LoadSystemFont(new System.Drawing.Font(table.CellDefault.Font.Name, 9, FontStyle.Bold)), table.CellDefault.FontSize, RgbColor.Black, RgbColor.LightGrey);
+        var row = table.Rows.Add(20, GeneratorVariables.ArialBold.GetFont(), table.CellDefault.FontSize, RgbColor.Black, RgbColor.LightGrey);
         
         foreach (var column in _tableData.Columns)
         {
@@ -135,7 +135,7 @@ public class PdfTable
         return value.ValueCase switch
         {
             GenericTableRowValue.ValueOneofCase.None => format ?? string.Empty,
-            GenericTableRowValue.ValueOneofCase.Text => format is null ? value.Text : string.Format(format, value.Text),
+            GenericTableRowValue.ValueOneofCase.Text => format is null ? value.Text : string.Format(CultureInfo.InvariantCulture, format, value.Text),
             GenericTableRowValue.ValueOneofCase.Date => GetFormattedString<DateTime>(value.Date),
             GenericTableRowValue.ValueOneofCase.Number => GetFormattedString(value.Number),
             GenericTableRowValue.ValueOneofCase.DecimalNumber => GetFormattedString<decimal>(value.DecimalNumber),
@@ -147,14 +147,14 @@ public class PdfTable
 
     private TextArea CreateTextArea(Table2 table)
     {
-        const float textTopMargin = 5f;
+        const float TextTopMargin = 5f;
 
         var visibleHeight = table.GetVisibleHeight();
         var remainingHeight = table.Height - visibleHeight;
 
-        return new TextArea(_tableData.ConcludingParagraph, table.X, table.Y + visibleHeight + textTopMargin, table.Width, remainingHeight - textTopMargin)
+        return new TextArea(_tableData.ConcludingParagraph, table.X, table.Y + visibleHeight + TextTopMargin, table.Width, remainingHeight - TextTopMargin)
         {
-            Font = Font.LoadSystemFont(new System.Drawing.Font(table.CellDefault.Font.Name, 9)),
+            Font = GeneratorVariables.Arial.GetFont(),
             FontSize = table.CellDefault.FontSize ?? 10,
             Align = Pdf.TextAlign.Justify
         };

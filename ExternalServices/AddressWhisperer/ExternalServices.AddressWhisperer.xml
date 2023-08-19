@@ -59,6 +59,16 @@
             Id RUIAN adresního bodu - AddressWhispererBEService|id
             </summary>
         </member>
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.KatuzId">
+            <summary>
+            KATUZ ID, pětimístné číslo katastrálního území, Id RUIAN katastrálního území - AddressWhispererBEService|cadastralAreaId
+            </summary>
+        </member>
+        <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.KatuzTitle">
+            <summary>
+            KATUZ, název katastrálního území, RUIAN katastrální území - AddressWhispererBEService|cadastralArea
+            </summary>
+        </member>
         <member name="M:ExternalServices.AddressWhisperer.V1.IAddressWhispererClient.GetSuggestions(System.String,System.String,System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Vraci seznam nalezenych adres pro 'text'

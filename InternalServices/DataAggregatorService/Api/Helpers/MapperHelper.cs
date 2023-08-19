@@ -21,7 +21,7 @@ internal static class MapperHelper
 
         if (memberNames.Length == 1)
         {
-            return ObjectAccessor.Create(obj)[memberNames.First()];
+            return string.IsNullOrWhiteSpace(memberNames.First()) ? obj : ObjectAccessor.Create(obj)[memberNames.First()];
         }
 
         var currentObject = obj;
@@ -29,7 +29,6 @@ internal static class MapperHelper
         foreach (var propertyName in memberNames)
         {
             var accessor = ObjectAccessor.Create(currentObject);
-
             currentObject = accessor[propertyName];
 
             if (currentObject is null)
@@ -37,6 +36,30 @@ internal static class MapperHelper
         }
 
         return currentObject;
+    }
+
+    public static Type GetType(object obj, string fullPropertyName)
+    {
+        var memberNames = fullPropertyName.Split('.');
+
+        var currentType = obj.GetType();
+
+        if (memberNames.Length == 1)
+        {
+            if (string.IsNullOrWhiteSpace(memberNames.First()))
+                return currentType;
+
+            return TypeAccessor.Create(currentType).GetMembers().First(m => m.Name == memberNames.First()).Type;
+        }
+
+        foreach (var propertyName in memberNames)
+        {
+            var members = TypeAccessor.Create(currentType).GetMembers();
+
+            currentType = members.First(m => m.Name == propertyName).Type;
+        }
+
+        return currentType;
     }
 
     public static object ConvertObjectImplicitly(object obj)

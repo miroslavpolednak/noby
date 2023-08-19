@@ -5,11 +5,13 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ServiceWrappers;
 
-[TransientService, SelfService]
-internal class HouseholdServiceWrapper : IServiceWrapper
+[ScopedService, SelfService]
+internal class HouseholdServiceWrapper : IServiceWrapper, IDisposable
 {
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
+
+    private readonly SemaphoreSlim _semaphore = new(1);
 
     public HouseholdServiceWrapper(IHouseholdServiceClient householdService, ICustomerOnSAServiceClient customerOnSAService)
     {
@@ -18,6 +20,11 @@ internal class HouseholdServiceWrapper : IServiceWrapper
     }
 
     public DataSource DataSource => DataSource.HouseholdService;
+
+    public void Dispose()
+    {
+        _semaphore.Dispose();
+    }
 
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
@@ -58,17 +65,26 @@ internal class HouseholdServiceWrapper : IServiceWrapper
 
     private async Task LoadHouseholds(int salesArrangementId, AggregatedData data, CancellationToken cancellationToken)
     {
-        if (data.Households.Any())
-            return;
+        await _semaphore.WaitAsync(cancellationToken);
 
-        var households = (await _householdService.GetHouseholdList(salesArrangementId, cancellationToken))
-                         .Select(household => new { Household = new HouseholdInfo { Household = household }, HouseholdType = (HouseholdTypes)household.HouseholdTypeId })
-                         .ToList();
+        try
+        {
+            if (data.Households.Any())
+                return;
 
-        data.Households.AddRange(households.Select(h => h.Household));
+            var households = (await _householdService.GetHouseholdList(salesArrangementId, cancellationToken))
+                             .Select(household => new { Household = new HouseholdInfo { Household = household }, HouseholdType = (HouseholdTypes)household.HouseholdTypeId })
+                             .ToList();
 
-        data.HouseholdMain = households.FirstOrDefault(h => h.HouseholdType == HouseholdTypes.Main)?.Household;
-        data.HouseholdCodebtor = households.FirstOrDefault(h => h.HouseholdType == HouseholdTypes.Codebtor)?.Household;
+            data.Households.AddRange(households.Select(h => h.Household));
+
+            data.HouseholdMain = households.FirstOrDefault(h => h.HouseholdType == HouseholdTypes.Main)?.Household;
+            data.HouseholdCodebtor = households.FirstOrDefault(h => h.HouseholdType == HouseholdTypes.Codebtor)?.Household;
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     private async Task LoadHouseholdDetail(HouseholdInfo? householdInfo, CancellationToken cancellationToken)

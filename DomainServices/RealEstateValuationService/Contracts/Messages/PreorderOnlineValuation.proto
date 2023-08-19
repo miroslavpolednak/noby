@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package DomainServices.RealEstateValuationService;
+option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
+
+import "Messages/Types.proto";
+
+message PreorderOnlineValuationRequest {
+    int32 RealEstateValuationId = 1;
+    
+    OrdersOnlinePreorder Data = 2;
+}

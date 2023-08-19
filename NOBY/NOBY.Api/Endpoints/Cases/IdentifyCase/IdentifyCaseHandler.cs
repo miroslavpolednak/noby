@@ -74,6 +74,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
 
         return new IdentifyCaseResponse
         {
+            CaseId = caseId,
             Task = taskDetailResponse.Task,
             TaskDetail = taskDetailResponse.TaskDetail,
             Documents = taskDetailResponse.Documents
@@ -100,15 +101,10 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     {
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
 
-        if (caseInstance.Exists)
-        {
-            caseOwnerCheck(caseInstance.OwnerUserId!.Value);
-            return new IdentifyCaseResponse { CaseId = caseId };
-        }
-        else
-        {
-            return new IdentifyCaseResponse();
-        }
+        if (!caseInstance.Exists) return new IdentifyCaseResponse();
+        
+        caseOwnerCheck(caseInstance.OwnerUserId!.Value);
+        return new IdentifyCaseResponse { CaseId = caseId };
     }
     
     private async Task<IdentifyCaseResponse> HandleByContractNumber(string contractNumber, CancellationToken cancellationToken)
@@ -133,7 +129,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     {
         if (ownerUserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("Case owner check failed");
         }
     }
 

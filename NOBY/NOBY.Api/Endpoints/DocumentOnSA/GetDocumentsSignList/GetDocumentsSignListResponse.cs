@@ -1,4 +1,7 @@
-﻿namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
+﻿using CIS.Foms.Enums;
+using NOBY.Dto.Signing;
+
+namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
 
 public class GetDocumentsSignListResponse
 {
@@ -26,13 +29,7 @@ public class GetDocumentsSignListData
     /// Příznak, zda byl dokument již podepsán.
     /// </summary>
     public bool IsSigned { get; set; }
-
-    /// <summary>
-    /// Metoda podpisu (manuální/elektronický). Číselník SigningMethodsForNaturalPerson.
-    /// </summary>
-    [Obsolete("Replaced with SignatureTypeId:  HFICH-6026")]
-    public string? SignatureMethodCode { get; set; }
-
+    
     /// <summary>
     /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
     /// </summary>
@@ -46,39 +43,18 @@ public class GetDocumentsSignListData
     public SignatureState SignatureState { get; set; } = null!;
 
     public EACodeMainItem EACodeMainItem { get; set; } = null!;
-}
 
-public class SignatureState
-{
-    public int Id { get; set; }
+    public int? CustomerOnSAId { get; set; }
 
-    public string Name { get; set; } = null!;
+    /// <summary>
+    /// Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
+    /// </summary>
+    public bool IsPreviewSentToCustomer { get; set; }
 
-    public static implicit operator SignatureState(SignatureStateDto signatureStateDto)
-    {
-        return new SignatureState
-        {
-            Id = signatureStateDto.Id,
-            Name = signatureStateDto.Name,
-        };
-    }
-}
+    /// <summary>
+    /// Id elektronicky podepisovaného dokumentu nahraného v ePodpisech
+    /// </summary>
+    public string? ExternalId { get; set; }
 
-public class EACodeMainItem
-{
-    public int Id { get; set; }
-
-    public string DocumentType { get; set; } = null!;
-
-    public string Category { get; set; } = null!;
-
-    public static implicit operator EACodeMainItem(EACodeMainItemDto eACode)
-    {
-        return new EACodeMainItem
-        {
-            Id = eACode.Id,
-            DocumentType = eACode.DocumentType,
-            Category = eACode.Category
-        };
-    }
+    public Source Source { get; set; }
 }

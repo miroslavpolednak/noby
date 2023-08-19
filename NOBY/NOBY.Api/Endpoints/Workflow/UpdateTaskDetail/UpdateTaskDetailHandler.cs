@@ -6,7 +6,8 @@ namespace NOBY.Api.Endpoints.Workflow.UpdateTaskDetail;
 internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetailRequest>
 {
     private readonly ICaseServiceClient _caseService;
-    private readonly Infrastructure.Services.TempFileManager.ITempFileManager _tempFileManager;
+    private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
+    private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
     private static int[] _allowedTaskTypeIds = { 1, 6 };
 
     public async Task Handle(UpdateTaskDetailRequest request, CancellationToken cancellationToken)
@@ -16,23 +17,23 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
         if (!_allowedTaskTypeIds.Contains(taskDetail.TaskObject.TaskTypeId))
         {
-            throw new CisAuthorizationException();
+            throw new CisAuthorizationException("Task type not allowed");
         }
 
         List<string>? documentIds = new();
         var attachments = request.Attachments?
-            .Select(t => new Infrastructure.Services.TempFileManager.TempDocumentInformation
+            .Select(t => new Services.UploadDocumentToArchive.DocumentMetadata
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
                 FileName = t.FileName,
-                TempGuid = t.Guid!.Value
+                TempFileId = t.Guid!.Value
             })
             .ToList();
 
         if (attachments?.Any() ?? false)
         {
-            documentIds.AddRange(await _tempFileManager.UploadToArchive(caseDetail.CaseId, caseDetail.Data?.ContractNumber, attachments, cancellationToken));
+            documentIds.AddRange(await _uploadDocumentToArchive.Upload(caseDetail.CaseId, caseDetail.Data?.ContractNumber, attachments, cancellationToken));
         }
 
         var completeTaskRequest = new CompleteTaskRequest
@@ -48,14 +49,18 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
         await _caseService.CompleteTask(completeTaskRequest, cancellationToken);
 
-        _tempFileManager.BatchDelete(attachments);
+        if (attachments?.Any() ?? false)
+        {
+            await _tempFileManager.Delete(attachments.Select(t => t.TempFileId), cancellationToken);
+        }
     }
 
     public UpdateTaskDetailHandler(
-
+        Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive,
         ICaseServiceClient caseService,
-        Infrastructure.Services.TempFileManager.ITempFileManager tempFileManager)
+        Services.TempFileManager.ITempFileManagerService tempFileManager)
     {
+        _uploadDocumentToArchive = uploadDocumentToArchive;
         _caseService = caseService;
         _tempFileManager = tempFileManager;
     }

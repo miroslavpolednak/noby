@@ -26,7 +26,7 @@ public class UpdateRealEstateValuationDetailRequest : IRequest
     /// ID stavu nemovitosti.
     /// </summary>
     /// <example>2</example>
-    public RealEstateStateIds? RealEstateStateId { get; set; }
+    public int? RealEstateStateId { get; set; }
 
     /// <summary>
     /// Adresa nemovitosti

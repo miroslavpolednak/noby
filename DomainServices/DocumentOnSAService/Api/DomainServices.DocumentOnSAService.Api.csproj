@@ -16,7 +16,7 @@
 
 	<ItemGroup>
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.55.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
@@ -31,13 +32,18 @@
     <ProjectReference Include="..\..\..\ExternalServices\ESignatures\ExternalServices.ESignatures.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\Sulm\ExternalServices.Sulm.csproj" />
     <ProjectReference Include="..\..\..\InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj" />
+    <ProjectReference Include="..\..\..\InternalServices\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj" />
+    <ProjectReference Include="..\..\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
     <ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
+    <ProjectReference Include="..\..\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
     <ProjectReference Include="..\..\DocumentArchiveService\Clients\DomainServices.DocumentArchiveService.Clients.csproj" />
     <ProjectReference Include="..\..\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
     <ProjectReference Include="..\..\ProductService\Clients\DomainServices.ProductService.Clients.csproj" />
     <ProjectReference Include="..\..\ProductService\Contracts\DomainServices.ProductService.Contracts.csproj" />
     <ProjectReference Include="..\..\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
+    <ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.DocumentOnSAService.Contracts.csproj" />
+    <ProjectReference Include="..\ExternalServices.ESignatureQueues\DomainServices.DocumentOnSAService.ExternalServices.ESignatureQueues.csproj" />
   </ItemGroup>
 
   <ItemGroup>

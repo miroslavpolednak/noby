@@ -11,12 +11,6 @@ public class WorkflowTaskDetail
     public int TaskIdSB { get; set; }
 
     /// <summary>
-    /// Login zadavatele/zpracovatele
-    /// </summary>
-    /// <example>14</example>
-    public string? PerformerLogin { get; set; }
-
-    /// <summary>
     /// Jméno a příjmení zadavatele/zpracovatele
     /// </summary>
     /// <example>Jan Novák</example>

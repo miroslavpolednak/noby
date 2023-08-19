@@ -7,6 +7,7 @@ using CIS.Infrastructure.Security;
 using CIS.InternalServices;
 using DomainServices.CaseService.Api.Endpoints;
 using CIS.Infrastructure.CisMediatR;
+using CIS.Infrastructure.Audit;
 
 bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
@@ -20,8 +21,8 @@ var builder = WebApplication.CreateBuilder(webAppOptions);
 
 var log = builder.CreateStartupLogger();
 
-//try
-//{
+try
+{
     #region register builder
     builder.Services.AddAttributedServices(typeof(Program));
 
@@ -33,6 +34,7 @@ var log = builder.CreateStartupLogger();
     builder
         // logging
         .AddCisLogging()
+        .AddCisAudit()
         .AddCisTracing()
         // authentication
         .AddCisServiceAuthentication()
@@ -41,9 +43,11 @@ var log = builder.CreateStartupLogger();
         // add BE services
         .Services
             // add CIS services
+            .AddRiskIntegrationService()
             .AddSalesArrangementService()
             .AddDocumentOnSAService()
             .AddCodebookService()
+            .AddHouseholdService()
             .AddUserService()
             .AddCisServiceDiscovery()
             // add rollback
@@ -81,7 +85,7 @@ var log = builder.CreateStartupLogger();
 
     log.ApplicationRun();
     app.Run();
-/*}
+}
 catch (Exception ex)
 {
     log.CatchedException(ex);
@@ -89,7 +93,7 @@ catch (Exception ex)
 finally
 {
     LoggingExtensions.CloseAndFlush();
-}*/
+}
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

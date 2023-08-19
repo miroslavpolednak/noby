@@ -72,7 +72,7 @@ public class Address
     /// <summary>
     /// Adresa v řádkovém formátu
     /// </summary>
-    public string? SingleLineAddressPoint { get; init; }
+    public string? SingleLineAddressPoint { get; set; }
 
     /// <summary>
     /// Zda je adresa ověřená jako kontaktní adresa

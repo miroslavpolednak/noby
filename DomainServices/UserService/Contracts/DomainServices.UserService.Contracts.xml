@@ -10,6 +10,12 @@
         <member name="F:DomainServices.UserService.Contracts.GetUserPermissionsRequest.UserIdFieldNumber">
             <summary>Field number for the "UserId" field.</summary>
         </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserRIPAttributesRequest.IdentityFieldNumber">
+            <summary>Field number for the "Identity" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserRIPAttributesRequest.IdentitySchemeFieldNumber">
+            <summary>Field number for the "IdentityScheme" field.</summary>
+        </member>
         <member name="T:DomainServices.UserService.Contracts.v1.UserServiceV1Reflection">
             <summary>Holder for reflection information generated from UserService.v1.proto</summary>
         </member>
@@ -169,7 +175,50 @@
             </summary>
         </member>
         <member name="F:DomainServices.UserService.Contracts.UserInfoObject.IsInternalFieldNumber">
-            <summary>Field number for the "isInternal" field.</summary>
+            <summary>Field number for the "IsInternal" field.</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.IsInternal">
+            <summary>
+            Flag musí být držen na uživateli. Je počítaný z identitního schématu (kde je BrokerID prázdné).
+            </summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserInfoObject.ChannelIdFieldNumber">
+            <summary>Field number for the "ChannelId" field.</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.ChannelId">
+            <summary>
+            Id distribučního kanálu
+            </summary>
+        </member>
+        <member name="T:DomainServices.UserService.Contracts.GetUserRIPAttributesReflection">
+            <summary>Holder for reflection information generated from Messages/GetUserRIPAttributes.proto</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.GetUserRIPAttributesReflection.Descriptor">
+            <summary>File descriptor for Messages/GetUserRIPAttributes.proto</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.PersonIdFieldNumber">
+            <summary>Field number for the "PersonId" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.PersonSurnameFieldNumber">
+            <summary>Field number for the "PersonSurname" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.PersonOrgUnitIdFieldNumber">
+            <summary>Field number for the "PersonOrgUnitId" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.PersonOrgUnitNameFieldNumber">
+            <summary>Field number for the "PersonOrgUnitName" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.PersonJobPostIdFieldNumber">
+            <summary>Field number for the "PersonJobPostId" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.CompanyFieldNumber">
+            <summary>Field number for the "Company" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.DealerCompanyIdFieldNumber">
+            <summary>Field number for the "DealerCompanyId" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.BrokerIdFieldNumber">
+            <summary>Field number for the "BrokerId" field.</summary>
         </member>
     </members>
 </doc>

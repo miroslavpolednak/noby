@@ -32,11 +32,16 @@ internal sealed class CustomerOnSAService
 
     public async Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default)
     {
-        return await _service.GetCustomerAsync(
-            new()
-            {
-                CustomerOnSAId = customerOnSAId
-            }, cancellationToken: cancellationToken);
+        if (_cacheGetCustomer is null || _cacheGetCustomer.CustomerOnSAId != customerOnSAId)
+        {
+            _cacheGetCustomer = await _service.GetCustomerAsync(
+                new()
+                {
+                    CustomerOnSAId = customerOnSAId
+                }, cancellationToken: cancellationToken);
+        }
+
+        return _cacheGetCustomer;
     }
 
     public async Task<List<CustomerOnSA>> GetCustomersByIdentity(Identity identity, CancellationToken cancellationToken = default)
@@ -159,6 +164,22 @@ internal sealed class CustomerOnSAService
     }
 
     #endregion Obligation
+
+    public async Task<ValidateCustomerOnSAIdResponse> ValidateCustomerOnSAId(int customerOnSAId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
+    {
+        if (_cacheValidateCustomerOnSAId is null)
+        {
+            _cacheValidateCustomerOnSAId = await _service.ValidateCustomerOnSAIdAsync(new ValidateCustomerOnSAIdRequest
+            {
+                CustomerOnSAId = customerOnSAId,
+                ThrowExceptionIfNotFound = throwExceptionIfNotFound
+            }, cancellationToken: cancellationToken);
+        }
+        return _cacheValidateCustomerOnSAId;
+    }
+
+    private CustomerOnSA? _cacheGetCustomer;
+    private ValidateCustomerOnSAIdResponse? _cacheValidateCustomerOnSAId;
 
     private readonly Contracts.v1.CustomerOnSAService.CustomerOnSAServiceClient _service;
 

@@ -17,6 +17,7 @@ internal class GetEasFormHandler : IRequestHandler<GetEasFormRequest, GetEasForm
     public async Task<GetEasFormResponse> Handle(GetEasFormRequest request, CancellationToken cancellationToken)
     {
         var config = await _configurationManager.LoadEasFormConfiguration(GetEasFormKey(request), cancellationToken);
+        config.IsCancelled = request.IsCancelled;
 
         var inputParameters = new InputParameters
         {

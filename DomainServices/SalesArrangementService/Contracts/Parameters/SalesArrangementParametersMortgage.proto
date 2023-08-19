@@ -14,6 +14,7 @@ message SalesArrangementParametersMortgage {
 	google.protobuf.Int32Value Agent = 6;
 	google.protobuf.BoolValue AgentConsentWithElCom = 7;
     string Comment = 8;
+	cis.types.NullableGrpcDate FirstSignatureDate = 9;
 
 	message LoanRealEstate {
 		int32 RealEstateTypeId = 1;

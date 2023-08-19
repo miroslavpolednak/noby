@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using DomainServices.RealEstateValuationService.Api.Database;
+using DomainServices.RealEstateValuationService.ExternalServices;
 
 namespace DomainServices.RealEstateValuationService.Api;
 
@@ -9,6 +10,9 @@ internal static class StartupExtensions
     {
         // dbcontext
         builder.AddEntityFramework<RealEstateValuationServiceDbContext>();
+
+        builder.AddExternalService<ExternalServices.PreorderService.V1.IPreorderServiceClient>();
+        builder.AddExternalService<ExternalServices.LuxpiService.V1.ILuxpiServiceClient>();
 
         return builder;
     }

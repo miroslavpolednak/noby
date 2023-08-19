@@ -185,6 +185,61 @@
             Příznak potvrzeného kontaktu
             </summary>
         </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument">
+            <summary>
+            Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.CremDeedOfOwnershipDocumentId">
+            <summary>
+            ID staženého dokumentu listu vlastnictví (LV)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.KatuzId">
+            <summary>
+            KATUZ ID, pětimístné číslo katastrálního území
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.KatuzTitle">
+            <summary>
+            KATUZ, název katastrálního území, RUIAN katastrální území - AddressWhispererBEService|cadastralArea
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.DeedOfOwnershipId">
+            <summary>
+            ISKN ID listu vlastnictví (LV), technický identifikátor katastru
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.DeedOfOwnershipNumber">
+            <summary>
+            Číslo listu vlastnictví (LV)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.Address">
+            <summary>
+            Adresa nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.RealEstateIds">
+            <summary>
+            Unikátní ID nemovitosti ze systému CREM
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.AddressPointId">
+            <summary>
+            ID adresního bodu z našeptávače adres
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocumentWithId.DeedOfOwnershipDocumentId">
+            <summary>
+            Noby ID daného záznamu.Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocumentWithId.DeedOfOwnershipDocument">
+            <summary>
+            Identifikační údaje nemovitosti k Ocenění(bez Noby ID)
+            </summary>
+        </member>
         <member name="T:NOBY.Dto.RealEstateValuation.LoanPurposeDetail">
             <summary>
             Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).
@@ -195,6 +250,31 @@
             ID účelu úvěru podle číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413109663">LoanPurpose (CIS_UCEL_UVERU_INT1)</a>
             </summary>
             <example>[204]</example>
+        </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment">
+            <summary>
+            Příloha k ocenění nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment.RealEstateValuationAttachmentId">
+            <summary>
+            ID přílohy v NOBY
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment.Title">
+            <summary>
+            Uživatelský popis souboru
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment.FileName">
+            <summary>
+            Název souboru
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment.CreatedOn">
+            <summary>
+            Datum vytvoření přílohy
+            </summary>
         </member>
         <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail">
             <summary>
@@ -221,9 +301,9 @@
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationDetail.SpecificDetails">
             <summary>
-            Objekty SpecificDetails jsou řízeny business logikou <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135">Ocenění nemovitosti - varianty nemovitostí</a>.<br />
-            Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.<br />
-            Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.<br />
+            Objekty SpecificDetails jsou řízeny business logikou <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135">Ocenění nemovitosti - varianty nemovitostí</a>.
+            Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.
+            Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
@@ -288,7 +368,7 @@
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.RealEstateStateId">
             <summary>
-            ID stavu nemovitosti. 0 - Unknown, 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
+            ID stavu nemovitosti. 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
             </summary>
             <example>2</example>
         </member>
@@ -396,11 +476,20 @@
             Objekt je použit pouze v případě, že jde o variantu nemovitosti P (Pozemek)
             </summary>
         </member>
-        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelDetails.ParcelNumber">
+        <member name="T:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelNumber">
             <summary>
             Číslo parcely
             </summary>
-            <example>1</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelNumber.Prefix">
+            <summary>
+            Předčíslí čísla parcely
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.SpecificDetails.ParcelNumber.Number">
+            <summary>
+            Číslo parcely
+            </summary>
         </member>
         <member name="T:NOBY.Dto.Workflow.AmendmentsConsultationData">
             <summary>
@@ -412,6 +501,12 @@
             Konzultace: Číslo objednávky ocenění (Atribut je relevantní jen pro konzultaci Dotaz k ocenění a pro konzultaci Vyhotovení ZOV.)
             </summary>
             <example>123556</example>
+        </member>
+        <member name="P:NOBY.Dto.Workflow.AmendmentsConsultationData.TaskSubtypeId">
+            <summary>
+            ID typu konzultace
+            </summary>
+            <example>1</example>
         </member>
         <member name="P:NOBY.Dto.Workflow.AmendmentsPriceException.Expiration">
             <summary>
@@ -501,11 +596,11 @@
             </summary>
             <example>S00000014139920</example>
         </member>
-        <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.SignatureType">
+        <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.SignatureTypeId">
             <summary>
-            Podepisování: způsob podpisu (0 - papírové podepisování, 1 - elektronické podepisování)
+            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
             </summary>
-            <example>0</example>
+            <example>1</example>
         </member>
         <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.Expiration">
             <summary>
@@ -650,12 +745,6 @@
             SB ID úkolu, není zobrazeno na FE UI
             </summary>
             <example>22456</example>
-        </member>
-        <member name="P:NOBY.Dto.Workflow.WorkflowTaskDetail.PerformerLogin">
-            <summary>
-            Login zadavatele/zpracovatele
-            </summary>
-            <example>14</example>
         </member>
         <member name="P:NOBY.Dto.Workflow.WorkflowTaskDetail.PerformerName">
             <summary>

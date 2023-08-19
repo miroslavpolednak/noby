@@ -70,6 +70,9 @@ public record Partner
     [Column("Misto")]
     public string? City { get; init; }
 
+    [Column("ZemeId")]
+    public int? CountryId { get; init; }
+
     [Column("VypisyUlice")]
     public string? MailingStreet { get; init; }
 
@@ -84,6 +87,9 @@ public record Partner
 
     [Column("VypisyMisto")]
     public string? MailingCity { get; init; }
+
+    [Column("VypisyZemeId")]
+    public int? MailingCountryId { get; init; }
 
     [Column("KBId")]
     public long? KbId { get; init; }

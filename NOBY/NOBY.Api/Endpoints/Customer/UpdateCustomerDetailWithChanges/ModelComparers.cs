@@ -34,6 +34,11 @@ internal static class ModelComparers
         writeDifferencesToDelta(_rootCompareLogic.Compare(original, request), delta);
     }
 
+    public static bool AreObjectsEqual<T>(T? request, T? original)
+    {
+        return _basicCompareLogic.Compare(original, request).AreEqual;
+    }
+
     public static void CompareObjects<T>(T? request, T? original, string propertyName, IDictionary<string, Object> delta)
     {
         if (!_basicCompareLogic.Compare(original, request).AreEqual)
@@ -54,6 +59,7 @@ internal static class ModelComparers
         _basicCompareLogic.Config.IgnoreCollectionOrder = true;
         _basicCompareLogic.Config.CompareChildren = true;
         _basicCompareLogic.Config.IgnoreProperty<CIS.Foms.Types.Address>(x => x.IsPrimary);
+        _basicCompareLogic.Config.IgnoreProperty<CIS.Foms.Types.Address>(x => x.SingleLineAddressPoint);
 
         var spec = new Dictionary<Type, IEnumerable<string>>();
         spec.Add(typeof(CIS.Foms.Types.Address), new string[] { "AddressTypeId" });

@@ -1,4 +1,3 @@
-using DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V2.Contracts;
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.RiskCharacteristics.V2.Contracts;
 using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using DomainServices.CodebookService.Contracts.v1;
@@ -20,8 +19,8 @@ internal sealed class DstiRequestMapper
             LoanApplicationProduct = new()
             {
                 ProductClusterCode = riskApplicationType.C4MAplCode,
-                Annuity = request.Product!.LoanPaymentAmount.ToAmount(),
-                AmountRequired = request.Product!.LoanAmount.ToAmount()
+                Annuity = request.Product!.LoanPaymentAmount.ToRiskCharacteristicsAmount(),
+                AmountRequired = request.Product!.LoanAmount.ToRiskCharacteristicsAmount()
             },
             LoanApplicationHousehold = mapHouseholds(request.Households!, riskApplicationType.MandantId)
         };
@@ -47,10 +46,10 @@ internal sealed class DstiRequestMapper
         => customers.Select(customer => new _C4M.LoanApplicationCounterparty
         {
             CustomerId = string.IsNullOrEmpty(customer.PrimaryCustomerId) ? null : _C4M.ResourceIdentifier.CreateCustomerId(customer.PrimaryCustomerId, !mandantId.HasValue || (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS").ToC4M(),
-            MonthlyEmploymentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 1).Sum(t => t.Amount) ?? 0).ToAmount(),
-            MonthlyRentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 3).Sum(t => t.Amount) ?? 0).ToAmount(),
-            EntrepreneurAnnualIncomeAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 2).Sum(t => t.Amount) ?? 0).ToAmount(),
-            MonthlyOtherIncomeAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 4).Sum(t => t.Amount) ?? 0).ToAmount()
+            MonthlyEmploymentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 1).Sum(t => t.Amount) ?? 0).ToRiskCharacteristicsAmount(),
+            MonthlyRentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 3).Sum(t => t.Amount) ?? 0).ToRiskCharacteristicsAmount(),
+            EntrepreneurAnnualIncomeAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 2).Sum(t => t.Amount) ?? 0).ToRiskCharacteristicsAmount(),
+            MonthlyOtherIncomeAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 4).Sum(t => t.Amount) ?? 0).ToRiskCharacteristicsAmount()
         })
         .ToList();
 
@@ -61,14 +60,14 @@ internal sealed class DstiRequestMapper
             new()
             {
                 ProductClusterCode = _C4M.DSTICreditLiabilitiesSummaryType.AD,
-                Amount = sumObligations(liabilitiesFlatten, "AD", isExternal, _fcSumObligationsAmount).ToAmount(),
-                AmountConsolidated = sumObligations(liabilitiesFlatten, "AD", isExternal, _fcSumObligationsAmountConsolidated).ToAmount()
+                Amount = sumObligations(liabilitiesFlatten, "AD", isExternal, _fcSumObligationsAmount).ToRiskCharacteristicsAmount(),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "AD", isExternal, _fcSumObligationsAmountConsolidated).ToRiskCharacteristicsAmount()
             },
             new()
             {
                 ProductClusterCode = _C4M.DSTICreditLiabilitiesSummaryType.CC,
-                Amount = sumObligations(liabilitiesFlatten, "CC", isExternal, _fcSumObligationsAmount).ToAmount(),
-                AmountConsolidated = sumObligations(liabilitiesFlatten, "CC", isExternal, _fcSumObligationsAmountConsolidated).ToAmount()
+                Amount = sumObligations(liabilitiesFlatten, "CC", isExternal, _fcSumObligationsAmount).ToRiskCharacteristicsAmount(),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "CC", isExternal, _fcSumObligationsAmountConsolidated).ToRiskCharacteristicsAmount()
             }
        };
 
@@ -78,14 +77,14 @@ internal sealed class DstiRequestMapper
             new()
             {
                 ProductClusterCode = _C4M.LoanInstallmentsSummaryType.CL,
-                Amount = sumObligations(liabilitiesFlatten, "CL", isExternal, _fcSumObligationsInstallment).ToAmount(),
-                AmountConsolidated = sumObligations(liabilitiesFlatten, "CL", isExternal, _fcSumObligationsInstallmentConsolidated).ToAmount()
+                Amount = sumObligations(liabilitiesFlatten, "CL", isExternal, _fcSumObligationsInstallment).ToRiskCharacteristicsAmount(),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "CL", isExternal, _fcSumObligationsInstallmentConsolidated).ToRiskCharacteristicsAmount()
             },
             new()
             {
                 ProductClusterCode = _C4M.LoanInstallmentsSummaryType.ML,
-                Amount = sumObligations(liabilitiesFlatten, "ML", isExternal, _fcSumObligationsInstallment).ToAmount(),
-                AmountConsolidated = sumObligations(liabilitiesFlatten, "ML", isExternal, _fcSumObligationsInstallmentConsolidated).ToAmount()
+                Amount = sumObligations(liabilitiesFlatten, "ML", isExternal, _fcSumObligationsInstallment).ToRiskCharacteristicsAmount(),
+                AmountConsolidated = sumObligations(liabilitiesFlatten, "ML", isExternal, _fcSumObligationsInstallmentConsolidated).ToRiskCharacteristicsAmount()
             }
        };
     #endregion liabilities

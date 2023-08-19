@@ -9,12 +9,6 @@ internal sealed class GetCaseByIdHandler
     {
         var result = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
-        // perm check
-        if (result.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
-        {
-            throw new CisAuthorizationException();
-        }
-
         var model = await _converter.FromContract(result);
         
         // case owner

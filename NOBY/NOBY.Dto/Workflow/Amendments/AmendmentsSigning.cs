@@ -13,12 +13,11 @@ public class AmendmentsSigning
     public string FormId { get; set; } = null!;
 
     /// <summary>
-    /// Podepisování: způsob podpisu (0 - papírové podepisování, 1 - elektronické podepisování)
+    /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
     /// </summary>
-    /// <example>0</example>
-    public SignatureType SignatureType { get; set; }
-
-
+    /// <example>1</example>
+    public int? SignatureTypeId { get; set; }
+    
     /// <summary>
     /// Podepisování: Lhůta pro zajištění podpisu
     /// </summary>
@@ -49,10 +48,4 @@ public class AmendmentsSigning
     /// </summary>
     /// <example>01_23_046_111203_SF_0001</example>
     public string ProposalForEntry { get; set; } = null!;
-}
-
-public enum SignatureType
-{
-    Paper = 0,
-    Digital = 1
 }

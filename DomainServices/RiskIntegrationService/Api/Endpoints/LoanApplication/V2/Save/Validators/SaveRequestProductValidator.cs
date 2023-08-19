@@ -9,10 +9,10 @@ internal sealed class SaveRequestProductValidator
     {
         RuleFor(t => t.ProductTypeId)
             .GreaterThan(0)
-            .WithErrorCode("Product.ProductTypeId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
         RuleFor(t => t.LoanKindId)
             .GreaterThan(0)
-            .WithErrorCode("Product.LoanKindId");
+            .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
     }
 }

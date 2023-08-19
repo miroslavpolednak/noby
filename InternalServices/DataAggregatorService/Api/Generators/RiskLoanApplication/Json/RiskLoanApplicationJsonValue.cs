@@ -7,7 +7,9 @@ internal class RiskLoanApplicationJsonValue : RiskLoanApplicationJsonObject
 {
     public required string DataFieldPath { get; init; }
 
-    public override void Add(string[] propertyPath, string dataFieldPath)
+    public required bool UseDefaultInsteadOfNull { get; init; }
+
+    public override void Add(string[] propertyPath, string dataFieldPath, bool useDefaultInsteadOfNull)
     {
         throw new NotImplementedException();
     }
@@ -16,7 +18,16 @@ internal class RiskLoanApplicationJsonValue : RiskLoanApplicationJsonObject
     {
         var value = MapperHelper.GetValue(data, DataFieldPath);
 
-        return value switch
+        if (value is not null || !UseDefaultInsteadOfNull)
+            return GetValue(value);
+        
+        var nullableType = Nullable.GetUnderlyingType(MapperHelper.GetType(data, DataFieldPath));
+
+        return nullableType is not null ? Activator.CreateInstance(nullableType) : GetValue(value);
+    }
+
+    private static object? GetValue(object? value) =>
+        value switch
         {
             GrpcDecimal grpcDecimal => (decimal)grpcDecimal,
             NullableGrpcDecimal nullableGrpcDecimal => (decimal?)nullableGrpcDecimal,
@@ -24,5 +35,4 @@ internal class RiskLoanApplicationJsonValue : RiskLoanApplicationJsonObject
             NullableGrpcDate nullableGrpcDate => (DateTime?)nullableGrpcDate,
             _ => value
         };
-    }
 }

@@ -39,7 +39,7 @@ public sealed class NobyAuthorizeAttribute
                 .Any(t => perms.Contains(t.Value))
             )
             {
-                throw new CisAuthorizationException();
+                throw new CisAuthorizationException($"User does not have all of claims {string.Join(",", perms)}");
             }
         }
     }

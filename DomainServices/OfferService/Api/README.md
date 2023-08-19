@@ -17,6 +17,7 @@ grpcurl -insecure -d "{\"OfferId\":6}" -H "Authorization: Basic YTph" 127.0.0.1:
 grpcurl -insecure -d "{\"OfferId\":6}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/GetMortgageOfferDetail
 grpcurl -insecure -d "{\"OfferId\":6}" -H "Authorization: Basic YTph" 172.30.35.51:30006 DomainServices.OfferService.v1.OfferService/GetMortgageOfferFPSchedule
 grpcurl -insecure -d "{\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3727\", \"BasicParameters\": {}, \"SimulationInputs\": {\"ProductTypeId\":20001, \"LoanKindId\":2000, \"LoanAmount\":{\"units\":3150020},\"LoanDuration\":36, \"GuaranteeDateFrom\": {\"year\":2022,\"month\":5,\"day\":15 }, \"InterestRateDiscount\": {\"units\":1}, \"FixedRatePeriod\": 24, \"CollateralAmount\": {\"units\":6500000}, \"DrawingDuration\": 0, \"LoanPurposes\":[{\"LoanPurposeId\":201,\"Sum\":{\"units\":1000000}}, {\"LoanPurposeId\":202,\"Sum\":{\"units\":2000000}}], \"MarketingActions\":{\"Domicile\": true} }}" -H "Authorization: Basic YTph" 127.0.0.1:5020 DomainServices.OfferService.v1.OfferService/SimulateMortgage
+grpcurl -insecure -d "{\"OfferId\":5630}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30006 DomainServices.OfferService.v1.OfferService/GetOfferDeveloper
 
 ## run batch
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"

@@ -3,5 +3,5 @@ package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 message GetRealEstateValuationDetailByOrderIdRequest {
-    int32 OrderId = 1;
+    int64 OrderId = 1;
 }

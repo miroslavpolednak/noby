@@ -1,8 +1,10 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices;
+using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
 using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using ExternalServices;
+using ExternalServices.ESignatureQueues;
 
 namespace DomainServices.DocumentOnSAService.Api.Extensions;
 
@@ -24,8 +26,12 @@ internal static class StartupExtensions
                     .AddCodebookService()
                     .AddDataAggregatorService()
                     .AddDocumentArchiveService()
-                    .AddProductService();
-        
+                    .AddProductService()
+                    .AddCaseService()
+                    .AddCustomerService()
+                    .AddUserService()
+                    .AddDocumentGeneratorService();
+
         // EAS svc
         builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
 
@@ -35,10 +41,15 @@ internal static class StartupExtensions
         // ePodpisy
         builder.AddExternalService<ExternalServices.ESignatures.V1.IESignaturesClient>();
         
+        // ePodpisy fronta
+        builder.AddExternalService<ExternalServices.ESignatureQueues.V1.IESignatureQueuesRepository>();
+        
         // registrace background jobu
         builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
         builder.AddCisBackgroundServiceCustomConfiguration<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
-       
+
+        builder.AddCisBackgroundService<UpdateDocumentStatusJob>();
+
         return builder;
     }
 }

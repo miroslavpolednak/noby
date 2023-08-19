@@ -6,7 +6,6 @@ using CIS.InternalServices;
 using CIS.InternalServices.DocumentGeneratorService.Api;
 using CIS.InternalServices.DocumentGeneratorService.Api.Services;
 using DomainServices;
-using Serilog;
 
 var runAsWinSvc = args.Any(t => t.Equals("winsvc"));
 
@@ -20,14 +19,15 @@ var log = builder.CreateStartupLogger();
 
 try
 {
+    var config = builder.Configuration.GetRequiredSection("GeneratorConfiguration").Get<GeneratorConfiguration>()!;
+
+    GeneratorVariables.Init(config);
+
     builder.AddCisEnvironmentConfiguration(); // globalni nastaveni prostredi
-    builder
-           .AddCisCoreFeatures()
+    builder.AddCisCoreFeatures()
            .AddCisLogging()
            .AddCisTracing()
            .AddCisServiceAuthentication();
-
-    builder.Services.Configure<GeneratorConfiguration>(builder.Configuration.GetRequiredSection("GeneratorConfiguration"));
 
     builder.Services
            .AddCisServiceDiscovery()
@@ -54,11 +54,14 @@ try
 
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseCisServiceUserContext();
 
     app.MapCisGrpcHealthChecks();
 
     app.MapGrpcService<DocumentGeneratorService>();
     app.MapGrpcReflectionService();
+
+    Document.AddLicense("DPS10NEDLDCHHBkifnavglbvMUnz6cOsK3rihyH8moPETXqm86GidIy9yKvju+7UztxVoPJRLgKM5MmmDgsKwmDSRjs5hznpB2Lw");
 
     log.ApplicationRun();
     app.Run();

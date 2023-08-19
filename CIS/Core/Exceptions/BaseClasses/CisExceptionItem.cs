@@ -12,4 +12,9 @@ public record CisExceptionItem(string ExceptionCode, string Message)
     public CisExceptionItem(int exceptionCode, string message)
         : this(exceptionCode.ToString(CultureInfo.InvariantCulture), message)
     { }
+
+    public override string ToString()
+    {
+        return $"{ExceptionCode}: {Message}";
+    }
 }

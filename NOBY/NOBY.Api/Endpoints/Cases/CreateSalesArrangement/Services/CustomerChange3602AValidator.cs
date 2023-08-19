@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types.Enums;
+﻿using CIS.Foms.Enums;
 using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
@@ -31,7 +31,7 @@ internal sealed class CustomerChange3602AValidator
         var salesArrangementsForCase = await salesArrangementService.GetSalesArrangementList(_request.CaseId, cancellationToken);
         if (!salesArrangementsForCase.SalesArrangements.Any(t => t.SalesArrangementTypeId == (int)SalesArrangementTypes.CustomerChange))
         {
-            throw new NobyValidationException(90014);
+            throw new NobyValidationException(90015);
         }
 
         return new CustomerChange3602ABuilder(_logger, _request, _httpContextAccessor);

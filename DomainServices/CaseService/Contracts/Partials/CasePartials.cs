@@ -75,3 +75,7 @@ public partial class CreateTaskRequest
 public partial class ValidateCaseIdRequest
     : MediatR.IRequest<ValidateCaseIdResponse>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class CancelCaseRequest
+    : MediatR.IRequest<CancelCaseResponse>, CIS.Core.Validation.IValidatableRequest
+{ }

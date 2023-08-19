@@ -21,7 +21,6 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int NotFound12018 = 12018;
     public const int InvalidArgument12019 = 12019;
     public const int InvalidArgument12020 = 12020;
-    public const int InvalidArgument12021 = 12021;
     public const int PaymentAccountNotFound = 12022;
     public const int ContractNumberNotFound = 12023;
     public const int NotFound12024 = 12024;
@@ -47,8 +46,7 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { InvalidArgument12017, "Relationship ContractRelationshipTypeId is not provided." },	
             { NotFound12018, "Relationship with ProductId {0} and PartnerId {1} not found." },	
             { InvalidArgument12019, "Unsupported product type." },	
-            { InvalidArgument12020, "Customers for product not found." },	
-            { InvalidArgument12021, "Some customers do not have KB ID." },
+            { InvalidArgument12020, "Customers for product not found." },
             { PaymentAccountNotFound, "Payment account {PropertyValue} not found." },
             { ContractNumberNotFound, "Contract number {PropertyValue} not found." },
             { NotFound12024, "Covenant not found." },
