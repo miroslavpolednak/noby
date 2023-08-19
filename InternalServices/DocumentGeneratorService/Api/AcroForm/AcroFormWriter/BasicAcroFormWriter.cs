@@ -48,11 +48,17 @@ public class BasicAcroFormWriter : IAcroFormWriter
     {
         var pdfFormField = pdfDocument.Form.Fields[data.Key];
 
-        //Sometimes it throws index out of range exception, dunno
-        var page = document.Pages[Math.Min(document.Pages.Count - 1, Math.Max(pdfFormField.GetOriginalPageNumber() - 1, 0))];
+        try
+        {
+            var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
 
-        var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), pdfFormField.Font.ParseOpenTypeFont(), pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
-        label.Width -= 2;
+            var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), pdfFormField.Font.ParseOpenTypeFont(), pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
+            label.Width -= 2;
+        }
+        catch (Exception ex) when (ex is IndexOutOfRangeException or NullReferenceException)
+        {
+            throw new CisValidationException($"AcroField {data.Key} has incorrect formatting (probably multiple Acrofields with the same name or something similar)");
+        }
     }
 
     private string GetFieldValue(GenerateDocumentPartData value)
