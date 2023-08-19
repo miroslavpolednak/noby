@@ -47,7 +47,9 @@ public class BasicAcroFormWriter : IAcroFormWriter
     private void CreateAlignedText(PdfDocument pdfDocument, Document document, GenerateDocumentPartData data)
     {
         var pdfFormField = pdfDocument.Form.Fields[data.Key];
-        var page = document.Pages[pdfFormField.GetOriginalPageNumber() - 1];
+
+        //Sometimes it throws index out of range exception, dunno
+        var page = document.Pages[Math.Min(document.Pages.Count - 1, Math.Max(pdfFormField.GetOriginalPageNumber() - 1, 0))];
 
         var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), pdfFormField.Font.ParseOpenTypeFont(), pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
         label.Width -= 2;
