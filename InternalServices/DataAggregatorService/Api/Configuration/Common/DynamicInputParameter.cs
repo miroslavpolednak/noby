@@ -2,11 +2,11 @@
 
 internal class DynamicInputParameter
 {
-    public string InputParameterName { get; set; } = null!;
+    public string InputParameter { get; init; } = null!;
 
-    public DataSource TargetDataSource { get; set; }
+    public DataService TargetDataService { get; init; }
 
-    public DataSource SourceDataSource { get; set; }
+    public DataService SourceDataService { get; init; }
 
-    public string SourceFieldPath { get; set; } = null!;
+    public string SourceFieldPath { get; init; } = null!;
 }

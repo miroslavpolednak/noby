@@ -16,7 +16,7 @@ internal class DocumentOnSaServiceWrapper : IServiceWrapper
         _codebookService = codebookService;
     }
 
-    public DataSource DataSource => DataSource.DocumentOnSa;
+    public DataService DataService => DataService.DocumentOnSa;
 
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {

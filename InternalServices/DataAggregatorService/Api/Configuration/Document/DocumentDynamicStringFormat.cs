@@ -2,11 +2,11 @@
 
 internal class DocumentDynamicStringFormat
 {
-    public int SourceFieldId { get; init; }
+    public string AcroFieldName { get; init; } = null!;
 
-    public string Format { get; init; } = null!;
+    public string StringFormat { get; init; } = null!;
 
     public int Priority { get; init; }
 
-    public ICollection<DocumentDynamicStringFormatCondition> Conditions { get; init; } = new List<DocumentDynamicStringFormatCondition>();
+    public ICollection<DocumentDynamicStringFormatCondition> Conditions { get; } = new List<DocumentDynamicStringFormatCondition>();
 }

@@ -15,22 +15,22 @@ internal class DynamicStringFormatParser
         _aggregatedData = aggregatedData;
     }
 
-    public static string? ParseStringFormat(IGrouping<int, DocumentDynamicStringFormat> dynamicStringFormats, AggregatedData aggregatedData)
+    public static string? ParseStringFormat(IGrouping<string, DocumentDynamicStringFormat> dynamicStringFormats, AggregatedData aggregatedData)
     {
         var parser = new DynamicStringFormatParser(aggregatedData);
 
         return dynamicStringFormats.OrderBy(d => d.Priority)
                                    .Where(d => parser.ValidateCondition(d.Conditions))
-                                   .Select(d => d.Format).FirstOrDefault();
+                                   .Select(d => d.StringFormat).FirstOrDefault();
     }
 
     private bool ValidateCondition(IEnumerable<DocumentDynamicStringFormatCondition> conditions) =>
-        conditions.GroupBy(c => CollectionPathHelper.GetCollectionPath(c.SourceFieldPath))
+        conditions.GroupBy(c => CollectionPathHelper.GetCollectionPath(c.FieldPath))
                   .All(group => group.Key == string.Empty ? group.All(ValidateConditionValue) : ValidateConditionCollection(group));
 
     private bool ValidateConditionValue(DocumentDynamicStringFormatCondition condition)
     {
-        var value = MapperHelper.GetValue(_aggregatedData, condition.SourceFieldPath);
+        var value = MapperHelper.GetValue(_aggregatedData, condition.FieldPath);
 
         return CompareValueToStringValue(value, condition.EqualToValue);
     }
@@ -44,7 +44,7 @@ internal class DynamicStringFormatParser
         {
             return groupedConditions.All(condition =>
             {
-                var value = MapperHelper.GetValue(obj, CollectionPathHelper.GetCollectionMemberPath(condition.SourceFieldPath));
+                var value = MapperHelper.GetValue(obj, CollectionPathHelper.GetCollectionMemberPath(condition.FieldPath));
 
                 return CompareValueToStringValue(value, condition.EqualToValue);
             });

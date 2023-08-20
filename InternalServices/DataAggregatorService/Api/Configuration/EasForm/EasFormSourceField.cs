@@ -1,19 +1,10 @@
 ﻿namespace CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
 
-internal class EasFormSourceField
+internal class EasFormSourceField : SourceFieldBase
 {
     public int? SourceFieldId { get; init; }
 
-    public DataSource DataSource { get; init; }
-
-    public EasFormType FormType { get; private set; }
-
-    public string FormTypeString
-    {
-        set => FormType = Enum.Parse<EasFormType>(value);
-    }
-
-    public string FieldPath { get; init; } = null!;
+    public EasFormType EasFormType { get; init; }
 
     public string JsonPropertyName { get; init; } = null!;
 }

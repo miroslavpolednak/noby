@@ -1,6 +1,6 @@
 ﻿namespace CIS.InternalServices.DataAggregatorService.Api.Configuration.Common;
 
-internal enum DataSource
+internal enum DataService
 {
     General = 0,
     SalesArrangementService,

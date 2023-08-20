@@ -12,7 +12,7 @@ internal class OfferServiceWrapper : IServiceWrapper
         _offerService = offerService;
     }
 
-    public DataSource DataSource => DataSource.OfferService;
+    public DataService DataService => DataService.OfferService;
 
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {

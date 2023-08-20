@@ -4,14 +4,14 @@ internal class DataLoaderStatus
 {
     private readonly object _remainingDataSourcesSyncRoot = new();
 
-    public DataLoaderStatus(IEnumerable<DataSource> requestedDataSources)
+    public DataLoaderStatus(IEnumerable<DataService> requestedDataSources)
     {
-        RemainingDataSources = new SynchronizedCollection<DataSource>(_remainingDataSourcesSyncRoot, requestedDataSources);
+        RemainingDataSources = new SynchronizedCollection<DataService>(_remainingDataSourcesSyncRoot, requestedDataSources);
     }
 
-    public SynchronizedCollection<DataSource> LoadedDataSources { get; } = new();
+    public SynchronizedCollection<DataService> LoadedDataSources { get; } = new();
 
-    public SynchronizedCollection<DataSource> RemainingDataSources { get; }
+    public SynchronizedCollection<DataService> RemainingDataSources { get; }
 
     public required List<DynamicInputParameter> RelatedInputParameters { get; init; }
 
@@ -19,11 +19,11 @@ internal class DataLoaderStatus
 
     public required AggregatedData AggregatedData { get; init; }
 
-    public void MarkAsLoaded(DataSource dataSource)
+    public void MarkAsLoaded(DataService dataService)
     {
-        RemainingDataSources.Remove(dataSource);
-        LoadedDataSources.Add(dataSource);
+        RemainingDataSources.Remove(dataService);
+        LoadedDataSources.Add(dataService);
     }
 
-    public ICollection<DataSource> GetRemainingDataSources() => RemainingDataSources.Except(RelatedInputParameters.Select(p => p.TargetDataSource)).ToList();
+    public ICollection<DataService> GetRemainingDataSources() => RemainingDataSources.Except(RelatedInputParameters.Select(p => p.TargetDataService)).ToList();
 }

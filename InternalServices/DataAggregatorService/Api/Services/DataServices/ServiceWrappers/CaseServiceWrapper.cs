@@ -12,7 +12,7 @@ internal class CaseServiceWrapper : IServiceWrapper
         _caseService = caseService;
     }
 
-    public DataSource DataSource => DataSource.CaseService;
+    public DataService DataService => DataService.CaseService;
 
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {

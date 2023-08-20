@@ -29,12 +29,12 @@ public class IntegrationTestBase
 
     public IntegrationTestBase()
     {
-        Fixture = new WebApplicationFactoryFixture<Program>();
+        Fixture = new WebApplicationFactoryFixture<DataAggregatorService.Api.Program>();
 
         ConfigureWebHost();
     }
 
-    public WebApplicationFactoryFixture<Program> Fixture { get; }
+    public WebApplicationFactoryFixture<DataAggregatorService.Api.Program> Fixture { get; }
 
     protected DataAggregatorServiceClient CreateGrpcClient() => Fixture.CreateGrpcClient<DataAggregatorServiceClient>(true);
 

@@ -1,7 +1,4 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
-using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
-using CIS.InternalServices.DataAggregatorService.Api.Configuration.RiskLoanApplication;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
@@ -20,11 +17,11 @@ internal class CachedConfigurationManager : IConfigurationManager
         _cacheEntryOptions = new MemoryCacheEntryOptions { AbsoluteExpiration = DateTime.UtcNow.AddSeconds(configuration.CacheExpirationSeconds) };
     }
 
-    public Task<DocumentConfiguration> LoadDocumentConfiguration(DocumentKey documentKey, CancellationToken cancellationToken)
+    public Task<Document.DocumentConfiguration> LoadDocumentConfiguration(Document.DocumentKey documentKey, CancellationToken cancellationToken)
     {
         return _memoryCache.GetOrCreateAsync(documentKey, LoadConfiguration)!;
 
-        Task<DocumentConfiguration> LoadConfiguration(ICacheEntry cacheEntry)
+        Task<Document.DocumentConfiguration> LoadConfiguration(ICacheEntry cacheEntry)
         {
             cacheEntry.SetOptions(_cacheEntryOptions);
 
@@ -32,11 +29,11 @@ internal class CachedConfigurationManager : IConfigurationManager
         }
     }
 
-    public Task<EasFormConfiguration> LoadEasFormConfiguration(EasFormKey easFormKey, CancellationToken cancellationToken)
+    public Task<EasForm.EasFormConfiguration> LoadEasFormConfiguration(EasForm.EasFormKey easFormKey, CancellationToken cancellationToken)
     {
         return _memoryCache.GetOrCreateAsync(easFormKey, LoadConfiguration)!;
 
-        Task<EasFormConfiguration> LoadConfiguration(ICacheEntry cacheEntry)
+        Task<EasForm.EasFormConfiguration> LoadConfiguration(ICacheEntry cacheEntry)
         {
             cacheEntry.SetOptions(_cacheEntryOptions);
 
@@ -45,11 +42,11 @@ internal class CachedConfigurationManager : IConfigurationManager
     }
 
     private static readonly object _riskLoanApplicationKey = new();
-    public Task<RiskLoanApplicationConfiguration> LoadRiskLoanApplicationConfiguration(CancellationToken cancellationToken)
+    public Task<ConfigurationBase<RiskLoanApplication.RiskLoanApplicationSourceField>> LoadRiskLoanApplicationConfiguration(CancellationToken cancellationToken)
     {
         return _memoryCache.GetOrCreateAsync(_riskLoanApplicationKey, LoadConfiguration)!;
 
-        Task<RiskLoanApplicationConfiguration> LoadConfiguration(ICacheEntry cacheEntry)
+        Task<ConfigurationBase<RiskLoanApplication.RiskLoanApplicationSourceField>> LoadConfiguration(ICacheEntry cacheEntry)
         {
             cacheEntry.SetOptions(_cacheEntryOptions);
 

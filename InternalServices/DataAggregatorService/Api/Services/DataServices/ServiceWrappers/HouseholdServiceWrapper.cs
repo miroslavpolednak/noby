@@ -19,7 +19,7 @@ internal class HouseholdServiceWrapper : IServiceWrapper, IDisposable
         _customerOnSAService = customerOnSAService;
     }
 
-    public DataSource DataSource => DataSource.HouseholdService;
+    public DataService DataService => DataService.HouseholdService;
 
     public void Dispose()
     {
