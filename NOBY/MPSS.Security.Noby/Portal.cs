@@ -35,6 +35,20 @@ internal sealed class Portal
         return CookieRepository.GetCookieForWrite(user, new CookieValidator(_contextAccessor.HttpContext!), _configuration, _logger);
     }
 
+    public int? GetIdentityFromCookie(string cookieValue)
+    {
+        // vytvorit cookie validator - trida obsahujici validacni informace o pozadavku
+        CookieValidator validator = new CookieValidator();
+        validator.DisableValidation = true;
+
+        // dekodovani cookie
+        ISecurityCookieFormatter formatter = SecurityCookieFactory.GetFormatter(_configuration, _logger);
+        
+        var user = formatter.Decode(cookieValue, validator);
+
+        return user?.ID;
+    }
+
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly Configuration _configuration;
     private readonly ILogger<IPortal> _logger;

@@ -2,6 +2,8 @@
 
 public interface IPortal
 {
+    int? GetIdentityFromCookie(string cookieValue);
+
     string CreateCookieValue(
         string cpm, /* CPM uzivatele */
         string icp, /* ICP uzivatele */
