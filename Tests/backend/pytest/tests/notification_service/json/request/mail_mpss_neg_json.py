@@ -371,7 +371,7 @@ json_bad_req_mail_mpss_empty_party_from = \
     "content": {
       "format": "application/mht",
       "language": "cs",
-      "text": "json_req_mail_mpss_empty_party"
+      "text": "json_bad_req_mail_mpss_empty_party_from"
     },
     "attachments": [],
     "identifier": {
@@ -409,7 +409,7 @@ json_bad_req_mail_mpss_both_party_from = \
     "content": {
       "format": "application/mht",
       "language": "cs",
-      "text": "json_req_mail_mpss_both_party"
+      "text": "json_bad_req_mail_mpss_both_party_from"
     },
     "attachments": [],
     "identifier": {

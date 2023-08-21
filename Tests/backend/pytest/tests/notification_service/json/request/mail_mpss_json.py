@@ -422,7 +422,7 @@ json_req_mail_mpss_null_party_from = \
     "content": {
       "format": "application/mht",
       "language": "cs",
-      "text": "json_req_mail_mpss_null_party"
+      "text": "json_req_mail_mpss_null_party_from"
     },
     "attachments": [],
     "identifier": {
@@ -451,7 +451,7 @@ json_req_mail_mpss_without_party_from = \
     "content": {
       "format": "application/mht",
       "language": "cs",
-      "text": "json_req_mail_mpss_withnout_party"
+      "text": "json_req_mail_mpss_without_party_from"
     },
     "attachments": [],
     "identifier": {
