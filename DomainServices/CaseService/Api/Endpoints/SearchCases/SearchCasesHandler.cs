@@ -81,7 +81,7 @@ internal sealed class SearchCasesHandler
         // hledani podle retezce
         if (!string.IsNullOrEmpty(request.SearchTerm))
         {
-            if (request.SearchTerm.Length < 11 && int.TryParse(request.SearchTerm, out int searchCaseId))
+            if (long.TryParse(request.SearchTerm, out long searchCaseId))
                 query = query.Where(t => t.CaseId == searchCaseId);
             else
                 query = query.Where(t => t.Name.Contains(request.SearchTerm) || t.ContractNumber!.Contains(request.SearchTerm));
