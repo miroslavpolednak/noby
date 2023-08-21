@@ -87,6 +87,16 @@ ALTER ROLE [db_ddladmin] ADD MEMBER [VSSKB\kb2mp_DevOps]
 GRANT ALTER ON SCHEMA::[dbo] TO [VSSKB\kb2mp_DevOps]
 GRANT CONTROL ON SCHEMA::[dbo] TO [VSSKB\kb2mp_DevOps]
 
+
+use [NobyAudit]
+CREATE USER [VSSKB\kb2mp_DevOps] FOR LOGIN [VSSKB\kb2mp_DevOps]
+ALTER ROLE [db_backupoperator] ADD MEMBER [VSSKB\kb2mp_DevOps]
+ALTER ROLE [db_datareader] ADD MEMBER [VSSKB\kb2mp_DevOps]
+ALTER ROLE [db_datawriter] ADD MEMBER [VSSKB\kb2mp_DevOps]
+ALTER ROLE [db_ddladmin] ADD MEMBER [VSSKB\kb2mp_DevOps]
+GRANT ALTER ON SCHEMA::[dbo] TO [VSSKB\kb2mp_DevOps]
+GRANT CONTROL ON SCHEMA::[dbo] TO [VSSKB\kb2mp_DevOps]
+
  
 use [NotificationService]
 CREATE USER [VSSKB\kb2mp_DevOps] FOR LOGIN [VSSKB\kb2mp_DevOps]
@@ -117,4 +127,12 @@ ALTER ROLE [db_ddladmin] ADD MEMBER [VSSKB\kb2mp_DevOps]
 GRANT ALTER ON SCHEMA::[dbo] TO [VSSKB\kb2mp_DevOps]
 GRANT CONTROL ON SCHEMA::[dbo] TO [VSSKB\kb2mp_DevOps]
 
- 
+
+use [RealEstateValuationService]
+CREATE USER [VSSKB\kb2mp_DevOps] FOR LOGIN [VSSKB\kb2mp_DevOps]
+ALTER ROLE [db_backupoperator] ADD MEMBER [VSSKB\kb2mp_DevOps]
+ALTER ROLE [db_datareader] ADD MEMBER [VSSKB\kb2mp_DevOps]
+ALTER ROLE [db_datawriter] ADD MEMBER [VSSKB\kb2mp_DevOps]
+ALTER ROLE [db_ddladmin] ADD MEMBER [VSSKB\kb2mp_DevOps]
+GRANT ALTER ON SCHEMA::[dbo] TO [VSSKB\kb2mp_DevOps]
+GRANT CONTROL ON SCHEMA::[dbo] TO [VSSKB\kb2mp_DevOps]
