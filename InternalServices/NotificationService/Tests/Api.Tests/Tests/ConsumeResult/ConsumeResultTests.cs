@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
-using CIS.InternalServices.NotificationService.Api.Handlers.Result;
-using CIS.InternalServices.NotificationService.Api.Handlers.Result.Requests;
+using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Result;
+using CIS.InternalServices.NotificationService.Api.Messaging.Consumers.Result;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Tests.Mocks;
 using CIS.Testing.Common;
