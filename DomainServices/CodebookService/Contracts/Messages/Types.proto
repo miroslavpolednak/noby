@@ -25,6 +25,7 @@ message CollateralTypesResponse {
 		string CodeBgm = 3;
 		string TextBgm = 4;
 		string NameType = 5;
+		int32 CollateralSubType = 6;
 	}
 }
 
