@@ -104,5 +104,5 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
     private IEnumerable<string> GetRealEstatePurchaseTypes() =>
         SalesArrangement.Mortgage
                         .LoanRealEstates
-                        .Join(_codebookManager.PurchaseTypes, x => x.RealEstatePurchaseTypeId, y => y.Id, (_, y) => y.Name);
+                        .Join(_codebookManager.PurchaseTypes, x => x.RealEstatePurchaseTypeId, y => y.Id, (_, y) => y.Name.Trim());
 }
