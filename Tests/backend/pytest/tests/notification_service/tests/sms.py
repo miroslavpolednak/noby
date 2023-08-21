@@ -148,7 +148,7 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
 
 
 #TODO: předělat na kontrrolu v db, až budu mít od Karla detaily, kam se loguje
-@pytest.mark.skip(reason="starý script, již se neloguje do sequ, ale do db")
+@pytest.mark.skip(reason="starý script, již se neloguje do sequ, ale do db:")
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
     ("loguji", json_req_sms_logovani_kb_sb, True),
