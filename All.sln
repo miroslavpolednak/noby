@@ -426,6 +426,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00040_HFICH-6914_DatabaseRefactoring_TableStructures.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00040_HFICH-6914_DatabaseRefactoring_TableStructures.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00041_HFICH-6914_DatabaseRefactoring_Views.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00041_HFICH-6914_DatabaseRefactoring_Views.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00042_FixedBadDataService_StaticValues.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00042_FixedBadDataService_StaticValues.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00043_FixedBadDataService_HouseholdList.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00043_FixedBadDataService_HouseholdList.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
