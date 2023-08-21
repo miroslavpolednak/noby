@@ -12,7 +12,7 @@ internal class ProductServiceWrapper : IServiceWrapper
         _productService = productService;
     }
 
-    public DataSource DataSource => DataSource.ProductService;
+    public DataService DataService => DataService.ProductService;
 
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {

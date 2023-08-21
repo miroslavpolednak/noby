@@ -4,10 +4,8 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices;
 using CIS.InternalServices.DataAggregatorService.Api;
-using CIS.InternalServices.DataAggregatorService.Api.Configuration.Data;
 using CIS.InternalServices.DataAggregatorService.Api.Endpoints;
 using DomainServices;
-using Microsoft.EntityFrameworkCore;
 
 var runAsWinSvc = args.Any(t => t.Equals("winsvc"));
 
@@ -44,11 +42,11 @@ try
            .AddHouseholdService()
            .AddDocumentOnSAService();
 
-    builder.Services.AddDbContext<ConfigurationContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+    builder.Services.AddDapper(builder.Configuration.GetConnectionString("default")!);
 
     builder.Services
-           .AddAttributedServices(typeof(Program))
-           .AddCisGrpcInfrastructure(typeof(Program))
+           .AddAttributedServices(typeof(CIS.InternalServices.DataAggregatorService.Api.Program))
+           .AddCisGrpcInfrastructure(typeof(CIS.InternalServices.DataAggregatorService.Api.Program))
            .AddGrpcReflection()
            .AddGrpc(opts => opts.Interceptors.Add<GenericServerExceptionInterceptor>());
 
@@ -89,7 +87,10 @@ finally
     LoggingExtensions.CloseAndFlush();
 }
 
-public partial class Program
+namespace CIS.InternalServices.DataAggregatorService.Api
 {
-    // Expose the Program class for use with WebApplicationFactory<T>
+    public partial class Program
+    {
+        // Expose the Program class for use with WebApplicationFactory<T>
+    }
 }

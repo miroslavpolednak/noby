@@ -2,9 +2,14 @@
 
 internal class InputConfig
 {
-    public required IEnumerable<DataSource> DataSources { get; init; }
+    private readonly Func<IEnumerable<DataService>> _dataServicesGetter;
 
-    public required IEnumerable<DynamicInputParameter> DynamicInputParameters { get; init; }
+    public InputConfig(Func<IEnumerable<DataService>> dataServicesGetter)
+    {
+        _dataServicesGetter = dataServicesGetter;
+    }
 
-    public IEnumerable<DataSource> GetAllDataSources() => DataSources.Concat(DynamicInputParameters.Select(i => i.SourceDataSource)).Distinct().ToList();
+    public required IList<DynamicInputParameter> DynamicInputParameters { get; init; }
+
+    public IEnumerable<DataService> GetAllDataSources() => _dataServicesGetter().Concat(DynamicInputParameters.Select(i => i.SourceDataService)).Distinct();
 }

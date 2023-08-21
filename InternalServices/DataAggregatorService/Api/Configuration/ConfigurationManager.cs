@@ -1,7 +1,4 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.Data;
-using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
-using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
-using CIS.InternalServices.DataAggregatorService.Api.Configuration.RiskLoanApplication;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.Repositories;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
@@ -15,66 +12,41 @@ internal class ConfigurationManager : IConfigurationManager
         _repositoryFactory = repositoryFactory;
     }
 
-    public async Task<DocumentConfiguration> LoadDocumentConfiguration(DocumentKey documentKey, CancellationToken cancellationToken)
+    public async Task<Document.DocumentConfiguration> LoadDocumentConfiguration(Document.DocumentKey documentKey, CancellationToken cancellationToken)
     {
         var repository = _repositoryFactory.CreateDocumentRepository();
 
-        var fields = await repository.LoadDocumentSourceFields(documentKey.TypeId, documentKey.VersionData.VersionName, documentKey.VersionData.VariantName, cancellationToken);
-        var tables = await repository.LoadDocumentTables(documentKey.TypeId, documentKey.VersionData.VersionName, cancellationToken);
-
-        return new DocumentConfiguration
+        return new Document.DocumentConfiguration
         {
             DocumentTemplateVersionId = documentKey.VersionData.VersionId,
             DocumentTemplateVariantId = documentKey.VersionData.VariantId,
-            InputConfig = new InputConfig
-            {
-                DataSources = GetDataSources(UnionFieldAndTableSources()),
-                DynamicInputParameters = await repository.LoadDocumentDynamicInputFields(documentKey.TypeId, documentKey.VersionData.VersionName, documentKey.VersionData.VariantName, cancellationToken)
-            },
-            SourceFields = fields,
-            DynamicStringFormats = await repository.LoadDocumentDynamicStringFormats(documentKey.TypeId, documentKey.VersionData.VersionName, cancellationToken),
-            Tables = tables
+            SourceFields = await repository.LoadDocumentSourceFields(documentKey, cancellationToken),
+            DynamicInputParameters = await repository.LoadDocumentDynamicInputParameters(documentKey, cancellationToken),
+            DynamicStringFormats = await repository.LoadDocumentDynamicStringFormats(documentKey, cancellationToken),
+            Tables = await repository.LoadDocumentTable(documentKey, cancellationToken)
         };
-
-        IEnumerable<DataSource> UnionFieldAndTableSources() => 
-            fields.Select(f => f.DataSource).Union(tables.Select(t => t.DataSource));
     }
 
-    public async Task<EasFormConfiguration> LoadEasFormConfiguration(EasFormKey easFormKey, CancellationToken cancellationToken)
+    public async Task<EasForm.EasFormConfiguration> LoadEasFormConfiguration(EasForm.EasFormKey easFormKey, CancellationToken cancellationToken)
     {
         var repository = _repositoryFactory.CreateEasFormConfigurationRepository();
 
-        var fields = await repository.LoadEasFormSourceFields(easFormKey.RequestTypeId, easFormKey.EasFormTypes.Cast<int>(), cancellationToken);
-
-        return new EasFormConfiguration
+        return new EasForm.EasFormConfiguration
         {
             EasFormKey = easFormKey,
-            InputConfig = new InputConfig
-            {
-                DataSources = GetDataSources(fields.Select(f => f.DataSource)),
-                DynamicInputParameters = await repository.LoadEasFormDynamicInputFields(easFormKey.RequestTypeId, easFormKey.EasFormTypes.Cast<int>(), cancellationToken)
-            },
-            SourceFields = fields
+            SourceFields = await repository.LoadEasFormSourceFields(easFormKey, cancellationToken),
+            DynamicInputParameters = await repository.LoadEasFormDynamicInputParameters(easFormKey, cancellationToken),
         };
     }
 
-    public async Task<RiskLoanApplicationConfiguration> LoadRiskLoanApplicationConfiguration(CancellationToken cancellationToken)
+    public async Task<ConfigurationBase<RiskLoanApplication.RiskLoanApplicationSourceField>> LoadRiskLoanApplicationConfiguration(CancellationToken cancellationToken)
     {
         var repository = _repositoryFactory.CreateRiskLoanApplicationRepository();
 
-        var fields = await repository.LoadSourceFields(cancellationToken);
-
-        return new RiskLoanApplicationConfiguration
+        return new ConfigurationBase<RiskLoanApplication.RiskLoanApplicationSourceField>
         {
-            InputConfig = new InputConfig
-            {
-                DataSources = GetDataSources(fields.Select(f => f.DataSource)),
-                DynamicInputParameters = Enumerable.Empty<DynamicInputParameter>()
-            },
-            SourceFields = fields
+            SourceFields = await repository.LoadSourceFields(cancellationToken),
+            DynamicInputParameters = new List<DynamicInputParameter>()
         };
     }
-
-    private static IEnumerable<DataSource> GetDataSources(IEnumerable<DataSource> dataSources) =>
-        dataSources.Where(d => d != DataSource.General).Distinct();
 }

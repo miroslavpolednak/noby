@@ -1,12 +1,8 @@
 ﻿namespace CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
 
-internal record EasFormConfiguration
+internal class EasFormConfiguration : ConfigurationBase<EasFormSourceField>
 {
     public required EasFormKey EasFormKey { get; init; }
-
-    public required InputConfig InputConfig { get; init; }
-
-    public required IReadOnlyCollection<EasFormSourceField> SourceFields { get; init; }
 
     public bool IsCancelled { get; set; }
 }

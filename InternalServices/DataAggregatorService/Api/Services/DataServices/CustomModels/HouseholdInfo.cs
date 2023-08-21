@@ -5,15 +5,17 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.C
 
 internal class HouseholdInfo
 {
-    private readonly CustomerOnSA? _customerOnSa1;
-    private readonly CustomerOnSA? _customerOnSa2;
+    private CustomerOnSA? _customerOnSa1;
+    private CustomerOnSA? _customerOnSa2;
 
-    public Household? Household { get; init; }
+    public required Household Household { get; init; }
+
+    public List<CustomerOnSA> CustomersOnSa { get; } = new(2);
 
     public CustomerOnSA? CustomerOnSa1
     {
         get => _customerOnSa1;
-        init
+        set
         {
             _customerOnSa1 = value;
 
@@ -24,7 +26,7 @@ internal class HouseholdInfo
     public CustomerOnSA? CustomerOnSa2
     {
         get => _customerOnSa2;
-        init
+        set
         {
             _customerOnSa2 = value;
 
@@ -41,6 +43,8 @@ internal class HouseholdInfo
         if (customerOnSA is null)
             return;
 
+        CustomersOnSa.Add(customerOnSA);
+
         switch ((CustomerRoles)customerOnSA.CustomerRoleId)
         {
             case CustomerRoles.Debtor:
@@ -50,6 +54,9 @@ internal class HouseholdInfo
             case CustomerRoles.Codebtor:
                 Codebtor = customerOnSA;
                 break;
+
+            default:
+                throw new NotImplementedException();
         }
     }
 }

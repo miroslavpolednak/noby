@@ -16,7 +16,7 @@ internal class EasProductForm : EasForm<ProductFormData>
 
     public override IEnumerable<Form> BuildForms(IEnumerable<DynamicFormValues> dynamicFormValues, IEnumerable<EasFormSourceField> sourceFields)
     {
-        var sourceFieldsGroup = sourceFields.ToLookup(f => f.FormType);
+        var sourceFieldsGroup = sourceFields.ToLookup(f => f.EasFormType);
 
         foreach (var dynamicValues in dynamicFormValues)
         {

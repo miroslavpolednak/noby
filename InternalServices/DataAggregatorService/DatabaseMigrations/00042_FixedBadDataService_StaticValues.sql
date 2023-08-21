@@ -1,0 +1,1 @@
+UPDATE DataField SET DataServiceId = 0 WHERE DataFieldId = 215

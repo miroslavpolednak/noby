@@ -1,13 +1,9 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
-using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
-using CIS.InternalServices.DataAggregatorService.Api.Configuration.RiskLoanApplication;
-
-namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
+﻿namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
 internal interface IConfigurationManager
 {
-    Task<DocumentConfiguration> LoadDocumentConfiguration(DocumentKey documentKey,  CancellationToken cancellationToken);
+    Task<Document.DocumentConfiguration> LoadDocumentConfiguration(Document.DocumentKey documentKey,  CancellationToken cancellationToken);
 
-    Task<EasFormConfiguration> LoadEasFormConfiguration(EasFormKey easFormKey, CancellationToken cancellationToken);
-    Task<RiskLoanApplicationConfiguration> LoadRiskLoanApplicationConfiguration(CancellationToken cancellationToken);
+    Task<EasForm.EasFormConfiguration> LoadEasFormConfiguration(EasForm.EasFormKey easFormKey, CancellationToken cancellationToken);
+    Task<ConfigurationBase<RiskLoanApplication.RiskLoanApplicationSourceField>> LoadRiskLoanApplicationConfiguration(CancellationToken cancellationToken);
 }

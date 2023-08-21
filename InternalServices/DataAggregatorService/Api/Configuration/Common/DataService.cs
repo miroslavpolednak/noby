@@ -1,6 +1,6 @@
 ﻿namespace CIS.InternalServices.DataAggregatorService.Api.Configuration.Common;
 
-internal enum DataSource
+internal enum DataService
 {
     General = 0,
     SalesArrangementService,
@@ -13,5 +13,6 @@ internal enum DataSource
     HouseholdService,
     HouseholdMainService,
     HouseholdCodebtorService,
-    DocumentOnSa
+    DocumentOnSa,
+    HouseholdAllService
 }

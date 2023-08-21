@@ -15,7 +15,6 @@ internal class SingleValueFieldParser : ISourceFieldParser
 
         return new DocumentSourceFieldData
         {
-            SourceFieldId = sourceField.SourceFieldId,
             AcroFieldName = sourceField.AcroFieldName,
             StringFormat = GetStringFormat(sourceField, value),
             Value = value ?? sourceField.DefaultTextIfNull,

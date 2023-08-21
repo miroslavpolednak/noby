@@ -7,56 +7,57 @@ internal class ServiceMap
 {
     public delegate Task ServiceCall(InputParameters input, AggregatedData data, CancellationToken cancellationToken);
     
-    private readonly Dictionary<DataSource, IServiceMapItem> _map = new();
+    private readonly Dictionary<DataService, IServiceMapItem> _map = new();
 
     public ServiceMap()
     {
         ConfigureServices();
     }
 
-    public ServiceCall GetServiceCallFunc(DataSource dataSource, IServiceProvider serviceProvider) => _map[dataSource].GetServiceCall(serviceProvider);
+    public ServiceCall GetServiceCallFunc(DataService dataService, IServiceProvider serviceProvider) => _map[dataService].GetServiceCall(serviceProvider);
 
     private void ConfigureServices()
     {
-        AddService<SalesArrangementServiceWrapper>(DataSource.SalesArrangementService);
-        AddService<CaseServiceWrapper>(DataSource.CaseService);
-        AddService<OfferServiceWrapper>(DataSource.OfferService);
-        AddService<UserServiceWrapper>(DataSource.UserService);
-        AddService<CustomerServiceWrapper>(DataSource.CustomerService);
-        AddService<ProductServiceWrapper>(DataSource.ProductService);
-        AddService<HouseholdServiceWrapper>(DataSource.HouseholdService);
-        AddService<DocumentOnSaServiceWrapper>(DataSource.DocumentOnSa);
+        AddService<SalesArrangementServiceWrapper>(DataService.SalesArrangementService);
+        AddService<CaseServiceWrapper>(DataService.CaseService);
+        AddService<OfferServiceWrapper>(DataService.OfferService);
+        AddService<UserServiceWrapper>(DataService.UserService);
+        AddService<CustomerServiceWrapper>(DataService.CustomerService);
+        AddService<ProductServiceWrapper>(DataService.ProductService);
+        AddService<HouseholdServiceWrapper>(DataService.HouseholdService);
+        AddService<DocumentOnSaServiceWrapper>(DataService.DocumentOnSa);
 
         ConfigureExtensionServices();
     }
 
     private void ConfigureExtensionServices()
     {
-        AddService<OfferServiceWrapper>(DataSource.OfferPaymentScheduleService, s => s.LoadPaymentSchedule);
-        AddService<HouseholdServiceWrapper>(DataSource.HouseholdMainService, s => s.LoadMainHouseholdDetail);
-        AddService<HouseholdServiceWrapper>(DataSource.HouseholdCodebtorService, s => s.LoadCodebtorHouseholdDetail);
+        AddService<OfferServiceWrapper>(DataService.OfferPaymentScheduleService, s => s.LoadPaymentSchedule);
+        AddService<HouseholdServiceWrapper>(DataService.HouseholdMainService, s => s.LoadMainHouseholdDetail);
+        AddService<HouseholdServiceWrapper>(DataService.HouseholdCodebtorService, s => s.LoadCodebtorHouseholdDetail);
+        AddService<HouseholdServiceWrapper>(DataService.HouseholdAllService, s => s.LoadAllHouseholdsDetail);
     }
 
-    private void AddService<TService>(DataSource dataSource) where TService : IServiceWrapper
+    private void AddService<TService>(DataService dataService) where TService : IServiceWrapper
     {
         var mapItem = new ServiceMapItem<TService>
         {
             ServiceCallFactory = CommonServiceCall
         };
 
-        _map.Add(dataSource, mapItem);
+        _map.Add(dataService, mapItem);
 
         static ServiceCall CommonServiceCall(TService service) => service.LoadData;
     }
 
-    private void AddService<TService>(DataSource dataSource, Func<TService, ServiceCall> serviceCallFactory) where TService : IServiceWrapper
+    private void AddService<TService>(DataService dataService, Func<TService, ServiceCall> serviceCallFactory) where TService : IServiceWrapper
     {
         var mapItem = new ServiceMapItem<TService>
         {
             ServiceCallFactory = serviceCallFactory
         };
 
-        _map.Add(dataSource, mapItem);
+        _map.Add(dataService, mapItem);
     }
 
     private interface IServiceMapItem

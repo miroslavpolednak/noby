@@ -1,11 +1,7 @@
 ﻿namespace CIS.InternalServices.DataAggregatorService.Api.Configuration.RiskLoanApplication;
 
-internal class RiskLoanApplicationSourceField
+internal class RiskLoanApplicationSourceField : SourceFieldBase
 {
-    public DataSource DataSource { get; init; }
-
-    public string FieldPath { get; init; } = null!;
-
     public string JsonPropertyName { get; init; } = null!;
 
     public bool UseDefaultInsteadOfNull { get; init; }

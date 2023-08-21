@@ -13,7 +13,7 @@ internal class UserServiceWrapper : IServiceWrapper
         _userService = userService;
     }
 
-    public DataSource DataSource => DataSource.UserService;
+    public DataService DataService => DataService.UserService;
 
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
