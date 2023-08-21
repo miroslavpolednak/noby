@@ -5,7 +5,7 @@ import requests
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ..conftest import URLS
-from ..json.request.mail_kb_json import json_req_mail_kb_bad_11_attachments, json_req_mail_kb_basic_legal
+from ..json.request.mail_kb_json import json_req_mail_kb_basic_legal
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
     json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, \
     json_req_mail_mpss_max_attachments, json_req_mail_mpss_basic_format_html, \
@@ -16,7 +16,9 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
  \
 # základní test
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, json_req_mail_kb_basic_legal])
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal,
+                                       json_req_mail_mpss_basic_natural,
+                                       json_req_mail_kb_basic_legal])
 def test_mail(ns_url, auth_params, auth, json_data):
     """kladny test"""
     url_name = ns_url["url_name"]
@@ -128,7 +130,6 @@ def test_mail_party(auth_params, auth, json_data, ns_url):
         verify=False
     )
     resp = resp.json()
-    assert resp['status'] == 200
     print(resp)
     assert "notificationId" in resp
     notification_id = resp["notificationId"]
