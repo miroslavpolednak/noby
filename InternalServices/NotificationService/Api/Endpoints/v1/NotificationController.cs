@@ -2,7 +2,6 @@
 using CIS.InternalServices.NotificationService.Api.Endpoints.Infrastructure.AuditLog;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -95,7 +94,7 @@ public class NotificationController : ControllerBase
     [ProducesResponseType(typeof(GetResultResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<Result> GetResult([Required] Guid id, CancellationToken token)
+    public async Task<Contracts.Result.Dto.Result> GetResult([Required] Guid id, CancellationToken token)
     {
         var response = await _mediator.Send(new GetResultRequest
         {
@@ -112,10 +111,10 @@ public class NotificationController : ControllerBase
     /// </remarks>
     [HttpGet("result/search")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    [ProducesResponseType(typeof(List<Result>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<Contracts.Result.Dto.Result>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<List<Result>> SearchResults([FromQuery] string? identity, [FromQuery] string? identityScheme,
+    public async Task<List<Contracts.Result.Dto.Result>> SearchResults([FromQuery] string? identity, [FromQuery] string? identityScheme,
         [FromQuery] string? customId, [FromQuery] string? documentId, CancellationToken token)
     {
         var response = await _mediator.Send(new SearchResultsRequest

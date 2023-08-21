@@ -1,9 +1,9 @@
 using AutoFixture;
 using AutoFixture.AutoMoq;
 using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Handlers.Email;
-using CIS.InternalServices.NotificationService.Api.Handlers.Result;
-using CIS.InternalServices.NotificationService.Api.Handlers.Sms;
+using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email;
+using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Result;
+using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Tests.Mocks;
