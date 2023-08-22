@@ -18,7 +18,6 @@ public class CasesController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B13A9B30-5896-4319-A96E-0982FE5A9045"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/cancel")]
-    [AuthorizeCaseOwner]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [Produces("application/json")]
@@ -39,7 +38,6 @@ public class CasesController : ControllerBase
     /// Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
     /// </remarks>
     [HttpPost("{caseId:long}/sales-arrangement")]
-    [AuthorizeCaseOwner]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [Produces("application/json")]
@@ -175,7 +173,6 @@ public class CasesController : ControllerBase
     ///  <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{caseId:long}/menu/flags")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -192,7 +189,6 @@ public class CasesController : ControllerBase
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/covenants")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -210,7 +206,6 @@ public class CasesController : ControllerBase
     /// <param name="caseId">ID Case-u</param>
     /// <param name="covenantOrder">Pořadí podmínky ke splnění</param>
     [HttpGet("{caseId:long}/covenant/{covenantOrder:int}")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
