@@ -46,7 +46,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
 
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
@@ -89,7 +89,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     {
         var documentTypes = await _codebookServiceClients.DocumentTypes(cancellationToken);
         var documentType = documentTypes.Single(d => d.SalesArrangementTypeId == salesArrangement.SalesArrangementTypeId);
-        var documentsOnSaToSignVirtual = _documentOnSaMapper.CreateDocumentOnSaToSign(documentType, request.SalesArrangementId!.Value);
+        var documentsOnSaToSignVirtual = _documentOnSaMapper.CreateDocumentOnSaToSign(documentType, request.SalesArrangementId);
         var documentOnSaReal = documentOnSaEntities.FirstOrDefault(r => r.DocumentTypeId == documentsOnSaToSignVirtual.DocumentTypeId);
 
         if (documentOnSaReal is not null)
@@ -128,7 +128,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignReal);
 
         // Product virtual
-        var households = await _householdClient.GetHouseholdList(request.SalesArrangementId!.Value, cancellationToken);
+        var households = await _householdClient.GetHouseholdList(request.SalesArrangementId, cancellationToken);
         var householdsWithoutdocumentOnsa = households
                                             .Where(h => !documentOnSaEntities.Select(d => d.HouseholdId)
                                             .Contains(h.HouseholdId));
@@ -143,9 +143,9 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
 
     private async Task<IEnumerable<DocumentOnSAToSign>> CreateVirtualDocumentOnSaCrs(GetDocumentsToSignListRequest request, List<DocumentOnSa> documentOnSaEntities, CancellationToken cancellationToken)
     {
-        var customersChangeMetadata = await _customerOnSAServiceClient.GetCustomerChangeMetadata(request.SalesArrangementId!.Value, cancellationToken);
+        var customersChangeMetadata = await _customerOnSAServiceClient.GetCustomerChangeMetadata(request.SalesArrangementId, cancellationToken);
         var customersOnSaIdsWithCRSChange = customersChangeMetadata!.Where(r => r.CustomerChangeMetadata.WasCRSChanged).Select(r => r.CustomerOnSAId);
-        var virtualDocumentsOnSaCrs = _documentOnSaMapper.CreateDocumentOnSaToSign(customersOnSaIdsWithCRSChange, request.SalesArrangementId!.Value);
+        var virtualDocumentsOnSaCrs = _documentOnSaMapper.CreateDocumentOnSaToSign(customersOnSaIdsWithCRSChange, request.SalesArrangementId);
 
         return MergeVirtualWithExistCrs(virtualDocumentsOnSaCrs, documentOnSaEntities);
     }
