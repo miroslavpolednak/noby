@@ -17,8 +17,6 @@ internal sealed class GetHouseholdsHandler
             .Select(t => new Dto.HouseholdInList
             {
                 HouseholdId = t.HouseholdId,
-                SalesArrangementId = t.SalesArrangementId,
-                CaseId = t.CaseId,
                 HouseholdTypeId = t.HouseholdTypeId,
                 HouseholdTypeName = householdTypes.First(x => x.Id == t.HouseholdTypeId).Name
             })

@@ -9,10 +9,6 @@ public class HouseholdInList
     /// ID domacnosti
     /// </summary>
     public int HouseholdId { get; set; }
-
-    public int SalesArrangementId { get; set; }
-    
-    public long CaseId { get; set; }
     
     /// <summary>
     /// ID typu domacnosti

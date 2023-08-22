@@ -18,8 +18,6 @@ internal sealed class GetCustomerChangeMetadataHandler
         response.CustomersOnSAMetadata.AddRange(customers.Select(t => new GetCustomerChangeMetadataResponse.Types.GetCustomerChangeMetadataResponseItem
         {
             CustomerOnSAId = t.CustomerOnSAId,
-            SalesArrangementId = t.SalesArrangementId,
-            CaseId = t.CaseId,
             CustomerChangeMetadata = CustomerChangeMetadata.Parser.ParseFrom(t.ChangeMetadataBin)
         }));
 

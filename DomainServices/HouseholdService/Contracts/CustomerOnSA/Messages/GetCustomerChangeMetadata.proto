@@ -13,11 +13,7 @@ message GetCustomerChangeMetadataResponse {
 
     message GetCustomerChangeMetadataResponseItem {
         int32 CustomerOnSAId = 1;
-        
-        int32 SalesArrangementId = 2;
-        
-        int64 CaseId = 3;
-        
-        CustomerChangeMetadata CustomerChangeMetadata = 4;
+                
+        CustomerChangeMetadata CustomerChangeMetadata = 2;
     }
 }

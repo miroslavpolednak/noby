@@ -7,10 +7,6 @@ public abstract class BaseCustomer
     /// </summary>
     public int? CustomerOnSAId { get; set; }
 
-    public int SalesArrangementId { get; set; }
-    
-    public long CaseId { get; set; }
-    
     /// <summary>
     /// Jmeno klienta, pokud se ma zalozit novy CustomerOnSA
     /// </summary>
