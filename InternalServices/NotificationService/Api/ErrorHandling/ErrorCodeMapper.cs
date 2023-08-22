@@ -41,8 +41,7 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     // Email address
     public const int ValueRequired = 317;
     public const int ValueInvalid = 318;
-    public const int PartyRequired = 319;
-    public const int PartyInvalid = 320;
+    public const int PartyInvalid = 319;
     
     // Email content
     public const int FormatRequired = 321;
@@ -136,7 +135,6 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             
             { ValueRequired, $"{nameof(EmailAddress.Value)} required." },
             { ValueInvalid, $"Invalid {nameof(EmailAddress.Value)}." },
-            { PartyRequired, $"{nameof(EmailAddress.Party)} required." },
             { PartyInvalid, $"Invalid {nameof(EmailAddress.Party)}." },
             
             { FormatRequired, $"{nameof(EmailContent.Format)} required." },

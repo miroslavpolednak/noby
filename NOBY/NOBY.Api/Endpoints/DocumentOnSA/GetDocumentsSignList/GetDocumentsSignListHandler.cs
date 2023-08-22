@@ -35,8 +35,8 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
         var signatureStates = await _codebookServiceClient.SignatureStatesNoby(cancellationToken);
         // All docsOnSa have same salesArrangementId
         var salesArrangementId = result.DocumentsOnSAToSign.FirstOrDefault()?.SalesArrangementId;
-        var salesArrangement = salesArrangementId is not null 
-              ? await _salesArrangementServiceClient.GetSalesArrangement(salesArrangementId.Value, cancellationToken) 
+        var salesArrangement = salesArrangementId is not null
+              ? await _salesArrangementServiceClient.GetSalesArrangement(salesArrangementId.Value, cancellationToken)
               : null;
 
         var response = new GetDocumentsSignListResponse
@@ -52,6 +52,7 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 SignatureDateTime = s.SignatureDateTime?.ToDateTime(),
                 SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
                 {
+                    IsValid = s.IsValid,
                     DocumentOnSAId = s.DocumentOnSAId,
                     IsSigned = s.IsSigned,
                     Source = s.Source.MapToCisEnum(),

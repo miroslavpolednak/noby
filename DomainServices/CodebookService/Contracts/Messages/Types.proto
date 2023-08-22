@@ -25,6 +25,7 @@ message CollateralTypesResponse {
 		string CodeBgm = 3;
 		string TextBgm = 4;
 		string NameType = 5;
+		int32 CollateralSubType = 6;
 	}
 }
 
@@ -162,6 +163,7 @@ message DocumentTemplateVersionsResponse {
 		string DocumentVersion = 3;
 		bool IsValid = 4;
 		google.protobuf.Int32Value FormTypeId = 5;
+		string TemplateProcessingType = 6;
 	}
 }
 

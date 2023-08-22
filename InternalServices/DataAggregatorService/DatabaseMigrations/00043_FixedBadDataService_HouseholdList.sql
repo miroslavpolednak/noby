@@ -1,0 +1,1 @@
+UPDATE EasFormSpecialDataField SET DataServiceId = 1 WHERE JsonPropertyName LIKE '%seznam_domacnosti%' AND DataServiceId = 0 

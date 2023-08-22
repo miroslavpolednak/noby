@@ -36,7 +36,7 @@ internal class DocumentMapper
         {
             var stringFormat = sourceData.StringFormat;
 
-            if (sourceData.SourceFieldId.HasValue && dynamicStringFormats.TryGetValue(sourceData.SourceFieldId.Value, out var format))
+            if (dynamicStringFormats.TryGetValue(sourceData.AcroFieldName, out var format))
                 stringFormat = format;
 
             var fieldData = new DocumentFieldData
@@ -52,7 +52,7 @@ internal class DocumentMapper
         }
     }
 
-    private Dictionary<int, string> GetDynamicStringFormats() =>
+    private Dictionary<string, string> GetDynamicStringFormats() =>
         _configuration.DynamicStringFormats.Select(formats => new
                       {
                           formats.Key,

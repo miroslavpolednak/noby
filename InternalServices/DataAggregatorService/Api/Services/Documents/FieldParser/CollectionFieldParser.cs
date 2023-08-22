@@ -29,10 +29,9 @@ internal class CollectionFieldParser : ISourceFieldParser
 
             return new DocumentSourceFieldData
             {
-                SourceFieldId = sourceField.SourceFieldId,
                 AcroFieldName = sourceField.AcroFieldName + (index + 1),
                 StringFormat = sourceField.StringFormat,
-                Value = string.Empty.Equals(fieldPath) ? value : MapperHelper.GetValue(value, fieldPath)
+                Value = string.Empty.Equals(fieldPath, StringComparison.OrdinalIgnoreCase) ? value : MapperHelper.GetValue(value, fieldPath)
             };
         });
 }

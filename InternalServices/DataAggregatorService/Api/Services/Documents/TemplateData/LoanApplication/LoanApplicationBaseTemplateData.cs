@@ -36,6 +36,8 @@ internal abstract class LoanApplicationBaseTemplateData : AggregatedData
     public string? Customer2MaritalStatus => CurrentHousehold.Household!.Data.AreBothPartnersDeptors == true ? $"{GetMaritalStatus(Customer2)} | druh/družka" : GetMaritalStatus(Customer2);
 
     public string PropertySettlement => GetPropertySettlementName();
+    
+    public string BrokerEmailAndPhone => string.Join(" | ", new[] { User.Phone, User.Email }.Where(str => !string.IsNullOrWhiteSpace(str)));
 
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
@@ -106,8 +108,8 @@ internal abstract class LoanApplicationBaseTemplateData : AggregatedData
     }
 
     private string GetPropertySettlementName() =>
-        _codebookManager.PropertySettlements.Where(p => p.Id == CurrentHousehold.Household!.Data.PropertySettlementId)
+        _codebookManager.PropertySettlements.Where(p => p.Id != 0 && p.Id == CurrentHousehold.Household!.Data.PropertySettlementId)
                         .Select(p => p.Name)
-                        .DefaultIfEmpty(string.Empty)
+                        .DefaultIfEmpty("--")
                         .First();
 }

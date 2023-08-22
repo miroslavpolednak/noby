@@ -2,8 +2,6 @@
 
 internal class DocumentSourceFieldData
 {
-    public int? SourceFieldId { get; init; }
-
     public required string AcroFieldName { get; init; }
 
     public string? StringFormat { get; init; }

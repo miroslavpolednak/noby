@@ -45,7 +45,7 @@ internal class DataServicesLoader
 
         return Task.WhenAll(dataSources.Select(Load));
 
-        async Task Load(DataSource dataSource)
+        async Task Load(DataService dataSource)
         {
             await _serviceMap.GetServiceCallFunc(dataSource, serviceProvider).Invoke(status.InputParameters, status.AggregatedData, cancellationToken);
 
@@ -55,7 +55,7 @@ internal class DataServicesLoader
 
     private static void SetInputParameters(DataLoaderStatus status)
     {
-        var loadedParameters = status.RelatedInputParameters.Where(p => status.LoadedDataSources.Contains(p.SourceDataSource)).ToList();
+        var loadedParameters = status.RelatedInputParameters.Where(p => status.LoadedDataSources.Contains(p.SourceDataService)).ToList();
 
         loadedParameters.ForEach(dynamicParameter =>
         {

@@ -43,6 +43,11 @@ public interface ICustomerServiceClient
     Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// <inheritdoc cref="GetCustomerDetail(Identity, CancellationToken)"/>
+    /// </summary>
+    Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, bool forceKbCustomerLoad, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Vyhledaní customeru podle identities
     /// </summary>
     /// <exception cref="CisArgumentException">Validations error, see more <see href="https://wiki.kb.cz/display/HT/CustomerService+errors">here</see></exception>

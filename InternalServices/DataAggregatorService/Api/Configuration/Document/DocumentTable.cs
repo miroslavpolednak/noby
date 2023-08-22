@@ -2,13 +2,15 @@
 
 internal class DocumentTable
 {
-    public required string AcroFieldPlaceholder { get; init; }
+    public int DocumentTableId { get; init; }
+    
+    public string AcroFieldPlaceholder { get; init; } = null!;
 
-    public required DataSource DataSource { get; set; }
+    public DataService DataService { get; set; }
 
-    public required string CollectionSourcePath { get; init; }
+    public string CollectionSourcePath { get; init; } = null!;
 
-    public required ICollection<Column> Columns { get; init; }
+    public List<Column> Columns { get; } = new List<Column>();
 
     public string? ConcludingParagraph { get; init; }
 

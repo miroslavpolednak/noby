@@ -79,6 +79,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.CollateralTypesResponse.Types.CollateralTypeItem.NameTypeFieldNumber">
             <summary>Field number for the "NameType" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.CollateralTypesResponse.Types.CollateralTypeItem.CollateralSubTypeFieldNumber">
+            <summary>Field number for the "CollateralSubType" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.ContactTypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
@@ -322,6 +325,9 @@
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem.FormTypeIdFieldNumber">
             <summary>Field number for the "FormTypeId" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTemplateVersionsResponse.Types.DocumentTemplateVersionItem.TemplateProcessingTypeFieldNumber">
+            <summary>Field number for the "TemplateProcessingType" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.DocumentTypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>

@@ -45,12 +45,14 @@ internal class LoanApplicationCustomer
 
     public string Contacts => GetContacts();
 
+    public object? HasConfirmedContacts => GetHasConfirmedContacts();
+
     public int MaritalStatusStateId => _customer.NaturalPerson.MaritalStatusStateId;
 
     public string EducationLevel => GetEducationLevel();
 
     public NaturalPersonResidenceCountry? CzechResidence => _customer.NaturalPerson.TaxResidence?.ResidenceCountries.FirstOrDefault(r => r.CountryId == 16);
-
+    
     private string GetContactAddress()
     {
         var contactAddress = _customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Mailing);
@@ -58,10 +60,7 @@ internal class LoanApplicationCustomer
         if (contactAddress is not null)
             return contactAddress.SingleLineAddressPoint ?? string.Empty;
 
-        if (_customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Permanent))
-            return PermanentAddress;
-
-        return CustomerHelper.FullAddress(_customer, AddressTypes.Other);
+        return PermanentAddress;
     }
 
     private string GetIdentificationDocument()
@@ -102,5 +101,13 @@ internal class LoanApplicationCustomer
                                .Select(e => e.ShortName)
                                .DefaultIfEmpty(string.Empty)
                                .First();
+    }
+
+    private object? GetHasConfirmedContacts()
+    {
+        var emailIsConfirmed = _customer.Contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Email && c.Email.IsEmailConfirmed);
+        var phoneIsConfirmed = _customer.Contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Mobil && c.Mobile.IsPhoneConfirmed);
+
+        return emailIsConfirmed && phoneIsConfirmed ? _customer.Contacts : default;
     }
 }

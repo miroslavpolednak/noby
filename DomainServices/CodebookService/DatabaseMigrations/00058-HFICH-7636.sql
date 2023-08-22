@@ -1,0 +1,1 @@
+UPDATE SqlQuery SET SqlQueryText='SELECT TYP_ZABEZPECENIA ''CollateralType'', CAST(PODTYP_ZABEZPECENIA as int) ''CollateralSubType'', NULLIF(MANDANT, 0) ''MandantId'', KOD_BGM ''CodeBgm'', TEXT_BGM ''TextBgm'', TEXT_K_TYPU ''NameType'' FROM [SBR].HTEDM_CIS_TYP_ZABEZPECENI ORDER BY TYP_ZABEZPECENIA ASC' WHERE SqlQueryId='CollateralTypes'

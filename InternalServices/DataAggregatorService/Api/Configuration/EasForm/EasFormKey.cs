@@ -21,6 +21,11 @@ public class EasFormKey
 
     public EasFormType[] EasFormTypes { get;}
 
+    public object CreateSqlParams()
+    {
+        return new { RequestTypeId, EasFormTypeIds = EasFormTypes.Cast<int>() };
+    }
+
     public override bool Equals(object? obj)
     {
         if (obj is not EasFormKey toCompare)

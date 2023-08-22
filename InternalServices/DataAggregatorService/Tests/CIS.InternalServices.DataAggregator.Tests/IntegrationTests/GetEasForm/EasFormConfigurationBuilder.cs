@@ -1,9 +1,9 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.Common;
-using CIS.InternalServices.DataAggregatorService.Api.Configuration.Data;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.Data.Entities;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using FastEnumUtility;
 using Microsoft.Extensions.DependencyInjection;
+using DataService = CIS.InternalServices.DataAggregatorService.Api.Configuration.Common.DataService;
 using EasFormType = CIS.InternalServices.DataAggregatorService.Contracts.EasFormType;
 
 namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.GetEasForm;
@@ -20,18 +20,18 @@ public class EasFormConfigurationBuilder
     public EasFormConfigurationBuilder DataFields()
     {
         _dbContext.DataServices
-                  .AddRange(CreateDataService(DataSource.General),
-                            CreateDataService(DataSource.SalesArrangementService),
-                            CreateDataService(DataSource.CaseService),
-                            CreateDataService(DataSource.OfferService),
-                            CreateDataService(DataSource.UserService),
-                            CreateDataService(DataSource.CustomerService),
-                            CreateDataService(DataSource.ProductService),
-                            CreateDataService(DataSource.OfferPaymentScheduleService),
-                            CreateDataService(DataSource.HouseholdService),
-                            CreateDataService(DataSource.HouseholdMainService),
-                            CreateDataService(DataSource.HouseholdCodebtorService),
-                            CreateDataService(DataSource.DocumentOnSa));
+                  .AddRange(CreateDataService(DataService.General),
+                            CreateDataService(DataService.SalesArrangementService),
+                            CreateDataService(DataService.CaseService),
+                            CreateDataService(DataService.OfferService),
+                            CreateDataService(DataService.UserService),
+                            CreateDataService(DataService.CustomerService),
+                            CreateDataService(DataService.ProductService),
+                            CreateDataService(DataService.OfferPaymentScheduleService),
+                            CreateDataService(DataService.HouseholdService),
+                            CreateDataService(DataService.HouseholdMainService),
+                            CreateDataService(DataService.HouseholdCodebtorService),
+                            CreateDataService(DataService.DocumentOnSa));
 
         _dbContext.DataFields.AddRange(new DataField[]
         {
@@ -52,7 +52,7 @@ public class EasFormConfigurationBuilder
 
         return this;
 
-        static DataService CreateDataService(DataSource dataSource) => new() { DataServiceId = (int)dataSource, DataServiceName = dataSource.ToString() };
+        static DataAggregatorService.Api.Configuration.Data.Entities.DataService CreateDataService(DataService dataSource) => new() { DataServiceId = (int)dataSource, DataServiceName = dataSource.ToString() };
     }
 
     public EasFormConfigurationBuilder ProductRequest()

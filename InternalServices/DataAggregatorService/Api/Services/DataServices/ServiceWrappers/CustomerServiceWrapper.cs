@@ -14,7 +14,7 @@ internal class CustomerServiceWrapper : IServiceWrapper
         _customerWithChangesService = customerWithChangesService;
     }
 
-    public DataSource DataSource => DataSource.CustomerService;
+    public DataService DataService => DataService.CustomerService;
 
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
@@ -39,7 +39,7 @@ internal class CustomerServiceWrapper : IServiceWrapper
         }
         else
         {
-            data.Customer = await _customerService.GetCustomerDetail(input.CustomerIdentity, cancellationToken);
+            data.Customer = await _customerService.GetCustomerDetail(input.CustomerIdentity, forceKbCustomerLoad: true, cancellationToken);
         }
     }
 }
