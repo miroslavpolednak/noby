@@ -55,5 +55,10 @@ public enum FlowSwitches : int
     /// <summary>
     /// Došlo ke skórování
     /// </summary>
-    ScoringPerformedAtleastOnce = 14
+    ScoringPerformedAtleastOnce = 14,
+
+    /// <summary>
+    /// Je možné oceňovat nemovitost
+    /// </summary>
+    IsRealEstateValuationAllowed = 15
 }
