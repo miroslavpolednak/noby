@@ -205,11 +205,7 @@
             KATUZ, název katastrálního území, RUIAN katastrální území - AddressWhispererBEService|cadastralArea
             </summary>
         </member>
-        <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.DeedOfOwnershipId">
-            <summary>
-            ISKN ID listu vlastnictví (LV), technický identifikátor katastru
-            </summary>
-        </member>
+        <!-- Badly formed XML comment ignored for member "P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.DeedOfOwnershipId" -->
         <member name="P:NOBY.Dto.RealEstateValuation.DeedOfOwnershipDocument.DeedOfOwnershipNumber">
             <summary>
             Číslo listu vlastnictví (LV)

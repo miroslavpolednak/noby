@@ -24,8 +24,7 @@ public sealed class DeedOfOwnershipDocument
 
     /// <summary>
     /// ISKN ID listu vlastnictví (LV), technický identifikátor katastru
-    /// </summary>
-    [Required]
+    /// </summary
     public long? DeedOfOwnershipId { get; set; }
 
     /// <summary>
