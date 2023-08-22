@@ -1,19 +1,23 @@
 import uuid
 from time import sleep
 from urllib.parse import urlencode, quote
+import urllib3
+
+
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 import pytest
 import requests
 
-from ..conftest import URLS, greater_than_zero
+from ..conftest import URLS, greater_than_zero, ns_url, auth
 from ..json.request.seg_log import json_req_basic_log
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
     json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_sb, \
     json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
-    json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e, \
-    json_req_sms_hsts_header
+    json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
@@ -48,14 +52,17 @@ def test_sms_manualy(url_name, auth_params, auth, json_data):
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg_e2e])
-def test_E2E_real_sms(ns_url, auth_params, auth, json_data):
+def test_E2E_real_sms(ns_url, auth_params, auth, json_data, modified_json_data):
     url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
     session = requests.session()
+    # Přidáváme hodnotu ns_url do JSON dat
+    json_data['text'] = json_data['text'] + " " + url_name
+
     resp = session.post(
         URLS[url_name] + "/v1/notification/sms",
-        json=json_data,
+        json=modified_json_data,
         auth=(username, password),
         verify=False
     )
@@ -140,6 +147,8 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
     assert notification_id != ""
 
 
+#TODO: předělat na kontrrolu v db, až budu mít od Karla detaily, kam se loguje
+@pytest.mark.skip(reason="starý script, již se neloguje do sequ, ale do db:")
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
     ("loguji", json_req_sms_logovani_kb_sb, True),
@@ -173,7 +182,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data, expected_resul
         "shortCircuitAfter": 100}
 
     encoded_params = "&".join(f"{key}={quote(str(value), safe='')}" for key, value in params.items())
-    url = f"http://172.30.35.51:6341/api/events/signal?{encoded_params}"
+    url = f"https://172.30.35.51:6341/api/events/signal?{encoded_params}"
 
     resp = authenticated_seqlog_session.post(
         url,
@@ -302,7 +311,7 @@ def test_sms_basic_alex(ns_url, auth_params, auth, json_data):
     }),
     (json_req_sms_bad_basic_without_identifier_identity, {
         'Identifier.Identity': ['The Identity field is required.']
-    }),
+    })
 ])
 def test_sms_bad_identifier(ns_url, auth_params, auth, json_data, expected_error):
     """uvodni errors test pro zakladni napln sms bez priloh
