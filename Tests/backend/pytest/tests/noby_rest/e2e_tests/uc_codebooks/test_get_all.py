@@ -1,11 +1,12 @@
 import pytest
 
-from Tests.backend.pytest.tests.noby_rest.json.response.codebooks_json import json_resp_academic_degrees_after, json_resp_paymentDays, \
+from Tests.backend.pytest.tests.noby_rest.json.response.codebooks_json import json_resp_academic_degrees_after, \
+    json_resp_paymentDays, \
     json_resp_academic_degrees_before, json_resp_bank_codes, json_resp_case_states, \
     json_resp_classification_of_economic_activities, json_resp_contact_types, json_resp_countries, \
     json_resp_country_code_phone_idc, json_resp_currencies, json_resp_customer_roles, json_resp_developers, \
     json_resp_developer_projects, json_resp_document_on_sa_types, json_resp_drawing_durations, json_resp_drawing_types, \
-    json_resp_ea_codes_main, json_resp_education_levels, json_resp_employment_types
+    json_resp_ea_codes_main, json_resp_education_levels, json_resp_employment_types, json_resp_document_types
 from Tests.backend.pytest.tests.noby_rest.models.enum import Codebooks_all
 from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import get_all_codebooks
 
@@ -63,6 +64,10 @@ from Tests.backend.pytest.tests.noby_rest.construct_api.Codebooks.get_all import
     (
             Codebooks_all.DOCUMENTONSATYPES,
             json_resp_document_on_sa_types
+    ),
+    (
+            Codebooks_all.DOCUMENTTYPES,
+            json_resp_document_types
     ),
     (
             Codebooks_all.DRAWINGDURATIONS,
