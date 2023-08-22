@@ -104,7 +104,7 @@ CREATE TABLE [dbo].[DeedOfOwnershipDocument](
 	[CremDeedOfOwnershipDocumentId] [bigint] NOT NULL,
 	[KatuzId] [int] NOT NULL,
 	[KatuzTitle] [nvarchar](250) NULL,
-	[DeedOfOwnershipId] [bigint] NOT NULL,
+	[DeedOfOwnershipId] [bigint] NULL,
 	[DeedOfOwnershipNumber] [int] NOT NULL,
 	[Address] [nvarchar](250) NULL,
 	[AddressPointId] bigint NULL,
