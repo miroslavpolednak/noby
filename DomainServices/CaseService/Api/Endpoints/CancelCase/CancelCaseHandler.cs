@@ -78,7 +78,7 @@ internal sealed class CancelCaseHandler
         await setDocumentArchived(documents, cancellation);
 
         // nastavit stav na SA
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangementId, (int)SalesArrangementStates.Cancelled, cancellation);
+        await _salesArrangementService.DeleteSalesArrangement(salesArrangementId, true, cancellation);
 
         // auditni log
         _auditLogger.LogWithCurrentUser(

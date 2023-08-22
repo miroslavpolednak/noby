@@ -1,10 +1,11 @@
+import copy
 import datetime
 import pyodbc
 
 import datetime as datetime
 import pytest
 import requests
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
@@ -12,9 +13,14 @@ Base = declarative_base()
 
 URLS = {
     "dev_url": "https://ds-notification-dev.vsskb.cz:30016",
+    "fat_url": "https://ds-notification-fat.vsskb.cz:31016",
     "sit_url": "https://ds-notification-sit1.vsskb.cz:32016",
-    "fat_url": "https://ds-notification-sit1.vsskb.cz:31016",
     "uat_url": "https://ds-notification-uat.vsskb.cz:33016",
+
+    "dev_url_discovery": "https://ds-discovery-dev.vsskb.cz:30011",
+    "fat_url_discovery": "https://ds-discovery-fat.vsskb.cz:31011",
+    "sit_url_discovery": "https://ds-discovery-sit1.vsskb.cz:32011",
+    "uat_url_discovery": "https://ds-discovery-uat.vsskb.cz:33011"
 }
 
 
@@ -76,13 +82,13 @@ def authenticated_seqlog_session():
     session = requests.Session()
 
     response = session.post(
-        url="http://172.30.35.51:6341/api/users/login",
+        url="https://172.30.35.51:6341/api/users/login",
         json={
              "Username": "seqadmin",
             "Password": "Rud514",
             "NewPassword": "",
         },
-        verify=False,  # Přeskočit ověření certifikátu
+        verify=False  # Přeskočit ověření certifikátu
     )
 
     if response.status_code != 200:
@@ -105,3 +111,69 @@ def get_current_date():
 
 def greater_than_zero(items_count):
     return items_count > 0
+
+
+@pytest.fixture
+def modified_json_data(request, ns_url):
+    json_data = request.node.get_closest_marker("parametrize").args[1][0]
+    modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
+    # Přidáme aktuální datum a čas
+    now = datetime.datetime.now()
+    date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
+    # seskladani smsky
+    modified_data['text'] = " Prostredi: " + ns_url["url_name"] + ", " + " Cas provedeni: " + date_time + ", Zprava: " + modified_data['text']
+    return modified_data
+
+@pytest.fixture
+def modified_template_json_data(request, ns_url):
+    json_data = request.node.get_closest_marker("parametrize").args[1][0]
+    modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
+
+    # Přidáme aktuální datum a čas
+    now = datetime.datetime.now()
+    date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
+
+    # Seskladani smsky
+    for placeholder in modified_data['placeholders']:
+        if placeholder['key'] == 'zadej':
+            placeholder['value'] = " Prostredi: " + ns_url["url_name"] + ", " + " Cas provedeni: " + date_time + ", Zprava: " + placeholder['value']
+
+    return modified_data
+
+
+@pytest.fixture
+def modified_json_data_health(request, url_name):
+    marker = [m for m in request.node.iter_markers(name="parametrize")]
+    json_data = None
+    for m in marker:
+        if "json_data" in m.args[0]:
+            json_data = m.args[1][0]
+    modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
+    # Přidáme aktuální datum a čas
+    now = datetime.datetime.now()
+    date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
+    # seskladani smsky
+    modified_data['text'] = " Prostredi: " + url_name + ", " + " Cas provedeni: " + date_time + ", Zprava: " + modified_data['text']
+    return modified_data
+
+
+@pytest.fixture
+def modified_template_json_data_health(request, url_name):
+    marker = [m for m in request.node.iter_markers(name="parametrize")]
+    json_data = None
+    for m in marker:
+        if "json_data" in m.args[0]:
+            json_data = m.args[1][0]
+
+    modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
+
+    # Přidáme aktuální datum a čas
+    now = datetime.datetime.now()
+    date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
+
+    # Seskladani smsky
+    for placeholder in modified_data['placeholders']:
+        if placeholder['key'] == 'zadej':
+            placeholder['value'] = " Prostredi: " + url_name + ", " + " Cas provedeni: " + date_time + ", Zprava: " + placeholder['value']
+
+    return modified_data

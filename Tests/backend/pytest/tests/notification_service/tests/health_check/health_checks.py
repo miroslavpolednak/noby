@@ -1,28 +1,34 @@
+
+import pytest
+import requests
 import time
 import uuid
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-import pytest
-import requests
+from Tests.backend.pytest.tests.notification_service.conftest import URLS
+from Tests.backend.pytest.tests.notification_service.json.request.mail_kb_json import json_req_mail_kb_basic_legal
+from Tests.backend.pytest.tests.notification_service.json.request.mail_mpss_json import json_req_mail_mpss_basic_legal
+from Tests.backend.pytest.tests.notification_service.json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full_for_search, \
+    json_req_sms_basic_insg_e2e
+from Tests.backend.pytest.tests.notification_service.json.request.sms_template_json import json_req_sms_full_template, json_req_real_sms_full_template
 
-from ..conftest import URLS
-from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
-    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_basic_full_for_search
-from ..json.request.sms_template_json import json_req_sms_full_template
 
+"""
+******TYTO TESTY NEPUJDOU POUSTET RUCNE, JSOU NAVRZENY PRO SPOUSTENI PS SCRIPTEM, KTERY Z TOHOTO SOUBORU DELA KOPII A PRED KAZDY TEST PRIDA
+@pytest.mark.parametrize("url_name", ["{url}"])
+"""
 
+#est pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
-def test_get_sms_notification_id_states(auth_params, auth, json_data, ns_url):
-    """uvodni test pro zakladni napln sms bez priloh, realne sms neprijde - fake cislo
-    """
-    url_name = ns_url["url_name"]
+@pytest.mark.parametrize("json_data", [json_req_sms_basic_insg_e2e])
+def test_get_sms_notification_id_states(url_name, auth_params, auth, json_data, modified_json_data_health):
+
     username = auth[0]
     password = auth[1]
     session = requests.session()
     resp = session.post(
         URLS[url_name] + "/v1/notification/sms",
-        json=json_data,
+        json=modified_json_data_health,
         auth=(username, password),
         verify=False
     )
@@ -47,7 +53,7 @@ def test_get_sms_notification_id_states(auth_params, auth, json_data, ns_url):
     assert len(resp['errors']) == 0
     assert 'createdBy' in resp
 
-    expected_sms_data = json_req_sms_basic_insg.copy()
+    expected_sms_data = json_req_sms_basic_insg_e2e.copy()
 
     # Odebere processingPriority, customId, documentid, text z expected_sms_data - insg nechce tento atribut vracet
     for attr in ["processingPriority", "text"]:
@@ -60,7 +66,7 @@ def test_get_sms_notification_id_states(auth_params, auth, json_data, ns_url):
         "countryCode": phone_number[:4],
         "nationalNumber": phone_number[4:]}
     assert resp["requestData"]["smsData"] == expected_sms_data
-    time.sleep(15)
+    time.sleep(14)
 
     #vola GET opet, abz si overil doruceni
     session = requests.session()
@@ -72,19 +78,14 @@ def test_get_sms_notification_id_states(auth_params, auth, json_data, ns_url):
     )
     resp = resp.json()
     assert resp['notificationId'] == notification_id
-    assert resp['state'] == 'Unsent'
-    errors = resp.get('errors', [])
-    assert len(errors) > 0, 'No errors present'
-    assert errors[0]['code'] == 'SMS-MCH-04'
-    assert errors[0]['message'] == 'Failed connection to the operator - message cannot be sent'
+    assert resp['state'] == 'Delivered'
+
 
 #TODO: koukni na response GET search, ve swagger vraci i vyparsovane parametry
+#est pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_full_for_search])
-def test_get_sms_notification_search(ns_url,  auth_params, auth, json_data):
-    """test pro vygenerovani sms a jeji nasledne vyhledani
-    """
-    url_name = ns_url["url_name"]
+def test_get_sms_notification_search(url_name,  auth_params, auth, json_data):
     username = auth[0]
     password = auth[1]
     unique_custom_id = f"{uuid.uuid4()}"
@@ -139,53 +140,42 @@ def test_get_sms_notification_search(ns_url,  auth_params, auth, json_data):
     assert resp["requestData"]["smsData"] == expected_sms_data
 
 
-@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-def test_get_sms_notification_id_vulnerability(auth_params, auth, ns_url):
-    """test zranitelnosti proti skriptování
-    """
-    url_name = ns_url["url_name"]
+#základní test pro mail
+#est pro additional parameters napr. --ns-url sit_url
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal, json_req_mail_kb_basic_legal])
+def test_mail_health_check(url_name,  auth_params, auth, json_data):
     username = auth[0]
     password = auth[1]
     session = requests.session()
-    resp = session.get(
-        URLS[url_name] + f"/v1/notification/result/<test_validace>",
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
         auth=(username, password),
         verify=False
     )
-    notification = resp.json()
-    error_message = notification['errors']['id'][0]
-    assert error_message == 'The value \'%3Ctest_validace%3E\' is not valid.'
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    notification_id = resp["notificationId"]
+    assert notification_id != ""
 
-    assert 'strict-transport-security' in resp.headers, \
-        'Expected "strict-transport-security" to be in headers'
 
-
+#zakladni test pro template
+#test pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-def test_get_sms_notification_search_vulnerability(ns_url,  auth_params, auth):
-    """test zranitelnosti proti skriptování
-    """
-    url_name = ns_url["url_name"]
+@pytest.mark.parametrize("json_data", [json_req_real_sms_full_template])
+def test_sms_template(url_name,  auth_params, auth, json_data, modified_template_json_data_health):
     username = auth[0]
     password = auth[1]
     session = requests.session()
-    resp = session.get(
-        URLS[url_name] + "/v1/notification/result/search",
-        params={
-            "identity": "<identity>",
-            "identityScheme": "<identityScheme>",
-            "customId": "<customId>",
-            "documentId": "<documentId>"
-        },
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/smsFromTemplate",
+        json=modified_template_json_data_health,
         auth=(username, password),
         verify=False
     )
-    expected_error = {'302': ['Invalid Identity.'],
-                      '304': ['Invalid IdentityScheme.'],
-                      '305': ['Invalid DocumentId.'],
-                      '306': ['Invalid CustomId.']}
-    error = resp.json()['errors']
-    assert error == expected_error, f'Expected {expected_error}, but got {error}'
-
-    assert 'strict-transport-security' in resp.headers, \
-        'Expected "strict-transport-security" to be in headers'
-
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    assert resp["notificationId"] != ""
