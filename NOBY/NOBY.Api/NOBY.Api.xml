@@ -263,6 +263,21 @@
             https://wiki.kb.cz/pages/viewpage.action?pageId=424119307#id-%C4%8Cerp%C3%A1ni%C5%BD%C3%A1dosto%C4%8Derp%C3%A1n%C3%AD-Kontrolyp%C5%99edformul%C3%A1%C5%99em%C4%8Derp%C3%A1n%C3%AD
             </remarks>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.DocumentsMenuItem">
+            <summary>
+            Položka menu Dokumenty
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.CovenantsMenuItem">
+            <summary>
+            Položka menu Podmínky ke splnění
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.RealEstatesMenuItem">
+            <summary>
+            Položka menu Nemovitosti
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsItem.Flag">
             <summary>
             Příznak

@@ -52,7 +52,7 @@ internal sealed class GetFlowSwitchesHandler
             response.EvaluationSection.IsVisible = true;
 
             var documentsToSignListResponse = await getDocumentsToSign(salesArrangementId, cancellationToken);
-            if (valuations.Any() || (response.ScoringSection.IsCompleted && documentsToSignListResponse.Any(t => t.IsSigned)))
+            if (valuations.Any() || (response.ScoringSection.IsCompleted && documentsToSignListResponse.All(t => t.IsSigned)))
             {
                 response.EvaluationSection.IsActive = true;
 
