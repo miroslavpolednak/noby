@@ -50,6 +50,7 @@ try
             .AddHouseholdService()
             .AddDocumentArchiveService()
             .AddDocumentOnSAService()
+            .AddRealEstateValuationService()
             .AddDocumentGeneratorService()
             .AddDataAggregatorService()
             // add grpc infrastructure
