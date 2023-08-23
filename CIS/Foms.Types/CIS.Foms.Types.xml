@@ -204,5 +204,10 @@
             Došlo ke skórování
             </summary>
         </member>
+        <member name="F:CIS.Foms.Enums.FlowSwitches.IsRealEstateValuationAllowed">
+            <summary>
+            Je možné oceňovat nemovitost
+            </summary>
+        </member>
     </members>
 </doc>

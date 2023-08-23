@@ -42,6 +42,12 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, documentData, cancellationToken);
 
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (documentData.SalesArrangement is not null)
+        {
+            inputParameters.CaseId = documentData.SalesArrangement.CaseId;
+        }
+
         return new DocumentMapper(config, documentData);
     }
 }

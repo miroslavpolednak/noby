@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
+﻿using System.Globalization;
+using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.LoanApplication;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.HouseholdService.Clients;
@@ -92,7 +93,7 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
             return string.Empty;
 
         return _codebookManager.SignatureTypes.Where(s => s.Id == SalesArrangement.Mortgage.ContractSignatureTypeId.Value)
-                               .Select(s => s.Name)
+                               .Select(s => s.Name.ToLower(CultureInfo.InvariantCulture))
                                .First();
     }
 

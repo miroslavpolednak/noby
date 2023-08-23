@@ -5,6 +5,8 @@ public sealed class GetCaseMenuFlagsResponse
     public GetCaseMenuFlagsItem DocumentsMenuItem { get; set; } = null!;
 
     public GetCaseMenuFlagsItem CovenantsMenuItem { get; set; } = null!;
+
+    public GetCaseMenuFlagsItem RealEstatesMenuFlagItem { get; set; } = null!;
 }
 
 public sealed class GetCaseMenuFlagsItem

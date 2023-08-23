@@ -6,7 +6,7 @@ import "google/protobuf/wrappers.proto";
 import "DocumentOnSAToSign.proto";
 
 message GetDocumentsToSignListRequest {
-	google.protobuf.Int32Value SalesArrangementId = 1;
+	int32 SalesArrangementId = 1;
 }
 
 message GetDocumentsToSignListResponse {

@@ -37,12 +37,28 @@ internal class CustomerTaxResidencyTemplateData : AggregatedData
 
     public string[] TaxResidencyCountriesTinMandatory { get; private set; } = Array.Empty<string>();
 
+    public string[] TaxResidencyCountriesMissingTinReason { get; private set; } = Array.Empty<string>();
+
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
         TaxResidencyCountries = GetTaxResidencyCountries().Select(country => country?.LongName ?? "N/A").ToArray();
 
-        TaxResidencyCountriesTinMandatory = GetTaxResidencyCountries().Select(country => _codebookManager.TinNoFillReasonsByCountry.FirstOrDefault(t => t.Id == country?.ShortName)?.IsTinMandatory ?? false)
-                                                                      .Select(required => required ? "Ano" : "Ne").ToArray();
+        var taxResidencyCountriesTinMandatory = GetTaxResidencyCountries().Select(country => _codebookManager.TinNoFillReasonsByCountry.FirstOrDefault(t => t.Id == country?.ShortName)?.IsTinMandatory ?? false).ToList();
+
+        TaxResidencyCountriesTinMandatory = taxResidencyCountriesTinMandatory.Select(required => required ? "Ano" : "Ne").ToArray();
+
+        TaxResidencyCountriesMissingTinReason = GetTaxResidencyCountries().Select((country, index) =>
+        {
+            var residencyCountry = Customer.NaturalPerson.TaxResidence.ResidenceCountries[index];
+
+            if (taxResidencyCountriesTinMandatory[index] && !string.IsNullOrWhiteSpace(residencyCountry.Tin))
+                return string.Empty;
+
+            if (string.IsNullOrWhiteSpace(residencyCountry.TinMissingReasonDescription))
+                return _codebookManager.TinNoFillReasonsByCountry.FirstOrDefault(t => t.Id == country?.ShortName)?.ReasonForBlankTin ?? string.Empty;
+
+            return residencyCountry.TinMissingReasonDescription;
+        }).ToArray();
 
         return Task.CompletedTask;
     }

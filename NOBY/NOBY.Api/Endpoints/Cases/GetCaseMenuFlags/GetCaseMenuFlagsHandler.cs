@@ -1,4 +1,5 @@
-﻿using DomainServices.DocumentArchiveService.Clients;
+﻿using DomainServices.CaseService.Clients;
+using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.ProductService.Clients;
 using NOBY.Dto.Documents;
@@ -12,13 +13,16 @@ internal sealed class GetCaseMenuFlagsHandler
     private readonly IProductServiceClient _productService;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly IDocumentHelperService _documentHelper;
+    private readonly ICaseServiceClient _caseService;
 
     public GetCaseMenuFlagsHandler(
+            ICaseServiceClient caseService,
             IProductServiceClient productService,
             IDocumentArchiveServiceClient documentArchiveServiceClient,
             IDocumentHelperService documentHelper
             )
     {
+        _caseService = caseService;
         _productService = productService;
         _documentArchiveServiceClient = documentArchiveServiceClient;
         _documentHelper = documentHelper;
@@ -29,7 +33,19 @@ internal sealed class GetCaseMenuFlagsHandler
         return new GetCaseMenuFlagsResponse
         {
             DocumentsMenuItem = await getDocuments(request.CaseId, cancellationToken),
-            CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken)
+            CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken),
+            RealEstatesMenuFlagItem = await getRealEstates(request.CaseId, cancellationToken)
+        };
+    }
+
+    private async Task<GetCaseMenuFlagsItem> getRealEstates(long caseId, CancellationToken cancellationToken)
+    {
+        var caseInstance = await _caseService.ValidateCaseId(caseId, false, cancellationToken);
+
+        return new GetCaseMenuFlagsItem
+        {
+            Flag = GetCaseMenuFlagsTypes.NoFlag,
+            IsActive = caseInstance.State >= 2
         };
     }
 
