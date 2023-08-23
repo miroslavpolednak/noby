@@ -53,6 +53,7 @@ try
             .AddRealEstateValuationService()
             .AddDocumentGeneratorService()
             .AddDataAggregatorService()
+            .AddRealEstateValuationService()
             // add grpc infrastructure
             .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
             .AddGrpcReflection()

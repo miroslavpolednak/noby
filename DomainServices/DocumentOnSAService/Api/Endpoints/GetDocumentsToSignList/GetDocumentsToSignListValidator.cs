@@ -7,6 +7,6 @@ public class GetDocumentsToSignListValidator : AbstractValidator<GetDocumentsToS
 {
 	public GetDocumentsToSignListValidator()
 	{
-        RuleFor(e => e.SalesArrangementId).NotNull().WithMessage($"{nameof(GetDocumentsToSignListRequest.SalesArrangementId)} is required");
+        //RuleFor(e => e.SalesArrangementId).NotNull().WithMessage($"{nameof(GetDocumentsToSignListRequest.SalesArrangementId)} is required");
     }
 }

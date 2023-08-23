@@ -32,7 +32,7 @@ internal sealed class GetFlowSwitchesHandler
 
         await adjustSigning(response, request.SalesArrangementId, cancellationToken);
         
-        await adjustEvaluation(response, request.SalesArrangementId, existingSwitches, cancellationToken);
+        //await adjustEvaluation(response, request.SalesArrangementId, existingSwitches, cancellationToken);
 
         return response;
     }
