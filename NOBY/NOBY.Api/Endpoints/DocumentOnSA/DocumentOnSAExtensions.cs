@@ -35,7 +35,9 @@ public static class DocumentOnSAExtensions
 
     private static __Contracts.DocumentFooter CreateFooter(this DocumentOnSAToSign documentOnSa) => new()
     {
+        CaseId = documentOnSa.CaseId,
         SalesArrangementId = documentOnSa.SalesArrangementId,
+        DocumentOnSaId = documentOnSa.DocumentOnSAId,
         DocumentId = documentOnSa.EArchivId,
         BarcodeText = documentOnSa.FormId
     };
