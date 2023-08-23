@@ -26,6 +26,14 @@ internal sealed class CreateRealEstateValuationHandler
         if (caseInstance.State == (int)CaseStates.InProgress)
         {
             var saInstance = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+
+            // kontrola HFICH-4168
+            var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);
+            if (!flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && t.Value))
+            {
+                throw new NobyValidationException("FlowSwitch IsRealEstateValuationAllowed is not set");
+            }
+
             var developer = await _offerService.GetOfferDeveloper(saInstance.OfferId!.Value, cancellationToken);
 
             revRequest.DeveloperAllowed = developer.IsDeveloperAllowed && request.IsLoanRealEstate;
