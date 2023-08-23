@@ -27,4 +27,4 @@ INSERT INTO DocumentVariant VALUES (16, '001', 'ZpusobPodpisu', 'D')
 
 DELETE FROM DocumentDataField WHERE DocumentId = 13 AND DocumentVersion = '001' AND AcroFieldName = 'DuvodNeposkytnuti'
 
-INSERT INTO DocumentSpecialDataField VALUES (13, '001', 'DuvodNeposkytnuti', 5, 'TaxResidencyCountriesMissingTinReason', NULL, NULL, NULL)
+INSERT INTO DocumentSpecialDataField VALUES (13, '001', 'DuvodNeposkytnuti', 5, 'TaxResidencyCountriesMissingTinReason[]', NULL, NULL, NULL)

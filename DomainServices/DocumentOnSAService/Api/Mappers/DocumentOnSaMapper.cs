@@ -16,7 +16,7 @@ public interface IDocumentOnSaMapper
 
     DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypesResponse.Types.DocumentTypeItem documentTypeItem, int salesArrangementId);
 
-    IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<int> documentOnSaIds, int salesArrangementId);
+    IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<int> customerOnSaIds, int salesArrangementId);
 
     IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<Household> households);
 
@@ -70,13 +70,13 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
         };
     }
 
-    public IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<int> documentOnSaIds, int salesArrangementId)
+    public IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<int> customerOnSaIds, int salesArrangementId)
     {
-        return documentOnSaIds.Select(documentOnSaId => new DocumentOnSAToSign
+        return customerOnSaIds.Select(customerOnSaId => new DocumentOnSAToSign
         {
             DocumentTypeId = DocumentTypes.DANRESID.ToByte(), //13
             SalesArrangementId = salesArrangementId,
-            CustomerOnSAId = documentOnSaId,
+            CustomerOnSAId = customerOnSaId,
             IsValid = true,
             IsSigned = false,
             IsArchived = false
