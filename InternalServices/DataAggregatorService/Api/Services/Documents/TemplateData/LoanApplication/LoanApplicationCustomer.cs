@@ -35,7 +35,7 @@ internal class LoanApplicationCustomer
 
     public string PermanentAddress => CustomerHelper.FullAddress(_customer, AddressTypes.Permanent);
 
-    public string ContactAddress => GetContactAddress();
+    public string? ContactAddress => GetContactAddress();
 
     public NullableGrpcDate DateOfBirth => _customer.NaturalPerson.DateOfBirth;
 
@@ -53,14 +53,11 @@ internal class LoanApplicationCustomer
 
     public NaturalPersonResidenceCountry? CzechResidence => _customer.NaturalPerson.TaxResidence?.ResidenceCountries.FirstOrDefault(r => r.CountryId == 16);
     
-    private string GetContactAddress()
+    private string? GetContactAddress()
     {
         var contactAddress = _customer.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)AddressTypes.Mailing);
 
-        if (contactAddress is not null)
-            return contactAddress.SingleLineAddressPoint ?? string.Empty;
-
-        return PermanentAddress;
+        return contactAddress?.SingleLineAddressPoint;
     }
 
     private string GetIdentificationDocument()
