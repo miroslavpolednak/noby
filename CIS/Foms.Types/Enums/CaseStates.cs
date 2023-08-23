@@ -20,11 +20,11 @@ public enum CaseStates : byte
     InProgress = 1,
         
     [EnumMember]
-    [Display(Name = "Zpracování žádosti v továrně")]
+    [Display(Name = "Žádost předána ke zpracování")]
     InApproval = 2,
         
     [EnumMember]
-    [Display(Name = "Podepisování")]
+    [Display(Name = "Podpis za klienta")]
     InSigning = 3,
 
     [EnumMember]
@@ -32,7 +32,7 @@ public enum CaseStates : byte
     InDisbursement = 4,
 
     [EnumMember]
-    [Display(Name = "Správa")]
+    [Display(Name = "Správa/splácení")]
     InAdministration = 5,
 
     [EnumMember]
@@ -44,7 +44,7 @@ public enum CaseStates : byte
     Cancelled = 7,
 
     [EnumMember]
-    [Display(Name = "Zpracování žádosti")]
+    [Display(Name = "Zpracování žádosti v továrně")]
     InApprovalConfirmed = 8,
 
     [EnumMember]
