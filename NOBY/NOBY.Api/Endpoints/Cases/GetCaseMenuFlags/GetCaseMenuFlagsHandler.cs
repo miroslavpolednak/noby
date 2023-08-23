@@ -34,7 +34,7 @@ internal sealed class GetCaseMenuFlagsHandler
         {
             DocumentsMenuItem = await getDocuments(request.CaseId, cancellationToken),
             CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken),
-            RealEstatesMenuFlagItem = await getRealEstates(request.CaseId, cancellationToken)
+            RealEstatesMenuItem = await getRealEstates(request.CaseId, cancellationToken)
         };
     }
 
