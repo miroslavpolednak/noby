@@ -7,4 +7,6 @@ public class PdfTextConstants
     public const string OfferIdIdentifierText = "OID";
 
     public const string SalesArrangementIdIdentifierText = "SID";
+
+    public const string DocumentOnSaIdIdentifierText = "DSA";
 }

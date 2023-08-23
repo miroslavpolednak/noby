@@ -138,6 +138,7 @@ public class PdfFooter
             GetCaseIdIdentifier(footer.CaseId),
             GetOfferIdIdentifier(footer.OfferId, footer.SalesArrangementId),
             GetSalesArrangementIdIdentifier(footer.SalesArrangementId),
+            GetDocumentOnSaIdIdentifier(footer.DocumentOnSaId),
             GetDocumentNameIdentifier(request.DocumentTypeId, request.DocumentTemplateVersionId, request.DocumentTemplateVariantId),
             GetDocumentDate()
         };
@@ -165,6 +166,9 @@ public class PdfFooter
 
     private string? GetSalesArrangementIdIdentifier(int? salesArrangementId) =>
         salesArrangementId is null ? default : $"{PdfTextConstants.SalesArrangementIdIdentifierText}:{salesArrangementId.Value.ToString(_cultureInfo)}";
+
+    private string? GetDocumentOnSaIdIdentifier(int? documentOnSaId) =>
+        documentOnSaId is null ? default : $"{PdfTextConstants.DocumentOnSaIdIdentifierText}:{documentOnSaId.Value.ToString(_cultureInfo)}";
 
     private string GetDocumentDate() => DateTime.Now.ToString("G", _cultureInfo);
 }

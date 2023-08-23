@@ -32,7 +32,9 @@ public static class GenerateDocumentRequestMapper
 
     private static DocumentFooter CreateFooter(__Entity.DocumentOnSa documentOnSa) => new()
     {
+        CaseId = documentOnSa.CaseId,
         SalesArrangementId = documentOnSa.SalesArrangementId,
+        DocumentOnSaId = documentOnSa.DocumentOnSAId,
         DocumentId = documentOnSa.EArchivId,
         BarcodeText = documentOnSa.FormId
     };

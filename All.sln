@@ -428,6 +428,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00042_FixedBadDataService_StaticValues.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00042_FixedBadDataService_StaticValues.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00043_FixedBadDataService_HouseholdList.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00043_FixedBadDataService_HouseholdList.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00044_HFICH-7635_Template3601_3602_changes.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00044_HFICH-7635_Template3601_3602_changes.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00045_HFICH-7615_HFICH-7477.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00045_HFICH-7615_HFICH-7477.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -481,7 +482,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{A57610AF-B011-4FAB-974B-B3FB39A6703E}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql
-		DomainServices\RealEstateValuationService\DatabaseMigrations\00002-HFICH-7569.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00002-HFICH-7569.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.Api", "DomainServices\RealEstateValuationService\Api\DomainServices.RealEstateValuationService.Api.csproj", "{8291DE0E-0447-471D-A402-B44B3FF30ED5}"
