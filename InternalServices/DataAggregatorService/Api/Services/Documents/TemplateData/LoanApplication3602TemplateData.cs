@@ -1,5 +1,6 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.LoanApplication;
+using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.HouseholdService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData;
@@ -30,6 +31,13 @@ internal class LoanApplication3602TemplateData : LoanApplicationBaseTemplateData
         await base.LoadAdditionalData(cancellationToken);
 
         AgentName = await LoadAgentName(cancellationToken);
+    }
+
+    protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
+    {
+        configurator.SignatureTypes();
+
+        base.ConfigureCodebooks(configurator);
     }
 
     private async Task<string> LoadAgentName(CancellationToken cancellationToken)
