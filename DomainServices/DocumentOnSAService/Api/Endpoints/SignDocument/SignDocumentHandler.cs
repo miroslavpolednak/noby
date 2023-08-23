@@ -29,6 +29,8 @@ namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocument;
 
 public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, Empty>
 {
+    public List<CustomerOnSA> CustomersOnSABuffer { get; set; } = new();
+
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserAccessor _currentUser;
@@ -157,7 +159,8 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     private async Task ProcessCrsDocumentOnSa(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
     {
-        var customerOnSa = await _customerOnSAService.GetCustomer(documentOnSa.CustomerOnSAId1!.Value, cancellationToken);
+        var customerOnSa = CustomersOnSABuffer.FirstOrDefault(c => c.CustomerOnSAId == documentOnSa.CustomerOnSAId1!.Value)
+                                    ?? await _customerOnSAService.GetCustomer(documentOnSa.CustomerOnSAId1!.Value, cancellationToken);
 
         var customerChangeMetadata = await GetCustomerOnSaMetadata(documentOnSa, customerOnSa, cancellationToken);
 
@@ -211,11 +214,13 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         var customers = new List<CustomerOnSA>();
         if (household.CustomerOnSAId1 is not null)
         {
-            customers.Add(await _customerOnSAService.GetCustomer(household.CustomerOnSAId1.Value, cancellationToken));
+            customers.Add(CustomersOnSABuffer.FirstOrDefault(c => c.CustomerOnSAId == household.CustomerOnSAId1.Value)
+                                    ?? await _customerOnSAService.GetCustomer(household.CustomerOnSAId1.Value, cancellationToken));
         }
         if (household.CustomerOnSAId2 is not null)
         {
-            customers.Add(await _customerOnSAService.GetCustomer(household.CustomerOnSAId2.Value, cancellationToken));
+            customers.Add(CustomersOnSABuffer.FirstOrDefault(c => c.CustomerOnSAId == household.CustomerOnSAId2.Value)
+                                    ?? await _customerOnSAService.GetCustomer(household.CustomerOnSAId2.Value, cancellationToken));
         }
 
         return customers;
@@ -300,6 +305,8 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     private async Task SumlCallForSpecifiedCustomer(int customerOnSaId, CancellationToken cancellationToken)
     {
         var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
+        CustomersOnSABuffer.Add(customerOnSa);
+
         var kbIdentity = customerOnSa.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
         await _sulmClientHelper.StartUse(kbIdentity.IdentityId, ISulmClient.PurposeMLAP, cancellationToken);
     }
