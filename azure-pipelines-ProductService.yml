@@ -55,14 +55,14 @@ steps:
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
     noCache: true
 
-- task: SonarQubePrepare@5
-  inputs:
-    SonarQube: 'NOBY - SonarQube'
-    scannerMode: 'MSBuild'
-    projectKey: 'NOBY.DS.ProductService'
-    projectName: 'NOBY.DS.ProductService'
-    projectVersion: '1.0.0.$(Build.BuildId)'
-    extraProperties: 'sonar.verbose=true'
+#- task: SonarQubePrepare@5
+#  inputs:
+#    SonarQube: 'NOBY - SonarQube'
+#    scannerMode: 'MSBuild'
+#    projectKey: 'NOBY.DS.ProductService'
+#    projectName: 'NOBY.DS.ProductService'
+#    projectVersion: '1.0.0.$(Build.BuildId)'
+#    extraProperties: 'sonar.verbose=true'
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -70,11 +70,11 @@ steps:
     projects: '$(projectFile)'
     arguments: '--output $(Build.BinariesDirectory)'
 
-- task: SonarQubeAnalyze@5
+#- task: SonarQubeAnalyze@5
 
-- task: SonarQubePublish@5
-  inputs:
-    pollingTimeoutSec: '300'
+#- task: SonarQubePublish@5
+#  inputs:
+#    pollingTimeoutSec: '300'
 
 - task: ArchiveFiles@2
   inputs:
