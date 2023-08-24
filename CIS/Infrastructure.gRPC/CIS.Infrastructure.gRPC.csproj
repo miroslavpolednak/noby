@@ -25,8 +25,8 @@
 		
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
-    <PackageReference Include="FluentValidation" Version="11.6.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.24.0" />
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.24.1" />
     <PackageReference Include="Grpc.AspNetCore.HealthChecks" Version="2.55.0" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.55.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.55.0" />
