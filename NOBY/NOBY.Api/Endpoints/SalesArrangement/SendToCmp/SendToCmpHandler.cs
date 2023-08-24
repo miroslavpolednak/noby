@@ -29,6 +29,7 @@ internal sealed class SendToCmpHandler
     private readonly IProductServiceClient _productService;
     private readonly ICustomerServiceClient _customerService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly IMediator _mediator;
 
     public SendToCmpHandler(
         DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
@@ -37,7 +38,8 @@ internal sealed class SendToCmpHandler
         ICustomerOnSAServiceClient customerOnSaService,
         IProductServiceClient productService,
         ICustomerServiceClient customerService,
-        IDocumentOnSAServiceClient documentOnSAService)
+        IDocumentOnSAServiceClient documentOnSAService,
+        IMediator mediator)
     {
         _codebookService = codebookService;
         _caseService = caseService;
@@ -46,6 +48,7 @@ internal sealed class SendToCmpHandler
         _productService = productService;
         _customerService = customerService;
         _documentOnSAService = documentOnSAService;
+        _mediator = mediator;
     }
 
     public async Task Handle(SendToCmpRequest request, CancellationToken cancellationToken)
@@ -115,8 +118,20 @@ internal sealed class SendToCmpHandler
             throw new NobyValidationException(90018);
         }
 
+        var sections = await _mediator.Send(new GetFlowSwitchesRequest(salesArrangementId), cancellationToken);
+
+        if (!EverySectionIsCompleted(sections.ModelationSection, sections.IndividualPriceSection, sections.HouseholdSection,
+                                     sections.ParametersSection, sections.SigningSection, sections.ScoringSection, sections.EvaluationSection))
+        {
+            throw new NobyValidationException(90001, "Some sections are not completed");
+        }
+
         bool isSet(FlowSwitches flowSwitch, bool value = true)
-            => flowSwitches?.Any(t => t.FlowSwitchId == (int)flowSwitch && t.Value == value) ?? false;
+            => flowSwitches.Any(t => t.FlowSwitchId == (int)flowSwitch && t.Value == value);
+
+        bool EverySectionIsCompleted(params GetFlowSwitchesResponseItem[] switches) =>
+            switches.Where(x => x.IsActive)
+                    .All(x => x.IsCompleted || ReferenceEquals(x, sections.EvaluationSection) && flowSwitches.Any(f => f.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && !f.Value));
     }
 
     private async Task ValidateSalesArrangement(int salesArrangementId, bool ignoreWarnings, CancellationToken cancellationToken)
