@@ -197,7 +197,7 @@ service CodebookService {
 
    rpc GetACVAndBagmanRealEstateType (GetACVAndBagmanRealEstateTypeRequest) returns (GetACVAndBagmanRealEstateTypeResponse) {
 	   option (google.api.http) = {
-			get: "/v1/get-acv-real-estate-type"
+			get: "/v1/get-acv-and-bagman-real-estate-type"
 		};
    }
 
