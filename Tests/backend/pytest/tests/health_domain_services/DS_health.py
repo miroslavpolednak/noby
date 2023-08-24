@@ -1,7 +1,7 @@
 import pytest
 import requests
 
-from Tests.backend.pytest.tests.health_domain_services.conftest import URLS
+#from Tests.backend.pytest.tests.health_domain_services.conftest import URLS
 
 
 #NOBY vraci okej, ale v databázi padnou kombinace, ktere nemaji pro sebe MCS kod
