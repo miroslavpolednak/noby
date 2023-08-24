@@ -6,6 +6,7 @@ namespace DomainServices.DocumentOnSAService.Api;
 public sealed class ErrorCodeMapper : ErrorCodeMapperBase
 {
     public const int SalesArrangementNotExist = 19000;
+    public const int DocumentTypeIdDoesNotExist = 19001;
     public const int SignatureTypeNotExist = 19002;
     public const int DocumentOnSANotExist = 19003;
     public const int AlreadySignedDocumentOnSA = 19005;
@@ -45,6 +46,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
         SetMessages(new Dictionary<int, string>()
         {
             { SalesArrangementNotExist, "SalesArrangement {PropertyValue} does not exist" },
+            { DocumentTypeIdDoesNotExist, "DocumentTypeId doesn't exist." },
             { SignatureTypeNotExist, "SignatureType {PropertyValue} does not exist." },
             { DocumentOnSANotExist, "DocumentOnSA {PropertyValue} does not exist."},
             { AlreadySignedDocumentOnSA, "Unable to sign DocumentOnSA {PropertyValue}. Document has been already signed."},
