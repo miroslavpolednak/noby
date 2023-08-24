@@ -69,8 +69,8 @@ public async Task SkipCaseOwner(long caseId, int salesArrangementId, int custome
 }
 ```
 
-### 1.3 Optimalizace
-
+### Optimalizace / kešování entit
+V případě, že je endpoint validován na vlastnictví case (viz. 1.2), tak taková kontrola zahrnuje volání doménových služeb pro zjištění Case.OwnerUserId.  
 K prevenci vícenásobného volání entit, které může dojít v `CaseOwnerValidationMiddleware` a následně v business logice, lze použít attribut `[NobyAuthorizePreload(flags)]`, který má parametr flagy `LoadableEntities`:
 
 ```csharp
