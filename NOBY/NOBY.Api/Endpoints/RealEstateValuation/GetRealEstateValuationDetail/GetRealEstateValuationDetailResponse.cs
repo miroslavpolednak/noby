@@ -11,5 +11,7 @@ public sealed class GetRealEstateValuationDetailResponse
     public List<RealEstateValuationAttachment>? Attachments { get; set; }
 
     public List<DeedOfOwnershipDocumentWithId>? DeedOfOwnershipDocuments { get; set; }
+
+    public List<NOBY.Dto.Documents.DocumentsMetadata>? Documents { get; set; }
 }
 
