@@ -1,7 +1,3 @@
-import datetime
-import pyodbc
-
-import datetime as datetime
 import pytest
 import requests
 from sqlalchemy.ext.declarative import declarative_base
