@@ -1,1 +1,1 @@
-UPDATE DocumentSpecialDataField SET DefaultTextIfNull = 'adresa trvalého pobytu' where DocumentId IN (4, 5, 16) AND AcroFieldName LIKE '%KontaktniAdresa%'
+UPDATE DocumentSpecialDataField SET DefaultTextIfNull = 'adresa trvalého pobytu' where DocumentId IN (4, 5, 11, 12, 16) AND AcroFieldName LIKE '%KontaktniAdresa%'
