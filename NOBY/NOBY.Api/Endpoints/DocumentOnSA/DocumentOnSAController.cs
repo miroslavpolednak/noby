@@ -33,6 +33,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/document-list")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(typeof(GetDocumentsSignListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -46,7 +47,7 @@ public class DocumentOnSAController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Provede checkform pro vybrané žádosti a spustí podepisovací proces pro zvolený typ dokumentu.<br /><br />
-    /// <i>DS:DocumentOnSAService/startSigning</i>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C65CE06A-6702-4d2d-ADCF-A8DC7F1902A4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId"> ID Sales Arrangement </param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/start")]
@@ -65,7 +66,7 @@ public class DocumentOnSAController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=11&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
@@ -74,14 +75,13 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task SendDocumentOnSAPreview([FromRoute] int salesArrangementId, [FromRoute] int documentOnSAId)
         => await _mediator.Send(new SendDocumentOnSAPreviewRequest(salesArrangementId, documentOnSAId));
-    
+
     /// <summary>
     /// Zrušit podepisování dokumentu
     /// </summary>
     /// <remarks>
     /// Zkontroluje, zda je pro daný dokument zahájen podepisovací proces a pokud ano, tak ho ukončí.<br /><br />
-    /// <i>DS:DocumentOnSAService/getDocumentsToSignList</i><br />
-    /// <i>DS:DocumentOnSAService/stopDocumentOnSASigning</i>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=AA714DE2-ACD8-48ed-B146-41D50B7D3BE1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
@@ -126,7 +126,7 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
