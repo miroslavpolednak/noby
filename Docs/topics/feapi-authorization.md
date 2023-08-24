@@ -49,6 +49,53 @@ Pokud toto právo nemá, jakýkoliv endpoint FE API musí vrátit HTTP 403.
 
 Kontrola na toto právo probíhá v middleware `NOBY.Infrastructure.Security.NobySecurityMiddleware`.
 
+### 1.1 Validace vlastnictví obchodního případu (case)
+Vyhodnocení vlastnictví obchodního případu (tzv. `CaseOwnerValidation`) se provádí automaticky v `CaseOwnerValidationMiddleware`, pokud jsou url path obsaženy některé z následujících hodnoty:
+- caseId:long
+- salesArrangementId:int
+- customerOnSAId:int
+- householdId:int
+
+### 1.2 Vypnutí validace vlastnictví případu (case)
+
+Vyhodnocení vlastníctví lze předejít pomocí attributu `[NobySkipCaseOwnerValidation]`:
+
+```csharp
+[HttpGet("case/caseId:long/sales-arrangement/salesArrangementId:int/customer-on-sa/customerOnSAId:int"]
+[NobySkipCaseOwnerValidation]
+public async Task SkipCaseOwner(long caseId, int salesArrangementId, int customerOnSAId)
+{
+    ...
+}
+```
+
+### 1.3 Optimalizace
+
+K prevenci vícenásobného volání entit, které může dojít v `CaseOwnerValidationMiddleware` a následně v business logice, lze použít attribut `[NobyAuthorizePreload(flags)]`, který má parametr flagy `LoadableEntities`:
+
+```csharp
+[Flags]
+public enum LoadableEntities
+{
+    None,
+    Case,
+    SalesArrangement,
+    Household,
+    CustomerOnSA
+}
+```
+
+pokud bychom v url path měli `caseId` a `salesArrangementId` a v business logice bychom chtěli načíst daný case s `caseId` a salesArrangement s `salesArrangementId`, můžeme attribut použít následovně:
+
+```csharp
+[HttpGet("case/caseId:long/sales-arrangement/salesArrangementId:int"]
+[NobyAuthorizePreload(LoadableEntities.Case|LoadableEntities.SalesArrangement)]
+public async Task DoSomething(long caseId, int salesArrangementId)
+{
+    ...
+}
+```
+
 ## 2. permission check na úrovni endpointu
 Pokud je endpoint FE API dostupný pouze pro uživatele s definovanými permissions, je nutné daný endpoint odekorovat atributem `NOBY.Infrastructure.Security.NobyAuthorizeAttribute` společně s informací o tom, jaké právo/a je/jsou vyžadováno/a.   
 Atributů `NobyAuthorizeAttribute` může být pro jeden endpoint použito více pokud je vyžádováno více oprávnění najednou.
@@ -94,6 +141,4 @@ static void CheckPermission(this ClaimsPrincipal principal, int permission);
 static void CheckPermission(this ICurrentUserAccessor userAccessor, DomainServices.UserService.Clients.Authorization.UserPermissions permission);
 static void CheckPermission(this ICurrentUserAccessor userAccessor, int permission);
 ```
-
-## Autorizace CaseOwner - ověření majitele Case
 
