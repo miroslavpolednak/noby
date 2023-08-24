@@ -37,6 +37,10 @@ internal sealed class GetRealEstateValuationTypesHandler
         {
             return System.Text.Json.JsonSerializer.Deserialize<long[]>(t!)!;
         }).ToArray();
+        if (realEstateIds.Length == 0)
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId);
+        }
         
         var purposes = await _codebookService.LoanPurposes(cancellationToken);
         var acvRequest = new ExternalServices.PreorderService.V1.Contracts.AvailableValuationTypesRequestDTO
@@ -50,6 +54,7 @@ internal sealed class GetRealEstateValuationTypesHandler
                 .LoanPurposes
                 ?.Select(t => purposes.FirstOrDefault(x => t == x.Id)?.AcvId)
                 .Where(t => !string.IsNullOrEmpty(t))
+                .Cast<string>()
                 ?.ToList(),
             RealEstateIds = realEstateIds,
             DealType = request.DealType ?? "",
