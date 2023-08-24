@@ -44,21 +44,21 @@ _context.HttpContext.User.HasClaim(t =>
 3) permission check v byznys logice handleru.
 
 ## 1. globální permission check
+
+### 1.1 Globální právo na práci s aplikací NOBY
 Aby uživatel mohl pracovat s aplikací *NOBY*, musí mít minimálně právo **201** (APPLICATION_BasicAccess). 
 Pokud toto právo nemá, jakýkoliv endpoint FE API musí vrátit HTTP 403.
 
-Kontrola na toto právo probíhá v middleware `NOBY.Infrastructure.Security.NobySecurityMiddleware`.
+Kontrola na toto právo probíhá v middleware `NOBY.Infrastructure.Security.NobySecurityMiddleware`, je tedy automatická na každém endpointu FE API.
 
-### 1.1 Validace vlastnictví obchodního případu (case)
-Vyhodnocení vlastnictví obchodního případu (tzv. `CaseOwnerValidation`) se provádí automaticky v `CaseOwnerValidationMiddleware`, pokud jsou url path obsaženy některé z následujících hodnoty:
+### 1.2 Validace vlastnictví obchodního případu (case)
+Vyhodnocení vlastnictví obchodního případu se provádí automaticky v `CaseOwnerValidationMiddleware`, pokud jsou route obsaženy některé z následujících parametrů:
 - caseId:long
 - salesArrangementId:int
 - customerOnSAId:int
 - householdId:int
 
-### 1.2 Vypnutí validace vlastnictví případu (case)
-
-Vyhodnocení vlastníctví lze předejít pomocí attributu `[NobySkipCaseOwnerValidation]`:
+Vyhodnocení vlastnictví lze předejít pomocí attributu `[NobySkipCaseOwnerValidation]`:
 
 ```csharp
 [HttpGet("case/caseId:long/sales-arrangement/salesArrangementId:int/customer-on-sa/customerOnSAId:int"]
