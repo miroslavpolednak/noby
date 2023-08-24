@@ -37,7 +37,14 @@ internal sealed class UpdateCustomerIdentifiersHandler
         var kbIdentity = identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
 
         //Does partner exist?
-        await _mediator.Send(new CustomerDetailRequest { Identity = mpIdentity }, cancellationToken);
+        try
+        {
+            await _mediator.Send(new CustomerDetailRequest { Identity = mpIdentity }, cancellationToken);
+        }
+        catch (CisNotFoundException)
+        {
+            throw new CisValidationException(11015, $"Identity {mpIdentity.IdentityId} for identityScheme MP does not exist");
+        }
 
         await _mpHomeClient.UpdatePartnerKbId(mpIdentity.IdentityId, kbIdentity.IdentityId, cancellationToken);
     }

@@ -37,12 +37,12 @@ public class UpdateCustomerRequestValidator : AbstractValidator<UpdateCustomerRe
         {
             RuleFor(m => m.NaturalPerson.IsPoliticallyExposed)
                 .Must(t => !t.GetValueOrDefault())
-                .WithMessage("Parametr isPoliticallyExposed je nastaven na true")
+                .WithMessage("Cannot set isPoliticallyExposed = true in KB CM")
                 .WithErrorCode("11027");
 
             RuleFor(m => m.NaturalPerson.IsUSPerson)
                 .Must(t => !t.GetValueOrDefault())
-                .WithMessage("Parametr isUSPerson je nastaven na true")
+                .WithMessage("Cannot set isUSPerson = true in KB CM")
                 .WithErrorCode("11028");
         });
     }
