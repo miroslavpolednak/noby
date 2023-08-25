@@ -31,7 +31,7 @@ internal sealed class DeleteHouseholdHandler
         await StopSigning(documentsOnSaWithHousehold, cancellationToken);
         // Crs
         var documentsOnSaCrs = documentsOnSaToSing.DocumentsOnSAToSign.Where(r => r.DocumentOnSAId is not null && r.DocumentTypeId == DocumentTypes.DANRESID.ToByte() &&
-                                                                            (r.CustomerOnSAId == household.CustomerOnSAId1 || r.CustomerOnSAId == household.CustomerOnSAId2));
+                                                                            (r.CustomerOnSA?.CustomerOnSAId == household.CustomerOnSAId1 || r.CustomerOnSA?.CustomerOnSAId == household.CustomerOnSAId2));
         await StopSigning(documentsOnSaCrs, cancellationToken);
 
         // smazat domacnost
