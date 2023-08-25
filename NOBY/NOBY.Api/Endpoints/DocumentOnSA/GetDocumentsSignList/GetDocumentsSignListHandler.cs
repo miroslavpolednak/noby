@@ -61,7 +61,12 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 },
               signatureStates),
                 EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(s.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains),
-                CustomerOnSAId = s.CustomerOnSAId,
+                CustomerOnSa = new()
+                {
+                    CustomerOnSAId = s.CustomerOnSA?.CustomerOnSAId,
+                    FirstName = s.CustomerOnSA?.FirstName,
+                    LastName = s.CustomerOnSA?.LastName
+                },
                 IsPreviewSentToCustomer = s.IsPreviewSentToCustomer,
                 ExternalId = s.ExternalId,
                 Source = s.Source.MapToCisEnum()

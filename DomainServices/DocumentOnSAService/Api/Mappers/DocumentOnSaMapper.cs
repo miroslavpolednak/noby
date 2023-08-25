@@ -1,9 +1,12 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Foms.Enums;
+using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CodebookService.Contracts.v1;
+using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Api.Extensions;
 using DomainServices.DocumentOnSAService.Contracts;
+using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;
@@ -16,7 +19,10 @@ public interface IDocumentOnSaMapper
 
     DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypesResponse.Types.DocumentTypeItem documentTypeItem, int salesArrangementId);
 
-    IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<int> customerOnSaIds, int salesArrangementId);
+    /// <summary>
+    /// For CRS
+    /// </summary>
+    Task<IReadOnlyCollection<DocumentOnSAToSign>> CreateDocumentOnSaToSign(IEnumerable<int> customerOnSaIds, int salesArrangementId, CancellationToken cancellationToken);
 
     IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<Household> households);
 
@@ -25,6 +31,21 @@ public interface IDocumentOnSaMapper
 [ScopedService, AsImplementedInterfacesService]
 public class DocumentOnSaMapper : IDocumentOnSaMapper
 {
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly ICustomerServiceClient _customerService;
+    private readonly ICustomerChangeDataMerger _customerChangeDataMerger;
+
+    public DocumentOnSaMapper(
+        ICustomerOnSAServiceClient customerOnSAService,
+        ICustomerServiceClient customerService,
+        ICustomerChangeDataMerger customerChangeDataMerger
+        )
+    {
+        _customerOnSAService = customerOnSAService;
+        _customerService = customerService;
+        _customerChangeDataMerger = customerChangeDataMerger;
+    }
+
     public IEnumerable<DocumentOnSAToSign> MapDocumentOnSaToSign(IEnumerable<DocumentOnSa> documentOnSas)
     {
         foreach (var documentOnSa in documentOnSas)
@@ -48,7 +69,13 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
                 IsFinal = documentOnSa.IsFinal,
                 SignatureTypeId = documentOnSa.SignatureTypeId,
                 Source = documentOnSa.Source.MapToContractEnum(),
-                CustomerOnSAId = documentOnSa.CustomerOnSAId1,
+                // Only for CRS DocumentTypeId == 13, should by only one in collection
+                CustomerOnSA = documentOnSa.DocumentTypeId == DocumentTypes.DANRESID.ToByte() ? new()
+                {
+                    CustomerOnSAId = documentOnSa.SigningIdentities.FirstOrDefault()?.SigningIdentityJson?.CustomerOnSAId,
+                    FirstName = documentOnSa.SigningIdentities.FirstOrDefault()?.SigningIdentityJson?.FirstName,
+                    LastName = documentOnSa.SigningIdentities.FirstOrDefault()?.SigningIdentityJson?.LastName
+                } : new(),
                 IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer,
                 TaskId = documentOnSa.TaskId,
                 CaseId = documentOnSa.CaseId,
@@ -70,17 +97,32 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
         };
     }
 
-    public IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<int> customerOnSaIds, int salesArrangementId)
+    public async Task<IReadOnlyCollection<DocumentOnSAToSign>> CreateDocumentOnSaToSign(IEnumerable<int> customerOnSaIds, int salesArrangementId, CancellationToken cancellationToken)
     {
-        return customerOnSaIds.Select(customerOnSaId => new DocumentOnSAToSign
+        var documentsToSignList = new List<DocumentOnSAToSign>();
+        foreach (var customerOnSaId in customerOnSaIds)
         {
-            DocumentTypeId = DocumentTypes.DANRESID.ToByte(), //13
-            SalesArrangementId = salesArrangementId,
-            CustomerOnSAId = customerOnSaId,
-            IsValid = true,
-            IsSigned = false,
-            IsArchived = false
-        });
+            // Merge customer with customerOnSa
+            var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
+            var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+            _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
+            documentsToSignList.Add(new()
+            {
+                DocumentTypeId = DocumentTypes.DANRESID.ToByte(), //13
+                SalesArrangementId = salesArrangementId,
+                CustomerOnSA = new()
+                {
+                    CustomerOnSAId = customerOnSaId,
+                    FirstName = customerDetail.NaturalPerson?.FirstName,
+                    LastName = customerDetail.NaturalPerson?.LastName,
+                },
+                IsValid = true,
+                IsSigned = false,
+                IsArchived = false
+            });
+        }
+
+        return documentsToSignList;
     }
 
     public IEnumerable<DocumentOnSAToSign> CreateDocumentOnSaToSign(IEnumerable<Household> households)

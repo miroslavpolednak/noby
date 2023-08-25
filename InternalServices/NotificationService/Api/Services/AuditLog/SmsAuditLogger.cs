@@ -61,7 +61,7 @@ public class SmsAuditLogger : ISmsAuditLogger
         
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby012,
-            "HTTP request processed",
+            "NotificationService /sms or /smsFromTemplate HTTP request processed",
             bodyBefore: new Dictionary<string, string>
             {
                 { "requestPath", httpContext.Request.Path },
@@ -118,7 +118,7 @@ public class SmsAuditLogger : ISmsAuditLogger
         if (smsType.IsAuditLogEnabled)
         {
             _auditLogger.Log(
-                AuditEventTypes.Noby013,
+                AuditEventTypes.Noby014,
                 "Received notification report for sms",
                 bodyBefore: new Dictionary<string, string>
                 {
