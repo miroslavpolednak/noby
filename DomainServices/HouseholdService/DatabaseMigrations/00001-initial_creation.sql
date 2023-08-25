@@ -99,6 +99,7 @@ GO
 CREATE TABLE [dbo].[CustomerOnSA](
 	[CustomerOnSAId] [int] IDENTITY(1,1) NOT NULL,
 	[SalesArrangementId] [int] NOT NULL,
+	[CaseId] [bigint] NOT NULL,
 	[CustomerRoleId] [tinyint] NOT NULL,
 	[HasPartner] [bit] NULL,
 	[FirstNameNaturalPerson] [nvarchar](100) NULL,
