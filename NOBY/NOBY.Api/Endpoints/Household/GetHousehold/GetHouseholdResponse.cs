@@ -7,6 +7,10 @@ public class GetHouseholdResponse
     /// </summary>
     public int HouseholdId { get; set; }
 
+    public int SalesArrangementId { get; set; }
+    
+    public long CaseId { get; set; }
+    
     public bool AreCustomersPartners { get; set; }
 
     /// <summary>
