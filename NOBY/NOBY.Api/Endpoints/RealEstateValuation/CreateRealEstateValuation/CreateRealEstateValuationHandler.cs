@@ -17,7 +17,7 @@ internal sealed class CreateRealEstateValuationHandler
             ?.Collateral ?? false;
         if (!isCollateral)
         {
-            throw new CisAuthorizationException("RealEstateTypeId is not collateral");
+            throw new NobyValidationException(90032);
         }
 
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
