@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.SalesArrangementService.Api.Database.Entities;
@@ -13,7 +12,7 @@ internal sealed class SalesArrangementParameters
 
     public int SalesArrangementId { get; set; }
 
-    public SalesArrangementTypes SalesArrangementParametersType { get; set; }
+    public SalesArrangementTypes? SalesArrangementParametersType { get; set; }
 
     public string? Parameters { get; set; }
     
