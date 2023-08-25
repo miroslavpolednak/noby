@@ -21,7 +21,8 @@ internal sealed class ErrorCodeMapper
     public const int AddressPointIdNotFound = 22013;
     public const int UnsopportedEstateType = 22014;
     public const int MaxValuationsForCase = 22015;
-    public const int RevaluationFailed = 22016;
+    public const int MissingRealEstateId = 22016;
+    public const int RevaluationFailed = 22017;
 
     public static IErrorCodesDictionary Init()
     {
@@ -43,6 +44,7 @@ internal sealed class ErrorCodeMapper
             { AddressPointIdNotFound, "AddressPointId not found in any DeedOfOwnershipDocuments" },
             { UnsopportedEstateType, "Unsupported RealEstateTypeId ({PropertyValue})" },
             { RevaluationFailed, "Revaluation failed" },
+            { MissingRealEstateId, "Missing RealEstateId" },
             { MaxValuationsForCase, "Příliš mnoho Ocenění s isLoanRealEstate true" }
         });
 

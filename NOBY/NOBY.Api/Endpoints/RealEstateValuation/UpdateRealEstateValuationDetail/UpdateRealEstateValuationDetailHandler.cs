@@ -88,7 +88,9 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
             throw new CisAuthorizationException("The valuation has bad state");
 
         if (caseInstance.State == (int)CaseStates.InProgress && request.LoanPurposeDetails is not null)
+        {
             throw new CisAuthorizationException("The LoanPurposeDetails has to be null when the case is in progress");
+        }
 
         if (caseInstance.State == (int)CaseStates.InProgress && request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate)
         {

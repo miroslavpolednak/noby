@@ -119,8 +119,8 @@ UPDATE DocumentSpecialDataField SET FieldPath = 'Customer2.SignerName' WHERE Doc
 
 DELETE FROM DocumentSpecialDataField WHERE DocumentId IN (5, 16) AND AcroFieldName = 'SplatnostLabel'
 
-INSERT INTO DocumentDataField VALUES (5, '001', 'SplatnostLabel', 28, 'Splatnost úvěru', NULL, NULL)
-INSERT INTO DocumentDataField VALUES (16, '001', 'SplatnostLabel', 28, 'Předpokládané datum splatnosti', NULL, NULL)
+INSERT INTO DocumentDataField VALUES (5, '001', 'SplatnostLabel', 207, 'Splatnost úvěru', NULL, NULL)
+INSERT INTO DocumentDataField VALUES (16, '001', 'SplatnostLabel', 207, 'Předpokládané datum splatnosti', NULL, NULL)
 
 
 INSERT INTO DocumentSpecialDataField VALUES (

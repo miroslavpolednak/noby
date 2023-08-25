@@ -86,7 +86,7 @@ public class TemplateManager : IDisposable
         var templateVariants = await _codebookService.DocumentTemplateVariants();
 
         var variant = templateVariants.FirstOrDefault(v => v.DocumentTemplateVersionId == templateVersionId && v.Id == templateVariantId)
-                      ?? throw new CisValidationException(402, $"Unsupported variant {templateVariantId} (Version id: {templateVersionId})");
+                      ?? throw new CisValidationException(402, $"Unsupported variant {templateVariantId} (Version id: {templateVersionId}, Variant id: {templateVariantId})");
 
         return variant.DocumentVariant;
     }

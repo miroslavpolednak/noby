@@ -120,29 +120,21 @@ internal sealed class LinkModelationToSalesArrangementHandler
                 {
                     await _caseService.CancelTask(caseId, taskToCancel.TaskIdSb, cancellation);
                 }
-
-                // Nastavení klapky k ocenění nemovitosti
-                bool flowSwitch15 = true;
-                if (offerInstance.SimulationInputs.LoanKindId != 2000)
-                {
-                    flowSwitch15 = false;
-
-                    // smazat oceneni nemovitosti
-                    var realEstatesToDelete = (await _realEstateValuationService.GetRealEstateValuationList(caseId, cancellation))
-                        .Where(t => t.ValuationStateId is (int)RealEstateValuationStates.Neoceneno or (int)RealEstateValuationStates.Rozpracovano);
-                    foreach (var realEstateValuation in realEstatesToDelete)
-                    {
-                        await _realEstateValuationService.DeleteRealEstateValuation(caseId, realEstateValuation.RealEstateValuationId, cancellation);
-                    }
-                }
-
-                flowSwitchesToSet.Add(new __SA.EditableFlowSwitch
-                {
-                    FlowSwitchId = (int)FlowSwitches.IsRealEstateValuationAllowed,
-                    Value = flowSwitch15
-                });
             }
         }
+
+        // Nastavení klapky k ocenění nemovitosti
+        bool flowSwitch15 = offerInstance.SimulationInputs.LoanKindId == 2000;
+        if (!flowSwitch15)
+        {
+            // smazat oceneni nemovitosti
+            await deleteBoundedRealEstateValuations(caseId, cancellation);
+        }
+        flowSwitchesToSet.Add(new __SA.EditableFlowSwitch
+        {
+            FlowSwitchId = (int)FlowSwitches.IsRealEstateValuationAllowed,
+            Value = flowSwitch15
+        });
 
         // ulozit pokud byli nejake switches nastaveny
         if (flowSwitchesToSet.Any())
@@ -154,6 +146,20 @@ internal sealed class LinkModelationToSalesArrangementHandler
             flowSwitchesRequest.FlowSwitches.AddRange(flowSwitchesToSet);
 
             await _mediator.Send(flowSwitchesRequest, cancellation);
+        }
+    }
+
+    private async Task deleteBoundedRealEstateValuations(long caseId, CancellationToken cancellationToken)
+    {
+        var realEstatesToDelete = (await _realEstateValuationService.GetRealEstateValuationList(caseId, cancellationToken))
+                .Where(t => t.ValuationStateId is (int)RealEstateValuationStates.Neoceneno or (int)RealEstateValuationStates.Rozpracovano);
+        foreach (var realEstateValuation in realEstatesToDelete)
+        {
+            try
+            {
+                await _realEstateValuationService.DeleteRealEstateValuation(caseId, realEstateValuation.RealEstateValuationId, cancellationToken);
+            }
+            catch { }
         }
     }
 

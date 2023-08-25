@@ -36,7 +36,10 @@ public sealed class ErrorCodeMapper
             { 90026, new("Vámi hledaný obchodní případ byl vytvořen v jiném systému a není možné zde zobrazit jeho detail") },
             { 90027, new("Diskvalifikace z online ocenění", "Při pokusu o online ocenění některý ze vstupních atributů přesáhl povolený rozsah pro možnost ocenění nemovitosti online.") },
             { 90028, new("Žádost v aktuální stavu nelze měnit.") },
-            { 90029, new("TODO Marťa") }
+            { 90029, new("Překročen počet objektů úvěru", "Maximální počet objektů úvěru je 3. Upravte počet objednávek ocenění s označením objekt úvěru.") },
+            { 90030, new("Dokument s tímto EACodeMain není povolen pro NOBY uložit do eArchivu.") },
+            { 90031, new("Chybí nemovitost k ocenění", "Je potřeba doplnit LV s alespoň jednou nemovitostí označenou k ocenění.") },
+            { 90032, new("Nepovolená operace", "Vámi požadovaná operace není se zadanými parametry povolena.") }
         };
 
         Messages = messages.AsReadOnly();
@@ -45,7 +48,8 @@ public sealed class ErrorCodeMapper
         {
             { 13035, 90025 },
             { 22202, 90027 },
-            { 22015, 90029 }
+            { 22015, 90029 },
+            { 22016, 90031 },
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();

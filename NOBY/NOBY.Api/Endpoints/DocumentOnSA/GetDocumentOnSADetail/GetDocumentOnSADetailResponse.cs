@@ -34,7 +34,10 @@ public class GetDocumentOnSADetailResponse
 
     public EACodeMainItem EACodeMainItem { get; set; } = null!;
 
-    public int? CustomerOnSAId { get; set; }
+    /// <summary>
+    /// Only for CRS
+    /// </summary>
+    public CustomerOnSa CustomerOnSa { get; set; } = null!;
 
     /// <summary>
     /// Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.

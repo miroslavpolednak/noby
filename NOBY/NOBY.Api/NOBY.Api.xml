@@ -263,6 +263,21 @@
             https://wiki.kb.cz/pages/viewpage.action?pageId=424119307#id-%C4%8Cerp%C3%A1ni%C5%BD%C3%A1dosto%C4%8Derp%C3%A1n%C3%AD-Kontrolyp%C5%99edformul%C3%A1%C5%99em%C4%8Derp%C3%A1n%C3%AD
             </remarks>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.DocumentsMenuItem">
+            <summary>
+            Položka menu Dokumenty
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.CovenantsMenuItem">
+            <summary>
+            Položka menu Podmínky ke splnění
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.RealEstatesMenuItem">
+            <summary>
+            Položka menu Nemovitosti
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsItem.Flag">
             <summary>
             Příznak
@@ -1819,7 +1834,7 @@
             </summary>
             <remarks>
             Provede checkform pro vybrané žádosti a spustí podepisovací proces pro zvolený typ dokumentu.<br /><br />
-            <i>DS:DocumentOnSAService/startSigning</i>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C65CE06A-6702-4d2d-ADCF-A8DC7F1902A4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId"> ID Sales Arrangement </param>
         </member>
@@ -1829,7 +1844,7 @@
             </summary>
             <remarks>
             Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=11&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.StopSigning(System.Int32,System.Int32)">
@@ -1838,8 +1853,7 @@
             </summary>
             <remarks>
             Zkontroluje, zda je pro daný dokument zahájen podepisovací proces a pokud ano, tak ho ukončí.<br /><br />
-            <i>DS:DocumentOnSAService/getDocumentsToSignList</i><br />
-            <i>DS:DocumentOnSAService/stopDocumentOnSASigning</i>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=AA714DE2-ACD8-48ed-B146-41D50B7D3BE1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
@@ -1925,6 +1939,11 @@
             Timestamp, kdy došlo k podpisu celého dokumentu.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.CustomerOnSa">
+            <summary>
+            Only for CRS
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.IsPreviewSentToCustomer">
             <summary>
             Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
@@ -1963,6 +1982,11 @@
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureDateTime">
             <summary>
             Timestamp, kdy došlo k podpisu celého dokumentu.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.CustomerOnSa">
+            <summary>
+            Only for CRS
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.IsPreviewSentToCustomer">
@@ -2049,98 +2073,6 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="offerId">Offer ID</param>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetDrawing(System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Vygenerování dokumentu Žádost o čerpání
-            </summary>
-            <remarks>
-            Vygenerování dokumentu Žádost o čerpání ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FF4A4806-9638-4287-8A4F-4CA027677E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="salesArrangementId">Sales Arrangement ID</param>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetGeneralChange(System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Vygenerování dokumentu Žádost o obecnou změnu
-            </summary>
-            <remarks>
-            Vygenerování dokumentu Žádost o obecnou změnu ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=176277CE-66F6-4abd-93E6-57F113B5AF16"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="salesArrangementId">Sales Arrangement ID</param>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetHUBN(System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Vygenerování dokumentu Žádost o HUBN
-            </summary>
-            <remarks>
-            Vygenerování dokumentu Žádost o HUBN ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak. <br/><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0E17AE8A-C137-415b-B4FB-2C0D3995E0DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="salesArrangementId">Sales Arrangement ID</param>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetCustomerChange(System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí)
-            </summary>
-            <remarks>
-            Vygenerování dokumentu Změna dlužníka (uvolnění/přistoupení/převzetí) ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B7ED8950-BAA7-44a2-A069-2593B6D5121E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="salesArrangementId"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetLoanApplicationMain(System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Vygenerování dokumentu Žádost o úvěr F3601
-            </summary>
-            <remarks>
-            Vygenerování dokumentu Žádost o úvěr F3601 (dlužnická domácnost) ze šablony k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DD734EDD-1344-43b2-B45E-3407255B993A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="salesArrangementId">Sales Arrangement ID</param>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetLoanApplicationCodebtor(System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Vygenerování dokumentu Žádost o úvěr F3602
-            </summary>
-            <remarks>
-            Vygenerování dokumentu Žádost o úvěr F3602 (spoludlužnická domácnost) k dané SalesArrangement.<br />Slouží pro náhledy, výstup obsahuje vodoznak.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D5159266-11E9-4959-BDFA-71C1FCF46092"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="salesArrangementId">Sales Arrangement ID</param>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetApproachCustomer3602(System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Vygenerování dokumentu Údaje o přistupujícím k dluhu
-            </summary>
-            <remarks>
-            Vygenerování dokumentu Údaje o přistupujícím k dluhu k dané SalesArrangement.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=02F2D995-565F-4250-8C0A-BCE875C3AAB2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="salesArrangementId">Sales Arrangement ID</param>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetRemainCustomer3602(System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Vygenerování dokumentu Údaje o zůstávajícím v dluhu
-            </summary>
-            <remarks>
-            Vygenerování dokumentu Údaje o zůstávajícím v dluhu k dané SalesArrangement.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=1FFE176A-27E6-421e-B2A0-CBD1D4D31890"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="salesArrangementId">Sales Arrangement ID</param>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetAddCodebtor3602(System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Vygenerování dokumentu Žádost o přidání spoludlužníka
-            </summary>
-            <remarks>
-            Vygenerování dokumentu Žádost o přidání spoludlužníka k dané SalesArrangement.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=89B4A263-F822-410b-B3AB-E5806A1C7526"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-            <param name="salesArrangementId">Sales Arrangement ID</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetCancelConfirmationDocument(System.Int32,System.Threading.CancellationToken)">
             <summary>

@@ -44,10 +44,57 @@ _context.HttpContext.User.HasClaim(t =>
 3) permission check v byznys logice handleru.
 
 ## 1. globální permission check
+
+### 1.1 Globální právo na práci s aplikací NOBY
 Aby uživatel mohl pracovat s aplikací *NOBY*, musí mít minimálně právo **201** (APPLICATION_BasicAccess). 
 Pokud toto právo nemá, jakýkoliv endpoint FE API musí vrátit HTTP 403.
 
-Kontrola na toto právo probíhá v middleware `NOBY.Infrastructure.Security.NobySecurityMiddleware`.
+Kontrola na toto právo probíhá v middleware `NOBY.Infrastructure.Security.NobySecurityMiddleware`, je tedy automatická na každém endpointu FE API.
+
+### 1.2 Validace vlastnictví obchodního případu (case)
+Vyhodnocení vlastnictví obchodního případu se provádí automaticky v `CaseOwnerValidationMiddleware`, pokud jsou route obsaženy některé z následujících parametrů:
+- caseId:long
+- salesArrangementId:int
+- customerOnSAId:int
+- householdId:int
+
+Vyhodnocení vlastnictví lze předejít pomocí attributu `[NobySkipCaseOwnerValidation]`:
+
+```csharp
+[HttpGet("case/caseId:long/sales-arrangement/salesArrangementId:int/customer-on-sa/customerOnSAId:int"]
+[NobySkipCaseOwnerValidation]
+public async Task SkipCaseOwner(long caseId, int salesArrangementId, int customerOnSAId)
+{
+    ...
+}
+```
+
+### Optimalizace / kešování entit
+V případě, že je endpoint validován na vlastnictví case (viz. 1.2), tak taková kontrola zahrnuje volání doménových služeb pro zjištění Case.OwnerUserId.  
+K prevenci vícenásobného volání entit, které může dojít v `CaseOwnerValidationMiddleware` a následně v business logice, lze použít attribut `[NobyAuthorizePreload(flags)]`, který má parametr flagy `LoadableEntities`:
+
+```csharp
+[Flags]
+public enum LoadableEntities
+{
+    None,
+    Case,
+    SalesArrangement,
+    Household,
+    CustomerOnSA
+}
+```
+
+pokud bychom v url path měli `caseId` a `salesArrangementId` a v business logice bychom chtěli načíst daný case s `caseId` a salesArrangement s `salesArrangementId`, můžeme attribut použít následovně:
+
+```csharp
+[HttpGet("case/caseId:long/sales-arrangement/salesArrangementId:int"]
+[NobyAuthorizePreload(LoadableEntities.Case|LoadableEntities.SalesArrangement)]
+public async Task DoSomething(long caseId, int salesArrangementId)
+{
+    ...
+}
+```
 
 ## 2. permission check na úrovni endpointu
 Pokud je endpoint FE API dostupný pouze pro uživatele s definovanými permissions, je nutné daný endpoint odekorovat atributem `NOBY.Infrastructure.Security.NobyAuthorizeAttribute` společně s informací o tom, jaké právo/a je/jsou vyžadováno/a.   
@@ -94,6 +141,4 @@ static void CheckPermission(this ClaimsPrincipal principal, int permission);
 static void CheckPermission(this ICurrentUserAccessor userAccessor, DomainServices.UserService.Clients.Authorization.UserPermissions permission);
 static void CheckPermission(this ICurrentUserAccessor userAccessor, int permission);
 ```
-
-## Autorizace CaseOwner - ověření majitele Case
 
