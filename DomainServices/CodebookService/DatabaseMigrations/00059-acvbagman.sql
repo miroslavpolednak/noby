@@ -1,0 +1,1 @@
+UPDATE SqlQuery SET SqlQueryText='SELECT TOP 1 [AcvRealEstateTypeId], BagmanRealEstateTypeId FROM [dbo].[ACVAndBagmanRealEstateType] WHERE [RealEstateTypeId]=@RealEstateTypeId AND [RealEstateSubtypeId]=@RealEstateSubtypeId AND ISNULL([RealEstateStateId],0)=ISNULL(@RealEstateStateId,0)' WHERE SqlQueryId='GetACVAndBagmanRealEstateType'
