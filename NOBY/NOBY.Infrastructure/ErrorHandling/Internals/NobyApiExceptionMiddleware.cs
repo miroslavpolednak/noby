@@ -70,11 +70,13 @@ public sealed class NobyApiExceptionMiddleware
         // object not found
         catch (CisNotFoundException ex)
         {
+            logger.NotFoundException(ex.Message, ex);
             await Results.Json(singleErrorResult(ex), statusCode: 404).ExecuteAsync(context);
         }
         // osetrena validace na urovni FE API
         catch (NobyValidationException ex)
         {
+            logger.NobyValidationException(ex.Message, ex);
             await Results.Json(ex.Errors, statusCode: ex.HttpStatusCode).ExecuteAsync(context);
         }
         catch (CisExtServiceValidationException ex)

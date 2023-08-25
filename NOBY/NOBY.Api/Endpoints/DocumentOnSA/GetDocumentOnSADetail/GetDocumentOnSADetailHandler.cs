@@ -61,7 +61,11 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(documentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains),
-            CustomerOnSAId = documentOnSa.CustomerOnSAId,
+            CustomerOnSa = new() {
+                CustomerOnSAId = documentOnSa.CustomerOnSA?.CustomerOnSAId,
+                FirstName = documentOnSa.CustomerOnSA?.FirstName,
+                LastName = documentOnSa.CustomerOnSA?.LastName
+            },
             IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer,
             ExternalId = documentOnSa.ExternalId,
             Source = documentOnSa.Source.MapToCisEnum()
