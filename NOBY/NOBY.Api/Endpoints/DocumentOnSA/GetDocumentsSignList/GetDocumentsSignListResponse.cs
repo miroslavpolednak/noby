@@ -29,7 +29,7 @@ public class GetDocumentsSignListData
     /// Příznak, zda byl dokument již podepsán.
     /// </summary>
     public bool IsSigned { get; set; }
-    
+
     /// <summary>
     /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
     /// </summary>
@@ -44,7 +44,10 @@ public class GetDocumentsSignListData
 
     public EACodeMainItem EACodeMainItem { get; set; } = null!;
 
-    public int? CustomerOnSAId { get; set; }
+    /// <summary>
+    /// Only for CRS
+    /// </summary>
+    public CustomerOnSa CustomerOnSa { get; set; } = null!;
 
     /// <summary>
     /// Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
@@ -58,3 +61,4 @@ public class GetDocumentsSignListData
 
     public Source Source { get; set; }
 }
+

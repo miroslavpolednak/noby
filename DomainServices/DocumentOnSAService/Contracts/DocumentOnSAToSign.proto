@@ -43,7 +43,7 @@ message DocumentOnSAToSign {
 	
 	DomainServices.DocumentOnSAService.Enums.Source Source = 17;
 
-	google.protobuf.Int32Value CustomerOnSAId = 18;
+	CustomerOnSa CustomerOnSA = 18;
 
 	bool IsPreviewSentToCustomer = 19;
 
@@ -54,5 +54,13 @@ message DocumentOnSAToSign {
 	google.protobuf.StringValue ExternalId = 22;
 
 	repeated string EArchivIdsLinked = 23;
+}
 
+message CustomerOnSa {
+
+	google.protobuf.Int32Value CustomerOnSAId = 1;
+	
+	google.protobuf.StringValue FirstName = 2;
+	
+	google.protobuf.StringValue LastName = 3;
 }
