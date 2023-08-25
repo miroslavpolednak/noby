@@ -1,3 +1,6 @@
+ALTER TABLE [dbo].[FormInstanceInterface] DROP CONSTRAINT IF EXISTS [FK_FormInstanceInterface_DocumentInterface_DOCUMENT_ID]
+GO
+
 DROP SEQUENCE IF EXISTS dbo.GenerateDocumentIdSequence;
 GO
 /****** Object:  Table [dbo].[DocumentInterface]    Script Date: 14.03.2023 11:05:25 ******/

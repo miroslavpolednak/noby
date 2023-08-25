@@ -142,12 +142,6 @@ GO
 /****** Object:  Table [dbo].[InputParameter]    Script Date: 3/12/2023 8:26:56 PM ******/
 DROP TABLE IF EXISTS [dbo].[InputParameter]
 GO
-/****** Object:  Table [dbo].[EasRequestType]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[EasRequestType]
-GO
-/****** Object:  Table [dbo].[EasFormType]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[EasFormType]
-GO
 /****** Object:  Table [dbo].[EasFormSpecialDataField]    Script Date: 3/12/2023 8:26:56 PM ******/
 DROP TABLE IF EXISTS [dbo].[EasFormSpecialDataField]
 GO
@@ -156,6 +150,12 @@ DROP TABLE IF EXISTS [dbo].[EasFormDynamicInputParameter]
 GO
 /****** Object:  Table [dbo].[EasFormDataField]    Script Date: 3/12/2023 8:26:56 PM ******/
 DROP TABLE IF EXISTS [dbo].[EasFormDataField]
+GO
+/****** Object:  Table [dbo].[EasRequestType]    Script Date: 3/12/2023 8:26:56 PM ******/
+DROP TABLE IF EXISTS [dbo].[EasRequestType]
+GO
+/****** Object:  Table [dbo].[EasFormType]    Script Date: 3/12/2023 8:26:56 PM ******/
+DROP TABLE IF EXISTS [dbo].[EasFormType]
 GO
 /****** Object:  Table [dbo].[DynamicStringFormatCondition]    Script Date: 3/12/2023 8:26:56 PM ******/
 DROP TABLE IF EXISTS [dbo].[DynamicStringFormatCondition]
@@ -178,15 +178,16 @@ GO
 /****** Object:  Table [dbo].[DocumentDataField]    Script Date: 3/12/2023 8:26:56 PM ******/
 DROP TABLE IF EXISTS [dbo].[DocumentDataField]
 GO
-/****** Object:  Table [dbo].[Document]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[Document]
+/****** Object:  Table [dbo].[DataField]    Script Date: 3/12/2023 8:26:56 PM ******/
+DROP TABLE IF EXISTS [dbo].[DataField]
 GO
 /****** Object:  Table [dbo].[DataService]    Script Date: 3/12/2023 8:26:56 PM ******/
 DROP TABLE IF EXISTS [dbo].[DataService]
 GO
-/****** Object:  Table [dbo].[DataField]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[DataField]
+/****** Object:  Table [dbo].[Document]    Script Date: 3/12/2023 8:26:56 PM ******/
+DROP TABLE IF EXISTS [dbo].[Document]
 GO
+
 /****** Object:  Table [dbo].[DataField]    Script Date: 3/12/2023 8:26:56 PM ******/
 SET ANSI_NULLS ON
 GO
