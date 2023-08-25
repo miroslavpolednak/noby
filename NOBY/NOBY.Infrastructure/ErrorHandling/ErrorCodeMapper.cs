@@ -38,7 +38,8 @@ public sealed class ErrorCodeMapper
             { 90028, new("Žádost v aktuální stavu nelze měnit.") },
             { 90029, new("Překročen počet objektů úvěru", "Maximální počet objektů úvěru je 3. Upravte počet objednávek ocenění s označením objekt úvěru.") },
             { 90030, new("Dokument s tímto EACodeMain není povolen pro NOBY uložit do eArchivu.") },
-            { 90031, new("Chybí nemovitost k ocenění", "Je potřeba doplnit LV s alespoň jednou nemovitostí označenou k ocenění.") }
+            { 90031, new("Chybí nemovitost k ocenění", "Je potřeba doplnit LV s alespoň jednou nemovitostí označenou k ocenění.") },
+            { 90032, new("Nepovolená operace", "Vámi požadovaná operace není se zadanými parametry povolena.") }
         };
 
         Messages = messages.AsReadOnly();
