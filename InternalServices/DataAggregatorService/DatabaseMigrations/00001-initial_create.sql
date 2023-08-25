@@ -1,191 +1,23 @@
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormSpecialDataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[EasFormSpecialDataField] DROP CONSTRAINT IF EXISTS [FK_EasFormSpecialDataField_EasRequestType_EasRequestTypeId]
+-- drop constraints
+DECLARE @DropConstraints NVARCHAR(max) = ''
+SELECT @DropConstraints += 'ALTER TABLE ' + QUOTENAME(OBJECT_SCHEMA_NAME(parent_object_id)) + '.'
+                        +  QUOTENAME(OBJECT_NAME(parent_object_id)) + ' ' + 'DROP CONSTRAINT' + QUOTENAME(name)
+FROM sys.foreign_keys
+EXECUTE sp_executesql @DropConstraints;
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormSpecialDataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[EasFormSpecialDataField] DROP CONSTRAINT IF EXISTS [FK_EasFormSpecialDataField_EasFormType_EasFormTypeId]
+  
+-- drop tables
+DECLARE @DropTables NVARCHAR(max) = ''
+SELECT @DropTables += 'DROP VIEW ' + QUOTENAME(TABLE_SCHEMA) + '.' + QUOTENAME(TABLE_NAME)
+FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'VIEW'
+EXECUTE sp_executesql @DropTables;
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormSpecialDataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[EasFormSpecialDataField] DROP CONSTRAINT IF EXISTS [FK_EasFormSpecialDataField_DataService_DataServiceId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormDynamicInputParameter]') AND type in (N'U'))
-ALTER TABLE [dbo].[EasFormDynamicInputParameter] DROP CONSTRAINT IF EXISTS [FK_EasFormDynamicInputParameter_InputParameter_InputParameterId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormDynamicInputParameter]') AND type in (N'U'))
-ALTER TABLE [dbo].[EasFormDynamicInputParameter] DROP CONSTRAINT IF EXISTS [FK_EasFormDynamicInputParameter_EasRequestType_EasRequestTypeId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormDynamicInputParameter]') AND type in (N'U'))
-ALTER TABLE [dbo].[EasFormDynamicInputParameter] DROP CONSTRAINT IF EXISTS [FK_EasFormDynamicInputParameter_DataService_TargetDataServiceId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormDynamicInputParameter]') AND type in (N'U'))
-ALTER TABLE [dbo].[EasFormDynamicInputParameter] DROP CONSTRAINT IF EXISTS [FK_EasFormDynamicInputParameter_DataField_SourceDataFieldId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormDataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[EasFormDataField] DROP CONSTRAINT IF EXISTS [FK_EasFormDataField_EasRequestType_EasRequestTypeId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormDataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[EasFormDataField] DROP CONSTRAINT IF EXISTS [FK_EasFormDataField_EasFormType_EasFormTypeId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[EasFormDataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[EasFormDataField] DROP CONSTRAINT IF EXISTS [FK_EasFormDataField_DataField_DataFieldId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DynamicStringFormatCondition]') AND type in (N'U'))
-ALTER TABLE [dbo].[DynamicStringFormatCondition] DROP CONSTRAINT IF EXISTS [FK_DynamicStringFormatCondition_DynamicStringFormat_DynamicStringFormatId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DynamicStringFormatCondition]') AND type in (N'U'))
-ALTER TABLE [dbo].[DynamicStringFormatCondition] DROP CONSTRAINT IF EXISTS [FK_DynamicStringFormatCondition_DataField_DataFieldId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DynamicStringFormat]') AND type in (N'U'))
-ALTER TABLE [dbo].[DynamicStringFormat] DROP CONSTRAINT IF EXISTS [FK_DynamicStringFormat_DocumentDataField_DocumentDataFieldId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentTableColumn]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentTableColumn] DROP CONSTRAINT IF EXISTS [FK_DocumentTableColumn_DocumentTable_DocumentTableId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentTable]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentTable] DROP CONSTRAINT IF EXISTS [FK_DocumentTable_Document_DocumentId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentTable]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentTable] DROP CONSTRAINT IF EXISTS [FK_DocumentTable_DataField_DataFieldId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentSpecialDataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentSpecialDataField] DROP CONSTRAINT IF EXISTS [FK_DocumentSpecialDataField_Document_DocumentId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentSpecialDataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentSpecialDataField] DROP CONSTRAINT IF EXISTS [FK_DocumentSpecialDataField_DataService_DataServiceId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentDynamicInputParameter]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentDynamicInputParameter] DROP CONSTRAINT IF EXISTS [FK_DocumentDynamicInputParameter_InputParameter_InputParameterId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentDynamicInputParameter]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentDynamicInputParameter] DROP CONSTRAINT IF EXISTS [FK_DocumentDynamicInputParameter_Document_DocumentId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentDynamicInputParameter]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentDynamicInputParameter] DROP CONSTRAINT IF EXISTS [FK_DocumentDynamicInputParameter_DataService_TargetDataServiceId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentDynamicInputParameter]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentDynamicInputParameter] DROP CONSTRAINT IF EXISTS [FK_DocumentDynamicInputParameter_DataField_SourceDataFieldId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentDataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentDataField] DROP CONSTRAINT IF EXISTS [FK_DocumentDataField_Document_DocumentId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentDataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentDataField] DROP CONSTRAINT IF EXISTS [FK_DocumentDataField_DataField_DataFieldId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DataField]') AND type in (N'U'))
-ALTER TABLE [dbo].[DataField] DROP CONSTRAINT IF EXISTS [FK_DataField_DataService_DataServiceId]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentTableColumn]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentTableColumn] DROP CONSTRAINT IF EXISTS [DF__DocumentT__Heade__4222D4EF]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DocumentTableColumn]') AND type in (N'U'))
-ALTER TABLE [dbo].[DocumentTableColumn] DROP CONSTRAINT IF EXISTS [DF__DocumentT__Order__412EB0B6]
-GO
-/****** Object:  Index [IX_EasFormSpecialDataField_EasFormTypeId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_EasFormSpecialDataField_EasFormTypeId] ON [dbo].[EasFormSpecialDataField]
-GO
-/****** Object:  Index [IX_EasFormSpecialDataField_DataServiceId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_EasFormSpecialDataField_DataServiceId] ON [dbo].[EasFormSpecialDataField]
-GO
-/****** Object:  Index [IX_EasFormDynamicInputParameter_TargetDataServiceId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_EasFormDynamicInputParameter_TargetDataServiceId] ON [dbo].[EasFormDynamicInputParameter]
-GO
-/****** Object:  Index [IX_EasFormDynamicInputParameter_SourceDataFieldId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_EasFormDynamicInputParameter_SourceDataFieldId] ON [dbo].[EasFormDynamicInputParameter]
-GO
-/****** Object:  Index [IX_EasFormDynamicInputParameter_InputParameterId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_EasFormDynamicInputParameter_InputParameterId] ON [dbo].[EasFormDynamicInputParameter]
-GO
-/****** Object:  Index [IX_EasFormDataField_EasRequestTypeId_EasFormTypeId_JsonPropertyName]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_EasFormDataField_EasRequestTypeId_EasFormTypeId_JsonPropertyName] ON [dbo].[EasFormDataField]
-GO
-/****** Object:  Index [IX_EasFormDataField_EasFormTypeId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_EasFormDataField_EasFormTypeId] ON [dbo].[EasFormDataField]
-GO
-/****** Object:  Index [IX_EasFormDataField_DataFieldId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_EasFormDataField_DataFieldId] ON [dbo].[EasFormDataField]
-GO
-/****** Object:  Index [IX_DynamicStringFormatCondition_DataFieldId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DynamicStringFormatCondition_DataFieldId] ON [dbo].[DynamicStringFormatCondition]
-GO
-/****** Object:  Index [IX_DynamicStringFormat_DocumentDataFieldId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DynamicStringFormat_DocumentDataFieldId] ON [dbo].[DynamicStringFormat]
-GO
-/****** Object:  Index [IX_DocumentTable_DocumentId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DocumentTable_DocumentId] ON [dbo].[DocumentTable]
-GO
-/****** Object:  Index [IX_DocumentTable_DataFieldId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DocumentTable_DataFieldId] ON [dbo].[DocumentTable]
-GO
-/****** Object:  Index [IX_DocumentSpecialDataField_DataServiceId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DocumentSpecialDataField_DataServiceId] ON [dbo].[DocumentSpecialDataField]
-GO
-/****** Object:  Index [IX_DocumentDynamicInputParameter_TargetDataServiceId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DocumentDynamicInputParameter_TargetDataServiceId] ON [dbo].[DocumentDynamicInputParameter]
-GO
-/****** Object:  Index [IX_DocumentDynamicInputParameter_SourceDataFieldId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DocumentDynamicInputParameter_SourceDataFieldId] ON [dbo].[DocumentDynamicInputParameter]
-GO
-/****** Object:  Index [IX_DocumentDynamicInputParameter_InputParameterId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DocumentDynamicInputParameter_InputParameterId] ON [dbo].[DocumentDynamicInputParameter]
-GO
-/****** Object:  Index [IX_DocumentDataField_DocumentId_DocumentVersion_AcroFieldName]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DocumentDataField_DocumentId_DocumentVersion_AcroFieldName] ON [dbo].[DocumentDataField]
-GO
-/****** Object:  Index [IX_DocumentDataField_DataFieldId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DocumentDataField_DataFieldId] ON [dbo].[DocumentDataField]
-GO
-/****** Object:  Index [IX_DataField_FieldPath]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DataField_FieldPath] ON [dbo].[DataField]
-GO
-/****** Object:  Index [IX_DataField_DataServiceId]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP INDEX IF EXISTS [IX_DataField_DataServiceId] ON [dbo].[DataField]
-GO
-/****** Object:  Table [dbo].[InputParameter]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[InputParameter]
-GO
-/****** Object:  Table [dbo].[EasFormSpecialDataField]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[EasFormSpecialDataField]
-GO
-/****** Object:  Table [dbo].[EasFormDynamicInputParameter]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[EasFormDynamicInputParameter]
-GO
-/****** Object:  Table [dbo].[EasFormDataField]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[EasFormDataField]
-GO
-/****** Object:  Table [dbo].[EasRequestType]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[EasRequestType]
-GO
-/****** Object:  Table [dbo].[EasFormType]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[EasFormType]
-GO
-/****** Object:  Table [dbo].[DynamicStringFormatCondition]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[DynamicStringFormatCondition]
-GO
-/****** Object:  Table [dbo].[DynamicStringFormat]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[DynamicStringFormat]
-GO
-/****** Object:  Table [dbo].[DocumentTableColumn]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[DocumentTableColumn]
-GO
-/****** Object:  Table [dbo].[DocumentTable]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[DocumentTable]
-GO
-/****** Object:  Table [dbo].[DocumentSpecialDataField]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[DocumentSpecialDataField]
-GO
-/****** Object:  Table [dbo].[DocumentDynamicInputParameter]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[DocumentDynamicInputParameter]
-GO
-/****** Object:  Table [dbo].[DocumentDataField]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[DocumentDataField]
-GO
-/****** Object:  Table [dbo].[DataField]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[DataField]
-GO
-/****** Object:  Table [dbo].[DataService]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[DataService]
-GO
-/****** Object:  Table [dbo].[Document]    Script Date: 3/12/2023 8:26:56 PM ******/
-DROP TABLE IF EXISTS [dbo].[Document]
+
+-- drop views
+DECLARE @DropTables NVARCHAR(max) = ''
+SELECT @DropTables += 'DROP TABLE ' + QUOTENAME(TABLE_SCHEMA) + '.' + QUOTENAME(TABLE_NAME)
+FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME <> 'MigrationHistory'
+EXECUTE sp_executesql @DropTables;
 GO
 
 /****** Object:  Table [dbo].[DataField]    Script Date: 3/12/2023 8:26:56 PM ******/
