@@ -30,17 +30,24 @@ internal sealed class GetRealEstateValuationTypesHandler
         // get revids
         var deedsRealEstateIds = await _dbContext.DeedOfOwnershipDocuments
             .AsNoTracking()
-            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId && !string.IsNullOrEmpty(t.RealEstateIds))
+            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
             .Select(t => t.RealEstateIds)
             .ToListAsync(cancellationToken);
         var realEstateIds = deedsRealEstateIds.SelectMany(t =>
         {
-            return System.Text.Json.JsonSerializer.Deserialize<long[]>(t!)!;
+            if (string.IsNullOrEmpty(t))
+            {
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId);
+            }
+
+            var arr = System.Text.Json.JsonSerializer.Deserialize<long[]>(t);
+            if (arr is null || arr.Length == 0)
+            {
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId);
+            }
+
+            return arr;
         }).ToArray();
-        if (realEstateIds.Length == 0)
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId);
-        }
         
         var purposes = await _codebookService.LoanPurposes(cancellationToken);
         var acvRequest = new ExternalServices.PreorderService.V1.Contracts.AvailableValuationTypesRequestDTO
