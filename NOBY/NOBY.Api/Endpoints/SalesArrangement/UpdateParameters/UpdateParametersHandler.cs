@@ -3,12 +3,21 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
+using _dto = NOBY.Api.Endpoints.SalesArrangement.Dto;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
 internal sealed class UpdateParametersHandler
     : IRequestHandler<UpdateParametersRequest>
 {
+    private static TModel? deserializeModel<TModel>(in string dataString)
+        where TModel : class
+    {
+        if (string.IsNullOrEmpty(dataString)) return null;
+
+        return System.Text.Json.JsonSerializer.Deserialize<TModel>(dataString, _jsonSerializerOptions);
+    }
+
     public async Task Handle(UpdateParametersRequest request, CancellationToken cancellationToken)
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
@@ -31,57 +40,45 @@ internal sealed class UpdateParametersHandler
             switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)
             {
                 case SalesArrangementTypes.Mortgage:
-                    var o1 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersMortgage>(dataString, _jsonSerializerOptions);
-                    if (o1 is not null)
-                    {
-                        if (string.IsNullOrEmpty(o1.IncomeCurrencyCode) || string.IsNullOrEmpty(o1.ResidencyCurrencyCode))
-                        {
-                            throw new NobyValidationException(90019);
-                        }
-                        updateRequest.Mortgage = o1.ToDomainService(saInstance.Mortgage);
-                    }
+                    var realEstateTypes = await _codebookService.RealEstateTypes(cancellationToken);
+                    updateRequest.Mortgage = deserializeModel<_dto.ParametersMortgage>(dataString)
+                        ?.Validate(realEstateTypes)
+                        ?.ToDomainService(saInstance.Mortgage);
                     break;
 
                 case SalesArrangementTypes.Drawing:
-                    var o2 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersDrawing>(dataString, _jsonSerializerOptions);
-                    if (o2 is not null)
-                        updateRequest.Drawing = o2.ToDomainService();
+                    updateRequest.Drawing = deserializeModel<_dto.ParametersDrawing>(dataString)
+                        ?.ToDomainService();
                     break;
 
                 case SalesArrangementTypes.GeneralChange:
-                    var o3 = System.Text.Json.JsonSerializer.Deserialize<Dto.GeneralChangeUpdate>(dataString, _jsonSerializerOptions);
-                    if (o3 is not null)
-                        updateRequest.GeneralChange = o3.ToDomainService(saInstance.GeneralChange);
+                    updateRequest.GeneralChange = deserializeModel<Dto.GeneralChangeUpdate>(dataString)
+                        ?.ToDomainService(saInstance.GeneralChange);
                     break;
 
                 case SalesArrangementTypes.HUBN:
-                    var o4 = System.Text.Json.JsonSerializer.Deserialize<Dto.HUBNUpdate>(dataString, _jsonSerializerOptions);
-                    if (o4 is not null)
-                        updateRequest.HUBN = o4.ToDomainService(saInstance.HUBN);
+                    updateRequest.HUBN = deserializeModel<Dto.HUBNUpdate>(dataString)
+                        ?.ToDomainService(saInstance.HUBN);
                     break;
 
                 case SalesArrangementTypes.CustomerChange:
-                    var o5 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChangeUpdate>(dataString, _jsonSerializerOptions);
-                    if (o5 is not null)
-                        updateRequest.CustomerChange = o5.ToDomainService(saInstance.CustomerChange);
+                    updateRequest.CustomerChange = deserializeModel<Dto.CustomerChangeUpdate>(dataString)
+                        ?.ToDomainService(saInstance.CustomerChange);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602A:
-                    var o6 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
-                    if (o6 is not null)
-                        updateRequest.CustomerChange3602A = o6.ToDomainService(saInstance.CustomerChange3602A);
+                    updateRequest.CustomerChange3602A = deserializeModel<Dto.CustomerChange3602Update>(dataString)
+                        ?.ToDomainService(saInstance.CustomerChange3602A);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602B:
-                    var o7 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
-                    if (o7 is not null)
-                        updateRequest.CustomerChange3602B = o7.ToDomainService(saInstance.CustomerChange3602B);
+                    updateRequest.CustomerChange3602B = deserializeModel<Dto.CustomerChange3602Update>(dataString)
+                        ?.ToDomainService(saInstance.CustomerChange3602B);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602C:
-                    var o8 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
-                    if (o8 is not null)
-                        updateRequest.CustomerChange3602C = o8.ToDomainService(saInstance.CustomerChange3602C);
+                    updateRequest.CustomerChange3602C = deserializeModel<Dto.CustomerChange3602Update>(dataString)
+                        ?.ToDomainService(saInstance.CustomerChange3602C);
                     break;
 
                 default:
