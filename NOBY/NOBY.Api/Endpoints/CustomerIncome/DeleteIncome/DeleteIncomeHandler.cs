@@ -10,7 +10,7 @@ internal sealed class DeleteIncomeHandler
     {
         await _customerService.DeleteIncome(request.IncomeId, cancellationToken);
 
-        await _flowSwitchMainHouseholdService.SetFlowSwitchByCustomerOnSAId(request.CustomerOnSAId, false, cancellationToken);
+        await _flowSwitchMainHouseholdService.SetFlowSwitchByCustomerOnSAId(request.CustomerOnSAId, cancellationToken: cancellationToken);
     }
 
     private readonly FlowSwitchAtLeastOneIncomeMainHouseholdService _flowSwitchMainHouseholdService;

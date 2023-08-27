@@ -57,7 +57,7 @@ internal sealed class CreateIncomeHandler
 
         int incomeId = await _customerService.CreateIncome(model, cancellationToken);
 
-        await _flowSwitchMainHouseholdService.SetFlowSwitchByCustomerOnSAId(request.CustomerOnSAId.Value, false, cancellationToken);
+        await _flowSwitchMainHouseholdService.SetFlowSwitchByCustomerOnSAId(request.CustomerOnSAId.Value, cancellationToken: cancellationToken);
 
         return incomeId;
     }
