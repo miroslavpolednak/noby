@@ -34,7 +34,20 @@ internal sealed class GetFlowSwitchesHandler
         
         await adjustEvaluation(response, request.SalesArrangementId, existingSwitches, cancellationToken);
 
+        adjustSendButton(response, existingSwitches);
+
         return response;
+    }
+
+    private static void adjustSendButton(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
+    {
+        response.SendButton.IsActive = response.ModelationSection.IsCompleted
+            && response.IndividualPriceSection.IsCompleted
+            && response.HouseholdSection.IsCompleted
+            && response.ParametersSection.IsCompleted
+            && response.SigningSection.IsCompleted
+            && response.ScoringSection.IsCompleted
+            && (response.EvaluationSection.IsCompleted || flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && !t.Value));
     }
 
     private async Task adjustEvaluation(
