@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData.Shared;
+﻿namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData.Shared;
 
 public class CultureProvider
 {

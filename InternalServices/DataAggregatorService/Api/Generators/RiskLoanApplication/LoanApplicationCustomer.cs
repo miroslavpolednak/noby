@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using DomainServices.CodebookService.Contracts.v1;
+﻿using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 

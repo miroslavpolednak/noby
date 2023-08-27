@@ -1,21 +1,21 @@
-﻿namespace CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms.Json;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
+using CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder.ValueSource;
 
-internal class EasFormJsonValue : EasFormJsonObject
+namespace CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms;
+
+internal class EasFormJsonValueSource : JsonValueSource<EasFormSourceField>
 {
     private const string FormatDecimal = "###########0.00";
     private const string FormatDate = "dd.MM.yyyy";
 
-    public required string DataFieldPath { get; init; }
-
-    public override void Add(string[] propertyPath, string dataFieldPath)
+    private EasFormJsonValueSource(EasFormSourceField sourceField) : base(sourceField)
     {
-        throw new NotImplementedException();
     }
 
-    public override object? GetJsonObject(object data) => GetValueAsString(MapperHelper.GetValue(data, DataFieldPath));
+    public static IJsonValueSource Create(EasFormSourceField sourceField) => new EasFormJsonValueSource(sourceField);
 
-    private static string? GetValueAsString(object? obj) =>
-        obj switch
+    public override object? ParseValue(object? value, object aggregatedData) =>
+        value switch
         {
             GrpcDecimal grpcDecimal => Format((decimal?)grpcDecimal),
             NullableGrpcDecimal nullableGrpcDecimal => Format((decimal?)nullableGrpcDecimal),
@@ -27,7 +27,7 @@ internal class EasFormJsonValue : EasFormJsonObject
             Identity identity => identity.IdentityId.ToString(CultureInfo.InvariantCulture),
             IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture),
             null => null,
-            _ => obj.ToString()
+            _ => value.ToString()
         };
 
     private static string? Format(decimal? value) => value?.ToString(FormatDecimal, CultureInfo.GetCultureInfo("cs-CZ"));

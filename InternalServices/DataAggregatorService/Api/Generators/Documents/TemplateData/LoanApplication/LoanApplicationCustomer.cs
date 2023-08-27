@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData.Shared;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData.Shared;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 

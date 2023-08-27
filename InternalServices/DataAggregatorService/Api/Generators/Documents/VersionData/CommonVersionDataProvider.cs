@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using CIS.Core.Exceptions;
+﻿using CIS.Core.Exceptions;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;

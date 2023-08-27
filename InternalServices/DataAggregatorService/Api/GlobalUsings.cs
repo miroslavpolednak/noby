@@ -1,5 +1,6 @@
 // Global using directives
 
+global using System.Globalization;
 global using CIS.Core.Attributes;
 global using CIS.Foms.Enums;
 global using CIS.Infrastructure.gRPC.CisTypes;

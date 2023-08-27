@@ -1,8 +1,5 @@
-﻿using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
-using CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms.Json;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
+using CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms.Forms;
 
@@ -23,24 +20,15 @@ internal abstract class EasForm<TFormData> : IEasForm where TFormData : Aggregat
 
     protected string CreateJson(IEnumerable<EasFormSourceField> sourceFieldGroups)
     {
-        var jsonObject = CreateJsonObject(sourceFieldGroups).GetJsonObject(_formData);
+        var jsonObject = new JsonObject();
 
-        var jsonOptions = new JsonSerializerOptions
+        foreach (var sourceField in sourceFieldGroups)
         {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        };
+            var jsonValueSource = EasFormJsonValueSource.Create(sourceField);
 
-        return JsonSerializer.Serialize(jsonObject, jsonOptions);
-    }
+            jsonObject.Add(sourceField.JsonPropertyName, jsonValueSource);
+        }
 
-    private static EasFormJsonObject CreateJsonObject(IEnumerable<EasFormSourceField> sourceFields)
-    {
-        var jsonObject = new EasFormJsonObjectImpl();
-
-        foreach (var sourceField in sourceFields)
-            jsonObject.Add(sourceField.JsonPropertyName.Split('.'), sourceField.FieldPath);
-
-        return jsonObject;
+        return jsonObject.Serialize(_formData);
     }
 }
