@@ -13,6 +13,7 @@ public class CustomerIncomeController : ControllerBase
     /// <strong>CustomerIncome.Delete</strong><br/>
     /// Tento endpoint se v současné době asi používat nebude.<br/>
     /// <i>DS:</i> SalesArrangementService/DeleteIncome
+    /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
@@ -72,6 +73,7 @@ public class CustomerIncomeController : ControllerBase
     /// <remarks>
     /// <strong>CustomerIncome.Create</strong><br/>
     /// <i>DS:</i> SalesArrangementService/CreateIncome
+    /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=388BC673-9722-45e3-88B3-838E85C99912"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
