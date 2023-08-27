@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Helpers;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 

@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
-using DomainServices.UserService.Clients;
+﻿using DomainServices.UserService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ServiceWrappers;
 
@@ -21,6 +20,6 @@ internal class UserServiceWrapper : IServiceWrapper
 
         var user = await _userService.GetUser(input.UserId!.Value, cancellationToken);
 
-        data.User = new UserInfo(user);
+        data.User.Source = user;
     }
 }

@@ -1,7 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DataAggregatorService.Api.Helpers;
-
-namespace CIS.InternalServices.DataAggregatorService.Api.Generators.RiskLoanApplication.Json;
+﻿namespace CIS.InternalServices.DataAggregatorService.Api.Generators.RiskLoanApplication.Json;
 
 internal class RiskLoanApplicationJsonValue : RiskLoanApplicationJsonObject
 {

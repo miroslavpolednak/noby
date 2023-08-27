@@ -1,6 +1,4 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
-
-namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ExtendedObjects;
+﻿namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ExtendedObjects;
 
 public abstract class ExtendedObject<TObj> where TObj : class
 {

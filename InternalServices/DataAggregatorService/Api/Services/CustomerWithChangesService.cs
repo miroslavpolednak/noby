@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CustomerService.Clients;
+﻿using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;

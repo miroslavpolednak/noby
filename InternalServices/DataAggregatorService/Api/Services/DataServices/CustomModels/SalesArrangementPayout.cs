@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.SalesArrangementService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
 

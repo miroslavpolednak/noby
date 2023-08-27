@@ -1,6 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
-using DomainServices.CodebookService.Contracts.v1;
+﻿using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ExtendedObjects;
