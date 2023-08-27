@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents;

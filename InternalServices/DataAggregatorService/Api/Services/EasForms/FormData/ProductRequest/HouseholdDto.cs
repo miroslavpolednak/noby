@@ -1,6 +1,4 @@
-﻿using CIS.Foms.Enums;
-
-namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest;
+﻿namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest;
 
 internal class HouseholdDto
 {

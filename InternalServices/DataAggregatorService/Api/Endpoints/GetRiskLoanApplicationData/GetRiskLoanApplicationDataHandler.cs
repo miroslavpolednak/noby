@@ -4,6 +4,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Endpoints.GetRiskLoanApplicationData;
 

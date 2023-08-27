@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.LoanApplicationData;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.LoanApplicationData;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;

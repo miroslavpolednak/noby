@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 

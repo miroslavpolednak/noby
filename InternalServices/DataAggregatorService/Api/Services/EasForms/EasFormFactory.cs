@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using CIS.Foms.Enums;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;

@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.LoanApplication;
 

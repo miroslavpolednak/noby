@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData.ProductRequest.Incomes;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Contracts;

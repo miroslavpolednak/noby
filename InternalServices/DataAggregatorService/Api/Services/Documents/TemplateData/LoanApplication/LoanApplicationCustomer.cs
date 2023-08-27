@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.CodebookService.Contracts.v1;

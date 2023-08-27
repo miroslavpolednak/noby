@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;

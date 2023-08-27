@@ -1,9 +1,9 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
+using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ExtendedObjects;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms.FormData;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.OfferService.Contracts;
 using DomainServices.ProductService.Contracts;
@@ -18,6 +18,9 @@ internal class AggregatedData
     public AggregatedData()
     {
         Custom = new CustomData(this);
+
+        Customer = new CustomerDetailExtended();
+        Customer.EnableCodebooks(_codebookManager);
     }
 
     public StaticValues StaticValues => StaticValues.Instance;
@@ -34,7 +37,7 @@ internal class AggregatedData
 
     public UserInfo User { get; set; } = null!;
 
-    public CustomerDetailResponse Customer { get; set; } = null!;
+    public CustomerDetailExtended Customer { get; }
 
     public CustomerOnSA? CustomerOnSA { get; set; }
 
@@ -50,12 +53,10 @@ internal class AggregatedData
     {
         ConfigureCodebooks(_codebookManager);
 
-        return _codebookManager.Load(codebookService, cancellationToken);
+        return ((ICodebookManagerConfigurator)_codebookManager).Load(codebookService, cancellationToken);
     }
 
     public virtual Task LoadAdditionalData(CancellationToken cancellationToken) => Task.CompletedTask;
 
-    protected virtual void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
-    {
-    }
+    protected virtual void ConfigureCodebooks(ICodebookManagerConfigurator configurator) { }
 }

@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.SalesArrangementService.Contracts;
 
@@ -11,11 +10,11 @@ internal class GeneralChangeTemplateData : AggregatedData
 
     public string PaymentAccount => BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
 
-    public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
+    public string FullName => CustomerHelper.FullName(Customer.Source, _codebookManager.DegreesBefore);
 
-    public string SignerName => CustomerHelper.FullName(Customer);
+    public string SignerName => CustomerHelper.FullName(Customer.Source);
 
-    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent);
+    public string PermanentAddress => CustomerHelper.FullAddress(Customer.Source, AddressTypes.Permanent);
 
     public string? RepaymentAccount
     {

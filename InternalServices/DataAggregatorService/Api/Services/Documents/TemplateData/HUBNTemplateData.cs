@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using System.Globalization;
 
@@ -9,9 +8,9 @@ internal class HUBNTemplateData : AggregatedData
 {
     public string PaymentAccount => BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
 
-    public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
+    public string FullName => CustomerHelper.FullName(Customer.Source, _codebookManager.DegreesBefore);
 
-    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent);
+    public string PermanentAddress => CustomerHelper.FullAddress(Customer.Source, AddressTypes.Permanent);
 
     public IEnumerable<string> LoanPurposes => GetLoanPurposes();
 

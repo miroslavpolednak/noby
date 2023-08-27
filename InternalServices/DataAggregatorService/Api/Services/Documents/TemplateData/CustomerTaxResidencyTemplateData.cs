@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 using CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 using DomainServices.CodebookService.Contracts.v1;
 
@@ -7,17 +6,17 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.Temp
 
 internal class CustomerTaxResidencyTemplateData : AggregatedData
 {
-    public string FullName => CustomerHelper.FullName(Customer, _codebookManager.DegreesBefore);
+    public string FullName => CustomerHelper.FullName(Customer.Source, _codebookManager.DegreesBefore);
 
-    public string SignerName => CustomerHelper.FullName(Customer);
+    public string SignerName => CustomerHelper.FullName(Customer.Source);
 
-    public string PermanentAddress => CustomerHelper.FullAddress(Customer, AddressTypes.Permanent);
+    public string PermanentAddress => CustomerHelper.FullAddress(Customer.Source, AddressTypes.Permanent);
 
     public string? CorrespondenceAddress
     {
         get
         {
-            var address = CustomerHelper.FullAddress(Customer, AddressTypes.Mailing);
+            var address = CustomerHelper.FullAddress(Customer.Source, AddressTypes.Mailing);
 
             return string.IsNullOrWhiteSpace(address) ? null : address;
         }

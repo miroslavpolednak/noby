@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration;
+using CIS.InternalServices.DataAggregatorService.Api.Configuration.EasForm;
 using CIS.InternalServices.DataAggregatorService.Api.Services.EasForms;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Endpoints.GetEasForm;

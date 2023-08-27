@@ -1,7 +1,10 @@
-﻿namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
+﻿using DomainServices.CodebookService.Clients;
+
+namespace CIS.InternalServices.DataAggregatorService.Api.Services.Documents.TemplateData.Shared;
 
 public interface ICodebookManagerConfigurator
 {
+    Task Load(ICodebookServiceClient codebookService, CancellationToken cancellationToken);
     ICodebookManagerConfigurator Countries();
     ICodebookManagerConfigurator DegreesBefore();
     ICodebookManagerConfigurator LoanPurposes();
