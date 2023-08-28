@@ -12,7 +12,7 @@ internal sealed class SalesArrangementParameters
 
     public int SalesArrangementId { get; set; }
 
-    public SalesArrangementTypes? SalesArrangementParametersType { get; set; }
+    public SalesArrangementTypes SalesArrangementParametersType { get; set; }
 
     public string? Parameters { get; set; }
     
