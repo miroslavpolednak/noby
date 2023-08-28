@@ -57,7 +57,9 @@ internal sealed class UpdateParametersHandler
                     break;
 
                 case SalesArrangementTypes.HUBN:
+                    var realEstateTypes2 = await _codebookService.RealEstateTypes(cancellationToken);
                     updateRequest.HUBN = deserializeModel<Dto.HUBNUpdate>(dataString)
+                        ?.Validate(realEstateTypes2)
                         ?.ToDomainService(saInstance.HUBN);
                     break;
 
