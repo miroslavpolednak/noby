@@ -55,7 +55,7 @@ internal sealed class GetRealEstateValuationTypesHandler
             RealEstateType = acvRealEstateTypeId,
             IsLeased = revInstance.HouseAndFlatDetails?.FinishedHouseAndFlatDetails?.Leased,
             IsCellarFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails?.Basement,
-            IsNonApartmentBuildingFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails.SpecialPlacement,
+            IsNonApartmentBuildingFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails?.SpecialPlacement,
             IsNotUsableTechnicalState = revInstance.HouseAndFlatDetails?.PoorCondition,
             PurposesLoan = request
                 .LoanPurposes
