@@ -10,7 +10,7 @@ internal sealed class ValidateSalesArrangementIdHandler
     public async Task<ValidateSalesArrangementIdResponse> Handle(ValidateSalesArrangementIdRequest request, CancellationToken cancellationToken)
     {
         var instance = await _dbContext.SalesArrangements
-            .Where(t => t.CaseId ==  request.SalesArrangementId)
+            .Where(t => t.SalesArrangementId ==  request.SalesArrangementId)
             .Select(t => new { t.State, t.CaseId })
             .FirstOrDefaultAsync(cancellationToken);
 
