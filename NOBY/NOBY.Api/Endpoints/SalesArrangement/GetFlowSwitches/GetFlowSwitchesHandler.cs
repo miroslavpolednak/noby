@@ -42,12 +42,21 @@ internal sealed class GetFlowSwitchesHandler
     private static void adjustSendButton(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
     {
         response.SendButton.IsActive = response.ModelationSection.IsCompleted
-            && response.IndividualPriceSection.IsCompleted
             && response.HouseholdSection.IsCompleted
             && response.ParametersSection.IsCompleted
             && response.SigningSection.IsCompleted
             && response.ScoringSection.IsCompleted
-            && (response.EvaluationSection.IsCompleted || flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && !t.Value));
+            // valuation
+            && (response.EvaluationSection.IsCompleted || flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && !t.Value))
+            // IC
+            && (response.IndividualPriceSection.IsCompleted || icSection());
+
+        bool icSection()
+        {
+            return flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferWithDiscount && t.Value)
+                && flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.DoesWflTaskForIPExist && t.Value)
+                && flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsWflTaskForIPNotApproved && !t.Value);
+        }
     }
 
     private async Task adjustEvaluation(
