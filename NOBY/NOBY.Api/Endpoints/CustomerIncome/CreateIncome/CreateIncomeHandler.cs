@@ -1,4 +1,5 @@
 ﻿using DomainServices.HouseholdService.Clients;
+using NOBY.Services.FlowSwitchAtLeastOneIncomeMainHousehold;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.CustomerIncome.CreateIncome;
@@ -55,6 +56,9 @@ internal sealed class CreateIncomeHandler
         }
 
         int incomeId = await _customerService.CreateIncome(model, cancellationToken);
+
+        await _flowSwitchMainHouseholdService.SetFlowSwitchByCustomerOnSAId(request.CustomerOnSAId.Value, cancellationToken: cancellationToken);
+
         return incomeId;
     }
 
@@ -64,10 +68,14 @@ internal sealed class CreateIncomeHandler
         PropertyNameCaseInsensitive = true
     };
 
+    private readonly FlowSwitchAtLeastOneIncomeMainHouseholdService _flowSwitchMainHouseholdService;
     private readonly ICustomerOnSAServiceClient _customerService;
 
-    public CreateIncomeHandler(ICustomerOnSAServiceClient customerService)
+    public CreateIncomeHandler(
+        ICustomerOnSAServiceClient customerService, 
+        FlowSwitchAtLeastOneIncomeMainHouseholdService flowSwitchMainHouseholdService)
     {
         _customerService = customerService;
+        _flowSwitchMainHouseholdService = flowSwitchMainHouseholdService;
     }
 }

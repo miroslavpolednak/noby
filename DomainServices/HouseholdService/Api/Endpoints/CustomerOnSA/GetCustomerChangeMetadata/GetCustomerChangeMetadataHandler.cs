@@ -11,7 +11,7 @@ internal sealed class GetCustomerChangeMetadataHandler
             .Customers
             .AsNoTracking()
             .Where(t => t.SalesArrangementId == request.SalesArrangementId && t.ChangeMetadataBin != null)
-            .Select(t => new { t.CustomerOnSAId, t.ChangeMetadataBin })
+            .Select(t => new { t.CustomerOnSAId, t.SalesArrangementId, t.CaseId, t.ChangeMetadataBin })
             .ToListAsync(cancellationToken);
 
         GetCustomerChangeMetadataResponse response = new();

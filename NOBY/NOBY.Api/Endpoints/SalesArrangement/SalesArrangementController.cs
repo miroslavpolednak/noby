@@ -106,7 +106,6 @@ public class SalesArrangementController : ControllerBase
     /// <param name="caseId">ID Case-u</param>
     /// <returns><see cref="List{T}"/> where T : <see cref="Dto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
     [HttpGet("list/{caseId:long}")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(List<Dto.SalesArrangementListItem>), StatusCodes.Status200OK)]

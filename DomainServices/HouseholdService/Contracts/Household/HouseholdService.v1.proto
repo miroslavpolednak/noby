@@ -11,6 +11,7 @@ import "Messages/UpdateHousehold.proto";
 import "Messages/LinkCustomerOnSAToHousehold.proto";
 import "Messages/DeleteHousehold.proto";
 import "Messages/ValidateHouseholdId.proto";
+import "Messages/GetHouseholdIdByCustomerOnSAId.proto";
 
 service HouseholdService {
     rpc CreateHousehold (CreateHouseholdRequest) returns (CreateHouseholdResponse);
@@ -26,4 +27,7 @@ service HouseholdService {
     rpc LinkCustomerOnSAToHousehold (LinkCustomerOnSAToHouseholdRequest) returns (google.protobuf.Empty);
 
     rpc ValidateHouseholdId (ValidateHouseholdIdRequest) returns (ValidateHouseholdIdResponse);
+
+    rpc GetHouseholdIdByCustomerOnSAId (GetHouseholdIdByCustomerOnSAIdRequest) returns (GetHouseholdIdByCustomerOnSAIdResponse);
+
 }

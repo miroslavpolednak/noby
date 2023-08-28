@@ -26,6 +26,12 @@ internal sealed class HouseholdService
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> LinkCustomerOnSAToHousehold(LinkCustomerOnSAToHouseholdRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<GetHouseholdIdByCustomerOnSAIdResponse> GetHouseholdIdByCustomerOnSAId(GetHouseholdIdByCustomerOnSAIdRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<ValidateHouseholdIdResponse> ValidateHouseholdId(ValidateHouseholdIdRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     private readonly IMediator _mediator;
 
     public HouseholdService(IMediator mediator)

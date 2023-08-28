@@ -49,7 +49,7 @@ internal sealed class DeleteCustomerHandler
 
         // Invalidate DocumentsOnSa Crs
         var documentsOnSaToSing = await _documentOnSAServiceClient.GetDocumentsToSignList(customer.SalesArrangementId, cancellationToken);
-        var documentsOnSaCrs = documentsOnSaToSing.DocumentsOnSAToSign.Where(r => r.DocumentOnSAId is not null && r.CustomerOnSAId == request.CustomerOnSAId);
+        var documentsOnSaCrs = documentsOnSaToSing.DocumentsOnSAToSign.Where(r => r.DocumentOnSAId is not null && r.CustomerOnSA?.CustomerOnSAId == request.CustomerOnSAId);
         await StopSigning(documentsOnSaCrs, cancellationToken);
 
         // smazat customer + prijmy + obligations + identities

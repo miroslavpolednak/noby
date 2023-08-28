@@ -51,4 +51,6 @@ public interface IHouseholdServiceClient
     Task LinkCustomerOnSAToHousehold(int householdId, int? customerOnSAId1, int? customerOnSAId2, CancellationToken cancellationToken = default);
 
     Task<ValidateHouseholdIdResponse> ValidateHouseholdId(int householdId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
+
+    Task<int?> GetHouseholdIdByCustomerOnSAId(int customerOnSAId, CancellationToken cancellationToken = default);
 }
