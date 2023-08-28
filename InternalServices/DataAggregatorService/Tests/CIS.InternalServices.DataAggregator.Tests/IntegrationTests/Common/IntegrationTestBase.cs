@@ -1,4 +1,5 @@
-﻿using CIS.Testing.Database;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration;
+using CIS.Testing.Database;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Clients.Services;
@@ -18,6 +19,7 @@ namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.Common;
 
 public class IntegrationTestBase
 {
+    internal IConfigurationManager ConfigurationManager { get; } = Substitute.For<IConfigurationManager>();
     protected ISalesArrangementServiceClient SalesArrangementServiceClient { get; } = Substitute.For<ISalesArrangementServiceClient>();
     protected ICaseServiceClient CaseServiceClient { get; } = Substitute.For<ICaseServiceClient>();
     protected IOfferServiceClient OfferServiceClient { get; } = Substitute.For<IOfferServiceClient>();
@@ -49,6 +51,7 @@ public class IntegrationTestBase
                    services.RemoveAll<ICodebookServiceClient>().AddSingleton<ICodebookServiceClient, CodebookServiceMock>();
 
                    //Services mocks
+                   services.RemoveAll<IConfigurationManager>().AddTransient(_ => ConfigurationManager);
                    services.RemoveAll<ISalesArrangementServiceClient>().AddTransient(_ => SalesArrangementServiceClient);
                    services.RemoveAll<ICaseServiceClient>().AddTransient(_ => CaseServiceClient);
                    services.RemoveAll<IOfferServiceClient>().AddTransient(_ => OfferServiceClient);

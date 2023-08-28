@@ -76,8 +76,9 @@ internal class DocumentConfigurationRepository
 
         const string ColumnsQuery =
             """
-            SELECT FieldPath, WidthPercentage, [Order], StringFormat, Header
+            SELECT FieldPath, WidthPercentage, StringFormat, Header
             FROM vw_DocumentTableColumns WHERE DocumentTableId = @documentTableId
+            ORDER BY [Order]
             """;
 
         var table = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefaultAsync<DocumentTable>(TableQuery, documentKey.CreateSqlParams(), cancellationToken);
