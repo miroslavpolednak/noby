@@ -36,13 +36,7 @@ internal sealed class CollateralValuationProcessChangedConsumer
         var getRequest = new GetRealEstateValuationDetailByOrderIdRequest { OrderId = realEstateValuation.OrderId };
         var realEstateValuationDetail = await _mediator.Send(getRequest, token);
 
-        var updateRequest = new UpdateStateByRealEstateValuationRequest
-        {
-            RealEstateValuationId = realEstateValuationDetail.RealEstateValuationId,
-            ValuationStateId = 5
-        };
-
-        await _mediator.Send(updateRequest, token);
+        await UpdateState(realEstateValuationDetail, 5, token);
     }
 
     private async Task HandleCompleted(AmendmentRealEstateValuation realEstateValuation, CancellationToken token)
@@ -58,15 +52,20 @@ internal sealed class CollateralValuationProcessChangedConsumer
             // todo:
         }
 
+        await UpdateState(realEstateValuationDetail, 4, token);
+    }
+
+    private async Task UpdateState(RealEstateValuationDetail realEstateValuationDetail, int valuationStateId, CancellationToken token)
+    {
         var updateRequest = new UpdateStateByRealEstateValuationRequest
         {
             RealEstateValuationId = realEstateValuationDetail.RealEstateValuationId,
-            ValuationStateId = 4
+            ValuationStateId = valuationStateId
         };
-        
+
         await _mediator.Send(updateRequest, token);
     }
-
+    
     private readonly IMediator _mediator;
     private readonly ICaseServiceClient _caseService;
     private readonly IPreorderServiceClient _preorderServiceClient;
