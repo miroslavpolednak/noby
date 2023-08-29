@@ -8,7 +8,7 @@ internal sealed class GetFlowSwitchesHandler
     public async Task<GetFlowSwitchesResponse> Handle(GetFlowSwitchesRequest request, CancellationToken cancellationToken)
     {
         // vytahnout flow switches z SA
-        var existingSwitches = await _salesArrangementService.GetFlowSwitches(request.SalesArrangementId, cancellationToken);
+        var existingSwitches = await _flowSwitches.GetFlowSwitchesForSA(request.SalesArrangementId, cancellationToken);
         
         // zjistit stav jednotlivych sekci na FE
         var mergedSwitches = _flowSwitches.GetFlowSwitchesGroups(existingSwitches);
