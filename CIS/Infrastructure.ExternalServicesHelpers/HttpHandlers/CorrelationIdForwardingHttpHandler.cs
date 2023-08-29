@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using CIS.Core;
+using System.Diagnostics;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 
@@ -21,7 +22,7 @@ public sealed class CorrelationIdForwardingHttpHandler
     {
         if (Activity.Current?.Id is not null)
         {
-            request.Headers.Add(_headerKey, Activity.Current?.Id);
+            request.Headers.Replace(_headerKey, Activity.Current?.Id);
         }
 
         return await base.SendAsync(request, cancellationToken);

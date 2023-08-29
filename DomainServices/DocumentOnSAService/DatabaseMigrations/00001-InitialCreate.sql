@@ -1,4 +1,14 @@
-﻿/****** Object:  Table [dbo].[GeneratedFormId]    Script Date: 14.03.2023 13:23:01 ******/
+﻿ALTER TABLE [dbo].[EArchivIdsLinked] DROP CONSTRAINT IF EXISTS [FK_EArchivIdsLinked_DocumentOnSa_DocumentOnSAId]
+GO
+DROP INDEX IF EXISTS [IX_EArchivIdsLinked_DocumentOnSAId] ON [dbo].[EArchivIdsLinked]
+GO
+
+ALTER TABLE [dbo].[SigningIdentity] DROP CONSTRAINT IF EXISTS [FK_SigningIdentity_DocumentOnSa_DocumentOnSAId]
+GO
+DROP INDEX IF EXISTS [IX_SigningIdentity_DocumentOnSAId] ON [dbo].[SigningIdentity]
+GO
+
+/****** Object:  Table [dbo].[GeneratedFormId]    Script Date: 14.03.2023 13:23:01 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GeneratedFormId]') AND type in (N'U'))
 DROP TABLE [dbo].[GeneratedFormId]
 GO

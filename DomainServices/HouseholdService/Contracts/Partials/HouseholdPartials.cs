@@ -27,3 +27,7 @@ public partial class UpdateHouseholdRequest
 public partial class ValidateHouseholdIdRequest
     : MediatR.IRequest<ValidateHouseholdIdResponse>
 { }
+
+public partial class GetHouseholdIdByCustomerOnSAIdRequest
+    : MediatR.IRequest<GetHouseholdIdByCustomerOnSAIdResponse>
+{ }

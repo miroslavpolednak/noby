@@ -1,8 +1,6 @@
 import copy
-import datetime
-import pyodbc
-
 import datetime as datetime
+
 import pytest
 import requests
 from sqlalchemy.orm import declarative_base

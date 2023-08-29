@@ -52,6 +52,10 @@ public enum FlowSwitches : int
     /// </summary>
     IsWflTaskForIPNotApproved = 10,
 
+    AtLeast1IncomeMainHousehold = 12,
+
+    AtLeast1IncomeCodebtorHousehold = 13,
+
     /// <summary>
     /// Došlo ke skórování
     /// </summary>

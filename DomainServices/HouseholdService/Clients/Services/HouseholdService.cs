@@ -34,6 +34,16 @@ internal sealed class HouseholdService
         return _cacheGetHousehold;
     }
 
+    public async Task<int?> GetHouseholdIdByCustomerOnSAId(int customerOnSAId, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        return (await _service.GetHouseholdIdByCustomerOnSAIdAsync(
+            new()
+            {
+                CustomerOnSAId = customerOnSAId,
+            }, cancellationToken: cancellationToken))
+            .HouseholdId;
+    }
+
     public async Task<List<Household>> GetHouseholdList(int salesArrangementId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.GetHouseholdListAsync(

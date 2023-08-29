@@ -53,6 +53,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         var documentOnSaEntities = await _dbContext.DocumentOnSa
             .AsNoTracking()
             .Include(i => i.EArchivIdsLinkeds)
+            .Include(s => s.SigningIdentities)
             .Where(e => e.SalesArrangementId == request.SalesArrangementId
                                                               && e.IsValid
                                                               && e.IsFinal == false)
@@ -145,7 +146,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     {
         var customersChangeMetadata = await _customerOnSAServiceClient.GetCustomerChangeMetadata(request.SalesArrangementId, cancellationToken);
         var customersOnSaIdsWithCRSChange = customersChangeMetadata!.Where(r => r.CustomerChangeMetadata.WasCRSChanged).Select(r => r.CustomerOnSAId);
-        var virtualDocumentsOnSaCrs = _documentOnSaMapper.CreateDocumentOnSaToSign(customersOnSaIdsWithCRSChange, request.SalesArrangementId);
+        var virtualDocumentsOnSaCrs = await _documentOnSaMapper.CreateDocumentOnSaToSign(customersOnSaIdsWithCRSChange, request.SalesArrangementId, cancellationToken);
 
         return MergeVirtualWithExistCrs(virtualDocumentsOnSaCrs, documentOnSaEntities);
     }
@@ -153,13 +154,13 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     /// <summary>
     /// Get only virtual CRS DocOnSa without existing DocOnSa (real) in DB 
     /// </summary>
-    private static IEnumerable<DocumentOnSAToSign> MergeVirtualWithExistCrs(IEnumerable<DocumentOnSAToSign> virtualDocumentsOnSaCrs, List<DocumentOnSa> documentOnSaEntities)
+    private static IEnumerable<DocumentOnSAToSign> MergeVirtualWithExistCrs(IReadOnlyCollection<DocumentOnSAToSign> virtualDocumentsOnSaCrs, List<DocumentOnSa> documentOnSaEntities)
     {
         foreach (var virtualCrs in virtualDocumentsOnSaCrs)
         {
             var docOnSaEntity = documentOnSaEntities.SingleOrDefault(r => r.SalesArrangementId == virtualCrs.SalesArrangementId
                                                                      && r.DocumentTypeId == virtualCrs.DocumentTypeId
-                                                                     && r.CustomerOnSAId1 == virtualCrs.CustomerOnSAId);
+                                                                     && r.CustomerOnSAId1 == virtualCrs.CustomerOnSA.CustomerOnSAId);
             if (docOnSaEntity is null)
             {
                 yield return virtualCrs;

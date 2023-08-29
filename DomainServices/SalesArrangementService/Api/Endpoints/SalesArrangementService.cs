@@ -62,4 +62,7 @@ internal sealed class SalesArrangementService : Contracts.v1.SalesArrangementSer
 
     public override async Task<SetContractNumberResponse> SetContractNumber(SetContractNumberRequest request, ServerCallContext context) => 
         await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(ValidateSalesArrangementIdRequest request, ServerCallContext context) =>
+        await _mediator.Send(request, context.CancellationToken);
 }

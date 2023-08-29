@@ -87,7 +87,7 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         if (valuationDetail.ValuationStateId is not (6 or 7))
             throw new CisAuthorizationException("The valuation has bad state");
 
-        if (caseInstance.State == (int)CaseStates.InProgress && request.LoanPurposeDetails is null)
+        if (caseInstance.State == (int)CaseStates.InProgress && request.LoanPurposeDetails is not null)
         {
             throw new CisAuthorizationException("The LoanPurposeDetails has to be null when the case is in progress");
         }

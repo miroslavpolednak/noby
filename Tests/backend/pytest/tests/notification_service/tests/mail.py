@@ -1,5 +1,3 @@
-import itertools
-
 import pytest
 import requests
 import urllib3

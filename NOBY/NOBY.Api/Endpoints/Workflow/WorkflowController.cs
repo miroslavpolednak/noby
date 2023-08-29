@@ -20,7 +20,6 @@ public class WorkflowController : ControllerBase
     /// </remarks>
     /// <param name="processId">Noby proces ID. Jde o ID sady úkolů generované Starbuildem.</param>
     [HttpGet("{caseId:long}/tasks/consultation-type")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(typeof(List<GetConsultationTypes.GetConsultationTypesResponseItem>), StatusCodes.Status200OK)]
@@ -36,7 +35,6 @@ public class WorkflowController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/{taskId:int}/cancel")]
-    [AuthorizeCaseOwner]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
@@ -56,7 +54,6 @@ public class WorkflowController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7A23BD1E-668C-4ddc-BB82-550DC6C34C7F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/{taskId:long}/signing/start")]
-    [AuthorizeCaseOwner]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(typeof(StartTaskSigning.StartTaskSigningResponse), StatusCodes.Status200OK)]
@@ -74,7 +71,6 @@ public class WorkflowController : ControllerBase
     /// <response code="200">Noby task ID. Jde o ID sady úkolů generované Starbuildem.</response>
     /// <returns>Noby task ID. Jde o ID sady úkolů generované Starbuildem.</returns>
     [HttpPost("{caseId:long}/tasks")]
-    [AuthorizeCaseOwner]
     [Consumes("application/json")]
     [Produces("text/plain")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
@@ -93,7 +89,6 @@ public class WorkflowController : ControllerBase
     /// </remarks>
     /// <returns>Seznam wf tasks z SB.</returns>
     [HttpGet("{caseId:long}/tasks")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(typeof(GetTaskList.GetTaskListResponse), StatusCodes.Status200OK)]
@@ -110,7 +105,6 @@ public class WorkflowController : ControllerBase
     /// </remarks>
     /// <returns></returns>
     [HttpGet("{caseId:long}/tasks/{taskId:long}")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(typeof(GetTaskDetail.GetTaskDetailResponse), StatusCodes.Status200OK)]
@@ -127,7 +121,6 @@ public class WorkflowController : ControllerBase
     /// </remarks>
     /// <response code="404">Task or case not found</response>
     [HttpPut("{caseId:long}/tasks/{taskId:int}")]
-    [AuthorizeCaseOwner]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
@@ -147,7 +140,6 @@ public class WorkflowController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F8C65CF5-6A02-4d2a-B068-C3EDE901DAE5"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{caseId:long}/tasks/current-price-exception")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status200OK)]

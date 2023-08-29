@@ -54,25 +54,19 @@ internal sealed class IndividualPricingProcessChangedConsumer
 
     private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForCompleted(int? decisionId)
     {
-        if (decisionId == 1)
-        {
-            yield return  new EditableFlowSwitch
-            {
-                FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved,
-                Value = true
-            };
-        }
-
-        if (decisionId == 2)
-        {
-            yield return  new EditableFlowSwitch
-            {
-                FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved,
-                Value = true
-            };
-        }
+        if (decisionId != 1 && decisionId != 2) yield break;
         
-        // else empty
+        yield return  new EditableFlowSwitch
+        {
+            FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved, // 9
+            Value = decisionId == 1
+        };
+        
+        yield return  new EditableFlowSwitch
+        {
+            FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved, // 10
+            Value = decisionId == 2
+        };
     }
 
     private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForActive()

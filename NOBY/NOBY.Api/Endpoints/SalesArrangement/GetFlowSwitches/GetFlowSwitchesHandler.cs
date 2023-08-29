@@ -32,9 +32,31 @@ internal sealed class GetFlowSwitchesHandler
 
         await adjustSigning(response, request.SalesArrangementId, cancellationToken);
         
-        //await adjustEvaluation(response, request.SalesArrangementId, existingSwitches, cancellationToken);
+        await adjustEvaluation(response, request.SalesArrangementId, existingSwitches, cancellationToken);
+
+        adjustSendButton(response, existingSwitches);
 
         return response;
+    }
+
+    private static void adjustSendButton(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
+    {
+        response.SendButton.IsActive = response.ModelationSection.IsCompleted
+            && response.HouseholdSection.IsCompleted
+            && response.ParametersSection.IsCompleted
+            && response.SigningSection.IsCompleted
+            && response.ScoringSection.IsCompleted
+            // valuation
+            && (response.EvaluationSection.IsCompleted || flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && !t.Value))
+            // IC
+            && (response.IndividualPriceSection.IsCompleted || icSection());
+
+        bool icSection()
+        {
+            return flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferWithDiscount && t.Value)
+                && flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.DoesWflTaskForIPExist && t.Value)
+                && flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsWflTaskForIPNotApproved && !t.Value);
+        }
     }
 
     private async Task adjustEvaluation(
@@ -59,7 +81,7 @@ internal sealed class GetFlowSwitchesHandler
                 var saInstanceDetail = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
                 var A = valuations.Count(t => t.IsLoanRealEstate && t.OrderId.HasValue);
                 var B = saInstanceDetail.Mortgage?.LoanRealEstates?.Count ?? 0;
-                response.EvaluationSection.IsCompleted = A == B || (A == 1 && B == 0);
+                response.EvaluationSection.IsCompleted = (B > 0 && A == B) || (A == 1 && B == 0);
             }
         }
     }

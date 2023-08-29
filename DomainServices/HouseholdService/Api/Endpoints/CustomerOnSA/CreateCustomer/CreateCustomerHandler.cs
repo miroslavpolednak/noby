@@ -24,6 +24,7 @@ internal sealed class CreateCustomerHandler
             Name = request.Customer?.Name ?? "",
             DateOfBirthNaturalPerson = request.Customer?.DateOfBirthNaturalPerson,
             SalesArrangementId = request.SalesArrangementId,
+            CaseId = salesArrangement.CaseId,
             CustomerRoleId = (CustomerRoles)request.CustomerRoleId,
             LockedIncomeDateTime = request.Customer?.LockedIncomeDateTime,
             MaritalStatusId = request.Customer?.MaritalStatusId,

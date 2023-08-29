@@ -46,7 +46,7 @@ public sealed class CaseOwnerValidationMiddleware
                 var customerOnSAService = context.RequestServices.GetRequiredService<ICustomerOnSAServiceClient>();
                 caseId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.CustomerOnSA) switch
                 {
-                    //true => (await customerOnSAService.GetCustomer(getId(_customerOnSAIdKey), cancellationToken)).CaseId,
+                    true => (await customerOnSAService.GetCustomer(getId(_customerOnSAIdKey), cancellationToken)).CaseId,
                     false => (await customerOnSAService.ValidateCustomerOnSAId(getId(_customerOnSAIdKey), true, cancellationToken)).CaseId
                 };  
             }

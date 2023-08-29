@@ -16,9 +16,11 @@ message CustomerOnSA {
 
     int32 SalesArrangementId = 2;
     
-    repeated cis.types.Identity CustomerIdentifiers = 3;
+    int64 CaseId = 3;
     
-    int32 CustomerRoleId = 4;
+    repeated cis.types.Identity CustomerIdentifiers = 4;
+    
+    int32 CustomerRoleId = 5;
     
     string FirstNameNaturalPerson = 6;
     

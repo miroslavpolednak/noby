@@ -30,12 +30,23 @@ internal sealed class GetRealEstateValuationTypesHandler
         // get revids
         var deedsRealEstateIds = await _dbContext.DeedOfOwnershipDocuments
             .AsNoTracking()
-            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId && !string.IsNullOrEmpty(t.RealEstateIds))
+            .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
             .Select(t => t.RealEstateIds)
             .ToListAsync(cancellationToken);
         var realEstateIds = deedsRealEstateIds.SelectMany(t =>
         {
-            return System.Text.Json.JsonSerializer.Deserialize<long[]>(t!)!;
+            if (string.IsNullOrEmpty(t))
+            {
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId);
+            }
+
+            var arr = System.Text.Json.JsonSerializer.Deserialize<long[]>(t);
+            if (arr is null || arr.Length == 0)
+            {
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId);
+            }
+
+            return arr;
         }).ToArray();
         
         var purposes = await _codebookService.LoanPurposes(cancellationToken);
@@ -44,12 +55,13 @@ internal sealed class GetRealEstateValuationTypesHandler
             RealEstateType = acvRealEstateTypeId,
             IsLeased = revInstance.HouseAndFlatDetails?.FinishedHouseAndFlatDetails?.Leased,
             IsCellarFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails?.Basement,
-            IsNonApartmentBuildingFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails.SpecialPlacement,
+            IsNonApartmentBuildingFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails?.SpecialPlacement,
             IsNotUsableTechnicalState = revInstance.HouseAndFlatDetails?.PoorCondition,
             PurposesLoan = request
                 .LoanPurposes
                 ?.Select(t => purposes.FirstOrDefault(x => t == x.Id)?.AcvId)
                 .Where(t => !string.IsNullOrEmpty(t))
+                .Cast<string>()
                 ?.ToList(),
             RealEstateIds = realEstateIds,
             DealType = request.DealType ?? "",

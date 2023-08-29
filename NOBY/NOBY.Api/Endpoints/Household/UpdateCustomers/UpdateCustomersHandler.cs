@@ -5,6 +5,7 @@ using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using __HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
+using NOBY.Services.FlowSwitchAtLeastOneIncomeMainHousehold;
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
@@ -51,6 +52,8 @@ internal sealed class UpdateCustomersHandler
             bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
             setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
         }
+
+        await _flowSwitchMainHouseholdService.SetFlowSwitchByHouseholdId(request.HouseholdId, _flowSwitchManager, cancellationToken);
 
         await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
 
@@ -214,6 +217,7 @@ internal sealed class UpdateCustomersHandler
         }
     }
 
+    private readonly FlowSwitchAtLeastOneIncomeMainHouseholdService _flowSwitchMainHouseholdService;
     private readonly IFlowSwitchManager _flowSwitchManager;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IHouseholdServiceClient _householdService;
@@ -223,6 +227,7 @@ internal sealed class UpdateCustomersHandler
     private readonly ILogger<UpdateCustomersHandler> _logger;
 
     public UpdateCustomersHandler(
+        FlowSwitchAtLeastOneIncomeMainHouseholdService flowSwitchMainHouseholdService,
         ILogger<UpdateCustomersHandler> logger,
         IFlowSwitchManager flowSwitchManager,
         IHouseholdServiceClient householdService,
@@ -231,6 +236,7 @@ internal sealed class UpdateCustomersHandler
         IDocumentOnSAServiceClient documentOnSAService,
         ISalesArrangementServiceClient salesArrangementService)
     {
+        _flowSwitchMainHouseholdService = flowSwitchMainHouseholdService;
         _logger = logger;
         _flowSwitchManager = flowSwitchManager;
         _productService = productService;

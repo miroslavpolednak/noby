@@ -8,9 +8,11 @@ internal static class Extensions
     public static GetHouseholdResponse ToApiResponse(this __Contracts.Household household)
         => new GetHouseholdResponse
         {
+            HouseholdId = household.HouseholdId,
+            SalesArrangementId = household.SalesArrangementId,
+            CaseId = household.CaseId,
             Data = household.Data?.mapData(),
-            Expenses = household.Expenses?.mapExpenses(),
-            HouseholdId = household.HouseholdId
+            Expenses = household.Expenses?.mapExpenses()
         };
 
     public static CustomerInHousehold? ToApiResponse(this __Contracts.CustomerOnSA model)

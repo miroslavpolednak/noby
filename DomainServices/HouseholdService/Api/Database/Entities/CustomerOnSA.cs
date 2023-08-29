@@ -11,10 +11,12 @@ internal sealed class CustomerOnSA
     public int CustomerOnSAId { get; set; }
 
     public int SalesArrangementId { get; set; }
+    
+    public long CaseId { get; set; }
 
-    public CIS.Foms.Enums.CustomerRoles CustomerRoleId { get; set; }
+    public CustomerRoles CustomerRoleId { get; set; }
 
-    public string? FirstNameNaturalPerson { get; set; } = null!;
+    public string? FirstNameNaturalPerson { get; set; }
 
     public string Name { get; set; } = null!;
 
