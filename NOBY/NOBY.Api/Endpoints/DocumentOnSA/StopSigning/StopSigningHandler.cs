@@ -1,4 +1,6 @@
-﻿using DomainServices.DocumentOnSAService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.DocumentOnSAService.Clients;
+using FastEnumUtility;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.StopSigning;
 
@@ -13,13 +15,33 @@ public class StopSigningHandler : IRequestHandler<StopSigningRequest>
 
     public async Task Handle(StopSigningRequest request, CancellationToken cancellationToken)
     {
-        var documentOnSas = await _client.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
+        var documentOnSa = await GetDocumentOnSa(request, cancellationToken);
 
-        if (!documentOnSas.DocumentsOnSAToSign.Any(d => d.DocumentOnSAId == request.DocumentOnSAId))
+        if (documentOnSa.SignatureTypeId == SignatureTypes.Electronic.ToByte())
         {
-            throw new NobyValidationException($"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
-        }
+            await _client.RefreshElectronicDocument(documentOnSa.DocumentOnSAId!.Value, cancellationToken);
+            var docOnSaAfterRefresh = await GetDocumentOnSa(request, cancellationToken);
 
-        await _client.StopSigning(request.DocumentOnSAId, cancellationToken);
+            if (docOnSaAfterRefresh.IsValid == false)
+                return;
+            else if (docOnSaAfterRefresh.IsSigned)
+                await _client.StopSigning(new() { DocumentOnSAId = request.DocumentOnSAId }, cancellationToken);
+            else
+                await _client.StopSigning(new() { DocumentOnSAId = request.DocumentOnSAId, NotifyESignatures = true }, cancellationToken);
+        }
+        else
+        {
+            await _client.StopSigning(new() { DocumentOnSAId = request.DocumentOnSAId }, cancellationToken);
+        }
+    }
+
+    private async Task<DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign> GetDocumentOnSa(StopSigningRequest request, CancellationToken cancellationToken)
+    {
+        var documentOnSas = await _client.GetDocumentsOnSAList(request.SalesArrangementId, cancellationToken);
+
+        var documentOnSa = documentOnSas.DocumentsOnSA.SingleOrDefault(d => d.DocumentOnSAId == request.DocumentOnSAId)
+            ?? throw new NobyValidationException($"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
+
+        return documentOnSa;
     }
 }

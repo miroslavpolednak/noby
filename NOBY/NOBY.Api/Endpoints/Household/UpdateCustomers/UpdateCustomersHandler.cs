@@ -25,12 +25,12 @@ internal sealed class UpdateCustomersHandler
 
         // process customer1
         var c1 = await crudCustomer(request.Customer1, salesArrangement.SalesArrangementId, isProductSA, salesArrangement.CaseId, householdInstance.CustomerOnSAId1, CustomerRoles.Debtor, allCustomers, cancellationToken);
-    
+
         // process customer2
         var c2 = await crudCustomer(request.Customer2, salesArrangement.SalesArrangementId, isProductSA, salesArrangement.CaseId, householdInstance.CustomerOnSAId2, CustomerRoles.Codebtor, allCustomers, cancellationToken);
 
         // linkovani novych nebo zmenenych CustomerOnSAId na household
-        if (householdInstance.CustomerOnSAId1 != c1.OnHouseholdCustomerOnSAId || householdInstance.CustomerOnSAId2 != c2.OnHouseholdCustomerOnSAId) 
+        if (householdInstance.CustomerOnSAId1 != c1.OnHouseholdCustomerOnSAId || householdInstance.CustomerOnSAId2 != c2.OnHouseholdCustomerOnSAId)
         {
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.OnHouseholdCustomerOnSAId, c2.OnHouseholdCustomerOnSAId, cancellationToken);
         }
@@ -45,7 +45,7 @@ internal sealed class UpdateCustomersHandler
 
             foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && t.HouseholdId == request.HouseholdId && (!t.IsSigned || !onlyNotSigned)))
             {
-                await _documentOnSAService.StopSigning(document.DocumentOnSAId!.Value, cancellationToken);
+                await _documentOnSAService.StopSigning(new() { DocumentOnSAId = document.DocumentOnSAId!.Value }, cancellationToken);
             }
 
             // HFICH-4165 - nastaveni flowSwitches
@@ -95,7 +95,7 @@ internal sealed class UpdateCustomersHandler
     {
         var allHouseholds = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
         var allCustomers = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellationToken);
-        
+
         var customers = allHouseholds
             .Where(t => t.HouseholdId != request.HouseholdId && t.CustomerOnSAId1.HasValue)
             .Select(t => new { CustomerOnSAId = t.CustomerOnSAId1!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId1).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
@@ -148,16 +148,16 @@ internal sealed class UpdateCustomersHandler
             if (customer.CustomerOnSAId.HasValue)
             {
                 var result = new Dto.CrudResult(customerIdChanged, customer.CustomerOnSAId.Value);
-                
+
                 try
                 {
                     var currentCustomerInstance = allCustomers.First(t => t.CustomerOnSAId == customer.CustomerOnSAId!.Value);
 
                     var identities = (await _customerOnSAService.UpdateCustomer(new __HO.UpdateCustomerRequest
-                        {
-                            CustomerOnSAId = customer.CustomerOnSAId!.Value,
-                            Customer = customer.ToDomainServiceRequest(currentCustomerInstance)
-                        }, cancellationToken))
+                    {
+                        CustomerOnSAId = customer.CustomerOnSAId!.Value,
+                        Customer = customer.ToDomainServiceRequest(currentCustomerInstance)
+                    }, cancellationToken))
                         .CustomerIdentifiers;
 
                     result.Identities = identities;
