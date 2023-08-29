@@ -2,11 +2,11 @@
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder;
 
-internal class JsonValue : IJsonBuilderEntry
+internal class JsonBuilderValue : IJsonBuilderEntry
 {
     private readonly IJsonValueSource _valueSource;
 
-    public JsonValue(IJsonValueSource valueSource, bool isCollection = false)
+    public JsonBuilderValue(IJsonValueSource valueSource, bool isCollection = false)
     {
         _valueSource = valueSource;
         IsCollection = isCollection;

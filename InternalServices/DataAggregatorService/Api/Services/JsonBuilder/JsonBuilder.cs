@@ -6,7 +6,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder.ValueS
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder;
 
-internal class JsonObject : JsonBuilderEntry, IJsonBuilderObjectEntry
+internal class JsonBuilder : JsonBuilderEntry, IJsonBuilderObjectEntry
 {
     private readonly Dictionary<string, IJsonBuilderEntry> _valueProperties = new();
     private readonly Dictionary<string, IJsonBuilderObjectEntry> _complexProperties = new();
@@ -20,8 +20,8 @@ internal class JsonObject : JsonBuilderEntry, IJsonBuilderObjectEntry
         if (jsonPropertyPath.Length <= Depth)
         {
             var jsonObject = IsPathCollection(actualPropertyPath)
-                ? GetOrAddJsonObject(ClearCollectionMarker(actualPropertyPath), CreateNew<JsonCollection>)
-                : GetOrAddJsonObject(actualPropertyPath, CreateNew<JsonObject>);
+                ? GetOrAddJsonObject(ClearCollectionMarker(actualPropertyPath), CreateNew<JsonBuilderCollection>)
+                : GetOrAddJsonObject(actualPropertyPath, CreateNew<JsonBuilder>);
 
             jsonObject.Add(jsonPropertyPath, source);
 
@@ -31,7 +31,7 @@ internal class JsonObject : JsonBuilderEntry, IJsonBuilderObjectEntry
         if (IsPathCollection(actualPropertyPath)) 
             source = new JsonValuePrimitiveTypesCollectionSource(source.FieldPath, Depth + 1);
 
-        _valueProperties.Add(actualPropertyPath, new JsonValue(source));
+        _valueProperties.Add(actualPropertyPath, new JsonBuilderValue(source));
     }
 
     public override object? GetJsonObject(object data)

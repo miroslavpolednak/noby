@@ -3,7 +3,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder.ValueS
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder;
 
-internal class JsonCollection : JsonObject
+internal class JsonBuilderCollection : JsonBuilder
 {
     private string _collectionPath = string.Empty;
 

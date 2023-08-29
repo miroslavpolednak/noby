@@ -31,7 +31,7 @@ internal class GetRiskLoanApplicationDataHandler : IRequestHandler<GetRiskLoanAp
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, _data, cancellationToken);
 
-        var jsonObject = new JsonObject();
+        var jsonObject = new JsonBuilder();
 
         foreach (var sourceField in config.SourceFields)
         {
