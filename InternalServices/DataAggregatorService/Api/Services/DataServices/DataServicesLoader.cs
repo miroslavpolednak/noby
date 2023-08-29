@@ -2,7 +2,7 @@
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 
-[SingletonService, SelfService]
+[ScopedService, SelfService]
 internal class DataServicesLoader
 {
     private readonly ServiceMap _serviceMap;

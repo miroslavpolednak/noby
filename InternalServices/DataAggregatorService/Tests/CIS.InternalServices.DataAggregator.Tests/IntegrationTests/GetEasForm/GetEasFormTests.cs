@@ -41,8 +41,14 @@ public class GetEasFormTests : IntegrationTestBase
     [Fact]
     public async Task GetEasForm_ServiceRequest_ShouldReturnOneForm()
     {
-        ConfigurationManager.MockServiceRequest();;
-        SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersDrawing>((sa, parameter) => sa.Drawing = parameter);
+        ConfigurationManager.MockServiceRequest();
+
+        SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersDrawing>((sa, parameter) =>
+        {
+            sa.Drawing = parameter;
+
+            ProductServiceClient.MockGetCustomersOnProduct(parameter.Applicant);
+        });
 
         var client = CreateGrpcClient();
 

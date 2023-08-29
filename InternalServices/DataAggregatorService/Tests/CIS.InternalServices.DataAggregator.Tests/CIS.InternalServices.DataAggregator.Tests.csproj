@@ -28,8 +28,4 @@
     <ProjectReference Include="..\..\Api\CIS.InternalServices.DataAggregatorService.Api.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="IntegrationTests\Common\Mocks\" />
-  </ItemGroup>
-
 </Project>

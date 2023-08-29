@@ -64,5 +64,9 @@ internal static class DocumentConfigurationMock
 
             }
         };
+
+        configurationManager.LoadDocumentConfiguration(Arg.Is<DocumentKey>(x => x.TypeId == DocumentConstants.DocumentTypeTableId),
+                                                       Arg.Any<CancellationToken>())
+                            .Returns(documentConfiguration);
     }
 }
