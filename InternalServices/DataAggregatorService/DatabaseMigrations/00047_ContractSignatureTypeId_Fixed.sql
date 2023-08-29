@@ -1,0 +1,1 @@
+DELETE FROM EasFormDataField WHERE JsonPropertyName = 'zpusob_podpisu_smluv_dok' AND EasRequestTypeId = 1 AND EasFormTypeId = 3
