@@ -139,3 +139,15 @@ VALUES (
 'Schránkou je vyhrazený prostor v internetovém bankovnictví KB+, přístupný prostřednictvím mobilní a webové aplikace KB+, určený pro vzájemnou komunikaci. Schránka nebo její část, stejně jako kontaktní e-mail, slouží jako trvalý nosič dat.',
 4,
 'Dále beru na vědomí, že do schránky v internetovém bankovnictví KB+ nebo na kontaktní e-mail může Banka zasílat jakékoli písemnosti, včetně písemností, které mohou mít za následek zánik smluvního vztahu. Schránkou je vyhrazený prostor v internetovém bankovnictví KB+, přístupný prostřednictvím mobilní a webové aplikace KB+, určený pro vzájemnou komunikaci. Schránka nebo její část, stejně jako kontaktní e-mail, slouží jako trvalý nosič dat.')
+
+INSERT INTO DocumentVariant VALUES (11, '001', 'ProhlaseniZadatele', 'A')
+INSERT INTO DocumentVariant VALUES (11, '001', 'ProhlaseniZadatele', 'B')
+
+INSERT INTO DocumentVariant VALUES (11, '001', 'ProhlaseniSpoluzadatele', 'B')
+INSERT INTO DocumentVariant VALUES (11, '001', 'ProhlaseniSpoluzadateleCast2', 'B')
+
+INSERT INTO DocumentVariant VALUES (12, '001', 'ProhlaseniZadatele', 'A')
+INSERT INTO DocumentVariant VALUES (12, '001', 'ProhlaseniZadatele', 'B')
+
+INSERT INTO DocumentVariant VALUES (12, '001', 'ProhlaseniSpoluzadatele', 'B')
+INSERT INTO DocumentVariant VALUES (12, '001', 'ProhlaseniSpoluzadateleCast2', 'B')
