@@ -38,15 +38,15 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
         var documentOnSa = await _dbContext.DocumentOnSa.FindAsync(request.DocumentOnSAId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
 
-        if (documentOnSa.SignatureTypeId == SignatureTypes.Electronic.ToByte()) // 3
+        if (documentOnSa.SignatureTypeId == SignatureTypes.Electronic.ToByte() && request.NotifyESignatures) // 3
             await _eSignaturesClient.DeleteDocument(documentOnSa.ExternalId!, cancellationToken);
 
         documentOnSa.IsValid = false;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-        
+
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-        
+
         _auditLogger.LogWithCurrentUser(
             AuditEventTypes.Noby008,
             "Podepsaný dokument byl stornován",
@@ -57,9 +57,10 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
                 new("form", documentOnSa.FormId),
             }
         );
-        
+
         // SA state
-        if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
+        if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte() // 7
+             || salesArrangement.State == SalesArrangementStates.ToSend.ToSByte()) // 8
         {
             await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
         }

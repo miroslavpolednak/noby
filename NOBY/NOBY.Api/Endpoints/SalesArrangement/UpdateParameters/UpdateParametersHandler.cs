@@ -87,7 +87,7 @@ internal sealed class UpdateParametersHandler
                     throw new NotImplementedException($"SalesArrangementTypeId {saInstance.SalesArrangementTypeId} parameters model cast to domain service is not implemented");
             }
         }
-        
+
         var salesArrangementTypes = await _codebookService.SalesArrangementTypes(cancellationToken);
         var salesArrangementType = salesArrangementTypes.Single(t => t.Id == saInstance.SalesArrangementTypeId);
 
@@ -99,7 +99,7 @@ internal sealed class UpdateParametersHandler
             {
                 if (documentOnSaToSign is { IsValid: true, IsSigned: false, DocumentOnSAId: not null })
                 {
-                    await _documentOnSaService.StopSigning(documentOnSaToSign.DocumentOnSAId.Value, cancellationToken);
+                    await _documentOnSaService.StopSigning(new() { DocumentOnSAId = documentOnSaToSign.DocumentOnSAId.Value }, cancellationToken);
                 }
             }
 
@@ -113,7 +113,7 @@ internal sealed class UpdateParametersHandler
             // nastavit flowSwitch ParametersSavedAtLeastOnce pouze pro NE servisni SA
             await setFlowSwitches(saInstance, cancellationToken);
         }
-        
+
         // update SA
         await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
     }

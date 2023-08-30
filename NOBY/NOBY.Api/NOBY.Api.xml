@@ -1902,7 +1902,7 @@
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSa(System.Int32,NOBY.Api.Endpoints.DocumentOnSA.Search.SearchDocumentsOnSaRequest)">
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSa(System.Int32,NOBY.Api.Endpoints.DocumentOnSA.Search.SearchDocumentsOnSaRequest,System.Threading.CancellationToken)">
             <summary>
             Vyhledání dokumentů na základě hlavního hesla (eArchivu)
             </summary>
@@ -1912,6 +1912,17 @@
             </remarks>
             <param name="salesArrangementId"></param>
             <param name="request"></param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.RefreshElectronicDocument(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Aktualizace stavu dokumentu
+            </summary>
+            <remarks>
+             Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).<br /><br />
+             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=73549CB9-547D-4b15-BEED-BE2E563459D9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId"></param>
+            <param name="documentOnSaId"></param>
         </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData.DocumentDataDto.Table">
             <summary>
@@ -1954,51 +1965,6 @@
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail.GetDocumentOnSADetailResponse.ExternalId">
-            <summary>
-            Id elektronicky podepisovaného dokumentu nahraného v ePodpisech
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.DocumentOnSAId">
-            <summary>
-            Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.DocumentTypeId">
-            <summary>
-            Typ dokumentu. Číselník DocumentOnSAType.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.FormId">
-            <summary>
-            Businessové modré ID
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.IsSigned">
-            <summary>
-            Příznak, zda byl dokument již podepsán.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureTypeId">
-            <summary>
-            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.SignatureDateTime">
-            <summary>
-            Timestamp, kdy došlo k podpisu celého dokumentu.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.CustomerOnSa">
-            <summary>
-            Only for CRS
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.IsPreviewSentToCustomer">
-            <summary>
-            Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList.GetDocumentsSignListData.ExternalId">
             <summary>
             Id elektronicky podepisovaného dokumentu nahraného v ePodpisech
             </summary>

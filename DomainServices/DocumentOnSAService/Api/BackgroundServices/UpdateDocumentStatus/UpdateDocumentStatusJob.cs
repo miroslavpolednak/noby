@@ -2,6 +2,7 @@
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
 using ExternalServices.ESignatures.V1;
+using FastEnumUtility;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
@@ -22,16 +23,21 @@ public sealed class UpdateDocumentStatusJob
         _dbContext = dbContext;
         _eSignaturesClient = eSignaturesClient;
     }
-    
+
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
         var documentOnSas = await _dbContext.DocumentOnSa
-            .Where(s => s.SignatureTypeId == (int)SignatureTypes.Electronic && s.IsValid && !s.IsSigned && !s.IsFinal)
+            .Where(s => s.SignatureTypeId == SignatureTypes.Electronic.ToByte() && s.IsValid && !s.IsSigned && !s.IsFinal)
+            .Select(s => new
+            {
+                s.DocumentOnSAId,
+                s.ExternalId
+            })
             .ToListAsync(cancellationToken);
 
         foreach (var documentOnSa in documentOnSas)
         {
-            var status = await _eSignaturesClient.GetDocumentStatus(documentOnSa.ExternalId, cancellationToken);
+            var status = await _eSignaturesClient.GetDocumentStatus(documentOnSa.ExternalId!, cancellationToken);
 
             if (status is EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT)
             {
@@ -40,7 +46,7 @@ public sealed class UpdateDocumentStatusJob
                     DocumentOnSAId = documentOnSa.DocumentOnSAId,
                     SignatureTypeId = (int)SignatureTypes.Electronic
                 };
-                
+
                 await _mediator.Send(signRequest, cancellationToken);
             }
 
@@ -54,7 +60,5 @@ public sealed class UpdateDocumentStatusJob
                 await _mediator.Send(stopSignRequest, cancellationToken);
             }
         }
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

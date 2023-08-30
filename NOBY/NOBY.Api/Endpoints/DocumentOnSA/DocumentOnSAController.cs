@@ -9,6 +9,7 @@ using NOBY.Api.Endpoints.DocumentOnSA.Search;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
+using NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -194,9 +195,10 @@ public class DocumentOnSAController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SearchDocumentsOnSa(
              [FromRoute] int salesArrangementId,
-             [FromBody] SearchDocumentsOnSaRequest request)
+             [FromBody] SearchDocumentsOnSaRequest request,
+             CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
+        var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId), cancellationToken);
 
         if (result.FormIds is null || !result.FormIds.Any())
             return NoContent();
@@ -204,6 +206,22 @@ public class DocumentOnSAController : ControllerBase
         return Ok(result);
     }
 
-
-
+    /// <summary>
+    /// Aktualizace stavu dokumentu
+    /// </summary>
+    /// <remarks>
+    ///  Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).<br /><br />
+    ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=73549CB9-547D-4b15-BEED-BE2E563459D9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId"></param>
+    /// <param name="documentOnSaId"></param>
+    [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSaId}/refresh")]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(typeof(RefreshElectronicDocumentResponse), StatusCodes.Status200OK)]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    public async Task<RefreshElectronicDocumentResponse> RefreshElectronicDocument(
+          [FromRoute] int salesArrangementId,
+          [FromRoute] int documentOnSaId,
+          CancellationToken cancellationToken)
+      => await _mediator.Send(new RefreshElectronicDocumentRequest(salesArrangementId, documentOnSaId), cancellationToken);
 }
