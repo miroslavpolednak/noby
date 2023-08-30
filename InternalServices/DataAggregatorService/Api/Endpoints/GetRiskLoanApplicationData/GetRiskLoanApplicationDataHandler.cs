@@ -31,14 +31,10 @@ internal class GetRiskLoanApplicationDataHandler : IRequestHandler<GetRiskLoanAp
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, _data, cancellationToken);
 
-        var jsonObject = new JsonBuilder();
+        var jsonObject = new JsonBuilder<RiskLoanApplicationJsonValueSource>();
 
-        foreach (var sourceField in config.SourceFields)
-        {
-            var jsonValueSource = RiskLoanApplicationJsonValueSource.Create(sourceField);
-
-            jsonObject.Add(sourceField.JsonPropertyName, jsonValueSource);
-        }
+        foreach (var sourceField in config.SourceFields) 
+            jsonObject.Add(sourceField.JsonPropertyName, sourceField);
 
         return new GetRiskLoanApplicationDataResponse
         {

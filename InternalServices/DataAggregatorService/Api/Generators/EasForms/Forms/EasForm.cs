@@ -20,14 +20,10 @@ internal abstract class EasForm<TFormData> : IEasForm where TFormData : Aggregat
 
     protected string CreateJson(IEnumerable<EasFormSourceField> sourceFieldGroups)
     {
-        var jsonObject = new JsonBuilder();
+        var jsonObject = new JsonBuilder<EasFormJsonValueSource>();
 
-        foreach (var sourceField in sourceFieldGroups)
-        {
-            var jsonValueSource = EasFormJsonValueSource.Create(sourceField);
-
-            jsonObject.Add(sourceField.JsonPropertyName, jsonValueSource);
-        }
+        foreach (var sourceField in sourceFieldGroups) 
+            jsonObject.Add(sourceField.JsonPropertyName, sourceField);
 
         return jsonObject.Serialize(_formData);
     }

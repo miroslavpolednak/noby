@@ -3,11 +3,11 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder.ValueS
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder;
 
-internal class JsonBuilderCollection : JsonBuilder
+internal class JsonBuilderCollection<TValueSource> : JsonBuilder<TValueSource> where TValueSource : IJsonValueSource
 {
     private string _collectionPath = string.Empty;
 
-    public override void Add(string[] jsonPropertyPath, IJsonValueSource source)
+    public override void Add(string[] jsonPropertyPath, TValueSource source)
     {
         if (_collectionPath == string.Empty)
             _collectionPath = CollectionPathHelper.GetCollectionPath(source.FieldPath);

@@ -8,7 +8,7 @@ namespace CIS.InternalServices.DataAggregator.Tests.UnitTests.Services;
 public class JsonBuilderTests
 {
     private readonly JsonSerializerOptions _serializerOptions = new() { WriteIndented = true };
-    private readonly JsonBuilder _sut = new();
+    private readonly JsonBuilder<DefaultJsonValueSource> _sut = new();
 
     [Fact]
     public void JsonBuilder_MapSimplePropertyToSimpleProperty_ShouldReturnJsonWithSimpleProperty()
@@ -89,7 +89,7 @@ public class JsonBuilderTests
     }
 
     [Fact]
-    public void JsonBuilder_InvalidFieldPath_ShouldThrow()
+    public void JsonBuilder_InvalidFieldPath_ShouldThrowArgumentOutOfRange()
     {
         const string JsonPath = "Value";
         const string FieldPath = "InvalidPath";

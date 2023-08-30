@@ -5,11 +5,11 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Generators.RiskLoanAppl
 
 internal class RiskLoanApplicationJsonValueSource : JsonValueSource<RiskLoanApplicationSourceField>
 {
-    private RiskLoanApplicationJsonValueSource(RiskLoanApplicationSourceField sourceField) : base(sourceField)
+    public RiskLoanApplicationJsonValueSource(RiskLoanApplicationSourceField sourceField) : base(sourceField)
     {
     }
 
-    public static IJsonValueSource Create(RiskLoanApplicationSourceField sourceField) => new RiskLoanApplicationJsonValueSource(sourceField);
+    public static implicit operator RiskLoanApplicationJsonValueSource(RiskLoanApplicationSourceField sourceField) => new(sourceField);
 
     public override object? ParseValue(object? value, object aggregatedData)
     {

@@ -8,11 +8,11 @@ internal class EasFormJsonValueSource : JsonValueSource<EasFormSourceField>
     private const string FormatDecimal = "###########0.00";
     private const string FormatDate = "dd.MM.yyyy";
 
-    private EasFormJsonValueSource(EasFormSourceField sourceField) : base(sourceField)
+    public EasFormJsonValueSource(EasFormSourceField sourceField) : base(sourceField)
     {
     }
 
-    public static IJsonValueSource Create(EasFormSourceField sourceField) => new EasFormJsonValueSource(sourceField);
+    public static implicit operator EasFormJsonValueSource(EasFormSourceField sourceField) => new(sourceField);
 
     public override object? ParseValue(object? value, object aggregatedData) =>
         value switch

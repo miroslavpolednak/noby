@@ -2,7 +2,7 @@
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder;
 
-internal interface IJsonBuilderObjectEntry : IJsonBuilderEntry
+internal interface IJsonBuilderObjectEntry<in TValueSource> : IJsonBuilderEntry where TValueSource : IJsonValueSource
 {
-    void Add(string[] jsonPropertyPath, IJsonValueSource source);
+    void Add(string[] jsonPropertyPath, TValueSource source);
 }

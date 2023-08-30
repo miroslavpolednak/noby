@@ -6,24 +6,22 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder.ValueS
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder;
 
-internal class JsonBuilder : JsonBuilderEntry, IJsonBuilderObjectEntry
+internal class JsonBuilder<TValueSource> : JsonBuilderEntry, IJsonBuilderObjectEntry<TValueSource> where TValueSource : IJsonValueSource
 {
     private readonly Dictionary<string, IJsonBuilderEntry> _valueProperties = new();
-    private readonly Dictionary<string, IJsonBuilderObjectEntry> _complexProperties = new();
+    private readonly Dictionary<string, IJsonBuilderObjectEntry<TValueSource>> _complexProperties = new();
 
-    public void Add(string jsonPropertyPath, DefaultJsonValueSource source) => Add(jsonPropertyPath.Split('.'), source);
+    public void Add(string jsonPropertyPath, TValueSource source) => Add(jsonPropertyPath.Split('.'), source);
 
-    public void Add(string jsonPropertyPath, IJsonValueSource source) => Add(jsonPropertyPath.Split('.'), source);
-
-    public virtual void Add(string[] jsonPropertyPath, IJsonValueSource source)
+    public virtual void Add(string[] jsonPropertyPath, TValueSource source)
     {
         var actualPropertyPath = jsonPropertyPath[Depth];
 
         if (jsonPropertyPath.Length > Depth + 1)
         {
             var jsonObject = CollectionPathHelper.IsCollection(actualPropertyPath)
-                ? GetOrAddJsonObject(ClearCollectionMarker(actualPropertyPath), CreateNew<JsonBuilderCollection>)
-                : GetOrAddJsonObject(actualPropertyPath, CreateNew<JsonBuilder>);
+                ? GetOrAddJsonObject<JsonBuilderCollection<TValueSource>>(ClearCollectionMarker(actualPropertyPath))
+                : GetOrAddJsonObject<JsonBuilder<TValueSource>>(actualPropertyPath);
 
             jsonObject.Add(jsonPropertyPath, source);
 
@@ -32,9 +30,9 @@ internal class JsonBuilder : JsonBuilderEntry, IJsonBuilderObjectEntry
 
         if (CollectionPathHelper.IsCollection(actualPropertyPath))
         {
-            source = new JsonValuePrimitiveTypesCollectionSource(source.FieldPath, Depth + 1);
+            var primitiveTypesCollectionSource = new JsonValuePrimitiveTypesCollectionSource(source, Depth + 1);
 
-            _valueProperties.Add(CollectionPathHelper.GetCollectionPath(actualPropertyPath), new JsonBuilderValue(source, isCollection: true));
+            _valueProperties.Add(CollectionPathHelper.GetCollectionPath(actualPropertyPath), new JsonBuilderValue(primitiveTypesCollectionSource, isCollection: true));
 
             return;
         }
@@ -67,19 +65,17 @@ internal class JsonBuilder : JsonBuilderEntry, IJsonBuilderObjectEntry
         return JsonSerializer.Serialize(GetJsonObject(data), jsonOptions);
     }
 
-    private IJsonBuilderObjectEntry GetOrAddJsonObject(string key, Func<IJsonBuilderObjectEntry> factory)
+    private IJsonBuilderObjectEntry<TValueSource> GetOrAddJsonObject<TObject>(string key) where TObject : IJsonBuilderObjectEntry<TValueSource>, new()
     {
         if (_complexProperties.TryGetValue(key, out var jsonObject))
             return jsonObject;
 
-        jsonObject = factory();
+        jsonObject = new TObject { Depth = Depth + 1 };
 
         _complexProperties.Add(key, jsonObject);
 
         return jsonObject;
     }
-
-    private TObject CreateNew<TObject>() where TObject : IJsonBuilderEntry, new() => new() { Depth = Depth + 1 };
 
     private static string ClearCollectionMarker(string propertyPath) => 
         propertyPath.Replace(ConfigurationConstants.CollectionMarker, "");

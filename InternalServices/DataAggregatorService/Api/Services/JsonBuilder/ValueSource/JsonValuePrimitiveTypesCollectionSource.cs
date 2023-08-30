@@ -4,12 +4,15 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder.Va
 
 internal class JsonValuePrimitiveTypesCollectionSource : IJsonValueSource
 {
+    private readonly IJsonValueSource _source;
     private readonly int _depth;
 
-    public JsonValuePrimitiveTypesCollectionSource(string fieldPath, int depth)
+    public JsonValuePrimitiveTypesCollectionSource(IJsonValueSource source, int depth)
     {
+        _source = source;
         _depth = depth;
-        FieldPath = fieldPath;
+
+        FieldPath = _source.FieldPath;
     }
 
     public string FieldPath { get; set; }
@@ -24,6 +27,13 @@ internal class JsonValuePrimitiveTypesCollectionSource : IJsonValueSource
 
         var memberPath = CollectionPathHelper.GetCollectionMemberPath(FieldPath, _depth);
 
-        return collection.Cast<object>().Select(o => MapperHelper.GetValue(o, memberPath)).ToList();
+        _source.FieldPath = memberPath;
+
+        return collection.Cast<object>().Select(obj =>
+        {
+            var objValue = MapperHelper.GetValue(obj, memberPath);
+
+            return _source.ParseValue(objValue, obj);
+        }).ToList();
     }
 }
