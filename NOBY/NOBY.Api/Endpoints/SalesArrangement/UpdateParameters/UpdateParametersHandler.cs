@@ -101,6 +101,7 @@ internal sealed class UpdateParametersHandler
                 {
                     await _documentOnSaService.StopSigning(new() { DocumentOnSAId = documentOnSaToSign.DocumentOnSAId.Value }, cancellationToken);
                     // We have to actualise SA after stop Signing (because stop Signing may change SA state)
+                    _salesArrangementService.ClearSalesArrangementCache();
                     saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
                 }
             }
