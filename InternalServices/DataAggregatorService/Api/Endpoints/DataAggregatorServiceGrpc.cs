@@ -21,12 +21,12 @@ internal class DataAggregatorServiceGrpc : Contracts.V1.DataAggregatorService.Da
     public override Task<GetRiskLoanApplicationDataResponse> GetRiskLoanApplicationData(GetRiskLoanApplicationDataRequest request, ServerCallContext context) =>
         SendViaMediatr(request, context.CancellationToken);
 
-    private Task<TResponse> SendViaMediatr<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken)
+    private async Task<TResponse> SendViaMediatr<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken)
     {
         using var scope = _scopeFactory.CreateScope();
 
         var mediatr = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-        return mediatr.Send(request, cancellationToken);
+        return await mediatr.Send(request, cancellationToken);
     }
 }
