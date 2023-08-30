@@ -26,40 +26,31 @@ internal sealed class InformationRequestProcessChangedConsumer
         var taskDetail = await _caseService.GetTaskDetail(currentTaskId, token);
         var orderId = taskDetail.TaskDetail.Request.OrderId;
 
-        if (orderId is null) return;
+        if (orderId is null)
+        {
+            return;
+        }
         
         var getListRequest = new GetRealEstateValuationListRequest { CaseId = caseId };
         var getListResponse = await _mediator.Send(getListRequest, token);
         var realEstateValuationListItem = getListResponse.RealEstateValuationList.FirstOrDefault(i => i.OrderId == orderId);
-        
-        if (realEstateValuationListItem == null || realEstateValuationListItem.ValuationStateId == 5) return;
-        
-        if (message.state is ProcessStateEnum.ACTIVE or ProcessStateEnum.SUSPENDED)
+
+        if (realEstateValuationListItem == null || realEstateValuationListItem.ValuationStateId == 5)
         {
-            if (realEstateValuationListItem is { ValuationStateId: 4, ValuationTypeId: ValuationTypes.Online })
-            {
-                await UpdateState(realEstateValuationListItem, 8, token);
-            }
-            else if (realEstateValuationListItem.ValuationStateId == 8)
-            {
-                await UpdateState(realEstateValuationListItem, 9, token);
-            }
+            return;
         }
 
-        if (message.state is ProcessStateEnum.COMPLETED or ProcessStateEnum.TERMINATED)
+        switch (message.state)
         {
-            if (realEstateValuationListItem.ValuationTypeId  == ValuationTypes.Online)
-            {
-                await UpdateState(realEstateValuationListItem, 4, token);
-            }
-            else if (realEstateValuationListItem.ValuationTypeId  is ValuationTypes.Dts or ValuationTypes.Standard)
-            {
-                if (realEstateValuationListItem.ValuationStateId == 4) return;
-                await UpdateState(realEstateValuationListItem, 8, token);
-            }
+            case ProcessStateEnum.ACTIVE or ProcessStateEnum.SUSPENDED:
+                await HandleStateActiveOrSuspended(realEstateValuationListItem, token);
+                break;
+            case ProcessStateEnum.COMPLETED or ProcessStateEnum.TERMINATED:
+                await HandleStateCompletedOrTerminated(realEstateValuationListItem, token);
+                break;
         }
     }
-
+    
     private async Task UpdateState(RealEstateValuationListItem realEstateValuationListItem, int valuationStateId, CancellationToken token)
     {
         var updateRequest = new UpdateStateByRealEstateValuationRequest
@@ -69,6 +60,34 @@ internal sealed class InformationRequestProcessChangedConsumer
         };
 
         await _mediator.Send(updateRequest, token);
+    }
+
+    private async Task HandleStateActiveOrSuspended(RealEstateValuationListItem realEstateValuationListItem, CancellationToken token)
+    {
+        if (realEstateValuationListItem is
+            { ValuationStateId: 4, ValuationTypeId: ValuationTypes.Online } or
+            { ValuationStateId: 8 })
+        {
+            await UpdateState(realEstateValuationListItem, 9, token);
+        }
+    }
+
+    private async Task HandleStateCompletedOrTerminated(RealEstateValuationListItem realEstateValuationListItem, CancellationToken token)
+    {
+        switch (realEstateValuationListItem.ValuationTypeId)
+        {
+            case ValuationTypes.Online:
+                await UpdateState(realEstateValuationListItem, 4, token);
+                break;
+            case ValuationTypes.Dts or ValuationTypes.Standard:
+            {
+                if (realEstateValuationListItem.ValuationStateId != 4)
+                {
+                    await UpdateState(realEstateValuationListItem, 8, token);
+                }
+                break;
+            }
+        }
     }
     
     private readonly IMediator _mediator;
