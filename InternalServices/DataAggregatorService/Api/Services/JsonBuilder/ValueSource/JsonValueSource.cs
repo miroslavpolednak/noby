@@ -13,5 +13,5 @@ internal abstract class JsonValueSource<TSourceField> : IJsonValueSource where T
 
     public string FieldPath { get; set; }
 
-    public abstract object? ParseValue(object? value, object aggregatedData);
+    public abstract object? ParseValue(object? value, object sourceData);
 }

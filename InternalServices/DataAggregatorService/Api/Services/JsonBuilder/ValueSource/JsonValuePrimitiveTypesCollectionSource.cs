@@ -17,14 +17,14 @@ internal class JsonValuePrimitiveTypesCollectionSource : IJsonValueSource
 
     public string FieldPath { get; set; }
 
-    public object ParseValue(object? value, object aggregatedData)
+    public object ParseValue(object? value, object sourceData)
     {
         if (value is null)
             return Enumerable.Empty<object>();
 
         if (value is not IEnumerable collection)
             throw new InvalidOperationException();
-
+        
         var memberPath = CollectionPathHelper.GetCollectionMemberPath(FieldPath, _depth);
 
         _source.FieldPath = memberPath;
@@ -34,6 +34,6 @@ internal class JsonValuePrimitiveTypesCollectionSource : IJsonValueSource
             var objValue = MapperHelper.GetValue(obj, memberPath);
 
             return _source.ParseValue(objValue, obj);
-        }).ToList();
+        });
     }
 }

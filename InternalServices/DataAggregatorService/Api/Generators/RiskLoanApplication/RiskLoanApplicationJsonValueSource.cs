@@ -11,12 +11,12 @@ internal class RiskLoanApplicationJsonValueSource : JsonValueSource<RiskLoanAppl
 
     public static implicit operator RiskLoanApplicationJsonValueSource(RiskLoanApplicationSourceField sourceField) => new(sourceField);
 
-    public override object? ParseValue(object? value, object aggregatedData)
+    public override object? ParseValue(object? value, object sourceData)
     {
         if (value is not null || !SourceField.UseDefaultInsteadOfNull)
             return GetValue(value);
 
-        var nullableType = Nullable.GetUnderlyingType(MapperHelper.GetType(aggregatedData, FieldPath));
+        var nullableType = Nullable.GetUnderlyingType(MapperHelper.GetType(sourceData, FieldPath));
 
         return nullableType is not null ? Activator.CreateInstance(nullableType) : GetValue(value);
     }

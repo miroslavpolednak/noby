@@ -4,5 +4,5 @@ internal interface IJsonValueSource
 {
     public string FieldPath { get; set; }
 
-    object? ParseValue(object? value, object aggregatedData);
+    object? ParseValue(object? value, object sourceData);
 }

@@ -31,7 +31,6 @@
   <ItemGroup>
     <Folder Include="UnitTests\Generators\EasForms\" />
     <Folder Include="UnitTests\Generators\RiskLoanApplication\" />
-    <Folder Include="UnitTests\Services\" />
   </ItemGroup>
 
 </Project>

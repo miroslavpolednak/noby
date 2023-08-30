@@ -6,7 +6,7 @@ internal class DefaultJsonValueSource : IJsonValueSource
 
     public string FieldPath { get; set; } = string.Empty;
 
-    public object? ParseValue(object? value, object aggregatedData)
+    public object? ParseValue(object? value, object sourceData)
     {
         return value;
     }

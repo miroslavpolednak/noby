@@ -14,7 +14,7 @@ internal class EasFormJsonValueSource : JsonValueSource<EasFormSourceField>
 
     public static implicit operator EasFormJsonValueSource(EasFormSourceField sourceField) => new(sourceField);
 
-    public override object? ParseValue(object? value, object aggregatedData) =>
+    public override object? ParseValue(object? value, object sourceData) =>
         value switch
         {
             GrpcDecimal grpcDecimal => Format((decimal?)grpcDecimal),
