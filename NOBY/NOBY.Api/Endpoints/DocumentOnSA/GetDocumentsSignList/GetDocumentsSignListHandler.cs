@@ -3,46 +3,47 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Extensions;
+using NOBY.Dto.Signing;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
 
 public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListRequest, GetDocumentsSignListResponse>
 {
-    private readonly IDocumentOnSAServiceClient _client;
-    private readonly ICodebookServiceClient _codebookServiceClient;
-    private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
+    private readonly IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public GetDocumentsSignListHandler(
-        IDocumentOnSAServiceClient client,
-        ICodebookServiceClient codebookServiceClient,
+        IDocumentOnSAServiceClient documentOnSAService,
+        ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementServiceClient)
     {
-        _client = client;
-        _codebookServiceClient = codebookServiceClient;
-        _salesArrangementServiceClient = salesArrangementServiceClient;
+        _documentOnSAService = documentOnSAService;
+        _codebookService = codebookService;
+        _salesArrangementService = salesArrangementServiceClient;
     }
 
     public async Task<GetDocumentsSignListResponse> Handle(GetDocumentsSignListRequest request, CancellationToken cancellationToken)
     {
-        var result = await _client.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
+        var result = await _documentOnSAService.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
         return await MapToResponseAndFilter(result, cancellationToken);
     }
 
     private async Task<GetDocumentsSignListResponse> MapToResponseAndFilter(GetDocumentsToSignListResponse result, CancellationToken cancellationToken)
     {
-        var documentTypes = await _codebookServiceClient.DocumentTypes(cancellationToken);
-        var eACodeMains = await _codebookServiceClient.EaCodesMain(cancellationToken);
-        var signatureStates = await _codebookServiceClient.SignatureStatesNoby(cancellationToken);
+        var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
+        var eACodeMains = await _codebookService.EaCodesMain(cancellationToken);
+        var signatureStates = await _codebookService.SignatureStatesNoby(cancellationToken);
         // All docsOnSa have same salesArrangementId
         var salesArrangementId = result.DocumentsOnSAToSign.FirstOrDefault()?.SalesArrangementId;
         var salesArrangement = salesArrangementId is not null
-              ? await _salesArrangementServiceClient.GetSalesArrangement(salesArrangementId.Value, cancellationToken)
+              ? await _salesArrangementService.GetSalesArrangement(salesArrangementId.Value, cancellationToken)
               : null;
 
         var response = new GetDocumentsSignListResponse
         {
             Data = result.DocumentsOnSAToSign
-            .Select(s => new GetDocumentsSignListData
+            .Select(s => new DocumentData
             {
                 DocumentOnSAId = s.DocumentOnSAId,
                 DocumentTypeId = s.DocumentTypeId,
@@ -75,5 +76,4 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
 
         return response;
     }
-
 }
