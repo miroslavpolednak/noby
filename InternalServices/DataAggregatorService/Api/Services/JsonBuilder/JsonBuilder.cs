@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Collections.Specialized;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -17,9 +18,9 @@ internal class JsonBuilder : JsonBuilderEntry, IJsonBuilderObjectEntry
     {
         var actualPropertyPath = jsonPropertyPath[Depth];
 
-        if (jsonPropertyPath.Length <= Depth)
+        if (jsonPropertyPath.Length > Depth + 1)
         {
-            var jsonObject = IsPathCollection(actualPropertyPath)
+            var jsonObject = CollectionPathHelper.IsCollection(actualPropertyPath)
                 ? GetOrAddJsonObject(ClearCollectionMarker(actualPropertyPath), CreateNew<JsonBuilderCollection>)
                 : GetOrAddJsonObject(actualPropertyPath, CreateNew<JsonBuilder>);
 
@@ -28,8 +29,14 @@ internal class JsonBuilder : JsonBuilderEntry, IJsonBuilderObjectEntry
             return;
         }
 
-        if (IsPathCollection(actualPropertyPath)) 
+        if (CollectionPathHelper.IsCollection(actualPropertyPath))
+        {
             source = new JsonValuePrimitiveTypesCollectionSource(source.FieldPath, Depth + 1);
+
+            _valueProperties.Add(CollectionPathHelper.GetCollectionPath(actualPropertyPath), new JsonBuilderValue(source, isCollection: true));
+
+            return;
+        }
 
         _valueProperties.Add(actualPropertyPath, new JsonBuilderValue(source));
     }
@@ -72,9 +79,6 @@ internal class JsonBuilder : JsonBuilderEntry, IJsonBuilderObjectEntry
     }
 
     private TObject CreateNew<TObject>() where TObject : IJsonBuilderEntry, new() => new() { Depth = Depth + 1 };
-
-    private static bool IsPathCollection(string propertyPath) =>
-        propertyPath.EndsWith(ConfigurationConstants.CollectionMarker, StringComparison.InvariantCultureIgnoreCase);
 
     private static string ClearCollectionMarker(string propertyPath) => 
         propertyPath.Replace(ConfigurationConstants.CollectionMarker, "");
