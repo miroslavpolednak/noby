@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Collections.Specialized;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -11,6 +10,8 @@ internal class JsonBuilder : JsonBuilderEntry, IJsonBuilderObjectEntry
 {
     private readonly Dictionary<string, IJsonBuilderEntry> _valueProperties = new();
     private readonly Dictionary<string, IJsonBuilderObjectEntry> _complexProperties = new();
+
+    public void Add(string jsonPropertyPath, DefaultJsonValueSource source) => Add(jsonPropertyPath.Split('.'), source);
 
     public void Add(string jsonPropertyPath, IJsonValueSource source) => Add(jsonPropertyPath.Split('.'), source);
 
