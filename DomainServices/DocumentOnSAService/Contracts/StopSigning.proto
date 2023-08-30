@@ -7,4 +7,6 @@ import "google/protobuf/wrappers.proto";
 message StopSigningRequest {
 
 	google.protobuf.Int32Value DocumentOnSAId = 1;
+
+	bool NotifyESignatures = 2;
 }
