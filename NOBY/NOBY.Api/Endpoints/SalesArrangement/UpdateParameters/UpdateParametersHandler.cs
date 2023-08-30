@@ -100,9 +100,11 @@ internal sealed class UpdateParametersHandler
                 if (documentOnSaToSign is { IsValid: true, IsSigned: false, DocumentOnSAId: not null })
                 {
                     await _documentOnSaService.StopSigning(new() { DocumentOnSAId = documentOnSaToSign.DocumentOnSAId.Value }, cancellationToken);
+                    // We have to actualise SA after stop Signing (because stop Signing may change SA state)
+                    saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
                 }
             }
-
+            
             if (saInstance.State != (int)SalesArrangementStates.InProgress)
             {
                 await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, (int)SalesArrangementStates.InProgress, cancellationToken);
