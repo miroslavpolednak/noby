@@ -60,9 +60,10 @@ public class DocumentArchiveController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Načtení seznamu dokumentů ke Case-u<br />Nevrací se dokumenty s EaCodeMain.IsVisibleForKb=false<br /><br />
-    /// <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=25F73554-B9DB-42a4-8CB5-25FC3B3F6902"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=25F73554-B9DB-42a4-8CB5-25FC3B3F6902"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks> 
     /// <param name="caseId">ID Case-u</param>
+    /// <param name="formId">Businessové ID dokumentu, na které chceme zafiltrovat.</param>
     [HttpGet("case/{caseId:long}/documents")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
@@ -106,7 +107,7 @@ public class DocumentArchiveController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u
-    /// <br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("document/{documentId}/status/{statusId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]

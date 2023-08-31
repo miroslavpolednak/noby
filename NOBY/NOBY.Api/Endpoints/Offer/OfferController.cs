@@ -14,7 +14,7 @@ public class OfferController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F8D7E9A3-7589-42af-B2B3-9B34A243D6AB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F8D7E9A3-7589-42af-B2B3-9B34A243D6AB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="request">Nastaveni simulace.</param>
     /// <returns>ID vytvořené simulace a její výsledky.</returns>
@@ -28,10 +28,11 @@ public class OfferController : ControllerBase
         => await _mediator.Send(request ?? new SimulateMortgage.SimulateMortgageRequest());
 
     /// <summary>
-    /// Detail provedené simulace dle ID simulace.
+    /// Detail simulace dle ID simulace.
     /// </summary>
     /// <remarks>
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2AB0C760-7188-48ad-ABA7-D432D51A1A40"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// Detail provedené simulace dle ID simulace.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2AB0C760-7188-48ad-ABA7-D432D51A1A40"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("mortgage/{offerId:int}")]
@@ -46,8 +47,8 @@ public class OfferController : ControllerBase
     /// Detail provedené simulace dle ID Sales Arrangement.
     /// </summary>
     /// <remarks>
-    /// Stejný endpoint jako MortgageOfferByOfferIdGet, jen podle jiného ID.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=43139152-F859-4d55-9D06-11353DA80961"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// Stejný endpoint jako GetMortgageByOfferId, jen podle jiného ID.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=43139152-F859-4d55-9D06-11353DA80961"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("mortgage/sales-arrangement/{salesArrangementId:int}")]

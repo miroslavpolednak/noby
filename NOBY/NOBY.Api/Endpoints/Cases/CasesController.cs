@@ -72,8 +72,7 @@ public class CasesController : ControllerBase
     /// Detail Case-u.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> CaseService/GetCaseDetail<br/>
-    /// https://wiki.kb.cz/confluence/display/HT/getCaseDetail
+    /// Načtení detailu Case-u<br /><br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CCF1229F-2E77-4de4-8E4A-665594BCD9CA"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     /// <returns>Zakladni informace o Case-u.</returns>
@@ -170,8 +169,9 @@ public class CasesController : ControllerBase
     /// <remarks>
     ///  Implementováno pro položku menu Documents<br /><br />
     ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
-    ///  <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    ///  <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
+    /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/menu/flags")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
@@ -185,7 +185,7 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Seznam Podmínek ke splnění pro Case<br /><br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4378EDFB-2A3D-46f6-8C51-0241A3436D5E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4378EDFB-2A3D-46f6-8C51-0241A3436D5E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/covenants")]
@@ -201,7 +201,7 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Detail Podmínky ke splnění pro Case<br /><br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=56FAFD66-E483-475d-9868-6B90A4ED889B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=56FAFD66-E483-475d-9868-6B90A4ED889B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     /// <param name="covenantOrder">Pořadí podmínky ke splnění</param>

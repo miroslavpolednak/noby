@@ -44,7 +44,7 @@ public class HouseholdController : ControllerBase
         => await _mediator.Send(new GetHousehold.GetHouseholdRequest(householdId), cancellationToken);
 
     /// <summary>
-    /// Smazani domacnosti
+    /// Smazání domácnosti
     /// </summary>
     /// <remarks>
     /// Slouží ke smazání domácnosti včetně navázaných customerů.<br /><br />
