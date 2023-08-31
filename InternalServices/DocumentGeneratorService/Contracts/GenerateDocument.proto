@@ -25,6 +25,13 @@ enum TextAlign {
 	FullJustify = 5;
 }
 
+enum VAlign {
+	VAlign_Unknown = 0;
+	Top = 1;
+	VAlign_Center = 2;
+	Bottom = 3;
+}
+
 message GenerateDocumentRequest {
 	int32 DocumentTypeId = 1;
 
@@ -74,4 +81,6 @@ message GenerateDocumentPartData {
 	}
 
 	TextAlign TextAlign = 9;
+
+	VAlign VAlign = 10;
 }

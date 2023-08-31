@@ -17,6 +17,8 @@ internal partial class DocumentSourceField : SourceFieldBase
 
     public byte? TextAlign { get; init; }
 
+    public byte? VAlign { get; init; }
+
     public string? DefaultTextIfNull
     {
         get => _defaultTextIfNull;

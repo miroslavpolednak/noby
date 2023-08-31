@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat.Formatters;
+﻿namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat.Formatters;
 
 internal class CurrencyFormatter : IAcroFieldFormatter
 {

@@ -53,7 +53,8 @@ public static class DocumentOnSAExtensions
         {
             Key = documentDataDto.FieldName,
             StringFormat = documentDataDto.StringFormat,
-            TextAlign = (__Contracts.TextAlign)(documentDataDto.TextAlign ?? 0)
+            TextAlign = (__Contracts.TextAlign)(documentDataDto.TextAlign ?? 0),
+            VAlign = (__Contracts.VAlign)(documentDataDto.VAlign ?? 0)
         };
                             
         switch (documentDataDto.ValueCase)

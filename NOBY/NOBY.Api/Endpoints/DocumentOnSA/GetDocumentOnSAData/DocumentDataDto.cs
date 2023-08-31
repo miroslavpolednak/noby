@@ -8,6 +8,8 @@ public class DocumentDataDto
 
     public byte? TextAlign { get; set; }
 
+    public byte? VAlign { get; set; }
+
     public string Text { get; set; } = null!;
 
     public DateOnlyDto? Date { get; set; }

@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using ceTe.DynamicPDF.Merger.Forms;
+﻿using ceTe.DynamicPDF.Merger.Forms;
 using ceTe.DynamicPDF.PageElements;
 using ceTe.DynamicPDF.PageElements.BarCoding;
 using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
