@@ -55,7 +55,7 @@ public class BasicAcroFormWriter : IAcroFormWriter
             var label = pdfFormField.CreateLabel(page, 0, 0, GetFieldValue(data), pdfFormField.Font.ParseOpenTypeFont(), pdfFormField.FontSize, (Pdf.TextAlign)data.TextAlign);
             label.Width -= 2;
         }
-        catch (Exception ex) when (ex is IndexOutOfRangeException or NullReferenceException)
+        catch (Exception ex) when (ex is IndexOutOfRangeException or ArgumentOutOfRangeException or NullReferenceException)
         {
             throw new CisValidationException($"AcroField {data.Key} has incorrect formatting (probably multiple Acrofields with the same name or something similar)");
         }

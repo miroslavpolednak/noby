@@ -114,7 +114,7 @@ internal sealed class CancelCaseHandler
 
         foreach (var document in documents)
         {
-            await _documentOnSAService.StopSigning(document.DocumentOnSAId!.Value, cancellationToken);
+            await _documentOnSAService.StopSigning(new() {DocumentOnSAId = document.DocumentOnSAId!.Value } , cancellationToken);
         }
     }
 

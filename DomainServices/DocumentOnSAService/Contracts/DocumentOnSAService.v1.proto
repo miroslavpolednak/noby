@@ -16,6 +16,7 @@ import "GetElectronicDocumentFromQueue.proto";
 import "GetElectronicDocumentPreview.proto";
 import "SetDocumentOnSAArchived.proto";
 import "SendDocumentPreview.proto";
+import "RefreshElectronicDocument.proto";
 
 //DocumentOnSAService
 service DocumentOnSAService{
@@ -32,6 +33,7 @@ service DocumentOnSAService{
 	rpc GetElectronicDocumentPreview(DomainServices.DocumentOnSAService.GetElectronicDocumentPreview.GetElectronicDocumentPreviewRequest) returns(DomainServices.DocumentOnSAService.GetElectronicDocumentPreview.GetElectronicDocumentPreviewResponse);
 	rpc SetDocumentOnSAArchived(DomainServices.DocumentOnSAService.SetDocumentOnSAArchived.SetDocumentOnSAArchivedRequest) returns(google.protobuf.Empty);
 	rpc SendDocumentPreview(DomainServices.DocumentOnSAService.SendDocumentPreview.SendDocumentPreviewRequest) returns(google.protobuf.Empty);
+	rpc RefreshElectronicDocument(DomainServices.DocumentOnSAService.RefreshElectronicDocument.RefreshElectronicDocumentRequest) returns(google.protobuf.Empty);
 
 	rpc Test1(Test1Request) returns (Test1Response);
 	rpc Test2(Test2Request) returns (Test2Response);

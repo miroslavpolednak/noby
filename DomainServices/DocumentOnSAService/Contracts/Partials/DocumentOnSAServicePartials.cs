@@ -27,3 +27,5 @@ public partial class GetElectronicDocumentPreviewRequest : IRequest<GetElectroni
 public partial class SetDocumentOnSAArchivedRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
 
 public partial class SendDocumentPreviewRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
+
+public partial class RefreshElectronicDocumentRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }

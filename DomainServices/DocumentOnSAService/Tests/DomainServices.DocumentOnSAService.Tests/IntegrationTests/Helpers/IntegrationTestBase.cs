@@ -23,11 +23,8 @@ using ExternalServices.ESignatures.V1;
 using _Domain = DomainServices.DocumentOnSAService.Contracts;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CaseService.Clients;
-using static DomainServices.CaseService.Contracts.v1.CaseService;
 using DomainServices.CustomerService.Clients;
-using static DomainServices.CustomerService.Contracts.V1.CustomerService;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
-using static CIS.InternalServices.DocumentGeneratorService.Contracts.V1.DocumentGeneratorService;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 

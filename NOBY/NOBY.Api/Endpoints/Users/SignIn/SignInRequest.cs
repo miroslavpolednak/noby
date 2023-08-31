@@ -5,12 +5,12 @@ public sealed class SignInRequest : IRequest
     /// <summary>
     /// ID uzivatele v ramci vybraneho identitniho schematu.
     /// </summary>
-    /// <example>10018162</example>
+    /// <example>A4Y6WX</example>
     public string? IdentityId { get; set; }
 
     /// <summary>
     /// Vybranne identitni schema pro prihlaseni, moznosti jsou: <a href="https://wiki.kb.cz/display/HT/IdentityScheme">https://wiki.kb.cz/display/HT/IdentityScheme</a>
     /// </summary>
-    /// <example>BROKERID</example>
+    /// <example>KBUID</example>
     public string? IdentityScheme { get; set; }
 }

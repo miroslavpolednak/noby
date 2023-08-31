@@ -16,7 +16,8 @@ internal static class StartupExtensions
 
         // background svc
         builder.AddCisBackgroundService<BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckJob>();
-
+        builder.AddCisBackgroundService<BackgroundServices.CancelCase.CancelCaseJob>();
+        
         return builder;
     }
 }
