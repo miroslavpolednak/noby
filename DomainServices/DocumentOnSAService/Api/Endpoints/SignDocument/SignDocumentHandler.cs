@@ -83,21 +83,16 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     public async Task<Empty> Handle(SignDocumentRequest request, CancellationToken cancellationToken)
     {
-        var documentOnSa = await _dbContext.DocumentOnSa.FirstOrDefaultAsync(r => r.DocumentOnSAId == request.DocumentOnSAId!.Value, cancellationToken);
+        var documentOnSa = await _dbContext.DocumentOnSa.FirstOrDefaultAsync(r => r.DocumentOnSAId == request.DocumentOnSAId!.Value, cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId!.Value);
 
-        if (documentOnSa is null)
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId!.Value);
-
-        if (documentOnSa.IsSigned)
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AlreadySignedDocumentOnSA, request.DocumentOnSAId!.Value);
+        if (!documentOnSa.IsValid || documentOnSa.IsSigned || documentOnSa.IsFinal)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidDocument);
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
         if (salesArrangement.State != SalesArrangementStates.InSigning.ToByte())
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
-
-        if (documentOnSa.IsValid == false || documentOnSa.IsSigned || documentOnSa.IsFinal)
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidDocument);
 
         var signatureDate = _dateTime.Now;
 
@@ -113,9 +108,11 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             ? await _householdService.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken)
             : null;
 
-        // SUML call
-        if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()) // 4 
+        // SUML call for all those document types, household should be not null 
+        if (IsDocumentTypeWithHousehold(documentOnSa.DocumentTypeId!.Value))
+        {
             await SumlCall(salesArrangement, houseHold!, cancellationToken);
+        }
 
         if (houseHold is null)
         {
@@ -133,16 +130,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        _auditLogger.LogWithCurrentUser(
-            AuditEventTypes.Noby007,
-            "Dokument byl označen za podepsaný",
-            products: new List<AuditLoggerHeaderItem>
-            {
-                new("case", salesArrangement.CaseId),
-                new("salesArrangement", salesArrangement.SalesArrangementId),
-                new("form", documentOnSa.FormId)
-            }
-        );
+        LogAuditMessage(documentOnSa, salesArrangement);
 
         // SA state
         if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
@@ -155,6 +143,27 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         }
 
         return new Empty();
+    }
+
+    private static bool IsDocumentTypeWithHousehold(int documentTypeId) =>
+                   documentTypeId == DocumentTypes.ZADOSTHU.ToByte() || // 4
+                   documentTypeId == DocumentTypes.ZADOSTHD.ToByte() || // 5
+                   documentTypeId == DocumentTypes.ZUSTAVSI.ToByte() || // 11
+                   documentTypeId == DocumentTypes.PRISTOUP.ToByte() || // 12
+                   documentTypeId == DocumentTypes.ZADOSTHD_SERVICE.ToByte();// 16
+
+    private void LogAuditMessage(DocumentOnSa documentOnSa, SalesArrangement salesArrangement)
+    {
+        _auditLogger.LogWithCurrentUser(
+            AuditEventTypes.Noby007,
+            "Dokument byl označen za podepsaný",
+            products: new List<AuditLoggerHeaderItem>
+            {
+                new("case", salesArrangement.CaseId),
+                new("salesArrangement", salesArrangement.SalesArrangementId),
+                new("form", documentOnSa.FormId)
+            }
+        );
     }
 
     private async Task ProcessCrsDocumentOnSa(DocumentOnSa documentOnSa, CancellationToken cancellationToken)

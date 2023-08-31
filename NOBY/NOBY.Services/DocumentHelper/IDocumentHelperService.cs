@@ -1,4 +1,5 @@
-﻿using NOBY.Dto.Documents;
+﻿using DomainServices.UserService.Contracts;
+using NOBY.Dto.Documents;
 using __Contract = DomainServices.DocumentArchiveService.Contracts;
 
 namespace NOBY.Services.DocumentHelper;
@@ -14,4 +15,6 @@ public interface IDocumentHelperService
     Task<IEnumerable<DocumentsMetadata>> FilterDocumentsVisibleForKb(IEnumerable<DocumentsMetadata> docMetadata, CancellationToken cancellationToken);
 
     Task<IReadOnlyCollection<CategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<DocumentsMetadata> documentsMetadata, CancellationToken cancellationToken);
+
+    string GetAuthorUserLoginForDocumentUpload(User user);
 }
