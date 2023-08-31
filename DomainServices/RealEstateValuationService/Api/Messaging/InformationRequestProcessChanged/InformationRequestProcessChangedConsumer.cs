@@ -1,5 +1,7 @@
 ﻿using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
 using DomainServices.CaseService.Clients;
+using DomainServices.RealEstateValuationService.Api.Database;
+using DomainServices.RealEstateValuationService.Api.Database.Entities;
 using DomainServices.RealEstateValuationService.Contracts;
 using MassTransit;
 
@@ -30,12 +32,11 @@ internal sealed class InformationRequestProcessChangedConsumer
         {
             return;
         }
-        
-        var getListRequest = new GetRealEstateValuationListRequest { CaseId = caseId };
-        var getListResponse = await _mediator.Send(getListRequest, token);
-        var realEstateValuationListItem = getListResponse.RealEstateValuationList.FirstOrDefault(i => i.OrderId == orderId);
 
-        if (realEstateValuationListItem == null || realEstateValuationListItem.ValuationStateId == 5)
+        var realEstateValuation = await _dbContext.RealEstateValuations
+            .FirstOrDefaultAsync(r => r.CaseId == caseId && r.OrderId == orderId, token);
+
+        if (realEstateValuation == null || realEstateValuation.ValuationStateId == 5)
         {
             return;
         }
@@ -43,64 +44,47 @@ internal sealed class InformationRequestProcessChangedConsumer
         switch (message.state)
         {
             case ProcessStateEnum.ACTIVE or ProcessStateEnum.SUSPENDED:
-                await HandleStateActiveOrSuspended(realEstateValuationListItem, token);
+                await HandleStateActiveOrSuspended(realEstateValuation, token);
                 break;
             case ProcessStateEnum.COMPLETED or ProcessStateEnum.TERMINATED:
-                await HandleStateCompletedOrTerminated(realEstateValuationListItem, token);
+                await HandleStateCompletedOrTerminated(realEstateValuation, token);
                 break;
         }
     }
     
-    private async Task UpdateState(RealEstateValuationListItem realEstateValuationListItem, int valuationStateId, CancellationToken token)
+    private async Task HandleStateActiveOrSuspended(RealEstateValuation realEstateValuationListItem, CancellationToken token)
     {
-        var updateRequest = new UpdateStateByRealEstateValuationRequest
+        if (realEstateValuationListItem is { ValuationStateId: 4, ValuationTypeId: (int)ValuationTypes.Online } or { ValuationStateId: 8 })
         {
-            RealEstateValuationId = realEstateValuationListItem.RealEstateValuationId,
-            ValuationStateId = valuationStateId
+            realEstateValuationListItem.ValuationStateId = 9;
+            await _dbContext.SaveChangesAsync(token);
+        }
+    }
+
+    private async Task HandleStateCompletedOrTerminated(RealEstateValuation realEstateValuationListItem, CancellationToken token)
+    {
+        realEstateValuationListItem.ValuationStateId = realEstateValuationListItem.ValuationTypeId switch
+        {
+            (int)ValuationTypes.Online => 4,
+            (int)ValuationTypes.Dts or (int)ValuationTypes.Standard
+                when realEstateValuationListItem.ValuationStateId != 4 => 8,
+            _ => realEstateValuationListItem.ValuationStateId
         };
 
-        await _mediator.Send(updateRequest, token);
-    }
-
-    private async Task HandleStateActiveOrSuspended(RealEstateValuationListItem realEstateValuationListItem, CancellationToken token)
-    {
-        if (realEstateValuationListItem is
-            { ValuationStateId: 4, ValuationTypeId: ValuationTypes.Online } or
-            { ValuationStateId: 8 })
-        {
-            await UpdateState(realEstateValuationListItem, 9, token);
-        }
-    }
-
-    private async Task HandleStateCompletedOrTerminated(RealEstateValuationListItem realEstateValuationListItem, CancellationToken token)
-    {
-        switch (realEstateValuationListItem.ValuationTypeId)
-        {
-            case ValuationTypes.Online:
-                await UpdateState(realEstateValuationListItem, 4, token);
-                break;
-            case ValuationTypes.Dts or ValuationTypes.Standard:
-            {
-                if (realEstateValuationListItem.ValuationStateId != 4)
-                {
-                    await UpdateState(realEstateValuationListItem, 8, token);
-                }
-                break;
-            }
-        }
+        await _dbContext.SaveChangesAsync(token);
     }
     
-    private readonly IMediator _mediator;
+    private readonly RealEstateValuationServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseService;
     private readonly ILogger<InformationRequestProcessChangedConsumer> _logger;
 
     public InformationRequestProcessChangedConsumer(
-        IMediator mediator,
+        RealEstateValuationServiceDbContext dbContext,
         ICaseServiceClient caseService,
         ILogger<InformationRequestProcessChangedConsumer> logger)
     {
-        _mediator = mediator;
         _caseService = caseService;
         _logger = logger;
+        _dbContext = dbContext;
     }
 }
