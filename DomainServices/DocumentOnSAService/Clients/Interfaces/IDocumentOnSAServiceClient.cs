@@ -16,7 +16,7 @@ public interface IDocumentOnSAServiceClient
     /// <summary>
     /// Metoda slouží k přerušení podepisovacího procesu.
     /// </summary>
-    Task StopSigning(int documentOnSAId, CancellationToken cancellationToken = default);
+    Task StopSigning(StopSigningRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Metoda slouží k poskytnutí seznamu dokumentů k podpisu.
@@ -67,4 +67,9 @@ public interface IDocumentOnSAServiceClient
     /// Metoda slouží k odeslání náhledu dokumentu klientovi v případě elektronického podpisu
     /// </summary>
     Task SendDocumentPreview(int documentOnSAId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k aktualizaci stavu Dokumentu dle stavu v ePodpisech
+    /// </summary>
+    Task RefreshElectronicDocument(int documentOnSAId, CancellationToken cancellationToken = default);
 }

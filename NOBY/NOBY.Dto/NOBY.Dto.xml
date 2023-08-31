@@ -487,6 +487,51 @@
             Číslo parcely
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Signing.DocumentData.DocumentOnSAId">
+            <summary>
+            Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Signing.DocumentData.DocumentTypeId">
+            <summary>
+            Typ dokumentu. Číselník DocumentOnSAType.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Signing.DocumentData.FormId">
+            <summary>
+            Businessové modré ID
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Signing.DocumentData.IsSigned">
+            <summary>
+            Příznak, zda byl dokument již podepsán.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Signing.DocumentData.SignatureTypeId">
+            <summary>
+            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Signing.DocumentData.SignatureDateTime">
+            <summary>
+            Timestamp, kdy došlo k podpisu celého dokumentu.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Signing.DocumentData.CustomerOnSa">
+            <summary>
+            Only for CRS
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Signing.DocumentData.IsPreviewSentToCustomer">
+            <summary>
+            Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Signing.DocumentData.ExternalId">
+            <summary>
+            Id elektronicky podepisovaného dokumentu nahraného v ePodpisech
+            </summary>
+        </member>
         <member name="T:NOBY.Dto.Workflow.AmendmentsConsultationData">
             <summary>
             Tento objekt je relevantní pouze pro některé typy Konzultací, a to sice pro Dotaz k ocenění a pro Vyhotovení ZOV.

@@ -36,7 +36,11 @@ internal sealed class OrderDTSValuationHandler
 
         async Task<long> getFlatResult()
         {
-            var orderRequest = new ExternalServices.PreorderService.V1.Contracts.DtsFlatRequest();
+            var orderRequest = new ExternalServices.PreorderService.V1.Contracts.DtsFlatRequest
+            {
+                LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO()
+            };
+
             orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
             orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);
 
@@ -45,7 +49,11 @@ internal sealed class OrderDTSValuationHandler
 
         async Task<long> getHouseResult()
         {
-            var orderRequest = new ExternalServices.PreorderService.V1.Contracts.DtsHouseRequest();
+            var orderRequest = new ExternalServices.PreorderService.V1.Contracts.DtsHouseRequest
+            {
+                LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO()
+            };
+
             orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
             orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);
 

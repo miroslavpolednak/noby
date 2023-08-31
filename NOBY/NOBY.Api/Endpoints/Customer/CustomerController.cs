@@ -44,12 +44,13 @@ public class CustomerController : ControllerBase
     [ProducesResponseType(typeof(SearchCustomers.SearchCustomersResponse), StatusCodes.Status200OK)]
     public async Task<SearchCustomers.SearchCustomersResponse> SearchCustomers([FromBody] SearchCustomers.SearchCustomersRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
-    
+
     /// <summary>
     /// Detail klienta
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> CustomerService/GetCustomer
+    /// Vrátí detail klienta z KB CM / KonsDB.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=7DE65D0D-8FAF-4c01-A6E1-04F69E90A753"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Kompletní detail klienta vrácený z KB CM nebo KonsDb.</returns>
     [HttpPost("customer/get")]
@@ -100,7 +101,7 @@ public class CustomerController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Validace kontatů (email či telefon) pomocí <i>DS:</i> CustomerService/validateContacts. Pro telefonní čísla vrací i informaci, zda se jedná o mobilní číslo.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("contact/validate")]
     [Produces("application/json")]
@@ -114,7 +115,8 @@ public class CustomerController : ControllerBase
     /// Profile check s profilem identifikovaný
     /// </summary>
     /// <remarks>
-    /// Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.
+    /// Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=ECA520A5-5423-4ebb-B855-977AAB9C4BEF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer/profile-check")]
     [Produces("application/json")]

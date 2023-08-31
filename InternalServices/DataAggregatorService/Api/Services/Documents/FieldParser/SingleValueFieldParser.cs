@@ -18,7 +18,8 @@ internal class SingleValueFieldParser : ISourceFieldParser
             AcroFieldName = sourceField.AcroFieldName,
             StringFormat = GetStringFormat(sourceField, value),
             Value = value ?? sourceField.DefaultTextIfNull,
-            TextAlign = sourceField.TextAlign
+            TextAlign = sourceField.TextAlign,
+            VAlign = sourceField.VAlign
         };
     }
 

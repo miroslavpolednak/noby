@@ -18,7 +18,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     {
         // customer instance
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
-        
+
         // customer from KB CM
         var (originalModel, identificationMethodId) = await _changedDataService.GetCustomerFromCM<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
 
@@ -62,7 +62,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         // ----- update naseho detailu instance customera
         // updatujeme CustomerChangeData a CustomerAdditionalData na nasi entite CustomerOnSA
         var delta = createDelta(originalModel, request);
-        
+
         //Update SingleLine address if address was changed
         if (((IDictionary<string, object>)delta).ContainsKey("Addresses"))
         {
@@ -94,7 +94,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
 
     private async Task cancelSigning(
         int customerOnSAId,
-        int salesArrangementId, 
+        int salesArrangementId,
         bool wereClientDataChanged,
         CancellationToken cancellationToken)
     {
@@ -109,16 +109,16 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
 
             foreach (var doc in documentsToSign.Where(t => t.HouseholdId == household.HouseholdId))
             {
-                await _documentOnSAService.StopSigning(doc.DocumentOnSAId!.Value, cancellationToken);
+                await _documentOnSAService.StopSigning(new() { DocumentOnSAId = doc.DocumentOnSAId!.Value }, cancellationToken);
             }
 
             // set flow switches
             await _salesArrangementService.SetFlowSwitches(salesArrangementId, new()
             {
-                new() 
-                { 
+                new()
+                {
                     FlowSwitchId = (int)(household.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning),
-                    Value = true 
+                    Value = true
                 }
             }, cancellationToken);
         }
@@ -127,7 +127,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13 && t.CustomerOnSA.CustomerOnSAId == customerOnSAId);//HH rikal, ze 14 neni spravne, ze to ma byt 13
             if (crsDoc != null)
             {
-                await _documentOnSAService.StopSigning(crsDoc.DocumentOnSAId!.Value, cancellationToken);
+                await _documentOnSAService.StopSigning(new() { DocumentOnSAId = crsDoc.DocumentOnSAId!.Value }, cancellationToken);
             }
         }
     }
@@ -163,8 +163,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         if (delta is not null)
         {
             var dict = (IDictionary<string, Object>)delta;
-            if (dict.Count > 0 && 
-                (dict.Count > 1 
+            if (dict.Count > 0 &&
+                (dict.Count > 1
                 || !dict.ContainsKey("NaturalPerson")
                 || (dict.ContainsKey("NaturalPerson") && ((IDictionary<string, Object>)dict["NaturalPerson"]).Any(t => t.Key != "TaxResidences"))
                 || !metadata.WasCRSChanged))
@@ -213,9 +213,9 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     /// Data se upravuji na zaklade toho, co prijde v requestu.
     /// </summary>
     private async Task<__Household.CustomerAdditionalData> createAdditionalData(
-        __Household.CustomerOnSA customerOnSA, 
-        UpdateCustomerDetailWithChangesRequest request, 
-        int? identificationMethodId, 
+        __Household.CustomerOnSA customerOnSA,
+        UpdateCustomerDetailWithChangesRequest request,
+        int? identificationMethodId,
         CancellationToken cancellationToken)
     {
         var additionalData = customerOnSA.CustomerAdditionalData ?? new __Household.CustomerAdditionalData();
@@ -238,7 +238,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         if (identificationMethodId != 1 && identificationMethodId != 8)
         {
             var user = await _userServiceClient.GetUser(_userAccessor.User!.Id, cancellationToken);
-            
+
             additionalData.CustomerIdentification ??= new __Household.CustomerIdentificationObject();
             additionalData.CustomerIdentification.IdentificationDate = DateTime.Now.Date;
             additionalData.CustomerIdentification.CzechIdentificationNumber = user.UserInfo.Cin;
@@ -252,7 +252,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerServiceClient _customerService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ICaseServiceClient _caseService;    
+    private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IUserServiceClient _userServiceClient;

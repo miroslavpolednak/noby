@@ -75,9 +75,6 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SalesArrangementCategoryNotSupported, salesArrangementType.SalesArrangementCategory);
         }
 
-        // Evaluate eletronic signature status 
-        await EvaluateElectronicDocumentStatus(documentOnSaEntities, cancellationToken);
-
         return response;
     }
 
@@ -164,32 +161,6 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
             if (docOnSaEntity is null)
             {
                 yield return virtualCrs;
-            }
-        }
-    }
-
-    private async Task EvaluateElectronicDocumentStatus(List<DocumentOnSa> documentsOnSaRealEntity, CancellationToken cancellationToken)
-    {
-        foreach (var docOnSa in documentsOnSaRealEntity)
-        {
-            if (docOnSa.SignatureTypeId is null or not ((int)SignatureTypes.Electronic))
-                continue;
-
-            var elDocumentStatus = await _eSignaturesClient.GetDocumentStatus(docOnSa.ExternalId!, cancellationToken);
-
-            switch (elDocumentStatus)
-            {
-                case EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT:
-                    await _mediator.Send(new SignDocumentRequest { DocumentOnSAId = docOnSa.DocumentOnSAId, SignatureTypeId = docOnSa.SignatureTypeId }, cancellationToken);
-                    break;
-                case EDocumentStatuses.DELETED:
-                    await _mediator.Send(new StopSigningRequest { DocumentOnSAId = docOnSa.DocumentOnSAId }, cancellationToken);
-                    break;
-                case EDocumentStatuses.NEW or EDocumentStatuses.IN_PROGRESS or EDocumentStatuses.APPROVED:
-                    // Ignore
-                    break;
-                default:
-                    throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedStatusReturnedFromESignature, elDocumentStatus);
             }
         }
     }

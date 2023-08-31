@@ -2,7 +2,7 @@
 
 public interface IFlowSwitchesService
 {
-    List<Dto.FlowSwitches.FlowSwitch> GetDefaultSwitches();
+    Task<List<DomainServices.SalesArrangementService.Contracts.FlowSwitch>> GetFlowSwitchesForSA(int salesArrangementId, CancellationToken cancellationToken = default);
 
-    Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA);
+    Dictionary<FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA);
 }

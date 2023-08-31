@@ -95,6 +95,6 @@ public class TableAcroFormWriter : IAcroFormWriter
 
         public PdfFormField GetPlaceholderSubFiled(Index index) => PlaceholderField.ChildFields[index];
 
-        public string GetRootFormFieldName() => (MergeDocument.Pages.Count + 1).ToString();
+        public string GetRootFormFieldName() => (MergeDocument.Pages.Count + 1).ToString(CultureInfo.InvariantCulture);
     }
 }

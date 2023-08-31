@@ -1,4 +1,5 @@
-﻿using LazyCache;
+﻿using DomainServices.SalesArrangementService.Clients;
+using LazyCache;
 using Microsoft.EntityFrameworkCore;
 
 namespace NOBY.Services.FlowSwitches;
@@ -7,16 +8,23 @@ namespace NOBY.Services.FlowSwitches;
 internal sealed class FlowSwitchesService
     : IFlowSwitchesService
 {
-    public List<Dto.FlowSwitches.FlowSwitch> GetDefaultSwitches()
+    public async Task<List<DomainServices.SalesArrangementService.Contracts.FlowSwitch>> GetFlowSwitchesForSA(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        return getFlowSwitches()
-            .Where(t => t.DefaultValue)
-            .Select(t => new Dto.FlowSwitches.FlowSwitch
+        var existingSwitches = await _salesArrangementService.GetFlowSwitches(salesArrangementId, cancellationToken);
+
+        foreach (var fs in getFlowSwitches())
+        {
+            if (!existingSwitches.Any(t => t.FlowSwitchId == fs.FlowSwitchId))
             {
-                FlowSwitchId = t.FlowSwitchId,
-                Value = t.DefaultValue
-            })
-            .ToList();
+                existingSwitches.Add(new()
+                {
+                    FlowSwitchId = fs.FlowSwitchId,
+                    Value = fs.DefaultValue
+                });
+            }
+        }
+
+        return existingSwitches;
     }
 
     public Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA)
@@ -110,11 +118,13 @@ internal sealed class FlowSwitchesService
         }, DateTime.Now.AddDays(1));
     }
 
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly Database.FeApiDbContext _dbContext;
     private readonly IAppCache _cache;
     
-    public FlowSwitchesService(Database.FeApiDbContext dbContext, IAppCache cache)
+    public FlowSwitchesService(Database.FeApiDbContext dbContext, IAppCache cache, ISalesArrangementServiceClient salesArrangementService)
     {
+        _salesArrangementService = salesArrangementService;
         _dbContext = dbContext;
         _cache = cache;
     }

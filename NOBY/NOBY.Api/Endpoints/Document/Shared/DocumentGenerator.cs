@@ -81,7 +81,8 @@ internal sealed class DocumentGenerator
         {
             Key = fieldData.FieldName,
             StringFormat = fieldData.StringFormat,
-            TextAlign = (_Document.TextAlign)(fieldData.TextAlign ?? 0)
+            TextAlign = (_Document.TextAlign)(fieldData.TextAlign ?? 0),
+            VAlign = (_Document.VAlign)(fieldData.VAlign ?? 0),
         };
 
         switch (fieldData.ValueCase)

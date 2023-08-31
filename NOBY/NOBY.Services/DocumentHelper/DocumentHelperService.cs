@@ -2,20 +2,27 @@
 using __Contract = DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
+using DomainServices.UserService.Contracts;
+using CIS.Core.Security;
+using NOBY.Infrastructure.ErrorHandling;
 
 namespace NOBY.Services.DocumentHelper;
 
 [TransientService, AsImplementedInterfacesService]
-internal sealed class DocumentHelperService 
+internal sealed class DocumentHelperService
     : IDocumentHelperService
 {
     private readonly ICodebookServiceClient _codebookServiceClient;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public List<EaCodesMainResponse.Types.EaCodesMainItem> EaCodeMainItems { get; set; } = null!;
 
-    public DocumentHelperService(ICodebookServiceClient codebookServiceClient)
+    public DocumentHelperService(
+        ICodebookServiceClient codebookServiceClient,
+        ICurrentUserAccessor currentUserAccessor)
     {
         _codebookServiceClient = codebookServiceClient;
+        _currentUserAccessor = currentUserAccessor;
     }
 
     public IEnumerable<DocumentsMetadata> MergeDocuments(IEnumerable<DocumentsMetadata> documentList, IEnumerable<DocumentsMetadata> documentInQueue)
@@ -97,6 +104,18 @@ internal sealed class DocumentHelperService
         }
 
         return categoryEaCodeMains;
+    }
+
+    public string GetAuthorUserLoginForDocumentUpload(User user)
+    {
+        if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
+            return user.UserInfo.Icp;
+        else if (!string.IsNullOrWhiteSpace(user.UserInfo.Cpm))
+            return user.UserInfo.Cpm;
+        else if (_currentUserAccessor?.User?.Id is not null)
+            return _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture);
+        else
+            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "Cannot get NOBY user identifier");
     }
 
     private static UploadStatuses getUploadStatus(int stateInQueue) => stateInQueue switch

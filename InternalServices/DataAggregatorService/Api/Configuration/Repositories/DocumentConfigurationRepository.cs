@@ -19,7 +19,7 @@ internal class DocumentConfigurationRepository
     {
         const string FieldsQuery =
             """
-            SELECT AcroFieldName, DataServiceId as DataService, FieldPath, StringFormat, TextAlign, DefaultTextIfNull
+            SELECT AcroFieldName, DataServiceId as DataService, FieldPath, StringFormat, TextAlign, VAlign, DefaultTextIfNull
             FROM vw_DocumentFields
             WHERE DocumentId = @documentId AND DocumentVersion = @documentVersion AND DocumentVariant = @documentVariant
             """;

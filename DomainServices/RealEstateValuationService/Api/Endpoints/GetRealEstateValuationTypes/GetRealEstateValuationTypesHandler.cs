@@ -1,4 +1,5 @@
-﻿using DomainServices.RealEstateValuationService.Api.Database;
+﻿using CIS.Foms.Enums;
+using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.GetRealEstateValuationTypes;
@@ -37,7 +38,7 @@ internal sealed class GetRealEstateValuationTypesHandler
         {
             if (string.IsNullOrEmpty(t))
             {
-                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId);
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId); 
             }
 
             var arr = System.Text.Json.JsonSerializer.Deserialize<long[]>(t);
@@ -55,14 +56,14 @@ internal sealed class GetRealEstateValuationTypesHandler
             RealEstateType = acvRealEstateTypeId,
             IsLeased = revInstance.HouseAndFlatDetails?.FinishedHouseAndFlatDetails?.Leased,
             IsCellarFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails?.Basement,
-            IsNonApartmentBuildingFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails.SpecialPlacement,
+            IsNonApartmentBuildingFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails?.SpecialPlacement,
             IsNotUsableTechnicalState = revInstance.HouseAndFlatDetails?.PoorCondition,
-            PurposesLoan = request
-                .LoanPurposes
-                ?.Select(t => purposes.FirstOrDefault(x => t == x.Id)?.AcvId)
-                .Where(t => !string.IsNullOrEmpty(t))
-                .Cast<string>()
-                ?.ToList(),
+            HasOwnershipLimitations = revInstance.HouseAndFlatDetails?.OwnershipRestricted ?? false,
+            PurposesLoan = request.LoanPurposes
+                                  .Select(purposeId => purposes.FirstOrDefault(x => x.MandantId == (int)Mandants.Kb && purposeId == x.Id)?.AcvId)
+                                  .Where(t => !string.IsNullOrEmpty(t))
+                                  .Cast<string>()
+                                  .ToList(),
             RealEstateIds = realEstateIds,
             DealType = request.DealType ?? "",
             LoanAmount = request.LoanAmount

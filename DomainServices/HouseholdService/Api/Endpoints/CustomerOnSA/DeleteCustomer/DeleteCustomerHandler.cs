@@ -42,10 +42,11 @@ internal sealed class DeleteCustomerHandler
         }
 
         // SULM
-        if (kbIdentity is not null && !hasMoreSA)
+        // Podmínka v zadání zůstává, protože po MVP se bude opět vracet 
+        /*if (kbIdentity is not null && !hasMoreSA)
         {
             await _sulmClient.StopUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
-        }
+        }*/
 
         // Invalidate DocumentsOnSa Crs
         var documentsOnSaToSing = await _documentOnSAServiceClient.GetDocumentsToSignList(customer.SalesArrangementId, cancellationToken);
@@ -92,7 +93,7 @@ internal sealed class DeleteCustomerHandler
         foreach (var doc in documentOnSAToSigns)
         {
             // Have to be call one by one
-            await _documentOnSAServiceClient.StopSigning(doc.DocumentOnSAId!.Value, cancellationToken);
+            await _documentOnSAServiceClient.StopSigning(new() { DocumentOnSAId = doc.DocumentOnSAId!.Value }, cancellationToken);
         }
     }
 

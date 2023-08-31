@@ -66,7 +66,7 @@ public class SalesArrangementController : ControllerBase
     /// - výsledek vyhodnocení žádosti<br />
     /// - výsledek vyhodnocení za jednotlivé domácnosti<br />
     /// Možno vyžadovat nové vyhodnocení<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CB8E73AD-C282-4555-B587-A571EE896E81"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CB8E73AD-C282-4555-B587-A571EE896E81"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
     /// <param name="newAssessmentRequired">Požadováno nové posouzení</param>
