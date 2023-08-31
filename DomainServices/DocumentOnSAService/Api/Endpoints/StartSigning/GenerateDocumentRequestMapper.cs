@@ -50,7 +50,8 @@ public static class GenerateDocumentRequestMapper
         {
             Key = documentDataDto.FieldName,
             StringFormat = documentDataDto.StringFormat,
-            TextAlign = (TextAlign)(documentDataDto.TextAlign ?? 0)
+            TextAlign = (TextAlign)(documentDataDto.TextAlign ?? 0),
+            VAlign = (VAlign)(documentDataDto.VAlign ?? 0)
         };
 
         switch (documentDataDto.ValueCase)

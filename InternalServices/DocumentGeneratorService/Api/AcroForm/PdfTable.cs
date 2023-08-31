@@ -3,7 +3,6 @@ using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat
 using System.Drawing;
 using ceTe.DynamicPDF.PageElements;
 using System.ComponentModel;
-using System.Globalization;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 
@@ -95,7 +94,7 @@ public class PdfTable
     {
         table.Border.Width = 0f;
         table.CellDefault.Align = Pdf.TextAlign.Center;
-        table.CellDefault.VAlign = VAlign.Center;
+        table.CellDefault.VAlign = Pdf.VAlign.Center;
         table.CellDefault.Font = GeneratorVariables.Arial.GetFont();
         table.CellDefault.FontSize = placeholderField.FontSize;
         table.CellDefault.Border.Width = 0.5f;

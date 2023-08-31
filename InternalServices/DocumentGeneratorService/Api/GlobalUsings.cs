@@ -1,5 +1,6 @@
 // Global using directives
 
+global using System.Globalization;
 global using ceTe.DynamicPDF;
 global using ceTe.DynamicPDF.Forms;
 global using ceTe.DynamicPDF.Merger;

@@ -22,6 +22,8 @@ message DocumentFieldData {
 	}
 
 	google.protobuf.Int32Value TextAlign = 9;
+
+	google.protobuf.Int32Value VAlign = 10;
 }
 
 message GenericTable {

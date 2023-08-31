@@ -9,4 +9,6 @@ internal class DocumentSourceFieldData
     public required object? Value { get; init; }
 
     public byte? TextAlign { get; init; }
+
+    public byte? VAlign { get; init; }
 }

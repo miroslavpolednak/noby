@@ -54,6 +54,8 @@ public class TemplateManager : IDisposable
 
     public void Dispose()
     {
+        GC.SuppressFinalize(this);
+
         _documentStreams.ForEach(stream => stream.Dispose());
         _fileStorage.Dispose();
     }
