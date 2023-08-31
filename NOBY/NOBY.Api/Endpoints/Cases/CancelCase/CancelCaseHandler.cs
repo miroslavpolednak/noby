@@ -12,10 +12,12 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
+using DomainServices.UserService.Clients;
 using FastEnumUtility;
 using Google.Protobuf;
 using NOBY.Api.Endpoints.Document.GeneralDocument;
 using NOBY.Api.Endpoints.Document.Shared;
+using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.Cases.CancelCase;
 
@@ -47,13 +49,16 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
             var generateDocumentRequest = await _documentGenerator.CreateRequest(getGeneralDocumentRequest, cancellationToken);
             var documentData = await _documentGenerator.GenerateDocument(generateDocumentRequest, cancellationToken);
             var documentId = await _documentArchiveService.GenerateDocumentId(new (), cancellationToken);
-            
+
+            var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
+            var authorUserLogin = _documentHelper.GetAuthorUserLoginForDocumentUpload(user);
+
             var uploadRequest = new UploadDocumentRequest
             {
                 BinaryData = ByteString.CopyFrom(documentData.ToArray()),
                 Metadata = new DocumentMetadata
                 {
-                    AuthorUserLogin = _currentUserAccessor.User?.Login,
+                    AuthorUserLogin = authorUserLogin,
                     CaseId = salesArrangement.CaseId,
                     ContractNumber = caseDetail.Data.ContractNumber,
                     CreatedOn = _dateTime.Now.Date,
@@ -111,6 +116,8 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
     private readonly DocumentGenerator _documentGenerator;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
+    private readonly IDocumentHelperService _documentHelper;
+    private readonly IUserServiceClient _userServiceClient;
 
     public CancelCaseHandler(
         IDateTime dateTime,
@@ -120,7 +127,9 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
         ICustomerOnSAServiceClient customerOnSaService,
         DocumentGenerator documentGenerator,
         IDocumentArchiveServiceClient documentArchiveService,
-        ICurrentUserAccessor currentUserAccessor)
+        ICurrentUserAccessor currentUserAccessor,
+        IDocumentHelperService documentHelper,
+        IUserServiceClient userServiceClient)
     {
         _dateTime = dateTime;
         _codebookService = codebookService;
@@ -130,5 +139,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
         _documentGenerator = documentGenerator;
         _documentArchiveService = documentArchiveService;
         _currentUserAccessor = currentUserAccessor;
+        _documentHelper = documentHelper;
+        _userServiceClient = userServiceClient;
     }
 }
