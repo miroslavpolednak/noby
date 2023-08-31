@@ -50,6 +50,8 @@ public sealed class ErrorCodeMapper
             { 22202, 90027 },
             { 22015, 90029 },
             { 22016, 90031 },
+            { 17103, 90023 },
+            { 17102, 90024 }
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();
