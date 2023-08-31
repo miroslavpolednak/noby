@@ -8,10 +8,9 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
-using System.Globalization;
 using CIS.Foms.Enums;
-using static DomainServices.DocumentOnSAService.Contracts.v1.DocumentOnSAService;
 using _DocOnSa = NOBY.Api.Endpoints.DocumentOnSA.Search;
+using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 
@@ -30,6 +29,7 @@ public class SaveDocumentToArchiveHandler
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IUserServiceClient _userServiceClient;
     private readonly ICodebookServiceClient _codebookServiceClient;
+    private readonly IDocumentHelperService _documentHelper;
 
     public SaveDocumentToArchiveHandler(
         IDocumentArchiveServiceClient client,
@@ -41,7 +41,9 @@ public class SaveDocumentToArchiveHandler
         IMediator mediator,
         ICaseServiceClient caseServiceClient,
         IUserServiceClient userServiceClient,
-        ICodebookServiceClient codebookServiceClient)
+        ICodebookServiceClient codebookServiceClient,
+        IDocumentHelperService documentHelper
+        )
     {
         _client = client;
         _currentUserAccessor = currentUserAccessor;
@@ -53,6 +55,7 @@ public class SaveDocumentToArchiveHandler
         _caseServiceClient = caseServiceClient;
         _userServiceClient = userServiceClient;
         _codebookServiceClient = codebookServiceClient;
+        _documentHelper = documentHelper;
     }
 
     public async Task Handle(SaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
@@ -60,7 +63,8 @@ public class SaveDocumentToArchiveHandler
         ArgumentNullException.ThrowIfNull(request);
         var filePaths = new List<Guid>();
         var filesToUpload = new List<(UploadDocumentRequest uploadRequest, int? documentOnSAId)>();
-        var authorUserLogin = await GetAuthorUserLogin(cancellationToken);
+        var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
+        var authorUserLogin = _documentHelper.GetAuthorUserLoginForDocumentUpload(user);
 
         foreach (var docInfo in request.DocumentsInformation)
         {
@@ -200,18 +204,7 @@ public class SaveDocumentToArchiveHandler
         };
     }
 
-    private async Task<string> GetAuthorUserLogin(CancellationToken cancellationToken)
-    {
-        var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
-        if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
-            return user.UserInfo.Icp;
-        else if (!string.IsNullOrWhiteSpace(user.UserInfo.Cpm))
-            return user.UserInfo.Cpm;
-        else if (_currentUserAccessor?.User?.Id is not null)
-            return _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture);
-        else
-            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "Cannot get NOBY user identifier");
-    }
+    
 
     private async Task<string> GetContractNumber(long caseId, CancellationToken cancellationToken)
     {
