@@ -48,7 +48,6 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 DocumentOnSAId = s.DocumentOnSAId,
                 DocumentTypeId = s.DocumentTypeId,
                 FormId = s.FormId,
-                IsSigned = s.IsSigned,
                 SignatureTypeId = s.SignatureTypeId,
                 SignatureDateTime = s.SignatureDateTime?.ToDateTime(),
                 SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
