@@ -1,0 +1,2 @@
+UPDATE DocumentSpecialDataField SET FieldPath = 'TaxResidencyCountriesTinMandatory[]' WHERE DocumentId = 13 AND AcroFieldName = 'PoskytujeTIN'
+UPDATE DocumentSpecialDataField SET FieldPath = 'TaxResidencyCountries[]' WHERE DocumentId = 13 AND AcroFieldName = 'ZemeDanoveRezidence'
