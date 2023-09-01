@@ -86,7 +86,6 @@ internal static class UpdateParametersExtensions
         {
             DrawingDate = parameters.DrawingDate,
             IsImmediateDrawing = parameters.IsImmediateDrawing,
-            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             RepaymentAccount = parameters.RepaymentAccount is null ? null : new()
             {
                 BankCode = parameters.RepaymentAccount.BankCode,
@@ -107,6 +106,11 @@ internal static class UpdateParametersExtensions
                 }
             }
         };
+
+        if (parameters.Applicant?.Any() ?? false)
+        {
+            model.Applicant.AddRange(parameters.Applicant.Cast<Identity>());
+        }
 
         if (parameters.PayoutList is not null)
             model.PayoutList.AddRange(parameters.PayoutList?.Select(x => new _SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingPayoutList
@@ -130,7 +134,6 @@ internal static class UpdateParametersExtensions
     {
         var model = new _SA.SalesArrangementParametersGeneralChange()
         {
-            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             Collateral = new()
             {
                 IsActive = parameters.Collateral.IsActive,
@@ -198,6 +201,11 @@ internal static class UpdateParametersExtensions
             }
         };
 
+        if (parameters.Applicant?.Any() ?? false)
+        {
+            model.Applicant.AddRange(parameters.Applicant.Cast<Identity>());
+        }
+
         if (parameters.LoanRealEstate?.LoanRealEstates != null)
             model.LoanRealEstate.LoanRealEstates.AddRange(parameters.LoanRealEstate.LoanRealEstates.Select(t => new _SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstatesItem
             {
@@ -212,7 +220,6 @@ internal static class UpdateParametersExtensions
     {
         var model = new _SA.SalesArrangementParametersHUBN()
         {
-            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             CollateralIdentification = new()
             {
                 RealEstateIdentification = parameters.CollateralIdentification?.RealEstateIdentification ?? ""
@@ -245,6 +252,11 @@ internal static class UpdateParametersExtensions
                 GeneralComment = parameters.CommentToChangeRequest?.GeneralComment
             }
         };
+
+        if (parameters.Applicant?.Any() ?? false)
+        {
+            model.Applicant.AddRange(parameters.Applicant.Cast<Identity>());
+        }
 
         if (parameters.LoanPurposes != null)
             model.LoanPurposes.AddRange(parameters.LoanPurposes.Select(t => new _SA.SalesArrangementParametersHUBN.Types.LoanPurposeItem

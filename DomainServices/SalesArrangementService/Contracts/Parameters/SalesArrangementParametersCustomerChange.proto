@@ -16,7 +16,7 @@ message SalesArrangementParametersCustomerChange {
 	CommentToChangeRequestObject CommentToChangeRequest = 6;
 
 	message ApplicantObject {
-		cis.types.Identity Identity = 1;
+		repeated cis.types.Identity Identity = 1;
 		NaturalPersonObject NaturalPerson = 2;
 		IdentificationDocumentObject IdentificationDocument = 3;
 	}

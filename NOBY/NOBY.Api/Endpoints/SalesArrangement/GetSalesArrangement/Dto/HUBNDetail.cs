@@ -9,7 +9,7 @@ public sealed class HUBNDetail
     /// <summary>
     /// Identita klienta
     /// </summary>
-    public CustomerIdentity? Applicant { get; set; }
+    public List<CustomerIdentity>? Applicant { get; set; }
 
     /// <summary>
     /// Výše úvěru

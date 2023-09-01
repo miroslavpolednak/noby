@@ -32,7 +32,7 @@ public sealed class CustomerChangeDetail
 
 public sealed class CustomerChangeDetailApplicant
 {
-    public CustomerIdentity? Identity { get; set; }
+    public List<CustomerIdentity>? Identity { get; set; }
 
     public CustomerChangeDetailNaturalPerson? NaturalPerson { get; set; }
 

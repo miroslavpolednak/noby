@@ -10,7 +10,7 @@ import "GrpcDate.proto";
 import "Identity.proto";
 
 message SalesArrangementParametersGeneralChange {
-	cis.types.Identity Applicant = 1;
+	repeated cis.types.Identity Applicant = 1;
 	CollateralObject Collateral = 2;
 	PaymentDayObject PaymentDay = 3;
 	DrawingDateToObject DrawingDateTo = 4;
