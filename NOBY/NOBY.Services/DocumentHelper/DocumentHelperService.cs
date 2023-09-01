@@ -12,16 +12,16 @@ namespace NOBY.Services.DocumentHelper;
 internal sealed class DocumentHelperService
     : IDocumentHelperService
 {
-    private readonly ICodebookServiceClient _codebookServiceClient;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public List<EaCodesMainResponse.Types.EaCodesMainItem> EaCodeMainItems { get; set; } = null!;
 
     public DocumentHelperService(
-        ICodebookServiceClient codebookServiceClient,
+        ICodebookServiceClient codebookService,
         ICurrentUserAccessor currentUserAccessor)
     {
-        _codebookServiceClient = codebookServiceClient;
+        _codebookService = codebookService;
         _currentUserAccessor = currentUserAccessor;
     }
 
@@ -61,28 +61,28 @@ internal sealed class DocumentHelperService
 
     public async Task<IEnumerable<DocumentsMetadata>> FilterDocumentsVisibleForKb(IEnumerable<DocumentsMetadata> docMetadata, CancellationToken cancellationToken)
     {
-        EaCodeMainItems = await _codebookServiceClient.EaCodesMain(cancellationToken);
+        EaCodeMainItems = await _codebookService.EaCodesMain(cancellationToken);
 
         var query = docMetadata.Select(data =>
          new
          {
              docData = data,
-             eACodeMainObj = EaCodeMainItems.FirstOrDefault(r => r.Id == data.EaCodeMainId)
+             eACodeMainObj = EaCodeMainItems.Find(r => r.Id == data.EaCodeMainId)
          })
-         .Where(f => f.eACodeMainObj is not null && f.eACodeMainObj.IsVisibleForKb);
+         .Where(f => f.eACodeMainObj?.IsVisibleForKb == true);
 
         return query.Select(s => s.docData);
     }
 
     public async Task<IReadOnlyCollection<CategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<DocumentsMetadata> documentsMetadata, CancellationToken cancellationToken)
     {
-        EaCodeMainItems ??= await _codebookServiceClient.EaCodesMain(cancellationToken);
+        EaCodeMainItems ??= await _codebookService.EaCodesMain(cancellationToken);
 
         var dataWithEaCodeMain = documentsMetadata.Select(data =>
         new
         {
             docData = data,
-            eACodeMainObj = EaCodeMainItems.FirstOrDefault(r => r.Id == data.EaCodeMainId)
+            eACodeMainObj = EaCodeMainItems.Find(r => r.Id == data.EaCodeMainId)
         })
         .Where(f => f.eACodeMainObj is not null).ToList();
 
