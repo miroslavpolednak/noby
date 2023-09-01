@@ -45,30 +45,34 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
 
         return new GetDocumentOnSADetailResponse
         {
-            DocumentOnSAId = documentOnSa.DocumentOnSAId,
-            DocumentTypeId = documentOnSa.DocumentTypeId,
-            FormId = documentOnSa.FormId,
-            SignatureTypeId = documentOnSa.SignatureTypeId,
-            SignatureDateTime = documentOnSa.SignatureDateTime?.ToDateTime(),
-            SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
+            Data = new()
             {
-                IsValid = documentOnSa.IsValid,
                 DocumentOnSAId = documentOnSa.DocumentOnSAId,
-                IsSigned = documentOnSa.IsSigned,
-                Source = documentOnSa.Source.MapToCisEnum(),
-                SalesArrangementTypeId = salesArrangement.SalesArrangementTypeId,
-                EArchivIdsLinked = documentOnSa.EArchivIdsLinked,
-            },
+                DocumentTypeId = documentOnSa.DocumentTypeId,
+                FormId = documentOnSa.FormId,
+                SignatureTypeId = documentOnSa.SignatureTypeId,
+                SignatureDateTime = documentOnSa.SignatureDateTime?.ToDateTime(),
+                SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
+                {
+                    IsValid = documentOnSa.IsValid,
+                    DocumentOnSAId = documentOnSa.DocumentOnSAId,
+                    IsSigned = documentOnSa.IsSigned,
+                    Source = documentOnSa.Source.MapToCisEnum(),
+                    SalesArrangementTypeId = salesArrangement.SalesArrangementTypeId,
+                    EArchivIdsLinked = documentOnSa.EArchivIdsLinked,
+                },
               signatureStates),
-            EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(documentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains),
-            CustomerOnSa = new() {
-                CustomerOnSAId = documentOnSa.CustomerOnSA?.CustomerOnSAId,
-                FirstName = documentOnSa.CustomerOnSA?.FirstName,
-                LastName = documentOnSa.CustomerOnSA?.LastName
-            },
-            IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer,
-            ExternalId = documentOnSa.ExternalId,
-            Source = documentOnSa.Source.MapToCisEnum()
+                EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(documentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains),
+                CustomerOnSa = new()
+                {
+                    CustomerOnSAId = documentOnSa.CustomerOnSA?.CustomerOnSAId,
+                    FirstName = documentOnSa.CustomerOnSA?.FirstName,
+                    LastName = documentOnSa.CustomerOnSA?.LastName
+                },
+                IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer,
+                ExternalId = documentOnSa.ExternalId,
+                Source = documentOnSa.Source.MapToCisEnum()
+            }
         };
     }
 }
