@@ -46,7 +46,6 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                 DocumentOnSAId = docOnSa.DocumentOnSAId,
                 DocumentTypeId = docOnSa.DocumentTypeId,
                 FormId = docOnSa.FormId,
-                IsSigned = docOnSa.IsSigned,
                 SignatureTypeId = docOnSa.SignatureTypeId,
                 SignatureDateTime = docOnSa.SignatureDateTime?.ToDateTime(),
                 SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()

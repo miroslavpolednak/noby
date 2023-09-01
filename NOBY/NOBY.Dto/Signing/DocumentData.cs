@@ -19,11 +19,6 @@ public class DocumentData
     public string? FormId { get; set; }
 
     /// <summary>
-    /// Příznak, zda byl dokument již podepsán.
-    /// </summary>
-    public bool IsSigned { get; set; }
-
-    /// <summary>
     /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
     /// </summary>
     public int? SignatureTypeId { get; set; }

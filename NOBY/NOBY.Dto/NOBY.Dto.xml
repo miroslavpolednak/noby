@@ -502,11 +502,6 @@
             Businessové modré ID
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Signing.DocumentData.IsSigned">
-            <summary>
-            Příznak, zda byl dokument již podepsán.
-            </summary>
-        </member>
         <member name="P:NOBY.Dto.Signing.DocumentData.SignatureTypeId">
             <summary>
             Metoda podpisu (manuální/elektronický). Číselník SignatureType.
