@@ -4,7 +4,7 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Document.Shared;
 
-namespace NOBY.Api.Endpoints.Document.SalesArrangement;
+namespace NOBY.Api.Endpoints.Document.CancelConfirmation;
 
 internal sealed class GetSalesArrangementCancelConfirmationHandler : IRequestHandler<GetSalesArrangementCancelConfirmationRequest, ReadOnlyMemory<byte>>
 {

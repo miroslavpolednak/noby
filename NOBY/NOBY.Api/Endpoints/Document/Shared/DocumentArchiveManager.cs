@@ -4,34 +4,27 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using Google.Protobuf;
-using NOBY.Api.Endpoints.Document.Shared.DocumentIdManager;
 
 namespace NOBY.Api.Endpoints.Document.Shared;
 
 [TransientService, SelfService]
-internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> where TDocumentIdManager : IDocumentIdManager<TEntityId>
+internal sealed class DocumentArchiveManager
 {
     // Document has been successfully transferred to Archive
     public const int QueueStateSuccess = 400;
 
-    private readonly TDocumentIdManager _documentIdManager;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ICisEnvironmentConfiguration _environmentConfiguration;
 
-    public DocumentArchiveManager(TDocumentIdManager documentIdManager,
-                                  IDocumentArchiveServiceClient documentArchiveService,
+    public DocumentArchiveManager(IDocumentArchiveServiceClient documentArchiveService,
                                   ICodebookServiceClient codebookService,
                                   ICisEnvironmentConfiguration environmentConfiguration)
     {
-        _documentIdManager = documentIdManager;
         _documentArchiveService = documentArchiveService;
         _codebookService = codebookService;
         _environmentConfiguration = environmentConfiguration;
     }
-
-    public Task<DocumentInfo> GetDocumentInfo(TEntityId entityId, CancellationToken cancellationToken) =>
-        _documentIdManager.LoadDocumentId(entityId, cancellationToken);
 
     public Task<string> GenerateDocumentId(CancellationToken cancellationToken)
     {
@@ -45,7 +38,7 @@ internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> wher
 
     public async Task<ReadOnlyMemory<byte>> GetDocument(string documentId, GetDocumentBaseRequest documentRequest, CancellationToken cancellationToken)
     {
-        return await CheckIfDocWasTansferredToEArchive(documentId, cancellationToken)
+        return await CheckIfDocWasTransferredToEArchive(documentId, cancellationToken)
             ? await LoadFromEArchive(documentId, documentRequest, cancellationToken)
             : await LoadFromEArchiveQueue(documentId, cancellationToken);
     }
@@ -74,7 +67,7 @@ internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> wher
         return response.Content.BinaryData.Memory;
     }
 
-    private async Task<bool> CheckIfDocWasTansferredToEArchive(string documentId, CancellationToken cancellationToken)
+    private async Task<bool> CheckIfDocWasTransferredToEArchive(string documentId, CancellationToken cancellationToken)
     {
         var queueRequest = new GetDocumentsInQueueRequest();
         queueRequest.EArchivIds.Add(documentId);
@@ -87,7 +80,7 @@ internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> wher
         return documentInQueue.StatusInQueue == QueueStateSuccess;
     }
 
-    public async Task SaveDocumentToArchive(TEntityId entityId, DocumentArchiveData archiveData, CancellationToken cancellationToken)
+    public async Task SaveDocumentToArchive(DocumentArchiveData archiveData, CancellationToken cancellationToken)
     {
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
 
@@ -107,7 +100,5 @@ internal sealed class DocumentArchiveManager<TDocumentIdManager, TEntityId> wher
         };
 
         await _documentArchiveService.UploadDocument(request, cancellationToken);
-
-        await _documentIdManager.UpdateDocumentId(entityId, archiveData.DocumentId, cancellationToken);
     }
 }
