@@ -168,7 +168,7 @@ internal static class GetSalesArrangementExtensions
                 Id = t.LoanPurposeId,
                 Sum = t.Sum
             }).ToList(),
-            LoanRealEstates = model.LoanRealEstates?.Select(t => new LoanRealEstateItemExtended
+            LoanRealEstates = model.LoanRealEstates?.Select(t => new LoanRealEstateDto
             {
                 IsCollateral = t.IsCollateral,
                 RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,

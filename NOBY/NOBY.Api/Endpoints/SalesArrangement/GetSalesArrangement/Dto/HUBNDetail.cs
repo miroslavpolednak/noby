@@ -27,7 +27,7 @@ public sealed class HUBNDetail
     /// Objekty úvěru
     /// </summary>
     [Required]
-    public List<LoanRealEstateItemExtended>? LoanRealEstates { get; set; }
+    public List<LoanRealEstateDto>? LoanRealEstates { get; set; }
 
     /// <summary>
     /// Identifikace zajištění
