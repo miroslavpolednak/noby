@@ -602,4 +602,10 @@ service CodebookService {
 			get: "/v1/realestate-valuation-local-survey-functions"
 		};
    }
+
+   rpc SigningMethodsForNaturalPerson (google.protobuf.Empty) returns (SigningMethodsForNaturalPersonResponse) {
+	   option (google.api.http) = {
+			get: "/v1/signing-methods-for-natural-person"
+		};
+   }
 }
