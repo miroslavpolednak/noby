@@ -3,6 +3,7 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
+using CIS.Core.Exceptions.ExternalServices;
 
 namespace CIS.Infrastructure.gRPC;
 

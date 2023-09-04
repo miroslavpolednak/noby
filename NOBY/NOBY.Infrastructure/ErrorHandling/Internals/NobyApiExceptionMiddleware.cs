@@ -55,18 +55,6 @@ public sealed class NobyApiExceptionMiddleware
             logger.WebApiNotImplementedException(ex.Message, ex);
             await Results.Json(singleErrorResult(ex.Message), statusCode: 500).ExecuteAsync(context);
         }
-        // DS neni dostupna
-        catch (CisServiceUnavailableException ex)
-        {
-            logger.ExtServiceUnavailable(ex.ServiceName, ex);
-            await Results.Json(singleErrorResult($"Service '{ex.ServiceName}' unavailable"), statusCode: 500).ExecuteAsync(context);
-        }
-        // 500 z volane externi sluzby
-        catch (CisServiceServerErrorException ex)
-        {
-            logger.ExtServiceUnavailable(ex.ServiceName, ex);
-            await Results.Json(singleErrorResult($"Service '{ex.ServiceName}' failed with HTTP 500"), statusCode: 500).ExecuteAsync(context);
-        }
         // object not found
         catch (CisNotFoundException ex)
         {
@@ -81,11 +69,13 @@ public sealed class NobyApiExceptionMiddleware
         }
         catch (CisExtServiceValidationException ex)
         {
+            logger.NobyValidationException(ex.Message, ex);
             await Results.Json(ex.Errors, statusCode: 400).ExecuteAsync(context);
         }
         // osetrena validace na urovni api call
         catch (CisValidationException ex)
         {
+            logger.NobyValidationException(ex.Message, ex);
             await Results.Json(ex.Errors!.Select(t => createErrorItem(parseExceptionCode(t.ExceptionCode), t.Message)), statusCode: 400).ExecuteAsync(context);
         }
         // jakakoliv jina chyba

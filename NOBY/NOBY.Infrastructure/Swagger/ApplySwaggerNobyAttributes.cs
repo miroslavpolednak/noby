@@ -20,15 +20,6 @@ public sealed class ApplySwaggerNobyAttributes
             reqPermSection = true;
         }
 
-        // case owner info
-        if (context.MethodInfo.GetCustomAttributes(typeof(AuthorizeCaseOwnerAttribute), false).Any())
-        {
-            if (!reqPermSection)
-                operation.Description += _requiredPermissionsLabel;
-            operation.Description += "<br/>CaseOwnerCheck()";
-            reqPermSection = true;
-        }
-
         // EAcko
         if (context.MethodInfo.GetCustomAttributes(typeof(SwaggerEaDiagramAttribute), false)?.FirstOrDefault() is SwaggerEaDiagramAttribute eaAttribute)
         {

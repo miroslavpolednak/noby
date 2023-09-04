@@ -72,7 +72,13 @@ public sealed class GenericServerExceptionInterceptor
         {
             setHttpStatus(StatusCodes.Status500InternalServerError);
             _logger.ExtServiceUnavailable(ex.ServiceName, ex);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Unknown, ex);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, ex);
+        }
+        catch (CisExtServiceServerErrorException ex)
+        {
+            setHttpStatus(StatusCodes.Status500InternalServerError);
+            _logger.ExtServiceServerError(ex.ServiceName, ex);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, ex);
         }
         catch (BaseCisException e)
         {
