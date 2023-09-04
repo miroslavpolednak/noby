@@ -29,19 +29,23 @@ internal sealed class CollateralValuationProcessChangedConsumer
         var realEstateValuation = await _dbContext.RealEstateValuations
             .FirstOrDefaultAsync(t => t.OrderId == orderId, token)
         ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, orderId);
-        
-        await (message.state switch
+
+        switch (message.state)
         {
-            ProcessStateEnum.TERMINATED => HandleTerminated(realEstateValuation, token),
-            ProcessStateEnum.COMPLETED => HandleCompleted(realEstateValuation, taskDetail.TaskDetail, token),
-            _ => Task.CompletedTask
-        });
+            case ProcessStateEnum.TERMINATED:
+                HandleTerminated(realEstateValuation);
+                break;
+            case ProcessStateEnum.COMPLETED:
+                await HandleCompleted(realEstateValuation, taskDetail.TaskDetail, token);
+                break;
+        }
+
+        await _dbContext.SaveChangesAsync(token);
     }
 
-    private async Task HandleTerminated(RealEstateValuation realEstateValuation, CancellationToken token)
+    private static void HandleTerminated(RealEstateValuation realEstateValuation)
     {
         realEstateValuation.ValuationStateId = 5;
-        await _dbContext.SaveChangesAsync(token);
     }
 
     private async Task HandleCompleted(RealEstateValuation realEstateValuation, TaskDetailItem taskDetail, CancellationToken token)
@@ -66,7 +70,6 @@ internal sealed class CollateralValuationProcessChangedConsumer
         }
 
         realEstateValuation.ValuationStateId = 4;
-        await _dbContext.SaveChangesAsync(token);
     }
 
     private static int? ConvertToNullableInt32(decimal? value)

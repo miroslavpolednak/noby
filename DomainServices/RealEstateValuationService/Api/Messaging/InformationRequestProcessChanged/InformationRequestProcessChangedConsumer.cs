@@ -44,24 +44,25 @@ internal sealed class InformationRequestProcessChangedConsumer
         switch (message.state)
         {
             case ProcessStateEnum.ACTIVE or ProcessStateEnum.SUSPENDED:
-                await HandleStateActiveOrSuspended(realEstateValuation, token);
+                HandleStateActiveOrSuspended(realEstateValuation);
                 break;
             case ProcessStateEnum.COMPLETED or ProcessStateEnum.TERMINATED:
-                await HandleStateCompletedOrTerminated(realEstateValuation, token);
+                HandleStateCompletedOrTerminated(realEstateValuation);
                 break;
         }
+        
+        await _dbContext.SaveChangesAsync(token);
     }
     
-    private async Task HandleStateActiveOrSuspended(RealEstateValuation realEstateValuationListItem, CancellationToken token)
+    private static void HandleStateActiveOrSuspended(RealEstateValuation realEstateValuationListItem)
     {
         if (realEstateValuationListItem is { ValuationStateId: 4, ValuationTypeId: (int)ValuationTypes.Online } or { ValuationStateId: 8 })
         {
             realEstateValuationListItem.ValuationStateId = 9;
-            await _dbContext.SaveChangesAsync(token);
         }
     }
 
-    private async Task HandleStateCompletedOrTerminated(RealEstateValuation realEstateValuationListItem, CancellationToken token)
+    private static void HandleStateCompletedOrTerminated(RealEstateValuation realEstateValuationListItem)
     {
         realEstateValuationListItem.ValuationStateId = realEstateValuationListItem.ValuationTypeId switch
         {
@@ -70,8 +71,6 @@ internal sealed class InformationRequestProcessChangedConsumer
                 when realEstateValuationListItem.ValuationStateId != 4 => 8,
             _ => realEstateValuationListItem.ValuationStateId
         };
-
-        await _dbContext.SaveChangesAsync(token);
     }
     
     private readonly RealEstateValuationServiceDbContext _dbContext;
