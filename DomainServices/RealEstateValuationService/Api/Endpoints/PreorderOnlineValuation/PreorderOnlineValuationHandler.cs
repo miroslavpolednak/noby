@@ -56,17 +56,14 @@ internal sealed class PreorderOnlineValuationHandler
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
             RealEstateIds = realEstateIds
         };
-        if (!(await _preorderService.RevaluationCheck(revaluationRequest, cancellationToken)))
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.RevaluationFailed);
-        }
+        bool revaluationRequired = await _preorderService.RevaluationCheck(revaluationRequest, cancellationToken);
         _logger.LogDebug("Revaluation finished");
 
         // update databaze hlavni entity
         entity.ValuationResultCurrentPrice = kbmodelReponse.ResultPrice;
         entity.PreorderId = kbmodelReponse.ValuationId;
         entity.ValuationTypeId = (int)RealEstateValuationTypes.Online;
-        entity.IsRevaluationRequired = true;
+        entity.IsRevaluationRequired = revaluationRequired;
         entity.ValuationStateId = (int)RealEstateValuationStates.DoplneniDokumentu;
 
         // vlozeni nove order
