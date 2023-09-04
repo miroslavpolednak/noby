@@ -102,7 +102,19 @@ public sealed class NobyApiExceptionMiddleware
     {
         if (ErrorCodeMapper.DsToApiCodeMapper.ContainsKey(errorCode))
         {
-            return createItem(ErrorCodeMapper.DsToApiCodeMapper[errorCode]);
+            if (ErrorCodeMapper.DsToApiCodeMapper[errorCode].PropagateDsError)
+            {
+                return new()
+                {
+                    Severity = ErrorCodeMapper.Messages[errorCode].Severity,
+                    ErrorCode = ErrorCodeMapper.DsToApiCodeMapper[errorCode].FeApiCode,
+                    Message = message
+                };
+            }
+            else
+            {
+                return createItem(ErrorCodeMapper.DsToApiCodeMapper[errorCode].FeApiCode);
+            }    
         }
 
         if (ErrorCodeMapper.Messages.ContainsKey(errorCode))

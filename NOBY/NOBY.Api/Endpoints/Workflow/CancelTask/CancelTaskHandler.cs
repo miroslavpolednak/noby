@@ -13,7 +13,7 @@ internal sealed class CancelTaskHandler
         var task = await _caseService.GetTaskDetail(request.TaskIdSB, cancellationToken);
         if (!_allowedTypeIds.Contains(task.TaskObject?.TaskTypeId ?? 0) || task.TaskObject?.TaskIdSb == 30)
         {
-            throw new CisAuthorizationException("Task type not allowed");
+            throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
         
         await _caseService.CancelTask(request.CaseId, request.TaskIdSB, cancellationToken);

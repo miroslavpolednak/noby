@@ -3,7 +3,7 @@
 public sealed class ErrorCodeMapper
 {
     public static IReadOnlyDictionary<int, ErrorCodeMapperItem> Messages { get; private set; } = null!;
-    public static IReadOnlyDictionary<int, int> DsToApiCodeMapper { get; private set; } = null!;
+    public static IReadOnlyDictionary<int, ErrorCodeDsToApiItem> DsToApiCodeMapper { get; private set; } = null!;
 
     public static void Init()
     {
@@ -39,23 +39,28 @@ public sealed class ErrorCodeMapper
             { 90029, new("Překročen počet objektů úvěru", "Maximální počet objektů úvěru je 3. Upravte počet objednávek ocenění s označením objekt úvěru.") },
             { 90030, new("Dokument s tímto EACodeMain není povolen pro NOBY uložit do eArchivu.") },
             { 90031, new("Chybí nemovitost k ocenění", "Je potřeba doplnit LV s alespoň jednou nemovitostí označenou k ocenění.") },
-            { 90032, new("Nepovolená operace", "Vámi požadovaná operace není se zadanými parametry povolena.") }
+            { 90032, new("Nepovolená operace", "Vámi požadovaná operace není se zadanými parametry povolena.") },
+            { 90003, new("Chyba simulace") }
         };
 
         Messages = messages.AsReadOnly();
 
-        var mapper = new Dictionary<int, int>()
+        var mapper = new Dictionary<int, ErrorCodeDsToApiItem>()
         {
-            { 13035, 90025 },
-            { 22202, 90027 },
-            { 22015, 90029 },
-            { 22016, 90031 },
-            { 17103, 90023 },
-            { 17102, 90024 }
+            { 13035, new ErrorCodeDsToApiItem(90025, false) },
+            { 22202, new ErrorCodeDsToApiItem(90027, false) },
+            { 22015, new ErrorCodeDsToApiItem(90029, false) },
+            { 22016, new ErrorCodeDsToApiItem(90031, false) },
+            { 17103, new ErrorCodeDsToApiItem(90023, false) },
+            { 17102, new ErrorCodeDsToApiItem(90024, false) },
+            { 10020, new ErrorCodeDsToApiItem(90033, true) }
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();
     }
+
+    public sealed record ErrorCodeDsToApiItem(int FeApiCode, bool PropagateDsError)
+    { }
 
     public sealed record ErrorCodeMapperItem(
         string Message,
