@@ -40,7 +40,7 @@ public sealed class ErrorCodeMapper
             { 90030, new("Dokument s tímto EACodeMain není povolen pro NOBY uložit do eArchivu.") },
             { 90031, new("Chybí nemovitost k ocenění", "Je potřeba doplnit LV s alespoň jednou nemovitostí označenou k ocenění.") },
             { 90032, new("Nepovolená operace", "Vámi požadovaná operace není se zadanými parametry povolena.") },
-            { 90003, new("Chyba simulace") }
+            { 90033, new("Chyba simulace") }
         };
 
         Messages = messages.AsReadOnly();
