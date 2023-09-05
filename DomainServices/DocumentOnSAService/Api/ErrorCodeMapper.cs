@@ -40,7 +40,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int UnsupportedDocumentTypeIdForServiceRequest = 19039;
     public const int WorkflowRequestCaseIdRequired = 19040;
     public const int UnsupportedKindOfSigningRequest = 19041;
-
+    public const int CannotGetNobyUserIdentifier = 19042;
 
     public static IErrorCodesDictionary Init()
     {
@@ -78,7 +78,8 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { CustomerOnSAIdRequired,"CustomerOnSAId is required" },
             { UnsupportedDocumentTypeIdForServiceRequest, "Unsupported DocumentTypeId for ServiceRequest, supported DocumentTypeId (9,10,11,12)" },
             { WorkflowRequestCaseIdRequired, "For processing workflow request CaseId is required" },
-            { UnsupportedKindOfSigningRequest, "Unsupported kind of signing request" }
+            { UnsupportedKindOfSigningRequest, "Unsupported kind of signing request" },
+            {CannotGetNobyUserIdentifier, "Cannot get NOBY user identifier"}
         });
 
         return Messages;
