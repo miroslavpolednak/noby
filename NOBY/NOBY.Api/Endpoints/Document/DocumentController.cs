@@ -103,6 +103,7 @@ public class DocumentController : ControllerBase
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Obsolete]
     public async Task<IActionResult> GetCancelConfirmationDocument([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
     {
         var request = new CancelConfirmation.GetSalesArrangementCancelConfirmationRequest

@@ -39,6 +39,7 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
         {
             DocumentId = documentId,
             UserLogin = user is null ? "Unknown NOBY user" : user.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            GetLocalCopyAsBackup = true,
             WithContent = true
         }, cancellationToken);
 
