@@ -79,7 +79,7 @@ internal sealed class GetFlowSwitchesHandler
                 response.EvaluationSection.IsActive = true;
 
                 var saInstanceDetail = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
-                var A = valuations.Count(t => t.IsLoanRealEstate && t.OrderId.HasValue);
+                var A = valuations.Count(t => t.IsLoanRealEstate && t.OrderId.HasValue && t.DeveloperAllowed && t.DeveloperApplied);
                 var B = saInstanceDetail.Mortgage?.LoanRealEstates?.Count ?? 0;
                 response.EvaluationSection.IsCompleted = (B > 0 && A == B) || (A == 1 && B == 0);
             }
