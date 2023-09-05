@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Foms.Enums;
+using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Workflow.UpdateTaskDetail;
@@ -34,6 +35,12 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         if (attachments?.Any() ?? false)
         {
             documentIds.AddRange(await _uploadDocumentToArchive.Upload(caseDetail.CaseId, caseDetail.Data?.ContractNumber, attachments, cancellationToken));
+        }
+        else if (taskDetail.TaskObject.TaskTypeId == 6
+            && taskDetail.TaskObject.SignatureTypeId == (int)SignatureTypes.Paper
+            && taskDetail.TaskObject.PhaseTypeId == 2)
+        {
+            throw new NobyValidationException("No attachments condition");
         }
 
         var completeTaskRequest = new CompleteTaskRequest
