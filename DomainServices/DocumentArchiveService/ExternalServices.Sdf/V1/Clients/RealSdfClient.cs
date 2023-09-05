@@ -13,10 +13,10 @@ using Polly;
 namespace DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Clients;
 internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedServices>, ISdfClient
 {
-    private const int MaxRetries = 3;
+    private const int _maxRetries = 3;
 
-    private AsyncRetryPolicy _retryPolicy;
-    private ILogger<RealSdfClient> _logger;
+    private readonly AsyncRetryPolicy _retryPolicy;
+    private readonly ILogger<RealSdfClient> _logger;
 
     protected override string ServiceName => StartupExtensions.ServiceName;
 
@@ -64,7 +64,6 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
                                 .WithCancellation(cancellationToken));
 
         return result;
-
     }
 
     protected override Binding CreateBinding()
@@ -99,7 +98,7 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
 
     private AsyncRetryPolicy CreatePolicy()
     {
-        return Policy.Handle<FaultException>().RetryAsync(MaxRetries, onRetry: (exp, retryCount) =>
+        return Policy.Handle<FaultException>().RetryAsync(_maxRetries, onRetry: (exp, retryCount) =>
         {
             if (exp.Message.Contains("DocumentNotFound"))
             {

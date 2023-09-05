@@ -4,9 +4,12 @@ using CIS.Foms.Enums;
 using CIS.Infrastructure.Audit;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
+using DomainServices.DocumentArchiveService.Clients;
+using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Api.Common;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
@@ -17,11 +20,16 @@ using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
+using DomainServices.UserService.Clients;
+using DomainServices.UserService.Contracts;
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using FastEnumUtility;
+using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using System.Text;
 using static DomainServices.HouseholdService.Contracts.GetCustomerChangeMetadataResponse.Types;
 using _CustomerService = DomainServices.CustomerService.Contracts;
 
@@ -30,6 +38,13 @@ namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocument;
 public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, Empty>
 {
     public List<CustomerOnSA> CustomersOnSABuffer { get; set; } = new();
+
+    /// <summary>
+    /// Unwritten data to KB CURE
+    /// </summary>
+    private const int _unwrittenDataEaCodeMainId = 616538;
+
+    private const string _defaultContractNumber = "HF00111111125";
 
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IDateTime _dateTime;
@@ -46,6 +61,9 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     private readonly ICustomerServiceClient _customerService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ICaseServiceClient _caseService;
+    private readonly ILogger<SignDocumentHandler> _logger;
+    private readonly IDocumentArchiveServiceClient _documentArchiveService;
+    private readonly IUserServiceClient _userService;
 
     public SignDocumentHandler(
         DocumentOnSAServiceDbContext dbContext,
@@ -62,7 +80,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         ICustomerChangeDataMerger customerChangeDataMerger,
         ICustomerServiceClient customerService,
         ICodebookServiceClient codebookService,
-        ICaseServiceClient caseService)
+        ICaseServiceClient caseService,
+        ILogger<SignDocumentHandler> logger,
+        IDocumentArchiveServiceClient documentArchiveService,
+        IUserServiceClient userService)
     {
         _dbContext = dbContext;
         _dateTime = dateTime;
@@ -79,6 +100,9 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         _customerService = customerService;
         _codebookService = codebookService;
         _caseService = caseService;
+        _logger = logger;
+        _documentArchiveService = documentArchiveService;
+        _userService = userService;
     }
 
     public async Task<Empty> Handle(SignDocumentRequest request, CancellationToken cancellationToken)
@@ -119,7 +143,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             // CRS
             if (documentOnSa.DocumentTypeId == DocumentTypes.DANRESID.ToByte()) // 13
             {
-                await ProcessCrsDocumentOnSa(documentOnSa, cancellationToken);
+                await ProcessCrsDocumentOnSa(documentOnSa, salesArrangement, cancellationToken);
             }
         }
         else
@@ -166,9 +190,9 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         );
     }
 
-    private async Task ProcessCrsDocumentOnSa(DocumentOnSa documentOnSa, CancellationToken cancellationToken)
+    private async Task ProcessCrsDocumentOnSa(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        var customerOnSa = CustomersOnSABuffer.FirstOrDefault(c => c.CustomerOnSAId == documentOnSa.CustomerOnSAId1!.Value)
+        var customerOnSa = CustomersOnSABuffer.Find(c => c.CustomerOnSAId == documentOnSa.CustomerOnSAId1!.Value)
                                     ?? await _customerOnSAService.GetCustomer(documentOnSa.CustomerOnSAId1!.Value, cancellationToken);
 
         var customerChangeMetadata = await GetCustomerOnSaMetadata(documentOnSa, customerOnSa, cancellationToken);
@@ -178,7 +202,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
             _customerChangeDataMerger.MergeTaxResidence(customerDetail?.NaturalPerson!, customerOnSa);
             var updateCustomerRequest = MapUpdateCustomerRequest((int)CIS.Foms.Enums.Mandants.Kb, customerDetail!);
-            await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
+            await UpdateCustomer(customerOnSa, updateCustomerRequest, salesArrangement, cancellationToken);
             // Throw away locally stored CRS data (keep client changes) 
             var jsonCustomerChangeDataWithoutCrs = _customerChangeDataMerger.TrowAwayLocallyStoredCrsData(customerOnSa);
             await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithoutCrs), cancellationToken);
@@ -203,12 +227,85 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                 var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
                 _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
                 var updateCustomerRequest = MapUpdateCustomerRequest(mandantId.Value, customerDetail);
-                await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
+                await UpdateCustomer(customerOnSa, updateCustomerRequest, salesArrangement, cancellationToken);
                 //Throw away locally stored Client data (keep CRS changes) 
                 var jsonCustomerChangeDataWithCrs = _customerChangeDataMerger.TrowAwayLocallyStoredClientData(customerOnSa);
                 await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithCrs), cancellationToken);
             }
         }
+    }
+
+    private async Task UpdateCustomer(CustomerOnSA customerOnSa, _CustomerService.UpdateCustomerRequest updateCustomerRequest, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
+        }
+        catch (Exception exp) when (exp is CisValidationException)
+        {
+            if (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
+            {
+                _logger.LogError(exp, exp.Message);
+                await CreateWfTask(customerOnSa, salesArrangement, cancellationToken);
+            }
+            else
+            {
+                throw;
+            }
+        }
+    }
+
+    private async Task CreateWfTask(CustomerOnSA customerOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    {
+        var customerChangeDataAsByteArray = Encoding.ASCII.GetBytes(customerOnSa.CustomerChangeData);
+        var documentId = await _documentArchiveService.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken);
+        var eaCodeMain = (await _codebookService.EaCodesMain(cancellationToken)).Single(e => e.Id == _unwrittenDataEaCodeMainId);
+        var contractNumber = await GetContractNumber(salesArrangement.CaseId, cancellationToken);
+        var user = await _userService.GetUser(_currentUser.User!.Id, cancellationToken);
+        var authorUserLogin = GetAuthorUserLoginForDocumentUpload(user);
+
+        var uploadDocRequest = new UploadDocumentRequest
+        {
+            BinaryData = ByteString.CopyFrom(customerChangeDataAsByteArray),
+            Metadata = new()
+            {
+                CaseId = salesArrangement.CaseId,
+                DocumentId = documentId,
+                EaCodeMainId = _unwrittenDataEaCodeMainId,
+                Filename = $"{eaCodeMain.Name}.txt",
+                AuthorUserLogin = authorUserLogin,
+                CreatedOn = _dateTime.Now.Date,
+                Description = string.Empty,
+                FormId = string.Empty,
+                ContractNumber = contractNumber
+            }
+        };
+
+        await _documentArchiveService.UploadDocument(uploadDocRequest, cancellationToken);
+
+        // ProcessTypeId == 1 (Hlavní úvěrový proces)
+        var process = (await _caseService.GetProcessList(salesArrangement.CaseId, cancellationToken)).Single(r => r.ProcessTypeId == 1);
+
+        var createTaskRequest = new CreateTaskRequest
+        {
+            CaseId = salesArrangement.CaseId,
+            ProcessId = process.ProcessId,
+            TaskTypeId = 3, // Konzultace
+            TaskSubtypeId = 0, // Dotaz (Obecný)
+            TaskRequest = "Při propisu dat do CURE (CustomerManagementu) nastala chyba, blíže viz příloha. Upravte prosím, nebo doplňte údaje na základě přílohy přímo v aplikaci CURE.",
+            TaskDocumentsId = { documentId }
+        };
+
+        await _caseService.CreateTask(createTaskRequest, cancellationToken);
+    }
+
+    private async Task<string> GetContractNumber(long caseId, CancellationToken cancellationToken)
+    {
+        var caseDetail = await _caseService.GetCaseDetail(caseId, cancellationToken);
+        if (string.IsNullOrWhiteSpace(caseDetail?.Data?.ContractNumber))
+            return _defaultContractNumber;
+
+        return caseDetail.Data.ContractNumber;
     }
 
     private async Task<int?> GetMandantId(SalesArrangement salesArrangement, CancellationToken cancellationToken)
@@ -339,5 +436,17 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         documentOnSa.IsSigned = true;
         documentOnSa.SignatureDateTime = signatureDate;
         documentOnSa.SignatureConfirmedBy = _currentUser.User?.Id;
+    }
+
+    private string GetAuthorUserLoginForDocumentUpload(User user)
+    {
+        if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
+            return user.UserInfo.Icp;
+        else if (!string.IsNullOrWhiteSpace(user.UserInfo.Cpm))
+            return user.UserInfo.Cpm;
+        else if (_currentUser.User?.Id is not null)
+            return _currentUser.User!.Id.ToString(CultureInfo.InvariantCulture);
+        else
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.CannotGetNobyUserIdentifier);
     }
 }
