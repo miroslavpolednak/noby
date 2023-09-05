@@ -39,23 +39,15 @@ internal sealed class SimulateMortgageHandler
         var model = request.ToDomainServiceRequest(guaranteeDateFrom);
 
         // zavolat DS
-        try
-        {
-            var result = await _offerService.SimulateMortgage(model, cancellationToken);
+        var result = await _offerService.SimulateMortgage(model, cancellationToken);
 
-            return new()
-            {
-                OfferId = result.OfferId,
-                ResourceProcessId = result.ResourceProcessId,
-                SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs, result.AdditionalSimulationResults),
-                CreditWorthinessSimpleResults = result.CreditWorthinessSimpleResults.ToApiResponse()
-            };
-        }
-        catch (CisArgumentException ex)
+        return new()
         {
-            // rethrow to be catched by validation middleware
-            throw new CisValidationException(ex.ExceptionCode, ex.Message);
-        }
+            OfferId = result.OfferId,
+            ResourceProcessId = result.ResourceProcessId,
+            SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs, result.AdditionalSimulationResults),
+            CreditWorthinessSimpleResults = result.CreditWorthinessSimpleResults.ToApiResponse()
+        };
     }
 
     private readonly ICurrentUserAccessor _userAccessor;

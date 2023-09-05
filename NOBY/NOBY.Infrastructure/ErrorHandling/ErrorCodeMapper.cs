@@ -40,7 +40,8 @@ public sealed class ErrorCodeMapper
             { 90030, new("Dokument s tímto EACodeMain není povolen pro NOBY uložit do eArchivu.") },
             { 90031, new("Chybí nemovitost k ocenění", "Je potřeba doplnit LV s alespoň jednou nemovitostí označenou k ocenění.") },
             { 90032, new("Nepovolená operace", "Vámi požadovaná operace není se zadanými parametry povolena.") },
-            { 90033, new("Chyba simulace") }
+            { 90033, new("Žadatel nenalezen na daném obchodním případu.") },
+            { 90034, new("<Chyba simulace z DS>") }
         };
 
         Messages = messages.AsReadOnly();
@@ -53,7 +54,7 @@ public sealed class ErrorCodeMapper
             { 22016, new ErrorCodeDsToApiItem(90031, false) },
             { 17103, new ErrorCodeDsToApiItem(90023, false) },
             { 17102, new ErrorCodeDsToApiItem(90024, false) },
-            { 10020, new ErrorCodeDsToApiItem(90033, true) }
+            { 10020, new ErrorCodeDsToApiItem(90034, true) }
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();

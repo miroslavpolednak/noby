@@ -104,10 +104,11 @@ public sealed class NobyApiExceptionMiddleware
         {
             if (ErrorCodeMapper.DsToApiCodeMapper[errorCode].PropagateDsError)
             {
+                int feApiErrorCode = ErrorCodeMapper.DsToApiCodeMapper[errorCode].FeApiCode;
                 return new()
                 {
-                    Severity = ErrorCodeMapper.Messages[errorCode].Severity,
-                    ErrorCode = ErrorCodeMapper.DsToApiCodeMapper[errorCode].FeApiCode,
+                    Severity = ErrorCodeMapper.Messages[feApiErrorCode].Severity,
+                    ErrorCode = feApiErrorCode,
                     Message = message
                 };
             }
