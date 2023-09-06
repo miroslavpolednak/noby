@@ -1,4 +1,5 @@
-﻿using DomainServices.RealEstateValuationService.Clients;
+﻿using CIS.Core.Exceptions.ExternalServices;
+using DomainServices.RealEstateValuationService.Clients;
 using ExternalServices.Crem.V1;
 
 namespace NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent;
@@ -36,6 +37,10 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
 
                     documentId = requestResult.CremDeedOfOwnershipDocumentId;
                     deedOfOwnershipNumber = requestResult.DeedOfOwnershipNumber;
+                }
+                catch (CisExtServiceValidationException ex) when (ex.FirstExceptionCode == "1")
+                {
+                    throw new NobyValidationException(90035);
                 }
                 catch (CisException ex) when (ex.ExceptionCode == "404")
                 {
