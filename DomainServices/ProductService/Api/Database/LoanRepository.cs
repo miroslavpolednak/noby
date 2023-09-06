@@ -1,64 +1,126 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data;
+using CIS.Core.Data;
+using CIS.Infrastructure.Data;
+using Dapper;
+using DomainServices.ProductService.Api.Database.Abstraction;
 
 namespace DomainServices.ProductService.Api.Database;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal class LoanRepository
 {
-    private readonly ProductServiceDbContext _dbContext;
-
-    public LoanRepository(ProductServiceDbContext dbContext)
+    private readonly IConnectionProvider<IProductServiceConnectionProvider> _connectionProvider;
+    
+    public LoanRepository(
+        IConnectionProvider<IProductServiceConnectionProvider> connectionProvider)
     {
-        _dbContext = dbContext;
+        _connectionProvider = connectionProvider;
+    }
+    
+    public async Task<Models.Loan?> GetLoan(long loanId, CancellationToken cancellation)
+    { 
+	    const string query = @"SELECT
+		[Id] as Id,
+		[PartnerId] as PartnerId,
+		[KodProduktyUv] as ProductTypeId,
+		[CisloSmlouvy] as ContractNumber,
+		[MesicniSplatka] as LoanPaymentAmount,
+		[VyseUveru] as LoanAmount,
+		[RadnaSazba] as LoanInterestRate,
+		[PeriodaFixace] as FixedRatePeriod,
+		[DruhUveru] as LoanKindId,
+		[PredpDatum1Cerpani] as ExpectedDateOfDrawing,
+		[DatumPodpisuPrvniZadosti] as FirstSignatureDate,
+		[PoradceId] as ThirdPartyConsultantId,
+		[ZbyvaCerpat] as AvailableForDrawing,
+		[ZustatekCelkem] as CurrentAmount,
+		[DatumKonceCerpani] as DrawingDateTo,
+		[DatumUzavreniSmlouvy] as ContractSignedDate,
+		[DatumFixaceUrokoveSazby] as FixedRateValidTo,
+		[Datum1AnuitniSplatky] as FirstAnnuityPaymentDate,
+		[DatumPredpSplatnosti] as LoanDueDate,
+		[CisloUctu] as PaymentAccountNumber,
+		[PredcisliUctu] as PaymentAccountPrefix,
+		[Jistina] as Principal,
+		[CelkovyDluhPoSplatnosti] as CurrentOverdueAmount,
+		[PohledavkaPoplatkyPo] as AllOverdueFees,
+		[PocetBankovnichDniPoSpl] as OverdueDaysNumber,
+		[SazbaZProdleni] as InterestInArrears,
+		[SplatkyDen] as PaymentDay,
+		[PobockaObsluhyId] as BranchConsultantId,
+		[InkasoPredcisli] as RepaymentAccountPrefix,
+		[InkasoCislo] as RepaymentAccountNumber,
+		[InkasoBanka] as RepaymentAccountBankCode,
+		[HuVypisFrekvence] as StatementFrequencyId,
+		[HuVypisZodb] as StatementSubscriptionTypeId,
+		[HuVypisTyp] as StatementTypeId,
+		[VypisEmail1] as EmailAddress1,
+	    [VypisEmail2] as EmailAddress2
+    	FROM [dbo].[Uver]
+    	WHERE Id = @LoanId";
+	    
+        var parameters = new DynamicParameters();
+        parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
+        
+        return await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<Models.Loan>(query, parameters, cancellation);
     }
 
-    public async Task<List<Entities.LoanPurpose>> GetPurposes(long loanId, CancellationToken cancellation)
+    public async Task<List<Models.LoanPurpose>> GetLoanPurposes(long loanId, CancellationToken cancellation)
     {
-        return await _dbContext.LoanPurposes
-            .AsNoTracking()
-            .Where(t => t.UverId == loanId)
-            .ToListAsync(cancellation);
+	    const string query = @"SELECT
+    	[UcelUveruId] as LoanPurposeId,
+    	[SumaUcelu] as Sum
+		FROM [dbo].[UverUcely]
+		WHERE UverId = @LoanId";
+	    
+	    var parameters = new DynamicParameters();
+	    parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
+        
+	    return await _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.LoanPurpose>(query, parameters, cancellation);
     }
-
-    public async Task<Entities.Loan> GetLoan(long loanId, CancellationToken cancellation)
+    
+    public async Task<List<Models.Relationship>> GetRelationships(long loanId, CancellationToken cancellation)
     {
-#pragma warning disable CS8603 // Possible null reference return.
-        return await _dbContext.Loans
-            .AsNoTracking()
-            .Where(t => t.Id == loanId)
-            .FirstOrDefaultAsync(cancellation);
-#pragma warning restore CS8603 // Possible null reference return.
+		const string query = @"SELECT
+		[PartnerId] as PartnerId,
+		[VztahId] as ContractRelationshipTypeId
+		FROM [dbo].[VztahUver]
+		WHERE UverId = @LoanId";
+
+		var parameters = new DynamicParameters();
+        parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
+        
+        return await _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.Relationship>(query, parameters, cancellation);
     }
 
     public async Task<bool> ExistsLoan(long loanId, CancellationToken cancellation)
-    {
-        return await _dbContext.Loans
-            .AsNoTracking()
-            .Where(t => t.Id == loanId)
-            .AnyAsync(cancellation);
+    { 
+	    const string query = "SELECT COUNT(1) from [dbo].[Uver] where Id = @LoanId";
+	    
+	    var parameters = new DynamicParameters();
+	    parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
+	    
+	    return await _connectionProvider.ExecuteDapperScalarAsync<bool>(query, parameters, cancellation);
     }
-
-    public async Task<List<Entities.Relationship>> GetRelationships(long loanId, CancellationToken cancellation)
-    {
-        return await _dbContext.Relationships
-            .AsNoTracking()
-            .Where(t => t.UverId == loanId)
-            .ToListAsync(cancellation);
-    }
-
+    
     public async Task<bool> ExistsRelationship(long loanId, long partnerId, CancellationToken cancellation)
-    {
-        return await _dbContext.Relationships
-            .AsNoTracking()
-            .Where(t => t.UverId == loanId && t.PartnerId == partnerId)
-            .AnyAsync(cancellation);
+    { 
+	    const string query = "SELECT COUNT(1) from [dbo].[VztahUver] where UverId = @LoanId and PartnerId = @PartnerId";
+	    
+	    var parameters = new DynamicParameters();
+        parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
+        parameters.Add("@PartnerId", partnerId, DbType.Int64, ParameterDirection.Input);
+        
+        return await _connectionProvider.ExecuteDapperScalarAsync<bool>(query, parameters, cancellation);
     }
 
     public async Task<bool> ExistsPartner(long partnerId, CancellationToken cancellation)
     {
-        return await _dbContext.Partners
-            .AsNoTracking()
-            .Where(t => t.Id == partnerId)
-            .AnyAsync(cancellation);
+	    const string query = "SELECT COUNT(1) from [dbo].[Partner] where Id = @PartnerId";
+	    
+	    var parameters = new DynamicParameters();
+	    parameters.Add("@PartnerId", partnerId, DbType.Int64, ParameterDirection.Input);
+	    
+	    return await _connectionProvider.ExecuteDapperScalarAsync<bool>(query, parameters, cancellation);
     }
 }
