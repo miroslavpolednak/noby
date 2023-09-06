@@ -13,7 +13,7 @@ internal sealed class OrderRealEstateValuationHandler
         var allowedTypes = await _estateValuationTypeService.GetAllowedTypes(request.RealEstateValuationId, request.CaseId, cancellationToken);
         if (!(allowedTypes?.Contains(request.ValuationTypeId) ?? false))
         {
-            throw new CisAuthorizationException("Allowed types is null");
+            throw new NobyValidationException(90032, "Allowed types is null");
         }
 
         switch (request.ValuationTypeId)
@@ -23,7 +23,7 @@ internal sealed class OrderRealEstateValuationHandler
                     || revInstance.OrderId.HasValue 
                     || revInstance.ValuationStateId != (int)RealEstateValuationStates.DoplneniDokumentu)
                 {
-                    throw new CisAuthorizationException("Valuation:Online OrderId or PreorderId already set or state is out of allowed range");
+                    throw new NobyValidationException(90032, "Valuation:Online OrderId or PreorderId already set or state is out of allowed range");
                 }
 
                 await _realEstateValuationService.OrderOnlineValuation(new DomainServices.RealEstateValuationService.Contracts.OrderOnlineValuationRequest
@@ -37,7 +37,7 @@ internal sealed class OrderRealEstateValuationHandler
                 if (revInstance.OrderId.HasValue 
                     || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(revInstance.ValuationStateId.GetValueOrDefault()))
                 {
-                    throw new CisAuthorizationException("Valuation:Standard OrderId already set or state is out of allowed range");
+                    throw new NobyValidationException(90032, "Valuation:Standard OrderId already set or state is out of allowed range");
                 }
 
                 await _realEstateValuationService.OrderStandardValuation(new DomainServices.RealEstateValuationService.Contracts.OrderStandardValuationRequest
@@ -51,7 +51,7 @@ internal sealed class OrderRealEstateValuationHandler
                 if (revInstance.OrderId.HasValue 
                     || revInstance.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
                 {
-                    throw new CisAuthorizationException("Valuation:Dts OrderId already set or state is out of allowed range");
+                    throw new NobyValidationException(90032, "Valuation:Dts OrderId already set or state is out of allowed range");
                 }
 
                 await _realEstateValuationService.OrderDTSValuation(request.RealEstateValuationId, cancellationToken);

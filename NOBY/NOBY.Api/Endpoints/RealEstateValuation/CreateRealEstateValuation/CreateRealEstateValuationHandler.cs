@@ -55,7 +55,7 @@ internal sealed class CreateRealEstateValuationHandler
 
         if (!revRequest.DeveloperAllowed && request.DeveloperApplied)
         {
-            throw new CisAuthorizationException("Developer check failed");
+            throw new NobyValidationException(90032, "Developer check failed");
         }
 
         return await _realEstateValuationService.CreateRealEstateValuation(revRequest, cancellationToken);
