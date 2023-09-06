@@ -10,4 +10,6 @@ internal sealed class DbUserAttribute
     public string? phone { get; set; }
     public string? VIPFlag { get; set; }
     public int? distributionChannelId { get; set; }
+    public string? personOrgUnitName { get; set; }
+    public string? dealerCompanyName { get; set; }
 }

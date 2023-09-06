@@ -190,6 +190,22 @@
             Id distribučního kanálu
             </summary>
         </member>
+        <member name="F:DomainServices.UserService.Contracts.UserInfoObject.PersonOrgUnitNameFieldNumber">
+            <summary>Field number for the "PersonOrgUnitName" field.</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.PersonOrgUnitName">
+            <summary>
+            pobočka uživatele
+            </summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserInfoObject.DealerCompanyNameFieldNumber">
+            <summary>Field number for the "DealerCompanyName" field.</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.UserInfoObject.DealerCompanyName">
+            <summary>
+            obchodní společnost uživatele
+            </summary>
+        </member>
         <member name="T:DomainServices.UserService.Contracts.GetUserRIPAttributesReflection">
             <summary>Holder for reflection information generated from Messages/GetUserRIPAttributes.proto</summary>
         </member>
