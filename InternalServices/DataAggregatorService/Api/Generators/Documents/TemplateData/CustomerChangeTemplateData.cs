@@ -80,7 +80,7 @@ internal class CustomerChangeTemplateData : AggregatedData
 
     public override async Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        var customerIdentities = SalesArrangement.CustomerChange.Applicants.Select(a => a.Identity).ToList();
+        var customerIdentities = SalesArrangement.CustomerChange.Applicants.Select(a => a.Identity.GetIdentity(Identity.Types.IdentitySchemes.Kb));
 
         var customers = await _customerService.GetCustomerList(customerIdentities, SalesArrangement.SalesArrangementId, cancellationToken);
 
