@@ -2,6 +2,7 @@
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using CIS.Foms.Enums;
+using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
@@ -109,7 +110,7 @@ internal static class CreateCustomerExtensions
         return model;
     }
 
-    public static CreateCustomerResponse ToResponseDto(this _Cust.CustomerDetailResponse customer, bool isVerified)
+    public static CreateCustomerResponse ToResponseDto(this _Cust.CustomerDetailResponse customer, bool isVerified, ResultCode resultCode)
     {
         GetCustomerDetail.Dto.NaturalPersonModel person = new();
         customer.NaturalPerson?.FillResponseDto(person);
@@ -120,6 +121,7 @@ internal static class CreateCustomerExtensions
             NaturalPerson = person,
             JuridicalPerson = null,
             IsVerified = isVerified,
+            ResultCode = resultCode,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
             IsInputDataDifferent = true,
