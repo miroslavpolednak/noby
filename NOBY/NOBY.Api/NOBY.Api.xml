@@ -1927,11 +1927,6 @@
             <param name="salesArrangementId"></param>
             <param name="documentOnSaId"></param>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData.DocumentDataDto.Table">
-            <summary>
-            This is not supported yet
-            </summary>
-        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningHandler.ValidateSalesArrangement(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Checkform 

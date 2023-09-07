@@ -1,9 +1,7 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Generators.RiskLoanApplication;
-using CIS.InternalServices.DataAggregatorService.Api.Generators.RiskLoanApplication.Json;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
-using System.Text.Encodings.Web;
-using System.Text.Json.Serialization;
-using System.Text.Json;
+using CIS.InternalServices.DataAggregatorService.Api.Configuration;
+using CIS.InternalServices.DataAggregatorService.Api.Services.JsonBuilder;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Endpoints.GetRiskLoanApplicationData;
 
@@ -33,22 +31,14 @@ internal class GetRiskLoanApplicationDataHandler : IRequestHandler<GetRiskLoanAp
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, _data, cancellationToken);
 
-        var jsonObject = new RiskLoanApplicationJsonObjectImpl();
+        var jsonObject = new JsonBuilder<RiskLoanApplicationJsonValueSource>();
 
-        foreach (var sourceField in config.SourceFields)
-        {
-            jsonObject.Add(sourceField.JsonPropertyName.Split('.'), sourceField.FieldPath, sourceField.UseDefaultInsteadOfNull);
-        }
-
-        var jsonOptions = new JsonSerializerOptions
-        {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        };
+        foreach (var sourceField in config.SourceFields) 
+            jsonObject.Add(sourceField.JsonPropertyName, sourceField);
 
         return new GetRiskLoanApplicationDataResponse
         {
-            Json = JsonSerializer.Serialize(jsonObject.GetJsonObject(_data), jsonOptions)
+            Json = jsonObject.Serialize(_data)
         };
     }
 }

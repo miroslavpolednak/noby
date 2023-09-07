@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
 using CIS.Core;
 using CIS.Core.Attributes;
-using CIS.Core.Security;
-using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
@@ -13,12 +11,10 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService;
 using DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.Entities;
-using DomainServices.SalesArrangementService.Api.Endpoints.SendToCmp;
 using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.UserService.Clients;
 using DomainServices.UserService.Contracts;
 using Newtonsoft.Json;
-using static DomainServices.UserService.Contracts.v1.UserService;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
@@ -135,49 +131,6 @@ internal sealed class FormsDocumentService
         return await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
     }
 
-    private static IEnumerable<GenerateDocumentPartData> CreateData(List<DocumentDataDto>? documentDataDtos)
-    {
-        ArgumentNullException.ThrowIfNull(documentDataDtos);
-
-        foreach (var documentDataDto in documentDataDtos)
-        {
-            var documentPartData = new GenerateDocumentPartData
-            {
-                Key = documentDataDto.FieldName,
-                StringFormat = documentDataDto.StringFormat,
-                TextAlign = (TextAlign)(documentDataDto.TextAlign ?? 0),
-                VAlign = (VAlign)(documentDataDto.VAlign ?? 0)
-            };
-
-            switch (documentDataDto.ValueCase)
-            {
-                case 0: break; //Should be just a StringFormat, the DataAggregator sends only the necessary data 
-
-                case 3:
-                    documentPartData.Text = documentDataDto.Text ?? string.Empty;
-                    break;
-                case 4:
-                    documentPartData.Date = new DateTime(documentDataDto.Date!.Year, documentDataDto.Date!.Month, documentDataDto.Date!.Day);
-                    break;
-                case 5:
-                    documentPartData.Number = documentDataDto.Number;
-                    break;
-                case 6:
-                    documentPartData.DecimalNumber = new GrpcDecimal(documentDataDto.DecimalNumber!.Units, documentDataDto.DecimalNumber!.Nanos);
-                    break;
-                case 7:
-                    documentPartData.LogicalValue = documentDataDto.LogicalValue;
-                    break;
-                case 8:
-                    throw new NotSupportedException("GenericTable is not supported");
-                default:
-                    throw new NotSupportedException("Notsupported oneof object");
-            }
-
-            yield return documentPartData;
-        }
-    }
-
     private async Task<string> GetFileName(DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
     {
         var templates = await _codebookService.DocumentTypes(cancellationToken);
@@ -201,15 +154,15 @@ internal sealed class FormsDocumentService
 
     private static GenerateDocumentPart CreateDocPart(GetDocumentOnSADataResponse documentOnSaData)
     {
+        var documentDataDtos = JsonConvert.DeserializeObject<List<DocumentDataDto>>(documentOnSaData.Data)!;
+
         var docPart = new GenerateDocumentPart
         {
             DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
             DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value,
             DocumentTemplateVariantId = documentOnSaData.DocumentTemplateVariantId,
+            Data = { documentDataDtos.CreateDocumentData() }
         };
-
-        var documentDataDtos = JsonConvert.DeserializeObject<List<DocumentDataDto>>(documentOnSaData.Data);
-        docPart.Data.AddRange(CreateData(documentDataDtos));
         return docPart;
     }
 

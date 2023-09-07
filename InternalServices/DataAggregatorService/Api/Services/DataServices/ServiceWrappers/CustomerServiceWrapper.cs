@@ -22,7 +22,7 @@ internal class CustomerServiceWrapper : IServiceWrapper
         {
             var (customer, customerOnSA) = await _customerWithChangesService.GetCustomerDetail(input.CustomerOnSaId.Value, cancellationToken);
 
-            data.Customer = customer;
+            data.Customer.Source = customer;
             data.CustomerOnSA = customerOnSA;
 
             return;
@@ -34,12 +34,12 @@ internal class CustomerServiceWrapper : IServiceWrapper
         {
             var (customer, customerOnSA) = await _customerWithChangesService.GetCustomerDetail(input.CustomerIdentity, input.SalesArrangementId.Value, cancellationToken);
 
-            data.Customer = customer;
+            data.Customer.Source = customer;
             data.CustomerOnSA = customerOnSA;
         }
         else
         {
-            data.Customer = await _customerService.GetCustomerDetail(input.CustomerIdentity, forceKbCustomerLoad: true, cancellationToken);
+            data.Customer.Source = await _customerService.GetCustomerDetail(input.CustomerIdentity, forceKbCustomerLoad: true, cancellationToken);
         }
     }
 }

@@ -17,7 +17,7 @@ internal sealed class CreateTaskHandler
         }
         catch (CisValidationException ex) when (ex.Errors.Any(x => x.ExceptionCode == "13029"))
         {
-            throw new CisAuthorizationException("TaskTypeId is not allowed");
+            throw new NobyValidationException(90032, "DS error 13029");
         }
 
         // validace price exception
@@ -131,7 +131,7 @@ internal sealed class CreateTaskHandler
     {
         if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == 2 && !t.Cancelled))
         {
-            throw new CisAuthorizationException("PriceException already exist");
+            throw new NobyValidationException(90032, "ValidatePriceException failed");
         }
     }
 

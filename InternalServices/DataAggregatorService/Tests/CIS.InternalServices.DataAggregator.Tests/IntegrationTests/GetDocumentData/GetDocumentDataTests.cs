@@ -1,18 +1,13 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.GetDocumentData;
 
 public class GetDocumentDataTests : IntegrationTestBase
 {
-    private readonly DocumentConfigurationBuilder _configurationBuilder;
-
     public GetDocumentDataTests()
     {
-        _configurationBuilder = new DocumentConfigurationBuilder(Fixture.Services.CreateScope().ServiceProvider);
-
         SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersMortgage>((sa, parameter) => sa.Mortgage = parameter);
         HouseholdServiceClient.MockHouseholdList(CustomerOnSAServiceClient);
         CustomerServiceClient.MockCustomerList();
@@ -22,8 +17,9 @@ public class GetDocumentDataTests : IntegrationTestBase
     [Fact]
     public async Task GetDocumentData_ValidDocumentType_ShouldReturnDocumentData()
     {
+        ConfigurationManager.MockDocumentFields();
+
         var client = CreateGrpcClient();
-        await _configurationBuilder.DataFields().DocumentFields().Build();
 
         var response = await client.GetDocumentDataAsync(new GetDocumentDataRequest
         {
@@ -40,8 +36,9 @@ public class GetDocumentDataTests : IntegrationTestBase
     [Fact]
     public async Task GetDocumentData_DocumentWithTable_ShouldReturnTable()
     {
+        ConfigurationManager.MockTable();
+
         var client = CreateGrpcClient();
-        await _configurationBuilder.DataFields().Table().Build();
 
         var response = await client.GetDocumentDataAsync(new GetDocumentDataRequest
         {

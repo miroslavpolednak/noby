@@ -1,9 +1,8 @@
-﻿using CIS.InternalServices.DataAggregatorService.Api.Helpers;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
 
-[TransientService, SelfService]
+[ScopedService, SelfService]
 internal class DataServicesLoader
 {
     private readonly ServiceMap _serviceMap;
@@ -15,7 +14,7 @@ internal class DataServicesLoader
         _serviceProvider = serviceProvider;
     }
 
-    public async Task LoadData(InputConfig inputConfig, InputParameters parameters, AggregatedData aggregatedData, CancellationToken cancellationToken = default)
+    public async Task LoadData(InputConfig inputConfig, InputParameters parameters, AggregatedData aggregatedData, CancellationToken cancellationToken)
     {
         var status = new DataLoaderStatus(inputConfig.GetAllDataSources())
         {
@@ -24,19 +23,18 @@ internal class DataServicesLoader
             InputParameters = parameters
         };
 
-        using var serviceScope = _serviceProvider.CreateScope();
+        await aggregatedData.LoadCodebooks(_serviceProvider.GetRequiredService<ICodebookServiceClient>(), cancellationToken);
 
         while (status.RemainingDataSources.Any())
         {
-            await ProcessRemainingDataSources(status, serviceScope.ServiceProvider, cancellationToken);
+            await ProcessRemainingDataSources(status, cancellationToken);
             SetInputParameters(status);
         }
 
-        await aggregatedData.LoadCodebooks(_serviceProvider.GetRequiredService<ICodebookServiceClient>(), cancellationToken);
         await aggregatedData.LoadAdditionalData(cancellationToken);
     }
 
-    private Task ProcessRemainingDataSources(DataLoaderStatus status, IServiceProvider serviceProvider, CancellationToken cancellationToken)
+    private Task ProcessRemainingDataSources(DataLoaderStatus status, CancellationToken cancellationToken)
     {
         var dataSources = status.GetRemainingDataSources();
 
@@ -47,7 +45,7 @@ internal class DataServicesLoader
 
         async Task Load(DataService dataSource)
         {
-            await _serviceMap.GetServiceCallFunc(dataSource, serviceProvider).Invoke(status.InputParameters, status.AggregatedData, cancellationToken);
+            await _serviceMap.GetServiceCallFunc(dataSource, _serviceProvider).Invoke(status.InputParameters, status.AggregatedData, cancellationToken);
 
             status.MarkAsLoaded(dataSource);
         }

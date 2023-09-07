@@ -2,18 +2,13 @@
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using FastEnumUtility;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.GetEasForm;
 
 public class GetEasFormTests : IntegrationTestBase
 {
-    private readonly EasFormConfigurationBuilder _configurationBuilder;
-
     public GetEasFormTests()
     {
-        _configurationBuilder = new EasFormConfigurationBuilder(Fixture.Services.CreateScope().ServiceProvider);
-
         HouseholdServiceClient.MockHouseholdList(CustomerOnSAServiceClient);
         CustomerServiceClient.MockCustomerList();
         DocumentOnSAServiceClient.MockDocumentOnSa();
@@ -23,10 +18,9 @@ public class GetEasFormTests : IntegrationTestBase
     [Fact]
     public async Task GetEasForm_ProductRequest_ShouldReturnTwoForms()
     {
+        ConfigurationManager.MockProductRequest();
         SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersMortgage>((sa, parameter) => sa.Mortgage = parameter);
         OfferServiceClient.MockGetOfferDetail();
-
-        _configurationBuilder.DataFields().ProductRequest().Commit();
 
         var client = CreateGrpcClient();
 
@@ -47,8 +41,14 @@ public class GetEasFormTests : IntegrationTestBase
     [Fact]
     public async Task GetEasForm_ServiceRequest_ShouldReturnOneForm()
     {
-        SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersDrawing>((sa, parameter) => sa.Drawing = parameter);
-        _configurationBuilder.DataFields().ServiceRequest().Commit();
+        ConfigurationManager.MockServiceRequest();
+
+        SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersDrawing>((sa, parameter) =>
+        {
+            sa.Drawing = parameter;
+
+            ProductServiceClient.MockGetCustomersOnProduct(parameter.Applicant);
+        });
 
         var client = CreateGrpcClient();
 

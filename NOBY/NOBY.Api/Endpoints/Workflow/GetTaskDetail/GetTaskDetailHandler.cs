@@ -13,7 +13,7 @@ internal sealed class GetTaskDetailHandler
 
         if (!_allowedTaskTypeIds.Contains(task.TaskTypeId))
         {
-            throw new CisAuthorizationException("Task type not allowed");
+            throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
         
         var (taskDto, taskDetailDto, documents) = await _workflowTaskService.GetTaskDetail(request.CaseId, task.TaskIdSb, cancellationToken);
