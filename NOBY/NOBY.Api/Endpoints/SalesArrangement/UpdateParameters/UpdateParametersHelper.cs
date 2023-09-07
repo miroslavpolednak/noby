@@ -2,10 +2,12 @@
 using DomainServices.ProductService.Clients;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 using System.Text.Json;
+using CIS.Core.Attributes;
 using _dto = NOBY.Api.Endpoints.SalesArrangement.Dto;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
+[SelfService, TransientService]
 internal sealed class UpdateParametersHelper
 {
     public async Task<TModel?> DeserializeAndValidate<TModel>(object? parameters, __SA.SalesArrangement salesArrangement)
