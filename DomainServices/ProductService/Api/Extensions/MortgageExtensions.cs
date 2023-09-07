@@ -31,7 +31,7 @@ internal static class MortgageExtensions
             EstimatedDuePaymentDate = mortgage.LoanDueDate,
             RepaymentStartDate = mortgage.FirstAnnuityPaymentDate,
             ServiceBranchId = mortgage.BranchConsultantId.GetValueOrDefault() == 0 ? null : mortgage.BranchConsultantId,
-            ConsultantId = mortgage.ThirdPartyConsultantId.GetValueOrDefault() == 0 ? null : mortgage.ThirdPartyConsultantId,
+            ConsultantId = mortgage.CaseOwnerUserCurrentId.GetValueOrDefault() == 0 ? null : mortgage.CaseOwnerUserCurrentId,
             FirstRequestSignDate = mortgage.FirstSignatureDate,
             LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
             {
@@ -53,7 +53,8 @@ internal static class MortgageExtensions
         {
             PartnerId = (int)(eLoan.PartnerId ?? default),
             BranchConsultantId = eLoan.PobockaObsluhyId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PobockaObsluhyId),
-            ThirdPartyConsultantId = eLoan.PoradceId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PoradceId),
+            CaseOwnerUserCurrentId = eLoan.PoradceId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PoradceId),
+            CaseOwnerUserOrigId = eLoan.PoradceOrigId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PoradceOrigId),
             ContractNumber = eLoan.CisloSmlouvy,
             LoanAmount = eLoan.VyseUveru,
             LoanInterestRate = eLoan.RadnaSazba,
