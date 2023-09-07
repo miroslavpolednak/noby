@@ -613,17 +613,17 @@ internal partial class CodebookService
     public override Task<GenericCodebookResponse> CovenantTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 
-    public override Task<SigningMethodsForNaturalPersonResponse> SigningMethodsForNaturalPerson(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-    {
-        return Task.FromResult(new SigningMethodsForNaturalPersonResponse()); // co to ma vracet?
-    }
-
     private readonly Database.DatabaseAggregate _db;
     private readonly ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient _acvEnumService;
+    private readonly ExternalServices.RDM.V1.IRDMClient _rdmClient;
 
-    public CodebookService(Database.DatabaseAggregate db, ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient acvEnumService)
+    public CodebookService(
+        Database.DatabaseAggregate db,
+        ExternalServices.RDM.V1.IRDMClient rdmClient,
+        ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient acvEnumService)
     {
         _db = db;
         _acvEnumService = acvEnumService;
+        _rdmClient = rdmClient;
     }
 }
