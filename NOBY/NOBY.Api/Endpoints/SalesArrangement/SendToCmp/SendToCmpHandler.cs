@@ -9,6 +9,7 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using Google.Protobuf.WellKnownTypes;
 using NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 using NOBY.Api.Endpoints.SalesArrangement.SendToCmp.Dto;
 using System.Threading;
@@ -108,21 +109,9 @@ internal sealed class SendToCmpHandler
         var sections = await _mediator.Send(new GetFlowSwitchesRequest(salesArrangementId), cancellationToken);
 
         // HFICH-3630
-        if (salesArrangementCategory == 1 && !isSet(FlowSwitches.IsOfferGuaranteed))
+        if (salesArrangementCategory == 1 && flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed && t.Value))
         {
             throw new NobyValidationException(90016);
-        }
-
-        // HFICH-5191
-        if (salesArrangementCategory == 1 && isSet(FlowSwitches.IsOfferWithDiscount) && isSet(FlowSwitches.IsWflTaskForIPApproved, false))
-        {
-            throw new NobyValidationException(90018);
-        }
-
-        if (!everySectionIsCompleted(sections.ModelationSection, sections.IndividualPriceSection, sections.HouseholdSection,
-                                     sections.ParametersSection, sections.SigningSection, sections.ScoringSection, sections.EvaluationSection))
-        {
-            throw new NobyValidationException(90001, "Some sections are not completed");
         }
 
         // HFICH-8011
@@ -130,13 +119,6 @@ internal sealed class SendToCmpHandler
         {
             throw new NobyValidationException(90001, "SendButton.IsActive is false");
         }
-
-        bool isSet(FlowSwitches flowSwitch, bool value = true)
-            => flowSwitches.Any(t => t.FlowSwitchId == (int)flowSwitch && t.Value == value);
-
-        bool everySectionIsCompleted(params GetFlowSwitchesResponseItem[] switches) =>
-            switches.Where(x => x.IsActive)
-                    .All(x => x.IsCompleted || ReferenceEquals(x, sections.EvaluationSection) && flowSwitches.Any(f => f.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && !f.Value));
     }
 
     private async Task ValidateSalesArrangement(int salesArrangementId, bool ignoreWarnings, CancellationToken cancellationToken)
