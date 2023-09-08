@@ -156,11 +156,15 @@ internal sealed class SalesArrangementService
 
     public async Task<List<FlowSwitch>> GetFlowSwitches(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        return (await _service.GetFlowSwitchesAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId
-            }, cancellationToken: cancellationToken)).FlowSwitches.ToList();
+        if (_cacheGetFlowSwitches is null || _cacheGetFlowSwitchesId != salesArrangementId)
+        {
+            _cacheGetFlowSwitches = (await _service.GetFlowSwitchesAsync(
+                new()
+                {
+                    SalesArrangementId = salesArrangementId
+                }, cancellationToken: cancellationToken)).FlowSwitches.ToList();
+        }
+        return _cacheGetFlowSwitches;
     }
 
     public async Task SetFlowSwitches(int salesArrangementId, List<EditableFlowSwitch> flowSwitches, CancellationToken cancellationToken = default)
@@ -203,6 +207,8 @@ internal sealed class SalesArrangementService
         _cacheGetSalesArrangement = null;
     }
 
+    private List<FlowSwitch> _cacheGetFlowSwitches;
+    private int? _cacheGetFlowSwitchesId;
     private SalesArrangement? _cacheGetSalesArrangement;
     private ValidateSalesArrangementIdResponse? _cacheValidateSalesArrangementId;
 

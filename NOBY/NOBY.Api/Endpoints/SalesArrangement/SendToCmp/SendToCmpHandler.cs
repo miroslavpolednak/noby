@@ -105,6 +105,7 @@ internal sealed class SendToCmpHandler
     private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)
     {
         var flowSwitches = await _salesArrangementService.GetFlowSwitches(salesArrangementId, cancellationToken);
+        var sections = await _mediator.Send(new GetFlowSwitchesRequest(salesArrangementId), cancellationToken);
 
         // HFICH-3630
         if (salesArrangementCategory == 1 && !isSet(FlowSwitches.IsOfferGuaranteed))
@@ -118,18 +119,22 @@ internal sealed class SendToCmpHandler
             throw new NobyValidationException(90018);
         }
 
-        var sections = await _mediator.Send(new GetFlowSwitchesRequest(salesArrangementId), cancellationToken);
-
-        if (!EverySectionIsCompleted(sections.ModelationSection, sections.IndividualPriceSection, sections.HouseholdSection,
+        if (!everySectionIsCompleted(sections.ModelationSection, sections.IndividualPriceSection, sections.HouseholdSection,
                                      sections.ParametersSection, sections.SigningSection, sections.ScoringSection, sections.EvaluationSection))
         {
             throw new NobyValidationException(90001, "Some sections are not completed");
         }
 
+        // HFICH-8011
+        if (!sections.SendButton.IsActive)
+        {
+            throw new NobyValidationException(90001, "SendButton.IsActive is false");
+        }
+
         bool isSet(FlowSwitches flowSwitch, bool value = true)
             => flowSwitches.Any(t => t.FlowSwitchId == (int)flowSwitch && t.Value == value);
 
-        bool EverySectionIsCompleted(params GetFlowSwitchesResponseItem[] switches) =>
+        bool everySectionIsCompleted(params GetFlowSwitchesResponseItem[] switches) =>
             switches.Where(x => x.IsActive)
                     .All(x => x.IsCompleted || ReferenceEquals(x, sections.EvaluationSection) && flowSwitches.Any(f => f.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && !f.Value));
     }
