@@ -15,7 +15,7 @@ message InputParameters {
 
 	google.protobuf.Int32Value UserId = 4;
 
-	cis.types.Identity CustomerIdentity = 5;
+	repeated cis.types.Identity CustomerIdentities = 5;
 
 	google.protobuf.BoolValue IsDocumentFinal = 6;
 

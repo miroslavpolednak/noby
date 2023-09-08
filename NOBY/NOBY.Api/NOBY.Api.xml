@@ -4173,13 +4173,19 @@
             <example>Tvrdí, že není politicky exponovaná osoba, ale já myslím, že je.</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstateTypeId">
-            <example>1</example>
+            <summary>
+            Typ nemovitosti
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.IsCollateral">
-            <example>false</example>
+            <summary>
+            Slouží k zajištění
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstatePurchaseTypeId">
-            <example>1</example>
+            <summary>
+            Účel pořízení nemovitosti
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.Applicant">
             <summary>
@@ -4399,21 +4405,6 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanPurposeItem.Sum">
             <summary>
             Výše úvěru pro zvolený účel v Kč
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItemExtended.RealEstateTypeId">
-            <summary>
-            Typ nemovitosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItemExtended.IsCollateral">
-            <summary>
-            Slouží k zajištění
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItemExtended.RealEstatePurchaseTypeId">
-            <summary>
-            Účel pořízení nemovitosti
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.CollateralIdentification.RealEstateIdentification">

@@ -9,7 +9,7 @@ import "Identity.proto";
 import "GrpcDecimal.proto";
 
 message SalesArrangementParametersDrawing {
-	cis.types.Identity Applicant = 1;
+	repeated cis.types.Identity Applicant = 1;
 	SalesArrangementParametersDrawingAgent Agent = 2;
 	SalesArrangementParametersDrawingRepaymentAccount RepaymentAccount = 3;
 	repeated SalesArrangementParametersDrawingPayoutList PayoutList = 4;

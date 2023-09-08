@@ -34,7 +34,7 @@ internal class DrawingFormData : AggregatedData
     {
         var customers = await _productService.GetCustomersOnProduct(SalesArrangement.CaseId, cancellationToken);
 
-        _applicantIdentities = customers.Customers.First(c => c.CustomerIdentifiers.Contains(SalesArrangement.Drawing.Applicant)).CustomerIdentifiers;
+        _applicantIdentities = customers.Customers.First(c => c.CustomerIdentifiers.Contains(SalesArrangement.Drawing.Applicant.GetIdentity(Identity.Types.IdentitySchemes.Kb))).CustomerIdentifiers;
     }
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)

@@ -8,7 +8,7 @@ public sealed class ParametersDrawing
     /// <summary>
     /// Žadatel o čerpání
     /// </summary>
-    public CIS.Foms.Types.CustomerIdentity? Applicant { get; set; }
+    public List<CIS.Foms.Types.CustomerIdentity>? Applicant { get; set; }
 
     /// <summary>
     /// Zmocněná osoba

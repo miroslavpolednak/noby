@@ -10,14 +10,6 @@ namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 internal sealed class UpdateParametersHandler
     : IRequestHandler<UpdateParametersRequest>
 {
-    private static TModel? deserializeModel<TModel>(in string dataString)
-        where TModel : class
-    {
-        if (string.IsNullOrEmpty(dataString)) return null;
-
-        return System.Text.Json.JsonSerializer.Deserialize<TModel>(dataString, _jsonSerializerOptions);
-    }
-
     public async Task Handle(UpdateParametersRequest request, CancellationToken cancellationToken)
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
@@ -35,51 +27,45 @@ internal sealed class UpdateParametersHandler
 
         if (request.Parameters is not null)
         {
-            string dataString = ((System.Text.Json.JsonElement)request.Parameters).GetRawText();
-
             switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)
             {
                 case SalesArrangementTypes.Mortgage:
-                    var realEstateTypes = await _codebookService.RealEstateTypes(cancellationToken);
-                    updateRequest.Mortgage = deserializeModel<_dto.ParametersMortgage>(dataString)
-                        ?.Validate(realEstateTypes)
+                    updateRequest.Mortgage = (await _helper.DeserializeAndValidate<_dto.ParametersMortgage>(request.Parameters, saInstance))
                         ?.ToDomainService(saInstance.Mortgage);
                     break;
 
                 case SalesArrangementTypes.Drawing:
-                    updateRequest.Drawing = deserializeModel<_dto.ParametersDrawing>(dataString)
+                    updateRequest.Drawing = (await _helper.DeserializeAndValidate<_dto.ParametersDrawing>(request.Parameters, saInstance))
                         ?.ToDomainService();
                     break;
 
                 case SalesArrangementTypes.GeneralChange:
-                    updateRequest.GeneralChange = deserializeModel<Dto.GeneralChangeUpdate>(dataString)
+                    updateRequest.GeneralChange = (await _helper.DeserializeAndValidate<Dto.GeneralChangeUpdate>(request.Parameters, saInstance))
                         ?.ToDomainService(saInstance.GeneralChange);
                     break;
 
                 case SalesArrangementTypes.HUBN:
-                    var realEstateTypes2 = await _codebookService.RealEstateTypes(cancellationToken);
-                    updateRequest.HUBN = deserializeModel<Dto.HUBNUpdate>(dataString)
-                        ?.Validate(realEstateTypes2)
+                    updateRequest.HUBN = (await _helper.DeserializeAndValidate<Dto.HUBNUpdate>(request.Parameters, saInstance))
                         ?.ToDomainService(saInstance.HUBN);
                     break;
 
                 case SalesArrangementTypes.CustomerChange:
-                    updateRequest.CustomerChange = deserializeModel<Dto.CustomerChangeUpdate>(dataString)
+                    updateRequest.CustomerChange = (await _helper.DeserializeAndValidate<Dto.CustomerChangeUpdate>(request.Parameters, saInstance))
                         ?.ToDomainService(saInstance.CustomerChange);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602A:
-                    updateRequest.CustomerChange3602A = deserializeModel<Dto.CustomerChange3602Update>(dataString)
+                    updateRequest.CustomerChange3602A = (await _helper.DeserializeAndValidate<Dto.CustomerChange3602Update>(request.Parameters, saInstance))
                         ?.ToDomainService(saInstance.CustomerChange3602A);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602B:
-                    updateRequest.CustomerChange3602B = deserializeModel<Dto.CustomerChange3602Update>(dataString)
+                    updateRequest.CustomerChange3602B = (await _helper.DeserializeAndValidate<Dto.CustomerChange3602Update>(request.Parameters, saInstance))
                         ?.ToDomainService(saInstance.CustomerChange3602B);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602C:
-                    updateRequest.CustomerChange3602C = deserializeModel<Dto.CustomerChange3602Update>(dataString)
+                    updateRequest.CustomerChange3602C = (await _helper.DeserializeAndValidate<Dto.CustomerChange3602Update>(request.Parameters, saInstance))
                         ?.ToDomainService(saInstance.CustomerChange3602C);
                     break;
 
@@ -133,12 +119,6 @@ internal sealed class UpdateParametersHandler
         }, cancellationToken);
     }
 
-    static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
-    {
-        NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
-        PropertyNameCaseInsensitive = true
-    };
-
     private static int[] _disallowedStates = new[]
     {
         (int)SalesArrangementStates.Cancelled,
@@ -146,15 +126,18 @@ internal sealed class UpdateParametersHandler
         (int)SalesArrangementStates.InApproval
     };
 
+    private readonly UpdateParametersHelper _helper;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
 
     public UpdateParametersHandler(
+        UpdateParametersHelper helper,
         ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
         IDocumentOnSAServiceClient documentOnSaService)
     {
+        _helper = helper;
         _codebookService = codebookService;
         _documentOnSaService = documentOnSaService;
         _salesArrangementService = salesArrangementService;
