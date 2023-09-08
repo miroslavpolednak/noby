@@ -25,21 +25,19 @@ public class StartSigningServiceRequestsTests : IntegrationTestBase
     public StartSigningServiceRequestsTests(WebApplicationFactoryFixture<Program> fixture) : base(fixture)
     {
         //Mocks default
-        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new SalesArrangement
+        var sa = new SalesArrangement
         {
             SalesArrangementId = 1,
             State = 1,
             CaseId = 2,
-            SalesArrangementTypeId = 6, // Service request
-            Drawing = new()
-            {
-                Applicant = new()
-                {
-                    IdentityId = 1,
-                    IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb,
-                }
-            }
+            SalesArrangementTypeId = 6 // Service request
+        };
+        sa.Drawing.Applicant.Add(new Identity()
+        {
+            IdentityId = 1,
+            IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb,
         });
+        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(sa);
 
         var resp = new GetDocumentDataResponse
         {
@@ -153,21 +151,19 @@ public class StartSigningServiceRequestsTestsPart2 : IntegrationTestBase
     public StartSigningServiceRequestsTestsPart2(WebApplicationFactoryFixture<Program> fixture) : base(fixture)
     {
         //Mocks default
-        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new SalesArrangement
+        var sa = new SalesArrangement
         {
             SalesArrangementId = 1,
             State = 1,
             CaseId = 2,
-            SalesArrangementTypeId = 6, // Service request
-            Drawing = new()
-            {
-                Applicant = new()
-                {
-                    IdentityId = 1,
-                    IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb,
-                }
-            }
+            SalesArrangementTypeId = 6 // Service request
+        };
+        sa.Drawing.Applicant.Add(new Identity()
+        {
+            IdentityId = 1,
+            IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb,
         });
+        ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(sa);
 
         var resp = new GetDocumentDataResponse
         {
