@@ -4,6 +4,7 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using NOBY.Infrastructure.Security.Attributes;
@@ -75,16 +76,39 @@ public sealed class CaseOwnerValidationMiddleware
 
             if (caseId.HasValue)
             {
-                int? ownerUserId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.Case) switch
+                var caseInstance = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.Case) switch
                 {
-                    true => (await caseService.GetCaseDetail(caseId.Value, cancellationToken)).CaseOwner.UserId,
-                    false => (await caseService.ValidateCaseId(caseId.Value, true, cancellationToken)).OwnerUserId
+                    true => await getCaseDataFromDetail(),
+                    false => await getCaseDataFromValidate()
                 };
 
-                if (currentUser.User!.Id != ownerUserId && !currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
+                // vidi vlastni Case nebo ma pravo videt vse
+                if (currentUser.User!.Id != caseInstance.OwnerUserId && !currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
                 {
                     throw new CisAuthorizationException("CaseOwnerValidation: user is not owner of the Case or does not have DASHBOARD_AccessAllCases permission");
                 }
+
+                // zakazane stavy Case
+                if (caseInstance.CaseState is 6 or 7)
+                {
+                    throw new CisAuthorizationException($"CaseOwnerValidation: Case state is {caseInstance.CaseState}");
+                }
+                else if (caseInstance.CaseState is 5 && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
+                {
+                    throw new CisAuthorizationException($"CaseOwnerValidation: CASE_ViewAfterDrawing missing");
+                }
+            }
+
+            async Task<(int OwnerUserId, int CaseState)> getCaseDataFromDetail()
+            {
+                var instance = await caseService.GetCaseDetail(caseId!.Value, cancellationToken);
+                return (instance.CaseOwner.UserId, instance.State);
+            }
+
+            async Task<(int OwnerUserId, int CaseState)> getCaseDataFromValidate()
+            {
+                var instance = await caseService.ValidateCaseId(caseId!.Value, true, cancellationToken);
+                return (instance.OwnerUserId!.Value, instance.State!.Value);
             }
         }
 
