@@ -82,19 +82,19 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
         if (valuationDetail.CaseId != request.CaseId)
-            throw new CisAuthorizationException("The requested RealEstateValuation is not assigned to the requested Case");
+            throw new NobyValidationException(90032, "The requested RealEstateValuation is not assigned to the requested Case");
 
         if (valuationDetail.ValuationStateId is not (6 or 7))
-            throw new CisAuthorizationException("The valuation has bad state");
+            throw new NobyValidationException(90032, "The valuation has bad state");
 
         if (caseInstance.State == (int)CaseStates.InProgress && request.LoanPurposeDetails is not null)
         {
-            throw new CisAuthorizationException("The LoanPurposeDetails has to be null when the case is in progress");
+            throw new NobyValidationException(90032, "The LoanPurposeDetails has to be null when the case is in progress");
         }
 
         if (caseInstance.State == (int)CaseStates.InProgress && request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate)
         {
-            throw new CisAuthorizationException("request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate");
+            throw new NobyValidationException(90032, "request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate");
         }
 
         var variant = RealEstateVariantHelper.GetRealEstateVariant(valuationDetail.RealEstateTypeId);

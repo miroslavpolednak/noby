@@ -49,7 +49,7 @@ internal sealed class GetMortgageHandler
             .Select(t => new LoanRealEstate
             {
                 RealEstatePurchaseTypeId = t.UcelKod,
-                RealEstateTypeId = t.NemovitostId
+                RealEstateTypeId = Convert.ToInt32(t.NemovitostId)
             })
             .ToList();
 

@@ -28,12 +28,12 @@ public static class InputParametersExtensions
         throw new ArgumentNullException(nameof(InputParameters.CaseId), InputParameterNullMessage);
     }
 
-    public static void ValidateCustomerIdentity(this InputParameters inputParameters)
+    public static void ValidateCustomerIdentities(this InputParameters inputParameters)
     {
-        if (inputParameters.CustomerIdentity is not null)
+        if (inputParameters.CustomerIdentities.Any())
             return;
 
-        throw new ArgumentNullException(nameof(InputParameters.CustomerIdentity), InputParameterNullMessage);
+        throw new InvalidOperationException($"{nameof(inputParameters.CustomerIdentities)} - Sequence contains no elements");
     }
 
     public static void ValidateUserId(this InputParameters inputParameters)

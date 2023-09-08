@@ -41,7 +41,8 @@ public sealed class ErrorCodeMapper
             { 90031, new("Chybí nemovitost k ocenění", "Je potřeba doplnit LV s alespoň jednou nemovitostí označenou k ocenění.") },
             { 90032, new("Nepovolená operace", "Vámi požadovaná operace není se zadanými parametry povolena.") },
             { 90033, new("Žadatel nenalezen na daném obchodním případu.") },
-            { 90034, new("<Chyba simulace z DS>") }
+            { 90034, new("<Chyba simulace z DS>") },
+            { 90035, new("Nepodařilo se stáhnout LV z katastru nemovitostí", "Je nám líto, ale v tuto chvíli se nedaří stáhnout požadovaný LV z katastru nemovitostí. Opakujte prosím akci později. Pokud se operace nezdaří do tří pracovních dnů, kontaktujte prosím zpracovatele.") }
         };
 
         Messages = messages.AsReadOnly();

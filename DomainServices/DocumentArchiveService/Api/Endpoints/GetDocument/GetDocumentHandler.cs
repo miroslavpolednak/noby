@@ -1,4 +1,5 @@
-﻿using DomainServices.DocumentArchiveService.Api.Mappers;
+﻿using DomainServices.DocumentArchiveService.Api.Database;
+using DomainServices.DocumentArchiveService.Api.Mappers;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1;
 using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Model;
@@ -7,6 +8,8 @@ using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Clients;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Model;
 using Google.Protobuf;
 using Ixtent.ContentServer.ExtendedServices.Model.WebService;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocument;
 
@@ -17,31 +20,68 @@ internal sealed class GetDocumentHandler : IRequestHandler<GetDocumentRequest, G
     private readonly IDocumentServiceRepository _documentServiceRepository;
     private readonly ITcpClient _tcpClient;
     private readonly IDocumentMapper _documentMapper;
+    private readonly ILogger<GetDocumentHandler> _logger;
+    private readonly DocumentArchiveDbContext _dbContext;
 
     public GetDocumentHandler(
         ISdfClient sdfClient,
         IDocumentServiceRepository documentServiceRepository,
         ITcpClient tcpClient,
-        IDocumentMapper documentMapper)
+        IDocumentMapper documentMapper,
+        ILogger<GetDocumentHandler> logger,
+        DocumentArchiveDbContext dbContext)
     {
         _sdfClient = sdfClient;
         _documentServiceRepository = documentServiceRepository;
         _tcpClient = tcpClient;
         _documentMapper = documentMapper;
+        _logger = logger;
+        _dbContext = dbContext;
     }
 
     public async Task<GetDocumentResponse> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
     {
-        if (request.DocumentId.StartsWith(DocumentPrefix, StringComparison.InvariantCultureIgnoreCase))
+        try
         {
-            var cspResponse = await LoadFromCspArchive(request, cancellationToken);
-            return MapCspResponse(cspResponse);
+            if (request.DocumentId.StartsWith(DocumentPrefix, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var cspResponse = await LoadFromCspArchive(request, cancellationToken);
+                return MapCspResponse(cspResponse);
+            }
+            else
+            {
+                var tcpResult = await LoadFromTcpArchive(request, cancellationToken);
+                return await MapTcpResponse(tcpResult, request, cancellationToken);
+            }
         }
-        else
+        catch (Exception exp) when (request.GetLocalCopyAsBackup)
         {
-            var tcpResult = await LoadFromTcpArchive(request, cancellationToken);
-            return await MapTcpResponse(tcpResult, request, cancellationToken);
+            _logger.LogError(exp, exp.Message);
+            return await TryFindDocumentInQueue(request, cancellationToken);
         }
+    }
+
+    private async Task<GetDocumentResponse> TryFindDocumentInQueue(GetDocumentRequest request, CancellationToken cancellationToken)
+    {
+        var docFromQueue = await _dbContext.DocumentInterface
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(d => d.DocumentId == request.DocumentId, cancellationToken)
+                  ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentWithEArchiveIdNotExistInQueue);
+
+        var response = new GetDocumentResponse
+        {
+            Metadata = _documentMapper.MapEntityDocumentMetadata(docFromQueue),
+            Content = new()
+        };
+
+        if (request.WithContent)
+        {
+            response.Content.BinaryData = ByteString.CopyFrom(docFromQueue.DocumentData);
+        }
+
+        _ = new FileExtensionContentTypeProvider().TryGetContentType(docFromQueue.FileName, out var mimeType);
+        response.Content.MineType = mimeType ?? "application/octet-stream";
+        return response;
     }
 
     private async Task<GetDocumentResponse> MapTcpResponse(DocumentServiceQueryResult tcpResult, GetDocumentRequest request, CancellationToken cancellationToken)
@@ -49,7 +89,7 @@ internal sealed class GetDocumentHandler : IRequestHandler<GetDocumentRequest, G
         var response = new GetDocumentResponse
         {
             Metadata = _documentMapper.MapTcpDocumentMetadata(tcpResult),
-            Content = new Contracts.FileInfo()
+            Content = new()
         };
 
         if (request.WithContent)
@@ -66,7 +106,7 @@ internal sealed class GetDocumentHandler : IRequestHandler<GetDocumentRequest, G
         var response = new GetDocumentResponse
         {
             Metadata = _documentMapper.MapSdfDocumentMetadata(cspResponse.Metadata),
-            Content = new Contracts.FileInfo()
+            Content = new()
         };
 
         if (cspResponse.FileContent is not null)

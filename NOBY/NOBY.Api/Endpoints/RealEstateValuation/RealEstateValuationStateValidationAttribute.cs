@@ -74,7 +74,7 @@ internal sealed class RealEstateValuationStateValidationAttribute
             // spatny stav REV
             if (_valuationStateId.Length > 0 && !_valuationStateId.Contains(instance.ValuationStateId.GetValueOrDefault()))
             {
-                throw new CisAuthorizationException("ValuationState check failed");
+                throw new NobyValidationException(90032, "ValuationState check failed");
             }
         }
     }

@@ -53,7 +53,7 @@ internal sealed class RealCremClient
             // jestlize ani v posledni iteraci neprisel pozadovany status, je to maler
             if (i == _requestNewDocumentIterations)
             {
-                throw new CisExtServiceValidationException("Can not obtaion WAITING_FOR_PRICE_CONFIRMATION document status");
+                throw new CisExtServiceValidationException(1, "Can not obtaion WAITING_FOR_PRICE_CONFIRMATION document status");
             }
 
             Thread.Sleep(_requestNewDocumentTimeout * i);

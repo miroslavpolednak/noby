@@ -10,7 +10,7 @@ import "GrpcDate.proto";
 import "Identity.proto";
 
 message SalesArrangementParametersHUBN {
-	cis.types.Identity Applicant = 1;
+	repeated cis.types.Identity Applicant = 1;
 	LoanAmountObject LoanAmount = 2;
 	repeated LoanPurposeItem LoanPurposes = 3;
 	repeated LoanRealEstateItem LoanRealEstates = 4;
@@ -35,7 +35,7 @@ message SalesArrangementParametersHUBN {
 	}
 
 	message LoanRealEstateItem {
-		int64 RealEstateTypeId = 1;
+		int32 RealEstateTypeId = 1;
 		int32 RealEstatePurchaseTypeId = 2;
 		bool IsCollateral = 3;
 	}

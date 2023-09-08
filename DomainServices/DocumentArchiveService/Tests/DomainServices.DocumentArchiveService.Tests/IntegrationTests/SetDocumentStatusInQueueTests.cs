@@ -23,7 +23,7 @@ public class SetDocumentStatusInQueueTests : IntegrationTestBase
             await client.SetDocumentStatusInQueueAsync(new() { EArchivId = "NotExist", StatusInQueue = 302 }, default);
         };
 
-        await act.Should().ThrowAsync<CisNotFoundException>().WithMessage(ErrorCodeMapper.GetMessage(ErrorCodeMapper.DocumentWithEArchiveIdNotExist));
+        await act.Should().ThrowAsync<CisNotFoundException>().WithMessage(ErrorCodeMapper.GetMessage(ErrorCodeMapper.DocumentWithEArchiveIdNotExistInQueue));
     }
 
     [Fact]

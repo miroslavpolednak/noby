@@ -17,7 +17,7 @@ public class SetDocumentStatusInQueueHandler : IRequestHandler<SetDocumentStatus
     public async Task<Empty> Handle(SetDocumentStatusInQueueRequest request, CancellationToken cancellationToken)
     {
         var document = await _dbContext.DocumentInterface.FirstOrDefaultAsync(d => d.DocumentId == request.EArchivId, cancellationToken)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentWithEArchiveIdNotExist);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentWithEArchiveIdNotExistInQueue);
 
         document.Status = request.StatusInQueue!.Value;
 

@@ -46,7 +46,7 @@ public sealed class CreateTaskRequest
     /// ID objednávky ocenění, pokud se vytváří konzultace "Dotaz k ocenění" nebo "Vyhotovení zprávy o stavu výstavby"
     /// </summary>
     /// <example>123455</example>
-    public long? OrderId { get; set; }
+    public int? OrderId { get; set; }
 
     public List<NOBY.Dto.Documents.DocumentInformation>? Attachments { get; set; }
 }

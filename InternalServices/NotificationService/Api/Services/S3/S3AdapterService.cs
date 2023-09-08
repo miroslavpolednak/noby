@@ -1,5 +1,7 @@
-﻿using Amazon.S3;
+﻿using System.Globalization;
+using Amazon.S3;
 using Amazon.S3.Model;
+using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.S3;
@@ -7,10 +9,12 @@ namespace CIS.InternalServices.NotificationService.Api.Services.S3;
 public class S3AdapterService : IS3AdapterService
 {
     private readonly IAmazonS3 _s3Client;
+    private readonly S3Configuration _s3Configuration;
 
-    public S3AdapterService(IAmazonS3 s3Client)
+    public S3AdapterService(IAmazonS3 s3Client, S3Configuration s3Configuration)
     {
         _s3Client = s3Client;
+        _s3Configuration = s3Configuration;
     }
     
     public async Task<string> UploadFile(byte [] content, string bucketName, CancellationToken token = default)
@@ -24,6 +28,8 @@ public class S3AdapterService : IS3AdapterService
             Key = key,
             InputStream = memoryStream
         };
+
+        putRequest.Headers["x-emc-retention-period"] = _s3Configuration.RetentionPeriod.ToString(CultureInfo.InvariantCulture);
         
         var putResponse = await _s3Client.PutObjectAsync(putRequest, token);
         

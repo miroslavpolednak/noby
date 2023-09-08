@@ -2,6 +2,7 @@
 using CIS.Infrastructure.Data;
 using DomainServices.CodebookService.Api.Database;
 using DomainServices.CodebookService.ExternalServices.AcvEnumService.V1;
+using DomainServices.CodebookService.ExternalServices.RDM.V1;
 using DomainServices.CodebookService.ExternalServices;
 
 namespace DomainServices.CodebookService.Api;
@@ -29,9 +30,11 @@ internal static class StartupExtensions
         });
 
         builder.AddExternalService<IAcvEnumServiceClient>();
+        builder.AddExternalService<IRDMClient>();
 
         return builder;
     }
 
     private const string _sqlQuerySelect = "SELECT SqlQueryId, SqlQueryText, DatabaseProvider FROM dbo.SqlQuery";
 }
+

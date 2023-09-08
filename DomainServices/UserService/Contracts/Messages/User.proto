@@ -50,4 +50,10 @@ message UserInfoObject {
 
 	// Id distribučního kanálu
 	int32 ChannelId = 11;
+
+	// pobočka uživatele
+	google.protobuf.StringValue PersonOrgUnitName = 12;
+	
+	// obchodní společnost uživatele
+	google.protobuf.StringValue DealerCompanyName = 13;
 }
