@@ -51,7 +51,7 @@ internal sealed class CreateProductHandler
             Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value, contractNumberResponse.ContractNumber)
         };
 
-        request.Mortgage.ThirdPartyConsultantId = saInstance.Created.UserId;
+        request.Mortgage.CaseOwnerUserCurrentId = saInstance.Created.UserId;
 
         var result = await _productService.CreateMortgage(request, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);

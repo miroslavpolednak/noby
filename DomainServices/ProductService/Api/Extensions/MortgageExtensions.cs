@@ -1,6 +1,5 @@
 ﻿using DomainServices.ProductService.Contracts;
 using ExternalServices.MpHome.V1.Contracts;
-using Microsoft.EntityFrameworkCore;
 using LoanPurpose = DomainServices.ProductService.Contracts.LoanPurpose;
 
 namespace DomainServices.ProductService.Api;
@@ -31,10 +30,10 @@ internal static class MortgageExtensions
             RepaymentAccountPrefix = mortgage.RepaymentAccount?.Prefix,
             EstimatedDuePaymentDate = mortgage.LoanDueDate,
             RepaymentStartDate = mortgage.FirstAnnuityPaymentDate,
-            ServiceBranchId = mortgage.BranchConsultantId.GetValueOrDefault() == 0 ? null : mortgage.BranchConsultantId,
-            ConsultantId = mortgage.ThirdPartyConsultantId.GetValueOrDefault() == 0 ? null : mortgage.ThirdPartyConsultantId,
+            ServiceBranchId = mortgage.BranchConsultantId,
+            ConsultantId = mortgage.CaseOwnerUserCurrentId,
             FirstRequestSignDate = mortgage.FirstSignatureDate,
-            LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
+            LoanPurposes = mortgage.LoanPurposes?.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
             {
                 Amount = Convert.ToDouble((decimal)t.Sum),
                 LoanPurposeId = t.LoanPurposeId
@@ -52,12 +51,9 @@ internal static class MortgageExtensions
         var mortgage = new MortgageData
         {
             PartnerId = (int)(loan.PartnerId ?? default),
-            BranchConsultantId = loan.BranchConsultantId.GetValueOrDefault() == 0
-                ? null
-                : Convert.ToInt32(loan.BranchConsultantId),
-            ThirdPartyConsultantId = loan.ThirdPartyConsultantId.GetValueOrDefault() == 0
-                ? null
-                : Convert.ToInt32(loan.ThirdPartyConsultantId),
+            BranchConsultantId = loan.BranchConsultantId,
+            CaseOwnerUserCurrentId = loan.CaseOwnerUserCurrentId,
+            CaseOwnerUserOrigId = loan.CaseOwnerUserOrigId,
             ContractNumber = loan.ContractNumber,
             LoanAmount = loan.LoanAmount,
             LoanInterestRate = loan.LoanInterestRate,

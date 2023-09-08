@@ -13,7 +13,8 @@ internal class Loan
 	public int LoanKindId { get; set; }
 	public DateTime? ExpectedDateOfDrawing { get; set; }
 	public DateTime? FirstSignatureDate { get; set; }
-	public long? ThirdPartyConsultantId { get; set; }
+	public long? CaseOwnerUserCurrentId { get; set; }
+	public long? CaseOwnerUserOrigId { get; set; }
 	public decimal? AvailableForDrawing { get; set; }
 	public decimal? CurrentAmount { get; set; }
 	public DateTime? DrawingDateTo { get; set; }
