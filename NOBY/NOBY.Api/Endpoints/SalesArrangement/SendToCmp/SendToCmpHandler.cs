@@ -9,10 +9,8 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using Google.Protobuf.WellKnownTypes;
 using NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 using NOBY.Api.Endpoints.SalesArrangement.SendToCmp.Dto;
-using System.Threading;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CreateCustomerRequest = DomainServices.CustomerService.Contracts.CreateCustomerRequest;
 using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
@@ -109,7 +107,7 @@ internal sealed class SendToCmpHandler
         var sections = await _mediator.Send(new GetFlowSwitchesRequest(salesArrangementId), cancellationToken);
 
         // HFICH-3630
-        if (salesArrangementCategory == 1 && flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed && t.Value))
+        if (salesArrangementCategory == 1 && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed && t.Value))
         {
             throw new NobyValidationException(90016);
         }
