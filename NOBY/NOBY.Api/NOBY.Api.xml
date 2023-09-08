@@ -1817,16 +1817,10 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.ValidateFormId(System.Int64,NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Threading.CancellationToken)">
             <summary>
-            If formId exist on DocumentOnSa, return EArchiveId from documentOnSa
+            If formId exist on DocumentOnSa, return DocumentOnSAId (for EArchivIdsLinked), if not throw exp
             </summary>
             <returns>DocumentOnSa.DocumentOnSAId</returns>
             <exception cref="T:CIS.Core.Exceptions.CisValidationException">Unable to upload file for selected FormId</exception>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentToArchiveHandler.CheckIfExistFormIdOnDocumentOnSa(NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.DocumentsInformation,System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            This method try to find formId on DocumentOnsa for all salesarragment under the Case
-            </summary>
-            <returns>SalesArrangementId from DocumentOnSa for FormId</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentsSignList(System.Int32,System.Threading.CancellationToken)">
              <summary>
