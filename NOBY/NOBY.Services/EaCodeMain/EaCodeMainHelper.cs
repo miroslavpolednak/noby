@@ -1,20 +1,7 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.v1;
 using NOBY.Infrastructure.ErrorHandling;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NOBY.Services.EaCodeMain;
-
-public interface IEaCodeMainHelper
-{
-    Task ValidateEaCodeMain(int eCodeMainId, CancellationToken cancellationToken);
-
-    Task<List<int>> GetDocumentTypeIdsAccordingEaCodeMain(int eCodeMainId, CancellationToken cancellationToken);
-}
 
 [ScopedService, AsImplementedInterfacesService]
 public class EaCodeMainHelper : IEaCodeMainHelper
