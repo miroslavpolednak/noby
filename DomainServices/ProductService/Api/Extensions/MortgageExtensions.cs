@@ -52,9 +52,9 @@ internal static class MortgageExtensions
         var mortgage = new MortgageData
         {
             PartnerId = (int)(eLoan.PartnerId ?? default),
-            BranchConsultantId = eLoan.PobockaObsluhyId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PobockaObsluhyId),
-            CaseOwnerUserCurrentId = eLoan.PoradceId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PoradceId),
-            CaseOwnerUserOrigId = eLoan.PoradceOrigId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PoradceOrigId),
+            BranchConsultantId =  eLoan.PobockaObsluhyId,
+            CaseOwnerUserCurrentId =  eLoan.PoradceId,
+            CaseOwnerUserOrigId = eLoan.PoradceOrigId,
             ContractNumber = eLoan.CisloSmlouvy,
             LoanAmount = eLoan.VyseUveru,
             LoanInterestRate = eLoan.RadnaSazba,
