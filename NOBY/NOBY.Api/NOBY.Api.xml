@@ -1919,6 +1919,17 @@
             <param name="salesArrangementId"></param>
             <param name="request"></param>
         </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSaOnCase(System.Int64,NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase.SearchDocumentsOnSaOnCaseRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vyhledání dokumentů na všech žádostech daného Case dle EACode
+            </summary>
+            <remarks>
+            Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=85D55F65-BA7A-4d86-8E2B-523EA1918A0A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+            </remarks>
+            <param name="caseId"></param>
+            <param name="request"></param>
+        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.RefreshElectronicDocument(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Aktualizace stavu dokumentu
