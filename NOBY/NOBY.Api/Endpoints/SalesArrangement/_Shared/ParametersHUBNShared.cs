@@ -16,24 +16,6 @@ public sealed class LoanPurposeItem
     public decimal Sum { get; set; }
 }
 
-public sealed class LoanRealEstateItemExtended
-{
-    /// <summary>
-    /// Typ nemovitosti
-    /// </summary>
-    public long RealEstateTypeId { get; set; }
-
-    /// <summary>
-    /// Slouží k zajištění
-    /// </summary>
-    public bool IsCollateral { get; set; }
-
-    /// <summary>
-    /// Účel pořízení nemovitosti
-    /// </summary>
-    public int RealEstatePurchaseTypeId { get; set; }
-}
-
 public sealed class CollateralIdentification
 {
     /// <summary>

@@ -44,7 +44,7 @@ public sealed class LoanRealEstateItem
     /// <summary>
     /// Typ nemovitosti
     /// </summary>
-    public long RealEstateTypeId { get; set; }
+    public int RealEstateTypeId { get; set; }
 
     /// <summary>
     /// Účel pořízení nemovitosti

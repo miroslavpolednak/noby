@@ -317,16 +317,16 @@ public class StartSigningMapper
         switch (salesArrangement.ParametersCase)
         {
             case SalesArrangement.ParametersOneofCase.Drawing:
-                identities.Add(salesArrangement.Drawing.Applicant);
+                identities.Add(salesArrangement.Drawing.Applicant.First());
                 break;
             case SalesArrangement.ParametersOneofCase.GeneralChange:
-                identities.Add(salesArrangement.GeneralChange.Applicant);
+                identities.Add(salesArrangement.GeneralChange.Applicant.First());
                 break;
             case SalesArrangement.ParametersOneofCase.HUBN:
-                identities.Add(salesArrangement.HUBN.Applicant);
+                identities.Add(salesArrangement.HUBN.Applicant.First());
                 break;
             case SalesArrangement.ParametersOneofCase.CustomerChange:
-                identities.AddRange(salesArrangement.CustomerChange.Applicants.Select(s => s.Identity));
+                identities.AddRange(salesArrangement.CustomerChange.Applicants.SelectMany(s => s.Identity));
                 break;
         }
 

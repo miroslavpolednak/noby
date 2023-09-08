@@ -47,7 +47,7 @@ public class GetEasFormTests : IntegrationTestBase
         {
             sa.Drawing = parameter;
 
-            ProductServiceClient.MockGetCustomersOnProduct(parameter.Applicant);
+            ProductServiceClient.MockGetCustomersOnProduct(parameter.Applicant.First());
         });
 
         var client = CreateGrpcClient();

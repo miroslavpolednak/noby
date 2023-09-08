@@ -10,6 +10,7 @@ using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
+using NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -200,7 +201,31 @@ public class DocumentOnSAController : ControllerBase
     {
         var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId), cancellationToken);
 
-        if (result.FormIds is null || !result.FormIds.Any())
+        if (result.FormIds?.Any() != true)
+            return NoContent();
+
+        return Ok(result);
+    }
+    /// <summary>
+    /// Vyhledání dokumentů na všech žádostech daného Case dle EACode
+    /// </summary>
+    /// <remarks>
+    /// Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=85D55F65-BA7A-4d86-8E2B-523EA1918A0A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+    /// </remarks>
+    /// <param name="caseId"></param>
+    /// <param name="request"></param>
+    [HttpPost("case/{caseId:long}/document-on-sa/search")]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(typeof(SearchDocumentsOnSaOnCaseResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> SearchDocumentsOnSaOnCase(
+         [FromRoute] long caseId,
+         [FromBody] SearchDocumentsOnSaOnCaseRequest request,
+         CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(request.InfuseCaseId(caseId), cancellationToken);
+        if (result.FormIds?.Any() != true)
             return NoContent();
 
         return Ok(result);

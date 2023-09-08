@@ -2,6 +2,7 @@
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
@@ -14,6 +15,7 @@ internal sealed class CreateCustomerHandler
         // vytvorit customera v CM
         long kbId;
         bool isVerified = false;
+        var resultCode = ResultCode.Created;
         try
         {
             var createResult = await _customerService.CreateCustomer(request.ToDomainService(Mandants.Kb), cancellationToken);
@@ -25,6 +27,7 @@ internal sealed class CreateCustomerHandler
         {
             _logger.LogInformation("CreateCustomer: client found {KBID}", ex.Message);
             kbId = long.Parse(ex.Message, System.Globalization.CultureInfo.InvariantCulture);
+            resultCode = ResultCode.Identified;
         }
         // Více klientů
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11024")
@@ -67,7 +70,7 @@ internal sealed class CreateCustomerHandler
 
         // vytvorit response z API
         var model = customerKb
-            .ToResponseDto(isVerified)
+            .ToResponseDto(isVerified, resultCode)
             .InputDataComparison(request);
 
         if (customerOnSA.CustomerRoleId == (int)CustomerRoles.Debtor)

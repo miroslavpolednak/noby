@@ -1695,7 +1695,8 @@
             Seznam dokumentů ke Case-u
             </summary>
             <remarks>
-            Načtení seznamu dokumentů ke Case-u<br />Nevrací se dokumenty s EaCodeMain.IsVisibleForKb=false<br /><br />
+            Načtení seznamu dokumentů ke Case-u<br />Nevrací se dokumenty s EaCodeMain.IsVisibleForKb=false
+            
             <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=25F73554-B9DB-42a4-8CB5-25FC3B3F6902"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks> 
             <param name="caseId">ID Case-u</param>
@@ -1707,6 +1708,8 @@
             </summary>
             <remarks>
             Uložení binárních dat dokumentu do dočasného úložiště.
+            
+            <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=618F9E36-618D-4dc5-A3C6-38626871504C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks> 
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.SaveDocumentsToArchive(System.Int64,NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentsToArchiveRequest)">
@@ -1914,6 +1917,17 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0C28E9E5-7AC1-4265-8342-FCE63B33967F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
             </remarks>
             <param name="salesArrangementId"></param>
+            <param name="request"></param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSaOnCase(System.Int64,NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase.SearchDocumentsOnSaOnCaseRequest,System.Threading.CancellationToken)">
+            <summary>
+            Vyhledání dokumentů na všech žádostech daného Case dle EACode
+            </summary>
+            <remarks>
+            Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=85D55F65-BA7A-4d86-8E2B-523EA1918A0A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+            </remarks>
+            <param name="caseId"></param>
             <param name="request"></param>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.RefreshElectronicDocument(System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -4159,13 +4173,19 @@
             <example>Tvrdí, že není politicky exponovaná osoba, ale já myslím, že je.</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstateTypeId">
-            <example>1</example>
+            <summary>
+            Typ nemovitosti
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.IsCollateral">
-            <example>false</example>
+            <summary>
+            Slouží k zajištění
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateDto.RealEstatePurchaseTypeId">
-            <example>1</example>
+            <summary>
+            Účel pořízení nemovitosti
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawing.Applicant">
             <summary>
@@ -4385,21 +4405,6 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanPurposeItem.Sum">
             <summary>
             Výše úvěru pro zvolený účel v Kč
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItemExtended.RealEstateTypeId">
-            <summary>
-            Typ nemovitosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItemExtended.IsCollateral">
-            <summary>
-            Slouží k zajištění
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.LoanRealEstateItemExtended.RealEstatePurchaseTypeId">
-            <summary>
-            Účel pořízení nemovitosti
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.CollateralIdentification.RealEstateIdentification">
