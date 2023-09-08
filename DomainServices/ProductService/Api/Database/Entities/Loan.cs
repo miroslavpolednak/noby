@@ -40,6 +40,8 @@ internal class Loan
     public DateTime? DatumPodpisuPrvniZadosti { get; set; }
 
     public Int64? PoradceId { get; set; }
+    
+    public Int64? PoradceOrigId { get; set; }
 
     public Int16 TypUveru { get; set; }
 
