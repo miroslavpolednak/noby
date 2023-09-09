@@ -9,7 +9,7 @@ public sealed class HUBNUpdate
     /// <summary>
     /// Identita klienta
     /// </summary>
-    public CustomerIdentity? Applicant { get; set; }
+    public List<CustomerIdentity>? Applicant { get; set; }
 
     /// <summary>
     /// Výše úvěru
@@ -27,7 +27,7 @@ public sealed class HUBNUpdate
     /// Objekty úvěru
     /// </summary>
     [Required]
-    public List<LoanRealEstateItemExtended>? LoanRealEstates { get; set; }
+    public List<LoanRealEstateDto>? LoanRealEstates { get; set; }
 
     /// <summary>
     /// Identifikace zajištění

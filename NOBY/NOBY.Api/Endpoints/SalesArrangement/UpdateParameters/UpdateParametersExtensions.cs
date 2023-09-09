@@ -1,5 +1,4 @@
 ﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CodebookService.Contracts.v1;
 using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -7,45 +6,6 @@ namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
 internal static class UpdateParametersExtensions
 {
-    public static Dto.HUBNUpdate Validate(this Dto.HUBNUpdate model, List<RealEstateTypesResponse.Types.RealEstateTypesResponseItem> realEstateTypes)
-    {
-        if (model.LoanRealEstates?.Any(t => t.IsCollateral) ?? false)
-        {
-            foreach (var estate in model.LoanRealEstates.Where(t => t.IsCollateral))
-            {
-                if (!(realEstateTypes
-                    .FirstOrDefault(t => t.Id == estate.RealEstateTypeId)
-                    ?.Collateral ?? false))
-                {
-                    throw new NobyValidationException(90032);
-                }
-            }
-        }
-        return model;
-    }
-
-    public static ParametersMortgage Validate(this ParametersMortgage model, List<RealEstateTypesResponse.Types.RealEstateTypesResponseItem> realEstateTypes)
-    {
-        if (string.IsNullOrEmpty(model.IncomeCurrencyCode) || string.IsNullOrEmpty(model.ResidencyCurrencyCode))
-        {
-            throw new NobyValidationException(90019);
-        }
-
-        if (model.LoanRealEstates?.Any(t => t.IsCollateral) ?? false)
-        {
-            foreach (var estate in model.LoanRealEstates.Where(t => t.IsCollateral))
-            {
-                if (!(realEstateTypes
-                    .FirstOrDefault(t => t.Id == estate.RealEstateTypeId)
-                    ?.Collateral ?? false))
-                {
-                    throw new NobyValidationException(90032);
-                }
-            }
-        }
-        return model;
-    }
-
     public static _SA.SalesArrangementParametersCustomerChange3602 ToDomainService(this Dto.CustomerChange3602Update parameters, _SA.SalesArrangementParametersCustomerChange3602 originalParameters)
     {
         return new _SA.SalesArrangementParametersCustomerChange3602
@@ -86,7 +46,6 @@ internal static class UpdateParametersExtensions
         {
             DrawingDate = parameters.DrawingDate,
             IsImmediateDrawing = parameters.IsImmediateDrawing,
-            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             RepaymentAccount = parameters.RepaymentAccount is null ? null : new()
             {
                 BankCode = parameters.RepaymentAccount.BankCode,
@@ -107,6 +66,11 @@ internal static class UpdateParametersExtensions
                 }
             }
         };
+
+        if (parameters.Applicant?.Any() ?? false)
+        {
+            model.Applicant.AddRange(parameters.Applicant.Cast<Identity>());
+        }
 
         if (parameters.PayoutList is not null)
             model.PayoutList.AddRange(parameters.PayoutList?.Select(x => new _SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingPayoutList
@@ -130,7 +94,6 @@ internal static class UpdateParametersExtensions
     {
         var model = new _SA.SalesArrangementParametersGeneralChange()
         {
-            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             Collateral = new()
             {
                 IsActive = parameters.Collateral.IsActive,
@@ -198,6 +161,11 @@ internal static class UpdateParametersExtensions
             }
         };
 
+        if (parameters.Applicant?.Any() ?? false)
+        {
+            model.Applicant.AddRange(parameters.Applicant.Cast<Identity>());
+        }
+
         if (parameters.LoanRealEstate?.LoanRealEstates != null)
             model.LoanRealEstate.LoanRealEstates.AddRange(parameters.LoanRealEstate.LoanRealEstates.Select(t => new _SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstatesItem
             {
@@ -212,7 +180,6 @@ internal static class UpdateParametersExtensions
     {
         var model = new _SA.SalesArrangementParametersHUBN()
         {
-            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             CollateralIdentification = new()
             {
                 RealEstateIdentification = parameters.CollateralIdentification?.RealEstateIdentification ?? ""
@@ -245,6 +212,11 @@ internal static class UpdateParametersExtensions
                 GeneralComment = parameters.CommentToChangeRequest?.GeneralComment
             }
         };
+
+        if (parameters.Applicant?.Any() ?? false)
+        {
+            model.Applicant.AddRange(parameters.Applicant.Cast<Identity>());
+        }
 
         if (parameters.LoanPurposes != null)
             model.LoanPurposes.AddRange(parameters.LoanPurposes.Select(t => new _SA.SalesArrangementParametersHUBN.Types.LoanPurposeItem

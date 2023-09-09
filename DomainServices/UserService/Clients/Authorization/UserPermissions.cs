@@ -2,9 +2,9 @@
 
 public enum UserPermissions : int
 {
-    UC_getWflSigningDocuments = 100,
-    UC_getWflSigningAttachments = 101,
-    FEAPI_IdentifyCase = 110,
+    WFL_TASK_DETAIL_SigningDocuments = 100,
+    WFL_TASK_DETAIL_SigningAttachments = 101,
+    DASHBOARD_IdentifyCase = 110,
     APPLICATION_BasicAccess = 201,
     DASHBOARD_CreateNewCase = 202,
     DASHBOARD_ViewOwnedCases = 203,
@@ -25,5 +25,20 @@ public enum UserPermissions : int
     CASEDETAIL_APPLICANT_ViewPersonInfo = 218,
     CLIENT_IdentifyPerson = 219,
     CLIENT_SearchPerson = 220,
-    SIGNING_DOCUMENT_UploadDrawingDocument = 221
+    SIGNING_DOCUMENT_UploadDrawingDocument = 221,
+    CASE_ViewAfterDrawing = 222,
+    DASHBOARD_SearchCases = 224,
+    CLIENT_Modify = 226,
+    SCORING_Perform = 227,
+    SALES_ARRANGEMENT_Send = 228,
+    CASE_Cancel = 229,
+    REALESTATE_VALUATION_Manage = 230,
+    WFL_TASK_DETAIL_OtherManage = 231,
+    WFL_TASK_DETAIL_SigningManage = 232,
+    CHANGE_REQUESTS_Access = 233,
+    WFL_TASK_DETAIL_OtherView = 234,
+    WFL_TASK_DETAIL_SigningView = 235,
+    WFL_TASK_CreateAndCancel = 236,
+    DOCUMENT_SIGNING_Manage = 237,
+    DOCUMENT_SIGNING_DownloadWorkflowDocument = 238
 }

@@ -1,4 +1,5 @@
-﻿using FastMember;
+﻿using System.Collections;
+using FastMember;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Helpers;
 
@@ -6,12 +7,23 @@ internal static class MapperHelper
 {
     public static void MapInputParameters(InputParameters parameters, DynamicInputParameter dynamicParameter, AggregatedData data)
     {
-        var propertyValue = GetValue(data, dynamicParameter.SourceFieldPath);
+        var propertyValue = GetValue(data, dynamicParameter.SourceFieldPath)
+                            ?? throw new InvalidOperationException($"Requested dynamic parameter '{dynamicParameter.SourceFieldPath}' has returned null.");
 
-        if (propertyValue == null)
-            throw new InvalidOperationException($"Requested dynamic parameter '{dynamicParameter.SourceFieldPath}' has returned null.");
+        var typeAccessor = TypeAccessor.Create(typeof(InputParameters));
 
-        TypeAccessor.Create(typeof(InputParameters))[parameters, dynamicParameter.InputParameter] = propertyValue;
+        if (propertyValue is IEnumerable enumerableSource)
+        {
+            if (typeAccessor[parameters, dynamicParameter.InputParameter] is not IList list)
+                throw new InvalidOperationException($"{dynamicParameter.InputParameter} is not a collection");
+
+            foreach (var obj in enumerableSource) 
+                list.Add(obj);
+
+            return;
+        }
+
+        typeAccessor[parameters, dynamicParameter.InputParameter] = propertyValue;
     }
 
     public static object? GetValue(object obj, string fullPropertyName)

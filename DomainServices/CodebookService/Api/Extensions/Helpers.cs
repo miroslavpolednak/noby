@@ -10,6 +10,19 @@ namespace DomainServices.CodebookService.Api;
 
 internal static class Helpers
 {
+    public static GenericCodebookResponse GetItems(this ExternalServices.RDM.V1.IRDMClient client, string codebookCode, [CallerMemberName] string method = "")
+    {
+        return CodebookMemoryCache.GetOrCreate(method.ToString(), () =>
+        {
+            var items = client.GetCodebookItems(codebookCode).GetAwaiter().GetResult();
+            return (new GenericCodebookResponse()).AddItems(items.Select(t => new GenericCodebookResponse.Types.GenericCodebookItem
+            {
+                Code = t.Code,
+                Name = t.CodebookEntryValues.First(t => t.CodebookColumn.Code == "Name").CodebookColumn.ValueName
+            }));
+        });
+    }
+
     public static GenericCodebookResponse GetItems(this ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient client, ExternalServices.AcvEnumService.V1.Categories category, [CallerMemberName] string method = "")
     {
         return CodebookMemoryCache.GetOrCreate(method.ToString(), () =>

@@ -25,7 +25,7 @@ internal sealed class WorkflowTaskService
         var taskDto = await _mapper.MapTask(taskDetails.TaskObject, cancellationToken);
         var taskDetailDto = await _mapper.MapTaskDetail(taskDetails.TaskObject, taskDetail, cancellationToken);
 
-        bool docsAllowed = taskDto.TaskTypeId != 6 || _userAccessor.HasPermission(DomainServices.UserService.Clients.Authorization.UserPermissions.UC_getWflSigningAttachments);
+        bool docsAllowed = taskDto.TaskTypeId != 6 || _userAccessor.HasPermission(DomainServices.UserService.Clients.Authorization.UserPermissions.WFL_TASK_DETAIL_SigningAttachments);
 
         if ((taskDetail.TaskDocumentIds?.Any() ?? false) && docsAllowed)
         {

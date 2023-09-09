@@ -42,7 +42,9 @@ public sealed class ErrorCodeMapper
             { 90032, new("Nepovolená operace", "Vámi požadovaná operace není se zadanými parametry povolena.") },
             { 90033, new("Žadatel nenalezen na daném obchodním případu.") },
             { 90034, new("<Chyba simulace z DS>") },
-            { 90035, new("Nepodařilo se stáhnout LV z katastru nemovitostí", "Je nám líto, ale v tuto chvíli se nedaří stáhnout požadovaný LV z katastru nemovitostí. Opakujte prosím akci později. Pokud se operace nezdaří do tří pracovních dnů, kontaktujte prosím zpracovatele.") }
+            { 90035, new("Nepodařilo se stáhnout LV z katastru nemovitostí", "Je nám líto, ale v tuto chvíli se nedaří stáhnout požadovaný LV z katastru nemovitostí. Opakujte prosím akci později. Pokud se operace nezdaří do tří pracovních dnů, kontaktujte prosím zpracovatele.") },
+            { 90037, new("Nahrávaný soubor je závadný", "Nahrávaný soubor je poškozen či může být závadný. Nahrání se nezdařilo.") },
+            { 90038, new("Název vkládaného dokumentu je větší než povolených 64 znaků.") }
         };
 
         Messages = messages.AsReadOnly();

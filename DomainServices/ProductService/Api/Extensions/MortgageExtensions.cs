@@ -1,11 +1,11 @@
 ﻿using DomainServices.ProductService.Contracts;
 using ExternalServices.MpHome.V1.Contracts;
+using LoanPurpose = DomainServices.ProductService.Contracts.LoanPurpose;
 
 namespace DomainServices.ProductService.Api;
 
 internal static class MortgageExtensions
 {
-
     /// <summary>
     /// Converts contract object MortgageData to MortgageRequest.
     /// </summary>
@@ -30,10 +30,10 @@ internal static class MortgageExtensions
             RepaymentAccountPrefix = mortgage.RepaymentAccount?.Prefix,
             EstimatedDuePaymentDate = mortgage.LoanDueDate,
             RepaymentStartDate = mortgage.FirstAnnuityPaymentDate,
-            ServiceBranchId = mortgage.BranchConsultantId.GetValueOrDefault() == 0 ? null : mortgage.BranchConsultantId,
-            ConsultantId = mortgage.ThirdPartyConsultantId.GetValueOrDefault() == 0 ? null : mortgage.ThirdPartyConsultantId,
+            ServiceBranchId = mortgage.BranchConsultantId,
+            ConsultantId = mortgage.CaseOwnerUserCurrentId,
             FirstRequestSignDate = mortgage.FirstSignatureDate,
-            LoanPurposes = mortgage.LoanPurposes is null ? null : mortgage.LoanPurposes.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
+            LoanPurposes = mortgage.LoanPurposes?.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
             {
                 Amount = Convert.ToDouble((decimal)t.Sum),
                 LoanPurposeId = t.LoanPurposeId
@@ -42,84 +42,97 @@ internal static class MortgageExtensions
 
         return request;
     }
-
-
+    
     /// <summary>
     /// Converts db entity Loan (table dbo.Uver) to contract object MortgageData.
     /// </summary>
-    public static MortgageData ToMortgage(this Database.Entities.Loan eLoan, List<Database.Entities.Relationship> eRelationships)
+    public static MortgageData ToMortgage(this Database.Models.Loan loan, List<Database.Models.Relationship> relationships)
     {
         var mortgage = new MortgageData
         {
-            PartnerId = (int)(eLoan.PartnerId ?? default),
-            BranchConsultantId = eLoan.PobockaObsluhyId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PobockaObsluhyId),
-            ThirdPartyConsultantId = eLoan.PoradceId.GetValueOrDefault() == 0 ? null : Convert.ToInt32(eLoan.PoradceId),
-            ContractNumber = eLoan.CisloSmlouvy,
-            LoanAmount = eLoan.VyseUveru,
-            LoanInterestRate = eLoan.RadnaSazba,
-            FixedRatePeriod = eLoan.PeriodaFixace,
-            ProductTypeId = eLoan.KodProduktyUv.GetValueOrDefault(),
-            LoanPaymentAmount = eLoan.MesicniSplatka,
-            CurrentAmount = eLoan.ZustatekCelkem,
-            DrawingDateTo = eLoan.DatumKonceCerpani,
-            ContractSignedDate = eLoan.DatumUzavreniSmlouvy,
-            FixedRateValidTo = eLoan.DatumFixaceUrokoveSazby,
-            AvailableForDrawing = eLoan.ZbyvaCerpat,
-            Principal = eLoan.Jistina,
-            LoanKindId = eLoan.DruhUveru,
-            PaymentAccount = string.IsNullOrEmpty(eLoan.CisloUctu) ? null : new PaymentAccount
-            {
-                Prefix = eLoan.PredcisliUctu ?? "",
-                Number = eLoan.CisloUctu ?? "",
-                BankCode = "0100"//ma byt hardcoded
-            },
-            CurrentOverdueAmount = eLoan.CelkovyDluhPoSplatnosti,
-            AllOverdueFees = eLoan.PohledavkaPoplatkyPo,
-            OverdueDaysNumber = eLoan.PocetBankovnichDniPoSpl,
-            ExpectedDateOfDrawing = eLoan.PredpDatum1Cerpani,
-            InterestInArrears = eLoan.SazbaZProdleni,
-            LoanDueDate = eLoan.DatumPredpSplatnosti,
-            PaymentDay = eLoan.SplatkyDen,
-            LoanInterestRateRefix = null,           // ???
-            LoanInterestRateValidFromRefix = null,  // ???
-            FixedRatePeriodRefix = null,            // ???
-            FirstAnnuityPaymentDate = eLoan.Datum1AnuitniSplatky,
-            RepaymentAccount = new PaymentAccount
-            {
-                BankCode = eLoan.InkasoBanka ?? "",
-                Number = eLoan.InkasoCislo ?? "",
-                Prefix = eLoan.InkasoPredcisli ?? ""
-            },
-            Statement = new StatementObject
-            {
-                TypeId = eLoan.HuVypisTyp,
-                SubscriptionTypeId = eLoan.HuVypisZodb,
-                FrequencyId = eLoan.HuVypisFrekvence,
-                EmailAddress1 = eLoan.VypisEmail1,
-                EmailAddress2 = eLoan.VypisEmail2
-            },
-            FirstSignatureDate = eLoan.DatumPodpisuPrvniZadosti
+            PartnerId = (int)(loan.PartnerId ?? default),
+            BranchConsultantId = loan.BranchConsultantId,
+            CaseOwnerUserCurrentId = loan.CaseOwnerUserCurrentId,
+            CaseOwnerUserOrigId = loan.CaseOwnerUserOrigId,
+            ContractNumber = loan.ContractNumber,
+            LoanAmount = loan.LoanAmount,
+            LoanInterestRate = loan.LoanInterestRate,
+            FixedRatePeriod = loan.FixedRatePeriod,
+            ProductTypeId = loan.ProductTypeId.GetValueOrDefault(),
+            LoanPaymentAmount = loan.LoanPaymentAmount,
+            CurrentAmount = loan.CurrentAmount,
+            DrawingDateTo = loan.DrawingDateTo,
+            ContractSignedDate = loan.ContractSignedDate,
+            FixedRateValidTo = loan.FixedRateValidTo,
+            AvailableForDrawing = loan.AvailableForDrawing,
+            Principal = loan.Principal,
+            LoanKindId = loan.LoanKindId,
+            PaymentAccount = ParsePaymentAccount(loan),
+            CurrentOverdueAmount = loan.CurrentOverdueAmount,
+            AllOverdueFees = loan.AllOverdueFees,
+            OverdueDaysNumber = loan.OverdueDaysNumber,
+            ExpectedDateOfDrawing = loan.ExpectedDateOfDrawing,
+            InterestInArrears = loan.InterestInArrears,
+            LoanDueDate = loan.LoanDueDate,
+            PaymentDay = loan.PaymentDay,
+            LoanInterestRateRefix = null, // ???
+            LoanInterestRateValidFromRefix = null, // ???
+            FixedRatePeriodRefix = null, // ???
+            FirstAnnuityPaymentDate = loan.FirstAnnuityPaymentDate,
+            FirstSignatureDate = loan.FirstSignatureDate,
+            RepaymentAccount = ParseRepaymentAccount(loan),
+            Statement = ParseStatementObject(loan)
         };
 
-        if (eRelationships?.Count > 0)
+        if (relationships.Any())
         {
-            mortgage.Relationships.AddRange(eRelationships.Select(e => e.ToRelationship()));
+            mortgage.Relationships.AddRange(relationships.Select(ToRelationship));
         }
 
         return mortgage;
     }
 
+    private static PaymentAccount? ParsePaymentAccount(this Database.Models.Loan loan) =>
+        string.IsNullOrEmpty(loan.PaymentAccountNumber)
+            ? null
+            : new PaymentAccount
+            {
+                Prefix = loan.PaymentAccountPrefix ?? string.Empty,
+                Number = loan.PaymentAccountNumber ?? string.Empty,
+                BankCode = "0100" //ma byt hardcoded
+            };
 
-    /// <summary>
-    /// Converts db entity Relationship (table dbo.VztahUver) to contract object Relationship .
-    /// </summary>
-    public static Relationship ToRelationship(this Database.Entities.Relationship eRelationship)
+    private static PaymentAccount ParseRepaymentAccount(this Database.Models.Loan loan) => new()
     {
-        return new Relationship
-        {
-            PartnerId = (int)eRelationship.PartnerId,
-            ContractRelationshipTypeId = eRelationship.VztahId
-        };
-    }
+        BankCode = loan.RepaymentAccountBankCode ?? string.Empty,
+        Number = loan.RepaymentAccountNumber ?? string.Empty,
+        Prefix = loan.RepaymentAccountPrefix ?? string.Empty
+    };
+    
+    private static StatementObject ParseStatementObject(this Database.Models.Loan loan) => new()
+    {
+        TypeId = loan.StatementTypeId,
+        SubscriptionTypeId = loan.StatementSubscriptionTypeId,
+        FrequencyId = loan.StatementFrequencyId,
+        EmailAddress1 = loan.EmailAddress1,
+        EmailAddress2 = loan.EmailAddress2
+    };
+    
+    /// <summary>
+    /// Maps db entity LoanPurpose (table dbo.UverUcely) to contract object LoanPurpose .
+    /// </summary>
+    public static LoanPurpose ToLoanPurpose(this Database.Models.LoanPurpose loanPurpose) => new()
+    {
+        LoanPurposeId = loanPurpose.LoanPurposeId,
+        Sum = loanPurpose.Sum
+    };
+    
+    /// <summary>
+    /// Maps db entity Relationship (table dbo.VztahUver) to contract object Relationship .
+    /// </summary>
+    public static Relationship ToRelationship(this Database.Models.Relationship relationship) => new()
+    {
+        PartnerId = relationship.PartnerId,
+        ContractRelationshipTypeId = relationship.ContractRelationshipTypeId
+    };
 }
-

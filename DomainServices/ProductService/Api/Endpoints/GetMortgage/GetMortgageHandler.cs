@@ -49,7 +49,7 @@ internal sealed class GetMortgageHandler
             .Select(t => new LoanRealEstate
             {
                 RealEstatePurchaseTypeId = t.UcelKod,
-                RealEstateTypeId = t.NemovitostId
+                RealEstateTypeId = Convert.ToInt32(t.NemovitostId)
             })
             .ToList();
 
@@ -92,14 +92,10 @@ internal sealed class GetMortgageHandler
         }
 
         // duvody
-        var purposes = await _repository.GetPurposes(request.ProductId, cancellation);
-        if (purposes is not null)
+        var purposes = await _repository.GetLoanPurposes(request.ProductId, cancellation);
+        if (purposes.Any())
         {
-            mortgage.LoanPurposes.AddRange(purposes.Select(t => new LoanPurpose
-            {
-                LoanPurposeId = t.UcelUveruId,
-                Sum = t.SumaUcelu
-            }));
+            mortgage.LoanPurposes.AddRange(purposes.Select(t => t.ToLoanPurpose()));
         }
 
         return new GetMortgageResponse { Mortgage = mortgage };

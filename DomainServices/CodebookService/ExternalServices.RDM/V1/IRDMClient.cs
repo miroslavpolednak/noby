@@ -6,4 +6,6 @@ public interface IRDMClient
     : IExternalServiceClient
 {
     const string Version = "V1";
+
+    Task<List<Contracts.GetCodebookResponse_CodebookEntry>> GetCodebookItems(string codebookCode, CancellationToken cancellationToken = default);
 }

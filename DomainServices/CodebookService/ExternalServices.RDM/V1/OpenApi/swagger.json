@@ -1,0 +1,2507 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Codebook.v3",
+    "description": "Sluzba poskytuje ciselniky, hierarchie a ciselnikove hodnoty",
+    "version": "3.1.5"
+  },
+  "servers": [
+    {
+      "url": "/api",
+      "variables": {
+        "basePath": {
+          "default": "v3"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": [
+
+      ]
+    }
+  ],
+  "paths": {
+    "/codebooks/{codebookCode}": {
+      "get": {
+        "summary": "Vrati obecne informace o ciselniku i obsah ciselniku se vsemi jazykovymi mutacemi hodnot.\r\n",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebook",
+        "parameters": [
+          {
+            "name": "codebookCode",
+            "in": "path",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "codebookRequestVersion",
+            "in": "query",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion.",
+            "required": false,
+            "schema": {
+              "maxLength": 30,
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagingAfterNumber",
+            "in": "query",
+            "description": "No. of entries after which other entries should be sent.For paging in direction from the beginning, e.g. for 187 results and constant maximum page size 50, sequence will be 0,50,100,150. CDM attribute class name: PagingAfterNumber.",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pagingNumberOfEntries",
+            "in": "query",
+            "description": "Page size.Number of entries to return. CDM attribute class name: PagingNumberOfEntries.",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookResponse_GetCodebookResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codebooks/{codebookCode}/entries": {
+      "get": {
+        "summary": "Najde polozku v danem ciselniku podle klice a vrati celou polozku vcetne jazykovych mutaci\r\n",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebookEntry",
+        "parameters": [
+          {
+            "name": "codebookCode",
+            "in": "path",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "codebookEntryRequestCode",
+            "in": "query",
+            "description": "Unique codebook entry identifier. CDM attribute class name: CodebookEntryCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "codebookRequestVersion",
+            "in": "query",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion.",
+            "required": false,
+            "schema": {
+              "maxLength": 30,
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookEntryResponse_GetCodebookEntryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codebooks": {
+      "get": {
+        "summary": "Vrati seznam ciselniku z RDM",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebookList",
+        "parameters": [
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookList_GetCodebookListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codebook-mappings/{codebookMappingCode}": {
+      "get": {
+        "summary": "Vrati mapovani polozek ciselniku jako dvojice &lt;kod z prvniho ciselniku, kod z druheho ciselniku&gt; a informaci, zda se jedna o jedno nebo obousmerne mapovani.",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebookMapping",
+        "parameters": [
+          {
+            "name": "codebookMappingCode",
+            "in": "path",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookMappingResponse_GetCodebookMappingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codebook-mappings": {
+      "get": {
+        "summary": "Vrati seznam vsech mapovani mezi ciselniky.",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebookMappingList",
+        "parameters": [
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookMappingList_GetCodebookMappingListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codebook-mappings/{codebookMappingCode}/version-history": {
+      "get": {
+        "summary": "Vrati historii verzi specifikovaneho mappingu. ",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebookMappingVersionHistory",
+        "parameters": [
+          {
+            "name": "codebookMappingCode",
+            "in": "path",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookMappingVersionHistory_GetCodebookMappingVersionHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codebooks/{codebookCode}/structure": {
+      "get": {
+        "summary": "Vrati informace o strukture daneho ciselniku - nazvy sloupcu, jejich datove typy",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebookStructure",
+        "parameters": [
+          {
+            "name": "codebookCode",
+            "in": "path",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookStructure_GetCodebookStructureResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codebooks/{codebookCode}/codebook-versions/{codebookVersionVersion}": {
+      "get": {
+        "summary": "Vrati obecne informace o ciselniku v konkretni verzi, vraci i obsah ciselniku se vsemi jazykovymi mutacemi hodnot.",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebookVersion",
+        "parameters": [
+          {
+            "name": "codebookCode",
+            "in": "path",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "codebookVersionVersion",
+            "in": "path",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion.",
+            "required": true,
+            "schema": {
+              "maxLength": 30,
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagingAfterNumber",
+            "in": "query",
+            "description": "No. of entries after which other entries should be sent.For paging in direction from the beginning, e.g. for 187 results and constant maximum page size 50, sequence will be 0,50,100,150. CDM attribute class name: PagingAfterNumber.",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pagingNumberOfEntries",
+            "in": "query",
+            "description": "Page size.Number of entries to return. CDM attribute class name: PagingNumberOfEntries.",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookResponse_GetCodebookResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codebooks/{codebookCode}/codebook-versions/{codebookVersionVersion}/entries": {
+      "get": {
+        "summary": "Najde polozku v dane verzi ciselniku podle klice a vrati celou polozku vcetne jazykovych mutaci",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebookVersionEntry",
+        "parameters": [
+          {
+            "name": "codebookCode",
+            "in": "path",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "codebookVersionVersion",
+            "in": "path",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion.",
+            "required": true,
+            "schema": {
+              "maxLength": 30,
+              "type": "string"
+            }
+          },
+          {
+            "name": "codebookEntryRequestCode",
+            "in": "query",
+            "description": "Unique codebook entry identifier. CDM attribute class name: CodebookEntryCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookEntryResponse_GetCodebookEntryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codebooks/{codebookCode}/version-history": {
+      "get": {
+        "summary": "Vrati historii verzi specifikovaneho ciselniku. ",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebookVersionHistory",
+        "parameters": [
+          {
+            "name": "codebookCode",
+            "in": "path",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookVersionHistory_GetCodebookVersionHistoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codebook-mappings/{codebookMappingCode}/codebook-versions/{codebookVersionVersion}": {
+      "get": {
+        "summary": "Vrati mapovani polozek konkretni verze ciselniku jako dvojice &lt;kod z prvniho ciselniku, kod z druheho ciselniku&gt; a informaci, zda se jedna o jedno nebo obousmerne mapovani.",
+        "description": "Operation uses standard KB headers: https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=217274116",
+        "operationId": "getCodebookVersionMapping",
+        "parameters": [
+          {
+            "name": "codebookMappingCode",
+            "in": "path",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode.",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "type": "string"
+            }
+          },
+          {
+            "name": "codebookVersionVersion",
+            "in": "path",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion.",
+            "required": true,
+            "schema": {
+              "maxLength": 30,
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Encoding",
+            "in": "header",
+            "description": "Standard header, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "gzip"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response body",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCodebookMappingResponse_GetCodebookMappingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data provided",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication information is missing or is invalid",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not permitted to access the resource",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request timeout",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occured",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unavailable",
+            "content": {
+              "application/json, application/x-msgpack": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringErrorModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GetCodebookResponse_CodebookColumn": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Human readable codebook column identifier within one codebook. CDM attribute class name: CodebookColumnCode."
+          },
+          "valueName": {
+            "maxLength": 400,
+            "type": "string",
+            "description": "Name of value.  CDM attribute class name: CodebookColumnValueName."
+          }
+        },
+        "description": "Defines what is the name of value and value's data type. CDM entity name(s): CodebookColumn."
+      },
+      "GetCodebookResponse_CodebookEntryValue": {
+        "required": [
+          "codebookColumn"
+        ],
+        "type": "object",
+        "properties": {
+          "codebookColumn": {
+            "$ref": "#/components/schemas/GetCodebookResponse_CodebookColumn"
+          }
+        },
+        "description": "One value in codebook entry. There is no default language, so actual values for each language is stored in LanguageMutation Entity. CDM entity name(s): CodebookEntryValue."
+      },
+      "GetCodebookResponse_CodebookEntryValueLanguageMutation": {
+        "required": [
+          "mutationLanguage"
+        ],
+        "type": "object",
+        "properties": {
+          "mutationDescription": {
+            "type": "string",
+            "description": "Description of language mutation. CDM attribute class name: CodebookEntryValueLanguageMutationDescription."
+          },
+          "mutationLanguage": {
+            "type": "string",
+            "description": "Language in which this value is. CDM attribute class name: CodebookEntryValueLanguageMutationLanguage. Codebook type: CB_Piggy."
+          },
+          "mutationValue": {
+            "type": "string",
+            "description": "Value in language defined in other atribute. CDM attribute class name: CodebookEntryValueLanguageMutationValue."
+          }
+        },
+        "description": "One codebook entry in one language. CDM entity name(s): CodebookEntryValueLanguageMutation."
+      },
+      "GetCodebookResponse_CodebookEntry": {
+        "required": [
+          "code",
+          "codebookEntryValues",
+          "state",
+          "validFrom"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique codebook entry identifier. CDM attribute class name: CodebookEntryCode."
+          },
+          "sortOrder": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Relative position of codebook entry in comparison to other codebook entries. Lower number means higher 'priority'. E.g. lowest number means entry is first in ordered list.  CDM attribute class name: CodebookEntrySortOrder.",
+            "format": "int32"
+          },
+          "state": {
+            "type": "string",
+            "description": "Defines state of the codebook entry - if it is active, deprecated, inactive etc. CDM attribute class name: CodebookEntryStateV2. Codebook type: CB_CodebookEntryState."
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Codebook entry has similar validity mechanism as codebook. This defines time from which this entry is valid. CDM attribute class name: CodebookEntryValidFrom.",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Codebook entry has similar validity mechanism as codebook. This defines time until which this entry is valid. CDM attribute class name: CodebookEntryValidTo.",
+            "format": "date-time"
+          },
+          "codebookEntryValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookResponse_CodebookEntryValue"
+            }
+          },
+          "codebookEntryValueLanguageMutations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookResponse_CodebookEntryValueLanguageMutation"
+            }
+          }
+        },
+        "description": "Polozka ciselniku.One item in codebook. Has one code and unlimited number of values and each can have any number of language translations.  CDM entity name(s): CodebookEntry."
+      },
+      "GetCodebookResponse_Codebook": {
+        "required": [
+          "code",
+          "latestVersion",
+          "lifeCycleProcess",
+          "state",
+          "validFrom",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "description": {
+            "maxLength": 4000,
+            "type": "string",
+            "description": "Textual description of codebook. CDM attribute class name: CodebookDescription."
+          },
+          "latestVersion": {
+            "type": "boolean",
+            "description": "Flag that represents that version sent is latest version. CDM attribute class name: CodebookLatestVersion."
+          },
+          "lifeCycleProcess": {
+            "type": "string",
+            "description": ". CDM attribute class name: CodebookLifeCycleProcess. Codebook type: CB_CodebookLifeCycleProcess."
+          },
+          "ownerGroups": {
+            "minItems": 0,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Owner group of the codebook. CDM attribute class name: CodebookOwnerGroup. Codebook type: CB_CodebookOwnerGroup."
+            }
+          },
+          "state": {
+            "type": "string",
+            "description": "Defines state of the codebook - if it is active, being replaced, deprecated etc. CDM attribute class name: CodebookStateV2. Codebook type: CB_CodebookState."
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. Until which time is codebook valid. CDM attribute class name: CodebookValidFrom.",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. From which time is codebook valid. CDM attribute class name: CodebookValidTo.",
+            "format": "date-time"
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          },
+          "codebookEntries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookResponse_CodebookEntry"
+            }
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookResponse_PagingResult": {
+        "required": [
+          "numberOfEntriesTotal"
+        ],
+        "type": "object",
+        "properties": {
+          "numberOfEntriesTotal": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Total number of entries that are matching requirements, not number of returned.E.g. there could be 30 out of 1087 entries displayed on page. 1087 will be in this attribute. CDM attribute class name: PagingResultNumberOfEntriesTotal.",
+            "format": "int64"
+          }
+        },
+        "description": "Generic paging information. Contains information about how called system handled paging. CDM entity name(s): PagingResult."
+      },
+      "GetCodebookResponse_PagingRes": {
+        "required": [
+          "afterNumber",
+          "numberOfEntries"
+        ],
+        "type": "object",
+        "properties": {
+          "afterNumber": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "No. of entries after which other entries should be sent.For paging in direction from the beginning, e.g. for 187 results and constant maximum page size 50, sequence will be 0,50,100,150. CDM attribute class name: PagingAfterNumber.",
+            "format": "int32"
+          },
+          "numberOfEntries": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Page size.Number of entries to return. CDM attribute class name: PagingNumberOfEntries.",
+            "format": "int32"
+          },
+          "pagingResult": {
+            "$ref": "#/components/schemas/GetCodebookResponse_PagingResult"
+          }
+        },
+        "description": "Generic paging information. How many entries should be sent from which 'position'. CDM entity name(s): Paging."
+      },
+      "GetCodebookResponse_GetCodebookResponse": {
+        "required": [
+          "codebook"
+        ],
+        "type": "object",
+        "properties": {
+          "codebook": {
+            "$ref": "#/components/schemas/GetCodebookResponse_Codebook"
+          },
+          "pagingRes": {
+            "$ref": "#/components/schemas/GetCodebookResponse_PagingRes"
+          }
+        },
+        "description": ""
+      },
+      "GetCodebookEntryResponse_CodebookColumn": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Human readable codebook column identifier within one codebook. CDM attribute class name: CodebookColumnCode."
+          },
+          "valueName": {
+            "maxLength": 400,
+            "type": "string",
+            "description": "Name of value.  CDM attribute class name: CodebookColumnValueName."
+          }
+        },
+        "description": "Defines what is the name of value and value's data type. CDM entity name(s): CodebookColumn."
+      },
+      "GetCodebookEntryResponse_CodebookEntryValue": {
+        "required": [
+          "codebookColumn"
+        ],
+        "type": "object",
+        "properties": {
+          "codebookColumn": {
+            "$ref": "#/components/schemas/GetCodebookEntryResponse_CodebookColumn"
+          }
+        },
+        "description": "One value in codebook entry. There is no default language, so actual values for each language is stored in LanguageMutation Entity. CDM entity name(s): CodebookEntryValue."
+      },
+      "GetCodebookEntryResponse_CodebookEntryValueLanguageMutation": {
+        "required": [
+          "mutationLanguage"
+        ],
+        "type": "object",
+        "properties": {
+          "mutationDescription": {
+            "type": "string",
+            "description": "Description of language mutation. CDM attribute class name: CodebookEntryValueLanguageMutationDescription."
+          },
+          "mutationLanguage": {
+            "type": "string",
+            "description": "Language in which this value is. CDM attribute class name: CodebookEntryValueLanguageMutationLanguage. Codebook type: CB_Piggy."
+          },
+          "mutationValue": {
+            "type": "string",
+            "description": "Value in language defined in other atribute. CDM attribute class name: CodebookEntryValueLanguageMutationValue."
+          }
+        },
+        "description": "One codebook entry in one language. CDM entity name(s): CodebookEntryValueLanguageMutation."
+      },
+      "GetCodebookEntryResponse_CodebookEntry": {
+        "required": [
+          "code",
+          "codebookEntryValues",
+          "state",
+          "validFrom"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique codebook entry identifier. CDM attribute class name: CodebookEntryCode."
+          },
+          "sortOrder": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Relative position of codebook entry in comparison to other codebook entries. Lower number means higher 'priority'. E.g. lowest number means entry is first in ordered list.  CDM attribute class name: CodebookEntrySortOrder.",
+            "format": "int32"
+          },
+          "state": {
+            "type": "string",
+            "description": "Defines state of the codebook entry - if it is active, deprecated, inactive etc. CDM attribute class name: CodebookEntryStateV2. Codebook type: CB_CodebookEntryState."
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Codebook entry has similar validity mechanism as codebook. This defines time from which this entry is valid. CDM attribute class name: CodebookEntryValidFrom.",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Codebook entry has similar validity mechanism as codebook. This defines time until which this entry is valid. CDM attribute class name: CodebookEntryValidTo.",
+            "format": "date-time"
+          },
+          "codebookEntryValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookEntryResponse_CodebookEntryValue"
+            }
+          },
+          "codebookEntryValueLanguageMutations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookEntryResponse_CodebookEntryValueLanguageMutation"
+            }
+          }
+        },
+        "description": "Polozka ciselniku.One item in codebook. Has one code and unlimited number of values and each can have any number of language translations.  CDM entity name(s): CodebookEntry."
+      },
+      "GetCodebookEntryResponse_Codebook": {
+        "required": [
+          "code",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          },
+          "codebookEntries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookEntryResponse_CodebookEntry"
+            }
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookEntryResponse_GetCodebookEntryResponse": {
+        "required": [
+          "codebook"
+        ],
+        "type": "object",
+        "properties": {
+          "codebook": {
+            "$ref": "#/components/schemas/GetCodebookEntryResponse_Codebook"
+          }
+        },
+        "description": ""
+      },
+      "GetCodebookList_Codebook": {
+        "required": [
+          "code",
+          "latestVersion",
+          "state",
+          "validFrom",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "description": {
+            "maxLength": 4000,
+            "type": "string",
+            "description": "Textual description of codebook. CDM attribute class name: CodebookDescription."
+          },
+          "latestVersion": {
+            "type": "boolean",
+            "description": "Flag that represents that version sent is latest version. CDM attribute class name: CodebookLatestVersion."
+          },
+          "state": {
+            "type": "string",
+            "description": "Defines state of the codebook - if it is active, being replaced, deprecated etc. CDM attribute class name: CodebookStateV2. Codebook type: CB_CodebookState."
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. Until which time is codebook valid. CDM attribute class name: CodebookValidFrom.",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. From which time is codebook valid. CDM attribute class name: CodebookValidTo.",
+            "format": "date-time"
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookList_GetCodebookListResponse": {
+        "type": "object",
+        "properties": {
+          "codebooks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookList_Codebook"
+            }
+          }
+        },
+        "description": ""
+      },
+      "GetCodebookMappingResponse_CodebookEntryMappingProperty": {
+        "required": [
+          "state",
+          "validFrom"
+        ],
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "description": "Defines state of the codebook entry - if it is active, deprecated, inactive etc. CDM attribute class name: CodebookEntryStateV2. Codebook type: CB_CodebookEntryState."
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Codebook entry has similar validity mechanism as codebook. This defines time from which this entry is valid. CDM attribute class name: CodebookEntryValidFrom.",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Codebook entry has similar validity mechanism as codebook. This defines time until which this entry is valid. CDM attribute class name: CodebookEntryValidTo.",
+            "format": "date-time"
+          }
+        },
+        "description": "Polozka ciselniku.One item in codebook. Has one code and unlimited number of values and each can have any number of language translations.  CDM entity name(s): CodebookEntry."
+      },
+      "GetCodebookMappingResponse_CodebookEntryReference": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique codebook entry identifier. CDM attribute class name: CodebookEntryCode."
+          }
+        },
+        "description": "Polozka ciselniku.One item in codebook. Has one code and unlimited number of values and each can have any number of language translations.  CDM entity name(s): CodebookEntry."
+      },
+      "GetCodebookMappingResponse_CodebookEntryMapping": {
+        "required": [
+          "codebookEntryMappingProperty",
+          "codebookEntrySource",
+          "codebookEntryTarget"
+        ],
+        "type": "object",
+        "properties": {
+          "codebookEntryMappingProperty": {
+            "$ref": "#/components/schemas/GetCodebookMappingResponse_CodebookEntryMappingProperty"
+          },
+          "codebookEntrySource": {
+            "$ref": "#/components/schemas/GetCodebookMappingResponse_CodebookEntryReference"
+          },
+          "codebookEntryTarget": {
+            "$ref": "#/components/schemas/GetCodebookMappingResponse_CodebookEntryReference"
+          }
+        },
+        "description": "Mapping of one code (CodebookEntry) from two codebooks. CDM entity name(s): CodebookEntryMapping."
+      },
+      "GetCodebookMappingResponse_CodebookReference": {
+        "required": [
+          "code",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookMappingResponse_Codebook": {
+        "required": [
+          "code",
+          "latestVersion",
+          "lifeCycleProcess",
+          "state",
+          "validFrom",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "description": {
+            "maxLength": 4000,
+            "type": "string",
+            "description": "Textual description of codebook. CDM attribute class name: CodebookDescription."
+          },
+          "latestVersion": {
+            "type": "boolean",
+            "description": "Flag that represents that version sent is latest version. CDM attribute class name: CodebookLatestVersion."
+          },
+          "lifeCycleProcess": {
+            "type": "string",
+            "description": ". CDM attribute class name: CodebookLifeCycleProcess. Codebook type: CB_CodebookLifeCycleProcess."
+          },
+          "ownerGroups": {
+            "minItems": 0,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Owner group of the codebook. CDM attribute class name: CodebookOwnerGroup. Codebook type: CB_CodebookOwnerGroup."
+            }
+          },
+          "state": {
+            "type": "string",
+            "description": "Defines state of the codebook - if it is active, being replaced, deprecated etc. CDM attribute class name: CodebookStateV2. Codebook type: CB_CodebookState."
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. Until which time is codebook valid. CDM attribute class name: CodebookValidFrom.",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. From which time is codebook valid. CDM attribute class name: CodebookValidTo.",
+            "format": "date-time"
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookMappingResponse_CodebookMapping": {
+        "description": "Mapping between two codebooks (always keys). Relationship is mapping CodebookEntries (rows of codebook) between two codebooks.It is specialization of codebook as resulting union of mapped codebooks is taken as another codebook. CDM entity name(s): CodebookMapping.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/GetCodebookMappingResponse_Codebook"
+          },
+          {
+            "required": [
+              "codebookSource",
+              "codebookTarget",
+              "oneWayONEtoTWO"
+            ],
+            "type": "object",
+            "properties": {
+              "oneWayONEtoTWO": {
+                "type": "boolean",
+                "description": "Flag that signifies that mapping is only one way. From codebook ONE to TWO. CDM attribute class name: CodebookMappingOneWayONEtoTWO."
+              },
+              "codebookEntryMappings": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/GetCodebookMappingResponse_CodebookEntryMapping"
+                }
+              },
+              "codebookSource": {
+                "$ref": "#/components/schemas/GetCodebookMappingResponse_CodebookReference"
+              },
+              "codebookTarget": {
+                "$ref": "#/components/schemas/GetCodebookMappingResponse_CodebookReference"
+              }
+            }
+          }
+        ]
+      },
+      "GetCodebookMappingResponse_GetCodebookMappingResponse": {
+        "required": [
+          "codebookMapping"
+        ],
+        "type": "object",
+        "properties": {
+          "codebookMapping": {
+            "$ref": "#/components/schemas/GetCodebookMappingResponse_CodebookMapping"
+          }
+        },
+        "description": ""
+      },
+      "GetCodebookMappingList_CodebookReference": {
+        "required": [
+          "code",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookMappingList_Codebook": {
+        "required": [
+          "code",
+          "latestVersion",
+          "state",
+          "validFrom",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "description": {
+            "maxLength": 4000,
+            "type": "string",
+            "description": "Textual description of codebook. CDM attribute class name: CodebookDescription."
+          },
+          "latestVersion": {
+            "type": "boolean",
+            "description": "Flag that represents that version sent is latest version. CDM attribute class name: CodebookLatestVersion."
+          },
+          "state": {
+            "type": "string",
+            "description": "Defines state of the codebook - if it is active, being replaced, deprecated etc. CDM attribute class name: CodebookStateV2. Codebook type: CB_CodebookState."
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. Until which time is codebook valid. CDM attribute class name: CodebookValidFrom.",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. From which time is codebook valid. CDM attribute class name: CodebookValidTo.",
+            "format": "date-time"
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookMappingList_CodebookMapping": {
+        "description": "Mapping between two codebooks (always keys). Relationship is mapping CodebookEntries (rows of codebook) between two codebooks.It is specialization of codebook as resulting union of mapped codebooks is taken as another codebook. CDM entity name(s): CodebookMapping.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/GetCodebookMappingList_Codebook"
+          },
+          {
+            "required": [
+              "codebookSource",
+              "codebookTarget",
+              "oneWayONEtoTWO"
+            ],
+            "type": "object",
+            "properties": {
+              "oneWayONEtoTWO": {
+                "type": "boolean",
+                "description": "Flag that signifies that mapping is only one way. From codebook ONE to TWO. CDM attribute class name: CodebookMappingOneWayONEtoTWO."
+              },
+              "codebookSource": {
+                "$ref": "#/components/schemas/GetCodebookMappingList_CodebookReference"
+              },
+              "codebookTarget": {
+                "$ref": "#/components/schemas/GetCodebookMappingList_CodebookReference"
+              }
+            }
+          }
+        ]
+      },
+      "GetCodebookMappingList_GetCodebookMappingListResponse": {
+        "type": "object",
+        "properties": {
+          "codebookMappings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookMappingList_CodebookMapping"
+            }
+          }
+        },
+        "description": ""
+      },
+      "GetCodebookMappingVersionHistory_CodebookReference": {
+        "required": [
+          "code",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookMappingVersionHistory_Codebook": {
+        "required": [
+          "code",
+          "state",
+          "validFrom",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "description": {
+            "maxLength": 4000,
+            "type": "string",
+            "description": "Textual description of codebook. CDM attribute class name: CodebookDescription."
+          },
+          "state": {
+            "type": "string",
+            "description": "Defines state of the codebook - if it is active, being replaced, deprecated etc. CDM attribute class name: CodebookStateV2. Codebook type: CB_CodebookState."
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. Until which time is codebook valid. CDM attribute class name: CodebookValidFrom.",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. From which time is codebook valid. CDM attribute class name: CodebookValidTo.",
+            "format": "date-time"
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookMappingVersionHistory_CodebookMapping": {
+        "description": "Mapping between two codebooks (always keys). Relationship is mapping CodebookEntries (rows of codebook) between two codebooks.It is specialization of codebook as resulting union of mapped codebooks is taken as another codebook. CDM entity name(s): CodebookMapping.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/GetCodebookMappingVersionHistory_Codebook"
+          },
+          {
+            "required": [
+              "codebookSource",
+              "codebookTarget"
+            ],
+            "type": "object",
+            "properties": {
+              "childrens": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/GetCodebookMappingVersionHistory_CodebookMapping"
+                }
+              },
+              "codebookSource": {
+                "$ref": "#/components/schemas/GetCodebookMappingVersionHistory_CodebookReference"
+              },
+              "codebookTarget": {
+                "$ref": "#/components/schemas/GetCodebookMappingVersionHistory_CodebookReference"
+              }
+            }
+          }
+        ]
+      },
+      "GetCodebookMappingVersionHistory_GetCodebookMappingVersionHistoryResponse": {
+        "required": [
+          "codebookMappings"
+        ],
+        "type": "object",
+        "properties": {
+          "codebookMappings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookMappingVersionHistory_CodebookMapping"
+            }
+          }
+        },
+        "description": ""
+      },
+      "GetCodebookStructure_CodebookReference": {
+        "required": [
+          "code",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookStructure_CodebookColumn": {
+        "required": [
+          "code",
+          "key",
+          "required",
+          "unique",
+          "validationRule",
+          "valueDataType"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Human readable codebook column identifier within one codebook. CDM attribute class name: CodebookColumnCode."
+          },
+          "defaultValue": {
+            "maxLength": 500,
+            "type": "string",
+            "description": "Default value to be filled in this property. CDM attribute class name: CommonCodebookPropertyValueAttributesDefaultValue."
+          },
+          "description": {
+            "maxLength": 4000,
+            "type": "string",
+            "description": "Description of column. CDM attribute class name: CodebookColumnDescription."
+          },
+          "key": {
+            "type": "boolean",
+            "description": "Flag whether this column is key of the codebook. CDM attribute class name: CodebookColumnKey."
+          },
+          "maxLength": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Defines maximum length of string within this property. Relevant only for strings. CDM attribute class name: CommonCodebookPropertyValueAttributesMaxLength.",
+            "format": "int64"
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Flag whether this property must be filled in. CDM attribute class name: CommonCodebookPropertyValueAttributesRequired."
+          },
+          "unique": {
+            "type": "boolean",
+            "description": "Flag that defines that values in this column are unique. CDM attribute class name: CodebookColumnUnique."
+          },
+          "validationRule": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Regexp representing validation rule for values in this property. CDM attribute class name: CommonCodebookPropertyValueAttributesValidationRule."
+          },
+          "valueDataType": {
+            "type": "string",
+            "description": "Data type of property. CDM attribute class name: CommonCodebookPropertyValueAttributesValueDataType. Codebook type: CB_Piggy."
+          },
+          "codebookReference": {
+            "$ref": "#/components/schemas/GetCodebookStructure_CodebookReference"
+          }
+        },
+        "description": "Defines what is the name of value and value's data type. CDM entity name(s): CodebookColumn."
+      },
+      "GetCodebookStructure_CodebookProperty": {
+        "required": [
+          "valueDataType"
+        ],
+        "type": "object",
+        "properties": {
+          "validationRule": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Regexp representing validation rule for values in this property. CDM attribute class name: CommonCodebookPropertyValueAttributesValidationRule."
+          },
+          "valueDataType": {
+            "type": "string",
+            "description": "Data type of property. CDM attribute class name: CommonCodebookPropertyValueAttributesValueDataType. Codebook type: CB_Piggy."
+          }
+        },
+        "description": "Defines structure of property that is attached to codebook. CDM entity name(s): CodebookProperty."
+      },
+      "GetCodebookStructure_CodebookStructure": {
+        "required": [
+          "code",
+          "codebookProperty",
+          "enableKey"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Unique identifier of codebook structure. CDM attribute class name: CodebookStructureCode."
+          },
+          "description": {
+            "maxLength": 4000,
+            "type": "string",
+            "description": "Free text representing description of codebook data structure. CDM attribute class name: CodebookStructureDescription."
+          },
+          "enableKey": {
+            "type": "boolean",
+            "description": "Flag that defines whether key is enabled for columns of this codebook, i.e. it is possible to set some columns as key columns. CDM attribute class name: CodebookStructureEnableKey."
+          },
+          "codebookColumns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookStructure_CodebookColumn"
+            }
+          },
+          "codebookProperty": {
+            "$ref": "#/components/schemas/GetCodebookStructure_CodebookProperty"
+          }
+        },
+        "description": "Defines structure of codebook, individual column data types and properties. CDM entity name(s): CodebookStructure."
+      },
+      "GetCodebookStructure_Codebook": {
+        "required": [
+          "codebookStructure"
+        ],
+        "type": "object",
+        "properties": {
+          "codebookStructure": {
+            "$ref": "#/components/schemas/GetCodebookStructure_CodebookStructure"
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookStructure_GetCodebookStructureResponse": {
+        "required": [
+          "codebook"
+        ],
+        "type": "object",
+        "properties": {
+          "codebook": {
+            "$ref": "#/components/schemas/GetCodebookStructure_Codebook"
+          }
+        },
+        "description": ""
+      },
+      "GetCodebookVersionHistory_Codebook": {
+        "required": [
+          "code",
+          "state",
+          "validFrom",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Unique identifier of codebookCB_. CDM attribute class name: CodebookCode."
+          },
+          "description": {
+            "maxLength": 4000,
+            "type": "string",
+            "description": "Textual description of codebook. CDM attribute class name: CodebookDescription."
+          },
+          "state": {
+            "type": "string",
+            "description": "Defines state of the codebook - if it is active, being replaced, deprecated etc. CDM attribute class name: CodebookStateV2. Codebook type: CB_CodebookState."
+          },
+          "validFrom": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. Until which time is codebook valid. CDM attribute class name: CodebookValidFrom.",
+            "format": "date-time"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Defines validity of whole codebook. From which time is codebook valid. CDM attribute class name: CodebookValidTo.",
+            "format": "date-time"
+          },
+          "version": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "Actual version of codebook. CDM attribute class name: CodebookVersion."
+          },
+          "childrens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookVersionHistory_Codebook"
+            }
+          }
+        },
+        "description": "Ciselnik.Data model of codebook used form codebook distribution across bank. All the way from codebook storage to codebook user. CDM entity name(s): Codebook."
+      },
+      "GetCodebookVersionHistory_GetCodebookVersionHistoryResponse": {
+        "required": [
+          "codebooks"
+        ],
+        "type": "object",
+        "properties": {
+          "codebooks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCodebookVersionHistory_Codebook"
+            }
+          }
+        },
+        "description": ""
+      },
+      "StringErrorModel": {
+        "required": [
+          "code",
+          "message",
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Code of the error that occured, common error codes are from codebook CB_ErrorCodes. Rules for codes: https://wiki.kb.cz/confluence/display/PATHFINDER/CB_ErrorCodes",
+            "example": "SC.00001"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Error detail (i.e. from back-end) which describes the event that occured in more details",
+            "example": "Back-end operation {name} failed with exception {back-end error code/message}"
+          },
+          "category": {
+            "type": "string",
+            "description": "Error category - java SPEED legacy, it should be ignored."
+          },
+          "message": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Error message in plain text format (description related to the given error code)",
+            "example": "Parameter is missing or invalid"
+          },
+          "uuid": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique error ID (GUID) is the generated unique identifier of the error message",
+            "example": "324d4777-b59e-4ad3-bb16-527856460113"
+          },
+          "httpStatusCode": {
+            "type": "string",
+            "description": "Http status code - java SPEED legacy, redundant information, it should be ignored."
+          }
+        }
+      },
+      "ValidationErrorModel": {
+        "required": [
+          "code",
+          "message",
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Code of the error that occured, common error codes are from codebook CB_ErrorCodes. Rules for codes: https://wiki.kb.cz/confluence/display/PATHFINDER/CB_ErrorCodes",
+            "example": "SC.00001"
+          },
+          "detail": {
+            "$ref": "#/components/schemas/ValidationDetail"
+          },
+          "category": {
+            "type": "string",
+            "description": "Error category - java SPEED legacy, it should be ignored."
+          },
+          "message": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Error message in plain text format (description related to the given error code)",
+            "example": "Parameter is missing or invalid"
+          },
+          "uuid": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique error ID (GUID) is the generated unique identifier of the error message",
+            "example": "324d4777-b59e-4ad3-bb16-527856460113"
+          },
+          "httpStatusCode": {
+            "type": "string",
+            "description": "Http status code - java SPEED legacy, redundant information, it should be ignored."
+          }
+        }
+      },
+      "ValidationDetail": {
+        "type": "object",
+        "properties": {
+          "violatedConstraints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ViolatedConstraint"
+            }
+          }
+        }
+      },
+      "ViolatedConstraint": {
+        "required": [
+          "attribute",
+          "invalidValue",
+          "message",
+          "rootObjectName"
+        ],
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The path to the element for which the validation error has occured",
+            "example": "/parameters/header/{parameterName} or /parameters/query/{parameterName} or /parameters/body/{parameterName}"
+          },
+          "message": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Validation error message in plain text format (description related to the given validation exception)",
+            "example": "Parameter is missing or invalid"
+          },
+          "rootObjectName": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Name of class in which validation problem was detected.",
+            "example": "ClassName.class"
+          },
+          "invalidValue": {
+            "minLength": 1,
+            "type": "object",
+            "description": "The value of the element for which the validation error has occured",
+            "example": "-50"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

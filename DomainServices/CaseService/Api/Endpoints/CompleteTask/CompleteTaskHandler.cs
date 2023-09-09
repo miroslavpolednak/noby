@@ -24,7 +24,7 @@ internal sealed class CompleteTaskHandler
 
         if (request.TaskTypeId == 6)
         {
-            var hasSigningAttachmentsPermission = _currentUserAccessor.Claims.Any(t => t.Type == "NP" && t.Value == $"{(int)UserPermissions.UC_getWflSigningAttachments}");
+            var hasSigningAttachmentsPermission = _currentUserAccessor.Claims.Any(t => t.Type == "NP" && t.Value == $"{(int)UserPermissions.WFL_TASK_DETAIL_SigningAttachments}");
 
             sbRequest.Metadata.Add("ukol_podpis_odpoved_typ", (request.TaskResponseTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
             sbRequest.Metadata.Add("ukol_podpis_zpusob_ukonceni", (hasSigningAttachmentsPermission ? 2 : 1).ToString(CultureInfo.InvariantCulture));

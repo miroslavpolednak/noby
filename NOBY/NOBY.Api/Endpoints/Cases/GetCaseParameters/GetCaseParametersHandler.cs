@@ -1,5 +1,4 @@
-﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+﻿using CIS.Foms.Enums;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
@@ -70,7 +69,7 @@ internal sealed class GetCaseParametersHandler
         var loanPurposes = await _codebookService.LoanPurposes(cancellationToken);
 
         var branchUser = await getUserInstance(mortgageData.BranchConsultantId, cancellationToken);
-        var thirdPartyUser = await getUserInstance(mortgageData.ThirdPartyConsultantId, cancellationToken);
+        var thirdPartyUser = await getUserInstance(mortgageData.CaseOwnerUserCurrentId, cancellationToken);
 
         var respone = new GetCaseParametersResponse
         {
@@ -146,14 +145,14 @@ internal sealed class GetCaseParametersHandler
         return respone;
     }
 
-    private async Task<DomainServices.UserService.Contracts.User?> getUserInstance(int? userId, CancellationToken cancellationToken)
+    private async Task<DomainServices.UserService.Contracts.User?> getUserInstance(long? userId, CancellationToken cancellationToken)
     {
         if (!userId.HasValue)
             return null;
 
         try
         {
-            return await _userService.GetUser(userId.Value, cancellationToken);
+            return await _userService.GetUser(Convert.ToInt32(userId.Value), cancellationToken);
         }
         catch
         {

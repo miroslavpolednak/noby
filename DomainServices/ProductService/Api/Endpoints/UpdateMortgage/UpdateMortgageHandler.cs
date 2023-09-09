@@ -1,5 +1,4 @@
-﻿using DomainServices.ProductService.Api.Database.Entities;
-using DomainServices.ProductService.Api.Endpoints.CreateMortgage;
+﻿using DomainServices.ProductService.Api.Endpoints.CreateMortgage;
 using ExternalServices.MpHome.V1;
 
 namespace DomainServices.ProductService.Api.Endpoints.UpdateMortgage;
@@ -26,9 +25,9 @@ internal sealed class UpdateMortgageHandler
 
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateMortgageRequest request, CancellationToken cancellation)
     {
-        if (!(await _repository.ExistsLoan(request.ProductId, cancellation)))
+        if (!await _repository.ExistsLoan(request.ProductId, cancellation))
         {
-            throw new CisNotFoundException(12001, nameof(Loan), request.ProductId);
+            throw new CisNotFoundException(12001, nameof(Database.Models.Loan), request.ProductId);
         }
 
         // create request
