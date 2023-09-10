@@ -50,7 +50,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
             var documentData = await _documentGenerator.GenerateDocument(generateDocumentRequest, cancellationToken);
             var documentId = await _documentArchiveService.GenerateDocumentId(new (), cancellationToken);
 
-            var user = await _userServiceClient.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
+            var user = await _userService.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
             var authorUserLogin = _documentHelper.GetAuthorUserLoginForDocumentUpload(user);
 
             var uploadRequest = new UploadDocumentRequest
@@ -117,7 +117,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDocumentHelperService _documentHelper;
-    private readonly IUserServiceClient _userServiceClient;
+    private readonly IUserServiceClient _userService;
 
     public CancelCaseHandler(
         IDateTime dateTime,
@@ -129,7 +129,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
         IDocumentArchiveServiceClient documentArchiveService,
         ICurrentUserAccessor currentUserAccessor,
         IDocumentHelperService documentHelper,
-        IUserServiceClient userServiceClient)
+        IUserServiceClient userService)
     {
         _dateTime = dateTime;
         _codebookService = codebookService;
@@ -140,6 +140,6 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
         _documentArchiveService = documentArchiveService;
         _currentUserAccessor = currentUserAccessor;
         _documentHelper = documentHelper;
-        _userServiceClient = userServiceClient;
+        _userService = userService;
     }
 }
