@@ -1,0 +1,15 @@
+UPDATE DocumentSpecialDataField 
+SET DefaultTextIfNull = 'Beru na vědomí, že Banka se mnou bude komunikovat přednostně elektronicky, a to na e-mail nebo telefon mnou uvedený v této žádosti. Potvrzuji, že údaje uvedené v této žádosti slouží k veškeré naší komunikaci týkající se tohoto úvěru a případně k naší další běžné komunikaci, není-li sjednáno v konkrétním případě jinak, a že je mohu měnit jen způsobem Bankou akceptovaným. Tyto údaje slouží také pro zasílání smluvní dokumentace, beru proto na vědomí, že e-mailem uvedeným v této žádosti nahrazuji e-mail pro zasílání smluvní dokumentace, mám-li jej sjednán.
+
+Pokud si sjednám kontaktní e-mail nebo kontaktní telefon, u kterých potvrdím, že slouží ke komunikaci mezi mnou a~Bankou, zejména pro zasílání dokumentace a jejích změn a zasílání hesel a kódů, pak budou údaje uvedené v~této žádosti těmito kontaktními údaji zcela nahrazeny. Ke vzájemné komunikaci mezi mnou a Bankou bude sloužit přednostně schránka v novém internetovém bankovnictví KB+, mám-li ji sjednanou, nebo můj kontaktní e-mail, v~ojedinělých případech mi Banka může doručovat i v listinné podobě na moji Kontaktní adresu.
+
+Dále beru na vědomí, že do schránky v internetovém bankovnictví KB+ nebo na kontaktní e-mail může Banka zasílat jakékoli písemnosti, včetně písemností, které mohou mít za následek zánik smluvního vztahu. Schránkou je vyhrazený'
+WHERE DocumentId = 4 AND AcroFieldName = 'ProhlaseniZadatele'
+
+UPDATE DocumentSpecialDataField 
+SET DefaultTextIfNull = 'Beru na vědomí, že Banka se mnou bude komunikovat přednostně elektronicky, a to na e-mail nebo telefon mnou uvedený v této žádosti. Potvrzuji, že údaje uvedené v této žádosti slouží k veškeré naší komunikaci týkající se tohoto úvěru a případně k naší další běžné komunikaci, není-li sjednáno v konkrétním případě jinak, a že je mohu měnit jen způsobem Bankou akceptovaným. Tyto údaje slouží také pro zasílání smluvní dokumentace, beru proto na vědomí, že e-mailem uvedeným v této žádosti nahrazuji e-mail pro zasílání smluvní dokumentace, mám-li jej sjednán.
+
+Pokud si sjednám kontaktní e-mail nebo kontaktní telefon, u kterých potvrdím, že slouží ke komunikaci mezi mnou a~Bankou, zejména pro zasílání dokumentace a jejích změn a zasílání hesel a kódů, pak budou údaje uvedené v~této žádosti těmito kontaktními údaji zcela nahrazeny. Ke vzájemné komunikaci mezi mnou a Bankou bude sloužit přednostně schránka v novém internetovém bankovnictví KB+, mám-li ji sjednanou, nebo můj kontaktní e-mail, v~ojedinělých případech mi Banka může doručovat i v listinné podobě na moji Kontaktní adresu.
+
+Dále beru na vědomí, že do schránky v internetovém bankovnictví KB+ nebo na kontaktní e-mail může Banka zasílat jakékoli písemnosti, včetně písemností, které mohou mít za následek zánik smluvního vztahu. Schránkou je vyhrazený prostor v internetovém bankovnictví KB+, přístupný prostřednictvím mobilní a webové aplikace KB+, určený pro vzájemnou komunikaci. Schránka nebo její část, stejně jako kontaktní e-mail, slouží jako trvalý nosič dat.'
+WHERE DocumentId = 4 AND AcroFieldName = 'ProhlaseniSpoluzadatele'
