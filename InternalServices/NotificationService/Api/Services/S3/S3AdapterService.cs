@@ -3,6 +3,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
+using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.S3;
 
@@ -11,10 +12,10 @@ public class S3AdapterService : IS3AdapterService
     private readonly IAmazonS3 _s3Client;
     private readonly S3Configuration _s3Configuration;
 
-    public S3AdapterService(IAmazonS3 s3Client, S3Configuration s3Configuration)
+    public S3AdapterService(IAmazonS3 s3Client, IOptions<S3Configuration> s3Configuration)
     {
         _s3Client = s3Client;
-        _s3Configuration = s3Configuration;
+        _s3Configuration = s3Configuration.Value;
     }
     
     public async Task<string> UploadFile(byte [] content, string bucketName, CancellationToken token = default)
