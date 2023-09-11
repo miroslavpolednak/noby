@@ -33,13 +33,11 @@ internal sealed class ErrorCodeMapper
     public const int IncomeIdIsEmpty =                  16055;
     public const int Customer2WithoutCustomer1 =        16056;
     public const int HouseholdIdIsEmpty =               16080;
-    public const int CantDeleteIdentity =               16081;
 
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
         {
-            { CantDeleteIdentity, "Unable to update customer, identity is missing in the request." },
             { SalesArrangementIdIsEmpty, "SalesArrangementId must be > 0" },
             { IdentityAlreadyExistOnCustomer, "Some of request identities already exists on CustomerOnSA with different ID" },
             { CustomerNotOnSA, "CustomerOnSA {PropertyValue} does not exist in selected SA." },

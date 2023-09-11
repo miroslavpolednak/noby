@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Security;
+using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -89,7 +90,7 @@ public sealed class CaseOwnerValidationMiddleware
                 }
 
                 // zakazane stavy Case
-                if (caseInstance.CaseState is 6 or 7)
+                if (caseInstance.CaseState is (int)CaseStates.Finished or (int)CaseStates.Cancelled)
                 {
                     throw new CisAuthorizationException($"CaseOwnerValidation: Case state is {caseInstance.CaseState}");
                 }

@@ -19,12 +19,6 @@ internal sealed class UpdateCustomerHandler
         // helper aby se nemuselo porad null checkovat
         entity.Identities ??= new List<Database.Entities.CustomerOnSAIdentity>();
 
-        // kontrola zda se nemaze jiz existujici entita HFICH-5394
-        /*if (entity.Identities.Any(t => !request.Customer.CustomerIdentifiers.Any(x => (int)x.IdentityScheme == (int)t.IdentityScheme && x.IdentityId == t.IdentityId)))
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CantDeleteIdentity);
-        }*/
-
         // customerOnSA byl jiz updatovan z KB CM
         bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == IdentitySchemes.Kb);
 
