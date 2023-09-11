@@ -11,6 +11,8 @@ public class SaveDocumentToArchiveRequestValidator : AbstractValidator<SaveDocum
             ch.RuleFor(t => t.DocumentInformation.Guid).NotNull().WithMessage($"{nameof(DocumentsInformation.DocumentInformation.Guid)} is required");
             ch.RuleFor(t => t.DocumentInformation.FileName).NotNull().WithMessage($"{nameof(DocumentsInformation.DocumentInformation.FileName)} is required");
             ch.RuleFor(t => t.DocumentInformation.EaCodeMainId).NotNull().WithMessage($"{nameof(DocumentsInformation.DocumentInformation.EaCodeMainId)} is required");
+
+            ch.RuleFor(t => t.DocumentInformation.FileName).MaximumLength(64).WithErrorCode(90038);
         });
     }
 }

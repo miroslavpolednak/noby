@@ -437,6 +437,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00048_HFICH-7761_NonBreakingSpaces.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00048_HFICH-7761_NonBreakingSpaces.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00049_Fixed_TaxResidencyDocument.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00049_Fixed_TaxResidencyDocument.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00050_HFICH-7827.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00050_HFICH-7827.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00051_HFICH-5780.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00051_HFICH-5780.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -523,7 +524,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.RuianAddre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregator.Tests", "InternalServices\DataAggregatorService\Tests\CIS.InternalServices.DataAggregator.Tests\CIS.InternalServices.DataAggregator.Tests.csproj", "{AFEFB16A-2BCB-42E5-B1F9-3F5B6E7CC640}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.CodebookService.ExternalServices.RDM", "DomainServices\CodebookService\ExternalServices.RDM\DomainServices.CodebookService.ExternalServices.RDM.csproj", "{FD90984C-25D1-422B-88F4-D164A8CC2E9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.ExternalServices.RDM", "DomainServices\CodebookService\ExternalServices.RDM\DomainServices.CodebookService.ExternalServices.RDM.csproj", "{FD90984C-25D1-422B-88F4-D164A8CC2E9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

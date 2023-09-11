@@ -9,6 +9,7 @@ INSERT INTO CodebookService.dbo.EaCodesMainExtension (EaCodesMainId, IsFormIdReq
 
 UPDATE CodebookService.dbo.GeneralDocumentList set Name = 'Identifikace klienta', Filename  = 'identifikace_klienta.pdf' WHERE Id = 1;
 UPDATE CodebookService.dbo.GeneralDocumentList set Name = 'Potvrzení o výši pracovního příjmu', Filename  = 'potvrzeni_o_vysi_pracovniho_prijmu.pdf' WHERE Id = 2;
+UPDATE CodebookService.dbo.GeneralDocumentList set Name = 'Sdělení čísla účtu ke splácení úvěru', Filename  = 'sdeleni_cisla_uctu_ke_splaceni_uveru.pdf' WHERE Id = 3;
 UPDATE CodebookService.dbo.GeneralDocumentList set Name = 'Seznam dokladů', Filename  = 'seznam_dokladu.pdf' WHERE Id = 4;
 UPDATE CodebookService.dbo.GeneralDocumentList set Name = 'Čestné prohlášení o rodinném stavu zástavce', Filename  = 'cestne_prohlaseni_o_rodinnem_stavu_zastavce.pdf' WHERE Id = 6;
 

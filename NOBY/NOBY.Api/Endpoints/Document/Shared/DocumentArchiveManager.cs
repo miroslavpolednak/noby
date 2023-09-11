@@ -1,9 +1,12 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Core.Configuration;
+using CIS.Core.Security;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
+using DomainServices.UserService.Clients;
 using Google.Protobuf;
+using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.Document.Shared;
 
@@ -16,14 +19,20 @@ internal sealed class DocumentArchiveManager
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ICisEnvironmentConfiguration _environmentConfiguration;
+    private readonly IDocumentHelperService _documentHelperService;
+    private readonly IUserServiceClient _userService;
 
     public DocumentArchiveManager(IDocumentArchiveServiceClient documentArchiveService,
                                   ICodebookServiceClient codebookService,
-                                  ICisEnvironmentConfiguration environmentConfiguration)
+                                  ICisEnvironmentConfiguration environmentConfiguration,
+                                  IDocumentHelperService documentHelperService,
+                                  IUserServiceClient userService)
     {
         _documentArchiveService = documentArchiveService;
         _codebookService = codebookService;
         _environmentConfiguration = environmentConfiguration;
+        _documentHelperService = documentHelperService;
+        _userService = userService;
     }
 
     public Task<string> GenerateDocumentId(CancellationToken cancellationToken)
@@ -83,6 +92,7 @@ internal sealed class DocumentArchiveManager
     public async Task SaveDocumentToArchive(DocumentArchiveData archiveData, CancellationToken cancellationToken)
     {
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
+        var user = await _userService.GetUser(archiveData.UserId, cancellationToken);
 
         var request = new UploadDocumentRequest
         {
@@ -91,7 +101,7 @@ internal sealed class DocumentArchiveManager
             {
                 DocumentId = archiveData.DocumentId,
                 CaseId = archiveData.CaseId,
-                AuthorUserLogin = archiveData.UserId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                AuthorUserLogin = _documentHelperService.GetAuthorUserLoginForDocumentUpload(user),
                 EaCodeMainId = documentTypes.First(d => d.Id == archiveData.DocumentTypeId).EACodeMainId,
                 Filename = archiveData.FileName,
                 CreatedOn = DateTime.Now,
