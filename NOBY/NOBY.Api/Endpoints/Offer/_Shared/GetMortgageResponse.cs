@@ -15,7 +15,7 @@ public sealed class GetMortgageResponse
     /// <summary>
     /// Zadani simulace.
     /// </summary>
-    public MortgageInputs SimulationInputs { get; set; } = null!;
+    public MortgageInputsExtended SimulationInputs { get; set; } = null!;
     
     /// <summary>
     /// Vysledky simulace.

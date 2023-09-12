@@ -5,7 +5,7 @@ namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
 internal static class Extensions
 {
-    public static DomainServices.OfferService.Contracts.SimulateMortgageRequest ToDomainServiceRequest(this SimulateMortgageRequest request, DateTime guaranteeDateFrom)
+    public static DomainServices.OfferService.Contracts.SimulateMortgageRequest ToDomainServiceRequest(this SimulateMortgageRequest request, DateTime guaranteeDateFrom, bool isUserVip)
     {
         var model = new DomainServices.OfferService.Contracts.SimulateMortgageRequest()
         {
@@ -89,7 +89,7 @@ internal static class Extensions
                 HealthRiskInsurance = request.MarketingActions.HealthRiskInsurance,
                 RealEstateInsurance = request.MarketingActions.RealEstateInsurance,
                 IncomeLoanRatioDiscount = request.MarketingActions.IncomeLoanRatioDiscount,
-                UserVip = request.MarketingActions.UserVip,
+                UserVip = isUserVip,
             };
         }
 

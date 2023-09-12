@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Security;
 using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.UserService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
@@ -35,8 +36,10 @@ internal sealed class SimulateMortgageHandler
             guaranteeDateFrom = saInstance.OfferGuaranteeDateFrom;
         }
 
+        var user = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
+
         // predelat na DS request
-        var model = request.ToDomainServiceRequest(guaranteeDateFrom);
+        var model = request.ToDomainServiceRequest(guaranteeDateFrom, user.UserInfo.IsUserVIP);
 
         // zavolat DS
         var result = await _offerService.SimulateMortgage(model, cancellationToken);
@@ -52,15 +55,18 @@ internal sealed class SimulateMortgageHandler
 
     private readonly ICurrentUserAccessor _userAccessor;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IUserServiceClient _userService;
     private readonly IOfferServiceClient _offerService;
     
     public SimulateMortgageHandler(
         ICurrentUserAccessor userAccessor,
         IOfferServiceClient offerService, 
-        ISalesArrangementServiceClient salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService,
+        IUserServiceClient userService)
     {
         _userAccessor = userAccessor;
         _salesArrangementService = salesArrangementService;
+        _userService = userService;
         _offerService = offerService;
     }
 }
