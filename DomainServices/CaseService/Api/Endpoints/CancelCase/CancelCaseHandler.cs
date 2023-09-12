@@ -81,12 +81,16 @@ internal sealed class CancelCaseHandler
         await _salesArrangementService.DeleteSalesArrangement(salesArrangementId, true, cancellation);
 
         // auditni log
-        _auditLogger.LogWithCurrentUser(
+        _auditLogger.Log(
             AuditEventTypes.Noby004,
             "Případ byl stornován",
             products: new List<AuditLoggerHeaderItem>
             {
-                new("case", request.CaseId)
+                new(AuditConstants.ProductNamesCase, request.CaseId)
+            },
+            bodyBefore: new Dictionary<string, string>
+            {
+                { "button_label", "Storno žádosti" }
             }
         );
 

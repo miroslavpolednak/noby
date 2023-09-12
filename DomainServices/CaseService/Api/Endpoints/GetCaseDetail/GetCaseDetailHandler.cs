@@ -26,12 +26,12 @@ internal sealed class GetCaseDetailHandler
         // auditni log
         if (_currentUser.User!.Id != model.CaseOwner.UserId)
         {
-            _auditLogger.LogWithCurrentUser(
+            _auditLogger.Log(
                 AuditEventTypes.Noby009,
                 "Přístup na případ, kde přistupující není majitelem případu",
                 products: new List<AuditLoggerHeaderItem>
                 {
-                    new("case", request.CaseId)
+                    new(AuditConstants.ProductNamesCase, request.CaseId)
                 }
             );
         }

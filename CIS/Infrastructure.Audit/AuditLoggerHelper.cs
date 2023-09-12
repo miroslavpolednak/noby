@@ -60,7 +60,7 @@ internal sealed class AuditLoggerHelper
         }
 
         // next seq no
-        var seqId = _databaseWriter.GetSequenceId();
+        long? seqId = eventDescriptor.GenerateSequenceNumber ? _databaseWriter.GetSequenceId() : default(long?);
         string? hashId = null;
         var time = DateTime.Now.ToString("o", _culture);
 
@@ -85,7 +85,7 @@ internal static class AuditLoggerJsonWriter
         StringWriter output,
         ref string time,
         ref string? hashId,
-        ref long sequenceId,
+        ref long? sequenceId,
         ref AuditLoggerDefaults loggerDefaults, 
         AuditEventContext context,
         ReadOnlySpan<char> eventTypeId,
@@ -103,8 +103,11 @@ internal static class AuditLoggerJsonWriter
         output.Write("\"logger\":\"NOBY\"");
 
         // seqno
-        output.Write(",\"seqNo\":");
-        write(output, sequenceId.ToString(CultureInfo.InvariantCulture));
+        if (sequenceId.HasValue)
+        {
+            output.Write(",\"seqNo\":");
+            write(output, sequenceId.Value.ToString(CultureInfo.InvariantCulture));
+        }
 
         // timestamp
         output.Write(",\"timestamp\":");
