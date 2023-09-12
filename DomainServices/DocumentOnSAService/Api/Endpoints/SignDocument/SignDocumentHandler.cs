@@ -113,6 +113,9 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         if (!documentOnSa.IsValid || documentOnSa.IsSigned || documentOnSa.IsFinal)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToStartSigningOrSignInvalidDocument);
 
+        if (documentOnSa.SignatureTypeId != request.SignatureTypeId)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SignatureTypeIdHasToBeSame);
+
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
         if (salesArrangement.State != SalesArrangementStates.InSigning.ToByte())
@@ -420,7 +423,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, DateTime signatureDate, CancellationToken cancellationToken)
     {
         if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()
-            && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => r.IsSigned == false, cancellationToken))
+            && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => !r.IsSigned, cancellationToken))
         {
             var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, signatureDate, cancellationToken);
 
