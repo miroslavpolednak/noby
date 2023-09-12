@@ -69,7 +69,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         DocumentOnSa documentOnSaEntity;
         if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ProductRequest.ToByte())
         {
-            if (request.TaskId is not null) // workflow
+            if (request.TaskIdSb is not null) // workflow
                 documentOnSaEntity = await ProcessWorkflowRequest(request, cancellationToken);
             else if (request.DocumentTypeId == _crsDocumentType) //CRS request
                 documentOnSaEntity = await ProcessCrsRequest(request, salesArrangement, cancellationToken);
@@ -140,7 +140,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     {
         StartSigningBlValidator.ValidateWorkflowRequest(request);
         await WorkflowInvalidateExistingSigningProcessesIfExist(request, cancellationToken);
-        var taskDetail = await _caseServiceClient.GetTaskDetail(request.TaskId!.Value, cancellationToken);
+        var taskDetail = await _caseServiceClient.GetTaskDetail(request.TaskIdSb!.Value, cancellationToken);
         return await _startSigningMapper.WorkflowMapToEntity(request, taskDetail, cancellationToken);
     }
 
@@ -196,7 +196,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     private async Task WorkflowInvalidateExistingSigningProcessesIfExist(StartSigningRequest request, CancellationToken cancellationToken)
     {
         var existSigningProcesses = await _dbContext.DocumentOnSa.Where(e => e.SalesArrangementId == request.SalesArrangementId
-                                                        && e.TaskId == request.TaskId && e.IsValid)
+                                                        && e.TaskIdSb == request.TaskIdSb && e.IsValid)
                                                        .ToListAsync(cancellationToken);
 
         existSigningProcesses.ForEach(s => s.IsValid = false);

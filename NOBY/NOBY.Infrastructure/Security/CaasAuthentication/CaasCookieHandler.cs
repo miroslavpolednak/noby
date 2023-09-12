@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Reflection;
 using System.Security.Claims;
 
 namespace NOBY.Infrastructure.Security.CaasAuthentication;
@@ -15,6 +16,8 @@ internal sealed class CaasCookieHandler
 {
     public void Configure(string? name, CookieAuthenticationOptions options)
     {
+        var appVersion = Assembly.GetEntryAssembly()!.GetName().Version!.ToString();
+
         if (!string.IsNullOrEmpty(_configuration.AuthenticationScheme))
         {
             options.Cookie.Domain = _configuration.AuthenticationCookieDomain;
@@ -72,7 +75,11 @@ internal sealed class CaasCookieHandler
                 logger.Log(
                     AuditEventTypes.Noby002,
                     $"Uživatel {currentLogin} se přihlásil do aplikace.",
-                    bodyAfter: new Dictionary<string, string>() { { "login", currentLogin } });
+                    bodyAfter: new Dictionary<string, string>() 
+                    { 
+                        { "login", currentLogin },
+                        { "app_version", appVersion }
+                    });
             },
             OnSignedIn = context =>
             {

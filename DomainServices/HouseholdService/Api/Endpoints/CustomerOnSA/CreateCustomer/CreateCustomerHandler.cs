@@ -106,7 +106,7 @@ internal sealed class CreateCustomerHandler
         // auditni log
         if (kbIdentity is not null)
         {
-            _auditLogger.LogWithCurrentUser(
+            _auditLogger.Log(
                 AuditEventTypes.Noby006,
                 "Identifikovaný klient byl přiřazen k žádosti",
                 identities: new List<AuditLoggerHeaderItem>
@@ -115,8 +115,8 @@ internal sealed class CreateCustomerHandler
                 },
                 products: new List<AuditLoggerHeaderItem>
                 {
-                    new("case", salesArrangement.CaseId),
-                    new("salesArrangement", salesArrangement.SalesArrangementId)
+                    new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
+                    new(AuditConstants.ProductNamesSalesArrangement, salesArrangement.SalesArrangementId)
                 }
             );
         }

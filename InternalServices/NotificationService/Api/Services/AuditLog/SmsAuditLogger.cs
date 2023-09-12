@@ -59,7 +59,7 @@ public class SmsAuditLogger : ISmsAuditLogger
         
         var rawHttpResponseBody = await GetBodyFromResponse(httpContext.Response);
         
-        _auditLogger.LogWithCurrentUser(
+        _auditLogger.Log(
             AuditEventTypes.Noby012,
             "NotificationService /sms or /smsFromTemplate HTTP request processed",
             bodyBefore: new Dictionary<string, string>
@@ -82,7 +82,7 @@ public class SmsAuditLogger : ISmsAuditLogger
     {
         if (smsType.IsAuditLogEnabled)
         {
-            _auditLogger.LogWithCurrentUser(
+            _auditLogger.Log(
                 AuditEventTypes.Noby013,
                 "Produced message SendSMS to KAFKA",
                 bodyBefore: new Dictionary<string, string>
@@ -101,7 +101,7 @@ public class SmsAuditLogger : ISmsAuditLogger
     {
         if (smsType.IsAuditLogEnabled)
         {
-            _auditLogger.LogWithCurrentUser(
+            _auditLogger.Log(
                 AuditEventTypes.Noby013,
                 "Could not produce message SendSMS to KAFKA",
                 bodyBefore: new Dictionary<string, string>

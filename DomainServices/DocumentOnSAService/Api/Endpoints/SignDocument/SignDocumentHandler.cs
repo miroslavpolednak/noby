@@ -178,14 +178,14 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     private void LogAuditMessage(DocumentOnSa documentOnSa, SalesArrangement salesArrangement)
     {
-        _auditLogger.LogWithCurrentUser(
+        _auditLogger.Log(
             AuditEventTypes.Noby007,
             "Dokument byl označen za podepsaný",
             products: new List<AuditLoggerHeaderItem>
             {
-                new("case", salesArrangement.CaseId),
-                new("salesArrangement", salesArrangement.SalesArrangementId),
-                new("form", documentOnSa.FormId)
+                new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
+                new(AuditConstants.ProductNamesSalesArrangement, salesArrangement.SalesArrangementId),
+                new(AuditConstants.ProductNamesForm, documentOnSa.FormId)
             }
         );
     }

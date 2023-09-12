@@ -46,13 +46,13 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
         }, cancellationToken);
 
         // auditni log
-        _auditLogger.LogWithCurrentUser(
+        _auditLogger.Log(
             AuditEventTypes.Noby005,
             "Žádost byla dokončena",
             products: new List<AuditLoggerHeaderItem>()
             {
-                new("case", salesArrangement.CaseId),
-                new("salesArrangement", request.SalesArrangementId)
+                new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
+                new(AuditConstants.ProductNamesSalesArrangement, request.SalesArrangementId)
             }
         );
 

@@ -73,7 +73,7 @@ internal sealed class UpdateCustomerHandler
         {
             var caseId = (await _salesArrangementService.GetSalesArrangement(entity.SalesArrangementId, cancellationToken)).CaseId;
 
-            _auditLogger.LogWithCurrentUser(
+            _auditLogger.Log(
                 AuditEventTypes.Noby006,
                 "Identifikovaný klient byl přiřazen k žádosti",
                 identities: new List<AuditLoggerHeaderItem>
@@ -82,8 +82,8 @@ internal sealed class UpdateCustomerHandler
                 },
                 products: new List<AuditLoggerHeaderItem>
                 {
-                    new("case", caseId),
-                    new("salesArrangement", entity.SalesArrangementId)
+                    new(AuditConstants.ProductNamesCase, caseId),
+                    new(AuditConstants.ProductNamesSalesArrangement, entity.SalesArrangementId)
                 }
             );
         }

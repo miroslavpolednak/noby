@@ -100,8 +100,9 @@ internal sealed class UpdateParametersHelper
     private readonly IProductServiceClient _productService;
     private readonly ICodebookServiceClient _codebookService;
 
-    public UpdateParametersHelper(ICodebookServiceClient codebookService)
+    public UpdateParametersHelper(ICodebookServiceClient codebookService, IProductServiceClient productService)
     {
+        _productService = productService;
         _codebookService = codebookService;
     }
 }

@@ -31,14 +31,14 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
             _ => throw new NobyValidationException("Unsupported kind of document source")
         };
         
-        _auditLogger.LogWithCurrentUser(
+        _auditLogger.Log(
             AuditEventTypes.Noby010,
             "Dokument byl zobrazen v aplikaci",
             products: new List<AuditLoggerHeaderItem>
             {
                 // new("case", todo),
-                new("salesArrangement", documentOnSA.SalesArrangementId),
-                new("form", documentOnSA.FormId)
+                new(AuditConstants.ProductNamesSalesArrangement, documentOnSA.SalesArrangementId),
+                new(AuditConstants.ProductNamesForm, documentOnSA.FormId)
             }
         );
 
