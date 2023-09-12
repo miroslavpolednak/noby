@@ -163,6 +163,7 @@ public class StartSigningMapper
         entity.SalesArrangementId = request.SalesArrangementId!.Value;
         entity.CaseId = request.CaseId;
         entity.TaskId = request.TaskId;
+        entity.TaskIdSb = request.TaskIdSb;
         entity.SignatureTypeId = taskDetail.TaskObject.SignatureTypeId;
         entity.IsValid = true;
         entity.IsSigned = false;
