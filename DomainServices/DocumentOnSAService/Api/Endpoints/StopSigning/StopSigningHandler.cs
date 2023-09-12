@@ -59,8 +59,8 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
         );
 
         // SA state
-        if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte() // 7
-             || salesArrangement.State == SalesArrangementStates.ToSend.ToSByte()) // 8
+        if (salesArrangement.State == (int)SalesArrangementStates.InSigning // 7
+             || salesArrangement.State == (int)SalesArrangementStates.ToSend) // 8
         {
             await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
         }
