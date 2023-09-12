@@ -82,8 +82,6 @@ public class MortgageInputs
 
     public List<LoanPurposeItem>? LoanPurposes { get; set; }
 
-    public MarketingActionInputItem? MarketingActions { get; set; }
-
     public Developer? Developer { get; set; }
 
     public List<FeeInputItem>? Fees { get; set; }

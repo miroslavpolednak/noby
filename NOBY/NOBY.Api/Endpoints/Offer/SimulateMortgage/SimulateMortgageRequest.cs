@@ -27,4 +27,6 @@ public sealed class SimulateMortgageRequest
     public List<CustomerIdentity>? CustomerIdentities { get; set; }
 
     public CreditWorthinessSimpleInputs? CreditWorthinessSimpleInputs { get; set; }
+
+    public MarketingActionInputItem? MarketingActions { get; set; }
 }
