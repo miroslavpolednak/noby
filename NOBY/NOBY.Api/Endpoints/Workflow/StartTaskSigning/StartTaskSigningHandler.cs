@@ -38,7 +38,8 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
         var signingRequest = new StartSigningRequest
         {
             CaseId = caseId,
-            TaskId = Convert.ToInt32(taskId),
+            TaskId = Convert.ToInt32(taskId), 
+            TaskIdSb = workflowTask.TaskIdSb,
             SalesArrangementId = salesArrangement.SalesArrangementId,
             SignatureTypeId = workflowTask.SignatureTypeId
         };

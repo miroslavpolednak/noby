@@ -1,0 +1,1 @@
+ALTER TABLE [DocumentOnSa] ADD [TaskIdSb] int NULL;
