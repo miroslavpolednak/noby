@@ -198,7 +198,7 @@ internal static class GetSalesArrangementExtensions
         {
             Applicants = model.Applicants is null ? null : model.Applicants.Select(t => new Dto.CustomerChangeDetailApplicant
             {
-                Identity = t.Identity?.Cast<CIS.Foms.Types.CustomerIdentity>()?.ToList(),
+                Identity = t.Identity?.Select(t => (CIS.Foms.Types.CustomerIdentity)t!).ToList(),
                 IdentificationDocument = t.IdentificationDocument is null ? null : new()
                 {
                     IdentificationDocumentTypeId = t.IdentificationDocument.IdentificationDocumentTypeId,
