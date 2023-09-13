@@ -15,6 +15,7 @@ namespace DomainServices.DocumentArchiveService.Api.Endpoints.GetDocument;
 
 internal sealed class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumentResponse>
 {
+    private static int[] _allowedDocStates = new[] { 100, 110, 200 };
     private const string DocumentPrefix = "KBH";
     private readonly ISdfClient _sdfClient;
     private readonly IDocumentServiceRepository _documentServiceRepository;
@@ -65,7 +66,7 @@ internal sealed class GetDocumentHandler : IRequestHandler<GetDocumentRequest, G
     {
         var docFromQueue = await _dbContext.DocumentInterface
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(d => d.DocumentId == request.DocumentId, cancellationToken)
+                    .FirstOrDefaultAsync(d => d.DocumentId == request.DocumentId && _allowedDocStates.Contains(d.Status), cancellationToken)
                   ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentWithEArchiveIdNotExistInQueue);
 
         var response = new GetDocumentResponse

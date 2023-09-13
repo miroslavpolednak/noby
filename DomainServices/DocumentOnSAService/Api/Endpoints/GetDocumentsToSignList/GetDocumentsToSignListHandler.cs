@@ -9,7 +9,6 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
-using ExternalServices.ESignatures.V1;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetDocumentsToSignList;
 
@@ -21,18 +20,14 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     private readonly IDocumentOnSaMapper _documentOnSaMapper;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
-    private readonly IESignaturesClient _eSignaturesClient;
-    private readonly IMediator _mediator;
 
     public GetDocumentsToSignListHandler(
-        DocumentOnSAServiceDbContext dbContext,
-        ISalesArrangementServiceClient arrangementServiceClient,
-        ICodebookServiceClient codebookServiceClients,
-        IDocumentOnSaMapper documentOnSaMapper,
-        IHouseholdServiceClient householdClient,
-        ICustomerOnSAServiceClient customerOnSAServiceClient,
-        IESignaturesClient eSignaturesClient,
-        IMediator mediator)
+           DocumentOnSAServiceDbContext dbContext,
+           ISalesArrangementServiceClient arrangementServiceClient,
+           ICodebookServiceClient codebookServiceClients,
+           IDocumentOnSaMapper documentOnSaMapper,
+           IHouseholdServiceClient householdClient,
+           ICustomerOnSAServiceClient customerOnSAServiceClient)
     {
         _dbContext = dbContext;
         _arrangementServiceClient = arrangementServiceClient;
@@ -40,8 +35,6 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         _documentOnSaMapper = documentOnSaMapper;
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
-        _eSignaturesClient = eSignaturesClient;
-        _mediator = mediator;
     }
 
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
