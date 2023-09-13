@@ -249,7 +249,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             if (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
             {
                 _logger.LogError(exp, exp.Message);
-                await CreateWfTask(customerOnSa, salesArrangement, cancellationToken);
+                await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
             }
             else
             {
@@ -258,9 +258,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         }
     }
 
-    private async Task CreateWfTask(CustomerOnSA customerOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task CreateWfTask(CustomerOnSA customerOnSa, SalesArrangement salesArrangement, string message, CancellationToken cancellationToken)
     {
-        var customerChangeDataAsByteArray = Encoding.ASCII.GetBytes(customerOnSa.CustomerChangeData);
+        var customerChangeDataAsByteArray = Encoding.UTF8.GetBytes(customerOnSa.CustomerChangeData + Environment.NewLine + Environment.NewLine + message);
+
         var documentId = await _documentArchiveService.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken);
         var eaCodeMain = (await _codebookService.EaCodesMain(cancellationToken)).Single(e => e.Id == _unwrittenDataEaCodeMainId);
         var contractNumber = await GetContractNumber(salesArrangement.CaseId, cancellationToken);
