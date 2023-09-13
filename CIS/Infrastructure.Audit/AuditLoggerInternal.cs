@@ -9,7 +9,7 @@ using System.Text;
 
 namespace CIS.Infrastructure.Audit;
 
-internal sealed class AuditLoggerHelper
+internal sealed class AuditLoggerInternal
 {
     private readonly Database.DatabaseWriter _databaseWriter;
     private AuditLoggerDefaults _loggerDefaults;
@@ -19,7 +19,7 @@ internal sealed class AuditLoggerHelper
     private static CultureInfo _culture = CultureInfo.InvariantCulture;
 
     // cache event types
-    static AuditLoggerHelper()
+    static AuditLoggerInternal()
     {
         var values = FastEnum.GetValues<AuditEventTypes>();
         foreach (var v in values)
@@ -28,7 +28,7 @@ internal sealed class AuditLoggerHelper
         }
     }
 
-    public AuditLoggerHelper(
+    public AuditLoggerInternal(
         string serverIp, 
         ICisEnvironmentConfiguration environmentConfiguration, 
         AuditLogConfiguration auditConfiguration)

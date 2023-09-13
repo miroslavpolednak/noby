@@ -72,7 +72,8 @@ Aktuálně podporujeme dva režimy autentizace technického uživatele:
 // hardcoded autentizace
 "CisSecurity": {
   "ServiceAuthentication": {
-    "Validator": "StaticCollection"
+    "Validator": "StaticCollection",
+    "AllowedUsers": []
   }
 }
 
@@ -81,7 +82,10 @@ Aktuálně podporujeme dva režimy autentizace technického uživatele:
   "ServiceAuthentication": {
     "Validator": "NativeActiveDirectory",
     "Domain": "vsskb.cz",
-    "AdHost": "vsskb.cz","AdPort": 636,"IsSsl": true
+    "AdHost": "vsskb.cz",
+    "AdPort": 636,
+    "IsSsl": true,
+    "AllowedUsers": []
   }
 }
 ```

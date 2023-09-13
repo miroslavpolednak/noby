@@ -11,6 +11,25 @@ internal class UserService
         return await GetUser(_currentUser.User!.Id, cancellationToken);
     }
 
+    public async Task<Contracts.GetUserBasicInfoResponse> GetUserBasicInfo(int userId, CancellationToken cancellationToken = default)
+    {
+        // pokud bude user nalezen v kesi
+        if (_distributedCacheProvider.UseDistributedCache)
+        {
+            var cachedUser = await _distributedCacheProvider.DistributedCacheInstance!.GetAsync(Helpers.CreateUserBasicCacheKey(userId), cancellationToken);
+            if (cachedUser is not null)
+            {
+                return Contracts.GetUserBasicInfoResponse.Parser.ParseFrom(cachedUser);
+            }
+        }
+    
+        return await _service.GetUserBasicInfoAsync(
+            new()
+            {
+                UserId = userId
+            }, cancellationToken: cancellationToken);
+    }
+
     public async Task<Contracts.User> GetUser(string loginWithScheme, CancellationToken cancellationToken = default)
     {
         var arr = loginWithScheme.Split('=');

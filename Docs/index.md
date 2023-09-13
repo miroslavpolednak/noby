@@ -11,7 +11,9 @@
 
 [Validace HTTP requestu a error handling](./topics/validation.md)
 
-[Autentizace doménových služeb](./topics/authentication.md)
+[Autentizace doménových služeb](./topics/authentication-ds.md)
+
+[Autorizace doménových služeb](./topics/authorization-ds.md)
 
 [Autentizace FE API](./topics/authentication-feapi.md)
 
