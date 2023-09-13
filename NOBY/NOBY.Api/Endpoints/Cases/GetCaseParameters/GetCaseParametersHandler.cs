@@ -158,7 +158,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         DomainServices.UserService.Contracts.User? caseOwnerOrig,
         DomainServices.UserService.Contracts.User? caseOwnerCurrent)
     {
-        var user = caseOwnerOrig ?? caseOwnerCurrent; // only for ConsultantName, IsInternal, UserIdentifiers
+        var user = caseOwnerOrig ?? caseOwnerCurrent;
         var identifiers = user?.UserIdentifiers ?? Enumerable.Empty<CIS.Infrastructure.gRPC.CisTypes.UserIdentity>();
         
         return new CaseOwnerUserDto
