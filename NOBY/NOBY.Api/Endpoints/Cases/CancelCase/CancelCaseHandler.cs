@@ -71,8 +71,8 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
 
             await _documentArchiveService.UploadDocument(uploadRequest, cancellationToken);
         }
-
-        await _caseService.CancelCase(request.CaseId, cancellationToken: cancellationToken);
+        
+        await _caseService.CancelCase(request.CaseId, true, cancellationToken);
         return await CreateCancelCaseResponse(salesArrangement.CaseId, customerOnSas, cancellationToken);
     }
 
