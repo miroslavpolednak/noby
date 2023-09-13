@@ -60,23 +60,27 @@ internal sealed class CisServiceAuthenticationHandler
         }
         else
         {
-            // autorizace uzivatele
-            var user = _configuration.AllowedUsers?.FirstOrDefault(t => t.Username == loginResult.Login);
-            if (user is null)
-            {
-                _logger.AuthServiceUserNotFound(loginResult.Login!);
-                return AuthenticateResult.Fail("Service user not found in allowed users");
-            }
-
             // vytvorit identity
             var claimsIdentity = new ServiceUser.CisServiceIdentity(loginResult.Login!);
-            // pridat role
-            if (user.Roles?.Any() ?? false)
+
+            // autorizace uzivatele
+            if (_configuration.AllowedUsers?.Any() ?? false)
             {
-                user.Roles.ForEach(t =>
+                var user = _configuration.AllowedUsers?.FirstOrDefault(t => t.Username == loginResult.Login);
+                if (user is null)
                 {
-                    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, t));
-                });
+                    _logger.AuthServiceUserNotFound(loginResult.Login!);
+                    return AuthenticateResult.Fail("Service user not found in allowed users");
+                }
+
+                // pridat role
+                if (user.Roles?.Any() ?? false)
+                {
+                    user.Roles.ForEach(t =>
+                    {
+                        claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, t));
+                    });
+                }
             }
 
             // vratit autentizacni ticket
