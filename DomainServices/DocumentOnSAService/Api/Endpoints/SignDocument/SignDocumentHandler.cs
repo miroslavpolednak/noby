@@ -30,6 +30,7 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using System.Text;
+using Newtonsoft.Json;
 using static DomainServices.HouseholdService.Contracts.GetCustomerChangeMetadataResponse.Types;
 using _CustomerService = DomainServices.CustomerService.Contracts;
 
@@ -260,7 +261,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     private async Task CreateWfTask(CustomerOnSA customerOnSa, SalesArrangement salesArrangement, string message, CancellationToken cancellationToken)
     {
-        var customerChangeDataAsByteArray = Encoding.UTF8.GetBytes(customerOnSa.CustomerChangeData + Environment.NewLine + Environment.NewLine + message);
+        dynamic parsedJson = JsonConvert.DeserializeObject(customerOnSa.CustomerChangeData)!;
+        var formattedCustomerChangedData = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
+
+        var customerChangeDataAsByteArray = Encoding.UTF8.GetBytes(formattedCustomerChangedData + Environment.NewLine + Environment.NewLine + message);
 
         var documentId = await _documentArchiveService.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken);
         var eaCodeMain = (await _codebookService.EaCodesMain(cancellationToken)).Single(e => e.Id == _unwrittenDataEaCodeMainId);
