@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using CIS.Foms.Types;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
@@ -157,18 +158,17 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         DomainServices.UserService.Contracts.User? caseOwnerOrig,
         DomainServices.UserService.Contracts.User? caseOwnerCurrent)
     {
-        var identifiers = caseOwnerOrig?.UserIdentifiers
-                              .Select(i => new CIS.Foms.Types.UserIdentity(i.Identity, (int)i.IdentityScheme)) 
-                          ?? Enumerable.Empty<CIS.Foms.Types.UserIdentity>();
+        var user = caseOwnerOrig ?? caseOwnerCurrent; // only for ConsultantName, IsInternal, UserIdentifiers
+        var identifiers = user?.UserIdentifiers ?? Enumerable.Empty<CIS.Infrastructure.gRPC.CisTypes.UserIdentity>();
         
         return new CaseOwnerUserDto
         {
-            BranchName = caseOwnerOrig?.UserInfo.PersonOrgUnitName ?? caseOwnerOrig?.UserInfo.DealerCompanyName,
-            ConsultantName = caseOwnerOrig?.UserInfo.DisplayName ?? caseOwnerCurrent?.UserInfo.DisplayName,
-            Cpm = caseOwnerOrig?.UserInfo.Cpm,
-            Icp = caseOwnerOrig?.UserInfo.Icp,
-            IsInternal = caseOwnerOrig?.UserInfo.IsInternal ?? false,
-            UserIdentifiers = identifiers.ToList()
+            BranchName = user?.UserInfo.PersonOrgUnitName ?? user?.UserInfo.DealerCompanyName,
+            ConsultantName = user?.UserInfo.DisplayName,
+            Cpm = user?.UserInfo.Cpm,
+            Icp = user?.UserInfo.Icp,
+            IsInternal = user?.UserInfo.IsInternal ?? false,
+            UserIdentifiers = identifiers.Select(i => new UserIdentity(i.Identity, (int)i.IdentityScheme)).ToList()
         };
     }
     

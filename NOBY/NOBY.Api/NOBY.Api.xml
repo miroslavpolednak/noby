@@ -454,44 +454,34 @@
             Délka nové fixace v měsících.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.BranchName">
-            <summary>
-            Pobočka banky, pod kterou spadá úvěr
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.ConsultantName">
-            <summary>
-            Poradce, pod kterého spadá úvěr
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.Cpm">
-            <summary>
-            ČPM
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.BranchConsultantDto.Icp">
-            <summary>
-            IČP
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.BranchName">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.BranchName">
             <summary>
             Pobočka/společnost třetí strany
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.ConsultantName">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.ConsultantName">
             <summary>
-            Poradce třetí strany
+            Poradce (Jméno Příjmení)
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.Cpm">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.Cpm">
             <summary>
             ČPM
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.ThirdPartyConsultantDto.Icp">
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.Icp">
             <summary>
             IČP
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.UserIdentifiers">
+            <summary>
+            Všechny identity uživatele z XXVVSS
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.IsInternal">
+            <summary>
+            Flag, zda se jedná o interního uživatele, či externistu
             </summary>
         </member>
         <member name="T:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponse">
