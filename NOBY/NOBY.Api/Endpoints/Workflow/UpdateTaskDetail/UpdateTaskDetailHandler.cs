@@ -52,7 +52,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             TaskUserResponse = request.TaskUserResponse
         };
 
-        completeTaskRequest.TaskDocumentIds.AddRange(documentIds);
+        completeTaskRequest.TaskDocumentIds.AddRange(taskDetail.TaskDetail.TaskDocumentIds.Concat(documentIds));
 
         await _caseService.CompleteTask(completeTaskRequest, cancellationToken);
 
