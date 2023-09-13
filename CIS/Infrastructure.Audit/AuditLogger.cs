@@ -51,9 +51,9 @@ internal sealed class AuditLogger
 
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly ICurrentUserAccessor _currentUser;
-    private readonly AuditLoggerHelper _helper;
+    private readonly AuditLoggerInternal _helper;
 
-    public AuditLogger(AuditLoggerHelper helper, IHttpContextAccessor contextAccessor, ICurrentUserAccessor currentUser)
+    public AuditLogger(AuditLoggerInternal helper, IHttpContextAccessor contextAccessor, ICurrentUserAccessor currentUser)
     {
         _helper = helper;
         _contextAccessor = contextAccessor;

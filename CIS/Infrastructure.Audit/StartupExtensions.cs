@@ -32,7 +32,7 @@ public static class StartupExtensions
 
                 var cisConfiguration = serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
 
-                return new Audit.AuditLoggerHelper(serverIp, cisConfiguration, configuration);
+                return new Audit.AuditLoggerInternal(serverIp, cisConfiguration, configuration);
             });
             builder.Services.AddScoped<IAuditLogger, AuditLogger>();
         }

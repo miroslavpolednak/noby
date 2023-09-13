@@ -36,9 +36,13 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
             "Dokument byl zobrazen v aplikaci",
             products: new List<AuditLoggerHeaderItem>
             {
-                // new("case", todo),
                 new(AuditConstants.ProductNamesSalesArrangement, documentOnSA.SalesArrangementId),
                 new(AuditConstants.ProductNamesForm, documentOnSA.FormId)
+            },
+            bodyBefore: new Dictionary<string, string>
+            {
+                { "sha2", AuditLoggerHelpers.GenerateSHA2(response.FileData) },
+                { "sha3", AuditLoggerHelpers.GenerateSHA3(response.FileData) }
             }
         );
 
