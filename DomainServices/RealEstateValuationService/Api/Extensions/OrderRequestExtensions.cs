@@ -15,7 +15,7 @@ internal static class OrderRequestExtensions
         model.DealNumber = caseInstance.Data.ContractNumber;
         model.EFormId = 0;
         model.CompanyCode = "02";
-        model.ProductCode = "02";
+        model.ProductCode = "01";
         model.Cpm = Convert.ToInt64(currentUser.UserInfo.Cpm, CultureInfo.InvariantCulture);
         model.Icp = Convert.ToInt64(currentUser.UserInfo.Icp, CultureInfo.InvariantCulture);
 
