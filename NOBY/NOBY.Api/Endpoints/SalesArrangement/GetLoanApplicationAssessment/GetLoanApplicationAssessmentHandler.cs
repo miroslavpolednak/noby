@@ -72,6 +72,15 @@ internal sealed class GetLoanApplicationAssessmentHandler
                 throw new NobyValidationException("SalesArrangement.RiskBusinessCaseId is not defined.");
 
             await CreateNewAssessment(saInstance, offer, cancellationToken);
+
+            await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
+            {
+                new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.ScoringPerformedAtleastOnce,
+                    Value = true
+                }
+            }, cancellationToken);
         }
 
         // load assesment by ID
@@ -88,15 +97,6 @@ internal sealed class GetLoanApplicationAssessmentHandler
         };
 
         var assessment = await _riskBusinessCaseService.GetAssessment(assessmentRequest, cancellationToken);
-
-        await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
-        {
-            new()
-            {
-                FlowSwitchId = (int)FlowSwitches.ScoringPerformedAtleastOnce,
-                Value = true
-            }
-        }, cancellationToken);
 
         // convert to ApiResponse
         var response = assessment.ToApiResponse(offer);
