@@ -5,6 +5,9 @@ internal static class Helpers
     public static string CreateUserCacheKey(string userId)
         => $"CisUser:{userId}";
 
+    public static string CreateUserBasicCacheKey(int userId)
+        => $"CisUser:{userId}:Basic";
+
     public static string CreateUserCacheKey(int userId)
         => CreateUserCacheKey(userId.ToString(System.Globalization.CultureInfo.InvariantCulture));
 

@@ -74,5 +74,14 @@ public class MockUserService
     public async Task<User> GetCurrentUser(CancellationToken cancellationToken = default)
         => await GetUser(1, cancellationToken);
 
+    public Task<GetUserBasicInfoResponse> GetUserBasicInfo(int userId, CancellationToken cancellationToken = default)
+    {
+        var user = CreateUser();
+        return Task.FromResult(new GetUserBasicInfoResponse
+        {
+            DisplayName = user.UserInfo.DisplayName
+        });
+    }
+
     public const int DefaultUserId = 3048;
 }

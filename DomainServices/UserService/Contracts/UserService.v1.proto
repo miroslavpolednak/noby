@@ -7,11 +7,18 @@ import "Messages/GetUserPermissions.proto";
 import "Messages/GetUser.proto";
 import "Messages/User.proto";
 import "Messages/GetUserRIPAttributes.proto";
+import "Messages/GetUserBasicInfo.proto";
 
 service UserService {
    rpc GetUser(GetUserRequest) returns (User) {
 	   option (google.api.http) = {
 			get: "/v1/user"
+		};
+   }
+
+   rpc GetUserBasicInfo(GetUserBasicInfoRequest) returns (GetUserBasicInfoResponse) {
+	   option (google.api.http) = {
+			get: "/v1/user-basic-info"
 		};
    }
 

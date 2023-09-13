@@ -11,6 +11,9 @@ internal class UserService
     public override async Task<User> GetUser(GetUserRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<GetUserBasicInfoResponse> GetUserBasicInfo(GetUserBasicInfoRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     public override async Task<GetUserPermissionsResponse> GetUserPermissions(GetUserPermissionsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
