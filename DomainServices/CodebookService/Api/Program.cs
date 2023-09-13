@@ -38,6 +38,7 @@ try {
         .Services
             // add swagger
             .AddCodebookServiceSwagger()
+            .AddCisServiceDiscovery()
             // add grpc infrastructure
             .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
             .AddGrpcReflection()
