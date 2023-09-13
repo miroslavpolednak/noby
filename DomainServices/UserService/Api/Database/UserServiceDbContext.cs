@@ -9,6 +9,7 @@ internal sealed class UserServiceDbContext
     public UserServiceDbContext(BaseDbContextAggregate<UserServiceDbContext> aggregate)
         : base(aggregate) { }
 
+    public DbSet<Entities.DbUserBasicInfo> UserBasicInfos { get; set; }
     public DbSet<Entities.DbUserIdentity> UserIdentities { get; set; }
     public DbSet<Entities.DbUserAttribute> DbUserAttributes { get; set; }
     public DbSet<Entities.DbUserPermission> DbUserPermissions { get; set; }

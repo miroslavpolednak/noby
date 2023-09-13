@@ -106,20 +106,6 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
         });
     }
 
-    public async Task<ESBI_SIMULATION_RESULTS> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input, CancellationToken cancellationToken)
-    {
-        return await callMethod(async () =>
-        {
-            var result = await Client.SimulationAsync(input).WithCancellation(cancellationToken);
-
-            if (result.SIM_error != 0)
-            {
-                throw new CIS.Core.Exceptions.CisValidationException(9103, $"Error occured during call external service EAS [{result.SIM_error} : {result.SIM_error_text}]");
-            }
-            return result;
-        });
-    }
-
     protected override Binding CreateBinding()
     {
         var basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);

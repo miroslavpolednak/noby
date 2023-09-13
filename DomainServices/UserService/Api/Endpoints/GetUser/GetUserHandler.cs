@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUser;
 
-internal class GetUserHandler
+internal sealed class GetUserHandler
     : IRequestHandler<Contracts.GetUserRequest, Contracts.User>
 {
     public async Task<Contracts.User> Handle(Contracts.GetUserRequest request, CancellationToken cancellationToken)

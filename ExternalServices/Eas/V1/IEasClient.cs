@@ -9,11 +9,6 @@ public interface IEasClient
     const string Version = "V1";
 
     /// <summary>
-    /// Pusti simulaci SS/Uv
-    /// </summary>
-    Task<ESBI_SIMULATION_RESULTS> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input, CancellationToken cancellationToken);
-
-    /// <summary>
     /// Vytvori nove ID sporeni/hypo - novy CASE
     /// </summary>
     /// <exception cref="System.Exception">Jakakoliv interni chyba EAS</exception>
