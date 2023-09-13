@@ -83,28 +83,26 @@ public abstract class BaseDbContext<TDbContext>
                         }
                         obj1.CreatedTime = CisDateTime.Now;
                     }
-                    if (CurrentUser is not null && CurrentUser.IsAuthenticated && entry.Entity is IModifiedUser obj2)
-                    {
-                        if (CurrentUser!.IsAuthenticated)
-                        {
-                            await CurrentUser!.EnsureDetails(cancellationToken);
-                            obj2.ModifiedUserId = CurrentUser!.User!.Id;
-                            obj2.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
-                        }
-                    }
+
+                    await processModified();
                     break;
 
                 case EntityState.Modified:
-                    if (CurrentUser is not null && CurrentUser.IsAuthenticated && entry.Entity is IModifiedUser obj3)
-                    {
-                        if (CurrentUser!.IsAuthenticated)
-                        {
-                            await CurrentUser!.EnsureDetails(cancellationToken);
-                            obj3.ModifiedUserId = CurrentUser!.User!.Id;
-                            obj3.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
-                        }
-                    }
+                    await processModified();
                     break;
+            }
+
+            async Task processModified()
+            {
+                if (CurrentUser is not null && CurrentUser.IsAuthenticated && entry.Entity is IModifiedUser obj3)
+                {
+                    if (CurrentUser!.IsAuthenticated)
+                    {
+                        await CurrentUser!.EnsureDetails(cancellationToken);
+                        obj3.ModifiedUserId = CurrentUser!.User!.Id;
+                        obj3.ModifiedUserName = CurrentUser!.UserDetails!.DisplayName;
+                    }
+                }
             }
         }
     }

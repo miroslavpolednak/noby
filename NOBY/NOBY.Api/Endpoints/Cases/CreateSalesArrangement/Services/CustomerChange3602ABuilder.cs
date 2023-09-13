@@ -1,4 +1,5 @@
 ﻿using CIS.Foms.Enums;
+using DomainServices.HouseholdService.Contracts;
 using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -9,27 +10,27 @@ internal sealed class CustomerChange3602ABuilder
 {
     public override async Task PostCreateProcessing(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        var mediator = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<IMediator>();
         var salesArrangementService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient>();
         var customerOnSAService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient>();
         var householdService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.HouseholdService.Clients.IHouseholdServiceClient>();
 
-        // zalozit household
-        var householdResult = await mediator.Send(new Endpoints.Household.CreateHousehold.CreateHouseholdRequest
+        // vytvorit domacnost
+        var requestModel = new CreateHouseholdRequest
         {
             SalesArrangementId = salesArrangementId,
-            HouseholdTypeId = (int)HouseholdTypes.Codebtor,
-            HardCreate = true
-        }, cancellationToken);
+            HouseholdTypeId = (int)HouseholdTypes.Codebtor
+        };
+
+        var householdId = await householdService.CreateHousehold(requestModel, cancellationToken);
 
         // vytvorit klienta
-        var createCustomerResult = await customerOnSAService.CreateCustomer(new DomainServices.HouseholdService.Contracts.CreateCustomerRequest
+        var createCustomerResult = await customerOnSAService.CreateCustomer(new CreateCustomerRequest
         {
             CustomerRoleId = (int)CustomerRoles.Codebtor,
             SalesArrangementId = salesArrangementId
         }, cancellationToken);
 
-        await householdService.LinkCustomerOnSAToHousehold(householdResult.HouseholdId, createCustomerResult.CustomerOnSAId, null, cancellationToken);
+        await householdService.LinkCustomerOnSAToHousehold(householdId, createCustomerResult.CustomerOnSAId, null, cancellationToken);
 
         // update parametru
         await salesArrangementService.UpdateSalesArrangementParameters(new()
@@ -37,7 +38,7 @@ internal sealed class CustomerChange3602ABuilder
             SalesArrangementId = salesArrangementId,
             CustomerChange3602A = new()
             {
-                HouseholdId = householdResult.HouseholdId
+                HouseholdId = householdId
             }
         }, cancellationToken);
     }
