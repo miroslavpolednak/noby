@@ -31,10 +31,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         var offerInstance = await _offerService.GetMortgageOfferDetail(salesArrangementInstance.OfferId!.Value, cancellationToken);
 
         // load User
-        var mortgageResponse = await _productService.GetMortgage(caseInstance.CaseId, cancellationToken);
-        var mortgageData = mortgageResponse.Mortgage;
-        var caseOwnerOrig = await getUserInstance(mortgageData.CaseOwnerUserOrigId, cancellationToken);
-        var caseOwnerCurrent = await getUserInstance(mortgageData.CaseOwnerUserCurrentId, cancellationToken);
+        var caseOwnerOrig = await getUserInstance(caseInstance.CaseOwner?.UserId, cancellationToken);
         
         return new GetCaseParametersResponse
         {
@@ -51,7 +48,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
             LoanDueDate = offerInstance.SimulationResults.LoanDueDate,
             PaymentDay = offerInstance.SimulationInputs.PaymentDay,
             FirstAnnuityPaymentDate = offerInstance.SimulationResults.AnnuityPaymentsDateFrom,
-            CaseOwnerOrigUser = getCaseOwnerOrigUser(caseOwnerOrig, caseOwnerCurrent)
+            CaseOwnerOrigUser = getCaseOwnerOrigUser(caseOwnerOrig, null)
         };
     }
 
@@ -62,6 +59,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         var loanKindTypes = await _codebookService.LoanKinds(cancellationToken);
         var loanPurposeTypes = await _codebookService.LoanPurposes(cancellationToken);
         
+        // load user
         var mortgageResponse = await _productService.GetMortgage(caseInstance.CaseId, cancellationToken);
         var mortgageData = mortgageResponse.Mortgage;
         var caseOwnerOrig = await getUserInstance(mortgageData.CaseOwnerUserOrigId, cancellationToken);
@@ -154,11 +152,14 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         Sum = loanPurpose.Sum
     };
     
-    private static CaseOwnerUserDto getCaseOwnerOrigUser(
+    private static CaseOwnerUserDto? getCaseOwnerOrigUser(
         DomainServices.UserService.Contracts.User? caseOwnerOrig,
         DomainServices.UserService.Contracts.User? caseOwnerCurrent)
     {
         var user = caseOwnerOrig ?? caseOwnerCurrent;
+
+        if (user is null) return null;
+        
         var identifiers = user?.UserIdentifiers ?? Enumerable.Empty<CIS.Infrastructure.gRPC.CisTypes.UserIdentity>();
         
         return new CaseOwnerUserDto
