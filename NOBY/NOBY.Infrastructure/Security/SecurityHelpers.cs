@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Security;
 using CIS.Foms.Enums;
 using DomainServices.UserService.Clients.Authorization;
+using NOBY.Infrastructure.ErrorHandling;
 
 namespace NOBY.Infrastructure.Security;
 
@@ -20,7 +21,7 @@ public static class SecurityHelpers
         // zakazane stavy Case
         if (caseState is (int)CaseStates.Finished or (int)CaseStates.Cancelled)
         {
-            throw new CisAuthorizationException($"CaseOwnerValidation: Case state is {caseState}");
+            throw new NobyValidationException(90032);
         }
         else if (caseState is 5 && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
         {
