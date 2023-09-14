@@ -41,6 +41,26 @@ public class SalesArrangementController : ControllerBase
         => await _mediator.Send(new ValidateSalesArrangement.ValidateSalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
+    /// Vytvoření servisního SalesArrangement-u
+    /// </summary>
+    /// <remarks>
+    /// Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
+    /// Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br/><br/>
+    /// Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
+    /// </remarks>
+    [HttpPost("{caseId:long}/sales-arrangement")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request)
+        => await _mediator.Send(request.InfuseId(caseId));
+
+    /// <summary>
     /// Smazaní SalesArrangement-u
     /// </summary>
     /// <remarks>
@@ -127,7 +147,7 @@ public class SalesArrangementController : ControllerBase
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(List<Dto.CustomerListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<Dto.CustomerListItem>> GetCustomers([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<List<Dto.CustomerListItem>> GetCustomersOnSa([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomers.GetCustomersRequest(salesArrangementId), cancellationToken);
 
     /// <summary>

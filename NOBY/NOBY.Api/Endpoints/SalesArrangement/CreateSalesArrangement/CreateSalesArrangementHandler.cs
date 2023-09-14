@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement;
+﻿namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement;
 
 internal sealed class CreateSalesArrangementHandler
     : IRequestHandler<CreateSalesArrangementRequest, CreateSalesArrangementResponse>

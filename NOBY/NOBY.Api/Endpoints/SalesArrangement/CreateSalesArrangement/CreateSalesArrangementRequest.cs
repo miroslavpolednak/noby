@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement;
+namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement;
 
 public sealed class CreateSalesArrangementRequest
     : IRequest<CreateSalesArrangementResponse>
