@@ -41,6 +41,7 @@ try
             // add CIS services
             .AddCisServiceDiscovery()
             .AddCodebookService()
+            .AddUserService()
             // add grpc infrastructure
             .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
             .AddGrpcReflection()
