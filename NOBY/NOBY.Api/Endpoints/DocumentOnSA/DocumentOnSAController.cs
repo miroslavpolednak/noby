@@ -11,6 +11,8 @@ using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
 using NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase;
+using CIS.Foms.Enums;
+using System.Diagnostics;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -29,8 +31,9 @@ public class DocumentOnSAController : ControllerBase
     /// Dokumenty Sales Arrangement-u k podpisu / v podepisovacím procesu.
     /// </summary>
     /// <remarks>
-    ///Provolá <i>DS:DocumentOnSAService/getDocumentsToSignList</i> a zafiltruje na dokumenty s příznakem IsValid = true.<br /><br />
-    ///Stav podepisovacího procesu (signatureState) je vyhodnocován logikou popsanou v společných algoritmech viz <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=401893151">Stavy podepisovacího procesu</a> 
+    ///Vrací seznam rozpodepsaných a podepsaných dokumentů.<br /><br />
+    ///Řadí dokumenty primárně podle documentTypeId a sekundárně podle customerOnSAId.<br /><br />
+    ///<a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=294380C5-4F9D-4dce-9D32-C1AD842ED84B" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width= "20" height= "20" /> Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/document-list")]
