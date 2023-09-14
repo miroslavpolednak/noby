@@ -72,12 +72,12 @@ public class OfferController : ControllerBase
     /// Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPut("mortgage/sales-arrangement/link")]
+    [HttpPut("mortgage/sales-arrangement/{salesArrangementId:int}/link")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Modelace" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task LinkModelation([FromBody] LinkModelation.LinkModelationRequest request)
-        => await _mediator.Send(request ?? new Offer.LinkModelation.LinkModelationRequest());
+    public async Task LinkModelation([FromRoute] int salesArrangementId, [FromBody] LinkModelation.LinkModelationRequest request)
+        => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? new Offer.LinkModelation.LinkModelationRequest());
 
     /// <summary>
     /// Plný splátkový kalendář dle ID simulace.

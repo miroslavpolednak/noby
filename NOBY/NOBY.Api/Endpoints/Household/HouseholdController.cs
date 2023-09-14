@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using DomainServices.SalesArrangementService.Contracts;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Household;
 
@@ -6,7 +7,7 @@ namespace NOBY.Api.Endpoints.Household;
 /// Prace s domacnostmi a customery
 /// </summary>
 [ApiController]
-[Route("api/household")]
+[Route("api")]
 public class HouseholdController : ControllerBase
 {
     /// <summary>
@@ -18,7 +19,7 @@ public class HouseholdController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
     /// <returns><see cref="List{T}"/> where T : <see cref="Dto.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
-    [HttpGet("list/{salesArrangementId:long}")]
+    [HttpGet("household/list/{salesArrangementId:long}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Domácnost" })]
     [ProducesResponseType(typeof(List<Dto.HouseholdInList>), StatusCodes.Status200OK)]
@@ -35,7 +36,7 @@ public class HouseholdController : ControllerBase
     /// </remarks>
     /// <param name="householdId">ID domacnosti</param>
     /// <returns><see cref="GetHousehold.GetHouseholdResponse"/> Detail domacnosti</returns>
-    [HttpGet("{householdId:long}")]
+    [HttpGet("household/{householdId:long}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(GetHousehold.GetHouseholdResponse), StatusCodes.Status200OK)]
@@ -52,7 +53,7 @@ public class HouseholdController : ControllerBase
     /// </remarks>
     /// <param name="householdId">ID domacnosti</param>
     /// <returns>ID smazané domacnosti</returns>
-    [HttpDelete("{householdId:int}")]
+    [HttpDelete("household/{householdId:int}")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
@@ -67,12 +68,12 @@ public class HouseholdController : ControllerBase
     /// Vytvoření domácnosti i s CustomerOnSA, aby domácnost nebyla prázdná.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=72EEBC25-A403-42e9-9AFD-A48CCEBC179F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
     /// </remarks>
-    [HttpPost("")]
+    [HttpPost("sales-arrangement/{salesArrangementId:int}/household")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(Dto.HouseholdInList), StatusCodes.Status200OK)]
-    public async Task<Dto.HouseholdInList> CreateHousehold([FromBody] CreateHousehold.CreateHouseholdRequest? request)
-        => await _mediator.Send(request ?? throw new NobyValidationException("Payload is empty"));
+    public async Task<Dto.HouseholdInList> CreateHousehold([FromRoute] int salesArrangementId, [FromBody] CreateHousehold.CreateHouseholdRequest? request)
+        => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? throw new NobyValidationException("Payload is empty"));
 
     /// <summary>
     /// Update existující domácnosti
@@ -81,7 +82,7 @@ public class HouseholdController : ControllerBase
     /// <i>DS:</i> SalesArrangementService/UpdateHousehold
     /// </remarks>
     /// <param name="householdId">ID domácnosti</param>
-    [HttpPut("{householdId:int}")]
+    [HttpPut("household/{householdId:int}")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -100,7 +101,7 @@ public class HouseholdController : ControllerBase
     /// </remarks>
     /// <param name="householdId">ID domácnosti</param>
     /// <returns>CustomerOnSAId nalinkovanych customeru</returns>
-    [HttpPut("{householdId:int}/customers")]
+    [HttpPut("household/{householdId:int}/customers")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(UpdateCustomers.UpdateCustomersResponse), StatusCodes.Status200OK)]
