@@ -41,7 +41,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         {
             return new IdentifyCaseResponse { CaseId = null };
         }
-        caseOwnerCheck(caseInstance.OwnerUserId!.Value);
+        SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
 
         var taskList = await _caseServiceClient.GetTaskList(caseId.Value, cancellationToken);
         var taskSubList = taskList.Where(t => t.TaskTypeId == 6).ToList();
@@ -102,8 +102,8 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
 
         if (!caseInstance.Exists) return new IdentifyCaseResponse();
-        
-        caseOwnerCheck(caseInstance.OwnerUserId!.Value);
+
+        SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
         return new IdentifyCaseResponse { CaseId = caseId };
     }
     
@@ -115,21 +115,13 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         {
             var response = await _productServiceClient.GetCaseId(request, cancellationToken);
             var caseInstance = await _caseServiceClient.ValidateCaseId(response.CaseId, false, cancellationToken);
-            caseOwnerCheck(caseInstance.OwnerUserId!.Value);
+            SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
 
             return await HandleByCaseId(response.CaseId, cancellationToken);
         }
         catch (CisNotFoundException)
         {
             return new IdentifyCaseResponse();
-        }
-    }
-
-    private void caseOwnerCheck(int ownerUserId)
-    {
-        if (ownerUserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
-        {
-            throw new CisAuthorizationException("Case owner check failed");
         }
     }
 

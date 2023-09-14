@@ -51,6 +51,7 @@ try
 
     // add BE services
     builder.Services
+        .AddUserService()
         .AddCodebookService()
         .AddCisServiceDiscovery();
 

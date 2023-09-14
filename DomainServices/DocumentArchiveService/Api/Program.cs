@@ -26,6 +26,7 @@ try
     #endregion strongly typed configuration
 
     #region register builder
+    builder.Services.AddAttributedServices(typeof(Program));
 
     // strongly-typed konfigurace aplikace
     builder.Services.AddSingleton(appConfiguration);
@@ -35,21 +36,21 @@ try
         .AddCisCoreFeatures()
         .AddCisEnvironmentConfiguration();
 
-    // logging 
     builder
+        // logging 
         .AddCisLogging()
-        .AddCisTracing();
-
-    builder.Services.AddAttributedServices(typeof(Program));
-
-    // authentication
-    builder.AddCisServiceAuthentication();
-
-    // add this service
-    builder.AddDocumentArchiveService();
+        .AddCisTracing()
+        // authentication
+        .AddCisServiceAuthentication()
+        // add self
+        .AddDocumentArchiveService()
+        .Services
+            // add CIS services
+            .AddCisServiceDiscovery()
+            // add grpc infrastructure
+            .AddCisGrpcInfrastructure(typeof(Program));
 
     // add grpc
-    builder.Services.AddCisGrpcInfrastructure(typeof(Program));
     builder.AddDocumentArchiveGrpc();
 
     // add grpc swagger 

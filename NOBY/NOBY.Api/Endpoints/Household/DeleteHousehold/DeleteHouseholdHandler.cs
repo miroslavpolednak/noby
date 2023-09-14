@@ -2,7 +2,6 @@
 using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.DeleteHousehold;
 
@@ -21,12 +20,6 @@ internal sealed class DeleteHouseholdHandler
         await _householdService.DeleteHousehold(request.HouseholdId, cancellationToken: cancellationToken);
 
         _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
-
-        // HFICH-5233
-        if (household.HouseholdTypeId == (int)HouseholdTypes.Codebtor)
-        {
-            _flowSwitchManager.AddFlowSwitch(FlowSwitches.Was3602CodebtorChangedAfterSigning, true);
-        }
 
         // ulozit flow switches
         await _flowSwitchManager.SaveFlowSwitches(household.SalesArrangementId, cancellationToken);

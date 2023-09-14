@@ -9,7 +9,13 @@ public static class DocumentOnSaMetadataManager
 {
     public static EACodeMainItem GetEaCodeMainItem(int documentTypeId, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypeItems, List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodeMainItems)
     {
-        var docType = documentTypeItems.Single(d => d.Id == documentTypeId);
+        var docType = documentTypeItems.FirstOrDefault(d => d.Id == documentTypeId);
+        
+        if (docType == null)//TODO !!!!!!!!!!!!!!!! toto je hotfix, ktery chtel Honza. Musi se odstranit az se prijde na to jak tento problem vyresit.
+        {
+            docType = documentTypeItems.First(t => t.EACodeMainId.HasValue);
+        }
+
         var eaCodeMain = eaCodeMainItems.Single(e => e.Id == docType.EACodeMainId);
         return new EACodeMainItem { Id = docType.EACodeMainId!.Value, DocumentType = eaCodeMain.Name, Category = eaCodeMain.Category };
     }

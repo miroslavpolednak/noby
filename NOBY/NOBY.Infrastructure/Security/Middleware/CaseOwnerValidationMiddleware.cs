@@ -83,21 +83,7 @@ public sealed class CaseOwnerValidationMiddleware
                     false => await getCaseDataFromValidate()
                 };
 
-                // vidi vlastni Case nebo ma pravo videt vse
-                if (currentUser.User!.Id != caseInstance.OwnerUserId && !currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
-                {
-                    throw new CisAuthorizationException("CaseOwnerValidation: user is not owner of the Case or does not have DASHBOARD_AccessAllCases permission");
-                }
-
-                // zakazane stavy Case
-                if (caseInstance.CaseState is (int)CaseStates.Finished or (int)CaseStates.Cancelled)
-                {
-                    throw new CisAuthorizationException($"CaseOwnerValidation: Case state is {caseInstance.CaseState}");
-                }
-                else if (caseInstance.CaseState is 5 && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
-                {
-                    throw new CisAuthorizationException($"CaseOwnerValidation: CASE_ViewAfterDrawing missing");
-                }
+                SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState);
             }
 
             async Task<(int OwnerUserId, int CaseState)> getCaseDataFromDetail()

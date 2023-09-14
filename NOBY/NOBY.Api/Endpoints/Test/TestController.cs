@@ -18,7 +18,6 @@ public class TestController : ControllerBase
     /// </summary>
     /// <remarks>Toto jsou remarks</remarks>
     [HttpGet("t1")]
-    [NobyAuthorize(UserPermissions.WFL_TASK_DETAIL_SigningAttachments, UserPermissions.CASEDETAIL_APPLICANT_ViewPersonInfo)]
     [Infrastructure.Swagger.SwaggerEaDiagram("https://eadiagram.com/neco")]
     public async Task T1()
     {
