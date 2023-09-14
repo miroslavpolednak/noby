@@ -21,7 +21,7 @@ internal class GetUserRIPAttributesHandler
                 PersonId = dbIdentity.PersonId,
                 DealerCompanyId = dbIdentity.DealerCompanyId,
                 PersonJobPostId = dbIdentity.PersonJobPostId ?? "",
-                PersonOrgUnitId = dbIdentity.PersonOrgUnitId,
+                PersonOrgUnitId = dbIdentity.PersonOrgUnitId ?? "",
                 PersonOrgUnitName = dbIdentity.PersonOrgUnitName ?? "",
                 PersonSurname = dbIdentity.PersonSurname ?? "",
                 Company = dbIdentity.Company ?? "",
