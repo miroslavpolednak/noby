@@ -12,7 +12,7 @@ internal sealed class GetCustomersOnProductHandler
     {
         var productTypes = await _codebookService.ProductTypes(cancellation);
 
-        var loan = await _dbContext.Loans.AsNoTracking().FirstOrDefaultAsync(t => t.Id == request.ProductId, cancellation) ??
+        var loan = await _dbContext.Loans.AsNoTracking().FirstOrDefaultAsync(t => t.Id == request.ProductId && !t.Neaktivni, cancellation) ??
                    throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
 
         // Kontrola, zda se jedná o KB produkt, chyba pokud ne vyhodit chybu

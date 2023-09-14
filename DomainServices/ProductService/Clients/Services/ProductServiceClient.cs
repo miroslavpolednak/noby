@@ -91,4 +91,9 @@ internal sealed class ProductServiceClient : IProductServiceClient
     {
         return await _service.GetCovenantListAsync(new GetCovenantListRequest { CaseId = caseId }, cancellationToken: cancellationToken);
     }
+
+    public async Task CancelMortgage(long caseId, CancellationToken cancellationToken = default)
+    {
+        await _service.CancelMortgageAsync(new CancelMortgageRequest { ProductId = caseId }, cancellationToken: cancellationToken);
+    }
 }

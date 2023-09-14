@@ -45,3 +45,7 @@ public partial class GetCovenantDetailRequest
 public partial class GetCovenantListRequest
     : MediatR.IRequest<GetCovenantListResponse>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class CancelMortgageRequest 
+    : MediatR.IRequest, CIS.Core.Validation.IValidatableRequest
+{}

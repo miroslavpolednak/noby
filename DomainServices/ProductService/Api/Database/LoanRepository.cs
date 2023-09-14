@@ -56,9 +56,10 @@ internal class LoanRepository
 		[HuVypisZodb] as StatementSubscriptionTypeId,
 		[HuVypisTyp] as StatementTypeId,
 		[VypisEmail1] as EmailAddress1,
-	    [VypisEmail2] as EmailAddress2
+	    [VypisEmail2] as EmailAddress2,
+        [Neaktivni] as IsCancelled
     	FROM [dbo].[Uver]
-    	WHERE Id = @LoanId";
+    	WHERE Id = @LoanId AND Neaktivni = 0";
 	    
         var parameters = new DynamicParameters();
         parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
@@ -96,7 +97,7 @@ internal class LoanRepository
 
     public async Task<bool> ExistsLoan(long loanId, CancellationToken cancellation)
     { 
-	    const string query = "SELECT COUNT(1) from [dbo].[Uver] where Id = @LoanId";
+	    const string query = "SELECT COUNT(1) from [dbo].[Uver] where Id = @LoanId AND Neaktivni = 0";
 	    
 	    var parameters = new DynamicParameters();
 	    parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);

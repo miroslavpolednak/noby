@@ -48,6 +48,7 @@ try
             .AddDocumentOnSAService()
             .AddCodebookService()
             .AddHouseholdService()
+            .AddProductService()
             .AddUserService()
             .AddCisServiceDiscovery()
             // add rollback

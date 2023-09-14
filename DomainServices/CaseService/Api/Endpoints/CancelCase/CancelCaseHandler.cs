@@ -49,6 +49,8 @@ internal sealed class CancelCaseHandler
         }
         else // pokud nezname datum prvniho podpisu
         {
+            await _productService.CancelMortgage(request.CaseId, cancellation);
+
             // je debtor identifikovany?
             if (await isDebtorIdentified(salesArrangementId, cancellation))
             {
@@ -154,6 +156,7 @@ internal sealed class CancelCaseHandler
     private readonly HouseholdService.Clients.IHouseholdServiceClient _householdService;
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly ProductService.Clients.IProductServiceClient _productService;
 
     public CancelCaseHandler(
         IAuditLogger auditLogger,
@@ -164,6 +167,7 @@ internal sealed class CancelCaseHandler
         HouseholdService.Clients.IHouseholdServiceClient householdService,
         DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSAService,
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
+        ProductService.Clients.IProductServiceClient productService,
         CaseServiceDbContext dbContext)
     {
         _auditLogger = auditLogger;
@@ -175,5 +179,6 @@ internal sealed class CancelCaseHandler
         _dbContext = dbContext;
         _documentOnSAService = documentOnSAService;
         _salesArrangementService = salesArrangementService;
+        _productService = productService;
     }
 }

@@ -103,4 +103,5 @@ internal class Loan
 	public short? HuVypisTyp { get; set; }
 	public string? VypisEmail1 { get; set; }
     public string? VypisEmail2 { get; set; }
+    public bool Neaktivni { get; set; }
 }

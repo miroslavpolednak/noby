@@ -14,7 +14,7 @@ internal sealed class GetCaseIdHandler
             case GetCaseIdRequest.RequestParametersOneofCase.ContractNumber:
                 var caseId1 = (await _dbContext.Loans
                     .AsNoTracking()
-                    .Where(t => t.CisloSmlouvy == request.ContractNumber.ContractNumber)
+                    .Where(t => t.CisloSmlouvy == request.ContractNumber.ContractNumber && !t.Neaktivni)
                     .Select(t => new { t.Id })
                     .FirstOrDefaultAsync(cancellation))
                     ?.Id;
@@ -28,7 +28,7 @@ internal sealed class GetCaseIdHandler
             case GetCaseIdRequest.RequestParametersOneofCase.PaymentAccount:
                 var caseId2 = (await _dbContext.Loans
                     .AsNoTracking()
-                    .Where(t => t.PredcisliUctu == request.PaymentAccount.Prefix && t.CisloUctu == request.PaymentAccount.AccountNumber)
+                    .Where(t => t.PredcisliUctu == request.PaymentAccount.Prefix && t.CisloUctu == request.PaymentAccount.AccountNumber && !t.Neaktivni)
                     .Select(t => new { t.Id })
                     .FirstOrDefaultAsync(cancellation))
                     ?.Id;

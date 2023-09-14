@@ -81,7 +81,8 @@ internal static class MortgageExtensions
             FirstAnnuityPaymentDate = loan.FirstAnnuityPaymentDate,
             FirstSignatureDate = loan.FirstSignatureDate,
             RepaymentAccount = ParseRepaymentAccount(loan),
-            Statement = ParseStatementObject(loan)
+            Statement = ParseStatementObject(loan),
+            IsCancelled = loan.IsCancelled
         };
 
         if (relationships.Any())

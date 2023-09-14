@@ -50,4 +50,5 @@ public interface IProductServiceClient
     Task<GetCovenantDetailResponse> GetCovenantDetail(long caseId, int order, CancellationToken cancellationToken = default);
     
     Task<GetCovenantListResponse> GetCovenantList(long caseId, CancellationToken cancellationToken = default);
+    Task CancelMortgage(long caseId, CancellationToken cancellationToken = default);
 }
