@@ -26,10 +26,10 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
     public async Task<GetDocumentsSignListResponse> Handle(GetDocumentsSignListRequest request, CancellationToken cancellationToken)
     {
         var result = await _documentOnSAService.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
-        return await MapToResponseAndFilter(result, cancellationToken);
+        return await MapToResponseAndOrder(result, cancellationToken);
     }
 
-    private async Task<GetDocumentsSignListResponse> MapToResponseAndFilter(GetDocumentsToSignListResponse result, CancellationToken cancellationToken)
+    private async Task<GetDocumentsSignListResponse> MapToResponseAndOrder(GetDocumentsToSignListResponse result, CancellationToken cancellationToken)
     {
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
         var eACodeMains = await _codebookService.EaCodesMain(cancellationToken);
@@ -40,7 +40,7 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
               ? await _salesArrangementService.GetSalesArrangement(salesArrangementId.Value, cancellationToken)
               : null;
 
-        var response = new GetDocumentsSignListResponse
+        return new GetDocumentsSignListResponse
         {
             Data = result.DocumentsOnSAToSign
             .Select(s => new DocumentData
@@ -70,9 +70,7 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 IsPreviewSentToCustomer = s.IsPreviewSentToCustomer,
                 ExternalId = s.ExternalId,
                 Source = s.Source.MapToCisEnum()
-            }).ToList()
+            }).OrderBy(o => o.DocumentTypeId).ThenBy(c => c.CustomerOnSa.CustomerOnSAId).ToList()
         };
-
-        return response;
     }
 }
