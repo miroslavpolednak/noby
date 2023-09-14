@@ -42,7 +42,7 @@ internal sealed class UpdateParametersHelper
             case Dto.CustomerChangeUpdate:
                 foreach (var applicant in salesArrangement.CustomerChange.Applicants)
                 {
-                    await validateApplicant(applicant.Identity?.Cast<CIS.Foms.Types.CustomerIdentity>()?.ToList(), salesArrangement.CaseId);
+                    await validateApplicant(applicant.Identity.Select(identity => (CIS.Foms.Types.CustomerIdentity)identity!).ToList(), salesArrangement.CaseId);
                 }
                 break;
 

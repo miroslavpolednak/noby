@@ -69,7 +69,7 @@ internal static class UpdateParametersExtensions
 
         if (parameters.Applicant?.Any() ?? false)
         {
-            model.Applicant.AddRange(parameters.Applicant.Cast<Identity>());
+            model.Applicant.AddRange(parameters.Applicant.Select(identity => (Identity)identity));
         }
 
         if (parameters.PayoutList is not null)
