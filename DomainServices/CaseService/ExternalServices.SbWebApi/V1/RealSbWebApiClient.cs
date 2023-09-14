@@ -88,6 +88,7 @@ internal sealed class RealSbWebApiClient
                 Uver_id = Convert.ToInt32(request.CaseId),//IT anal nevi co s tim
                 Loan_no = request.ContractNumber,
                 Jmeno_prijmeni = request.ClientFullName,
+                Case_state_id = request.CaseStateId,
                 Case_state = request.CaseStateName,
                 Product_type = request.ProductTypeId,
                 Owner_cpm = request.OwnerUserCpm,
