@@ -1,5 +1,6 @@
-﻿using Abstraction = DomainServices.SalesArrangementService.Clients;
-using DSContracts = DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.OfferService.Clients;
+using NOBY.Api.Endpoints.Offer.Dto;
+using Abstraction = DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 
@@ -14,18 +15,31 @@ internal sealed class GetMortgageBySalesArrangementHandler
         // kontrola, zda ma SA OfferId
         if (!salesArrangementInstance.OfferId.HasValue)
             throw new NobyValidationException("SalesArrangement is not linked to any Offer");
-         
-        return await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(salesArrangementInstance.OfferId.Value), cancellationToken);
+
+        var result = await _offerService.GetMortgageOfferDetail(salesArrangementInstance.OfferId.Value, cancellationToken);
+
+        // predelat z DS na FE Dto
+        return new GetMortgageResponse
+        {
+            OfferId = result.OfferId,
+            ResourceProcessId = result.ResourceProcessId,
+            SimulationInputs = result.SimulationInputs.ToApiResponse(result.BasicParameters),
+            SimulationResults = result.SimulationResults.ToApiResponse(result.SimulationInputs, result.AdditionalSimulationResults),
+            CreditWorthinessSimpleInputs = result.CreditWorthinessSimpleInputs.ToApiResponse(result.IsCreditWorthinessSimpleRequested),
+        };
     }
 
     private readonly Abstraction.ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IOfferServiceClient _offerService;
     private readonly IMediator _mediator;
     
     public GetMortgageBySalesArrangementHandler(
         IMediator mediator,
-        Abstraction.ISalesArrangementServiceClient salesArrangementService)
+        Abstraction.ISalesArrangementServiceClient salesArrangementService,
+        IOfferServiceClient offerService)
     {
         _salesArrangementService = salesArrangementService;
+        _offerService = offerService;
         _mediator = mediator;
     }
 }

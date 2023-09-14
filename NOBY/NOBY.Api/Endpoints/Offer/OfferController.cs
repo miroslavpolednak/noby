@@ -28,22 +28,6 @@ public class OfferController : ControllerBase
         => await _mediator.Send(request ?? new SimulateMortgage.SimulateMortgageRequest());
 
     /// <summary>
-    /// Detail simulace dle ID simulace.
-    /// </summary>
-    /// <remarks>
-    /// Detail provedené simulace dle ID simulace.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2AB0C760-7188-48ad-ABA7-D432D51A1A40"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-    /// </remarks>
-    /// <returns>Vstupy a výstupy uložené simulace.</returns>
-    [HttpGet("mortgage/{offerId:int}")]
-    [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "Modelace" })]
-    [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Dto.GetMortgageResponse> GetMortgageByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetMortgageByOfferId.GetMortgageByOfferIdRequest(offerId), cancellationToken);
-
-    /// <summary>
     /// Detail provedené simulace dle ID Sales Arrangement.
     /// </summary>
     /// <remarks>
