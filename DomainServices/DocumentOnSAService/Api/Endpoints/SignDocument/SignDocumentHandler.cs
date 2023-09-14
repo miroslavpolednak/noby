@@ -209,7 +209,8 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             await UpdateCustomer(customerOnSa, updateCustomerRequest, salesArrangement, cancellationToken);
             // Throw away locally stored CRS data (keep client changes) 
             var jsonCustomerChangeDataWithoutCrs = _customerChangeDataMerger.TrowAwayLocallyStoredCrsData(customerOnSa);
-            await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithoutCrs), cancellationToken);
+            customerOnSa.CustomerChangeMetadata.WasCRSChanged = false;
+            await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithoutCrs, customerOnSa.CustomerChangeMetadata), cancellationToken);
         }
     }
 
@@ -234,7 +235,8 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                 await UpdateCustomer(customerOnSa, updateCustomerRequest, salesArrangement, cancellationToken);
                 //Throw away locally stored Client data (keep CRS changes) 
                 var jsonCustomerChangeDataWithCrs = _customerChangeDataMerger.TrowAwayLocallyStoredClientData(customerOnSa);
-                await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithCrs), cancellationToken);
+                customerOnSa.CustomerChangeMetadata.WereClientDataChanged = false;
+                await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithCrs, customerOnSa.CustomerChangeMetadata), cancellationToken);
             }
         }
     }
@@ -340,13 +342,14 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         return customers;
     }
 
-    private static UpdateCustomerDetailRequest MapUpdateCustomerOnSaRequest(CustomerOnSA customerOnSa, string? customerChangeDataJson)
+    private static UpdateCustomerDetailRequest MapUpdateCustomerOnSaRequest(CustomerOnSA customerOnSa, string? customerChangeDataJson, CustomerChangeMetadata customerChangeMetadata)
     {
         return new UpdateCustomerDetailRequest
         {
             CustomerOnSAId = customerOnSa.CustomerOnSAId,
             CustomerAdditionalData = customerOnSa.CustomerAdditionalData,
-            CustomerChangeData = customerChangeDataJson
+            CustomerChangeData = customerChangeDataJson,
+            CustomerChangeMetadata = customerChangeMetadata
         };
     }
 
