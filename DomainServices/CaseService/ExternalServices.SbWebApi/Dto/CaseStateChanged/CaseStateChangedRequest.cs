@@ -14,6 +14,7 @@ public sealed class CaseStateChangedRequest
     /// </summary>
     public string? ClientFullName { get; set; }
 
+    public int CaseStateId { get; set; }
     public string CaseStateName { get; set; } = string.Empty;
     public int ProductTypeId { get; set; }
 
