@@ -52,7 +52,7 @@ internal sealed class IndividualPricingProcessChangedConsumer
         }
     }
 
-    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForCompleted(int? decisionId)
+    private static IEnumerable<EditableFlowSwitch> GetFlowSwitchesForCompleted(int? decisionId)
     {
         if (decisionId != 1 && decisionId != 2) yield break;
         
@@ -69,7 +69,7 @@ internal sealed class IndividualPricingProcessChangedConsumer
         };
     }
 
-    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForActive()
+    private static IEnumerable<EditableFlowSwitch> GetFlowSwitchesForActive()
     {
         yield return new EditableFlowSwitch
         {
@@ -78,7 +78,7 @@ internal sealed class IndividualPricingProcessChangedConsumer
         };
     }
 
-    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForTerminated()
+    private static IEnumerable<EditableFlowSwitch> GetFlowSwitchesForTerminated()
     {
         var flowSwitchIds = new[]
         {
