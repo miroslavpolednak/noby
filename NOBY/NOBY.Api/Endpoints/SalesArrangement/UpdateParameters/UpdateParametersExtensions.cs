@@ -163,7 +163,7 @@ internal static class UpdateParametersExtensions
 
         if (parameters.Applicant?.Any() ?? false)
         {
-            model.Applicant.AddRange(parameters.Applicant.Cast<Identity>());
+            model.Applicant.AddRange(parameters.Applicant.Select(t => (Identity)t));
         }
 
         if (parameters.LoanRealEstate?.LoanRealEstates != null)
@@ -215,7 +215,7 @@ internal static class UpdateParametersExtensions
 
         if (parameters.Applicant?.Any() ?? false)
         {
-            model.Applicant.AddRange(parameters.Applicant.Cast<Identity>());
+            model.Applicant.AddRange(parameters.Applicant.Select(t => (Identity)t));
         }
 
         if (parameters.LoanPurposes != null)
