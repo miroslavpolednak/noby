@@ -39,7 +39,7 @@ internal class DocumentMapper
             var fieldData = new DocumentFieldData
             {
                 FieldName = sourceData.AcroFieldName,
-                StringFormat = stringFormat,
+                StringFormat = string.IsNullOrWhiteSpace(stringFormat) ? stringFormat : DocumentPlaceholderHelper.ReplaceNonBreakingPlaceholders(stringFormat),
                 TextAlign = sourceData.TextAlign,
                 VAlign = sourceData.VAlign
             };
@@ -136,7 +136,7 @@ internal class DocumentMapper
                 break;
 
             case string text:
-                fieldValue.Text = text;
+                fieldValue.Text = DocumentPlaceholderHelper.ReplaceNonBreakingPlaceholders(text);
                 break;
 
             case DateTime date:
