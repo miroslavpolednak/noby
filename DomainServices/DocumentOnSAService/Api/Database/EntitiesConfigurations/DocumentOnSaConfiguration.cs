@@ -13,6 +13,8 @@ public class DocumentOnSaConfiguration : IEntityTypeConfiguration<DocumentOnSa>
 
         builder.HasIndex(e => e.SalesArrangementId);
 
+        builder.HasIndex(e => e.FormId);
+
         builder.Property(e => e.FormId)
                     .HasColumnType("nvarchar(15)");
 

@@ -191,8 +191,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 	ProjectSection(SolutionItems) = preProject
 		Docs\topics\audit.md = Docs\topics\audit.md
 		Docs\topics\authentication-feapi.md = Docs\topics\authentication-feapi.md
-		Docs\topics\authentication-ds.md = Docs\topics\authentication-ds.md
-		Docs\topics\authorization-ds.md = Docs\topics\authorization-ds.md
+		Docs\topics\authentication.md = Docs\topics\authentication.md
 		Docs\topics\background-service-job.md = Docs\topics\background-service-job.md
 		Docs\topics\background-services.md = Docs\topics\background-services.md
 		Docs\topics\configuration.md = Docs\topics\configuration.md
@@ -397,6 +396,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00007-HFICH-3917_DocumentTypeIdNull.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00007-HFICH-3917_DocumentTypeIdNull.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00008-HFICH-6947_Drop_SignatureMethodCode.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00008-HFICH-6947_Drop_SignatureMethodCode.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00009-HFICH-7885_AddedTaskIdSb.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00009-HFICH-7885_AddedTaskIdSb.sql
+		DomainServices\DocumentOnSAService\DatabaseMigrations\00010-MissingIndexes.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00010-MissingIndexes.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness", "DomainServices\RiskIntegrationService\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj", "{FF60B12F-B083-46BE-B8DA-FD91ABE2D831}"

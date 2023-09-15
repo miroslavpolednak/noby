@@ -72,4 +72,6 @@ public interface IDocumentOnSAServiceClient
     /// Metoda slouží k aktualizaci stavu Dokumentu dle stavu v ePodpisech
     /// </summary>
     Task RefreshElectronicDocument(int documentOnSAId, CancellationToken cancellationToken = default);
+
+    Task<GetDocumentOnSAByFormIdResponse> GetDocumentOnSAByFormId(string formId, CancellationToken cancellationToken = default);
 }

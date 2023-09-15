@@ -46,7 +46,7 @@ internal sealed class WithdrawalProcessChangedConsumer
             {
                 1 => 6,
                 3 => 3,
-                _ => throw new ArgumentException()
+                _ => throw new ArgumentException(nameof(code))
             };
             
             var documentResponse = await _documentOnSAService.GetDocumentsOnSAList(salesArrangementId, token);
