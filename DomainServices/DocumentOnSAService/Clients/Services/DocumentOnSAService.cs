@@ -88,4 +88,9 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
     {
         await _client.RefreshElectronicDocumentAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
     }
+
+    public async Task<GetDocumentOnSAByFormIdResponse> GetDocumentOnSAByFormId(string formId, CancellationToken cancellationToken = default)
+    {
+        return await _client.GetDocumentOnSAByFormIdAsync(new() { FormId = formId }, cancellationToken: cancellationToken);
+    }
 }

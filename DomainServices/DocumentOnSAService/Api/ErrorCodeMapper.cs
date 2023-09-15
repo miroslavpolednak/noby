@@ -27,6 +27,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int AttachmentFileNotExist = 19023;
     public const int NoDocumentsToSignForSa = 19024;
     public const int UnableGetExternalIdForDocumentOnSaId = 19025;
+    public const int DocumentOnSaDoesntExistForFormId = 19026;
 
     // Non BL validation
     public const int SalesArrangementIdIsRequired = 19030;
@@ -65,6 +66,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { AttachmentFileNotExist,"Attachment file {PropertyValue} doest not exist."},
             { NoDocumentsToSignForSa,"For SalesArrangementId {PropertyValue} there isn't document to sign"},
             { UnableGetExternalIdForDocumentOnSaId, "Unable get external id for provided DocumentOnSAId {PropertyValue}"},
+            { DocumentOnSaDoesntExistForFormId, "DocumentOnSa doesn't exist for specified FormId {PropertyValue}" },
 
             { DocumentTypeIdIsRequired, " DocumentTypeId is required"},
             { FormIdIsRequired, "FormId is required"},
