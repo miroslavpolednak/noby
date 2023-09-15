@@ -15,9 +15,10 @@ internal sealed class OfferGuaranteeDateToCheckJob
         var flowSwitches = await _dbContext.FlowSwitches
             .Include(f => f.SalesArrangement)
             .Where(f =>
-                f.FlowSwitchId == 1 &&
-                f.Value && new[] { 1, 5 }.Contains(f.SalesArrangement.State) &&
-                f.SalesArrangement.OfferGuaranteeDateTo < _dateTime.Now)
+                f.FlowSwitchId == 1 
+                && f.Value 
+                && _saStates.Contains(f.SalesArrangement.State) 
+                && f.SalesArrangement.OfferGuaranteeDateTo < _dateTime.Now)
             .ToListAsync(cancellationToken);
         
         foreach (var flowSwitch in flowSwitches)
@@ -35,6 +36,7 @@ internal sealed class OfferGuaranteeDateToCheckJob
         }
     }
 
+    private static int[] _saStates = new[] { (int)SalesArrangementStates.InProgress, (int)SalesArrangementStates.NewArrangement, (int)SalesArrangementStates.InSigning, (int)SalesArrangementStates.ToSend };
     private readonly IDateTime _dateTime;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseService;
