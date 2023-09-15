@@ -20,7 +20,7 @@ internal static class CreateProductExtensions
             LoanKindId= offerData.SimulationInputs.LoanKindId,
             PartnerId = partnerId,
             LoanDueDate = offerData.SimulationResults.LoanDueDate,
-            FirstAnnuityPaymentDate = offerData.SimulationResults.AnnuityPaymentsDateFrom
+            FirstAnnuityInstallmentDate = offerData.SimulationResults.AnnuityPaymentsDateFrom
         };
 
         if (offerData.SimulationInputs.LoanPurposes is not null)

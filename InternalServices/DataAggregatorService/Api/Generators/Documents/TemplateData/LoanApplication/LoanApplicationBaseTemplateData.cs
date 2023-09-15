@@ -29,9 +29,9 @@ internal abstract class LoanApplicationBaseTemplateData : AggregatedData
 
     public LoanApplicationObligation? Customer2Obligation { get; private set; }
 
-    public string? Customer1MaritalStatus => CurrentHousehold.Household!.Data.AreBothPartnersDeptors == true ? $"{GetMaritalStatus(Customer1)} | druh/družka" : GetMaritalStatus(Customer1);
+    public string? Customer1MaritalStatus => AreCustomersPartners() ? $"{GetMaritalStatus(Customer1)} | druh/družka" : GetMaritalStatus(Customer1);
 
-    public string? Customer2MaritalStatus => CurrentHousehold.Household!.Data.AreBothPartnersDeptors == true ? $"{GetMaritalStatus(Customer2)} | druh/družka" : GetMaritalStatus(Customer2);
+    public string? Customer2MaritalStatus => AreCustomersPartners() ? $"{GetMaritalStatus(Customer2)} | druh/družka" : GetMaritalStatus(Customer2);
 
     public string PropertySettlement => GetPropertySettlementName();
     
@@ -110,4 +110,12 @@ internal abstract class LoanApplicationBaseTemplateData : AggregatedData
                         .Select(p => p.Name)
                         .DefaultIfEmpty("--")
                         .First();
+
+    private bool AreCustomersPartners()
+    {
+        var maritalStatusId1 = Customer1.MaritalStatusStateId;
+        var maritalStatusId2 = Customer2?.MaritalStatusStateId;
+
+        return DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(maritalStatusId1, maritalStatusId2);
+    }
 }

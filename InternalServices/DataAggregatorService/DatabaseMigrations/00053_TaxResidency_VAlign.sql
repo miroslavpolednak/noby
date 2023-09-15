@@ -1,0 +1,1 @@
+UPDATE DocumentSpecialDataField SET VAlign = 2 WHERE DocumentId = 13 AND AcroFieldName = 'DuvodNeposkytnuti'
