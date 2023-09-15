@@ -143,6 +143,17 @@
             </remarks>
             <param name="caseId">ID Case-u</param>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateSalesArrangement(System.Int64,NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest)">
+            <summary>
+            Vytvoření servisního SalesArrangement-u
+            </summary>
+            <remarks>
+            Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
+            Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br/><br/>
+            Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCaseById(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Detail Case-u.
@@ -236,6 +247,21 @@
             </remarks>
             <param name="caseId">ID Case-u</param>
             <param name="covenantOrder">Pořadí podmínky ke splnění</param>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
+            <summary>
+            Typ žádosti - číselník SalesArrangementType
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CreateSalesArrangement.CreateSalesArrangementResponse.SalesArrangementId">
+            <summary>
+            ID Sales Arrangement
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.DrawingValidator.Validate(System.Threading.CancellationToken)">
+            <remarks>
+            https://wiki.kb.cz/pages/viewpage.action?pageId=424119307#id-%C4%8Cerp%C3%A1ni%C5%BD%C3%A1dosto%C4%8Derp%C3%A1n%C3%AD-Kontrolyp%C5%99edformul%C3%A1%C5%99em%C4%8Derp%C3%A1n%C3%AD
+            </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.DocumentsMenuItem">
             <summary>
@@ -907,9 +933,7 @@
             Smazání příjmu customera
             </summary>
             <remarks>
-            <strong>CustomerIncome.Delete</strong><br/>
-            Tento endpoint se v současné době asi používat nebude.<br/>
-            <i>DS:</i> SalesArrangementService/DeleteIncome <br/><br/>
+            Ověří, že příjem patří customerovi a příjem smaže.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="customerOnSAId">ID customera</param>
@@ -947,8 +971,7 @@
             Vytvoření příjmu customera
             </summary>
             <remarks>
-            <strong>CustomerIncome.Create</strong><br/>
-            <i>DS:</i> SalesArrangementService/CreateIncome<br/><br/>
+            Vytvoří příjem k danému customerovi.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=388BC673-9722-45e3-88B3-838E85C99912"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="customerOnSAId">ID customera</param>
@@ -3036,21 +3059,6 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
-            <summary>
-            Typ žádosti - číselník SalesArrangementType
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementResponse.SalesArrangementId">
-            <summary>
-            ID Sales Arrangement
-            </summary>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.DrawingValidator.Validate(System.Threading.CancellationToken)">
-            <remarks>
-            https://wiki.kb.cz/pages/viewpage.action?pageId=424119307#id-%C4%8Cerp%C3%A1ni%C5%BD%C3%A1dosto%C4%8Derp%C3%A1n%C3%AD-Kontrolyp%C5%99edformul%C3%A1%C5%99em%C4%8Derp%C3%A1n%C3%AD
-            </remarks>
-        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">
             <summary>
             Je sekce aktivní/neaktivní (lze prokliknout)?
@@ -3739,17 +3747,6 @@
             Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br />
             Data z doménové služby jsou roztříděné do kategorií a seřazeny abecedně v rámci kategorie podle parametru 'parameter'<br /><br />
             <i>DS:</i> SalesArrangementService/validateSalesArrangement
-            </remarks>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.CreateSalesArrangement(System.Int64,NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest)">
-            <summary>
-            Vytvoření servisního SalesArrangement-u
-            </summary>
-            <remarks>
-            Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
-            Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br/><br/>
-            Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.DeleteSalesArrangement(System.Int32)">
