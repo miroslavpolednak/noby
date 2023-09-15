@@ -38,7 +38,7 @@ internal class LoanRepository
 		[DatumKonceCerpani] as DrawingDateTo,
 		[DatumUzavreniSmlouvy] as ContractSignedDate,
 		[DatumFixaceUrokoveSazby] as FixedRateValidTo,
-		[Datum1AnuitniSplatky] as FirstAnnuityPaymentDate,
+		[Datum1AnuitniSplatky] as FirstAnnuityInstallmentDate,
 		[DatumPredpSplatnosti] as LoanDueDate,
 		[CisloUctu] as PaymentAccountNumber,
 		[PredcisliUctu] as PaymentAccountPrefix,

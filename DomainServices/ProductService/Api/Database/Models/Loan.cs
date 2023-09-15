@@ -20,7 +20,7 @@ internal class Loan
 	public DateTime? DrawingDateTo { get; set; }
 	public DateTime? ContractSignedDate { get; set; }
 	public DateTime? FixedRateValidTo { get; set; }
-	public DateTime? FirstAnnuityPaymentDate { get; set; }
+	public DateTime? FirstAnnuityInstallmentDate { get; set; }
 	public DateTime? LoanDueDate { get; set; }
 	public string? PaymentAccountNumber { get; set; }
 	public string? PaymentAccountPrefix { get; set; }
