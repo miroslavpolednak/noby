@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement;
+﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement;
 
 public sealed class CreateSalesArrangementResponse
 {

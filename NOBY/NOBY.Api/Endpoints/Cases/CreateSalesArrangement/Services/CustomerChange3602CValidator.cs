@@ -1,7 +1,7 @@
 ﻿using CIS.Foms.Enums;
-using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
+using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;
+namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class CustomerChange3602CValidator
     : BaseValidator, ICreateSalesArrangementParametersValidator

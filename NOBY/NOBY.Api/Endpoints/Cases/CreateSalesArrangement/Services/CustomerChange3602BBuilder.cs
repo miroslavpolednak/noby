@@ -1,11 +1,11 @@
 ﻿using CIS.Foms.Enums;
 using DomainServices.HouseholdService.Contracts;
-using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
+using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;
+namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
-internal sealed class CustomerChange3602ABuilder
+internal sealed class CustomerChange3602BBuilder
     : BaseBuilder
 {
     public override async Task PostCreateProcessing(int salesArrangementId, CancellationToken cancellationToken = default)
@@ -36,17 +36,14 @@ internal sealed class CustomerChange3602ABuilder
         await salesArrangementService.UpdateSalesArrangementParameters(new()
         {
             SalesArrangementId = salesArrangementId,
-            CustomerChange3602A = new()
+            CustomerChange3602B = new()
             {
                 HouseholdId = householdId
             }
         }, cancellationToken);
     }
 
-    public CustomerChange3602ABuilder(
-        ILogger<CreateSalesArrangementParametersFactory> logger, 
-        __SA.CreateSalesArrangementRequest request, 
-        IHttpContextAccessor httpContextAccessor)
+    public CustomerChange3602BBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
         : base(logger, request, httpContextAccessor)
     {
     }

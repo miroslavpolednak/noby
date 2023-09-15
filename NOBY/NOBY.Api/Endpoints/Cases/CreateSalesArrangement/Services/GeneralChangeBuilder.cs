@@ -1,7 +1,7 @@
-﻿using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
+﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;
+namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class GeneralChangeBuilder
     : BaseBuilder
