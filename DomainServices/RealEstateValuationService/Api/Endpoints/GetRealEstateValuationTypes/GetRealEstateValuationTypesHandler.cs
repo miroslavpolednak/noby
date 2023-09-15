@@ -58,7 +58,7 @@ internal sealed class GetRealEstateValuationTypesHandler
             IsCellarFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails?.Basement,
             IsNonApartmentBuildingFlat = revInstance.HouseAndFlatDetails?.FlatOnlyDetails?.SpecialPlacement,
             IsNotUsableTechnicalState = revInstance.HouseAndFlatDetails?.PoorCondition,
-            HasOwnershipLimitations = revInstance.HouseAndFlatDetails?.OwnershipRestricted ?? false,
+            HasOwnershipLimitations = revInstance.HouseAndFlatDetails?.OwnershipRestricted,
             PurposesLoan = request.LoanPurposes
                                   .Select(purposeId => purposes.FirstOrDefault(x => x.MandantId == (int)Mandants.Kb && purposeId == x.Id)?.AcvId)
                                   .Where(t => !string.IsNullOrEmpty(t))
