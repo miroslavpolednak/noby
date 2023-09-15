@@ -129,7 +129,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await AddSignatureIfNotSetYet(documentOnSa, salesArrangement, signatureDate, cancellationToken);
 
         // Update Mortgage.FirstSignatureDate
-        if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()) // 4
+        if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()) // 4
             await UpdateFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
 
         var houseHold = documentOnSa.HouseholdId.HasValue
@@ -137,7 +137,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             : null;
 
         // SUML call for all those document types, household should be not null 
-        if (IsDocumentTypeWithHousehold(documentOnSa.DocumentTypeId!.Value))
+        if (IsDocumentTypeWithHousehold(documentOnSa.DocumentTypeId.GetValueOrDefault()))
         {
             await SumlCall(salesArrangement, houseHold!, cancellationToken);
         }
@@ -145,7 +145,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         if (houseHold is null)
         {
             // CRS
-            if (documentOnSa.DocumentTypeId == DocumentTypes.DANRESID.ToByte()) // 13
+            if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.DANRESID.ToByte()) // 13
             {
                 await ProcessCrsDocumentOnSa(documentOnSa, salesArrangement, cancellationToken);
             }
@@ -430,7 +430,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, DateTime signatureDate, CancellationToken cancellationToken)
     {
-        if (documentOnSa.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()
+        if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()
             && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => !r.IsSigned, cancellationToken))
         {
             var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, signatureDate, cancellationToken);

@@ -29,7 +29,7 @@ internal static class MortgageExtensions
             RepaymentAccountNumber = mortgage.RepaymentAccount?.Number,
             RepaymentAccountPrefix = mortgage.RepaymentAccount?.Prefix,
             EstimatedDuePaymentDate = mortgage.LoanDueDate,
-            RepaymentStartDate = mortgage.FirstAnnuityPaymentDate,
+            RepaymentStartDate = mortgage.FirstAnnuityInstallmentDate,
             ServiceBranchId = mortgage.BranchConsultantId,
             ConsultantId = mortgage.CaseOwnerUserCurrentId,
             FirstRequestSignDate = mortgage.FirstSignatureDate,
@@ -78,7 +78,7 @@ internal static class MortgageExtensions
             LoanInterestRateRefix = null, // ???
             LoanInterestRateValidFromRefix = null, // ???
             FixedRatePeriodRefix = null, // ???
-            FirstAnnuityPaymentDate = loan.FirstAnnuityPaymentDate,
+            FirstAnnuityInstallmentDate = loan.FirstAnnuityInstallmentDate,
             FirstSignatureDate = loan.FirstSignatureDate,
             RepaymentAccount = ParseRepaymentAccount(loan),
             Statement = ParseStatementObject(loan),

@@ -15,15 +15,15 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     {
         return request.Criterion switch
         {
-            Criterion.FormId => await HandleByFormId(request.FormId!, cancellationToken),
-            Criterion.PaymentAccount => await HandleByPaymentAccount(request.Account!, cancellationToken),
-            Criterion.CaseId => await HandleByCaseId(request.CaseId!.Value, cancellationToken),
-            Criterion.ContractNumber => await HandleByContractNumber(request.ContractNumber!, cancellationToken),
-            _ => throw new ArgumentOutOfRangeException()
+            Criterion.FormId => await handleByFormId(request.FormId!, cancellationToken),
+            Criterion.PaymentAccount => await handleByPaymentAccount(request.Account!, cancellationToken),
+            Criterion.CaseId => await handleByCaseId(request.CaseId!.Value, cancellationToken),
+            Criterion.ContractNumber => await handleByContractNumber(request.ContractNumber!, cancellationToken),
+            _ => throw new NobyValidationException("Criterion unknown")
         };
     }
 
-    private async Task<IdentifyCaseResponse> HandleByFormId(string formId, CancellationToken cancellationToken)
+    private async Task<IdentifyCaseResponse> handleByFormId(string formId, CancellationToken cancellationToken)
     {
         var documentListRequest = new GetDocumentListRequest { FormId = formId };
         var documentListResponse = await _documentArchiveServiceClient.GetDocumentList(documentListRequest, cancellationToken);
@@ -39,7 +39,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId.Value, false, cancellationToken);
         if (!caseInstance.Exists)
         {
-            return new IdentifyCaseResponse { CaseId = null };
+            return new IdentifyCaseResponse();
         }
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
 
@@ -81,43 +81,48 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         };
     }
     
-    private async Task<IdentifyCaseResponse> HandleByPaymentAccount(PaymentAccount account, CancellationToken cancellationToken)
+    private async Task<IdentifyCaseResponse> handleByPaymentAccount(PaymentAccount account, CancellationToken cancellationToken)
     {
-        var paymentAccount = new PaymentAccountObject { Prefix = account.Prefix, AccountNumber = account.Number };
-        var request = new GetCaseIdRequest { PaymentAccount = paymentAccount };
-        
-        try
-        {
-            var response = await _productServiceClient.GetCaseId(request, cancellationToken);
-            return await HandleByCaseId(response.CaseId, cancellationToken);
-        }
-        catch (CisNotFoundException)
-        {
-            return new IdentifyCaseResponse();
-        }
+        var request = new GetCaseIdRequest 
+        { 
+            PaymentAccount = new()
+            { 
+                Prefix = account.Prefix, 
+                AccountNumber = account.Number 
+            }
+        };
+        return await callProductService(request, cancellationToken);
     }
     
-    private async Task<IdentifyCaseResponse> HandleByCaseId(long caseId, CancellationToken cancellationToken)
+    private async Task<IdentifyCaseResponse> handleByContractNumber(string contractNumber, CancellationToken cancellationToken)
+    {
+        var request = new GetCaseIdRequest 
+        { 
+            ContractNumber = new()
+            {
+                ContractNumber = contractNumber
+            }
+        };
+        return await callProductService(request, cancellationToken);
+    }
+
+    private async Task<IdentifyCaseResponse> handleByCaseId(long caseId, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
 
         if (!caseInstance.Exists) return new IdentifyCaseResponse();
 
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
+
         return new IdentifyCaseResponse { CaseId = caseId };
     }
-    
-    private async Task<IdentifyCaseResponse> HandleByContractNumber(string contractNumber, CancellationToken cancellationToken)
+
+    private async Task<IdentifyCaseResponse> callProductService(GetCaseIdRequest request, CancellationToken cancellationToken)
     {
-        var contract = new ContractNumberObject { ContractNumber = contractNumber };
-        var request = new GetCaseIdRequest { ContractNumber = contract };
         try
         {
             var response = await _productServiceClient.GetCaseId(request, cancellationToken);
-            var caseInstance = await _caseServiceClient.ValidateCaseId(response.CaseId, false, cancellationToken);
-            SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
-
-            return await HandleByCaseId(response.CaseId, cancellationToken);
+            return await handleByCaseId(response.CaseId, cancellationToken);
         }
         catch (CisNotFoundException)
         {
