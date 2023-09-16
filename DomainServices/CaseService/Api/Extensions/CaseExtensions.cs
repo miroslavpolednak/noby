@@ -29,7 +29,7 @@ internal static class CaseExtensions
             2 => taskData.GetInteger("ukol_overeni_ic_stav"),
             6 => taskData.GetInteger("ukol_podpis_stav"),
             3 or 4 or 7 or 8 => 1,
-            _ => throw new ArgumentOutOfRangeException("PhaseTypeId can not be set")
+            _ => throw new ArgumentOutOfRangeException(nameof(task.PhaseTypeId),"PhaseTypeId can not be set")
         };
 
         task.SignatureTypeId = (task.TaskTypeId, taskData.GetNInteger("ukol_podpis_dokument_metoda")) switch
@@ -133,7 +133,8 @@ internal static class CaseExtensions
                         FormId = taskData.GetValueOrDefault("ukol_podpis_dokument_form_id") ?? "",
                         Expiration = taskData.GetDate("ukol_podpis_lhuta_do"),
                         DocumentForSigning = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_id") ?? "",
-                        DocumentForSigningType = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_typ") ?? ""
+                        DocumentForSigningType = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_typ") ?? "",
+                        EACodeMain = taskData.GetValueOrDefault("ukol_podpis_dokument_typ")
                     };
 
                     if (string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")))

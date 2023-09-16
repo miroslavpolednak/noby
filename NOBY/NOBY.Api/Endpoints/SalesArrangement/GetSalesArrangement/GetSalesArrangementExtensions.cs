@@ -35,7 +35,7 @@ internal static class GetSalesArrangementExtensions
         {
             DrawingDate = model.DrawingDate,
             IsImmediateDrawing = model.IsImmediateDrawing,
-            Applicant = model.Applicant?.Cast<CIS.Foms.Types.CustomerIdentity>()?.ToList(),
+            Applicant = model.Applicant?.Select(t => (CIS.Foms.Types.CustomerIdentity)t!)?.ToList(),
             PayoutList = model.PayoutList?.Select(x => new ParametersDrawingPayout
             {
                 ProductObligationId = x.ProductObligationId,   
@@ -73,7 +73,7 @@ internal static class GetSalesArrangementExtensions
     public static Dto.GeneralChangeDetail ToApiResponse(this _SA.SalesArrangementParametersGeneralChange model)
         => new()
         {
-            Applicant = model.Applicant?.Cast<CIS.Foms.Types.CustomerIdentity>()?.ToList(),
+            Applicant = model.Applicant?.Select(t => (CIS.Foms.Types.CustomerIdentity)t!)?.ToList(),
             Collateral = new Collateral
             {
                 IsActive = model.Collateral?.IsActive ?? false,
@@ -148,7 +148,7 @@ internal static class GetSalesArrangementExtensions
     public static Dto.HUBNDetail ToApiResponse(this _SA.SalesArrangementParametersHUBN model)
         => new()
         {
-            Applicant = model.Applicant?.Cast<CIS.Foms.Types.CustomerIdentity>()?.ToList(),
+            Applicant = model.Applicant?.Select(t => (CIS.Foms.Types.CustomerIdentity)t!)?.ToList(),
             CollateralIdentification = new()
             {
                 RealEstateIdentification = model.CollateralIdentification?.RealEstateIdentification

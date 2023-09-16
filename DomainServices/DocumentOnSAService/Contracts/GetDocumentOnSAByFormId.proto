@@ -1,0 +1,14 @@
+syntax = "proto3";
+package DomainServices.DocumentOnSAService.GetDocumentOnSAByFormId;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "DocumentOnSA.proto";
+import "google/protobuf/wrappers.proto";
+
+message GetDocumentOnSAByFormIdRequest{
+		string FormId = 1;
+}
+
+message GetDocumentOnSAByFormIdResponse{
+	DocumentOnSA DocumentOnSa = 1;
+}
