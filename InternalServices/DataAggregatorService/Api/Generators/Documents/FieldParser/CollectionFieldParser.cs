@@ -29,7 +29,9 @@ internal class CollectionFieldParser : ISourceFieldParser
             {
                 AcroFieldName = sourceField.AcroFieldName + (index + 1),
                 StringFormat = sourceField.StringFormat,
-                Value = string.Empty.Equals(fieldPath, StringComparison.OrdinalIgnoreCase) ? value : MapperHelper.GetValue(value, fieldPath)
+                Value = string.Empty.Equals(fieldPath, StringComparison.OrdinalIgnoreCase) ? value : MapperHelper.GetValue(value, fieldPath),
+                TextAlign = sourceField.TextAlign,
+                VAlign = sourceField.VAlign
             };
         });
 }
