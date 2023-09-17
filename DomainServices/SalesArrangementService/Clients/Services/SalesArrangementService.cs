@@ -163,6 +163,7 @@ internal sealed class SalesArrangementService
                 {
                     SalesArrangementId = salesArrangementId
                 }, cancellationToken: cancellationToken)).FlowSwitches.ToList();
+            _cacheGetFlowSwitchesId = salesArrangementId;
         }
         return _cacheGetFlowSwitches;
     }

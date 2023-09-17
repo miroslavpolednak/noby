@@ -1,95 +1,47 @@
-using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.Messaging;
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.RealEstateValuationService.Api;
-using DomainServices;
-using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Security;
-using CIS.InternalServices;
-using DomainServices.RealEstateValuationService.Api.Endpoints;
+using DomainServices.RealEstateValuationService.Api.Database;
+using DomainServices.RealEstateValuationService.Api.Messaging;
+using DomainServices.RealEstateValuationService.ExternalServices;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
+SharedComponents.GrpcServiceBuilder
+    .CreateGrpcService(args, typeof(Program))
+    .AddApplicationConfiguration<DomainServices.RealEstateValuationService.Api.Configuration.AppConfiguration>()
+    .AddCustomServices((builder, appConfiguration) =>
+    {
+        appConfiguration.Validate();
 
-//TODO workaround until .NET6 UseWindowsService() will work with WebApplication
-var webAppOptions = runAsWinSvc
-    ?
-    new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
-    :
-    new WebApplicationOptions { Args = args };
-var builder = WebApplication.CreateBuilder(webAppOptions);
+        // dbcontext
+        builder.AddEntityFramework<RealEstateValuationServiceDbContext>();
 
-var log = builder.CreateStartupLogger();
+        builder.AddExternalService<DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1.IPreorderServiceClient>();
+        builder.AddExternalService<DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.V1.ILuxpiServiceClient>();
 
-try
-{
-    #region register builder
-    builder.Services.AddAttributedServices(typeof(Program));
-
-    // globalni nastaveni prostredi
-    builder
-        .AddCisCoreFeatures()
-        .AddCisEnvironmentConfiguration();
-
-    builder
-        // logging
-        .AddCisLogging()
-        .AddCisTracing()
-        // authentication
-        .AddCisServiceAuthentication()
-        // add self
-        .AddRealEstateValuationService()
-        // add BE services
-        .Services
-            // add CIS services
+        // kafka messaging
+        builder.AddCisMessaging()
+            .AddKafka(typeof(Program).Assembly)
+            .AddConsumer<DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged.CollateralValuationProcessChangedConsumer>()
+            .AddConsumer<DomainServices.RealEstateValuationService.Api.Messaging.InformationRequestProcessChanged.InformationRequestProcessChangedConsumer>()
+            .AddConsumerTopicAvro<ISbWorkflowProcessEvent>(appConfiguration.SbWorkflowProcessTopic!)
+            .Build();
+    })
+    .AddErrorCodeMapper(DomainServices.RealEstateValuationService.Api.ErrorCodeMapper.Init())
+    .AddRequiredServices(services =>
+    {
+        services
             .AddCodebookService()
             .AddUserService()
             .AddProductService()
             .AddSalesArrangementService()
             .AddCustomerService()
             .AddCaseService()
-            .AddOfferService()
-            .AddCisServiceDiscovery()
-            // add grpc infrastructure
-            .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-            .AddGrpcReflection()
-            .AddGrpc(options =>
-            {
-                options.Interceptors.Add<GenericServerExceptionInterceptor>();
-            });
-
-    // add HC
-    builder.AddCisGrpcHealthChecks();
-    #endregion register builder
-
-    // kestrel configuration
-    builder.UseKestrelWithCustomConfiguration();
-
-    // BUILD APP
-    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-    var app = builder.Build();
-    log.ApplicationBuilt();
-
-    app.UseServiceDiscovery();
-    app.UseRouting();
-
-    app.UseAuthentication();
-    app.UseAuthorization();
-    app.UseCisServiceUserContext();
-
-    app.MapCisGrpcHealthChecks();
-    app.MapGrpcReflectionService();
-    app.MapGrpcService<RealEstateValuationService>();
-
-    log.ApplicationRun();
-    app.Run();
-}
-catch (Exception ex)
-{
-    log.CatchedException(ex);
-}
-finally
-{
-    LoggingExtensions.CloseAndFlush();
-}
+            .AddOfferService();
+    })
+    .MapGrpcServices(app =>
+    {
+        app.MapGrpcService<DomainServices.RealEstateValuationService.Api.Endpoints.RealEstateValuationService>();
+    })
+    .Run();
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program
