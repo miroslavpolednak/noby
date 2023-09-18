@@ -34,8 +34,8 @@ SharedComponents.GrpcServiceBuilder
     })
     .EnableJsonTranscoding(options =>
     {
-        options.Title = "Codebook Service API";
-        options.AddXmlCommentsPath(Path.Combine(AppContext.BaseDirectory, "DomainServices.CodebookService.Contracts.xml"));
+        options.OpenApiTitle = "Codebook Service API";
+        options.AddOpenApiXmlComment(Path.Combine(AppContext.BaseDirectory, "DomainServices.CodebookService.Contracts.xml"));
     })
     .SkipRequiredServices()
     .MapGrpcServices(app =>

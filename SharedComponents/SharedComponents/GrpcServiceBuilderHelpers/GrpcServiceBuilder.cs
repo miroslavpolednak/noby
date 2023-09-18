@@ -11,12 +11,11 @@ public static class GrpcServiceBuilder
         bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
 
         //TODO workaround until .NET6 UseWindowsService() will work with WebApplication
-        var webAppOptions = runAsWinSvc
-            ?
-            new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
-            :
-            new WebApplicationOptions { Args = args };
-        var builder = WebApplication.CreateBuilder(webAppOptions);
+        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+        {
+            Args = args,
+            ContentRootPath = runAsWinSvc ? AppContext.BaseDirectory : default
+        });
 
         // globalni nastaveni prostredi
         var configuration = builder.AddCisEnvironmentConfiguration();

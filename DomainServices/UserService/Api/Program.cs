@@ -13,10 +13,10 @@ SharedComponents.GrpcServiceBuilder
     .AddErrorCodeMapper(DomainServices.UserService.Api.ErrorCodeMapper.Init())
     .EnableJsonTranscoding(options =>
     {
-        options.Title = "User Service API";
+        options.OpenApiTitle = "User Service API";
         options
-            .AddXmlCommentsPath(Path.Combine(AppContext.BaseDirectory, "DomainServices.UserService.Contracts.xml"))
-            .AddXmlCommentsPath(Path.Combine(AppContext.BaseDirectory, "CIS.Infrastructure.gRPC.CisTypes.xml"));
+            .AddOpenApiXmlComment(Path.Combine(AppContext.BaseDirectory, "DomainServices.UserService.Contracts.xml"))
+            .AddOpenApiXmlComment(Path.Combine(AppContext.BaseDirectory, "CIS.Infrastructure.gRPC.CisTypes.xml"));
     })
     .SkipRequiredServices()
     .MapGrpcServices(app =>

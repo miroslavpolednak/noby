@@ -8,27 +8,27 @@ public sealed class JsonTranscodingOptions
     /// <summary>
     /// Název projektu v OpenApi
     /// </summary>
-    public string? Title { get; set; }
+    public string? OpenApiTitle { get; set; }
 
     /// <summary>
     /// Verze API v URL
     /// </summary>
-    public string SwaggerApiVersion { get; set; } = "v1";
+    public string OpenApiVersion { get; set; } = "v1";
 
     /// <summary>
     /// Verze API v popisu
     /// </summary>
-    public string SwaggerEndpointVersion { get; set; } = "1.0";
+    public string OpenApiEndpointVersion { get; set; } = "1.0";
 
-    internal List<string>? XmlCommentsPaths { get; set; }
+    internal List<string>? OpenApiXmlCommentsPaths { get; set; }
 
     /// <summary>
     /// Přidá cestu k souboru s XML dokumentací pro OpenApi
     /// </summary>
-    public JsonTranscodingOptions AddXmlCommentsPath(string path)
+    public JsonTranscodingOptions AddOpenApiXmlComment(string path)
     {
-        XmlCommentsPaths ??= new List<string>();
-        XmlCommentsPaths.Add(path);
+        OpenApiXmlCommentsPaths ??= new List<string>();
+        OpenApiXmlCommentsPaths.Add(path);
 
         return this;
     }

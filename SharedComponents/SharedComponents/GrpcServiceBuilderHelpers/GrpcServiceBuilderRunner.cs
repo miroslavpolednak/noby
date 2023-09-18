@@ -58,10 +58,11 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             // add grpc infrastructure
             var grpcBuilder = _settings.Builder.Services
                 .AddCisGrpcInfrastructure(_settings.MainAssembly, _settings.ErrorCodeMapperMessages)
-                
                 .AddGrpc(options =>
                 {
                     options.Interceptors.Add<GenericServerExceptionInterceptor>();
+                    options.MaxReceiveMessageSize = 25 * 1024 * 1024; // 25 MB
+                    options.MaxSendMessageSize = 25 * 1024 * 1024; // 25 MB
                 });
 
             // grpc reflection
@@ -74,7 +75,10 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             // json transcoding
             if (_settings.EnableJsonTranscoding)
             {
-                grpcBuilder.AddJsonTranscoding();
+                grpcBuilder.AddJsonTranscoding(o =>
+                {
+                    o.JsonSettings.WriteEnumsAsIntegers = true;
+                });
             }
 
             // add HC
@@ -144,16 +148,16 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
 
         _settings.Builder.Services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc(_settings.TranscodingOptions!.SwaggerApiVersion, new OpenApiInfo 
+            c.SwaggerDoc(_settings.TranscodingOptions!.OpenApiVersion, new OpenApiInfo 
             { 
-                Title = _settings.TranscodingOptions.Title ?? "", 
-                Version = _settings.TranscodingOptions.SwaggerApiVersion 
+                Title = _settings.TranscodingOptions.OpenApiTitle ?? "", 
+                Version = _settings.TranscodingOptions.OpenApiVersion 
             });
 
             // generate the XML docs that'll drive the swagger docs
-            if (_settings.TranscodingOptions.XmlCommentsPaths?.Any() ?? false)
+            if (_settings.TranscodingOptions.OpenApiXmlCommentsPaths?.Any() ?? false)
             {
-                _settings.TranscodingOptions.XmlCommentsPaths.ForEach(path =>
+                _settings.TranscodingOptions.OpenApiXmlCommentsPaths.ForEach(path =>
                 {
                     c.IncludeXmlComments(path);
                     c.IncludeGrpcXmlComments(path, includeControllerXmlComments: true);
@@ -193,7 +197,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint($"/swagger/{_settings.TranscodingOptions!.SwaggerApiVersion}/swagger.json", _settings.TranscodingOptions!.SwaggerEndpointVersion);
+                c.SwaggerEndpoint($"/swagger/{_settings.TranscodingOptions!.OpenApiVersion}/swagger.json", _settings.TranscodingOptions!.OpenApiEndpointVersion);
             });
         }
     }
