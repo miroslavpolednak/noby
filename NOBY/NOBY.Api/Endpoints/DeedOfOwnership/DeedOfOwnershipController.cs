@@ -11,8 +11,7 @@ public sealed class DeedOfOwnershipController : ControllerBase
     /// Seznam ISKN id listů vlastnictví pro daný adresní bod
     /// </summary>
     /// <remarks>
-    /// Provolání CREM pro získání seznamu ISKN id.
-    /// 
+    /// Provolání CREM pro získání seznamu ISKN id.<br/><br/>
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D5B309D6-5B0C-4fe3-8CCE-50955423F7E4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("address/{addressPointId:long}/ids")]
@@ -29,8 +28,7 @@ public sealed class DeedOfOwnershipController : ControllerBase
     /// Informace z dokumentu listu vlastnictví
     /// </summary>
     /// <remarks>
-    /// Integrace na CREM
-    /// 
+    /// Integrace na CREM.<br/><br/>
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2B4B2F8E-17B5-48af-A01D-49E60B53E5BA"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="katuzId">KATUZ ID, pětimístné číslo katastrálního území, Id RUIAN katastrálního území</param>
