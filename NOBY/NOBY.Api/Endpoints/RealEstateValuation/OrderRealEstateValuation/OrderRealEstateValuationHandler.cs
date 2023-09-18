@@ -63,12 +63,12 @@ internal sealed class OrderRealEstateValuationHandler
     {
         return new DomainServices.RealEstateValuationService.Contracts.OrdersStandard
         {
-            RealEstateValuationLocalSurveyFunctionCode = request.LocalSurveyPerson?.FunctionCode,
-            FirstName = request.LocalSurveyPerson?.FirstName,
-            LastName = request.LocalSurveyPerson?.LastName,
-            Email = request.LocalSurveyPerson?.EmailAddress?.EmailAddress,
-            PhoneIDC = request.LocalSurveyPerson?.MobilePhone?.PhoneIDC,
-            PhoneNumber = request.LocalSurveyPerson?.MobilePhone?.PhoneNumber
+            RealEstateValuationLocalSurveyFunctionCode = request.LocalSurveyPerson?.FunctionCode ?? "",
+            FirstName = request.LocalSurveyPerson?.FirstName ?? "",
+            LastName = request.LocalSurveyPerson?.LastName ?? "",
+            Email = request.LocalSurveyPerson?.EmailAddress?.EmailAddress ?? "",
+            PhoneIDC = request.LocalSurveyPerson?.MobilePhone?.PhoneIDC ?? "",
+            PhoneNumber = request.LocalSurveyPerson?.MobilePhone?.PhoneNumber ?? ""
         };
     }
 
