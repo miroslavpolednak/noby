@@ -50,7 +50,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
-        
+
         if (salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Mortgage.ToByte() // 1
             || salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() // 6
             || salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.CustomerChange3602A.ToByte() // 10 
@@ -190,7 +190,8 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
                 EArchivIdsLinked = Array.Empty<string>()
             },
               signatureStates),
-            EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(result.DocumentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains)
+            EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
+                new() { DocumentTypeId = result.DocumentOnSa.DocumentTypeId, EACodeMainId = result.DocumentOnSa.EACodeMainId }, documentTypes, eACodeMains)
         };
     }
 

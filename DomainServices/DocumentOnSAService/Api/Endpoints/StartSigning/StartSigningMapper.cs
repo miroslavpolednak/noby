@@ -147,7 +147,7 @@ public class StartSigningMapper
         clientData.Identities = signingIdentity.CustomerIdentifiers.Select(s => new CustomerIdentity(s.IdentityId, s.IdentityScheme));
     }
 
-    public async Task<__Entity.DocumentOnSa> WorkflowMapToEntity(StartSigningRequest request, GetTaskDetailResponse taskDetail, CancellationToken cancellationToken)
+    public async Task<DocumentOnSa> WorkflowMapToEntity(StartSigningRequest request, GetTaskDetailResponse taskDetail, CancellationToken cancellationToken)
     {
         var signing = taskDetail.TaskDetail.AmendmentsCase switch
         {
@@ -155,7 +155,7 @@ public class StartSigningMapper
             _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AmendmentHasToBeOfTypeSigning)
         };
 
-        var entity = new __Entity.DocumentOnSa();
+        var entity = new DocumentOnSa();
         entity.FormId = signing.FormId;
         entity.ExternalId = signing.DocumentForSigning;
         entity.Source = __DbEnum.Source.Workflow;
@@ -168,14 +168,14 @@ public class StartSigningMapper
         entity.IsValid = true;
         entity.IsSigned = false;
         entity.IsArchived = false;
-
+        entity.EACodeMainId = int.Parse(signing.EACodeMain, CultureInfo.InvariantCulture);
         return entity;
     }
 
     public async Task<DocumentOnSa> ServiceRequestMapToEntity(StartSigningRequest request, __Household.Household? houseHold, string formId, GetDocumentDataResponse documentDataResponse, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var entity = new DocumentOnSa();
-        entity.DocumentTypeId = request.DocumentTypeId!.Value; 
+        entity.DocumentTypeId = request.DocumentTypeId!.Value;
         entity.DocumentTemplateVersionId = documentDataResponse.DocumentTemplateVersionId;
         entity.DocumentTemplateVariantId = documentDataResponse.DocumentTemplateVariantId;
         entity.FormId = formId;
@@ -204,7 +204,7 @@ public class StartSigningMapper
         return entity;
     }
 
-    public async Task<__Entity.DocumentOnSa> ProductRequestMapToEntity(StartSigningRequest request, __Household.Household houseHold, string formId, GetDocumentDataResponse documentDataResponse, CancellationToken cancellationToken)
+    public async Task<DocumentOnSa> ProductRequestMapToEntity(StartSigningRequest request, __Household.Household houseHold, string formId, GetDocumentDataResponse documentDataResponse, CancellationToken cancellationToken)
     {
         var entity = new DocumentOnSa();
         entity.DocumentTypeId = request.DocumentTypeId!.Value;
@@ -264,7 +264,8 @@ public class StartSigningMapper
                 EArchivId = documentOnSaEntity.EArchivId,
                 SignatureTypeId = documentOnSaEntity.SignatureTypeId,
                 Source = documentOnSaEntity.Source.MapToContractEnum(),
-                SalesArrangementId = documentOnSaEntity.SalesArrangementId
+                SalesArrangementId = documentOnSaEntity.SalesArrangementId,
+                EACodeMainId = documentOnSaEntity.EACodeMainId
             }
         };
     }
@@ -290,7 +291,7 @@ public class StartSigningMapper
             entitySigningIdentity.SigningIdentityJson.FirstName = customer.NaturalPerson.FirstName;
             entitySigningIdentity.SigningIdentityJson.LastName = customer.NaturalPerson.LastName;
             entitySigningIdentity.SigningIdentityJson.BirthNumber = customer.NaturalPerson.BirthNumber;
-            
+
             foreach (var contact in customer.Contacts)
             {
                 switch (contact.DataCase)

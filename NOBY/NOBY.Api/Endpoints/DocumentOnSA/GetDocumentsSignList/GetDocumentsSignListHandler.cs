@@ -60,7 +60,8 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                     EArchivIdsLinked = s.EArchivIdsLinked
                 },
               signatureStates),
-                EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(s.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains),
+                EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
+                    new() { DocumentTypeId = s.DocumentTypeId, EACodeMainId = s.EACodeMainId }, documentTypes, eACodeMains),
                 CustomerOnSa = new()
                 {
                     CustomerOnSAId = s.CustomerOnSA?.CustomerOnSAId,

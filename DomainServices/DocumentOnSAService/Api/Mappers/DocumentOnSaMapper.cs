@@ -81,6 +81,7 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
                 CaseId = documentOnSa.CaseId,
                 ExternalId = documentOnSa.ExternalId,
                 EArchivIdsLinked = { documentOnSa.EArchivIdsLinkeds.Select(s => s.EArchivId) },
+                EACodeMainId = documentOnSa.EACodeMainId,
             };
         }
     }

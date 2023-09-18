@@ -38,7 +38,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
         var signingRequest = new StartSigningRequest
         {
             CaseId = caseId,
-            TaskId = Convert.ToInt32(taskId), 
+            TaskId = Convert.ToInt32(taskId),
             TaskIdSb = workflowTask.TaskIdSb,
             SalesArrangementId = salesArrangement.SalesArrangementId,
             SignatureTypeId = workflowTask.SignatureTypeId
@@ -86,7 +86,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
-            documentOnSa.DocumentTypeId.GetValueOrDefault(),
+            new() { DocumentTypeId = documentOnSa.DocumentTypeId, EACodeMainId = documentOnSa.EACodeMainId },
             documentTypes,
             eACodeMains)
         };
@@ -114,7 +114,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
-            signingResponse.DocumentOnSa.DocumentTypeId.GetValueOrDefault(),
+             new() { DocumentTypeId = signingResponse.DocumentOnSa.DocumentTypeId, EACodeMainId = signingResponse.DocumentOnSa.EACodeMainId },
             documentTypes,
             eACodeMains)
         };
