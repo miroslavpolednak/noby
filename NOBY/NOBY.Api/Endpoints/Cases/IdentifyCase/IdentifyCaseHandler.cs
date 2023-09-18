@@ -3,8 +3,10 @@ using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
+using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 using PaymentAccount = NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount;
 
 namespace NOBY.Api.Endpoints.Cases.IdentifyCase;
@@ -33,7 +35,18 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
 
         if (caseId == null)
         {
-            return new IdentifyCaseResponse();
+            try
+            {
+                var documentOnSa = (await _documentOnSAService.GetDocumentOnSAByFormId(formId, cancellationToken)).DocumentOnSa;
+
+                var validationResponse = await _salesArrangementService.ValidateSalesArrangementId(documentOnSa.SalesArrangementId, false, cancellationToken);
+
+                return validationResponse.Exists ? new IdentifyCaseResponse { CaseId = validationResponse.CaseId } : new IdentifyCaseResponse();
+            }
+            catch (CisNotFoundException)
+            {
+                return new IdentifyCaseResponse();
+            }
         }
 
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId.Value, false, cancellationToken);
@@ -135,18 +148,24 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     private readonly IProductServiceClient _productServiceClient;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
-    
+    private readonly IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+
     public IdentifyCaseHandler(
         ICurrentUserAccessor currentUser,
         IMediator mediator,
         IProductServiceClient productServiceClient,
         ICaseServiceClient caseServiceClient,
-        IDocumentArchiveServiceClient documentArchiveServiceClient)
+        IDocumentArchiveServiceClient documentArchiveServiceClient,
+        IDocumentOnSAServiceClient documentOnSAService,
+        ISalesArrangementServiceClient salesArrangementService)
     {
         _currentUser = currentUser;
         _mediator = mediator;
         _productServiceClient = productServiceClient;
         _caseServiceClient = caseServiceClient;
         _documentArchiveServiceClient = documentArchiveServiceClient;
+        _documentOnSAService = documentOnSAService;
+        _salesArrangementService = salesArrangementService;
     }
 }
