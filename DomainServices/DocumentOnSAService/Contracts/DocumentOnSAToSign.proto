@@ -54,6 +54,8 @@ message DocumentOnSAToSign {
 	google.protobuf.StringValue ExternalId = 22;
 
 	repeated string EArchivIdsLinked = 23;
+
+	google.protobuf.Int32Value EACodeMainId = 24;
 }
 
 message CustomerOnSa {

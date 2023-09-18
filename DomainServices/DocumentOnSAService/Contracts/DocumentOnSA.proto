@@ -31,4 +31,6 @@ message DocumentOnSA {
 	DomainServices.DocumentOnSAService.Enums.Source Source = 10;
 
 	int32 SalesArrangementId = 11;
+
+	google.protobuf.Int32Value EACodeMainId = 12;
 }

@@ -7,17 +7,25 @@ namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 public static class DocumentOnSaMetadataManager
 {
-    public static EACodeMainItem GetEaCodeMainItem(int documentTypeId, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypeItems, List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodeMainItems)
+    public static EACodeMainItem GetEaCodeMainItem(DocIdentificator docIdentificator, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypeItems, List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodeMainItems)
     {
-        var docType = documentTypeItems.FirstOrDefault(d => d.Id == documentTypeId);
-        
-        if (docType == null)//TODO !!!!!!!!!!!!!!!! toto je hotfix, ktery chtel Honza. Musi se odstranit az se prijde na to jak tento problem vyresit.
+        EaCodesMainResponse.Types.EaCodesMainItem eaCodeMain;
+
+        if (docIdentificator.DocumentTypeId is not null)
         {
-            docType = documentTypeItems.First(t => t.EACodeMainId.HasValue);
+            var docType = documentTypeItems.Single(d => d.Id == docIdentificator.DocumentTypeId);
+            eaCodeMain = eaCodeMainItems.Single(e => e.Id == docType.EACodeMainId);
+        }
+        else if (docIdentificator.EACodeMainId is not null)
+        {
+            eaCodeMain = eaCodeMainItems.Single(e => e.Id == docIdentificator.EACodeMainId);
+        }
+        else
+        {
+            throw new NobyValidationException($"{nameof(docIdentificator.DocumentTypeId)} or {nameof(docIdentificator.EACodeMainId)} have to be fill in");
         }
 
-        var eaCodeMain = eaCodeMainItems.Single(e => e.Id == docType.EACodeMainId);
-        return new EACodeMainItem { Id = docType.EACodeMainId!.Value, DocumentType = eaCodeMain.Name, Category = eaCodeMain.Category };
+        return new EACodeMainItem { Id = eaCodeMain.Id, DocumentType = eaCodeMain.Name, Category = eaCodeMain.Category };
     }
 
     public static SignatureState GetSignatureState(DocumentOnSAInfo docSa, List<GenericCodebookResponse.Types.GenericCodebookItem> signatureStates) => docSa switch
@@ -39,6 +47,13 @@ public static class DocumentOnSaMetadataManager
         var signatureState = signatureStates.Single(s => s.Id == stateId);
         return new SignatureState { Id = signatureState.Id, Name = signatureState.Name };
     }
+}
+
+public class DocIdentificator
+{
+    public int? DocumentTypeId { get; set; }
+
+    public int? EACodeMainId { get; set; }
 }
 
 public class DocumentOnSAInfo
