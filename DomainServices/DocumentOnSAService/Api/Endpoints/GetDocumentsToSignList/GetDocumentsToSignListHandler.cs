@@ -49,7 +49,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
             .Include(s => s.SigningIdentities)
             .Where(e => e.SalesArrangementId == request.SalesArrangementId
                                                               && e.IsValid
-                                                              && e.IsFinal == false)
+                                                              && !e.IsFinal)
                                                   .ToListAsync(cancellationToken);
 
 
@@ -81,7 +81,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         var documentTypes = await _codebookServiceClients.DocumentTypes(cancellationToken);
         var documentType = documentTypes.Single(d => d.SalesArrangementTypeId == salesArrangement.SalesArrangementTypeId);
         var documentsOnSaToSignVirtual = _documentOnSaMapper.CreateDocumentOnSaToSign(documentType, request.SalesArrangementId);
-        var documentOnSaReal = documentOnSaEntities.FirstOrDefault(r => r.DocumentTypeId == documentsOnSaToSignVirtual.DocumentTypeId);
+        var documentOnSaReal = documentOnSaEntities.Find(r => r.DocumentTypeId == documentsOnSaToSignVirtual.DocumentTypeId);
 
         if (documentOnSaReal is not null)
         {

@@ -58,7 +58,8 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                     EArchivIdsLinked = docOnSa.EArchivIdsLinked
                 },
               signatureStates),
-                EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(docOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains),
+                EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
+                    new() { DocumentTypeId = docOnSa.DocumentTypeId, EACodeMainId = docOnSa.EACodeMainId }, documentTypes, eACodeMains),
                 CustomerOnSa = new()
                 {
                     CustomerOnSAId = docOnSa.CustomerOnSA?.CustomerOnSAId,
