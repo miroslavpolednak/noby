@@ -60,8 +60,7 @@ internal sealed class OrderRealEstateValuationHandler
     }
 
     private static DomainServices.RealEstateValuationService.Contracts.OrdersStandard createData(OrderRealEstateValuationRequest request)
-    {
-        return new DomainServices.RealEstateValuationService.Contracts.OrdersStandard
+        => new DomainServices.RealEstateValuationService.Contracts.OrdersStandard
         {
             RealEstateValuationLocalSurveyFunctionCode = request.LocalSurveyPerson?.FunctionCode ?? "",
             FirstName = request.LocalSurveyPerson?.FirstName ?? "",
@@ -70,7 +69,6 @@ internal sealed class OrderRealEstateValuationHandler
             PhoneIDC = request.LocalSurveyPerson?.MobilePhone?.PhoneIDC ?? "",
             PhoneNumber = request.LocalSurveyPerson?.MobilePhone?.PhoneNumber ?? ""
         };
-    }
 
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
     private readonly Services.RealEstateValuationType.IRealEstateValuationTypeService _estateValuationTypeService;
