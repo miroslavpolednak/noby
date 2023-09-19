@@ -83,5 +83,10 @@ public class MockUserService
         });
     }
 
+    public Task<int[]> GetCurrentUserPermissions(CancellationToken cancellationToken = default)
+    {
+        return GetUserPermissions(1, cancellationToken);
+    }
+
     public const int DefaultUserId = 3048;
 }

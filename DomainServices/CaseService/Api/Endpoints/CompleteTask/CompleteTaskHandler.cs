@@ -24,10 +24,10 @@ internal sealed class CompleteTaskHandler
 
         if (request.TaskTypeId == 6)
         {
-            var currentUser = await _userService.GetCurrentUser(cancellationToken);
+            var permissions = await _userService.GetCurrentUserPermissions(cancellationToken);
 
             sbRequest.Metadata.Add("ukol_podpis_odpoved_typ", (request.TaskResponseTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
-            sbRequest.Metadata.Add("ukol_podpis_zpusob_ukonceni", (currentUser.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningAttachments) ? 2 : 1).ToString(CultureInfo.InvariantCulture));
+            sbRequest.Metadata.Add("ukol_podpis_zpusob_ukonceni", (permissions.Contains((int)UserPermissions.WFL_TASK_DETAIL_SigningAttachments) ? 2 : 1).ToString(CultureInfo.InvariantCulture));
         }
 
         await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
