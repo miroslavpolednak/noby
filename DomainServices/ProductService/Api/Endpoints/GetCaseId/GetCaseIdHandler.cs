@@ -10,7 +10,7 @@ internal sealed class GetCaseIdHandler : IRequestHandler<GetCaseIdRequest, GetCa
         switch (request.RequestParametersCase)
         {
             case GetCaseIdRequest.RequestParametersOneofCase.ContractNumber:
-                var caseId1 =  await _loanRepository.GetCaseIdByContractNumber(request.ContractNumber.ContractNumber, cancellation);
+                var caseId1 =  await _repository.GetCaseIdByContractNumber(request.ContractNumber.ContractNumber, cancellation);
                 if (!caseId1.HasValue)
                 {
                     throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ContractNumberNotFound, request.ContractNumber.ContractNumber);
@@ -19,7 +19,7 @@ internal sealed class GetCaseIdHandler : IRequestHandler<GetCaseIdRequest, GetCa
                 return new GetCaseIdResponse { CaseId = caseId1.Value };
 
             case GetCaseIdRequest.RequestParametersOneofCase.PaymentAccount:
-                var caseId2 =  await _loanRepository.GetCaseIdByPaymentAccount(request.PaymentAccount.Prefix, request.PaymentAccount.AccountNumber, cancellation);
+                var caseId2 =  await _repository.GetCaseIdByPaymentAccount(request.PaymentAccount.Prefix, request.PaymentAccount.AccountNumber, cancellation);
                 if (!caseId2.HasValue)
                 {
                     throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, request.PaymentAccount.AccountNumber);
@@ -29,7 +29,7 @@ internal sealed class GetCaseIdHandler : IRequestHandler<GetCaseIdRequest, GetCa
 
             case GetCaseIdRequest.RequestParametersOneofCase.PcpId:
             {
-                var caseId3 =  await _loanRepository.GetCaseIdByPcpId(request.PcpId.PcpId, cancellation);
+                var caseId3 =  await _repository.GetCaseIdByPcpId(request.PcpId.PcpId, cancellation);
                 if (!caseId3.HasValue)
                 {
                     throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PcpIdNotFound, request.PcpId.PcpId);
@@ -43,10 +43,10 @@ internal sealed class GetCaseIdHandler : IRequestHandler<GetCaseIdRequest, GetCa
         }
     }
 
-    private readonly LoanRepository _loanRepository;
+    private readonly LoanRepository _repository;
 
-    public GetCaseIdHandler(LoanRepository loanRepository)
+    public GetCaseIdHandler(LoanRepository repository)
     {
-        _loanRepository = loanRepository;
+        _repository = repository;
     }
 }
