@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Core.Security;
+using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
@@ -9,6 +10,8 @@ internal sealed class CreateTaskHandler
 {
     public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
+        WorkflowHelpers.ValidateTaskManagePermission(request.TaskTypeId, _currentUserAccessor);
+
         // kontrola existence Case
         DomainServices.CaseService.Contracts.Case caseInstance;
         try
@@ -135,6 +138,7 @@ internal sealed class CreateTaskHandler
         }
     }
 
+    private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
@@ -142,12 +146,14 @@ internal sealed class CreateTaskHandler
     private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
 
     public CreateTaskHandler(
+        ICurrentUserAccessor currentUserAccessor,
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
         Services.TempFileManager.ITempFileManagerService tempFileManager,
         Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive)
     {
+        _currentUserAccessor = currentUserAccessor;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
         _caseService = caseService;
