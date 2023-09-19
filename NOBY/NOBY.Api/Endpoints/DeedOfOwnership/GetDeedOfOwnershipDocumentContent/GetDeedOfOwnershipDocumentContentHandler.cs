@@ -40,7 +40,7 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
                 }
                 catch (CisExtServiceValidationException ex) when (ex.FirstExceptionCode == "1")
                 {
-                    throw new NobyValidationException(90035);
+                    throw new NobyValidationException(90035, ex.Message);
                 }
                 catch (CisException ex) when (ex.ExceptionCode == "404")
                 {

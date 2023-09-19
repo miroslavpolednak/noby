@@ -121,6 +121,12 @@
             </summary>
             <example>2000-02-01</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.CancelCase.CustomerOnSAItem.DocumentId">
+            <summary>
+            eArchiv ID dokumentu s potvrzení pro daného klienta
+            </summary>
+            <example>KBH00000000000000000123456789</example>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CancelCase(System.Int64)">
             <summary>
             Stornování case-u
@@ -276,6 +282,26 @@
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.RealEstatesMenuItem">
             <summary>
             Položka menu Nemovitosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.ParametersMenuItem">
+            <summary>
+            Položka menu Parametry
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.DebtorsItem">
+            <summary>
+            Položka menu Žadatelé
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.ChangeRequestsMenuItem">
+            <summary>
+            Položka menu Požadavky a změny
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.TasksMenuItem">
+            <summary>
+            Položka menu Úkoly
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsItem.Flag">
@@ -1864,7 +1890,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSa(System.Int32,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSA(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Stažení dokumentu k fyzickému podepisování
             </summary>

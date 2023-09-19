@@ -1,4 +1,5 @@
 ﻿using CIS.Core;
+using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
@@ -8,28 +9,31 @@ using System.Globalization;
 using System.Net.Mime;
 using _DocOnSaSource = DomainServices.DocumentOnSAService.Contracts;
 
-namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
+namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSA;
 
-public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataRequest, GetDocumentOnSADataResponse>
+public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, GetDocumentOnSAResponse>
 {
     private readonly IDocumentOnSAServiceClient _documentOnSaClient;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
     private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IDateTime _dateTime;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
-    public GetDocumentOnSADataHandler(
+    public GetDocumentOnSAHandler(
+        ICurrentUserAccessor currentUserAccessor,
         IDocumentOnSAServiceClient documentOnSaClient,
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
         ICodebookServiceClient codebookServiceClients,
         IDateTime dateTime)
     {
+        _currentUserAccessor = currentUserAccessor;
         _documentOnSaClient = documentOnSaClient;
         _documentGeneratorServiceClient = documentGeneratorServiceClient;
         _codebookServiceClients = codebookServiceClients;
         _dateTime = dateTime;
     }
 
-    public async Task<GetDocumentOnSADataResponse> Handle(GetDocumentOnSADataRequest request, CancellationToken cancellationToken)
+    public async Task<GetDocumentOnSAResponse> Handle(GetDocumentOnSARequest request, CancellationToken cancellationToken)
     {
         var documentOnSas = await _documentOnSaClient.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
 
@@ -45,6 +49,15 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         if (!documentOnSaData.IsValid)
             throw new NobyValidationException("Unable to generate document for invalid document");
 
+        if (!_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_Manage))
+        {
+            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");
+        }
+        else if (documentOnSaData.Source == _DocOnSaSource.Source.Workflow && !_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_DownloadWorkflowDocument))
+        {
+            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");
+        }
+
         return documentOnSaData.Source switch
         {
             _DocOnSaSource.Source.Noby => await GetDocumentFromDocumentGenerator(documentOnSa, documentOnSaData, cancellationToken),
@@ -53,7 +66,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         };
     }
 
-    private async Task<GetDocumentOnSADataResponse> GetDocumentFromEQueue(_DocOnSaSource.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
+    private async Task<GetDocumentOnSAResponse> GetDocumentFromEQueue(_DocOnSaSource.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
     {
         var docData = await _documentOnSaClient.GetElectronicDocumentFromQueue(new()
         {
@@ -63,7 +76,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
             }
         }, cancellationToken);
 
-        return new GetDocumentOnSADataResponse
+        return new GetDocumentOnSAResponse
         {
             ContentType = MediaTypeNames.Application.Pdf,
             Filename = await GetFileName(documentOnSa, cancellationToken),
@@ -71,13 +84,13 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         };
     }
 
-    private async Task<GetDocumentOnSADataResponse> GetDocumentFromDocumentGenerator(_DocOnSaSource.DocumentOnSAToSign documentOnSa, _DocOnSaSource.GetDocumentOnSADataResponse documentOnSaData, CancellationToken cancellationToken)
+    private async Task<GetDocumentOnSAResponse> GetDocumentFromDocumentGenerator(_DocOnSaSource.DocumentOnSAToSign documentOnSa, _DocOnSaSource.GetDocumentOnSADataResponse documentOnSaData, CancellationToken cancellationToken)
     {
         var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSa, documentOnSaData, forPreview: false);
 
         var result = await _documentGeneratorServiceClient.GenerateDocument(generateDocumentRequest, cancellationToken);
 
-        return new GetDocumentOnSADataResponse
+        return new GetDocumentOnSAResponse
         {
             ContentType = MediaTypeNames.Application.Pdf,
             Filename = await GetFileName(documentOnSa, cancellationToken),

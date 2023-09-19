@@ -29,7 +29,7 @@ public static class DataStartupExtensions
     /// <summary>
     /// Registrace DbContextu pro EntityFramework
     /// </summary>
-    public static WebApplicationBuilder AddEntityFramework<TDbContext>(this WebApplicationBuilder builder, bool enableSensitiveDataLogging = false, string connectionStringKey = "default", CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
+    public static WebApplicationBuilder AddEntityFramework<TDbContext>(this WebApplicationBuilder builder, bool enableSensitiveDataLogging = true, string connectionStringKey = "default", CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
         where TDbContext : DbContext
     {
         // add custom CIS options
@@ -46,7 +46,7 @@ public static class DataStartupExtensions
         return builder;
     }
 
-    public static WebApplicationBuilder AddBaseEntityFramework<TDbContext>(this WebApplicationBuilder builder, bool enableSensitiveDataLogging = false, string connectionStringKey = "default", CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
+    public static WebApplicationBuilder AddBaseEntityFramework<TDbContext>(this WebApplicationBuilder builder, bool enableSensitiveDataLogging = true, string connectionStringKey = "default", CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
         where TDbContext : DbContext
     {
         // add custom CIS options
