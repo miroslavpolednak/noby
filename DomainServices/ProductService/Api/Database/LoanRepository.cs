@@ -85,8 +85,11 @@ internal class LoanRepository
     {
 		const string query = @"SELECT
 		[PartnerId] as PartnerId,
-		[VztahId] as ContractRelationshipTypeId
-		FROM [dbo].[VztahUver]
+		[VztahId] as ContractRelationshipTypeId,
+    	[KbId] as KbId,
+    	[Zmocnenec] as Agent,
+    	[StavKyc] as Kyc
+		FROM [dbo].[VztahUver] LEFT JOIN [dbo].[Partner] ON [VztahUver].PartnerId = [Partner].Id
 		WHERE UverId = @LoanId";
 
 		var parameters = new DynamicParameters();
