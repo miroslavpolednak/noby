@@ -95,6 +95,67 @@ internal class LoanRepository
         return await _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.Relationship>(query, parameters, cancellation);
     }
 
+    public async Task<Models.Covenant?> GetCovenant(long caseId, int order, CancellationToken cancellation)
+    {
+	    const string query = @"SELECT
+		[UverId] as CaseId,  
+		[PoradoveCislo] as [Order],
+		[TextNazevProKlienta] as Name,
+		[TextVysvetlujiciDokument] as Description,
+		[TextDoUveroveSmlouvy] as Text,
+		[PriznakSplnena] as IsFulFilled,
+		[SplnitDo] as FulfillDate,
+		[TypSmlouvaPoradiPismeno] as OrderLetter,
+		[TypSmlouvy] as CovenantTypeId,
+		[FazePoradi] as PhaseOrder
+		FROM [dbo].[Terminovnik]
+		WHERE UverId = @CaseId AND PoradoveCislo = @Order";
+	    
+	    var parameters = new DynamicParameters();
+	    parameters.Add("@CaseId", caseId, DbType.Int64, ParameterDirection.Input);
+	    parameters.Add("@Order", order, DbType.Int32, ParameterDirection.Input);
+	 
+	    return await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<Models.Covenant>(query, parameters, cancellation);
+    }
+
+    public async Task<List<Models.Covenant>> GetCovenants(long caseId, CancellationToken cancellation)
+    {
+	    const string query = @"SELECT
+		[UverId] as CaseId,  
+		[PoradoveCislo] as [Order],
+		[TextNazevProKlienta] as Name,
+		[TextVysvetlujiciDokument] as Description,
+		[TextDoUveroveSmlouvy] as Text,
+		[PriznakSplnena] as IsFulFilled,
+		[SplnitDo] as FulfillDate,
+		[TypSmlouvaPoradiPismeno] as OrderLetter,
+		[TypSmlouvy] as CovenantTypeId,
+		[FazePoradi] as PhaseOrder
+		FROM [dbo].[Terminovnik]
+		WHERE UverId = @CaseId";
+	    
+	    var parameters = new DynamicParameters();
+	    parameters.Add("@CaseId", caseId, DbType.Int64, ParameterDirection.Input);
+	 
+	    return await _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.Covenant>(query, parameters, cancellation);
+    }
+    
+    public async Task<List<Models.CovenantPhase>> GetCovenantPhases(long caseId, CancellationToken cancellation)
+    {
+	    const string query = @"SELECT
+		[UverId] as CaseId,   
+		[Nazev] as Name,
+		[Poradi] as [Order],
+		[PoradiPismeno] as OrderLetter
+		FROM [dbo].[TerminovnikFaze]
+		WHERE UverId = @CaseId";
+	    
+	    var parameters = new DynamicParameters();
+	    parameters.Add("@CaseId", caseId, DbType.Int64, ParameterDirection.Input);
+	 
+	    return await _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.CovenantPhase>(query, parameters, cancellation);
+    }
+    
     public async Task<long?> GetCaseIdByContractNumber(string contractNumber, CancellationToken cancellation)
     {
 	    const string query = @"SELECT Id FROM [dbo].[Uver] WHERE CisloSmlouvy = @ContractNumber AND Neaktivni = 0";
