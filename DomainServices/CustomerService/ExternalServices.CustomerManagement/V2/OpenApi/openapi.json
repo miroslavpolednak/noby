@@ -3,7 +3,7 @@
   "info": {
     "description": "Customer service, contains operations for getting basic customer data and search customers",
     "title": "CustomerService.v2",
-    "version": "2.0.4"
+    "version": "2.4.0"
   },
   "servers": [
     {
@@ -510,6 +510,9 @@
           },
           "temporaryStay": {
             "$ref": "#/components/schemas/TemporaryStayAddress"
+          },
+          "crsAddress": {
+            "$ref": "#/components/schemas/CrsAddress"
           },
           "primaryEmail": {
             "$ref": "#/components/schemas/PrimaryEmail"
@@ -1040,6 +1043,21 @@
       },
       "TemporaryStayAddress": {
         "description": "Temporary residence address. The address is obligatory for foreigners who do not have the Czech Republic filled in at their permanent address. Address is returned according to input parameter requiredAddressFormats. LINE - addressLinePoint, COMPONENT - componentAddressPoint, SINGLE_LINE - singleLineAddressPoint",
+        "type": "object",
+        "properties": {
+          "addressLinePoint": {
+            "$ref": "#/components/schemas/AddressLinePoint"
+          },
+          "componentAddressPoint": {
+            "$ref": "#/components/schemas/ComponentAddressPoint"
+          },
+          "singleLineAddressPoint": {
+            "$ref": "#/components/schemas/SingleLineAddressPoint"
+          }
+        }
+      },
+      "CrsAddress": {
+        "description": "Address for CRS purposes. Address is returned according to input parameter requiredAddressFormats. LINE - addressLinePoint, COMPONENT - componentAddressPoint, SINGLE_LINE - singleLineAddressPoint",
         "type": "object",
         "properties": {
           "addressLinePoint": {
@@ -1686,6 +1704,11 @@
             "items": {
               "$ref": "#/components/schemas/CustomerTurnover"
             }
+          },
+          "obligationToRegisterContracts": {
+            "type": "boolean",
+            "description": "A flag indicating whether the subject is obliged to register contracts in the register of contracts.",
+            "example": true
           }
         },
         "description": "Juridical person KYC data. Object is only present when customer is type of JuridicalPerson."
@@ -1888,12 +1911,13 @@
         ]
       },
       "DataEntity": {
-        "description": "Data entity to be returned.\n* 'ADDRESS_PRIMARY' - primary address\n* 'ADDRESS_CONTACT' - contact address\n* 'ADDRESS_TEMPORARY_STAY' - temporary stay address\n* 'ID_DOC_PRIMARY' - primary identification document\n* 'CUSTOMER_IDENTIFICATION' - customer identification\n* 'PHONE_PRIMARY' - primary phone\n* 'EMAIL_PRIMARY' - primary email\n* 'SEGMENT' - segment\n* 'POLITICAL_EXPOSITION' - political exposition\n* 'ESA' - ESA classification\n* 'NACE' - NACE classification\n* 'INSURABILITY' - insurability\n* 'FIRST_NAME_VOCATIVE' - firstname vocative\n* 'SURNAME_VOCATIVE' - surname vocative\n* 'FATCA' - FATCA\n* 'FINANCIAL_PROFILE' - financial profile like main source of earnings, net month earning etc.\n* 'HOUSING' - housing\n* 'EDUCATION' - education\n* 'EMPLOYMENT' - employment\n* 'TURNOVERS' - turnovers\n* 'EMPLOYEES_NUMBER' - number of employees\n* 'BUSINESS_AREA' - business area\n* 'BR_SUBSCRIPTION' - basic registry information\n* 'TAX_RESIDENCE' - tax residence\n* 'TAX_DOMICILE' - tax domicile\n* 'KB_RELATIONSHIP' - type of relationship with KB\n* 'CONFIRMED_CONTACT_FLAGS' - information about confirmed contacts\n",
+        "description": "Data entity to be returned.\n* 'ADDRESS_PRIMARY' - primary address\n* 'ADDRESS_CONTACT' - contact address\n* 'ADDRESS_TEMPORARY_STAY' - temporary stay address\n* 'ADDRESS_CRS' - address for CRS purposes\n* 'ID_DOC_PRIMARY' - primary identification document\n* 'CUSTOMER_IDENTIFICATION' - customer identification\n* 'PHONE_PRIMARY' - primary phone\n* 'EMAIL_PRIMARY' - primary email\n* 'SEGMENT' - segment\n* 'POLITICAL_EXPOSITION' - political exposition\n* 'ESA' - ESA classification\n* 'NACE' - NACE classification\n* 'INSURABILITY' - insurability\n* 'FIRST_NAME_VOCATIVE' - firstname vocative\n* 'SURNAME_VOCATIVE' - surname vocative\n* 'FATCA' - FATCA\n* 'FINANCIAL_PROFILE' - financial profile like main source of earnings, net month earning etc.\n* 'HOUSING' - housing\n* 'EDUCATION' - education\n* 'EMPLOYMENT' - employment\n* 'TURNOVERS' - turnovers\n* 'EMPLOYEES_NUMBER' - number of employees\n* 'BUSINESS_AREA' - business area\n* 'BR_SUBSCRIPTION' - basic registry information\n* 'TAX_RESIDENCE' - tax residence\n* 'TAX_DOMICILE' - tax domicile\n* 'KB_RELATIONSHIP' - type of relationship with KB\n* 'CONFIRMED_CONTACT_FLAGS' - information about confirmed contacts\n* 'CONTRACTS_REGISTRATION' - information on whether the subject is obliged to register contracts in the register of contracts\n",
         "type": "string",
         "enum": [
           "ADDRESS_PRIMARY",
           "ADDRESS_CONTACT",
           "ADDRESS_TEMPORARY_STAY",
+          "ADDRESS_CRS",
           "ID_DOC_PRIMARY",
           "CUSTOMER_IDENTIFICATION",
           "PHONE_PRIMARY",
@@ -1917,7 +1941,8 @@
           "TAX_RESIDENCE",
           "TAX_DOMICILE",
           "KB_RELATIONSHIP",
-          "CONFIRMED_CONTACT_FLAGS"
+          "CONFIRMED_CONTACT_FLAGS",
+          "CONTRACTS_REGISTRATION"
         ],
         "example": "PRIMARY_ADDRESS"
       },

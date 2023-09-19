@@ -3,27 +3,27 @@
   "info": {
     "description": "Customer Profile service",
     "title": "CustomerProfileService.v1",
-    "version": "1.0.1"
+    "version": "1.1.0"
   },
   "servers": [
     {
-      "url": "https://cm-dev.kb.cz/be-cm/api",
+      "url": "https://be-cm-v1.dev.custmng.kbcloud/api",
       "description": "DEV environment"
     },
     {
-      "url": "https://cm-fat.kb.cz/be-cm/api",
+      "url": "https://be-cm-v1.fat.custmng.kbcloud/api",
       "description": "SIT environment"
     },
     {
-      "url": "https://cm-uat.kb.cz/be-cm/api",
+      "url": "https://be-cm-v1.stage.custmng.kbcloud/api",
       "description": "UAT environment"
     },
     {
-      "url": "https://cm-edu.kb.cz/be-cm/api",
+      "url": "https://be-cm-v1.edu.custmng.kbcloud/api",
       "description": "EDU environment"
     },
     {
-      "url": "https://cm.kb.cz/be-cm/api",
+      "url": "https://be-cm-v1.prod.custmng.kbcloud/api",
       "description": "Production environment"
     }
   ],
@@ -133,6 +133,102 @@
           }
         }
       }
+    },
+    "/public/v1/customers/{customerId}/alerts": {
+      "get": {
+        "operationId": "getAlerts",
+        "tags": [
+          "CustomerProfileService.v1"
+        ],
+        "summary": "getAlerts",
+        "description": "Operation returns alerts for given customer",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "Identifier of the customer for whom alerts are returned. (KBID - identifier of customer in Customer Management system)",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/X-B3-TraceId"
+          },
+          {
+            "$ref": "#/components/parameters/X-KB-Party-Identity-In-Service"
+          },
+          {
+            "$ref": "#/components/parameters/X-KB-Orig-System-Identity"
+          },
+          {
+            "$ref": "#/components/parameters/X-KB-Caller-System-Identity"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertResponse"
+                }
+              }
+            },
+            "description": "Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Validation error - mostly invalid data in request is provided provided"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Authentication information is missing or is invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "You are not authorized to run this operation"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unexpected error occured"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -184,6 +280,68 @@
               "maxLength": 20,
               "example": "VAL_02_01_01"
             }
+          }
+        }
+      },
+      "AlertResponse": {
+        "type": "object",
+        "description": "Customer alert response",
+        "required": [
+          "profileCode",
+          "legalStatus",
+          "alertCodes"
+        ],
+        "properties": {
+          "profileCode": {
+            "type": "string",
+            "description": "Customer profile code.",
+            "enum": [
+              "IDENTIFIED_SUBJECT",
+              "KYC_SUBJECT",
+              "OTHER"
+            ],
+            "example": "KYC_SUBJECT"
+          },
+          "legalStatus": {
+            "type": "string",
+            "description": "Legal status. P - for Natural Person, E - for Entrepreneur, B - for Legal Person",
+            "enum": [
+              "P",
+              "E",
+              "B"
+            ],
+            "example": "P"
+          },
+          "mainIdentifier": {
+            "$ref": "#/components/schemas/CustomerIdentifier"
+          },
+          "alertCodes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "List of alert codes",
+              "example": "INVALID_ID_DOC"
+            }
+          }
+        }
+      },
+      "CustomerIdentifier": {
+        "type": "object",
+        "description": "customer identifier",
+        "required": [
+          "typeCode",
+          "identifierValue"
+        ],
+        "properties": {
+          "typeCode": {
+            "type": "string",
+            "description": "Identifier type code. RDM codebook CB_JuridicalPersonIdentificationType",
+            "example": "CZ_RC"
+          },
+          "identifierValue": {
+            "type": "string",
+            "description": "Value of identifier",
+            "example": 9001051234
           }
         }
       },

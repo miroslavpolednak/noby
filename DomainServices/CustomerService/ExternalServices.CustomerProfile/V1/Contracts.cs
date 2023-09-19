@@ -87,6 +87,83 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerProfile.V1.Con
 
     }
 
+    /// <summary>
+    /// Customer alert response
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AlertResponse
+    {
+        /// <summary>
+        /// Customer profile code.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("profileCode")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public AlertResponseProfileCode ProfileCode { get; set; }
+
+        /// <summary>
+        /// Legal status. P - for Natural Person, E - for Entrepreneur, B - for Legal Person
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("legalStatus")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public AlertResponseLegalStatus LegalStatus { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("mainIdentifier")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public CustomerIdentifier MainIdentifier { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("alertCodes")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<string> AlertCodes { get; set; } = new System.Collections.ObjectModel.Collection<string>();
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    /// <summary>
+    /// customer identifier
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CustomerIdentifier
+    {
+        /// <summary>
+        /// Identifier type code. RDM codebook CB_JuridicalPersonIdentificationType
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("typeCode")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string TypeCode { get; set; }
+
+        /// <summary>
+        /// Value of identifier
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("identifierValue")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string IdentifierValue { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class Error
     {
@@ -157,6 +234,36 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerProfile.V1.Con
 
         [System.Runtime.Serialization.EnumMember(Value = @"ERROR")]
         ERROR = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum AlertResponseProfileCode
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"IDENTIFIED_SUBJECT")]
+        IDENTIFIED_SUBJECT = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"KYC_SUBJECT")]
+        KYC_SUBJECT = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"OTHER")]
+        OTHER = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum AlertResponseLegalStatus
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"P")]
+        P = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"E")]
+        E = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"B")]
+        B = 2,
 
     }
 

@@ -63,6 +63,11 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V2.
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public TemporaryStayAddress TemporaryStay { get; set; }
 
+        [System.Text.Json.Serialization.JsonPropertyName("crsAddress")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public CrsAddress CrsAddress { get; set; }
+
         [System.Text.Json.Serialization.JsonPropertyName("primaryEmail")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
@@ -895,6 +900,39 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V2.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class TemporaryStayAddress
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("addressLinePoint")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public AddressLinePoint AddressLinePoint { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("componentAddressPoint")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public ComponentAddressPoint ComponentAddressPoint { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("singleLineAddressPoint")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public SingleLineAddressPoint SingleLineAddressPoint { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    /// <summary>
+    /// Address for CRS purposes. Address is returned according to input parameter requiredAddressFormats. LINE - addressLinePoint, COMPONENT - componentAddressPoint, SINGLE_LINE - singleLineAddressPoint
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CrsAddress
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("addressLinePoint")]
@@ -1987,6 +2025,15 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V2.
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public System.Collections.Generic.ICollection<CustomerTurnover> CustomerTurnovers { get; set; }
 
+        /// <summary>
+        /// A flag indicating whether the subject is obliged to register contracts in the register of contracts.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("obligationToRegisterContracts")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public bool? ObligationToRegisterContracts { get; set; }
+
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [System.Text.Json.Serialization.JsonExtensionData]
@@ -2306,6 +2353,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V2.
     /// <br/>* 'ADDRESS_PRIMARY' - primary address
     /// <br/>* 'ADDRESS_CONTACT' - contact address
     /// <br/>* 'ADDRESS_TEMPORARY_STAY' - temporary stay address
+    /// <br/>* 'ADDRESS_CRS' - address for CRS purposes
     /// <br/>* 'ID_DOC_PRIMARY' - primary identification document
     /// <br/>* 'CUSTOMER_IDENTIFICATION' - customer identification
     /// <br/>* 'PHONE_PRIMARY' - primary phone
@@ -2330,6 +2378,7 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V2.
     /// <br/>* 'TAX_DOMICILE' - tax domicile
     /// <br/>* 'KB_RELATIONSHIP' - type of relationship with KB
     /// <br/>* 'CONFIRMED_CONTACT_FLAGS' - information about confirmed contacts
+    /// <br/>* 'CONTRACTS_REGISTRATION' - information on whether the subject is obliged to register contracts in the register of contracts
     /// <br/>
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -2345,77 +2394,83 @@ namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V2.
         [System.Runtime.Serialization.EnumMember(Value = @"ADDRESS_TEMPORARY_STAY")]
         ADDRESS_TEMPORARY_STAY = 2,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"ADDRESS_CRS")]
+        ADDRESS_CRS = 3,
+
         [System.Runtime.Serialization.EnumMember(Value = @"ID_DOC_PRIMARY")]
-        ID_DOC_PRIMARY = 3,
+        ID_DOC_PRIMARY = 4,
 
         [System.Runtime.Serialization.EnumMember(Value = @"CUSTOMER_IDENTIFICATION")]
-        CUSTOMER_IDENTIFICATION = 4,
+        CUSTOMER_IDENTIFICATION = 5,
 
         [System.Runtime.Serialization.EnumMember(Value = @"PHONE_PRIMARY")]
-        PHONE_PRIMARY = 5,
+        PHONE_PRIMARY = 6,
 
         [System.Runtime.Serialization.EnumMember(Value = @"EMAIL_PRIMARY")]
-        EMAIL_PRIMARY = 6,
+        EMAIL_PRIMARY = 7,
 
         [System.Runtime.Serialization.EnumMember(Value = @"SEGMENT")]
-        SEGMENT = 7,
+        SEGMENT = 8,
 
         [System.Runtime.Serialization.EnumMember(Value = @"POLITICAL_EXPOSITION")]
-        POLITICAL_EXPOSITION = 8,
+        POLITICAL_EXPOSITION = 9,
 
         [System.Runtime.Serialization.EnumMember(Value = @"ESA")]
-        ESA = 9,
+        ESA = 10,
 
         [System.Runtime.Serialization.EnumMember(Value = @"NACE")]
-        NACE = 10,
+        NACE = 11,
 
         [System.Runtime.Serialization.EnumMember(Value = @"INSURABILITY")]
-        INSURABILITY = 11,
+        INSURABILITY = 12,
 
         [System.Runtime.Serialization.EnumMember(Value = @"FIRST_NAME_VOCATIVE")]
-        FIRST_NAME_VOCATIVE = 12,
+        FIRST_NAME_VOCATIVE = 13,
 
         [System.Runtime.Serialization.EnumMember(Value = @"SURNAME_VOCATIVE")]
-        SURNAME_VOCATIVE = 13,
+        SURNAME_VOCATIVE = 14,
 
         [System.Runtime.Serialization.EnumMember(Value = @"FATCA")]
-        FATCA = 14,
+        FATCA = 15,
 
         [System.Runtime.Serialization.EnumMember(Value = @"FINANCIAL_PROFILE")]
-        FINANCIAL_PROFILE = 15,
+        FINANCIAL_PROFILE = 16,
 
         [System.Runtime.Serialization.EnumMember(Value = @"HOUSING")]
-        HOUSING = 16,
+        HOUSING = 17,
 
         [System.Runtime.Serialization.EnumMember(Value = @"EDUCATION")]
-        EDUCATION = 17,
+        EDUCATION = 18,
 
         [System.Runtime.Serialization.EnumMember(Value = @"EMPLOYMENT")]
-        EMPLOYMENT = 18,
+        EMPLOYMENT = 19,
 
         [System.Runtime.Serialization.EnumMember(Value = @"TURNOVERS")]
-        TURNOVERS = 19,
+        TURNOVERS = 20,
 
         [System.Runtime.Serialization.EnumMember(Value = @"EMPLOYEES_NUMBER")]
-        EMPLOYEES_NUMBER = 20,
+        EMPLOYEES_NUMBER = 21,
 
         [System.Runtime.Serialization.EnumMember(Value = @"BUSINESS_AREA")]
-        BUSINESS_AREA = 21,
+        BUSINESS_AREA = 22,
 
         [System.Runtime.Serialization.EnumMember(Value = @"BR_SUBSCRIPTION")]
-        BR_SUBSCRIPTION = 22,
+        BR_SUBSCRIPTION = 23,
 
         [System.Runtime.Serialization.EnumMember(Value = @"TAX_RESIDENCE")]
-        TAX_RESIDENCE = 23,
+        TAX_RESIDENCE = 24,
 
         [System.Runtime.Serialization.EnumMember(Value = @"TAX_DOMICILE")]
-        TAX_DOMICILE = 24,
+        TAX_DOMICILE = 25,
 
         [System.Runtime.Serialization.EnumMember(Value = @"KB_RELATIONSHIP")]
-        KB_RELATIONSHIP = 25,
+        KB_RELATIONSHIP = 26,
 
         [System.Runtime.Serialization.EnumMember(Value = @"CONFIRMED_CONTACT_FLAGS")]
-        CONFIRMED_CONTACT_FLAGS = 26,
+        CONFIRMED_CONTACT_FLAGS = 27,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CONTRACTS_REGISTRATION")]
+        CONTRACTS_REGISTRATION = 28,
 
     }
 
