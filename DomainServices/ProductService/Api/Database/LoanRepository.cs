@@ -95,9 +95,41 @@ internal class LoanRepository
         return await _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.Relationship>(query, parameters, cancellation);
     }
 
+    public async Task<long?> GetCaseIdByContractNumber(string contractNumber, CancellationToken cancellation)
+    {
+	    const string query = @"SELECT Id FROM [dbo].[Uver] WHERE CisloSmlouvy = @ContractNumber AND Neaktivni = 0";
+
+	    var parameters = new DynamicParameters();
+	    parameters.Add("@ContractNumber", contractNumber, DbType.String, ParameterDirection.Input);
+
+	    return await _connectionProvider.ExecuteDapperScalarAsync<long?>(query, parameters, cancellation);
+    }
+
+    public async Task<long?> GetCaseIdByPaymentAccount(string prefix, string accountNumber, CancellationToken cancellation)
+    {
+	    const string query = @"SELECT Id FROM [dbo].[Uver]
+		WHERE PredcisliUctu = @Prefix AND CisloUctu = @AccountNumber AND Neaktivni = 0";
+
+	    var parameters = new DynamicParameters();
+	    parameters.Add("@Prefix", prefix, DbType.String, ParameterDirection.Input);
+	    parameters.Add("@AccountNumber", accountNumber, DbType.String, ParameterDirection.Input);
+
+	    return await _connectionProvider.ExecuteDapperScalarAsync<long?>(query, parameters, cancellation);
+    }
+    
+    public async Task<long?> GetCaseIdByPcpId(string pcpId, CancellationToken cancellation)
+    {
+	    const string query = @"SELECT UverId FROM [dbo].[RezervaceSmluv] WHERE PcpInstId = @PcpId";
+
+	    var parameters = new DynamicParameters();
+	    parameters.Add("@PcpId", pcpId, DbType.String, ParameterDirection.Input);
+
+	    return await _connectionProvider.ExecuteDapperScalarAsync<long?>(query, parameters, cancellation);
+    }
+    
     public async Task<bool> ExistsLoan(long loanId, CancellationToken cancellation)
     { 
-	    const string query = "SELECT COUNT(1) from [dbo].[Uver] where Id = @LoanId AND Neaktivni = 0";
+	    const string query = "SELECT COUNT(1) FROM [dbo].[Uver] WHERE Id = @LoanId AND Neaktivni = 0";
 	    
 	    var parameters = new DynamicParameters();
 	    parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
@@ -118,7 +150,7 @@ internal class LoanRepository
 
     public async Task<bool> ExistsPartner(long partnerId, CancellationToken cancellation)
     {
-	    const string query = "SELECT COUNT(1) from [dbo].[Partner] where Id = @PartnerId";
+	    const string query = "SELECT COUNT(1) FROM [dbo].[Partner] WHERE Id = @PartnerId";
 	    
 	    var parameters = new DynamicParameters();
 	    parameters.Add("@PartnerId", partnerId, DbType.Int64, ParameterDirection.Input);
