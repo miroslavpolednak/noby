@@ -284,6 +284,26 @@
             Položka menu Nemovitosti
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.ParametersMenuItem">
+            <summary>
+            Položka menu Parametry
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.DebtorsItem">
+            <summary>
+            Položka menu Žadatelé
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.ChangeRequestsMenuItem">
+            <summary>
+            Položka menu Požadavky a změny
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.TasksMenuItem">
+            <summary>
+            Položka menu Úkoly
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsItem.Flag">
             <summary>
             Příznak

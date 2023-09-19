@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Core.Security;
+using DomainServices.CaseService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.ProductService.Clients;
@@ -10,30 +11,26 @@ namespace NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 internal sealed class GetCaseMenuFlagsHandler 
     : IRequestHandler<GetCaseMenuFlagsRequest, GetCaseMenuFlagsResponse>
 {
-    private readonly IProductServiceClient _productService;
-    private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
-    private readonly IDocumentHelperService _documentHelper;
-    private readonly ICaseServiceClient _caseService;
-
-    public GetCaseMenuFlagsHandler(
-            ICaseServiceClient caseService,
-            IProductServiceClient productService,
-            IDocumentArchiveServiceClient documentArchiveServiceClient,
-            IDocumentHelperService documentHelper
-            )
-    {
-        _caseService = caseService;
-        _productService = productService;
-        _documentArchiveServiceClient = documentArchiveServiceClient;
-        _documentHelper = documentHelper;
-    }
-
     public async Task<GetCaseMenuFlagsResponse> Handle(GetCaseMenuFlagsRequest request, CancellationToken cancellationToken)
     {
+        var getDocumentsInQueueRequest = new GetDocumentsInQueueRequest 
+        { 
+            CaseId = request.CaseId
+        };
+        getDocumentsInQueueRequest.StatusesInQueue.AddRange(new List<int> { 100, 110, 200, 300 });
+        var documentsInQueue = await _documentArchiveServiceClient.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
+
         return new GetCaseMenuFlagsResponse
         {
-            DocumentsMenuItem = await getDocuments(request.CaseId, cancellationToken),
-            CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken),
+            ParametersMenuItem = new(),
+            DebtorsItem = new(),
+            TasksMenuItem = new(),
+            ChangeRequestsMenuItem = new()
+            {
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access)
+            },
+            DocumentsMenuItem = await getDocuments(request.CaseId, documentsInQueue, cancellationToken),
+            CovenantsMenuItem = await getCovenants(request.CaseId, documentsInQueue, cancellationToken),
             RealEstatesMenuItem = await getRealEstates(request.CaseId, cancellationToken)
         };
     }
@@ -45,34 +42,42 @@ internal sealed class GetCaseMenuFlagsHandler
         return new GetCaseMenuFlagsItem
         {
             Flag = GetCaseMenuFlagsTypes.NoFlag,
-            IsActive = caseInstance.State >= 2
+            IsActive = !(!_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) || caseInstance.State == 1)
         };
     }
 
-    private async Task<GetCaseMenuFlagsItem> getCovenants(long caseId, CancellationToken cancellationToken)
+    private async Task<GetCaseMenuFlagsItem> getCovenants(long caseId, GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
     {
-        bool isActive = false;
+        var response = new GetCaseMenuFlagsItem
+        {
+            IsActive = false
+        };
+
         try
         {
             var productInstance = await _productService.GetMortgage(caseId, cancellationToken);
-            isActive = productInstance.Mortgage?.ContractSignedDate != null;
+            response.IsActive = productInstance.Mortgage?.ContractSignedDate != null;
         }
         catch { } // je v poradku, ze toto nekdy spadne - produkt nemusi byt v KonsDb
 
-        return new GetCaseMenuFlagsItem
+        if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
         {
-            Flag = GetCaseMenuFlagsTypes.NoFlag,
-            IsActive = isActive
-        };
+            if (documentsInQueue.QueuedDocuments.Any(t => t.StatusInQueue == 300))
+            {
+                response.Flag = GetCaseMenuFlagsTypes.ExclamationMark;
+            }
+            else if (documentsInQueue.QueuedDocuments.Any(t => (new[] { 100, 110, 200 }).Contains(t.StatusInQueue)))
+            {
+                response.Flag = GetCaseMenuFlagsTypes.InProcessing;
+            }
+        }
+
+        return response;
     }
 
-    private async Task<GetCaseMenuFlagsItem> getDocuments(long caseId, CancellationToken cancellationToken)
+    private async Task<GetCaseMenuFlagsItem> getDocuments(long caseId, GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
     {
-        var getDocumentsInQueueRequest = new GetDocumentsInQueueRequest { CaseId = caseId };
-        getDocumentsInQueueRequest.StatusesInQueue.AddRange(new List<int> { 100, 110, 200, 300 });
-        var getDocumentsInQueueResult = await _documentArchiveServiceClient.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
-
-        var getDocumentsInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(getDocumentsInQueueResult);
+        var getDocumentsInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(documentsInQueue);
         var documentsInQueueFiltered = await _documentHelper.FilterDocumentsVisibleForKb(getDocumentsInQueueMetadata, cancellationToken);
 
         return new()
@@ -100,6 +105,26 @@ internal sealed class GetCaseMenuFlagsHandler
         {
             throw new ArgumentException("This state isn't supported");
         }
+    }
+
+    private readonly ICurrentUserAccessor _currentUserAccessor;
+    private readonly IProductServiceClient _productService;
+    private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
+    private readonly IDocumentHelperService _documentHelper;
+    private readonly ICaseServiceClient _caseService;
+
+    public GetCaseMenuFlagsHandler(
+        ICurrentUserAccessor currentUserAccessor,
+        ICaseServiceClient caseService,
+        IProductServiceClient productService,
+        IDocumentArchiveServiceClient documentArchiveServiceClient,
+        IDocumentHelperService documentHelper)
+    {
+        _currentUserAccessor = currentUserAccessor;
+        _caseService = caseService;
+        _productService = productService;
+        _documentArchiveServiceClient = documentArchiveServiceClient;
+        _documentHelper = documentHelper;
     }
 }
 
