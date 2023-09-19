@@ -38,10 +38,12 @@ internal sealed class UpdateCustomersHandler
         _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
 
         // zastavit podepisovani, pokud probehla zmena na customerech
-        if (c1.CancelSigning || c2.CancelSigning)
+        if (c1.Reason != Dto.CrudResult.Reasons.None || c2.Reason != Dto.CrudResult.Reasons.None)
         {
             var documentsToSign = await _documentOnSAService.GetDocumentsToSignList(salesArrangement.SalesArrangementId, cancellationToken);
-            bool onlyNotSigned = (c1.CancelSigning && !c1.OnHouseholdCustomerOnSAId.HasValue) || (c2.CancelSigning && !c2.OnHouseholdCustomerOnSAId.HasValue);
+            bool onlyNotSigned = (c1.Reason == Dto.CrudResult.Reasons.CustomerRemoved && c2.Reason == Dto.CrudResult.Reasons.None)
+                || (c1.Reason == Dto.CrudResult.Reasons.None && c2.Reason == Dto.CrudResult.Reasons.CustomerRemoved)
+                || (c1.Reason == Dto.CrudResult.Reasons.CustomerRemoved && c2.Reason == Dto.CrudResult.Reasons.CustomerRemoved);
 
             foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && t.HouseholdId == request.HouseholdId && (!t.IsSigned || !onlyNotSigned)))
             {
@@ -51,11 +53,13 @@ internal sealed class UpdateCustomersHandler
             // HFICH-4165 - nastaveni flowSwitches
             bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
             setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
+
+            if (!onlyNotSigned)
+            {
+                await _flowSwitchMainHouseholdService.SetFlowSwitchByHouseholdId(request.HouseholdId, _flowSwitchManager, cancellationToken);
+                await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
+            }
         }
-
-        await _flowSwitchMainHouseholdService.SetFlowSwitchByHouseholdId(request.HouseholdId, _flowSwitchManager, cancellationToken);
-
-        await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
 
         return new UpdateCustomersResponse
         {
@@ -130,10 +134,7 @@ internal sealed class UpdateCustomersHandler
             if (isProductSA)
                 await deleteRelationships(caseId, getMpId(customerOnSAId.Value), cancellationToken);
 
-            return new Dto.CrudResult(true)
-            {
-                IsDeleted = true
-            };
+            return new Dto.CrudResult(Dto.CrudResult.Reasons.CustomerRemoved);
         }
         else if (customer is not null)
         {
@@ -150,7 +151,7 @@ internal sealed class UpdateCustomersHandler
             // update stavajiciho
             if (customer.CustomerOnSAId.HasValue)
             {
-                var result = new Dto.CrudResult(customerIdChanged, customer.CustomerOnSAId.Value);
+                var result = new Dto.CrudResult(customerIdChanged ? Dto.CrudResult.Reasons.CustomerUpdated : Dto.CrudResult.Reasons.None, customer.CustomerOnSAId.Value);
 
                 try
                 {
@@ -182,7 +183,7 @@ internal sealed class UpdateCustomersHandler
                     Customer = customer.ToDomainServiceRequest()
                 }, cancellationToken);
 
-                return new Dto.CrudResult(true, createResult.CustomerOnSAId)
+                return new Dto.CrudResult(Dto.CrudResult.Reasons.CustomerAdded, createResult.CustomerOnSAId)
                 {
                     Identities = createResult.CustomerIdentifiers
                 };
