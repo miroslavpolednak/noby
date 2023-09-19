@@ -265,3 +265,4 @@ logs/
 *.azurePubxml
 *.pubxml
 *.publishproj
+_pdfFiles_/

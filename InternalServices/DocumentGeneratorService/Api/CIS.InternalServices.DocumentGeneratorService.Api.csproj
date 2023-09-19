@@ -21,11 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
-    <ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
-    <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\..\DomainServices\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
+    <ProjectReference Include="..\..\..\SharedComponents\SharedComponents\SharedComponents.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.DocumentGeneratorService.Contracts.csproj" />
   </ItemGroup>
 
