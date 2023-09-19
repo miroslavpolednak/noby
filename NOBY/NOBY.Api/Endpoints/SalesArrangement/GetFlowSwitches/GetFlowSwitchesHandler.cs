@@ -1,4 +1,5 @@
-﻿using CIS.Foms.Enums;
+﻿using CIS.Core.Security;
+using CIS.Foms.Enums;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 
@@ -36,20 +37,38 @@ internal sealed class GetFlowSwitchesHandler
 
         adjustSendButton(response, existingSwitches);
 
+        adjustScoring(response, existingSwitches);
+
         return response;
     }
 
-    private static void adjustSendButton(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
+    private void adjustScoring(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
     {
-        response.SendButton.IsActive = response.ModelationSection.IsCompleted
-            && response.HouseholdSection.IsCompleted
-            && response.ParametersSection.IsCompleted
-            && response.SigningSection.IsCompleted
-            && response.ScoringSection.IsCompleted
-            // valuation
-            && (response.EvaluationSection.IsCompleted || flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && !t.Value))
-            // IC
-            && (response.IndividualPriceSection.IsCompleted || icSection());
+        if (!flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.ScoringPerformedAtleastOnce && t.Value)
+            && !_currentUserAccessor.HasPermission(UserPermissions.SCORING_Perform))
+        {
+            response.ScoringSection.IsActive = false;
+        }
+    }
+
+    private void adjustSendButton(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
+    {
+        if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Send))
+        {
+            response.SendButton.IsActive = response.ModelationSection.IsCompleted
+                && response.HouseholdSection.IsCompleted
+                && response.ParametersSection.IsCompleted
+                && response.SigningSection.IsCompleted
+                && response.ScoringSection.IsCompleted
+                // valuation
+                && (response.EvaluationSection.IsCompleted || flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && !t.Value))
+                // IC
+                && (response.IndividualPriceSection.IsCompleted || icSection());
+        }
+        else
+        {
+            response.SendButton.IsActive = false;
+        }
 
         bool icSection()
         {
@@ -141,17 +160,20 @@ internal sealed class GetFlowSwitchesHandler
 
     private List<DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign>? _documentsOnSAToSign;
 
+    private ICurrentUserAccessor _currentUserAccessor;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly Services.FlowSwitches.IFlowSwitchesService _flowSwitches;
     private readonly DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSaService;
     private readonly DomainServices.RealEstateValuationService.Clients.IRealEstateValuationServiceClient _realEstateValuationService;
 
     public GetFlowSwitchesHandler(
+        ICurrentUserAccessor currentUserAccessor,
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient arrangementServiceClient,
         DomainServices.RealEstateValuationService.Clients.IRealEstateValuationServiceClient realEstateValuationService,
         Services.FlowSwitches.IFlowSwitchesService flowSwitches,
         DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSaService)
     {
+        _currentUserAccessor = currentUserAccessor;
         _realEstateValuationService = realEstateValuationService;
         _flowSwitches = flowSwitches;
         _documentOnSaService = documentOnSaService;

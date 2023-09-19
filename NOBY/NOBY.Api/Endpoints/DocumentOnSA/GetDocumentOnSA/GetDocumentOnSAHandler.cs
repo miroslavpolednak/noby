@@ -8,16 +8,16 @@ using System.Globalization;
 using System.Net.Mime;
 using _DocOnSaSource = DomainServices.DocumentOnSAService.Contracts;
 
-namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
+namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSA;
 
-public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataRequest, GetDocumentOnSADataResponse>
+public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, GetDocumentOnSAResponse>
 {
     private readonly IDocumentOnSAServiceClient _documentOnSaClient;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
     private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IDateTime _dateTime;
 
-    public GetDocumentOnSADataHandler(
+    public GetDocumentOnSAHandler(
         IDocumentOnSAServiceClient documentOnSaClient,
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
         ICodebookServiceClient codebookServiceClients,
@@ -29,7 +29,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         _dateTime = dateTime;
     }
 
-    public async Task<GetDocumentOnSADataResponse> Handle(GetDocumentOnSADataRequest request, CancellationToken cancellationToken)
+    public async Task<GetDocumentOnSAResponse> Handle(GetDocumentOnSARequest request, CancellationToken cancellationToken)
     {
         var documentOnSas = await _documentOnSaClient.GetDocumentsToSignList(request.SalesArrangementId, cancellationToken);
 
@@ -53,7 +53,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         };
     }
 
-    private async Task<GetDocumentOnSADataResponse> GetDocumentFromEQueue(_DocOnSaSource.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
+    private async Task<GetDocumentOnSAResponse> GetDocumentFromEQueue(_DocOnSaSource.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
     {
         var docData = await _documentOnSaClient.GetElectronicDocumentFromQueue(new()
         {
@@ -63,7 +63,7 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
             }
         }, cancellationToken);
 
-        return new GetDocumentOnSADataResponse
+        return new GetDocumentOnSAResponse
         {
             ContentType = MediaTypeNames.Application.Pdf,
             Filename = await GetFileName(documentOnSa, cancellationToken),
@@ -71,13 +71,13 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
         };
     }
 
-    private async Task<GetDocumentOnSADataResponse> GetDocumentFromDocumentGenerator(_DocOnSaSource.DocumentOnSAToSign documentOnSa, _DocOnSaSource.GetDocumentOnSADataResponse documentOnSaData, CancellationToken cancellationToken)
+    private async Task<GetDocumentOnSAResponse> GetDocumentFromDocumentGenerator(_DocOnSaSource.DocumentOnSAToSign documentOnSa, _DocOnSaSource.GetDocumentOnSADataResponse documentOnSaData, CancellationToken cancellationToken)
     {
         var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSa, documentOnSaData, forPreview: false);
 
         var result = await _documentGeneratorServiceClient.GenerateDocument(generateDocumentRequest, cancellationToken);
 
-        return new GetDocumentOnSADataResponse
+        return new GetDocumentOnSAResponse
         {
             ContentType = MediaTypeNames.Application.Pdf,
             Filename = await GetFileName(documentOnSa, cancellationToken),

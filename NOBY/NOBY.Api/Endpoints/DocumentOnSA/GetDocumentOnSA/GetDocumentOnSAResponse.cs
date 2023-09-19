@@ -1,6 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
+﻿namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSA;
 
-public class GetDocumentOnSADataResponse
+public class GetDocumentOnSAResponse
 {
     public string Filename { get; set; } = null!;
     

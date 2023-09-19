@@ -8,6 +8,8 @@ internal sealed class CrudResult
     
     public bool CancelSigning { get; set; }
 
+    public bool IsDeleted { get; set; }
+
     public CrudResult()
     {
         CancelSigning = false;

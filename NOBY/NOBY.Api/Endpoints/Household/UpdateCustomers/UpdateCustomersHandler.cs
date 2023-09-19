@@ -130,7 +130,10 @@ internal sealed class UpdateCustomersHandler
             if (isProductSA)
                 await deleteRelationships(caseId, getMpId(customerOnSAId.Value), cancellationToken);
 
-            return new Dto.CrudResult(true);
+            return new Dto.CrudResult(true)
+            {
+                IsDeleted = true
+            };
         }
         else if (customer is not null)
         {

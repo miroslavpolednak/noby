@@ -1890,7 +1890,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSa(System.Int32,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSA(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Stažení dokumentu k fyzickému podepisování
             </summary>
