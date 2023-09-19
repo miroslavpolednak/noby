@@ -1,4 +1,5 @@
 ﻿using CIS.Core;
+using CIS.Core.Security;
 using CIS.Foms.Enums;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
@@ -16,13 +17,16 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
     private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IDateTime _dateTime;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public GetDocumentOnSAHandler(
+        ICurrentUserAccessor currentUserAccessor,
         IDocumentOnSAServiceClient documentOnSaClient,
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
         ICodebookServiceClient codebookServiceClients,
         IDateTime dateTime)
     {
+        _currentUserAccessor = currentUserAccessor;
         _documentOnSaClient = documentOnSaClient;
         _documentGeneratorServiceClient = documentGeneratorServiceClient;
         _codebookServiceClients = codebookServiceClients;
@@ -44,6 +48,15 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
 
         if (!documentOnSaData.IsValid)
             throw new NobyValidationException("Unable to generate document for invalid document");
+
+        if (!_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_Manage))
+        {
+            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");
+        }
+        else if (documentOnSaData.Source == _DocOnSaSource.Source.Workflow && !_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_DownloadWorkflowDocument))
+        {
+            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");
+        }
 
         return documentOnSaData.Source switch
         {
