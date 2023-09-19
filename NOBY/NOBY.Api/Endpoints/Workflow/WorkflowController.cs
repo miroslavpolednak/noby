@@ -121,7 +121,6 @@ public class WorkflowController : ControllerBase
     /// </remarks>
     /// <response code="404">Task or case not found</response>
     [HttpPut("{caseId:long}/tasks/{taskId:int}")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
