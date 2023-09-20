@@ -17,7 +17,8 @@ internal class SingleValueFieldParser : ISourceFieldParser
             StringFormat = GetStringFormat(sourceField, value),
             Value = value ?? sourceField.DefaultTextIfNull,
             TextAlign = sourceField.TextAlign,
-            VAlign = sourceField.VAlign
+            VAlign = sourceField.VAlign,
+            DefaultValueWasUsed = value is null && sourceField.DefaultTextIfNull is not null
         };
     }
 
