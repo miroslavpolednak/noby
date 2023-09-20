@@ -57,9 +57,10 @@ internal sealed class UpdateCustomersHandler
             if (!onlyNotSigned)
             {
                 await _flowSwitchMainHouseholdService.SetFlowSwitchByHouseholdId(request.HouseholdId, _flowSwitchManager, cancellationToken);
-                await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
             }
         }
+
+        await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
 
         return new UpdateCustomersResponse
         {
