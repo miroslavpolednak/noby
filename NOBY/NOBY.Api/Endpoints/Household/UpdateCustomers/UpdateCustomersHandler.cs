@@ -50,14 +50,17 @@ internal sealed class UpdateCustomersHandler
                 await _documentOnSAService.StopSigning(new() { DocumentOnSAId = document.DocumentOnSAId!.Value }, cancellationToken);
             }
 
-            // HFICH-4165 - nastaveni flowSwitches
-            bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
-            setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
-
             if (!onlyNotSigned)
             {
-                await _flowSwitchMainHouseholdService.SetFlowSwitchByHouseholdId(request.HouseholdId, _flowSwitchManager, cancellationToken);
+                // HFICH-4165 - nastaveni flowSwitches
+                bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
+                setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
             }
+        }
+
+        if (isProductSA)
+        {
+            await _flowSwitchMainHouseholdService.SetFlowSwitchByHouseholdId(request.HouseholdId, _flowSwitchManager, cancellationToken);
         }
 
         await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
