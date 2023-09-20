@@ -35,8 +35,6 @@ internal sealed class UpdateCustomersHandler
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.OnHouseholdCustomerOnSAId, c2.OnHouseholdCustomerOnSAId, cancellationToken);
         }
 
-        _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
-
         // zastavit podepisovani, pokud probehla zmena na customerech
         if (c1.Reason != Dto.CrudResult.Reasons.None || c2.Reason != Dto.CrudResult.Reasons.None)
         {
@@ -50,16 +48,22 @@ internal sealed class UpdateCustomersHandler
                 await _documentOnSAService.StopSigning(new() { DocumentOnSAId = document.DocumentOnSAId!.Value }, cancellationToken);
             }
 
-            // HFICH-4165 - nastaveni flowSwitches
-            bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
-            setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
-
             if (!onlyNotSigned)
             {
-                await _flowSwitchMainHouseholdService.SetFlowSwitchByHouseholdId(request.HouseholdId, _flowSwitchManager, cancellationToken);
-                await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
+                // HFICH-4165 - nastaveni flowSwitches
+                bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
+                setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
             }
         }
+
+        _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
+
+        if (isProductSA)
+        {
+            await _flowSwitchMainHouseholdService.SetFlowSwitchByHouseholdId(request.HouseholdId, _flowSwitchManager, cancellationToken);
+        }
+
+        await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
 
         return new UpdateCustomersResponse
         {

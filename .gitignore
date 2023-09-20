@@ -265,3 +265,4 @@ logs/
 *.azurePubxml
 *.pubxml
 *.publishproj
+InternalServices/DocumentGeneratorService/_pdfFiles_/ICC/sRGB_IEC61966-2-1.icc
