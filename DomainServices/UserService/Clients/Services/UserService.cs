@@ -93,6 +93,11 @@ internal class UserService
         return response.UserPermissions.ToArray();
     }
 
+    public async Task<int[]> GetCurrentUserPermissions(CancellationToken cancellationToken = default)
+    {
+        return await GetUserPermissions(_currentUser.User!.Id, cancellationToken);
+    }
+
     public async Task<UserRIPAttributes> GetUserRIPAttributes(string identity, string identityScheme, CancellationToken cancellationToken = default)
     {
         return await _service.GetUserRIPAttributesAsync(new GetUserRIPAttributesRequest { Identity = identity, IdentityScheme = identityScheme }, cancellationToken: cancellationToken);

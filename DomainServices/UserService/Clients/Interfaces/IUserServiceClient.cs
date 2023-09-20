@@ -14,5 +14,7 @@ public interface IUserServiceClient
 
     Task<int[]> GetUserPermissions(int userId, CancellationToken cancellationToken = default);
 
+    Task<int[]> GetCurrentUserPermissions(CancellationToken cancellationToken = default);
+
     Task<Contracts.UserRIPAttributes> GetUserRIPAttributes(string identity, string identityScheme, CancellationToken cancellationToken = default);
 }
