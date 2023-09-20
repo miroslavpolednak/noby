@@ -106,7 +106,9 @@ class SVC {
         SC.exe STOP $win_svc_name;
     }
 
-    [bool] Create() {
+    [bool] Create( [System.Management.Automation.PSCredential] $credential) {
+
+        Write-Host $credential.UserName -ForegroundColor Blue;
 
         $win_svc_name = $this.GetWinSvcName();
 
@@ -120,6 +122,7 @@ class SVC {
             DisplayName = $win_svc_name
             StartupType = "Automatic" # value 'AutomaticDelayedStart' is set later using 'SC.exe CONFIG ...'
             Description = $this.svc_name
+            Credential = $credential
           }
         
         # check if service exists
@@ -235,7 +238,7 @@ function ShowHelp([string] $env) {
     $row_services = "- 'services' [{0}], default: all services" -f $services_str;
 
     $row_exec = "- 'exec' [status, create, remote], default: 'status'";
-    
+
 
     $rows = @(
         'NOBY SERVICES REGISTRATION',
@@ -340,10 +343,30 @@ function CheckServices([string] $services_str) {
     return $services;
 }
 
+function GetCredential([string] $env) {
+    [string] $user_name = if ($env -in @("PREPROD", "PROD")) {"VSSKB\XX_NOBY_SVC_USR_PROD"} Else {"VSSKB\XX_NOBY_SVC_USR_TEST"};
+    
+    Write-Host "Credential must be provided." -ForegroundColor DarkYellow
+
+    [System.Management.Automation.PSCredential] $credential = Get-Credential -Message "Credential must be provided." -User $user_name;
+
+    $user_name = $credential.UserName
+    $password = $credential.GetNetworkCredential().password
+
+    if ($user_name.length -eq 0 -or $password.length -eq 0) {
+        Write-Host "Credential not provided!" -ForegroundColor Red
+        [Environment]::Exit(1);
+    }
+    
+    return $credential;
+}
+
 function ServicesCreate([SVC[]] $services) {
 
     $message = "STARTED CREATION OF SERVICES ({0})." -f $services.Count;
     Write-Host $message -ForegroundColor Blue;
+
+    [System.Management.Automation.PSCredential] $credential = GetCredential($env);
 
     [SVC[]] $services_success = @();
     [SVC[]] $services_failure = @();
@@ -353,7 +376,7 @@ function ServicesCreate([SVC[]] $services) {
         $index = [array]::indexof($services, $svc) + 1;
 
         try {
-            $created = $svc.create();
+            $created = $svc.create($credential);
             $created_str = If ($created -eq $true) {'CREATED'} Else {'exists'};
             $message = "[{0}] {1} ({2})" -f $index, $svc.GetWinSvcName(), $created_str;
             Write-Host $message -ForegroundColor Green
