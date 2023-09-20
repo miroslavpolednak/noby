@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.Data;
 using DomainServices.CodebookService.Contracts.v1;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DomainServices.CodebookService.Api.Endpoints;
@@ -199,7 +198,7 @@ internal partial class CodebookService
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OperatorNotFound, request.PerformerLogin);
     }
 
-    public override Task<HashAlgorithmsResponse> HashAlgorithms(Empty request, ServerCallContext context)
+    public override Task<HashAlgorithmsResponse> HashAlgorithms(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new HashAlgorithmsResponse()).AddItems(
             new List<HashAlgorithmsResponse.Types.HashAlgorithmItem>
             {
