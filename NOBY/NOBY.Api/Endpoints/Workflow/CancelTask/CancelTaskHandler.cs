@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Core.Security;
+using DomainServices.CaseService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.CancelTask;
 
@@ -15,16 +16,19 @@ internal sealed class CancelTaskHandler
         {
             throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
-        
+        WorkflowHelpers.ValidateTaskManagePermission(task.TaskObject?.TaskTypeId, _currentUserAccessor);
+
         await _caseService.CancelTask(request.CaseId, request.TaskIdSB, cancellationToken);
     }
 
     private static int[] _allowedTypeIds = new[] { 2, 3 };
 
+    private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly ICaseServiceClient _caseService;
 
-    public CancelTaskHandler(ICaseServiceClient caseService)
+    public CancelTaskHandler(ICaseServiceClient caseService, ICurrentUserAccessor currentUserAccessor)
     {
         _caseService = caseService;
+        _currentUserAccessor = currentUserAccessor;
     }
 }

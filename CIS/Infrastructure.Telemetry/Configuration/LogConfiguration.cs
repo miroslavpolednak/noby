@@ -29,8 +29,14 @@ public sealed class LogConfiguration
         public string ServerUrl { get; set; } = "";
     }
 
+    /// <summary>
+    /// Nastaveni File sink dle https://github.com/serilog/serilog-sinks-file
+    /// </summary>
     public sealed class FileLogger
     {
+        public int RetainedFileCountLimit { get; set; } = 180;
+        public long FileSizeLimitBytes { get; set; } = 512*1024*1024;
+        public bool RollOnFileSizeLimit { get; set; } = true;
         public string Path { get; set; } = "";
         public string Filename { get; set; } = "";
     }

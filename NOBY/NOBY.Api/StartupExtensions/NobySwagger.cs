@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.OpenApi.Models;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
 using NOBY.Infrastructure.Swagger;
@@ -50,10 +51,12 @@ internal static class NobySwagger
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "NOBY.Dto.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "CIS.Foms.Types.xml"));
             
+            x.SchemaFilter<NewLineReplacementFilter>();
             x.SchemaFilter<SwaggerOneOfSchemaFilter>();
             x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
-
+            
+            x.OperationFilter<NewLineReplacementFilter>();
             x.OperationFilter<RollbackRequestSupportFilter>();
             x.OperationFilter<ApplySwaggerNobyAttributes>();
             x.OperationFilter<Endpoints.RealEstateValuation.ApplySwaggerRealEstateValuationAttributes> ();

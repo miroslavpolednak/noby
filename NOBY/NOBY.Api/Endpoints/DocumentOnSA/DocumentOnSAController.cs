@@ -3,7 +3,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 using NOBY.Api.Endpoints.DocumentOnSA.StopSigning;
 using NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
-using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAData;
+using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSA;
 using System.Net.Mime;
 using NOBY.Api.Endpoints.DocumentOnSA.Search;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
@@ -11,8 +11,6 @@ using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
 using NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase;
-using CIS.Foms.Enums;
-using System.Diagnostics;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -155,12 +153,12 @@ public class DocumentOnSAController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetDocumentOnSa(
+    public async Task<IActionResult> GetDocumentOnSA(
        [FromRoute] int salesArrangementId,
        [FromRoute] int documentOnSAId,
        CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(new GetDocumentOnSADataRequest(salesArrangementId, documentOnSAId), cancellationToken);
+        var response = await _mediator.Send(new GetDocumentOnSARequest(salesArrangementId, documentOnSAId), cancellationToken);
         return File(response.FileData, response.ContentType, response.Filename);
     }
 

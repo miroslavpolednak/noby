@@ -11,4 +11,6 @@ internal class DocumentSourceFieldData
     public byte? TextAlign { get; init; }
 
     public byte? VAlign { get; init; }
+
+    public bool DefaultValueWasUsed { get; init; }
 }

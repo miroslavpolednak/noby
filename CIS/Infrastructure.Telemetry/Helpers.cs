@@ -79,7 +79,7 @@ public static class Helpers
 #pragma warning disable CA1305 // Specify IFormatProvider
             loggerConfiguration
                 .WriteTo
-                .Async(a => a.File(path, buffered: true, rollingInterval: RollingInterval.Day, outputTemplate: _fileLoggerTemplate), bufferSize: 1000);
+                .Async(a => a.File(path, buffered: true, rollingInterval: RollingInterval.Day, retainedFileCountLimit: configuration.File.RetainedFileCountLimit, rollOnFileSizeLimit: configuration.File.RollOnFileSizeLimit, fileSizeLimitBytes: configuration.File.FileSizeLimitBytes, outputTemplate: _fileLoggerTemplate), bufferSize: 1000);
 #pragma warning restore CA1305 // Specify IFormatProvider
         }
 

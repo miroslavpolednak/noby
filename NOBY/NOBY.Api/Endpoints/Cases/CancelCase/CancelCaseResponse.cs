@@ -48,4 +48,10 @@ public class CustomerOnSAItem
     /// </summary>
     /// <example>2000-02-01</example>
     public DateTime BirthDate { get; set; }
+
+    /// <summary>
+    /// eArchiv ID dokumentu s potvrzení pro daného klienta
+    /// </summary>
+    /// <example>KBH00000000000000000123456789</example>
+    public string DocumentId { get; set; } = string.Empty!;
 }
