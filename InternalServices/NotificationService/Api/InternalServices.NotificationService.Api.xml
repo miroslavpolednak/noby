@@ -68,6 +68,18 @@
         <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH5458DropText.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH8192CaseIdDocumentHash">
+            <inheritdoc />
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH8192CaseIdDocumentHash.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH8192CaseIdDocumentHash.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH8192CaseIdDocumentHash.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Channel">
             <summary>
             Represents communication channel of bank with party. . ## Multicodebook property that uniquely identifies channel. It is multicodebook as here can be any of subsets of Channel codebook, which are defined as standalone codebooks. But here should not be any principally different codebook. (e.g. ObtainType should not be here). CDM entity name(s): Channel,ChannelIdentification.

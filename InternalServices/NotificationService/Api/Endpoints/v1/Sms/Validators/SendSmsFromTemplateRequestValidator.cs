@@ -47,18 +47,32 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
                     .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentifierInvalid);
         });
         
-        When(request => request.DocumentId is not null, () =>
+        When(request => request.CaseId.HasValue, () =>
         {
-            RuleFor(request => request.DocumentId!)
-                .SetValidator(new DocumentIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+            RuleFor(request => request.CaseId!.Value)
+                .NotEmpty()
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.CaseIdInvalid);
         });
         
         When(request => request.CustomId is not null, () =>
         {
             RuleFor(request => request.CustomId!)
                 .SetValidator(new CustomIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
+        });
+        
+        When(request => request.DocumentId is not null, () =>
+        {
+            RuleFor(request => request.DocumentId!)
+                .SetValidator(new DocumentIdValidator())
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+        });
+        
+        When(request => request.DocumentHash is not null, () =>
+        {
+            RuleFor(request => request.DocumentHash!)
+                .SetValidator(new DocumentHashValidator())
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentHashInvalid);
         });
     }
 }

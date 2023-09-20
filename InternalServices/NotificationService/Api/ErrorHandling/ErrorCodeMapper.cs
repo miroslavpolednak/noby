@@ -3,6 +3,7 @@ using CIS.InternalServices.NotificationService.Contracts.Common;
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
 using CIS.InternalServices.NotificationService.Contracts.Result;
+using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
 
 namespace CIS.InternalServices.NotificationService.Api.ErrorHandling;
@@ -16,52 +17,62 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int IdentitySchemeRequired = 303;
     public const int IdentitySchemeInvalid = 304;
     
-    // DocumentId
-    public const int DocumentIdInvalid = 305;
+    // CaseId
+    public const int CaseIdInvalid = 305;
 
     // CustomId
     public const int CustomIdInvalid = 306;
     
+    // DocumentId
+    public const int DocumentIdInvalid = 307;
+    
+    // DocumentHash
+    public const int DocumentHashInvalid = 308;
+    public const int HashRequired = 309;
+    public const int HashLengthLimitExceeded = 310;
+    public const int HashAlgorithmRequired = 311;
+    public const int HashAlgorithmInvalid = 312;
+    
     // Legal person
-    public const int NameRequired = 307;
-    public const int NameLengthLimitExceeded = 308;
+    public const int NameRequired = 313;
+    public const int NameLengthLimitExceeded = 314;
     
     // Natural person
-    public const int FirstNameRequired = 309;
-    public const int FirstNameLengthLimitExceeded = 310;
-    public const int MiddleNameLengthLimitExceeded = 311;
-    public const int SurnameRequired = 312;
-    public const int SurnameLengthLimitExceeded = 313;
+    public const int FirstNameRequired = 315;
+    public const int FirstNameLengthLimitExceeded = 316;
+    public const int MiddleNameLengthLimitExceeded = 317;
+    public const int SurnameRequired = 318;
+    public const int SurnameLengthLimitExceeded = 319;
     
     // Party
-    public const int EitherLegalOrNaturalPersonRequired = 314;
-    public const int LegalPersonInvalid = 315;
-    public const int NaturalPersonInvalid = 316;
+    public const int EitherLegalOrNaturalPersonRequired = 320;
+    public const int LegalPersonInvalid = 321;
+    public const int NaturalPersonInvalid = 322;
     
     // Email address
-    public const int ValueRequired = 317;
-    public const int ValueInvalid = 318;
-    public const int PartyInvalid = 319;
+    public const int ValueRequired = 323;
+    public const int ValueInvalid = 324;
+    public const int PartyInvalid = 325;
     
     // Email content
-    public const int FormatRequired = 321;
-    public const int FormatInvalid = 322;
-    public const int LanguageRequired = 323;
-    public const int LanguageInvalid = 324;
-    public const int EmailTextRequired = 325;
+    public const int FormatRequired = 326;
+    public const int FormatInvalid = 327;
+    public const int LanguageRequired = 328;
+    public const int LanguageInvalid = 329;
+    public const int EmailTextRequired = 330;
     
     // Email attachment 
-    public const int BinaryRequired = 326;
-    public const int BinaryInvalid = 327;
-    public const int FilenameRequired = 328;
-    public const int FilenameLengthLimitExceeded = 329;
+    public const int BinaryRequired = 331;
+    public const int BinaryInvalid = 332;
+    public const int FilenameRequired = 333;
+    public const int FilenameLengthLimitExceeded = 334;
     
     // Phone
-    public const int PhoneInvalid = 330;
-    public const int CountryCodeRequired = 331;
-    public const int CountryCodeInvalid = 332;
-    public const int NationalNumberRequired = 333;
-    public const int NationalNumberInvalid = 334;
+    public const int PhoneInvalid = 335;
+    public const int CountryCodeRequired = 336;
+    public const int CountryCodeInvalid = 337;
+    public const int NationalNumberRequired = 338;
+    public const int NationalNumberInvalid = 339;
     
     // Get/Search result
     public const int NotificationIdRequired = 340;
@@ -117,8 +128,14 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { IdentitySchemeRequired, $"{nameof(Identifier.IdentityScheme)} required."},
             { IdentitySchemeInvalid, $"Invalid {nameof(Identifier.IdentityScheme)}."},
             
-            { DocumentIdInvalid, $"Invalid DocumentId."},
-            { CustomIdInvalid, $"Invalid CustomId."},
+            { CaseIdInvalid, $"Invalid {nameof(Result.CaseId)}."},
+            { CustomIdInvalid, $"Invalid {nameof(Result.CustomId)}."},
+            { DocumentIdInvalid, $"Invalid {nameof(Result.DocumentId)}."},
+            { DocumentHashInvalid, $"Invalid {nameof(Result.DocumentHash)}" },
+            { HashRequired, $"{nameof(Result.DocumentHash.Hash)} required." },
+            { HashLengthLimitExceeded, $"Maximum length of {nameof(Result.DocumentHash.Hash)} is 1024" },
+            { HashAlgorithmRequired, $"{nameof(Result.DocumentHash.HashAlgorithm)} required." },
+            { HashAlgorithmInvalid, $"Invalid {nameof(Result.DocumentHash.HashAlgorithm)}" },
 
             { NameRequired, $"{nameof(LegalPerson.Name)} required." },
             { NameLengthLimitExceeded, $"Maximum length of {nameof(LegalPerson.Name)} is 255." },

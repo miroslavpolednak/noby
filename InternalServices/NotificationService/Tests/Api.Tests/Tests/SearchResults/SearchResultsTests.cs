@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
+using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Result;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Tests.Mocks;
@@ -24,6 +25,25 @@ public class SearchResultsTests
     }
     
     [Fact]
+    public async Task SearchByCaseId()
+    {
+        var token = CancellationToken.None;
+        var request = new SearchResultsRequest { CaseId = 10 };
+        
+        var handler = _fixture.Create<SearchResultsHandler>();
+        var response = await handler.Handle(request, token);
+        
+        Assert.Equal(2, response.Results.Count);
+        Assert.Single(response.Results.Where(r => r.NotificationId == RepositoryExtensions.SmsResultId4));
+        Assert.Single(response.Results.Where(r => r.NotificationId == RepositoryExtensions.EmailResultId4));
+        
+        var mockRepository = _fixture.Freeze<Mock<INotificationRepository>>();
+        mockRepository.Verify(r =>
+                r.SearchResultsBy(null, null,  10, null, null),
+            Times.Once);
+    }
+    
+    [Fact]
     public async Task SearchByCustomId()
     {
         var token = CancellationToken.None;
@@ -38,7 +58,7 @@ public class SearchResultsTests
         
         var mockRepository = _fixture.Freeze<Mock<INotificationRepository>>();
         mockRepository.Verify(r =>
-            r.SearchResultsBy(null, null, "CustomIdA", null),
+            r.SearchResultsBy(null, null,  null, "CustomIdA", null),
             Times.Once);
     }
     
@@ -57,7 +77,7 @@ public class SearchResultsTests
         
         var mockRepository = _fixture.Freeze<Mock<INotificationRepository>>();
         mockRepository.Verify(r =>
-            r.SearchResultsBy(null, null, null, "DocumentIdA"),
+            r.SearchResultsBy(null, null, null, null, "DocumentIdA"),
             Times.Once);
     }
     
@@ -76,7 +96,7 @@ public class SearchResultsTests
         
         var mockRepository = _fixture.Freeze<Mock<INotificationRepository>>();
         mockRepository.Verify(r =>
-            r.SearchResultsBy("IdentityA", "IdentitySchemeA", null, null),
+            r.SearchResultsBy("IdentityA", "IdentitySchemeA", null, null, null),
             Times.Once);
     }
 }

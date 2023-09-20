@@ -12,6 +12,7 @@ public class SearchResultsRequestValidator : AbstractValidator<SearchResultsRequ
     {
         RuleFor(request => request)
             .Must(request =>
+                request.CaseId.HasValue ||
                 !string.IsNullOrEmpty(request.CustomId) ||
                 !string.IsNullOrEmpty(request.DocumentId) ||
                 !string.IsNullOrEmpty(request.Identity) ||
@@ -33,19 +34,25 @@ public class SearchResultsRequestValidator : AbstractValidator<SearchResultsRequ
                     .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentifierInvalid);
         });
         
-        When(request => request.DocumentId is not null, () =>
+        When(request => request.CaseId.HasValue, () =>
         {
-            RuleFor(request => request.DocumentId!)
-                .SetValidator(new DocumentIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+            RuleFor(request => request.CaseId!.Value)
+                .NotEmpty()
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.CaseIdInvalid);
         });
         
         When(request => request.CustomId is not null, () =>
         {
             RuleFor(request => request.CustomId!)
                 .SetValidator(new CustomIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
         });
         
+        When(request => request.DocumentId is not null, () =>
+        {
+            RuleFor(request => request.DocumentId!)
+                .SetValidator(new DocumentIdValidator())
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+        });
     }
 }
