@@ -33,7 +33,7 @@ internal class DocumentMapper
         {
             var stringFormat = sourceData.StringFormat;
 
-            if (dynamicStringFormats.TryGetValue(sourceData.AcroFieldName, out var format))
+            if (!sourceData.DefaultValueWasUsed && dynamicStringFormats.TryGetValue(sourceData.AcroFieldName, out var format))
                 stringFormat = format;
 
             var fieldData = new DocumentFieldData
