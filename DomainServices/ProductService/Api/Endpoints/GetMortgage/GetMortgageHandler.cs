@@ -71,7 +71,7 @@ internal sealed class GetMortgageHandler
             };
         }
 
-        if (realEstates is not null && realEstates.Any())
+        if (realEstates.Any())
         {
             // zjistit zajisteni
             var collateral = await _dbContext.Collaterals
