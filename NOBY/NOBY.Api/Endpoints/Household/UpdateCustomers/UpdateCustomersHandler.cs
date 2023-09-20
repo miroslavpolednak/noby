@@ -35,8 +35,6 @@ internal sealed class UpdateCustomersHandler
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.OnHouseholdCustomerOnSAId, c2.OnHouseholdCustomerOnSAId, cancellationToken);
         }
 
-        _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
-
         // zastavit podepisovani, pokud probehla zmena na customerech
         if (c1.Reason != Dto.CrudResult.Reasons.None || c2.Reason != Dto.CrudResult.Reasons.None)
         {
@@ -57,6 +55,8 @@ internal sealed class UpdateCustomersHandler
                 setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
             }
         }
+
+        _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
 
         if (isProductSA)
         {
