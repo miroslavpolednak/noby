@@ -99,7 +99,10 @@ internal sealed class CreateTaskHandler
             metadata.Add($"ukol_overeni_ic_popl_sleva_perc{i + 1}", priceException.Fees![i].DiscountPercentage.ToSbFormat());
         }
 
-        foreach (var item in priceException.AppliedMarketingActionsCodes.Select(GetMarketingActionValue).Where(value => value.HasValue).Select((value, index) => new { value = (int)value!, index }))
+        foreach (var item in priceException.AppliedMarketingActionsCodes
+                                           .Select(GetMarketingActionValue)
+                                           .Where(value => value.HasValue)
+                                           .Select((value, index) => new { value = (int)value!, index }))
         {
             metadata.Add($"ukol_overeni_ic_skladacka_ma{item.index + 1}", item.value.ToString(CultureInfo.InvariantCulture));
         }
@@ -110,7 +113,7 @@ internal sealed class CreateTaskHandler
             "RZP" => 2,
             "VYSE_PRIJMU_UVERU" => 3,
             "POJIST_NEM" => 4,
-            _ => default
+            _ => null
         };
     }
 
