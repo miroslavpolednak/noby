@@ -31,9 +31,5 @@ GO
 CREATE INDEX [IX_EmailResult_CustomId_Identity_IdentityScheme_DocumentId_CaseId] ON [EmailResult] ([CustomId], [Identity], [IdentityScheme], [DocumentId], [CaseId]);
 GO
 
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20230920095629_HFICH-8192-CaseId-DocumentHash', N'7.0.9');
-GO
-
 COMMIT;
 GO

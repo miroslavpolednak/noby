@@ -115,12 +115,13 @@ public class NotificationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<List<Contracts.Result.Dto.Result>> SearchResults([FromQuery] string? identity, [FromQuery] string? identityScheme,
-        [FromQuery] string? customId, [FromQuery] string? documentId, CancellationToken token)
+        [FromQuery] long? caseId, [FromQuery] string? customId, [FromQuery] string? documentId, CancellationToken token)
     {
         var response = await _mediator.Send(new SearchResultsRequest
         {
             Identity = identity,
             IdentityScheme = identityScheme,
+            CaseId = caseId,
             CustomId = customId,
             DocumentId = documentId
         }, token);
