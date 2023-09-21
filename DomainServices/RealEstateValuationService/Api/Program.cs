@@ -53,6 +53,7 @@ try
             .AddGrpcReflection()
             .AddGrpc(options =>
             {
+                options.MaxReceiveMessageSize = 25 * 1024 * 1024; // 25 MB
                 options.Interceptors.Add<GenericServerExceptionInterceptor>();
             });
 

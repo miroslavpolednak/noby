@@ -7,6 +7,7 @@ using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstrac
 using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Email;
+using DomainServices.CodebookService.Clients;
 using MediatR;
 using Microsoft.Extensions.Options;
 
@@ -19,6 +20,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
     private readonly IMcsEmailProducer _mcsEmailProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IS3AdapterService _s3Service;
     private readonly S3Buckets _buckets;
     private readonly HashSet<string> _mcsSenders;
@@ -31,6 +33,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         IMcsEmailProducer mcsEmailProducer,
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
+        ICodebookServiceClient codebookService,
         IS3AdapterService s3Service,
         IOptions<AppConfiguration> options,
         ILogger<SendEmailHandler> logger)
@@ -40,6 +43,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         _mcsEmailProducer = mcsEmailProducer;
         _userAdapterService = userAdapterService;
         _repository = repository;
+        _codebookService = codebookService;
         _s3Service = s3Service;
         _buckets = options.Value.S3Buckets;
         _mcsSenders = options.Value.EmailSenders.Mcs.Select(e => e.ToLowerInvariant()).ToHashSet();
@@ -52,6 +56,13 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         var username = _userAdapterService
             .CheckSendEmailAccess()
             .GetUsername();
+        
+        var hashAlgorithms = await _codebookService.HashAlgorithms(cancellationToken);
+        var hashAlgorithmCodes = string.Join(',', hashAlgorithms.Select(s => s.Code));
+        var hashAlgorithm = string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm)
+            ? null
+            : hashAlgorithms.FirstOrDefault(s => s.Code == request.DocumentHash.HashAlgorithm) ?? 
+              throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash.HashAlgorithm}'. Allowed HashAlgorithms: {hashAlgorithmCodes}");
         
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
         var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
@@ -77,8 +88,11 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         var result = _repository.NewEmailResult();
         result.Identity = request.Identifier?.Identity;
         result.IdentityScheme = request.Identifier?.IdentityScheme;
+        result.CaseId = request.CaseId;
         result.CustomId = request.CustomId;
         result.DocumentId = request.DocumentId;
+        result.DocumentHash = request.DocumentHash?.Hash;
+        result.HashAlgorithm = request.DocumentHash?.HashAlgorithm;
         result.RequestTimestamp = _dateTime.Now;
 
         result.CreatedBy = username;

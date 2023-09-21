@@ -14,8 +14,11 @@ public class SearchResultsRequest : IRequest<SearchResultsResponse>, IValidatabl
     public string? IdentityScheme { get; set; }
     
     [ProtoMember(3)]
-    public string? CustomId { get; set; }
+    public long? CaseId { get; set; }
     
     [ProtoMember(4)]
+    public string? CustomId { get; set; }
+    
+    [ProtoMember(5)]
     public string? DocumentId { get; set; }
 }

@@ -1,9 +1,12 @@
-﻿namespace NOBY.Api.Endpoints.Offer.LinkModelation;
+﻿using System.Text.Json.Serialization;
+
+namespace NOBY.Api.Endpoints.Offer.LinkModelation;
 
 public class LinkModelationRequest
     : IRequest
 {
-    public int SalesArrangementId { get; set; }
+    [JsonIgnore]
+    internal int SalesArrangementId { get; set; }
 
     public int OfferId { get; set; }
 
@@ -26,4 +29,10 @@ public class LinkModelationRequest
     public DateTime? DateOfBirth { get; set; }
 
     public NOBY.Dto.ContactsDto? OfferContacts { get; set; }
+
+    internal LinkModelationRequest InfuseId(int salesArrangementId)
+    {
+        this.SalesArrangementId = salesArrangementId;
+        return this;
+    }
 }

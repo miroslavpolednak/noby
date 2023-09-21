@@ -47,15 +47,26 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
             .GetUsername();
         
         var smsTypes = await _codebookService.SmsNotificationTypes(cancellationToken);
+        var smsTypeCodes = string.Join(',', smsTypes.Select(s => s.Code));
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
-        throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {string.Join(',', smsTypes.Select(s => s.Code))}");
-        
+        throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {smsTypeCodes}");
+
+        var hashAlgorithms = await _codebookService.HashAlgorithms(cancellationToken);
+        var hashAlgorithmCodes = string.Join(',', hashAlgorithms.Select(s => s.Code));
+        var hashAlgorithm = string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm)
+            ? null
+            : hashAlgorithms.FirstOrDefault(s => s.Code == request.DocumentHash.HashAlgorithm) ?? 
+        throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash.HashAlgorithm}'. Allowed HashAlgorithms: {hashAlgorithmCodes}");
+
         var result = _repository.NewSmsResult();
-        var phone = request.PhoneNumber.ParsePhone();
+        var phone = request.PhoneNumber.ParsePhone()!;
         result.Identity = request.Identifier?.Identity;
         result.IdentityScheme = request.Identifier?.IdentityScheme;
+        result.CaseId = request.CaseId;
         result.CustomId = request.CustomId;
         result.DocumentId = request.DocumentId;
+        result.DocumentHash = request.DocumentHash?.Hash;
+        result.HashAlgorithm = request.DocumentHash?.HashAlgorithm;
         result.RequestTimestamp = _dateTime.Now;
 
         result.Type = request.Type;
@@ -90,12 +101,26 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         try
         {
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
-            _smsAuditLogger.LogKafkaProduced(smsType, result.Id, username);
+            _smsAuditLogger.LogKafkaProduced(smsType, result.Id, username,
+                request.Identifier?.Identity,
+                request.Identifier?.IdentityScheme,
+                request.CaseId,
+                request.CustomId,
+                request.DocumentId,
+                request.DocumentHash?.Hash,
+                request.DocumentHash?.HashAlgorithm);
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Could not produce message SendSMS to KAFKA.");
-            _smsAuditLogger.LogKafkaProduceError(smsType, username);
+            _smsAuditLogger.LogKafkaProduceError(smsType, username,
+                request.Identifier?.Identity,
+                request.Identifier?.IdentityScheme,
+                request.CaseId,
+                request.CustomId,
+                request.DocumentId,
+                request.DocumentHash?.Hash,
+                request.DocumentHash?.HashAlgorithm);
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
             throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");

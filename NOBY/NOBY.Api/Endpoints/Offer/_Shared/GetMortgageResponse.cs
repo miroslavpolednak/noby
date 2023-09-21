@@ -22,5 +22,10 @@ public sealed class GetMortgageResponse
     /// </summary>
     public MortgageOutputs SimulationResults { get; set; } = null!;
 
+    /// <summary>
+    /// Datum, kdy končí garance pro danou simulaci
+    /// </summary>
+    public DateOnly? OfferGuaranteeDateTo { get; set; }
+
     public CreditWorthinessSimpleInputs? CreditWorthinessSimpleInputs { get; set; }
 }

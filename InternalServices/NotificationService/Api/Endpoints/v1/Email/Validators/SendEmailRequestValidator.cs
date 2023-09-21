@@ -65,11 +65,11 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
                     .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentifierInvalid);
         });
 
-        When(request => request.DocumentId is not null, () =>
+        When(request => request.CaseId.HasValue, () =>
         {
-            RuleFor(request => request.DocumentId!)
-                .SetValidator(new DocumentIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+            RuleFor(request => request.CaseId!.Value)
+                .GreaterThan(0)
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CaseIdInvalid);
         });
         
         When(request => request.CustomId is not null, () =>
@@ -77,6 +77,20 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
             RuleFor(request => request.CustomId!)
                 .SetValidator(new CustomIdValidator())
                     .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
+        });
+        
+        When(request => request.DocumentId is not null, () =>
+        {
+            RuleFor(request => request.DocumentId!)
+                .SetValidator(new DocumentIdValidator())
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+        });
+        
+        When(request => request.DocumentHash is not null, () =>
+        {
+            RuleFor(request => request.DocumentHash!)
+                .SetValidator(new DocumentHashValidator())
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentHashInvalid);
         });
     }
 }

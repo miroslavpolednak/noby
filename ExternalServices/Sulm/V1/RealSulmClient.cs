@@ -12,7 +12,7 @@ internal sealed class RealSulmClient
         long kbCustomerId,
         IList<CIS.Foms.Types.UserIdentity> userIdentities,
         string purposeCode,
-        CancellationToken cancellationToken = default(CancellationToken))
+        CancellationToken cancellationToken = default)
     {
         var request = createRegisterRequest(kbCustomerId, userIdentities, purposeCode);
 
@@ -30,7 +30,7 @@ internal sealed class RealSulmClient
         long kbCustomerId, 
         IList<CIS.Foms.Types.UserIdentity> userIdentities, 
         string purposeCode, 
-        CancellationToken cancellationToken = default(CancellationToken))
+        CancellationToken cancellationToken = default)
     {
         var request = terminateRegisterRequest(kbCustomerId, userIdentities, purposeCode);
         

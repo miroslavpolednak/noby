@@ -198,6 +198,17 @@ internal partial class CodebookService
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OperatorNotFound, request.PerformerLogin);
     }
 
+    public override Task<HashAlgorithmsResponse> HashAlgorithms(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(() => (new HashAlgorithmsResponse()).AddItems(
+            new List<HashAlgorithmsResponse.Types.HashAlgorithmItem>
+            {
+                new() { Code = "SHA-256", Description = "Secure Hash Algorithm 256-bit" },
+                new() { Code = "SHA-384", Description = "Secure Hash Algorithm 384-bit" },
+                new() { Code = "SHA-512", Description = "Secure Hash Algorithm 512-bit" },
+                new() { Code = "SHA-3", Description = "Secure Hash Algorithm 3" },
+            })
+        );
+
     public override Task<HouseholdTypesResponse> HouseholdTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new HouseholdTypesResponse()).AddItems(
             FastEnum

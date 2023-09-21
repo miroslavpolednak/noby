@@ -1148,12 +1148,6 @@
             </summary>
             <example>true</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.CustomerOnSAId">
-            <summary>
-            Id customera na sales arrangementu
-            </summary>
-            <example>123456</example>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.BirthDate">
             <summary>
             Datum narození
@@ -1269,7 +1263,7 @@
             Id adresního bodu
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.CreateCustomer(NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.CreateCustomer(System.Int32,NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest)">
             <summary>
             Založení nového klienta
             </summary>
@@ -2071,11 +2065,6 @@
             </summary>
             <example>PDF</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.SalesArrangementId">
-            <summary>
-            ID pripadu
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.HouseholdTypeId">
             <summary>
             ID typu domacnosti. Ciselnik HouseholdTypes
@@ -2171,7 +2160,7 @@
             <param name="householdId">ID domacnosti</param>
             <returns>ID smazané domacnosti</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.CreateHousehold(NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest)">
+        <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.CreateHousehold(System.Int32,NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest)">
             <summary>
             Vytvořeni nové domacnosti
             </summary>
@@ -2470,7 +2459,7 @@
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nově vytvořeného Case</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkModelation(NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkModelation(System.Int32,NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest)">
             <summary>
             Nalinkuje novou modelaci na stávající SA.
             </summary>
@@ -2543,6 +2532,11 @@
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.OfferId">
             <summary>
             ID vytvorene simulace.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.OfferGuaranteeDateTo">
+            <summary>
+            Datum, kdy končí garance pro danou simulaci
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.ResourceProcessId">
@@ -2618,6 +2612,11 @@
         <member name="P:NOBY.Api.Endpoints.Offer.Dto.GetMortgageResponse.SimulationResults">
             <summary>
             Vysledky simulace.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.Dto.GetMortgageResponse.OfferGuaranteeDateTo">
+            <summary>
+            Datum, kdy končí garance pro danou simulaci
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.Dto.MortgageInputs.ProductTypeId">

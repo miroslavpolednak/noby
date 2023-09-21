@@ -26,6 +26,7 @@ public class SearchResultsHandler : IRequestHandler<SearchResultsRequest, Search
         var results = await _repository.SearchResultsBy(
             request.Identity,
             request.IdentityScheme,
+            request.CaseId,
             request.CustomId,
             request.DocumentId);
 
