@@ -1,24 +1,21 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
 public class CreateCustomerRequest
     : IRequest<CreateCustomerResponse>
 {
+    [JsonIgnore]
+    internal int CustomerOnSAId { get; set; }
+
     /// <summary>
     /// Příznak tvrdého vytvoření customera.
     /// </summary>
     /// <example>true</example>
     [DefaultValue(false)]
     public bool HardCreate { get; set; }
-
-    /// <summary>
-    /// Id customera na sales arrangementu
-    /// </summary>
-    /// <example>123456</example>
-    [Required]
-    public int CustomerOnSAId { get; set; }
 
     /// <summary>
     /// Datum narození
@@ -74,4 +71,10 @@ public class CreateCustomerRequest
 
     [Required]
     public NOBY.Dto.IdentificationDocumentFull? IdentificationDocument { get; set; }
+
+    internal CreateCustomerRequest InfuseId(int customerOnSAId)
+    {
+        this.CustomerOnSAId = customerOnSAId;
+        return this;
+    }
 }
