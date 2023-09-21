@@ -51,6 +51,12 @@ internal sealed class CreateHouseholdHandler
             }, cancellationToken);
         }
 
+        if (saInstance.State == (int)SalesArrangementStates.ToSend) // 8
+        {
+            await _salesArrangementService.UpdateSalesArrangementState(saInstance.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken); // 7
+        }
+
+
         return new CreateHouseholdResponse()
         {
             HouseholdId = entity.HouseholdId
