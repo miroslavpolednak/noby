@@ -11,6 +11,8 @@ public class CustomerChangeDataDelta
 
     public IdentificationDocumentDelta? IdentificationDocument { get; set; }
 
+    public CustomerIdentificationDelta? CustomerIdentification { get; set; }
+
     public List<Address>? Addresses { get; set; }
 
     public MobilePhoneDelta? MobilePhone { get; set; }
