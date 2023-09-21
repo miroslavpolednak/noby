@@ -11,8 +11,8 @@ public class DocumentHashValidator : AbstractValidator<DocumentHash>
         RuleFor(request => request.Hash)
             .NotEmpty()
                 .WithErrorCode(ErrorHandling.ErrorCodeMapper.HashRequired)
-            .MaximumLength(1024)
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.HashLengthLimitExceeded);
+            .Matches("^([A-Fa-f0-9]{0,1024})$")
+                .WithErrorCode(ErrorHandling.ErrorCodeMapper.HashInvalid);
 
         RuleFor(request => request.HashAlgorithm)
             .NotEmpty()

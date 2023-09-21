@@ -29,7 +29,7 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     // DocumentHash
     public const int DocumentHashInvalid = 308;
     public const int HashRequired = 309;
-    public const int HashLengthLimitExceeded = 310;
+    public const int HashInvalid = 310;
     public const int HashAlgorithmRequired = 311;
     public const int HashAlgorithmInvalid = 312;
     
@@ -131,11 +131,11 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { CaseIdInvalid, $"Invalid {nameof(Result.CaseId)}."},
             { CustomIdInvalid, $"Invalid {nameof(Result.CustomId)}."},
             { DocumentIdInvalid, $"Invalid {nameof(Result.DocumentId)}."},
-            { DocumentHashInvalid, $"Invalid {nameof(Result.DocumentHash)}" },
+            { DocumentHashInvalid, $"Invalid {nameof(Result.DocumentHash)}." },
             { HashRequired, $"{nameof(Result.DocumentHash.Hash)} required." },
-            { HashLengthLimitExceeded, $"Maximum length of {nameof(Result.DocumentHash.Hash)} is 1024" },
+            { HashInvalid, $"Invalid {nameof(Result.DocumentHash.Hash)}." },
             { HashAlgorithmRequired, $"{nameof(Result.DocumentHash.HashAlgorithm)} required." },
-            { HashAlgorithmInvalid, $"Invalid {nameof(Result.DocumentHash.HashAlgorithm)}" },
+            { HashAlgorithmInvalid, $"Invalid {nameof(Result.DocumentHash.HashAlgorithm)}." },
 
             { NameRequired, $"{nameof(LegalPerson.Name)} required." },
             { NameLengthLimitExceeded, $"Maximum length of {nameof(LegalPerson.Name)} is 255." },

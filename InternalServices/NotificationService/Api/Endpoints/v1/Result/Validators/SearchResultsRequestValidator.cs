@@ -37,22 +37,22 @@ public class SearchResultsRequestValidator : AbstractValidator<SearchResultsRequ
         When(request => request.CaseId.HasValue, () =>
         {
             RuleFor(request => request.CaseId!.Value)
-                .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.CaseIdInvalid);
+                .GreaterThan(0)
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CaseIdInvalid);
         });
         
         When(request => request.CustomId is not null, () =>
         {
             RuleFor(request => request.CustomId!)
                 .SetValidator(new CustomIdValidator())
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
         });
         
         When(request => request.DocumentId is not null, () =>
         {
             RuleFor(request => request.DocumentId!)
                 .SetValidator(new DocumentIdValidator())
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
         });
     }
 }

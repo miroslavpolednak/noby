@@ -68,7 +68,7 @@ public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
         When(request => request.CaseId.HasValue, () =>
         {
             RuleFor(request => request.CaseId!.Value)
-                .NotEmpty()
+                .GreaterThan(0)
                     .WithErrorCode(ErrorHandling.ErrorCodeMapper.CaseIdInvalid);
         });
         
