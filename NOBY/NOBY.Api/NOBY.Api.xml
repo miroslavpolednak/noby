@@ -2534,6 +2534,11 @@
             ID vytvorene simulace.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.OfferGuaranteeDateTo">
+            <summary>
+            Datum, kdy končí garance pro danou simulaci
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.ResourceProcessId">
             <summary>
             Unikatni identifikator pro session simulace.
@@ -2607,6 +2612,11 @@
         <member name="P:NOBY.Api.Endpoints.Offer.Dto.GetMortgageResponse.SimulationResults">
             <summary>
             Vysledky simulace.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.Dto.GetMortgageResponse.OfferGuaranteeDateTo">
+            <summary>
+            Datum, kdy končí garance pro danou simulaci
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.Dto.MortgageInputs.ProductTypeId">

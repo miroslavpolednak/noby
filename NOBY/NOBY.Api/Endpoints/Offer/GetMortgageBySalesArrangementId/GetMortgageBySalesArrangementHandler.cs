@@ -22,6 +22,7 @@ internal sealed class GetMortgageBySalesArrangementHandler
         return new GetMortgageResponse
         {
             OfferId = result.OfferId,
+            OfferGuaranteeDateTo = result.BasicParameters.GuaranteeDateTo,
             ResourceProcessId = result.ResourceProcessId,
             SimulationInputs = result.SimulationInputs.ToApiResponse(result.BasicParameters),
             SimulationResults = result.SimulationResults.ToApiResponse(result.SimulationInputs, result.AdditionalSimulationResults),

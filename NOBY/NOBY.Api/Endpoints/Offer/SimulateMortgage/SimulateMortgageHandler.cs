@@ -47,6 +47,7 @@ internal sealed class SimulateMortgageHandler
         return new()
         {
             OfferId = result.OfferId,
+            OfferGuaranteeDateTo = result.BasicParameters.GuaranteeDateTo,
             ResourceProcessId = result.ResourceProcessId,
             SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs, result.AdditionalSimulationResults),
             CreditWorthinessSimpleResults = result.CreditWorthinessSimpleResults.ToApiResponse()
