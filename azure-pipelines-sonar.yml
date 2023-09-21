@@ -1,0 +1,24 @@
+# Node.js with Vue
+# Build a Node.js project that uses Vue.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+pool:
+  name: MPSS Common
+
+variables:
+  runSonarQube: $[eq(lower(variables['USESONARQUBE']), 'true')]
+
+steps:
+#- task: InlinePowershell@1
+#  inputs:
+#    Script: 'nslookup nodejs.org'
+
+- task: PowerShell@2
+  displayName: Display variables
+  inputs:
+    targetType: 'inline'
+    script: 'Write-Host "RunSonarQube: $(runSonarQube)"' 
