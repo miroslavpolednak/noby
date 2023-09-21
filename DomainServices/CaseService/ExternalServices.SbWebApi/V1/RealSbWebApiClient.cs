@@ -179,7 +179,9 @@ internal sealed class RealSbWebApiClient
 
             if (string.IsNullOrEmpty(userInstance.UserInfo.Cpm) || string.IsNullOrEmpty(userInstance.UserInfo.Icp))
             {
-                var s = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous";
+                var s = userInstance.UserIdentifiers
+                    .Where(t => t.IdentityScheme is CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.Kbad or CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.Mpad)
+                    .FirstOrDefault()?.Identity ?? "anonymous";
                 var idx = s.IndexOf('\\');
                 return idx > 0 ? s[(idx + 1)..] : s;
             }
