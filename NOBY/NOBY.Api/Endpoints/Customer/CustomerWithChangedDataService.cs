@@ -12,8 +12,8 @@ namespace NOBY.Api.Endpoints.Customer;
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class CustomerWithChangedDataService
 {
-    public async Task<(TResponse Customer, int? IdentificationMethodId)> GetCustomerFromCM<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
-        where TResponse : Shared.BaseCustomerDetail
+    public async Task<(TResponse Customer, int? customerIdentification)> GetCustomerFromCM<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
+        where TResponse : BaseCustomerDetail
     {
         // kontrola identity KB
         var kbIdentity = customerOnSA.CustomerIdentifiers
@@ -24,20 +24,20 @@ internal sealed class CustomerWithChangedDataService
         var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
         // convert DS contract to FE model
-        return (fillResponseDto<TResponse>(customer, customerOnSA), customer.CustomerIdentification?.IdentificationMethodId);
+        return (fillResponseDto<TResponse>(customer, customerOnSA), customer.CustomerIdentification.IdentificationMethodId);
     }
 
-    public async Task<(TResponse Customer, int? IdentificationMethodId)> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
-        where TResponse : Shared.BaseCustomerDetail
+    public async Task<TResponse> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
+        where TResponse : BaseCustomerDetail
     {
         // convert DS contract to FE model
-        var model = await GetCustomerFromCM<TResponse>(customerOnSA, cancellationToken);
+        var (model, _) = await GetCustomerFromCM<TResponse>(customerOnSA, cancellationToken);
 
         // changed data already exist in database
         if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
         {
             // provide saved changes to original model
-            var original = JObject.FromObject(model.Customer);
+            var original = JObject.FromObject(model);
             var delta = JObject.Parse(customerOnSA.CustomerChangeData);
 
             original.Merge(delta, new JsonMergeSettings
@@ -46,19 +46,17 @@ internal sealed class CustomerWithChangedDataService
                 MergeNullValueHandling = MergeNullValueHandling.Merge
             });
 
-            return (original.ToObject<TResponse>()!, model.IdentificationMethodId);
+            return original.ToObject<TResponse>()!;
         }
-        else
-        {
-            return model;
-        }
+
+        return model;
     }
 
     private static TCustomerDetail fillResponseDto<TCustomerDetail>(__Customer.CustomerDetailResponse dsCustomer, __Household.CustomerOnSA customerOnSA)
         where TCustomerDetail : BaseCustomerDetail
     {
         var newCustomer = (TCustomerDetail)Activator.CreateInstance(typeof(TCustomerDetail))!;
-    
+
         NaturalPerson person = new();
         dsCustomer.NaturalPerson?.FillResponseDto(person);
         person.EducationLevelId = dsCustomer.NaturalPerson?.EducationLevelId;
@@ -77,7 +75,7 @@ internal sealed class CustomerWithChangedDataService
         person.NetMonthEarningAmountId = dsCustomer.NaturalPerson?.NetMonthEarningAmountId;
         person.NetMonthEarningTypeId = dsCustomer.NaturalPerson?.NetMonthEarningTypeId;
         newCustomer.IsBrSubscribed = dsCustomer.NaturalPerson?.IsBrSubscribed;
-        
+
         newCustomer.HasRelationshipWithCorporate = customerOnSA.CustomerAdditionalData?.HasRelationshipWithCorporate;
         newCustomer.HasRelationshipWithKB = customerOnSA.CustomerAdditionalData?.HasRelationshipWithKB;
         newCustomer.HasRelationshipWithKBEmployee = customerOnSA.CustomerAdditionalData?.HasRelationshipWithKBEmployee;

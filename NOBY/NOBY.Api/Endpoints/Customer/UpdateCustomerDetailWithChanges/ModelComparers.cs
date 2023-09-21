@@ -1,4 +1,5 @@
-﻿using KellermanSoftware.CompareNetObjects;
+﻿using System.Collections;
+using KellermanSoftware.CompareNetObjects;
 using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
@@ -26,7 +27,8 @@ internal static class ModelComparers
         CompareObjects(request?.LegalCapacity, original?.LegalCapacity, "LegalCapacity", deltaPerson);
         CompareObjects(request?.TaxResidences, original?.TaxResidences, "TaxResidences", deltaPerson);
 
-        delta.NaturalPerson = deltaPerson;
+        if (((IEnumerable)deltaPerson).Cast<object>().Any())
+            delta.NaturalPerson = deltaPerson;
     }
 
     public static void CompareRoot(UpdateCustomerDetailWithChangesRequest request, UpdateCustomerDetailWithChangesRequest original, dynamic delta)
