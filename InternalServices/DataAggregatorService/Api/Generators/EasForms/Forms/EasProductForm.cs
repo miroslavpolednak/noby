@@ -32,7 +32,8 @@ internal class EasProductForm : EasForm<ProductFormData>
                 EasFormType = easFormType,
                 DynamicFormValues = dynamicValues,
                 DefaultValues = EasFormTypeFactory.CreateDefaultValues(easFormType, _documentTypes),
-                Json = CreateJson(sourceFieldsGroup[easFormType])
+                Json = CreateJson(sourceFieldsGroup[easFormType]),
+                FormIdentifier = CalculateFormIdentifier('P', easFormType, (long)_formData.SalesArrangement.SalesArrangementId << 32 | (uint)_formData.HouseholdData.HouseholdDto.HouseholdId)
             };
         }
     }
