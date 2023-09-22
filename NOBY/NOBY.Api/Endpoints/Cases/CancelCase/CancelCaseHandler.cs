@@ -41,7 +41,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
             CustomersOnSa = new List<CustomerOnSAItem>(customerOnSas.Count)
         };
 
-        foreach (var customerOnSa in customerOnSas)
+        foreach (var customerOnSa in customerOnSas.Where(t => (t.CustomerIdentifiers?.Any() ?? false)))
         {
             var getGeneralDocumentRequest = new GetGeneralDocumentRequest
             {
