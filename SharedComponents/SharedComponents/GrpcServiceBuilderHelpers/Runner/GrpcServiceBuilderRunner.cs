@@ -65,7 +65,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
                     options.MaxSendMessageSize = 4 * 1024 * 1024; // 4 MB
 
                     // alter options if needed
-                    _settings.AddGrpcServiceOptions(options);
+                    _settings.AddGrpcServiceOptions?.Invoke(options);
                 });
 
             // grpc reflection

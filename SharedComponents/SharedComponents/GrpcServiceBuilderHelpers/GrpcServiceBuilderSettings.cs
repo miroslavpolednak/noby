@@ -27,7 +27,7 @@ internal class GrpcServiceBuilderSettings
     public bool AddRollbackCapability;
     public Action<WebApplicationBuilder>? AddCustomServices;
     public GrpcServiceRequiredServicesBuilder? RequiredServicesBuilder;
-    public Action<GrpcServiceOptions> AddGrpcServiceOptions;
+    public Action<GrpcServiceOptions>? AddGrpcServiceOptions;
 
     public Action<IEndpointRouteBuilder>? MapGrpcServices;
 
