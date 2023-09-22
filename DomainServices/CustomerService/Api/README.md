@@ -19,4 +19,4 @@ grpcurl -insecure -d "{\"Identities\":[{\"identityId\":300527075,\"identitySchem
 
 
 ## run batch
-    dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CustomerService\Api\DomainServices.CustomerService.Api.csproj"
+dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CustomerService\Api\DomainServices.CustomerService.Api.csproj"

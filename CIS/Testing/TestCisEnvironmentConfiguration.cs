@@ -16,4 +16,6 @@ public sealed class TestCisEnvironmentConfiguration
     public string? InternalServicePassword { get; set; } = Constants.CisSecurityPassword;
 
     public bool DisableServiceDiscovery { get; set; } = true;
+
+    public bool DisableContractDescriptionPropagation { get; set; }
 }

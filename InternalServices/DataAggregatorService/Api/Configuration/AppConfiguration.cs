@@ -1,6 +1,6 @@
 ﻿namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
-public class DataAggregatorServiceConfiguration
+public class AppConfiguration
 {
     public bool UseCacheForConfiguration { get; set; }
 

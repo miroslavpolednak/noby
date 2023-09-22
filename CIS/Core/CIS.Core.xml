@@ -102,6 +102,11 @@
             </summary>
             <example>passw0rd</example>
         </member>
+        <member name="P:CIS.Core.Configuration.ICisEnvironmentConfiguration.DisableContractDescriptionPropagation">
+            <summary>
+            Nastavením na TRUE se vypne Swagger / gRPC Reflection
+            </summary>
+        </member>
         <member name="T:CIS.Core.Configuration.ICorsConfiguration">
             <summary>
             Nastavení CORS pro REST/Webapi projekty.

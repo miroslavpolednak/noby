@@ -1,85 +1,42 @@
-using CIS.Infrastructure.gRPC;
+using CIS.Infrastructure.Messaging;
 using CIS.Infrastructure.StartupExtensions;
-using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Security;
-using DomainServices.CustomerService.Api.Extensions;
-using CIS.InternalServices;
-using ExternalServices;
-using DomainServices.CustomerService.Api.Endpoints;
-using Serilog;
+using DomainServices.CustomerService.ExternalServices;
+using global::ExternalServices;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
+SharedComponents.GrpcServiceBuilder
+    .CreateGrpcService(args, typeof(Program))
+    .AddApplicationConfiguration<DomainServices.CustomerService.Api.Configuration.AppConfiguration>()
+    .AddCustomServices((builder, appConfiguration) =>
+    {
+        appConfiguration.Validate();
 
-//TODO workaround until .NET6 UseWindowsService() will work with WebApplication
-var webAppOptions = runAsWinSvc
-    ?
-    new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
-    :
-    new WebApplicationOptions { Args = args };
-var builder = WebApplication.CreateBuilder(webAppOptions);
+        builder.Services.AddDapper(builder.Configuration.GetConnectionString("KonsDb")!);
 
-var log = builder.CreateStartupLogger();
+        builder.AddExternalService<DomainServices.CustomerService.ExternalServices.CustomerManagement.V2.ICustomerManagementClient>();
+        builder.AddExternalService<DomainServices.CustomerService.ExternalServices.Contacts.V1.IContactClient>();
+        builder.AddExternalService<DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient>();
+        builder.AddExternalService<DomainServices.CustomerService.ExternalServices.CustomerProfile.V1.ICustomerProfileClient>();
+        builder.AddExternalService<DomainServices.CustomerService.ExternalServices.Kyc.V1.IKycClient>();
+        builder.AddExternalService<DomainServices.CustomerService.ExternalServices.Address.V2.ICustomerAddressServiceClient>();
+        builder.AddExternalService<ExternalServices.MpHome.V1.IMpHomeClient>();
 
-try
-{
-    #region register builder.Services
-    builder.Services.AddAttributedServices(typeof(Program));
-
-    // globalni nastaveni prostredi
-    builder
-        .AddCisCoreFeatures()
-        .AddCisEnvironmentConfiguration();
-
-    builder
-        // logging 
-        .AddCisLogging()
-        .AddCisTracing()
-        // authentication
-        .AddCisServiceAuthentication()
-        // add self
-        .AddCustomerService()
-        // add external svc
-        .AddExternalService<ExternalServices.MpHome.V1.IMpHomeClient>()
-        .Services
-        // add grpc infrastructure
-            .AddCisGrpcInfrastructure(typeof(Program))
-            .AddGrpcReflection()
-            .AddGrpc(options =>
-            {
-                options.Interceptors.Add<GenericServerExceptionInterceptor>();
-            });
-
-    // add HC
-    builder.AddCisGrpcHealthChecks();
-    #endregion register builder.Services
-
-    // kestrel configuration
-    builder.UseKestrelWithCustomConfiguration();
-
-    // BUILD APP
-    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-    var app = builder.Build();
-    log.ApplicationBuilt();
-
-    app.UseServiceDiscovery();
-    app.UseRouting();
-
-    app.UseAuthentication();
-    app.UseAuthorization();
-    app.UseCisServiceUserContext();
-
-    app.MapCisGrpcHealthChecks();
-    app.MapGrpcReflectionService(); 
-    app.MapGrpcService<CustomerService>();
-
-    log.ApplicationRun();
-    app.Run();
-}
-catch (Exception ex)
-{
-    log.CatchedException(ex);
-}
-finally
-{
-    LoggingExtensions.CloseAndFlush();
-}
+        builder.AddCisMessaging()
+            .AddKafka()
+            .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyCreated.PartyCreatedConsumer>()
+            .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyUpdated.PartyUpdatedConsumer>()
+            .AddConsumerTopicJson<DomainServices.CustomerService.Api.Messaging.Abstraction.ICustomerManagementEvent>(appConfiguration.CustomerManagementEventTopic)
+            .Build();
+    })
+    .AddRequiredServices(services =>
+    {
+        services
+            .AddCodebookService()
+            .AddHouseholdService()
+            .AddSalesArrangementService()
+            .AddCaseService();
+    })
+    .MapGrpcServices(app =>
+    {
+        app.MapGrpcService<DomainServices.CustomerService.Api.Endpoints.CustomerService>();
+    })
+    .Run();

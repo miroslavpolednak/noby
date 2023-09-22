@@ -23,7 +23,7 @@ try
     builder.Services.AddAttributedServices(typeof(NOBY.Services.IServicesAssembly), typeof(NOBY.Api.IApiAssembly));
 
     // add CIS pipeline
-    builder.AddCisEnvironmentConfiguration();
+    var envConfiguration = builder.AddCisEnvironmentConfiguration();
     builder
         .AddCisCoreFeatures()
         .AddCisWebApiCors()
@@ -70,8 +70,10 @@ try
     builder.AddNobyAuthentication(appConfiguration);
 
     // swagger
-    if (appConfiguration.EnableSwaggerUi)
+    if (!envConfiguration.DisableContractDescriptionPropagation)
+    {
         builder.AddFomsSwagger();
+    }
 
     // podpora SPA
     builder.Services.AddSpaStaticFiles(configuration =>
@@ -104,8 +106,10 @@ try
         .UseNobyHealthChecks();
 
     // swagger
-    if (appConfiguration.EnableSwaggerUi)
+    if (!envConfiguration.DisableContractDescriptionPropagation)
+    {
         app.UseNobySwagger();
+    }
 
     log.ApplicationRun();
     app.Run();

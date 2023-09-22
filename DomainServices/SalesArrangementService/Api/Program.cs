@@ -1,48 +1,25 @@
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.SalesArrangementService.Api;
-using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Security;
-using DomainServices;
-using CIS.InternalServices;
-using DomainServices.SalesArrangementService.Api.Endpoints;
-using Serilog;
-using CIS.Infrastructure.Audit;
+using ExternalServices;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
+SharedComponents.GrpcServiceBuilder
+    .CreateGrpcService(args, typeof(Program))
+    .AddCustomServices(builder =>
+    {
+        // EAS svc
+        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
 
-//TODO workaround until .NET6 UseWindowsService() will work with WebApplication
-var webAppOptions = runAsWinSvc
-    ?
-    new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
-    :
-    new WebApplicationOptions { Args = args };
-var builder = WebApplication.CreateBuilder(webAppOptions);
+        // dbcontext
+        builder.AddEntityFramework<DomainServices.SalesArrangementService.Api.Database.SalesArrangementServiceDbContext>();
+        builder.AddEntityFramework<DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.DocumentArchiveServiceDbContext>(connectionStringKey: "documentArchiveDb");
 
-var log = builder.CreateStartupLogger();
-
-try
-{
-    #region register builder.Services
-    builder.Services.AddAttributedServices(typeof(Program));
-
-    // globalni nastaveni prostredi
-    builder
-        .AddCisCoreFeatures()
-        .AddCisEnvironmentConfiguration();
-
-    builder
-        // logging 
-        .AddCisLogging()
-        .AddCisTracing()
-        .AddCisAudit()
-        // authentication
-        .AddCisServiceAuthentication()
-        // add self
-        .AddSalesArrangementService()
-        // add services
-        .Services
-            // add CIS services
-            .AddCisServiceDiscovery()
+        // background svc
+        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckJob>();
+        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelCase.CancelCaseJob>();
+    })
+    .AddErrorCodeMapper(DomainServices.SalesArrangementService.Api.ErrorCodeMapper.Init())
+    .AddRequiredServices(services =>
+    {
+        services
             .AddCaseService()
             .AddCodebookService()
             .AddOfferService()
@@ -53,49 +30,13 @@ try
             .AddRealEstateValuationService()
             .AddDocumentGeneratorService()
             .AddDataAggregatorService()
-            .AddRealEstateValuationService()
-            // add grpc infrastructure
-            .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-            .AddGrpcReflection()
-            .AddGrpc(options =>
-            {
-                options.Interceptors.Add<GenericServerExceptionInterceptor>();
-            });
-
-    // add HC
-    builder.AddCisGrpcHealthChecks();
-    #endregion register builder.Services
-
-    // kestrel configuration
-    builder.UseKestrelWithCustomConfiguration();
-
-    // BUILD APP
-    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-    var app = builder.Build();
-    log.ApplicationBuilt();
-
-    app.UseServiceDiscovery();
-    app.UseRouting();
-
-    app.UseAuthentication();
-    app.UseAuthorization();
-    app.UseCisServiceUserContext();
-
-    app.MapCisGrpcHealthChecks();
-    app.MapGrpcReflectionService();
-    app.MapGrpcService<SalesArrangementService>();
-
-    log.ApplicationRun();
-    app.Run();
-}
-catch (Exception ex)
-{
-    log.CatchedException(ex);
-}
-finally
-{
-    LoggingExtensions.CloseAndFlush();
-}
+            .AddRealEstateValuationService();
+    })
+    .MapGrpcServices(app =>
+    {
+        app.MapGrpcService<DomainServices.SalesArrangementService.Api.Endpoints.SalesArrangementService>();
+    })
+    .Run();
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

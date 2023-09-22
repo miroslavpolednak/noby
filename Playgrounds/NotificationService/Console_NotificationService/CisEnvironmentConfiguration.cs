@@ -15,5 +15,7 @@ namespace Console_NotificationService
         public string? InternalServicesLogin { get; set; }
 
         public string? InternalServicePassword { get; set; }
+
+        public bool DisableContractDescriptionPropagation { get; set; }
     }
 }
