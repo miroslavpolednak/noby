@@ -1,4 +1,4 @@
-﻿namespace DomainServices.DocumentArchiveService.Api;
+﻿namespace DomainServices.DocumentArchiveService.Api.Configuration;
 
 internal static class AppConfigurationExtensions
 {

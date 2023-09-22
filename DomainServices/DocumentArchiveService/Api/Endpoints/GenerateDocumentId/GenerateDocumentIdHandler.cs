@@ -8,7 +8,7 @@ namespace DomainServices.DocumentArchiveService.Api.Endpoints.GenerateDocumentId
 internal sealed class GenerateDocumentIdHandler
     : IRequestHandler<GenerateDocumentIdRequest, Contracts.GenerateDocumentIdResponse>
 {
-    private readonly AppConfiguration _configuration;
+    private readonly Configuration.AppConfiguration _configuration;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
     private readonly IDocumentSequenceRepository _documentSequenceRepository;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
@@ -16,7 +16,7 @@ internal sealed class GenerateDocumentIdHandler
     public GenerateDocumentIdHandler(
         IDocumentSequenceRepository documentSequenceRepository,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        AppConfiguration configuration,
+        Configuration.AppConfiguration configuration,
         ICisEnvironmentConfiguration cisEnvironment)
     {
         _documentSequenceRepository = documentSequenceRepository;
