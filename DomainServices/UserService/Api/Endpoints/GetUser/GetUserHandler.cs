@@ -45,7 +45,7 @@ internal sealed class GetUserHandler
             {
                 FirstName = dbIdentities.firstname ?? "",
                 LastName = dbIdentities.surname ?? "",
-                Cin = dbIdentities.ic,
+                Cin = string.IsNullOrWhiteSpace(dbIdentities.ic) ? GetDefaultCustomerIdentificationNumber(dbIdentities) : dbIdentities.ic,
                 Cpm = dbIdentities.cpm,
                 Icp = dbIdentities.icp,
                 DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}".Trim(), //Trim because some users have full name only in the Surname field
@@ -132,6 +132,17 @@ internal sealed class GetUserHandler
                 Identity = dbIdentities.kbad,
                 IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.Kbad
             });
+    }
+
+    private static string GetDefaultCustomerIdentificationNumber(DbUserIdentity dbIdentities)
+    {
+        if (!string.IsNullOrWhiteSpace(dbIdentities.kbad))
+            return "45317054";
+
+        if (!string.IsNullOrWhiteSpace(dbIdentities.mpad))
+            return "63998017";
+
+        return string.Empty;
     }
 
     private const int _minutesInCache = 30;
