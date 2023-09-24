@@ -22,5 +22,7 @@ public class FormInstanceInterface
 
     public string? JsonDataClob { get; set; }
 
+    public string FormIdentifier { get; set; } = null!;
+
     public DocumentInterface? Document { get; set; }
 }

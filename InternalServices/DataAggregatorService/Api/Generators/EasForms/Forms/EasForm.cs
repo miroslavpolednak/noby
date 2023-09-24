@@ -27,6 +27,4 @@ internal abstract class EasForm<TFormData> : IEasForm where TFormData : Aggregat
 
         return jsonObject.Serialize(_formData);
     }
-
-    protected string CalculateFormIdentifier(char prefix, EasFormType formType, long numberIdentifier) => $"{prefix}{formType}{numberIdentifier}";
 }

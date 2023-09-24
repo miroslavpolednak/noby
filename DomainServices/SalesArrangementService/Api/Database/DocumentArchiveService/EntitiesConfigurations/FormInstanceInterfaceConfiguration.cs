@@ -49,5 +49,9 @@ public class FormInstanceInterfaceConfiguration : IEntityTypeConfiguration<FormI
         builder.Property(e => e.JsonDataClob)
        .HasColumnName("JSON_DATA_CLOB")
        .HasColumnType("varchar(max)");
+
+        builder.Property(e => e.FormIdentifier)
+               .HasColumnName("FORM_IDENTIFIER")
+               .HasColumnType("varchar(25)");
     }
 }

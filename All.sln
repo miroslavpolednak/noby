@@ -418,6 +418,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00002-ColumnRenaming.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00002-ColumnRenaming.sql
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00003-AddFormInstanceInterface.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00003-AddFormInstanceInterface.sql
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00004-CreatedAtRename.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00004-CreatedAtRename.sql
+		DomainServices\DocumentArchiveService\DatabaseMigrations\00005-HFICH-8278_FormIdentifier.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00005-HFICH-8278_FormIdentifier.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{6D676B53-6AD7-4828-922D-B52A42B5AD4F}"
@@ -534,7 +535,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookServ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedComponents", "SharedComponents", "{D18ADD8E-CF48-40D2-8CC9-F8506417BF31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedComponents", "SharedComponents\SharedComponents\SharedComponents.csproj", "{CE9759B2-B9FB-4DC8-978E-F592FD3E158F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedComponents", "SharedComponents\SharedComponents\SharedComponents.csproj", "{CE9759B2-B9FB-4DC8-978E-F592FD3E158F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
