@@ -13,7 +13,7 @@ variables:
   runSonarQubeByVar: $[eq(lower(variables['USESONARQUBE']), 'true')]
   #runSonarQubeByBranch: $[variables['Build.SourceBranch'] -contains "sonar"]
   runSonarQubeByBranch: $[contains(variables['Build.SourceBranch'], 'sonar')]
-  runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'sonar'), eq(lower(variables['USESONARQUBE']), 'true'))]
+  runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), eq(lower(variables['USESONARQUBE']), 'true'))]
 
 
 steps:
