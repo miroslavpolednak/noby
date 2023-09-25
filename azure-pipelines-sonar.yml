@@ -11,7 +11,7 @@ pool:
 
 variables:
   runSonarQube: $[eq(lower(variables['USESONARQUBE']), 'true')]
-  runSonarQubeByBranch: $[lower($(Build.SourceBranch)) -contains "sonar"]
+  runSonarQubeByBranch: $[lower(variables['Build.SourceBranch']) -contains "sonar"]
 
 steps:
 #- task: InlinePowershell@1
