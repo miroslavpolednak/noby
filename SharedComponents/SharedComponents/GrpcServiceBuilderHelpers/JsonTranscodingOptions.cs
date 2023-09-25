@@ -6,6 +6,11 @@
 public sealed class JsonTranscodingOptions
 {
     /// <summary>
+    /// Pokud ma být Transcoding zapnut, nastavit na TRUE
+    /// </summary>
+    public bool Enabled { get; set; }
+
+    /// <summary>
     /// Název projektu v OpenApi
     /// </summary>
     public string? OpenApiTitle { get; set; }
@@ -29,6 +34,17 @@ public sealed class JsonTranscodingOptions
     {
         OpenApiXmlCommentsPaths ??= new List<string>();
         OpenApiXmlCommentsPaths.Add(path);
+
+        return this;
+    }
+
+    /// <summary>
+    /// Přidá cestu k souboru z AppContext.BaseDirectory s XML dokumentací pro OpenApi
+    /// </summary>
+    public JsonTranscodingOptions AddOpenApiXmlCommentFromBaseDirectory(string filename)
+    {
+        OpenApiXmlCommentsPaths ??= new List<string>();
+        OpenApiXmlCommentsPaths.Add(Path.Combine(AppContext.BaseDirectory, filename));
 
         return this;
     }

@@ -8,7 +8,18 @@ using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .AddApplicationConfiguration<DomainServices.DocumentArchiveService.Api.Configuration.AppConfiguration>()
-    .AddCustomServices((builder, appConfiguration) =>
+    .AddGrpcServiceOptions(options =>
+    {
+        options.MaxReceiveMessageSize = 25 * 1024 * 1024; // 25 MB
+        options.MaxSendMessageSize = 25 * 1024 * 1024; // 25 MB
+    })
+    .EnableJsonTranscoding(options =>
+    {
+        options.OpenApiTitle = "DocumentArchive Service API";
+        options.AddOpenApiXmlCommentFromBaseDirectory("DomainServices.DocumentArchiveService.xml");
+    })
+    .AddErrorCodeMapper(DomainServices.DocumentArchiveService.Api.ErrorCodeMapper.Init())
+    .Build((builder, appConfiguration) =>
     {
         if (appConfiguration?.ServiceUser2LoginBinding is null)
             throw new CisConfigurationNotFound("AppConfiguration");
@@ -26,18 +37,6 @@ SharedComponents.GrpcServiceBuilder
         // dbcontext
         builder.AddEntityFramework<DomainServices.DocumentArchiveService.Api.Database.DocumentArchiveDbContext>(connectionStringKey: "default");
     })
-    .AddGrpcServiceOptions(options =>
-    {
-        options.MaxReceiveMessageSize = 25 * 1024 * 1024; // 25 MB
-        options.MaxSendMessageSize = 25 * 1024 * 1024; // 25 MB
-    })
-    .EnableJsonTranscoding(options =>
-    {
-        options.OpenApiTitle = "DocumentArchive Service API";
-        options.AddOpenApiXmlComment(Path.Combine(AppContext.BaseDirectory, "DomainServices.DocumentArchiveService.xml"));
-    })
-    .AddErrorCodeMapper(DomainServices.DocumentArchiveService.Api.ErrorCodeMapper.Init())
-    .SkipRequiredServices()
     .MapGrpcServices(app =>
     {
         app.MapGrpcService<DomainServices.DocumentArchiveService.Api.Endpoints.DocumentArchiveServiceGrpc>();

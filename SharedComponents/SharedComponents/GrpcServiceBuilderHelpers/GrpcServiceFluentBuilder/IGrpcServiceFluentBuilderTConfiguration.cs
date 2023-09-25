@@ -16,12 +16,12 @@ public interface IGrpcServiceFluentBuilder<TConfiguration>
     /// <summary>
     /// Možnost registrace vlastních services nebo dalších dependences, které je potřeba registrovat do DI kontajneru.
     /// </summary>
-    IGrpcServiceFluentBuilder<TConfiguration> AddCustomServices(Action<WebApplicationBuilder, TConfiguration> services);
+    IGrpcServiceFluentBuilderStage2<TConfiguration> Build(Action<WebApplicationBuilder, TConfiguration> services);
 
     /// <summary>
     /// Možnost registrace vlastních services nebo dalších dependences, které je potřeba registrovat do DI kontajneru.
     /// </summary>
-    IGrpcServiceFluentBuilder<TConfiguration> AddCustomServices(Action<WebApplicationBuilder> services);
+    IGrpcServiceFluentBuilderStage2<TConfiguration> Build(Action<WebApplicationBuilder> services);
 
     /// <summary>
     /// Registruje distribuovanou cache z CIS frameworku
@@ -36,12 +36,12 @@ public interface IGrpcServiceFluentBuilder<TConfiguration>
     /// <summary>
     /// Registrace doménových nebo interních služeb.
     /// </summary>
-    IGrpcServiceFluentBuilderStage2<TConfiguration> AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder, ICisEnvironmentConfiguration> serviceBuilder);
+    IGrpcServiceFluentBuilder<TConfiguration> AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder, ICisEnvironmentConfiguration> serviceBuilder);
 
     /// <summary>
     /// Registrace doménových nebo interních služeb.
     /// </summary>
-    IGrpcServiceFluentBuilderStage2<TConfiguration> AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder> serviceBuilder);
+    IGrpcServiceFluentBuilder<TConfiguration> AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder> serviceBuilder);
 
     /// <summary>
     /// Přidá podporu rollbacku z CIS frameworku
@@ -55,7 +55,7 @@ public interface IGrpcServiceFluentBuilder<TConfiguration>
     IGrpcServiceFluentBuilder<TConfiguration> EnableJsonTranscoding(Action<JsonTranscodingOptions> options);
 
     /// <summary>
-    /// Pokud není potřeba registrace žádné doménové nebo interní služby, je to nutné explicitně vyjádřit touto metodou.
+    /// Ukončuje část konfigurace DI kontajneru a vrací builder pro vytváření middleware konfigurace.
     /// </summary>
-    IGrpcServiceFluentBuilderStage2<TConfiguration> SkipRequiredServices();
+    IGrpcServiceFluentBuilderStage2<TConfiguration> Build();
 }

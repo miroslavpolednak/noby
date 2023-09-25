@@ -7,7 +7,12 @@ using DomainServices.CodebookService.ExternalServices;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
-    .AddCustomServices(builder =>
+    .EnableJsonTranscoding(options =>
+    {
+        options.OpenApiTitle = "Codebook Service API";
+        options.AddOpenApiXmlCommentFromBaseDirectory("DomainServices.CodebookService.Contracts.xml");
+    })
+    .Build(builder =>
     {
         const string _sqlQuerySelect = "SELECT SqlQueryId, SqlQueryText, DatabaseProvider FROM dbo.SqlQuery";
 
@@ -32,12 +37,6 @@ SharedComponents.GrpcServiceBuilder
         builder.AddExternalService<IAcvEnumServiceClient>();
         builder.AddExternalService<IRDMClient>();
     })
-    .EnableJsonTranscoding(options =>
-    {
-        options.OpenApiTitle = "Codebook Service API";
-        options.AddOpenApiXmlComment(Path.Combine(AppContext.BaseDirectory, "DomainServices.CodebookService.Contracts.xml"));
-    })
-    .SkipRequiredServices()
     .MapGrpcServices(app =>
     {
         app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.CodebookService>();

@@ -11,7 +11,19 @@ SharedComponents.GrpcServiceBuilder
     {
         options.MaxReceiveMessageSize = 25 * 1024 * 1024; // 25 MB
     })
-    .AddCustomServices((builder, appConfiguration) =>
+    .AddErrorCodeMapper(DomainServices.RealEstateValuationService.Api.ErrorCodeMapper.Init())
+    .AddRequiredServices(services =>
+    {
+        services
+            .AddCodebookService()
+            .AddUserService()
+            .AddProductService()
+            .AddSalesArrangementService()
+            .AddCustomerService()
+            .AddCaseService()
+            .AddOfferService();
+    })
+    .Build((builder, appConfiguration) =>
     {
         appConfiguration.Validate();
 
@@ -28,18 +40,6 @@ SharedComponents.GrpcServiceBuilder
             .AddConsumer<DomainServices.RealEstateValuationService.Api.Messaging.InformationRequestProcessChanged.InformationRequestProcessChangedConsumer>()
             .AddConsumerTopicAvro<ISbWorkflowProcessEvent>(appConfiguration.SbWorkflowProcessTopic!)
             .Build();
-    })
-    .AddErrorCodeMapper(DomainServices.RealEstateValuationService.Api.ErrorCodeMapper.Init())
-    .AddRequiredServices(services =>
-    {
-        services
-            .AddCodebookService()
-            .AddUserService()
-            .AddProductService()
-            .AddSalesArrangementService()
-            .AddCustomerService()
-            .AddCaseService()
-            .AddOfferService();
     })
     .MapGrpcServices(app =>
     {

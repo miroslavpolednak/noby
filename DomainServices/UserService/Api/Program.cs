@@ -4,21 +4,21 @@ using DomainServices.UserService.Api.Database;
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .AddRollbackCapability()
-    .AddCustomServices(builder =>
-    {
-        // dbcontext
-        builder.AddEntityFramework<UserServiceDbContext>();
-    })
+    
     .AddDistributedCache()
     .AddErrorCodeMapper(DomainServices.UserService.Api.ErrorCodeMapper.Init())
     .EnableJsonTranscoding(options =>
     {
         options.OpenApiTitle = "User Service API";
         options
-            .AddOpenApiXmlComment(Path.Combine(AppContext.BaseDirectory, "DomainServices.UserService.Contracts.xml"))
-            .AddOpenApiXmlComment(Path.Combine(AppContext.BaseDirectory, "CIS.Infrastructure.gRPC.CisTypes.xml"));
+            .AddOpenApiXmlComment("DomainServices.UserService.Contracts.xml")
+            .AddOpenApiXmlComment("CIS.Infrastructure.gRPC.CisTypes.xml");
     })
-    .SkipRequiredServices()
+    .Build(builder =>
+    {
+        // dbcontext
+        builder.AddEntityFramework<UserServiceDbContext>();
+    })
     .MapGrpcServices(app =>
     {
         app.MapGrpcService<DomainServices.UserService.Api.Endpoints.UserService>();
