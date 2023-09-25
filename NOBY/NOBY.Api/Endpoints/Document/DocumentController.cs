@@ -7,7 +7,7 @@ using NOBY.Api.Endpoints.Document.Shared;
 namespace NOBY.Api.Endpoints.Document;
 
 [ApiController]
-[Route("api")]
+[Route("api/document")]
 public class DocumentController : ControllerBase
 {
     private readonly DocumentManager _documentManager;
@@ -27,7 +27,7 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=01EE50D6-556E-47e8-ADD8-673A844864C2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
-    [HttpGet("document/template/offer/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("offer/sales-arrangement/{salesArrangementId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
@@ -55,7 +55,7 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
-    [HttpGet("document/template/calculation/offer/{offerId:int}")]
+    [HttpGet("calculation/offer/{offerId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
@@ -76,7 +76,7 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
-    [HttpGet("document/template/payment-schedule/offer/{offerId:int}")]
+    [HttpGet("payment-schedule/offer/{offerId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
@@ -97,7 +97,7 @@ public class DocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91D71957-A737-4ee8-9EFC-A3B62878153C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">Customer on SA ID</param>
-    [HttpGet("document/template/cancel-confirmation/customer-on-sa/{customerOnSAId}")]
+    [HttpGet("cancel-confirmation/customer-on-sa/{customerOnSAId}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [Produces(MediaTypeNames.Application.Pdf)]
