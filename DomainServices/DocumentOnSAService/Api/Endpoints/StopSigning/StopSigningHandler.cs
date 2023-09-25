@@ -7,6 +7,7 @@ using DomainServices.SalesArrangementService.Clients;
 using ExternalServices.ESignatures.V1;
 using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;
+using Source = DomainServices.DocumentOnSAService.Api.Database.Enums.Source;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StopSigning;
 
@@ -57,6 +58,9 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
                 new(AuditConstants.ProductNamesForm, documentOnSa.FormId),
             }
         );
+
+        if (documentOnSa.Source == Source.Workflow)
+            return new Empty();
 
         // SA state
         if (salesArrangement.State == (int)SalesArrangementStates.InSigning // 7

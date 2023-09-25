@@ -33,6 +33,7 @@ using System.Text;
 using Newtonsoft.Json;
 using static DomainServices.HouseholdService.Contracts.GetCustomerChangeMetadataResponse.Types;
 using _CustomerService = DomainServices.CustomerService.Contracts;
+using Source = DomainServices.DocumentOnSAService.Api.Database.Enums.Source;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocument;
 
@@ -159,6 +160,9 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         LogAuditMessage(documentOnSa, salesArrangement);
+
+        if (documentOnSa.Source == Source.Workflow)
+            return new Empty();
 
         // SA state
         if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
