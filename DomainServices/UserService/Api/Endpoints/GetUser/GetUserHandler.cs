@@ -45,7 +45,7 @@ internal sealed class GetUserHandler
             {
                 FirstName = dbIdentities.firstname ?? "",
                 LastName = dbIdentities.surname ?? "",
-                Cin = string.IsNullOrWhiteSpace(dbIdentities.ic) ? GetDefaultCustomerIdentificationNumber(dbIdentities) : dbIdentities.ic,
+                Cin = string.IsNullOrWhiteSpace(dbAttributes?.companyCin) ? GetDefaultCustomerIdentificationNumber(dbIdentities) : dbAttributes.companyCin,
                 Cpm = dbIdentities.cpm,
                 Icp = dbIdentities.icp,
                 DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}".Trim(), //Trim because some users have full name only in the Surname field

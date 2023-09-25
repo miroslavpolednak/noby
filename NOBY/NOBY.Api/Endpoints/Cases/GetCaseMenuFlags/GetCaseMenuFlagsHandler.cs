@@ -48,17 +48,31 @@ internal sealed class GetCaseMenuFlagsHandler
 
     private async Task<GetCaseMenuFlagsItem> getCovenants(long caseId, GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
     {
-        var response = new GetCaseMenuFlagsItem
-        {
-            IsActive = false
-        };
+        var response = new GetCaseMenuFlagsItem();
 
-        try
+        if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
         {
-            var productInstance = await _productService.GetMortgage(caseId, cancellationToken);
-            response.IsActive = productInstance.Mortgage?.ContractSignedDate != null;
+            try
+            {
+                var productInstance = await _productService.GetMortgage(caseId, cancellationToken);
+                response.IsActive = productInstance.Mortgage?.ContractSignedDate != null;
+            }
+            catch { } // je v poradku, ze toto nekdy spadne - produkt nemusi byt v KonsDb
         }
-        catch { } // je v poradku, ze toto nekdy spadne - produkt nemusi byt v KonsDb
+        else
+        {
+            response.IsActive = false;
+        }
+
+        return response;
+    }
+
+    private async Task<GetCaseMenuFlagsItem> getDocuments(long caseId, GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
+    {
+        var getDocumentsInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(documentsInQueue);
+        var documentsInQueueFiltered = await _documentHelper.FilterDocumentsVisibleForKb(getDocumentsInQueueMetadata, cancellationToken);
+
+        var response = new GetCaseMenuFlagsItem();
 
         if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
         {
@@ -73,38 +87,6 @@ internal sealed class GetCaseMenuFlagsHandler
         }
 
         return response;
-    }
-
-    private async Task<GetCaseMenuFlagsItem> getDocuments(long caseId, GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
-    {
-        var getDocumentsInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(documentsInQueue);
-        var documentsInQueueFiltered = await _documentHelper.FilterDocumentsVisibleForKb(getDocumentsInQueueMetadata, cancellationToken);
-
-        return new()
-        {
-            Flag = getDocumentsFlag(documentsInQueueFiltered.ToList()),
-            IsActive = true
-        };
-    }
-
-    private static GetCaseMenuFlagsTypes getDocumentsFlag(IEnumerable<DocumentsMetadata> documentsInQueueFiltered)
-    {
-        if (documentsInQueueFiltered.Any(s => s.UploadStatus == UploadStatuses.Error))
-        {
-            return GetCaseMenuFlagsTypes.ExclamationMark;
-        }
-        else if (documentsInQueueFiltered.Any(s => s.UploadStatus == UploadStatuses.InProgress))
-        {
-            return GetCaseMenuFlagsTypes.InProcessing;
-        }
-        else if (!documentsInQueueFiltered.Any())
-        {
-            return GetCaseMenuFlagsTypes.NoFlag;
-        }
-        else
-        {
-            throw new ArgumentException("This state isn't supported");
-        }
     }
 
     private readonly ICurrentUserAccessor _currentUserAccessor;

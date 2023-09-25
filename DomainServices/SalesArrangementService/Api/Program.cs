@@ -22,6 +22,7 @@ SharedComponents.GrpcServiceBuilder
         services
             .AddCaseService()
             .AddCodebookService()
+            .AddCustomerService()
             .AddOfferService()
             .AddUserService()
             .AddHouseholdService()
