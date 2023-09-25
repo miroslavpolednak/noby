@@ -25,6 +25,7 @@ SharedComponents.GrpcServiceBuilder
             .AddOfferService()
             .AddUserService()
             .AddHouseholdService()
+            .AddCustomerService()
             .AddDocumentArchiveService()
             .AddDocumentOnSAService()
             .AddRealEstateValuationService()
