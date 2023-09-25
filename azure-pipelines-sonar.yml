@@ -21,4 +21,9 @@ steps:
   displayName: Display variables
   inputs:
     targetType: 'inline'
-    script: 'Write-Host "RunSonarQube: $(runSonarQube)"' 
+    #script: 'Write-Host "RunSonarQube: $(runSonarQube)"' 
+    script: |
+      # Write your PowerShell commands here.
+      Write-Host "RunSonarQube: $(runSonarQube)"
+      Write-Host "SourceBranchName: $(Build.SourceBranchName)"
+      Write-Host "SourceBranch: $(Build.SourceBranch)"
