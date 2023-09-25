@@ -3,16 +3,28 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using NOBY.Infrastructure.Configuration;
 
 namespace NOBY.Services.FileAntivirus;
 
 [TransientService, AsImplementedInterfacesService]
-internal sealed class FileAntivirusService
+internal sealed class IcapFileAntivirusService
     : IFileAntivirusService
 {
+    private readonly string _ipAddress;
+    private readonly int _port;
+    private readonly ILogger<IcapFileAntivirusService> _logger;
+
+    public IcapFileAntivirusService(AppConfiguration configuration, ILogger<IcapFileAntivirusService> logger)
+    {
+        _logger = logger;
+        _ipAddress = configuration.IcapAntivirus?.IpAddress ?? throw new CisConfigurationException(0, "ICAP antivirus configuration not found");
+        _port = configuration.IcapAntivirus.Port;
+    }
+
     public async Task<IFileAntivirusService.CheckFileResults> CheckFile(IFormFile file)
     {
-        ICAP icap = new ICAP("10.85.0.200", 1344, "avscan");
+        ICAP icap = new ICAP(_ipAddress, _port, "avscan");
         using (var ms = new MemoryStream())
         {
             file.CopyTo(ms);
@@ -20,10 +32,15 @@ internal sealed class FileAntivirusService
             try
             {
                 _logger.LogDebug($"Start scanning {file.FileName}");
-                var scanResult = icap.scanFile(ms);
+                var scanResult = icap.ScanFile(ms);
                 _logger.LogDebug($"Scanning {file.FileName} finished with {scanResult}");
 
                 return scanResult ? IFileAntivirusService.CheckFileResults.Passed : IFileAntivirusService.CheckFileResults.Failed;
+            }
+            catch (ICAP.ICAPException ex)
+            {
+                _logger.LogWarning($"Scanning {file.FileName} timeouted: {ex.Message}");
+                return IFileAntivirusService.CheckFileResults.Timeouted;
             }
             catch (Exception ex)
             {
@@ -121,7 +138,7 @@ internal sealed class FileAntivirusService
         /// <exception cref="ICAPException">Thrown when error occurs in communication with server</exception>
         /// <exception cref="IOException">Thrown when error occurs in reading file</exception>
         /// <exception cref="SocketException">Thrown if socket is closed unexpectedly.</exception>
-        public bool scanFile(Stream fileStream)
+        public bool ScanFile(Stream fileStream)
         {
             int fileSize = (int)fileStream.Length;
 
@@ -216,7 +233,6 @@ internal sealed class FileAntivirusService
             if (tempString != null)
             {
                 status = Convert.ToInt16(tempString);
-
 
                 if (status == 204) { return true; } //Unmodified
 
@@ -347,12 +363,5 @@ internal sealed class FileAntivirusService
             //fileStream.Close();
             //throw new NotImplementedException();
         }
-    }
-
-    private readonly ILogger<FileAntivirusService> _logger;
-
-    public FileAntivirusService(ILogger<FileAntivirusService> logger)
-    {
-        _logger = logger;
     }
 }

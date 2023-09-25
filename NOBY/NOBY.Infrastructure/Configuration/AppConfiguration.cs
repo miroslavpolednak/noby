@@ -26,4 +26,12 @@ public sealed class AppConfiguration
     /// ID prostredi pro ktere se ma nahrat config pro MPSS.Security.dll
     /// </summary>
     public int? MpssSecurityDllEnvironment { get; set; }
+
+    public IcapAntivirusConfiguration? IcapAntivirus { get; set; }
+
+    public sealed class IcapAntivirusConfiguration
+    {
+        public string IpAddress { get; set; } = string.Empty;
+        public int Port { get; set; }
+    }
 }
