@@ -10,10 +10,7 @@ pool:
   name: MPSS Common
 
 variables:
-  runSonarQubeByVar: $[eq(lower(variables['USESONARQUBE']), 'true')]
-  #runSonarQubeByBranch: $[variables['Build.SourceBranch'] -contains "sonar"]
-  runSonarQubeByBranch: $[contains(variables['Build.SourceBranch'], 'sonar')]
-  runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'sonAR'), eq(lower(variables['USESONARQUBE']), 'true'))]
+  runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), eq(lower(variables['USESONARQUBE']), 'true'))]
 
 
 steps:
@@ -27,8 +24,4 @@ steps:
     targetType: 'inline'
     #script: 'Write-Host "RunSonarQube: $(runSonarQube)"' 
     script: |
-      # Write your PowerShell commands here.
-      Write-Host "runSonarQubeByVar: $(runSonarQubeByVar)"
-      Write-Host "runSonarQubeByBranch: $(runSonarQubeByBranch)"
       Write-Host "RunSonarQube: $(runSonarQube)"
-      Write-Host "SourceBranchName: $(Build.SourceBranchName)"
