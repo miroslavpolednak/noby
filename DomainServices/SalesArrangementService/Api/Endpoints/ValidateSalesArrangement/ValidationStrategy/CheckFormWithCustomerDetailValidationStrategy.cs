@@ -112,7 +112,7 @@ internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangement
     }
 
     private static void ThrowValidationException() =>
-        throw new CisValidationException("Customer validation failed, check customers detail");
+        throw new CisValidationException(18087, "Customer validation failed, check customers detail");
 
     private static IEnumerable<Identity> GetCustomerIdentities(IEnumerable<CustomerOnSA> customersOnSa) =>
         customersOnSa.Select(c =>
