@@ -8,7 +8,7 @@ using NOBY.Infrastructure.ErrorHandling;
 
 namespace NOBY.Services.DocumentHelper;
 
-[TransientService, AsImplementedInterfacesService]
+[ScopedService, AsImplementedInterfacesService]
 internal sealed class DocumentHelperService
     : IDocumentHelperService
 {

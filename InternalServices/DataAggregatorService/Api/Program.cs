@@ -4,16 +4,6 @@ using CIS.InternalServices.DataAggregatorService.Api.Configuration;
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .AddApplicationConfiguration<CIS.InternalServices.DataAggregatorService.Api.Configuration.AppConfiguration>()
-    .AddCustomServices((builder, appConfiguration) =>
-    {
-        builder.Services.AddDapper(builder.Configuration.GetConnectionString("default")!);
-
-        if (appConfiguration.UseCacheForConfiguration)
-        {
-            builder.Services.AddMemoryCache();
-            builder.Services.Decorate<IConfigurationManager, CachedConfigurationManager>();
-        }
-    })
     .AddRequiredServices(services =>
     {
         services
@@ -26,6 +16,16 @@ SharedComponents.GrpcServiceBuilder
             .AddProductService()
             .AddHouseholdService()
             .AddDocumentOnSAService();
+    })
+    .Build((builder, appConfiguration) =>
+    {
+        builder.Services.AddDapper(builder.Configuration.GetConnectionString("default")!);
+
+        if (appConfiguration.UseCacheForConfiguration)
+        {
+            builder.Services.AddMemoryCache();
+            builder.Services.Decorate<IConfigurationManager, CachedConfigurationManager>();
+        }
     })
     .MapGrpcServices(app =>
     {

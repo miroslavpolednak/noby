@@ -23,7 +23,11 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
 
-        WorkflowHelpers.ValidateTaskManagePermission(taskDetail.TaskObject!.TaskTypeId, _currentUserAccessor);
+        WorkflowHelpers.ValidateTaskManagePermission(
+            taskDetail.TaskObject!.TaskTypeId,
+            taskDetail.TaskObject!.SignatureTypeId,
+            taskDetail.TaskObject!.PhaseTypeId,
+            _currentUserAccessor);
 
         List<string>? documentIds = new();
         var attachments = request.Attachments?

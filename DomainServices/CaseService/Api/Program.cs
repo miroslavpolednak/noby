@@ -12,7 +12,19 @@ SharedComponents.GrpcServiceBuilder
     .AddApplicationConfiguration<DomainServices.CaseService.Api.Configuration.AppConfiguration>()
     .AddRollbackCapability()
     .AddDistributedCache()
-    .AddCustomServices((builder, appConfiguration) =>
+    .AddErrorCodeMapper(DomainServices.CaseService.Api.ErrorCodeMapper.Init())
+    .AddRequiredServices(services =>
+    {
+        services
+            .AddRiskIntegrationService()
+            .AddSalesArrangementService()
+            .AddDocumentOnSAService()
+            .AddCodebookService()
+            .AddHouseholdService()
+            .AddProductService()
+            .AddUserService();
+    })
+    .Build((builder, appConfiguration) =>
     {
         appConfiguration.Validate();
 
@@ -38,18 +50,6 @@ SharedComponents.GrpcServiceBuilder
             .AddConsumerTopicAvro<ISbWorkflowProcessEvent>(appConfiguration.SbWorkflowProcessTopic!)
             .AddConsumerTopicAvro<ISbWorkflowInputProcessingEvent>(appConfiguration.SbWorkflowInputProcessingTopic!)
             .Build();
-    })
-    .AddErrorCodeMapper(DomainServices.CaseService.Api.ErrorCodeMapper.Init())
-    .AddRequiredServices(services =>
-    {
-        services
-            .AddRiskIntegrationService()
-            .AddSalesArrangementService()
-            .AddDocumentOnSAService()
-            .AddCodebookService()
-            .AddHouseholdService()
-            .AddProductService()
-            .AddUserService();
     })
     .MapGrpcServices(app =>
     {

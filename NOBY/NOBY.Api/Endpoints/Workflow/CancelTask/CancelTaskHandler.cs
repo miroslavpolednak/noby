@@ -16,7 +16,11 @@ internal sealed class CancelTaskHandler
         {
             throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
-        WorkflowHelpers.ValidateTaskManagePermission(task.TaskObject?.TaskTypeId, _currentUserAccessor);
+        WorkflowHelpers.ValidateTaskManagePermission(
+            task.TaskObject?.TaskTypeId,
+            task.TaskObject?.SignatureTypeId,
+            task.TaskObject?.PhaseTypeId,
+            _currentUserAccessor);
 
         await _caseService.CancelTask(request.CaseId, request.TaskIdSB, cancellationToken);
     }

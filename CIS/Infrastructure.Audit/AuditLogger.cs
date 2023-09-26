@@ -1,8 +1,6 @@
 ﻿using CIS.Core.Security;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
-using CIS.Infrastructure.Security;
-using CIS.Core;
 
 namespace CIS.Infrastructure.Audit;
 
@@ -51,9 +49,9 @@ internal sealed class AuditLogger
 
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly ICurrentUserAccessor _currentUser;
-    private readonly AuditLoggerInternal _helper;
+    private readonly IAuditLoggerInternal _helper;
 
-    public AuditLogger(AuditLoggerInternal helper, IHttpContextAccessor contextAccessor, ICurrentUserAccessor currentUser)
+    public AuditLogger(IAuditLoggerInternal helper, IHttpContextAccessor contextAccessor, ICurrentUserAccessor currentUser)
     {
         _helper = helper;
         _contextAccessor = contextAccessor;

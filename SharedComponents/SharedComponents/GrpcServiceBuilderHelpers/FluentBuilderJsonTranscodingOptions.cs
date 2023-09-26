@@ -3,8 +3,13 @@
 /// <summary>
 /// Nastavení pro gRPC - json transcoding
 /// </summary>
-public sealed class JsonTranscodingOptions
+public sealed class FluentBuilderJsonTranscodingOptions
 {
+    /// <summary>
+    /// Pokud ma být Transcoding zapnut, nastavit na TRUE
+    /// </summary>
+    public bool Enabled { get; set; }
+
     /// <summary>
     /// Název projektu v OpenApi
     /// </summary>
@@ -25,7 +30,7 @@ public sealed class JsonTranscodingOptions
     /// <summary>
     /// Přidá cestu k souboru s XML dokumentací pro OpenApi
     /// </summary>
-    public JsonTranscodingOptions AddOpenApiXmlComment(string path)
+    public FluentBuilderJsonTranscodingOptions AddOpenApiXmlComment(string path)
     {
         OpenApiXmlCommentsPaths ??= new List<string>();
         OpenApiXmlCommentsPaths.Add(path);
@@ -33,5 +38,16 @@ public sealed class JsonTranscodingOptions
         return this;
     }
 
-    internal JsonTranscodingOptions() { }
+    /// <summary>
+    /// Přidá cestu k souboru z AppContext.BaseDirectory s XML dokumentací pro OpenApi
+    /// </summary>
+    public FluentBuilderJsonTranscodingOptions AddOpenApiXmlCommentFromBaseDirectory(string filename)
+    {
+        OpenApiXmlCommentsPaths ??= new List<string>();
+        OpenApiXmlCommentsPaths.Add(Path.Combine(AppContext.BaseDirectory, filename));
+
+        return this;
+    }
+
+    internal FluentBuilderJsonTranscodingOptions() { }
 }

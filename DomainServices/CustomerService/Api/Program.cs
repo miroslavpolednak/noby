@@ -6,7 +6,15 @@ using global::ExternalServices;
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .AddApplicationConfiguration<DomainServices.CustomerService.Api.Configuration.AppConfiguration>()
-    .AddCustomServices((builder, appConfiguration) =>
+    .AddRequiredServices(services =>
+    {
+        services
+            .AddCodebookService()
+            .AddHouseholdService()
+            .AddSalesArrangementService()
+            .AddCaseService();
+    })
+    .Build((builder, appConfiguration) =>
     {
         appConfiguration.Validate();
 
@@ -26,14 +34,6 @@ SharedComponents.GrpcServiceBuilder
             .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyUpdated.PartyUpdatedConsumer>()
             .AddConsumerTopicJson<DomainServices.CustomerService.Api.Messaging.Abstraction.ICustomerManagementEvent>(appConfiguration.CustomerManagementEventTopic)
             .Build();
-    })
-    .AddRequiredServices(services =>
-    {
-        services
-            .AddCodebookService()
-            .AddHouseholdService()
-            .AddSalesArrangementService()
-            .AddCaseService();
     })
     .MapGrpcServices(app =>
     {

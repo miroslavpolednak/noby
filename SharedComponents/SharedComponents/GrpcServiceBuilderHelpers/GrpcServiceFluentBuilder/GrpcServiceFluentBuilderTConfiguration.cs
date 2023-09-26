@@ -14,7 +14,7 @@ internal sealed class GrpcServiceFluentBuilder<TConfiguration>
         return this;
     }
 
-    public IGrpcServiceFluentBuilder<TConfiguration> AddCustomServices(Action<WebApplicationBuilder, TConfiguration> services)
+    public IGrpcServiceFluentBuilderStage2<TConfiguration> Build(Action<WebApplicationBuilder, TConfiguration> services)
     {
         if (_settings.AddCustomServices is not null)
         {
@@ -22,10 +22,10 @@ internal sealed class GrpcServiceFluentBuilder<TConfiguration>
         }
 
         _settings.AddCustomServicesWithConfiguration = services;
-        return this;
+        return Build();
     }
 
-    public IGrpcServiceFluentBuilder<TConfiguration> EnableJsonTranscoding(Action<JsonTranscodingOptions> options)
+    public IGrpcServiceFluentBuilder<TConfiguration> EnableJsonTranscoding(Action<FluentBuilderJsonTranscodingOptions> options)
     {
         IntEnableJsonTranscoding(options);
         return this;
@@ -37,10 +37,10 @@ internal sealed class GrpcServiceFluentBuilder<TConfiguration>
         return this;
     }
 
-    public IGrpcServiceFluentBuilder<TConfiguration> AddCustomServices(Action<WebApplicationBuilder> services)
+    public IGrpcServiceFluentBuilderStage2<TConfiguration> Build(Action<WebApplicationBuilder> services)
     {
         IntAddCustomServices(services);
-        return this;
+        return Build();
     }
 
     public IGrpcServiceFluentBuilder<TConfiguration> AddErrorCodeMapper(CIS.Core.ErrorCodes.IErrorCodesDictionary validationMessages)
@@ -55,19 +55,19 @@ internal sealed class GrpcServiceFluentBuilder<TConfiguration>
         return this;
     }
 
-    public IGrpcServiceFluentBuilderStage2<TConfiguration> AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder> serviceBuilder)
+    public IGrpcServiceFluentBuilder<TConfiguration> AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder> serviceBuilder)
     {
         IntAddRequiredServices(serviceBuilder);
-        return new GrpcServiceFluentBuilderStage2<TConfiguration>(_settings);
+        return this;
     }
 
-    public IGrpcServiceFluentBuilderStage2<TConfiguration> AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder, ICisEnvironmentConfiguration> serviceBuilder)
+    public IGrpcServiceFluentBuilder<TConfiguration> AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder, ICisEnvironmentConfiguration> serviceBuilder)
     {
         IntAddRequiredServices(serviceBuilder);
-        return new GrpcServiceFluentBuilderStage2<TConfiguration>(_settings);
+        return this;
     }
 
-    public IGrpcServiceFluentBuilderStage2<TConfiguration> SkipRequiredServices()
+    public IGrpcServiceFluentBuilderStage2<TConfiguration> Build()
     {
         return new GrpcServiceFluentBuilderStage2<TConfiguration>(_settings);
     }

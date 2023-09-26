@@ -31,7 +31,7 @@ internal class GrpcServiceFluentBuilder
         return new GrpcServiceFluentBuilder<TConfiguration>(newSettings);
     }
 
-    public IGrpcServiceFluentBuilder EnableJsonTranscoding(Action<JsonTranscodingOptions> options)
+    public IGrpcServiceFluentBuilder EnableJsonTranscoding(Action<FluentBuilderJsonTranscodingOptions> options)
     {
         IntEnableJsonTranscoding(options);
         return this;
@@ -43,10 +43,10 @@ internal class GrpcServiceFluentBuilder
         return this;
     }
 
-    public IGrpcServiceFluentBuilder AddCustomServices(Action<WebApplicationBuilder> services)
+    public IGrpcServiceFluentBuilderStage2 Build(Action<WebApplicationBuilder> services)
     {
         IntAddCustomServices(services);
-        return this;
+        return Build();
     }
 
     public IGrpcServiceFluentBuilder AddErrorCodeMapper(CIS.Core.ErrorCodes.IErrorCodesDictionary validationMessages)
@@ -61,19 +61,19 @@ internal class GrpcServiceFluentBuilder
         return this;
     }
 
-    public IGrpcServiceFluentBuilderStage2 AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder> serviceBuilder)
+    public IGrpcServiceFluentBuilder AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder> serviceBuilder)
     {
         IntAddRequiredServices(serviceBuilder);
-        return new GrpcServiceFluentBuilderStage2(_settings);
+        return this;
     }
 
-    public IGrpcServiceFluentBuilderStage2 AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder, ICisEnvironmentConfiguration> serviceBuilder)
+    public IGrpcServiceFluentBuilder AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder, ICisEnvironmentConfiguration> serviceBuilder)
     {
         IntAddRequiredServices(serviceBuilder);
-        return new GrpcServiceFluentBuilderStage2(_settings);
+        return this;
     }
 
-    public IGrpcServiceFluentBuilderStage2 SkipRequiredServices()
+    public IGrpcServiceFluentBuilderStage2 Build()
     {
         return new GrpcServiceFluentBuilderStage2(_settings);
     }

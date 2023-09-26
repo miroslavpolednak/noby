@@ -24,7 +24,7 @@ public interface IGrpcServiceFluentBuilder
     /// <summary>
     /// Možnost registrace vlastních services nebo dalších dependences, které je potřeba registrovat do DI kontajneru.
     /// </summary>
-    IGrpcServiceFluentBuilder AddCustomServices(Action<WebApplicationBuilder> services);
+    IGrpcServiceFluentBuilderStage2 Build(Action<WebApplicationBuilder> services);
 
     /// <summary>
     /// Registruje distribuovanou cache z CIS frameworku
@@ -39,12 +39,12 @@ public interface IGrpcServiceFluentBuilder
     /// <summary>
     /// Registrace doménových nebo interních služeb.
     /// </summary>
-    IGrpcServiceFluentBuilderStage2 AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder, ICisEnvironmentConfiguration> serviceBuilder);
+    IGrpcServiceFluentBuilder AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder, ICisEnvironmentConfiguration> serviceBuilder);
 
     /// <summary>
     /// Registrace doménových nebo interních služeb.
     /// </summary>
-    IGrpcServiceFluentBuilderStage2 AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder> serviceBuilder);
+    IGrpcServiceFluentBuilder AddRequiredServices(Action<GrpcServiceRequiredServicesBuilder> serviceBuilder);
 
     /// <summary>
     /// Přidá podporu rollbacku z CIS frameworku
@@ -55,10 +55,10 @@ public interface IGrpcServiceFluentBuilder
     /// Přidá do aplikace gRPC / JSON Transcoding včetně SwaggerUI
     /// </summary>
     /// <param name="options">Možnost nastavení SwaggerUI, např. název API, XML komentáře...</param>
-    IGrpcServiceFluentBuilder EnableJsonTranscoding(Action<JsonTranscodingOptions> options);
+    IGrpcServiceFluentBuilder EnableJsonTranscoding(Action<FluentBuilderJsonTranscodingOptions> options);
 
     /// <summary>
-    /// Pokud není potřeba registrace žádné doménové nebo interní služby, je to nutné explicitně vyjádřit touto metodou.
+    /// Ukončuje část konfigurace DI kontajneru a vrací builder pro vytváření middleware konfigurace.
     /// </summary>
-    IGrpcServiceFluentBuilderStage2 SkipRequiredServices();
+    IGrpcServiceFluentBuilderStage2 Build();
 }

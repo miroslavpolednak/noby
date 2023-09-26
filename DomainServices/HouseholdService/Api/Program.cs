@@ -3,16 +3,6 @@ using ExternalServices;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
-    .AddCustomServices(builder =>
-    {
-        // EAS svc
-        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
-        // sulm
-        builder.AddExternalService<ExternalServices.Sulm.V1.ISulmClient>();
-
-        // dbcontext
-        builder.AddEntityFramework<DomainServices.HouseholdService.Api.Database.HouseholdServiceDbContext>();
-    })
     .AddErrorCodeMapper(DomainServices.HouseholdService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
@@ -24,6 +14,16 @@ SharedComponents.GrpcServiceBuilder
             .AddCustomerService()
             .AddUserService()
             .AddDocumentOnSAService();
+    })
+    .Build(builder =>
+    {
+        // EAS svc
+        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
+        // sulm
+        builder.AddExternalService<ExternalServices.Sulm.V1.ISulmClient>();
+
+        // dbcontext
+        builder.AddEntityFramework<DomainServices.HouseholdService.Api.Database.HouseholdServiceDbContext>();
     })
     .MapGrpcServices(app =>
     {

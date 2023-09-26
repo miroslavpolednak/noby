@@ -22,7 +22,7 @@ internal class GrpcServiceBuilderSettings
 
     public bool AddDistributedCache;
     public bool EnableJsonTranscoding;
-    public JsonTranscodingOptions? TranscodingOptions;
+    public FluentBuilderJsonTranscodingOptions? TranscodingOptions;
     public CIS.Core.ErrorCodes.IErrorCodesDictionary? ErrorCodeMapperMessages;
     public bool AddRollbackCapability;
     public Action<WebApplicationBuilder>? AddCustomServices;

@@ -3,14 +3,6 @@ using ExternalServices;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
-    .AddCustomServices(builder =>
-    {
-        // EAS EasSimulationHT svc
-        builder.AddExternalService<ExternalServices.EasSimulationHT.V1.IEasSimulationHTClient>();
-
-        // dbcontext
-        builder.AddEntityFramework<DomainServices.OfferService.Api.Database.OfferServiceDbContext>();
-    })
     .AddErrorCodeMapper(DomainServices.OfferService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
@@ -18,6 +10,14 @@ SharedComponents.GrpcServiceBuilder
             .AddRiskIntegrationService()
             .AddCodebookService()
             .AddUserService();
+    })
+    .Build(builder =>
+    {
+        // EAS EasSimulationHT svc
+        builder.AddExternalService<ExternalServices.EasSimulationHT.V1.IEasSimulationHTClient>();
+
+        // dbcontext
+        builder.AddEntityFramework<DomainServices.OfferService.Api.Database.OfferServiceDbContext>();
     })
     .MapGrpcServices(app =>
     {
