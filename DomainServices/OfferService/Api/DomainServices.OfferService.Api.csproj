@@ -26,7 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj" />
-    <ProjectReference Include="..\..\..\SharedComponents\SharedComponents\SharedComponents.csproj" />
+    <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.OfferService.Contracts.csproj" />
   </ItemGroup>
 

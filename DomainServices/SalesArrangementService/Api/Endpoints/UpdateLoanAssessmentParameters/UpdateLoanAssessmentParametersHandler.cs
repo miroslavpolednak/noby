@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.SalesArrangementService.Api.Database;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;

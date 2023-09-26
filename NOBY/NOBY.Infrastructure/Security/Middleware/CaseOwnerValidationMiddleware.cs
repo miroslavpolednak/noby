@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;

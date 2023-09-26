@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using DomainServices.CustomerService.ExternalServices.Contacts.V1;
 using Microsoft.AspNetCore.Builder;

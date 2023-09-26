@@ -21,7 +21,7 @@ internal sealed class GetCustomersHandler
 
         List<(Identity? Identity, _HO.CustomerOnSA? CustomerOnSA, int Role, string RoleName, bool Agent, bool IsKYCSuccessful)> customerIdentities;
 
-        if (caseInstance.State == (int)CIS.Foms.Enums.CaseStates.InProgress)
+        if (caseInstance.State == (int)SharedTypes.Enums.CaseStates.InProgress)
         {
             var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
             // z parameters nacist Agent
@@ -37,7 +37,7 @@ internal sealed class GetCustomersHandler
                     t.CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb),
                     (_HO.CustomerOnSA?)t,
                     t.CustomerRoleId,
-                    ((CIS.Foms.Enums.CustomerRoles)t.CustomerRoleId).GetAttribute<DisplayAttribute>()!.Name ?? "",
+                    ((SharedTypes.Enums.CustomerRoles)t.CustomerRoleId).GetAttribute<DisplayAttribute>()!.Name ?? "",
                     saDetail.Mortgage?.Agent.GetValueOrDefault() == t.CustomerOnSAId,
                     false
                 ))
@@ -84,8 +84,8 @@ internal sealed class GetCustomersHandler
                 }
             } : customerDetails.First(x => x.Identities.Any(i => i.IdentityId == t.Identity.IdentityId && i.IdentityScheme == t.Identity.IdentityScheme));
 
-            var permanentAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent);
-            var mailingAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Mailing);
+            var permanentAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)SharedTypes.Enums.AddressTypes.Permanent);
+            var mailingAddress = customer.Addresses?.FirstOrDefault(x => x.AddressTypeId == (int)SharedTypes.Enums.AddressTypes.Mailing);
             var country = countries.FirstOrDefault(x => x.Id == customer.NaturalPerson.CitizenshipCountriesId.FirstOrDefault());
 
             var model = new GetCustomersResponseCustomer
@@ -109,16 +109,16 @@ internal sealed class GetCustomersHandler
                 }
             };
 
-            var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.EmailAddress;
+            var email = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)SharedTypes.Enums.ContactTypes.Email)?.Email?.EmailAddress;
             if (!string.IsNullOrEmpty(email))
                 model.Contacts.EmailAddress = new() { EmailAddress = email };
 
-            var phone = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
+            var phone = customer.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)SharedTypes.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
             if (!string.IsNullOrEmpty(phone))
                 model.Contacts.MobilePhone = new()
                 {
                     PhoneNumber = phone,
-                    PhoneIDC = customer.Contacts!.First(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
+                    PhoneIDC = customer.Contacts!.First(x => x.ContactTypeId == (int)SharedTypes.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
                 };
 
             return model;

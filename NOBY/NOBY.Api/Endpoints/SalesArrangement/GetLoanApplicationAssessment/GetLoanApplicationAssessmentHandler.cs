@@ -12,7 +12,7 @@ using DomainServices.OfferService.Contracts;
 using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
 using DomainServices.UserService.Clients;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 

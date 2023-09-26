@@ -2,26 +2,26 @@
 
 public partial class Identity
 {
-    public Identity(Foms.Types.CustomerIdentity identity)
+    public Identity(SharedTypes.Types.CustomerIdentity identity)
     {
         IdentityId = identity.Id;
         IdentityScheme = FastEnum.Parse<Types.IdentitySchemes>(identity.Scheme.ToString());
     }
 
-    public Identity(long? identityId, Foms.Enums.IdentitySchemes? scheme)
+    public Identity(long? identityId, SharedTypes.Enums.IdentitySchemes? scheme)
     {
         IdentityId = identityId ?? 0;
-        IdentityScheme = FastEnum.Parse<Types.IdentitySchemes>((scheme ?? Foms.Enums.IdentitySchemes.Unknown).ToString());
+        IdentityScheme = FastEnum.Parse<Types.IdentitySchemes>((scheme ?? SharedTypes.Enums.IdentitySchemes.Unknown).ToString());
     }
 
-    public static implicit operator Foms.Types.CustomerIdentity?(Identity? identity)
+    public static implicit operator SharedTypes.Types.CustomerIdentity?(Identity? identity)
     {
         if (identity is null) return null;
         
-        return new Foms.Types.CustomerIdentity(identity.IdentityId, identity.IdentityScheme.ToString());
+        return new SharedTypes.Types.CustomerIdentity(identity.IdentityId, identity.IdentityScheme.ToString());
     }
 
-    public static implicit operator Identity(Foms.Types.CustomerIdentity identity)
+    public static implicit operator Identity(SharedTypes.Types.CustomerIdentity identity)
     {
         ArgumentNullException.ThrowIfNull(identity);
 

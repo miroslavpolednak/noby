@@ -9,7 +9,7 @@ using _HO = DomainServices.HouseholdService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using DomainServices.CustomerService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
@@ -57,7 +57,7 @@ internal sealed class CreateMortgageCaseHandler
 
         // pokud je to KB klient, tak si stahni jeho data z CM a updatuj request
         var createCustomerRequest = request.ToDomainServiceRequest(salesArrangementId);
-        if (request.Identity?.Scheme == CIS.Foms.Enums.IdentitySchemes.Kb)
+        if (request.Identity?.Scheme == SharedTypes.Enums.IdentitySchemes.Kb)
         {
             await updateCustomerFromCM(createCustomerRequest, cancellationToken);
         }
@@ -71,7 +71,7 @@ internal sealed class CreateMortgageCaseHandler
         // create household
         int householdId = await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
         {
-            HouseholdTypeId = (int)CIS.Foms.Enums.HouseholdTypes.Main,
+            HouseholdTypeId = (int)SharedTypes.Enums.HouseholdTypes.Main,
             CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,
             SalesArrangementId = salesArrangementId
         }, cancellationToken);

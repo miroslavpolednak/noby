@@ -2,7 +2,7 @@
 using DomainServices.UserService.Clients;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.CodebookService.Clients;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangement;

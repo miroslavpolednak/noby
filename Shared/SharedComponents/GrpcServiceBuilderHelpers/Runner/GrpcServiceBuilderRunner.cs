@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.Security;
 using CIS.Infrastructure.CisMediatR;

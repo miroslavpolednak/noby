@@ -8,7 +8,7 @@ internal sealed class CreateIncomeRequestValidator
     public CreateIncomeRequestValidator()
     {
         RuleFor(t => t.IncomeTypeId)
-            .Must(t => t != CIS.Foms.Enums.CustomerIncomeTypes.Unknown);
+            .Must(t => t != SharedTypes.Enums.CustomerIncomeTypes.Unknown);
 
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0);

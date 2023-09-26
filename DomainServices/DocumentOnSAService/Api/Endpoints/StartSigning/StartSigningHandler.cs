@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;

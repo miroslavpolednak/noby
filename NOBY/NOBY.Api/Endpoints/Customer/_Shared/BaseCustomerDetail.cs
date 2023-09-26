@@ -10,7 +10,7 @@ public abstract class BaseCustomerDetail
 
     public IdentificationDocumentFull? IdentificationDocument { get; set; }
 
-    public List<CIS.Foms.Types.Address>? Addresses { get; set; }
+    public List<SharedTypes.Types.Address>? Addresses { get; set; }
 
     /// <summary>
     /// Objekt právního omezení	

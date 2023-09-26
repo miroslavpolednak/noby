@@ -28,7 +28,7 @@ public interface IRealEstateValuationServiceClient
 
     Task<ValidateRealEstateValuationIdResponse> ValidateRealEstateValuationId(int realEstateValuationId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
 
-    Task<List<CIS.Foms.Enums.RealEstateValuationTypes>> GetRealEstateValuationTypes(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken = default);
+    Task<List<SharedTypes.Enums.RealEstateValuationTypes>> GetRealEstateValuationTypes(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken = default);
 
     Task PreorderOnlineValuation(PreorderOnlineValuationRequest request, CancellationToken cancellationToken = default);
 

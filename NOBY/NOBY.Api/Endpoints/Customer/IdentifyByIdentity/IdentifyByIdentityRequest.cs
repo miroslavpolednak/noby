@@ -10,7 +10,7 @@ public sealed class IdentifyByIdentityRequest
     /// Identita klienta
     /// </summary>
     [Required]
-    public CIS.Foms.Types.CustomerIdentity? CustomerIdentity { get; set; }
+    public SharedTypes.Types.CustomerIdentity? CustomerIdentity { get; set; }
 
     [JsonIgnore]
     internal int CustomerOnSAId;

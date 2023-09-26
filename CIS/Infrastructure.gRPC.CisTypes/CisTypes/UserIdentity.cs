@@ -2,26 +2,26 @@
 
 public partial class UserIdentity
 {
-    public UserIdentity(Foms.Types.UserIdentity identity)
+    public UserIdentity(SharedTypes.Types.UserIdentity identity)
     {
         Identity = identity.Identity;
         IdentityScheme = FastEnum.Parse<Types.UserIdentitySchemes>(identity.Scheme.ToString());
     }
 
-    public UserIdentity(string? identity, Foms.Enums.UserIdentitySchemes? scheme)
+    public UserIdentity(string? identity, SharedTypes.Enums.UserIdentitySchemes? scheme)
     {
         Identity = identity;
-        IdentityScheme = FastEnum.Parse<Types.UserIdentitySchemes>((scheme ?? Foms.Enums.UserIdentitySchemes.Unknown).ToString());
+        IdentityScheme = FastEnum.Parse<Types.UserIdentitySchemes>((scheme ?? SharedTypes.Enums.UserIdentitySchemes.Unknown).ToString());
     }
 
-    public static implicit operator Foms.Types.UserIdentity?(UserIdentity? identity)
+    public static implicit operator SharedTypes.Types.UserIdentity?(UserIdentity? identity)
     {
         if (identity is null) return null;
         
-        return new Foms.Types.UserIdentity(identity.Identity, identity.IdentityScheme.ToString());
+        return new SharedTypes.Types.UserIdentity(identity.Identity, identity.IdentityScheme.ToString());
     }
 
-    public static implicit operator UserIdentity(Foms.Types.UserIdentity identity)
+    public static implicit operator UserIdentity(SharedTypes.Types.UserIdentity identity)
     {
         ArgumentNullException.ThrowIfNull(identity);
         

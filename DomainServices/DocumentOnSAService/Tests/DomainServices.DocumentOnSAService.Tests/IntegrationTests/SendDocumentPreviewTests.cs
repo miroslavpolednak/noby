@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;

@@ -60,11 +60,11 @@ internal static class ModelComparers
         _basicCompareLogic.Config.MaxDifferences = 1;
         _basicCompareLogic.Config.IgnoreCollectionOrder = true;
         _basicCompareLogic.Config.CompareChildren = true;
-        _basicCompareLogic.Config.IgnoreProperty<CIS.Foms.Types.Address>(x => x.IsPrimary);
-        _basicCompareLogic.Config.IgnoreProperty<CIS.Foms.Types.Address>(x => x.SingleLineAddressPoint);
+        _basicCompareLogic.Config.IgnoreProperty<SharedTypes.Types.Address>(x => x.IsPrimary);
+        _basicCompareLogic.Config.IgnoreProperty<SharedTypes.Types.Address>(x => x.SingleLineAddressPoint);
 
         var spec = new Dictionary<Type, IEnumerable<string>>();
-        spec.Add(typeof(CIS.Foms.Types.Address), new string[] { "AddressTypeId" });
+        spec.Add(typeof(SharedTypes.Types.Address), new string[] { "AddressTypeId" });
         _basicCompareLogic.Config.CollectionMatchingSpec = spec;
 
         // root

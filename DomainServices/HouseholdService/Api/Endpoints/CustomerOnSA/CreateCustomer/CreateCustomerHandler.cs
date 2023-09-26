@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Audit;
+﻿using SharedAudit;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Api.Database.Entities;

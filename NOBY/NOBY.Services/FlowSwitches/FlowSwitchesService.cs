@@ -27,10 +27,10 @@ internal sealed class FlowSwitchesService
         return existingSwitches;
     }
 
-    public Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA)
+    public Dictionary<SharedTypes.Enums.FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA)
     {
         flowSwitchesOnSA ??= new List<DomainServices.SalesArrangementService.Contracts.FlowSwitch>();
-        var result = new Dictionary<CIS.Foms.Enums.FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup>();
+        var result = new Dictionary<SharedTypes.Enums.FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup>();
 
         var allFlowSwitches = getFlowSwitches();
         var allFlowSwitchGroups = getFlowSwitchGroups();
@@ -44,7 +44,7 @@ internal sealed class FlowSwitchesService
                 IsCompleted = resolveStatus(group.IsCompletedFlowSwitches, group.IsCompletedDefault)
             };
 
-            result.Add((CIS.Foms.Enums.FlowSwitchesGroups)group.FlowSwitchGroupId, resultGroup);
+            result.Add((SharedTypes.Enums.FlowSwitchesGroups)group.FlowSwitchGroupId, resultGroup);
         }
 
         return result;

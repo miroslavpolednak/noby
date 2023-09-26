@@ -53,7 +53,7 @@ public sealed class PrepareDocumentRequest
         /// <summary>
         /// Slouzi k naplneni "ExternalId" a "UniversalID" z ePodpis kontraktu
         /// </summary>
-        public IEnumerable<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
+        public IEnumerable<SharedTypes.Types.CustomerIdentity>? Identities { get; set; }
 
         /// <summary>
         /// "Name" z ePodpis kontraktu

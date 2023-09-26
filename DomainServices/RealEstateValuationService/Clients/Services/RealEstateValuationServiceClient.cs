@@ -147,10 +147,10 @@ internal sealed class RealEstateValuationServiceClient
         return _cacheValidateRealEstateValuationId;
     }
 
-    public async Task<List<CIS.Foms.Enums.RealEstateValuationTypes>> GetRealEstateValuationTypes(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken = default)
+    public async Task<List<SharedTypes.Enums.RealEstateValuationTypes>> GetRealEstateValuationTypes(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken = default)
         => (await _service.GetRealEstateValuationTypesAsync(request, cancellationToken: cancellationToken))
             .ValuationTypeId
-            .Select(t => (CIS.Foms.Enums.RealEstateValuationTypes)t)
+            .Select(t => (SharedTypes.Enums.RealEstateValuationTypes)t)
             .ToList();
 
     // DeedOfOwnershipDocument

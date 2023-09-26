@@ -1,6 +1,4 @@
-﻿using CIS.Foms.Enums;
-
-namespace CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+﻿namespace CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 
 /// <summary>
 /// Základní konfigurace externí služby (služby třetí strany).

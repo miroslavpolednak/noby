@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Cases.CancelCase;
 

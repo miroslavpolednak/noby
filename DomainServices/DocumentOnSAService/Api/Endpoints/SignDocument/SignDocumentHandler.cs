@@ -1,7 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Core.Security;
-using CIS.Foms.Enums;
-using CIS.Infrastructure.Audit;
+using SharedTypes.Enums;
+using SharedAudit;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
@@ -209,7 +209,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         {
             var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
             _customerChangeDataMerger.MergeTaxResidence(customerDetail?.NaturalPerson!, customerOnSa);
-            var updateCustomerRequest = MapUpdateCustomerRequest((int)CIS.Foms.Enums.Mandants.Kb, customerDetail!);
+            var updateCustomerRequest = MapUpdateCustomerRequest((int)SharedTypes.Enums.Mandants.Kb, customerDetail!);
             await UpdateCustomer(customerOnSa, updateCustomerRequest, salesArrangement, cancellationToken);
             // Throw away locally stored CRS data (keep client changes) 
             var jsonCustomerChangeDataWithoutCrs = _customerChangeDataMerger.TrowAwayLocallyStoredCrsData(customerOnSa);
@@ -222,7 +222,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     {
         var mandantId = await GetMandantId(salesArrangement, cancellationToken);
 
-        if (mandantId != (int)CIS.Foms.Enums.Mandants.Kb)
+        if (mandantId != (int)SharedTypes.Enums.Mandants.Kb)
         {
             throw new CisValidationException(90002, $"Mp products not supported (mandant {mandantId})");
         }

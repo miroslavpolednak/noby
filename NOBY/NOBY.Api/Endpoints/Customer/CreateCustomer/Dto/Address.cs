@@ -76,7 +76,7 @@ public class Address
 
     public override bool Equals(object? obj)
     {
-        var address2 = obj as CIS.Foms.Types.Address;
+        var address2 = obj as SharedTypes.Types.Address;
 
         if (stringCompare(this.Street, address2?.Street)
             && stringCompare(this.City, address2?.City)

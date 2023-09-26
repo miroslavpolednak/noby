@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types;
+﻿using SharedTypes.Types;
 using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.Dto;

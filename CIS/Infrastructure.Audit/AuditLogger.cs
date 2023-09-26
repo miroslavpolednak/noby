@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 
-namespace CIS.Infrastructure.Audit;
+namespace SharedAudit;
 
 internal sealed class AuditLogger
     : IAuditLogger

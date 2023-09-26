@@ -34,7 +34,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.ExternalServicesHelpers\CIS.Infrastructure.ExternalServicesHelpers.csproj" />
-		<ProjectReference Include="..\..\..\SharedComponents\SharedComponents\SharedComponents.csproj" />
+		<ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.DocumentArchiveService.Contracts.csproj" />
 		<ProjectReference Include="..\ExternalServices.Sdf\DomainServices.DocumentArchiveService.ExternalServices.Sdf.csproj" />
 		<ProjectReference Include="..\ExternalServices.Tcp\DomainServices.DocumentArchiveService.ExternalServices.Tcp.csproj" />

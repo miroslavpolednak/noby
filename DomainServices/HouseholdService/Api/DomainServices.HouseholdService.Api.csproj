@@ -28,11 +28,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj" />
+		<ProjectReference Include="..\..\..\Shared\SharedAudit\SharedAudit.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
 		<ProjectReference Include="..\..\..\ExternalServices\Sulm\ExternalServices.Sulm.csproj" />
-		<ProjectReference Include="..\..\..\SharedComponents\SharedComponents\SharedComponents.csproj" />
+		<ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.HouseholdService.Contracts.csproj" />
 	</ItemGroup>
 </Project>

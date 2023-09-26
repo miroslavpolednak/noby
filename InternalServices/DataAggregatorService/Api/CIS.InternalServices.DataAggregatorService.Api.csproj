@@ -37,7 +37,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
-		<ProjectReference Include="..\..\..\SharedComponents\SharedComponents\SharedComponents.csproj" />
+		<ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
 		<ProjectReference Include="..\Contracts\CIS.InternalServices.DataAggregatorService.Contracts.csproj" />
 	</ItemGroup>
 

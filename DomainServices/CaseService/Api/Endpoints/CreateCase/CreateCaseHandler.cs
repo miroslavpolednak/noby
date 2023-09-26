@@ -18,7 +18,7 @@ internal sealed class CreateCaseHandler
         int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault.GetValueOrDefault()).Id;
 
         // ziskat caseId
-        long newCaseId = await _easClient.GetCaseId(CIS.Foms.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId, cancellation);
+        long newCaseId = await _easClient.GetCaseId(SharedTypes.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId, cancellation);
         _logger.NewCaseIdCreated(newCaseId);
 
         // vytvorit entitu
@@ -81,7 +81,7 @@ internal sealed class CreateCaseHandler
         // pokud je zadany customer
         if (request.Customer is not null)
         {
-            entity.CustomerIdentityScheme = (CIS.Foms.Enums.IdentitySchemes)Convert.ToInt32(request.Customer?.Identity?.IdentityScheme, CultureInfo.InvariantCulture);
+            entity.CustomerIdentityScheme = (SharedTypes.Enums.IdentitySchemes)Convert.ToInt32(request.Customer?.Identity?.IdentityScheme, CultureInfo.InvariantCulture);
             entity.CustomerIdentityId = request.Customer?.Identity?.IdentityId;
         }
 

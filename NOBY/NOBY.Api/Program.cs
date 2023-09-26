@@ -7,7 +7,7 @@ using CIS.InternalServices;
 using Microsoft.AspNetCore.HttpLogging;
 using CIS.Infrastructure.WebApi;
 using NOBY.Infrastructure.Configuration;
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 
 var builder = WebApplication.CreateBuilder(args);
 

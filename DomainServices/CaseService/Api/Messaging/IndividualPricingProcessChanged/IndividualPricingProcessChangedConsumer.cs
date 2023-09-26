@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
 using DomainServices.CaseService.Api.Services;
 using DomainServices.CaseService.Contracts;

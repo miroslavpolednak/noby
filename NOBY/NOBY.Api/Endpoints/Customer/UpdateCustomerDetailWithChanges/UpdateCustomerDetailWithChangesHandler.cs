@@ -5,7 +5,7 @@ using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
 using __Household = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Clients;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 

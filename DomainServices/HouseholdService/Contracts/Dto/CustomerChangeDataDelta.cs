@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types;
+﻿using SharedTypes.Types;
 
 namespace DomainServices.HouseholdService.Contracts.Dto;
 

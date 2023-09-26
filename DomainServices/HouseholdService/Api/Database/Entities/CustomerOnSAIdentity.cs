@@ -11,7 +11,7 @@ internal sealed class CustomerOnSAIdentity
 
     public int CustomerOnSAId { get; set; }
 
-    public CIS.Foms.Enums.IdentitySchemes IdentityScheme { get; set; }
+    public SharedTypes.Enums.IdentitySchemes IdentityScheme { get; set; }
 
     public long IdentityId { get; set; }
 
@@ -32,6 +32,6 @@ internal sealed class CustomerOnSAIdentity
         if (customerOnSAId.GetValueOrDefault() > 0)
             this.CustomerOnSAId = customerOnSAId!.Value;
         this.IdentityId = identity.IdentityId;
-        this.IdentityScheme = (CIS.Foms.Enums.IdentitySchemes)(int)identity.IdentityScheme;
+        this.IdentityScheme = (SharedTypes.Enums.IdentitySchemes)(int)identity.IdentityScheme;
     }
 }

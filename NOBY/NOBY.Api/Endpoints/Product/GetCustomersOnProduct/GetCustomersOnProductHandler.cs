@@ -25,7 +25,7 @@ internal sealed class GetCustomersOnProductHandler
 
             return new GetCustomersOnProductCustomer
             {
-                Identities = t.CustomerIdentifiers.Select(x => (CIS.Foms.Types.CustomerIdentity)x!).ToList(),
+                Identities = t.CustomerIdentifiers.Select(x => (SharedTypes.Types.CustomerIdentity)x!).ToList(),
                 FirstName = c?.NaturalPerson?.FirstName,
                 LastName = c?.NaturalPerson?.LastName,
                 DateOfBirth = c?.NaturalPerson?.DateOfBirth,

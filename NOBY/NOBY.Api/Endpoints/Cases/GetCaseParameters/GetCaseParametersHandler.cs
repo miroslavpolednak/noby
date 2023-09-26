@@ -1,5 +1,5 @@
-﻿using CIS.Foms.Enums;
-using CIS.Foms.Types;
+﻿using SharedTypes.Enums;
+using SharedTypes.Types;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
@@ -119,7 +119,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
                     mortgageData.Statement.Address.SingleLineAddressPoint = await _customerService.FormatAddress(mortgageData.Statement.Address, cancellationToken);
                 }
 
-                response.Statement.Address = (CIS.Foms.Types.Address)mortgageData.Statement.Address!;
+                response.Statement.Address = (SharedTypes.Types.Address)mortgageData.Statement.Address!;
             }
         }
 

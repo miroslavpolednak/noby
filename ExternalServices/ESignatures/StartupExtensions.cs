@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.Extensions.DependencyInjection;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 
 namespace ExternalServices;
 

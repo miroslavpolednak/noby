@@ -15,7 +15,7 @@
 		<AnalysisMode>Recommended</AnalysisMode>
 		<Title>Audit logging</Title>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>CIS.Infrastructure.Audit.xml</DocumentationFile>
+		<DocumentationFile>SharedAudit.xml</DocumentationFile>
 		<OutputType>Library</OutputType>
 		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
 	</PropertyGroup>
@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\CIS.Core.csproj" />
-    <ProjectReference Include="..\Foms.Types\CIS.Foms.Types.csproj" />
+    <ProjectReference Include="..\..\Shared\SharedTypes\SharedTypes.csproj" />
     <ProjectReference Include="..\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
     <ProjectReference Include="..\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
     <ProjectReference Include="..\Infrastructure\CIS.Infrastructure.csproj" />

@@ -30,7 +30,7 @@ internal sealed class GetCustomersHandler
             // pokud nema identitu, ani nevolej customerSvc
             if (t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any())
             {
-                c.Identities = t.CustomerIdentifiers.Select(x => new CIS.Foms.Types.CustomerIdentity(x.IdentityId, (int)x.IdentityScheme)).ToList();
+                c.Identities = t.CustomerIdentifiers.Select(x => new SharedTypes.Types.CustomerIdentity(x.IdentityId, (int)x.IdentityScheme)).ToList();
 
                 // zavolat customer svc pro detail
                 //TODO nejak prioritizovat schemata?
@@ -50,7 +50,7 @@ internal sealed class GetCustomersHandler
                 var address = customerDetail.Addresses?.FirstOrDefault(t => t.AddressTypeId == 1);
                 if (address is not null)
                 {
-                    c.MainAddress = new CIS.Foms.Types.Address
+                    c.MainAddress = new SharedTypes.Types.Address
                     {
                         Street = address.Street,
                         City = address.City,
@@ -64,7 +64,7 @@ internal sealed class GetCustomersHandler
                 var address2 = customerDetail.Addresses?.FirstOrDefault(t => t.AddressTypeId == 2);
                 if (address2 is not null)
                 {
-                    c.ContactAddress = new CIS.Foms.Types.Address
+                    c.ContactAddress = new SharedTypes.Types.Address
                     {
                         Street = address2.Street,
                         City = address2.City,
@@ -76,16 +76,16 @@ internal sealed class GetCustomersHandler
                 }
 
                 // kontakty
-                var email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Email)?.Email?.EmailAddress;
+                var email = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)SharedTypes.Enums.ContactTypes.Email)?.Email?.EmailAddress;
                 if (!string.IsNullOrEmpty(email))
                     c.Contacts.EmailAddress = new() { EmailAddress = email };
 
-                var phone = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
+                var phone = customerDetail.Contacts?.FirstOrDefault(x => x.ContactTypeId == (int)SharedTypes.Enums.ContactTypes.Mobil)?.Mobile?.PhoneNumber;
                 if (!string.IsNullOrEmpty(phone))
                     c.Contacts.MobilePhone = new()
                     {
                         PhoneNumber = phone,
-                        PhoneIDC = customerDetail.Contacts!.First(x => x.ContactTypeId == (int)CIS.Foms.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
+                        PhoneIDC = customerDetail.Contacts!.First(x => x.ContactTypeId == (int)SharedTypes.Enums.ContactTypes.Mobil).Mobile.PhoneIDC
                     };
             }
 

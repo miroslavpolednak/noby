@@ -3,7 +3,7 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.ProductService.Clients;
@@ -132,7 +132,7 @@ internal sealed class IdentifyByIdentityHandler
         return (customersInSA, currentHousehold, saInstance);
     }
 
-    private async Task<_HO.UpdateCustomerResponse> updateCustomer(_HO.CustomerOnSA customerOnSaInstance, CIS.Foms.Types.CustomerIdentity customerIdentity, CancellationToken cancellationToken)
+    private async Task<_HO.UpdateCustomerResponse> updateCustomer(_HO.CustomerOnSA customerOnSaInstance, SharedTypes.Types.CustomerIdentity customerIdentity, CancellationToken cancellationToken)
     {
         // crm customer
         var customerInstance = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);

@@ -29,7 +29,7 @@
 	  <ProjectReference Include="..\..\..\CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\MpHome\ExternalServices.MpHome.csproj" />
-    <ProjectReference Include="..\..\..\SharedComponents\SharedComponents\SharedComponents.csproj" />
+    <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
 	<ProjectReference Include="..\Contracts\DomainServices.CustomerService.Contracts.csproj" />
 	<ProjectReference Include="..\ExternalService.Address\DomainServices.CustomerService.ExternalServices.Address.csproj" />
 	<ProjectReference Include="..\ExternalServices.Contacts\DomainServices.CustomerService.ExternalServices.Contacts.csproj" />

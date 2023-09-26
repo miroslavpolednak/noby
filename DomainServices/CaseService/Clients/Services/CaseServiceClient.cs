@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Types;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Clients.Services;

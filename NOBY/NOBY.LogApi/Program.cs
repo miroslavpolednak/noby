@@ -4,7 +4,7 @@ using CIS.Infrastructure.Telemetry;
 using NOBY.LogApi;
 using CIS.Core.Security;
 using NOBY.Infrastructure.Configuration;
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 
 var builder = WebApplication.CreateBuilder(args);
 

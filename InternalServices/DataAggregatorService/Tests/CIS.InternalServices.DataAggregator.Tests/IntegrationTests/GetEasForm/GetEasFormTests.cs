@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using FastEnumUtility;

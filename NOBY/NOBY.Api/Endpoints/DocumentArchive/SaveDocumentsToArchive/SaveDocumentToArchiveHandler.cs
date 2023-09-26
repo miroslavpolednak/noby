@@ -8,7 +8,7 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using NOBY.Services.DocumentHelper;
 using NOBY.Services.EaCodeMain;
 using NOBY.Services.FileExtension;

@@ -13,7 +13,7 @@ internal static class NaturalPersonExtensions
         transformedModel.BirthName = person.BirthName;
         transformedModel.BirthNumber = person.BirthNumber;
         transformedModel.PlaceOfBirth = person.PlaceOfBirth;
-        transformedModel.Gender = (CIS.Foms.Enums.Genders)person.GenderId;
+        transformedModel.Gender = (SharedTypes.Enums.Genders)person.GenderId;
         transformedModel.BirthCountryId = person.BirthCountryId;
         transformedModel.CitizenshipCountriesId = person.CitizenshipCountriesId?.Select(t => t).ToList();
     }

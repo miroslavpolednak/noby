@@ -16,7 +16,7 @@ public class MockUserService
         return Task.FromResult(CreateUser());
     }
 
-    public Task<User> GetUser(CIS.Foms.Types.UserIdentity identity, CancellationToken cancellationToken = default)
+    public Task<User> GetUser(SharedTypes.Types.UserIdentity identity, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(CreateUser());
     }

@@ -2,7 +2,7 @@
 
 global using System.Globalization;
 global using CIS.Core.Attributes;
-global using CIS.Foms.Enums;
+global using SharedTypes.Enums;
 global using CIS.Infrastructure.gRPC.CisTypes;
 global using CIS.InternalServices.DataAggregatorService.Api.Configuration.Common;
 global using CIS.InternalServices.DataAggregatorService.Api.Extensions;

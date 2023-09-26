@@ -25,7 +25,7 @@ internal sealed class CasesModelConverter
 		{
 			OfferContacts = new(),
 			CaseId = model.CaseId,
-			State = (CIS.Foms.Enums.CaseStates)model.State,
+			State = (SharedTypes.Enums.CaseStates)model.State,
 			StateName = _caseStates.First(x => x.Id == model.State).Name,
 			StateUpdated = model.StateUpdatedOn,
 			ContractNumber = model.Data.ContractNumber,

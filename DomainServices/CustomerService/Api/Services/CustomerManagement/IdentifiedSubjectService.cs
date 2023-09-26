@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using CIS.Core.Exceptions;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;

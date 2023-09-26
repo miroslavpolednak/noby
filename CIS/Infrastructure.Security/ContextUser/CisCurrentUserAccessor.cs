@@ -62,7 +62,7 @@ public sealed class CisCurrentContextUserAccessor
         return _userDetails;
     }
     
-    public CIS.Foms.Types.UserIdentity? GetMainIdentity()
+    public SharedTypes.Types.UserIdentity? GetMainIdentity()
     {
         return CurrentUserAccessorHelpers.GetUserIdentityFromHeaders(_httpContext?.HttpContext?.Request);
     }

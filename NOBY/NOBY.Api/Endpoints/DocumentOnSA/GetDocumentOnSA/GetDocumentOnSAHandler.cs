@@ -1,6 +1,6 @@
 ﻿using CIS.Core;
 using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.CodebookService.Clients;

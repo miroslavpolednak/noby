@@ -75,7 +75,7 @@ internal sealed class ErrorCodeMapper
             { FormValidation9, "Income mandatory fields not provided [{PropertyValue}]." },
             { FormValidation3, "Sales arrangement customers [{PropertyValue}] don't contain both [KB,MP] identities." },
             { FormValidation4, "Sales arrangement contains duplicit household types [{PropertyValue}]." },
-            { FormValidation5, "Sales arrangement must contain just one CIS.Foms.Enums.HouseholdTypes.Main household." },
+            { FormValidation5, "Sales arrangement must contain just one SharedTypes.Enums.HouseholdTypes.Main household." },
             { FormValidation6, "Sales arrangement contains households [{PropertyValue}] with CustomerOnSAId2 but without CustomerOnSAId1." },
             { FormValidation7, "Main household´s CustomerOnSAId1 not defined [{PropertyValue}]." },
             { FormValidation8, "Sales arrangement households contain duplicit customers [{PropertyValue}] on sales arrangement." },

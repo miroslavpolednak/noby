@@ -1286,7 +1286,7 @@
             </remarks>
             <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.GetCustomerDetail(CIS.Foms.Types.CustomerIdentity)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.GetCustomerDetail(SharedTypes.Types.CustomerIdentity)">
             <summary>
             Detail klienta
             </summary>
@@ -1324,7 +1324,7 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.ProfileCheck(CIS.Foms.Types.CustomerIdentity)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.ProfileCheck(SharedTypes.Types.CustomerIdentity)">
             <summary>
             Profile check s profilem identifikovaný
             </summary>

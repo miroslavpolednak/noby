@@ -2,7 +2,7 @@
 
 public sealed class GetCustomersOnProductCustomer
 {
-    public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
+    public List<SharedTypes.Types.CustomerIdentity>? Identities { get; set; }
 
     /// <summary>
     /// Jméno

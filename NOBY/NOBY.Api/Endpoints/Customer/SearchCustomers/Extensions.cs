@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types;
+﻿using SharedTypes.Types;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CustomerService.Contracts;
 using Google.Protobuf.Collections;
@@ -42,7 +42,7 @@ internal static class Extensions
         // ID klienta
         if (request.IdentityId.HasValue)
         {
-            model.Identity = new Identity(request.IdentityId, CIS.Foms.Enums.IdentitySchemes.Kb);
+            model.Identity = new Identity(request.IdentityId, SharedTypes.Enums.IdentitySchemes.Kb);
         }
 
         // document

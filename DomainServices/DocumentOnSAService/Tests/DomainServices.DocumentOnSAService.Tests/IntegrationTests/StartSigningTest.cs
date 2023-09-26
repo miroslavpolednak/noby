@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.Testing;

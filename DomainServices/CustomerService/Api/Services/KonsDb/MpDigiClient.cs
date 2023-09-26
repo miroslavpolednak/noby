@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using CIS.Core.Data;
 using CIS.Core.Exceptions;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.Infrastructure.Data;
 using Dapper;
 using DomainServices.CodebookService.Clients;

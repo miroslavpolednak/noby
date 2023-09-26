@@ -25,8 +25,8 @@
 
 	<ItemGroup>
     <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
-    <ProjectReference Include="..\..\CIS\Foms.Types\CIS.Foms.Types.csproj" />
-    <ProjectReference Include="..\..\CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj" />
+    <ProjectReference Include="..\..\Shared\SharedTypes\SharedTypes.csproj" />
+    <ProjectReference Include="..\..\Shared\SharedAudit\SharedAudit.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />

@@ -12,7 +12,7 @@ internal sealed class CustomerOnSAIncome
 
     public int CustomerOnSAId { get; set; }
 
-    public CIS.Foms.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
+    public SharedTypes.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
 
     [Column(TypeName = "decimal(12, 2)")]
     public decimal? Sum { get; set; }

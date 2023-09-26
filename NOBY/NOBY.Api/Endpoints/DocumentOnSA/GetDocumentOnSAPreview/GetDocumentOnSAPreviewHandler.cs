@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 using System.Net.Mime;
 using CIS.Core;
-using CIS.Foms.Enums;
-using CIS.Infrastructure.Audit;
+using SharedTypes.Enums;
+using SharedAudit;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.CodebookService.Clients;

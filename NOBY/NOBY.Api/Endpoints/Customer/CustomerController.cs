@@ -58,7 +58,7 @@ public class CustomerController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Klient" })]
     [ProducesResponseType(typeof(GetCustomerDetail.GetCustomerDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetCustomerDetail.GetCustomerDetailResponse> GetCustomerDetail([FromBody] CIS.Foms.Types.CustomerIdentity request)
+    public async Task<GetCustomerDetail.GetCustomerDetailResponse> GetCustomerDetail([FromBody] SharedTypes.Types.CustomerIdentity request)
         => await _mediator.Send(new GetCustomerDetail.GetCustomerDetailRequest(request.Id, request.Scheme));
 
     /// <summary>
@@ -123,7 +123,7 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(ProfileCheck.ProfileCheckResponse), StatusCodes.Status200OK)]
-    public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] CIS.Foms.Types.CustomerIdentity request)
+    public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] SharedTypes.Types.CustomerIdentity request)
         => await _mediator.Send(new ProfileCheck.ProfileCheckRequest(request.Id, request.Scheme));
 
     /// <summary>

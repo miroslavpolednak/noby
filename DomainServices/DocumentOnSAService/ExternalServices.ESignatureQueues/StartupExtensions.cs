@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.Foms.Enums;
 using CIS.Infrastructure.StartupExtensions;
 using ExternalServices.ESignatureQueues.Abstraction;
 using ExternalServices.ESignatureQueues.Configuration;
@@ -8,6 +7,7 @@ using ExternalServices.ESignatureQueues.V1.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CIS.Infrastructure.ExternalServicesHelpers;
 
 namespace ExternalServices.ESignatureQueues;
 

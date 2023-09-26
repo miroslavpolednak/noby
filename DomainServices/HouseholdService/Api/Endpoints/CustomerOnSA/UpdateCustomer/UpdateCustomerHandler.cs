@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Audit;
+﻿using SharedAudit;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
 

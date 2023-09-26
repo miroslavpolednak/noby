@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using CIS.Infrastructure.gRPC.CisTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;

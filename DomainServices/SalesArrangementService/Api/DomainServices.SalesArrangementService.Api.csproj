@@ -26,10 +26,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj" />
+		<ProjectReference Include="..\..\..\Shared\SharedAudit\SharedAudit.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
-		<ProjectReference Include="..\..\..\SharedComponents\SharedComponents\SharedComponents.csproj" />
+		<ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
 		<ProjectReference Include="..\..\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.SalesArrangementService.Contracts.csproj" />
 	</ItemGroup>
@@ -41,7 +41,7 @@
 
 	<ItemGroup>
 	  <Reference Include="CIS.Foms.Types">
-	    <HintPath>..\..\CaseService\ExternalServices.SbWebApi\bin\Debug\net7.0\CIS.Foms.Types.dll</HintPath>
+	    <HintPath>..\..\CaseService\ExternalServices.SbWebApi\bin\Debug\net7.0\CIS.SharedTypes.Types.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types;
+﻿using SharedTypes.Types;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 using NOBY.Dto;
 

@@ -1,5 +1,5 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.Audit;
+﻿using SharedTypes.Enums;
+using SharedAudit;
 using DomainServices.DocumentOnSAService.Api.Common;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;

@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using CIS.Core;
 using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;

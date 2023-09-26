@@ -2,11 +2,11 @@
 
 public partial class GrpcAddress
 {
-    public static implicit operator Foms.Types.Address?(GrpcAddress? address)
+    public static implicit operator SharedTypes.Types.Address?(GrpcAddress? address)
     {
         if (address is null) return null;
 
-        return new Foms.Types.Address
+        return new SharedTypes.Types.Address
         {
             IsPrimary = address.IsPrimary,
             Street = address.Street,
@@ -27,7 +27,7 @@ public partial class GrpcAddress
         };
     }
     
-    public static implicit operator GrpcAddress?(Foms.Types.Address? address)
+    public static implicit operator GrpcAddress?(SharedTypes.Types.Address? address)
     {
         if (address is null) return null;
 

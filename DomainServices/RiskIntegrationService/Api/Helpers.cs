@@ -8,7 +8,7 @@ internal static class Helpers
         => dealerCompanyId != null;
 
     public static string GetResourceInstanceFromMandant(int? mandantId)
-        => !mandantId.HasValue || mandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS";
+        => !mandantId.HasValue || mandantId == (int)SharedTypes.Enums.Mandants.Kb ? "KBCZ" : "MPSS";
 
     public static TResponse? GetEnumFromString<TResponse>(string? enumValue, TResponse? defaultValue = default(TResponse?)) 
         where TResponse : struct

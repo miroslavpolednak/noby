@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using CIS.Testing;
 using CIS.Testing.Database;
 using DomainServices.UserService.Clients.Services;

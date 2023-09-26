@@ -1,7 +1,7 @@
 ﻿using DomainServices.SalesArrangementService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.CaseService.Clients;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.HouseholdService.Clients;
 
 namespace NOBY.Api.Notifications.Handlers;

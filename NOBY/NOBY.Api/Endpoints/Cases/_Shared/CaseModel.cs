@@ -12,7 +12,7 @@ public class CaseModel
 	/// <summary>
 	/// Id klienta
 	/// </summary>
-	public CIS.Foms.Types.CustomerIdentity? CustomerIdentity { get; set; }
+	public SharedTypes.Types.CustomerIdentity? CustomerIdentity { get; set; }
 
 	/// <summary>
 	/// FO/FOP/Cizinec/Nezletilec: Jméno
@@ -32,7 +32,7 @@ public class CaseModel
 	/// <summary>
 	/// Stav Case - ciselnik CaseStates
 	/// </summary>
-	public CIS.Foms.Enums.CaseStates State { get; set; }
+	public SharedTypes.Enums.CaseStates State { get; set; }
 	
 	/// <summary>
 	/// Slovne nazev stavu Case.

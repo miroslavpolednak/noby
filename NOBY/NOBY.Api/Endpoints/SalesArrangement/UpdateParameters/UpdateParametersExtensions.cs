@@ -271,7 +271,7 @@ internal static class UpdateParametersExtensions
             if (parameters.Release.Customers is not null)
                 model.Release.Customers.AddRange(parameters.Release.Customers.Select(t => new _SA.SalesArrangementParametersCustomerChange.Types.ReleaseCustomerObject
                 {
-                    Identity = t.Identity ?? new CIS.Foms.Types.CustomerIdentity(),
+                    Identity = t.Identity ?? new SharedTypes.Types.CustomerIdentity(),
                     NaturalPerson = new()
                     {
                         FirstName = t.NaturalPerson?.FirstName ?? "",

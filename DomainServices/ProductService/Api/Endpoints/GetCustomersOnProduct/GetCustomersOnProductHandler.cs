@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -40,10 +40,10 @@ internal sealed class GetCustomersOnProductHandler
                 Agent = customer.Zmocnenec.GetValueOrDefault(),
                 IsKYCSuccessful = customer.StavKyc == 1
             };
-            item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.MpId, CIS.Foms.Enums.IdentitySchemes.Mp));
+            item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.MpId, SharedTypes.Enums.IdentitySchemes.Mp));
 
             if (customer.KbId.HasValue)
-                item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.KbId!.Value, CIS.Foms.Enums.IdentitySchemes.Kb));
+                item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.KbId!.Value, SharedTypes.Enums.IdentitySchemes.Kb));
 
             model.Customers.Add(item);
         }

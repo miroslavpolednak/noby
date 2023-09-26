@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.Dto;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1.Contracts;
 

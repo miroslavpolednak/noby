@@ -4,7 +4,7 @@ using NOBY.Api.Endpoints.Customer.Shared;
 using NOBY.Dto;
 using __Household = DomainServices.HouseholdService.Contracts;
 using __Customer = DomainServices.CustomerService.Contracts;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.Customer;
@@ -85,7 +85,7 @@ internal sealed class CustomerWithChangedDataService
         newCustomer.NaturalPerson = person;
         newCustomer.JuridicalPerson = null;
         newCustomer.IdentificationDocument = dsCustomer.IdentificationDocument?.ToResponseDto();
-        newCustomer.Addresses = dsCustomer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList();
+        newCustomer.Addresses = dsCustomer.Addresses?.Select(t => (SharedTypes.Types.Address)t!).ToList();
 
         // https://jira.kb.cz/browse/HFICH-4200
         // docasne reseni nez se CM rozmysli jak na to

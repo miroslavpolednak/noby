@@ -1,6 +1,6 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using NOBY.Api.Endpoints.Document.Shared;
 

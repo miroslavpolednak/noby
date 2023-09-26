@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj" />
+    <ProjectReference Include="..\..\Shared\SharedAudit\SharedAudit.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Caching\CIS.Infrastructure.Caching.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using DomainServices.CodebookService.Contracts.v1;

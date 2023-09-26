@@ -30,7 +30,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Caching\CIS.Infrastructure.Caching.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
-		<ProjectReference Include="..\..\..\SharedComponents\SharedComponents\SharedComponents.csproj" />
+		<ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.UserService.Contracts.csproj" />
 	</ItemGroup>
 	
