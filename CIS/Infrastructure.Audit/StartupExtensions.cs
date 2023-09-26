@@ -4,11 +4,15 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Globalization;
 
 namespace CIS.Infrastructure.Audit;
 
 public static class StartupExtensions
 {
+    private const string _testEnv = "TEST";
+
     public static WebApplicationBuilder AddCisAudit(this WebApplicationBuilder builder)
     {
         // get configuration from json file
@@ -23,17 +27,19 @@ public static class StartupExtensions
                 throw new CIS.Core.Exceptions.CisConfigurationException(0, "HashSecretKey is not set for audit logging");
             }
 
-            builder.Services.AddSingleton((serviceProvider) =>
-            {
-                // get server IP
-                var server = serviceProvider.GetRequiredService<IServer>();
-                var addresses = server.Features.Get<IServerAddressesFeature>()!.Addresses;
-                var serverIp = addresses.First()[7..^1];
+            builder.Services.AddSingleton<IAuditLoggerInternal>((serviceProvider) =>
+               {
+                   var cisConfiguration = serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
+                   if (cisConfiguration.EnvironmentName?.ToUpper(CultureInfo.InvariantCulture) == _testEnv)
+                       return new AuditLoggerInternalMock();
 
-                var cisConfiguration = serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
+                   // get server IP
+                   var server = serviceProvider.GetRequiredService<IServer>();
+                   var addresses = server.Features.Get<IServerAddressesFeature>()!.Addresses;
+                   var serverIp = addresses.First()[7..^1];
 
-                return new Audit.AuditLoggerInternal(serverIp, cisConfiguration, configuration);
-            });
+                   return new AuditLoggerInternal(serverIp, cisConfiguration, configuration);
+               });
             builder.Services.AddScoped<IAuditLogger, AuditLogger>();
         }
 
