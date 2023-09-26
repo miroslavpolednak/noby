@@ -9,12 +9,18 @@ using System.Text;
 
 namespace CIS.Infrastructure.Audit;
 
-internal sealed class AuditLoggerInternal
+
+internal interface IAuditLoggerInternal
+{
+    void Log(AuditEventContext context);
+}
+
+internal sealed class AuditLoggerInternal : IAuditLoggerInternal
 {
     private readonly Database.DatabaseWriter _databaseWriter;
     private AuditLoggerDefaults _loggerDefaults;
     private readonly byte[] _hashSecretKey;
-    
+
     static Dictionary<AuditEventTypes, AuditEventTypeDescriptorAttribute> _eventTypeDescriptors = new();
     private static CultureInfo _culture = CultureInfo.InvariantCulture;
 
@@ -29,8 +35,8 @@ internal sealed class AuditLoggerInternal
     }
 
     public AuditLoggerInternal(
-        string serverIp, 
-        ICisEnvironmentConfiguration environmentConfiguration, 
+        string serverIp,
+        ICisEnvironmentConfiguration environmentConfiguration,
         AuditLogConfiguration auditConfiguration)
     {
         if (auditConfiguration is null)
@@ -52,7 +58,7 @@ internal sealed class AuditLoggerInternal
         {
             throw new InvalidOperationException($"Audit log event of type '{context.EventType}' can not contain result");
         }
-        else if (eventDescriptor.Results is not null 
+        else if (eventDescriptor.Results is not null
             && !string.IsNullOrEmpty(context.Result)
             && !eventDescriptor.Results.Contains(context.Result))
         {
@@ -79,6 +85,14 @@ internal sealed class AuditLoggerInternal
     }
 }
 
+internal sealed class AuditLoggerInternalMock : IAuditLoggerInternal
+{
+    public void Log(AuditEventContext context)
+    {
+        // In test do nothing
+    }
+}
+
 internal static class AuditLoggerJsonWriter
 {
     public static void CreateJson(
@@ -86,7 +100,7 @@ internal static class AuditLoggerJsonWriter
         ref string time,
         ref string? hashId,
         ref long? sequenceId,
-        ref AuditLoggerDefaults loggerDefaults, 
+        ref AuditLoggerDefaults loggerDefaults,
         AuditEventContext context,
         ReadOnlySpan<char> eventTypeId,
         int eventTypeVersion)
@@ -179,7 +193,7 @@ internal static class AuditLoggerJsonWriter
             output.Write("\"idSchema\":");
             write(output, context.UserIdent[..idx].AsSpan());
             output.Write(",\"id\":");
-            write(output, context.UserIdent[(idx+1)..].AsSpan());
+            write(output, context.UserIdent[(idx + 1)..].AsSpan());
             output.Write("}");
         }
         #endregion actor
