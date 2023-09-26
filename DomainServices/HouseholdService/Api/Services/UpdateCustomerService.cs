@@ -14,7 +14,7 @@ internal sealed class UpdateCustomerService
             return;
 
         int defaultCountry = (await _codebookService.Countries(cancellationToken)).First(t => t.IsDefault).Id;
-        var cmCustomer = await _customerService.GetCustomerDetail(new CIS.Infrastructure.gRPC.CisTypes.Identity(dbIdentity.IdentityId, dbIdentity.IdentityScheme), cancellationToken);
+        var cmCustomer = await _customerService.GetCustomerDetail(new SharedTypes.GrpcTypes.Identity(dbIdentity.IdentityId, dbIdentity.IdentityScheme), cancellationToken);
 
         var model = new ExternalServices.Eas.Dto.ClientDataModel()
         {

@@ -26,7 +26,7 @@ internal sealed class CustomerOnSAIdentity
 
 #pragma warning disable CS8618
 
-    public CustomerOnSAIdentity(CIS.Infrastructure.gRPC.CisTypes.Identity identity, int? customerOnSAId = default(int?))
+    public CustomerOnSAIdentity(SharedTypes.GrpcTypes.Identity identity, int? customerOnSAId = default(int?))
 #pragma warning restore CS8618
     {
         if (customerOnSAId.GetValueOrDefault() > 0)

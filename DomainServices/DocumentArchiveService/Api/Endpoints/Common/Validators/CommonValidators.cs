@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using System.Globalization;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.Common.Validators;

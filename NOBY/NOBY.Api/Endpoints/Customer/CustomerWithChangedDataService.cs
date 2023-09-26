@@ -17,7 +17,7 @@ internal sealed class CustomerWithChangedDataService
     {
         // kontrola identity KB
         var kbIdentity = customerOnSA.CustomerIdentifiers
-            .FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
+            .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
             ?? throw new CisValidationException("Customer is missing KB identity");
 
         // instance customer z KB CM

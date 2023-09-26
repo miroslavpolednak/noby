@@ -4,7 +4,7 @@ internal sealed class CrudResult
 {
     public int? OnHouseholdCustomerOnSAId { get; set; }
     
-    public IEnumerable<CIS.Infrastructure.gRPC.CisTypes.Identity>? Identities { get; set; }
+    public IEnumerable<SharedTypes.GrpcTypes.Identity>? Identities { get; set; }
     
     //public bool CancelSigning { get; set; }
     public Reasons Reason { get; set; }

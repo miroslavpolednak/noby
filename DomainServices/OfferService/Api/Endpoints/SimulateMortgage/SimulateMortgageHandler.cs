@@ -1,6 +1,6 @@
 ﻿using DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Clients;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.OfferService.Api.Database;
 using DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2;
 using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;

@@ -1,5 +1,5 @@
 ﻿using DomainServices.UserService.Contracts;
-using _CIS = CIS.Infrastructure.gRPC.CisTypes;
+using _CIS = SharedTypes.GrpcTypes;
 
 namespace DomainServices.UserService.Clients.Services;
 

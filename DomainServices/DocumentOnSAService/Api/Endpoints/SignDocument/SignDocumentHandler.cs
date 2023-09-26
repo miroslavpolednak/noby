@@ -2,7 +2,7 @@
 using CIS.Core.Security;
 using SharedTypes.Enums;
 using SharedAudit;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
@@ -366,7 +366,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             CustomerIdentification = customerDetail.CustomerIdentification,
             IdentificationDocument = customerDetail.IdentificationDocument,
             Identities = { customerDetail.Identities },
-            Mandant = (CIS.Infrastructure.gRPC.CisTypes.Mandants)mandantId,
+            Mandant = (SharedTypes.GrpcTypes.Mandants)mandantId,
             NaturalPerson = customerDetail.NaturalPerson
         };
     }

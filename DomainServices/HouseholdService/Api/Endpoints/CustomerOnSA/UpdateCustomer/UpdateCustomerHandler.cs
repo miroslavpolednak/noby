@@ -62,9 +62,9 @@ internal sealed class UpdateCustomerHandler
 
         // response instance
         var model = new UpdateCustomerResponse();
-        model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity
+        model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new SharedTypes.GrpcTypes.Identity
         {
-            IdentityScheme = (CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes)(int)t.IdentityScheme,
+            IdentityScheme = (SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes)(int)t.IdentityScheme,
             IdentityId = t.IdentityId
         }).ToList());
 

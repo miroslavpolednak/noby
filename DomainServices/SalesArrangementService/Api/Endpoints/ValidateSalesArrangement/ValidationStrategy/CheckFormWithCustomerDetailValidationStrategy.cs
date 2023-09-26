@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Attributes;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;

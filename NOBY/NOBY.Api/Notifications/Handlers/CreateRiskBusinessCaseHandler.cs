@@ -14,8 +14,8 @@ internal sealed class CreateRiskBusinessCaseHandler
 {
     public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
     {
-        long? mpId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)?.IdentityId;
-        long? kbId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId;
+        long? mpId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)?.IdentityId;
+        long? kbId = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId;
         if (!mpId.HasValue || !kbId.HasValue)
         {
             _logger.LogInformation($"CreateProductHandler for CaseId #{notification.CaseId} not proceeding / missing MP ID");

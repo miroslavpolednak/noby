@@ -160,7 +160,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
 
         if (user is null) return null;
         
-        var identifiers = user?.UserIdentifiers ?? Enumerable.Empty<CIS.Infrastructure.gRPC.CisTypes.UserIdentity>();
+        var identifiers = user?.UserIdentifiers ?? Enumerable.Empty<SharedTypes.GrpcTypes.UserIdentity>();
         
         return new CaseOwnerUserDto
         {

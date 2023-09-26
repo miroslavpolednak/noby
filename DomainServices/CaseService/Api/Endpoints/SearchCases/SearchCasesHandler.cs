@@ -61,7 +61,7 @@ internal sealed class SearchCasesHandler
 
         var result = new SearchCasesResponse()
         {
-            Pagination = new CIS.Infrastructure.gRPC.CisTypes.PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, recordsTotalSize)
+            Pagination = new SharedTypes.GrpcTypes.PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, recordsTotalSize)
         };
         result.Cases.AddRange(data);
 

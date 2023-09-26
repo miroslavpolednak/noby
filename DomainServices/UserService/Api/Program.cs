@@ -12,7 +12,7 @@ SharedComponents.GrpcServiceBuilder
         options.OpenApiTitle = "User Service API";
         options
             .AddOpenApiXmlComment("DomainServices.UserService.Contracts.xml")
-            .AddOpenApiXmlComment("CIS.Infrastructure.gRPC.CisTypes.xml");
+            .AddOpenApiXmlComment("SharedTypes.GrpcTypes.xml");
     })
     .Build(builder =>
     {

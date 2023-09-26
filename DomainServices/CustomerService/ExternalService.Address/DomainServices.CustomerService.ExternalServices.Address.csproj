@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
     <ProjectReference Include="..\ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj" />
   </ItemGroup>
 

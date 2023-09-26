@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
 using SharedTypes.Enums;
@@ -9,11 +9,11 @@ namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
 internal static class CreateCustomerExtensions
 {
-    public static _Cust.CreateCustomerRequest ToDomainService(this CreateCustomerRequest request, CIS.Infrastructure.gRPC.CisTypes.Mandants createIn, params Identity[] identities)
+    public static _Cust.CreateCustomerRequest ToDomainService(this CreateCustomerRequest request, SharedTypes.GrpcTypes.Mandants createIn, params Identity[] identities)
     {
         var model = new _Cust.CreateCustomerRequest
         {
-            Mandant = CIS.Infrastructure.gRPC.CisTypes.Mandants.Kb,
+            Mandant = SharedTypes.GrpcTypes.Mandants.Kb,
             NaturalPerson = new()
             {
                 FirstName = request.FirstName ?? "",

@@ -1,5 +1,5 @@
 ﻿using SharedTypes.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
@@ -13,7 +13,7 @@ using NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 using NOBY.Api.Endpoints.SalesArrangement.SendToCmp.Dto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CreateCustomerRequest = DomainServices.CustomerService.Contracts.CreateCustomerRequest;
-using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
+using Mandants = SharedTypes.GrpcTypes.Mandants;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
 

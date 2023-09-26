@@ -1,6 +1,6 @@
 ﻿using SharedTypes.Enums;
 using SharedTypes.Types;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts.Dto;

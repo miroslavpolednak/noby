@@ -20,7 +20,7 @@ internal static class Extensions
             }
         };
         if (request.Identity is not null && request.Identity.Id > 0)
-            model.Customer.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Identity!));
+            model.Customer.CustomerIdentifiers.Add(new SharedTypes.GrpcTypes.Identity(request.Identity!));
 
         return model;
     }
@@ -37,7 +37,7 @@ internal static class Extensions
                 DateOfBirthNaturalPerson = request.DateOfBirth,
                 FirstNameNaturalPerson = request.FirstName ?? "",
                 Name = request.LastName ?? "",
-                Identity = request.Identity is null ? null : new CIS.Infrastructure.gRPC.CisTypes.Identity(request.Identity)
+                Identity = request.Identity is null ? null : new SharedTypes.GrpcTypes.Identity(request.Identity)
             },
             OfferContacts = new _Case.OfferContacts
             {

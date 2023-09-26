@@ -145,7 +145,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         var signingIdentity = new _DocOnSA.SigningIdentity();
 
         // Product, CRS and Service with household mapping
-        signingIdentity.CustomerIdentifiers.AddRange(customerOnSa.CustomerIdentifiers.Select(s => new CIS.Infrastructure.gRPC.CisTypes.Identity
+        signingIdentity.CustomerIdentifiers.AddRange(customerOnSa.CustomerIdentifiers.Select(s => new SharedTypes.GrpcTypes.Identity
         {
             IdentityId = s.IdentityId,
             IdentityScheme = s.IdentityScheme

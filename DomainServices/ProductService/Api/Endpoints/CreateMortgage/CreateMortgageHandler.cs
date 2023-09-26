@@ -44,7 +44,7 @@ internal sealed class CreateMortgageHandler
 
         // create in pcp
         string? newPcpId = null;
-        if (caseInstance.Customer?.Identity?.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)
+        if (caseInstance.Customer?.Identity?.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
         {
             var pcpId = (await _codebookService.ProductTypes(cancellation)).First(t => t.Id == request.Mortgage.ProductTypeId).PcpProductId;
             newPcpId = await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpId, cancellation);

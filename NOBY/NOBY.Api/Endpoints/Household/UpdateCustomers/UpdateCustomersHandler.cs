@@ -51,7 +51,7 @@ internal sealed class UpdateCustomersHandler
             if (!onlyNotSigned)
             {
                 // HFICH-4165 - nastaveni flowSwitches
-                bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
+                bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
                 setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
             }
         }
@@ -106,10 +106,10 @@ internal sealed class UpdateCustomersHandler
 
         var customers = allHouseholds
             .Where(t => t.HouseholdId != request.HouseholdId && t.CustomerOnSAId1.HasValue)
-            .Select(t => new { CustomerOnSAId = t.CustomerOnSAId1!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId1).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
+            .Select(t => new { CustomerOnSAId = t.CustomerOnSAId1!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId1).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
             .Union(allHouseholds
                 .Where(t => t.HouseholdId != request.HouseholdId && t.CustomerOnSAId2.HasValue)
-                .Select(t => new { CustomerOnSAId = t.CustomerOnSAId2!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId2).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
+                .Select(t => new { CustomerOnSAId = t.CustomerOnSAId2!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId2).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
             );
 
         if (customers.Any(t => t.CustomerOnSAId == request.Customer1?.CustomerOnSAId || t.CustomerOnSAId == request.Customer2?.CustomerOnSAId))
@@ -203,7 +203,7 @@ internal sealed class UpdateCustomersHandler
             return allCustomers
                 .First(t => t.CustomerOnSAId == customerOnSAId)
                 .CustomerIdentifiers?
-                .FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)?
+                .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)?
                 .IdentityId;
         }
     }

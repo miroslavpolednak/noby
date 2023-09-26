@@ -5,7 +5,7 @@ using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using SharedTypes.Enums;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
@@ -112,7 +112,7 @@ internal sealed class IdentifyByIdentityHandler
             return customerDetails
                 .First(t => t.CustomerOnSAId == secondCustomerOnHouseholdId)
                 .CustomerIdentifiers?
-                .Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb && t.IdentityId > 0)
+                .Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb && t.IdentityId > 0)
                 ?? false;
         }
     }

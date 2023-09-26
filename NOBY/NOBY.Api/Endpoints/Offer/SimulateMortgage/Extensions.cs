@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;

@@ -1,5 +1,5 @@
 ﻿using SharedTypes.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Clients;
@@ -7,7 +7,7 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
-using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
+using Mandants = SharedTypes.GrpcTypes.Mandants;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -149,7 +149,7 @@ internal sealed class CreateCustomerHandler
             return customerDetails
                    .First(t => t.CustomerOnSAId == secondCustomerOnHouseholdId)
                    .CustomerIdentifiers?
-                   .Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb && t.IdentityId > 0)
+                   .Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb && t.IdentityId > 0)
                    ?? false;
         }
     }

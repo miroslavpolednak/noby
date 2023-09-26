@@ -1,5 +1,5 @@
 ﻿using SharedTypes.Types;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Contracts;
 using Google.Protobuf.Collections;
 using NOBY.Api.Endpoints.Customer.SearchCustomers.Dto;

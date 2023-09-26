@@ -9,7 +9,7 @@ using DomainServices.DocumentArchiveService.Clients;
 using System.Text.Json;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.SalesArrangementService.Contracts;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Clients;
 using ExternalServices.ESignatures.Dto;
 using CIS.Core.Security;

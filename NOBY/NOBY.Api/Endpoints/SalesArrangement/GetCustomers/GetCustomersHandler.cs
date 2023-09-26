@@ -34,7 +34,7 @@ internal sealed class GetCustomersHandler
 
                 // zavolat customer svc pro detail
                 //TODO nejak prioritizovat schemata?
-                var identity = new CIS.Infrastructure.gRPC.CisTypes.Identity
+                var identity = new SharedTypes.GrpcTypes.Identity
                 {
                     IdentityId = t.CustomerIdentifiers[0].IdentityId,
                     IdentityScheme = t.CustomerIdentifiers[0].IdentityScheme

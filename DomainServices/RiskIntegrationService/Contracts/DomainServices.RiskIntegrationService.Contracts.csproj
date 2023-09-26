@@ -18,12 +18,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
-	  <PackageReference Include="protobuf-net.Core" Version="3.2.26" />
-	  <PackageReference Include="System.ServiceModel.Primitives" Version="6.0.0" />
+		<ProjectReference Include="..\..\..\Shared\SharedTypes\SharedTypes.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
+	  <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+	  <PackageReference Include="protobuf-net.Core" Version="3.2.26" />
+	  <PackageReference Include="System.ServiceModel.Primitives" Version="6.0.0" />
 	</ItemGroup>
 </Project>

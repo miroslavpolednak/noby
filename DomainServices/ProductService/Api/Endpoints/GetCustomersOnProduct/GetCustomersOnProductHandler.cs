@@ -40,10 +40,10 @@ internal sealed class GetCustomersOnProductHandler
                 Agent = customer.Zmocnenec.GetValueOrDefault(),
                 IsKYCSuccessful = customer.StavKyc == 1
             };
-            item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.MpId, SharedTypes.Enums.IdentitySchemes.Mp));
+            item.CustomerIdentifiers.Add(new SharedTypes.GrpcTypes.Identity(customer.MpId, SharedTypes.Enums.IdentitySchemes.Mp));
 
             if (customer.KbId.HasValue)
-                item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.KbId!.Value, SharedTypes.Enums.IdentitySchemes.Kb));
+                item.CustomerIdentifiers.Add(new SharedTypes.GrpcTypes.Identity(customer.KbId!.Value, SharedTypes.Enums.IdentitySchemes.Kb));
 
             model.Customers.Add(item);
         }

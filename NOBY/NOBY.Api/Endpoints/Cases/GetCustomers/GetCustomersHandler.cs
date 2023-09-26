@@ -1,6 +1,6 @@
 ﻿using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using System.ComponentModel.DataAnnotations;
 using CIS.Core;
 using NOBY.Api.Extensions;

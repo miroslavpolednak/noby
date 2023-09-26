@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using ValueType = CIS.InternalServices.DocumentGeneratorService.Contracts.GenerateDocumentPartData.ValueOneofCase;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Contracts;

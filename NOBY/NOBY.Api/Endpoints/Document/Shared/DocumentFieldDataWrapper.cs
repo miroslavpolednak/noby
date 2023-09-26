@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Contracts;
 

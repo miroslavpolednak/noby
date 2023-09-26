@@ -9,7 +9,7 @@ internal sealed class GetUserHandler
 {
     public async Task<Contracts.User> Handle(Contracts.GetUserRequest request, CancellationToken cancellationToken)
     {
-        if (request.Identity.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.V33Id)
+        if (request.Identity.IdentityScheme == SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.V33Id)
         {
             // zkusit cache
             string cacheKey = Helpers.CreateUserCacheKey(request.Identity.Identity);
@@ -62,7 +62,7 @@ internal sealed class GetUserHandler
         fillIdentities(dbIdentities, model);
 
         // set is internal
-        model.UserInfo.IsInternal = !model.UserIdentifiers.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.BrokerId) && model.UserIdentifiers.Any();
+        model.UserInfo.IsInternal = !model.UserIdentifiers.Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.BrokerId) && model.UserIdentifiers.Any();
 
         // perms
         dbPermissions.ForEach(t =>
@@ -85,52 +85,52 @@ internal sealed class GetUserHandler
     private static void fillIdentities(DbUserIdentity dbIdentities, Contracts.User user)
     {
         if (dbIdentities.brokerId.HasValue)
-            user.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity
+            user.UserIdentifiers.Add(new SharedTypes.GrpcTypes.UserIdentity
             {
                 Identity = dbIdentities.brokerId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.BrokerId
+                IdentityScheme = SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.BrokerId
             });
 
         if (!string.IsNullOrEmpty(dbIdentities.kbuid))
-            user.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity
+            user.UserIdentifiers.Add(new SharedTypes.GrpcTypes.UserIdentity
             {
                 Identity = dbIdentities.kbuid,
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.KbUid
+                IdentityScheme = SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.KbUid
             });
 
         if (!string.IsNullOrEmpty(dbIdentities.mpad))
-            user.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity
+            user.UserIdentifiers.Add(new SharedTypes.GrpcTypes.UserIdentity
             {
                 Identity = dbIdentities.mpad,
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.Mpad
+                IdentityScheme = SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.Mpad
             });
 
         if (dbIdentities.m04id.HasValue)
-            user.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity
+            user.UserIdentifiers.Add(new SharedTypes.GrpcTypes.UserIdentity
             {
                 Identity = dbIdentities.m04id.Value.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.M04Id
+                IdentityScheme = SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.M04Id
             });
 
         if (dbIdentities.m17id.HasValue)
-            user.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity
+            user.UserIdentifiers.Add(new SharedTypes.GrpcTypes.UserIdentity
             {
                 Identity = dbIdentities.m17id.Value.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.M17Id
+                IdentityScheme = SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.M17Id
             });
 
         if (dbIdentities.oscis.HasValue)
-            user.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity
+            user.UserIdentifiers.Add(new SharedTypes.GrpcTypes.UserIdentity
             {
                 Identity = dbIdentities.oscis.Value.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.OsCis
+                IdentityScheme = SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.OsCis
             });
 
         if (!string.IsNullOrEmpty(dbIdentities.kbad))
-            user.UserIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.UserIdentity
+            user.UserIdentifiers.Add(new SharedTypes.GrpcTypes.UserIdentity
             {
                 Identity = dbIdentities.kbad,
-                IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.UserIdentity.Types.UserIdentitySchemes.Kbad
+                IdentityScheme = SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.Kbad
             });
     }
 
