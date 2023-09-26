@@ -98,10 +98,19 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
         };
     }
 
-    private async Task<string> GetFileName(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
+    private async Task<string> GetFileName(_DocOnSaSource.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
     {
-        var templates = await _codebookServiceClients.DocumentTypes(cancellationToken);
-        var fileName = templates.First(t => t.Id == (int)documentOnSa.DocumentTypeId!).FileName;
-        return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
+        if (documentOnSa.DocumentTypeId is not null)
+        {
+            var templates = await _codebookServiceClients.DocumentTypes(cancellationToken);
+            var fileName = templates.First(t => t.Id == (int)documentOnSa.DocumentTypeId!).FileName;
+            return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
+        }
+        else
+        {
+            // Todo dodělat až bude hotová integrace na frontu starbuild
+            return "Mock.pdf";
+        }
+
     }
 }
