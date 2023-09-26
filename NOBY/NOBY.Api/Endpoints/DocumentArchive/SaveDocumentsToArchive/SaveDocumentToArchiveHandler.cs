@@ -11,6 +11,7 @@ using Google.Protobuf;
 using CIS.Foms.Enums;
 using NOBY.Services.DocumentHelper;
 using NOBY.Services.EaCodeMain;
+using NOBY.Services.FileExtension;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 
@@ -30,6 +31,7 @@ public class SaveDocumentToArchiveHandler
     private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentHelperService _documentHelper;
     private readonly IEaCodeMainHelper _eaCodeMainHelper;
+    private readonly IFileExtensionService _fileExtension;
 
     public SaveDocumentToArchiveHandler(
         IDocumentArchiveServiceClient client,
@@ -42,7 +44,8 @@ public class SaveDocumentToArchiveHandler
         IUserServiceClient userService,
         ICodebookServiceClient codebookService,
         IDocumentHelperService documentHelper,
-        IEaCodeMainHelper eaCodeMainHelper
+        IEaCodeMainHelper eaCodeMainHelper,
+        IFileExtensionService fileExtension
         )
     {
         _documentArchiveService = client;
@@ -56,6 +59,7 @@ public class SaveDocumentToArchiveHandler
         _codebookService = codebookService;
         _documentHelper = documentHelper;
         _eaCodeMainHelper = eaCodeMainHelper;
+        _fileExtension = fileExtension;
     }
 
     public async Task Handle(SaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
@@ -68,6 +72,8 @@ public class SaveDocumentToArchiveHandler
 
         foreach (var docInfo in request.DocumentsInformation)
         {
+            _fileExtension.ValidateFileExtension(Path.GetExtension(docInfo.DocumentInformation.FileName));
+
             await CheckIfDocumentCanByUploadedFromNoby(docInfo, cancellationToken);
 
             await CheckDrawingPermissionIfArrangementIsDrawing(docInfo.DocumentInformation.EaCodeMainId, cancellationToken);

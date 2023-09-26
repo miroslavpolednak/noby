@@ -2,7 +2,7 @@
 
 namespace CIS.Infrastructure.Audit.Dto;
 
-internal sealed class AuditEventContext
+public sealed class AuditEventContext
 {
     public AuditEventTypes EventType { get; init; }
     public string Message { get; init; } = null!;
