@@ -13,15 +13,18 @@ public sealed class UpdateDocumentStatusJob
     private readonly IMediator _mediator;
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IESignaturesClient _eSignaturesClient;
+    private readonly ILogger<UpdateDocumentStatusJob> _logger;
 
     public UpdateDocumentStatusJob(
         IMediator mediator,
         DocumentOnSAServiceDbContext dbContext,
-        IESignaturesClient eSignaturesClient)
+        IESignaturesClient eSignaturesClient,
+        ILogger<UpdateDocumentStatusJob> logger)
     {
         _mediator = mediator;
         _dbContext = dbContext;
         _eSignaturesClient = eSignaturesClient;
+        _logger = logger;
     }
 
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
@@ -37,27 +40,34 @@ public sealed class UpdateDocumentStatusJob
 
         foreach (var documentOnSa in documentOnSas)
         {
-            var status = await _eSignaturesClient.GetDocumentStatus(documentOnSa.ExternalId!, cancellationToken);
-
-            if (status is EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT)
+            try
             {
-                var signRequest = new SignDocumentRequest
-                {
-                    DocumentOnSAId = documentOnSa.DocumentOnSAId,
-                    SignatureTypeId = (int)SignatureTypes.Electronic
-                };
+                var status = await _eSignaturesClient.GetDocumentStatus(documentOnSa.ExternalId!, cancellationToken);
 
-                await _mediator.Send(signRequest, cancellationToken);
+                if (status is EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT)
+                {
+                    var signRequest = new SignDocumentRequest
+                    {
+                        DocumentOnSAId = documentOnSa.DocumentOnSAId,
+                        SignatureTypeId = (int)SignatureTypes.Electronic
+                    };
+
+                    await _mediator.Send(signRequest, cancellationToken);
+                }
+
+                if (status == EDocumentStatuses.DELETED)
+                {
+                    var stopSignRequest = new StopSigningRequest
+                    {
+                        DocumentOnSAId = documentOnSa.DocumentOnSAId
+                    };
+
+                    await _mediator.Send(stopSignRequest, cancellationToken);
+                }
             }
-
-            if (status == EDocumentStatuses.DELETED)
+            catch (Exception ex)
             {
-                var stopSignRequest = new StopSigningRequest
-                {
-                    DocumentOnSAId = documentOnSa.DocumentOnSAId
-                };
-
-                await _mediator.Send(stopSignRequest, cancellationToken);
+                _logger.LogError(ex, ex.Message);
             }
         }
     }
