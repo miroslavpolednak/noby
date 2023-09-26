@@ -52,7 +52,7 @@ public interface IGrpcServiceFluentBuilder<TConfiguration>
     /// Přidá do aplikace gRPC / JSON Transcoding včetně SwaggerUI
     /// </summary>
     /// <param name="options">Možnost nastavení SwaggerUI, např. název API, XML komentáře...</param>
-    IGrpcServiceFluentBuilder<TConfiguration> EnableJsonTranscoding(Action<JsonTranscodingOptions> options);
+    IGrpcServiceFluentBuilder<TConfiguration> EnableJsonTranscoding(Action<FluentBuilderJsonTranscodingOptions> options);
 
     /// <summary>
     /// Ukončuje část konfigurace DI kontajneru a vrací builder pro vytváření middleware konfigurace.

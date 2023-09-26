@@ -11,7 +11,7 @@ internal abstract class GrpcServiceFluentBuilderBase
         _settings.AddGrpcServiceOptions = changeOptions;
     }
 
-    protected void IntEnableJsonTranscoding(Action<JsonTranscodingOptions> options)
+    protected void IntEnableJsonTranscoding(Action<FluentBuilderJsonTranscodingOptions> options)
     {
         if (_settings.EnableJsonTranscoding)
         {
@@ -20,7 +20,7 @@ internal abstract class GrpcServiceFluentBuilderBase
 
         _settings.EnableJsonTranscoding = true;
         // vychozi nastaveni transcodingu
-        _settings.TranscodingOptions = new JsonTranscodingOptions();
+        _settings.TranscodingOptions = new FluentBuilderJsonTranscodingOptions();
         // custom uprava nastaveni
         options(_settings.TranscodingOptions);
     }

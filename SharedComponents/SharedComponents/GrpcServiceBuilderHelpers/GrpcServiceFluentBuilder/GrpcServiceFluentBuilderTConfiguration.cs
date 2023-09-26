@@ -25,7 +25,7 @@ internal sealed class GrpcServiceFluentBuilder<TConfiguration>
         return Build();
     }
 
-    public IGrpcServiceFluentBuilder<TConfiguration> EnableJsonTranscoding(Action<JsonTranscodingOptions> options)
+    public IGrpcServiceFluentBuilder<TConfiguration> EnableJsonTranscoding(Action<FluentBuilderJsonTranscodingOptions> options)
     {
         IntEnableJsonTranscoding(options);
         return this;
