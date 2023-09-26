@@ -22,5 +22,11 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="SharedTypes.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 	
 </Project>
