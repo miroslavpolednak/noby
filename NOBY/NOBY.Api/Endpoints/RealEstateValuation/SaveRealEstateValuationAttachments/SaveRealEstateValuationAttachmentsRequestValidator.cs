@@ -11,6 +11,15 @@ internal sealed class SaveRealEstateValuationAttachmentsRequestValidator
             .NotEmpty();
 
         RuleForEach(t => t.Attachments)
+            .ChildRules(c =>
+            {
+                c.RuleFor(t => t.Title)
+                    .NotEmpty()
+                    .WithErrorCode(90032);
+            })
+            .When(t => t is not null);
+
+        RuleForEach(t => t.Attachments)
             .MustAsync(async (t, cancallationToken) => (await codebookService.AcvAttachmentCategories(cancallationToken)).Any(x => x.Id == t.AcvAttachmentCategoryId));
     }
 }
