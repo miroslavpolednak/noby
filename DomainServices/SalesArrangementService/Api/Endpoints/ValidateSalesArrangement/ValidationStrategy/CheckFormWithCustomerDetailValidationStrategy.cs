@@ -60,7 +60,7 @@ internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangement
         if (!naturalPerson.NetMonthEarningAmountId.HasValue || 
             !naturalPerson.NetMonthEarningTypeId.HasValue || 
             !naturalPerson.ProfessionCategoryId.HasValue || 
-            !naturalPerson.ProfessionId.HasValue)
+            (naturalPerson.ProfessionCategoryId.Value != 0 && !naturalPerson.ProfessionId.HasValue))
         {
             ThrowValidationException();
         }
