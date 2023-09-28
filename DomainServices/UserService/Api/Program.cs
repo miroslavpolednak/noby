@@ -3,16 +3,14 @@ using DomainServices.UserService.Api.Database;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
-    .AddRollbackCapability()
-    
     .AddDistributedCache()
     .AddErrorCodeMapper(DomainServices.UserService.Api.ErrorCodeMapper.Init())
     .EnableJsonTranscoding(options =>
     {
         options.OpenApiTitle = "User Service API";
         options
-            .AddOpenApiXmlComment("DomainServices.UserService.Contracts.xml")
-            .AddOpenApiXmlComment("SharedTypes.GrpcTypes.xml");
+            .AddOpenApiXmlCommentFromBaseDirectory("DomainServices.UserService.Contracts.xml")
+            .AddOpenApiXmlCommentFromBaseDirectory("SharedTypes.xml");
     })
     .Build(builder =>
     {
