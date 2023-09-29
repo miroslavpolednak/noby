@@ -49,7 +49,7 @@ internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangement
             await ValidateIdentificationDetail(customer.NaturalPerson, cancellationToken);
             ValidateAddresses(customer);
             ValidateContacts(customer.Contacts);
-            await ValidateIdentificationDocument(customer.CustomerIdentification, cancellationToken);
+            await ValidateIdentificationDocument(customer.IdentificationDocument, customer.CustomerIdentification, cancellationToken);
         }
 
         return await _checkFormValidation.Validate(salesArrangement, cancellationToken);
@@ -95,17 +95,17 @@ internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangement
         ThrowValidationException();
     }
 
-    private async Task ValidateIdentificationDocument(CustomerIdentification? identification, CancellationToken cancellationToken)
+    private async Task ValidateIdentificationDocument(IdentificationDocument? identificationDocument, CustomerIdentification? customerIdentification, CancellationToken cancellationToken)
     {
-        if (identification is null)
+        if (identificationDocument is null || customerIdentification is null)
             ThrowValidationException();
 
-        if (identification!.IdentificationDate is not null && !string.IsNullOrWhiteSpace(identification.CzechIdentificationNumber))
+        if (customerIdentification!.IdentificationDate is not null && !string.IsNullOrWhiteSpace(customerIdentification.CzechIdentificationNumber))
             return;
 
         var identificationDocumentTypes = await _codebookService.IdentificationDocumentTypes(cancellationToken);
 
-        if (identificationDocumentTypes.Any(i => i.Id != 0 && i.Id == identification.IdentificationMethodId))
+        if (identificationDocumentTypes.Any(i => i.Id != 0 && i.Id == identificationDocument!.IdentificationDocumentTypeId))
             return;
 
         ThrowValidationException();
