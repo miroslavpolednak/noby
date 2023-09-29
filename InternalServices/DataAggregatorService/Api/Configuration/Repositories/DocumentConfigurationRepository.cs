@@ -70,7 +70,7 @@ internal class DocumentConfigurationRepository
     {
         const string TableQuery =
             """
-            SELECT DocumentTableId, TableSourcePath, AcroFieldPlaceholderName, ConcludingParagraph
+            SELECT DocumentTableId, TableSourcePath, DataServiceId as DataService, AcroFieldPlaceholderName, ConcludingParagraph
             FROM vw_DocumentTables WHERE DocumentId = @documentId AND DocumentVersion = @documentVersion
             """;
 
