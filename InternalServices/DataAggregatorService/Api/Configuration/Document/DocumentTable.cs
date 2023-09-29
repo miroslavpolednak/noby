@@ -4,7 +4,7 @@ internal class DocumentTable
 {
     public int DocumentTableId { get; init; }
     
-    public string AcroFieldPlaceholder { get; init; } = null!;
+    public string AcroFieldPlaceholderName { get; init; } = null!;
 
     public DataService DataService { get; set; }
 
