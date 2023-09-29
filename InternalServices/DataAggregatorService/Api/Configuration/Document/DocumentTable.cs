@@ -8,7 +8,7 @@ internal class DocumentTable
 
     public DataService DataService { get; set; }
 
-    public string CollectionSourcePath { get; init; } = null!;
+    public string TableSourcePath { get; init; } = null!;
 
     public List<Column> Columns { get; } = new List<Column>();
 

@@ -53,7 +53,7 @@ internal static class DocumentConfigurationMock
                     DocumentTableId = 1,
                     AcroFieldPlaceholder = "SplatkovyKalendar", 
                     DataService = DataService.OfferPaymentScheduleService,
-                    CollectionSourcePath = "OfferPaymentSchedule.PaymentScheduleFull[]",
+                    TableSourcePath = "OfferPaymentSchedule.PaymentScheduleFull[]",
                     ConcludingParagraph = "Text",
                     Columns =
                     {
