@@ -2201,11 +2201,6 @@
             Identita klienta, pokud se ma zalozit novy CustomerOnSA
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.setFlowSwitches(System.Int32,System.Boolean)">
-            <summary>
-            Nastavit flowSwitches na SalesArrangementu
-            </summary>
-        </member>
         <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.checkDoubledCustomers(System.Int32,NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest,System.Threading.CancellationToken)">
             <summary>
             Kontrola zda nektery z customeru jiz nema pouzitou stejnou identitu
