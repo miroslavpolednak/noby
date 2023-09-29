@@ -57,8 +57,8 @@ internal static class DocumentConfigurationMock
                     ConcludingParagraph = "Text",
                     Columns =
                     {
-                        new DocumentTable.Column { CollectionFieldPath = "Amount", Header = "Header 1", WidthPercentage = 10 },
-                        new DocumentTable.Column { CollectionFieldPath = "PaymentNumber", Header = "Header 2", WidthPercentage = 10 },
+                        new DocumentTable.Column { FieldPath = "Amount", Header = "Header 1", WidthPercentage = 10 },
+                        new DocumentTable.Column { FieldPath = "PaymentNumber", Header = "Header 2", WidthPercentage = 10 },
                     }
                 }
 

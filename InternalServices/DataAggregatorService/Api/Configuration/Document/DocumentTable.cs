@@ -16,7 +16,7 @@ internal class DocumentTable
 
     public class Column
     {
-        public required string CollectionFieldPath { get; init; }
+        public required string FieldPath { get; init; }
 
         public required string Header { get; init; }
 
