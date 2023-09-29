@@ -109,7 +109,7 @@ internal class DocumentMapper
     {
         return collection.Cast<object>().Select(obj =>
         {
-            var rowValues = (ICollection<object?>)columns.Select(c => MapperHelper.GetValue(obj, c.CollectionFieldPath)).ToList();
+            var rowValues = (ICollection<object?>)columns.Select(c => MapperHelper.GetValue(obj, c.FieldPath)).ToList();
 
             return new GenericTableRow
             {
