@@ -44,7 +44,7 @@ public enum CaseStates : byte
     Cancelled = 7,
 
     [EnumMember]
-    [Display(Name = "Zpracování žádosti v továrně")]
+    [Display(Name = "Zpracování žádosti")]
     InApprovalConfirmed = 8,
 
     [EnumMember]
