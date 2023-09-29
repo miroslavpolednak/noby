@@ -49,11 +49,11 @@ internal sealed class CancelCaseHandler
         }
         else // pokud nezname datum prvniho podpisu
         {
-            await _productService.CancelMortgage(request.CaseId, cancellation);
-
             // je debtor identifikovany?
             if (await isDebtorIdentified(salesArrangementId, cancellation))
             {
+                await _productService.CancelMortgage(request.CaseId, cancellation);
+
                 var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation);
 
                 // zavolat RIP
