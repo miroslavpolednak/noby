@@ -27,10 +27,10 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
     
     public async Task<CancelCaseResponse> Handle(CancelCaseRequest request, CancellationToken cancellationToken)
     {
-        var documentTypeItem = await GetDocumentType(_documentType, cancellationToken);
+        var documentTypeItem = await getDocumentType(_documentType, cancellationToken);
         
-        var salesArrangement = await GetProductSalesArrangement(request.CaseId, cancellationToken);
-        var caseDetail = await _caseService.GetCaseDetail(salesArrangement.CaseId, cancellationToken);
+        var salesArrangement = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+        var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var customerOnSas = await _customerOnSaService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
         var caseState = (await _codebookService.CaseStates(cancellationToken)).First(s => s.Id == caseDetail.State);
 
@@ -95,13 +95,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
         return responseModel;
     }
 
-    private async Task<DomainServices.SalesArrangementService.Contracts.SalesArrangement> GetProductSalesArrangement(long caseId, CancellationToken cancellationToken)
-    {
-        var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
-        return salesArrangementResponse.SalesArrangements.First(s => s.IsProductSalesArrangement());
-    }
-
-    private async Task<DocumentTypesResponse.Types.DocumentTypeItem> GetDocumentType(DocumentTypes documentType, CancellationToken cancellationToken)
+    private async Task<DocumentTypesResponse.Types.DocumentTypeItem> getDocumentType(DocumentTypes documentType, CancellationToken cancellationToken)
     {
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
         return documentTypes.First(t => t.Id == documentType.ToByte());
