@@ -11,7 +11,6 @@ using Google.Protobuf;
 using SharedTypes.Enums;
 using NOBY.Services.DocumentHelper;
 using NOBY.Services.EaCodeMain;
-using NOBY.Services.FileExtension;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 
@@ -31,8 +30,7 @@ public class SaveDocumentToArchiveHandler
     private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentHelperService _documentHelper;
     private readonly IEaCodeMainHelper _eaCodeMainHelper;
-    private readonly IFileExtensionService _fileExtension;
-
+    
     public SaveDocumentToArchiveHandler(
         IDocumentArchiveServiceClient client,
         ICurrentUserAccessor currentUserAccessor,
@@ -44,8 +42,7 @@ public class SaveDocumentToArchiveHandler
         IUserServiceClient userService,
         ICodebookServiceClient codebookService,
         IDocumentHelperService documentHelper,
-        IEaCodeMainHelper eaCodeMainHelper,
-        IFileExtensionService fileExtension
+        IEaCodeMainHelper eaCodeMainHelper
         )
     {
         _documentArchiveService = client;
@@ -59,7 +56,6 @@ public class SaveDocumentToArchiveHandler
         _codebookService = codebookService;
         _documentHelper = documentHelper;
         _eaCodeMainHelper = eaCodeMainHelper;
-        _fileExtension = fileExtension;
     }
 
     public async Task Handle(SaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
@@ -72,8 +68,6 @@ public class SaveDocumentToArchiveHandler
 
         foreach (var docInfo in request.DocumentsInformation)
         {
-            _fileExtension.ValidateFileExtension(Path.GetExtension(docInfo.DocumentInformation.FileName));
-
             await CheckIfDocumentCanByUploadedFromNoby(docInfo, cancellationToken);
 
             await CheckDrawingPermissionIfArrangementIsDrawing(docInfo.DocumentInformation.EaCodeMainId, cancellationToken);
@@ -86,12 +80,14 @@ public class SaveDocumentToArchiveHandler
 
             filePaths.Add(docInfo.DocumentInformation.Guid!.Value);
 
+            var fileMetadata = await _tempFileManager.GetMetadata(docInfo.DocumentInformation.Guid!.Value, cancellationToken);
             var file = await _tempFileManager.GetContent(docInfo.DocumentInformation.Guid!.Value, cancellationToken);
+            
             var documentId = await _documentArchiveService.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken);
 
             filesToUpload.Add(new()
             {
-                uploadRequest = await MapRequest(file, documentId, request.CaseId, docInfo, authorUserLogin, cancellationToken),
+                uploadRequest = await MapRequest(file, fileMetadata.FileName, documentId, request.CaseId, docInfo, authorUserLogin, cancellationToken),
                 documentOnSAId = documentOnSAId
             });
         }
@@ -107,7 +103,7 @@ public class SaveDocumentToArchiveHandler
             ?? throw new NobyValidationException($"Unsupported EACodeMainId {docInfo.DocumentInformation.EaCodeMainId}");
 
         if (eACodeMain?.IsInsertingAllowedNoby == false)
-            throw new NobyValidationException($"Document {docInfo.DocumentInformation.FileName} with EACodeMainId {docInfo.DocumentInformation.EaCodeMainId} cannot be uploaded from Noby");
+            throw new NobyValidationException($"Document {docInfo.DocumentInformation.Guid} with EACodeMainId {docInfo.DocumentInformation.EaCodeMainId} cannot be uploaded from Noby");
     }
 
     private async Task UploadDocument((UploadDocumentRequest uploadRequest, int? documentOnSAId) uploadItem, CancellationToken cancellationToken)
@@ -184,6 +180,7 @@ public class SaveDocumentToArchiveHandler
 
     private async Task<UploadDocumentRequest> MapRequest(
         byte[] file,
+        string fileName,
         string documentId,
         long caseId,
         DocumentsInformation documentInformation,
@@ -198,7 +195,7 @@ public class SaveDocumentToArchiveHandler
                 CaseId = caseId,
                 DocumentId = documentId,
                 EaCodeMainId = documentInformation.DocumentInformation.EaCodeMainId,
-                Filename = documentInformation.DocumentInformation.FileName,
+                Filename = fileName,
                 AuthorUserLogin = authorUserLogin,
                 CreatedOn = _dateTime.Now.Date,
                 Description = documentInformation.DocumentInformation.Description ?? string.Empty,

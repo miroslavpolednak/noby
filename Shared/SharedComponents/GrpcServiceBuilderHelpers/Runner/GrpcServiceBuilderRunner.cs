@@ -72,7 +72,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             if (!_settings.EnvironmentConfiguration.DisableContractDescriptionPropagation)
             {
                 _settings.Builder.Services.AddGrpcReflection();
-                addJsonTranscoding();
+                addSwagger();
             }
 
             // json transcoding
@@ -128,7 +128,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             if (!_settings.EnvironmentConfiguration.DisableContractDescriptionPropagation)
             {
                 app.MapGrpcReflectionService();
-                useJsonTranscoding(app);
+                useSwagger(app);
             }
             
             log.ApplicationRun();
@@ -144,7 +144,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
         }
     }
 
-    private void addJsonTranscoding()
+    private void addSwagger()
     {
         _settings.Builder.Services.AddGrpcSwagger();
         _settings.Builder.Services.AddEndpointsApiExplorer();
@@ -193,7 +193,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
         });
     }
 
-    private void useJsonTranscoding(WebApplication app)
+    private void useSwagger(WebApplication app)
     {
         if (_settings.EnableJsonTranscoding)
         {

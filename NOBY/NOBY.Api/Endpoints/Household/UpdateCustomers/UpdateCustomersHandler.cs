@@ -48,12 +48,15 @@ internal sealed class UpdateCustomersHandler
                 await _documentOnSAService.StopSigning(new() { DocumentOnSAId = document.DocumentOnSAId!.Value }, cancellationToken);
             }
 
+            // HFICH-4165
             if (!onlyNotSigned)
             {
-                // HFICH-4165 - nastaveni flowSwitches
-                bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
-                setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
+                _flowSwitchManager.AddFlowSwitch(householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning, true);
             }
+
+            // HFICH-4165 - nastaveni flowSwitches
+            bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
+            _flowSwitchManager.AddFlowSwitch(householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.CustomerIdentifiedOnMainHousehold : FlowSwitches.CustomerIdentifiedOnCodebtorHousehold, isSecondCustomerIdentified);
         }
 
         _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
@@ -70,30 +73,6 @@ internal sealed class UpdateCustomersHandler
             CustomerOnSAId1 = c1.OnHouseholdCustomerOnSAId,
             CustomerOnSAId2 = c2.OnHouseholdCustomerOnSAId
         };
-    }
-
-    /// <summary>
-    /// Nastavit flowSwitches na SalesArrangementu
-    /// </summary>
-    private void setFlowSwitches(int householdTypeId, bool isSecondCustomerIdentified)
-    {
-        switch (householdTypeId)
-        {
-            case (int)HouseholdTypes.Main:
-                _flowSwitchManager.AddFlowSwitch(FlowSwitches.Was3601MainChangedAfterSigning, true);
-
-                // HFICH-5396, vezmi druhého customera z householdu a pokud existuje, tak zkontroluj, že pro identity.scheme = KBID existuje identity.id které není null
-                _flowSwitchManager.AddFlowSwitch(FlowSwitches.CustomerIdentifiedOnMainHousehold, isSecondCustomerIdentified);
-                break;
-            case (int)HouseholdTypes.Codebtor:
-                _flowSwitchManager.AddFlowSwitch(FlowSwitches.Was3602CodebtorChangedAfterSigning, true);
-
-                // HFICH-5396, vezmi druhého customera z householdu a pokud existuje, tak zkontroluj, že pro identity.scheme = KBID existuje identity.id které není null
-                _flowSwitchManager.AddFlowSwitch(FlowSwitches.CustomerIdentifiedOnCodebtorHousehold, isSecondCustomerIdentified);
-                break;
-            default:
-                throw new NobyValidationException("Unsupported HouseholdType");
-        }
     }
 
     /// <summary>

@@ -64,11 +64,6 @@
             GUID dokumentu v dočasném úložišti
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Documents.DocumentInformation.FileName">
-            <summary>
-            Jméno souboru
-            </summary>
-        </member>
         <member name="P:NOBY.Dto.Documents.DocumentInformation.EaCodeMainId">
             <summary>
             Id EA kódu
