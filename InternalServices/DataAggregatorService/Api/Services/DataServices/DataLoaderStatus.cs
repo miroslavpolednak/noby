@@ -25,5 +25,5 @@ internal class DataLoaderStatus
         LoadedDataSources.Add(dataService);
     }
 
-    public ICollection<DataService> GetRemainingDataSources() => RemainingDataSources.Except(RelatedInputParameters.Select(p => p.TargetDataService)).Where(s => s != DataService.General).ToList();
+    public ICollection<DataService> GetRemainingDataSources() => RemainingDataSources.Except(RelatedInputParameters.Select(p => p.TargetDataService)).ToList();
 }
