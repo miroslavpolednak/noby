@@ -3,8 +3,8 @@ using DomainServices.CaseService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.ProductService.Clients;
-using NOBY.Dto.Documents;
 using NOBY.Services.DocumentHelper;
+using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 
@@ -13,11 +13,15 @@ internal sealed class GetCaseMenuFlagsHandler
 {
     public async Task<GetCaseMenuFlagsResponse> Handle(GetCaseMenuFlagsRequest request, CancellationToken cancellationToken)
     {
+        // instance case
+        var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
+
+        // seznam dokumentu
         var getDocumentsInQueueRequest = new GetDocumentsInQueueRequest 
         { 
             CaseId = request.CaseId
         };
-        getDocumentsInQueueRequest.StatusesInQueue.AddRange(new List<int> { 100, 110, 200, 300 });
+        getDocumentsInQueueRequest.StatusesInQueue.AddRange(new[] { 100, 110, 200, 300 });
         var documentsInQueue = await _documentArchiveServiceClient.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
 
         return new GetCaseMenuFlagsResponse
@@ -25,28 +29,21 @@ internal sealed class GetCaseMenuFlagsHandler
             ParametersMenuItem = new(),
             DebtorsItem = new(),
             TasksMenuItem = new(),
-            ChangeRequestsMenuItem = new()
+            ChangeRequestsMenuItem = new GetCaseMenuFlagsItem
             {
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access)
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.ToBeCancelled
             },
-            DocumentsMenuItem = await getDocuments(request.CaseId, documentsInQueue, cancellationToken),
-            CovenantsMenuItem = await getCovenants(request.CaseId, documentsInQueue, cancellationToken),
-            RealEstatesMenuItem = await getRealEstates(request.CaseId, cancellationToken)
+            RealEstatesMenuItem = new GetCaseMenuFlagsItem
+            {
+                Flag = GetCaseMenuFlagsTypes.NoFlag,
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State is not (int)CaseStates.InProgress or (int)CaseStates.ToBeCancelled
+            },
+            DocumentsMenuItem = await getDocuments(documentsInQueue, cancellationToken),
+            CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken),
         };
     }
 
-    private async Task<GetCaseMenuFlagsItem> getRealEstates(long caseId, CancellationToken cancellationToken)
-    {
-        var caseInstance = await _caseService.ValidateCaseId(caseId, false, cancellationToken);
-
-        return new GetCaseMenuFlagsItem
-        {
-            Flag = GetCaseMenuFlagsTypes.NoFlag,
-            IsActive = !(!_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) || caseInstance.State == 1)
-        };
-    }
-
-    private async Task<GetCaseMenuFlagsItem> getCovenants(long caseId, GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
+    private async Task<GetCaseMenuFlagsItem> getCovenants(long caseId, CancellationToken cancellationToken)
     {
         var response = new GetCaseMenuFlagsItem();
 
@@ -67,7 +64,7 @@ internal sealed class GetCaseMenuFlagsHandler
         return response;
     }
 
-    private async Task<GetCaseMenuFlagsItem> getDocuments(long caseId, GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
+    private async Task<GetCaseMenuFlagsItem> getDocuments(GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
     {
         var getDocumentsInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(documentsInQueue);
         var documentsInQueueFiltered = await _documentHelper.FilterDocumentsVisibleForKb(getDocumentsInQueueMetadata, cancellationToken);
