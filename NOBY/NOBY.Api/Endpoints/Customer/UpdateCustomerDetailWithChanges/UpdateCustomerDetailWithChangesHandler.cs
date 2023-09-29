@@ -210,7 +210,6 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         // compare objects
         dynamic delta = new System.Dynamic.ExpandoObject();
 
-        ModelComparers.CompareRoot(request, originalModel, delta);
         ModelComparers.ComparePerson(request.NaturalPerson, originalModel?.NaturalPerson, delta);
         ModelComparers.CompareObjects(request.IdentificationDocument, originalModel?.IdentificationDocument, "IdentificationDocument", delta);
         ModelComparers.CompareObjects(request.CustomerIdentification, originalModel?.CustomerIdentification, "CustomerIdentification", delta);

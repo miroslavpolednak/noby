@@ -31,11 +31,6 @@ internal static class ModelComparers
             delta.NaturalPerson = deltaPerson;
     }
 
-    public static void CompareRoot(UpdateCustomerDetailWithChangesRequest request, UpdateCustomerDetailWithChangesRequest original, dynamic delta)
-    {
-        writeDifferencesToDelta(_rootCompareLogic.Compare(original, request), delta);
-    }
-
     public static bool AreObjectsEqual<T>(T? request, T? original)
     {
         return _basicCompareLogic.Compare(original, request).AreEqual;
