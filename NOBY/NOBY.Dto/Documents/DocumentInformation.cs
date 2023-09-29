@@ -8,11 +8,6 @@ public class DocumentInformation
     public Guid? Guid { get; set; }
 
     /// <summary>
-    /// Jméno souboru
-    /// </summary>
-    public string FileName { get; set; } = null!;
-
-    /// <summary>
     /// Id EA kódu
     /// </summary>
     public int? EaCodeMainId { get; set; }

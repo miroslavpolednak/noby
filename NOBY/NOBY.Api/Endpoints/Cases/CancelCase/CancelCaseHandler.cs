@@ -67,7 +67,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
                 Metadata = new DocumentMetadata
                 {
                     AuthorUserLogin = authorUserLogin,
-                    CaseId = salesArrangement.CaseId,
+                    CaseId = request.CaseId,
                     ContractNumber = caseDetail.Data.ContractNumber,
                     CreatedOn = _dateTime.Now.Date,
                     DocumentId = documentId,
