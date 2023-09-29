@@ -24,7 +24,7 @@ internal sealed class CustomerWithChangedDataService
         var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
         // convert DS contract to FE model
-        return (fillResponseDto<TResponse>(customer, customerOnSA), customer.CustomerIdentification.IdentificationMethodId);
+        return (fillResponseDto<TResponse>(customer, customerOnSA), customer.CustomerIdentification?.IdentificationMethodId);
     }
 
     public async Task<TResponse> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)

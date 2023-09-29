@@ -11,7 +11,7 @@ internal sealed class ValidateSalesArrangementIdHandler
     {
         var instance = await _dbContext.SalesArrangements
             .Where(t => t.SalesArrangementId ==  request.SalesArrangementId)
-            .Select(t => new { t.State, t.CaseId })
+            .Select(t => new { t.State, t.CaseId, t.SalesArrangementTypeId })
             .FirstOrDefaultAsync(cancellationToken);
 
         if (request.ThrowExceptionIfNotFound && instance is null)
@@ -23,7 +23,8 @@ internal sealed class ValidateSalesArrangementIdHandler
         {
             Exists = instance is not null,
             CaseId = instance?.CaseId,
-            State = instance?.State
+            State = instance?.State,
+            SalesArrangementTypeId = instance?.SalesArrangementTypeId,
         };
     }
 

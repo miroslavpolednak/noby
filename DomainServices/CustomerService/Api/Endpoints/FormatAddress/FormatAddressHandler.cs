@@ -33,11 +33,11 @@ internal class FormatAddressHandler : IRequestHandler<FormatAddressRequest, Form
         };
     }
 
-    private async Task<string> CountryCode(int? countryId, CancellationToken cancellationToken)
+    private async Task<string?> CountryCode(int? countryId, CancellationToken cancellationToken)
     {
         var countries = await _codebookService.Countries(cancellationToken);
 
-        return countries.First(c => c.Id == countryId).ShortName;
+        return countries.FirstOrDefault(c => c.Id == countryId)?.ShortName;
     }
 
     private async Task<ComponentAddressPoint> ParseComponentAddress(GrpcAddress address, CancellationToken cancellationToken)
@@ -87,7 +87,7 @@ internal class FormatAddressHandler : IRequestHandler<FormatAddressRequest, Form
         return string.Join("/", RemoveEmptyAddressValues(address.HouseNumber, address.StreetNumber));
     }
 
-    private static IEnumerable<string> RemoveEmptyAddressValues(params string[] addressValues)
+    private static IEnumerable<string> RemoveEmptyAddressValues(params string?[] addressValues)
     {
         return addressValues.Where(str => !string.IsNullOrWhiteSpace(str));
     }

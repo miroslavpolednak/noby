@@ -18,7 +18,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     {
         // customer instance
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
-
+        
         // customer from KB CM
         var (originalModel, customerIdentification) = await _changedDataService.GetCustomerFromCM<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
 
@@ -100,6 +100,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 customerOnSA.CustomerOnSAId,
                 customerOnSA.SalesArrangementId,
                 updateRequest.CustomerChangeMetadata.WereClientDataChanged,
+                updateRequest.CustomerChangeMetadata.WasCRSChanged,
                 cancellationToken);
         }
     }
@@ -108,11 +109,13 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         int customerOnSAId,
         int salesArrangementId,
         bool wereClientDataChanged,
+        bool wasCRSChanged,
         CancellationToken cancellationToken)
     {
         var documentsToSign = (await _documentOnSAService.GetDocumentsToSignList(salesArrangementId, cancellationToken))
             .DocumentsOnSAToSign
             .Where(t => t.DocumentOnSAId.HasValue);
+        var usedDocumentIds = new List<int>();
 
         if (wereClientDataChanged) // zmena klientskych udaju
         {
@@ -122,6 +125,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             foreach (var doc in documentsToSign.Where(t => t.HouseholdId == household.HouseholdId))
             {
                 await _documentOnSAService.StopSigning(new() { DocumentOnSAId = doc.DocumentOnSAId!.Value }, cancellationToken);
+                usedDocumentIds.Add(doc.DocumentOnSAId.Value);
             }
 
             // set flow switches
@@ -134,9 +138,10 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 }
             }, cancellationToken);
         }
-        else // zmena pouze CRS
+        
+        if (wasCRSChanged) // zmena CRS
         {
-            var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13 && t.CustomerOnSA.CustomerOnSAId == customerOnSAId);//HH rikal, ze 14 neni spravne, ze to ma byt 13
+            var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13 && t.CustomerOnSA.CustomerOnSAId == customerOnSAId && !usedDocumentIds.Contains(t.DocumentOnSAId!.Value));//HH rikal, ze 14 neni spravne, ze to ma byt 13
             if (crsDoc != null)
             {
                 await _documentOnSAService.StopSigning(new() { DocumentOnSAId = crsDoc.DocumentOnSAId!.Value }, cancellationToken);
