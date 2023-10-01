@@ -38,7 +38,7 @@ internal sealed class CustomerWithChangedDataService
         {
             // provide saved changes to original model
             var original = JObject.FromObject(model);
-            var delta = JObject.Parse(customerOnSA.CustomerChangeData);
+            var delta = JObject.Parse(string.IsNullOrEmpty(customerOnSA.CustomerChangeData) || customerOnSA.CustomerChangeData == "null" ? "{}" : customerOnSA.CustomerChangeData);
 
             original.Merge(delta, new JsonMergeSettings
             {
