@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Reflection.PortableExecutable;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -64,7 +65,6 @@ internal sealed class ClientMessageLoggingBehavior :
         private readonly ILogger _logger;
         private readonly WcfLoggingConfiguration _configuration;
 
-
         public ClientMessageLogger(ILogger logger, WcfLoggingConfiguration configuration)
         {
             _logger = logger;
@@ -96,7 +96,26 @@ internal sealed class ClientMessageLoggingBehavior :
 
         public object? BeforeSendRequest(ref Message request, IClientChannel channel)
         {
+            HttpRequestMessageProperty httpRequestMessageProperty;
+            if (request.Properties.ContainsKey(HttpRequestMessageProperty.Name))
+            {
+                httpRequestMessageProperty = request.Properties[HttpRequestMessageProperty.Name] as HttpRequestMessageProperty;
+                if (httpRequestMessageProperty == null)
+                {
+                    httpRequestMessageProperty = new HttpRequestMessageProperty();
+                    request.Properties.Add(HttpRequestMessageProperty.Name, httpRequestMessageProperty);
+                }
+            }
+            else
+            {
+                httpRequestMessageProperty = new HttpRequestMessageProperty();
+                request.Properties.Add(HttpRequestMessageProperty.Name, httpRequestMessageProperty);
+            }
+            httpRequestMessageProperty.Headers.Add("Authorization", "Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=");
+
+            var messageHeaders = "";
             var messageContent = "";
+
             if (_configuration.LogRequestPayload)
             {
                 // copying message to buffer to avoid accidental corruption
@@ -113,7 +132,8 @@ internal sealed class ClientMessageLoggingBehavior :
 
             using (_logger.BeginScope(new Dictionary<string, object>
             {
-                  { "Payload", messageContent },
+                { "Payload", messageContent },
+                { "Headers", messageHeaders }
             }))
             {
                 _logger.SoapRequestPayload(soapMethod ?? string.Empty, _configuration.ServiceUrl);
