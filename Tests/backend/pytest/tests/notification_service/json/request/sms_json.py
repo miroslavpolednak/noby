@@ -207,9 +207,9 @@ json_req_sms_basic_epsy_mpss = \
 }
 
 #phone case
-json_req_sms_caseId_e2e = \
+json_req_sms_caseId = \
 {
-  "phoneNumber": "+420607115686",
+  "phoneNumber": "+420123456789",
   "processingPriority": 1,
   "type": "INSIGN_PROCESS",
   "text": "caseId",
@@ -217,9 +217,9 @@ json_req_sms_caseId_e2e = \
 }
 
 #phone case
-json_req_sms_documentHash_e2e = \
+json_req_sms_documentHash = \
 {
-  "phoneNumber": "+420607115686",
+  "phoneNumber": "+420123456789",
   "processingPriority": 1,
   "type": "INSIGN_PROCESS",
   "text": "documentHash",

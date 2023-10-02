@@ -15,7 +15,7 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
     json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e, \
-    json_req_sms_caseId_e2e, json_req_sms_documentHash_e2e
+    json_req_sms_caseId, json_req_sms_documentHash
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
@@ -333,7 +333,7 @@ def test_sms_bad_identifier(ns_url, auth_params, auth, json_data, expected_error
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_caseId_e2e])
+@pytest.mark.parametrize("json_data", [json_req_sms_caseId])
 def test_caseid_sms(ns_url, auth_params, auth, json_data, modified_json_data):
     url_name = ns_url["url_name"]
     username = auth[0]
@@ -355,7 +355,7 @@ def test_caseid_sms(ns_url, auth_params, auth, json_data, modified_json_data):
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_documentHash_e2e])
+@pytest.mark.parametrize("json_data", [json_req_sms_documentHash])
 def test_documentHash_sms(ns_url, auth_params, auth, json_data, modified_json_data):
     url_name = ns_url["url_name"]
     username = auth[0]
