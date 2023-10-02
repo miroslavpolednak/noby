@@ -31,7 +31,6 @@
     <ProjectReference Include="..\..\..\ExternalServices\MpHome\ExternalServices.MpHome.csproj" />
     <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
 	<ProjectReference Include="..\Contracts\DomainServices.CustomerService.Contracts.csproj" />
-	<ProjectReference Include="..\ExternalService.Address\DomainServices.CustomerService.ExternalServices.Address.csproj" />
 	<ProjectReference Include="..\ExternalServices.Contacts\DomainServices.CustomerService.ExternalServices.Contacts.csproj" />
 	<ProjectReference Include="..\ExternalServices.CustomerManagement\DomainServices.CustomerService.ExternalServices.CustomerManagement.csproj" />
 	<ProjectReference Include="..\ExternalServices.CustomerProfile\DomainServices.CustomerService.ExternalServices.CustomerProfile.csproj" />

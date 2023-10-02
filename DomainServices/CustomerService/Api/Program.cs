@@ -1,7 +1,7 @@
 using CIS.Infrastructure.Messaging;
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.CustomerService.ExternalServices;
-using global::ExternalServices;
+using ExternalServices;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -25,7 +25,6 @@ SharedComponents.GrpcServiceBuilder
         builder.AddExternalService<DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient>();
         builder.AddExternalService<DomainServices.CustomerService.ExternalServices.CustomerProfile.V1.ICustomerProfileClient>();
         builder.AddExternalService<DomainServices.CustomerService.ExternalServices.Kyc.V1.IKycClient>();
-        builder.AddExternalService<DomainServices.CustomerService.ExternalServices.Address.V2.ICustomerAddressServiceClient>();
         builder.AddExternalService<ExternalServices.MpHome.V1.IMpHomeClient>();
 
         builder.AddCisMessaging()
