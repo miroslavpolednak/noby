@@ -70,7 +70,6 @@ public sealed class GenericClientExceptionInterceptor
         }
         catch (Exception ex)
         {
-            string catchAll = ex.Message;
             throw;
         }
     }

@@ -10,7 +10,7 @@ public static class SecurityHelpers
     /// <summary>
     /// Autorizace uzivatele na Case podle OwnerUserId a na stav Case
     /// </summary>
-    public static void CheckCaseOwnerAndState(ICurrentUserAccessor currentUser, in int ownerUserId, in int caseState, in int? salesArrangementTypeId = null)
+    public static void CheckCaseOwnerAndState(ICurrentUserAccessor currentUser, in int ownerUserId, in int caseState, bool validateCaseStateAndProductSA = true, in int? salesArrangementTypeId = null)
     {
         // vidi vlastni Case nebo ma pravo videt vse
         if (currentUser.User!.Id != ownerUserId && !currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
@@ -27,7 +27,7 @@ public static class SecurityHelpers
         {
             throw new CisAuthorizationException($"CaseOwnerValidation: CASE_ViewAfterDrawing missing");
         }
-        else if (caseState > 1 && salesArrangementTypeId == (int)SalesArrangementTypes.Mortgage)
+        else if (validateCaseStateAndProductSA && caseState > 1 && salesArrangementTypeId == (int)SalesArrangementTypes.Mortgage)
         {
             throw new CisAuthorizationException($"CaseOwnerValidation: is product SA and CaseState > 1");
         }

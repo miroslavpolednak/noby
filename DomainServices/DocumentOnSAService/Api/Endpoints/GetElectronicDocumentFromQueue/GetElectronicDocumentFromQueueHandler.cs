@@ -1,6 +1,6 @@
 ﻿using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
-using ExternalServices.ESignatureQueues.V1;
+using ExternalServices.SbQueues.V1;
 using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,11 +9,11 @@ namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetElectronicDocument
 public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectronicDocumentFromQueueRequest, GetElectronicDocumentFromQueueResponse>
 {
     private readonly DocumentOnSAServiceDbContext _dbContext;
-    private readonly IESignatureQueuesRepository _signatureQueues;
+    private readonly ISbQueuesRepository _signatureQueues;
 
     public GetElectronicDocumentFromQueueHandler(
         DocumentOnSAServiceDbContext dbContext,
-        IESignatureQueuesRepository signatureQueues)
+        ISbQueuesRepository signatureQueues)
     {
         _dbContext = dbContext;
         _signatureQueues = signatureQueues;
@@ -24,52 +24,40 @@ public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectron
         return request.EDocumentCase switch
         {
             GetElectronicDocumentFromQueueRequest.EDocumentOneofCase.MainDocument
-                => await HandleMainDocument(request.MainDocument?.DocumentOnSAId ?? 0, cancellationToken),
+                => await HandleMainDocument(request.MainDocument?.DocumentId ?? string.Empty, cancellationToken),
             GetElectronicDocumentFromQueueRequest.EDocumentOneofCase.DocumentAttachment
-                => await HandleDocumentAttachment(request.DocumentAttachment?.DocumentAttachmentId ?? string.Empty, cancellationToken),
+                => await HandleDocumentAttachment(request.DocumentAttachment?.AttachmentId ?? string.Empty, cancellationToken),
             _ => throw new NotSupportedException(),
         };
     }
 
-    private async Task<GetElectronicDocumentFromQueueResponse> HandleMainDocument(int documentOnSAId, CancellationToken cancellationToken)
+    private async Task<GetElectronicDocumentFromQueueResponse> HandleMainDocument(string documentId, CancellationToken cancellationToken)
     {
-        var externalId = await _dbContext.DocumentOnSa
-            .Where(r => r.DocumentOnSAId == documentOnSAId)
-            .Select(r => r.ExternalId)
-            .FirstOrDefaultAsync(cancellationToken)
-        ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, documentOnSAId);
-
-        var documentFile = await _signatureQueues.GetDocumentByExternalId(externalId, cancellationToken);
+        var documentFile = await _signatureQueues.GetDocumentByExternalId(documentId, cancellationToken);
         if (documentFile?.Content == null || !documentFile.Content.Any())
         {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentFileNotExist, externalId);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentFileNotExist, documentId);
         }
 
         return new()
         {
-            Filename = documentFile.Name,
+            Filename = documentFile.FileName,
             MimeType = documentFile.ContentType,
             BinaryData = ByteString.CopyFrom(documentFile.Content)
         };
     }
 
-    private async Task<GetElectronicDocumentFromQueueResponse> HandleDocumentAttachment(string documentAttachmentId, CancellationToken cancellationToken)
+    private async Task<GetElectronicDocumentFromQueueResponse> HandleDocumentAttachment(string attachmentId, CancellationToken cancellationToken)
     {
-        // confirmed with IT ANA
-        if (!long.TryParse(documentAttachmentId, out var attachmentId))
-        {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AttachmentFileNotExist, documentAttachmentId);
-        }
-
         var attachmentFile = await _signatureQueues.GetAttachmentById(attachmentId, cancellationToken);
         if (attachmentFile?.Content == null || !attachmentFile.Content.Any())
         {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AttachmentFileNotExist, documentAttachmentId);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AttachmentFileNotExist, attachmentId);
         }
 
         return new()
         {
-            Filename = attachmentFile.Name,
+            Filename = attachmentFile.FileName,
             MimeType = attachmentFile.ContentType,
             BinaryData = ByteString.CopyFrom(attachmentFile.Content)
         };

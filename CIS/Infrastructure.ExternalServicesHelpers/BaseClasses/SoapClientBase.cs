@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using CIS.Infrastructure.ExternalServicesHelpers.Soap;
-using CIS.Infrastructure.Logging.Extensions.Extensions;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -34,18 +33,15 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
 
         if (_configuration.UseLogging)
         {
-            _client.Endpoint.SetTraceLogging(logger, new()
-            {
-                ServiceUrl = _configuration.ServiceUrl!.AbsoluteUri,
-                LogRequestPayload = _configuration.LogRequestPayload,
-                LogResponsePayload = _configuration.LogResponsePayload
-            });
+            _client.Endpoint.EndpointBehaviors.Add(new SoapClientMessageLoggingBehavior(logger, _configuration));
         }
 
         if (_configuration.Authentication == ExternalServicesAuthenticationTypes.Basic)
         {
             _client.ClientCredentials.UserName.UserName = _configuration.Username;
             _client.ClientCredentials.UserName.Password = _configuration.Password;
+            // http basic
+            _client.Endpoint.EndpointBehaviors.Add(new SoapHttpBasicAuthenticationBehavior(_configuration));
         }
 
         if (_configuration.IgnoreServerCertificateErrors)
