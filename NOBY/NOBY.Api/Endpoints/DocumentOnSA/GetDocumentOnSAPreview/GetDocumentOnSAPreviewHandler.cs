@@ -8,6 +8,7 @@ using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 using _Domain = DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
@@ -69,8 +70,11 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
             throw new NobyValidationException("Signed or invalid paper document is not allowed.");
         }
 
+        //Should be in the cache, so load it because we need CaseId
+        var saValidationResult = await _salesArrangementService.ValidateSalesArrangementId(documentOnSA.SalesArrangementId, false, cancellationToken);
+
         var documentOnSAData = await _documentOnSaService.GetDocumentOnSAData(documentOnSA.DocumentOnSAId ?? 0, cancellationToken);
-        var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSA, documentOnSAData);
+        var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSA, documentOnSAData, saValidationResult.CaseId);
         var document = await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
 
         var templates = await _codebookService.DocumentTypes(cancellationToken);
@@ -112,6 +116,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
     private readonly IDateTime _dateTime;
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IAuditLogger _auditLogger;
 
 
@@ -120,12 +125,14 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
         IDateTime dateTime,
         IDocumentOnSAServiceClient documentOnSaService,
         IDocumentGeneratorServiceClient documentGeneratorService,
+        ISalesArrangementServiceClient salesArrangementService,
         IAuditLogger auditLogger)
     {
         _codebookService = codebookService;
         _dateTime = dateTime;
         _documentOnSaService = documentOnSaService;
         _documentGeneratorService = documentGeneratorService;
+        _salesArrangementService = salesArrangementService;
         _auditLogger = auditLogger;
     }
 }
