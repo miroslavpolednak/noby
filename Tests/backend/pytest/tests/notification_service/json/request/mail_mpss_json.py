@@ -481,11 +481,11 @@ json_req_mail_mpss_case = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_basic_legal",
+    "subject": "NS_test_MIKEL",
     "content": {
       "format": "application/html",
       "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
+      "text": "json_req_mail_mpss_case"
     },
     "attachments": [],
     "caseId": 303062934
@@ -512,11 +512,11 @@ json_req_mail_mpss_documentHash_SHA_256 = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_basic_legal",
+    "subject": "NS_test_MIKEL",
     "content": {
       "format": "application/html",
       "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
+      "text": "json_req_mail_mpss_documentHash_SHA_256"
     },
     "attachments": [],
     "documentHash": {
@@ -546,11 +546,11 @@ json_req_mail_mpss_documentHash_SHA_384 = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_basic_legal",
+    "subject": "NS_test_MIKEL",
     "content": {
       "format": "application/html",
       "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
+      "text": "json_req_mail_mpss_documentHash_SHA_384"
     },
     "attachments": [],
     "documentHash": {
@@ -580,11 +580,11 @@ json_req_mail_mpss_documentHash_SHA_512 = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_basic_legal",
+    "subject": "NS_test_MIKEL",
     "content": {
       "format": "application/html",
       "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
+      "text": "json_req_mail_mpss_documentHash_SHA_512"
     },
     "attachments": [],
     "documentHash": {
@@ -614,11 +614,11 @@ json_req_mail_mpss_documentHash_SHA_3 = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_basic_legal",
+    "subject": "NS_test_MIKEL",
     "content": {
       "format": "application/html",
       "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
+      "text": "json_req_mail_mpss_documentHash_SHA_3"
     },
     "attachments": [],
     "documentHash": {
