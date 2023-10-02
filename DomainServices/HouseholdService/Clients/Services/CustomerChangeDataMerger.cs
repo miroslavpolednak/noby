@@ -78,6 +78,7 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
 
         customer.NaturalPerson.TaxResidence = MapDeltaToTaxResidence(delta.NaturalPerson?.TaxResidences) ?? customer.NaturalPerson.TaxResidence;
         customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
+        customer.CustomerIdentification = MapDeltaToCustomerIdentification(delta.CustomerIdentification) ?? customer.CustomerIdentification;
     }
 
     public void MergeClientData(CustomerDetailResponse customer, CustomerOnSA customerOnSA)

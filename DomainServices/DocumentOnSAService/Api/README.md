@@ -46,7 +46,8 @@ grpcurl -insecure -d "{\"DocumentOnSAId\":1,\"EArchivId\":\"KBHXXD00000000000000
 ```
 ### GetElectronicDocumentFromQueue
 ```
-grpcurl -insecure -d "{\"DocumentOnSAId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetElectronicDocumentFromQueue
+grpcurl -insecure -d "{\"MainDocument\":{\"DocumentId\" : \"15160133\"}}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetElectronicDocumentFromQueue
+grpcurl -insecure -d "{\"DocumentAttachment\":{\"AttachmentId\" : \"15160135\"}}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetElectronicDocumentFromQueue
 ```
 ### GetElectronicDocumentPreview
 ```

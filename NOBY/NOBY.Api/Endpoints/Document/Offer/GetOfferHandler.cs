@@ -27,6 +27,8 @@ internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnl
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
 
+        request.InputParameters.CaseId = salesArrangement.CaseId;
+
         if (string.IsNullOrWhiteSpace(salesArrangement.OfferDocumentId))
             return await GenerateAndSaveOffer(request, salesArrangementId, salesArrangement.ContractNumber, cancellationToken);
 

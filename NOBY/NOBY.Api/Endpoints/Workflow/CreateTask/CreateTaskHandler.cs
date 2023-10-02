@@ -36,7 +36,6 @@ internal sealed class CreateTaskHandler
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
-                FileName = t.FileName,
                 TempFileId = t.Guid!.Value
             })
             .ToList();

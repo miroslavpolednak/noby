@@ -1,94 +1,96 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.ExternalServices.Address.V2;
-using DomainServices.CustomerService.ExternalServices.Address.V2.Contracts;
 
 namespace DomainServices.CustomerService.Api.Endpoints.FormatAddress;
 
 internal class FormatAddressHandler : IRequestHandler<FormatAddressRequest, FormatAddressResponse>
 {
-    private readonly ICustomerAddressServiceClient _addressService;
     private readonly ICodebookServiceClient _codebookService;
 
-    public FormatAddressHandler(ICustomerAddressServiceClient addressService, ICodebookServiceClient codebookService)
+    public FormatAddressHandler(ICodebookServiceClient codebookService)
     {
-        _addressService = addressService;
         _codebookService = codebookService;
     }
 
     public async Task<FormatAddressResponse> Handle(FormatAddressRequest request, CancellationToken cancellationToken)
     {
-        var singleLineAddress = await _addressService.FormatAddress(await ParseComponentAddress(request.Address, cancellationToken), cancellationToken);
-
-        if (string.IsNullOrWhiteSpace(singleLineAddress))
-        {
-            if (string.IsNullOrWhiteSpace(request.Address.Street))
-                singleLineAddress = await FormatAddressWithoutStreet(request.Address, cancellationToken);
-            else
-                singleLineAddress = await FormatAddressWithStreet(request.Address, cancellationToken);
-        }
+        var countryName = await CountryName(request.Address.CountryId!.Value, cancellationToken);
 
         return new FormatAddressResponse
         {
-            SingleLineAddress = singleLineAddress
+            SingleLineAddress = JoinAddressValues(CreateStreetPart(request.Address),
+                                                  CreateCityNamePart(request.Address),
+                                                  GetFormattedPostCode(request.Address.Postcode, request.Address.CountryId.Value),
+                                                  countryName)
         };
+
+        static string JoinAddressValues(params string[] values) => string.Join(", ", values.Where(str => !string.IsNullOrWhiteSpace(str)));
     }
 
-    private async Task<string> CountryCode(int? countryId, CancellationToken cancellationToken)
+    private async Task<string> CountryName(int countryId, CancellationToken cancellationToken)
     {
         var countries = await _codebookService.Countries(cancellationToken);
 
-        return countries.First(c => c.Id == countryId).ShortName;
+        return countries.First(c => c.Id == countryId).LongName;
     }
 
-    private async Task<ComponentAddressPoint> ParseComponentAddress(GrpcAddress address, CancellationToken cancellationToken)
+    private static string CreateStreetPart(GrpcAddress address)
     {
-        return new ComponentAddressPoint
+        //PO BOX part in the future
+
+        var streetName = new[] { address.Street, address.CityDistrict, address.City }.First(str => !string.IsNullOrWhiteSpace(str));
+        var houseNumber = CreateHouseNumber(address);
+
+        if (string.IsNullOrWhiteSpace(houseNumber))
+            return streetName;
+
+        return string.IsNullOrWhiteSpace(streetName) ? houseNumber : $"{streetName} {houseNumber}";
+    }
+
+    private static string CreateHouseNumber(GrpcAddress address)
+    {
+        var houseNumber = string.IsNullOrWhiteSpace(address.HouseNumber) ? $"ev. č. {address.EvidenceNumber}" : address.HouseNumber;
+
+        if (string.IsNullOrWhiteSpace(address.StreetNumber))
+            return houseNumber;
+
+        return string.IsNullOrWhiteSpace(houseNumber) ? address.StreetNumber : $"{houseNumber}/{address.StreetNumber}";
+    }
+
+    private static string CreateCityNamePart(GrpcAddress address)
+    {
+        if (IsPrague(address))
         {
-            Street = address.Street.ToCMString(),
-            StreetNumber = address.StreetNumber.ToCMString(),
-            HouseNumber = address.HouseNumber.ToCMString(),
-            EvidenceNumber = address.EvidenceNumber.ToCMString(),
-            City = address.City,
-            CityDistrict = address.CityDistrict.ToCMString(),
-            PragueDistrict = address.PragueDistrict.ToCMString(),
-            DeliveryDetails = address.DeliveryDetails.ToCMString(),
-            PostCode = address.Postcode.ToCMString(),
-            CountryCode = await CountryCode(address.CountryId, cancellationToken),
-            CountrySubdivision = address.CountrySubdivision.ToCMString(),
-            AddressPointId = address.AddressPointId.ToCMString()
-        };
+            if (string.IsNullOrWhiteSpace(address.CityDistrict) || address.City.Equals(address.CityDistrict, StringComparison.OrdinalIgnoreCase))
+                return address.PragueDistrict;
+
+            return $"{address.PragueDistrict} - {address.CityDistrict}";
+        }
+
+        if (string.IsNullOrWhiteSpace(address.Street))
+            return address.City;
+
+        if (!string.IsNullOrWhiteSpace(address.CityDistrict) && address.CityDistrict.StartsWith(address.City, StringComparison.OrdinalIgnoreCase))
+            return address.CityDistrict;
+
+        if (string.IsNullOrWhiteSpace(address.CityDistrict) || address.City.Equals(address.CityDistrict, StringComparison.OrdinalIgnoreCase))
+            return address.City;
+
+        return $"{address.City} - {address.CityDistrict}";
     }
 
-    private async Task<string> FormatAddressWithStreet(GrpcAddress address, CancellationToken cancellationToken)
+    private static string GetFormattedPostCode(string? postCode, int countryId)
     {
-        var addressValues = RemoveEmptyAddressValues($"{address.Street} {FormatHouseNumber(address)}", 
-                                                     address.City,
-                                                     address.Postcode, 
-                                                     await CountryCode(address.CountryId, cancellationToken));
+        if (string.IsNullOrWhiteSpace(postCode))
+            return string.Empty;
 
-        return string.Join(", ", addressValues);
+        if (!IsCzech(countryId) || postCode.Length < 5 || postCode[3] == ' ')
+            return postCode;
+
+        return $"PSČ {postCode.Replace(" ", "").Insert(3, " ")}";
     }
 
-    private async Task<string> FormatAddressWithoutStreet(GrpcAddress address, CancellationToken cancellationToken)
-    {
-        var addressValues = RemoveEmptyAddressValues($"{address.CityDistrict} {FormatHouseNumber(address)}", 
-                                                     address.City, 
-                                                     address.Postcode, 
-                                                     await CountryCode(address.CountryId, cancellationToken));
+    private static bool IsPrague(GrpcAddress address) => 
+        IsCzech(address.CountryId!.Value) && address.City == "Praha" && !string.IsNullOrWhiteSpace(address.PragueDistrict);
 
-        return string.Join(", ", addressValues);
-    }
-
-    private static string FormatHouseNumber(GrpcAddress address)
-    {
-        if (!string.IsNullOrWhiteSpace(address.EvidenceNumber))
-            return $"ev.č. {address.EvidenceNumber}";
-
-        return string.Join("/", RemoveEmptyAddressValues(address.HouseNumber, address.StreetNumber));
-    }
-
-    private static IEnumerable<string> RemoveEmptyAddressValues(params string[] addressValues)
-    {
-        return addressValues.Where(str => !string.IsNullOrWhiteSpace(str));
-    }
+    private static bool IsCzech(int countryId) => countryId == 16;
 }

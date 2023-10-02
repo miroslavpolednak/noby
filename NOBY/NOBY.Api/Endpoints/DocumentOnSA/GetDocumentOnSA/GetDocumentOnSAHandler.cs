@@ -41,6 +41,10 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
             throw new NobyValidationException($"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
 
         var documentOnSa = documentOnSas.DocumentsOnSAToSign.Single(r => r.DocumentOnSAId == request.DocumentOnSAId);
+
+        if (documentOnSa.DocumentTypeId is null)
+            throw new NobyValidationException("Unknown DocumentTypeId, cannot generate document");
+
         var documentOnSaData = await _documentOnSaClient.GetDocumentOnSAData(documentOnSa.DocumentOnSAId!.Value, cancellationToken);
 
         if (documentOnSaData.SignatureTypeId is not null && documentOnSaData.SignatureTypeId != (int)SignatureTypes.Paper)
@@ -53,35 +57,8 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
         {
             throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");
         }
-        else if (documentOnSaData.Source == _DocOnSaSource.Source.Workflow && !_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_DownloadWorkflowDocument))
-        {
-            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");
-        }
 
-        return documentOnSaData.Source switch
-        {
-            _DocOnSaSource.Source.Noby => await GetDocumentFromDocumentGenerator(documentOnSa, documentOnSaData, cancellationToken),
-            _DocOnSaSource.Source.Workflow => await GetDocumentFromEQueue(documentOnSa, cancellationToken),
-            _ => throw new NobyValidationException("Unsupported kind of document source")
-        };
-    }
-
-    private async Task<GetDocumentOnSAResponse> GetDocumentFromEQueue(_DocOnSaSource.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
-    {
-        var docData = await _documentOnSaClient.GetElectronicDocumentFromQueue(new()
-        {
-            MainDocument = new _DocOnSaSource.MainDocument
-            {
-                DocumentOnSAId = documentOnSa.DocumentOnSAId!.Value,
-            }
-        }, cancellationToken);
-
-        return new GetDocumentOnSAResponse
-        {
-            ContentType = MediaTypeNames.Application.Pdf,
-            Filename = await GetFileName(documentOnSa, cancellationToken),
-            FileData = docData.BinaryData.ToArrayUnsafe()
-        };
+        return await GetDocumentFromDocumentGenerator(documentOnSa, documentOnSaData, cancellationToken);
     }
 
     private async Task<GetDocumentOnSAResponse> GetDocumentFromDocumentGenerator(_DocOnSaSource.DocumentOnSAToSign documentOnSa, _DocOnSaSource.GetDocumentOnSADataResponse documentOnSaData, CancellationToken cancellationToken)
@@ -100,17 +77,8 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
 
     private async Task<string> GetFileName(_DocOnSaSource.DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
     {
-        if (documentOnSa.DocumentTypeId is not null)
-        {
-            var templates = await _codebookServiceClients.DocumentTypes(cancellationToken);
-            var fileName = templates.First(t => t.Id == (int)documentOnSa.DocumentTypeId!).FileName;
-            return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
-        }
-        else
-        {
-            // Todo dodělat až bude hotová integrace na frontu starbuild
-            return "Mock.pdf";
-        }
-
+        var templates = await _codebookServiceClients.DocumentTypes(cancellationToken);
+        var fileName = templates.First(t => t.Id == (int)documentOnSa.DocumentTypeId!).FileName;
+        return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
     }
 }

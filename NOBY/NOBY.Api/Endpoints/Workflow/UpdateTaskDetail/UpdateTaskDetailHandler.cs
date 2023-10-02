@@ -35,7 +35,6 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
-                FileName = t.FileName,
                 TempFileId = t.Guid!.Value
             })
             .ToList();

@@ -24,7 +24,7 @@ internal sealed class CustomerWithChangedDataService
         var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
         // convert DS contract to FE model
-        return (fillResponseDto<TResponse>(customer, customerOnSA), customer.CustomerIdentification.IdentificationMethodId);
+        return (fillResponseDto<TResponse>(customer, customerOnSA), customer.CustomerIdentification?.IdentificationMethodId);
     }
 
     public async Task<TResponse> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
@@ -38,7 +38,7 @@ internal sealed class CustomerWithChangedDataService
         {
             // provide saved changes to original model
             var original = JObject.FromObject(model);
-            var delta = JObject.Parse(customerOnSA.CustomerChangeData);
+            var delta = JObject.Parse(string.IsNullOrEmpty(customerOnSA.CustomerChangeData) || customerOnSA.CustomerChangeData == "null" ? "{}" : customerOnSA.CustomerChangeData);
 
             original.Merge(delta, new JsonMergeSettings
             {

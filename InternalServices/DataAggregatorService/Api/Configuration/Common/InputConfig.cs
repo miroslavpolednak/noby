@@ -11,5 +11,5 @@ internal class InputConfig
 
     public required IList<DynamicInputParameter> DynamicInputParameters { get; init; }
 
-    public IEnumerable<DataService> GetAllDataSources() => _dataServicesGetter().Concat(DynamicInputParameters.Select(i => i.SourceDataService)).Distinct();
+    public IEnumerable<DataService> GetAllDataSources() => _dataServicesGetter().Concat(DynamicInputParameters.Select(i => i.SourceDataService)).Where(source => source != DataService.General).Distinct();
 }

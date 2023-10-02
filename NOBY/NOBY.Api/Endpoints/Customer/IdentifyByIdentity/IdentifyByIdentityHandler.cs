@@ -45,7 +45,7 @@ internal sealed class IdentifyByIdentityHandler
         // validate two same identities on household
         if (customerDetails.Any(x => x.CustomerIdentifiers?.Any(t => (int)t.IdentityScheme == (int)request.CustomerIdentity!.Scheme && t.IdentityId == request.CustomerIdentity.Id) ?? false))
         {
-            throw new NobyValidationException("Identity already present on SalesArrangement customers");
+            throw new NobyValidationException(90005);
         }
 
         // update customera

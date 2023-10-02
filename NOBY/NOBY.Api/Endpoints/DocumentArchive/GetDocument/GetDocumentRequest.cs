@@ -19,5 +19,6 @@ public class GetDocumentRequest : IRequest<GetDocumentResponse>
 public enum Source
 {
     EArchive = 0,
-    ESignature = 1
+    SbDocument = 1,
+    SbAttachment = 2
 }
