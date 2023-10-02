@@ -21,12 +21,12 @@ message GetElectronicDocumentFromQueueResponse{
 
 message MainDocument{
 
-	google.protobuf.Int32Value DocumentOnSAId = 1;
+	string DocumentId = 1;
 
 }
 
 message DocumentAttachment{
 
-	string DocumentAttachmentId = 1;
+	string AttachmentId = 1;
 
 }

@@ -1,14 +1,10 @@
-﻿namespace ExternalServices.ESignatureQueues.V1.Model;
+﻿namespace ExternalServices.SbQueues.V1.Model;
 
 public class Document
 {
-    public long Id { get; set; }
+    public long DocumentId { get; set; }
 
-    public string ExternalId { get; set; } = null!;
-    
-    public long FileBinaryOriginalId { get; set; }
-    
-    public string Name { get; set; } = null!;
+    public string FileName { get; set; } = null!;
     
     public string ContentType { get; set; } = null!;
     
