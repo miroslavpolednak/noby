@@ -98,7 +98,7 @@ public class StartSigningMapper
             {
                 DocumentTypeId = documentOnSa.DocumentTypeId!.Value,
                 DocumentTemplateVersionId = documentOnSa.DocumentTemplateVersionId!.Value,
-                FileName = $"{documentType.FileName}_{salesArrangement.CaseId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
+                FileName = $"{documentType.FileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
                 FormId = documentOnSa.FormId,
                 ContractNumber = caseObj.Data.ContractNumber
             },
