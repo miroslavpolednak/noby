@@ -81,13 +81,35 @@ internal class LoanRepository
 	    return await _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.LoanPurpose>(query, parameters, cancellation);
     }
     
+    public async Task<Models.LoanStatement?> GetLoanStatement(long loanId, CancellationToken cancellation)
+    {
+	    const string query = @"SELECT
+		[Ulice] as Street,
+		[CisloDomu4] as StreetNumber,
+		[CisloDomu2] as HouseNumber,
+		[Psc] as Postcode,
+		[Mesto] as City,
+		[ZemeId] as CountryId,
+		[StatPodkategorie] as AddressPointId
+		FROM [dbo].[UverVypisy]
+		WHERE Id = @LoanId";
+	    
+	    var parameters = new DynamicParameters();
+	    parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
+
+	    return await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<Models.LoanStatement>(query, parameters, cancellation);
+    }
+    
     public async Task<List<Models.Relationship>> GetRelationships(long loanId, CancellationToken cancellation)
     {
 		const string query = @"SELECT
 		[PartnerId] as PartnerId,
-		[VztahId] as ContractRelationshipTypeId
-		FROM [dbo].[VztahUver]
-		WHERE UverId = @LoanId";
+		[VztahId] as ContractRelationshipTypeId,
+    	[KbId] as KbId,
+    	[Zmocnenec] as Agent,
+    	[StavKyc] as Kyc
+		FROM [dbo].[VztahUver] LEFT JOIN [dbo].[Partner] ON [VztahUver].PartnerId = [Partner].Id
+		WHERE UverId = @LoanId AND Neaktivni = 0";
 
 		var parameters = new DynamicParameters();
         parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
