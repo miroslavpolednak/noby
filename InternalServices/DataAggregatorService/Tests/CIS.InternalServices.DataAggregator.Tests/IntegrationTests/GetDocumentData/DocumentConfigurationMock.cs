@@ -51,7 +51,7 @@ internal static class DocumentConfigurationMock
                 new()
                 {
                     DocumentTableId = 1,
-                    AcroFieldPlaceholder = "SplatkovyKalendar", 
+                    AcroFieldPlaceholderName = "SplatkovyKalendar", 
                     DataService = DataService.OfferPaymentScheduleService,
                     TableSourcePath = "OfferPaymentSchedule.PaymentScheduleFull[]",
                     ConcludingParagraph = "Text",
