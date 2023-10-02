@@ -53,21 +53,19 @@ internal sealed class GetMortgageHandler
             })
             .ToList();
 
-        var statements = await _dbContext.Loans2Statements
-            .AsNoTracking()
-            .Where(t => t.Id == loan.Id)
-            .FirstOrDefaultAsync(cancellation);
+        var statements = await _repository.GetLoanStatement(loan.Id, cancellation);
+        
         if (statements is not null)
         {
             mortgage.Statement.Address = new()
             {
-                Street = statements.Ulice ?? "",
-                StreetNumber = statements.CisloDomu4 ?? "",
-                HouseNumber = statements.CisloDomu2 ?? "",
-                Postcode = statements.Psc ?? "",
-                City = statements.Mesto ?? "",
-                AddressPointId = statements.StatPodkategorie ?? "",
-                CountryId = statements.ZemeId
+                Street = statements.Street ?? string.Empty,
+                StreetNumber = statements.StreetNumber ?? string.Empty,
+                HouseNumber = statements.HouseNumber ?? string.Empty,
+                Postcode = statements.Postcode ?? string.Empty,
+                City = statements.City ?? string.Empty,
+                AddressPointId = statements.AddressPointId ?? string.Empty,
+                CountryId = statements.CountryId
             };
         }
 

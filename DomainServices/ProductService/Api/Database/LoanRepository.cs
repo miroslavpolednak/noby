@@ -80,9 +80,8 @@ internal class LoanRepository
         
 	    return await _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.LoanPurpose>(query, parameters, cancellation);
     }
-
-    // todo: use it in GetMortgageHandler and test it
-    public async Task<Models.LoanStatement> GetLoanStatement(long loanId, CancellationToken cancellation)
+    
+    public async Task<Models.LoanStatement?> GetLoanStatement(long loanId, CancellationToken cancellation)
     {
 	    const string query = @"SELECT
 		[Ulice] as Street,
@@ -93,7 +92,7 @@ internal class LoanRepository
 		[ZemeId] as CountryId,
 		[StatPodkategorie] as AddressPointId
 		FROM [dbo].[UverVypisy]
-		WHERE UverId = @LoanId";
+		WHERE Id = @LoanId";
 	    
 	    var parameters = new DynamicParameters();
 	    parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
@@ -110,7 +109,7 @@ internal class LoanRepository
     	[Zmocnenec] as Agent,
     	[StavKyc] as Kyc
 		FROM [dbo].[VztahUver] LEFT JOIN [dbo].[Partner] ON [VztahUver].PartnerId = [Partner].Id
-		WHERE UverId = @LoanId";
+		WHERE UverId = @LoanId AND Neaktivni = 0";
 
 		var parameters = new DynamicParameters();
         parameters.Add("@LoanId", loanId, DbType.Int64, ParameterDirection.Input);
