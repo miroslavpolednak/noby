@@ -43,7 +43,7 @@
     <ProjectReference Include="..\..\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
     <ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.DocumentOnSAService.Contracts.csproj" />
-    <ProjectReference Include="..\ExternalServices.ESignatureQueues\DomainServices.DocumentOnSAService.ExternalServices.SbQueues.csproj" />
+    <ProjectReference Include="..\ExternalServices.SbQueues\DomainServices.DocumentOnSAService.ExternalServices.SbQueues.csproj" />
   </ItemGroup>
 
   <ItemGroup>
