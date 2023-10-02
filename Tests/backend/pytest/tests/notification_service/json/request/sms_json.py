@@ -205,3 +205,26 @@ json_req_sms_basic_epsy_mpss = \
   "type": "EPODPISY_SIGNED_DOCUMENT_MP",
   "text": "Testovací sms text epsy mpss"
 }
+
+#phone case
+json_req_sms_caseId_e2e = \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "INSIGN_PROCESS",
+  "text": "caseId",
+  "caseId": 303062934
+}
+
+#phone case
+json_req_sms_documentHash_e2e = \
+{
+  "phoneNumber": "+420607115686",
+  "processingPriority": 1,
+  "type": "INSIGN_PROCESS",
+  "text": "documentHash",
+  "documentHash": {
+    "hash": "a3f4b2e8967d3a2c1b5f4e6090d7c3b2a4f8e9d0c6b5a432e9d0b3a295f7c8e1",
+    "hashAlgorithm": "SHA-256"
+  }
+}

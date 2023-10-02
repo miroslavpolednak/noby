@@ -2,9 +2,6 @@ import uuid
 from time import sleep
 from urllib.parse import urlencode, quote
 import urllib3
-
-
-
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 import pytest
@@ -17,7 +14,8 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
-    json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e
+    json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e, \
+    json_req_sms_caseId_e2e, json_req_sms_documentHash_e2e
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
@@ -332,3 +330,47 @@ def test_sms_bad_identifier(ns_url, auth_params, auth, json_data, expected_error
     print(resp)
     result_error = resp.get('errors', {})
     assert result_error == expected_error
+
+
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_sms_caseId_e2e])
+def test_caseid_sms(ns_url, auth_params, auth, json_data, modified_json_data):
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    json_data['text'] = json_data['text'] + " " + url_name
+
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/sms",
+        json=modified_json_data,
+        auth=(username, password),
+        verify=False
+    )
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    notification_id = resp["notificationId"]
+    assert notification_id != ""
+
+
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_sms_documentHash_e2e])
+def test_documentHash_sms(ns_url, auth_params, auth, json_data, modified_json_data):
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    json_data['text'] = json_data['text'] + " " + url_name
+
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/sms",
+        json=modified_json_data,
+        auth=(username, password),
+        verify=False
+    )
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    notification_id = resp["notificationId"]
+    assert notification_id != ""
