@@ -36,7 +36,8 @@ public sealed class CaseOwnerValidationMiddleware
         var routeValues = context.GetRouteData().Values;
         var endpoint = context.GetEndpoint();
         var skipCheck = endpoint?.Metadata.OfType<NobySkipCaseOwnerValidationAttribute>().Any() ?? true;
-        
+        var skipValidateCaseStateAndProductSA = endpoint?.Metadata.OfType<NobySkipCaseOwnerStateAndProductSAValidationAttribute>().Any() ?? true;
+
         if (!skipCheck && (routeValues?.Any() ?? false))
         {
             var cancellationToken = context.RequestAborted;
@@ -99,7 +100,7 @@ public sealed class CaseOwnerValidationMiddleware
                     false => await getCaseDataFromValidate()
                 };
 
-                SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState, salesArrangementTypeId);
+                SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState, skipValidateCaseStateAndProductSA, salesArrangementTypeId);
             }
 
             async Task<(int OwnerUserId, int CaseState)> getCaseDataFromDetail()

@@ -9,7 +9,8 @@ public sealed class ApplySwaggerNobyAttributes
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        bool reqPermSection = false;
+        bool skipCaseOwnerStateAndProduct = context.MethodInfo.GetCustomAttributes(typeof(NobySkipCaseOwnerStateAndProductSAValidationAttribute), false)?.Any() ?? false;
+        bool skipCaseOwner = context.MethodInfo.GetCustomAttributes(typeof(NobySkipCaseOwnerValidationAttribute), false)?.Any() ?? false;
 
         // prava
         var authorizeAttributes = context.MethodInfo.GetCustomAttributes(typeof(NobyAuthorizeAttribute), false);
@@ -17,13 +18,20 @@ public sealed class ApplySwaggerNobyAttributes
         {
             string perms = string.Join("<br/><font color=\"lightgrey\">[AND]</font><br/>", authorizeAttributes.Select(t => string.Join(" <font color=\"lightgrey\">[OR]</font> ", ((NobyAuthorizeAttribute)t).RequiredPermissions)));
             operation.Description += $"{_requiredPermissionsLabel}<br/>{perms}";
-            reqPermSection = true;
+        }
+
+        if (skipCaseOwnerStateAndProduct || skipCaseOwner)
+        {
+            List<string> skips = new();
+            if (skipCaseOwner) skips.Add("NobySkipCaseOwnerValidation");
+            if (skipCaseOwnerStateAndProduct) skips.Add("NobySkipCaseOwnerStateAndProductSAValidation");
+            operation.Description = $"{operation.Description}<br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>{string.Join(";", skips)}";
         }
 
         // EAcko
         if (context.MethodInfo.GetCustomAttributes(typeof(SwaggerEaDiagramAttribute), false)?.FirstOrDefault() is SwaggerEaDiagramAttribute eaAttribute)
         {
-            operation.Description = $"{operation.Description}<br/><br/><strong style=\"color:#61affe;\">EA Diagram</strong><br/><a href=\"{eaAttribute.DiagramUrl}\">{eaAttribute.DiagramUrl}</a>";
+            operation.Description += $"{operation.Description}<br/><br/><strong style=\"color:#61affe;\">EA Diagram</strong><br/><a href=\"{eaAttribute.DiagramUrl}\">{eaAttribute.DiagramUrl}</a>";
         }
     }
 
