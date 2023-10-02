@@ -4,7 +4,7 @@ using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentSt
 using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using ExternalServices;
-using ExternalServices.ESignatureQueues;
+using ExternalServices.SbQueues;
 
 namespace DomainServices.DocumentOnSAService.Api.Extensions;
 
@@ -42,7 +42,7 @@ internal static class StartupExtensions
         builder.AddExternalService<ExternalServices.ESignatures.V1.IESignaturesClient>();
         
         // ePodpisy fronta
-        builder.AddExternalService<ExternalServices.ESignatureQueues.V1.IESignatureQueuesRepository>();
+        builder.AddExternalService<ExternalServices.SbQueues.V1.ISbQueuesRepository>();
         
         // registrace background jobu
         builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();

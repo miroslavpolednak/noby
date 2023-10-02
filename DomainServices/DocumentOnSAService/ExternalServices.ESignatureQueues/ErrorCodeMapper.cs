@@ -1,6 +1,6 @@
 ﻿using CIS.Core.ErrorCodes;
 
-namespace ExternalServices.ESignatureQueues;
+namespace ExternalServices.SbQueues;
 
 internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
 {
