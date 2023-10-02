@@ -12,7 +12,13 @@ public class GetDocumentRequestValidator: AbstractValidator<GetDocumentRequest>
                 .NotEmpty();
         });
         
-        When(t => t.Source == Source.ESignature, () =>
+        When(t => t.Source == Source.SbAttachment, () =>
+        {
+            RuleFor(t => t.ExternalId)
+                .NotEmpty();
+        });
+
+        When(t => t.Source == Source.SbDocument, () =>
         {
             RuleFor(t => t.ExternalId)
                 .NotEmpty();

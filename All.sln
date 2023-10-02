@@ -513,7 +513,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateVa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Crem", "ExternalServices\Crem\ExternalServices.Crem.csproj", "{8240FF9F-9DFE-4C53-87FE-C94753F9EC5E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSAService.ExternalServices.ESignatureQueues", "DomainServices\DocumentOnSAService\ExternalServices.ESignatureQueues\DomainServices.DocumentOnSAService.ExternalServices.ESignatureQueues.csproj", "{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSAService.ExternalServices.SbQueues", "DomainServices\DocumentOnSAService\ExternalServices.ESignatureQueues\DomainServices.DocumentOnSAService.ExternalServices.SbQueues.csproj", "{5EC8BE89-B0B5-4A09-B94B-86B1039F390D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.ExternalServices.AcvEnumService", "DomainServices\CodebookService\ExternalServices.AcvEnumService\DomainServices.CodebookService.ExternalServices.AcvEnumService.csproj", "{01D3090B-36DD-48E7-BC2B-A3B69B6E1CC6}"
 EndProject

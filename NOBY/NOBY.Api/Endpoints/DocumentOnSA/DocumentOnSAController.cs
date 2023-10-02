@@ -142,7 +142,7 @@ public class DocumentOnSAController : ControllerBase
     /// Stažení dokumentu k fyzickému podepisování
     /// </summary>
     /// <remarks>
-    /// Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání.<br /><br />
+    /// Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).<br /><br />
     /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F950B198-2C67-48e5-B1FE-C091131E6A63"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId"></param>
