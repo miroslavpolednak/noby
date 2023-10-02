@@ -7,7 +7,7 @@ namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 public static class DocumentOnSAExtensions
 {
-    public static GenerateDocumentRequest CreateGenerateDocumentRequest(DocumentOnSAToSign documentOnSA, GetDocumentOnSADataResponse documentOnSAData, bool forPreview = true) => new ()
+    public static GenerateDocumentRequest CreateGenerateDocumentRequest(DocumentOnSAToSign documentOnSA, GetDocumentOnSADataResponse documentOnSAData, long? caseId, bool forPreview = true) => new ()
     {
         DocumentTypeId = documentOnSA.DocumentTypeId!.Value,
         DocumentTemplateVersionId = documentOnSA.DocumentTemplateVersionId!.Value,
@@ -15,7 +15,7 @@ public static class DocumentOnSAExtensions
         ForPreview = forPreview,
         OutputType = OutputFileType.Pdfa,
         Parts = { documentOnSAData.CreateDocPart() },
-        DocumentFooter = documentOnSA.CreateFooter()
+        DocumentFooter = documentOnSA.CreateFooter(caseId)
     };
 
     private static GenerateDocumentPart CreateDocPart(this GetDocumentOnSADataResponse documentOnSaData)
@@ -31,9 +31,9 @@ public static class DocumentOnSAExtensions
         };
     }
 
-    private static DocumentFooter CreateFooter(this DocumentOnSAToSign documentOnSa) => new()
+    private static DocumentFooter CreateFooter(this DocumentOnSAToSign documentOnSa, long? caseId) => new()
     {
-        CaseId = documentOnSa.CaseId,
+        CaseId = caseId,
         SalesArrangementId = documentOnSa.SalesArrangementId,
         DocumentOnSaId = documentOnSa.DocumentOnSAId,
         DocumentId = documentOnSa.EArchivId,
