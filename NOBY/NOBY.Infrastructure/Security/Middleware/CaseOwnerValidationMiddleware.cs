@@ -100,7 +100,7 @@ public sealed class CaseOwnerValidationMiddleware
                     false => await getCaseDataFromValidate()
                 };
 
-                SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState, skipValidateCaseStateAndProductSA, salesArrangementTypeId);
+                SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState, !skipValidateCaseStateAndProductSA, salesArrangementTypeId);
             }
 
             async Task<(int OwnerUserId, int CaseState)> getCaseDataFromDetail()
