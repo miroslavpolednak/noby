@@ -7,11 +7,14 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ..conftest import URLS
 from ..json.request.mail_kb_json import json_req_mail_kb_bad_11_attachments, json_req_mail_kb_basic_legal
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal
-from ..json.request.mail_mpss_neg_json import json_bad_req_mail_mpss_empty_party_from, json_bad_req_mail_mpss_both_party_from, \
+from ..json.request.mail_mpss_neg_json import json_bad_req_mail_mpss_empty_party_from, \
+    json_bad_req_mail_mpss_both_party_from, \
     json_req_mail_mpss_negative_basic_format_text_plain, json_req_mail_mpss_bad_11_attachments, \
     json_req_mail_bad_identifier_mpss_basic, json_req_mail_bad_identifier_identity_mpss_basic, \
     json_req_mail_bad_identifier_scheme_mpss_basic, json_req_mail_mpss_bad_format_language, \
-    json_req_mail_mpss_bad_content_format_text,  json_req_mail_mpss_bad_natural_legal
+    json_req_mail_mpss_bad_content_format_text, json_req_mail_mpss_bad_natural_legal, \
+    json_req_mail_mpss_documentHash_without_hashAlgorithm, json_req_mail_mpss_documentHash_without_hash, \
+    json_req_mail_mpss_documentHash_with_bad_hash, json_req_mail_mpss_documentHash_bad_hashAlgorithm
 
 
 # negativní testy
@@ -163,4 +166,35 @@ def test_mail_bad_party(auth_params, auth, json_data, ns_url, expected_error):
     assert resp['status'] == 400
     print(resp)
     result_error = resp.get('errors', {})
+    assert result_error == expected_error
+
+
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data, expected_error", [
+    (json_req_mail_mpss_documentHash_without_hashAlgorithm, {
+        'DocumentHash.HashAlgorithm': ['The HashAlgorithm field is required.']}),
+    (json_req_mail_mpss_documentHash_without_hash, {
+        'DocumentHash.Hash': ['The Hash field is required.']}),
+    (json_req_mail_mpss_documentHash_with_bad_hash, {
+        '310': ['Invalid Hash.']}),
+    (json_req_mail_mpss_documentHash_bad_hashAlgorithm, {
+        '0': ["Invalid HashAlgorithm = 'MMI-1989'. Allowed HashAlgorithms: "
+               'SHA-256,SHA-384,SHA-512,SHA-3']
+    })
+])
+def test_mail_negative_documentHash(ns_url, auth_params, auth, json_data, expected_error):
+    """negativní test pro test jazyka a formatu"""
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    assert resp.status_code == 400
+    print(resp)
+    result_error = resp.json()['errors']
     assert result_error == expected_error
