@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using CIS.Testing;
 using CIS.Testing.Database;
 using DomainServices.UserService.Clients.Services;
@@ -21,10 +21,11 @@ using ExternalServices.Eas.V1;
 using DomainServices.ProductService.Clients;
 using ExternalServices.ESignatures.V1;
 using _Domain = DomainServices.DocumentOnSAService.Contracts;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
+using DomainServices.DocumentOnSAService.Api.Common;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 
@@ -42,6 +43,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
     internal ICaseServiceClient CaseServiceClient { get; }
     internal ICustomerServiceClient CustomerServiceClient { get; }
     internal IDocumentGeneratorServiceClient DocumentGeneratorServiceClient { get; }
+    internal ISalesArrangementStateManager SalesArrangementStateManager { get; }
 
     public IntegrationTestBase(WebApplicationFactoryFixture<Program> fixture)
     {
@@ -58,6 +60,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         CaseServiceClient = Substitute.For<ICaseServiceClient>();
         CustomerServiceClient = Substitute.For<ICustomerServiceClient>();
         DocumentGeneratorServiceClient = Substitute.For<IDocumentGeneratorServiceClient>();
+        SalesArrangementStateManager = Substitute.For<ISalesArrangementStateManager>();
 
         ConfigureWebHost();
 
@@ -87,17 +90,19 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
             services.RemoveAll<ICodebookServiceClient>().AddSingleton<ICodebookServiceClient, CodebookService.Clients.Services.CodebookServiceMock>();
 
             // NSubstitute mocks
-            services.RemoveAll<IDataAggregatorServiceClient>().AddTransient(r => DataAggregatorServiceClient);
-            services.RemoveAll<ISalesArrangementServiceClient>().AddTransient(r => ArrangementServiceClient);
-            services.RemoveAll<IHouseholdServiceClient>().AddTransient(r => HouseholdServiceClient);
-            services.RemoveAll<IDocumentArchiveServiceClient>().AddTransient(r => DocumentArchiveServiceClient);
-            services.RemoveAll<IEasClient>().AddTransient(r => EasClient);
-            services.RemoveAll<IESignaturesClient>().AddTransient(r => ESignaturesClient);
-            services.RemoveAll<ICustomerOnSAServiceClient>().AddTransient(r => CustomerOnSAServiceClient);
-            services.RemoveAll<IProductServiceClient>().AddTransient(r => ProductServiceClient);
-            services.RemoveAll<ICaseServiceClient>().AddTransient(r => CaseServiceClient);
-            services.RemoveAll<ICustomerServiceClient>().AddTransient(r => CustomerServiceClient);
-            services.RemoveAll<IDocumentGeneratorServiceClient>().AddTransient(r => DocumentGeneratorServiceClient);
+            services.RemoveAll<IDataAggregatorServiceClient>().AddScoped(_ => DataAggregatorServiceClient);
+            services.RemoveAll<ISalesArrangementServiceClient>().AddScoped(_ => ArrangementServiceClient);
+            services.RemoveAll<IHouseholdServiceClient>().AddScoped(_ => HouseholdServiceClient);
+            services.RemoveAll<IDocumentArchiveServiceClient>().AddScoped(_ => DocumentArchiveServiceClient);
+            services.RemoveAll<IEasClient>().AddScoped(_ => EasClient);
+            services.RemoveAll<IESignaturesClient>().AddScoped(_ => ESignaturesClient);
+            services.RemoveAll<ICustomerOnSAServiceClient>().AddScoped(_ => CustomerOnSAServiceClient);
+            services.RemoveAll<IProductServiceClient>().AddScoped(_ => ProductServiceClient);
+            services.RemoveAll<ICaseServiceClient>().AddScoped(_ => CaseServiceClient);
+            services.RemoveAll<ICustomerServiceClient>().AddScoped(_ => CustomerServiceClient);
+            services.RemoveAll<IDocumentGeneratorServiceClient>().AddScoped(_ => DocumentGeneratorServiceClient);
+            services.RemoveAll<ISalesArrangementStateManager>().AddScoped(_ => SalesArrangementStateManager);
+
         });
     }
 

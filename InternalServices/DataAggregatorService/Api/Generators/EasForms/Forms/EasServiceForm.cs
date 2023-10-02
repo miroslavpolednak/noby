@@ -26,7 +26,8 @@ internal class EasServiceForm<TFormData> : EasForm<TFormData> where TFormData : 
             EasFormType = easFormType,
             DynamicFormValues = dynamicValues,
             DefaultValues = EasFormTypeFactory.CreateDefaultValues(easFormType, _documentTypes),
-            Json = CreateJson(sourceFields)
+            Json = CreateJson(sourceFields),
+            FormIdentifier = $"S{_formData.SalesArrangement.SalesArrangementId.ToString(CultureInfo.InvariantCulture)}"
         };
     }
 

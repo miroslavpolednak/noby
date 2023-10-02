@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using NOBY.Dto.Signing;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;

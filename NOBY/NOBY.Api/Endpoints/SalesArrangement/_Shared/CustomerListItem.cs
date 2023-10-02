@@ -10,8 +10,8 @@ public class CustomerListItem
     public string? BirthNumber { get; set; }
     public string? PlaceOfBirth { get; set; }   
     public int? MaritalStatusId { get; set; }
-    public CIS.Foms.Types.Address? MainAddress { get; set; }
-    public CIS.Foms.Types.Address? ContactAddress { get; set; }
+    public SharedTypes.Types.Address? MainAddress { get; set; }
+    public SharedTypes.Types.Address? ContactAddress { get; set; }
     public NOBY.Dto.ContactsConfirmedDto? Contacts { get; set; }
-    public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
+    public List<SharedTypes.Types.CustomerIdentity>? Identities { get; set; }
 }

@@ -13,11 +13,6 @@ public sealed class AppConfiguration
     public bool UseDeveloperExceptionPage { get; set; }
 
     /// <summary>
-    /// When set to false, Swagger middleware is not added to pipeline.
-    /// </summary>
-    public bool EnableSwaggerUi { get; set; }
-
-    /// <summary>
     /// Folder where temp files gonna be stored  
     /// </summary>
     public string FileTempFolderLocation { get; set; } = Path.Combine(Path.GetTempPath(), "Noby");
@@ -31,4 +26,12 @@ public sealed class AppConfiguration
     /// ID prostredi pro ktere se ma nahrat config pro MPSS.Security.dll
     /// </summary>
     public int? MpssSecurityDllEnvironment { get; set; }
+
+    public IcapAntivirusConfiguration? IcapAntivirus { get; set; }
+
+    public sealed class IcapAntivirusConfiguration
+    {
+        public string IpAddress { get; set; } = string.Empty;
+        public int Port { get; set; }
+    }
 }

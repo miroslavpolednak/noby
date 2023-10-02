@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.RealEstateValuationService.Clients;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Globalization;

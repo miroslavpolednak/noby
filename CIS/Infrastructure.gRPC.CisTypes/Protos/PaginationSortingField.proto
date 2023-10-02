@@ -1,8 +1,0 @@
-syntax = "proto3";
-package cis.types;
-option csharp_namespace = "CIS.Infrastructure.gRPC.CisTypes";
-
-message PaginationSortingField {
-	string field = 1;
-	bool descending = 2;
-}

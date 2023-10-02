@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CIS.Foms.Enums;
+using CIS.Infrastructure.ExternalServicesHelpers;
 
 namespace ExternalServices.ESignatureQueues.Configuration;
 

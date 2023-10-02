@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Audit;
+﻿using SharedAudit;
 using DomainServices.UserService.Clients;
 using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;

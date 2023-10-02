@@ -20,7 +20,7 @@ internal static class DatabaseExpressions
             LoanApplicationAssessmentId = t.LoanApplicationAssessmentId ?? "",
             RiskSegment = t.RiskSegment ?? "",
             CommandId = t.CommandId ?? "",
-            Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime),
+            Created = new SharedTypes.GrpcTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime),
             OfferGuaranteeDateFrom = t.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = t.OfferGuaranteeDateTo,
             RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate

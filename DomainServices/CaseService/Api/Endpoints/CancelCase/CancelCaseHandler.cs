@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.Infrastructure.Security;
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -49,11 +49,11 @@ internal sealed class CancelCaseHandler
         }
         else // pokud nezname datum prvniho podpisu
         {
-            await _productService.CancelMortgage(request.CaseId, cancellation);
-
             // je debtor identifikovany?
             if (await isDebtorIdentified(salesArrangementId, cancellation))
             {
+                await _productService.CancelMortgage(request.CaseId, cancellation);
+
                 var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation);
 
                 // zavolat RIP

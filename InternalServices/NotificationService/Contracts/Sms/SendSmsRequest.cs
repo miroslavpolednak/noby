@@ -24,8 +24,14 @@ public class SendSmsRequest : IRequest<SendSmsResponse>, IValidatableRequest
     public Identifier? Identifier { get; set; }
     
     [ProtoMember(6)]
-    public string? CustomId { get; set; }
+    public long? CaseId { get; set; }
     
     [ProtoMember(7)]
+    public string? CustomId { get; set; }
+    
+    [ProtoMember(8)]
     public string? DocumentId { get; set; }
+    
+    [ProtoMember(9)]
+    public DocumentHash? DocumentHash { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using CIS.Core;
 using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
@@ -27,10 +27,10 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
     
     public async Task<CancelCaseResponse> Handle(CancelCaseRequest request, CancellationToken cancellationToken)
     {
-        var documentTypeItem = await GetDocumentType(_documentType, cancellationToken);
+        var documentTypeItem = await getDocumentType(_documentType, cancellationToken);
         
-        var salesArrangement = await GetProductSalesArrangement(request.CaseId, cancellationToken);
-        var caseDetail = await _caseService.GetCaseDetail(salesArrangement.CaseId, cancellationToken);
+        var salesArrangement = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+        var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var customerOnSas = await _customerOnSaService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
         var caseState = (await _codebookService.CaseStates(cancellationToken)).First(s => s.Id == caseDetail.State);
 
@@ -41,7 +41,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
             CustomersOnSa = new List<CustomerOnSAItem>(customerOnSas.Count)
         };
 
-        foreach (var customerOnSa in customerOnSas)
+        foreach (var customerOnSa in customerOnSas.Where(t => (t.CustomerIdentifiers?.Any() ?? false)))
         {
             var getGeneralDocumentRequest = new GetGeneralDocumentRequest
             {
@@ -67,7 +67,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
                 Metadata = new DocumentMetadata
                 {
                     AuthorUserLogin = authorUserLogin,
-                    CaseId = salesArrangement.CaseId,
+                    CaseId = request.CaseId,
                     ContractNumber = caseDetail.Data.ContractNumber,
                     CreatedOn = _dateTime.Now.Date,
                     DocumentId = documentId,
@@ -95,13 +95,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
         return responseModel;
     }
 
-    private async Task<DomainServices.SalesArrangementService.Contracts.SalesArrangement> GetProductSalesArrangement(long caseId, CancellationToken cancellationToken)
-    {
-        var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
-        return salesArrangementResponse.SalesArrangements.First(s => s.IsProductSalesArrangement());
-    }
-
-    private async Task<DocumentTypesResponse.Types.DocumentTypeItem> GetDocumentType(DocumentTypes documentType, CancellationToken cancellationToken)
+    private async Task<DocumentTypesResponse.Types.DocumentTypeItem> getDocumentType(DocumentTypes documentType, CancellationToken cancellationToken)
     {
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
         return documentTypes.First(t => t.Id == documentType.ToByte());

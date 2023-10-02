@@ -1,0 +1,669 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SharedTypes</name>
+    </assembly>
+    <members>
+        <member name="T:SharedTypes.AssemblyDoc">
+            <summary>
+            Custom DTO pro NOBY
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Enums.AddressTypes">
+            <summary>
+            Druhy adres
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Enums.CaseStates">
+            <summary>
+            Stavy Case
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Enums.ContactTypes">
+            <summary>
+            Typy kontaktů
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Enums.CustomerIncomeTypes">
+            <summary>
+            Druhy příjmu
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Enums.CustomerProfiles">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Enums.CustomerRoles">
+            <summary>
+            Role klienta v obchodu
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.IsOfferGuaranteed">
+            <summary>
+            Nabídka s platnou garancí
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.CustomerIdentifiedOnMainHousehold">
+            <summary>
+            Identifikovaní klienti na hlavní domácnosti
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.CustomerIdentifiedOnCodebtorHousehold">
+            <summary>
+            Identifikovaní klienti na spolužadatelské domácnosti
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.Was3601MainChangedAfterSigning">
+            <summary>
+            3601 pro hlavní domácnost byla změněna po podpisu
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.Was3602CodebtorChangedAfterSigning">
+            <summary>
+            3602 pro spoludlužnickou domácnost byla změněna po podpisu
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.ParametersSavedAtLeastOnce">
+            <summary>
+            Došlo k uložení parametrů na žádosti
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.IsOfferWithDiscount">
+            <summary>
+            IC: Sleva ze sazby nebo na poplatku na modelaci
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.DoesWflTaskForIPExist">
+            <summary>
+            IC: Zadán WFL úkol na IC
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.IsWflTaskForIPApproved">
+            <summary>
+            IC: WFL úkol na IC je schválen
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.IsWflTaskForIPNotApproved">
+            <summary>
+            IC: WFL úkol na IC je zamítnut
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.ScoringPerformedAtleastOnce">
+            <summary>
+            Došlo ke skórování
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.FlowSwitches.IsRealEstateValuationAllowed">
+            <summary>
+            Je možné oceňovat nemovitost
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.StreetFieldNumber">
+            <summary>Field number for the "Street" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.StreetNumberFieldNumber">
+            <summary>Field number for the "StreetNumber" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.HouseNumberFieldNumber">
+            <summary>Field number for the "HouseNumber" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.PostcodeFieldNumber">
+            <summary>Field number for the "Postcode" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.CityFieldNumber">
+            <summary>Field number for the "City" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.CountryIdFieldNumber">
+            <summary>Field number for the "CountryId" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.AddressTypeIdFieldNumber">
+            <summary>Field number for the "AddressTypeId" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.EvidenceNumberFieldNumber">
+            <summary>Field number for the "EvidenceNumber" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.IsPrimaryFieldNumber">
+            <summary>Field number for the "IsPrimary" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.DeliveryDetailsFieldNumber">
+            <summary>Field number for the "DeliveryDetails" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.CityDistrictFieldNumber">
+            <summary>Field number for the "CityDistrict" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.PragueDistrictFieldNumber">
+            <summary>Field number for the "PragueDistrict" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.CountrySubdivisionFieldNumber">
+            <summary>Field number for the "CountrySubdivision" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.PrimaryAddressFromFieldNumber">
+            <summary>Field number for the "PrimaryAddressFrom" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.AddressPointIdFieldNumber">
+            <summary>Field number for the "AddressPointId" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.SingleLineAddressPointFieldNumber">
+            <summary>Field number for the "SingleLineAddressPoint" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcAddress.IsAddressConfirmedFieldNumber">
+            <summary>Field number for the "IsAddressConfirmed" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDate.YearFieldNumber">
+            <summary>Field number for the "year" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDate.Year">
+            <summary>
+            Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+            a year.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDate.MonthFieldNumber">
+            <summary>Field number for the "month" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDate.Month">
+            <summary>
+            Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+            month and day.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDate.DayFieldNumber">
+            <summary>Field number for the "day" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDate.Day">
+            <summary>
+            Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+            to specify a year by itself or a year and month where the day isn't
+            significant.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDateTime.YearFieldNumber">
+            <summary>Field number for the "year" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDateTime.Year">
+            <summary>
+            Optional. Year of date. Must be from 1 to 9999, or 0 if specifying a
+            datetime without a year.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDateTime.MonthFieldNumber">
+            <summary>Field number for the "month" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDateTime.Month">
+            <summary>
+            Required. Month of year. Must be from 1 to 12.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDateTime.DayFieldNumber">
+            <summary>Field number for the "day" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDateTime.Day">
+            <summary>
+            Required. Day of month. Must be from 1 to 31 and valid for the year and
+            month.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDateTime.HoursFieldNumber">
+            <summary>Field number for the "hours" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDateTime.Hours">
+            <summary>
+            Required. Hours of day in 24 hour format. Should be from 0 to 23. An API
+            may choose to allow the value "24:00:00" for scenarios like business
+            closing time.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDateTime.MinutesFieldNumber">
+            <summary>Field number for the "minutes" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDateTime.Minutes">
+            <summary>
+            Required. Minutes of hour of day. Must be from 0 to 59.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDateTime.SecondsFieldNumber">
+            <summary>Field number for the "seconds" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDateTime.Seconds">
+            <summary>
+            Required. Seconds of minutes of the time. Must normally be from 0 to 59. An
+            API may allow the value 60 if it allows leap-seconds.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDateTime.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDateTime.Nanos">
+            <summary>
+            Required. Fractions of seconds in nanoseconds. Must be from 0 to
+            999,999,999.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDecimal.UnitsFieldNumber">
+            <summary>Field number for the "units" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.GrpcDecimal.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.Identity">
+            <summary>
+            Jednoznacna identifikace klienta s ohledem na ruzne mandanty.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.Identity.IdentityIdFieldNumber">
+            <summary>Field number for the "identityId" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.Identity.IdentityId">
+            <summary>
+            Id klienta - bud ID_PARTNER nebo KBID
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.Identity.IdentitySchemeFieldNumber">
+            <summary>Field number for the "identityScheme" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.Identity.IdentityScheme">
+            <summary>
+            KB nebo MP nebo v budoucnu neco jineho
+            </summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.Identity.Types">
+            <summary>Container for nested types declared in the Identity message type.</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.ModificationStamp">
+            <summary>
+            Informace o tom kdo a kdy menil/zalozil danou entitu.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.ModificationStamp.UserIdFieldNumber">
+            <summary>Field number for the "userId" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.ModificationStamp.UserId">
+            <summary>
+            v33id uzivatele
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.ModificationStamp.DateTimeFieldNumber">
+            <summary>Field number for the "dateTime" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.ModificationStamp.DateTime">
+            <summary>
+            Cas zmeny
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.ModificationStamp.UserNameFieldNumber">
+            <summary>Field number for the "userName" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.ModificationStamp.UserName">
+            <summary>
+            Cele jmeno uzivatele
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDate.YearFieldNumber">
+            <summary>Field number for the "year" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDate.Year">
+            <summary>
+            Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+            a year.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDate.MonthFieldNumber">
+            <summary>Field number for the "month" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDate.Month">
+            <summary>
+            Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+            month and day.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDate.DayFieldNumber">
+            <summary>Field number for the "day" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDate.Day">
+            <summary>
+            Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+            to specify a year by itself or a year and month where the day isn't
+            significant.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDateTime.YearFieldNumber">
+            <summary>Field number for the "year" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateTime.Year">
+            <summary>
+            Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+            a year.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDateTime.MonthFieldNumber">
+            <summary>Field number for the "month" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateTime.Month">
+            <summary>
+            Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+            month and day.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDateTime.DayFieldNumber">
+            <summary>Field number for the "day" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateTime.Day">
+            <summary>
+            Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+            to specify a year by itself or a year and month where the day isn't
+            significant.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDateTime.HoursFieldNumber">
+            <summary>Field number for the "hours" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateTime.Hours">
+            <summary>
+            Required. Hours of day in 24 hour format. Should be from 0 to 23. An API
+            may choose to allow the value "24:00:00" for scenarios like business
+            closing time.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDateTime.MinutesFieldNumber">
+            <summary>Field number for the "minutes" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateTime.Minutes">
+            <summary>
+            Required. Minutes of hour of day. Must be from 0 to 59.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDateTime.SecondsFieldNumber">
+            <summary>Field number for the "seconds" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateTime.Seconds">
+            <summary>
+            Required. Seconds of minutes of the time. Must normally be from 0 to 59. An
+            API may allow the value 60 if it allows leap-seconds.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDateTime.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateTime.Nanos">
+            <summary>
+            Required. Fractions of seconds in nanoseconds. Must be from 0 to
+            999,999,999.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDecimal.UnitsFieldNumber">
+            <summary>Field number for the "units" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.NullableGrpcDecimal.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.PaginationRequest.RecordOffsetFieldNumber">
+            <summary>Field number for the "recordOffset" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.PaginationRequest.PageSizeFieldNumber">
+            <summary>Field number for the "pageSize" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.PaginationRequest.SortingFieldNumber">
+            <summary>Field number for the "sorting" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.PaginationResponse.RecordOffsetFieldNumber">
+            <summary>Field number for the "recordOffset" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.PaginationResponse.PageSizeFieldNumber">
+            <summary>Field number for the "pageSize" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.PaginationResponse.SortingFieldNumber">
+            <summary>Field number for the "sorting" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.PaginationResponse.RecordsTotalSizeFieldNumber">
+            <summary>Field number for the "recordsTotalSize" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.PaginationSortingField.FieldFieldNumber">
+            <summary>Field number for the "field" field.</summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.PaginationSortingField.DescendingFieldNumber">
+            <summary>Field number for the "descending" field.</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.UserIdentity">
+            <summary>
+            Jednoznacna identifikace uzivatele
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.UserIdentity.IdentityFieldNumber">
+            <summary>Field number for the "identity" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.UserIdentity.Identity">
+            <summary>
+            login uzivatele
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.UserIdentity.IdentitySchemeFieldNumber">
+            <summary>Field number for the "identityScheme" field.</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.UserIdentity.Types">
+            <summary>Container for nested types declared in the UserIdentity message type.</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.UserInfo">
+            <summary>
+            Zakladni informace o uzivateli (poradci).
+            Pouziva se hlavne jako info properta na entite kde neni moznost joinovani na tabulku uzivatelu.
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.UserInfo.UserIdFieldNumber">
+            <summary>Field number for the "userId" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.UserInfo.UserId">
+            <summary>
+            v33id uzivatele
+            </summary>
+        </member>
+        <member name="F:SharedTypes.GrpcTypes.UserInfo.UserNameFieldNumber">
+            <summary>Field number for the "userName" field.</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.UserInfo.UserName">
+            <summary>
+            Cele jmeno uzivatele
+            </summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.GrpcDateReflection">
+            <summary>Holder for reflection information generated from GrpcDate.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDateReflection.Descriptor">
+            <summary>File descriptor for GrpcDate.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.GrpcDecimalReflection">
+            <summary>Holder for reflection information generated from GrpcDecimal.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDecimalReflection.Descriptor">
+            <summary>File descriptor for GrpcDecimal.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.ModificationStampReflection">
+            <summary>Holder for reflection information generated from ModificationStamp.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.ModificationStampReflection.Descriptor">
+            <summary>File descriptor for ModificationStamp.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.GrpcDateTimeReflection">
+            <summary>Holder for reflection information generated from GrpcDateTime.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcDateTimeReflection.Descriptor">
+            <summary>File descriptor for GrpcDateTime.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.IdentityReflection">
+            <summary>Holder for reflection information generated from Identity.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.IdentityReflection.Descriptor">
+            <summary>File descriptor for Identity.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.NullableGrpcDateReflection">
+            <summary>Holder for reflection information generated from NullableGrpcDate.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateReflection.Descriptor">
+            <summary>File descriptor for NullableGrpcDate.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.PaginationResponseReflection">
+            <summary>Holder for reflection information generated from PaginationResponse.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.PaginationResponseReflection.Descriptor">
+            <summary>File descriptor for PaginationResponse.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.PaginationRequestReflection">
+            <summary>Holder for reflection information generated from PaginationRequest.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.PaginationRequestReflection.Descriptor">
+            <summary>File descriptor for PaginationRequest.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.PaginationSortingFieldReflection">
+            <summary>Holder for reflection information generated from PaginationSortingField.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.PaginationSortingFieldReflection.Descriptor">
+            <summary>File descriptor for PaginationSortingField.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.UserInfoReflection">
+            <summary>Holder for reflection information generated from UserInfo.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.UserInfoReflection.Descriptor">
+            <summary>File descriptor for UserInfo.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.MandantsReflection">
+            <summary>Holder for reflection information generated from Mandants.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.MandantsReflection.Descriptor">
+            <summary>File descriptor for Mandants.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.NullableGrpcDecimalReflection">
+            <summary>Holder for reflection information generated from NullableGrpcDecimal.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDecimalReflection.Descriptor">
+            <summary>File descriptor for NullableGrpcDecimal.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.GrpcAddressReflection">
+            <summary>Holder for reflection information generated from GrpcAddress.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.GrpcAddressReflection.Descriptor">
+            <summary>File descriptor for GrpcAddress.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.UserIdentityReflection">
+            <summary>Holder for reflection information generated from UserIdentity.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.UserIdentityReflection.Descriptor">
+            <summary>File descriptor for UserIdentity.proto</summary>
+        </member>
+        <member name="T:SharedTypes.GrpcTypes.NullableGrpcDateTimeReflection">
+            <summary>Holder for reflection information generated from NullableGrpcDateTime.proto</summary>
+        </member>
+        <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateTimeReflection.Descriptor">
+            <summary>File descriptor for NullableGrpcDateTime.proto</summary>
+        </member>
+        <member name="T:SharedTypes.Types.Address">
+            <summary>
+            Adresa - bydliste, kontaktni atd.
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.Street">
+            <summary>
+            Ulice
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.StreetNumber">
+            <summary>
+            Číslo orientační
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.HouseNumber">
+            <summary>
+            Číslo popisné
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.EvidenceNumber">
+            <summary>
+            Číslo evidenční
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.Postcode">
+            <summary>
+            PSČ
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.City">
+            <summary>
+            Město/Obec
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.CountryId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.CityDistrict">
+            <summary>
+            Část obce
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.PragueDistrict">
+            <summary>
+            Praha obvod
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.CountrySubdivision">
+            <summary>
+            Název územního celku
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.AddressPointId">
+            <summary>
+            Id adresního bodu
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.SingleLineAddressPoint">
+            <summary>
+            Adresa v řádkovém formátu
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.Address.IsAddressConfirmed">
+            <summary>
+            Zda je adresa ověřená jako kontaktní adresa
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Types.CustomerIdentity">
+            <summary>
+            Identita klienta
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.CustomerIdentity.Id">
+            <summary>
+            ID klienta v danem schematu
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.CustomerIdentity.Scheme">
+            <summary>
+            Schema ve kterem je klient ulozeny - Kb | Mp
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Types.UserIdentity">
+            <summary>
+            Identita uživatele NOBY aplikace
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.UserIdentity.Identity">
+            <summary>
+            ID uživatele
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Types.UserIdentity.Scheme">
+            <summary>
+            Identitní schéma
+            </summary>
+        </member>
+        <member name="M:SharedTypes.Types.UserIdentity.#ctor(System.String,SharedTypes.Enums.UserIdentitySchemes)">
+            <param name="identity">ID uživatele</param>
+            <param name="scheme">Identitní schéma</param>
+            <exception cref="T:CIS.Core.Exceptions.CisArgumentException">ID není zadáno</exception>
+        </member>
+        <member name="M:SharedTypes.Types.UserIdentity.#ctor(System.String,System.String)">
+            <param name="identity">ID uživatele</param>
+            <param name="scheme">Identitní schéma</param>
+            <exception cref="T:CIS.Core.Exceptions.CisArgumentException">ID nebo schéma není zadáno</exception>
+        </member>
+    </members>
+</doc>

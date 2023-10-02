@@ -41,7 +41,10 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
 
                 var validationResponse = await _salesArrangementService.ValidateSalesArrangementId(documentOnSa.SalesArrangementId, false, cancellationToken);
 
-                return validationResponse.Exists ? new IdentifyCaseResponse { CaseId = validationResponse.CaseId } : new IdentifyCaseResponse();
+                if (!validationResponse.Exists || validationResponse.CaseId is null)
+                    return new IdentifyCaseResponse();
+
+                return await handleByCaseId(validationResponse.CaseId.Value, cancellationToken);
             }
             catch (CisNotFoundException)
             {
@@ -54,6 +57,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         {
             return new IdentifyCaseResponse();
         }
+
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
 
         var taskList = await _caseServiceClient.GetTaskList(caseId.Value, cancellationToken);

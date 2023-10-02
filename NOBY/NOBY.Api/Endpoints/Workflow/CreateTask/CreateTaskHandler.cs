@@ -10,7 +10,7 @@ internal sealed class CreateTaskHandler
 {
     public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        WorkflowHelpers.ValidateTaskManagePermission(request.TaskTypeId, _currentUserAccessor);
+        WorkflowHelpers.ValidateTaskManagePermission(request.TaskTypeId, null, null, _currentUserAccessor);
 
         // kontrola existence Case
         DomainServices.CaseService.Contracts.Case caseInstance;
@@ -36,7 +36,6 @@ internal sealed class CreateTaskHandler
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
-                FileName = t.FileName,
                 TempFileId = t.Guid!.Value
             })
             .ToList();

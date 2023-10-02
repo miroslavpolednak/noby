@@ -44,4 +44,9 @@ public interface ICisEnvironmentConfiguration
     /// </summary>
     /// <example>passw0rd</example>
     string? InternalServicePassword { get; }
+
+    /// <summary>
+    /// Nastavením na TRUE se vypne Swagger / gRPC Reflection
+    /// </summary>
+    bool DisableContractDescriptionPropagation { get; }
 }

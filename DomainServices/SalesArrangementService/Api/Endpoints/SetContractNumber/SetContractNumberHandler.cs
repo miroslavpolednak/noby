@@ -1,5 +1,5 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.Enums;
+using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;

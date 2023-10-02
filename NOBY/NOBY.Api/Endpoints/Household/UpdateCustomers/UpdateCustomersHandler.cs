@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
@@ -35,8 +35,6 @@ internal sealed class UpdateCustomersHandler
             await _householdService.LinkCustomerOnSAToHousehold(householdInstance.HouseholdId, c1.OnHouseholdCustomerOnSAId, c2.OnHouseholdCustomerOnSAId, cancellationToken);
         }
 
-        _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
-
         // zastavit podepisovani, pokud probehla zmena na customerech
         if (c1.Reason != Dto.CrudResult.Reasons.None || c2.Reason != Dto.CrudResult.Reasons.None)
         {
@@ -50,46 +48,31 @@ internal sealed class UpdateCustomersHandler
                 await _documentOnSAService.StopSigning(new() { DocumentOnSAId = document.DocumentOnSAId!.Value }, cancellationToken);
             }
 
-            // HFICH-4165 - nastaveni flowSwitches
-            bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
-            setFlowSwitches(householdInstance.HouseholdTypeId, isSecondCustomerIdentified);
-
+            // HFICH-4165
             if (!onlyNotSigned)
             {
-                await _flowSwitchMainHouseholdService.SetFlowSwitchByHouseholdId(request.HouseholdId, _flowSwitchManager, cancellationToken);
-                await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
+                _flowSwitchManager.AddFlowSwitch(householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning, true);
             }
+
+            // HFICH-4165 - nastaveni flowSwitches
+            bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
+            _flowSwitchManager.AddFlowSwitch(householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.CustomerIdentifiedOnMainHousehold : FlowSwitches.CustomerIdentifiedOnCodebtorHousehold, isSecondCustomerIdentified);
         }
+
+        _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
+
+        if (isProductSA)
+        {
+            await _flowSwitchMainHouseholdService.SetFlowSwitchByHouseholdId(request.HouseholdId, _flowSwitchManager, cancellationToken);
+        }
+
+        await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
 
         return new UpdateCustomersResponse
         {
             CustomerOnSAId1 = c1.OnHouseholdCustomerOnSAId,
             CustomerOnSAId2 = c2.OnHouseholdCustomerOnSAId
         };
-    }
-
-    /// <summary>
-    /// Nastavit flowSwitches na SalesArrangementu
-    /// </summary>
-    private void setFlowSwitches(int householdTypeId, bool isSecondCustomerIdentified)
-    {
-        switch (householdTypeId)
-        {
-            case (int)HouseholdTypes.Main:
-                _flowSwitchManager.AddFlowSwitch(FlowSwitches.Was3601MainChangedAfterSigning, true);
-
-                // HFICH-5396, vezmi druhého customera z householdu a pokud existuje, tak zkontroluj, že pro identity.scheme = KBID existuje identity.id které není null
-                _flowSwitchManager.AddFlowSwitch(FlowSwitches.CustomerIdentifiedOnMainHousehold, isSecondCustomerIdentified);
-                break;
-            case (int)HouseholdTypes.Codebtor:
-                _flowSwitchManager.AddFlowSwitch(FlowSwitches.Was3602CodebtorChangedAfterSigning, true);
-
-                // HFICH-5396, vezmi druhého customera z householdu a pokud existuje, tak zkontroluj, že pro identity.scheme = KBID existuje identity.id které není null
-                _flowSwitchManager.AddFlowSwitch(FlowSwitches.CustomerIdentifiedOnCodebtorHousehold, isSecondCustomerIdentified);
-                break;
-            default:
-                throw new NobyValidationException("Unsupported HouseholdType");
-        }
     }
 
     /// <summary>
@@ -102,10 +85,10 @@ internal sealed class UpdateCustomersHandler
 
         var customers = allHouseholds
             .Where(t => t.HouseholdId != request.HouseholdId && t.CustomerOnSAId1.HasValue)
-            .Select(t => new { CustomerOnSAId = t.CustomerOnSAId1!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId1).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
+            .Select(t => new { CustomerOnSAId = t.CustomerOnSAId1!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId1).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
             .Union(allHouseholds
                 .Where(t => t.HouseholdId != request.HouseholdId && t.CustomerOnSAId2.HasValue)
-                .Select(t => new { CustomerOnSAId = t.CustomerOnSAId2!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId2).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
+                .Select(t => new { CustomerOnSAId = t.CustomerOnSAId2!.Value, KbId = allCustomers.First(x => x.CustomerOnSAId == t.CustomerOnSAId2).CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId })
             );
 
         if (customers.Any(t => t.CustomerOnSAId == request.Customer1?.CustomerOnSAId || t.CustomerOnSAId == request.Customer2?.CustomerOnSAId))
@@ -199,7 +182,7 @@ internal sealed class UpdateCustomersHandler
             return allCustomers
                 .First(t => t.CustomerOnSAId == customerOnSAId)
                 .CustomerIdentifiers?
-                .FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)?
+                .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)?
                 .IdentityId;
         }
     }

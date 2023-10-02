@@ -40,7 +40,7 @@ public abstract class BaseNaturalPerson
     /// <summary>
     /// Pohlaví
     /// </summary>
-    public CIS.Foms.Enums.Genders Gender { get; set; }
+    public SharedTypes.Enums.Genders Gender { get; set; }
 
     public int? MaritalStatusId { get; set; }
 

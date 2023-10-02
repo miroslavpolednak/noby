@@ -2,7 +2,7 @@
 
 public sealed class GetCustomerDetailResponse
 {
-    public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
+    public List<SharedTypes.Types.CustomerIdentity>? Identities { get; set; }
     
     public Dto.NaturalPersonModel? NaturalPerson { get; set; }
     
@@ -12,7 +12,7 @@ public sealed class GetCustomerDetailResponse
     
     public Shared.LegalCapacityItem? LegalCapacity { get; set; }
     
-    public List<CIS.Foms.Types.Address>? Addresses { get; set; }
+    public List<SharedTypes.Types.Address>? Addresses { get; set; }
     
     public NOBY.Dto.ContactsConfirmedDto? Contacts { get; set; }
     

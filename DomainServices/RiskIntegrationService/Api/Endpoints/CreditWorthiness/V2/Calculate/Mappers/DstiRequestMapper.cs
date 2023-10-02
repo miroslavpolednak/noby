@@ -45,7 +45,7 @@ internal sealed class DstiRequestMapper
     private static List<_C4M.LoanApplicationCounterparty> mapCustomers(List<_V2.CreditWorthinessCustomer> customers, int? mandantId)
         => customers.Select(customer => new _C4M.LoanApplicationCounterparty
         {
-            CustomerId = string.IsNullOrEmpty(customer.PrimaryCustomerId) ? null : _C4M.ResourceIdentifier.CreateCustomerId(customer.PrimaryCustomerId, !mandantId.HasValue || (CIS.Foms.Enums.Mandants)mandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS").ToC4M(),
+            CustomerId = string.IsNullOrEmpty(customer.PrimaryCustomerId) ? null : _C4M.ResourceIdentifier.CreateCustomerId(customer.PrimaryCustomerId, !mandantId.HasValue || (SharedTypes.Enums.Mandants)mandantId == SharedTypes.Enums.Mandants.Kb ? "KBCZ" : "MPSS").ToC4M(),
             MonthlyEmploymentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 1).Sum(t => t.Amount) ?? 0).ToRiskCharacteristicsAmount(),
             MonthlyRentIncomeSumAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 3).Sum(t => t.Amount) ?? 0).ToRiskCharacteristicsAmount(),
             EntrepreneurAnnualIncomeAmount = (customer.Incomes?.Where(t => t.IncomeTypeId == 2).Sum(t => t.Amount) ?? 0).ToRiskCharacteristicsAmount(),

@@ -28,18 +28,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
+		<ProjectReference Include="..\..\..\Shared\SharedTypes\SharedTypes.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Protobuf Include="./DocumentArchiveService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="./GenerateDocumentId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="./UploadDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="./DocumentMetadata.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="./GetDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="./GetDocumentList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="./GetDocumentsInQueue.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
-		<Protobuf Include="./SetDocumentStatusInQueue.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+		<Protobuf Include="./DocumentArchiveService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="./GenerateDocumentId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="./UploadDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="./DocumentMetadata.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="./GetDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="./GetDocumentList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="./GetDocumentsInQueue.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="./SetDocumentStatusInQueue.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	</ItemGroup>
 
 	<ItemGroup>

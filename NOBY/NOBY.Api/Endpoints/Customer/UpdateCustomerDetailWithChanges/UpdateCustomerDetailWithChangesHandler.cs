@@ -5,7 +5,7 @@ using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
 using __Household = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Clients;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 
@@ -18,9 +18,9 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     {
         // customer instance
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
-
+        
         // customer from KB CM
-        var (originalModel, identificationMethodId) = await _changedDataService.GetCustomerFromCM<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
+        var (originalModel, customerIdentification) = await _changedDataService.GetCustomerFromCM<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
 
         // ----- update zakladnich udaju nasi instance customera
         // pokud se zmenili zakladni udaje jako jmeno, prijmeni, tak je potreba tuto zmenu
@@ -54,9 +54,21 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                     DateOfBirthNaturalPerson = request.NaturalPerson?.DateOfBirth,
                     FirstNameNaturalPerson = request.NaturalPerson?.FirstName ?? "",
                     Name = request.NaturalPerson?.LastName ?? "",
-                    Identity = customerOnSA.CustomerIdentifiers is not null ? customerOnSA.CustomerIdentifiers[0] : null
+                    Identity = customerOnSA.CustomerIdentifiers?[0]
                 }, cancellationToken);
             }
+        }
+
+        if (customerIdentification != 1 && customerIdentification != 8)
+        {
+            var user = await _userServiceClient.GetUser(_userAccessor.User!.Id, cancellationToken);
+
+            request.CustomerIdentification ??= new UpdateCustomerDetailWithChangesRequest.CustomerIdentificationObj
+            {
+                IdentificationDate = DateTime.Now.Date,
+                CzechIdentificationNumber = user.UserInfo.Cin,
+                IdentificationMethodId = user.UserInfo.IsInternal ? 1 : 8
+            };
         }
 
         // ----- update naseho detailu instance customera
@@ -77,7 +89,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             CustomerOnSAId = customerOnSA.CustomerOnSAId,
             CustomerChangeData = createJsonFromDelta(delta),
             CustomerChangeMetadata = createMetadata(originalModel, request, delta),
-            CustomerAdditionalData = await createAdditionalData(customerOnSA, request, identificationMethodId, cancellationToken)
+            CustomerAdditionalData = createAdditionalData(customerOnSA, request)
         };
         await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
 
@@ -88,6 +100,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 customerOnSA.CustomerOnSAId,
                 customerOnSA.SalesArrangementId,
                 updateRequest.CustomerChangeMetadata.WereClientDataChanged,
+                updateRequest.CustomerChangeMetadata.WasCRSChanged,
                 cancellationToken);
         }
     }
@@ -96,11 +109,13 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         int customerOnSAId,
         int salesArrangementId,
         bool wereClientDataChanged,
+        bool wasCRSChanged,
         CancellationToken cancellationToken)
     {
         var documentsToSign = (await _documentOnSAService.GetDocumentsToSignList(salesArrangementId, cancellationToken))
             .DocumentsOnSAToSign
             .Where(t => t.DocumentOnSAId.HasValue);
+        var usedDocumentIds = new List<int>();
 
         if (wereClientDataChanged) // zmena klientskych udaju
         {
@@ -110,6 +125,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             foreach (var doc in documentsToSign.Where(t => t.HouseholdId == household.HouseholdId))
             {
                 await _documentOnSAService.StopSigning(new() { DocumentOnSAId = doc.DocumentOnSAId!.Value }, cancellationToken);
+                usedDocumentIds.Add(doc.DocumentOnSAId.Value);
             }
 
             // set flow switches
@@ -122,9 +138,10 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 }
             }, cancellationToken);
         }
-        else // zmena pouze CRS
+        
+        if (wasCRSChanged) // zmena CRS
         {
-            var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13 && t.CustomerOnSA.CustomerOnSAId == customerOnSAId);//HH rikal, ze 14 neni spravne, ze to ma byt 13
+            var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13 && t.CustomerOnSA.CustomerOnSAId == customerOnSAId && !usedDocumentIds.Contains(t.DocumentOnSAId!.Value));//HH rikal, ze 14 neni spravne, ze to ma byt 13
             if (crsDoc != null)
             {
                 await _documentOnSAService.StopSigning(new() { DocumentOnSAId = crsDoc.DocumentOnSAId!.Value }, cancellationToken);
@@ -193,9 +210,9 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         // compare objects
         dynamic delta = new System.Dynamic.ExpandoObject();
 
-        ModelComparers.CompareRoot(request, originalModel, delta);
         ModelComparers.ComparePerson(request.NaturalPerson, originalModel?.NaturalPerson, delta);
         ModelComparers.CompareObjects(request.IdentificationDocument, originalModel?.IdentificationDocument, "IdentificationDocument", delta);
+        ModelComparers.CompareObjects(request.CustomerIdentification, originalModel?.CustomerIdentification, "CustomerIdentification", delta);
         ModelComparers.CompareObjects(request.Addresses, originalModel?.Addresses, "Addresses", delta);
         //ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
 
@@ -212,11 +229,9 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     /// Vytvori / upravi JSON data v prop CustomerAdditionalData
     /// Data se upravuji na zaklade toho, co prijde v requestu.
     /// </summary>
-    private async Task<__Household.CustomerAdditionalData> createAdditionalData(
+    private __Household.CustomerAdditionalData createAdditionalData(
         __Household.CustomerOnSA customerOnSA,
-        UpdateCustomerDetailWithChangesRequest request,
-        int? identificationMethodId,
-        CancellationToken cancellationToken)
+        UpdateCustomerDetailWithChangesRequest request)
     {
         var additionalData = customerOnSA.CustomerAdditionalData ?? new __Household.CustomerAdditionalData();
 
@@ -232,18 +247,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         additionalData.HasRelationshipWithKB = request.HasRelationshipWithKB.GetValueOrDefault();
         additionalData.HasRelationshipWithKBEmployee = request.HasRelationshipWithKBEmployee.GetValueOrDefault();
         additionalData.IsUSPerson = request.IsUSPerson.GetValueOrDefault();
-        additionalData.IsPoliticallyExposed = request.IsUSPerson.GetValueOrDefault();
-
-        // tady schvalne neresime prvni pindu z EA diagramu, protoze bysme museli z customerOnSA json delty udelat objekt a ten teprve kontrolovat. A to by bylo pomalejsi a narocnejsi nez tuhle podminku vzdy znovu projet.
-        if (identificationMethodId != 1 && identificationMethodId != 8)
-        {
-            var user = await _userServiceClient.GetUser(_userAccessor.User!.Id, cancellationToken);
-
-            additionalData.CustomerIdentification ??= new __Household.CustomerIdentificationObject();
-            additionalData.CustomerIdentification.IdentificationDate = DateTime.Now.Date;
-            additionalData.CustomerIdentification.CzechIdentificationNumber = user.UserInfo.Cin;
-            additionalData.CustomerIdentification.IdentificationMethodId = user.UserInfo.IsInternal ? 1 : 8;
-        }
+        additionalData.IsPoliticallyExposed = request.IsPoliticallyExposed.GetValueOrDefault();
 
         return additionalData;
     }

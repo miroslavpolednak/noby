@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -42,6 +42,7 @@ public sealed class CaseOwnerValidationMiddleware
             var cancellationToken = context.RequestAborted;
             var preload = endpoint?.Metadata.OfType<NobyAuthorizePreloadAttribute>().FirstOrDefault()?.Preload ?? NobyAuthorizePreloadAttribute.LoadableEntities.None;
             long? caseId = null;
+            int? salesArrangementTypeId = null;
 
             if (isInRoute(_customerOnSAIdKey))
             {
@@ -61,14 +62,29 @@ public sealed class CaseOwnerValidationMiddleware
                     false => (await householdService.ValidateHouseholdId(getId(_householdIdKey), true, cancellationToken)).CaseId
                 };
             }
+            // u SA potrebujeme take typ SA
             else if (isInRoute(_salesArrangementIdKey))
             {
                 var salesArrangementService = context.RequestServices.GetRequiredService<ISalesArrangementServiceClient>();
-                caseId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.SalesArrangement) switch
+                var saResponse = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.SalesArrangement) switch
                 {
-                    true => (await salesArrangementService.GetSalesArrangement(getId(_salesArrangementIdKey), cancellationToken)).CaseId,
-                    false => (await salesArrangementService.ValidateSalesArrangementId(getId(_salesArrangementIdKey), true, cancellationToken)).CaseId,
+                    true => await getSAFromDetail(),
+                    false => await getSAFromValidate(),
                 };
+                caseId = saResponse.CaseId;
+                salesArrangementTypeId = saResponse.SalesArrangementTypeId;
+
+                async Task<(long CaseId, int SalesArrangementTypeId)> getSAFromDetail()
+                {
+                    var sa = await salesArrangementService!.GetSalesArrangement(getId(_salesArrangementIdKey), cancellationToken);
+                    return (sa.CaseId, sa.SalesArrangementTypeId);
+                }
+
+                async Task<(long CaseId, int SalesArrangementTypeId)> getSAFromValidate()
+                {
+                    var sa = await salesArrangementService.ValidateSalesArrangementId(getId(_salesArrangementIdKey), true, cancellationToken);
+                    return (sa.CaseId!.Value, sa.SalesArrangementTypeId!.Value);
+                }
             }
             else if (isInRoute(_caseIdKey))
             {
@@ -83,7 +99,7 @@ public sealed class CaseOwnerValidationMiddleware
                     false => await getCaseDataFromValidate()
                 };
 
-                SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState);
+                SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState, salesArrangementTypeId);
             }
 
             async Task<(int OwnerUserId, int CaseState)> getCaseDataFromDetail()

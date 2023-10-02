@@ -10,7 +10,7 @@ public sealed class CreateIncomeRequest
     [JsonIgnore]
     internal int? CustomerOnSAId;
 
-    public CIS.Foms.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
+    public SharedTypes.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
 
     /// <summary>
     /// Detailni informace o prijmu

@@ -4,7 +4,7 @@ using CIS.Infrastructure.Telemetry;
 using NOBY.LogApi;
 using CIS.Core.Security;
 using NOBY.Infrastructure.Configuration;
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +15,7 @@ try
     // konfigurace aplikace
     var appConfiguration = builder.AddNobyConfig();
 
-    builder.AddCisEnvironmentConfiguration();
+    var envConfiguration = builder.AddCisEnvironmentConfiguration();
     builder
         .AddCisCoreFeatures()
         .AddCisWebApiCors()
@@ -30,8 +30,10 @@ try
     builder.Services.AddAuthorization();
 
     // pridat swagger
-    if (appConfiguration.EnableSwaggerUi)
+    if (!envConfiguration.DisableContractDescriptionPropagation)
+    {
         builder.Services.AddLogApiSwagger();
+    }
 
     var app = builder.Build();
     log.ApplicationBuilt();
@@ -63,7 +65,7 @@ try
             .UseEndpoints(e => e.RegisterLoggerEndpoints());
     });
 
-    if (appConfiguration.EnableSwaggerUi)
+    if (!envConfiguration.DisableContractDescriptionPropagation)
     {
         app.UseSwagger();
         app.UseSwaggerUI();

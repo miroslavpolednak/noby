@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Audit;
+﻿using SharedAudit;
 using Microsoft.AspNetCore.Authorization;
 using NOBY.Api.Endpoints.Test.Rollback;
 
@@ -29,7 +29,7 @@ public class TestController : ControllerBase
     {
         var logger = _context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
         logger.Log(
-            CIS.Infrastructure.Audit.AuditEventTypes.Noby001,
+            SharedAudit.AuditEventTypes.Noby001,
             "Nejaka fajn zprava",
             identities: new List<AuditLoggerHeaderItem> { new("aaa", "bbb") },
             products: new List<AuditLoggerHeaderItem> { new("111", "Uver") },

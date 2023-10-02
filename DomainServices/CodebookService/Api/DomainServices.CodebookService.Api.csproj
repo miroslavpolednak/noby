@@ -30,11 +30,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
-		<ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure.Caching\CIS.Infrastructure.Caching.csproj" />
-		<ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.CodebookService.Contracts.csproj" />
 		<ProjectReference Include="..\ExternalServices.AcvEnumService\DomainServices.CodebookService.ExternalServices.AcvEnumService.csproj" />
 		<ProjectReference Include="..\ExternalServices.RDM\DomainServices.CodebookService.ExternalServices.RDM.csproj" />

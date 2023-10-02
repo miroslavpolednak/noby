@@ -28,10 +28,14 @@ internal sealed class ValidateSalesArrangementHandler
 
     private ISalesArrangementValidationStrategy GetValidationStrategy(SalesArrangementTypesResponse.Types.SalesArrangementTypeItem saType)
     {
-        if (saType.IsFormSentToCmp)
-            return _serviceProvider.GetRequiredService<CheckFormSalesArrangementValidation>();
+        if (!saType.IsFormSentToCmp)
+            return _serviceProvider.GetRequiredService<ServiceAgreementValidation>();
 
-        return _serviceProvider.GetRequiredService<ServiceAgreementValidation>();
+        if (saType.Id != 6)
+            return _serviceProvider.GetRequiredService<CheckFormWithCustomerDetailValidationStrategy>();
+
+        return _serviceProvider.GetRequiredService<CheckFormSalesArrangementValidation>();
+
     }
 }
 

@@ -21,8 +21,14 @@ public class SendEmailFromTemplateRequest : IRequest<SendEmailFromTemplateRespon
     public Identifier? Identifier { get; set; }
     
     [ProtoMember(4)]
-    public string? CustomId { get; set; }
+    public long? CaseId { get; set; }
     
     [ProtoMember(5)]
+    public string? CustomId { get; set; }
+    
+    [ProtoMember(6)]
     public string? DocumentId { get; set; }
+    
+    [ProtoMember(7)]
+    public DocumentHash? DocumentHash { get; set; }
 }

@@ -61,7 +61,7 @@ MediatR extensions, behaviors.
 [CIS.Infrastructure.Logging.Extensions](CIS.Infrastructure.Logging.Extensions/index.md)  
 Extension metody pro High Performance logging.
 
-[CIS.Foms.Types](CIS.Foms.Types/index.md)  
+[SharedTypes.Types](SharedTypes.Types/index.md)  
 Společné DTO, Interfaces, Enumy pro NOBY
 
 [CIS.Infrastructure.gRPC](CIS.Infrastructure.gRPC/index.md)  

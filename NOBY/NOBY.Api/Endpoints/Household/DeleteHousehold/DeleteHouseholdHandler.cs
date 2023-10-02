@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -35,7 +35,7 @@ internal sealed class DeleteHouseholdHandler
 
         var partnerId = customer
             .CustomerIdentifiers
-            .FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)
+            .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)
             ?.IdentityId;
 
         if (partnerId.HasValue)

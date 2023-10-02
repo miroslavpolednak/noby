@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Audit;
+﻿using SharedAudit;
 using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Mvc;
 

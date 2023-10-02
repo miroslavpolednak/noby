@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -271,7 +271,7 @@ internal static class UpdateParametersExtensions
             if (parameters.Release.Customers is not null)
                 model.Release.Customers.AddRange(parameters.Release.Customers.Select(t => new _SA.SalesArrangementParametersCustomerChange.Types.ReleaseCustomerObject
                 {
-                    Identity = t.Identity ?? new CIS.Foms.Types.CustomerIdentity(),
+                    Identity = t.Identity ?? new SharedTypes.Types.CustomerIdentity(),
                     NaturalPerson = new()
                     {
                         FirstName = t.NaturalPerson?.FirstName ?? "",

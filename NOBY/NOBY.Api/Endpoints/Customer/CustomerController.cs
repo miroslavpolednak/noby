@@ -14,7 +14,7 @@ public class CustomerController : ControllerBase
     /// Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("customer")]
+    [HttpPost("customer-on-sa/{customerOnSAId:int}/identity")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -22,8 +22,8 @@ public class CustomerController : ControllerBase
     [ProducesResponseType(typeof(CreateCustomer.CreateCustomerResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<CreateCustomer.CreateCustomerResponse> CreateCustomer([FromBody] CreateCustomer.CreateCustomerRequest request)
-        => await _mediator.Send(request);
+    public async Task<CreateCustomer.CreateCustomerResponse> CreateCustomer([FromRoute] int customerOnSAId, [FromBody] CreateCustomer.CreateCustomerRequest request)
+        => await _mediator.Send(request.InfuseId(customerOnSAId));
 
     /// <summary>
     /// Vyhledávání klientů
@@ -58,7 +58,7 @@ public class CustomerController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Klient" })]
     [ProducesResponseType(typeof(GetCustomerDetail.GetCustomerDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetCustomerDetail.GetCustomerDetailResponse> GetCustomerDetail([FromBody] CIS.Foms.Types.CustomerIdentity request)
+    public async Task<GetCustomerDetail.GetCustomerDetailResponse> GetCustomerDetail([FromBody] SharedTypes.Types.CustomerIdentity request)
         => await _mediator.Send(new GetCustomerDetail.GetCustomerDetailRequest(request.Id, request.Scheme));
 
     /// <summary>
@@ -123,7 +123,7 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(ProfileCheck.ProfileCheckResponse), StatusCodes.Status200OK)]
-    public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] CIS.Foms.Types.CustomerIdentity request)
+    public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] SharedTypes.Types.CustomerIdentity request)
         => await _mediator.Send(new ProfileCheck.ProfileCheckRequest(request.Id, request.Scheme));
 
     /// <summary>

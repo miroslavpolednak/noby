@@ -42,7 +42,7 @@ internal sealed class UpdateParametersHelper
             case Dto.CustomerChangeUpdate:
                 foreach (var applicant in salesArrangement.CustomerChange.Applicants)
                 {
-                    await validateApplicant(applicant.Identity.Select(identity => (CIS.Foms.Types.CustomerIdentity)identity!).ToList(), salesArrangement.CaseId);
+                    await validateApplicant(applicant.Identity.Select(identity => (SharedTypes.Types.CustomerIdentity)identity!).ToList(), salesArrangement.CaseId);
                 }
                 break;
 
@@ -54,7 +54,7 @@ internal sealed class UpdateParametersHelper
         return model;
     }
 
-    private async Task validateApplicant(List<CIS.Foms.Types.CustomerIdentity>? identities, long caseId)
+    private async Task validateApplicant(List<SharedTypes.Types.CustomerIdentity>? identities, long caseId)
     {
         if (!(identities?.Any() ?? false))
         {
@@ -64,7 +64,7 @@ internal sealed class UpdateParametersHelper
         var customers = await _productService.GetCustomersOnProduct(caseId);
         foreach (var customer in customers.Customers)
         {
-            if (customer.CustomerIdentifiers.Any(t => identities.Any(x => (CIS.Foms.Enums.IdentitySchemes)t.IdentityScheme == x.Scheme && t.IdentityId == x.Id)))
+            if (customer.CustomerIdentifiers.Any(t => identities.Any(x => (SharedTypes.Enums.IdentitySchemes)t.IdentityScheme == x.Scheme && t.IdentityId == x.Id)))
             {
                 return;
             }

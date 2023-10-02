@@ -29,7 +29,7 @@ internal sealed class GetCreditWorthinessHandler
             RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
             UserIdentity = new()
             {
-                IdentityScheme = ((CIS.Foms.Enums.UserIdentitySchemes)Convert.ToInt32(userInstance.UserIdentifiers[0].IdentityScheme)).GetAttribute<DisplayAttribute>()!.Name,
+                IdentityScheme = ((SharedTypes.Enums.UserIdentitySchemes)Convert.ToInt32(userInstance.UserIdentifiers[0].IdentityScheme)).GetAttribute<DisplayAttribute>()!.Name,
                 IdentityId = userInstance.UserIdentifiers[0].Identity
             },
             Product = new()

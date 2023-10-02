@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;

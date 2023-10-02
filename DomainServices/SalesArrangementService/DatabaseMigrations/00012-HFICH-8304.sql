@@ -1,0 +1,1 @@
+UPDATE FormValidationTransformation SET FieldPath = 'seznam_ucastniku[].klient.manzel_v_dluhu_je' WHERE FieldPath = 'seznam_ucastniku[].klient.klient.manzel_v_dluhu_je'

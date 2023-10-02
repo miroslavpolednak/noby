@@ -11,7 +11,7 @@ public sealed class CreateMortgageCaseRequest
     /// <summary>
     /// Identifikovany klient.
     /// </summary>
-    public CIS.Foms.Types.CustomerIdentity? Identity { get; set; }
+    public SharedTypes.Types.CustomerIdentity? Identity { get; set; }
 
     /// <summary>
     /// Jmeno klienta, pokud neni identifikovan.

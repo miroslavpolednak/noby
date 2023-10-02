@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Contracts;
 
@@ -37,13 +37,11 @@ internal sealed class GetCustomersOnProductHandler
                 Agent = customer.Agent ?? false,
                 IsKYCSuccessful = customer.Kyc ?? false
             };
-            
-            item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.PartnerId, IdentitySchemes.Mp));
+
+            item.CustomerIdentifiers.Add(new SharedTypes.GrpcTypes.Identity(customer.PartnerId, IdentitySchemes.Mp));
 
             if (customer.KbId.HasValue)
-            {
-                item.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.KbId.Value, IdentitySchemes.Kb));
-            }
+                item.CustomerIdentifiers.Add(new SharedTypes.GrpcTypes.Identity(customer.KbId!.Value, IdentitySchemes.Kb));
 
             model.Customers.Add(item);
         }

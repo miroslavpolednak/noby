@@ -45,5 +45,5 @@ public sealed class StatementDto
     /// <summary>
     /// Adresa - bydliste, kontaktni atd.
     /// </summary>
-    public CIS.Foms.Types.Address? Address { get; set; }
+    public SharedTypes.Types.Address? Address { get; set; }
 }

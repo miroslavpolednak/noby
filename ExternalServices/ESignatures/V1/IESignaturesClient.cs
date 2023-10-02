@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
 
 namespace ExternalServices.ESignatures.V1;

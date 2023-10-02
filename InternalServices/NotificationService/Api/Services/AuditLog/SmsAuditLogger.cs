@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using DomainServices.CodebookService.Contracts.v1;
@@ -78,7 +78,7 @@ public class SmsAuditLogger : ISmsAuditLogger
         );
     }
 
-    public void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer)
+    public void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer, string? identity, string? identityScheme, long? caseId, string? customId, string? documentId, string? documentHash, string? hashAlgorithm)
     {
         if (smsType.IsAuditLogEnabled)
         {
@@ -88,7 +88,14 @@ public class SmsAuditLogger : ISmsAuditLogger
                 bodyBefore: new Dictionary<string, string>
                 {
                     { "smsType", smsType.Code },
-                    { "consumer", consumer }
+                    { "consumer", consumer },
+                    { "identity", identity ?? string.Empty },
+                    { "identityScheme", identityScheme ?? string.Empty },
+                    { "caseId", caseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
+                    { "customId", customId ?? string.Empty },
+                    { "documentId", documentId ?? string.Empty },
+                    { "documentHash", documentHash ?? string.Empty },
+                    { "hashAlgorithm", hashAlgorithm ?? string.Empty }
                 },
                 bodyAfter: new Dictionary<string, string>
                 {
@@ -97,7 +104,7 @@ public class SmsAuditLogger : ISmsAuditLogger
         }
     }
 
-    public void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer)
+    public void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer, string? identity, string? identityScheme, long? caseId, string? customId, string? documentId, string? documentHash, string? hashAlgorithm)
     {
         if (smsType.IsAuditLogEnabled)
         {
@@ -107,7 +114,14 @@ public class SmsAuditLogger : ISmsAuditLogger
                 bodyBefore: new Dictionary<string, string>
                 {
                     { "smsType", smsType.Code },
-                    { "consumer", consumer }
+                    { "consumer", consumer },
+                    { "identity", identity ?? string.Empty },
+                    { "identityScheme", identityScheme ?? string.Empty },
+                    { "caseId", caseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
+                    { "customId", customId ?? string.Empty },
+                    { "documentId", documentId ?? string.Empty },
+                    { "documentHash", documentHash ?? string.Empty },
+                    { "hashAlgorithm", hashAlgorithm ?? string.Empty }
                 }
             );
         }

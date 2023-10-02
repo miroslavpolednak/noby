@@ -76,17 +76,17 @@ internal class DocumentMapper
     {
         foreach (var table in _configuration.Tables)
         {
-            var collectionSource = MapperHelper.GetValue(_aggregatedData, table.CollectionSourcePath.Replace(ConfigurationConstants.CollectionMarker, ""));
+            var collectionSource = MapperHelper.GetValue(_aggregatedData, table.TableSourcePath.Replace(ConfigurationConstants.CollectionMarker, ""));
 
             if (collectionSource is null)
                 continue;
 
             if (collectionSource is not IEnumerable collection)
-                throw new InvalidOperationException($"Path {table.CollectionSourcePath} does not return IEnumerable.");
+                throw new InvalidOperationException($"Path {table.TableSourcePath} does not return IEnumerable.");
 
             yield return new DocumentFieldData
             {
-                FieldName = table.AcroFieldPlaceholder,
+                FieldName = table.AcroFieldPlaceholderName,
                 Table = new GenericTable
                 {
                     Columns =
@@ -109,7 +109,7 @@ internal class DocumentMapper
     {
         return collection.Cast<object>().Select(obj =>
         {
-            var rowValues = (ICollection<object?>)columns.Select(c => MapperHelper.GetValue(obj, c.CollectionFieldPath)).ToList();
+            var rowValues = (ICollection<object?>)columns.Select(c => MapperHelper.GetValue(obj, c.FieldPath)).ToList();
 
             return new GenericTableRow
             {

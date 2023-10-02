@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SharedAudit</name>
+    </assembly>
+    <members>
+        <member name="P:SharedAudit.Configuration.AuditLogConfiguration.ConnectionString">
+            <summary>
+            CS na databazi auditniho logu
+            </summary>
+        </member>
+        <member name="P:SharedAudit.Configuration.AuditLogConfiguration.EamApplication">
+            <summary>
+            Kod pro ukladani v Logmanu
+            </summary>
+        </member>
+        <member name="P:SharedAudit.Configuration.AuditLogConfiguration.EamVersion">
+            <summary>
+            Verze logovaciho schematu
+            </summary>
+        </member>
+        <member name="P:SharedAudit.Configuration.AuditLogConfiguration.HashSecretKey">
+            <summary>
+            Klic pro sifrovani zpravy
+            </summary>
+        </member>
+    </members>
+</doc>

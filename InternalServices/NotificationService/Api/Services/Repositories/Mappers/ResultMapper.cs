@@ -11,10 +11,16 @@ public static class ResultMapper
         return results.Select(r => r.ToDto());
     }
 
-    public static Identifier? Map(string? identity, string? identityScheme)
+    public static Identifier? MapIdentifier(string? identity, string? identityScheme)
     {
         return string.IsNullOrEmpty(identity) && string.IsNullOrEmpty(identityScheme)
             ? null : new Identifier { Identity = identity ?? string.Empty, IdentityScheme = identityScheme ?? string.Empty };
+    }
+
+    public static DocumentHash? MapDocumentHash(string? hash, string? hashAlgorithm)
+    {
+        return string.IsNullOrEmpty(hash) && string.IsNullOrEmpty(hashAlgorithm)
+            ? null : new DocumentHash { Hash = hash ?? string.Empty, HashAlgorithm = hashAlgorithm ?? string.Empty };
     }
     
     public static Dto.Result Map(this Entity.SmsResult smsResult)
@@ -25,9 +31,11 @@ public static class ResultMapper
             State = smsResult.State,
             Channel = smsResult.Channel,
             Errors = smsResult.ErrorSet.ToList(),
-            Identifier = Map(smsResult.Identity, smsResult.IdentityScheme),
+            Identifier = MapIdentifier(smsResult.Identity, smsResult.IdentityScheme),
+            CaseId = smsResult.CaseId,
             CustomId = smsResult.CustomId,
             DocumentId = smsResult.DocumentId,
+            DocumentHash = MapDocumentHash(smsResult.DocumentHash, smsResult.HashAlgorithm),
             RequestTimestamp = smsResult.RequestTimestamp,
             RequestData = new Dto.RequestData
             {
@@ -54,9 +62,11 @@ public static class ResultMapper
             State = emailResult.State,
             Channel = emailResult.Channel,
             Errors = emailResult.ErrorSet.ToList(),
-            Identifier = Map(emailResult.Identity, emailResult.IdentityScheme),
+            Identifier = MapIdentifier(emailResult.Identity, emailResult.IdentityScheme),
+            CaseId = emailResult.CaseId,
             CustomId = emailResult.CustomId,
             DocumentId = emailResult.DocumentId,
+            DocumentHash = MapDocumentHash(emailResult.DocumentHash, emailResult.HashAlgorithm),
             RequestTimestamp = emailResult.RequestTimestamp,
             RequestData = new Dto.RequestData
             {

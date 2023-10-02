@@ -10,7 +10,7 @@ public interface IUserServiceClient
 
     Task<Contracts.User> GetUser(int userId, CancellationToken cancellationToken = default);
 
-    Task<Contracts.User> GetUser(CIS.Foms.Types.UserIdentity identity, CancellationToken cancellationToken = default);
+    Task<Contracts.User> GetUser(SharedTypes.Types.UserIdentity identity, CancellationToken cancellationToken = default);
 
     Task<int[]> GetUserPermissions(int userId, CancellationToken cancellationToken = default);
 

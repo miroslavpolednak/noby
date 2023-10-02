@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.CustomerService.Clients.Services;

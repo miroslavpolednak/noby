@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 

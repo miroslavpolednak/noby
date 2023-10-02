@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 

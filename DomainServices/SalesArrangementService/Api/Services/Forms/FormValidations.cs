@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
@@ -73,7 +73,7 @@ internal static class FormValidations
         }
 
         // check if MAIN household is available
-        var mainHouseholdCount = households.Count(i => i.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main);
+        var mainHouseholdCount = households.Count(i => i.HouseholdTypeId == (int)SharedTypes.Enums.HouseholdTypes.Main);
         if (mainHouseholdCount != 1)
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation5);
@@ -87,7 +87,7 @@ internal static class FormValidations
         }
 
         // check if CustomerOnSAId1 is available on Main households
-        var mainHousehold = households.Single(i => i.HouseholdTypeId == (int)CIS.Foms.Enums.HouseholdTypes.Main);
+        var mainHousehold = households.Single(i => i.HouseholdTypeId == (int)SharedTypes.Enums.HouseholdTypes.Main);
         if (!mainHousehold.CustomerOnSaId1.HasValue)
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation7, mainHousehold.HouseholdId);

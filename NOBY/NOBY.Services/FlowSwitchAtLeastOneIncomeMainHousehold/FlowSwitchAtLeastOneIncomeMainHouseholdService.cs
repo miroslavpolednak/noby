@@ -42,7 +42,7 @@ public sealed class FlowSwitchAtLeastOneIncomeMainHouseholdService
     {
         if (flowSwitchManager is not null)
         {
-            flowSwitchManager.AddFlowSwitch(CIS.Foms.Enums.FlowSwitches.AtLeast1IncomeMainHousehold, flowSwitchValue);
+            flowSwitchManager.AddFlowSwitch(SharedTypes.Enums.FlowSwitches.AtLeast1IncomeMainHousehold, flowSwitchValue);
         }
         else
         {
@@ -50,7 +50,7 @@ public sealed class FlowSwitchAtLeastOneIncomeMainHouseholdService
             {
                 new() 
                 {
-                    FlowSwitchId = (int)CIS.Foms.Enums.FlowSwitches.AtLeast1IncomeMainHousehold, 
+                    FlowSwitchId = (int)SharedTypes.Enums.FlowSwitches.AtLeast1IncomeMainHousehold, 
                     Value = flowSwitchValue 
                 }
             }, cancellationToken);

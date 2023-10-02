@@ -25,9 +25,9 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.10" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC.CisTypes\CIS.Infrastructure.gRPC.CisTypes.csproj" />
+		<ProjectReference Include="..\..\..\Shared\SharedTypes\SharedTypes.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>

@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using FastEnumUtility;
 using System.Globalization;
@@ -150,8 +150,8 @@ internal sealed class RealESignaturesClient
             },
             ClientData = new()
             {
-                UniversalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == CIS.Foms.Enums.IdentitySchemes.Kb)?.Id.ToString(CultureInfo.InvariantCulture),
-                ExternalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == CIS.Foms.Enums.IdentitySchemes.Mp)?.Id.ToString(CultureInfo.InvariantCulture) ?? "",
+                UniversalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == SharedTypes.Enums.IdentitySchemes.Kb)?.Id.ToString(CultureInfo.InvariantCulture),
+                ExternalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == SharedTypes.Enums.IdentitySchemes.Mp)?.Id.ToString(CultureInfo.InvariantCulture) ?? "",
                 Name = request.ClientData.FullName!,
                 BirthNumber_RegNumber = request.ClientData.BirthNumber,
                 PhoneNumber = request.ClientData.Phone,
@@ -173,7 +173,7 @@ internal sealed class RealESignaturesClient
         {
             svcRequest.OtherClients = request.OtherClients.Select(t => new Contracts.SigneeInfo2
             {
-                UniversalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == CIS.Foms.Enums.IdentitySchemes.Kb)?.Id.ToString(CultureInfo.InvariantCulture),
+                UniversalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == SharedTypes.Enums.IdentitySchemes.Kb)?.Id.ToString(CultureInfo.InvariantCulture),
                 EmailAddress = t.Email,
                 PhoneNumber = t.Phone,
                 Signatures = new List<Contracts.SignatureData>

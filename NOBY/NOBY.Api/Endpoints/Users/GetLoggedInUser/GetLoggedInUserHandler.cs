@@ -26,7 +26,7 @@ internal sealed class GetLoggedInUserHandler
                 IsUserVIP = userInstance.UserInfo?.IsUserVIP ?? false,
                 IsInternal = userInstance.UserInfo?.IsInternal ?? false
             },
-            UserIdentifiers = userInstance.UserIdentifiers.Select(t => (CIS.Foms.Types.UserIdentity)t!).ToList(),
+            UserIdentifiers = userInstance.UserIdentifiers.Select(t => (SharedTypes.Types.UserIdentity)t!).ToList(),
             UserPermissions = getPermissions(userInstance.UserPermissions)
         };
     }

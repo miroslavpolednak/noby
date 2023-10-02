@@ -8,7 +8,7 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using NOBY.Services.DocumentHelper;
 using NOBY.Services.EaCodeMain;
 
@@ -30,7 +30,7 @@ public class SaveDocumentToArchiveHandler
     private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentHelperService _documentHelper;
     private readonly IEaCodeMainHelper _eaCodeMainHelper;
-
+    
     public SaveDocumentToArchiveHandler(
         IDocumentArchiveServiceClient client,
         ICurrentUserAccessor currentUserAccessor,
@@ -80,12 +80,14 @@ public class SaveDocumentToArchiveHandler
 
             filePaths.Add(docInfo.DocumentInformation.Guid!.Value);
 
+            var fileMetadata = await _tempFileManager.GetMetadata(docInfo.DocumentInformation.Guid!.Value, cancellationToken);
             var file = await _tempFileManager.GetContent(docInfo.DocumentInformation.Guid!.Value, cancellationToken);
+            
             var documentId = await _documentArchiveService.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken);
 
             filesToUpload.Add(new()
             {
-                uploadRequest = await MapRequest(file, documentId, request.CaseId, docInfo, authorUserLogin, cancellationToken),
+                uploadRequest = await MapRequest(file, fileMetadata.FileName, documentId, request.CaseId, docInfo, authorUserLogin, cancellationToken),
                 documentOnSAId = documentOnSAId
             });
         }
@@ -101,7 +103,7 @@ public class SaveDocumentToArchiveHandler
             ?? throw new NobyValidationException($"Unsupported EACodeMainId {docInfo.DocumentInformation.EaCodeMainId}");
 
         if (eACodeMain?.IsInsertingAllowedNoby == false)
-            throw new NobyValidationException($"Document {docInfo.DocumentInformation.FileName} with EACodeMainId {docInfo.DocumentInformation.EaCodeMainId} cannot be uploaded from Noby");
+            throw new NobyValidationException($"Document {docInfo.DocumentInformation.Guid} with EACodeMainId {docInfo.DocumentInformation.EaCodeMainId} cannot be uploaded from Noby");
     }
 
     private async Task UploadDocument((UploadDocumentRequest uploadRequest, int? documentOnSAId) uploadItem, CancellationToken cancellationToken)
@@ -178,6 +180,7 @@ public class SaveDocumentToArchiveHandler
 
     private async Task<UploadDocumentRequest> MapRequest(
         byte[] file,
+        string fileName,
         string documentId,
         long caseId,
         DocumentsInformation documentInformation,
@@ -192,7 +195,7 @@ public class SaveDocumentToArchiveHandler
                 CaseId = caseId,
                 DocumentId = documentId,
                 EaCodeMainId = documentInformation.DocumentInformation.EaCodeMainId,
-                Filename = documentInformation.DocumentInformation.FileName,
+                Filename = fileName,
                 AuthorUserLogin = authorUserLogin,
                 CreatedOn = _dateTime.Now.Date,
                 Description = documentInformation.DocumentInformation.Description ?? string.Empty,

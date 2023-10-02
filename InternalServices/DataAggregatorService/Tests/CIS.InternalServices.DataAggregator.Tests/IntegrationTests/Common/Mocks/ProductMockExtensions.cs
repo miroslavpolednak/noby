@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using CIS.Testing.Common;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;

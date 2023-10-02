@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Extensions;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using ExternalServices.Eas.Dto;

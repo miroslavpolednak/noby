@@ -1,5 +1,5 @@
 ﻿using DomainServices.UserService.Contracts;
-using _CIS = CIS.Infrastructure.gRPC.CisTypes;
+using _CIS = SharedTypes.GrpcTypes;
 
 namespace DomainServices.UserService.Clients.Services;
 
@@ -16,7 +16,7 @@ public class MockUserService
         return Task.FromResult(CreateUser());
     }
 
-    public Task<User> GetUser(CIS.Foms.Types.UserIdentity identity, CancellationToken cancellationToken = default)
+    public Task<User> GetUser(SharedTypes.Types.UserIdentity identity, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(CreateUser());
     }

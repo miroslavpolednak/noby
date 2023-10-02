@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using CIS.Testing;
 using DomainServices.DocumentArchiveService.Tests.IntegrationTests.Helpers;
 

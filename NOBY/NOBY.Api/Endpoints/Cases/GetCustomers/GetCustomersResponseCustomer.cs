@@ -48,7 +48,7 @@ public sealed class GetCustomersResponseCustomer
 
     public DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem? CitizenshipCountry { get; set; }
 
-    public CIS.Foms.Types.Address? PermanentAddress { get; set; }
+    public SharedTypes.Types.Address? PermanentAddress { get; set; }
 
-    public CIS.Foms.Types.Address? ContactAddress { get; set; }
+    public SharedTypes.Types.Address? ContactAddress { get; set; }
 }

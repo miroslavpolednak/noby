@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using ceTe.DynamicPDF.Text;
+using CIS.InternalServices.DocumentGeneratorService.Api.Configuration;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api;
 
@@ -20,7 +21,7 @@ public static class GeneratorVariables
 
     public static CachedFont ArialBoldItalic { get; private set; } = null!;
 
-    public static void Init(GeneratorConfiguration config)
+    public static void Init(AppConfiguration config)
     {
         StoragePath = config.StoragePath;
 

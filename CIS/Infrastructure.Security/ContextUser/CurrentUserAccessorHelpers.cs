@@ -20,7 +20,7 @@ public static class CurrentUserAccessorHelpers
             ? request.Headers[SecurityConstants.ContextUserHttpHeaderUserIdentKey].First() : null;
     }
 
-    public static CIS.Foms.Types.UserIdentity? GetUserIdentityFromHeaders(HttpRequest? request)
+    public static SharedTypes.Types.UserIdentity? GetUserIdentityFromHeaders(HttpRequest? request)
     {
         if (request is null)
         {
@@ -32,14 +32,14 @@ public static class CurrentUserAccessorHelpers
         if (ident == null) return null;
         int idx = ident.IndexOf('=', 0);
 
-        return new Foms.Types.UserIdentity
+        return new SharedTypes.Types.UserIdentity
         {
-            Scheme = FastEnumUtility.FastEnum.Parse<Foms.Enums.UserIdentitySchemes>(ident[..idx], true),
+            Scheme = FastEnumUtility.FastEnum.Parse<SharedTypes.Enums.UserIdentitySchemes>(ident[..idx], true),
             Identity = ident[(idx + 1)..]
         };
     }
 
-    public static CIS.Foms.Types.UserIdentity? GetUserIdentityFromHeaders(this ICurrentUserAccessor currentUserAccessor)
+    public static SharedTypes.Types.UserIdentity? GetUserIdentityFromHeaders(this ICurrentUserAccessor currentUserAccessor)
     {
         var accessor = currentUserAccessor as CisCurrentContextUserAccessor;
         if (accessor == null) return null;

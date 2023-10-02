@@ -1,8 +1,8 @@
 ﻿using CIS.Core;
 using CIS.Core.Security;
-using CIS.Foms.Enums;
-using CIS.Infrastructure.Audit;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.Enums;
+using SharedAudit;
+using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
@@ -33,6 +33,7 @@ using System.Text;
 using Newtonsoft.Json;
 using static DomainServices.HouseholdService.Contracts.GetCustomerChangeMetadataResponse.Types;
 using _CustomerService = DomainServices.CustomerService.Contracts;
+using Source = DomainServices.DocumentOnSAService.Api.Database.Enums.Source;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocument;
 
@@ -119,7 +120,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
-        if (salesArrangement.State != SalesArrangementStates.InSigning.ToByte())
+        if (documentOnSa.Source != Source.Workflow && salesArrangement.State != SalesArrangementStates.InSigning.ToByte())
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
 
         var signatureDate = _dateTime.Now;
@@ -159,6 +160,9 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         LogAuditMessage(documentOnSa, salesArrangement);
+
+        if (documentOnSa.Source == Source.Workflow)
+            return new Empty();
 
         // SA state
         if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
@@ -205,7 +209,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         {
             var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
             _customerChangeDataMerger.MergeTaxResidence(customerDetail?.NaturalPerson!, customerOnSa);
-            var updateCustomerRequest = MapUpdateCustomerRequest((int)CIS.Foms.Enums.Mandants.Kb, customerDetail!);
+            var updateCustomerRequest = MapUpdateCustomerRequest((int)SharedTypes.Enums.Mandants.Kb, customerDetail!);
             await UpdateCustomer(customerOnSa, updateCustomerRequest, salesArrangement, cancellationToken);
             // Throw away locally stored CRS data (keep client changes) 
             var jsonCustomerChangeDataWithoutCrs = _customerChangeDataMerger.TrowAwayLocallyStoredCrsData(customerOnSa);
@@ -218,7 +222,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     {
         var mandantId = await GetMandantId(salesArrangement, cancellationToken);
 
-        if (mandantId != (int)CIS.Foms.Enums.Mandants.Kb)
+        if (mandantId != (int)SharedTypes.Enums.Mandants.Kb)
         {
             throw new CisValidationException(90002, $"Mp products not supported (mandant {mandantId})");
         }
@@ -362,7 +366,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             CustomerIdentification = customerDetail.CustomerIdentification,
             IdentificationDocument = customerDetail.IdentificationDocument,
             Identities = { customerDetail.Identities },
-            Mandant = (CIS.Infrastructure.gRPC.CisTypes.Mandants)mandantId,
+            Mandant = (SharedTypes.GrpcTypes.Mandants)mandantId,
             NaturalPerson = customerDetail.NaturalPerson
         };
     }

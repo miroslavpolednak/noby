@@ -2,7 +2,7 @@
 using DomainServices.SalesArrangementService.Clients;
 using CIS.Core;
 using DomainServices.CodebookService.Clients;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangements;
 

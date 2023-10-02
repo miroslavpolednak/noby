@@ -37,8 +37,14 @@ public class SendEmailRequest : IRequest<SendEmailResponse>, IValidatableRequest
     public Identifier? Identifier { get; set; }
     
     [ProtoMember(10)]
-    public string? CustomId { get; set; }
+    public long? CaseId { get; set; }
     
     [ProtoMember(11)]
+    public string? CustomId { get; set; }
+    
+    [ProtoMember(12)]
     public string? DocumentId { get; set; }
+    
+    [ProtoMember(13)]
+    public DocumentHash? DocumentHash { get; set; }
 }

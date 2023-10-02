@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 

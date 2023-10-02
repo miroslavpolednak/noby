@@ -1,6 +1,6 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.Enums;
+using SharedTypes.GrpcTypes;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.Testing;
 using DomainServices.CaseService.Contracts;
@@ -35,7 +35,7 @@ public class StartSigningServiceRequestsTests : IntegrationTestBase
         sa.Drawing.Applicant.Add(new Identity()
         {
             IdentityId = 1,
-            IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb,
+            IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb,
         });
         ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(sa);
 
@@ -161,7 +161,7 @@ public class StartSigningServiceRequestsTestsPart2 : IntegrationTestBase
         sa.Drawing.Applicant.Add(new Identity()
         {
             IdentityId = 1,
-            IdentityScheme = CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb,
+            IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb,
         });
         ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(sa);
 

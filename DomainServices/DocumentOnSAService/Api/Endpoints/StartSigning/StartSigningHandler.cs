@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
@@ -96,7 +96,8 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             documentOnSaEntity.ExternalId = externalId;
         }
 
-        await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
+        if (request.TaskId is null)
+            await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
 
         await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);

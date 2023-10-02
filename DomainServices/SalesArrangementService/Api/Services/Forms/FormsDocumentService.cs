@@ -92,7 +92,8 @@ internal sealed class FormsDocumentService
             CreatedAt = _dateTime.Now,
             Storno = 0,
             DataType = 1,
-            JsonDataClob = form.Json
+            JsonDataClob = form.Json,
+            FormIdentifier = form.FormIdentifier
         };
 
         return entity;

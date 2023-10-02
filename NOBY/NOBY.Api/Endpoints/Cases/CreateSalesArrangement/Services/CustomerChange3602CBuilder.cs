@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.HouseholdService.Contracts;
 using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 using __SA = DomainServices.SalesArrangementService.Contracts;

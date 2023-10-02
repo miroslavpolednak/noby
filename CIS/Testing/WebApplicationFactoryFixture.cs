@@ -88,7 +88,7 @@ public class WebApplicationFactoryFixture<TStartup>
         {
             config
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(CisWebFactoryConfiguration.AppSettingsName, optional: true);
+                .AddJsonFile(CisWebFactoryConfiguration.AppSettingsName, optional: false);
 
             _configureAppConfiguration?.Invoke(context, config);
         }).

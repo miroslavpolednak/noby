@@ -53,12 +53,12 @@ internal sealed class GetRealEstateValuationDetailHandler
         {
             switch (Helpers.GetRealEstateType(response))
             {
-                case CIS.Foms.Enums.RealEstateTypes.Hf:
-                case CIS.Foms.Enums.RealEstateTypes.Hff:
+                case SharedTypes.Enums.RealEstateTypes.Hf:
+                case SharedTypes.Enums.RealEstateTypes.Hff:
                     response.HouseAndFlatDetails = SpecificDetailHouseAndFlatObject.Parser.ParseFrom(realEstate.SpecificDetailBin);
                     break;
 
-                case CIS.Foms.Enums.RealEstateTypes.P:
+                case SharedTypes.Enums.RealEstateTypes.P:
                     response.ParcelDetails = SpecificDetailParcelObject.Parser.ParseFrom(realEstate.SpecificDetailBin);
                     break;
             }

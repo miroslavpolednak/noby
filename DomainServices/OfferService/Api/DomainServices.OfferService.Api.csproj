@@ -24,13 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <ProjectReference Include="..\..\..\CIS\Infrastructure.Security\CIS.Infrastructure.Security.csproj" />
-    <ProjectReference Include="..\..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
-    <ProjectReference Include="..\..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj" />
-    <ProjectReference Include="..\..\CodebookService\Clients\DomainServices.CodebookService.Clients.csproj" />
-    <ProjectReference Include="..\..\RiskIntegrationService\Clients\DomainServices.RiskIntegrationService.Clients.csproj" />
+    <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.OfferService.Contracts.csproj" />
   </ItemGroup>
 

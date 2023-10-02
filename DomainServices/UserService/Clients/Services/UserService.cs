@@ -38,22 +38,22 @@ internal class UserService
             throw new ArgumentOutOfRangeException(nameof(loginWithScheme));
         }
 
-        if (!Enum.TryParse<CIS.Foms.Enums.UserIdentitySchemes>(arr[0], true, out CIS.Foms.Enums.UserIdentitySchemes scheme))
+        if (!Enum.TryParse<SharedTypes.Enums.UserIdentitySchemes>(arr[0], true, out SharedTypes.Enums.UserIdentitySchemes scheme))
         {
             throw new ArgumentOutOfRangeException(nameof(loginWithScheme));
         }
 
-        return await GetUser(new CIS.Foms.Types.UserIdentity(arr[1], scheme), cancellationToken);
+        return await GetUser(new SharedTypes.Types.UserIdentity(arr[1], scheme), cancellationToken);
     }
 
     public async Task<Contracts.User> GetUser(int userId, CancellationToken cancellationToken = default)
     {
-        return await GetUser(new CIS.Foms.Types.UserIdentity(userId.ToString(), CIS.Foms.Enums.UserIdentitySchemes.V33Id), cancellationToken);
+        return await GetUser(new SharedTypes.Types.UserIdentity(userId.ToString(), SharedTypes.Enums.UserIdentitySchemes.V33Id), cancellationToken);
     }
 
-    public async Task<Contracts.User> GetUser(CIS.Foms.Types.UserIdentity identity, CancellationToken cancellationToken = default)
+    public async Task<Contracts.User> GetUser(SharedTypes.Types.UserIdentity identity, CancellationToken cancellationToken = default)
     {
-        if (identity.Scheme == CIS.Foms.Enums.UserIdentitySchemes.V33Id)
+        if (identity.Scheme == SharedTypes.Enums.UserIdentitySchemes.V33Id)
         {
             // pokud bude user nalezen v kesi
             if (_distributedCacheProvider.UseDistributedCache)

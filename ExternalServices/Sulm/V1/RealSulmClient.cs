@@ -10,9 +10,9 @@ internal sealed class RealSulmClient
 {
     public async Task StartUse(
         long kbCustomerId,
-        IList<CIS.Foms.Types.UserIdentity> userIdentities,
+        IList<SharedTypes.Types.UserIdentity> userIdentities,
         string purposeCode,
-        CancellationToken cancellationToken = default(CancellationToken))
+        CancellationToken cancellationToken = default)
     {
         var request = createRegisterRequest(kbCustomerId, userIdentities, purposeCode);
 
@@ -28,9 +28,9 @@ internal sealed class RealSulmClient
 
     public async Task StopUse(
         long kbCustomerId, 
-        IList<CIS.Foms.Types.UserIdentity> userIdentities, 
+        IList<SharedTypes.Types.UserIdentity> userIdentities, 
         string purposeCode, 
-        CancellationToken cancellationToken = default(CancellationToken))
+        CancellationToken cancellationToken = default)
     {
         var request = terminateRegisterRequest(kbCustomerId, userIdentities, purposeCode);
         
@@ -46,7 +46,7 @@ internal sealed class RealSulmClient
 
     private static RegisterClientPurposeRequest createRegisterRequest(
         long kbCustomerId,
-        IList<CIS.Foms.Types.UserIdentity> userIdentities,
+        IList<SharedTypes.Types.UserIdentity> userIdentities,
         string purposeCode)
     {
         var identity = getKbIdentity(userIdentities);
@@ -63,7 +63,7 @@ internal sealed class RealSulmClient
 
     private static TerminateClientPurposeRequest terminateRegisterRequest(
         long kbCustomerId,
-        IList<CIS.Foms.Types.UserIdentity> userIdentities,
+        IList<SharedTypes.Types.UserIdentity> userIdentities,
         string purposeCode)
     {
         var identity = getKbIdentity(userIdentities);
@@ -91,18 +91,18 @@ internal sealed class RealSulmClient
         }
     }
 
-    private static CIS.Foms.Types.UserIdentity getKbIdentity(IList<CIS.Foms.Types.UserIdentity> identities)
+    private static SharedTypes.Types.UserIdentity getKbIdentity(IList<SharedTypes.Types.UserIdentity> identities)
     {
         return identities
             .FirstOrDefault(t => _allowedIdentities.Contains(t.Scheme))
             ?? throw new CisExtServiceValidationException(0, "SULM integration: User does not have supported identity");
     }
 
-    private static CIS.Foms.Enums.UserIdentitySchemes[] _allowedIdentities = new[]
+    private static SharedTypes.Enums.UserIdentitySchemes[] _allowedIdentities = new[]
     {
-        CIS.Foms.Enums.UserIdentitySchemes.KbUid,
-        CIS.Foms.Enums.UserIdentitySchemes.BrokerId,
-        CIS.Foms.Enums.UserIdentitySchemes.Mpad
+        SharedTypes.Enums.UserIdentitySchemes.KbUid,
+        SharedTypes.Enums.UserIdentitySchemes.BrokerId,
+        SharedTypes.Enums.UserIdentitySchemes.Mpad
     };
     private const string _apiBasePath = "api/customers/sulm/v1/client/purpose/";
 

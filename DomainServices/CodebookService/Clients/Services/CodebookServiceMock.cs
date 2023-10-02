@@ -6,7 +6,7 @@ public class CodebookServiceMock
     : CodebookServiceBaseMock, ICodebookServiceClient
 {
     public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> CaseStates(CancellationToken cancellationToken = default)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.CaseStates>();
+        => Helpers.GetGenericItems<SharedTypes.Enums.CaseStates>();
 
     public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> AcademicDegreesBefore(CancellationToken cancellationToken = default)
     {

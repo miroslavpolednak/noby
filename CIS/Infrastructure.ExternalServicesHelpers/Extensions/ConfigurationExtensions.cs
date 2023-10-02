@@ -87,7 +87,7 @@ public static class ConfigurationExtensions
             throw new CisConfigurationNotFound(getSectionName(serviceName, serviceImplementationVersion));
         if (!configuration.UseServiceDiscovery && configuration.ServiceUrl == null)
             throw new CisConfigurationException(0, $"{serviceName} Service URL must be defined");
-        if (configuration.ImplementationType == Foms.Enums.ServiceImplementationTypes.Unknown)
+        if (configuration.ImplementationType == ServiceImplementationTypes.Unknown)
             throw new CisConfigurationException(0, $"{serviceName} Service client Implementation type is not set");
     }
 

@@ -1,6 +1,6 @@
 ﻿using CIS.Core.Attributes;
-using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.Enums;
+using SharedTypes.GrpcTypes;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;

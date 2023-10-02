@@ -29,7 +29,7 @@ internal sealed class GetMortgageOfferHandler
         {
             OfferId = request.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
-            Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime),
+            Created = new SharedTypes.GrpcTypes.ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime),
             BasicParameters = BasicParameters.Parser.ParseFrom(entity.BasicParametersBin),
             SimulationInputs = MortgageSimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin),
             SimulationResults = MortgageSimulationResults.Parser.ParseFrom(entity.SimulationResultsBin)

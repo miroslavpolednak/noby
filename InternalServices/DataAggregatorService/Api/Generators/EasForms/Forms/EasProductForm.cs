@@ -32,7 +32,8 @@ internal class EasProductForm : EasForm<ProductFormData>
                 EasFormType = easFormType,
                 DynamicFormValues = dynamicValues,
                 DefaultValues = EasFormTypeFactory.CreateDefaultValues(easFormType, _documentTypes),
-                Json = CreateJson(sourceFieldsGroup[easFormType])
+                Json = CreateJson(sourceFieldsGroup[easFormType]),
+                FormIdentifier = $"P{FormIdentifierNumber().ToString(CultureInfo.InvariantCulture)}"
             };
         }
     }
@@ -72,4 +73,7 @@ internal class EasProductForm : EasForm<ProductFormData>
             }
         };
     }
+
+    private long FormIdentifierNumber() => 
+        (long)_formData.SalesArrangement.SalesArrangementId << 32 | (uint)_formData.HouseholdData.HouseholdDto.HouseholdId;
 }

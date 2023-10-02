@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using NOBY.Dto.RealEstateValuation;

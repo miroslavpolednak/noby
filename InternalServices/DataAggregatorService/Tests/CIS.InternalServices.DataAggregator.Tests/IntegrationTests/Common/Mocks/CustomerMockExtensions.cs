@@ -1,5 +1,5 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.Enums;
+using SharedTypes.GrpcTypes;
 using CIS.Testing.Common;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;

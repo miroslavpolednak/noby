@@ -1,5 +1,5 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.Audit;
+﻿using SharedTypes.Enums;
+using SharedAudit;
 using DomainServices.SalesArrangementService.Api.Services.Forms;
 using DomainServices.SalesArrangementService.Contracts;
 using Google.Protobuf.WellKnownTypes;

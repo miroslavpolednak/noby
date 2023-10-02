@@ -49,5 +49,5 @@ public sealed class IdentifyRequest
     /// <summary>
     /// ID klienta v MP nebo KB
     /// </summary>
-    public CIS.Foms.Types.CustomerIdentity? Identity { get; set; }
+    public SharedTypes.Types.CustomerIdentity? Identity { get; set; }
 }

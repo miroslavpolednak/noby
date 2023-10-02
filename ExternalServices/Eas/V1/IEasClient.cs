@@ -12,7 +12,7 @@ public interface IEasClient
     /// Vytvori nove ID sporeni/hypo - novy CASE
     /// </summary>
     /// <exception cref="System.Exception">Jakakoliv interni chyba EAS</exception>
-    Task<long> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId, CancellationToken cancellationToken);
+    Task<long> GetCaseId(SharedTypes.Enums.IdentitySchemes mandant, int productTypeId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Vytvori noveho klienta (rezervace partnerId)

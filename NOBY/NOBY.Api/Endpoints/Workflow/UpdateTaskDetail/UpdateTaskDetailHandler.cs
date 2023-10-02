@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 
@@ -23,7 +23,11 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
 
-        WorkflowHelpers.ValidateTaskManagePermission(taskDetail.TaskObject!.TaskTypeId, _currentUserAccessor);
+        WorkflowHelpers.ValidateTaskManagePermission(
+            taskDetail.TaskObject!.TaskTypeId,
+            taskDetail.TaskObject!.SignatureTypeId,
+            taskDetail.TaskObject!.PhaseTypeId,
+            _currentUserAccessor);
 
         List<string>? documentIds = new();
         var attachments = request.Attachments?
@@ -31,7 +35,6 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
-                FileName = t.FileName,
                 TempFileId = t.Guid!.Value
             })
             .ToList();

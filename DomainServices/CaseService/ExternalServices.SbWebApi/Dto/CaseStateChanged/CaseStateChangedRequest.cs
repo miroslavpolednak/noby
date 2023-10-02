@@ -21,7 +21,7 @@ public sealed class CaseStateChangedRequest
     public string OwnerUserCpm { get; set; } = string.Empty;
     public string? OwnerUserIcp { get; set; }
 
-    public CIS.Foms.Enums.Mandants Mandant { get; set; }
+    public SharedTypes.Enums.Mandants Mandant { get; set; }
 
     public string? RiskBusinessCaseId { get; set; }
 

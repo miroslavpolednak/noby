@@ -9,7 +9,7 @@ using DomainServices.DocumentArchiveService.Clients;
 using System.Text.Json;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.SalesArrangementService.Contracts;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Clients;
 using ExternalServices.ESignatures.Dto;
 using CIS.Core.Security;
@@ -19,7 +19,7 @@ using DomainServices.CodebookService.Clients;
 using System.Globalization;
 using DomainServices.CaseService.Clients;
 using static ExternalServices.ESignatures.Dto.PrepareDocumentRequest;
-using CIS.Foms.Types;
+using SharedTypes.Types;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.Infrastructure.gRPC;
 using DomainServices.DocumentOnSAService.Api.Extensions;
@@ -284,7 +284,7 @@ public class StartSigningMapper
             entitySigningIdentity.SigningIdentityJson.CustomerIdentifiers.Add(new CustomerIdentifier
             {
                 IdentityId = identity.IdentityId,
-                IdentityScheme = (CIS.Foms.Enums.IdentitySchemes)(int)identity.IdentityScheme
+                IdentityScheme = (SharedTypes.Enums.IdentitySchemes)(int)identity.IdentityScheme
             });
 
             entitySigningIdentity.SigningIdentityJson.SignatureDataCode = $"{_signatureAnchorTemplate}{++index}";
@@ -350,7 +350,7 @@ public class StartSigningMapper
         entity.SigningIdentityJson.CustomerIdentifiers.AddRange(signingIdentity.CustomerIdentifiers.Select(s => new CustomerIdentifier
         {
             IdentityId = s.IdentityId,
-            IdentityScheme = (CIS.Foms.Enums.IdentitySchemes)(int)s.IdentityScheme
+            IdentityScheme = (SharedTypes.Enums.IdentitySchemes)(int)s.IdentityScheme
         }));
 
         entity.SigningIdentityJson.CustomerOnSAId = signingIdentity.CustomerOnSAId;

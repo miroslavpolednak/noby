@@ -26,7 +26,7 @@ internal sealed class GetOfferHandler
         {
             OfferId = request.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
-            Created = new CIS.Infrastructure.gRPC.CisTypes.ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime)
+            Created = new SharedTypes.GrpcTypes.ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime)
         };
     }
 

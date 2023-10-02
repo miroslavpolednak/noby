@@ -13,7 +13,7 @@ internal sealed class UpdateCustomerOnCaseHandler
         // detail customera
         var customerInstance = await _customerService.GetCustomer(notification.CustomerOnSAId, cancellationToken);
 
-        if (customerInstance.CustomerRoleId == (int)CIS.Foms.Enums.CustomerRoles.Debtor)
+        if (customerInstance.CustomerRoleId == (int)SharedTypes.Enums.CustomerRoles.Debtor)
         {
             // update case detailu
             await _caseService.UpdateCustomerData(notification.CaseId, new _Case.CustomerData

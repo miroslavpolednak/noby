@@ -14,4 +14,6 @@ message ValidateSalesArrangementIdResponse {
 	google.protobuf.Int64Value CaseId = 2;
 	// Stav SA
 	google.protobuf.Int32Value State = 3;
+	// Typ SA
+	google.protobuf.Int32Value SalesArrangementTypeId = 4;
 }

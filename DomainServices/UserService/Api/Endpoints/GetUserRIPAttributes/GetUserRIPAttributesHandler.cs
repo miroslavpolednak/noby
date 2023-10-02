@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserRIPAttributes;
 
-internal class GetUserRIPAttributesHandler
+internal sealed class GetUserRIPAttributesHandler
     : IRequestHandler<Contracts.GetUserRIPAttributesRequest, Contracts.UserRIPAttributes>
 {
     public async Task<UserRIPAttributes> Handle(GetUserRIPAttributesRequest request, CancellationToken cancellationToken)

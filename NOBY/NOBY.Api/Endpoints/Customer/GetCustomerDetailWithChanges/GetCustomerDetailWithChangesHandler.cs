@@ -18,8 +18,7 @@ internal sealed class GetCustomerDetailWithChangesHandler
 
         await CheckProductTypeMandant(salesArrangement.CaseId, cancellationToken);
 
-        var (data, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSA, cancellationToken);
-        return data;
+        return await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSA, cancellationToken);
     }
 
     private async Task CheckProductTypeMandant(long caseId, CancellationToken cancellationToken)

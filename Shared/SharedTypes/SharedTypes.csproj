@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net7.0</TargetFramework>
+	  <Product>Common Infrastructure Solution</Product>
+	  <Authors>Filip Tuma</Authors>
+	  <Nullable>enable</Nullable>
+	  <Platforms>AnyCPU;x64</Platforms>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<Title>Custom DTO pro NOBY</Title>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>SharedTypes.xml</DocumentationFile>
+		<OutputType>Library</OutputType>
+		<DisableDefaultDocumentation Condition=" '$(Configuration)' != 'Debug' ">true</DisableDefaultDocumentation>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FastEnum" Version="1.8.0" />
+		<PackageReference Include="Google.Protobuf" Version="3.24.1" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.55.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.57.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\..\CIS\Core\CIS.Core.csproj" />
+		<ProjectReference Include="..\..\CIS\Infrastructure.gRPC\CIS.Infrastructure.gRPC.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="./GrpcTypes/Protos/GrpcDate.proto" GrpcServices="None" ProtoRoot="./GrpcTypes/Protos" Access="Public" />
+		<Protobuf Include="./GrpcTypes/Protos/GrpcDecimal.proto" GrpcServices="None" ProtoRoot="./GrpcTypes/Protos" Access="Public" />
+		<Protobuf Include="./GrpcTypes/Protos/ModificationStamp.proto" GrpcServices="None" ProtoRoot="./GrpcTypes/Protos" Access="Public" />
+		<Protobuf Include="./GrpcTypes/Protos/GrpcDateTime.proto" GrpcServices="None" ProtoRoot="./GrpcTypes/Protos" Access="Public" />
+		<Protobuf Include="./GrpcTypes/Protos/Identity.proto" GrpcServices="None" ProtoRoot="./GrpcTypes/Protos" Access="Public" />
+		<Protobuf Include="./GrpcTypes/Protos/NullableGrpcDate.proto" ProtoRoot="./GrpcTypes/Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./GrpcTypes/Protos/PaginationResponse.proto" ProtoRoot="./GrpcTypes/Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./GrpcTypes/Protos/PaginationRequest.proto" ProtoRoot="./GrpcTypes/Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./GrpcTypes/Protos/PaginationSortingField.proto" ProtoRoot="./GrpcTypes/Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./GrpcTypes/Protos/UserInfo.proto" ProtoRoot="./GrpcTypes/Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./GrpcTypes/Protos/Mandants.proto" ProtoRoot="./GrpcTypes/Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./GrpcTypes/Protos/NullableGrpcDecimal.proto" ProtoRoot="./GrpcTypes/Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./GrpcTypes/Protos/GrpcAddress.proto" ProtoRoot="./GrpcTypes/Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./GrpcTypes/Protos/UserIdentity.proto" ProtoRoot="./GrpcTypes/Protos" Access="Public" GrpcServices="None" />
+		<Protobuf Include="./GrpcTypes/Protos/NullableGrpcDateTime.proto" ProtoRoot="./GrpcTypes/Protos" Access="Public" GrpcServices="None" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="SharedTypes.xml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+	
+</Project>
