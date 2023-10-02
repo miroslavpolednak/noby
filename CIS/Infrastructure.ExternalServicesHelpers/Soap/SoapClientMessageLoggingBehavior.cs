@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -6,39 +6,18 @@ using System.ServiceModel.Dispatcher;
 using System.Text;
 using System.Xml;
 
-namespace CIS.Infrastructure.Logging.Extensions.Extensions;
+namespace CIS.Infrastructure.ExternalServicesHelpers;
 
-public static class WcfLoggingExtensions
-{
-    public static void SetTraceLogging(this ServiceEndpoint serviceEndpoint, ILogger logger, WcfLoggingConfiguration configuration)
-    {
-        if (logger == null)
-            throw new ArgumentNullException(nameof(logger));
-        if (logger.IsEnabled(LogLevel.Information))
-            serviceEndpoint.EndpointBehaviors.Add(new ClientMessageLoggingBehavior(logger, configuration));
-    }
-}
-
-public class WcfLoggingConfiguration
-{
-    public string ServiceUrl { get; set; } = null!;
-
-    public bool LogRequestPayload { get; set; } = true;
-
-    public bool LogResponsePayload { get; set; } = true;
-}
-
-internal sealed class ClientMessageLoggingBehavior :
-   IEndpointBehavior
+internal sealed class SoapClientMessageLoggingBehavior 
+    : IEndpointBehavior
 {
     private readonly ILogger _logger;
-    private readonly WcfLoggingConfiguration _configuration;
+    private readonly IExternalServiceConfiguration _configuration;
 
-    public ClientMessageLoggingBehavior(ILogger logger, WcfLoggingConfiguration configuration)
+    public SoapClientMessageLoggingBehavior(ILogger logger, IExternalServiceConfiguration configuration)
     {
         _logger = logger;
         _configuration = configuration;
-
     }
 
     public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
@@ -62,10 +41,9 @@ internal sealed class ClientMessageLoggingBehavior :
         IClientMessageInspector
     {
         private readonly ILogger _logger;
-        private readonly WcfLoggingConfiguration _configuration;
+        private readonly IExternalServiceConfiguration _configuration;
 
-
-        public ClientMessageLogger(ILogger logger, WcfLoggingConfiguration configuration)
+        public ClientMessageLogger(ILogger logger, IExternalServiceConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
@@ -90,13 +68,14 @@ internal sealed class ClientMessageLoggingBehavior :
                   { "Payload", messageContent }
             }))
             {
-                _logger.SoapResponsePayload(_configuration.ServiceUrl);
+                _logger.SoapResponsePayload(_configuration.ServiceUrl!.AbsoluteUri);
             }
         }
 
         public object? BeforeSendRequest(ref Message request, IClientChannel channel)
         {
             var messageContent = "";
+
             if (_configuration.LogRequestPayload)
             {
                 // copying message to buffer to avoid accidental corruption
@@ -113,10 +92,10 @@ internal sealed class ClientMessageLoggingBehavior :
 
             using (_logger.BeginScope(new Dictionary<string, object>
             {
-                  { "Payload", messageContent },
+                { "Payload", messageContent }
             }))
             {
-                _logger.SoapRequestPayload(soapMethod ?? string.Empty, _configuration.ServiceUrl);
+                _logger.SoapRequestPayload(soapMethod ?? string.Empty, _configuration.ServiceUrl!.AbsoluteUri);
             }
 
             return null;
