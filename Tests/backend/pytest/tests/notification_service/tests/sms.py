@@ -145,7 +145,7 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
     assert notification_id != ""
 
 
-#TODO: předělat na kontrrolu v db, až budu mít od Karla detaily, kam se loguje
+#TODO: předělat na kontrrolu v db NobyAudit.dbo.AuditEvent , AuditEventTypeId IN ('AU_NOBY_013') ORDER BY [TimeStamp] DESC, "smsType":"SB_NOTIFICATIONS_AUDITED_KB",objectsAfter":{"notificationId":"2d60088c-89ef-4f1c-bf66-65c73aeeb3ed"}
 #@pytest.mark.skip(reason="starý script, již se neloguje do sequ, ale do db:")
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
