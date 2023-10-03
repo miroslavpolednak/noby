@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\DomainServices\OfferService\Clients\DomainServices.OfferService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\ProductService\Clients\DomainServices.ProductService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\RealEstateValuationService\Clients\DomainServices.RealEstateValuationService.Clients.csproj" />
+    <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Clients\DomainServices.RiskIntegrationService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
     <ProjectReference Include="..\NOBY.Database\NOBY.Database.csproj" />
     <ProjectReference Include="..\NOBY.Dto\NOBY.Dto.csproj" />
