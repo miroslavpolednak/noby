@@ -4,6 +4,7 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _dto = NOBY.Api.Endpoints.SalesArrangement.Dto;
+using FastEnumUtility;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
@@ -83,7 +84,7 @@ internal sealed class UpdateParametersHandler
 
             foreach (var documentOnSaToSign in documentResponse.DocumentsOnSAToSign)
             {
-                if (documentOnSaToSign is { IsValid: true, IsSigned: false, DocumentOnSAId: not null })
+                if (documentOnSaToSign.DocumentTypeId != DocumentTypes.DANRESID.ToByte() && documentOnSaToSign.DocumentOnSAId is not null ) // 13
                 {
                     await _documentOnSaService.StopSigning(new() { DocumentOnSAId = documentOnSaToSign.DocumentOnSAId.Value }, cancellationToken);
                     // We have to actualise SA after stop Signing (because stop Signing may change SA state)
