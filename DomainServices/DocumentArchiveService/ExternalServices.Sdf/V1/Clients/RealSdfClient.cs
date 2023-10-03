@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System.ServiceModel.Channels;
 using System.ServiceModel;
 using Polly.Retry;
@@ -9,6 +8,7 @@ using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Model;
 using Ixtent.ContentServer.ExtendedServices.Model;
 using CIS.Core.Extensions;
 using Polly;
+using CIS.Infrastructure.ExternalServicesHelpers.Soap;
 
 namespace DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Clients;
 internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedServices>, ISdfClient
