@@ -8,7 +8,8 @@ internal sealed class StaticLoginValidator : ILoginValidator
         { "test", "Test" },
         { "sb", "pwd" },
         { "epodpisy", "epodpisy" },
-        { "insign", "insign" }
+        { "insign", "insign" },
+        { "XX_NOBY_RMT_USR_TEST", "ppmlesnrTWYSDYGDR!98538535634544" }
     };
 
     public Task<bool> Validate(string login, string password)

@@ -109,7 +109,7 @@ public class DocumentOnSAController : ControllerBase
     /// Dle zdroje podepisovaného dokumentu, typu podepisování a stavu podepisování dojde k vrácení PDF pro náhled dokumentu.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A1B54B66-9AF8-4e5c-A240-93FEF635449F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpGet("document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSaId}/preview")]
+    [HttpGet("document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/preview")]
     [NobySkipCaseOwnerStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Pdf)]

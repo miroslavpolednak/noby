@@ -7,6 +7,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using System.Globalization;
 using System.Net.Mime;
+using DomainServices.SalesArrangementService.Clients;
 using _DocOnSaSource = DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSA;
@@ -15,6 +16,7 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
 {
     private readonly IDocumentOnSAServiceClient _documentOnSaClient;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClient _codebookServiceClients;
     private readonly IDateTime _dateTime;
     private readonly ICurrentUserAccessor _currentUserAccessor;
@@ -23,12 +25,14 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
         ICurrentUserAccessor currentUserAccessor,
         IDocumentOnSAServiceClient documentOnSaClient,
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
+        ISalesArrangementServiceClient salesArrangementService,
         ICodebookServiceClient codebookServiceClients,
         IDateTime dateTime)
     {
         _currentUserAccessor = currentUserAccessor;
         _documentOnSaClient = documentOnSaClient;
         _documentGeneratorServiceClient = documentGeneratorServiceClient;
+        _salesArrangementService = salesArrangementService;
         _codebookServiceClients = codebookServiceClients;
         _dateTime = dateTime;
     }
@@ -63,7 +67,10 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
 
     private async Task<GetDocumentOnSAResponse> GetDocumentFromDocumentGenerator(_DocOnSaSource.DocumentOnSAToSign documentOnSa, _DocOnSaSource.GetDocumentOnSADataResponse documentOnSaData, CancellationToken cancellationToken)
     {
-        var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSa, documentOnSaData, forPreview: false);
+        //Should be in the cache, so load it because we need CaseId
+        var saValidationResult = await _salesArrangementService.ValidateSalesArrangementId(documentOnSa.SalesArrangementId, false, cancellationToken);
+
+        var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSa, documentOnSaData, saValidationResult.CaseId, forPreview: false);
 
         var result = await _documentGeneratorServiceClient.GenerateDocument(generateDocumentRequest, cancellationToken);
 

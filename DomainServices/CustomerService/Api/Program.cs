@@ -16,7 +16,7 @@ SharedComponents.GrpcServiceBuilder
     })
     .Build((builder, appConfiguration) =>
     {
-        appConfiguration.Validate();
+        //appConfiguration.Validate();
 
         builder.Services.AddDapper(builder.Configuration.GetConnectionString("KonsDb")!);
 
@@ -27,12 +27,12 @@ SharedComponents.GrpcServiceBuilder
         builder.AddExternalService<DomainServices.CustomerService.ExternalServices.Kyc.V1.IKycClient>();
         builder.AddExternalService<ExternalServices.MpHome.V1.IMpHomeClient>();
 
-        builder.AddCisMessaging()
-            .AddKafka()
-            .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyCreated.PartyCreatedConsumer>()
-            .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyUpdated.PartyUpdatedConsumer>()
-            .AddConsumerTopicJson<DomainServices.CustomerService.Api.Messaging.Abstraction.ICustomerManagementEvent>(appConfiguration.CustomerManagementEventTopic)
-            .Build();
+        //builder.AddCisMessaging()
+        //    .AddKafka()
+        //    .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyCreated.PartyCreatedConsumer>()
+        //    .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyUpdated.PartyUpdatedConsumer>()
+        //    .AddConsumerTopicJson<DomainServices.CustomerService.Api.Messaging.Abstraction.ICustomerManagementEvent>(appConfiguration.CustomerManagementEventTopic)
+        //    .Build();
     })
     .MapGrpcServices(app =>
     {
