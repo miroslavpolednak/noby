@@ -19,11 +19,11 @@ internal sealed class GetTaskDetailHandler
 
         if (task.TaskTypeId is 6 && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningView))
         {
-            throw new CisAuthorizationException("Task detail manage permission missing");
+            throw new CisAuthorizationException("Task detail manage permission missing #1");
         }
         else if (!(task.TaskTypeId is 6) && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_OtherView))
         {
-            throw new CisAuthorizationException("Task detail manage permission missing");
+            throw new CisAuthorizationException("Task detail manage permission missing #2");
         }
         
         var (taskDto, taskDetailDto, documents) = await _workflowTaskService.GetTaskDetail(request.CaseId, task.TaskIdSb, cancellationToken);
