@@ -262,6 +262,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00010-HFICH-6859_BusinessCaseId_Severity.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00010-HFICH-6859_BusinessCaseId_Severity.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00011_ValidationText_FixedHouseholdNumber.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00011_ValidationText_FixedHouseholdNumber.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00012-HFICH-8304.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00012-HFICH-8304.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00013_HFICH-8480_IgnoreBusinessCaseId.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00013_HFICH-8480_IgnoreBusinessCaseId.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
