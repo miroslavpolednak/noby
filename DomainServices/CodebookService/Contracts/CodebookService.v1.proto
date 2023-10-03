@@ -614,4 +614,10 @@ service CodebookService {
 			get: "/v1/signing-methods-for-natural-person"
 		};
    }
+
+   rpc SigningMethods (google.protobuf.Empty) returns (SigningMethodsResponse) {
+	   option (google.api.http) = {
+			get: "/v1/signing-methods"
+		};
+   }
 }
