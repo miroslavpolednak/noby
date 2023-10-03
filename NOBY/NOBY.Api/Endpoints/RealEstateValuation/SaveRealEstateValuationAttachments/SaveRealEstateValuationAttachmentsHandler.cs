@@ -21,7 +21,7 @@ internal sealed class SaveRealEstateValuationAttachmentsHandler
                 RealEstateValuationId = request.RealEstateValuationId,
                 FileName = metadata!.FileName,
                 MimeType = metadata.MimeType,
-                Title = attachment.Title,
+                Title = attachment.Title ?? "",
                 FileData = Google.Protobuf.ByteString.CopyFrom(content),
                 AcvAttachmentCategoryId = attachment.AcvAttachmentCategoryId
             };
