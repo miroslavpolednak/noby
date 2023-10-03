@@ -1256,6 +1256,27 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.RealEstateTypesResponse.Types.RealEstateTypesResponseItem.CollateralFieldNumber">
             <summary>Field number for the "Collateral" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.SigningMethodsResponse.Types">
+            <summary>Container for nested types declared in the SigningMethodsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsResponse.Types.SigningMethodsItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsResponse.Types.SigningMethodsItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsResponse.Types.SigningMethodsItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsResponse.Types.SigningMethodsItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsResponse.Types.SigningMethodsItem.IdESignFieldNumber">
+            <summary>Field number for the "IdESign" field.</summary>
+        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.CodebookServiceV1Reflection">
             <summary>Holder for reflection information generated from CodebookService.v1.proto</summary>
         </member>

@@ -725,3 +725,15 @@ message WorkflowTaskStatesNobyResponse {
 		int32 Indicator = 4;
 	}
 }
+
+message SigningMethodsResponse {
+	repeated SigningMethodsItem Items = 1;
+
+	message SigningMethodsItem {
+		int32 Id = 1;
+		string Code = 2;
+		string Name = 3;
+		bool IsValid = 4;
+		google.protobuf.StringValue IdESign = 5;
+	}
+}
