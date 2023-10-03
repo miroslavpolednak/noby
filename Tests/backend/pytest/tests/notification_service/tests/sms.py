@@ -146,7 +146,7 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
 
 
 #TODO: předělat na kontrrolu v db, až budu mít od Karla detaily, kam se loguje
-@pytest.mark.skip(reason="starý script, již se neloguje do sequ, ale do db:")
+#@pytest.mark.skip(reason="starý script, již se neloguje do sequ, ale do db:")
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
     ("loguji", json_req_sms_logovani_kb_sb, True),
@@ -172,6 +172,8 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data, expected_resul
     assert "notificationId" in resp
     notification_id = resp["notificationId"]
     assert notification_id != ""
+
+"""
     sleep(2)
 
     # Kontrola v seq logu
@@ -203,7 +205,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data, expected_resul
             not any(prop["Name"] == "SmsType" for prop in event["Properties"]) for event in
             events if
             "Properties" in event), f"Failed for custom_id: {custom_id}. Expected: {expected_result}, Got: {result}"
-
+"""
 
 # NOBY vraci okej, ale v databázi padnou kombinace, ktere nemaji pro sebe MCS kod
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)

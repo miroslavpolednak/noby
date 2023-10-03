@@ -74,7 +74,12 @@ json_req_sms_logovani_kb_sb = \
         "processingPriority": 1,
         "type": "SB_NOTIFICATIONS_AUDITED_KB",
         "text": "kb logovani SB",
-        "customId": "log"
+        "customId": "log",
+        "caseId": 303062934,
+        "documentHash": {
+            "hash": "a3f4b2e8967d3a2c1b5f4e6090d7c3b2a4f8e9d0c6b5a432e9d0b3a295f7c8e1",
+            "hashAlgorithm": "SHA-3"
+        }
     }
 
 json_req_sms_logovani_mpss_sb = \
