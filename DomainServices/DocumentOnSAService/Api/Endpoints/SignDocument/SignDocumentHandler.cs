@@ -140,7 +140,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         // SUML call for all those document types, household should be not null 
         if (IsDocumentTypeWithHousehold(documentOnSa.DocumentTypeId.GetValueOrDefault()))
         {
-            await SumlCall(salesArrangement, houseHold!, cancellationToken);
+            await SumlCall(houseHold!, cancellationToken);
         }
 
         if (houseHold is null)
@@ -410,16 +410,13 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await _productService.UpdateMortgage(new UpdateMortgageRequest { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
-    private async Task SumlCall(SalesArrangement salesArrangement, Household houseHold, CancellationToken cancellationToken)
+    private async Task SumlCall(Household houseHold, CancellationToken cancellationToken)
     {
-        if (salesArrangement.IsProductSalesArrangement())
-        {
-            await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId1!.Value, cancellationToken);
+        await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId1!.Value, cancellationToken);
 
-            if (houseHold.CustomerOnSAId2 is not null)
-            {
-                await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId2.Value, cancellationToken);
-            }
+        if (houseHold.CustomerOnSAId2 is not null)
+        {
+            await SumlCallForSpecifiedCustomer(houseHold.CustomerOnSAId2.Value, cancellationToken);
         }
     }
 
