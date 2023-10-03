@@ -1,11 +1,10 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
-using CIS.Infrastructure.ExternalServicesHelpers.Soap;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 
-namespace CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
+namespace CIS.Infrastructure.ExternalServicesHelpers.Soap;
 
 public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposable
     where TSoapClient : ClientBase<TSoapClientChannel>, new()

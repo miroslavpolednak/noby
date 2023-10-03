@@ -1,11 +1,11 @@
 ﻿using CIS.Core.Extensions;
 using SharedTypes.Enums;
-using CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using ExternalServices.Eas.Dto;
 using ExternalServices.Eas.V1.CheckFormV2;
 using ExternalServices.Eas.V1.EasWrapper;
 using System.ServiceModel.Channels;
+using CIS.Infrastructure.ExternalServicesHelpers.Soap;
 
 namespace ExternalServices.Eas.V1;
 
