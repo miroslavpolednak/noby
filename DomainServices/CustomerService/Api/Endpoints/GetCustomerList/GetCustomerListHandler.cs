@@ -36,7 +36,7 @@ internal sealed class GetCustomerListHandler : IRequestHandler<CustomerListReque
         if (!customerIds.Any())
             return Enumerable.Empty<CustomerDetailResponse>();
 
-        return await _cmDetailProvider.GetList(customerIds, cancellationToken);
+        return await _cmDetailProvider.GetList(customerIds, cancellationToken).ToListAsync(cancellationToken);
     }
 
     private async Task<IEnumerable<CustomerDetailResponse>> GetKonsDbCustomers(IEnumerable<long> partnerIds, CancellationToken cancellationToken)
