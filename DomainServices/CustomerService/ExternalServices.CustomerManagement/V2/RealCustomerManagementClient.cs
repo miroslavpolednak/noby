@@ -87,7 +87,7 @@ internal class RealCustomerManagementClient : ICustomerManagementClient
         return new QueryBuilder
         {
             { "getAllPrimaryPhones", "true" },
-            { "requiredAddressFormats", new[] { AddressFormat.COMPONENT, AddressFormat.SINGLE_LINE }.Select(v => v.ToString()) },
+            { "requiredAddressFormats", new[] { AddressFormat.COMPONENT }.Select(v => v.ToString()) },
             {
                 "e", new[]
                 {
