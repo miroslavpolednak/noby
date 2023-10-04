@@ -1,6 +1,7 @@
 import copy
 import datetime as datetime
 
+import pyodbc
 import pytest
 import requests
 from sqlalchemy.orm import declarative_base
@@ -21,10 +22,23 @@ URLS = {
     "uat_url_discovery": "https://ds-discovery-uat.vsskb.cz:33011"
 }
 
+DB_SERVERS = {
+    'dev_db': 'adpra173.vsskb.cz',
+    'sit_db': 'adpra173.vsskb.cz\SIT'
+}
+
+DB_TEMPLATE = {
+    'database': 'NobyAudit',
+    'user': 'testsql',
+    'password': 'Rud514',
+}
+
 
 def pytest_addoption(parser):
     parser.addoption("--ns-url", action="store", default="dev_url",
-                     help="ns url")
+                     help="ns url"),
+    parser.addoption("--db-url", action="store", default="dev_db",
+                     help="db url")
 
 
 @pytest.fixture(scope="session")
@@ -33,6 +47,30 @@ def ns_url(request):
     url_name = request.config.getoption("--ns-url")
     url = URLS[url_name]
     return {"url": url, "url_name": url_name}
+
+
+@pytest.fixture(scope="session")
+def db_url(request):
+    """Fixture pro nastavení URL adresy."""
+    db_name = request.config.getoption("--db-url")
+    db = DB_SERVERS[db_name]
+    return {"db": db, "db_name": db_name}
+
+
+#napojeni na MSSQL noby
+
+@pytest.fixture(scope='function')
+def db_connection(db_url):
+    connection_string = (
+        fr"Driver={{ODBC Driver 17 for SQL Server}};"
+        fr"Server={db_url['db']};"
+        fr"Database={DB_TEMPLATE['database']};"
+        fr"UID={DB_TEMPLATE['user']};"
+        fr"PWD={DB_TEMPLATE['password']};"
+    )
+    connection = pyodbc.connect(connection_string)
+    yield connection
+    connection.close()
 
 
 @pytest.fixture(scope="function")

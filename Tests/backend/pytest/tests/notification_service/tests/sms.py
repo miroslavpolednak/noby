@@ -1,7 +1,10 @@
 import uuid
 from time import sleep
 from urllib.parse import urlencode, quote
+
+import pyodbc
 import urllib3
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 import pytest
@@ -145,14 +148,15 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
     assert notification_id != ""
 
 
-#TODO: předělat na kontrrolu v db NobyAudit.dbo.AuditEvent , AuditEventTypeId IN ('AU_NOBY_013') ORDER BY [TimeStamp] DESC, "smsType":"SB_NOTIFICATIONS_AUDITED_KB",objectsAfter":{"notificationId":"2d60088c-89ef-4f1c-bf66-65c73aeeb3ed"}
-#@pytest.mark.skip(reason="starý script, již se neloguje do sequ, ale do db:")
+# TODO: předělat na kontrrolu v db NobyAudit.dbo.AuditEvent , AuditEventTypeId IN ('AU_NOBY_013') ORDER BY [TimeStamp] DESC, "smsType":"SB_NOTIFICATIONS_AUDITED_KB",objectsAfter":{"notificationId":"2d60088c-89ef-4f1c-bf66-65c73aeeb3ed"}
+# @pytest.mark.skip(reason="starý script, již se neloguje do sequ, ale do db:")
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
     ("loguji", json_req_sms_logovani_kb_sb, True),
     ("neloguji", json_req_sms_bez_logovani_kb_sb, False)
 ])
-def test_sms_log(ns_url, auth_params, auth, custom_id, json_data, expected_result, authenticated_seqlog_session):
+def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
+                 expected_result, db_url, db_connection):
     """test logovani - zalogujeme, nezalogujeme do seq"""
     url_name = ns_url["url_name"]
     username = auth[0]
@@ -160,6 +164,10 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data, expected_resul
     # vytvoření unikátního ID pro customId pro dohledani logu
     uuid_str = uuid.uuid4().hex
     unique_custom_id = f"{uuid_str[:4]}{custom_id}{uuid_str[4:8]}"
+
+    # upravit json_data před požadavkem
+    json_data['customId'] = unique_custom_id
+
     session = requests.session()
     resp = session.post(
         URLS[url_name] + "/v1/notification/sms",
@@ -172,6 +180,45 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data, expected_resul
     assert "notificationId" in resp
     notification_id = resp["notificationId"]
     assert notification_id != ""
+
+    cursor = db_connection.cursor()
+    print(f"Notification ID: {notification_id}")
+    #notification_id_db = str(resp["notificationId"])
+    sleep(3)
+    try:
+        cursor.execute("""
+                    SELECT * 
+                    FROM AuditEvent
+                    WHERE AuditEventTypeId = ? 
+                    AND JSON_VALUE(Detail, '$.body.objectsBefore.notificationId') = ?
+                    ORDER BY [TimeStamp] DESC
+                    """, ('AU_NOBY_013', notification_id)
+                       )
+        results = cursor.fetchall()
+        found_records = bool(results)
+        # Výpis výsledků.
+        #print(f"Results from {db_url['db_name']}:")
+        #for row in results:
+        #   print(row)
+    except pyodbc.Error as e:
+        pytest.fail(f"Failed to execute query: {e}")
+
+        try:
+            cursor.execute("""
+                           SELECT * 
+                           FROM AuditEvent
+                           WHERE AuditEventTypeId = ? 
+                           AND JSON_VALUE(Detail, '$.body.objectsBefore.customId') = ?
+                           ORDER BY [TimeStamp] DESC
+                           """, ('AU_NOBY_012', unique_custom_id)
+                           )
+            results = cursor.fetchall()
+            found_records = bool(results)
+        except pyodbc.Error as e:
+            pytest.fail(f"Failed to execute query: {e}")
+
+    assert found_records == expected_result
+
 
 """
     sleep(2)
@@ -206,6 +253,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data, expected_resul
             events if
             "Properties" in event), f"Failed for custom_id: {custom_id}. Expected: {expected_result}, Got: {result}"
 """
+
 
 # NOBY vraci okej, ale v databázi padnou kombinace, ktere nemaji pro sebe MCS kod
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
@@ -376,3 +424,31 @@ def test_documentHash_sms(ns_url, auth_params, auth, json_data, modified_json_da
     assert "notificationId" in resp
     notification_id = resp["notificationId"]
     assert notification_id != ""
+
+
+# připrava na MSSQL dotazy
+@pytest.mark.parametrize("expected_result", [
+    (True)
+])
+def test_db_connection(db_url, db_connection, expected_result):
+    cursor = db_connection.cursor()
+    notification_id = 'c0fdfabf-f859-4023-834b-e0004070768d'
+    try:
+        cursor.execute("""
+                SELECT * 
+                FROM AuditEvent
+                WHERE AuditEventTypeId IN (?, ?) 
+                AND JSON_VALUE(Detail, '$.body.objectsBefore.notificationId') = ?
+                ORDER BY [TimeStamp] DESC
+                """, ('AU_NOBY_013', 'AU_NOBY_012', notification_id)
+                       )
+        results = cursor.fetchall()
+        found_records = bool(results)
+        # Výpis výsledků.
+        print(f"Results from {db_url['db_name']}:")
+        for row in results:
+            print(row)
+    except pyodbc.Error as e:
+        pytest.fail(f"Failed to execute query: {e}")
+
+    assert found_records == expected_result
