@@ -6,7 +6,7 @@ namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
 internal static class Extensions
 {
-    public static GetLoanApplicationAssessmentResponse ToApiResponse(this cRS.V1.LoanApplicationAssessmentResponse response, cOffer.GetMortgageOfferDetailResponse? offer)
+    public static GetLoanApplicationAssessmentResponse ToApiResponse(this cRS.V1.LoanApplicationAssessmentResponse response, cOffer.GetMortgageOfferResponse? offer)
     {
         //https://wiki.kb.cz/pages/viewpage.action?pageId=464683017
 

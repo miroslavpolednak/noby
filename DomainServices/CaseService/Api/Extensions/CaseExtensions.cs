@@ -137,7 +137,7 @@ internal static class CaseExtensions
                         EACodeMain = taskData.GetValueOrDefault("ukol_podpis_dokument_typ")
                     };
 
-                    if (string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")))
+                    if (!string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")))
                     {
                         taskDetail.Signing.ProposalForEntry.AddRange(taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")!.Split(',', StringSplitOptions.RemoveEmptyEntries));
                     }

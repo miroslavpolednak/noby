@@ -2022,7 +2022,7 @@
             </remarks>
             <param name="customerOnSAId">Customer on SA ID</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GenerateDocumentPreview(System.Int32,System.Int32,System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetDocumentPreview(System.Int32,System.Int32,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Vygenerování náhledu dokumentu
             </summary>

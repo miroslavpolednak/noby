@@ -18,7 +18,7 @@ public class CasesController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B13A9B30-5896-4319-A96E-0982FE5A9045"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/cancel")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.CASE_Cancel, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
@@ -58,7 +58,7 @@ public class CasesController : ControllerBase
     /// Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
     /// </remarks>
     [HttpPost("{caseId:long}/sales-arrangement")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
@@ -94,6 +94,7 @@ public class CasesController : ControllerBase
     /// <returns>Kolekce ID stavu s počtem Cases.</returns>
     [HttpGet("dashboard-filters")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(List<GetTotalsByStates.GetDashboardFiltersResponse>), StatusCodes.Status200OK)]
     public async Task<List<GetTotalsByStates.GetDashboardFiltersResponse>> GetDashboardFilters(CancellationToken cancellationToken)
@@ -115,6 +116,7 @@ public class CasesController : ControllerBase
     [HttpPost("search")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.DASHBOARD_SearchCases)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(SearchCases.SearchCasesResponse), StatusCodes.Status200OK)]
     public async Task<SearchCases.SearchCasesResponse> SearchCases([FromBody] SearchCases.SearchCasesRequest request)
@@ -135,9 +137,9 @@ public class CasesController : ControllerBase
     /// </remarks>
     /// <param name="request">Typ kritéria a jeho hodnota pro vyhledávání.</param>
     [HttpPost("identify")]
-    [NobyAuthorize(UserPermissions.DASHBOARD_IdentifyCase)]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.DASHBOARD_IdentifyCase)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(IdentifyCase.IdentifyCaseResponse), StatusCodes.Status200OK)]
     public async Task<IdentifyCase.IdentifyCaseResponse> IdentifyCase([FromBody] IdentifyCase.IdentifyCaseRequest request)
@@ -188,6 +190,7 @@ public class CasesController : ControllerBase
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/covenants")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -205,6 +208,7 @@ public class CasesController : ControllerBase
     /// <param name="covenantOrder">Pořadí podmínky ke splnění</param>
     [HttpGet("{caseId:long}/covenant/{covenantOrder:int}")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

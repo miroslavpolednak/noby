@@ -21,6 +21,7 @@ public class OfferController : ControllerBase
     [HttpPost("mortgage")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,6 +60,7 @@ public class OfferController : ControllerBase
     [HttpPost("mortgage/create-case")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.DASHBOARD_CreateNewCase)]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -74,6 +76,7 @@ public class OfferController : ControllerBase
     /// </remarks>
     [HttpPut("mortgage/sales-arrangement/{salesArrangementId:int}/link")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Modelace" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task LinkModelation([FromRoute] int salesArrangementId, [FromBody] LinkModelation.LinkModelationRequest request)

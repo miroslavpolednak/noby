@@ -28,11 +28,12 @@ internal sealed class SearchCasesHandler
     static List<int>? getStatesFilter(int? filterId)
         => filterId switch
         {
+            1 => new List<int>() { 1, 2, 3, 4, 5, 8, 9 },
             2 => new List<int>() { 1, 2, 8 },
             3 => new List<int>() { 3 },
             4 => new List<int>() { 4 },
             5 => new List<int>() { 5 },
-            _ => null
+            _ => throw new NotImplementedException($"Filter {filterId} is not implemented")
         };
 
     static List<Paginable.MapperField> sortingMapper = new()

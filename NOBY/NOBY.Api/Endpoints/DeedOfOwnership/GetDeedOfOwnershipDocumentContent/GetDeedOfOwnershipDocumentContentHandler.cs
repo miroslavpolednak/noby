@@ -54,11 +54,11 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
         var legalRelations = await _cremClient.GetLegalRelations(documentId, cancellationToken);
         var realEstates = await _cremClient.GetRealEstates(documentId, cancellationToken);
         var owners = await _cremClient.GetOwners(documentId, cancellationToken);
-
+        
         return new GetDeedOfOwnershipDocumentContentResponse
         {
             CremDeedOfOwnershipDocumentId = documentId,
-            DeedOfOwnershipNumber = deedOfOwnershipNumber,
+            DeedOfOwnershipNumber = deedOfOwnershipNumber ?? realEstates.FirstOrDefault()?.DeedOfOwnershipNumber,
             Owners = owners?.Select(t => new GetDeedOfOwnershipDocumentContentResponseOwners
             {
                 OwnerDescription = t.Description,

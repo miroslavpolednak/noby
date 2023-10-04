@@ -30,7 +30,7 @@ public sealed class SaveRealEstateValuationAttachmentsRequestItem
     /// Popis souboru
     /// </summary>
     /// <example>Fotka dveří</example>
-    public string? Title { get; set; }
+    public string Title { get; set; } = string.Empty;
 
     /// <summary>
     /// ID kategorie přílohy

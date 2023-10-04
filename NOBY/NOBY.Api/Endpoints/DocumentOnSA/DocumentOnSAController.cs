@@ -36,7 +36,6 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/document-list")]
     [Produces("application/json")]
-    [NobySkipCaseOwnerStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(typeof(GetDocumentsSignListResponse), StatusCodes.Status200OK)]
@@ -55,8 +54,7 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId"> ID Sales Arrangement </param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/start")]
-    [NobySkipCaseOwnerStateAndProductSAValidation]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(typeof(StartSigningResponse), StatusCodes.Status200OK)]
@@ -75,7 +73,7 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview")]
     [NobySkipCaseOwnerStateAndProductSAValidation]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage)]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -93,7 +91,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="documentOnSAId"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/stop")]
     [NobySkipCaseOwnerStateAndProductSAValidation]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -110,7 +108,6 @@ public class DocumentOnSAController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A1B54B66-9AF8-4e5c-A240-93FEF635449F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/preview")]
-    [NobySkipCaseOwnerStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Pdf)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
@@ -134,7 +131,7 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
     [NobySkipCaseOwnerStateAndProductSAValidation]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -154,7 +151,6 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpGet("document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}")]
-    [NobySkipCaseOwnerStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Pdf)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
@@ -179,6 +175,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}")]
+    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
     [NobySkipCaseOwnerStateAndProductSAValidation]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -254,7 +251,7 @@ public class DocumentOnSAController : ControllerBase
     [NobySkipCaseOwnerStateAndProductSAValidation]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(typeof(RefreshElectronicDocumentResponse), StatusCodes.Status200OK)]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage)]
     public async Task<RefreshElectronicDocumentResponse> RefreshElectronicDocument(
           [FromRoute] int salesArrangementId,
           [FromRoute] int documentOnSaId,

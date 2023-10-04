@@ -21,6 +21,7 @@ public class HouseholdController : ControllerBase
     /// <returns><see cref="List{T}"/> where T : <see cref="Dto.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
     [HttpGet("household/list/{salesArrangementId:long}")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new [] { "Domácnost" })]
     [ProducesResponseType(typeof(List<Dto.HouseholdInList>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -38,6 +39,7 @@ public class HouseholdController : ControllerBase
     /// <returns><see cref="GetHousehold.GetHouseholdResponse"/> Detail domacnosti</returns>
     [HttpGet("household/{householdId:long}")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(GetHousehold.GetHouseholdResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -55,6 +57,7 @@ public class HouseholdController : ControllerBase
     /// <returns>ID smazané domacnosti</returns>
     [HttpDelete("household/{householdId:int}")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -70,6 +73,7 @@ public class HouseholdController : ControllerBase
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId:int}/household")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(Dto.HouseholdInList), StatusCodes.Status200OK)]
     public async Task<Dto.HouseholdInList> CreateHousehold([FromRoute] int salesArrangementId, [FromBody] CreateHousehold.CreateHouseholdRequest? request)
@@ -84,6 +88,7 @@ public class HouseholdController : ControllerBase
     /// <param name="householdId">ID domácnosti</param>
     [HttpPut("household/{householdId:int}")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -104,6 +109,7 @@ public class HouseholdController : ControllerBase
     [HttpPut("household/{householdId:int}/customers")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [ProducesResponseType(typeof(UpdateCustomers.UpdateCustomersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
