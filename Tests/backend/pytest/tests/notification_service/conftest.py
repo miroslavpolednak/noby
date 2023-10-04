@@ -24,6 +24,7 @@ URLS = {
 
 DB_SERVERS = {
     'dev_db': 'adpra173.vsskb.cz',
+    'fat_db': 'adpra173.vsskb.cz\FAT',
     'sit_db': 'adpra173.vsskb.cz\SIT'
 }
 
@@ -35,9 +36,9 @@ DB_TEMPLATE = {
 
 
 def pytest_addoption(parser):
-    parser.addoption("--ns-url", action="store", default="dev_url",
+    parser.addoption("--ns-url", action="store", default="fat_url",
                      help="ns url"),
-    parser.addoption("--db-url", action="store", default="dev_db",
+    parser.addoption("--db-url", action="store", default="fat_db",
                      help="db url")
 
 

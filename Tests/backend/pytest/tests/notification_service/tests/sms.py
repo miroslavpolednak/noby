@@ -51,6 +51,7 @@ def test_sms_manualy(url_name, auth_params, auth, json_data):
     assert notification_id != ""
 
 
+@pytest.mark.skip(reason="real")
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg_e2e])
 def test_E2E_real_sms(ns_url, auth_params, auth, json_data, modified_json_data):
@@ -427,6 +428,7 @@ def test_documentHash_sms(ns_url, auth_params, auth, json_data, modified_json_da
 
 
 # připrava na MSSQL dotazy
+@pytest.mark.skip("pouze pro test connection")
 @pytest.mark.parametrize("expected_result", [
     (True)
 ])

@@ -182,8 +182,8 @@ def test_get_sms_notification_search_vulnerability(ns_url,  auth_params, auth):
     )
     expected_error = {'302': ['Invalid Identity.'],
                       '304': ['Invalid IdentityScheme.'],
-                      '305': ['Invalid DocumentId.'],
-                      '306': ['Invalid CustomId.']}
+                      '306': ['Invalid CustomId.'],
+                      '307': ['Invalid DocumentId.']}
     error = resp.json()['errors']
     assert error == expected_error, f'Expected {expected_error}, but got {error}'
 
