@@ -12,10 +12,16 @@ internal sealed class OfferService
         }, cancellationToken: cancellationToken);
 
     public async Task<GetMortgageOfferResponse> GetMortgageOffer(int offerId, CancellationToken cancellationToken = default)
-        => await _service.GetMortgageOfferAsync(new GetMortgageOfferRequest() 
-        { 
-            OfferId = offerId 
-        }, cancellationToken: cancellationToken);
+    {
+        if (_cacheGetMortgageOfferResponse is null || offerId != _cacheGetMortgageOfferResponseId)
+        {
+            _cacheGetMortgageOfferResponse = await _service.GetMortgageOfferAsync(new GetMortgageOfferRequest()
+            {
+                OfferId = offerId
+            }, cancellationToken: cancellationToken);
+        }
+        return _cacheGetMortgageOfferResponse;
+    }
 
     public async Task<GetMortgageOfferDetailResponse> GetMortgageOfferDetail(int offerId, CancellationToken cancellationToken = default)
         => await _service.GetMortgageOfferDetailAsync(new GetMortgageOfferDetailRequest() 
@@ -44,7 +50,11 @@ internal sealed class OfferService
         }, cancellationToken: cancellationToken);
     }
 
+    private int? _cacheGetMortgageOfferResponseId;
+    private GetMortgageOfferResponse? _cacheGetMortgageOfferResponse;
+
     private readonly Contracts.v1.OfferService.OfferServiceClient _service;
+
     public OfferService(Contracts.v1.OfferService.OfferServiceClient service)
         => _service = service;
 }

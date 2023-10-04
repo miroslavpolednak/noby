@@ -48,6 +48,15 @@ public class TestController : ControllerBase
         return result.ToString();
     }
 
+    [HttpGet("t4")]
+    public async Task<string> T4()
+    {
+        var client = _context.HttpContext.RequestServices.GetRequiredService<IFileAntivirusService>();
+        var file = System.Text.Encoding.ASCII.GetBytes("Ahoj");
+        var result = await client.CheckFile(file);
+        return result.ToString();
+    }
+
     private readonly IHttpContextAccessor _context;
     private readonly IMediator _mediator;
 

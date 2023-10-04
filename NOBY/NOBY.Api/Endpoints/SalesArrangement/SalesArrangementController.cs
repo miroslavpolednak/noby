@@ -49,7 +49,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID</param>
     [HttpDelete("{salesArrangementId:int}")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -73,6 +73,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
     [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(GetLoanApplicationAssessment.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -90,6 +91,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="GetCreditWorthiness.GetCreditWorthinessResponse"/> Výsledek výpočtu</returns>
     [HttpGet("{salesArrangementId:int}/credit-worthiness")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(GetCreditWorthiness.GetCreditWorthinessResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -107,6 +109,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="List{T}"/> where T : <see cref="Dto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
     [HttpGet("list/{caseId:long}")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(List<Dto.SalesArrangementListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -140,6 +143,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("{salesArrangementId:int}")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(GetSalesArrangement.GetSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -172,7 +176,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
     [HttpPost("{salesArrangementId:int}/send")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Send)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -190,6 +194,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/comment")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -206,6 +211,7 @@ public class SalesArrangementController : ControllerBase
     [HttpPut("{salesArrangementId:int}/comment")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
