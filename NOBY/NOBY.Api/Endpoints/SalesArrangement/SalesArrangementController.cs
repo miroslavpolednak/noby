@@ -49,7 +49,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID</param>
     [HttpDelete("{salesArrangementId:int}")]
-    [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access)]
+    [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -176,7 +176,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
     [HttpPost("{salesArrangementId:int}/send")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Send)]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Send, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
