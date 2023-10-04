@@ -1,7 +1,9 @@
 import uuid
 from time import sleep
 from urllib.parse import urlencode, quote
-
+"""
+jak provolat s upravou additional argument, ze složky: notification_service> pytest .\tests\sms.py --ns-url fat_url --db-url fat_db
+"""
 import pyodbc
 import urllib3
 
