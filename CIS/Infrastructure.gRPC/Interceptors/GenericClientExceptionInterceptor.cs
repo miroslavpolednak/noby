@@ -68,9 +68,5 @@ public sealed class GenericClientExceptionInterceptor
             _logger.ClientUncoughtRpcException(methodFullName, ex);
             throw;
         }
-        catch (Exception ex)
-        {
-            throw;
-        }
     }
 }

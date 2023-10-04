@@ -16,15 +16,15 @@ public static class DapperExtensions
         => await connectionProvider.ExecuteDapperQueryAsync<List<dynamic>>(async c => (await c.QueryAsync(sqlQuery, param)).AsList(), cancellationToken);
 
     public static async Task<T?> ExecuteDapperRawSqlFirstOrDefaultAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery, CancellationToken cancellationToken = default)
-        => await connectionProvider.ExecuteDapperQueryAsync<T>(async c => await c.QueryFirstOrDefaultAsync<T>(sqlQuery), cancellationToken);
+        => await connectionProvider.ExecuteDapperQueryAsync<T?>(async c => await c.QueryFirstOrDefaultAsync<T>(sqlQuery), cancellationToken);
     
     public static async Task<T?> ExecuteDapperRawSqlFirstOrDefaultAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default)
-        => await connectionProvider.ExecuteDapperQueryAsync<T>(async c => await c.QueryFirstOrDefaultAsync<T>(sqlQuery, param), cancellationToken);
+        => await connectionProvider.ExecuteDapperQueryAsync<T?>(async c => await c.QueryFirstOrDefaultAsync<T>(sqlQuery, param), cancellationToken);
 
-    public static async Task<T> ExecuteDapperFirstOrDefaultAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default)
-        => await connectionProvider.ExecuteDapperQueryAsync<T>(async c => await c.QueryFirstOrDefaultAsync<T>(sqlQuery, param), cancellationToken);
+    public static async Task<T?> ExecuteDapperFirstOrDefaultAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default)
+        => await connectionProvider.ExecuteDapperQueryAsync<T?>(async c => await c.QueryFirstOrDefaultAsync<T>(sqlQuery, param), cancellationToken);
 
-    public static async Task<T> ExecuteDapperScalarAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery,
+    public static async Task<T?> ExecuteDapperScalarAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery,
         object param, CancellationToken cancellationToken = default)
     {
         await using var connection = connectionProvider.Create();
