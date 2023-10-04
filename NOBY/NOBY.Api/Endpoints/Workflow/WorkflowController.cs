@@ -108,7 +108,6 @@ public class WorkflowController : ControllerBase
     /// <returns></returns>
     [HttpGet("{caseId:long}/tasks/{taskId:long}")]
     [Produces("application/json")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(typeof(GetTaskDetail.GetTaskDetailResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
