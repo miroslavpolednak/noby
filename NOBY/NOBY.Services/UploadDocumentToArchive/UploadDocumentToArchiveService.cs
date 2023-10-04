@@ -23,7 +23,8 @@ internal sealed class UploadDocumentToArchiveService
         {
             var documentId = await _documentArchiveService.GenerateDocumentId(new(), cancellationToken);
             var file = await _tempFileManager.GetContent(attachment.TempFileId, cancellationToken);
-            
+            var fileMetadata = await _tempFileManager.GetMetadata(attachment.TempFileId, cancellationToken);
+
             await _documentArchiveService.UploadDocument(new()
             {
                 BinaryData = ByteString.CopyFrom(file),
@@ -36,7 +37,7 @@ internal sealed class UploadDocumentToArchiveService
                     AuthorUserLogin = _documentHelper.GetAuthorUserLoginForDocumentUpload(user),
                     Description = attachment.Description ?? string.Empty,
                     EaCodeMainId = attachment.EaCodeMainId,
-                    Filename = attachment.FileName,
+                    Filename = fileMetadata.FileName,
                     FormId = attachment.FormId ?? string.Empty
                 },
                 NotifyStarBuild = false

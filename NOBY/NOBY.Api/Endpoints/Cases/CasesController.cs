@@ -18,7 +18,7 @@ public class CasesController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B13A9B30-5896-4319-A96E-0982FE5A9045"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/cancel")]
-    [NobyAuthorize(UserPermissions.CASE_Cancel)]
+    [NobyAuthorize(UserPermissions.CASE_Cancel, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
@@ -58,7 +58,7 @@ public class CasesController : ControllerBase
     /// Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
     /// </remarks>
     [HttpPost("{caseId:long}/sales-arrangement")]
-    [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access)]
+    [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
