@@ -15,14 +15,14 @@ public sealed class CreateRiskBusinessCaseService
         if (!mpId.HasValue || !kbId.HasValue)
         {
             // nema modre ID, nezajima me
-            throw new CisValidationException(400001, $"CreateProductHandler for CaseId #{caseId} not proceeding / missing MP ID");
+            throw new CisValidationException(400001, $"CreateRiskBusinessCaseService for CaseId #{caseId} not proceeding / missing MP ID");
         }
 
         //SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
         if (!saInstance.OfferId.HasValue)
         {
-            throw new CisValidationException(400002, "SA does not have Offer bound to it");
+            throw new CisValidationException(400002, "CreateRiskBusinessCaseService: SA does not have Offer bound to it");
         }
 
         // case
@@ -35,7 +35,7 @@ public sealed class CreateRiskBusinessCaseService
         var households = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
         if (!households.Any())
         {
-            throw new CisValidationException(400003, "CreateRiskBusinessCase: household does not exist");
+            throw new CisValidationException(400003, "CreateRiskBusinessCaseService: household does not exist");
         }
 
         // ziskat segment

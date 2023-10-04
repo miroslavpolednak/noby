@@ -18,9 +18,9 @@ internal sealed class CreateRiskBusinessCaseHandler
             {
                 await _createRiskBusiness.Create(notification.CaseId, notification.SalesArrangementId, notification.CustomerOnSAId, notification.CustomerIdentifiers, cancellationToken);
             }
-            catch (BaseCisException ex)
+            catch (CisValidationException ex)
             {
-                _logger.LogInformation($"CreateRBC failed: {ex.ExceptionCode}; {ex.Message}");
+                _logger.LogInformation($"CreateRBC failed: {ex.FirstExceptionCode}; {ex.Message}");
             }
         }
         else // RBCID je jiz zalozene, ukonci flow

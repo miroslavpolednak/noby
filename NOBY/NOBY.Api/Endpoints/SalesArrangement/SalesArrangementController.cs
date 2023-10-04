@@ -26,9 +26,9 @@ public class SalesArrangementController : ControllerBase
     /// Validace dat SalesArrangementu - checkform.
     /// </summary>
     /// <remarks>
-    /// Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br />
+    /// Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br /><br />
     /// Data z doménové služby jsou roztříděné do kategorií a seřazeny abecedně v rámci kategorie podle parametru 'parameter'<br /><br />
-    /// <i>DS:</i> SalesArrangementService/validateSalesArrangement
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91FE5011-5C25-486e-B425-002C76448D66"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/validate")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
@@ -44,8 +44,8 @@ public class SalesArrangementController : ControllerBase
     /// Smazaní SalesArrangement-u
     /// </summary>
     /// <remarks>
-    /// Smazání pouze servisních žádostí (validace na servisní žádosti je v doménových službách).<br /><br />
-    /// <i>DS:</i>SalesArrangementService/DeleteSalesArrangement
+    ///  Smazání pouze servisních žádostí (validace na servisní žádosti je v doménových službách).<br /><br />
+    ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=513586F4-297B-4e72-BF55-2207943157C6"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID</param>
     [HttpDelete("{salesArrangementId:int}")]
@@ -84,8 +84,7 @@ public class SalesArrangementController : ControllerBase
     /// Výpočet rozšírené bonity
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> HouseholdService<br/>
-    /// <i>DS:</i> CustomerOnSaService
+    ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EBB933C8-328F-497d-A434-9D2D3C565CB0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales arrangement</param>
     /// <returns><see cref="GetCreditWorthiness.GetCreditWorthinessResponse"/> Výsledek výpočtu</returns>
@@ -120,14 +119,13 @@ public class SalesArrangementController : ControllerBase
     /// Seznam klientů navázaných na Sales Arrangement.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/GetCustomerList<br/>
-    /// <i>DS:</i> CustomerService/GetCustomerDetail
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=439685F4-2313-4dfe-A374-8EE45F1C8E86"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     /// <returns><see cref="List{T}"/> where T : <see cref="Dto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
     [HttpGet("{salesArrangementId:int}/customers")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
     [ProducesResponseType(typeof(List<Dto.CustomerListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<Dto.CustomerListItem>> GetCustomersOnSa([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
@@ -137,8 +135,8 @@ public class SalesArrangementController : ControllerBase
     /// Detail Sales Arrangement-u.
     /// </summary>
     /// <remarks>
-    /// <i>DS:SalesArrangementService/GetDetail</i><br />
-    /// Obsahuje kompilaci údajů z SA a navázené Offer. Pro každý typ produktu se vrací jiná struktura Data objektu.
+    ///  Obsahuje kompilaci údajů z SA a navázené Offer. Pro každý typ produktu se vrací jiná struktura Data objektu.<br /><br />
+    ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B35C47A9-4467-4949-9B03-0724D6D73F6F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("{salesArrangementId:int}")]
@@ -200,7 +198,7 @@ public class SalesArrangementController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.Comment> GetComment([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetComment.GetCommentRequest(salesArrangementId), cancellationToken);
-    
+
     /// <summary>
     /// Aktualizace komentáře na SalesArrangementu.
     /// </summary>
@@ -217,7 +215,7 @@ public class SalesArrangementController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task UpdateComment([FromRoute] int salesArrangementId, [FromBody] Dto.Comment? comment)
         => await _mediator.Send(new UpdateComment.UpdateCommentRequest(salesArrangementId, comment ?? throw new NobyValidationException("Payload is empty")));
-    
+
     private readonly IMediator _mediator;
-    public SalesArrangementController(IMediator mediator) =>  _mediator = mediator;
+    public SalesArrangementController(IMediator mediator) => _mediator = mediator;
 }
