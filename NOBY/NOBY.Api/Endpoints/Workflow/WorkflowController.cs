@@ -35,7 +35,7 @@ public class WorkflowController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/{taskId:int}/cancel")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.WFL_TASK_CreateAndCancel, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -56,6 +56,7 @@ public class WorkflowController : ControllerBase
     [HttpPost("{caseId:long}/tasks/{taskId:long}/signing/start")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage)]
     [ProducesResponseType(typeof(StartTaskSigning.StartTaskSigningResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<StartTaskSigning.StartTaskSigningResponse> StartTaskSigning([FromRoute] long caseId, [FromRoute] long taskId)
@@ -73,6 +74,7 @@ public class WorkflowController : ControllerBase
     [HttpPost("{caseId:long}/tasks")]
     [Consumes("application/json")]
     [Produces("text/plain")]
+    [NobyAuthorize(UserPermissions.WFL_TASK_CreateAndCancel)]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -140,6 +142,7 @@ public class WorkflowController : ControllerBase
     /// </remarks>
     [HttpGet("{caseId:long}/tasks/current-price-exception")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

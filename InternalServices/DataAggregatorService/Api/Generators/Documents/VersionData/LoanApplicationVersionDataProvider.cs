@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Exceptions;
+using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -11,17 +12,20 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.Ve
 internal sealed class LoanApplicationVersionDataProvider : DocumentVersionDataProviderBase
 {
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICaseServiceClient _caseService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly IUserServiceClient _userService;
 
     public LoanApplicationVersionDataProvider(IDocumentVersionDataProvider documentVersionDataProvider,
                                               ICodebookServiceClient codebookService,
                                               ISalesArrangementServiceClient salesArrangementService,
+                                              ICaseServiceClient caseService,
                                               IHouseholdServiceClient householdService,
                                               IUserServiceClient userService)
         : base(documentVersionDataProvider, codebookService)
     {
         _salesArrangementService = salesArrangementService;
+        _caseService = caseService;
         _householdService = householdService;
         _userService = userService;
     }
@@ -49,12 +53,13 @@ internal sealed class LoanApplicationVersionDataProvider : DocumentVersionDataPr
 
     private async Task<bool> IsCreatorBroker(int salesArrangementId, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
+        var saValidationResult = await _salesArrangementService.ValidateSalesArrangementId(salesArrangementId, true, cancellationToken);
+        var caseValidationResult = await _caseService.ValidateCaseId(saValidationResult.CaseId!.Value, true, cancellationToken); 
 
         User? user = null;
 
-        if (salesArrangement.Created.UserId.HasValue)
-            user = await _userService.GetUser(salesArrangement.Created.UserId.Value, cancellationToken);
+        if (caseValidationResult.OwnerUserId.HasValue)
+            user = await _userService.GetUser(caseValidationResult.OwnerUserId.Value, cancellationToken);
 
         return user?.UserIdentifiers.Any(i => i.IdentityScheme == UserIdentity.Types.UserIdentitySchemes.BrokerId) ?? false;
     }

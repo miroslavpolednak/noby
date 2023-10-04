@@ -128,12 +128,13 @@ public class DocumentController : ControllerBase
     /// Vrací se steam binárních dat.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=258EEA87-9394-42ec-B51F-C13F091686E0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [SwaggerOperation(Tags = new[] { "Dokument" }, OperationId = "GetDocumentPreview")]
+    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview")]
-    public Task<IActionResult> GenerateDocumentPreview(int salesArrangementId, int documentTypeId, [FromQuery] int? customerOnSaId, CancellationToken cancellationToken)
+    public Task<IActionResult> GetDocumentPreview(int salesArrangementId, int documentTypeId, [FromQuery] int? customerOnSaId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId, customerOnSaId);
 

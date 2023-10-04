@@ -15,9 +15,9 @@ public class CustomerController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identity")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.CLIENT_Modify)]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(CreateCustomer.CreateCustomerResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -29,11 +29,11 @@ public class CustomerController : ControllerBase
     /// Vyhledávání klientů
     /// </summary>
     /// <remarks>
-    /// Endpoint umožňuje:
-    /// - hledat podle zadaných kriterií
-    /// - nastavit stránkovaní
-    /// - nastavit řazení [lastName]
-    /// <i>DS:</i> CustomerService/SearchCustomers
+    /// Endpoint umožňuje:<br />
+    /// - hledat podle zadaných kriterií<br />
+    /// - nastavit stránkovaní<br />
+    /// - nastavit řazení [lastName]<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F2D0EA12-6E96-4eea-92A6-D179E99B0E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
     [HttpPost("customer/search")]
@@ -56,6 +56,7 @@ public class CustomerController : ControllerBase
     [HttpPost("customer/get")]
     [Consumes("application/json")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new [] { "Klient" })]
     [ProducesResponseType(typeof(GetCustomerDetail.GetCustomerDetailResponse), StatusCodes.Status200OK)]
     public async Task<GetCustomerDetail.GetCustomerDetailResponse> GetCustomerDetail([FromBody] SharedTypes.Types.CustomerIdentity request)
@@ -72,6 +73,7 @@ public class CustomerController : ControllerBase
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identify-by-identity")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.CLIENT_Modify)]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -82,8 +84,9 @@ public class CustomerController : ControllerBase
     /// Identifikace klienta
     /// </summary>
     /// <remarks>
-    /// Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null / HTTP 204 při nenalezení klienta v KB customer managementu.<br /><br />
-    /// V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
+    /// Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null / HTTP 204 při nenalezení klienta v KB customer managementu.<br /><br /><br />
+    /// V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=E62ABB4D-8480-4b3e-BD13-1A1B83F5C740"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer/identify")]
     [NobyAuthorize(UserPermissions.CLIENT_IdentifyPerson)]
@@ -134,6 +137,7 @@ public class CustomerController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("customer-on-sa/{customerOnSAId:int}")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(typeof(GetCustomerDetailWithChanges.GetCustomerDetailWithChangesResponse), StatusCodes.Status200OK)]
@@ -150,8 +154,8 @@ public class CustomerController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BB5766C4-CCC7-487e-B482-1B1C86D999F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("customer-on-sa/{customerOnSAId:int}")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.CLIENT_Modify)]
     [SwaggerOperation(Tags = new[] { "Klient" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

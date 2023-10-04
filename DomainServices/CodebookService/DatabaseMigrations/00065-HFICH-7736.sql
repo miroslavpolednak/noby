@@ -1,0 +1,2 @@
+INSERT INTO [dbo].[SqlQuery] (SqlQueryId, SqlQueryText, DatabaseProvider) VALUES ('SigningMethods','SELECT CAST(KOD as int) ''Id'', MAX(CODE) ''Code'', MAX(KOD_E_PODPISY) ''IdESign'', MAX(TEXT) ''Name'', CAST(CASE WHEN MAX(ISNULL(PLATNOST_DO, ''2099-01-01'')) > GETDATE() THEN 1 ELSE 0 END as bit) ''IsValid'' FROM [SBR].HTEDM_CIS_PODPISOVE_METODY GROUP BY KOD 
+',2);

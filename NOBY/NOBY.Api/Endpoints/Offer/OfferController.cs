@@ -21,6 +21,7 @@ public class OfferController : ControllerBase
     [HttpPost("mortgage")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,6 +60,7 @@ public class OfferController : ControllerBase
     [HttpPost("mortgage/create-case")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.DASHBOARD_CreateNewCase)]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
     [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -74,6 +76,7 @@ public class OfferController : ControllerBase
     /// </remarks>
     [HttpPut("mortgage/sales-arrangement/{salesArrangementId:int}/link")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Modelace" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task LinkModelation([FromRoute] int salesArrangementId, [FromBody] LinkModelation.LinkModelationRequest request)
@@ -83,8 +86,8 @@ public class OfferController : ControllerBase
     /// Plný splátkový kalendář dle ID simulace.
     /// </summary>
     /// <remarks>
-    /// Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId. Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy. Chyba simulační služby se propaguje.<br/>
-    /// <i>DS:</i> OfferService/GetMortgageOfferFPSchedule
+    /// Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId.Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy.Chyba simulační služby se propaguje.<br /><br />
+    /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=994B63B5-C1C0-4433-AB92-9FCC23760F52" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width= "20" height= "20" /> Diagram v EA</a>
     /// </remarks>
     /// <returns>Plný splátkový kalendář simulace.</returns>
     [HttpGet("mortgage/{offerId:int}/full-payment-schedule")]
@@ -95,14 +98,16 @@ public class OfferController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<Dto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);
-    
+
     /// <summary>
     /// Vyhledání developerských projektů a developerů bez projektu.
     /// </summary>
     /// <remarks>
-    /// Vyhledá developerské projekty na základě vyhledávacího textu.<br />
-    /// Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
-    /// Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
+    /// Vyhledá developerské projekty na základě vyhledávacího textu.<br /><br />
+    /// Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku 
+    /// <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br /><br />
+    /// Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D43515EA-4014-47a1-AD45-0E80EE43AEB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("mortgage/developer-project/search")]
     [Produces("application/json")]

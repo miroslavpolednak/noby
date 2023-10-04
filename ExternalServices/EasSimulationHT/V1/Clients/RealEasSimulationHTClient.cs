@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.Core.Extensions;
-using CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+using CIS.Infrastructure.ExternalServicesHelpers.Soap;
 using CIS.Infrastructure.Logging;
 using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
 using System.ServiceModel.Channels;

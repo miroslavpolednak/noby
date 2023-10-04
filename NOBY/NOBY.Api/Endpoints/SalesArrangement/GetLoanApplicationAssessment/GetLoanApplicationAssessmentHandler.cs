@@ -30,9 +30,11 @@ internal sealed class GetLoanApplicationAssessmentHandler
     private readonly IDataAggregatorServiceClient _dataAggregatorService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IUserServiceClient _userService;
+    private readonly NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService _createRiskBusinessCase;
 
 
     public GetLoanApplicationAssessmentHandler(
+        NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService createRiskBusinessCase,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
         ILoanApplicationServiceClient loanApplicationService,
@@ -42,6 +44,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         ICurrentUserAccessor currentUserAccessor,
         IUserServiceClient userService)
     {
+        _createRiskBusinessCase = createRiskBusinessCase;
         _customerOnSAService = customerOnSAService;
         _dataAggregatorService = dataAggregatorService;
         _currentUserAccessor = currentUserAccessor;
@@ -63,13 +66,18 @@ internal sealed class GetLoanApplicationAssessmentHandler
         if (!request.NewAssessmentRequired && string.IsNullOrWhiteSpace(saInstance.LoanApplicationAssessmentId))
             throw new NobyValidationException($"LoanApplicationAssessmentId is missing for SA #{saInstance.SalesArrangementId}");
 
-        var offer = await _offerService.GetMortgageOfferDetail(saInstance.OfferId!.Value, cancellationToken);
+        var offer = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
 
         // create new assesment, if required
         if (request.NewAssessmentRequired)
         {
             if (string.IsNullOrWhiteSpace(saInstance.RiskBusinessCaseId))
-                throw new NobyValidationException("SalesArrangement.RiskBusinessCaseId is not defined.");
+            {
+                var customers = await _customerOnSAService.GetCustomerList(saInstance.SalesArrangementId, cancellationToken);
+                var debtor = customers.First(t => t.CustomerRoleId == (int)CustomerRoles.Debtor);
+
+                saInstance.RiskBusinessCaseId = await _createRiskBusinessCase.Create(saInstance.CaseId, saInstance.SalesArrangementId, debtor.CustomerOnSAId, debtor.CustomerIdentifiers, cancellationToken);
+            }
 
             await CreateNewAssessment(saInstance, offer, cancellationToken);
 
@@ -118,7 +126,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         return response;
     }
 
-    private async Task CreateNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetMortgageOfferDetailResponse offer, CancellationToken cancellationToken)
+    private async Task CreateNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetMortgageOfferResponse offer, CancellationToken cancellationToken)
     {
         var dataRequest = new GetRiskLoanApplicationDataRequest
         {

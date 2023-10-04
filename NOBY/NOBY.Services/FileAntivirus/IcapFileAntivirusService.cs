@@ -50,6 +50,29 @@ internal sealed class IcapFileAntivirusService
         }
     }
 
+    public async Task<IFileAntivirusService.CheckFileResults> CheckFile(byte[] file)
+    {
+        ICAP icap = new ICAP(_ipAddress, _port, "avscan");
+        using (var ms = new MemoryStream(file))
+        {
+            ms.Seek(0, SeekOrigin.Begin);
+
+            try
+            {
+                var scanResult = icap.ScanFile(ms);
+                return scanResult ? IFileAntivirusService.CheckFileResults.Passed : IFileAntivirusService.CheckFileResults.Failed;
+            }
+            catch (ICAP.ICAPException ex)
+            {
+                return IFileAntivirusService.CheckFileResults.Timeouted;
+            }
+            catch (Exception ex)
+            {
+                return IFileAntivirusService.CheckFileResults.Unknown;
+            }
+        }
+    }
+
     public class ICAP : IDisposable
     {
         private String serverIP;

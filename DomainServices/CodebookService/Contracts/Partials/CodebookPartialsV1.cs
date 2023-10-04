@@ -72,3 +72,4 @@ public partial class WorkflowTaskStatesResponse : IItemsResponse<WorkflowTaskSta
 public partial class WorkflowTaskStatesNobyResponse : IItemsResponse<WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem> { }
 public partial class RealEstateSubtypesResponse : IItemsResponse<RealEstateSubtypesResponse.Types.RealEstateSubtypesResponseItem> { }
 public partial class RealEstateTypesResponse : IItemsResponse<RealEstateTypesResponse.Types.RealEstateTypesResponseItem> { }
+public partial class SigningMethodsResponse : IItemsResponse<SigningMethodsResponse.Types.SigningMethodsItem> { }

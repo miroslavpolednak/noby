@@ -37,7 +37,7 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
     public async Task<Empty> Handle(StopSigningRequest request, CancellationToken cancellationToken)
     {
         var documentOnSa = await _dbContext.DocumentOnSa.FindAsync(request.DocumentOnSAId, cancellationToken)
-            ?? throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
 
         if (documentOnSa.SignatureTypeId == SignatureTypes.Electronic.ToByte() && request.NotifyESignatures) // 3
             await _eSignaturesClient.DeleteDocument(documentOnSa.ExternalId!, cancellationToken);

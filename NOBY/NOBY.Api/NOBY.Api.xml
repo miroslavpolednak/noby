@@ -175,8 +175,7 @@
             Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.
             </summary>
             <remarks>
-            <i>DS:</i> CseService/GetCaseCounts<br/>
-            https://wiki.kb.cz/confluence/display/HT/getCaseCounts
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2FDB0893-BE64-4f37-A196-DDECBB910CB3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Kolekce ID stavu s počtem Cases.</returns>
         </member>
@@ -185,13 +184,12 @@
             Seznam Cases pro přihlášeného uživatele.
             </summary>
             <remarks>
-            Endpoint umožnuje:
-            - vyhledat Case podle řetězce
-            - zobrazit pouze Cases v požadovaném stavu
-            - nastavit stránkovaní
-            - nastavit řazení [povolené: stateUpdated, customerName]
-            <i>DS:</i> CaseService/SearchCases<br/>
-            https://wiki.kb.cz/confluence/display/HT/searchCases
+            Endpoint umožnuje:<br />
+            - vyhledat Case podle řetězce<br />
+            - zobrazit pouze Cases v požadovaném stavu<br />
+            - nastavit stránkovaní<br />
+            - nastavit řazení [povolené: stateUpdated, customerName]<br /><br />
+            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=62A33551-BC77-401d-80DB-E8DFA5081719" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width= "20" height= "20" /> Diagram v EA</a>
             </remarks>
             <param name="request">Nastavení možnosti filtrovaní, strankovaní a řazení.</param>
             <returns>Seznam Cases + informace o použitém stránkovaní/řazení.</returns>
@@ -971,8 +969,8 @@
             </summary>
             <remarks>
             <strong>CustomerIncome.GetDetail</strong><br/>
-            Použít pro zobrazení detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domacnosti.<br/>
-            <i>DS:</i> SalesArrangementService/GetIncome
+            Ověří, že příjem patří customerovi a příjem smaže.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <param name="incomeId">ID příjmu</param>
@@ -985,9 +983,8 @@
             Update detailu příjmu customera
             </summary>
             <remarks>
-            <strong>CustomerIncome.Update</strong><br/>
-            Použít pro update detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domácnosti.<br/>
-            <i>DS:</i> SalesArrangementService/UpdateIncome
+            Ověří, že příjem patří customerovi a příjem smaže.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a> 
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <param name="incomeId">ID příjmu</param>
@@ -1045,7 +1042,7 @@
             Smazání závazku customera
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/DeleteObligation
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3325947-AFC4-444a-989E-1531C4AFFEDE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <param name="obligationId">ID závazku ke smazani</param>
@@ -1055,7 +1052,7 @@
             Detail závazku customera
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/GetObligation
+             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B816782F-3F9B-4709-8D90-CAD6DB020F70"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <param name="obligationId">ID závazku</param>
@@ -1068,7 +1065,7 @@
             Update detailu závazku customera
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/UpdateObligation
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9AA4E44C-58B8-44c5-897A-64857ADD69DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <param name="obligationId">ID závazku</param>
@@ -1078,7 +1075,7 @@
             Vytvoření závazku customera
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/CreateObligation
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=15CBD05C-8B14-43a9-918F-5BAB59148D4D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="customerOnSAId">ID customera</param>
         </member>
@@ -1278,11 +1275,11 @@
             Vyhledávání klientů
             </summary>
             <remarks>
-            Endpoint umožňuje:
-            - hledat podle zadaných kriterií
-            - nastavit stránkovaní
-            - nastavit řazení [lastName]
-            <i>DS:</i> CustomerService/SearchCustomers
+            Endpoint umožňuje:<br />
+            - hledat podle zadaných kriterií<br />
+            - nastavit stránkovaní<br />
+            - nastavit řazení [lastName]<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F2D0EA12-6E96-4eea-92A6-D179E99B0E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
         </member>
@@ -1311,8 +1308,9 @@
             Identifikace klienta
             </summary>
             <remarks>
-            Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null / HTTP 204 při nenalezení klienta v KB customer managementu.<br /><br />
-            V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
+            Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null / HTTP 204 při nenalezení klienta v KB customer managementu.<br /><br /><br />
+            V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=E62ABB4D-8480-4b3e-BD13-1A1B83F5C740"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.ValidateContact(NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactRequest)">
@@ -1680,7 +1678,7 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocument(NOBY.Dto.Documents.FileContentDispositions,NOBY.Api.Endpoints.DocumentArchive.GetDocument.Source,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
-            Načtení dokumentu z archivu nebo ePodpisů
+            Načtení dokumentu z archivu nebo starbuildu
             </summary>
             <remarks>
             Načtení contentu dokumentu. Vrací se stream binárních dat.<br />
@@ -1710,9 +1708,9 @@
             Nahrání dokumentu
             </summary>
             <remarks>
-            Uložení binárních dat dokumentu do dočasného úložiště.
-            
-            <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=618F9E36-618D-4dc5-A3C6-38626871504C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Uložení binárních dat dokumentu do dočasného úložiště.<br /><br />
+            Zasílá se i jméno souboru viz. filename v multipart/form-data<a href="https://www.rfc-editor.org/rfc/rfc7578"> rfc7578</a><br /><br />
+            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=618F9E36-618D-4dc5-A3C6-38626871504C"><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width= "20" height= "20" /> Diagram v EA</a>
             </remarks> 
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.SaveDocumentsToArchive(System.Int64,NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive.SaveDocumentsToArchiveRequest)">
@@ -1851,8 +1849,8 @@
             Odeslání náhledu klientovi
             </summary>
             <remarks>
-            Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=11&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.StopSigning(System.Int32,System.Int32)">
@@ -2024,7 +2022,7 @@
             </remarks>
             <param name="customerOnSAId">Customer on SA ID</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GenerateDocumentPreview(System.Int32,System.Int32,System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetDocumentPreview(System.Int32,System.Int32,System.Nullable{System.Int32},System.Threading.CancellationToken)">
             <summary>
             Vygenerování náhledu dokumentu
             </summary>
@@ -2132,8 +2130,8 @@
             Seznam domácností
             </summary>
             <remarks>
-            Vraci zakladni seznam domacností pro daný Sales Arrangement bez detailu.<br/>
-            <i>DS:</i> SalesArrangementService/GetHouseholdList
+            Vraci zakladni seznam domacností pro daný Sales Arrangement bez detailu.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B6359602-67D9-4d06-BF61-8FC85F9E082C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement-u</param>
             <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.Household.Dto.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
@@ -2143,8 +2141,8 @@
             Detail domacnosti
             </summary>
             <remarks>
-            Vrací detail dané domácnosti včetně detailu navázaných CustomerOnSA. Příznak druh/družka (areCustomersPartners) je počítán dynamicky při každém provolání dle logiky ve společných algoritmech.
-            <i>DS:</i> SalesArrangementService/GetHousehold
+            Vrací detail dané domácnosti včetně detailu navázaných CustomerOnSA. Příznak druh/družka (areCustomersPartners) je počítán dynamicky při každém provolání dle logiky ve společných algoritmech.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A2A7CE0E-0E93-459e-B883-3947C26A3DB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="householdId">ID domacnosti</param>
             <returns><see cref="T:NOBY.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse"/> Detail domacnosti</returns>
@@ -2174,7 +2172,7 @@
             Update existující domácnosti
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/UpdateHousehold
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C56C0725-E4F2-4b3d-9729-09D845336952"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="householdId">ID domácnosti</param>
         </member>
@@ -2468,8 +2466,8 @@
             Plný splátkový kalendář dle ID simulace.
             </summary>
             <remarks>
-            Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId. Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy. Chyba simulační služby se propaguje.<br/>
-            <i>DS:</i> OfferService/GetMortgageOfferFPSchedule
+            Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId.Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy.Chyba simulační služby se propaguje.<br /><br />
+            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=994B63B5-C1C0-4433-AB92-9FCC23760F52" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width= "20" height= "20" /> Diagram v EA</a>
             </remarks>
             <returns>Plný splátkový kalendář simulace.</returns>
         </member>
@@ -2478,9 +2476,11 @@
             Vyhledání developerských projektů a developerů bez projektu.
             </summary>
             <remarks>
-            Vyhledá developerské projekty na základě vyhledávacího textu.<br />
-            Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br />
-            Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
+            Vyhledá developerské projekty na základě vyhledávacího textu.<br /><br />
+            Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku 
+            <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br /><br />
+            Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D43515EA-4014-47a1-AD45-0E80EE43AEB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.WorthinessResult">
@@ -3753,9 +3753,9 @@
             Validace dat SalesArrangementu - checkform.
             </summary>
             <remarks>
-            Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br />
+            Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br /><br />
             Data z doménové služby jsou roztříděné do kategorií a seřazeny abecedně v rámci kategorie podle parametru 'parameter'<br /><br />
-            <i>DS:</i> SalesArrangementService/validateSalesArrangement
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91FE5011-5C25-486e-B425-002C76448D66"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.DeleteSalesArrangement(System.Int32)">
@@ -3763,8 +3763,8 @@
             Smazaní SalesArrangement-u
             </summary>
             <remarks>
-            Smazání pouze servisních žádostí (validace na servisní žádosti je v doménových službách).<br /><br />
-            <i>DS:</i>SalesArrangementService/DeleteSalesArrangement
+             Smazání pouze servisních žádostí (validace na servisní žádosti je v doménových službách).<br /><br />
+             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=513586F4-297B-4e72-BF55-2207943157C6"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID</param>
         </member>
@@ -3788,8 +3788,7 @@
             Výpočet rozšírené bonity
             </summary>
             <remarks>
-            <i>DS:</i> HouseholdService<br/>
-            <i>DS:</i> CustomerOnSaService
+             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EBB933C8-328F-497d-A434-9D2D3C565CB0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">Sales arrangement</param>
             <returns><see cref="T:NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness.GetCreditWorthinessResponse"/> Výsledek výpočtu</returns>
@@ -3810,8 +3809,7 @@
             Seznam klientů navázaných na Sales Arrangement.
             </summary>
             <remarks>
-            <i>DS:</i> SalesArrangementService/GetCustomerList<br/>
-            <i>DS:</i> CustomerService/GetCustomerDetail
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=439685F4-2313-4dfe-A374-8EE45F1C8E86"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
             <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.SalesArrangement.Dto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
@@ -3821,8 +3819,8 @@
             Detail Sales Arrangement-u.
             </summary>
             <remarks>
-            <i>DS:SalesArrangementService/GetDetail</i><br />
-            Obsahuje kompilaci údajů z SA a navázené Offer. Pro každý typ produktu se vrací jiná struktura Data objektu.
+             Obsahuje kompilaci údajů z SA a navázené Offer. Pro každý typ produktu se vrací jiná struktura Data objektu.<br /><br />
+             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B35C47A9-4467-4949-9B03-0724D6D73F6F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
         </member>

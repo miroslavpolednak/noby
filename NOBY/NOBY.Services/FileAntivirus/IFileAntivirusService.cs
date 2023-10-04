@@ -6,6 +6,8 @@ public interface IFileAntivirusService
 {
     Task<CheckFileResults> CheckFile(IFormFile file);
 
+    Task<CheckFileResults> CheckFile(byte[] file);
+
     public enum CheckFileResults
     {
         Unknown,

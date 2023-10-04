@@ -1,8 +1,10 @@
 ﻿using System.Globalization;
+using System.Runtime.CompilerServices;
 using SharedTypes.Enums;
 using DomainServices.CodebookService.Clients;
 using CM = DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
 using DomainServices.CodebookService.Contracts.v1;
+using DomainServices.CustomerService.Api.Endpoints.FormatAddress;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -11,6 +13,7 @@ internal sealed class CustomerManagementDetailProvider
 {
     private readonly CM.ICustomerManagementClient _customerManagement;
     private readonly ICodebookServiceClient _codebook;
+    private readonly IRequestHandler<FormatAddressRequest, FormatAddressResponse> _formatAddressHandler;
 
     private List<CountriesResponse.Types.CountryItem> _countries = null!;
     private List<GendersResponse.Types.GenderItem> _genders = null!;
@@ -24,10 +27,14 @@ internal sealed class CustomerManagementDetailProvider
     private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
     private readonly ILogger<CustomerManagementDetailProvider> _logger;
 
-    public CustomerManagementDetailProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClient codebook, ILogger<CustomerManagementDetailProvider> logger)
+    public CustomerManagementDetailProvider(CM.ICustomerManagementClient customerManagement,
+                                            ICodebookServiceClient codebook,
+                                            IRequestHandler<FormatAddressRequest, FormatAddressResponse> formatAddressHandler,
+                                            ILogger<CustomerManagementDetailProvider> logger)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
+        _formatAddressHandler = formatAddressHandler;
         _logger = logger;
     }
 
@@ -37,22 +44,25 @@ internal sealed class CustomerManagementDetailProvider
 
         await InitializeCodebooks(cancellationToken);
 
-        return CreateDetailResponse(customer);
+        return await CreateDetailResponse(customer, cancellationToken);
     }
 
-    public async Task<IEnumerable<CustomerDetailResponse>> GetList(IEnumerable<long> customerIds, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<CustomerDetailResponse> GetList(IEnumerable<long> customerIds, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var customers = await _customerManagement.GetList(customerIds, cancellationToken);
 
         if (!customers.Any())
-            return Enumerable.Empty<CustomerDetailResponse>();
+            yield break;
 
         await InitializeCodebooks(cancellationToken);
 
-        return customers.Select(CreateDetailResponse);
+        foreach (var customer in customers)
+        {
+            yield return await CreateDetailResponse(customer, cancellationToken);
+        }
     }
 
-    private CustomerDetailResponse CreateDetailResponse(CM.Contracts.CustomerInfo customer)
+    private async Task<CustomerDetailResponse> CreateDetailResponse(CM.Contracts.CustomerInfo customer, CancellationToken cancellationToken)
     {
         var response = new CustomerDetailResponse
         {
@@ -62,9 +72,9 @@ internal sealed class CustomerManagementDetailProvider
             CustomerIdentification = CreateCustomerIdentification(customer.CustomerIdentification)
         };
 
-        AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.ComponentAddressPoint, customer.PrimaryAddress?.SingleLineAddressPoint, null);
-        AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddressPoint, customer.ContactAddress?.SingleLineAddressPoint, customer.ContactAddress?.Confirmed);
-        AddAddress(AddressTypes.Other, response.Addresses.Add, customer.TemporaryStay?.ComponentAddressPoint, customer.TemporaryStay?.SingleLineAddressPoint, null);
+        await AddAddress(AddressTypes.Permanent, response.Addresses.Add, customer.PrimaryAddress?.ComponentAddressPoint, null, cancellationToken);
+        await AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddressPoint, customer.ContactAddress?.Confirmed, cancellationToken);
+        await AddAddress(AddressTypes.Other, response.Addresses.Add, customer.TemporaryStay?.ComponentAddressPoint, null, cancellationToken);
 
         AddContacts(customer, response.Contacts.Add);
 
@@ -185,12 +195,12 @@ internal sealed class CustomerManagementDetailProvider
         };
     }
 
-    private void AddAddress(AddressTypes addressType, Action<GrpcAddress> onAddAddress, CM.Contracts.ComponentAddressPoint? componentAddress, CM.Contracts.SingleLineAddressPoint? singleLineAddress, bool? isConfirmed)
+    private async Task AddAddress(AddressTypes addressType, Action<GrpcAddress> onAddAddress, CM.Contracts.ComponentAddressPoint? componentAddress, bool? isConfirmed, CancellationToken cancellationToken)
     {
         if (componentAddress is null)
             return;
 
-        onAddAddress(new GrpcAddress
+        var address = new GrpcAddress
         {
             AddressTypeId = (int)addressType,
             StreetNumber = componentAddress.StreetNumber ?? string.Empty,
@@ -206,9 +216,14 @@ internal sealed class CustomerManagementDetailProvider
             PragueDistrict = componentAddress.PragueDistrict ?? string.Empty,
             CountrySubdivision = componentAddress.CountrySubdivision ?? string.Empty,
             AddressPointId = componentAddress.AddressPointId ?? string.Empty,
-            SingleLineAddressPoint = singleLineAddress?.Address,
             IsAddressConfirmed = isConfirmed
-        });
+        };
+
+        var formattedAddressResponse = await _formatAddressHandler.Handle(new FormatAddressRequest { Address = address }, cancellationToken);
+
+        address.SingleLineAddressPoint = formattedAddressResponse.SingleLineAddress;
+
+        onAddAddress(address);
     }
 
     private static void AddContacts(CM.Contracts.CustomerInfo customer, Action<Contact> onAddContact)
