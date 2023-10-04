@@ -89,8 +89,7 @@ public class CasesController : ControllerBase
     /// Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> CseService/GetCaseCounts<br/>
-    /// https://wiki.kb.cz/confluence/display/HT/getCaseCounts
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2FDB0893-BE64-4f37-A196-DDECBB910CB3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Kolekce ID stavu s počtem Cases.</returns>
     [HttpGet("dashboard-filters")]
@@ -104,13 +103,12 @@ public class CasesController : ControllerBase
     /// Seznam Cases pro přihlášeného uživatele.
     /// </summary>
     /// <remarks>
-    /// Endpoint umožnuje:
-    /// - vyhledat Case podle řetězce
-    /// - zobrazit pouze Cases v požadovaném stavu
-    /// - nastavit stránkovaní
-    /// - nastavit řazení [povolené: stateUpdated, customerName]
-    /// <i>DS:</i> CaseService/SearchCases<br/>
-    /// https://wiki.kb.cz/confluence/display/HT/searchCases
+    /// Endpoint umožnuje:<br />
+    /// - vyhledat Case podle řetězce<br />
+    /// - zobrazit pouze Cases v požadovaném stavu<br />
+    /// - nastavit stránkovaní<br />
+    /// - nastavit řazení [povolené: stateUpdated, customerName]<br /><br />
+    /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=62A33551-BC77-401d-80DB-E8DFA5081719" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width= "20" height= "20" /> Diagram v EA</a>
     /// </remarks>
     /// <param name="request">Nastavení možnosti filtrovaní, strankovaní a řazení.</param>
     /// <returns>Seznam Cases + informace o použitém stránkovaní/řazení.</returns>
