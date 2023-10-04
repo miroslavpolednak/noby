@@ -29,11 +29,11 @@ public class CustomerController : ControllerBase
     /// Vyhledávání klientů
     /// </summary>
     /// <remarks>
-    /// Endpoint umožňuje:
-    /// - hledat podle zadaných kriterií
-    /// - nastavit stránkovaní
-    /// - nastavit řazení [lastName]
-    /// <i>DS:</i> CustomerService/SearchCustomers
+    /// Endpoint umožňuje:<br />
+    /// - hledat podle zadaných kriterií<br />
+    /// - nastavit stránkovaní<br />
+    /// - nastavit řazení [lastName]<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F2D0EA12-6E96-4eea-92A6-D179E99B0E2B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
     [HttpPost("customer/search")]
@@ -84,8 +84,9 @@ public class CustomerController : ControllerBase
     /// Identifikace klienta
     /// </summary>
     /// <remarks>
-    /// Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null / HTTP 204 při nenalezení klienta v KB customer managementu.<br /><br />
-    /// V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.
+    /// Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null / HTTP 204 při nenalezení klienta v KB customer managementu.<br /><br /><br />
+    /// V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=E62ABB4D-8480-4b3e-BD13-1A1B83F5C740"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer/identify")]
     [NobyAuthorize(UserPermissions.CLIENT_IdentifyPerson)]

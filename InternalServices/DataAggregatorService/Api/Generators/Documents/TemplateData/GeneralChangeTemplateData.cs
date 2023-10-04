@@ -52,14 +52,23 @@ internal class GeneralChangeTemplateData : AggregatedData
         }
     }
 
-    public int? ExtensionDrawingDate
+    public string? ExtensionDrawingDateText
     {
         get
         {
             if (GeneralChange.DrawingDateTo?.IsActive != true || (GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths ?? 0) == 0)
                 return default;
 
-            return Math.Abs(GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths!.Value);
+            var months = Math.Abs(GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths!.Value);
+
+            var monthsText = months switch
+            {
+                1 => "měsíc",
+                2 or 3 or 4 => "měsíce",
+                _ => "měsíců"
+            };
+
+            return $"o {months} {monthsText} od původní lhůty čerpání  {((DateTime)GeneralChange.DrawingDateTo.AgreedDrawingDateTo).ToString("d", CultureProvider.GetProvider())}";
         }
     }
 
@@ -76,5 +85,5 @@ internal class GeneralChangeTemplateData : AggregatedData
     private IEnumerable<string> GetRealEstatePurchaseTypes() =>
         GeneralChange.LoanRealEstate
                      .LoanRealEstates
-                     .Join(_codebookManager.PurchaseTypes, x => x.RealEstatePurchaseTypeId, y => y.Id, (_, y) => y.Name);
+                     .Join(_codebookManager.PurchaseTypes, x => x.RealEstatePurchaseTypeId, y => y.Id, (_, y) => y.Name.Trim());
 }
