@@ -2,7 +2,7 @@ UPDATE DocumentDataField SET TextAlign = 4 WHERE DocumentId = 9 AND AcroFieldNam
 
 INSERT INTO DataField VALUES (217, 1, 'SalesArrangement.GeneralChange.DueDate.ConnectionExtraordinaryPayment')
 
-INSERT INTO DocumentDynamicStringFormat VALUES (122, 8, '001', 'NovaDobaSplatnosti', '{0:Y} v souvislosti s mimořádnou splátkou')
+INSERT INTO DocumentDynamicStringFormat VALUES (122, 8, '001', 'NovaDobaSplatnosti', '{0:Y} v souvislosti s mimořádnou splátkou', 2)
 
 INSERT INTO DocumentDynamicStringFormatCondition VALUES (122, 'False', 217)
 
