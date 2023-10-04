@@ -17,6 +17,8 @@ internal class CustomerInfo
 
     public string FullName => CustomerHelper.FullName(_customer, _degreesBefore);
 
+    public string SignerName => CustomerHelper.FullName(_customer);
+
     public string Address => CustomerHelper.FullAddress(_customer, AddressTypes.Permanent);
 
     public string? BirthNumberText => string.IsNullOrWhiteSpace(_customer.NaturalPerson.BirthNumber) ? default : "Rodné číslo:";
