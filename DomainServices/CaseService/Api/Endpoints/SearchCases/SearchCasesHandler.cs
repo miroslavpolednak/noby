@@ -73,7 +73,7 @@ internal sealed class SearchCasesHandler
         // base query
         var query = _dbContext.Cases
             .AsNoTracking()
-            .Where(t => t.OwnerUserId == request.CaseOwnerUserId && !Helpers.DisallowedStates.Contains(t.State));
+            .Where(t => t.OwnerUserId == request.CaseOwnerUserId);
 
         // omezeni na state
         if (request.State?.Any() ?? false)
