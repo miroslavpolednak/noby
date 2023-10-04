@@ -21,7 +21,7 @@ public class DocumentArchiveController : ControllerBase
     }
 
     /// <summary>
-    /// Načtení dokumentu z archivu nebo ePodpisů
+    /// Načtení dokumentu z archivu nebo starbuildu
     /// </summary>
     /// <remarks>
     /// Načtení contentu dokumentu. Vrací se stream binárních dat.<br />
@@ -77,9 +77,9 @@ public class DocumentArchiveController : ControllerBase
     /// Nahrání dokumentu
     /// </summary>
     /// <remarks>
-    /// Uložení binárních dat dokumentu do dočasného úložiště.
-    /// 
-    /// <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=618F9E36-618D-4dc5-A3C6-38626871504C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Uložení binárních dat dokumentu do dočasného úložiště.<br /><br />
+    /// Zasílá se i jméno souboru viz. filename v multipart/form-data<a href="https://www.rfc-editor.org/rfc/rfc7578"> rfc7578</a><br /><br />
+    /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=618F9E36-618D-4dc5-A3C6-38626871504C"><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width= "20" height= "20" /> Diagram v EA</a>
     /// </remarks> 
     [HttpPost("document")]
     [SwaggerOperation(Tags = new[] { "Dokument" })]

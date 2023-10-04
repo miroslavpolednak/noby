@@ -68,8 +68,8 @@ public class DocumentOnSAController : ControllerBase
     /// Odeslání náhledu klientovi
     /// </summary>
     /// <remarks>
-    /// Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=11&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview")]
     [NobySkipCaseOwnerStateAndProductSAValidation]
