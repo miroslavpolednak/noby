@@ -58,7 +58,7 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
         return new GetDeedOfOwnershipDocumentContentResponse
         {
             CremDeedOfOwnershipDocumentId = documentId,
-            DeedOfOwnershipNumber = deedOfOwnershipNumber ?? realEstates.FirstOrDefault()?.DeedOfOwnershipNumber,
+            DeedOfOwnershipNumber = deedOfOwnershipNumber.GetValueOrDefault() == 0 ? realEstates.FirstOrDefault()?.DeedOfOwnershipNumber : deedOfOwnershipNumber,
             Owners = owners?.Select(t => new GetDeedOfOwnershipDocumentContentResponseOwners
             {
                 OwnerDescription = t.Description,
