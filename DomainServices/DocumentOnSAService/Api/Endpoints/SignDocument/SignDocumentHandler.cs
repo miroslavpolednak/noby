@@ -251,7 +251,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         {
             await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
         }
-        catch (Exception exp) when (exp is CisValidationException)
+        catch (Exception exp)
         {
             if (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
             {
