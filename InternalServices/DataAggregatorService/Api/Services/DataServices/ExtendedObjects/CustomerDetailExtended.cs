@@ -19,7 +19,9 @@ internal class CustomerDetailExtended : ExtendedObject<CustomerDetailResponse>
 
     public string FullNameWitDegree => !NaturalPerson.DegreeBeforeId.HasValue ? FullName : $"{FullName}, {CodebookManager.DegreesBefore.First(d => d.Id == NaturalPerson.DegreeBeforeId.Value).Name}";
 
-    public CountriesResponse.Types.CountryItem? BirthCountry => CodebookManager.Countries.FirstOrDefault(c => c.Id == NaturalPerson.BirthCountryId); 
+    public CountriesResponse.Types.CountryItem? BirthCountry => CodebookManager.Countries.FirstOrDefault(c => c.Id == NaturalPerson.BirthCountryId);
+
+    public IEnumerable<NaturalPersonResidenceCountry> TaxResidenceCountriesLimited => NaturalPerson.TaxResidence.ResidenceCountries.Take(8);
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configure)
     {
