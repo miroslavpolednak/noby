@@ -1,7 +1,7 @@
-﻿using CIS.Foms.Enums;
+﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration.Document;
+using CIS.InternalServices.DataAggregatorService.Api.Generators.Documents;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices;
-using CIS.InternalServices.DataAggregatorService.Api.Services.Documents;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Endpoints.GetDocumentData;
 
@@ -41,6 +41,12 @@ internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, 
         var documentData = _documentDataFactory.CreateData(documentType);
 
         await _dataServicesLoader.LoadData(config.InputConfig, inputParameters, documentData, cancellationToken);
+
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (documentData.SalesArrangement is not null)
+        {
+            inputParameters.CaseId = documentData.SalesArrangement.CaseId;
+        }
 
         return new DocumentMapper(config, documentData);
     }

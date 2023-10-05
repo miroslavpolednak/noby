@@ -54,6 +54,21 @@
             True pokud se jedna o SSL connection
             </summary>
         </member>
+        <member name="P:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.AllowedUsers">
+            <summary>
+            Seznam uživatelů, kteří mohou přistupovat k dané službě
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.AllowedUserConfiguration.Username">
+            <summary>
+            Login technického uživatele
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.AllowedUserConfiguration.Roles">
+            <summary>
+            Seznam rolí ve kterých je uživatel zařazen - nemusí mít žádné
+            </summary>
+        </member>
         <member name="M:CIS.Infrastructure.Security.CisServiceAuthenticationHandler.authenticateUser(System.String,System.String)">
             <summary>
             Autentizace uzivatele proti AD

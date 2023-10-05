@@ -78,7 +78,7 @@ internal sealed class WorkflowMapperService
     private _Dto.AmendmentsSigning mapAmendmentsSigning(_Case.WorkflowTask task, _Case.AmendmentSigning signing)
     {
         var stateId = (int)getWorkflowState(task);
-        bool remove1 = (new[] { 3, 4, 5 }).Contains(stateId) || !_userAccessor.HasPermission(DomainServices.UserService.Clients.Authorization.UserPermissions.UC_getWflSigningDocuments);
+        bool remove1 = (new[] { 3, 4, 5 }).Contains(stateId) || !_userAccessor.HasPermission(DomainServices.UserService.Clients.Authorization.UserPermissions.WFL_TASK_DETAIL_SigningDocuments);
 
         return new()
         {

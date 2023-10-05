@@ -2,7 +2,6 @@
 using DomainServices.UserService.Clients;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.CodebookService.Clients;
-using CIS.Foms.Enums;
 using DomainServices.CaseService.Clients;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangement;
@@ -22,8 +21,10 @@ internal sealed class UpdateSalesArrangementHandler
             throw new CisValidationException(18013, $"SalesArrangement type not supported");*/
 
         // kontrola na stav
-        if (!_allowedStates.Contains(entity.State))
+        if (!_allowedStates.Contains(entity.State) && entity.SalesArrangementTypeId != (int)SalesArrangementTypes.Mortgage)
+        {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SalesArrangementCantDelete, entity.State);
+        }
 
         // meni se rbcid
         bool riskBusinessCaseIdChanged = !string.IsNullOrEmpty(request.RiskBusinessCaseId) && !request.RiskBusinessCaseId.Equals(entity.RiskBusinessCaseId, StringComparison.OrdinalIgnoreCase);

@@ -1,6 +1,7 @@
-﻿using CIS.Infrastructure.Audit;
+﻿using SharedAudit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Reflection;
 using System.Security.Claims;
 
 namespace NOBY.Api.Endpoints.Users.SignIn;
@@ -43,14 +44,27 @@ internal sealed class SignInHandler
 
         await _httpContext.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
+        logAuditEvent(request);
+    }
+
+    private void logAuditEvent(SignInRequest request)
+    {
+        if (string.IsNullOrEmpty(_appVersion))
+        {
+            _appVersion = Assembly.GetEntryAssembly()!.GetName().Version!.ToString();
+        }
+
         _auditLogger.Log(
             AuditEventTypes.Noby002,
             $"Uživatel {request.IdentityScheme}={request.IdentityId} se přihlásil do aplikace.",
-            bodyAfter: new Dictionary<string, string>() { 
+            bodyAfter: new Dictionary<string, string>() {
                 { "login", $"{request.IdentityScheme}={request.IdentityId}" },
-                { "type", AuthenticationConstants.SimpleLoginAuthScheme }
+                { "type", AuthenticationConstants.SimpleLoginAuthScheme },
+                { "app_version", _appVersion }
             });
     }
+
+    private static string? _appVersion;
 
     private readonly IHttpContextAccessor _httpContext;
     private readonly ILogger<SignInHandler> _logger;

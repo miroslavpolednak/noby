@@ -21,7 +21,7 @@ public class CustomerInHousehold
     /// <summary>
     /// Identity klienta v KB nebo MP
     /// </summary>
-    public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
+    public List<SharedTypes.Types.CustomerIdentity>? Identities { get; set; }
 
     /// <summary>
     /// Zavazky customera

@@ -1,8 +1,6 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.ProductService.Api.Database;
-using DomainServices.ProductService.Api.Database.Entities;
 using DomainServices.ProductService.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetCovenantList;
 
@@ -11,14 +9,15 @@ internal sealed class GetCovenantListHandler : IRequestHandler<GetCovenantListRe
     public async Task<GetCovenantListResponse> Handle(GetCovenantListRequest request, CancellationToken cancellationToken)
     {
         await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
-        
-        var covenants = await _dbContext.Covenants
-            .Where(c => c.CaseId == request.CaseId)
-            .ToListAsync(cancellationToken);
 
-        var covenantPhases = await _dbContext.CovenantPhases
-            .Where(c => c.CaseId == request.CaseId)
-            .ToListAsync(cancellationToken);
+        // check if loan exists (against KonsDB)
+        if (!await _repository.ExistsLoan(request.CaseId, cancellationToken))
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.CaseId);
+        }
+
+        var covenants = await _repository.GetCovenants(request.CaseId, cancellationToken);
+        var covenantPhases = await _repository.GetCovenantPhases(request.CaseId, cancellationToken);
         
         var response = new GetCovenantListResponse();
         response.Covenants.AddRange(covenants.Select(Map));
@@ -27,32 +26,32 @@ internal sealed class GetCovenantListHandler : IRequestHandler<GetCovenantListRe
         return response;
     }
 
-    private static CovenantListItem Map(Covenant covenant) => new()
+    private static CovenantListItem Map(Database.Models.Covenant covenant) => new()
     {
-        Name = covenant.Name,
+        Name = covenant.Name ?? string.Empty,
         FulfillDate = covenant.FulfillDate,
-        IsFulfilled = covenant.IsFulFilled != 0,
+        IsFulfilled = (covenant.IsFulFilled ?? 0 ) != 0,
         Order = covenant.Order,
-        OrderLetter = covenant.OrderLetter,
-        PhaseOrder = covenant.PhaseOrder,
-        CovenantTypeId = covenant.CovenantTypeId,
+        OrderLetter = covenant.OrderLetter ?? string.Empty,
+        PhaseOrder = covenant.PhaseOrder ?? 0,
+        CovenantTypeId = covenant.CovenantTypeId ?? 0,
     };
 
-    private static PhaseListItem Map(CovenantPhase covenantPhase) => new()
+    private static PhaseListItem Map(Database.Models.CovenantPhase covenantPhase) => new()
     {
-        Name = covenantPhase.Name,
+        Name = covenantPhase.Name ?? string.Empty,
         Order = covenantPhase.Order,
-        OrderLetter = covenantPhase.OrderLetter
+        OrderLetter = covenantPhase.OrderLetter ?? string.Empty
     };
     
-    private readonly ProductServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseService;
-    
+    private readonly LoanRepository _repository;
+
     public GetCovenantListHandler(
-        ProductServiceDbContext dbContext,
-        ICaseServiceClient caseService)
+        ICaseServiceClient caseService,
+        LoanRepository repository)
     {
-        _dbContext = dbContext;
         _caseService = caseService;
+        _repository = repository;
     }
 }

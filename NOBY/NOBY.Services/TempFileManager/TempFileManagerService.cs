@@ -20,6 +20,17 @@ internal class TempFileManagerService
         Guid? sessionId = null,
         CancellationToken cancellationToken = default)
     {
+        // overit validni extension
+        if (!_allowedFileExtensions.Contains(Path.GetExtension(file.FileName)))
+        {
+            throw new NOBY.Infrastructure.ErrorHandling.NobyValidationException($"Unsupported file extension {file.FileName}");
+        }
+        // overit delku filename
+        if (file.FileName.Length > 64)
+        {
+            throw new NOBY.Infrastructure.ErrorHandling.NobyValidationException(90038);
+        }
+
         var fileInstance = new TempFile
         {
             TempFileId = Guid.NewGuid(),
@@ -131,6 +142,24 @@ internal class TempFileManagerService
 
     private string getPath(Guid fileTempId)
         => Path.Combine(_appConfiguration.FileTempFolderLocation, fileTempId.ToString());
+
+    private readonly HashSet<string> _allowedFileExtensions = new()
+    {
+        ".pdf",
+        ".png",
+        ".txt",
+        ".xls",
+        ".xlsx",
+        ".doc",
+        ".docx",
+        ".rtf",
+        ".jpg",
+        ".jpeg",
+        ".jfif",
+        ".tif",
+        ".tiff",
+        ".gif"
+    };
 
     private readonly AppConfiguration _appConfiguration;
     private readonly Database.FeApiDbContext _dbContext;

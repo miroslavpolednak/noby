@@ -4,9 +4,9 @@ public interface ICommonDocumentFieldValue
 {
     string Text { get; set; }
 
-    Infrastructure.gRPC.CisTypes.GrpcDate Date { get; set; }
+    SharedTypes.GrpcTypes.GrpcDate Date { get; set; }
 
     int Number { get; set; }
 
-    Infrastructure.gRPC.CisTypes.GrpcDecimal DecimalNumber { get; set; }
+    SharedTypes.GrpcTypes.GrpcDecimal DecimalNumber { get; set; }
 }

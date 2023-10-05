@@ -1,91 +1,27 @@
-using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.UserService.Api;
-using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Security;
-using CIS.InternalServices;
-using DomainServices.UserService.Api.Endpoints;
+using DomainServices.UserService.Api.Database;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc"));
-
-//TODO workaround until .NET6 UseWindowsService() will work with WebApplication
-var webAppOptions = runAsWinSvc
-    ?
-    new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
-    :
-    new WebApplicationOptions { Args = args };
-var builder = WebApplication.CreateBuilder(webAppOptions);
-
-var log = builder.CreateStartupLogger();
-
-try
-{
-    #region register builder.Services
-    builder.Services.AddAttributedServices(typeof(Program));
-
-    // globalni nastaveni prostredi
-    builder
-        .AddCisCoreFeatures()
-        .AddCisEnvironmentConfiguration();
-
-    builder
-        // logging 
-        .AddCisLogging()
-        .AddCisTracing()
-        // authentication
-        .AddCisServiceAuthentication()
-        // add distributed cache
-        .AddCisDistributedCache()
-        // add self
-        .AddUserService()
-        .Services
-            // add CIS services
-            .AddCisServiceDiscovery()
-            // add swagger
-            .AddUserServiceSwagger()
-            // add grpc infrastructure
-            .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-            .AddGrpcReflection()
-            .AddGrpc(options =>
-            {
-                options.Interceptors.Add<GenericServerExceptionInterceptor>();
-            })
-            .AddJsonTranscoding();
-
-    // add HC
-    builder.AddCisGrpcHealthChecks();
-    #endregion register builder.Services
-
-    // kestrel configuration
-    builder.UseKestrelWithCustomConfiguration();
-
-    // BUILD APP
-    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-    var app = builder.Build();
-    log.ApplicationBuilt();
-
-    app.UseHsts();
-    app.UseRouting();
-
-    app.UseAuthentication();
-    app.UseAuthorization();
-
-    app.MapCisGrpcHealthChecks();
-    app.MapGrpcReflectionService();
-    app.MapGrpcService<UserService>();
-    app.UseUserServiceSwagger();
-
-    log.ApplicationRun();
-    app.Run();
-}
-catch (Exception ex)
-{
-    log.CatchedException(ex);
-}
-finally
-{
-    LoggingExtensions.CloseAndFlush();
-}
+SharedComponents.GrpcServiceBuilder
+    .CreateGrpcService(args, typeof(Program))
+    .AddDistributedCache()
+    .AddErrorCodeMapper(DomainServices.UserService.Api.ErrorCodeMapper.Init())
+    .EnableJsonTranscoding(options =>
+    {
+        options.OpenApiTitle = "User Service API";
+        options
+            .AddOpenApiXmlCommentFromBaseDirectory("DomainServices.UserService.Contracts.xml")
+            .AddOpenApiXmlCommentFromBaseDirectory("SharedTypes.xml");
+    })
+    .Build(builder =>
+    {
+        // dbcontext
+        builder.AddEntityFramework<UserServiceDbContext>();
+    })
+    .MapGrpcServices(app =>
+    {
+        app.MapGrpcService<DomainServices.UserService.Api.Endpoints.UserService>();
+    })
+    .Run();
 
 public partial class Program
 {

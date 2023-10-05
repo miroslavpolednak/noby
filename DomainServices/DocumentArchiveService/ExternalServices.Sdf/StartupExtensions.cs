@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Clients;
 using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1;
 using Microsoft.AspNetCore.Builder;

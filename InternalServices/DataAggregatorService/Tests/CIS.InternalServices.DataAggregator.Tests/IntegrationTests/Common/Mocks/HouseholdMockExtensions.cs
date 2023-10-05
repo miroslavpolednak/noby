@@ -1,4 +1,5 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
+using SharedTypes.GrpcTypes;
 using CIS.Testing.Common;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
@@ -9,6 +10,7 @@ public static class HouseholdMockExtensions
 {
     public static void MockHouseholdList(this IHouseholdServiceClient householdServiceClient, ICustomerOnSAServiceClient customerOnSAServiceClient)
     {
+        var customerKbId = 0;
         var fixture = FixtureFactory.Create();
 
         var householdMain = fixture.Build<Household>().With(h => h.HouseholdId, DefaultMockValues.HouseholdMainId).With(h => h.HouseholdTypeId, (int)HouseholdTypes.Main).Create();
@@ -31,8 +33,13 @@ public static class HouseholdMockExtensions
 
         CustomerOnSA CreateCustomer(int customerSaId, CustomerRoles role)
         {
-            var customer = fixture.Build<CustomerOnSA>().With(c => c.CustomerOnSAId, customerSaId).With(c => c.CustomerRoleId, (int)role).Create();
-            customer.CustomerIdentifiers.Add(DefaultMockValues.KbIdentity);
+            var customer = fixture.Build<CustomerOnSA>()
+                                  .With(c => c.CustomerOnSAId, customerSaId)
+                                  .With(c => c.CustomerRoleId, (int)role)
+                                  .Without(c => c.CustomerChangeData)
+                                  .Create();
+
+            customer.CustomerIdentifiers.Add(new Identity(customerKbId++, IdentitySchemes.Kb));
 
             return customer;
         }

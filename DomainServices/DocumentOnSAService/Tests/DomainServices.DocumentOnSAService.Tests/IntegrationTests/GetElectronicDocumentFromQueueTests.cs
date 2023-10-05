@@ -25,7 +25,7 @@ public class GetElectronicDocumentFromQueueTests : IntegrationTestBase
                {
                    MainDocument = new MainDocument
                    {
-                       DocumentOnSAId = 10000  
+                       //DocumentOnSAId = 10000  
                    }
                });
            };
@@ -49,7 +49,7 @@ public class GetElectronicDocumentFromQueueTests : IntegrationTestBase
         {
             MainDocument = new MainDocument
             {
-                DocumentOnSAId = docOnSaEntity.DocumentOnSAId  
+                //DocumentOnSAId = docOnSaEntity.DocumentOnSAId  
             }
         });
 

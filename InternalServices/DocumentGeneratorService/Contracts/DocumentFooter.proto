@@ -15,4 +15,6 @@ message DocumentFooter {
 	google.protobuf.StringValue DocumentId = 4;
 
 	google.protobuf.StringValue BarcodeText = 5;
+
+	google.protobuf.Int32Value DocumentOnSaId = 6;
 }

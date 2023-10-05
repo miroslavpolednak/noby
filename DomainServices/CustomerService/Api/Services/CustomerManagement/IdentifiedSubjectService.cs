@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using CIS.Core.Exceptions;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
@@ -113,7 +113,7 @@ internal sealed class IdentifiedSubjectService
             model.IsPoliticallyExposed = false;
         }
 
-        if (request.NaturalPerson?.TaxResidence is not null)
+        if (request.NaturalPerson?.TaxResidence is not null && request.NaturalPerson.TaxResidence.ResidenceCountries.Any())
         {
             model.TaxResidence = new TaxResidence
             {

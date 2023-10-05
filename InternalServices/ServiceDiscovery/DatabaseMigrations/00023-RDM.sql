@@ -1,0 +1,6 @@
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('DEV', 'ES:RDM:V1', 'https://codebooks-dev.kb.cz/int-codebooks-rest/api/v3', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('FAT', 'ES:RDM:V1', 'https://codebooks-dev.kb.cz/int-codebooks-rest/api/v3', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('PREPROD', 'ES:RDM:V1', 'https://codebooks-dev.kb.cz/int-codebooks-rest/api/v3', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('SIT1', 'ES:RDM:V1', 'https://codebooks-dev.kb.cz/int-codebooks-rest/api/v3', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('UAT', 'ES:RDM:V1', 'https://codebooks-dev.kb.cz/int-codebooks-rest/api/v3', 3, 0);
+INSERT INTO ServiceDiscovery (EnvironmentName, ServiceName, ServiceUrl, ServiceType, AddToGlobalHealthCheck) VALUES ('PROD', 'ES:RDM:V1', 'https://codebooks-dev.kb.cz/int-codebooks-rest/api/v3', 3, 0);

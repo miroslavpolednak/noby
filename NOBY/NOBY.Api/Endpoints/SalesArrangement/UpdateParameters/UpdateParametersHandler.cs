@@ -1,8 +1,10 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
+using _dto = NOBY.Api.Endpoints.SalesArrangement.Dto;
+using FastEnumUtility;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
@@ -26,69 +28,53 @@ internal sealed class UpdateParametersHandler
 
         if (request.Parameters is not null)
         {
-            string dataString = ((System.Text.Json.JsonElement)request.Parameters).GetRawText();
-
             switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)
             {
                 case SalesArrangementTypes.Mortgage:
-                    var o1 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersMortgage>(dataString, _jsonSerializerOptions);
-                    if (o1 is not null)
-                    {
-                        if (string.IsNullOrEmpty(o1.IncomeCurrencyCode) || string.IsNullOrEmpty(o1.ResidencyCurrencyCode))
-                        {
-                            throw new NobyValidationException(90019);
-                        }
-                        updateRequest.Mortgage = o1.ToDomainService(saInstance.Mortgage);
-                    }
+                    updateRequest.Mortgage = (await _helper.DeserializeAndValidate<_dto.ParametersMortgage>(request.Parameters, saInstance))
+                        ?.ToDomainService(saInstance.Mortgage);
                     break;
 
                 case SalesArrangementTypes.Drawing:
-                    var o2 = System.Text.Json.JsonSerializer.Deserialize<SalesArrangement.Dto.ParametersDrawing>(dataString, _jsonSerializerOptions);
-                    if (o2 is not null)
-                        updateRequest.Drawing = o2.ToDomainService();
+                    updateRequest.Drawing = (await _helper.DeserializeAndValidate<_dto.ParametersDrawing>(request.Parameters, saInstance))
+                        ?.ToDomainService();
                     break;
 
                 case SalesArrangementTypes.GeneralChange:
-                    var o3 = System.Text.Json.JsonSerializer.Deserialize<Dto.GeneralChangeUpdate>(dataString, _jsonSerializerOptions);
-                    if (o3 is not null)
-                        updateRequest.GeneralChange = o3.ToDomainService(saInstance.GeneralChange);
+                    updateRequest.GeneralChange = (await _helper.DeserializeAndValidate<Dto.GeneralChangeUpdate>(request.Parameters, saInstance))
+                        ?.ToDomainService(saInstance.GeneralChange);
                     break;
 
                 case SalesArrangementTypes.HUBN:
-                    var o4 = System.Text.Json.JsonSerializer.Deserialize<Dto.HUBNUpdate>(dataString, _jsonSerializerOptions);
-                    if (o4 is not null)
-                        updateRequest.HUBN = o4.ToDomainService(saInstance.HUBN);
+                    updateRequest.HUBN = (await _helper.DeserializeAndValidate<Dto.HUBNUpdate>(request.Parameters, saInstance))
+                        ?.ToDomainService(saInstance.HUBN);
                     break;
 
                 case SalesArrangementTypes.CustomerChange:
-                    var o5 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChangeUpdate>(dataString, _jsonSerializerOptions);
-                    if (o5 is not null)
-                        updateRequest.CustomerChange = o5.ToDomainService(saInstance.CustomerChange);
+                    updateRequest.CustomerChange = (await _helper.DeserializeAndValidate<Dto.CustomerChangeUpdate>(request.Parameters, saInstance))
+                        ?.ToDomainService(saInstance.CustomerChange);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602A:
-                    var o6 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
-                    if (o6 is not null)
-                        updateRequest.CustomerChange3602A = o6.ToDomainService(saInstance.CustomerChange3602A);
+                    updateRequest.CustomerChange3602A = (await _helper.DeserializeAndValidate<Dto.CustomerChange3602Update>(request.Parameters, saInstance))
+                        ?.ToDomainService(saInstance.CustomerChange3602A);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602B:
-                    var o7 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
-                    if (o7 is not null)
-                        updateRequest.CustomerChange3602B = o7.ToDomainService(saInstance.CustomerChange3602B);
+                    updateRequest.CustomerChange3602B = (await _helper.DeserializeAndValidate<Dto.CustomerChange3602Update>(request.Parameters, saInstance))
+                        ?.ToDomainService(saInstance.CustomerChange3602B);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602C:
-                    var o8 = System.Text.Json.JsonSerializer.Deserialize<Dto.CustomerChange3602Update>(dataString, _jsonSerializerOptions);
-                    if (o8 is not null)
-                        updateRequest.CustomerChange3602C = o8.ToDomainService(saInstance.CustomerChange3602C);
+                    updateRequest.CustomerChange3602C = (await _helper.DeserializeAndValidate<Dto.CustomerChange3602Update>(request.Parameters, saInstance))
+                        ?.ToDomainService(saInstance.CustomerChange3602C);
                     break;
 
                 default:
                     throw new NotImplementedException($"SalesArrangementTypeId {saInstance.SalesArrangementTypeId} parameters model cast to domain service is not implemented");
             }
         }
-        
+
         var salesArrangementTypes = await _codebookService.SalesArrangementTypes(cancellationToken);
         var salesArrangementType = salesArrangementTypes.Single(t => t.Id == saInstance.SalesArrangementTypeId);
 
@@ -98,12 +84,15 @@ internal sealed class UpdateParametersHandler
 
             foreach (var documentOnSaToSign in documentResponse.DocumentsOnSAToSign)
             {
-                if (documentOnSaToSign is { IsValid: true, IsSigned: false, DocumentOnSAId: not null })
+                if (documentOnSaToSign.DocumentTypeId != DocumentTypes.DANRESID.ToByte() && documentOnSaToSign.DocumentOnSAId is not null ) // 13
                 {
-                    await _documentOnSaService.StopSigning(documentOnSaToSign.DocumentOnSAId.Value, cancellationToken);
+                    await _documentOnSaService.StopSigning(new() { DocumentOnSAId = documentOnSaToSign.DocumentOnSAId.Value }, cancellationToken);
+                    // We have to actualise SA after stop Signing (because stop Signing may change SA state)
+                    _salesArrangementService.ClearSalesArrangementCache();
+                    saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
                 }
             }
-
+            
             if (saInstance.State != (int)SalesArrangementStates.InProgress)
             {
                 await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, (int)SalesArrangementStates.InProgress, cancellationToken);
@@ -114,7 +103,7 @@ internal sealed class UpdateParametersHandler
             // nastavit flowSwitch ParametersSavedAtLeastOnce pouze pro NE servisni SA
             await setFlowSwitches(saInstance, cancellationToken);
         }
-        
+
         // update SA
         await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
     }
@@ -131,12 +120,6 @@ internal sealed class UpdateParametersHandler
         }, cancellationToken);
     }
 
-    static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
-    {
-        NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
-        PropertyNameCaseInsensitive = true
-    };
-
     private static int[] _disallowedStates = new[]
     {
         (int)SalesArrangementStates.Cancelled,
@@ -144,15 +127,18 @@ internal sealed class UpdateParametersHandler
         (int)SalesArrangementStates.InApproval
     };
 
+    private readonly UpdateParametersHelper _helper;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
 
     public UpdateParametersHandler(
+        UpdateParametersHelper helper,
         ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
         IDocumentOnSAServiceClient documentOnSaService)
     {
+        _helper = helper;
         _codebookService = codebookService;
         _documentOnSaService = documentOnSaService;
         _salesArrangementService = salesArrangementService;

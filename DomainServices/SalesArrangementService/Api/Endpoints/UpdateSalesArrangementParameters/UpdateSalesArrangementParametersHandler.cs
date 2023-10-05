@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Google.Protobuf;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementParameters;
 

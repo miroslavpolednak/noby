@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 
 namespace CIS.Testing.Common;
 

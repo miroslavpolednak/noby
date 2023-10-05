@@ -851,7 +851,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+                "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
               }
             }
           }
@@ -952,7 +952,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+                "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
               }
             }
           }
@@ -4138,7 +4138,7 @@
   },
   "components": {
     "schemas": {
-      "CIS.Foms.Types.Address": {
+      "SharedTypes.Types.Address": {
         "type": "object",
         "properties": {
           "addressTypeId": {
@@ -4215,7 +4215,7 @@
         "additionalProperties": false,
         "description": "Adresa - bydliste, kontaktni atd."
       },
-      "CIS.Foms.Types.CustomerIdentity": {
+      "SharedTypes.Types.CustomerIdentity": {
         "type": "object",
         "properties": {
           "id": {
@@ -5854,7 +5854,7 @@
             "format": "int64"
           },
           "customerIdentity": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           },
           "firstName": {
             "type": "string",
@@ -6336,7 +6336,7 @@
           },
           "address": {
             "type": "object",
-            "$ref": "#/components/schemas/CIS.Foms.Types.Address"
+            "$ref": "#/components/schemas/SharedTypes.Types.Address"
           }
         },
         "additionalProperties": false
@@ -6419,10 +6419,10 @@
             "$ref": "#/components/schemas/DomainServices.CodebookService.Contracts.GenericCodebookItem"
           },
           "permanentAddress": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.Address"
+            "$ref": "#/components/schemas/SharedTypes.Types.Address"
           },
           "contactAddress": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.Address"
+            "$ref": "#/components/schemas/SharedTypes.Types.Address"
           }
         },
         "additionalProperties": false
@@ -6829,7 +6829,7 @@
           "identities": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+              "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
             },
             "nullable": true
           },
@@ -6848,7 +6848,7 @@
           "addresses": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.Address"
+              "$ref": "#/components/schemas/SharedTypes.Types.Address"
             },
             "nullable": true
           },
@@ -7019,7 +7019,7 @@
           "identities": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+              "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
             },
             "nullable": true
           },
@@ -7038,7 +7038,7 @@
           "addresses": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.Address"
+              "$ref": "#/components/schemas/SharedTypes.Types.Address"
             },
             "nullable": true
           },
@@ -7066,7 +7066,7 @@
           "addresses": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.Address"
+              "$ref": "#/components/schemas/SharedTypes.Types.Address"
             },
             "nullable": true
           },
@@ -7157,7 +7157,7 @@
             "nullable": true
           },
           "identity": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           }
         },
         "additionalProperties": false
@@ -7167,7 +7167,7 @@
         "type": "object",
         "properties": {
           "customerIdentity": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           }
         },
         "additionalProperties": false
@@ -7217,7 +7217,7 @@
             "nullable": true
           },
           "identity": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           },
           "street": {
             "type": "string",
@@ -7522,7 +7522,7 @@
           "addresses": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.Address"
+              "$ref": "#/components/schemas/SharedTypes.Types.Address"
             },
             "nullable": true
           },
@@ -8586,7 +8586,7 @@
           "identities": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+              "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
             },
             "description": "Identity klienta v KB nebo MP",
             "nullable": true
@@ -8658,7 +8658,7 @@
             "description": "Příznak zamknutí příjmů daného CustomerOnSA"
           },
           "identity": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           }
         },
         "additionalProperties": false
@@ -8712,7 +8712,7 @@
             "format": "int32"
           },
           "identity": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           },
           "firstName": {
             "type": "string",
@@ -9517,7 +9517,7 @@
           "customerIdentities": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+              "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
             },
             "nullable": true
           },
@@ -9639,7 +9639,7 @@
           "identities": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+              "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
             },
             "nullable": true
           },
@@ -9991,10 +9991,10 @@
             "nullable": true
           },
           "mainAddress": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.Address"
+            "$ref": "#/components/schemas/SharedTypes.Types.Address"
           },
           "contactAddress": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.Address"
+            "$ref": "#/components/schemas/SharedTypes.Types.Address"
           },
           "contacts": {
             "$ref": "#/components/schemas/NOBY.Api.SharedDto.ContactsConfirmedDto"
@@ -10002,7 +10002,7 @@
           "identities": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+              "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
             },
             "nullable": true
           }
@@ -10140,7 +10140,7 @@
         "type": "object",
         "properties": {
           "applicant": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           },
           "agent": {
             "$ref": "#/components/schemas/NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingAgent"
@@ -10582,7 +10582,7 @@
         "type": "object",
         "properties": {
           "identity": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           },
           "naturalPerson": {
             "$ref": "#/components/schemas/NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailNaturalPerson"
@@ -10637,7 +10637,7 @@
         "type": "object",
         "properties": {
           "identity": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           },
           "naturalPerson": {
             "$ref": "#/components/schemas/NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.CustomerChangeDetailNaturalPerson"
@@ -10760,7 +10760,7 @@
         "type": "object",
         "properties": {
           "applicant": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           },
           "collateral": {
             "$ref": "#/components/schemas/NOBY.Api.Endpoints.SalesArrangement.Dto.Collateral"
@@ -10808,7 +10808,7 @@
         "type": "object",
         "properties": {
           "applicant": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           },
           "loanAmount": {
             "$ref": "#/components/schemas/NOBY.Api.Endpoints.SalesArrangement.GetDetail.Dto.LoanAmount"
@@ -11490,7 +11490,7 @@
         "type": "object",
         "properties": {
           "applicant": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           },
           "collateral": {
             "$ref": "#/components/schemas/NOBY.Api.Endpoints.SalesArrangement.Dto.Collateral"
@@ -11538,7 +11538,7 @@
         "type": "object",
         "properties": {
           "applicant": {
-            "$ref": "#/components/schemas/CIS.Foms.Types.CustomerIdentity"
+            "$ref": "#/components/schemas/SharedTypes.Types.CustomerIdentity"
           },
           "loanAmount": {
             "$ref": "#/components/schemas/NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.LoanAmount"
@@ -11765,7 +11765,7 @@
           "userIdentifiers": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CIS.Foms.Types.UserIdentity"
+              "$ref": "#/components/schemas/SharedTypes.Types.UserIdentity"
             },
             "description": "Všechny identity uživatele z XXVVSS"
           },
@@ -11839,7 +11839,7 @@
         },
         "additionalProperties": false
       },
-      "CIS.Foms.Types.UserIdentity": {
+      "SharedTypes.Types.UserIdentity": {
         "type": "object",
         "properties": {
           "identity": {

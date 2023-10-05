@@ -39,6 +39,11 @@
             Logovani do Sequ
             </summary>
         </member>
+        <member name="T:CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.FileLogger">
+            <summary>
+            Nastaveni File sink dle https://github.com/serilog/serilog-sinks-file
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.Telemetry.Enrichers.CisHeadersEnricher">
             <summary>
             Doda do kontextu log item ID a Login uzivatele

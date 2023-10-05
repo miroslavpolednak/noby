@@ -1,4 +1,4 @@
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.Security;
 using CIS.Infrastructure.StartupExtensions;

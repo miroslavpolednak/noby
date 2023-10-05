@@ -1,4 +1,5 @@
-﻿using NOBY.Api.Endpoints.Customer.GetCustomerDetail.Dto;
+﻿using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
+using NOBY.Api.Endpoints.Customer.GetCustomerDetail.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -14,7 +15,9 @@ public sealed class CreateCustomerResponse
     /// </summary>
     public bool IsVerified { get; set; }
 
-    public List<CIS.Foms.Types.CustomerIdentity>? Identities { get; set; }
+    public ResultCode ResultCode { get; set; }
+
+    public List<SharedTypes.Types.CustomerIdentity>? Identities { get; set; }
 
     public NaturalPersonModel? NaturalPerson { get; set; }
 
@@ -24,7 +27,7 @@ public sealed class CreateCustomerResponse
 
     public Shared.LegalCapacityItem? LegalCapacity { get; set; }
 
-    public List<CIS.Foms.Types.Address>? Addresses { get; set; }
+    public List<SharedTypes.Types.Address>? Addresses { get; set; }
 
     public NOBY.Dto.ContactsDto? Contacts { get; set; }
 

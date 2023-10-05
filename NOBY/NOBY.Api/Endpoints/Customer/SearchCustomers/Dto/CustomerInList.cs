@@ -3,7 +3,7 @@
 public class CustomerInList
     : BaseCustomer
 {
-    public CIS.Foms.Types.CustomerIdentity? Identity { get; set; }
+    public SharedTypes.Types.CustomerIdentity? Identity { get; set; }
     
     public string? Street { get; set; }
     

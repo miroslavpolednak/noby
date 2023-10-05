@@ -1,87 +1,47 @@
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.CodebookService.Api;
-using CIS.Infrastructure.gRPC;
-using CIS.Infrastructure.Telemetry;
-using CIS.Infrastructure.Security;
-using CIS.InternalServices;
+using CIS.Infrastructure.Data;
+using DomainServices.CodebookService.Api.Database;
+using DomainServices.CodebookService.ExternalServices.AcvEnumService.V1;
+using DomainServices.CodebookService.ExternalServices.RDM.V1;
+using DomainServices.CodebookService.ExternalServices;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
+SharedComponents.GrpcServiceBuilder
+    .CreateGrpcService(args, typeof(Program))
+    .EnableJsonTranscoding(options =>
+    {
+        options.OpenApiTitle = "Codebook Service API";
+        options.AddOpenApiXmlCommentFromBaseDirectory("DomainServices.CodebookService.Contracts.xml");
+    })
+    .Build(builder =>
+    {
+        const string _sqlQuerySelect = "SELECT SqlQueryId, SqlQueryText, DatabaseProvider FROM dbo.SqlQuery";
 
-//TODO workaround until .NET6 UseWindowsService() will work with WebApplication
-var webAppOptions = runAsWinSvc 
-    ?
-    new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
-    :
-    new WebApplicationOptions { Args = args };
-var builder = WebApplication.CreateBuilder(webAppOptions);
+        // add general Dapper repository
+        builder.Services
+            .AddDapper(builder.Configuration.GetConnectionString("default")!)
+            .AddDapper<IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd")!)
+            .AddDapper<IXxdHfDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxdhf")!)
+            .AddDapper<IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb")!);
 
-var log = builder.CreateStartupLogger();
+        // seznam SQL dotazu
+        builder.Services.AddSingleton(provider =>
+        {
+            var database = provider.GetRequiredService<CIS.Core.Data.IConnectionProvider>();
+            var data = database
+                .ExecuteDapperRawSqlToList<(string SqlQueryId, string SqlQueryText, SqlQueryCollection.DatabaseProviders DatabaseProvider)>(_sqlQuerySelect)
+                .ToDictionary(k => k.SqlQueryId, v => new SqlQueryCollection.QueryItem { Provider = v.DatabaseProvider, Query = v.SqlQueryText });
 
-try { 
-    #region register builder.Services
-    builder.Services.AddAttributedServices(typeof(Program));
+            return new SqlQueryCollection(data);
+        });
 
-    // globalni nastaveni prostredi
-    builder
-        .AddCisCoreFeatures()
-        .AddCisEnvironmentConfiguration();
-
-    // logging 
-    builder
-        .AddCisLogging()
-        .AddCisTracing()
-        // authentication
-        .AddCisServiceAuthentication()
-        // add self
-        .AddCodebookService()
-        // add BE services
-        .Services
-            // add swagger
-            .AddCodebookServiceSwagger()
-            // add grpc infrastructure
-            .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-            .AddGrpcReflection()
-            .AddGrpc(options =>
-            {
-                options.Interceptors.Add<GenericServerExceptionInterceptor>();
-            })
-            .AddJsonTranscoding();
-
-    // add HC
-    builder.AddCisGrpcHealthChecks();
-    #endregion register builder.Services
-
-    // kestrel configuration
-    builder.UseKestrelWithCustomConfiguration();
-
-    // BUILD APP
-    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-    var app = builder.Build();
-    log.ApplicationBuilt();
-
-    app.UseServiceDiscovery();
-    app.UseRouting();
-
-    app.UseAuthentication();
-    app.UseAuthorization();
-    app.UseCisServiceUserContext();
-
-    app.MapCisGrpcHealthChecks();
-    app.MapGrpcReflectionService();
-    app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.CodebookService>();
-    app.UseCodebookServiceSwagger();
-
-    log.ApplicationRun();
-    app.Run();
-}
-catch (Exception ex)
-{
-    log.CatchedException(ex);
-}
-finally
-{
-    LoggingExtensions.CloseAndFlush();
-}
+        builder.AddExternalService<IAcvEnumServiceClient>();
+        builder.AddExternalService<IRDMClient>();
+    })
+    .MapGrpcServices(app =>
+    {
+        app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.CodebookService>();
+    })
+    .Run();
 
 public partial class Program
 {

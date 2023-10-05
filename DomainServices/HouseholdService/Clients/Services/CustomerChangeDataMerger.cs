@@ -1,6 +1,6 @@
-﻿using CIS.Foms.Enums;
-using CIS.Foms.Types;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.Enums;
+using SharedTypes.Types;
+using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts.Dto;
@@ -78,6 +78,7 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
 
         customer.NaturalPerson.TaxResidence = MapDeltaToTaxResidence(delta.NaturalPerson?.TaxResidences) ?? customer.NaturalPerson.TaxResidence;
         customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
+        customer.CustomerIdentification = MapDeltaToCustomerIdentification(delta.CustomerIdentification) ?? customer.CustomerIdentification;
     }
 
     public void MergeClientData(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
@@ -90,6 +91,7 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         MergeClientData(delta, customer.NaturalPerson, customer.Addresses, customer.Contacts);
 
         customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
+        customer.CustomerIdentification = MapDeltaToCustomerIdentification(delta.CustomerIdentification) ?? customer.CustomerIdentification;
     }
 
     public void MergeTaxResidence(NaturalPerson naturalPerson, CustomerOnSA customerOnSA)
@@ -235,6 +237,19 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
             IssuingCountryId = delta.IssuingCountryId,
             IssuedOn = delta.IssuedOn,
             RegisterPlace = delta.RegisterPlace
+        };
+    }
+
+    private static CustomerIdentification? MapDeltaToCustomerIdentification(CustomerIdentificationDelta? delta)
+    {
+        if (delta is null)
+            return default;
+
+        return new CustomerIdentification
+        {
+            IdentificationMethodId = delta.IdentificationMethodId ?? 0,
+            CzechIdentificationNumber = delta.CzechIdentificationNumber,
+            IdentificationDate = delta.IdentificationDate
         };
     }
 }

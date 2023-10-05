@@ -113,14 +113,14 @@ UPDATE DocumentSpecialDataField SET FieldPath = 'DebtorCustomer.SignerName' WHER
 UPDATE DocumentSpecialDataField SET FieldPath = 'Customer1.SignerName' WHERE DocumentId = 5 AND DocumentVersion = '001' AND AcroFieldName = 'PodpisJmenoKlienta'
 UPDATE DocumentSpecialDataField SET FieldPath = 'Customer1.SignerName' WHERE DocumentId = 16 AND DocumentVersion = '001' AND AcroFieldName = 'PodpisJmenoKlienta'
 
-UPDATE DocumentSpecialDataField SET FieldPath = 'CodebtorCustomer.SignerName' WHERE DocumentId = 4 AND DocumentVersion = '001' AND AcroFieldName = 'PodpisJmenoKlienta'
-UPDATE DocumentSpecialDataField SET FieldPath = 'Customer2.SignerName' WHERE DocumentId = 5 AND DocumentVersion = '001' AND AcroFieldName = 'PodpisJmenoKlienta'
-UPDATE DocumentSpecialDataField SET FieldPath = 'Customer2.SignerName' WHERE DocumentId = 16 AND DocumentVersion = '001' AND AcroFieldName = 'PodpisJmenoKlienta'
+UPDATE DocumentSpecialDataField SET FieldPath = 'CodebtorCustomer.SignerName' WHERE DocumentId = 4 AND DocumentVersion = '001' AND AcroFieldName = 'PodpisJmenoKlienta2'
+UPDATE DocumentSpecialDataField SET FieldPath = 'Customer2.SignerName' WHERE DocumentId = 5 AND DocumentVersion = '001' AND AcroFieldName = 'PodpisJmenoKlienta2'
+UPDATE DocumentSpecialDataField SET FieldPath = 'Customer2.SignerName' WHERE DocumentId = 16 AND DocumentVersion = '001' AND AcroFieldName = 'PodpisJmenoKlienta2'
 
 DELETE FROM DocumentSpecialDataField WHERE DocumentId IN (5, 16) AND AcroFieldName = 'SplatnostLabel'
 
-INSERT INTO DocumentDataField VALUES (5, '001', 'SplatnostLabel', 28, 'Splatnost úvěru', NULL, NULL)
-INSERT INTO DocumentDataField VALUES (16, '001', 'SplatnostLabel', 28, 'Předpokládané datum splatnosti', NULL, NULL)
+INSERT INTO DocumentDataField VALUES (5, '001', 'SplatnostLabel', 207, 'Splatnost úvěru', NULL, NULL)
+INSERT INTO DocumentDataField VALUES (16, '001', 'SplatnostLabel', 207, 'Předpokládané datum splatnosti', NULL, NULL)
 
 
 INSERT INTO DocumentSpecialDataField VALUES (
@@ -163,3 +163,97 @@ INSERT INTO DocumentSpecialDataField VALUES (
 'přednostně schránka v novém internetovém bankovnictví KB+, mám-li ji sjednanou, nebo můj kontaktní e-mail, v ojedinělých případech mi Banka může doručovat i v listinné podobě na moji Kontaktní adresu.
 
 Dále beru na vědomí, že do schránky v internetovém bankovnictví KB+ nebo na kontaktní e-mail může Banka zasílat jakékoli písemnosti, včetně písemností, které mohou mít za následek zánik smluvního vztahu. Schránkou je vyhrazený prostor v internetovém bankovnictví KB+, přístupný prostřednictvím mobilní a webové aplikace KB+, určený pro vzájemnou komunikaci. Schránka nebo její část, stejně jako kontaktní e-mail, slouží jako trvalý nosič dat.')
+
+INSERT INTO DocumentSpecialDataField VALUES (
+16,
+'001',
+'ProhlaseniZadatele', 10,
+'Customer1.HasConfirmedContacts',
+'Beru na vědomí, že Banka se mnou bude komunikovat přednostně elektronicky, a to prostřednictvím schránky v internetovém bankovnictví KB+ nebo na mnou uvedený kontaktní e-mail nebo kontaktní telefon, u kterých bylo mnou potvrzeno, že slouží ke komunikaci mezi mnou a Bankou, zejména pro zasílání dokumentace a jejích změn a zasílání hesel a kódů, v ojedinělých případech mi Banka může doručovat i v listinné podobě na moji Kontaktní adresu. Zároveň beru na vědomí, že tyto kontaktní údaje jsou automaticky předvyplněny, a že v případě, že dojde k jejich změně Bankou akceptovaným způsobem, bude se mnou Banka komunikovat na tyto nové kontaktní údaje.
+
+Dále beru na vědomí, že do schránky v internetovém bankovnictví KB+ nebo na kontaktní e-mail může Banka zasílat jakékoli písemnosti, včetně písemností, které mohou mít za následek zánik smluvního vztahu.
+
+Schránkou je vyhrazený prostor v internetovém bankovnictví KB+, přístupný prostřednictvím mobilní a webové aplikace KB+, určený pro vzájemnou komunikaci. Schránka nebo její část, stejně jako kontaktní e-mail, slouží jako trvalý nosič dat.',
+4,
+'Beru na vědomí, že Banka se mnou bude komunikovat přednostně elektronicky, a to na e-mail nebo telefon mnou uvedený v této žádosti. Potvrzuji, že údaje uvedené v této žádosti slouží k veškeré naší komunikaci týkající se tohoto úvěru a případně k naší další běžné komunikaci, není-li sjednáno v konkrétním případě jinak, a že je mohu měnit jen způsobem Bankou akceptovaným. Tyto údaje slouží také pro zasílání smluvní dokumentace, beru proto na vědomí, že e-mailem uvedeným v této žádosti nahrazuji e-mail pro zasílání smluvní dokumentace, mám-li jej sjednán.
+
+Pokud si sjednám kontaktní e-mail nebo kontaktní telefon, u kterých potvrdím, že slouží ke komunikaci mezi mnou a Bankou, zejména pro zasílání dokumentace a jejích změn a zasílání hesel a kódů, pak budou údaje uvedené v této žádosti těmito kontaktními údaji zcela nahrazeny. Ke vzájemné komunikaci mezi mnou a Bankou bude sloužit přednostně schránka v novém internetovém bankovnictví KB+, mám-li ji sjednanou, nebo můj kontaktní e-mail, v ojedinělých případech mi Banka může doručovat i v listinné podobě na moji Kontaktní adresu.
+
+Dále beru na vědomí, že do schránky v internetovém bankovnictví KB+ nebo na kontaktní e-mail může Banka zasílat jakékoli písemnosti, včetně písemností, které mohou mít za následek zánik smluvního vztahu. Schránkou je vyhrazený prostor v internetovém bankovnictví KB+, přístupný prostřednictvím mobilní a webové aplikace KB+, určený pro vzájemnou komunikaci. Schránka nebo její část, stejně jako kontaktní e-mail, slouží jako trvalý nosič dat.')
+
+INSERT INTO DocumentSpecialDataField VALUES (
+16,
+'001',
+'ProhlaseniSpoluzadatele', 10,
+'Customer2.HasConfirmedContacts',
+'Beru na vědomí, že Banka se mnou bude komunikovat přednostně elektronicky, a to prostřednictvím schránky v internetovém bankovnictví KB+ nebo na mnou uvedený kontaktní e-mail nebo kontaktní telefon, u kterých bylo mnou potvrzeno, že slouží ke komunikaci mezi mnou a Bankou, zejména pro zasílání dokumentace a jejích změn a zasílání hesel a kódů, v ojedinělých případech mi Banka může doručovat i v listinné podobě na moji Kontaktní adresu. Zároveň beru na vědomí, že tyto kontaktní údaje jsou automaticky předvyplněny, a že v případě, že dojde k jejich změně Bankou akceptovaným způsobem, bude se mnou Banka komunikovat na tyto nové kontaktní údaje.
+
+Dále beru na vědomí, že do schránky v internetovém bankovnictví KB+ nebo na kontaktní e-mail může Banka zasílat jakékoli písemnosti, včetně písemností, které mohou mít za následek zánik smluvního vztahu.',
+4,
+'Beru na vědomí, že Banka se mnou bude komunikovat přednostně elektronicky, a to na e-mail nebo telefon mnou uvedený v této žádosti. Potvrzuji, že údaje uvedené v této žádosti slouží k veškeré naší komunikaci týkající se tohoto úvěru a případně k naší další běžné komunikaci, není-li sjednáno v konkrétním případě jinak, a že je mohu měnit jen způsobem Bankou akceptovaným. Tyto údaje slouží také pro zasílání smluvní dokumentace, beru proto na vědomí, že e-mailem uvedeným v této žádosti nahrazuji e-mail pro zasílání smluvní dokumentace, mám-li jej sjednán.
+
+Pokud si sjednám kontaktní e-mail nebo kontaktní telefon, u kterých potvrdím, že slouží ke komunikaci mezi mnou a Bankou, zejména pro zasílání dokumentace a jejích změn a zasílání hesel a kódů, pak budou údaje uvedené v této žádosti těmito kontaktními údaji zcela nahrazeny. Ke vzájemné komunikaci mezi mnou a Bankou bude sloužit')
+
+INSERT INTO DocumentSpecialDataField VALUES (
+16,
+'001',
+'ProhlaseniSpoluzadateleCast2', 10,
+'Customer2.HasConfirmedContacts',
+'Schránkou je vyhrazený prostor v internetovém bankovnictví KB+, přístupný prostřednictvím mobilní a webové aplikace KB+, určený pro vzájemnou komunikaci. Schránka nebo její část, stejně jako kontaktní e-mail, slouží jako trvalý nosič dat.',
+4,
+'přednostně schránka v novém internetovém bankovnictví KB+, mám-li ji sjednanou, nebo můj kontaktní e-mail, v ojedinělých případech mi Banka může doručovat i v listinné podobě na moji Kontaktní adresu.
+
+Dále beru na vědomí, že do schránky v internetovém bankovnictví KB+ nebo na kontaktní e-mail může Banka zasílat jakékoli písemnosti, včetně písemností, které mohou mít za následek zánik smluvního vztahu. Schránkou je vyhrazený prostor v internetovém bankovnictví KB+, přístupný prostřednictvím mobilní a webové aplikace KB+, určený pro vzájemnou komunikaci. Schránka nebo její část, stejně jako kontaktní e-mail, slouží jako trvalý nosič dat.')
+
+INSERT INTO DocumentVariant VALUES (4, '001', 'ProhlaseniZadatele', 'A')
+INSERT INTO DocumentVariant VALUES (4, '001', 'ProhlaseniZadatele', 'B')
+INSERT INTO DocumentVariant VALUES (4, '001', 'ProhlaseniZadatele', 'C')
+INSERT INTO DocumentVariant VALUES (4, '001', 'ProhlaseniZadatele', 'D')
+
+INSERT INTO DocumentVariant VALUES (4, '001', 'ProhlaseniZadateleCast2', 'A')
+INSERT INTO DocumentVariant VALUES (4, '001', 'ProhlaseniZadateleCast2', 'B')
+INSERT INTO DocumentVariant VALUES (4, '001', 'ProhlaseniZadateleCast2', 'C')
+INSERT INTO DocumentVariant VALUES (4, '001', 'ProhlaseniZadateleCast2', 'D')
+
+INSERT INTO DocumentVariant VALUES (4, '001', 'ProhlaseniSpoluzadatele', 'C')
+INSERT INTO DocumentVariant VALUES (4, '001', 'ProhlaseniSpoluzadatele', 'D')
+
+INSERT INTO DocumentVariant VALUES (4, '001', 'Zprostredkovatel', 'A')
+INSERT INTO DocumentVariant VALUES (4, '001', 'Zprostredkovatel', 'C')
+
+INSERT INTO DocumentVariant VALUES (4, '001', 'ZprostredkovatelTelEmail', 'A')
+INSERT INTO DocumentVariant VALUES (4, '001', 'ZprostredkovatelTelEmail', 'C')
+
+INSERT INTO DocumentVariant VALUES (5, '001', 'Zprostredkovatel', 'A')
+INSERT INTO DocumentVariant VALUES (5, '001', 'Zprostredkovatel', 'C')
+
+INSERT INTO DocumentVariant VALUES (5, '001', 'ZprostredkovatelTelEmail', 'A')
+INSERT INTO DocumentVariant VALUES (5, '001', 'ZprostredkovatelTelEmail', 'C')
+
+INSERT INTO DocumentVariant VALUES (16, '001', 'Zprostredkovatel', 'A')
+INSERT INTO DocumentVariant VALUES (16, '001', 'Zprostredkovatel', 'C')
+
+INSERT INTO DocumentVariant VALUES (16, '001', 'ZprostredkovatelTelEmail', 'A')
+INSERT INTO DocumentVariant VALUES (16, '001', 'ZprostredkovatelTelEmail', 'C')
+
+INSERT INTO DocumentVariant VALUES (5, '001', 'ProhlaseniZadatele', 'A')
+INSERT INTO DocumentVariant VALUES (5, '001', 'ProhlaseniZadatele', 'B')
+INSERT INTO DocumentVariant VALUES (5, '001', 'ProhlaseniZadatele', 'C')
+INSERT INTO DocumentVariant VALUES (5, '001', 'ProhlaseniZadatele', 'D')
+
+INSERT INTO DocumentVariant VALUES (16, '001', 'ProhlaseniZadatele', 'A')
+INSERT INTO DocumentVariant VALUES (16, '001', 'ProhlaseniZadatele', 'B')
+INSERT INTO DocumentVariant VALUES (16, '001', 'ProhlaseniZadatele', 'C')
+INSERT INTO DocumentVariant VALUES (16, '001', 'ProhlaseniZadatele', 'D')
+
+INSERT INTO DocumentVariant VALUES (5, '001', 'ProhlaseniSpoluzadatele', 'C')
+INSERT INTO DocumentVariant VALUES (5, '001', 'ProhlaseniSpoluzadatele', 'D')
+
+INSERT INTO DocumentVariant VALUES (16, '001', 'ProhlaseniSpoluzadatele', 'C')
+INSERT INTO DocumentVariant VALUES (16, '001', 'ProhlaseniSpoluzadatele', 'D')
+
+INSERT INTO DocumentVariant VALUES (5, '001', 'ProhlaseniSpoluzadateleCast2', 'C')
+INSERT INTO DocumentVariant VALUES (5, '001', 'ProhlaseniSpoluzadateleCast2', 'D')
+
+INSERT INTO DocumentVariant VALUES (16, '001', 'ProhlaseniSpoluzadateleCast2', 'C')
+INSERT INTO DocumentVariant VALUES (16, '001', 'ProhlaseniSpoluzadateleCast2', 'D')

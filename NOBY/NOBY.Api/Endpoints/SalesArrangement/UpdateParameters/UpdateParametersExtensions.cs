@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -46,7 +46,6 @@ internal static class UpdateParametersExtensions
         {
             DrawingDate = parameters.DrawingDate,
             IsImmediateDrawing = parameters.IsImmediateDrawing,
-            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             RepaymentAccount = parameters.RepaymentAccount is null ? null : new()
             {
                 BankCode = parameters.RepaymentAccount.BankCode,
@@ -67,6 +66,11 @@ internal static class UpdateParametersExtensions
                 }
             }
         };
+
+        if (parameters.Applicant?.Any() ?? false)
+        {
+            model.Applicant.AddRange(parameters.Applicant.Select(identity => (Identity)identity));
+        }
 
         if (parameters.PayoutList is not null)
             model.PayoutList.AddRange(parameters.PayoutList?.Select(x => new _SA.SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingPayoutList
@@ -90,7 +94,6 @@ internal static class UpdateParametersExtensions
     {
         var model = new _SA.SalesArrangementParametersGeneralChange()
         {
-            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             Collateral = new()
             {
                 IsActive = parameters.Collateral.IsActive,
@@ -158,6 +161,11 @@ internal static class UpdateParametersExtensions
             }
         };
 
+        if (parameters.Applicant?.Any() ?? false)
+        {
+            model.Applicant.AddRange(parameters.Applicant.Select(t => (Identity)t));
+        }
+
         if (parameters.LoanRealEstate?.LoanRealEstates != null)
             model.LoanRealEstate.LoanRealEstates.AddRange(parameters.LoanRealEstate.LoanRealEstates.Select(t => new _SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstatesItem
             {
@@ -172,7 +180,6 @@ internal static class UpdateParametersExtensions
     {
         var model = new _SA.SalesArrangementParametersHUBN()
         {
-            Applicant = parameters.Applicant is null ? null : (Identity)parameters.Applicant,
             CollateralIdentification = new()
             {
                 RealEstateIdentification = parameters.CollateralIdentification?.RealEstateIdentification ?? ""
@@ -205,6 +212,11 @@ internal static class UpdateParametersExtensions
                 GeneralComment = parameters.CommentToChangeRequest?.GeneralComment
             }
         };
+
+        if (parameters.Applicant?.Any() ?? false)
+        {
+            model.Applicant.AddRange(parameters.Applicant.Select(t => (Identity)t));
+        }
 
         if (parameters.LoanPurposes != null)
             model.LoanPurposes.AddRange(parameters.LoanPurposes.Select(t => new _SA.SalesArrangementParametersHUBN.Types.LoanPurposeItem
@@ -259,7 +271,7 @@ internal static class UpdateParametersExtensions
             if (parameters.Release.Customers is not null)
                 model.Release.Customers.AddRange(parameters.Release.Customers.Select(t => new _SA.SalesArrangementParametersCustomerChange.Types.ReleaseCustomerObject
                 {
-                    Identity = t.Identity ?? new CIS.Foms.Types.CustomerIdentity(),
+                    Identity = t.Identity ?? new SharedTypes.Types.CustomerIdentity(),
                     NaturalPerson = new()
                     {
                         FirstName = t.NaturalPerson?.FirstName ?? "",

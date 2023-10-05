@@ -17,7 +17,7 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -27,6 +27,9 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<long?>("CaseId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Channel")
                         .HasColumnType("int");
@@ -38,11 +41,17 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
                     b.Property<string>("CustomId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("DocumentHash")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DocumentId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Errors")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HashAlgorithm")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Identity")
@@ -62,7 +71,7 @@ namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mig
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomId", "Identity", "IdentityScheme", "DocumentId");
+                    b.HasIndex("CustomId", "Identity", "IdentityScheme", "DocumentId", "CaseId");
 
                     b.ToTable((string)null);
 

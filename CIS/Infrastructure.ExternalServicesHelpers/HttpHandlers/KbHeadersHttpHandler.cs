@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using CIS.Core;
+using System.Diagnostics;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 
@@ -26,16 +27,16 @@ public sealed class KbHeadersHttpHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        request.Headers.Add("X-KB-Orig-System-Identity", $$"""{"app":"{{DefaultAppValue}}","appComp":"{{_appComponentOriginator}}"}""");
-        request.Headers.Add("X-KB-Caller-System-Identity", $$"""{"app":"{{DefaultAppValue}}","appComp":"{{_appComponent}}"}""");
+        request.Headers.AddIfNotExists("X-KB-Orig-System-Identity", $$"""{"app":"{{DefaultAppValue}}","appComp":"{{_appComponentOriginator}}"}""");
+        request.Headers.AddIfNotExists("X-KB-Caller-System-Identity", $$"""{"app":"{{DefaultAppValue}}","appComp":"{{_appComponent}}"}""");
 
         // trace info
         if (Activity.Current?.Id is not null)
         {
             // nova hlavicka
-            request.Headers.Add("b3", $"{Activity.Current.TraceId}-{Activity.Current.SpanId}-1-{Activity.Current.ParentSpanId}");
+            request.Headers.Replace("b3", $"{Activity.Current.TraceId}-{Activity.Current.SpanId}-1-{Activity.Current.ParentSpanId}");
             // stara hlavicka
-            request.Headers.Add("X-KB-Trace-Id", Activity.Current?.RootId);
+            request.Headers.Replace("X-KB-Trace-Id", Activity.Current?.RootId);
         }
         
         return await base.SendAsync(request, cancellationToken);

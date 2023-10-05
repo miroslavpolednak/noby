@@ -21,6 +21,12 @@ internal sealed class DeleteContractRelationshipHandler
 
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.DeleteContractRelationshipRequest request, CancellationToken cancellation)
     {
+        // check if loan exists (against KonsDB)
+        if (!await _repository.ExistsLoan(request.ProductId, cancellation))
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+        }
+
         // check if relationship exists
         if (!await _repository.ExistsRelationship(request.ProductId, request.PartnerId, cancellation))
         {

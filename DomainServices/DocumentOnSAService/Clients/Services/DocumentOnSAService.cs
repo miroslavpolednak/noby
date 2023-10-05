@@ -30,11 +30,12 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
         return await _client.StartSigningAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task StopSigning(int documentOnSAId, CancellationToken cancellationToken = default)
+    public async Task StopSigning(StopSigningRequest request, CancellationToken cancellationToken = default)
     {
         await _client.StopSigningAsync(new StopSigningRequest
         {
-            DocumentOnSAId = documentOnSAId
+            DocumentOnSAId = request.DocumentOnSAId,
+            NotifyESignatures = request.NotifyESignatures
         }, cancellationToken: cancellationToken);
     }
 
@@ -77,9 +78,19 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
     {
         return await _client.GetElectronicDocumentPreviewAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
     }
-    
+
     public async Task SendDocumentPreview(int documentOnSAId, CancellationToken cancellationToken = default)
     {
         await _client.SendDocumentPreviewAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
+    }
+
+    public async Task RefreshElectronicDocument(int documentOnSAId, CancellationToken cancellationToken = default)
+    {
+        await _client.RefreshElectronicDocumentAsync(new() { DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<GetDocumentOnSAByFormIdResponse> GetDocumentOnSAByFormId(string formId, CancellationToken cancellationToken = default)
+    {
+        return await _client.GetDocumentOnSAByFormIdAsync(new() { FormId = formId }, cancellationToken: cancellationToken);
     }
 }

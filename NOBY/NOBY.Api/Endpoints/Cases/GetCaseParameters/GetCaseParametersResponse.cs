@@ -1,4 +1,5 @@
-﻿using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
+﻿using SharedTypes.Types;
+using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 using NOBY.Dto;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
@@ -132,37 +133,12 @@ public sealed class GetCaseParametersResponse
     /// </summary>
     public int? FixedRatePeriodRefix { get; set; }
 
-    public BranchConsultantDto? BranchConsultant { get; set; }
-
-    public ThirdPartyConsultantDto? ThirdPartyConsultant { get; set; }
+    public CaseOwnerUserDto? CaseOwnerOrigUser { get; set; }
 
     public StatementDto? Statement { get; set; }
 }
 
-public sealed class BranchConsultantDto
-{
-    /// <summary>
-    /// Pobočka banky, pod kterou spadá úvěr
-    /// </summary>
-    public string? BranchName { get; set; }
-
-    /// <summary>
-    /// Poradce, pod kterého spadá úvěr
-    /// </summary>
-    public string? ConsultantName { get; set; }
-
-    /// <summary>
-    /// ČPM
-    /// </summary>
-    public string? Cpm { get; set; }
-
-    /// <summary>
-    /// IČP
-    /// </summary>
-    public string? Icp { get; set; }
-}
-
-public sealed class ThirdPartyConsultantDto
+public sealed class CaseOwnerUserDto
 {
     /// <summary>
     /// Pobočka/společnost třetí strany
@@ -170,7 +146,7 @@ public sealed class ThirdPartyConsultantDto
     public string? BranchName { get; set; }
 
     /// <summary>
-    /// Poradce třetí strany
+    /// Poradce (Jméno Příjmení)
     /// </summary>
     public string? ConsultantName { get; set; }
 
@@ -183,4 +159,14 @@ public sealed class ThirdPartyConsultantDto
     /// IČP
     /// </summary>
     public string? Icp { get; set; }
+
+    /// <summary>
+    /// Všechny identity uživatele z XXVVSS
+    /// </summary>
+    public List<UserIdentity> UserIdentifiers { get; set; } = null!;
+    
+    /// <summary>
+    /// Flag, zda se jedná o interního uživatele, či externistu
+    /// </summary>
+    public bool IsInternal { get; set; }
 }

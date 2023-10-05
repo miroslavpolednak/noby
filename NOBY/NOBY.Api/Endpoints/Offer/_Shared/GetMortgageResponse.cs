@@ -15,12 +15,17 @@ public sealed class GetMortgageResponse
     /// <summary>
     /// Zadani simulace.
     /// </summary>
-    public MortgageInputs SimulationInputs { get; set; } = null!;
+    public MortgageInputsExtended SimulationInputs { get; set; } = null!;
     
     /// <summary>
     /// Vysledky simulace.
     /// </summary>
     public MortgageOutputs SimulationResults { get; set; } = null!;
+
+    /// <summary>
+    /// Datum, kdy končí garance pro danou simulaci
+    /// </summary>
+    public DateOnly? OfferGuaranteeDateTo { get; set; }
 
     public CreditWorthinessSimpleInputs? CreditWorthinessSimpleInputs { get; set; }
 }

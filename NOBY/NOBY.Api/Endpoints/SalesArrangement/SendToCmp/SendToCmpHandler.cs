@@ -1,5 +1,5 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.Enums;
+using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
@@ -11,10 +11,9 @@ using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 using NOBY.Api.Endpoints.SalesArrangement.SendToCmp.Dto;
-using System.Threading;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CreateCustomerRequest = DomainServices.CustomerService.Contracts.CreateCustomerRequest;
-using Mandants = CIS.Infrastructure.gRPC.CisTypes.Mandants;
+using Mandants = SharedTypes.GrpcTypes.Mandants;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
 
@@ -29,6 +28,7 @@ internal sealed class SendToCmpHandler
     private readonly IProductServiceClient _productService;
     private readonly ICustomerServiceClient _customerService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly IMediator _mediator;
 
     public SendToCmpHandler(
         DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
@@ -37,7 +37,8 @@ internal sealed class SendToCmpHandler
         ICustomerOnSAServiceClient customerOnSaService,
         IProductServiceClient productService,
         ICustomerServiceClient customerService,
-        IDocumentOnSAServiceClient documentOnSAService)
+        IDocumentOnSAServiceClient documentOnSAService,
+        IMediator mediator)
     {
         _codebookService = codebookService;
         _caseService = caseService;
@@ -46,6 +47,7 @@ internal sealed class SendToCmpHandler
         _productService = productService;
         _customerService = customerService;
         _documentOnSAService = documentOnSAService;
+        _mediator = mediator;
     }
 
     public async Task Handle(SendToCmpRequest request, CancellationToken cancellationToken)
@@ -57,7 +59,8 @@ internal sealed class SendToCmpHandler
         var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
 
         // check flow switches
-        await validateFlowSwitches(saInstance.SalesArrangementId, saCategory.SalesArrangementCategory, cancellationToken);
+        if (saCategory.SalesArrangementCategory == 1)
+            await validateFlowSwitches(saInstance.SalesArrangementId, saCategory.SalesArrangementCategory, cancellationToken);
 
         await ValidateSalesArrangement(saInstance.SalesArrangementId, request.IgnoreWarnings, cancellationToken);
 
@@ -102,21 +105,19 @@ internal sealed class SendToCmpHandler
     private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)
     {
         var flowSwitches = await _salesArrangementService.GetFlowSwitches(salesArrangementId, cancellationToken);
+        var sections = await _mediator.Send(new GetFlowSwitchesRequest(salesArrangementId), cancellationToken);
 
         // HFICH-3630
-        if (salesArrangementCategory == 1 && !isSet(FlowSwitches.IsOfferGuaranteed))
+        if (salesArrangementCategory == 1 && !flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed && t.Value))
         {
             throw new NobyValidationException(90016);
         }
 
-        // HFICH-5191
-        if (salesArrangementCategory == 1 && isSet(FlowSwitches.IsOfferWithDiscount) && isSet(FlowSwitches.IsWflTaskForIPApproved, false))
+        // HFICH-8011
+        if (!sections.SendButton.IsActive)
         {
-            throw new NobyValidationException(90018);
+            throw new NobyValidationException(90001, "SendButton.IsActive is false");
         }
-
-        bool isSet(FlowSwitches flowSwitch, bool value = true)
-            => flowSwitches?.Any(t => t.FlowSwitchId == (int)flowSwitch && t.Value == value) ?? false;
     }
 
     private async Task ValidateSalesArrangement(int salesArrangementId, bool ignoreWarnings, CancellationToken cancellationToken)

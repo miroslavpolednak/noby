@@ -13,16 +13,17 @@ variables:
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
   projectFile: 'DomainServices/HouseholdService/Api/DomainServices.HouseholdService.Api.csproj'
+  runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), ne(lower(variables['USESONARQUBE']), 'false'))]
 
 # custom BuildNumber
 name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
 
 steps:
-# - task: UseDotNet@2
+#- task: UseDotNet@2
 #  inputs:
-#    packageType: 'sdk'
-#    version: '6.0.x'
-#    includePreviewVersions: true
+#   packageType: 'sdk'
+#   version: '7.0.x'
+#   includePreviewVersions: true
 
 - task: InlinePowershell@1
   inputs:
@@ -56,6 +57,7 @@ steps:
     noCache: true
 
 - task: SonarQubePrepare@5
+  condition: eq(variables.runSonarQube, true)
   inputs:
     SonarQube: 'NOBY - SonarQube'
     scannerMode: 'MSBuild'
@@ -71,8 +73,10 @@ steps:
     arguments: '--output $(Build.BinariesDirectory)'
 
 - task: SonarQubeAnalyze@5
+  condition: eq(variables.runSonarQube, true)
 
 - task: SonarQubePublish@5
+  condition: eq(variables.runSonarQube, true)
   inputs:
     pollingTimeoutSec: '300'
 

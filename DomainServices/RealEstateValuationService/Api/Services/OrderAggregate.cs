@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
@@ -91,8 +91,8 @@ internal sealed class OrderAggregate
         {
             switch (Helpers.GetRealEstateType(entity))
             {
-                case CIS.Foms.Enums.RealEstateTypes.Hf:
-                case CIS.Foms.Enums.RealEstateTypes.Hff:
+                case SharedTypes.Enums.RealEstateTypes.Hf:
+                case SharedTypes.Enums.RealEstateTypes.Hff:
                     return SpecificDetailHouseAndFlatObject.Parser.ParseFrom(entity.SpecificDetailBin);
             }
         }

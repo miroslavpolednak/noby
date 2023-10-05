@@ -1,5 +1,5 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.Enums;
+using SharedTypes.GrpcTypes;
 using CIS.Testing.Common;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
@@ -10,9 +10,20 @@ public static class CustomerMockExtensions
 {
     public static void MockCustomerList(this ICustomerServiceClient customerServiceClient)
     {
-        var customer = FixtureFactory.Create().Create<CustomerDetailResponse>();
-        customer.Identities.Add(new Identity(0, IdentitySchemes.Kb));
+        var fixture = FixtureFactory.Create();
 
-        customerServiceClient.GetCustomerList(Arg.Any<IEnumerable<Identity>>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new CustomerListResponse { Customers = { customer } });
+        customerServiceClient.GetCustomerList(Arg.Any<IEnumerable<Identity>>(), Arg.Any<CancellationToken>()).Returns(args =>
+        {
+            var customers = args.Arg<IEnumerable<Identity>>().Select(identity =>
+            {
+                var customer = fixture.Create<CustomerDetailResponse>();
+                
+                customer.Identities.Add(new Identity(identity.IdentityId, IdentitySchemes.Kb));
+
+                return customer;
+            });
+
+            return new CustomerListResponse { Customers = { customers } };
+        });
     }
 }

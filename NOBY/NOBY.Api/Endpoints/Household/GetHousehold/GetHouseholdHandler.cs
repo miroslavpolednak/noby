@@ -9,7 +9,7 @@ internal sealed class GetHouseholdHandler
     {
         // nacist ulozenou domacnost
         var household = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
-        GetHouseholdResponse response = household.ToApiResponse();
+        var response = household.ToApiResponse();
 
         // nacist klienty
         if (household.CustomerOnSAId1.HasValue)
@@ -17,7 +17,7 @@ internal sealed class GetHouseholdHandler
         if (household.CustomerOnSAId2.HasValue)
             response.Customer2 = await getCustomer(household.CustomerOnSAId2.Value, cancellationToken);
 
-        bool isPartner = DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(response.Customer1?.MaritalStatusId, response.Customer2?.MaritalStatusId);
+        bool isPartner = Helpers.AreCustomersPartners(response.Customer1?.MaritalStatusId, response.Customer2?.MaritalStatusId);
         response.AreCustomersPartners = isPartner;
 
         return response;

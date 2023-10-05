@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.HouseholdService.Api.Database;
 using DomainServices.HouseholdService.Contracts;
 
@@ -19,10 +19,11 @@ internal sealed class GetCustomerHandler
         var customerInstance = new Contracts.CustomerOnSA
         {
             CustomerOnSAId = entity.CustomerOnSAId,
+            SalesArrangementId = entity.SalesArrangementId,
+            CaseId = entity.CaseId,
             Name = entity.Name,
             FirstNameNaturalPerson = entity.FirstNameNaturalPerson,
             DateOfBirthNaturalPerson = entity.DateOfBirthNaturalPerson,
-            SalesArrangementId = entity.SalesArrangementId,
             CustomerRoleId = (int)entity.CustomerRoleId,
             LockedIncomeDateTime = entity.LockedIncomeDateTime,
             MaritalStatusId = entity.MaritalStatusId,

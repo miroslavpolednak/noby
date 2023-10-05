@@ -33,4 +33,22 @@ public sealed class CisServiceAuthenticationConfiguration
     /// True pokud se jedna o SSL connection
     /// </summary>
     public bool IsSsl { get; set; }
+
+    /// <summary>
+    /// Seznam uživatelů, kteří mohou přistupovat k dané službě
+    /// </summary>
+    public List<AllowedUserConfiguration>? AllowedUsers { get; set; }
+
+    public sealed class AllowedUserConfiguration
+    {
+        /// <summary>
+        /// Login technického uživatele
+        /// </summary>
+        public string Username { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Seznam rolí ve kterých je uživatel zařazen - nemusí mít žádné
+        /// </summary>
+        public List<string>? Roles { get; set; }
+    }
 }

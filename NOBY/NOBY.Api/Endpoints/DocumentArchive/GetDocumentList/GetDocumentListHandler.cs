@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using NOBY.Services.DocumentHelper;
@@ -10,18 +9,15 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
 {
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly IDocumentHelperService _documentHelper;
 
     public GetDocumentListHandler(
             IDocumentArchiveServiceClient client,
             ICurrentUserAccessor currentUserAccessor,
-            ICodebookServiceClient codebookServiceClient,
             IDocumentHelperService documentHelper)
     {
         _client = client;
         _currentUserAccessor = currentUserAccessor;
-        _codebookServiceClient = codebookServiceClient;
         _documentHelper = documentHelper;
     }
 
@@ -44,6 +40,10 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
         var documentListMetadata = _documentHelper.MapGetDocumentListMetadata(getDocumentListResult);
         var documentInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(getDocumentsInQueueResult);
         var mergedDocumentMetadata = _documentHelper.MergeDocuments(documentListMetadata, documentInQueueMetadata);
+
+        if (!string.IsNullOrWhiteSpace(request.FormId))
+            mergedDocumentMetadata = mergedDocumentMetadata.Where(d => d.FormId == request.FormId);
+
         var mergedDocumentMetadataFiltered = (await _documentHelper.FilterDocumentsVisibleForKb(mergedDocumentMetadata, cancellationToken)).ToList();
 
         var finalResponse = new GetDocumentListResponse();

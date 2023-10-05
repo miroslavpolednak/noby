@@ -1,4 +1,4 @@
-﻿using _CisEnum = CIS.Foms.Enums;
+﻿using _CisEnum = SharedTypes.Enums;
 using _DocSaEnum = DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Extensions;

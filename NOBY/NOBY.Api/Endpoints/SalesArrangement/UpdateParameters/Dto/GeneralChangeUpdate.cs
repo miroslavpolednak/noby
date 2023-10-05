@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types;
+﻿using SharedTypes.Types;
 using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,7 +9,7 @@ public sealed class GeneralChangeUpdate
     /// <summary>
     /// Identita klienta
     /// </summary>
-    public CustomerIdentity? Applicant { get; set; }
+    public List<CustomerIdentity>? Applicant { get; set; }
 
     /// <summary>
     /// Zajištění

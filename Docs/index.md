@@ -11,7 +11,9 @@
 
 [Validace HTTP requestu a error handling](./topics/validation.md)
 
-[Autentizace doménových služeb](./topics/authentication.md)
+[Autentizace doménových služeb](./topics/authentication-ds.md)
+
+[Autorizace doménových služeb](./topics/authorization-ds.md)
 
 [Autentizace FE API](./topics/authentication-feapi.md)
 
@@ -59,7 +61,7 @@ MediatR extensions, behaviors.
 [CIS.Infrastructure.Logging.Extensions](CIS.Infrastructure.Logging.Extensions/index.md)  
 Extension metody pro High Performance logging.
 
-[CIS.Foms.Types](CIS.Foms.Types/index.md)  
+[SharedTypes.Types](SharedTypes.Types/index.md)  
 Společné DTO, Interfaces, Enumy pro NOBY
 
 [CIS.Infrastructure.gRPC](CIS.Infrastructure.gRPC/index.md)  

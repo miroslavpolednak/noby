@@ -1,5 +1,6 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.DocumentOnSAService.Contracts;
+using FastEnumUtility;
 using FluentValidation;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
@@ -9,7 +10,26 @@ public class StartSigningValidator : AbstractValidator<StartSigningRequest>
     public StartSigningValidator()
     {
         RuleFor(e => e.SalesArrangementId).NotNull().WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsRequired);
+
+        RuleFor(d => d)
+            .Must(ValidateDocumentType)
+            .WithErrorCode(ErrorCodeMapper.DocumentTypeIdDoesNotExist);
     }
+
+    private readonly Func<StartSigningRequest, bool> ValidateDocumentType = (request) =>
+    {
+        // if not worflow 
+        if (request.TaskId is null)
+        {
+            if (request.DocumentTypeId is null)
+                return false;
+
+            if (!FastEnum.IsDefined<DocumentTypes>((byte)request.DocumentTypeId.Value))
+                return false;
+        }
+        return true;
+    };
+
 }
 
 public static class StartSigningBlValidator

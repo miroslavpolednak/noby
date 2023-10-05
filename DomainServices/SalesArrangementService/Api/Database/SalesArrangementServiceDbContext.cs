@@ -15,6 +15,7 @@ internal sealed class SalesArrangementServiceDbContext
     public DbSet<Entities.SalesArrangement> SalesArrangements { get; set; }
     public DbSet<Entities.SalesArrangementParameters> SalesArrangementsParameters { get; set; }
     public DbSet<Entities.FlowSwitch> FlowSwitches { get; set; }
+    public DbSet<Queries.CaseSaParametersQuery> CaseSaParametersQuery { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

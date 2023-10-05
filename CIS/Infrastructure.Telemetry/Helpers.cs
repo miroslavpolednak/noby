@@ -8,7 +8,7 @@ namespace CIS.Infrastructure.Telemetry;
 
 public static class Helpers
 {
-    const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{ThreadId}] [{Level:u}] [{TraceId}] [{SpanId}] [{ParentId}] [{CisAppKey}] [{Version}] [{Assembly}] [{SourceContext}] [{MachineName}] [{ClientIp}] [{CisUserId}] [{CisUserIdent}] [{RequestId}] [{RequestPath}] [{ConnectionId}] [{Message}] [{Exception}]{NewLine}";
+    const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff zzz} [{ThreadId}] [{Level:u}] [{TraceId}] [{SpanId}] [{ParentId}] [{CisAppKey}] [{Version}] [{Assembly}] [{SourceContext}] [{MachineName}] [{ClientIp}] [{CisUserId}] [{CisUserIdent}] [{RequestId}] [{RequestPath}] [{ConnectionId}] [{Message}] [{Exception}]{NewLine}";
 
     public static (int? UserId, string? UserIdent) GetCurrentUser(ICurrentUserAccessor? userAccessor, IHttpContextAccessor httpContextAccessor)
     {
@@ -79,7 +79,7 @@ public static class Helpers
 #pragma warning disable CA1305 // Specify IFormatProvider
             loggerConfiguration
                 .WriteTo
-                .Async(a => a.File(path, buffered: true, rollingInterval: RollingInterval.Day, outputTemplate: _fileLoggerTemplate), bufferSize: 1000);
+                .Async(a => a.File(path, buffered: true, rollingInterval: RollingInterval.Day, retainedFileCountLimit: configuration.File.RetainedFileCountLimit, rollOnFileSizeLimit: configuration.File.RollOnFileSizeLimit, fileSizeLimitBytes: configuration.File.FileSizeLimitBytes, outputTemplate: _fileLoggerTemplate), bufferSize: 1000);
 #pragma warning restore CA1305 // Specify IFormatProvider
         }
 

@@ -12,7 +12,7 @@ internal sealed class Household : CIS.Core.Data.BaseCreatedWithModifiedUserId
     public long CaseId { get; set; }
     public int SalesArrangementId { get; set; }
 
-    public CIS.Foms.Enums.HouseholdTypes HouseholdTypeId { get; set; }
+    public SharedTypes.Enums.HouseholdTypes HouseholdTypeId { get; set; }
 
     public int? ChildrenUpToTenYearsCount { get; set; }
     public int? ChildrenOverTenYearsCount { get; set; }

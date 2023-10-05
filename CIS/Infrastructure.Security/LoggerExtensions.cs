@@ -9,6 +9,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, string, Exception> _authParsedLogin;
     private static readonly Action<ILogger, string, Exception> _adConnectionFailed;
     private static readonly Action<ILogger, int, Exception> _contextUserAdded;
+    private static readonly Action<ILogger, string, Exception> _authServiceUserNotFound;
 
     static LoggerExtensions()
     {
@@ -44,8 +45,13 @@ internal static class LoggerExtensions
 
         _contextUserAdded = LoggerMessage.Define<int>(
            LogLevel.Trace,
-           new EventId(526, nameof(ContextUserAdded)),
+           new EventId(527, nameof(ContextUserAdded)),
            "Context user identity {PartyId} added");
+
+        _authServiceUserNotFound = LoggerMessage.Define<string>(
+           LogLevel.Warning,
+           new EventId(528, nameof(AuthServiceUserNotFound)),
+           "Service user {Username} not found in allowed users");
     }
 
     public static void AuthIsNotBasic(this ILogger logger)
@@ -68,4 +74,7 @@ internal static class LoggerExtensions
 
     public static void ContextUserAdded(this ILogger logger, int partyId)
         => _contextUserAdded(logger, partyId, null!);
+
+    public static void AuthServiceUserNotFound(this ILogger logger, string username)
+        => _authServiceUserNotFound(logger, username, null!);
 }

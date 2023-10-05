@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
@@ -50,7 +50,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
-        
+
         if (salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Mortgage.ToByte() // 1
             || salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() // 6
             || salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.CustomerChange3602A.ToByte() // 10 
@@ -140,12 +140,12 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
     private async Task<_DocOnSA.SigningIdentity> MapCustomerOnSAIdentity(int customerOnSAId, string signatureAnchor, CancellationToken cancellationToken)
     {
         var customerOnSa = await _customerOnSAServiceClient.GetCustomer(customerOnSAId, cancellationToken);
-        var (detailWithChangedData, _) = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
+        var detailWithChangedData = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
 
         var signingIdentity = new _DocOnSA.SigningIdentity();
 
         // Product, CRS and Service with household mapping
-        signingIdentity.CustomerIdentifiers.AddRange(customerOnSa.CustomerIdentifiers.Select(s => new CIS.Infrastructure.gRPC.CisTypes.Identity
+        signingIdentity.CustomerIdentifiers.AddRange(customerOnSa.CustomerIdentifiers.Select(s => new SharedTypes.GrpcTypes.Identity
         {
             IdentityId = s.IdentityId,
             IdentityScheme = s.IdentityScheme
@@ -190,7 +190,8 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
                 EArchivIdsLinked = Array.Empty<string>()
             },
               signatureStates),
-            EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(result.DocumentOnSa.DocumentTypeId.GetValueOrDefault(), documentTypes, eACodeMains)
+            EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
+                new() { DocumentTypeId = result.DocumentOnSa.DocumentTypeId, EACodeMainId = result.DocumentOnSa.EACodeMainId }, documentTypes, eACodeMains)
         };
     }
 

@@ -3,8 +3,10 @@ using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
+using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 using PaymentAccount = NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount;
 
 namespace NOBY.Api.Endpoints.Cases.IdentifyCase;
@@ -15,15 +17,15 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     {
         return request.Criterion switch
         {
-            Criterion.FormId => await HandleByFormId(request.FormId!, cancellationToken),
-            Criterion.PaymentAccount => await HandleByPaymentAccount(request.Account!, cancellationToken),
-            Criterion.CaseId => await HandleByCaseId(request.CaseId!.Value, cancellationToken),
-            Criterion.ContractNumber => await HandleByContractNumber(request.ContractNumber!, cancellationToken),
-            _ => throw new ArgumentOutOfRangeException()
+            Criterion.FormId => await handleByFormId(request.FormId!, cancellationToken),
+            Criterion.PaymentAccount => await handleByPaymentAccount(request.Account!, cancellationToken),
+            Criterion.CaseId => await handleByCaseId(request.CaseId!.Value, cancellationToken),
+            Criterion.ContractNumber => await handleByContractNumber(request.ContractNumber!, cancellationToken),
+            _ => throw new NobyValidationException("Criterion unknown")
         };
     }
 
-    private async Task<IdentifyCaseResponse> HandleByFormId(string formId, CancellationToken cancellationToken)
+    private async Task<IdentifyCaseResponse> handleByFormId(string formId, CancellationToken cancellationToken)
     {
         var documentListRequest = new GetDocumentListRequest { FormId = formId };
         var documentListResponse = await _documentArchiveServiceClient.GetDocumentList(documentListRequest, cancellationToken);
@@ -33,15 +35,30 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
 
         if (caseId == null)
         {
-            return new IdentifyCaseResponse();
+            try
+            {
+                var documentOnSa = (await _documentOnSAService.GetDocumentOnSAByFormId(formId, cancellationToken)).DocumentOnSa;
+
+                var validationResponse = await _salesArrangementService.ValidateSalesArrangementId(documentOnSa.SalesArrangementId, false, cancellationToken);
+
+                if (!validationResponse.Exists || validationResponse.CaseId is null)
+                    return new IdentifyCaseResponse();
+
+                return await handleByCaseId(validationResponse.CaseId.Value, cancellationToken);
+            }
+            catch (CisNotFoundException)
+            {
+                return new IdentifyCaseResponse();
+            }
         }
 
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId.Value, false, cancellationToken);
         if (!caseInstance.Exists)
         {
-            return new IdentifyCaseResponse { CaseId = null };
+            return new IdentifyCaseResponse();
         }
-        caseOwnerCheck(caseInstance.OwnerUserId!.Value);
+
+        SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
 
         var taskList = await _caseServiceClient.GetTaskList(caseId.Value, cancellationToken);
         var taskSubList = taskList.Where(t => t.TaskTypeId == 6).ToList();
@@ -81,55 +98,52 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         };
     }
     
-    private async Task<IdentifyCaseResponse> HandleByPaymentAccount(PaymentAccount account, CancellationToken cancellationToken)
+    private async Task<IdentifyCaseResponse> handleByPaymentAccount(PaymentAccount account, CancellationToken cancellationToken)
     {
-        var paymentAccount = new PaymentAccountObject { Prefix = account.Prefix, AccountNumber = account.Number };
-        var request = new GetCaseIdRequest { PaymentAccount = paymentAccount };
-        
-        try
-        {
-            var response = await _productServiceClient.GetCaseId(request, cancellationToken);
-            return await HandleByCaseId(response.CaseId, cancellationToken);
-        }
-        catch (CisNotFoundException)
-        {
-            return new IdentifyCaseResponse();
-        }
+        var request = new GetCaseIdRequest 
+        { 
+            PaymentAccount = new()
+            { 
+                Prefix = account.Prefix, 
+                AccountNumber = account.Number 
+            }
+        };
+        return await callProductService(request, cancellationToken);
     }
     
-    private async Task<IdentifyCaseResponse> HandleByCaseId(long caseId, CancellationToken cancellationToken)
+    private async Task<IdentifyCaseResponse> handleByContractNumber(string contractNumber, CancellationToken cancellationToken)
+    {
+        var request = new GetCaseIdRequest 
+        { 
+            ContractNumber = new()
+            {
+                ContractNumber = contractNumber
+            }
+        };
+        return await callProductService(request, cancellationToken);
+    }
+
+    private async Task<IdentifyCaseResponse> handleByCaseId(long caseId, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
 
         if (!caseInstance.Exists) return new IdentifyCaseResponse();
-        
-        caseOwnerCheck(caseInstance.OwnerUserId!.Value);
+
+        SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
+
         return new IdentifyCaseResponse { CaseId = caseId };
     }
-    
-    private async Task<IdentifyCaseResponse> HandleByContractNumber(string contractNumber, CancellationToken cancellationToken)
+
+    private async Task<IdentifyCaseResponse> callProductService(GetCaseIdRequest request, CancellationToken cancellationToken)
     {
-        var contract = new ContractNumberObject { ContractNumber = contractNumber };
-        var request = new GetCaseIdRequest { ContractNumber = contract };
         try
         {
             var response = await _productServiceClient.GetCaseId(request, cancellationToken);
-            var caseInstance = await _caseServiceClient.ValidateCaseId(response.CaseId, false, cancellationToken);
-            caseOwnerCheck(caseInstance.OwnerUserId!.Value);
-
-            return await HandleByCaseId(response.CaseId, cancellationToken);
+            return await handleByCaseId(response.CaseId, cancellationToken);
         }
         catch (CisNotFoundException)
         {
             return new IdentifyCaseResponse();
-        }
-    }
-
-    private void caseOwnerCheck(int ownerUserId)
-    {
-        if (ownerUserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
-        {
-            throw new CisAuthorizationException("Case owner check failed");
         }
     }
 
@@ -138,18 +152,24 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     private readonly IProductServiceClient _productServiceClient;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
-    
+    private readonly IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+
     public IdentifyCaseHandler(
         ICurrentUserAccessor currentUser,
         IMediator mediator,
         IProductServiceClient productServiceClient,
         ICaseServiceClient caseServiceClient,
-        IDocumentArchiveServiceClient documentArchiveServiceClient)
+        IDocumentArchiveServiceClient documentArchiveServiceClient,
+        IDocumentOnSAServiceClient documentOnSAService,
+        ISalesArrangementServiceClient salesArrangementService)
     {
         _currentUser = currentUser;
         _mediator = mediator;
         _productServiceClient = productServiceClient;
         _caseServiceClient = caseServiceClient;
         _documentArchiveServiceClient = documentArchiveServiceClient;
+        _documentOnSAService = documentOnSAService;
+        _salesArrangementService = salesArrangementService;
     }
 }

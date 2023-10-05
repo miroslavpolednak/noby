@@ -119,7 +119,7 @@ internal sealed partial class ValidationTransformationServiceFactory
                     // polozka neexistuje v transformacni tabulce... co s tim?
                     return new TransformationItem
                     {
-                        Category = "-unknown-",
+                        Category = "Ostatní",
                         Text = item.Message
                     };
                 }

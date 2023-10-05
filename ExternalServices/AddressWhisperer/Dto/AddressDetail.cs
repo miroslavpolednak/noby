@@ -13,17 +13,17 @@ public class AddressDetail
     public string? Street { get; set; }
 
     /// <summary>
-    /// Číslo orientační - AddressWhispererBEService|streetNumber
+    /// Číslo orientační - pro CZ/SK adresy mapujeme z AddressWhispererBEService|streetNumber, pro ostatní z AddressWhispererBEService|landRegisterNumber
     /// </summary>
     public string? StreetNumber { get; set; }
 
     /// <summary>
-    /// Číslo popisné - AddressWhispererBEService|landRegisterNumber
+    /// Číslo popisné - pro CZ/SK adresy mapujeme z AddressWhispererBEService|landRegisterNumber, pro ostatní státy nemapujeme
     /// </summary>
     public string? HouseNumber { get; set; }
 
     /// <summary>
-    /// Číslo evidenční - AddressWhispererBEService|evidenceNumber
+    /// Číslo evidenční - pro CZ/SK adresy mapujeme z AddressWhispererBEService|evidenceNumber, pro ostatní státy nemapujeme
     /// </summary>
     public string? EvidenceNumber { get; set; }
 

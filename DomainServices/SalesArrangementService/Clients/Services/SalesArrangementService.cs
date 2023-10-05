@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Clients.Services;
 
-internal sealed class SalesArrangementService 
+internal sealed class SalesArrangementService
     : ISalesArrangementServiceClient
 {
     public async Task<(int SalesArrangementId, int? OfferId)> GetProductSalesArrangement(long caseId, CancellationToken cancellationToken = default(CancellationToken))
@@ -29,9 +29,10 @@ internal sealed class SalesArrangementService
     public async Task<int> CreateSalesArrangement(long caseId, int salesArrangementTypeId, int? offerId = null, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.CreateSalesArrangementAsync(
-            new() { 
-                CaseId = caseId, 
-                SalesArrangementTypeId = salesArrangementTypeId, 
+            new()
+            {
+                CaseId = caseId,
+                SalesArrangementTypeId = salesArrangementTypeId,
                 OfferId = offerId
             }, cancellationToken: cancellationToken);
         return result.SalesArrangementId;
@@ -55,7 +56,7 @@ internal sealed class SalesArrangementService
         }
         return _cacheGetSalesArrangement;
     }
-    
+
     public async Task<SalesArrangement?> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default(CancellationToken))
     {
         var result = await _service.GetSalesArrangementByOfferIdAsync(
@@ -87,60 +88,60 @@ internal sealed class SalesArrangementService
 
     public async Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken))
     {
-         await _service.UpdateSalesArrangementAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId,
-                ContractNumber = contractNumber ?? "",
-                RiskBusinessCaseId = riskBusinessCaseId ?? ""
-            }, cancellationToken: cancellationToken);
+        await _service.UpdateSalesArrangementAsync(
+           new()
+           {
+               SalesArrangementId = salesArrangementId,
+               ContractNumber = contractNumber ?? "",
+               RiskBusinessCaseId = riskBusinessCaseId ?? ""
+           }, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellationToken = default(CancellationToken))
     {
-         await _service.UpdateSalesArrangementStateAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId,
-                State = state
-            }, cancellationToken: cancellationToken);
+        await _service.UpdateSalesArrangementStateAsync(
+           new()
+           {
+               SalesArrangementId = salesArrangementId,
+               State = state
+           }, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateSalesArrangementParameters(Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-         await _service.UpdateSalesArrangementParametersAsync(request, cancellationToken: cancellationToken);
+        await _service.UpdateSalesArrangementParametersAsync(request, cancellationToken: cancellationToken);
     }
 
     public async Task<ValidateSalesArrangementResponse> ValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-         return await _service.ValidateSalesArrangementAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId
-            }, cancellationToken: cancellationToken);
+        return await _service.ValidateSalesArrangementAsync(
+           new()
+           {
+               SalesArrangementId = salesArrangementId
+           }, cancellationToken: cancellationToken);
     }
 
     public async Task SendToCmp(int salesArrangementId, bool isCancelled, CancellationToken cancellationToken = default)
     {
-         await _service.SendToCmpAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId,
-                IsCancelled = isCancelled
-            }, cancellationToken: cancellationToken);
+        await _service.SendToCmpAsync(
+           new()
+           {
+               SalesArrangementId = salesArrangementId,
+               IsCancelled = isCancelled
+           }, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default)
     {
-         await _service.UpdateLoanAssessmentParametersAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId,
-                LoanApplicationAssessmentId = loanApplicationAssessmentId ?? "",
-                RiskSegment = riskSegment ?? "",
-                CommandId = commandId ?? "",
-                RiskBusinessCaseExpirationDate = riskBusinessCaseExpirationDate,
-            }, cancellationToken: cancellationToken);
+        await _service.UpdateLoanAssessmentParametersAsync(
+           new()
+           {
+               SalesArrangementId = salesArrangementId,
+               LoanApplicationAssessmentId = loanApplicationAssessmentId ?? "",
+               RiskSegment = riskSegment ?? "",
+               CommandId = commandId ?? "",
+               RiskBusinessCaseExpirationDate = riskBusinessCaseExpirationDate,
+           }, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateOfferDocumentId(int salesArrangementId, string offerDocumentId, CancellationToken cancellationToken = default)
@@ -155,11 +156,16 @@ internal sealed class SalesArrangementService
 
     public async Task<List<FlowSwitch>> GetFlowSwitches(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        return (await _service.GetFlowSwitchesAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId
-            }, cancellationToken: cancellationToken)).FlowSwitches.ToList();
+        if (_cacheGetFlowSwitches is null || _cacheGetFlowSwitchesId != salesArrangementId)
+        {
+            _cacheGetFlowSwitches = (await _service.GetFlowSwitchesAsync(
+                new()
+                {
+                    SalesArrangementId = salesArrangementId
+                }, cancellationToken: cancellationToken)).FlowSwitches.ToList();
+            _cacheGetFlowSwitchesId = salesArrangementId;
+        }
+        return _cacheGetFlowSwitches;
     }
 
     public async Task SetFlowSwitches(int salesArrangementId, List<EditableFlowSwitch> flowSwitches, CancellationToken cancellationToken = default)
@@ -197,6 +203,13 @@ internal sealed class SalesArrangementService
         return _cacheValidateSalesArrangementId;
     }
 
+    public void ClearSalesArrangementCache()
+    {
+        _cacheGetSalesArrangement = null;
+    }
+
+    private List<FlowSwitch> _cacheGetFlowSwitches;
+    private int? _cacheGetFlowSwitchesId;
     private SalesArrangement? _cacheGetSalesArrangement;
     private ValidateSalesArrangementIdResponse? _cacheValidateSalesArrangementId;
 

@@ -16,7 +16,7 @@ internal sealed class SearchCasesHandler
 
         // zavolat BE sluzbu
         var result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken);
-        
+
         // transform
         return new SearchCasesResponse
         {
@@ -28,11 +28,12 @@ internal sealed class SearchCasesHandler
     static List<int>? getStatesFilter(int? filterId)
         => filterId switch
         {
-            1 => new List<int>() { 1, 2 },
-            2 => new List<int>() { 3 },
-            3 => new List<int>() { 4 },
-            4 => new List<int>() { 5 },
-            _ => null
+            1 => new List<int>() { 1, 2, 3, 4, 5, 8, 9 },
+            2 => new List<int>() { 1, 2, 8 },
+            3 => new List<int>() { 3 },
+            4 => new List<int>() { 4 },
+            5 => new List<int>() { 5 },
+            _ => throw new NotImplementedException($"Filter {filterId} is not implemented")
         };
 
     static List<Paginable.MapperField> sortingMapper = new()

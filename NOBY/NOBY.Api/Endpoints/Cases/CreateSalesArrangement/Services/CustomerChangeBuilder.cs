@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -42,9 +42,8 @@ internal sealed class CustomerChangeBuilder
                 var customerDetail = await customerService.GetCustomerDetail(identity, cancellationToken);
                 loadedCustomers.Add(customerDetail);
 
-                _request.CustomerChange.Applicants.Add(new __SA.SalesArrangementParametersCustomerChange.Types.ApplicantObject
+                var applicant = new __SA.SalesArrangementParametersCustomerChange.Types.ApplicantObject
                 {
-                    Identity = identity,
                     NaturalPerson = new __SA.SalesArrangementParametersCustomerChange.Types.NaturalPersonObject
                     {
                         FirstName = customerDetail.NaturalPerson?.FirstName ?? "",
@@ -56,7 +55,10 @@ internal sealed class CustomerChangeBuilder
                         IdentificationDocumentTypeId = customerDetail.IdentificationDocument?.IdentificationDocumentTypeId ?? 0,
                         Number = customerDetail.IdentificationDocument?.Number ?? ""
                     }
-                });
+                };
+                applicant.Identity.Add(identity);
+
+                _request.CustomerChange.Applicants.Add(applicant);
             }
 
             // agent

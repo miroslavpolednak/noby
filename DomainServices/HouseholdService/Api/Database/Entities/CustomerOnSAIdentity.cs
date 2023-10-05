@@ -11,7 +11,7 @@ internal sealed class CustomerOnSAIdentity
 
     public int CustomerOnSAId { get; set; }
 
-    public CIS.Foms.Enums.IdentitySchemes IdentityScheme { get; set; }
+    public SharedTypes.Enums.IdentitySchemes IdentityScheme { get; set; }
 
     public long IdentityId { get; set; }
 
@@ -26,12 +26,12 @@ internal sealed class CustomerOnSAIdentity
 
 #pragma warning disable CS8618
 
-    public CustomerOnSAIdentity(CIS.Infrastructure.gRPC.CisTypes.Identity identity, int? customerOnSAId = default(int?))
+    public CustomerOnSAIdentity(SharedTypes.GrpcTypes.Identity identity, int? customerOnSAId = default(int?))
 #pragma warning restore CS8618
     {
         if (customerOnSAId.GetValueOrDefault() > 0)
             this.CustomerOnSAId = customerOnSAId!.Value;
         this.IdentityId = identity.IdentityId;
-        this.IdentityScheme = (CIS.Foms.Enums.IdentitySchemes)(int)identity.IdentityScheme;
+        this.IdentityScheme = (SharedTypes.Enums.IdentitySchemes)(int)identity.IdentityScheme;
     }
 }

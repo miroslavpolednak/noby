@@ -11,6 +11,25 @@ internal class UserService
         return await GetUser(_currentUser.User!.Id, cancellationToken);
     }
 
+    public async Task<Contracts.GetUserBasicInfoResponse> GetUserBasicInfo(int userId, CancellationToken cancellationToken = default)
+    {
+        // pokud bude user nalezen v kesi
+        if (_distributedCacheProvider.UseDistributedCache)
+        {
+            var cachedUser = await _distributedCacheProvider.DistributedCacheInstance!.GetAsync(Helpers.CreateUserBasicCacheKey(userId), cancellationToken);
+            if (cachedUser is not null)
+            {
+                return Contracts.GetUserBasicInfoResponse.Parser.ParseFrom(cachedUser);
+            }
+        }
+    
+        return await _service.GetUserBasicInfoAsync(
+            new()
+            {
+                UserId = userId
+            }, cancellationToken: cancellationToken);
+    }
+
     public async Task<Contracts.User> GetUser(string loginWithScheme, CancellationToken cancellationToken = default)
     {
         var arr = loginWithScheme.Split('=');
@@ -19,22 +38,22 @@ internal class UserService
             throw new ArgumentOutOfRangeException(nameof(loginWithScheme));
         }
 
-        if (!Enum.TryParse<CIS.Foms.Enums.UserIdentitySchemes>(arr[0], true, out CIS.Foms.Enums.UserIdentitySchemes scheme))
+        if (!Enum.TryParse<SharedTypes.Enums.UserIdentitySchemes>(arr[0], true, out SharedTypes.Enums.UserIdentitySchemes scheme))
         {
             throw new ArgumentOutOfRangeException(nameof(loginWithScheme));
         }
 
-        return await GetUser(new CIS.Foms.Types.UserIdentity(arr[1], scheme), cancellationToken);
+        return await GetUser(new SharedTypes.Types.UserIdentity(arr[1], scheme), cancellationToken);
     }
 
     public async Task<Contracts.User> GetUser(int userId, CancellationToken cancellationToken = default)
     {
-        return await GetUser(new CIS.Foms.Types.UserIdentity(userId.ToString(), CIS.Foms.Enums.UserIdentitySchemes.V33Id), cancellationToken);
+        return await GetUser(new SharedTypes.Types.UserIdentity(userId.ToString(), SharedTypes.Enums.UserIdentitySchemes.V33Id), cancellationToken);
     }
 
-    public async Task<Contracts.User> GetUser(CIS.Foms.Types.UserIdentity identity, CancellationToken cancellationToken = default)
+    public async Task<Contracts.User> GetUser(SharedTypes.Types.UserIdentity identity, CancellationToken cancellationToken = default)
     {
-        if (identity.Scheme == CIS.Foms.Enums.UserIdentitySchemes.V33Id)
+        if (identity.Scheme == SharedTypes.Enums.UserIdentitySchemes.V33Id)
         {
             // pokud bude user nalezen v kesi
             if (_distributedCacheProvider.UseDistributedCache)
@@ -72,6 +91,11 @@ internal class UserService
                 UserId = userId,
             }, cancellationToken: cancellationToken);
         return response.UserPermissions.ToArray();
+    }
+
+    public async Task<int[]> GetCurrentUserPermissions(CancellationToken cancellationToken = default)
+    {
+        return await GetUserPermissions(_currentUser.User!.Id, cancellationToken);
     }
 
     public async Task<UserRIPAttributes> GetUserRIPAttributes(string identity, string identityScheme, CancellationToken cancellationToken = default)

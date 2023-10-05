@@ -36,7 +36,7 @@ internal static class ModelExtensions
                     priezvisko = model.LastName,
                     meno = model.FirstName,
                     datum_narodenia = model.DateOfBirth.HasValue ? model.DateOfBirth.Value : default(DateTime),
-                    pohlavie = model.Gender == CIS.Foms.Enums.Genders.Female ? "Z" : "M"
+                    pohlavie = model.Gender == SharedTypes.Enums.Genders.Female ? "Z" : "M"
                 };
         }
     }

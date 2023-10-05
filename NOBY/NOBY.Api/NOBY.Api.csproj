@@ -28,21 +28,20 @@
 	</ItemGroup>
 	
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="7.0.0" />
-    <PackageReference Include="CompareNETObjects" Version="4.79.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+    <PackageReference Include="CompareNETObjects" Version="4.82.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.10" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.55.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.11" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.56.0" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
-    <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CIS\Infrastructure.Audit\CIS.Infrastructure.Audit.csproj" />
+    <ProjectReference Include="..\..\Shared\SharedAudit\SharedAudit.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Caching\CIS.Infrastructure.Caching.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Telemetry\CIS.Infrastructure.Telemetry.csproj" />
@@ -75,7 +74,6 @@
   <ItemGroup>
     <Folder Include="Endpoints\Document\GeneralDocument\" />
     <Folder Include="Endpoints\Document\Offer\" />
-    <Folder Include="Endpoints\Document\Shared\DocumentIdManager\" />
     <Folder Include="Endpoints\Product\GetCaseIdByPcpId\" />
     <Folder Include="Endpoints\RealEstateValuation\GetRealEstateValuationDetail\" />
     <Folder Include="Endpoints\SalesArrangement\SendToCmp\Dto\" />

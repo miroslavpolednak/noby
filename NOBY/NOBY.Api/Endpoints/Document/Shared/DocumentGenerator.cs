@@ -2,7 +2,9 @@
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
+using CIS.InternalServices.DocumentGeneratorService.Contracts;
 using _Document = CIS.InternalServices.DocumentGeneratorService.Contracts;
+using GenericTableRowValue = CIS.InternalServices.DataAggregatorService.Contracts.GenericTableRowValue;
 
 namespace NOBY.Api.Endpoints.Document.Shared;
 
@@ -18,14 +20,14 @@ internal sealed class DocumentGenerator
         _documentGenerator = documentGenerator;
     }
 
-    public async Task<_Document.GenerateDocumentRequest> CreateRequest(GetDocumentBaseRequest request, CancellationToken cancellationToken)
+    public async Task<GenerateDocumentRequest> CreateRequest(GetDocumentBaseRequest request, CancellationToken cancellationToken)
     {
         var documentData = await GenerateDocumentData(request, cancellationToken);
 
         return Create(request, documentData);
     }
 
-    public async Task<ReadOnlyMemory<byte>> GenerateDocument(_Document.GenerateDocumentRequest generateDocumentRequest, CancellationToken cancellationToken)
+    public async Task<ReadOnlyMemory<byte>> GenerateDocument(GenerateDocumentRequest generateDocumentRequest, CancellationToken cancellationToken)
     {
         var document = await _documentGenerator.GenerateDocument(generateDocumentRequest, cancellationToken);
 
@@ -49,17 +51,17 @@ internal sealed class DocumentGenerator
         return result.DocumentData;
     }
 
-    private static _Document.GenerateDocumentRequest Create(GetDocumentBaseRequest request, IEnumerable<DocumentFieldData> documentData) =>
+    private static GenerateDocumentRequest Create(GetDocumentBaseRequest request, IEnumerable<DocumentFieldData> documentData) =>
         new()
         {
             DocumentTypeId = (int)request.DocumentType,
             DocumentTemplateVersionId = request.DocumentTemplateVersionId,
             DocumentTemplateVariantId = request.DocumentTemplateVariantId,
             ForPreview = request.ForPreview,
-            OutputType = _Document.OutputFileType.Pdfa,
+            OutputType = OutputFileType.Pdfa,
             Parts =
             {
-                new _Document.GenerateDocumentPart
+                new GenerateDocumentPart
                 {
                     DocumentTypeId = (int)request.DocumentType,
                     DocumentTemplateVersionId = request.DocumentTemplateVersionId,
@@ -67,7 +69,7 @@ internal sealed class DocumentGenerator
                     Data = { documentData.Select(CreateDocumentPartData) }
                 }
             },
-            DocumentFooter = new _Document.DocumentFooter
+            DocumentFooter = new DocumentFooter
             {
                 CaseId = request.InputParameters.CaseId,
                 OfferId = request.InputParameters.OfferId,
@@ -75,68 +77,42 @@ internal sealed class DocumentGenerator
             }
         };
 
-    private static _Document.GenerateDocumentPartData CreateDocumentPartData(DocumentFieldData fieldData)
+    private static GenerateDocumentPartData CreateDocumentPartData(DocumentFieldData fieldData)
     {
-        var partData = new _Document.GenerateDocumentPartData
+        var fieldDataWrapper = new DocumentFieldDataWrapper(fieldData);
+
+        var documentData = fieldDataWrapper.CreateDocumentData();
+
+        var valueWasSet = documentData.TrySetValue(fieldDataWrapper);
+
+        if (valueWasSet)
+            return documentData;
+
+        if (fieldData.ValueCase != DocumentFieldData.ValueOneofCase.Table)
+            throw new NotSupportedException($"ValueCase {fieldData.ValueCase} is not supported");
+
+        documentData.Table = new _Document.GenericTable
         {
-            Key = fieldData.FieldName,
-            StringFormat = fieldData.StringFormat,
-            TextAlign = (_Document.TextAlign)(fieldData.TextAlign ?? 0)
+            Rows =
+            {
+                fieldData.Table.Rows.Select(row => new _Document.GenericTableRow
+                {
+                    Values = { row.Values.Select(CreateTableRowValue) }
+                })
+            },
+            Columns =
+            {
+                fieldData.Table.Columns.Select(column => new _Document.GenericTableColumn
+                {
+                    Header = column.Header,
+                    StringFormat = column.StringFormat,
+                    WidthPercentage = column.WidthPercentage
+                })
+            },
+            ConcludingParagraph = fieldData.Table.ConcludingParagraph
         };
 
-        switch (fieldData.ValueCase)
-        {
-            case DocumentFieldData.ValueOneofCase.None:
-                break;
-
-            case DocumentFieldData.ValueOneofCase.Text:
-                partData.Text = fieldData.Text;
-                break;
-
-            case DocumentFieldData.ValueOneofCase.Date:
-                partData.Date = fieldData.Date;
-                break;
-
-            case DocumentFieldData.ValueOneofCase.Number:
-                partData.Number = fieldData.Number;
-                break;
-
-            case DocumentFieldData.ValueOneofCase.DecimalNumber:
-                partData.DecimalNumber = fieldData.DecimalNumber;
-                break;
-
-            case DocumentFieldData.ValueOneofCase.LogicalValue:
-                partData.LogicalValue = fieldData.LogicalValue;
-                break;
-
-            case DocumentFieldData.ValueOneofCase.Table:
-                partData.Table = new _Document.GenericTable
-                {
-                    Rows =
-                    {
-                        fieldData.Table.Rows.Select(row => new _Document.GenericTableRow
-                        {
-                            Values = { row.Values.Select(CreateTableRowValue) }
-                        })
-                    },
-                    Columns =
-                    {
-                        fieldData.Table.Columns.Select(column => new _Document.GenericTableColumn
-                        {
-                            Header = column.Header,
-                            StringFormat = column.StringFormat,
-                            WidthPercentage = column.WidthPercentage
-                        })
-                    },
-                    ConcludingParagraph = fieldData.Table.ConcludingParagraph
-                };
-                break;
-
-            default:
-                throw new NotImplementedException();
-        }
-
-        return partData;
+        return documentData;
     }
 
     private static _Document.GenericTableRowValue CreateTableRowValue(GenericTableRowValue value)

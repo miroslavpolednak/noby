@@ -6,9 +6,9 @@ public interface ISmsAuditLogger
 {
     Task LogHttpRequestResponse();
 
-    void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer);
+    void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer, string? identity, string? identityScheme, long? caseId, string? customId, string? documentId, string? documentHash, string? hashAlgorithm);
     
-    void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer);
+    void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer, string? identity, string? identityScheme, long? caseId, string? customId, string? documentId, string? documentHash, string? hashAlgorithm);
 
     void LogKafkaResultReceived(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, NotificationReport report);
 }

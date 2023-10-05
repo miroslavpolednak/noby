@@ -12,8 +12,9 @@ internal sealed class ValidateSalesArrangementHandler
 
         return new ValidateSalesArrangementResponse
         {
-            Categories = response.ValidationMessages?
-                .Where(t => t.NobyMessageDetail.Severity != _SA.ValidationMessageNoby.Types.NobySeverity.None)
+            Categories = response
+                .ValidationMessages
+                ?.Where(t => t.NobyMessageDetail.Severity != _SA.ValidationMessageNoby.Types.NobySeverity.None)
                 .GroupBy(t => t.NobyMessageDetail.Category)
                 .OrderBy(t => t.Min(x => x.NobyMessageDetail.CategoryOrder))
                 .Select(t => new Dto.ValidateCategory

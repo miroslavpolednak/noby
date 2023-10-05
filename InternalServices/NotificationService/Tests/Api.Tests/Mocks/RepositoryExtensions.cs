@@ -13,9 +13,11 @@ public static class RepositoryExtensions
     public static Guid SmsResultId1 = Guid.NewGuid();
     public static Guid SmsResultId2 = Guid.NewGuid();
     public static Guid SmsResultId3 = Guid.NewGuid();
+    public static Guid SmsResultId4 = Guid.NewGuid();
     public static Guid EmailResultId1 = Guid.NewGuid();
     public static Guid EmailResultId2 = Guid.NewGuid();
     public static Guid EmailResultId3 = Guid.NewGuid();
+    public static Guid EmailResultId4 = Guid.NewGuid();
 
     public static Guid SmsResultIdForAdding = Guid.NewGuid();
     public static Guid EmailResultIdForAdding = Guid.NewGuid();
@@ -62,6 +64,19 @@ public static class RepositoryExtensions
             CreatedBy = "UsernameA",
             RequestTimestamp = new DateTime(2023, 1, 1, 1, 0, 0)
         },
+        new SmsResult
+        {
+            Id = SmsResultId4,
+            Channel = NotificationChannel.Sms,
+            ErrorSet = new HashSet<ResultError>(),
+            CaseId = 10,
+            Type = "TypeD",
+            State = NotificationState.InProgress,
+            CountryCode = "+420",
+            PhoneNumber = "777123456",
+            CreatedBy = "UsernameA",
+            RequestTimestamp = new DateTime(2023, 1, 1, 1, 0, 0)
+        },
         new EmailResult
         {
             Id = EmailResultId1,
@@ -92,6 +107,16 @@ public static class RepositoryExtensions
             State = NotificationState.InProgress,
             CreatedBy = "UsernameA",
             RequestTimestamp = new DateTime(2023, 1, 1, 1, 1, 0)
+        },
+        new EmailResult
+        {
+            Id = EmailResultId4,
+            Channel = NotificationChannel.Email,
+            ErrorSet = new HashSet<ResultError>(),
+            CaseId = 10,
+            State = NotificationState.InProgress,
+            CreatedBy = "UsernameA",
+            RequestTimestamp = new DateTime(2023, 1, 1, 1, 1, 0)
         }
     };
     
@@ -115,12 +140,14 @@ public static class RepositoryExtensions
             .Setup(r => r.SearchResultsBy(
                 It.IsAny<string?>(),
                 It.IsAny<string?>(),
+                It.IsAny<long?>(),
                 It.IsAny<string?>(),
                 It.IsAny<string?>()))
-            .Returns((string? identity, string? identityScheme, string? customId, string? documentId) =>
+            .Returns((string? identity, string? identityScheme, long? caseId, string? customId, string? documentId) =>
                 Task.FromResult(Results
                     .Where(r => string.IsNullOrEmpty(identity) || r.Identity == identity)
                     .Where(r => string.IsNullOrEmpty(identityScheme) || r.IdentityScheme == identityScheme)
+                    .Where(r => !caseId.HasValue || r.CaseId == caseId.Value)
                     .Where(r => string.IsNullOrEmpty(customId) || r.CustomId == customId)
                     .Where(r => string.IsNullOrEmpty(documentId) || r.DocumentId == documentId)));
         

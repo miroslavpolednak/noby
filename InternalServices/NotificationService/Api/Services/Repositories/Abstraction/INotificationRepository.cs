@@ -12,7 +12,7 @@ public interface INotificationRepository
 
     Task<Result> GetResult(Guid id, CancellationToken token = default);
 
-    Task<IEnumerable<Result>> SearchResultsBy(string? identity, string? identityScheme, string? customId, string? documentId);
+    Task<IEnumerable<Result>> SearchResultsBy(string? identity, string? identityScheme, long? caseId, string? customId, string? documentId);
 
     void DeleteResult(Result result);
 

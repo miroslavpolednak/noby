@@ -1,4 +1,5 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
+using DomainServices.RealEstateValuationService.Clients;
 using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using __Offer = DomainServices.OfferService.Contracts;
@@ -36,7 +37,9 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         // kontrola, zda simulace neni nalinkovana na jiny SA
         if (await _dbContext.SalesArrangements.AnyAsync(t => t.OfferId == request.OfferId, cancellation))
+        {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AlreadyLinkedToAnotherSA, request.OfferId);
+        }
 
         // Kontrola, že nová Offer má GuaranteeDateFrom větší nebo stejné jako původně nalinkovaná offer
         if (offerInstanceOld is not null
@@ -120,6 +123,19 @@ internal sealed class LinkModelationToSalesArrangementHandler
             }
         }
 
+        // Nastavení klapky k ocenění nemovitosti
+        bool flowSwitch15 = offerInstance.SimulationInputs.LoanKindId == 2000;
+        if (!flowSwitch15)
+        {
+            // smazat oceneni nemovitosti
+            await deleteBoundedRealEstateValuations(caseId, cancellation);
+        }
+        flowSwitchesToSet.Add(new __SA.EditableFlowSwitch
+        {
+            FlowSwitchId = (int)FlowSwitches.IsRealEstateValuationAllowed,
+            Value = flowSwitch15
+        });
+
         // ulozit pokud byli nejake switches nastaveny
         if (flowSwitchesToSet.Any())
         {
@@ -130,6 +146,20 @@ internal sealed class LinkModelationToSalesArrangementHandler
             flowSwitchesRequest.FlowSwitches.AddRange(flowSwitchesToSet);
 
             await _mediator.Send(flowSwitchesRequest, cancellation);
+        }
+    }
+
+    private async Task deleteBoundedRealEstateValuations(long caseId, CancellationToken cancellationToken)
+    {
+        var realEstatesToDelete = (await _realEstateValuationService.GetRealEstateValuationList(caseId, cancellationToken))
+                .Where(t => t.ValuationStateId is (int)RealEstateValuationStates.Neoceneno or (int)RealEstateValuationStates.Rozpracovano);
+        foreach (var realEstateValuation in realEstatesToDelete)
+        {
+            try
+            {
+                await _realEstateValuationService.DeleteRealEstateValuation(caseId, realEstateValuation.RealEstateValuationId, cancellationToken);
+            }
+            catch { }
         }
     }
 
@@ -175,13 +205,16 @@ internal sealed class LinkModelationToSalesArrangementHandler
     private readonly OfferService.Clients.IOfferServiceClient _offerService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly IMediator _mediator;
+    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
     public LinkModelationToSalesArrangementHandler(
+        IRealEstateValuationServiceClient realEstateValuationService,
         IMediator mediator,
         CaseService.Clients.ICaseServiceClient caseService,
         Database.SalesArrangementServiceDbContext dbContext,
         OfferService.Clients.IOfferServiceClient offerService)
     {
+        _realEstateValuationService = realEstateValuationService;
         _mediator = mediator;
         _caseService = caseService;
         _dbContext = dbContext;

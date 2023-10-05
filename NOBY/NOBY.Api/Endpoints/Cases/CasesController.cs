@@ -18,8 +18,7 @@ public class CasesController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B13A9B30-5896-4319-A96E-0982FE5A9045"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/cancel")]
-    [AuthorizeCaseOwner]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.CASE_Cancel, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
@@ -28,27 +27,6 @@ public class CasesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<CancelCase.CancelCaseResponse> CancelCase([FromRoute] long caseId)
         => await _mediator.Send(new CancelCase.CancelCaseRequest(caseId));
-
-    /// <summary>
-    /// Vytvoření servisního SalesArrangement-u
-    /// </summary>
-    /// <remarks>
-    /// Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
-    /// Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br/><br/>
-    /// Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
-    /// </remarks>
-    [HttpPost("{caseId:long}/sales-arrangement")]
-    [AuthorizeCaseOwner]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Consumes("application/json")]
-    [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Case" })]
-    [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request)
-        => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>
     /// Detail dlužníků a spoludlužníků pro daný case
@@ -62,25 +40,44 @@ public class CasesController : ControllerBase
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/customers")]
-    [AuthorizeCaseOwner(true)]
+    [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(List<GetCustomers.GetCustomersResponseCustomer>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<GetCustomers.GetCustomersResponseCustomer>> GetCustomers([FromRoute] long caseId, CancellationToken cancellationToken)
+    public async Task<List<GetCustomers.GetCustomersResponseCustomer>> GetCustomersOnCase([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomers.GetCustomersRequest(caseId), cancellationToken);
+
+    /// <summary>
+    /// Vytvoření servisního SalesArrangement-u
+    /// </summary>
+    /// <remarks>
+    /// Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
+    /// Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br/><br/>
+    /// Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
+    /// </remarks>
+    [HttpPost("{caseId:long}/sales-arrangement")]
+    [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access, UserPermissions.SALES_ARRANGEMENT_Access)]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request)
+        => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>
     /// Detail Case-u.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> CaseService/GetCaseDetail<br/>
-    /// https://wiki.kb.cz/confluence/display/HT/getCaseDetail
+    /// Načtení detailu Case-u<br /><br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CCF1229F-2E77-4de4-8E4A-665594BCD9CA"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     /// <returns>Zakladni informace o Case-u.</returns>
     [HttpGet("{caseId:long}")]
-    [AuthorizeCaseOwner(true)]
+    [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(Dto.CaseModel), StatusCodes.Status200OK)]
@@ -92,12 +89,12 @@ public class CasesController : ControllerBase
     /// Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> CseService/GetCaseCounts<br/>
-    /// https://wiki.kb.cz/confluence/display/HT/getCaseCounts
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2FDB0893-BE64-4f37-A196-DDECBB910CB3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Kolekce ID stavu s počtem Cases.</returns>
     [HttpGet("dashboard-filters")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(List<GetTotalsByStates.GetDashboardFiltersResponse>), StatusCodes.Status200OK)]
     public async Task<List<GetTotalsByStates.GetDashboardFiltersResponse>> GetDashboardFilters(CancellationToken cancellationToken)
@@ -107,19 +104,19 @@ public class CasesController : ControllerBase
     /// Seznam Cases pro přihlášeného uživatele.
     /// </summary>
     /// <remarks>
-    /// Endpoint umožnuje:
-    /// - vyhledat Case podle řetězce
-    /// - zobrazit pouze Cases v požadovaném stavu
-    /// - nastavit stránkovaní
-    /// - nastavit řazení [povolené: stateUpdated, customerName]
-    /// <i>DS:</i> CaseService/SearchCases<br/>
-    /// https://wiki.kb.cz/confluence/display/HT/searchCases
+    /// Endpoint umožnuje:<br />
+    /// - vyhledat Case podle řetězce<br />
+    /// - zobrazit pouze Cases v požadovaném stavu<br />
+    /// - nastavit stránkovaní<br />
+    /// - nastavit řazení [povolené: stateUpdated, customerName]<br /><br />
+    /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=62A33551-BC77-401d-80DB-E8DFA5081719" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width= "20" height= "20" /> Diagram v EA</a>
     /// </remarks>
     /// <param name="request">Nastavení možnosti filtrovaní, strankovaní a řazení.</param>
     /// <returns>Seznam Cases + informace o použitém stránkovaní/řazení.</returns>
     [HttpPost("search")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.DASHBOARD_SearchCases)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(SearchCases.SearchCasesResponse), StatusCodes.Status200OK)]
     public async Task<SearchCases.SearchCasesResponse> SearchCases([FromBody] SearchCases.SearchCasesRequest request)
@@ -140,9 +137,9 @@ public class CasesController : ControllerBase
     /// </remarks>
     /// <param name="request">Typ kritéria a jeho hodnota pro vyhledávání.</param>
     [HttpPost("identify")]
-    [NobyAuthorize(UserPermissions.FEAPI_IdentifyCase)]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.DASHBOARD_IdentifyCase)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(IdentifyCase.IdentifyCaseResponse), StatusCodes.Status200OK)]
     public async Task<IdentifyCase.IdentifyCaseResponse> IdentifyCase([FromBody] IdentifyCase.IdentifyCaseRequest request)
@@ -157,7 +154,7 @@ public class CasesController : ControllerBase
     /// </remarks>
     /// <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
     [HttpGet("{caseId:long}/parameters")]
-    [AuthorizeCaseOwner(true)]
+    [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(GetCaseParameters.GetCaseParametersResponse), StatusCodes.Status200OK)]
@@ -172,10 +169,10 @@ public class CasesController : ControllerBase
     /// <remarks>
     ///  Implementováno pro položku menu Documents<br /><br />
     ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
-    ///  <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    ///  <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
+    /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/menu/flags")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -188,12 +185,12 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Seznam Podmínek ke splnění pro Case<br /><br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4378EDFB-2A3D-46f6-8C51-0241A3436D5E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4378EDFB-2A3D-46f6-8C51-0241A3436D5E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/covenants")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -205,13 +202,13 @@ public class CasesController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Detail Podmínky ke splnění pro Case<br /><br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=56FAFD66-E483-475d-9868-6B90A4ED889B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=56FAFD66-E483-475d-9868-6B90A4ED889B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     /// <param name="covenantOrder">Pořadí podmínky ke splnění</param>
     [HttpGet("{caseId:long}/covenant/{covenantOrder:int}")]
-    [AuthorizeCaseOwner]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

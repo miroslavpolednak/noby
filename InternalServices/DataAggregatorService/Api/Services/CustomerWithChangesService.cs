@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
-using DomainServices.CustomerService.Clients;
+﻿using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
@@ -93,10 +92,10 @@ public class CustomerWithChangesService
 
     private static Dictionary<Identity, CustomerOnSA> GetCustomersOnSaWithIdentity(IEnumerable<CustomerOnSA> customersOnSa) =>
         customersOnSa.Select(c => new
-        {
-            CustomerOnSa = c,
-            KbIdentity = c.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
-        })
+                     {
+                         CustomerOnSa = c,
+                         KbIdentity = c.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+                     })
                      .Where(c => c.KbIdentity is not null)
                      .ToDictionary(k => k.KbIdentity!, v => v.CustomerOnSa);
 

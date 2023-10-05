@@ -3,4 +3,4 @@ global using CIS.Core.Exceptions;
 global using CIS.Infrastructure.Logging;
 global using Eas = ExternalServices.Eas.V1;
 global using CIS.Infrastructure.gRPC;
-global using CIS.Foms.Enums;
+global using SharedTypes.Enums;

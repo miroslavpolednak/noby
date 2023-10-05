@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using NOBY.Api.Endpoints.Customer.SearchCustomers;

@@ -2,12 +2,18 @@
 
 public class LoanRealEstateDto
 {
-	/// <example>1</example>
-	public int RealEstateTypeId { get; set; }
+    /// <summary>
+    /// Typ nemovitosti
+    /// </summary>
+    public int RealEstateTypeId { get; set; }
 
-	/// <example>false</example>
-	public bool IsCollateral { get; set; }
+    /// <summary>
+    /// Slouží k zajištění
+    /// </summary>
+    public bool IsCollateral { get; set; }
 
-	/// <example>1</example>
-	public int RealEstatePurchaseTypeId { get; set; }
+    /// <summary>
+    /// Účel pořízení nemovitosti
+    /// </summary>
+    public int RealEstatePurchaseTypeId { get; set; }
 }

@@ -1,18 +1,19 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
+using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
 internal static class CreateCustomerExtensions
 {
-    public static _Cust.CreateCustomerRequest ToDomainService(this CreateCustomerRequest request, CIS.Infrastructure.gRPC.CisTypes.Mandants createIn, params Identity[] identities)
+    public static _Cust.CreateCustomerRequest ToDomainService(this CreateCustomerRequest request, SharedTypes.GrpcTypes.Mandants createIn, params Identity[] identities)
     {
         var model = new _Cust.CreateCustomerRequest
         {
-            Mandant = CIS.Infrastructure.gRPC.CisTypes.Mandants.Kb,
+            Mandant = SharedTypes.GrpcTypes.Mandants.Kb,
             NaturalPerson = new()
             {
                 FirstName = request.FirstName ?? "",
@@ -57,7 +58,7 @@ internal static class CreateCustomerExtensions
         // adresa
         if (request.PrimaryAddress is not null)
         {
-            request.PrimaryAddress!.AddressTypeId = (int)CIS.Foms.Enums.AddressTypes.Permanent;
+            request.PrimaryAddress!.AddressTypeId = (int)SharedTypes.Enums.AddressTypes.Permanent;
             model.Addresses.Add(request.PrimaryAddress.ToDomainService());
         }
         // narodnost
@@ -109,7 +110,7 @@ internal static class CreateCustomerExtensions
         return model;
     }
 
-    public static CreateCustomerResponse ToResponseDto(this _Cust.CustomerDetailResponse customer, bool isVerified)
+    public static CreateCustomerResponse ToResponseDto(this _Cust.CustomerDetailResponse customer, bool isVerified, ResultCode resultCode)
     {
         GetCustomerDetail.Dto.NaturalPersonModel person = new();
         customer.NaturalPerson?.FillResponseDto(person);
@@ -120,8 +121,9 @@ internal static class CreateCustomerExtensions
             NaturalPerson = person,
             JuridicalPerson = null,
             IsVerified = isVerified,
+            ResultCode = resultCode,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
-            Addresses = customer.Addresses?.Select(t => (CIS.Foms.Types.Address)t!).ToList(),
+            Addresses = customer.Addresses?.Select(t => (SharedTypes.Types.Address)t!).ToList(),
             IsInputDataDifferent = true,
             Contacts = new(),
             LegalCapacity = customer.NaturalPerson?.LegalCapacity is null ? null : new Shared.LegalCapacityItem
@@ -158,7 +160,7 @@ internal static class CreateCustomerExtensions
             || originalRequest.GenderId != ((int?)response.NaturalPerson?.Gender ?? 0)
             || !stringCompare(originalRequest.FirstName, response.NaturalPerson?.FirstName)
             || !stringCompare(originalRequest.LastName, response.NaturalPerson?.LastName)
-            || !(originalRequest.PrimaryAddress?.Equals(response.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)CIS.Foms.Enums.AddressTypes.Permanent)) ?? true)
+            || !(originalRequest.PrimaryAddress?.Equals(response.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)SharedTypes.Enums.AddressTypes.Permanent)) ?? true)
         )
             response.IsInputDataDifferent = true;
 

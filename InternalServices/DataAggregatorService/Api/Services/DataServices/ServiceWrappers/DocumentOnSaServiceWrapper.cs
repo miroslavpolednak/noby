@@ -1,5 +1,4 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
-using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ServiceWrappers;
@@ -8,12 +7,10 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.S
 internal class DocumentOnSaServiceWrapper : IServiceWrapper
 {
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ICodebookServiceClient _codebookService;
 
-    public DocumentOnSaServiceWrapper(IDocumentOnSAServiceClient documentOnSAService, ICodebookServiceClient codebookService)
+    public DocumentOnSaServiceWrapper(IDocumentOnSAServiceClient documentOnSAService)
     {
         _documentOnSAService = documentOnSAService;
-        _codebookService = codebookService;
     }
 
     public DataService DataService => DataService.DocumentOnSa;

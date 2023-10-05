@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api.Database;

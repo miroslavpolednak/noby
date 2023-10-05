@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.V1;
@@ -18,10 +18,13 @@ internal sealed class PreorderOnlineValuationHandler
         {
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AddressPointIdNotFound);
         }
+        _logger.LogDebug("Get Aggregate finished");
+
         var houseAndFlat = Services.OrderAggregate.GetHouseAndFlat(entity);
         // info o produktu
         var (collateralAmount, loanAmount, _, _) = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
         _ = int.TryParse(request.Data.BuildingAgeCode, out int ageCode);
+        _logger.LogDebug("Get Product props finished");
 
         // KBModel
         var kbmodelRequest = new ExternalServices.LuxpiService.V1.Contracts.KBModelRequest
@@ -39,6 +42,7 @@ internal sealed class PreorderOnlineValuationHandler
             kbmodelRequest.ActualPurchasePrice = Convert.ToDouble(collateralAmount.GetValueOrDefault(), CultureInfo.InvariantCulture);
         if (loanAmount.HasValue)
             kbmodelRequest.LoanAmount = Convert.ToDouble(loanAmount.GetValueOrDefault(), CultureInfo.InvariantCulture);
+        _logger.LogDebug("KbModel request prepared");
 
         var kbmodelReponse = await _luxpiServiceClient.CreateKbmodelFlat(kbmodelRequest, addressPointId.Value, cancellationToken);
 
@@ -52,16 +56,14 @@ internal sealed class PreorderOnlineValuationHandler
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
             RealEstateIds = realEstateIds
         };
-        if (!(await _preorderService.RevaluationCheck(revaluationRequest, cancellationToken)))
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.RevaluationFailed);
-        }
+        bool revaluationRequired = await _preorderService.RevaluationCheck(revaluationRequest, cancellationToken);
+        _logger.LogDebug("Revaluation finished");
 
         // update databaze hlavni entity
         entity.ValuationResultCurrentPrice = kbmodelReponse.ResultPrice;
         entity.PreorderId = kbmodelReponse.ValuationId;
         entity.ValuationTypeId = (int)RealEstateValuationTypes.Online;
-        entity.IsRevaluationRequired = true;
+        entity.IsRevaluationRequired = revaluationRequired;
         entity.ValuationStateId = (int)RealEstateValuationStates.DoplneniDokumentu;
 
         // vlozeni nove order
@@ -73,9 +75,10 @@ internal sealed class PreorderOnlineValuationHandler
             DataBin = request.Data.ToByteArray()
         };
         _dbContext.RealEstateValuationOrders.Add(order);
+        _logger.LogDebug("Updating entities...");
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-
+        
         return new Empty();
     }
 
@@ -83,13 +86,16 @@ internal sealed class PreorderOnlineValuationHandler
     private readonly RealEstateValuationServiceDbContext _dbContext;
     private readonly IPreorderServiceClient _preorderService;
     private readonly ILuxpiServiceClient _luxpiServiceClient;
+    private readonly ILogger<PreorderOnlineValuationHandler> _logger;
 
     public PreorderOnlineValuationHandler(
+        ILogger<PreorderOnlineValuationHandler> logger,
         Services.OrderAggregate aggregate,
         ILuxpiServiceClient luxpiServiceClient, 
         IPreorderServiceClient preorderService, 
         RealEstateValuationServiceDbContext dbContext)
     {
+        _logger = logger;
         _aggregate = aggregate;
         _dbContext = dbContext;
         _preorderService = preorderService;

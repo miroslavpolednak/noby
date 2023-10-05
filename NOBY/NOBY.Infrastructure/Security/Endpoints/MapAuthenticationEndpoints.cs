@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Security;
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 using CIS.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;

@@ -12,6 +12,11 @@ namespace CIS.Core.Exceptions;
 public class CisValidationException
     : Exception
 {
+    public string FirstExceptionCode
+    {
+        get => Errors[0].ExceptionCode;
+    }
+
     /// <summary>
     /// Seznam chyb.
     /// </summary>

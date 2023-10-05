@@ -1,11 +1,11 @@
 ﻿using CIS.Core.Extensions;
-using CIS.Foms.Enums;
-using CIS.Infrastructure.ExternalServicesHelpers.BaseClasses;
+using SharedTypes.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using ExternalServices.Eas.Dto;
 using ExternalServices.Eas.V1.CheckFormV2;
 using ExternalServices.Eas.V1.EasWrapper;
 using System.ServiceModel.Channels;
+using CIS.Infrastructure.ExternalServicesHelpers.Soap;
 
 namespace ExternalServices.Eas.V1;
 
@@ -103,20 +103,6 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
             var request = new ContractNrRequest(Convert.ToInt32(clientId), caseId);
             var result = await Client.Get_ContractNumberAsync(request).WithCancellation(cancellationToken);
             return result.contractNumber;
-        });
-    }
-
-    public async Task<ESBI_SIMULATION_RESULTS> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input, CancellationToken cancellationToken)
-    {
-        return await callMethod(async () =>
-        {
-            var result = await Client.SimulationAsync(input).WithCancellation(cancellationToken);
-
-            if (result.SIM_error != 0)
-            {
-                throw new CIS.Core.Exceptions.CisValidationException(9103, $"Error occured during call external service EAS [{result.SIM_error} : {result.SIM_error_text}]");
-            }
-            return result;
         });
     }
 

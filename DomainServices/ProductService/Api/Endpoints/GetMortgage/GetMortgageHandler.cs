@@ -49,29 +49,27 @@ internal sealed class GetMortgageHandler
             .Select(t => new LoanRealEstate
             {
                 RealEstatePurchaseTypeId = t.UcelKod,
-                RealEstateTypeId = t.NemovitostId
+                RealEstateTypeId = Convert.ToInt32(t.NemovitostId)
             })
             .ToList();
 
-        var statements = await _dbContext.Loans2Statements
-            .AsNoTracking()
-            .Where(t => t.Id == loan.Id)
-            .FirstOrDefaultAsync(cancellation);
+        var statements = await _repository.GetLoanStatement(loan.Id, cancellation);
+        
         if (statements is not null)
         {
             mortgage.Statement.Address = new()
             {
-                Street = statements.Ulice ?? "",
-                StreetNumber = statements.CisloDomu4 ?? "",
-                HouseNumber = statements.CisloDomu2 ?? "",
-                Postcode = statements.Psc ?? "",
-                City = statements.Mesto ?? "",
-                AddressPointId = statements.StatPodkategorie ?? "",
-                CountryId = statements.ZemeId
+                Street = statements.Street ?? string.Empty,
+                StreetNumber = statements.StreetNumber ?? string.Empty,
+                HouseNumber = statements.HouseNumber ?? string.Empty,
+                Postcode = statements.Postcode ?? string.Empty,
+                City = statements.City ?? string.Empty,
+                AddressPointId = statements.AddressPointId ?? string.Empty,
+                CountryId = statements.CountryId
             };
         }
 
-        if (realEstates is not null && realEstates.Any())
+        if (realEstates.Any())
         {
             // zjistit zajisteni
             var collateral = await _dbContext.Collaterals
@@ -92,14 +90,10 @@ internal sealed class GetMortgageHandler
         }
 
         // duvody
-        var purposes = await _repository.GetPurposes(request.ProductId, cancellation);
-        if (purposes is not null)
+        var purposes = await _repository.GetLoanPurposes(request.ProductId, cancellation);
+        if (purposes.Any())
         {
-            mortgage.LoanPurposes.AddRange(purposes.Select(t => new LoanPurpose
-            {
-                LoanPurposeId = t.UcelUveruId,
-                Sum = t.SumaUcelu
-            }));
+            mortgage.LoanPurposes.AddRange(purposes.Select(t => t.ToLoanPurpose()));
         }
 
         return new GetMortgageResponse { Mortgage = mortgage };

@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Core.Security;
+using DomainServices.CaseService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 
@@ -13,7 +14,16 @@ internal sealed class GetTaskDetailHandler
 
         if (!_allowedTaskTypeIds.Contains(task.TaskTypeId))
         {
-            throw new CisAuthorizationException("Task type not allowed");
+            throw new NobyValidationException(90032, "TaskTypeId not allowed");
+        }
+
+        if (task.TaskTypeId is 6 && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningView))
+        {
+            throw new CisAuthorizationException("Task detail view permission missing");
+        }
+        else if (!(task.TaskTypeId is 6) && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_OtherView))
+        {
+            throw new CisAuthorizationException("Task detail view permission missing");
         }
         
         var (taskDto, taskDetailDto, documents) = await _workflowTaskService.GetTaskDetail(request.CaseId, task.TaskIdSb, cancellationToken);
@@ -26,14 +36,17 @@ internal sealed class GetTaskDetailHandler
         };
     }
 
+    private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
     private readonly ICaseServiceClient _caseService;
     private static int[] _allowedTaskTypeIds = { 1, 2, 3, 6, 7 };
 
     public GetTaskDetailHandler(
-            Services.WorkflowTask.IWorkflowTaskService workflowTaskService,
-            ICaseServiceClient caseService)
+        ICurrentUserAccessor currentUserAccessor,
+        Services.WorkflowTask.IWorkflowTaskService workflowTaskService,
+        ICaseServiceClient caseService)
     {
+        _currentUserAccessor = currentUserAccessor;
         _workflowTaskService = workflowTaskService;
         _caseService = caseService;
     }

@@ -24,7 +24,7 @@ internal sealed class SaveRequestMapper
         // produkt
         var riskApplicationType = await getRiskApplicationType(request.Product, cancellation) ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.RiskApplicationTypeNotFound);
 
-        bool verification = riskApplicationType.MandantId == (int)CIS.Foms.Enums.Mandants.Kb
+        bool verification = riskApplicationType.MandantId == (int)SharedTypes.Enums.Mandants.Kb
             && request.Product.RequiredAmount <= 25000000M
             && (request.Product.Purposes?.All(p => p.LoanPurposeId == 201 || p.LoanPurposeId == 202) ?? false)
             && request.Households.Count == 1
@@ -52,7 +52,7 @@ internal sealed class SaveRequestMapper
             LoanApplicationProductRelation = await productChildMapper.MapProductRelations(request.ProductRelations),
             LoanApplicationDeclaredProductRelation = productChildMapper.MapDeclaredProductRelations(request.DeclaredSecuredProducts)
         };
-        if (request.SignatureType != CIS.Foms.Enums.SignatureTypes.Unknown)
+        if (request.SignatureType != SharedTypes.Enums.SignatureTypes.Unknown)
             requestModel.SignatureType = request.SignatureType.ToString();
 
         // human user instance

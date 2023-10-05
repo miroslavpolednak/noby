@@ -36,7 +36,7 @@ internal sealed class MockEasClient
         });
     }
 
-    public Task<long> GetCaseId(CIS.Foms.Enums.IdentitySchemes mandant, int productTypeId, CancellationToken cancellationToken)
+    public Task<long> GetCaseId(SharedTypes.Enums.IdentitySchemes mandant, int productTypeId, CancellationToken cancellationToken)
     {
         Random random = new Random();
         return Task.FromResult<long>(random.NextInt64(1, 999));

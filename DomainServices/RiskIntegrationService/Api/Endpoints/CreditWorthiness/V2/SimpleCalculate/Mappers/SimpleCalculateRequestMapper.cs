@@ -50,7 +50,7 @@ internal sealed class SimpleCalculateRequestMapper
         // client
         var counterParty = new _C4M.LoanApplicationCounterParty
         {
-            Id = string.IsNullOrEmpty(request.PrimaryCustomerId) ? null : _C4M.ResourceIdentifier.CreateResourceCounterParty(request.PrimaryCustomerId, !riskApplicationType.MandantId.HasValue || (CIS.Foms.Enums.Mandants)riskApplicationType.MandantId == CIS.Foms.Enums.Mandants.Kb ? "KBCZ" : "MPSS").ToC4M(),
+            Id = string.IsNullOrEmpty(request.PrimaryCustomerId) ? null : _C4M.ResourceIdentifier.CreateResourceCounterParty(request.PrimaryCustomerId, !riskApplicationType.MandantId.HasValue || (SharedTypes.Enums.Mandants)riskApplicationType.MandantId == SharedTypes.Enums.Mandants.Kb ? "KBCZ" : "MPSS").ToC4M(),
             IsPartner = false,
             MaritalStatus = _C4M.MartialStatusType.M,
             Income = createIncome(request.TotalMonthlyIncome)

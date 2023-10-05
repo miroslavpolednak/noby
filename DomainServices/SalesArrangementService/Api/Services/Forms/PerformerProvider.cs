@@ -39,7 +39,7 @@ internal class PerformerProvider
             return default; //Ignore
         }
 
-        var user = await _userService.GetUser(new CIS.Foms.Types.UserIdentity(newestTask.PerformerLogin, CIS.Foms.Enums.UserIdentitySchemes.Mpad), cancellationToken);
+        var user = await _userService.GetUser(new SharedTypes.Types.UserIdentity(newestTask.PerformerLogin, SharedTypes.Enums.UserIdentitySchemes.Mpad), cancellationToken);
 
         return user.UserId;
     }

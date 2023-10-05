@@ -16,5 +16,5 @@ public class IncomeBaseData
     /// Typ prijmu
     /// </summary>
     /// <example>1</example>
-    public CIS.Foms.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
+    public SharedTypes.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
 }

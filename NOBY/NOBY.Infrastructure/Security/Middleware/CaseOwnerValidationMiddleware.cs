@@ -1,9 +1,11 @@
 ﻿using CIS.Core.Security;
+using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using NOBY.Infrastructure.Security.Attributes;
@@ -34,19 +36,21 @@ public sealed class CaseOwnerValidationMiddleware
         var routeValues = context.GetRouteData().Values;
         var endpoint = context.GetEndpoint();
         var skipCheck = endpoint?.Metadata.OfType<NobySkipCaseOwnerValidationAttribute>().Any() ?? true;
-        
+        var skipValidateCaseStateAndProductSA = endpoint?.Metadata.OfType<NobySkipCaseOwnerStateAndProductSAValidationAttribute>().Any() ?? true;
+
         if (!skipCheck && (routeValues?.Any() ?? false))
         {
             var cancellationToken = context.RequestAborted;
             var preload = endpoint?.Metadata.OfType<NobyAuthorizePreloadAttribute>().FirstOrDefault()?.Preload ?? NobyAuthorizePreloadAttribute.LoadableEntities.None;
             long? caseId = null;
+            int? salesArrangementTypeId = null;
 
             if (isInRoute(_customerOnSAIdKey))
             {
                 var customerOnSAService = context.RequestServices.GetRequiredService<ICustomerOnSAServiceClient>();
                 caseId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.CustomerOnSA) switch
                 {
-                    //true => (await customerOnSAService.GetCustomer(getId(_customerOnSAIdKey), cancellationToken)).CaseId,
+                    true => (await customerOnSAService.GetCustomer(getId(_customerOnSAIdKey), cancellationToken)).CaseId,
                     false => (await customerOnSAService.ValidateCustomerOnSAId(getId(_customerOnSAIdKey), true, cancellationToken)).CaseId
                 };  
             }
@@ -59,14 +63,29 @@ public sealed class CaseOwnerValidationMiddleware
                     false => (await householdService.ValidateHouseholdId(getId(_householdIdKey), true, cancellationToken)).CaseId
                 };
             }
+            // u SA potrebujeme take typ SA
             else if (isInRoute(_salesArrangementIdKey))
             {
                 var salesArrangementService = context.RequestServices.GetRequiredService<ISalesArrangementServiceClient>();
-                caseId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.SalesArrangement) switch
+                var saResponse = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.SalesArrangement) switch
                 {
-                    true => (await salesArrangementService.GetSalesArrangement(getId(_salesArrangementIdKey), cancellationToken)).CaseId,
-                    false => (await salesArrangementService.ValidateSalesArrangementId(getId(_salesArrangementIdKey), true, cancellationToken)).CaseId,
+                    true => await getSAFromDetail(),
+                    false => await getSAFromValidate(),
                 };
+                caseId = saResponse.CaseId;
+                salesArrangementTypeId = saResponse.SalesArrangementTypeId;
+
+                async Task<(long CaseId, int SalesArrangementTypeId)> getSAFromDetail()
+                {
+                    var sa = await salesArrangementService!.GetSalesArrangement(getId(_salesArrangementIdKey), cancellationToken);
+                    return (sa.CaseId, sa.SalesArrangementTypeId);
+                }
+
+                async Task<(long CaseId, int SalesArrangementTypeId)> getSAFromValidate()
+                {
+                    var sa = await salesArrangementService.ValidateSalesArrangementId(getId(_salesArrangementIdKey), true, cancellationToken);
+                    return (sa.CaseId!.Value, sa.SalesArrangementTypeId!.Value);
+                }
             }
             else if (isInRoute(_caseIdKey))
             {
@@ -75,16 +94,25 @@ public sealed class CaseOwnerValidationMiddleware
 
             if (caseId.HasValue)
             {
-                int? ownerUserId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.Case) switch
+                var caseInstance = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.Case) switch
                 {
-                    true => (await caseService.GetCaseDetail(caseId.Value, cancellationToken)).CaseOwner.UserId,
-                    false => (await caseService.ValidateCaseId(caseId.Value, true, cancellationToken)).OwnerUserId
+                    true => await getCaseDataFromDetail(),
+                    false => await getCaseDataFromValidate()
                 };
 
-                if (currentUser.User!.Id != ownerUserId && !currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
-                {
-                    throw new CisAuthorizationException("CaseOwnerValidation: user is not owner of the Case or does not have DASHBOARD_AccessAllCases permission");
-                }
+                SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState, !skipValidateCaseStateAndProductSA, salesArrangementTypeId);
+            }
+
+            async Task<(int OwnerUserId, int CaseState)> getCaseDataFromDetail()
+            {
+                var instance = await caseService.GetCaseDetail(caseId!.Value, cancellationToken);
+                return (instance.CaseOwner.UserId, instance.State);
+            }
+
+            async Task<(int OwnerUserId, int CaseState)> getCaseDataFromValidate()
+            {
+                var instance = await caseService.ValidateCaseId(caseId!.Value, true, cancellationToken);
+                return (instance.OwnerUserId!.Value, instance.State!.Value);
             }
         }
 

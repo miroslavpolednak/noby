@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using CIS.Core;
 using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
@@ -12,10 +12,12 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
+using DomainServices.UserService.Clients;
 using FastEnumUtility;
 using Google.Protobuf;
 using NOBY.Api.Endpoints.Document.GeneralDocument;
 using NOBY.Api.Endpoints.Document.Shared;
+using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.Cases.CancelCase;
 
@@ -25,13 +27,21 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
     
     public async Task<CancelCaseResponse> Handle(CancelCaseRequest request, CancellationToken cancellationToken)
     {
-        var documentTypeItem = await GetDocumentType(_documentType, cancellationToken);
+        var documentTypeItem = await getDocumentType(_documentType, cancellationToken);
         
-        var salesArrangement = await GetProductSalesArrangement(request.CaseId, cancellationToken);
-        var caseDetail = await _caseService.GetCaseDetail(salesArrangement.CaseId, cancellationToken);
+        var salesArrangement = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+        var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var customerOnSas = await _customerOnSaService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
-        
-        foreach (var customerOnSa in customerOnSas)
+        var caseState = (await _codebookService.CaseStates(cancellationToken)).First(s => s.Id == caseDetail.State);
+
+        var responseModel = new CancelCaseResponse
+        {
+            State = (CaseStates)caseDetail.State,
+            StateName = caseState.Name,
+            CustomersOnSa = new List<CustomerOnSAItem>(customerOnSas.Count)
+        };
+
+        foreach (var customerOnSa in customerOnSas.Where(t => (t.CustomerIdentifiers?.Any() ?? false)))
         {
             var getGeneralDocumentRequest = new GetGeneralDocumentRequest
             {
@@ -47,14 +57,17 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
             var generateDocumentRequest = await _documentGenerator.CreateRequest(getGeneralDocumentRequest, cancellationToken);
             var documentData = await _documentGenerator.GenerateDocument(generateDocumentRequest, cancellationToken);
             var documentId = await _documentArchiveService.GenerateDocumentId(new (), cancellationToken);
-            
+
+            var user = await _userService.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
+            var authorUserLogin = _documentHelper.GetAuthorUserLoginForDocumentUpload(user);
+
             var uploadRequest = new UploadDocumentRequest
             {
                 BinaryData = ByteString.CopyFrom(documentData.ToArray()),
                 Metadata = new DocumentMetadata
                 {
-                    AuthorUserLogin = _currentUserAccessor.User?.Login,
-                    CaseId = salesArrangement.CaseId,
+                    AuthorUserLogin = authorUserLogin,
+                    CaseId = request.CaseId,
                     ContractNumber = caseDetail.Data.ContractNumber,
                     CreatedOn = _dateTime.Now.Date,
                     DocumentId = documentId,
@@ -65,44 +78,29 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
             };
 
             await _documentArchiveService.UploadDocument(uploadRequest, cancellationToken);
+
+            // pridat do resonse modelu
+            responseModel.CustomersOnSa.Add(new CustomerOnSAItem
+            {
+                CustomerOnSAId = customerOnSa.CustomerOnSAId,
+                BirthDate = customerOnSa.DateOfBirthNaturalPerson,
+                FirstName = customerOnSa.FirstNameNaturalPerson,
+                LastName = customerOnSa.Name,
+                DocumentId = documentId
+            });
         }
-
-        await _caseService.CancelCase(request.CaseId, cancellationToken: cancellationToken);
-        return await CreateCancelCaseResponse(salesArrangement.CaseId, customerOnSas, cancellationToken);
+        
+        await _caseService.CancelCase(request.CaseId, true, cancellationToken);
+        
+        return responseModel;
     }
 
-    private async Task<DomainServices.SalesArrangementService.Contracts.SalesArrangement> GetProductSalesArrangement(long caseId, CancellationToken cancellationToken)
-    {
-        var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
-        return salesArrangementResponse.SalesArrangements.First(s => s.IsProductSalesArrangement());
-    }
-
-    private async Task<DocumentTypesResponse.Types.DocumentTypeItem> GetDocumentType(DocumentTypes documentType, CancellationToken cancellationToken)
+    private async Task<DocumentTypesResponse.Types.DocumentTypeItem> getDocumentType(DocumentTypes documentType, CancellationToken cancellationToken)
     {
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
         return documentTypes.First(t => t.Id == documentType.ToByte());
     }
 
-    private async Task<CancelCaseResponse> CreateCancelCaseResponse(long caseId, List<CustomerOnSA> customerOnSas, CancellationToken cancellationToken)
-    {
-        var caseDetail = await _caseService.GetCaseDetail(caseId, cancellationToken);
-        var caseStates = await _codebookService.CaseStates(cancellationToken);
-        var caseState = caseStates.First(s => s.Id == caseDetail.State);
-        
-        return new CancelCaseResponse
-        {
-            State = (CaseStates) caseState.Id,
-            StateName = caseState.Name,
-            CustomersOnSa = customerOnSas.Select(c => new CustomerOnSAItem
-            {
-                CustomerOnSAId = c.CustomerOnSAId,
-                BirthDate = c.DateOfBirthNaturalPerson,
-                FirstName = c.FirstNameNaturalPerson,
-                LastName = c.Name
-            }).ToList()
-        };
-    }
-    
     private readonly IDateTime _dateTime;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -111,6 +109,8 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
     private readonly DocumentGenerator _documentGenerator;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
+    private readonly IDocumentHelperService _documentHelper;
+    private readonly IUserServiceClient _userService;
 
     public CancelCaseHandler(
         IDateTime dateTime,
@@ -120,7 +120,9 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
         ICustomerOnSAServiceClient customerOnSaService,
         DocumentGenerator documentGenerator,
         IDocumentArchiveServiceClient documentArchiveService,
-        ICurrentUserAccessor currentUserAccessor)
+        ICurrentUserAccessor currentUserAccessor,
+        IDocumentHelperService documentHelper,
+        IUserServiceClient userService)
     {
         _dateTime = dateTime;
         _codebookService = codebookService;
@@ -130,5 +132,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
         _documentGenerator = documentGenerator;
         _documentArchiveService = documentArchiveService;
         _currentUserAccessor = currentUserAccessor;
+        _documentHelper = documentHelper;
+        _userService = userService;
     }
 }

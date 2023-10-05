@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 
 namespace NOBY.Api.Endpoints.Document.Shared;

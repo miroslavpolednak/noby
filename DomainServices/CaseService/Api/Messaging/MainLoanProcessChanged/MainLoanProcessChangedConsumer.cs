@@ -1,6 +1,4 @@
-﻿using CIS.Foms.Enums;
-using DomainServices.CaseService.Api.Database;
-using DomainServices.CaseService.Api.Services;
+﻿using DomainServices.CaseService.Contracts;
 using MassTransit;
 
 namespace DomainServices.CaseService.Api.Messaging.MainLoanProcessChanged;
@@ -13,40 +11,30 @@ internal sealed class MainLoanProcessChangedConsumer
         var message = context.Message;
         var token = context.CancellationToken;
         
-        var caseState = message.state switch
-        {
-            cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.TERMINATED => CaseStates.Cancelled,
-            cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED => CaseStates.Finished,
-            _ => (CaseStates) message.processData.@private.mainLoanProcessData.processPhase.code
-        };
-        
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
             _logger.KafkaMessageCaseIdIncorrectFormat(message.@case.caseId.id);
         }
 
-        var entity = await _dbContext.Cases.FirstOrDefaultAsync(t => t.CaseId == caseId, token);
-
-        if (entity is null)
-        {
-            _logger.KafkaCaseIdNotFound(caseId);
-        }
-        else
-        {
-            entity.State = (int) caseState;
-        }
+        var caseState = message.processData.@private.mainLoanProcessData.processPhase.code;
+        _logger.UpdateCaseStateStart(caseId, caseState);
         
-        await _dbContext.SaveChangesAsync(token);
+        await _mediator.Send(new UpdateCaseStateRequest
+        {
+            CaseId = caseId,
+            State = caseState,
+            StateUpdatedInStarbuild = UpdatedInStarbuildStates.Ok
+        }, token);
     }
-    
-    private readonly CaseServiceDbContext _dbContext;
+
+    private readonly IMediator _mediator;
     private readonly ILogger<MainLoanProcessChangedConsumer> _logger;
     
     public MainLoanProcessChangedConsumer(
-        CaseServiceDbContext dbContext,
+        IMediator mediator,
         ILogger<MainLoanProcessChangedConsumer> logger)
     {
-        _dbContext = dbContext;
+        _mediator = mediator;
         _logger = logger;
     }
 }

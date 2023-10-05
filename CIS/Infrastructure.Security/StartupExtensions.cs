@@ -25,16 +25,19 @@ public static class StartupExtensions
     public static WebApplicationBuilder AddCisServiceAuthentication(this WebApplicationBuilder builder)
     {
         // get configuration
-        var c = new Configuration.CisServiceAuthenticationConfiguration();
-        builder.Configuration.GetSection("CisSecurity:ServiceAuthentication").Bind(c);
-        if (c == null || (string.IsNullOrEmpty(c.AdHost) && c.Validator == Configuration.CisServiceAuthenticationConfiguration.LoginValidators.ActiveDirectory))
+        var configuration = builder.Configuration
+            .GetSection("CisSecurity:ServiceAuthentication")
+            .Get<Configuration.CisServiceAuthenticationConfiguration>();
+
+        if (configuration == null || (string.IsNullOrEmpty(configuration.AdHost) && configuration.Validator == Configuration.CisServiceAuthenticationConfiguration.LoginValidators.ActiveDirectory))
             throw new Core.Exceptions.CisConfigurationNotFound("CisSecurity:ServiceAuthentication");
 
+        builder.Services.AddSingleton(configuration);
         // header parser
         builder.Services.TryAddSingleton<IAuthHeaderParser, AuthHeaderParser>();
 
         // login validator
-        switch (c.Validator)
+        switch (configuration.Validator)
         {
             case Configuration.CisServiceAuthenticationConfiguration.LoginValidators.StaticCollection:
                 builder.Services.TryAddSingleton<ILoginValidator, StaticLoginValidator>();
@@ -46,17 +49,17 @@ public static class StartupExtensions
                 builder.Services.TryAddSingleton<ILoginValidator, NativeAdLoginValidator>();
                 break;
             default:
-                throw new System.Security.Authentication.AuthenticationException($"Unknown LoginValidator {c.Validator}");
+                throw new System.Security.Authentication.AuthenticationException($"Unknown LoginValidator {configuration.Validator}");
         }
 
         builder.Services
             .AddAuthentication(InternalServicesAuthentication.DefaultSchemeName)
             .AddScheme<CisServiceAuthenticationOptions, CisServiceAuthenticationHandler>(InternalServicesAuthentication.DefaultSchemeName, options =>
             {
-                options.Domain = c.Domain;
-                options.AdHost = c.AdHost;
-                options.AdPort = c.AdPort ?? 0;
-                options.IsSsl = c.IsSsl;
+                options.Domain = configuration.Domain;
+                options.AdHost = configuration.AdHost;
+                options.AdPort = configuration.AdPort ?? 0;
+                options.IsSsl = configuration.IsSsl;
             });
 
         builder.Services.AddAuthorization();
@@ -67,7 +70,7 @@ public static class StartupExtensions
         // helper pro ziskani aktualniho uzivatele
         builder.Services.AddScoped<Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>();
 
-        builder.Services.AddUserService();
+        //builder.Services.AddUserService(); // ja myslim, ze je to zde z historickych duvodu a neni to treba
 
         return builder;
     }

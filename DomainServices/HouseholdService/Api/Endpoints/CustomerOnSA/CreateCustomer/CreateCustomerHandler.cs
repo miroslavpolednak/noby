@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.Audit;
+﻿using SharedAudit;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Api.Database.Entities;
@@ -24,6 +24,7 @@ internal sealed class CreateCustomerHandler
             Name = request.Customer?.Name ?? "",
             DateOfBirthNaturalPerson = request.Customer?.DateOfBirthNaturalPerson,
             SalesArrangementId = request.SalesArrangementId,
+            CaseId = salesArrangement.CaseId,
             CustomerRoleId = (CustomerRoles)request.CustomerRoleId,
             LockedIncomeDateTime = request.Customer?.LockedIncomeDateTime,
             MaritalStatusId = request.Customer?.MaritalStatusId,
@@ -33,12 +34,12 @@ internal sealed class CreateCustomerHandler
         var kbIdentity = request
             .Customer?
             .CustomerIdentifiers?
-            .FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb);
+            .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb);
 
         bool containsMpIdentity = request
             .Customer?
             .CustomerIdentifiers?
-            .Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp) ?? false;
+            .Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp) ?? false;
 
         // kontrola zda customer existuje v CM
         if (kbIdentity is not null)
@@ -95,9 +96,9 @@ internal sealed class CreateCustomerHandler
         };
         if (entity.Identities is not null)
         {
-            model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new CIS.Infrastructure.gRPC.CisTypes.Identity
+            model.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new SharedTypes.GrpcTypes.Identity
             {
-                IdentityScheme = (CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes)(int)t.IdentityScheme,
+                IdentityScheme = (SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes)(int)t.IdentityScheme,
                 IdentityId = t.IdentityId
             }).ToList());
         }
@@ -105,7 +106,7 @@ internal sealed class CreateCustomerHandler
         // auditni log
         if (kbIdentity is not null)
         {
-            _auditLogger.LogWithCurrentUser(
+            _auditLogger.Log(
                 AuditEventTypes.Noby006,
                 "Identifikovaný klient byl přiřazen k žádosti",
                 identities: new List<AuditLoggerHeaderItem>
@@ -114,8 +115,8 @@ internal sealed class CreateCustomerHandler
                 },
                 products: new List<AuditLoggerHeaderItem>
                 {
-                    new("case", salesArrangement.CaseId),
-                    new("salesArrangement", salesArrangement.SalesArrangementId)
+                    new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
+                    new(AuditConstants.ProductNamesSalesArrangement, salesArrangement.SalesArrangementId)
                 }
             );
         }
@@ -123,7 +124,7 @@ internal sealed class CreateCustomerHandler
         return model;
     }
 
-    private async Task updateCase(long caseId, Database.Entities.CustomerOnSA entity, CIS.Infrastructure.gRPC.CisTypes.Identity identity, CancellationToken cancellationToken)
+    private async Task updateCase(long caseId, Database.Entities.CustomerOnSA entity, SharedTypes.GrpcTypes.Identity identity, CancellationToken cancellationToken)
     {
         // update case service
         await _caseService.UpdateCustomerData(caseId, new CaseService.Contracts.CustomerData

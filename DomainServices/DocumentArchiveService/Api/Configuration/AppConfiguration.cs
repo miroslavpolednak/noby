@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DomainServices.DocumentArchiveService.Api;
+namespace DomainServices.DocumentArchiveService.Api.Configuration;
 
 internal sealed class AppConfiguration
 {
-    public const string SectionName = "AppConfiguration";
-
     /// <summary>
     /// Nastaveni mapovani technickych uzivatelu sluzby vs. Login v generovanem ID
     /// [service_user, C4M ItChannel]

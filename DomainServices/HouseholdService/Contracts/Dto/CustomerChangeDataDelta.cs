@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Types;
+﻿using SharedTypes.Types;
 
 namespace DomainServices.HouseholdService.Contracts.Dto;
 
@@ -10,6 +10,8 @@ public class CustomerChangeDataDelta
     public NaturalPersonDelta? NaturalPerson { get; set; }
 
     public IdentificationDocumentDelta? IdentificationDocument { get; set; }
+
+    public CustomerIdentificationDelta? CustomerIdentification { get; set; }
 
     public List<Address>? Addresses { get; set; }
 

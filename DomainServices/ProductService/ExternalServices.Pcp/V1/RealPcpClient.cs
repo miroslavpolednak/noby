@@ -20,7 +20,7 @@ internal sealed class RealPcpClient
             </dto:kBCustomer>
             <dto:partyInProductInstanceRole>
                 <dto:partyInproductInstanceRoleCode>
-                <dto:class>CB_CustomerLoanProductRole</dto:class>
+                <dto:class>CB_CustomerInMortgageInstanceRole</dto:class>
                 <dto:code>A</dto:code>
                 </dto:partyInproductInstanceRoleCode>
             </dto:partyInProductInstanceRole>

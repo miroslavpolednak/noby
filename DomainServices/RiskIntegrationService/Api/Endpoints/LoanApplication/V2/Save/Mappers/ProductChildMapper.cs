@@ -20,8 +20,8 @@ internal sealed class ProductChildMapper
         {
             ProductClusterCode = _riskApplicationType?.C4MAplCode,
             AplType = product.AplType ?? _riskApplicationType?.C4MAplTypeId,
-            GlTableSelection = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? "OST" : null,
-            IsProductSecured = _riskApplicationType?.MandantId == (int)CIS.Foms.Enums.Mandants.Kb ? true : default(bool?),
+            GlTableSelection = _riskApplicationType?.MandantId == (int)SharedTypes.Enums.Mandants.Kb ? "OST" : null,
+            IsProductSecured = _riskApplicationType?.MandantId == (int)SharedTypes.Enums.Mandants.Kb ? true : default(bool?),
             LoanApplicationPurpose = tranformPurposes(product.Purposes, purposes, product, _riskApplicationType?.MandantId),
             LoanApplicationCollateral = product.Collaterals?.Select(tranformCollateral(collaterals, _riskApplicationType?.MandantId))?.ToList(),
             AmountRequired = product.RequiredAmount.ToAmount(),

@@ -1,4 +1,5 @@
-﻿using DomainServices.RealEstateValuationService.Clients;
+﻿using CIS.Core.Exceptions.ExternalServices;
+using DomainServices.RealEstateValuationService.Clients;
 using ExternalServices.Crem.V1;
 
 namespace NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent;
@@ -21,14 +22,11 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
         }
         else
         {
-            var foundDocuments = await _cremClient.GetDocuments(request.KatuzId, request.DeedOfOwnershipNumber, request.DeedOfOwnershipId, cancellationToken);
+            var foundDocument = (await _cremClient.GetDocuments(request.KatuzId, request.DeedOfOwnershipNumber, request.DeedOfOwnershipId, cancellationToken))
+                ?.OrderByDescending(t => t.ValidityDate)
+                .FirstOrDefault();
 
-            if (foundDocuments.Count > 1)
-            {
-                throw new NobyValidationException("CREM:GetDocuments more documents found");
-            }
-
-            if (!foundDocuments.Any() || foundDocuments.First().PublicDocument || DateTime.Now.Subtract(foundDocuments.First().ValidityDate).TotalDays >= 30)
+            if (foundDocument is null || foundDocument.PublicDocument || DateTime.Now.Subtract(foundDocument.ValidityDate).TotalDays >= 30)
             {
                 try
                 {
@@ -37,6 +35,10 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
                     documentId = requestResult.CremDeedOfOwnershipDocumentId;
                     deedOfOwnershipNumber = requestResult.DeedOfOwnershipNumber;
                 }
+                catch (CisExtServiceValidationException ex) when (ex.FirstExceptionCode == "1")
+                {
+                    throw new NobyValidationException(90035, ex.Message);
+                }
                 catch (CisException ex) when (ex.ExceptionCode == "404")
                 {
                     throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "CREM:GetDocuments nothing found");
@@ -44,19 +46,19 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
             }
             else
             {
-                documentId = foundDocuments.First().DocumentId;
-                deedOfOwnershipNumber = foundDocuments.First().DeedOfOwnershipNumber;
+                documentId = foundDocument.DocumentId;
+                deedOfOwnershipNumber = foundDocument.DeedOfOwnershipNumber;
             }
         }
 
         var legalRelations = await _cremClient.GetLegalRelations(documentId, cancellationToken);
         var realEstates = await _cremClient.GetRealEstates(documentId, cancellationToken);
         var owners = await _cremClient.GetOwners(documentId, cancellationToken);
-
+        
         return new GetDeedOfOwnershipDocumentContentResponse
         {
             CremDeedOfOwnershipDocumentId = documentId,
-            DeedOfOwnershipNumber = deedOfOwnershipNumber,
+            DeedOfOwnershipNumber = deedOfOwnershipNumber.GetValueOrDefault() == 0 ? realEstates.FirstOrDefault()?.DeedOfOwnershipNumber : deedOfOwnershipNumber,
             Owners = owners?.Select(t => new GetDeedOfOwnershipDocumentContentResponseOwners
             {
                 OwnerDescription = t.Description,

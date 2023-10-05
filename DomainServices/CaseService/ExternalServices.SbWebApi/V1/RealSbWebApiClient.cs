@@ -88,6 +88,7 @@ internal sealed class RealSbWebApiClient
                 Uver_id = Convert.ToInt32(request.CaseId),//IT anal nevi co s tim
                 Loan_no = request.ContractNumber,
                 Jmeno_prijmeni = request.ClientFullName,
+                Case_state_id = request.CaseStateId,
                 Case_state = request.CaseStateName,
                 Product_type = request.ProductTypeId,
                 Owner_cpm = request.OwnerUserCpm,
@@ -178,7 +179,9 @@ internal sealed class RealSbWebApiClient
 
             if (string.IsNullOrEmpty(userInstance.UserInfo.Cpm) || string.IsNullOrEmpty(userInstance.UserInfo.Icp))
             {
-                var s = userInstance.UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous";
+                var s = userInstance.UserIdentifiers
+                    .Where(t => t.IdentityScheme is SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.Kbad or SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.Mpad)
+                    .FirstOrDefault()?.Identity ?? "anonymous";
                 var idx = s.IndexOf('\\');
                 return idx > 0 ? s[(idx + 1)..] : s;
             }

@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
 using DomainServices.CaseService.Api.Services;
 using DomainServices.CaseService.Contracts;
@@ -52,30 +52,24 @@ internal sealed class IndividualPricingProcessChangedConsumer
         }
     }
 
-    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForCompleted(int? decisionId)
+    private static IEnumerable<EditableFlowSwitch> GetFlowSwitchesForCompleted(int? decisionId)
     {
-        if (decisionId == 1)
-        {
-            yield return  new EditableFlowSwitch
-            {
-                FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved,
-                Value = true
-            };
-        }
-
-        if (decisionId == 2)
-        {
-            yield return  new EditableFlowSwitch
-            {
-                FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved,
-                Value = true
-            };
-        }
+        if (decisionId != 1 && decisionId != 2) yield break;
         
-        // else empty
+        yield return  new EditableFlowSwitch
+        {
+            FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved, // 9
+            Value = decisionId == 1
+        };
+        
+        yield return  new EditableFlowSwitch
+        {
+            FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved, // 10
+            Value = decisionId == 2
+        };
     }
 
-    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForActive()
+    private static IEnumerable<EditableFlowSwitch> GetFlowSwitchesForActive()
     {
         yield return new EditableFlowSwitch
         {
@@ -84,7 +78,7 @@ internal sealed class IndividualPricingProcessChangedConsumer
         };
     }
 
-    private IEnumerable<EditableFlowSwitch> GetFlowSwitchesForTerminated()
+    private static IEnumerable<EditableFlowSwitch> GetFlowSwitchesForTerminated()
     {
         var flowSwitchIds = new[]
         {

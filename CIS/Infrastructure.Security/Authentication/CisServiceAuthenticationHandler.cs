@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using CIS.Infrastructure.Security.Configuration;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using System.Security.Claims;
@@ -15,8 +16,10 @@ internal sealed class CisServiceAuthenticationHandler
     private readonly IAuthHeaderParser _headerParser;
     private readonly ILoginValidator _adValidator;
     private readonly ILogger<CisServiceAuthenticationHandler> _logger;
+    private readonly CisServiceAuthenticationConfiguration _configuration;
 
     public CisServiceAuthenticationHandler(
+        CisServiceAuthenticationConfiguration configuration,
         IOptionsMonitor<CisServiceAuthenticationOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
@@ -25,6 +28,7 @@ internal sealed class CisServiceAuthenticationHandler
         ILoginValidator adValidator)
     : base(options, logger, encoder, clock)
     {
+        _configuration = configuration;
         _adValidator = adValidator;
         _headerParser = headerParser;
         _logger = logger.CreateLogger<CisServiceAuthenticationHandler>();
@@ -47,13 +51,37 @@ internal sealed class CisServiceAuthenticationHandler
         var loginResult = _headerParser.Parse(authorizationHeader);
 
         if (!loginResult.Success) // nepodarilo se parsovat login a heslo
+        {
             return AuthenticateResult.Fail(loginResult.ErrorMessage!);
+        }
         else if (!await authenticateUser(loginResult.Login!, loginResult.Password!)) // nepodarila se autentizace
+        {
             return AuthenticateResult.Fail("Login or password incorrect");
+        }
         else
         {
             // vytvorit identity
             var claimsIdentity = new ServiceUser.CisServiceIdentity(loginResult.Login!);
+
+            // autorizace uzivatele
+            if (_configuration.AllowedUsers?.Any() ?? false)
+            {
+                var user = _configuration.AllowedUsers?.FirstOrDefault(t => t.Username == loginResult.Login);
+                if (user is null)
+                {
+                    _logger.AuthServiceUserNotFound(loginResult.Login!);
+                    return AuthenticateResult.Fail("Service user not found in allowed users");
+                }
+
+                // pridat role
+                if (user.Roles?.Any() ?? false)
+                {
+                    user.Roles.ForEach(t =>
+                    {
+                        claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, t));
+                    });
+                }
+            }
 
             // vratit autentizacni ticket
             var ticket = new AuthenticationTicket(new ClaimsPrincipal(claimsIdentity), InternalServicesAuthentication.DefaultSchemeName);

@@ -12,6 +12,7 @@ public static class ServiceLoggerExtensions
     private static readonly Action<ILogger, string, Exception> _extServiceUnavailable;
     private static readonly Action<ILogger, Exception> _extServiceAuthenticationFailed;
     private static readonly Action<ILogger, string, Exception> _extServiceResponseError;
+    private static readonly Action<ILogger, string, Exception> _extServiceServerError;
 
     static ServiceLoggerExtensions()
     {
@@ -38,7 +39,12 @@ public static class ServiceLoggerExtensions
         _extServiceResponseError = LoggerMessage.Define<string>(
             LogLevel.Warning,
             new EventId(EventIdCodes.ExtServiceResponseError, nameof(ExtServiceResponseError)),
-            "Error returned from ext.service: {Message}");
+            "Error returned from external service: {Message}");
+
+        _extServiceServerError = LoggerMessage.Define<string>(
+            LogLevel.Warning,
+            new EventId(EventIdCodes.ExtServiceServerError, nameof(ExtServiceServerError)),
+            "External service internal error: {Message}");
     }
 
     /// <summary>
@@ -62,6 +68,9 @@ public static class ServiceLoggerExtensions
     /// </summary>
     /// <param name="parentServiceName">Název doménové služby, ze které je služba třetí strany volaná.</param>
     public static void ExtServiceUnavailable(this ILogger logger, string parentServiceName, Exception ex)
+        => _extServiceUnavailable(logger, parentServiceName, ex);
+
+    public static void ExtServiceServerError(this ILogger logger, string parentServiceName, Exception ex)
         => _extServiceUnavailable(logger, parentServiceName, ex);
 
     /// <summary>

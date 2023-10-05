@@ -47,12 +47,12 @@ Každý .proto soubor v projektu musí mít nastavený způsob kompilace a odkaz
 
 Ukázka elementu v .csproj pro soubor s definicí služby:
 ```xml
-<Protobuf Include="CustomerOnSAService.v1.proto" GrpcServices="Both" ProtoRoot="/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+<Protobuf Include="CustomerOnSAService.v1.proto" GrpcServices="Both" ProtoRoot="/" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 ```
 
 Ukázka elementu v .csproj pro soubor s definicí kontraktu:
 ```xml
-<Protobuf Include="CustomerOnSA.proto" GrpcServices="None" ProtoRoot="/" AdditionalImportDirs="../../../CIS/Infrastructure.gRPC.CisTypes/Protos" />
+<Protobuf Include="CustomerOnSA.proto" GrpcServices="None" ProtoRoot="/" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 ```
 
 ## Hlavičky .proto souborů

@@ -6,6 +6,7 @@ namespace DomainServices.DocumentOnSAService.Api;
 public sealed class ErrorCodeMapper : ErrorCodeMapperBase
 {
     public const int SalesArrangementNotExist = 19000;
+    public const int DocumentTypeIdDoesNotExist = 19001;
     public const int SignatureTypeNotExist = 19002;
     public const int DocumentOnSANotExist = 19003;
     public const int AlreadySignedDocumentOnSA = 19005;
@@ -25,6 +26,8 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int DocumentFileNotExist = 19022;
     public const int AttachmentFileNotExist = 19023;
     public const int NoDocumentsToSignForSa = 19024;
+    public const int UnableGetExternalIdForDocumentOnSaId = 19025;
+    public const int DocumentOnSaDoesntExistForFormId = 19026;
 
     // Non BL validation
     public const int SalesArrangementIdIsRequired = 19030;
@@ -38,13 +41,14 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int UnsupportedDocumentTypeIdForServiceRequest = 19039;
     public const int WorkflowRequestCaseIdRequired = 19040;
     public const int UnsupportedKindOfSigningRequest = 19041;
-
+    public const int CannotGetNobyUserIdentifier = 19042;
 
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
         {
             { SalesArrangementNotExist, "SalesArrangement {PropertyValue} does not exist" },
+            { DocumentTypeIdDoesNotExist, "DocumentTypeId doesn't exist." },
             { SignatureTypeNotExist, "SignatureType {PropertyValue} does not exist." },
             { DocumentOnSANotExist, "DocumentOnSA {PropertyValue} does not exist."},
             { AlreadySignedDocumentOnSA, "Unable to sign DocumentOnSA {PropertyValue}. Document has been already signed."},
@@ -61,6 +65,8 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { DocumentFileNotExist,"Document file {PropertyValue} doest not exist."},
             { AttachmentFileNotExist,"Attachment file {PropertyValue} doest not exist."},
             { NoDocumentsToSignForSa,"For SalesArrangementId {PropertyValue} there isn't document to sign"},
+            { UnableGetExternalIdForDocumentOnSaId, "Unable get external id for provided DocumentOnSAId {PropertyValue}"},
+            { DocumentOnSaDoesntExistForFormId, "DocumentOnSa doesn't exist for specified FormId {PropertyValue}" },
 
             { DocumentTypeIdIsRequired, " DocumentTypeId is required"},
             { FormIdIsRequired, "FormId is required"},
@@ -74,7 +80,8 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { CustomerOnSAIdRequired,"CustomerOnSAId is required" },
             { UnsupportedDocumentTypeIdForServiceRequest, "Unsupported DocumentTypeId for ServiceRequest, supported DocumentTypeId (9,10,11,12)" },
             { WorkflowRequestCaseIdRequired, "For processing workflow request CaseId is required" },
-            { UnsupportedKindOfSigningRequest, "Unsupported kind of signing request" }
+            { UnsupportedKindOfSigningRequest, "Unsupported kind of signing request" },
+            {CannotGetNobyUserIdentifier, "Cannot get NOBY user identifier"}
         });
 
         return Messages;

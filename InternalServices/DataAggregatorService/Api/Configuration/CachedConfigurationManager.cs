@@ -9,7 +9,7 @@ internal class CachedConfigurationManager : IConfigurationManager
 
     private readonly MemoryCacheEntryOptions _cacheEntryOptions;
 
-    public CachedConfigurationManager(IConfigurationManager configurationManager, IMemoryCache memoryCache, DataAggregatorConfiguration configuration)
+    public CachedConfigurationManager(IConfigurationManager configurationManager, IMemoryCache memoryCache, AppConfiguration configuration)
     {
         _configurationManager = configurationManager;
         _memoryCache = memoryCache;

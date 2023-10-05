@@ -15,7 +15,7 @@ internal partial class CodebookService
         => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> AddressTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.AddressTypes>(true);
+        => Helpers.GetGenericItems<SharedTypes.Enums.AddressTypes>(true);
 
     public override Task<GenericCodebookResponse> AcvAttachmentCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
@@ -24,7 +24,7 @@ internal partial class CodebookService
         => _db.GetItems<BankCodesResponse, BankCodesResponse.Types.BankCodeItem>();
 
     public override Task<GenericCodebookResponse> CaseStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.CaseStates>(true);
+        => Helpers.GetGenericItems<SharedTypes.Enums.CaseStates>(true);
 
     public override Task<GenericCodebookResponse> ClassificationOfEconomicActivities(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
@@ -54,12 +54,12 @@ internal partial class CodebookService
         => _db.GetItems<CurrenciesResponse, CurrenciesResponse.Types.CurrencyItem>();
 
     public override Task<GenericCodebookResponse> CustomerProfiles(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.CustomerProfiles>(true);
+        => Helpers.GetGenericItems<SharedTypes.Enums.CustomerProfiles>(true);
 
     public override Task<CustomerRolesResponse> CustomerRoles(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new CustomerRolesResponse()).AddItems(
             FastEnum
-                .GetValues<CIS.Foms.Enums.CustomerRoles>()
+                .GetValues<SharedTypes.Enums.CustomerRoles>()
                 .Select(t => new Contracts.v1.CustomerRolesResponse.Types.CustomerRoleItem()
                 {
                     Id = (int)t,
@@ -67,9 +67,9 @@ internal partial class CodebookService
                     RdmCode = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? "",
                     NameNoby = t switch
                     {
-                        CIS.Foms.Enums.CustomerRoles.Debtor => "Hlavní žadatel",
-                        CIS.Foms.Enums.CustomerRoles.Codebtor => "Spoludlužník",
-                        CIS.Foms.Enums.CustomerRoles.Garantor => "Ručitel",
+                        SharedTypes.Enums.CustomerRoles.Debtor => "Hlavní žadatel",
+                        SharedTypes.Enums.CustomerRoles.Codebtor => "Spoludlužník",
+                        SharedTypes.Enums.CustomerRoles.Garantor => "Ručitel",
                         _ => ""
                     },
                 }))
@@ -95,12 +95,12 @@ internal partial class CodebookService
     public override Task<DocumentFileTypesResponse> DocumentFileTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new DocumentFileTypesResponse()).AddItems(
             FastEnum
-                .GetValues<CIS.Foms.Enums.DocumentFileTypes>()
+                .GetValues<SharedTypes.Enums.DocumentFileTypes>()
                 .Select(t => new DocumentFileTypesResponse.Types.DocumentFileTypeItem()
                 {
                     Id = (int)t,
                     DocumenFileType = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
-                    IsPrintingSupported = t == CIS.Foms.Enums.DocumentFileTypes.PdfA || t == CIS.Foms.Enums.DocumentFileTypes.OpenForm
+                    IsPrintingSupported = t == SharedTypes.Enums.DocumentFileTypes.PdfA || t == SharedTypes.Enums.DocumentFileTypes.OpenForm
                 })
             )
         );
@@ -111,7 +111,7 @@ internal partial class CodebookService
     public override Task<DocumentTemplateTypesResponse> DocumentTemplateTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new DocumentTemplateTypesResponse()).AddItems(
             FastEnum
-                .GetValues<CIS.Foms.Enums.DocumentFileTypes>()
+                .GetValues<SharedTypes.Enums.DocumentFileTypes>()
                 .Select(t => new DocumentTemplateTypesResponse.Types.DocumentTemplateTypeItem()
                 {
                     Id = (int)t,
@@ -136,7 +136,7 @@ internal partial class CodebookService
     public override Task<DrawingTypesResponse> DrawingTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new DrawingTypesResponse()).AddItems(
             FastEnum
-                .GetValues<CIS.Foms.Enums.DrawingTypes>()
+                .GetValues<SharedTypes.Enums.DrawingTypes>()
                 .Select(t => new DrawingTypesResponse.Types.DrawingTypeItem()
                 {
                     Id = (int)t,
@@ -176,15 +176,15 @@ internal partial class CodebookService
     public override Task<GendersResponse> Genders(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new GendersResponse()).AddItems(
             FastEnum
-                .GetValues<CIS.Foms.Enums.Genders>()
-                .Where(t => t != CIS.Foms.Enums.Genders.Unknown)
+                .GetValues<SharedTypes.Enums.Genders>()
+                .Where(t => t != SharedTypes.Enums.Genders.Unknown)
                 .Select(t => new GendersResponse.Types.GenderItem()
                 {
                     Id = (int)t,
                     Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
                     KonsDBCode = (int)t,
-                    KbCmCode = t == CIS.Foms.Enums.Genders.Male ? "M" : "F",
-                    StarBuildJsonCode = t == CIS.Foms.Enums.Genders.Male ? "M" : "Z"
+                    KbCmCode = t == SharedTypes.Enums.Genders.Male ? "M" : "F",
+                    StarBuildJsonCode = t == SharedTypes.Enums.Genders.Male ? "M" : "Z"
                 })
             )
         );
@@ -198,10 +198,21 @@ internal partial class CodebookService
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OperatorNotFound, request.PerformerLogin);
     }
 
+    public override Task<HashAlgorithmsResponse> HashAlgorithms(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(() => (new HashAlgorithmsResponse()).AddItems(
+            new List<HashAlgorithmsResponse.Types.HashAlgorithmItem>
+            {
+                new() { Code = "SHA-256", Description = "Secure Hash Algorithm 256-bit" },
+                new() { Code = "SHA-384", Description = "Secure Hash Algorithm 384-bit" },
+                new() { Code = "SHA-512", Description = "Secure Hash Algorithm 512-bit" },
+                new() { Code = "SHA-3", Description = "Secure Hash Algorithm 3" },
+            })
+        );
+
     public override Task<HouseholdTypesResponse> HouseholdTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new HouseholdTypesResponse()).AddItems(
             FastEnum
-                .GetValues<CIS.Foms.Enums.HouseholdTypes>()
+                .GetValues<SharedTypes.Enums.HouseholdTypes>()
                 .Select(t => new HouseholdTypesResponse.Types.HouseholdTypeItem()
                 {
                     Id = (int)t,
@@ -209,14 +220,14 @@ internal partial class CodebookService
                     RdmCode = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? "",
                     MaxHouseholdsForSA = t switch
                     {
-                        CIS.Foms.Enums.HouseholdTypes.Main => 1,
-                        CIS.Foms.Enums.HouseholdTypes.Codebtor => 1,
+                        SharedTypes.Enums.HouseholdTypes.Main => 1,
+                        SharedTypes.Enums.HouseholdTypes.Codebtor => 1,
                         _ => 0
                     },
                     DocumentTypeId = t switch
                     {
-                        CIS.Foms.Enums.HouseholdTypes.Main => 4,
-                        CIS.Foms.Enums.HouseholdTypes.Codebtor => 5,
+                        SharedTypes.Enums.HouseholdTypes.Main => 4,
+                        SharedTypes.Enums.HouseholdTypes.Codebtor => 5,
                         _ => null
                     }
                 })
@@ -302,7 +313,7 @@ internal partial class CodebookService
     public override Task<GenericCodebookResponse> LegalCapacityRestrictionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new GenericCodebookResponse()).AddItems(
             FastEnum
-                .GetValues<CIS.Foms.Enums.LegalCapacityRestrictions>()
+                .GetValues<SharedTypes.Enums.LegalCapacityRestrictions>()
                 .Select(t => new GenericCodebookResponse.Types.GenericCodebookItem()
                 {
                     Id = (int)t,
@@ -314,7 +325,7 @@ internal partial class CodebookService
         );
 
     public override Task<GenericCodebookResponse> LoanInterestRateAnnouncedTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.LoanInterestRateAnnouncedTypes>(true);
+        => Helpers.GetGenericItems<SharedTypes.Enums.LoanInterestRateAnnouncedTypes>(true);
 
     public override Task<GenericCodebookResponse> LoanKinds(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
@@ -346,7 +357,7 @@ internal partial class CodebookService
         });
 
     public override Task<GenericCodebookResponse> Mandants(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.Mandants>(true);
+        => Helpers.GetGenericItems<SharedTypes.Enums.Mandants>(true);
 
     public override Task<GenericCodebookResponse> MaritalStatuses(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
@@ -400,7 +411,7 @@ internal partial class CodebookService
         => _db.GetItems<PaymentDaysResponse, PaymentDaysResponse.Types.PaymentDayItem>();
 
     public override Task<GenericCodebookResponse> PayoutTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.PayoutTypes>();
+        => Helpers.GetGenericItems<SharedTypes.Enums.PayoutTypes>();
 
     public override Task<PostCodesResponse> PostCodes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<PostCodesResponse, PostCodesResponse.Types.PostCodeItem>();
@@ -560,7 +571,7 @@ internal partial class CodebookService
     public override Task<SalesArrangementStatesResponse> SalesArrangementStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new SalesArrangementStatesResponse()).AddItems(
             FastEnum
-                .GetValues<CIS.Foms.Enums.SalesArrangementStates>()
+                .GetValues<SharedTypes.Enums.SalesArrangementStates>()
                 .Select(t => new SalesArrangementStatesResponse.Types.SalesArrangementStateItem()
                 {
                     Id = (int)t,
@@ -587,7 +598,7 @@ internal partial class CodebookService
         ));
 
     public override Task<GenericCodebookResponse> SignatureTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<CIS.Foms.Enums.SignatureTypes>(true);
+        => Helpers.GetGenericItems<SharedTypes.Enums.SignatureTypes>(true);
 
     public override Task<SmsNotificationTypesResponse> SmsNotificationTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<SmsNotificationTypesResponse, SmsNotificationTypesResponse.Types.SmsNotificationTypeItem>();
@@ -613,12 +624,20 @@ internal partial class CodebookService
     public override Task<GenericCodebookResponse> CovenantTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 
+    public override Task<SigningMethodsResponse> SigningMethods(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetItems<SigningMethodsResponse, SigningMethodsResponse.Types.SigningMethodsItem>();
+
     private readonly Database.DatabaseAggregate _db;
     private readonly ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient _acvEnumService;
+    private readonly ExternalServices.RDM.V1.IRDMClient _rdmClient;
 
-    public CodebookService(Database.DatabaseAggregate db, ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient acvEnumService)
+    public CodebookService(
+        Database.DatabaseAggregate db,
+        ExternalServices.RDM.V1.IRDMClient rdmClient,
+        ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient acvEnumService)
     {
         _db = db;
         _acvEnumService = acvEnumService;
+        _rdmClient = rdmClient;
     }
 }

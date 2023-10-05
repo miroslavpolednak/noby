@@ -11,7 +11,7 @@ internal sealed class CodebookMemoryCache
     private static CancellationTokenSource _changeTokenSource = new CancellationTokenSource();
 
     //TODO zatim se mi to nechce datavat do appsettings
-    public const int AbsoluteExpirationInMinutes = 10;
+    public const int AbsoluteExpirationInMinutes = 30;
     private static MemoryCacheEntryOptions _cacheOptions = (new MemoryCacheEntryOptions()
         {
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(AbsoluteExpirationInMinutes)

@@ -15,11 +15,11 @@ public sealed class ProductController : ControllerBase
     /// Vrátí seznam dlužníků a spoludlužníků na daném produktu
     /// </summary>
     /// <remarks>
+    /// Vrátí seznam dlužníků a spoludlužníků na daném produktu.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DFD7FC8B-6D32-4a81-9608-A502E6F0E74B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Seznam klientů na produktu</returns>
     [HttpGet("{caseId:long}/customers")]
-    [AuthorizeCaseOwner]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
@@ -37,7 +37,6 @@ public sealed class ProductController : ControllerBase
     /// </remarks>
     /// <returns>Seznam závazků na produktu</returns>
     [HttpGet("{caseId:long}/obligations")]
-    [AuthorizeCaseOwner]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
@@ -56,7 +55,7 @@ public sealed class ProductController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vyhledá Case ID podle PCP ID v KonsDB.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=951AAF15-BEBB-4e22-8DF4-E9C195F309AC"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=048F18B9-903F-4e3a-8B79-02592E9ED41B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="pcpId">PCP ID</param>
     [HttpGet("caseid-by-pcpid/{pcpId:required}")]

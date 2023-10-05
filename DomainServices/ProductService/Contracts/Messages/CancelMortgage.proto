@@ -1,0 +1,7 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+message CancelMortgageRequest {
+	int64 ProductId = 1;
+}

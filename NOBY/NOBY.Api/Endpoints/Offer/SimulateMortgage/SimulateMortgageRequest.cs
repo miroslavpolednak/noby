@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CIS.Foms.Types;
+using SharedTypes.Types;
 using NOBY.Api.Endpoints.Offer.Dto;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
@@ -27,4 +27,6 @@ public sealed class SimulateMortgageRequest
     public List<CustomerIdentity>? CustomerIdentities { get; set; }
 
     public CreditWorthinessSimpleInputs? CreditWorthinessSimpleInputs { get; set; }
+
+    public MarketingActionInputItem? MarketingActions { get; set; }
 }

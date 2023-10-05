@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserRIPAttributes;
 
-internal class GetUserRIPAttributesHandler
+internal sealed class GetUserRIPAttributesHandler
     : IRequestHandler<Contracts.GetUserRIPAttributesRequest, Contracts.UserRIPAttributes>
 {
     public async Task<UserRIPAttributes> Handle(GetUserRIPAttributesRequest request, CancellationToken cancellationToken)
@@ -21,7 +21,7 @@ internal class GetUserRIPAttributesHandler
                 PersonId = dbIdentity.PersonId,
                 DealerCompanyId = dbIdentity.DealerCompanyId,
                 PersonJobPostId = dbIdentity.PersonJobPostId ?? "",
-                PersonOrgUnitId = dbIdentity.PersonOrgUnitId,
+                PersonOrgUnitId = dbIdentity.PersonOrgUnitId ?? "",
                 PersonOrgUnitName = dbIdentity.PersonOrgUnitName ?? "",
                 PersonSurname = dbIdentity.PersonSurname ?? "",
                 Company = dbIdentity.Company ?? "",

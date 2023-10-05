@@ -19,5 +19,7 @@ internal class SalesArrangementServiceWrapper : IServiceWrapper
         input.ValidateSalesArrangementId();
 
         data.SalesArrangement = await _salesArrangementService.GetSalesArrangement(input.SalesArrangementId!.Value, cancellationToken);
+
+        input.CaseId = data.SalesArrangement.CaseId;
     }
 }

@@ -1,13 +1,14 @@
 ﻿using System.Globalization;
 using System.Net.Mime;
 using CIS.Core;
-using CIS.Foms.Enums;
-using CIS.Infrastructure.Audit;
+using SharedTypes.Enums;
+using SharedAudit;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 using _Domain = DomainServices.DocumentOnSAService.Contracts;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
@@ -31,14 +32,18 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
             _ => throw new NobyValidationException("Unsupported kind of document source")
         };
         
-        _auditLogger.LogWithCurrentUser(
+        _auditLogger.Log(
             AuditEventTypes.Noby010,
             "Dokument byl zobrazen v aplikaci",
             products: new List<AuditLoggerHeaderItem>
             {
-                // new("case", todo),
-                new("salesArrangement", documentOnSA.SalesArrangementId),
-                new("form", documentOnSA.FormId)
+                new(AuditConstants.ProductNamesSalesArrangement, documentOnSA.SalesArrangementId),
+                new(AuditConstants.ProductNamesForm, documentOnSA.FormId)
+            },
+            bodyBefore: new Dictionary<string, string>
+            {
+                { "sha2", AuditLoggerHelpers.GenerateSHA2(response.FileData) },
+                { "sha3", AuditLoggerHelpers.GenerateSHA3(response.FileData) }
             }
         );
 
@@ -65,8 +70,11 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
             throw new NobyValidationException("Signed or invalid paper document is not allowed.");
         }
 
+        //Should be in the cache, so load it because we need CaseId
+        var saValidationResult = await _salesArrangementService.ValidateSalesArrangementId(documentOnSA.SalesArrangementId, false, cancellationToken);
+
         var documentOnSAData = await _documentOnSaService.GetDocumentOnSAData(documentOnSA.DocumentOnSAId ?? 0, cancellationToken);
-        var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSA, documentOnSAData);
+        var generateDocumentRequest = DocumentOnSAExtensions.CreateGenerateDocumentRequest(documentOnSA, documentOnSAData, saValidationResult.CaseId);
         var document = await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
 
         var templates = await _codebookService.DocumentTypes(cancellationToken);
@@ -108,6 +116,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
     private readonly IDateTime _dateTime;
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IAuditLogger _auditLogger;
 
 
@@ -116,12 +125,14 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
         IDateTime dateTime,
         IDocumentOnSAServiceClient documentOnSaService,
         IDocumentGeneratorServiceClient documentGeneratorService,
+        ISalesArrangementServiceClient salesArrangementService,
         IAuditLogger auditLogger)
     {
         _codebookService = codebookService;
         _dateTime = dateTime;
         _documentOnSaService = documentOnSaService;
         _documentGeneratorService = documentGeneratorService;
+        _salesArrangementService = salesArrangementService;
         _auditLogger = auditLogger;
     }
 }

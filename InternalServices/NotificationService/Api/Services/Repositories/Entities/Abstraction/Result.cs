@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
 
-[Index(nameof(CustomId), nameof(Identity), nameof(IdentityScheme), nameof(DocumentId), IsUnique = false)]
+[Index(nameof(CustomId), nameof(Identity), nameof(IdentityScheme), nameof(DocumentId), nameof(CaseId), IsUnique = false)]
 public abstract class Result
 {
     public Guid Id { get; set; }
@@ -13,13 +13,20 @@ public abstract class Result
     public NotificationState State { get; set; }
     
     public NotificationChannel Channel { get; set; }
+
+    public string? Identity { get; set; }
+    
+    public string? IdentityScheme { get; set; }
+    
+    public long? CaseId { get; set; }
     
     public string? CustomId { get; set; }
     
-    public string? Identity { get; set; }
-    public string? IdentityScheme { get; set; }
-    
     public string? DocumentId { get; set; }
+    
+    public string? DocumentHash { get; set; }
+    
+    public string? HashAlgorithm { get; set; }
     
     public DateTime? RequestTimestamp { get; set; }
     

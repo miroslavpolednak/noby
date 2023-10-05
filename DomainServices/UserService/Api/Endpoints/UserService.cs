@@ -5,10 +5,13 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.UserService.Api.Endpoints;
 
 [Authorize]
-internal class UserService 
+internal sealed class UserService 
     : Contracts.v1.UserService.UserServiceBase
 {
     public override async Task<User> GetUser(GetUserRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<GetUserBasicInfoResponse> GetUserBasicInfo(GetUserBasicInfoRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<GetUserPermissionsResponse> GetUserPermissions(GetUserPermissionsRequest request, ServerCallContext context)

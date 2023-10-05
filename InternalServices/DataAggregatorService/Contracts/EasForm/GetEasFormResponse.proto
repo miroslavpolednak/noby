@@ -32,6 +32,8 @@ message Form {
     optional DefaultValues DefaultValues = 3;
 
     string Json = 4;
+
+    string FormIdentifier = 5;
 }
 
 message DefaultValues {

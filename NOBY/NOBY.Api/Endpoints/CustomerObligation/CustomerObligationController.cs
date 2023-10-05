@@ -10,7 +10,7 @@ public class CustomerObligationController : ControllerBase
     /// Smazání závazku customera
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/DeleteObligation
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3325947-AFC4-444a-989E-1531C4AFFEDE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="obligationId">ID závazku ke smazani</param>
@@ -26,7 +26,7 @@ public class CustomerObligationController : ControllerBase
     /// Detail závazku customera
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/GetObligation
+    ///  <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B816782F-3F9B-4709-8D90-CAD6DB020F70"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="obligationId">ID závazku</param>
@@ -46,7 +46,7 @@ public class CustomerObligationController : ControllerBase
     /// Update detailu závazku customera
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/UpdateObligation
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9AA4E44C-58B8-44c5-897A-64857ADD69DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="obligationId">ID závazku</param>
@@ -63,7 +63,7 @@ public class CustomerObligationController : ControllerBase
     /// Vytvoření závazku customera
     /// </summary>
     /// <remarks>
-    /// <i>DS:</i> SalesArrangementService/CreateObligation
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=15CBD05C-8B14-43a9-918F-5BAB59148D4D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     [HttpPost("{customerOnSAId:int}/obligation")]

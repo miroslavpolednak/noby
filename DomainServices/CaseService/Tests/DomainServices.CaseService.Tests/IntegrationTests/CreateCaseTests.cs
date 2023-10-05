@@ -30,7 +30,7 @@ public class CreateCaseTests
     public async Task GetContractNumberFromEasFail_ShouldThrowRpcException()
     {
         MockEas
-            .Setup(t => t.GetCaseId(It.IsAny<CIS.Foms.Enums.IdentitySchemes>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Setup(t => t.GetCaseId(It.IsAny<SharedTypes.Enums.IdentitySchemes>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new CIS.Core.Exceptions.CisValidationException(9102, "test_exception"));
 
         var request = createFullRequest();

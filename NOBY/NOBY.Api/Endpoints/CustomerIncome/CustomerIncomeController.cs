@@ -10,9 +10,8 @@ public class CustomerIncomeController : ControllerBase
     /// Smazání příjmu customera
     /// </summary>
     /// <remarks>
-    /// <strong>CustomerIncome.Delete</strong><br/>
-    /// Tento endpoint se v současné době asi používat nebude.<br/>
-    /// <i>DS:</i> SalesArrangementService/DeleteIncome
+    /// Ověří, že příjem patří customerovi a příjem smaže.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID příjmu ke smazání</param>
@@ -29,8 +28,8 @@ public class CustomerIncomeController : ControllerBase
     /// </summary>
     /// <remarks>
     /// <strong>CustomerIncome.GetDetail</strong><br/>
-    /// Použít pro zobrazení detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domacnosti.<br/>
-    /// <i>DS:</i> SalesArrangementService/GetIncome
+    /// Ověří, že příjem patří customerovi a příjem smaže.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID příjmu</param>
@@ -50,9 +49,8 @@ public class CustomerIncomeController : ControllerBase
     /// Update detailu příjmu customera
     /// </summary>
     /// <remarks>
-    /// <strong>CustomerIncome.Update</strong><br/>
-    /// Použít pro update detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domácnosti.<br/>
-    /// <i>DS:</i> SalesArrangementService/UpdateIncome
+    /// Ověří, že příjem patří customerovi a příjem smaže.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a> 
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID příjmu</param>
@@ -69,8 +67,8 @@ public class CustomerIncomeController : ControllerBase
     /// Vytvoření příjmu customera
     /// </summary>
     /// <remarks>
-    /// <strong>CustomerIncome.Create</strong><br/>
-    /// <i>DS:</i> SalesArrangementService/CreateIncome
+    /// Vytvoří příjem k danému customerovi.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=388BC673-9722-45e3-88B3-838E85C99912"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     [HttpPost("{customerOnSAId:int}/income")]

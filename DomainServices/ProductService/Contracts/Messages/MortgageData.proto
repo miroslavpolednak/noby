@@ -36,12 +36,14 @@ message MortgageData {
 	cis.types.NullableGrpcDecimal LoanInterestRateRefix = 25;
 	cis.types.NullableGrpcDate LoanInterestRateValidFromRefix = 26;
 	google.protobuf.Int32Value FixedRatePeriodRefix = 27;
-	google.protobuf.Int32Value BranchConsultantId = 28;
-	google.protobuf.Int32Value ThirdPartyConsultantId = 29;
-	cis.types.NullableGrpcDate FirstAnnuityPaymentDate = 30;
-	PaymentAccount RepaymentAccount = 31;
-	repeated LoanRealEstate LoanRealEstates = 32;
-	StatementObject Statement = 33;
-	google.protobuf.StringValue PcpId = 34;
-	cis.types.NullableGrpcDate FirstSignatureDate = 35;
+	google.protobuf.Int64Value BranchConsultantId = 28;
+	google.protobuf.Int64Value CaseOwnerUserCurrentId = 29;
+	google.protobuf.Int64Value CaseOwnerUserOrigId = 30;
+	cis.types.NullableGrpcDate FirstAnnuityInstallmentDate = 31;
+	PaymentAccount RepaymentAccount = 32;
+	repeated LoanRealEstate LoanRealEstates = 33;
+	StatementObject Statement = 34;
+	google.protobuf.StringValue PcpId = 35;
+	cis.types.NullableGrpcDate FirstSignatureDate = 36;
+	bool IsCancelled = 37;
 }

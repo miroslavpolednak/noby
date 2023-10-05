@@ -1,4 +1,5 @@
 ﻿using DomainServices.HouseholdService.Clients;
+using NOBY.Services.FlowSwitchAtLeastOneIncomeMainHousehold;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.CustomerIncome.CreateIncome;
@@ -26,25 +27,25 @@ internal sealed class CreateIncomeHandler
 
             switch (request.IncomeTypeId)
             {
-                case CIS.Foms.Enums.CustomerIncomeTypes.Employement:
+                case SharedTypes.Enums.CustomerIncomeTypes.Employement:
                     var o1 = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataEmployement>(dataString, _jsonSerializerOptions);
                     if (o1 is not null) //TODO kdyz je to null, mam resit nejakou validaci?
                         model.Employement = o1.ToDomainServiceRequest();
                     break;
 
-                case CIS.Foms.Enums.CustomerIncomeTypes.Other:
+                case SharedTypes.Enums.CustomerIncomeTypes.Other:
                     var o2 = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataOther>(dataString, _jsonSerializerOptions);
                     if (o2 is not null) //TODO kdyz je to null, mam resit nejakou validaci?
                         model.Other = o2.ToDomainServiceRequest();
                     break;
 
-                case CIS.Foms.Enums.CustomerIncomeTypes.Enterprise:
+                case SharedTypes.Enums.CustomerIncomeTypes.Enterprise:
                     var o3 = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataEntrepreneur>(dataString, _jsonSerializerOptions);
                     if (o3 is not null) //TODO kdyz je to null, mam resit nejakou validaci?
                         model.Entrepreneur = o3.ToDomainServiceRequest();
                     break;
 
-                case CIS.Foms.Enums.CustomerIncomeTypes.Rent:
+                case SharedTypes.Enums.CustomerIncomeTypes.Rent:
                     // RENT nema zadna data
                     model.Rent = new _HO.IncomeDataRent();
                     break;
@@ -55,6 +56,9 @@ internal sealed class CreateIncomeHandler
         }
 
         int incomeId = await _customerService.CreateIncome(model, cancellationToken);
+
+        await _flowSwitchMainHouseholdService.SetFlowSwitchByCustomerOnSAId(request.CustomerOnSAId.Value, cancellationToken: cancellationToken);
+
         return incomeId;
     }
 
@@ -64,10 +68,14 @@ internal sealed class CreateIncomeHandler
         PropertyNameCaseInsensitive = true
     };
 
+    private readonly FlowSwitchAtLeastOneIncomeMainHouseholdService _flowSwitchMainHouseholdService;
     private readonly ICustomerOnSAServiceClient _customerService;
 
-    public CreateIncomeHandler(ICustomerOnSAServiceClient customerService)
+    public CreateIncomeHandler(
+        ICustomerOnSAServiceClient customerService, 
+        FlowSwitchAtLeastOneIncomeMainHouseholdService flowSwitchMainHouseholdService)
     {
         _customerService = customerService;
+        _flowSwitchMainHouseholdService = flowSwitchMainHouseholdService;
     }
 }

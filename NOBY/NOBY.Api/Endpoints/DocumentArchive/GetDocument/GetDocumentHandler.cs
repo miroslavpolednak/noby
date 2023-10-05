@@ -21,24 +21,26 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
         _documentArchiveService = documentArchiveService;
         _documentOnSAService = documentOnSaService;
     }
-    
+
     public async Task<GetDocumentResponse> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
     {
         return request.Source switch
         {
             Source.EArchive => await HandleByEArchive(request.DocumentId ?? string.Empty, cancellationToken),
-            Source.ESignature => await HandleByESignature(request.ExternalId ?? string.Empty, cancellationToken)
+            Source.SbDocument or Source.SbAttachment => await HandleBySb(request.ExternalId ?? string.Empty, request.Source, cancellationToken),
+            _ => throw new NobyValidationException($"Unsupported kind of source {request.Source}")
         };
     }
 
     private async Task<GetDocumentResponse> HandleByEArchive(string documentId, CancellationToken cancellationToken)
     {
         var user = _currentUserAccessor.User;
-        
+
         var documentResponse = await _documentArchiveService.GetDocument(new()
         {
             DocumentId = documentId,
             UserLogin = user is null ? "Unknown NOBY user" : user.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            GetLocalCopyAsBackup = true,
             WithContent = true
         }, cancellationToken);
 
@@ -73,27 +75,48 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
             }
         };
     }
-    
-    private async Task<GetDocumentResponse> HandleByESignature(string attachmentId, CancellationToken cancellationToken)
+
+    private async Task<GetDocumentResponse> HandleBySb(string externalId, Source source, CancellationToken cancellationToken)
     {
-        var request = new GetElectronicDocumentFromQueueRequest
+        if (!_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_Manage))
         {
-            DocumentAttachment = new ()
+            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");
+        }
+
+        if (!_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_DownloadWorkflowDocument))
+        {
+            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");
+        }
+
+        var request = source switch
+        {
+            Source.SbAttachment => new GetElectronicDocumentFromQueueRequest
             {
-                DocumentAttachmentId = attachmentId
-            }
+                DocumentAttachment = new()
+                {
+                    AttachmentId = externalId
+                }
+            },
+            Source.SbDocument => new GetElectronicDocumentFromQueueRequest
+            {
+                MainDocument = new()
+                {
+                    DocumentId = externalId
+                }
+            },
+            _ => throw new NotSupportedException($"Unsupported kind of source {source}"),
         };
-        
+
         var response = await _documentOnSAService.GetElectronicDocumentFromQueue(request, cancellationToken);
 
         return new GetDocumentResponse
         {
-            Content = new ()
+            Content = new()
             {
                 BinaryData = response.BinaryData.ToArrayUnsafe(),
                 MimeType = response.MimeType
             },
-            Metadata = new ()
+            Metadata = new()
             {
                 Filename = response.Filename
             }

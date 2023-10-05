@@ -3,6 +3,7 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
+using CIS.Core.Exceptions.ExternalServices;
 
 namespace CIS.Infrastructure.gRPC;
 
@@ -65,11 +66,6 @@ public sealed class GenericClientExceptionInterceptor
         catch (RpcException ex)
         {
             _logger.ClientUncoughtRpcException(methodFullName, ex);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            string catchAll = ex.Message;
             throw;
         }
     }

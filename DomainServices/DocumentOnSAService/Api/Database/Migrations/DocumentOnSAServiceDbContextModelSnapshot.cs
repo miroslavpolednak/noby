@@ -17,7 +17,7 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -61,6 +61,9 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("DocumentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EACodeMainId")
                         .HasColumnType("int");
 
                     b.Property<string>("EArchivId")
@@ -117,7 +120,12 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                     b.Property<int?>("TaskId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TaskIdSb")
+                        .HasColumnType("int");
+
                     b.HasKey("DocumentOnSAId");
+
+                    b.HasIndex("FormId");
 
                     b.HasIndex("SalesArrangementId");
 

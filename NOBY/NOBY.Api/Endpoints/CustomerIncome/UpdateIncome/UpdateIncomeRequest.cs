@@ -15,7 +15,7 @@ public sealed class UpdateIncomeRequest
     public int CustomerOnSAId { get; set; }
 
     [Required]
-    public CIS.Foms.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
+    public SharedTypes.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
 
     /// <summary>
     /// Detailni informace o prijmu

@@ -19,7 +19,7 @@ internal sealed class SulmClientHelper
         await _sulmClient.StopUse(kbCustomerId, identities, purposeCode, cancellationToken);
     }
 
-    private async Task<List<CIS.Foms.Types.UserIdentity>> getUserIdentities(CancellationToken cancellationToken)
+    private async Task<List<SharedTypes.Types.UserIdentity>> getUserIdentities(CancellationToken cancellationToken)
     {
         if (!_userAccessor.IsAuthenticated)
         {
@@ -27,7 +27,7 @@ internal sealed class SulmClientHelper
         }
         var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
         return userInstance.UserIdentifiers
-            .Select(t => (CIS.Foms.Types.UserIdentity)t!)
+            .Select(t => (SharedTypes.Types.UserIdentity)t!)
             .ToList();
     }
 

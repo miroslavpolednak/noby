@@ -40177,6 +40177,8 @@ json_resp_developer_projects = [{'developerId': 999, 'id': 0, 'isValid': False, 
  {'developerId': 276, 'id': 276, 'isValid': False, 'massValuation': -1},
  {'developerId': 277, 'id': 277, 'isValid': False, 'massValuation': -1},
  {'developerId': 278, 'id': 278, 'isValid': False, 'massValuation': -1}]
+
+
 json_resp_document_on_sa_types = [
       {
         "id": 1,
@@ -40200,6 +40202,136 @@ json_resp_document_on_sa_types = [
         "formTypeId": 3700001
       }
     ]
+
+json_resp_document_types = [
+            {
+                "id": 1,
+                "name": "Nabídka hypotečního úvěru",
+                "shortName": "NABIDKA",
+                "fileName": "Nabidka_HU",
+                "isValid": True,
+                "eaCodeMainId": 605569
+            },
+            {
+                "id": 2,
+                "name": "Hypoteční úvěr - kalkulace",
+                "shortName": "KALKULHU",
+                "fileName": "Kalkulace_HU",
+                "isValid": True
+            },
+            {
+                "id": 3,
+                "name": "Simulace splátkového kalendáře",
+                "shortName": "SPLKALHU",
+                "fileName": "Splatkovy_kalendar",
+                "isValid": True
+            },
+            {
+                "id": 4,
+                "name": "Žádost o poskytnutí úvěru",
+                "shortName": "ZADOSTHU",
+                "fileName": "Zadost_HU1",
+                "isValid": True,
+                "eaCodeMainId": 608248
+            },
+            {
+                "id": 5,
+                "name": "Žádost o poskytnutí úvěru (spoludlužníci)",
+                "shortName": "ZADOSTHD",
+                "fileName": "Zadost_HU2",
+                "isValid": True,
+                "eaCodeMainId": 608243
+            },
+            {
+                "id": 6,
+                "name": "Žádost o čerpání hypotečního úvěru",
+                "shortName": "ZADOCERP",
+                "fileName": "Cerpani_HU",
+                "salesArrangementTypeId": 6,
+                "isValid": True,
+                "eaCodeMainId": 613226
+            },
+            {
+                "id": 7,
+                "name": "Žádost o uplatnění Flexi opce",
+                "shortName": "ZADOOPCI",
+                "fileName": "Zadost_Flexi",
+                "salesArrangementTypeId": 13,
+                "isValid": True,
+                "eaCodeMainId": 608578
+            },
+            {
+                "id": 8,
+                "name": "Žádost o změnu parametrů",
+                "shortName": "ZAOZMPAR",
+                "fileName": "Zadost_parametricka",
+                "salesArrangementTypeId": 7,
+                "isValid": True,
+                "eaCodeMainId": 608279
+            },
+            {
+                "id": 9,
+                "name": "Žádost o změnu dlužníka",
+                "shortName": "ZAOZMDLU",
+                "fileName": "Zadost_dluznik",
+                "salesArrangementTypeId": 9,
+                "isValid": True,
+                "eaCodeMainId": 608580
+            },
+            {
+                "id": 10,
+                "name": "Žádost o změnu HÚ bez nemovitosti",
+                "shortName": "ZAODHUBN",
+                "fileName": "Zadost_bezNem",
+                "salesArrangementTypeId": 8,
+                "isValid": True,
+                "eaCodeMainId": 608579
+            },
+            {
+                "id": 11,
+                "name": "Údaje o zůstávajícím v úvěru",
+                "shortName": "ZUSTAVSI",
+                "fileName": "Zustavajici_v_HU",
+                "salesArrangementTypeId": 12,
+                "isValid": True,
+                "eaCodeMainId": 608524
+            },
+            {
+                "id": 12,
+                "name": "Údaje o přistupujícím k úvěru",
+                "shortName": "PRISTOUP",
+                "fileName": "Pristupujici_k_HU",
+                "salesArrangementTypeId": 10,
+                "isValid": True,
+                "eaCodeMainId": 608524
+            },
+            {
+                "id": 13,
+                "name": "Prohlášení o daňové rezidenci",
+                "shortName": "DANRESID",
+                "fileName": "Prohlaseni_dan",
+                "isValid": True,
+                "eaCodeMainId": 616578
+            },
+            {
+                "id": 15,
+                "name": "Ukončení žádosti o úvěr",
+                "shortName": "ODSTOUP",
+                "fileName": "Ukonceni_zadosti_HU",
+                "isValid": True,
+                "eaCodeMainId": 608522
+            },
+            {
+                "id": 16,
+                "name": "Žádost o poskytnutí úvěru (spoludlužníci)",
+                "shortName": "ZADOSTHD",
+                "fileName": "Pridani_spoludluznika",
+                "salesArrangementTypeId": 11,
+                "isValid": True,
+                "eaCodeMainId": 608243
+            }
+        ]
+
 json_resp_drawing_durations = [{'drawingDuration': 12, 'id': 1, 'isDefault': False, 'isValid': True},
  {'drawingDuration': 18, 'id': 2, 'isDefault': False, 'isValid': True},
  {'drawingDuration': 24, 'id': 3, 'isDefault': True, 'isValid': True},

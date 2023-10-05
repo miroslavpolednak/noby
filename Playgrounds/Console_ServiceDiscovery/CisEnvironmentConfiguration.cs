@@ -14,4 +14,6 @@ internal sealed class CisEnvironmentConfiguration
     public string InternalServicesLogin { get; set; }
 
     public string InternalServicePassword { get; set; }
+
+    public bool DisableContractDescriptionPropagation { get; set; }
 }

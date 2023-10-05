@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Types;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Clients.Services;
@@ -59,7 +59,7 @@ internal sealed class CaseServiceClient
         var request = new SearchCasesRequest
         {
             SearchTerm = searchTerm ?? "",
-            Pagination = new CIS.Infrastructure.gRPC.CisTypes.PaginationRequest(pagination),
+            Pagination = new SharedTypes.GrpcTypes.PaginationRequest(pagination),
             CaseOwnerUserId = caseOwnerUserId,
         };
         if (states is not null)

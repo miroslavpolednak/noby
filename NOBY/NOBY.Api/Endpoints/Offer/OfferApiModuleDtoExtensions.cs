@@ -7,7 +7,7 @@ namespace NOBY.Api.Endpoints.Offer;
 
 internal static class OfferApiModuleDtoExtensions
 {
-    public static Dto.MortgageInputs ToApiResponse(this MortgageSimulationInputs input, BasicParameters basicParams)
+    public static Dto.MortgageInputsExtended ToApiResponse(this MortgageSimulationInputs input, BasicParameters basicParams)
         => new()
         {
             ProductTypeId = input.ProductTypeId,
@@ -31,7 +31,7 @@ internal static class OfferApiModuleDtoExtensions
             DrawingDurationId = input.DrawingDurationId,
             DrawingTypeId = input.DrawingTypeId,
             InterestRateDiscount = input.InterestRateDiscount,
-            MarketingActions = input.MarketingActions is null ? null : new Dto.MarketingActionInputItem
+            MarketingActions = input.MarketingActions is null ? null : new Dto.MarketingActionInputItemResult
             {
                 Domicile = input.MarketingActions.Domicile,
                 HealthRiskInsurance = input.MarketingActions.HealthRiskInsurance,

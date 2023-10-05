@@ -61,7 +61,7 @@ internal sealed class SearchCasesHandler
 
         var result = new SearchCasesResponse()
         {
-            Pagination = new CIS.Infrastructure.gRPC.CisTypes.PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, recordsTotalSize)
+            Pagination = new SharedTypes.GrpcTypes.PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, recordsTotalSize)
         };
         result.Cases.AddRange(data);
 
@@ -73,7 +73,7 @@ internal sealed class SearchCasesHandler
         // base query
         var query = _dbContext.Cases
             .AsNoTracking()
-            .Where(t => t.OwnerUserId == request.CaseOwnerUserId && !Helpers.DisallowedStates.Contains(t.State));
+            .Where(t => t.OwnerUserId == request.CaseOwnerUserId);
 
         // omezeni na state
         if (request.State?.Any() ?? false)

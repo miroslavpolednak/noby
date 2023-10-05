@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using DomainServices.CustomerService.Api.Services.CustomerManagement;
 using DomainServices.CustomerService.Api.Services.KonsDb;
 

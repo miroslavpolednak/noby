@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Clients.Services;
@@ -56,12 +56,16 @@ internal sealed class CustomerOnSAService
 
     public async Task<List<CustomerOnSA>> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        var result = await _service.GetCustomerListAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId
-            }, cancellationToken: cancellationToken);
-        return result.Customers.ToList();
+        if (_cacheGetCustomerList is null || _cacheGetCustomerListId != salesArrangementId)
+        {
+            _cacheGetCustomerList = (await _service.GetCustomerListAsync(
+                new()
+                {
+                    SalesArrangementId = salesArrangementId
+                }, cancellationToken: cancellationToken)
+            ).Customers.ToList();
+        }
+        return _cacheGetCustomerList;
     }
 
     public async Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default)
@@ -178,6 +182,8 @@ internal sealed class CustomerOnSAService
         return _cacheValidateCustomerOnSAId;
     }
 
+    private List<CustomerOnSA>? _cacheGetCustomerList;
+    private int? _cacheGetCustomerListId;
     private CustomerOnSA? _cacheGetCustomer;
     private ValidateCustomerOnSAIdResponse? _cacheValidateCustomerOnSAId;
 

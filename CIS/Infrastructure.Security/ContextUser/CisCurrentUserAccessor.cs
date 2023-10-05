@@ -44,17 +44,17 @@ public sealed class CisCurrentContextUserAccessor
         get => _userDetailsFetched ? _userDetails : throw new InvalidOperationException("Trying to access UserDetails without fetching details first. Call FetchDetails() to ensure data being loaded.");
     }
 
-    public async Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken = default)
     {
         if (!IsAuthenticated)
             throw new InvalidOperationException("Missing authenticated user - can not fetch user details");
         if (_userDetailsFetched) return _userDetails!;
 
         var userService = _httpContext!.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Clients.IUserServiceClient>();
-        var userInstance = await userService.GetUser(_user!.Id, cancellationToken);
+        var userInstance = await userService.GetUserBasicInfo(_user!.Id, cancellationToken);
         _userDetails = new CisUserDetails
         {
-            DisplayName = userInstance.UserInfo.DisplayName
+            DisplayName = userInstance.DisplayName
         };
 
         _userDetailsFetched = true;
@@ -62,7 +62,7 @@ public sealed class CisCurrentContextUserAccessor
         return _userDetails;
     }
     
-    public CIS.Foms.Types.UserIdentity? GetMainIdentity()
+    public SharedTypes.Types.UserIdentity? GetMainIdentity()
     {
         return CurrentUserAccessorHelpers.GetUserIdentityFromHeaders(_httpContext?.HttpContext?.Request);
     }

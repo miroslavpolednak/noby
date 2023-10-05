@@ -4,23 +4,24 @@ internal sealed class CrudResult
 {
     public int? OnHouseholdCustomerOnSAId { get; set; }
     
-    public IEnumerable<CIS.Infrastructure.gRPC.CisTypes.Identity>? Identities { get; set; }
+    public IEnumerable<SharedTypes.GrpcTypes.Identity>? Identities { get; set; }
     
-    public bool CancelSigning { get; set; }
+    //public bool CancelSigning { get; set; }
+    public Reasons Reason { get; set; }
 
-    public CrudResult()
-    {
-        CancelSigning = false;
-    }
+    public CrudResult() { }
 
-    public CrudResult(bool cancelSigning)
-    {
-        CancelSigning = cancelSigning;
-    }
-
-    public CrudResult(bool cancelSigning, int onHouseholdCustomerOnSAId)
-        : this(cancelSigning)
+    public CrudResult(Reasons reason, int? onHouseholdCustomerOnSAId = null)
     {
         OnHouseholdCustomerOnSAId = onHouseholdCustomerOnSAId;
+        Reason = reason;
+    }
+
+    public enum Reasons
+    {
+        None,
+        CustomerRemoved,
+        CustomerAdded,
+        CustomerUpdated
     }
 }

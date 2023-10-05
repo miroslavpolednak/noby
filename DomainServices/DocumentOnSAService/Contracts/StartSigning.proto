@@ -20,6 +20,7 @@ message StartSigningRequest {
 	google.protobuf.Int32Value CustomerOnSAId2 = 9;
 	SigningIdentity CustomerOnSAId1SigningIdentity = 10;
 	SigningIdentity CustomerOnSAId2SigningIdentity = 11;
+	google.protobuf.Int32Value TaskIdSb = 12;
 }
 
 message StartSigningResponse {

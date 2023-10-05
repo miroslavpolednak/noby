@@ -10,7 +10,7 @@ public class SalesArrangementListItem
     
     public string? SalesArrangementTypeText { get; set; }
     
-    public CIS.Foms.Enums.SalesArrangementStates State { get; set; }
+    public SharedTypes.Enums.SalesArrangementStates State { get; set; }
     
     public string? StateText { get; set; }
     

@@ -1,5 +1,5 @@
-﻿using NOBY.Api.Endpoints.Document.Shared;
-using NOBY.Api.Endpoints.Document.Shared.DocumentIdManager;
+﻿using DomainServices.SalesArrangementService.Clients;
+using NOBY.Api.Endpoints.Document.Shared;
 
 namespace NOBY.Api.Endpoints.Document.Offer;
 
@@ -7,26 +7,32 @@ internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnl
 {
     private readonly DocumentGenerator _documentGenerator;
     private readonly DocumentManager _documentManager;
-    private readonly DocumentArchiveManager<OfferDocumentIdManager, int> _documentArchiveManager;
+    private readonly DocumentArchiveManager _documentArchiveManager;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public GetOfferHandler(DocumentGenerator documentGenerator,
                            DocumentManager documentManager,
-                           DocumentArchiveManager<OfferDocumentIdManager, int> documentArchiveManager)
+                           DocumentArchiveManager documentArchiveManager,
+                           ISalesArrangementServiceClient salesArrangementService)
     {
         _documentGenerator = documentGenerator;
         _documentManager = documentManager;
         _documentArchiveManager = documentArchiveManager;
+        _salesArrangementService = salesArrangementService;
     }
 
     public async Task<ReadOnlyMemory<byte>> Handle(GetOfferRequest request, CancellationToken cancellationToken)
     {
         var salesArrangementId = request.InputParameters.SalesArrangementId!.Value;
-        var documentInfo = await _documentArchiveManager.GetDocumentInfo(salesArrangementId, cancellationToken);
 
-        if (string.IsNullOrWhiteSpace(documentInfo.DocumentId))
-            return await GenerateAndSaveOffer(request, salesArrangementId, documentInfo.ContractNumber, cancellationToken);
+        var salesArrangement = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
 
-        return await _documentArchiveManager.GetDocument(documentInfo.DocumentId, request, cancellationToken);
+        request.InputParameters.CaseId = salesArrangement.CaseId;
+
+        if (string.IsNullOrWhiteSpace(salesArrangement.OfferDocumentId))
+            return await GenerateAndSaveOffer(request, salesArrangementId, salesArrangement.ContractNumber, cancellationToken);
+
+        return await _documentArchiveManager.GetDocument(salesArrangement.OfferDocumentId, request, cancellationToken);
     }
 
     private async Task<ReadOnlyMemory<byte>> GenerateAndSaveOffer(GetDocumentBaseRequest request, int salesArrangementId, string? contractNumber, CancellationToken cancellationToken)
@@ -52,7 +58,8 @@ internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnl
                 ContractNumber = contractNumber
             };
 
-            await _documentArchiveManager.SaveDocumentToArchive(salesArrangementId, archiveData, cancellationToken);
+            await _documentArchiveManager.SaveDocumentToArchive(archiveData, cancellationToken);
+            await _salesArrangementService.UpdateOfferDocumentId(salesArrangementId, documentId, cancellationToken);
         }
     }
 

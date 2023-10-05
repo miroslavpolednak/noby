@@ -8,7 +8,7 @@ grpcurl -insecure -d "{\"Id\":\"999\"}" -H "noby-user-id: 3048" -H "noby-user-id
 grpcurl -insecure -d "{\"Id\":\"999\"}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/Test5
 */
 
-using CIS.Foms.Types;
+using SharedTypes.Types;
 using DomainServices.DocumentOnSAService.Contracts.v1;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.Test;
@@ -45,8 +45,8 @@ public class Test1Handler : IRequestHandler<Test1MediatrRequest, Test1Response>
             {
                 Identities = new List<CustomerIdentity>
                 {
-                    new() { Scheme = CIS.Foms.Enums.IdentitySchemes.Kb, Id = 951061749 },
-                    new() { Scheme = CIS.Foms.Enums.IdentitySchemes.Mp, Id = 300526731 }
+                    new() { Scheme = SharedTypes.Enums.IdentitySchemes.Kb, Id = 951061749 },
+                    new() { Scheme = SharedTypes.Enums.IdentitySchemes.Mp, Id = 300526731 }
                 },
                 FullName = "John Doe",
                 BirthNumber = "500101123",

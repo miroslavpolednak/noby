@@ -10,7 +10,9 @@ message GetDocumentRequest{
 	// Vrátit i binární data (default=false)
 	bool withContent = 2;
 
-	string userLogin = 3;
+	string UserLogin = 3;
+
+	bool GetLocalCopyAsBackup = 4;
 }
 
 message GetDocumentResponse{

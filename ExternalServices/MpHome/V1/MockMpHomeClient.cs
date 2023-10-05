@@ -29,4 +29,9 @@ internal sealed class MockMpHomeClient
     {
         return Task.CompletedTask;
     }
+
+    public Task CancelLoan(long loanId, CancellationToken cancellationToken = default)
+    {
+        return Task.CompletedTask;
+    }
 }

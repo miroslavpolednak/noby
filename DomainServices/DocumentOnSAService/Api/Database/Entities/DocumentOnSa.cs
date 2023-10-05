@@ -57,7 +57,11 @@ public class DocumentOnSa : ICreated
 
     public int? TaskId { get; set; }
 
+    public int? TaskIdSb { get; set; }
+
     public bool IsPreviewSentToCustomer { get; set; }
+
+    public int? EACodeMainId { get; set; }
 
     public ICollection<EArchivIdsLinked> EArchivIdsLinkeds { get; } = new List<EArchivIdsLinked>();
     

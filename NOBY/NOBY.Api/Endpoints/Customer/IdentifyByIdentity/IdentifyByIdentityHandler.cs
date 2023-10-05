@@ -3,9 +3,9 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
@@ -45,7 +45,7 @@ internal sealed class IdentifyByIdentityHandler
         // validate two same identities on household
         if (customerDetails.Any(x => x.CustomerIdentifiers?.Any(t => (int)t.IdentityScheme == (int)request.CustomerIdentity!.Scheme && t.IdentityId == request.CustomerIdentity.Id) ?? false))
         {
-            throw new NobyValidationException("Identity already present on SalesArrangement customers");
+            throw new NobyValidationException(90005);
         }
 
         // update customera
@@ -112,7 +112,7 @@ internal sealed class IdentifyByIdentityHandler
             return customerDetails
                 .First(t => t.CustomerOnSAId == secondCustomerOnHouseholdId)
                 .CustomerIdentifiers?
-                .Any(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Kb && t.IdentityId > 0)
+                .Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb && t.IdentityId > 0)
                 ?? false;
         }
     }
@@ -132,7 +132,7 @@ internal sealed class IdentifyByIdentityHandler
         return (customersInSA, currentHousehold, saInstance);
     }
 
-    private async Task<_HO.UpdateCustomerResponse> updateCustomer(_HO.CustomerOnSA customerOnSaInstance, CIS.Foms.Types.CustomerIdentity customerIdentity, CancellationToken cancellationToken)
+    private async Task<_HO.UpdateCustomerResponse> updateCustomer(_HO.CustomerOnSA customerOnSaInstance, SharedTypes.Types.CustomerIdentity customerIdentity, CancellationToken cancellationToken)
     {
         // crm customer
         var customerInstance = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);

@@ -22,20 +22,26 @@ public class Result
     public Identifier? Identifier { get; set; }
     
     [ProtoMember(6)]
-    public string? CustomId { get; set; }
+    public long? CaseId { get; set; }
     
     [ProtoMember(7)]
-    public string? DocumentId { get; set; }
-
+    public string? CustomId { get; set; }
+    
     [ProtoMember(8)]
+    public string? DocumentId { get; set; }
+    
+    [ProtoMember(9)]
+    public DocumentHash? DocumentHash { get; set; }
+
+    [ProtoMember(10)]
     public DateTime? RequestTimestamp { get; set; }
 
-    [ProtoMember(9)]
+    [ProtoMember(11)]
     public RequestData RequestData { get; set; } = null!;
     
-    [ProtoMember(10)]
+    [ProtoMember(12)]
     public DateTime? ResultTimestamp { get; set; }
 
-    [ProtoMember(11)]
+    [ProtoMember(13)]
     public string CreatedBy { get; set; } = null!;
 }

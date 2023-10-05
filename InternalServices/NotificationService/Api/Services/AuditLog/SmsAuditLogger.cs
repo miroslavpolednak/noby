@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using DomainServices.CodebookService.Contracts.v1;
@@ -59,9 +59,9 @@ public class SmsAuditLogger : ISmsAuditLogger
         
         var rawHttpResponseBody = await GetBodyFromResponse(httpContext.Response);
         
-        _auditLogger.LogWithCurrentUser(
+        _auditLogger.Log(
             AuditEventTypes.Noby012,
-            "HTTP request processed",
+            "NotificationService /sms or /smsFromTemplate HTTP request processed",
             bodyBefore: new Dictionary<string, string>
             {
                 { "requestPath", httpContext.Request.Path },
@@ -78,17 +78,24 @@ public class SmsAuditLogger : ISmsAuditLogger
         );
     }
 
-    public void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer)
+    public void LogKafkaProduced(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, Guid notificationId, string consumer, string? identity, string? identityScheme, long? caseId, string? customId, string? documentId, string? documentHash, string? hashAlgorithm)
     {
         if (smsType.IsAuditLogEnabled)
         {
-            _auditLogger.LogWithCurrentUser(
+            _auditLogger.Log(
                 AuditEventTypes.Noby013,
                 "Produced message SendSMS to KAFKA",
                 bodyBefore: new Dictionary<string, string>
                 {
                     { "smsType", smsType.Code },
-                    { "consumer", consumer }
+                    { "consumer", consumer },
+                    { "identity", identity ?? string.Empty },
+                    { "identityScheme", identityScheme ?? string.Empty },
+                    { "caseId", caseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
+                    { "customId", customId ?? string.Empty },
+                    { "documentId", documentId ?? string.Empty },
+                    { "documentHash", documentHash ?? string.Empty },
+                    { "hashAlgorithm", hashAlgorithm ?? string.Empty }
                 },
                 bodyAfter: new Dictionary<string, string>
                 {
@@ -97,17 +104,24 @@ public class SmsAuditLogger : ISmsAuditLogger
         }
     }
 
-    public void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer)
+    public void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer, string? identity, string? identityScheme, long? caseId, string? customId, string? documentId, string? documentHash, string? hashAlgorithm)
     {
         if (smsType.IsAuditLogEnabled)
         {
-            _auditLogger.LogWithCurrentUser(
+            _auditLogger.Log(
                 AuditEventTypes.Noby013,
                 "Could not produce message SendSMS to KAFKA",
                 bodyBefore: new Dictionary<string, string>
                 {
                     { "smsType", smsType.Code },
-                    { "consumer", consumer }
+                    { "consumer", consumer },
+                    { "identity", identity ?? string.Empty },
+                    { "identityScheme", identityScheme ?? string.Empty },
+                    { "caseId", caseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
+                    { "customId", customId ?? string.Empty },
+                    { "documentId", documentId ?? string.Empty },
+                    { "documentHash", documentHash ?? string.Empty },
+                    { "hashAlgorithm", hashAlgorithm ?? string.Empty }
                 }
             );
         }
@@ -118,7 +132,7 @@ public class SmsAuditLogger : ISmsAuditLogger
         if (smsType.IsAuditLogEnabled)
         {
             _auditLogger.Log(
-                AuditEventTypes.Noby013,
+                AuditEventTypes.Noby014,
                 "Received notification report for sms",
                 bodyBefore: new Dictionary<string, string>
                 {

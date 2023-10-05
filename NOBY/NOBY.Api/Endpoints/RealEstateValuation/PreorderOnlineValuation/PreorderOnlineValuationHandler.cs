@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.RealEstateValuationService.Clients;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation;
@@ -11,7 +11,7 @@ internal sealed class PreorderOnlineValuationHandler
         var allowedTypes = await _estateValuationTypeService.GetAllowedTypes(request.RealEstateValuationId, request.CaseId, cancellationToken);
         if (!allowedTypes.Contains(RealEstateValuationTypes.Online))
         {
-            throw new CisAuthorizationException("RealEstateValuation type not allowed");
+            throw new NobyValidationException(90032, "RealEstateValuation type not allowed");
         }
 
         await _realEstateValuationService.PreorderOnlineValuation(new DomainServices.RealEstateValuationService.Contracts.PreorderOnlineValuationRequest

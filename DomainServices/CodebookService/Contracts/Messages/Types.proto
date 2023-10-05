@@ -337,6 +337,15 @@ message GetOperatorResponse {
 	int32 PerformerCode = 3;
 }
 
+message HashAlgorithmsResponse {
+	repeated HashAlgorithmItem Items = 1;
+
+	message HashAlgorithmItem {
+	   string Code = 1;
+	   google.protobuf.StringValue Description = 2;
+	}
+}
+
 message HouseholdTypesResponse {
 	repeated HouseholdTypeItem Items = 1;
 
@@ -714,5 +723,17 @@ message WorkflowTaskStatesNobyResponse {
 		string Name = 2;
 		int32 Filter = 3;
 		int32 Indicator = 4;
+	}
+}
+
+message SigningMethodsResponse {
+	repeated SigningMethodsItem Items = 1;
+
+	message SigningMethodsItem {
+		int32 Id = 1;
+		string Code = 2;
+		string Name = 3;
+		bool IsValid = 4;
+		google.protobuf.StringValue IdESign = 5;
 	}
 }

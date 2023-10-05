@@ -7,8 +7,14 @@ public class UploadDocumentValidator : AbstractValidator<UploadDocumentRequest>
 {
     public UploadDocumentValidator(AppConfiguration configuration)
     {
-        RuleFor(r => r).Must(ValidateFile).WithMessage("No file has been uploaded");
-        RuleFor(r => r.File).Must(file => file.Length <= configuration.MaxFileSize * 1024 * 1024).WithMessage($"The maximum file size {configuration.MaxFileSize}MB has been exceeded");
+        RuleFor(r => r)
+            .Must(ValidateFile)
+            .WithMessage("No file has been uploaded");
+        
+        RuleFor(r => r.File)
+            .Must(file => file.Length <= configuration.MaxFileSize * 1024 * 1024)
+            .When(t => t.File is not null)
+            .WithMessage($"The maximum file size {configuration.MaxFileSize}MB has been exceeded");
     }
 
 

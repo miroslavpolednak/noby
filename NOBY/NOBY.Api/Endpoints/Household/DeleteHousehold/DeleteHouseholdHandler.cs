@@ -1,9 +1,7 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.HouseholdService.Clients;
-using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.DeleteHousehold;
 
@@ -23,12 +21,6 @@ internal sealed class DeleteHouseholdHandler
 
         _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);
 
-        // HFICH-5233
-        if (household.HouseholdTypeId == (int)HouseholdTypes.Codebtor)
-        {
-            _flowSwitchManager.AddFlowSwitch(FlowSwitches.Was3602CodebtorChangedAfterSigning, true);
-        }
-
         // ulozit flow switches
         await _flowSwitchManager.SaveFlowSwitches(household.SalesArrangementId, cancellationToken);
 
@@ -43,7 +35,7 @@ internal sealed class DeleteHouseholdHandler
 
         var partnerId = customer
             .CustomerIdentifiers
-            .FirstOrDefault(t => t.IdentityScheme == CIS.Infrastructure.gRPC.CisTypes.Identity.Types.IdentitySchemes.Mp)
+            .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)
             ?.IdentityId;
 
         if (partnerId.HasValue)

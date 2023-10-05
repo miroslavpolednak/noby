@@ -11,5 +11,5 @@ public class CustomerDto
     /// <summary>
     /// Identita klienta, pokud se ma zalozit novy CustomerOnSA
     /// </summary>
-    public CIS.Foms.Types.CustomerIdentity? Identity { get; set; }
+    public SharedTypes.Types.CustomerIdentity? Identity { get; set; }
 }

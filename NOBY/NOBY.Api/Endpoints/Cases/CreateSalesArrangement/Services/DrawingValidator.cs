@@ -27,7 +27,7 @@ internal sealed class DrawingValidator
             throw new NobyValidationException(90011);
         }
 
-        if (productInstance.Mortgage.FirstAnnuityPaymentDate != null && DateTime.Now >= productInstance.Mortgage.FirstAnnuityPaymentDate)
+        if (productInstance.Mortgage.FirstAnnuityInstallmentDate != null && DateTime.Now >= productInstance.Mortgage.FirstAnnuityInstallmentDate)
         {
             throw new NobyValidationException(90012);
         }

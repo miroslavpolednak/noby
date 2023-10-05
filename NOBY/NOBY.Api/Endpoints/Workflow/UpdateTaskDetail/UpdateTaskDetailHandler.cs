@@ -1,10 +1,13 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Core.Security;
+using SharedTypes.Enums;
+using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Workflow.UpdateTaskDetail;
 
 internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetailRequest>
 {
+    private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly ICaseServiceClient _caseService;
     private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
     private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
@@ -17,8 +20,14 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
         if (!_allowedTaskTypeIds.Contains(taskDetail.TaskObject.TaskTypeId))
         {
-            throw new CisAuthorizationException("Task type not allowed");
+            throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
+
+        WorkflowHelpers.ValidateTaskManagePermission(
+            taskDetail.TaskObject!.TaskTypeId,
+            taskDetail.TaskObject!.SignatureTypeId,
+            taskDetail.TaskObject!.PhaseTypeId,
+            _currentUserAccessor);
 
         List<string>? documentIds = new();
         var attachments = request.Attachments?
@@ -26,7 +35,6 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
-                FileName = t.FileName,
                 TempFileId = t.Guid!.Value
             })
             .ToList();
@@ -34,6 +42,12 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         if (attachments?.Any() ?? false)
         {
             documentIds.AddRange(await _uploadDocumentToArchive.Upload(caseDetail.CaseId, caseDetail.Data?.ContractNumber, attachments, cancellationToken));
+        }
+        else if (taskDetail.TaskObject.TaskTypeId == 6
+            && taskDetail.TaskObject.SignatureTypeId == (int)SignatureTypes.Paper
+            && taskDetail.TaskObject.PhaseTypeId == 2)
+        {
+            throw new NobyValidationException("No attachments condition");
         }
 
         var completeTaskRequest = new CompleteTaskRequest
@@ -45,7 +59,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             TaskUserResponse = request.TaskUserResponse
         };
 
-        completeTaskRequest.TaskDocumentIds.AddRange(documentIds);
+        completeTaskRequest.TaskDocumentIds.AddRange(taskDetail.TaskDetail.TaskDocumentIds.Concat(documentIds));
 
         await _caseService.CompleteTask(completeTaskRequest, cancellationToken);
 
@@ -56,10 +70,12 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
     }
 
     public UpdateTaskDetailHandler(
+        ICurrentUserAccessor currentUserAccessor,
         Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive,
         ICaseServiceClient caseService,
         Services.TempFileManager.ITempFileManagerService tempFileManager)
     {
+        _currentUserAccessor = currentUserAccessor;
         _uploadDocumentToArchive = uploadDocumentToArchive;
         _caseService = caseService;
         _tempFileManager = tempFileManager;

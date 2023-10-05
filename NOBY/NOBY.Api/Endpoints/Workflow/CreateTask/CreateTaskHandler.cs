@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using CIS.Core.Security;
+using DomainServices.CaseService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
@@ -9,6 +10,8 @@ internal sealed class CreateTaskHandler
 {
     public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
+        WorkflowHelpers.ValidateTaskManagePermission(request.TaskTypeId, null, null, _currentUserAccessor);
+
         // kontrola existence Case
         DomainServices.CaseService.Contracts.Case caseInstance;
         try
@@ -17,7 +20,7 @@ internal sealed class CreateTaskHandler
         }
         catch (CisValidationException ex) when (ex.Errors.Any(x => x.ExceptionCode == "13029"))
         {
-            throw new CisAuthorizationException("TaskTypeId is not allowed");
+            throw new NobyValidationException(90032, "DS error 13029");
         }
 
         // validace price exception
@@ -33,7 +36,6 @@ internal sealed class CreateTaskHandler
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
-                FileName = t.FileName,
                 TempFileId = t.Guid!.Value
             })
             .ToList();
@@ -131,10 +133,11 @@ internal sealed class CreateTaskHandler
     {
         if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == 2 && !t.Cancelled))
         {
-            throw new CisAuthorizationException("PriceException already exist");
+            throw new NobyValidationException(90032, "ValidatePriceException failed");
         }
     }
 
+    private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
@@ -142,12 +145,14 @@ internal sealed class CreateTaskHandler
     private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
 
     public CreateTaskHandler(
+        ICurrentUserAccessor currentUserAccessor,
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
         Services.TempFileManager.ITempFileManagerService tempFileManager,
         Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive)
     {
+        _currentUserAccessor = currentUserAccessor;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
         _caseService = caseService;

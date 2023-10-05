@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Security;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.Infrastructure.Security;
-using CIS.Infrastructure.Audit;
+using SharedAudit;
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -52,6 +52,8 @@ internal sealed class CancelCaseHandler
             // je debtor identifikovany?
             if (await isDebtorIdentified(salesArrangementId, cancellation))
             {
+                await _productService.CancelMortgage(request.CaseId, cancellation);
+
                 var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation);
 
                 // zavolat RIP
@@ -78,15 +80,19 @@ internal sealed class CancelCaseHandler
         await setDocumentArchived(documents, cancellation);
 
         // nastavit stav na SA
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangementId, (int)SalesArrangementStates.Cancelled, cancellation);
+        await _salesArrangementService.DeleteSalesArrangement(salesArrangementId, true, cancellation);
 
         // auditni log
-        _auditLogger.LogWithCurrentUser(
+        _auditLogger.Log(
             AuditEventTypes.Noby004,
             "Případ byl stornován",
             products: new List<AuditLoggerHeaderItem>
             {
-                new("case", request.CaseId)
+                new(AuditConstants.ProductNamesCase, request.CaseId)
+            },
+            bodyBefore: new Dictionary<string, string>
+            {
+                { "button_label", "Storno žádosti" }
             }
         );
 
@@ -114,7 +120,7 @@ internal sealed class CancelCaseHandler
 
         foreach (var document in documents)
         {
-            await _documentOnSAService.StopSigning(document.DocumentOnSAId!.Value, cancellationToken);
+            await _documentOnSAService.StopSigning(new() {DocumentOnSAId = document.DocumentOnSAId!.Value } , cancellationToken);
         }
     }
 
@@ -150,6 +156,7 @@ internal sealed class CancelCaseHandler
     private readonly HouseholdService.Clients.IHouseholdServiceClient _householdService;
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly ProductService.Clients.IProductServiceClient _productService;
 
     public CancelCaseHandler(
         IAuditLogger auditLogger,
@@ -160,6 +167,7 @@ internal sealed class CancelCaseHandler
         HouseholdService.Clients.IHouseholdServiceClient householdService,
         DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSAService,
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
+        ProductService.Clients.IProductServiceClient productService,
         CaseServiceDbContext dbContext)
     {
         _auditLogger = auditLogger;
@@ -171,5 +179,6 @@ internal sealed class CancelCaseHandler
         _dbContext = dbContext;
         _documentOnSAService = documentOnSAService;
         _salesArrangementService = salesArrangementService;
+        _productService = productService;
     }
 }

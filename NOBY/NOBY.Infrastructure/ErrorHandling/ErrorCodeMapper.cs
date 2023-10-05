@@ -3,7 +3,7 @@
 public sealed class ErrorCodeMapper
 {
     public static IReadOnlyDictionary<int, ErrorCodeMapperItem> Messages { get; private set; } = null!;
-    public static IReadOnlyDictionary<int, int> DsToApiCodeMapper { get; private set; } = null!;
+    public static IReadOnlyDictionary<int, ErrorCodeDsToApiItem> DsToApiCodeMapper { get; private set; } = null!;
 
     public static void Init()
     {
@@ -36,20 +36,39 @@ public sealed class ErrorCodeMapper
             { 90026, new("Vámi hledaný obchodní případ byl vytvořen v jiném systému a není možné zde zobrazit jeho detail") },
             { 90027, new("Diskvalifikace z online ocenění", "Při pokusu o online ocenění některý ze vstupních atributů přesáhl povolený rozsah pro možnost ocenění nemovitosti online.") },
             { 90028, new("Žádost v aktuální stavu nelze měnit.") },
-            { 90029, new("TODO Marťa") }
+            { 90029, new("Překročen počet objektů úvěru", "Maximální počet objektů úvěru je 3. Upravte počet objednávek ocenění s označením objekt úvěru.") },
+            { 90030, new("Dokument s tímto EACodeMain není povolen pro NOBY uložit do eArchivu.") },
+            { 90031, new("Chybí nemovitost k ocenění", "Je potřeba doplnit LV s alespoň jednou nemovitostí označenou k ocenění.") },
+            { 90032, new("Nepovolená operace", "Vámi požadovaná operace není se zadanými parametry povolena.") },
+            { 90033, new("Žadatel nenalezen na daném obchodním případu.") },
+            { 90034, new("<Chyba simulace z DS>") },
+            { 90035, new("Nepodařilo se stáhnout LV z katastru nemovitostí", "Je nám líto, ale v tuto chvíli se nedaří stáhnout požadovaný LV z katastru nemovitostí. Opakujte prosím akci později. Pokud se operace nezdaří do tří pracovních dnů, kontaktujte prosím zpracovatele.") },
+            { 90037, new("Nahrávaný soubor je závadný", "Nahrávaný soubor je poškozen či může být závadný. Nahrání se nezdařilo.") },
+            { 90038, new("Název vkládaného dokumentu je větší než povolených 64 znaků.") },
+            { 90039, new("Klientské údaje nejsou validní", "Zkontrolujte klientské údaje všech žadatelů. Validace klientských údajů spustíte tlačítkem DALŠÍ na obrazovce Detailu subjektu.") },
+            { 90040, new("Existuje rozpracovaná žádost o úvěr. Nelze vytvořit žádost o změnu.") },
+            { 90041, new("Smlouva je již podepsána. Nelze vytvořit tento typ změnové žádosti.") }
         };
 
         Messages = messages.AsReadOnly();
 
-        var mapper = new Dictionary<int, int>()
+        var mapper = new Dictionary<int, ErrorCodeDsToApiItem>()
         {
-            { 13035, 90025 },
-            { 22202, 90027 },
-            { 22015, 90029 }
+            { 13035, new ErrorCodeDsToApiItem(90025, false) },
+            { 22202, new ErrorCodeDsToApiItem(90027, false) },
+            { 22015, new ErrorCodeDsToApiItem(90029, false) },
+            { 22016, new ErrorCodeDsToApiItem(90031, false) },
+            { 17103, new ErrorCodeDsToApiItem(90023, false) },
+            { 17102, new ErrorCodeDsToApiItem(90024, false) },
+            { 10020, new ErrorCodeDsToApiItem(90034, true) },
+            { 18087, new ErrorCodeDsToApiItem(90039, false) }
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();
     }
+
+    public sealed record ErrorCodeDsToApiItem(int FeApiCode, bool PropagateDsError)
+    { }
 
     public sealed record ErrorCodeMapperItem(
         string Message,

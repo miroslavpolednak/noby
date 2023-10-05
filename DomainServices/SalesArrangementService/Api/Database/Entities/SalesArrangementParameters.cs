@@ -1,5 +1,4 @@
-﻿using CIS.Foms.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.SalesArrangementService.Api.Database.Entities;

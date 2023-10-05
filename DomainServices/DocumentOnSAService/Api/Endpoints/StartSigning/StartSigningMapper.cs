@@ -9,7 +9,7 @@ using DomainServices.DocumentArchiveService.Clients;
 using System.Text.Json;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.SalesArrangementService.Contracts;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Clients;
 using ExternalServices.ESignatures.Dto;
 using CIS.Core.Security;
@@ -19,7 +19,7 @@ using DomainServices.CodebookService.Clients;
 using System.Globalization;
 using DomainServices.CaseService.Clients;
 using static ExternalServices.ESignatures.Dto.PrepareDocumentRequest;
-using CIS.Foms.Types;
+using SharedTypes.Types;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.Infrastructure.gRPC;
 using DomainServices.DocumentOnSAService.Api.Extensions;
@@ -98,7 +98,7 @@ public class StartSigningMapper
             {
                 DocumentTypeId = documentOnSa.DocumentTypeId!.Value,
                 DocumentTemplateVersionId = documentOnSa.DocumentTemplateVersionId!.Value,
-                FileName = $"{documentType.FileName}_{salesArrangement.CaseId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
+                FileName = $"{documentType.FileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
                 FormId = documentOnSa.FormId,
                 ContractNumber = caseObj.Data.ContractNumber
             },
@@ -147,7 +147,7 @@ public class StartSigningMapper
         clientData.Identities = signingIdentity.CustomerIdentifiers.Select(s => new CustomerIdentity(s.IdentityId, s.IdentityScheme));
     }
 
-    public async Task<__Entity.DocumentOnSa> WorkflowMapToEntity(StartSigningRequest request, GetTaskDetailResponse taskDetail, CancellationToken cancellationToken)
+    public async Task<DocumentOnSa> WorkflowMapToEntity(StartSigningRequest request, GetTaskDetailResponse taskDetail, CancellationToken cancellationToken)
     {
         var signing = taskDetail.TaskDetail.AmendmentsCase switch
         {
@@ -155,7 +155,7 @@ public class StartSigningMapper
             _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AmendmentHasToBeOfTypeSigning)
         };
 
-        var entity = new __Entity.DocumentOnSa();
+        var entity = new DocumentOnSa();
         entity.FormId = signing.FormId;
         entity.ExternalId = signing.DocumentForSigning;
         entity.Source = __DbEnum.Source.Workflow;
@@ -163,18 +163,19 @@ public class StartSigningMapper
         entity.SalesArrangementId = request.SalesArrangementId!.Value;
         entity.CaseId = request.CaseId;
         entity.TaskId = request.TaskId;
+        entity.TaskIdSb = request.TaskIdSb;
         entity.SignatureTypeId = taskDetail.TaskObject.SignatureTypeId;
         entity.IsValid = true;
         entity.IsSigned = false;
         entity.IsArchived = false;
-
+        entity.EACodeMainId = int.Parse(signing.EACodeMain, CultureInfo.InvariantCulture);
         return entity;
     }
 
     public async Task<DocumentOnSa> ServiceRequestMapToEntity(StartSigningRequest request, __Household.Household? houseHold, string formId, GetDocumentDataResponse documentDataResponse, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var entity = new DocumentOnSa();
-        entity.DocumentTypeId = request.DocumentTypeId!.Value; 
+        entity.DocumentTypeId = request.DocumentTypeId!.Value;
         entity.DocumentTemplateVersionId = documentDataResponse.DocumentTemplateVersionId;
         entity.DocumentTemplateVariantId = documentDataResponse.DocumentTemplateVariantId;
         entity.FormId = formId;
@@ -203,7 +204,7 @@ public class StartSigningMapper
         return entity;
     }
 
-    public async Task<__Entity.DocumentOnSa> ProductRequestMapToEntity(StartSigningRequest request, __Household.Household houseHold, string formId, GetDocumentDataResponse documentDataResponse, CancellationToken cancellationToken)
+    public async Task<DocumentOnSa> ProductRequestMapToEntity(StartSigningRequest request, __Household.Household houseHold, string formId, GetDocumentDataResponse documentDataResponse, CancellationToken cancellationToken)
     {
         var entity = new DocumentOnSa();
         entity.DocumentTypeId = request.DocumentTypeId!.Value;
@@ -263,7 +264,8 @@ public class StartSigningMapper
                 EArchivId = documentOnSaEntity.EArchivId,
                 SignatureTypeId = documentOnSaEntity.SignatureTypeId,
                 Source = documentOnSaEntity.Source.MapToContractEnum(),
-                SalesArrangementId = documentOnSaEntity.SalesArrangementId
+                SalesArrangementId = documentOnSaEntity.SalesArrangementId,
+                EACodeMainId = documentOnSaEntity.EACodeMainId
             }
         };
     }
@@ -282,14 +284,14 @@ public class StartSigningMapper
             entitySigningIdentity.SigningIdentityJson.CustomerIdentifiers.Add(new CustomerIdentifier
             {
                 IdentityId = identity.IdentityId,
-                IdentityScheme = (CIS.Foms.Enums.IdentitySchemes)(int)identity.IdentityScheme
+                IdentityScheme = (SharedTypes.Enums.IdentitySchemes)(int)identity.IdentityScheme
             });
 
             entitySigningIdentity.SigningIdentityJson.SignatureDataCode = $"{_signatureAnchorTemplate}{++index}";
             entitySigningIdentity.SigningIdentityJson.FirstName = customer.NaturalPerson.FirstName;
             entitySigningIdentity.SigningIdentityJson.LastName = customer.NaturalPerson.LastName;
             entitySigningIdentity.SigningIdentityJson.BirthNumber = customer.NaturalPerson.BirthNumber;
-            
+
             foreach (var contact in customer.Contacts)
             {
                 switch (contact.DataCase)
@@ -317,16 +319,16 @@ public class StartSigningMapper
         switch (salesArrangement.ParametersCase)
         {
             case SalesArrangement.ParametersOneofCase.Drawing:
-                identities.Add(salesArrangement.Drawing.Applicant);
+                identities.Add(salesArrangement.Drawing.Applicant.First());
                 break;
             case SalesArrangement.ParametersOneofCase.GeneralChange:
-                identities.Add(salesArrangement.GeneralChange.Applicant);
+                identities.Add(salesArrangement.GeneralChange.Applicant.First());
                 break;
             case SalesArrangement.ParametersOneofCase.HUBN:
-                identities.Add(salesArrangement.HUBN.Applicant);
+                identities.Add(salesArrangement.HUBN.Applicant.First());
                 break;
             case SalesArrangement.ParametersOneofCase.CustomerChange:
-                identities.AddRange(salesArrangement.CustomerChange.Applicants.Select(s => s.Identity));
+                identities.AddRange(salesArrangement.CustomerChange.Applicants.SelectMany(s => s.Identity));
                 break;
         }
 
@@ -348,7 +350,7 @@ public class StartSigningMapper
         entity.SigningIdentityJson.CustomerIdentifiers.AddRange(signingIdentity.CustomerIdentifiers.Select(s => new CustomerIdentifier
         {
             IdentityId = s.IdentityId,
-            IdentityScheme = (CIS.Foms.Enums.IdentitySchemes)(int)s.IdentityScheme
+            IdentityScheme = (SharedTypes.Enums.IdentitySchemes)(int)s.IdentityScheme
         }));
 
         entity.SigningIdentityJson.CustomerOnSAId = signingIdentity.CustomerOnSAId;

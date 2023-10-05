@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.Configuration;

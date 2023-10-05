@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using FastEnumUtility;
 using __MpHome = ExternalServices.MpHome.V1.Contracts;
 

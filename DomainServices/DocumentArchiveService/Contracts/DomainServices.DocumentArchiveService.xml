@@ -78,7 +78,10 @@
             </summary>
         </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.UserLoginFieldNumber">
-            <summary>Field number for the "userLogin" field.</summary>
+            <summary>Field number for the "UserLogin" field.</summary>
+        </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.GetLocalCopyAsBackupFieldNumber">
+            <summary>Field number for the "GetLocalCopyAsBackup" field.</summary>
         </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GenerateDocumentIdRequest.EnvironmentNameFieldNumber">
             <summary>Field number for the "EnvironmentName" field.</summary>

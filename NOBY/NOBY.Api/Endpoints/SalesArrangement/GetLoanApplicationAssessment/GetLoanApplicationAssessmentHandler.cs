@@ -12,7 +12,7 @@ using DomainServices.OfferService.Contracts;
 using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
 using DomainServices.UserService.Clients;
-using CIS.Foms.Enums;
+using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -30,9 +30,11 @@ internal sealed class GetLoanApplicationAssessmentHandler
     private readonly IDataAggregatorServiceClient _dataAggregatorService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IUserServiceClient _userService;
+    private readonly NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService _createRiskBusinessCase;
 
 
     public GetLoanApplicationAssessmentHandler(
+        NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService createRiskBusinessCase,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
         ILoanApplicationServiceClient loanApplicationService,
@@ -42,6 +44,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         ICurrentUserAccessor currentUserAccessor,
         IUserServiceClient userService)
     {
+        _createRiskBusinessCase = createRiskBusinessCase;
         _customerOnSAService = customerOnSAService;
         _dataAggregatorService = dataAggregatorService;
         _currentUserAccessor = currentUserAccessor;
@@ -63,15 +66,29 @@ internal sealed class GetLoanApplicationAssessmentHandler
         if (!request.NewAssessmentRequired && string.IsNullOrWhiteSpace(saInstance.LoanApplicationAssessmentId))
             throw new NobyValidationException($"LoanApplicationAssessmentId is missing for SA #{saInstance.SalesArrangementId}");
 
-        var offer = await _offerService.GetMortgageOfferDetail(saInstance.OfferId!.Value, cancellationToken);
+        var offer = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
 
         // create new assesment, if required
         if (request.NewAssessmentRequired)
         {
             if (string.IsNullOrWhiteSpace(saInstance.RiskBusinessCaseId))
-                throw new NobyValidationException("SalesArrangement.RiskBusinessCaseId is not defined.");
+            {
+                var customers = await _customerOnSAService.GetCustomerList(saInstance.SalesArrangementId, cancellationToken);
+                var debtor = customers.First(t => t.CustomerRoleId == (int)CustomerRoles.Debtor);
+
+                saInstance.RiskBusinessCaseId = await _createRiskBusinessCase.Create(saInstance.CaseId, saInstance.SalesArrangementId, debtor.CustomerOnSAId, debtor.CustomerIdentifiers, cancellationToken);
+            }
 
             await CreateNewAssessment(saInstance, offer, cancellationToken);
+
+            await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
+            {
+                new()
+                {
+                    FlowSwitchId = (int)FlowSwitches.ScoringPerformedAtleastOnce,
+                    Value = true
+                }
+            }, cancellationToken);
         }
 
         // load assesment by ID
@@ -88,15 +105,6 @@ internal sealed class GetLoanApplicationAssessmentHandler
         };
 
         var assessment = await _riskBusinessCaseService.GetAssessment(assessmentRequest, cancellationToken);
-
-        await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
-        {
-            new()
-            {
-                FlowSwitchId = (int)FlowSwitches.ScoringPerformedAtleastOnce,
-                Value = true
-            }
-        }, cancellationToken);
 
         // convert to ApiResponse
         var response = assessment.ToApiResponse(offer);
@@ -118,7 +126,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         return response;
     }
 
-    private async Task CreateNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetMortgageOfferDetailResponse offer, CancellationToken cancellationToken)
+    private async Task CreateNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetMortgageOfferResponse offer, CancellationToken cancellationToken)
     {
         var dataRequest = new GetRiskLoanApplicationDataRequest
         {

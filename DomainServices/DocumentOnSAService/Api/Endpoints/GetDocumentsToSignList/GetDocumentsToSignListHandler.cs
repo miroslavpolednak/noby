@@ -1,4 +1,4 @@
-﻿using CIS.Foms.Enums;
+﻿using SharedTypes.Enums;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database;
@@ -9,7 +9,6 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
-using ExternalServices.ESignatures.V1;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetDocumentsToSignList;
 
@@ -21,18 +20,14 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     private readonly IDocumentOnSaMapper _documentOnSaMapper;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
-    private readonly IESignaturesClient _eSignaturesClient;
-    private readonly IMediator _mediator;
 
     public GetDocumentsToSignListHandler(
-        DocumentOnSAServiceDbContext dbContext,
-        ISalesArrangementServiceClient arrangementServiceClient,
-        ICodebookServiceClient codebookServiceClients,
-        IDocumentOnSaMapper documentOnSaMapper,
-        IHouseholdServiceClient householdClient,
-        ICustomerOnSAServiceClient customerOnSAServiceClient,
-        IESignaturesClient eSignaturesClient,
-        IMediator mediator)
+           DocumentOnSAServiceDbContext dbContext,
+           ISalesArrangementServiceClient arrangementServiceClient,
+           ICodebookServiceClient codebookServiceClients,
+           IDocumentOnSaMapper documentOnSaMapper,
+           IHouseholdServiceClient householdClient,
+           ICustomerOnSAServiceClient customerOnSAServiceClient)
     {
         _dbContext = dbContext;
         _arrangementServiceClient = arrangementServiceClient;
@@ -40,22 +35,21 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         _documentOnSaMapper = documentOnSaMapper;
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
-        _eSignaturesClient = eSignaturesClient;
-        _mediator = mediator;
     }
 
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+        var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
 
         var documentOnSaEntities = await _dbContext.DocumentOnSa
             .AsNoTracking()
             .Include(i => i.EArchivIdsLinkeds)
+            .Include(s => s.SigningIdentities)
             .Where(e => e.SalesArrangementId == request.SalesArrangementId
                                                               && e.IsValid
-                                                              && e.IsFinal == false)
+                                                              && !e.IsFinal)
                                                   .ToListAsync(cancellationToken);
 
 
@@ -74,9 +68,6 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SalesArrangementCategoryNotSupported, salesArrangementType.SalesArrangementCategory);
         }
 
-        // Evaluate eletronic signature status 
-        await EvaluateElectronicDocumentStatus(documentOnSaEntities, cancellationToken);
-
         return response;
     }
 
@@ -89,8 +80,8 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     {
         var documentTypes = await _codebookServiceClients.DocumentTypes(cancellationToken);
         var documentType = documentTypes.Single(d => d.SalesArrangementTypeId == salesArrangement.SalesArrangementTypeId);
-        var documentsOnSaToSignVirtual = _documentOnSaMapper.CreateDocumentOnSaToSign(documentType, request.SalesArrangementId!.Value);
-        var documentOnSaReal = documentOnSaEntities.FirstOrDefault(r => r.DocumentTypeId == documentsOnSaToSignVirtual.DocumentTypeId);
+        var documentsOnSaToSignVirtual = _documentOnSaMapper.CreateDocumentOnSaToSign(documentType, request.SalesArrangementId);
+        var documentOnSaReal = documentOnSaEntities.Find(r => r.DocumentTypeId == documentsOnSaToSignVirtual.DocumentTypeId);
 
         if (documentOnSaReal is not null)
         {
@@ -128,7 +119,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignReal);
 
         // Product virtual
-        var households = await _householdClient.GetHouseholdList(request.SalesArrangementId!.Value, cancellationToken);
+        var households = await _householdClient.GetHouseholdList(request.SalesArrangementId, cancellationToken);
         var householdsWithoutdocumentOnsa = households
                                             .Where(h => !documentOnSaEntities.Select(d => d.HouseholdId)
                                             .Contains(h.HouseholdId));
@@ -143,9 +134,9 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
 
     private async Task<IEnumerable<DocumentOnSAToSign>> CreateVirtualDocumentOnSaCrs(GetDocumentsToSignListRequest request, List<DocumentOnSa> documentOnSaEntities, CancellationToken cancellationToken)
     {
-        var customersChangeMetadata = await _customerOnSAServiceClient.GetCustomerChangeMetadata(request.SalesArrangementId!.Value, cancellationToken);
+        var customersChangeMetadata = await _customerOnSAServiceClient.GetCustomerChangeMetadata(request.SalesArrangementId, cancellationToken);
         var customersOnSaIdsWithCRSChange = customersChangeMetadata!.Where(r => r.CustomerChangeMetadata.WasCRSChanged).Select(r => r.CustomerOnSAId);
-        var virtualDocumentsOnSaCrs = _documentOnSaMapper.CreateDocumentOnSaToSign(customersOnSaIdsWithCRSChange, request.SalesArrangementId!.Value);
+        var virtualDocumentsOnSaCrs = await _documentOnSaMapper.CreateDocumentOnSaToSign(customersOnSaIdsWithCRSChange, request.SalesArrangementId, cancellationToken);
 
         return MergeVirtualWithExistCrs(virtualDocumentsOnSaCrs, documentOnSaEntities);
     }
@@ -153,42 +144,16 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     /// <summary>
     /// Get only virtual CRS DocOnSa without existing DocOnSa (real) in DB 
     /// </summary>
-    private static IEnumerable<DocumentOnSAToSign> MergeVirtualWithExistCrs(IEnumerable<DocumentOnSAToSign> virtualDocumentsOnSaCrs, List<DocumentOnSa> documentOnSaEntities)
+    private static IEnumerable<DocumentOnSAToSign> MergeVirtualWithExistCrs(IReadOnlyCollection<DocumentOnSAToSign> virtualDocumentsOnSaCrs, List<DocumentOnSa> documentOnSaEntities)
     {
         foreach (var virtualCrs in virtualDocumentsOnSaCrs)
         {
             var docOnSaEntity = documentOnSaEntities.SingleOrDefault(r => r.SalesArrangementId == virtualCrs.SalesArrangementId
                                                                      && r.DocumentTypeId == virtualCrs.DocumentTypeId
-                                                                     && r.CustomerOnSAId1 == virtualCrs.CustomerOnSAId);
+                                                                     && r.CustomerOnSAId1 == virtualCrs.CustomerOnSA.CustomerOnSAId);
             if (docOnSaEntity is null)
             {
                 yield return virtualCrs;
-            }
-        }
-    }
-
-    private async Task EvaluateElectronicDocumentStatus(List<DocumentOnSa> documentsOnSaRealEntity, CancellationToken cancellationToken)
-    {
-        foreach (var docOnSa in documentsOnSaRealEntity)
-        {
-            if (docOnSa.SignatureTypeId is null or not ((int)SignatureTypes.Electronic))
-                continue;
-
-            var elDocumentStatus = await _eSignaturesClient.GetDocumentStatus(docOnSa.ExternalId!, cancellationToken);
-
-            switch (elDocumentStatus)
-            {
-                case EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT:
-                    await _mediator.Send(new SignDocumentRequest { DocumentOnSAId = docOnSa.DocumentOnSAId, SignatureTypeId = docOnSa.SignatureTypeId }, cancellationToken);
-                    break;
-                case EDocumentStatuses.DELETED:
-                    await _mediator.Send(new StopSigningRequest { DocumentOnSAId = docOnSa.DocumentOnSAId }, cancellationToken);
-                    break;
-                case EDocumentStatuses.NEW or EDocumentStatuses.IN_PROGRESS or EDocumentStatuses.APPROVED:
-                    // Ignore
-                    break;
-                default:
-                    throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedStatusReturnedFromESignature, elDocumentStatus);
             }
         }
     }

@@ -16,6 +16,13 @@ internal sealed class RealMpHomeClient
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 
+    public async Task CancelLoan(long loanId, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/foms/Loan/{loanId}", cancellationToken);
+
+        await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+    }
+
     public async Task UpdateLoanPartnerLink(long loanId, long partnerId, LoanLinkRequest loanLinkRequest, CancellationToken cancellationToken = default(CancellationToken))
     {
         var response = await _httpClient

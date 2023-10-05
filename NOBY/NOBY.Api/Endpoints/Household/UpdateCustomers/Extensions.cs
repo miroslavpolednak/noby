@@ -18,7 +18,7 @@ internal static class Extensions
             model.LockedIncomeDateTime = currentCustomer?.LockedIncomeDateTime is null ? DateTime.Now : currentCustomer.LockedIncomeDateTime;
 
         if (customer.Identity is not null)
-            model.CustomerIdentifiers.Add(new CIS.Infrastructure.gRPC.CisTypes.Identity(customer.Identity));
+            model.CustomerIdentifiers.Add(new SharedTypes.GrpcTypes.Identity(customer.Identity));
 
         return model;
     }

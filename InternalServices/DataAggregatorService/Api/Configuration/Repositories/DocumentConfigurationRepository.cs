@@ -19,7 +19,7 @@ internal class DocumentConfigurationRepository
     {
         const string FieldsQuery =
             """
-            SELECT AcroFieldName, DataServiceId as DataService, FieldPath, StringFormat, TextAlign, DefaultTextIfNull
+            SELECT AcroFieldName, DataServiceId as DataService, FieldPath, StringFormat, TextAlign, VAlign, DefaultTextIfNull
             FROM vw_DocumentFields
             WHERE DocumentId = @documentId AND DocumentVersion = @documentVersion AND DocumentVariant = @documentVariant
             """;
@@ -70,14 +70,15 @@ internal class DocumentConfigurationRepository
     {
         const string TableQuery =
             """
-            SELECT DocumentTableId, TableSourcePath, AcroFieldPlaceholderName, ConcludingParagraph
+            SELECT DocumentTableId, TableSourcePath, DataServiceId as DataService, AcroFieldPlaceholderName, ConcludingParagraph
             FROM vw_DocumentTables WHERE DocumentId = @documentId AND DocumentVersion = @documentVersion
             """;
 
         const string ColumnsQuery =
             """
-            SELECT FieldPath, WidthPercentage, [Order], StringFormat, Header
+            SELECT FieldPath, WidthPercentage, StringFormat, Header
             FROM vw_DocumentTableColumns WHERE DocumentTableId = @documentTableId
+            ORDER BY [Order]
             """;
 
         var table = await _connectionProvider.ExecuteDapperRawSqlFirstOrDefaultAsync<DocumentTable>(TableQuery, documentKey.CreateSqlParams(), cancellationToken);

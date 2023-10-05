@@ -40,6 +40,14 @@ public static class CodebookExtensions
                     SmsText = "Template variable A = {{var_a}} variable B = {{var_b}}",
                     IsAuditLogEnabled = false
                 },
+                new()
+                {
+                    Code = "TypeD",
+                    McsCode = "McsCodeD",
+                    Description = "DescriptionD",
+                    SmsText = "Template variable A = {{var_a}} variable B = {{var_b}}",
+                    IsAuditLogEnabled = false
+                },
             }));
     }
 }

@@ -8,16 +8,18 @@ internal static class Extensions
     public static GetHouseholdResponse ToApiResponse(this __Contracts.Household household)
         => new GetHouseholdResponse
         {
+            HouseholdId = household.HouseholdId,
+            SalesArrangementId = household.SalesArrangementId,
+            CaseId = household.CaseId,
             Data = household.Data?.mapData(),
-            Expenses = household.Expenses?.mapExpenses(),
-            HouseholdId = household.HouseholdId
+            Expenses = household.Expenses?.mapExpenses()
         };
 
     public static CustomerInHousehold? ToApiResponse(this __Contracts.CustomerOnSA model)
         => new CustomerInHousehold()
         {
             CustomerOnSAId = model.CustomerOnSAId,
-            Identities = model.CustomerIdentifiers?.Select(t => new CIS.Foms.Types.CustomerIdentity(t.IdentityId, (int)t.IdentityScheme)).ToList(),
+            Identities = model.CustomerIdentifiers?.Select(t => new SharedTypes.Types.CustomerIdentity(t.IdentityId, (int)t.IdentityScheme)).ToList(),
             FirstName = model.FirstNameNaturalPerson,
             LastName = model.Name,
             DateOfBirth = model.DateOfBirthNaturalPerson,
@@ -31,7 +33,7 @@ internal static class Extensions
                 IncomeId = x.IncomeId,
                 IncomeSource = x.IncomeSource,
                 HasProofOfIncome = x.HasProofOfIncome,
-                IncomeTypeId = (CIS.Foms.Enums.CustomerIncomeTypes)x.IncomeTypeId
+                IncomeTypeId = (SharedTypes.Enums.CustomerIncomeTypes)x.IncomeTypeId
             }).ToList(),
             Obligations = model.Obligations is null ? null : model.Obligations.Select(x => x.ToApiResponse()).ToList()
         };

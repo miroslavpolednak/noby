@@ -1,99 +1,38 @@
-using CIS.Infrastructure.Audit;
-using CIS.Infrastructure.Security;
 using CIS.Infrastructure.StartupExtensions;
-using CIS.Infrastructure.Telemetry;
-using CIS.InternalServices;
-using DomainServices;
-using DomainServices.HouseholdService.Api;
-using Serilog;
+using ExternalServices;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
-
-//TODO workaround until .NET6 UseWindowsService() will work with WebApplication
-var webAppOptions = runAsWinSvc
-    ?
-    new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
-    :
-    new WebApplicationOptions { Args = args };
-var builder = WebApplication.CreateBuilder(webAppOptions);
-
-var log = builder.CreateStartupLogger();
-
-try
-{
-    #region register builder.Services
-    builder.Services.AddAttributedServices(typeof(Program));
-
-    // globalni nastaveni prostredi
-    builder
-        .AddCisCoreFeatures()
-        .AddCisEnvironmentConfiguration();
-
-    builder
-        // logging
-        .AddCisLogging()
-        .AddCisTracing()
-        .AddCisAudit()
-        // authentication
-        .AddCisServiceAuthentication()
-        // add self
-        .AddHouseholdService()
-        .Services
-            // add CIS services
-            .AddCisServiceDiscovery()
+SharedComponents.GrpcServiceBuilder
+    .CreateGrpcService(args, typeof(Program))
+    .AddErrorCodeMapper(DomainServices.HouseholdService.Api.ErrorCodeMapper.Init())
+    .AddRequiredServices(services =>
+    {
+        services
             .AddCaseService()
             .AddCodebookService()
             .AddOfferService()
             .AddSalesArrangementService()
             .AddCustomerService()
             .AddUserService()
-            // add grpc infrastructure
-            .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-            .AddGrpcReflection()
-            .AddDocumentOnSAService()
-            .AddGrpc(options =>
-            {
-                options.Interceptors.Add<GenericServerExceptionInterceptor>();
-            });
+            .AddDocumentOnSAService();
+    })
+    .Build(builder =>
+    {
+        // EAS svc
+        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
+        // sulm
+        builder.AddExternalService<ExternalServices.Sulm.V1.ISulmClient>();
 
-    // add HC
-    builder.AddCisGrpcHealthChecks();
-    #endregion register builder.Services
-
-    // kestrel configuration
-    builder.UseKestrelWithCustomConfiguration();
-
-    // BUILD APP
-    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-    var app = builder.Build();
-    log.ApplicationBuilt();
-
-    app.UseServiceDiscovery();
-    app.UseRouting();
-
-    app.UseAuthentication();
-    app.UseAuthorization();
-    app.UseCisServiceUserContext();
-
-    app.MapCisGrpcHealthChecks();
-    app.MapGrpcReflectionService();
-    app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.HouseholdService>();
-    app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.CustomerOnSAService>();
-
-    log.ApplicationRun();
-    app.Run();
-}
-catch (Exception ex)
-{
-    log.CatchedException(ex);
-}
-finally
-{
-    LoggingExtensions.CloseAndFlush();
-}
+        // dbcontext
+        builder.AddEntityFramework<DomainServices.HouseholdService.Api.Database.HouseholdServiceDbContext>();
+    })
+    .MapGrpcServices(app =>
+    {
+        app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.HouseholdService>();
+        app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.CustomerOnSAService>();
+    })
+    .Run();
 
 #pragma warning disable CA1050 // Declare types in namespaces
-
 public partial class Program
 #pragma warning restore CA1050 // Declare types in namespaces
 {

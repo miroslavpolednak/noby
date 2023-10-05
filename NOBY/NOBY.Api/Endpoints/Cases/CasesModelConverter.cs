@@ -25,7 +25,7 @@ internal sealed class CasesModelConverter
 		{
 			OfferContacts = new(),
 			CaseId = model.CaseId,
-			State = (CIS.Foms.Enums.CaseStates)model.State,
+			State = (SharedTypes.Enums.CaseStates)model.State,
 			StateName = _caseStates.First(x => x.Id == model.State).Name,
 			StateUpdated = model.StateUpdatedOn,
 			ContractNumber = model.Data.ContractNumber,
@@ -51,7 +51,7 @@ internal sealed class CasesModelConverter
 
         if (model.Tasks is not null && model.Tasks.Any())
 		{
-			converted.ActiveTasks = model.Tasks
+			converted.ActiveTasks = model.Tasks.Where(t => t.TaskTypeId != 5 && t.TaskTypeId != 8)
 				.Join(_taskTypes, i => i.TaskTypeId, o => o.Id, (task, i) => i.Id)
 				.GroupBy(k => k)
 				.Select(t => new Dto.TaskModel

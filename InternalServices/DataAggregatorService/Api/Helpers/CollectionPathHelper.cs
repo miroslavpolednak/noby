@@ -2,6 +2,9 @@
 
 internal static class CollectionPathHelper
 {
+    public static bool IsCollection(string path) => 
+        path.EndsWith(ConfigurationConstants.CollectionMarker, StringComparison.InvariantCultureIgnoreCase);
+
     public static string GetCollectionPath(string path)
     {
         var splitPath = path.Split(ConfigurationConstants.CollectionMarker);

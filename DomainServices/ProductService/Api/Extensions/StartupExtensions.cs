@@ -15,7 +15,11 @@ internal static class StartupExtensions
 
         // dbcontext
         builder.AddEntityFramework<Database.ProductServiceDbContext>(connectionStringKey: "konsDb");
-
+        
+        builder.Services.AddDapper<Database.Abstraction.IProductServiceConnectionProvider>(
+            builder.Configuration.GetConnectionString("konsDb")
+            ?? throw new ArgumentException("Missing connection string konsDb."));
+        
         // repos
         builder.Services.AddScoped<Database.LoanRepository>();
 

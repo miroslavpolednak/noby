@@ -26,4 +26,5 @@ public interface IMpHomeClient
     Task UpdatePartnerKbId(long partnerId, long kbId, CancellationToken cancellationToken = default);
 
     const string Version = "V1";
+    Task CancelLoan(long loanId, CancellationToken cancellationToken = default);
 }

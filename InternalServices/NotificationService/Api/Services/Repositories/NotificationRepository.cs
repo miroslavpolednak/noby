@@ -44,11 +44,12 @@ public class NotificationRepository : INotificationRepository
                ?? throw new CisNotFoundException(ErrorHandling.ErrorCodeMapper.ResultNotFound, $"Result with id = '{id}' not found.");
     }
 
-    public async Task<IEnumerable<Result>> SearchResultsBy(string? identity, string? identityScheme, string? customId, string? documentId)
+    public async Task<IEnumerable<Result>> SearchResultsBy(string? identity, string? identityScheme, long? caseId, string? customId, string? documentId)
     {
         return await _dbContext.Results
             .Where(r => string.IsNullOrEmpty(identity) || r.Identity == identity)
             .Where(r => string.IsNullOrEmpty(identityScheme) || r.IdentityScheme == identityScheme)
+            .Where(r => !caseId.HasValue || r.CaseId == caseId.Value)
             .Where(r => string.IsNullOrEmpty(customId) || r.CustomId == customId)
             .Where(r => string.IsNullOrEmpty(documentId) || r.DocumentId == documentId)
             .ToListAsync();

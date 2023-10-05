@@ -21,7 +21,7 @@ public static class Extension
             Surname = userInfo.PersonSurname,
             OrgUnit = new _C4M.OrgUnit
             {
-                Id = userInfo.PersonOrgUnitId.ToString(),
+                Id = userInfo.PersonOrgUnitId,
                 JobPost = new _C4M.JobPost
                 {
                     Id = userInfo.PersonJobPostId

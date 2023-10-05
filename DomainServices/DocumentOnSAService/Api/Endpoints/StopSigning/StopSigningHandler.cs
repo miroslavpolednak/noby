@@ -1,5 +1,5 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.Audit;
+﻿using SharedTypes.Enums;
+using SharedAudit;
 using DomainServices.DocumentOnSAService.Api.Common;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -7,6 +7,7 @@ using DomainServices.SalesArrangementService.Clients;
 using ExternalServices.ESignatures.V1;
 using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;
+using Source = DomainServices.DocumentOnSAService.Api.Database.Enums.Source;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StopSigning;
 
@@ -36,30 +37,34 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
     public async Task<Empty> Handle(StopSigningRequest request, CancellationToken cancellationToken)
     {
         var documentOnSa = await _dbContext.DocumentOnSa.FindAsync(request.DocumentOnSAId, cancellationToken)
-            ?? throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
 
-        if (documentOnSa.SignatureTypeId == SignatureTypes.Electronic.ToByte()) // 3
+        if (documentOnSa.SignatureTypeId == SignatureTypes.Electronic.ToByte() && request.NotifyESignatures) // 3
             await _eSignaturesClient.DeleteDocument(documentOnSa.ExternalId!, cancellationToken);
 
         documentOnSa.IsValid = false;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-        
+
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-        
-        _auditLogger.LogWithCurrentUser(
+
+        _auditLogger.Log(
             AuditEventTypes.Noby008,
             "Podepsaný dokument byl stornován",
             products: new List<AuditLoggerHeaderItem>
             {
-                new("case", salesArrangement.CaseId),
-                new("salesArrangement", documentOnSa.SalesArrangementId),
-                new("form", documentOnSa.FormId),
+                new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
+                new(AuditConstants.ProductNamesSalesArrangement, documentOnSa.SalesArrangementId),
+                new(AuditConstants.ProductNamesForm, documentOnSa.FormId),
             }
         );
-        
+
+        if (documentOnSa.Source == Source.Workflow)
+            return new Empty();
+
         // SA state
-        if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
+        if (salesArrangement.State == (int)SalesArrangementStates.InSigning // 7
+             || salesArrangement.State == (int)SalesArrangementStates.ToSend) // 8
         {
             await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
         }

@@ -1,19 +1,19 @@
-#phone String
+#phone String E2E test
 json_req_sms_basic_insg_e2e = \
 {
   "phoneNumber": "+420607115686",
   "processingPriority": 1,
   "type": "INSIGN_PROCESS",
-  "text": "insg bez logování a chci háčky a čárky"
+  "text": "insg bez logování a odstraň háčky a čárky"
 }
 
-#phone String E2E test
+#phone String
 json_req_sms_basic_insg = \
 {
   "phoneNumber": "+420123456789",
   "processingPriority": 1,
   "type": "INSIGN_PROCESS",
-  "text": "e2e TEST insg bez logování a chci háčky a čárky"
+  "text": "e2e TEST insg bez logovani"
 }
 
 json_req_sms_basic_insg_uat = \
@@ -204,10 +204,4 @@ json_req_sms_basic_epsy_mpss = \
   "processingPriority": 1,
   "type": "EPODPISY_SIGNED_DOCUMENT_MP",
   "text": "Testovací sms text epsy mpss"
-}
-
-
-json_req_sms_hsts_header = \
-{
-  "<test_validace>"
 }

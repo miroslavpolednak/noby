@@ -13,6 +13,7 @@ variables:
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
   projectFile: 'DomainServices/CodebookService/Api/DomainServices.CodebookService.Api.csproj'
+  runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), ne(lower(variables['USESONARQUBE']), 'false'))]
 
 # custom BuildNumber
 name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
@@ -56,6 +57,7 @@ steps:
     noCache: true
 
 - task: SonarQubePrepare@5
+  condition: eq(variables.runSonarQube, true)
   inputs:
     SonarQube: 'NOBY - SonarQube'
     scannerMode: 'MSBuild'
@@ -71,8 +73,10 @@ steps:
     arguments: '--output $(Build.BinariesDirectory)'
 
 - task: SonarQubeAnalyze@5
+  condition: eq(variables.runSonarQube, true)
 
 - task: SonarQubePublish@5
+  condition: eq(variables.runSonarQube, true)
   inputs:
     pollingTimeoutSec: '300'
 

@@ -1,7 +1,7 @@
 ﻿using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.OfferService.Clients;
-using CIS.Infrastructure.gRPC.CisTypes;
+using SharedTypes.GrpcTypes;
 using _Product = DomainServices.ProductService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using NOBY.Api.Endpoints.Offer.CreateMortgageCase;
@@ -51,7 +51,7 @@ internal sealed class CreateProductHandler
             Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value, contractNumberResponse.ContractNumber)
         };
 
-        request.Mortgage.ThirdPartyConsultantId = saInstance.Created.UserId;
+        request.Mortgage.CaseOwnerUserCurrentId = saInstance.Created.UserId;
 
         var result = await _productService.CreateMortgage(request, cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);

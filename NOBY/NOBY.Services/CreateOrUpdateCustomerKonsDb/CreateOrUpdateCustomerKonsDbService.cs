@@ -1,4 +1,4 @@
-﻿using CIS.Infrastructure.gRPC.CisTypes;
+﻿using SharedTypes.GrpcTypes;
 using Microsoft.Extensions.Logging;
 
 namespace NOBY.Services.CreateOrUpdateCustomerKonsDb;
@@ -53,7 +53,7 @@ public sealed class CreateOrUpdateCustomerKonsDbService
     {
         var request = new DomainServices.CustomerService.Contracts.UpdateCustomerIdentifiersRequest
         {
-            Mandant = CIS.Infrastructure.gRPC.CisTypes.Mandants.Mp,
+            Mandant = SharedTypes.GrpcTypes.Mandants.Mp,
             CustomerIdentities = { mpIdentity, kbIdentity }
         };
 
@@ -75,7 +75,7 @@ public sealed class CreateOrUpdateCustomerKonsDbService
             },
             HardCreate = true,
             NaturalPerson = customerDetail.NaturalPerson,
-            Mandant = CIS.Infrastructure.gRPC.CisTypes.Mandants.Mp
+            Mandant = SharedTypes.GrpcTypes.Mandants.Mp
         };
 
         if (customerDetail.IdentificationDocument is not null)

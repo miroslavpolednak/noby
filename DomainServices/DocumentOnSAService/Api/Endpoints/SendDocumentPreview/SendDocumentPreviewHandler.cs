@@ -1,5 +1,5 @@
-﻿using CIS.Foms.Enums;
-using CIS.Infrastructure.Audit;
+﻿using SharedTypes.Enums;
+using SharedAudit;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
 using ExternalServices.ESignatures.V1;
@@ -28,14 +28,14 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
         
         var (code, message) = await _signaturesClient.SendDocumentPreview(documentOnSa.ExternalId ?? string.Empty, cancellationToken);
         
-        _auditLogger.LogWithCurrentUser(
+        _auditLogger.Log(
             AuditEventTypes.Noby011,
             "Dokument byl odeslán klientovi k náhledu",
             products: new List<AuditLoggerHeaderItem>
             {
                 // new("case", todo),
-                new("salesArrangement", documentOnSa.SalesArrangementId),
-                new("form", documentOnSa.FormId)
+                new(AuditConstants.ProductNamesSalesArrangement, documentOnSa.SalesArrangementId),
+                new(AuditConstants.ProductNamesForm, documentOnSa.FormId)
             }
         );
         

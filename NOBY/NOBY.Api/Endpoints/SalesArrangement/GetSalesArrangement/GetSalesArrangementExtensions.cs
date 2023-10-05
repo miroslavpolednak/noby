@@ -35,7 +35,7 @@ internal static class GetSalesArrangementExtensions
         {
             DrawingDate = model.DrawingDate,
             IsImmediateDrawing = model.IsImmediateDrawing,
-            Applicant = model.Applicant,
+            Applicant = model.Applicant?.Select(t => (SharedTypes.Types.CustomerIdentity)t!)?.ToList(),
             PayoutList = model.PayoutList?.Select(x => new ParametersDrawingPayout
             {
                 ProductObligationId = x.ProductObligationId,   
@@ -73,7 +73,7 @@ internal static class GetSalesArrangementExtensions
     public static Dto.GeneralChangeDetail ToApiResponse(this _SA.SalesArrangementParametersGeneralChange model)
         => new()
         {
-            Applicant = model.Applicant,
+            Applicant = model.Applicant?.Select(t => (SharedTypes.Types.CustomerIdentity)t!)?.ToList(),
             Collateral = new Collateral
             {
                 IsActive = model.Collateral?.IsActive ?? false,
@@ -148,7 +148,7 @@ internal static class GetSalesArrangementExtensions
     public static Dto.HUBNDetail ToApiResponse(this _SA.SalesArrangementParametersHUBN model)
         => new()
         {
-            Applicant = model.Applicant,
+            Applicant = model.Applicant?.Select(t => (SharedTypes.Types.CustomerIdentity)t!)?.ToList(),
             CollateralIdentification = new()
             {
                 RealEstateIdentification = model.CollateralIdentification?.RealEstateIdentification
@@ -168,7 +168,7 @@ internal static class GetSalesArrangementExtensions
                 Id = t.LoanPurposeId,
                 Sum = t.Sum
             }).ToList(),
-            LoanRealEstates = model.LoanRealEstates?.Select(t => new LoanRealEstateItemExtended
+            LoanRealEstates = model.LoanRealEstates?.Select(t => new LoanRealEstateDto
             {
                 IsCollateral = t.IsCollateral,
                 RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
@@ -198,7 +198,7 @@ internal static class GetSalesArrangementExtensions
         {
             Applicants = model.Applicants is null ? null : model.Applicants.Select(t => new Dto.CustomerChangeDetailApplicant
             {
-                Identity = t.Identity,
+                Identity = t.Identity?.Select(t => (SharedTypes.Types.CustomerIdentity)t!).ToList(),
                 IdentificationDocument = t.IdentificationDocument is null ? null : new()
                 {
                     IdentificationDocumentTypeId = t.IdentificationDocument.IdentificationDocumentTypeId,

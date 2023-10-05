@@ -16,7 +16,7 @@ message UserRIPAttributes {
 
 	string PersonSurname = 2;
 
-	google.protobuf.Int64Value PersonOrgUnitId = 3;
+	string PersonOrgUnitId = 3;
 
 	string PersonOrgUnitName = 4;
 
