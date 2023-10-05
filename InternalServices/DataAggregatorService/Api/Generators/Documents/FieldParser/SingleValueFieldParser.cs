@@ -11,6 +11,9 @@ internal class SingleValueFieldParser : ISourceFieldParser
     {
         var value = MapperHelper.GetValue(aggregatedData, sourceField.FieldPath);
 
+        if (value is string str && string.IsNullOrWhiteSpace(str))
+            value = null;
+
         return new DocumentSourceFieldData
         {
             AcroFieldName = sourceField.AcroFieldName,
