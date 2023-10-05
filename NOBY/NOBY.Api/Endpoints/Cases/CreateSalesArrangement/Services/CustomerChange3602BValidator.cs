@@ -23,14 +23,14 @@ internal sealed class CustomerChange3602BValidator
         var caseInstance = await caseService.GetCaseDetail(_request.CaseId, cancellationToken);
         if (caseInstance.State == 1)
         {
-            throw new NobyValidationException("Case state < 2");
+            throw new NobyValidationException(90040);
         }
 
         // instance hypo
         var productInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
         if (productInstance.Mortgage?.ContractSignedDate is not null)
         {
-            throw new NobyValidationException("ContractSignedDate is not null");
+            throw new NobyValidationException(90041);
         }
 
         return new CustomerChange3602BBuilder(_logger, _request, _httpContextAccessor);
