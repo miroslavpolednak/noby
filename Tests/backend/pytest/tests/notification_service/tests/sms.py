@@ -151,7 +151,6 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
     assert notification_id != ""
 
 
-# TODO: předělat na kontrrolu v db NobyAudit.dbo.AuditEvent , AuditEventTypeId IN ('AU_NOBY_013') ORDER BY [TimeStamp] DESC, "smsType":"SB_NOTIFICATIONS_AUDITED_KB",objectsAfter":{"notificationId":"2d60088c-89ef-4f1c-bf66-65c73aeeb3ed"}
 # @pytest.mark.skip(reason="starý script, již se neloguje do sequ, ale do db:")
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
@@ -193,34 +192,47 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
                     SELECT * 
                     FROM AuditEvent
                     WHERE AuditEventTypeId = ? 
-                    AND JSON_VALUE(Detail, '$.body.objectsBefore.notificationId') = ?
+                    AND JSON_VALUE(Detail, '$.body.objectsAfter.notificationId') = ?
                     ORDER BY [TimeStamp] DESC
                     """, ('AU_NOBY_013', notification_id)
                        )
-        results = cursor.fetchall()
-        found_records = bool(results)
-        # Výpis výsledků.
-        #print(f"Results from {db_url['db_name']}:")
-        #for row in results:
-        #   print(row)
+        results_1 = cursor.fetchall()
+        found_records_1 = bool(results_1)
     except pyodbc.Error as e:
-        pytest.fail(f"Failed to execute query: {e}")
+        pytest.fail(f"Failed to execute query 1: {e}")
+    '''
+    try:
+        cursor.execute("""
+                       SELECT * 
+                       FROM AuditEvent
+                       WHERE AuditEventTypeId = ? 
+                       AND JSON_VALUE(Detail, '$.body.objectsBefore.customId') = ?
+                       AND ABS(DATEDIFF(SECOND, TimeStamp, GETDATE())) <= 10
+                       ORDER BY [TimeStamp] DESC
+                       """, ('AU_NOBY_012', unique_custom_id)
+                       )
+        results_2 = cursor.fetchall()
+        found_records_2 = bool(results_2)
+    except pyodbc.Error as e:
+        pytest.fail(f"Failed to execute query 2: {e}")
+    '''
+    try:
+        cursor.execute("""
+                       SELECT * 
+                       FROM AuditEvent
+                       WHERE AuditEventTypeId = ? 
+                       AND JSON_VALUE(Detail, '$.body.objectsBefore.notificationId') = ?
+                       ORDER BY [TimeStamp] DESC
+                       """, ('AU_NOBY_014', notification_id)
+                       )
+        results_3 = cursor.fetchall()
+        found_records_3 = bool(results_3)
+    except pyodbc.Error as e:
+        pytest.fail(f"Failed to execute query 3: {e}")
 
-        try:
-            cursor.execute("""
-                           SELECT * 
-                           FROM AuditEvent
-                           WHERE AuditEventTypeId = ? 
-                           AND JSON_VALUE(Detail, '$.body.objectsBefore.customId') = ?
-                           ORDER BY [TimeStamp] DESC
-                           """, ('AU_NOBY_012', unique_custom_id)
-                           )
-            results = cursor.fetchall()
-            found_records = bool(results)
-        except pyodbc.Error as e:
-            pytest.fail(f"Failed to execute query: {e}")
-
-    assert found_records == expected_result
+    assert found_records_1 == expected_result
+    #assert found_records_2 == expected_result
+    assert found_records_3 == expected_result
 
 
 """
