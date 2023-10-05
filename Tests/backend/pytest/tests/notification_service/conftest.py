@@ -24,9 +24,9 @@ URLS = {
 
 DB_SERVERS = {
     'dev_db': 'adpra173.vsskb.cz',
-    'fat_db': 'adpra173.vsskb.cz\FAT',
-    'sit_db': 'adpra173.vsskb.cz\SIT',
-    'uat_db': 'adpra173.vsskb.cz\UAT1'
+    'fat_db': r'adpra173.vsskb.cz\FAT',
+    'sit_db': r'adpra173.vsskb.cz\SIT',
+    'uat_db': r'adpra173.vsskb.cz\UAT1'
 }
 
 DB_TEMPLATE = {
