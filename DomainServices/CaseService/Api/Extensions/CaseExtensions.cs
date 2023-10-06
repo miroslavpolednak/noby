@@ -123,7 +123,7 @@ internal static class CaseExtensions
                         OrderId = taskData.GetInteger("ukol_odhad_order_id"),
                         DocumentInfoPrice = taskData.GetValueOrDefault("ukol_odhad_ea_docs_infocena"),
                         DocumentRecommendationForClient = taskData.GetValueOrDefault("ukol_odhad_ea_docs_doporuceni"),
-                        OnlineValuation = taskData.GetValueOrDefault("ukol_odhad_valuation_type ") == "OCEN_LUX"
+                        OnlineValuation = taskData.GetValueOrDefault("ukol_odhad_valuation_type") == "OCEN_LUX"
                     };
                     break;
 
