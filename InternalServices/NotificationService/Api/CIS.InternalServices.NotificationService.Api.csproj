@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.202.3" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.205.8" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
     <PackageReference Include="MailKit" Version="4.2.0" />
     <PackageReference Include="MediatR" Version="12.1.1" />
@@ -36,10 +36,10 @@
 
   <ItemGroup>
     <!-- DO NOT UPGRADE VERSIONS -->
-    <PackageReference Include="Apache.Avro" Version="1.11.1" />
-    <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="1.1.0.16-SNAPSHOT" />
-    <PackageReference Include="MassTransit" Version="8.0.13" />
-    <PackageReference Include="MassTransit.Kafka" Version="8.0.13" />
+    <PackageReference Include="Apache.Avro" Version="1.11.3" />
+    <PackageReference Include="KB.Speed.MassTransit.Kafka" Version="1.3.0.48" />
+    <PackageReference Include="MassTransit" Version="8.1.1" />
+    <PackageReference Include="MassTransit.Kafka" Version="8.1.1" />
   </ItemGroup>
   
   <ItemGroup>

@@ -30,9 +30,6 @@ public static class TracingExtensions
                     b.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName));
                 }*/
 
-                // uses the default Jaeger settings
-                b.AddJaegerExporter();
-
                 // receive traces from built-in sources
                 b.AddEntityFrameworkCoreInstrumentation();
                 b.AddSqlClientInstrumentation();
