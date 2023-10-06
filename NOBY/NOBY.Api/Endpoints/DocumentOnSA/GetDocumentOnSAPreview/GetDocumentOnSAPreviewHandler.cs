@@ -24,14 +24,14 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
         {
             throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "DocumentOnSA does not exist on provided sales arrangement.");
         }
-        
+
         var response = documentOnSA.Source switch
         {
             _Domain.Source.Noby => await HandleSourceNoby(documentOnSA, cancellationToken),
             _Domain.Source.Workflow => await HandleSourceWorkflow(documentOnSA, cancellationToken),
             _ => throw new NobyValidationException("Unsupported kind of document source")
         };
-        
+
         _auditLogger.Log(
             AuditEventTypes.Noby010,
             "Dokument byl zobrazen v aplikaci",
@@ -65,7 +65,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
             throw new NobyValidationException("Invalid electronic document is not allowed.");
         }
 
-        if (documentOnSA.SignatureTypeId == (int)SignatureTypes.Paper && (documentOnSA.IsSigned || !documentOnSA.IsValid))
+        if (documentOnSA.SignatureTypeId == (int)SignatureTypes.Paper && ((documentOnSA.IsSigned && documentOnSA.EArchivIdsLinked.Any()) || !documentOnSA.IsValid))
         {
             throw new NobyValidationException("Signed or invalid paper document is not allowed.");
         }
@@ -79,7 +79,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
 
         var templates = await _codebookService.DocumentTypes(cancellationToken);
         var fileName = templates.First(t => t.Id == (int)documentOnSA.DocumentTypeId!).FileName;
-        
+
         return new GetDocumentOnSAPreviewResponse
         {
             FileData = document.Data.ToByteArray(),
@@ -87,7 +87,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
             ContentType = MediaTypeNames.Application.Pdf
         };
     }
-    
+
     private async Task<GetDocumentOnSAPreviewResponse> HandleSourceWorkflow(
         DocumentOnSAToSign documentOnSA,
         CancellationToken cancellationToken)
@@ -111,7 +111,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
             ContentType = previewResponse.MimeType
         };
     }
-    
+
     private readonly ICodebookServiceClient _codebookService;
     private readonly IDateTime _dateTime;
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
