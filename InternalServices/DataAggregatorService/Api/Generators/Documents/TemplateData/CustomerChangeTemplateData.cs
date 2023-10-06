@@ -24,6 +24,8 @@ internal class CustomerChangeTemplateData : AggregatedData
 
     public CustomerInfo? Customer4 => GetCustomerInfo(4);
 
+    public string PaymentAccount => BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
+
     public string ReleaseCustomers
     {
         get
