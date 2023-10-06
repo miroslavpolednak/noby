@@ -21,14 +21,25 @@ internal sealed class CollateralValuationProcessChangedConsumer
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
             _logger.KafkaMessageCurrentTaskIdIncorrectFormat(message.currentTask.id);
+            return;
         }
 
         var taskDetail = await _caseService.GetTaskDetail(currentTaskId, token);
         var orderId = taskDetail.TaskDetail.RealEstateValuation.OrderId;
+
+        if (message.state != ProcessStateEnum.COMPLETED && message.state != ProcessStateEnum.TERMINATED)
+        {
+            return;
+        }
         
         var realEstateValuation = await _dbContext.RealEstateValuations
-            .FirstOrDefaultAsync(t => t.OrderId == orderId, token)
-        ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, orderId);
+            .FirstOrDefaultAsync(t => t.OrderId == orderId, token);
+
+        if (realEstateValuation is null)
+        {
+            _logger.RealEstateValuationByOrderIdNotFound(orderId);
+            return;
+        }
 
         switch (message.state)
         {

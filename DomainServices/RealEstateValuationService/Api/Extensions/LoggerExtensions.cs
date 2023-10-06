@@ -5,6 +5,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, long, int, Exception> _attachmentDeleteFailed;
     private static readonly Action<ILogger, string, Exception> _kafkaMessageCaseIdIncorrectFormat;
     private static readonly Action<ILogger, string, Exception> _kafkaMessageCurrentTaskIdIncorrectFormat;
+    private static readonly Action<ILogger, long?, Exception> _kafkaRealEstateValuationByOrderIdNotFound;
 
     static LoggerExtensions()
     {
@@ -22,6 +23,11 @@ internal static class LoggerExtensions
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.KafkaMessageCurrentTaskIdIncorrectFormat, nameof(KafkaMessageCurrentTaskIdIncorrectFormat)),
             "Message CurrentTaskId {CurrentTaskId} is not in valid format");
+        
+        _kafkaRealEstateValuationByOrderIdNotFound = LoggerMessage.Define<long?>(
+            LogLevel.Error,
+            new EventId(LoggerEventIdCodes.RealEstateValuationNotFound, nameof(RealEstateValuationByOrderIdNotFound)),
+            "RealEstateValuation OrderId {OrderId} not found");
     }
 
     public static void AttachmentDeleteFailed(this ILogger logger, long externalId, int realEstateValuationAttachmentId, Exception ex)
@@ -32,5 +38,7 @@ internal static class LoggerExtensions
 
     public static void KafkaMessageCurrentTaskIdIncorrectFormat(this ILogger logger, string currentTaskId)
         => _kafkaMessageCurrentTaskIdIncorrectFormat(logger, currentTaskId, null!);
-    
+
+    public static void RealEstateValuationByOrderIdNotFound(this ILogger logger, long? orderId)
+        => _kafkaRealEstateValuationByOrderIdNotFound(logger, orderId, null!);
 }
