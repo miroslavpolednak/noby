@@ -98,10 +98,11 @@ internal sealed class CreateCustomerHandler
             // pokud je vse OK, zalozit customera v konsDb
             try
             {
-                await _createOrUpdateCustomerKonsDb.CreateOrUpdate(new Identity[] { new(updateResponse.PartnerId!.Value, IdentitySchemes.Mp), new(kbId, IdentitySchemes.Kb) }, cancellationToken);
+                await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResponse.CustomerIdentifiers, cancellationToken);
 
                 var relationshipTypeId = customerOnSA.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
-                await _productService.CreateContractRelationship(updateResponse.PartnerId!.Value, saInstance.CaseId, relationshipTypeId, cancellationToken);
+                var partnerId = updateResponse.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
+                await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
             }
             catch (Exception ex)
             {
