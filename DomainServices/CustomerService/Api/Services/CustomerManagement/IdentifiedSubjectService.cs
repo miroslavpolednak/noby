@@ -113,7 +113,7 @@ internal sealed class IdentifiedSubjectService
             model.IsPoliticallyExposed = false;
         }
 
-        if (request.NaturalPerson?.TaxResidence is not null)
+        if (request.NaturalPerson?.TaxResidence is not null && request.NaturalPerson.TaxResidence.ResidenceCountries.Any())
         {
             model.TaxResidence = new TaxResidence
             {

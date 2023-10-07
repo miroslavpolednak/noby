@@ -67,5 +67,5 @@ internal class CustomerTaxResidencyTemplateData : AggregatedData
     }
 
     private IEnumerable<CountriesResponse.Types.CountryItem?> GetTaxResidencyCountries() => 
-        Customer.NaturalPerson.TaxResidence.ResidenceCountries.Select(r => _codebookManager.Countries.FirstOrDefault(c => c.Id == r.CountryId));
+        Customer.TaxResidenceCountriesLimited.Select(r => _codebookManager.Countries.FirstOrDefault(c => c.Id == r.CountryId));
 }

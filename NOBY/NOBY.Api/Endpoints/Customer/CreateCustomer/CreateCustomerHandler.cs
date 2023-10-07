@@ -19,7 +19,11 @@ internal sealed class CreateCustomerHandler
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
         var customerOnSaList = await _customerOnSAService.GetCustomerList(customerOnSA.SalesArrangementId, cancellationToken);
 
-        if (customerOnSA.CustomerRoleId != (int)CustomerRoles.Debtor)
+        // SA
+        var saInstance = await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken);
+        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
+
+        if (saCategory.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest && customerOnSA.CustomerRoleId != (int)CustomerRoles.Debtor)
         {
             if (!customerOnSaList.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
                 throw new NobyValidationException(90001, "Main customer is not identified");
@@ -76,9 +80,6 @@ internal sealed class CreateCustomerHandler
             IdentityScheme = Identity.Types.IdentitySchemes.Kb
         }, cancellationToken);
 
-        // SA
-        var saInstance = await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken);
-
         // update customerOnSA. Dostanu nove PartnerId
         var updateResponse = await _customerOnSAService.UpdateCustomer(customerOnSA.ToUpdateRequest(customerKb), cancellationToken);
 
@@ -97,10 +98,11 @@ internal sealed class CreateCustomerHandler
             // pokud je vse OK, zalozit customera v konsDb
             try
             {
-                await _createOrUpdateCustomerKonsDb.CreateOrUpdate(new Identity[] { new(updateResponse.PartnerId!.Value, IdentitySchemes.Mp), new(kbId, IdentitySchemes.Kb) }, cancellationToken);
+                await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResponse.CustomerIdentifiers, cancellationToken);
 
                 var relationshipTypeId = customerOnSA.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
-                await _productService.CreateContractRelationship(updateResponse.PartnerId!.Value, saInstance.CaseId, relationshipTypeId, cancellationToken);
+                var partnerId = updateResponse.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
+                await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -108,9 +110,7 @@ internal sealed class CreateCustomerHandler
             }
         }
 
-        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
-
-        if (saCategory.SalesArrangementCategory == 1)
+        if (saCategory.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
         {
             var households = await _householdService.GetHouseholdList(saInstance.SalesArrangementId, cancellationToken);
             var household = households.First(t => t.CustomerOnSAId1 == customerOnSA.CustomerOnSAId || t.CustomerOnSAId2 == customerOnSA.CustomerOnSAId);

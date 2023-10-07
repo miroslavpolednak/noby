@@ -310,7 +310,7 @@ INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl],
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'ES:ESignatures:V1', N'https://testbio.mpss.cz/ePodpisy', 3)
 GO
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'ES:IdentifiedSubjectBr:V1', N'https://cm-identified-subject-br-v1.uat.custmng.kbcloud/api', 3)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'ES:IdentifiedSubjectBr:V1', N'https://cm-identified-subject-br-v1.stage.custmng.kbcloud/api', 3)
 GO
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType]) VALUES (N'UAT', N'ES:Kyc:V1', N'https://cm-uat.kb.cz/be-cm/api', 3)
 GO

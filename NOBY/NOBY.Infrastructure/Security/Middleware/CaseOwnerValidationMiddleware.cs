@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using NOBY.Infrastructure.Security.Attributes;
+using DomainServices.SalesArrangementService.Contracts.v1;
+using DomainServices.HouseholdService.Contracts.v1;
 
 namespace NOBY.Infrastructure.Security.Middleware;
 
@@ -47,45 +49,56 @@ public sealed class CaseOwnerValidationMiddleware
 
             if (isInRoute(_customerOnSAIdKey))
             {
-                var customerOnSAService = context.RequestServices.GetRequiredService<ICustomerOnSAServiceClient>();
-                caseId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.CustomerOnSA) switch
+                var customerOnSAService = context.RequestServices.GetRequiredService<ICustomerOnSAServiceClient>()!;
+                var customerResult = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.CustomerOnSA) switch
                 {
-                    true => (await customerOnSAService.GetCustomer(getId(_customerOnSAIdKey), cancellationToken)).CaseId,
-                    false => (await customerOnSAService.ValidateCustomerOnSAId(getId(_customerOnSAIdKey), true, cancellationToken)).CaseId
-                };  
+                    true => await getCustomerFromDetail(),
+                    false => await getCustomerFromValidate()
+                };
+                caseId = customerResult.CaseId;
+                salesArrangementTypeId = (await getSalesArrangement(context, customerResult.SalesArrangementId, false, cancellationToken)).SalesArrangementTypeId;
+
+                async Task<(long CaseId, int SalesArrangementId)> getCustomerFromDetail()
+                {
+                    var result = await customerOnSAService.GetCustomer(getId(_customerOnSAIdKey), cancellationToken);
+                    return (result.CaseId, result.SalesArrangementId);
+                }
+
+                async Task<(long CaseId, int SalesArrangementId)> getCustomerFromValidate()
+                {
+                    var sa = await customerOnSAService.ValidateCustomerOnSAId(getId(_customerOnSAIdKey), true, cancellationToken);
+                    return (sa.CaseId!.Value, sa.SalesArrangementId!.Value);
+                }
             }
             else if (isInRoute(_householdIdKey))
             {
-                var householdService = context.RequestServices.GetRequiredService<IHouseholdServiceClient>();
-                caseId = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.Household) switch
+                var householdService = context.RequestServices.GetRequiredService<IHouseholdServiceClient>()!;
+                var householdResult = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.Household) switch
                 {
-                    true => (await householdService.GetHousehold(getId(_householdIdKey), cancellationToken)).CaseId,
-                    false => (await householdService.ValidateHouseholdId(getId(_householdIdKey), true, cancellationToken)).CaseId
+                    true => await getHouseholdFromDetail(),
+                    false => await getHouseholdFromValidate()
                 };
+                caseId = householdResult.CaseId;
+                salesArrangementTypeId = (await getSalesArrangement(context, householdResult.SalesArrangementId, false, cancellationToken)).SalesArrangementTypeId;
+
+                async Task<(long CaseId, int SalesArrangementId)> getHouseholdFromDetail()
+                {
+                    var result = await householdService.GetHousehold(getId(_householdIdKey), cancellationToken);
+                    return (result.CaseId, result.SalesArrangementId);
+                }
+
+                async Task<(long CaseId, int SalesArrangementId)> getHouseholdFromValidate()
+                {
+                    var sa = await householdService.ValidateHouseholdId(getId(_householdIdKey), true, cancellationToken);
+                    return (sa.CaseId!.Value, sa.SalesArrangementId!.Value);
+                }
             }
             // u SA potrebujeme take typ SA
             else if (isInRoute(_salesArrangementIdKey))
             {
-                var salesArrangementService = context.RequestServices.GetRequiredService<ISalesArrangementServiceClient>();
-                var saResponse = preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.SalesArrangement) switch
-                {
-                    true => await getSAFromDetail(),
-                    false => await getSAFromValidate(),
-                };
+                var saResponse = await getSalesArrangement(context, getId(_salesArrangementIdKey), preload.HasFlag(NobyAuthorizePreloadAttribute.LoadableEntities.SalesArrangement), cancellationToken);
                 caseId = saResponse.CaseId;
                 salesArrangementTypeId = saResponse.SalesArrangementTypeId;
-
-                async Task<(long CaseId, int SalesArrangementTypeId)> getSAFromDetail()
-                {
-                    var sa = await salesArrangementService!.GetSalesArrangement(getId(_salesArrangementIdKey), cancellationToken);
-                    return (sa.CaseId, sa.SalesArrangementTypeId);
-                }
-
-                async Task<(long CaseId, int SalesArrangementTypeId)> getSAFromValidate()
-                {
-                    var sa = await salesArrangementService.ValidateSalesArrangementId(getId(_salesArrangementIdKey), true, cancellationToken);
-                    return (sa.CaseId!.Value, sa.SalesArrangementTypeId!.Value);
-                }
             }
             else if (isInRoute(_caseIdKey))
             {
@@ -123,5 +136,26 @@ public sealed class CaseOwnerValidationMiddleware
 
         int getId(in string key)
             => int.Parse(routeValues![key]!.ToString()!, CultureInfo.InvariantCulture);
+    }
+
+    private async Task<(long CaseId, int SalesArrangementTypeId)> getSalesArrangement(HttpContext context, int salesArrangementId, bool fromDetail, CancellationToken cancellationToken)
+    {
+        var salesArrangementService = context.RequestServices.GetRequiredService<ISalesArrangementServiceClient>();
+        return fromDetail switch
+        {
+            true => await getSAFromDetail(),
+            false => await getSAFromValidate(),
+        };
+        async Task<(long CaseId, int SalesArrangementTypeId)> getSAFromDetail()
+        {
+            var sa = await salesArrangementService!.GetSalesArrangement(salesArrangementId, cancellationToken);
+            return (sa.CaseId, sa.SalesArrangementTypeId);
+        }
+
+        async Task<(long CaseId, int SalesArrangementTypeId)> getSAFromValidate()
+        {
+            var sa = await salesArrangementService.ValidateSalesArrangementId(salesArrangementId, true, cancellationToken);
+            return (sa.CaseId!.Value, sa.SalesArrangementTypeId!.Value);
+        }
     }
 }

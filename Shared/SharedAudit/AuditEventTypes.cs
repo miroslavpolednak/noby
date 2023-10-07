@@ -44,6 +44,6 @@ public enum AuditEventTypes
     [AuditEventTypeDescriptor("SMSNotificationSentThroughMCS", "AU_NOBY_013")]
     Noby013 = 13,
     
-    [AuditEventTypeDescriptor("NotificationResultForAuditableSMSReceived", "AU_NOBY_013")]
+    [AuditEventTypeDescriptor("NotificationResultForAuditableSMSReceived", "AU_NOBY_014")]
     Noby014 = 14,
 }

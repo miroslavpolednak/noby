@@ -24,15 +24,18 @@ internal class CustomerChangeTemplateData : AggregatedData
 
     public CustomerInfo? Customer4 => GetCustomerInfo(4);
 
+    public string PaymentAccount => BankAccountHelper.AccountNumber(Mortgage.PaymentAccount.Prefix, Mortgage.PaymentAccount.Number, Mortgage.PaymentAccount.BankCode);
+
     public string ReleaseCustomers
     {
         get
         {
-            if (SalesArrangement.CustomerChange.Release?.IsActive != true)
-                return string.Empty;
+            var customersText = Enumerable.Empty<string>();
 
-            return string.Join(Environment.NewLine,
-                               SalesArrangement.CustomerChange.Release.Customers.Select(c => CustomerHelper.NameWithDateOfBirth($"{c.NaturalPerson.FirstName} {c.NaturalPerson.LastName}", c.NaturalPerson.DateOfBirth)));
+            if (SalesArrangement.CustomerChange.Release?.IsActive == true)
+                customersText = SalesArrangement.CustomerChange.Release.Customers.Select(c => CustomerHelper.NameWithDateOfBirth($"{c.NaturalPerson.FirstName} {c.NaturalPerson.LastName}", c.NaturalPerson.DateOfBirth));
+
+            return string.Join(Environment.NewLine, customersText.Concat(Enumerable.Repeat("--", 4)).Take(4));
         }
     }
 
@@ -40,19 +43,21 @@ internal class CustomerChangeTemplateData : AggregatedData
     {
         get
         {
-            if (SalesArrangement.CustomerChange.Add?.IsActive != true)
-                return string.Empty;
+            var customersText = Enumerable.Empty<string>();
 
-            return string.Join(Environment.NewLine, SalesArrangement.CustomerChange.Add.Customers.Select(c => CustomerHelper.NameWithDateOfBirth(c.Name, c.DateOfBirth)));
+            if (SalesArrangement.CustomerChange.Add?.IsActive == true)
+                customersText = SalesArrangement.CustomerChange.Add.Customers.Select(c => CustomerHelper.NameWithDateOfBirth(c.Name, c.DateOfBirth));
+
+            return string.Join(Environment.NewLine, customersText.Concat(Enumerable.Repeat("--", 4)).Take(4));
         }
     }
 
-    public string BankAccount
+    public string? BankAccount
     {
         get
         {
             if (SalesArrangement.CustomerChange.RepaymentAccount?.IsActive != true)
-                return string.Empty;
+                return default;
 
             var account = SalesArrangement.CustomerChange.RepaymentAccount;
 
@@ -60,12 +65,12 @@ internal class CustomerChangeTemplateData : AggregatedData
         }
     }
 
-    public string BankAccountOwner
+    public string? BankAccountOwner
     {
         get
         {
             if (SalesArrangement.CustomerChange.RepaymentAccount?.IsActive != true)
-                return string.Empty;
+                return null;
 
             var account = SalesArrangement.CustomerChange.RepaymentAccount;
 

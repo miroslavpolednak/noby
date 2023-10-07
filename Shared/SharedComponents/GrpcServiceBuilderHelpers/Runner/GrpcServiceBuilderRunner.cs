@@ -72,7 +72,6 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             if (!_settings.EnvironmentConfiguration.DisableContractDescriptionPropagation)
             {
                 _settings.Builder.Services.AddGrpcReflection();
-                addSwagger();
             }
 
             // json transcoding
@@ -82,6 +81,11 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
                 {
                     o.JsonSettings.WriteEnumsAsIntegers = true;
                 });
+
+                if (!_settings.EnvironmentConfiguration.DisableContractDescriptionPropagation)
+                {
+                    addSwagger();
+                }
             }
 
             // add HC
@@ -128,7 +132,11 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             if (!_settings.EnvironmentConfiguration.DisableContractDescriptionPropagation)
             {
                 app.MapGrpcReflectionService();
-                useSwagger(app);
+
+                if (_settings.EnableJsonTranscoding)
+                {
+                    useSwagger(app);
+                }
             }
             
             log.ApplicationRun();
