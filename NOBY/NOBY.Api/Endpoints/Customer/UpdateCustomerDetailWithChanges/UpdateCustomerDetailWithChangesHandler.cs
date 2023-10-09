@@ -5,6 +5,7 @@ using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
 using __Household = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Clients;
+using DomainServices.CodebookService.Clients;
 using SharedTypes.Enums;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
@@ -70,6 +71,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 IdentificationMethodId = user.UserInfo.IsInternal ? 1 : 8
             };
         }
+
+        await RemoveTinMissingReasonIfTinIsNotRequired(originalModel?.NaturalPerson?.TaxResidences, cancellationToken);
 
         // ----- update naseho detailu instance customera
         // updatujeme CustomerChangeData a CustomerAdditionalData na nasi entite CustomerOnSA
@@ -252,9 +255,27 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         return additionalData;
     }
 
+    private async Task RemoveTinMissingReasonIfTinIsNotRequired(Shared.TaxResidenceItem? original, CancellationToken cancellationToken)
+    {
+        if (original?.ResidenceCountries is null)
+            return;
+
+        var countries = await _codebookService.Countries(cancellationToken);
+        var tinMissingReasons = await _codebookService.TinNoFillReasonsByCountry(cancellationToken);
+
+        var taxResidencyCountries = original.ResidenceCountries.Select(r => new { Country = countries.FirstOrDefault(c => c.Id == r.CountryId), TaxResidency = r });
+        var taxResidencyCountriesWithTinRequiredFalse = taxResidencyCountries.Where(c => !tinMissingReasons.First(t => t.Id == c.Country?.ShortName).IsTinMandatory);
+
+        foreach (var taxResidency in taxResidencyCountriesWithTinRequiredFalse)
+        {
+            taxResidency.TaxResidency.TinMissingReasonDescription = null;
+        }
+    }
+
     private readonly CustomerWithChangedDataService _changedDataService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerServiceClient _customerService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -271,7 +292,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         IDocumentOnSAServiceClient documentOnSAService,
         ICurrentUserAccessor userAccessor,
         IHouseholdServiceClient householdService,
-        ICustomerServiceClient customerService)
+        ICustomerServiceClient customerService,
+        ICodebookServiceClient codebookService)
     {
         _documentOnSAService = documentOnSAService;
         _caseService = caseService;
@@ -282,5 +304,6 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         _userAccessor = userAccessor;
         _householdService = householdService;
         _customerService = customerService;
+        _codebookService = codebookService;
     }
 }
