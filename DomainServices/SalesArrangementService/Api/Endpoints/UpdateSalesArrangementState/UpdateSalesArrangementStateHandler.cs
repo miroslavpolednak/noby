@@ -13,10 +13,6 @@ internal sealed class UpdateSalesArrangementStateHandler
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
-        // kontrola aktualniho stavu vuci novemu stavu
-        if (entity.State == request.State)
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AlreadyInSalesArrangementState, request.State);
-
         // update stavu SA
         entity.State = request.State;
         entity.StateUpdateTime = _dbContext.CisDateTime.Now;
