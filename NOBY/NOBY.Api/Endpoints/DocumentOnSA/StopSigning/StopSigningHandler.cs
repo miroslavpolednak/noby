@@ -17,6 +17,9 @@ public class StopSigningHandler : IRequestHandler<StopSigningRequest>
     {
         var documentOnSa = await GetDocumentOnSa(request, cancellationToken);
 
+        if (documentOnSa.DocumentTypeId == DocumentTypes.DANRESID.ToByte() && documentOnSa.IsSigned) // 13
+            throw new NobyValidationException("Cannot cancel signed CRS, because CRS has already been written to KB CM");
+
         if (documentOnSa.SignatureTypeId == SignatureTypes.Electronic.ToByte())
         {
             await _documentOnSAService.RefreshElectronicDocument(documentOnSa.DocumentOnSAId!.Value, cancellationToken);
