@@ -32,5 +32,9 @@
     <ItemGroup>
       <Folder Include="Database\Migrations\" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\InternalServices\NotificationService\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
+    </ItemGroup>
     
 </Project>

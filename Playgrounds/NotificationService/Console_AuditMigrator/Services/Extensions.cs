@@ -11,7 +11,10 @@ public static class Extensions
     {
         return services
             .AddDatabase(configuration)
+            .AddScoped<IApplication, Application>()
             .AddTransient<ILogParser, LogParser>()
-            .AddScoped<ILogRepository, LogRepository>();
+            .AddTransient<IMigrationDataParser, MigrationDataParser>()
+            .AddTransient<IMigrationDataAggregator, MigrationDataAggregator>()
+            .AddTransient<IAuditMigrator, AuditMigrator>();
     }
 }

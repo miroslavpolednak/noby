@@ -12,7 +12,7 @@ namespace Console_AuditMigrator.Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ProcessedFiles",
+                name: "ProcessedFile",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -22,11 +22,11 @@ namespace Console_AuditMigrator.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProcessedFiles", x => x.Id);
+                    table.PrimaryKey("PK_ProcessedFile", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationLogs",
+                name: "ApplicationLog",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -55,29 +55,61 @@ namespace Console_AuditMigrator.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationLogs", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationLog", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApplicationLogs_ProcessedFiles_ProcessedFileId",
+                        name: "FK_ApplicationLog_ProcessedFile_ProcessedFileId",
                         column: x => x.ProcessedFileId,
-                        principalTable: "ProcessedFiles",
+                        principalTable: "ProcessedFile",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MigrationData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationLogId = table.Column<int>(type: "int", nullable: false),
+                    LogType = table.Column<int>(type: "int", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RequestId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Payload = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MigrationData", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MigrationData_ApplicationLog_ApplicationLogId",
+                        column: x => x.ApplicationLogId,
+                        principalTable: "ApplicationLog",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationLogs_ProcessedFileId",
-                table: "ApplicationLogs",
+                name: "IX_ApplicationLog_ProcessedFileId",
+                table: "ApplicationLog",
                 column: "ProcessedFileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MigrationData_ApplicationLogId",
+                table: "MigrationData",
+                column: "ApplicationLogId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApplicationLogs");
+                name: "MigrationData");
 
             migrationBuilder.DropTable(
-                name: "ProcessedFiles");
+                name: "ApplicationLog");
+
+            migrationBuilder.DropTable(
+                name: "ProcessedFile");
         }
     }
 }

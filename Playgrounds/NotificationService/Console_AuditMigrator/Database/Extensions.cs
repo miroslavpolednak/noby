@@ -8,10 +8,16 @@ public static class Extensions
 {
     public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("Migrator")
-                               ?? throw new ArgumentException("Connection string 'migrator' is missing.");
+        var migratorConnectionString = configuration.GetConnectionStringByKey("Migrator");
+        var notificationServiceConnectionString = configuration.GetConnectionStringByKey("NotificationService");
         
         return services
-            .AddDbContext<LogDbContext>(options => options.UseSqlServer(connectionString));
+            .AddDbContext<LogDbContext>(options => options.UseSqlServer(migratorConnectionString))
+            .AddDbContext<NotificationServiceContext>(options => options.UseSqlServer(notificationServiceConnectionString));
     }
+
+    private static string GetConnectionStringByKey(this IConfiguration configuration, string key) =>
+        configuration.GetConnectionString(key)
+        ?? throw new ArgumentException($"Connection string '{key}' is missing.");
+
 }

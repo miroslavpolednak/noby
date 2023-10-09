@@ -1,17 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Console_AuditMigrator.Models;
 
 namespace Console_AuditMigrator.Database.Entities;
-
-public enum LogType
-{
-    ReceivedHttpRequest = 0,
-    SendingHttpResponse = 1,
-    ProducingToKafka = 2,
-    ProducedToKafka = 3,
-    CouldNotProduceToKafka = 4,
-    ReceivedReport = 5
-}
 
 public class ApplicationLog
 {
