@@ -83,10 +83,10 @@ steps:
     ASPNETCORE_ENVIRONMENT: 'Testing'
 
 - task: SonarQubeAnalyze@5
-  condition: eq(variables.runSonarQube, true)
+  condition: and(succeeded(), eq(variables.runSonarQube, true))
 
 - task: SonarQubePublish@5
-  condition: eq(variables.runSonarQube, true)
+  condition: and(succeeded(), eq(variables.runSonarQube, true))
   inputs:
     pollingTimeoutSec: '300'
 
