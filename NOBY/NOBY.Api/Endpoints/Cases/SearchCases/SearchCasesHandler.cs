@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Security;
 using CIS.Core.Types;
 using CIS.Infrastructure.WebApi.Types;
+using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Cases.SearchCases;
 
@@ -14,8 +15,17 @@ internal sealed class SearchCasesHandler
             .FromRequest(request.Pagination)
             .EnsureAndTranslateSortFields(sortingMapper);
 
-        // zavolat BE sluzbu
-        var result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken);
+        var filterStates = getStatesFilter(request.FilterId);
+
+        if (filterStates is not null && !_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing)) 
+            filterStates.Remove((int)CaseStates.InAdministration);
+
+        DomainServices.CaseService.Contracts.SearchCasesResponse result;
+
+        if (filterStates?.Any() ?? true)
+            result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken);
+        else
+            result = new DomainServices.CaseService.Contracts.SearchCasesResponse();
 
         // transform
         return new SearchCasesResponse
