@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Google.Protobuf;
-using SharedTypes.Enums;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementParameters;
 
