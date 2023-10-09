@@ -13,11 +13,6 @@ internal sealed class RealKycClient
         await sendRequest($"/public/v2/customers/{customerId}/kyc", request, cancellationToken);
     }
 
-    public async Task SetFinancialProfile(long customerId, Contracts.EmploymentFinancialProfile request, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        await sendRequest($"/public/v2/customers/{customerId}/employment-financial-profile", request, cancellationToken);
-    }
-
     private async Task sendRequest<TRequest>(string url, TRequest request, CancellationToken cancellationToken)
         where TRequest : class
     {
