@@ -16,7 +16,7 @@ public sealed class ApplySwaggerNobyAttributes
         var authorizeAttributes = context.MethodInfo.GetCustomAttributes(typeof(NobyAuthorizeAttribute), false);
         if (authorizeAttributes is not null && authorizeAttributes.Any())
         {
-            string perms = string.Join("<br/><font color=\"lightgrey\">[AND]</font><br/>", authorizeAttributes.Select(t => string.Join(" <font color=\"lightgrey\">[OR]</font> ", ((NobyAuthorizeAttribute)t).RequiredPermissions)));
+            string perms = string.Join("<br/><font color=\"lightgrey\">[AND]</font><br/>", authorizeAttributes.Select(t => string.Join(" <font color=\"lightgrey\">[AND]</font> ", ((NobyAuthorizeAttribute)t).RequiredPermissions)));
             operation.Description += $"{_requiredPermissionsLabel}<br/>{perms}";
         }
 
