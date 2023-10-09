@@ -13,6 +13,7 @@ variables:
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
   projectFile: 'InternalServices/DataAggregatorService/Api/CIS.InternalServices.DataAggregatorService.Api.csproj'
+  testsFile: 'InternalServices/DataAggregatorService/Tests/CIS.InternalServices.DataAggregator.Tests/CIS.InternalServices.DataAggregator.Tests.csproj'
   runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), ne(lower(variables['USESONARQUBE']), 'false'))]
 
 # custom BuildNumber
@@ -71,6 +72,15 @@ steps:
     command: 'build'
     projects: '$(projectFile)'
     arguments: '--output $(Build.BinariesDirectory)'
+
+- task: DotNetCoreCLI@2
+  displayName: C# Integration and Unit tests
+  inputs:
+    command: test
+    projects: '$(testsFile)'
+    arguments: '--configuration debug'
+  env:
+    ASPNETCORE_ENVIRONMENT: 'Testing'
 
 - task: SonarQubeAnalyze@5
   condition: eq(variables.runSonarQube, true)
