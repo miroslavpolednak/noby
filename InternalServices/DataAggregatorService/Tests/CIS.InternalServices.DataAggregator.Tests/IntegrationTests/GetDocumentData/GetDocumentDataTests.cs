@@ -9,9 +9,11 @@ public class GetDocumentDataTests : IntegrationTestBase
     public GetDocumentDataTests()
     {
         SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersMortgage>((sa, parameter) => sa.Mortgage = parameter);
+        SalesArrangementServiceClient.MockValidateSalesArrangementId();
         HouseholdServiceClient.MockHouseholdList(CustomerOnSAServiceClient);
         CustomerServiceClient.MockCustomerList();
         OfferServiceClient.MockGetOfferDetail();
+        CaseServiceClient.MockValidateCaseId();
     }
 
     [Fact]

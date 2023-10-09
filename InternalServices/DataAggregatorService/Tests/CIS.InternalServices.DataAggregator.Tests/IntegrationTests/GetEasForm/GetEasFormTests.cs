@@ -2,6 +2,7 @@
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using FastEnumUtility;
+using SharedTypes.GrpcTypes;
 
 namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.GetEasForm;
 
@@ -46,7 +47,7 @@ public class GetEasFormTests : IntegrationTestBase
         SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersDrawing>((sa, parameter) =>
         {
             sa.Drawing = parameter;
-
+            parameter.Applicant.Add(new Identity());
             ProductServiceClient.MockGetCustomersOnProduct(parameter.Applicant.First());
         });
 
