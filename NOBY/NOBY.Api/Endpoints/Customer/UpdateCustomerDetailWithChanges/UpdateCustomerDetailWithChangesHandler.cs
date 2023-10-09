@@ -42,6 +42,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             if (customerOnSA.CustomerIdentifiers is not null)
                 updateBaseRequest.Customer.CustomerIdentifiers.AddRange(customerOnSA.CustomerIdentifiers);
 
+            //
+
             await _customerOnSAService.UpdateCustomer(updateBaseRequest, cancellationToken);
 
             // update na CASE, pokud se jedna o hlavniho dluznika

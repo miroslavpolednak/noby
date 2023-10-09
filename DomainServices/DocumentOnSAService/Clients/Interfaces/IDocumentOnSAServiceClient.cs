@@ -74,4 +74,9 @@ public interface IDocumentOnSAServiceClient
     Task RefreshElectronicDocument(int documentOnSAId, CancellationToken cancellationToken = default);
 
     Task<GetDocumentOnSAByFormIdResponse> GetDocumentOnSAByFormId(string formId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Metoda slouží k updatu stavu sales arrangementu dle aktuálního stavu podepisování.
+    /// </summary>
+    Task RefreshSalesArrangementState(int salesArrangementId, CancellationToken cancellationToken = default);
 }
