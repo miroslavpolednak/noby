@@ -20,6 +20,12 @@ internal sealed class UpdateSalesArrangementHandler
         /*if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == entity.SalesArrangementTypeId).SalesArrangementCategory != 2)
             throw new CisValidationException(18013, $"SalesArrangement type not supported");*/
 
+        // pokud je zadost NEW, zmenit na InProgress
+        if (entity.State == (int)SalesArrangementStates.NewArrangement)
+        {
+            entity.State = (int)SalesArrangementStates.InProgress;
+        }
+
         // kontrola na stav
         if (!_allowedStates.Contains(entity.State) && entity.SalesArrangementTypeId != (int)SalesArrangementTypes.Mortgage)
         {
@@ -31,12 +37,6 @@ internal sealed class UpdateSalesArrangementHandler
 
         entity.ContractNumber = request.ContractNumber;
         entity.RiskBusinessCaseId = request.RiskBusinessCaseId;
-
-        // pokud je zadost NEW, zmenit na InProgress
-        if (entity.State == (int)SalesArrangementStates.NewArrangement)
-        {
-            entity.State = (int)SalesArrangementStates.InProgress;
-        }
 
         await _dbContext.SaveChangesAsync(cancellation);
 
@@ -61,7 +61,7 @@ internal sealed class UpdateSalesArrangementHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private static int[] _allowedStates = new[] { (int)SalesArrangementStates.NewArrangement, (int)SalesArrangementStates.InProgress, (int)SalesArrangementStates.IsSigned };
+    private static int[] _allowedStates = new[] { (int)SalesArrangementStates.InSigning, (int)SalesArrangementStates.InProgress };
 
     private readonly ICaseServiceClient _caseService;
     private readonly ICurrentUserAccessor _userAccessor;
