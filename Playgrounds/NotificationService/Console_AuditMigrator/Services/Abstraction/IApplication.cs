@@ -1,6 +1,6 @@
 ﻿namespace Console_AuditMigrator.Services.Abstraction;
 
-public interface ILogParser
+public interface IApplication
 {
-    Task ParseLogFiles();
+    Task Run();
 }
