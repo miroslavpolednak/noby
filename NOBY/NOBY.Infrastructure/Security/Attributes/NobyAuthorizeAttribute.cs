@@ -31,13 +31,11 @@ public sealed class NobyAuthorizeAttribute
         {
             string[] perms = _requiredPermissions.Select(t => $"{(int)t}").ToArray();
 
-            if (!context
+            if (!perms.All(t => context
                 .HttpContext!
                 .User
                 .Claims
-                .Where(t => t.Type == AuthenticationConstants.NobyPermissionClaimType)
-                .Any(t => perms.Contains(t.Value))
-            )
+                .Any(x => x.Type == AuthenticationConstants.NobyPermissionClaimType && x.Value == t)))
             {
                 throw new CisAuthorizationException($"User does not have all of claims {string.Join(",", perms)}");
             }

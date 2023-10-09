@@ -93,4 +93,9 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
     {
         return await _client.GetDocumentOnSAByFormIdAsync(new() { FormId = formId }, cancellationToken: cancellationToken);
     }
+
+    public async Task RefreshSalesArrangementState(int salesArrangementId, CancellationToken cancellationToken = default)
+    {
+        await _client.RefreshSalesArrangementStateAsync(new() { SalesArrangementId = salesArrangementId }, cancellationToken: cancellationToken);
+    }
 }

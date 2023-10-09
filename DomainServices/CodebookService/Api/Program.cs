@@ -12,6 +12,7 @@ SharedComponents.GrpcServiceBuilder
         options.OpenApiTitle = "Codebook Service API";
         options.AddOpenApiXmlCommentFromBaseDirectory("DomainServices.CodebookService.Contracts.xml");
     })
+    .AddErrorCodeMapper(DomainServices.CodebookService.Api.ErrorCodeMapper.Init())
     .Build(builder =>
     {
         const string _sqlQuerySelect = "SELECT SqlQueryId, SqlQueryText, DatabaseProvider FROM dbo.SqlQuery";
