@@ -251,17 +251,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         {
             await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
         }
-        catch (Exception exp)
+        catch (Exception exp) when (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
         {
-            if (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
-            {
-                _logger.LogError(exp, exp.Message);
-                await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
-            }
-            else
-            {
-                throw;
-            }
+            _logger.LogError(exp, exp.Message);
+            await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
         }
     }
 
