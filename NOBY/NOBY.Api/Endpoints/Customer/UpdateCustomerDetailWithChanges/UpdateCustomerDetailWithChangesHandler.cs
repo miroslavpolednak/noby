@@ -176,6 +176,10 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             WasCRSChanged = (request.IsUSPerson ?? false) || 
                             !ModelComparers.AreObjectsEqual(request.NaturalPerson?.TaxResidences, originalModel?.NaturalPerson?.TaxResidences)
         };
+        
+        //HFICH-8593 temporary just to make sure, in D2+ there will be a more complex validation (hopefully)
+        if (metadata.WasCRSChanged && request.NaturalPerson?.TaxResidences?.ResidenceCountries?.Count > 8)
+            throw new NotImplementedException("We don't know how to update more than 8 tax residences yet");
 
         if (delta is not null)
         {
