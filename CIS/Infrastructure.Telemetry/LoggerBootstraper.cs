@@ -14,7 +14,7 @@ internal sealed class LoggerBootstraper
     private readonly AssemblyName? _assemblyName;
     private readonly ICisEnvironmentConfiguration? _cisConfiguration;
     private readonly IConfiguration? _generalConfiguration;
-    private readonly LogBehaviourTypes _logType;
+    private readonly LoggingConfiguration _configuration;
     private readonly IServiceProvider _serviceProvider;
 
     static string[] _excludedGrpcRequestPaths = new[]
@@ -23,13 +23,13 @@ internal sealed class LoggerBootstraper
         "/grpc.health.v1.Health/Check"
     };
 
-    public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider, LogBehaviourTypes logType)
+    public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider, LoggingConfiguration configuration)
     {
 #pragma warning disable CS8602 // Dereference of a possibly null reference. 
         _assemblyName = Assembly.GetEntryAssembly().GetName();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-        _logType = logType;
+        _configuration = configuration;
         _generalConfiguration = hostingContext.Configuration;
         _serviceProvider = serviceProvider;
         _cisConfiguration = serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
@@ -39,17 +39,19 @@ internal sealed class LoggerBootstraper
     {
         // global filter to exclude GRPC reflection
         //TODO any odstranit az se zbavime code-first grpc!
-        if (_logType == LogBehaviourTypes.Grpc || _logType == LogBehaviourTypes.Any)
+        if (_configuration.LogType == LogBehaviourTypes.Grpc || _configuration.LogType == LogBehaviourTypes.Any)
         {
             loggerConfiguration
-                .Filter.ByExcluding(Matching.WithProperty<string>("RequestPath", t => _excludedGrpcRequestPaths.Contains(t)));
+                .Filter
+                .ByExcluding(Matching.WithProperty<string>("RequestPath", t => _excludedGrpcRequestPaths.Contains(t, StringComparer.OrdinalIgnoreCase)));
         }
         
-        if (_logType == LogBehaviourTypes.WebApi)
+        if (_configuration.IncludeOnlyPaths?.Any() ?? false)
         {
             // cokoliv jineho nez /api zahazovat
             loggerConfiguration
-                .Filter.ByExcluding(Matching.WithProperty<string>("RequestPath", t => !t.StartsWith("/api/", StringComparison.OrdinalIgnoreCase)));
+                .Filter
+                .ByExcluding(Matching.WithProperty<string>("RequestPath", t => !_configuration.IncludeOnlyPaths.Any(x => t.StartsWith(x, StringComparison.OrdinalIgnoreCase))));
         }
         
         // remove health checks from logging

@@ -44,6 +44,21 @@
             Nastaveni File sink dle https://github.com/serilog/serilog-sinks-file
             </summary>
         </member>
+        <member name="P:CIS.Infrastructure.Telemetry.Configuration.LoggingConfiguration.LogType">
+            <summary>
+            Typ logu - gRPC nebo WebApi
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Telemetry.Configuration.LoggingConfiguration.Application">
+            <summary>
+            Jak se má logovat - nastavení sinků
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Telemetry.Configuration.LoggingConfiguration.IncludeOnlyPaths">
+            <summary>
+            Pokud je nastaveno, omezuje logování pouze na zadané RequestUrl
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.Telemetry.Enrichers.CisHeadersEnricher">
             <summary>
             Doda do kontextu log item ID a Login uzivatele
