@@ -123,6 +123,8 @@ public class WebApplicationFactoryFixture<TStartup>
             _configureServices?.Invoke(services);
         });
 
+        builder.UseEnvironment("Testing");
+
         return base.CreateHost(builder);
     }
 
