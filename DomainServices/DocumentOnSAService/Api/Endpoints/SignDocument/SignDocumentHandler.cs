@@ -207,14 +207,22 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         if (customerChangeMetadata.CustomerChangeMetadata.WasCRSChanged)
         {
-            var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
-            _customerChangeDataMerger.MergeTaxResidence(customerDetail?.NaturalPerson!, customerOnSa);
-            var updateCustomerRequest = MapUpdateCustomerRequest((int)SharedTypes.Enums.Mandants.Kb, customerDetail!);
-            await UpdateCustomer(customerOnSa, updateCustomerRequest, salesArrangement, cancellationToken);
-            // Throw away locally stored CRS data (keep client changes) 
-            var jsonCustomerChangeDataWithoutCrs = _customerChangeDataMerger.TrowAwayLocallyStoredCrsData(customerOnSa);
-            customerOnSa.CustomerChangeMetadata.WasCRSChanged = false;
-            await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithoutCrs, customerOnSa.CustomerChangeMetadata), cancellationToken);
+            try
+            {
+                var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+                _customerChangeDataMerger.MergeTaxResidence(customerDetail?.NaturalPerson!, customerOnSa);
+                var updateCustomerRequest = MapUpdateCustomerRequest((int)SharedTypes.Enums.Mandants.Kb, customerDetail!);
+                await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
+                // Throw away locally stored CRS data (keep client changes) 
+                var jsonCustomerChangeDataWithoutCrs = _customerChangeDataMerger.TrowAwayLocallyStoredCrsData(customerOnSa);
+                customerOnSa.CustomerChangeMetadata.WasCRSChanged = false;
+                await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithoutCrs, customerOnSa.CustomerChangeMetadata), cancellationToken);
+            }
+            catch (Exception exp) when (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
+            {
+                _logger.LogError(exp, exp.Message);
+                await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
+            }
         }
     }
 
@@ -233,38 +241,26 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             var customerChangeMetadata = await GetCustomerOnSaMetadata(documentOnSa, customerOnSa, cancellationToken);
             if (customerChangeMetadata.CustomerChangeMetadata.WereClientDataChanged)
             {
-                var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
-                _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
-                var updateCustomerRequest = MapUpdateCustomerRequest(mandantId.Value, customerDetail);
-                await UpdateCustomer(customerOnSa, updateCustomerRequest, salesArrangement, cancellationToken);
-                //Throw away locally stored Client data (keep CRS changes) 
-                var jsonCustomerChangeDataWithCrs = _customerChangeDataMerger.TrowAwayLocallyStoredClientData(customerOnSa);
-                customerOnSa.CustomerChangeMetadata.WereClientDataChanged = false;
-                await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithCrs, customerOnSa.CustomerChangeMetadata), cancellationToken);
+                try
+                {
+                    var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+                    _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
+                    var updateCustomerRequest = MapUpdateCustomerRequest(mandantId.Value, customerDetail);
+                    await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
+                    //Throw away locally stored Client data (keep CRS changes) 
+                    var jsonCustomerChangeDataWithCrs = _customerChangeDataMerger.TrowAwayLocallyStoredClientData(customerOnSa);
+                    customerOnSa.CustomerChangeMetadata.WereClientDataChanged = false;
+                    await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithCrs, customerOnSa.CustomerChangeMetadata), cancellationToken);
+                }
+                catch (Exception exp) when (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
+                {
+                    _logger.LogError(exp, exp.Message);
+                    await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
+                }
             }
         }
     }
-
-    private async Task UpdateCustomer(CustomerOnSA customerOnSa, _CustomerService.UpdateCustomerRequest updateCustomerRequest, SalesArrangement salesArrangement, CancellationToken cancellationToken)
-    {
-        try
-        {
-            await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
-        }
-        catch (Exception exp)
-        {
-            if (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
-            {
-                _logger.LogError(exp, exp.Message);
-                await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
-            }
-            else
-            {
-                throw;
-            }
-        }
-    }
-
+    
     private async Task CreateWfTask(CustomerOnSA customerOnSa, SalesArrangement salesArrangement, string message, CancellationToken cancellationToken)
     {
         dynamic parsedJson = JsonConvert.DeserializeObject(customerOnSa.CustomerChangeData)!;
@@ -392,7 +388,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             }, cancellationToken);
     }
 
-    private async Task UpdateFirstSignatureDate(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task UpdateFirstSignatureDate(System.DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         //SalesArrangement parameters
         salesArrangement.Mortgage.FirstSignatureDate = signatureDate;
@@ -429,7 +425,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await _sulmClientHelper.StartUse(kbIdentity.IdentityId, ISulmClient.PurposeMLAP, cancellationToken);
     }
 
-    private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, DateTime signatureDate, CancellationToken cancellationToken)
+    private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, System.DateTime signatureDate, CancellationToken cancellationToken)
     {
         if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()
             && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => !r.IsSigned, cancellationToken))
@@ -443,7 +439,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         }
     }
 
-    private void UpdateDocumentOnSa(DocumentOnSa documentOnSa, DateTime signatureDate)
+    private void UpdateDocumentOnSa(DocumentOnSa documentOnSa, System.DateTime signatureDate)
     {
         documentOnSa.IsSigned = true;
         documentOnSa.SignatureDateTime = signatureDate;

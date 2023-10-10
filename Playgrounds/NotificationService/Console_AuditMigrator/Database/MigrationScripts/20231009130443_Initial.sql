@@ -11,15 +11,15 @@ GO
 BEGIN TRANSACTION;
 GO
 
-CREATE TABLE [ProcessedFiles] (
+CREATE TABLE [ProcessedFile] (
     [Id] int NOT NULL IDENTITY,
     [FileName] nvarchar(max) NOT NULL,
     [Timestamp] datetime2 NOT NULL,
-    CONSTRAINT [PK_ProcessedFiles] PRIMARY KEY ([Id])
+    CONSTRAINT [PK_ProcessedFile] PRIMARY KEY ([Id])
     );
 GO
 
-CREATE TABLE [ApplicationLogs] (
+CREATE TABLE [ApplicationLog] (
     [Id] int NOT NULL IDENTITY,
     [LogType] int NOT NULL,
     [ProcessedFileId] int NOT NULL,
@@ -42,16 +42,32 @@ CREATE TABLE [ApplicationLogs] (
     [ConnectionId] nvarchar(max) NULL,
     [Message] nvarchar(max) NULL,
     [Exception] nvarchar(max) NULL,
-    CONSTRAINT [PK_ApplicationLogs] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_ApplicationLogs_ProcessedFiles_ProcessedFileId] FOREIGN KEY ([ProcessedFileId]) REFERENCES [ProcessedFiles] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [PK_ApplicationLog] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_ApplicationLog_ProcessedFile_ProcessedFileId] FOREIGN KEY ([ProcessedFileId]) REFERENCES [ProcessedFile] ([Id]) ON DELETE CASCADE
     );
 GO
 
-CREATE INDEX [IX_ApplicationLogs_ProcessedFileId] ON [ApplicationLogs] ([ProcessedFileId]);
+CREATE TABLE [MigrationData] (
+    [Id] int NOT NULL IDENTITY,
+    [ApplicationLogId] int NOT NULL,
+    [LogType] int NOT NULL,
+    [Timestamp] datetime2 NOT NULL,
+    [NotificationId] uniqueidentifier NULL,
+    [RequestId] nvarchar(max) NULL,
+    [Payload] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_MigrationData] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_MigrationData_ApplicationLog_ApplicationLogId] FOREIGN KEY ([ApplicationLogId]) REFERENCES [ApplicationLog] ([Id]) ON DELETE CASCADE
+    );
+GO
+
+CREATE INDEX [IX_ApplicationLog_ProcessedFileId] ON [ApplicationLog] ([ProcessedFileId]);
+GO
+
+CREATE INDEX [IX_MigrationData_ApplicationLogId] ON [MigrationData] ([ApplicationLogId]);
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20230930181904_Initial', N'7.0.11');
+VALUES (N'20231009130443_Initial', N'7.0.11');
 GO
 
 COMMIT;

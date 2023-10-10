@@ -11,5 +11,10 @@ public static class CaseMockExtensions
         var fixture = FixtureFactory.Create();
 
         caseService.GetCaseDetail(Arg.Any<long>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(fixture.Create<Case>());
-    }   
+    }
+
+    public static void MockValidateCaseId(this ICaseServiceClient caseService)
+    {
+        caseService.ValidateCaseId(Arg.Any<long>(), Arg.Any<bool>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new ValidateCaseIdResponse { Exists = true });
+    }
 }

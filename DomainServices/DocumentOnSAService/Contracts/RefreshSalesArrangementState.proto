@@ -1,0 +1,10 @@
+syntax = "proto3";
+package DomainServices.DocumentOnSAService.RefreshSalesArrangementState;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message RefreshSalesArrangementStateRequest {
+	
+	int32 SalesArrangementId = 1;
+}

@@ -20,4 +20,9 @@ public static class SalesArrangementMockExtensions
 
         salesArrangementServiceClient.GetSalesArrangement(Arg.Any<int>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(salesArrangement);
     }
+
+    public static void MockValidateSalesArrangementId(this ISalesArrangementServiceClient salesArrangementService)
+    {
+        salesArrangementService.ValidateSalesArrangementId(Arg.Any<int>(), Arg.Any<bool>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new ValidateSalesArrangementIdResponse { CaseId = 1, Exists = true });
+    }
 }

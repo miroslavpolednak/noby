@@ -333,6 +333,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00051-HFICH-7236.sql = DomainServices\CodebookService\DatabaseMigrations\00051-HFICH-7236.sql
 		DomainServices\CodebookService\DatabaseMigrations\00057-TemplateVersion_TemplateProcessingType_Column.sql = DomainServices\CodebookService\DatabaseMigrations\00057-TemplateVersion_TemplateProcessingType_Column.sql
 		DomainServices\CodebookService\DatabaseMigrations\00061-HFICH-7632.sql = DomainServices\CodebookService\DatabaseMigrations\00061-HFICH-7632.sql
+		DomainServices\CodebookService\DatabaseMigrations\00066-HFICH-8634.sql = DomainServices\CodebookService\DatabaseMigrations\00066-HFICH-8634.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -447,6 +448,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00056_HFICH-7761.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00056_HFICH-7761.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00057_TaxResidencyTemplate.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00057_TaxResidencyTemplate.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00058_CustomerChange_PaymentAccount_User.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00058_CustomerChange_PaymentAccount_User.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00059_HFICH-7615_CustomerChange3602_AgentName.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00059_HFICH-7615_CustomerChange3602_AgentName.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"

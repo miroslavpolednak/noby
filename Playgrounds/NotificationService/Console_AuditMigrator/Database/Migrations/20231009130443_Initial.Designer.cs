@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Console_AuditMigrator.Database.Migrations
 {
     [DbContext(typeof(LogDbContext))]
-    [Migration("20230930181904_Initial")]
+    [Migration("20231009130443_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -100,7 +100,41 @@ namespace Console_AuditMigrator.Database.Migrations
 
                     b.HasIndex("ProcessedFileId");
 
-                    b.ToTable("ApplicationLogs");
+                    b.ToTable("ApplicationLog");
+                });
+
+            modelBuilder.Entity("Console_AuditMigrator.Database.Entities.MigrationData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApplicationLogId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LogType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("NotificationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequestId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationLogId");
+
+                    b.ToTable("MigrationData");
                 });
 
             modelBuilder.Entity("Console_AuditMigrator.Database.Entities.ProcessedFile", b =>
@@ -120,7 +154,7 @@ namespace Console_AuditMigrator.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProcessedFiles");
+                    b.ToTable("ProcessedFile");
                 });
 
             modelBuilder.Entity("Console_AuditMigrator.Database.Entities.ApplicationLog", b =>
@@ -132,6 +166,17 @@ namespace Console_AuditMigrator.Database.Migrations
                         .IsRequired();
 
                     b.Navigation("ProcessedFile");
+                });
+
+            modelBuilder.Entity("Console_AuditMigrator.Database.Entities.MigrationData", b =>
+                {
+                    b.HasOne("Console_AuditMigrator.Database.Entities.ApplicationLog", "ApplicationLog")
+                        .WithMany()
+                        .HasForeignKey("ApplicationLogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationLog");
                 });
 
             modelBuilder.Entity("Console_AuditMigrator.Database.Entities.ProcessedFile", b =>
