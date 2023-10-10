@@ -171,16 +171,11 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     /// </summary>
     private static __Household.CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request, dynamic? delta)
     {
-        var metadata = new __Household.CustomerChangeMetadata();
-
-        if (originalModel?.IsUSPerson != request.IsUSPerson)
+        var metadata = new __Household.CustomerChangeMetadata
         {
-            metadata.WasCRSChanged = true;
-        }
-        else if (!ModelComparers.AreObjectsEqual(request.NaturalPerson?.TaxResidences, originalModel?.NaturalPerson?.TaxResidences))
-        {
-            metadata.WasCRSChanged = true;
-        }
+            WasCRSChanged = (request.IsUSPerson ?? false) || 
+                            !ModelComparers.AreObjectsEqual(request.NaturalPerson?.TaxResidences, originalModel?.NaturalPerson?.TaxResidences)
+        };
 
         if (delta is not null)
         {
