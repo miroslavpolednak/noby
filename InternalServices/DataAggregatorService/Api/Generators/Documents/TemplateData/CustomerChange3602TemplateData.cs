@@ -30,6 +30,8 @@ internal class CustomerChange3602TemplateData : LoanApplicationBaseTemplateData
 
     public override async Task LoadAdditionalData(CancellationToken cancellationToken)
     {
+        await base.LoadAdditionalData(cancellationToken);
+
         if (SalesArrangement.SalesArrangementTypeId != (int)SalesArrangementTypes.CustomerChange3602B)
             return;
 
