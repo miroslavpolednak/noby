@@ -55,6 +55,7 @@ internal static class ModelComparers
         _basicCompareLogic.Config.MaxDifferences = 1;
         _basicCompareLogic.Config.IgnoreCollectionOrder = true;
         _basicCompareLogic.Config.CompareChildren = true;
+        _basicCompareLogic.Config.IgnoreStringLeadingTrailingWhitespace = true;
         _basicCompareLogic.Config.IgnoreProperty<SharedTypes.Types.Address>(x => x.IsPrimary);
         _basicCompareLogic.Config.IgnoreProperty<SharedTypes.Types.Address>(x => x.SingleLineAddressPoint);
 
