@@ -50,6 +50,7 @@ steps:
       Write-Host $finalVersion
 
 - task: DotNetCoreCLI@2
+  displayName: DotNet - Restore
   inputs:
     command: 'restore'
     projects: '$(projectFile)'
@@ -58,7 +59,7 @@ steps:
     noCache: true
 
 - task: SonarQubePrepare@5
-  condition: eq(variables.runSonarQube, true)
+  condition: and(succeeded(), eq(variables.runSonarQube, true))
   inputs:
     SonarQube: 'NOBY - SonarQube'
     scannerMode: 'MSBuild'
@@ -68,17 +69,20 @@ steps:
     extraProperties: 'sonar.verbose=true'
 
 - task: DotNetCoreCLI@2
+  displayName: DotNet - Build
   inputs:
     command: 'build'
     projects: '$(projectFile)'
     arguments: '--output $(Build.BinariesDirectory)'
 
 - task: DotNetCoreCLI@2
-  displayName: C# Integration and Unit tests
+  displayName: DotNet - Tests
   inputs:
     command: test
     projects: '$(testsFile)'
     arguments: '--configuration debug'
+    publishTestResults: true
+    testRunTitle: '$(TeamProject)_$(Build.DefinitionName) on $(SourceBranchName)'
   env:
     ASPNETCORE_ENVIRONMENT: 'Testing'
 
