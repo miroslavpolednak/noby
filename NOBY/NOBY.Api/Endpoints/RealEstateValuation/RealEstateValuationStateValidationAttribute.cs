@@ -68,7 +68,7 @@ internal sealed class RealEstateValuationStateValidationAttribute
             // podvrhnute caseId
             if (instance.CaseId != caseId)
             {
-                throw new CisAuthorizationException("Case ID check failed");
+                throw new NobyValidationException(90032, "Case ID check failed");
             }
 
             // spatny stav REV
