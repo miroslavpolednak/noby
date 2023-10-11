@@ -127,6 +127,7 @@ internal sealed class GetFlowSwitchesHandler
             else
             {
                 response.ScoringSection.IsActive = false;
+                response.SigningSection.IsActive = false;
             }
         }
     }
