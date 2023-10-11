@@ -12,7 +12,8 @@ pool:
 variables:
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
-  projectFile: 'InternalServices\NotificationService\Api\CIS.InternalServices.NotificationService.Api.csproj'
+  projectFile: 'InternalServices/NotificationService/Api/CIS.InternalServices.NotificationService.Api.csproj'
+  testsFile: 'InternalServices/NotificationService/Tests/Api.Tests/CIS.InternalServices.NotificationService.Api.Tests.csproj'
   runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), ne(lower(variables['USESONARQUBE']), 'false'))]
 
 # custom BuildNumber
@@ -49,6 +50,7 @@ steps:
       Write-Host $finalVersion
 
 - task: DotNetCoreCLI@2
+  displayName: DotNet - Restore
   inputs:
     command: 'restore'
     projects: '$(projectFile)'
@@ -57,7 +59,7 @@ steps:
     noCache: true
 
 - task: SonarQubePrepare@5
-  condition: eq(variables.runSonarQube, true)
+  condition: and(succeeded(), eq(variables.runSonarQube, true))
   inputs:
     SonarQube: 'NOBY - SonarQube'
     scannerMode: 'MSBuild'
@@ -67,16 +69,28 @@ steps:
     extraProperties: 'sonar.verbose=true'
 
 - task: DotNetCoreCLI@2
+  displayName: DotNet - Build
   inputs:
     command: 'build'
     projects: '$(projectFile)'
     arguments: '--output $(Build.BinariesDirectory)'
 
+- task: DotNetCoreCLI@2
+  displayName: DotNet - Tests
+  inputs:
+    command: test
+    projects: '$(testsFile)'
+    arguments: '--configuration debug'
+    publishTestResults: true
+    testRunTitle: '$(System.TeamProject)_$(Build.DefinitionName) on $(Build.SourceBranch)'
+  env:
+    ASPNETCORE_ENVIRONMENT: 'Testing'
+
 - task: SonarQubeAnalyze@5
-  condition: eq(variables.runSonarQube, true)
+  condition: and(succeeded(), eq(variables.runSonarQube, true))
 
 - task: SonarQubePublish@5
-  condition: eq(variables.runSonarQube, true)
+  condition: and(succeeded(), eq(variables.runSonarQube, true))
   inputs:
     pollingTimeoutSec: '300'
 

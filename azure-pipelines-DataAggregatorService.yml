@@ -13,7 +13,7 @@ variables:
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
   projectFile: 'InternalServices/DataAggregatorService/Api/CIS.InternalServices.DataAggregatorService.Api.csproj'
-  testsFile: 'InternalServices/DataAggregatorService/Tests/CIS.InternalServices.DataAggregator.Tests/CIS.InternalServices.DataAggregator.Tests.csproj'
+  testsFile: 'InternalServices/DataAggregatorService/Tests/CIS.InternalServices.DataAggregator.Tests.csproj'
   runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), ne(lower(variables['USESONARQUBE']), 'false'))]
 
 # custom BuildNumber
@@ -82,7 +82,7 @@ steps:
     projects: '$(testsFile)'
     arguments: '--configuration debug'
     publishTestResults: true
-    testRunTitle: '$(TeamProject)_$(Build.DefinitionName) on $(SourceBranchName)'
+    testRunTitle: '$(System.TeamProject)_$(Build.DefinitionName) on $(Build.SourceBranch)'
   env:
     ASPNETCORE_ENVIRONMENT: 'Testing'
 
