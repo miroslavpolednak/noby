@@ -1,0 +1,1 @@
+DELETE FROM CodebookService.dbo.EaCodesMainExtension WHERE EaCodesMainId IN (603225, 603255, 605125)
