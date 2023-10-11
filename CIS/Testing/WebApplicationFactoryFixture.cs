@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using System.Net.Http.Headers;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Hosting;
+using CIS.Infrastructure.Security.Configuration;
 
 namespace CIS.Testing;
 
@@ -84,44 +85,52 @@ public class WebApplicationFactoryFixture<TStartup>
     {
         ArgumentNullException.ThrowIfNull(nameof(builder));
 
-        builder.ConfigureAppConfiguration((context, config) =>
-        {
-            config
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(CisWebFactoryConfiguration.AppSettingsName, optional: false);
+        builder
+            .ConfigureAppConfiguration((context, config) =>
+            {
+                config
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile(CisWebFactoryConfiguration.AppSettingsName, optional: false);
 
-            _configureAppConfiguration?.Invoke(context, config);
-        }).
-        ConfigureServices(services =>
-        {
-            // ziskat korektni app key dane sluzby
-            var config = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-            var applicationKey = config
-                .GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName)
-                .GetValue<string>("DefaultApplicationKey");
+                _configureAppConfiguration?.Invoke(context, config);
+            })
+            .ConfigureServices(services =>
+            {
+                // ziskat korektni app key dane sluzby
+                var config = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+                var applicationKey = config
+                    .GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName)
+                    .GetValue<string>("DefaultApplicationKey");
 
-            // vyhodit puvodni konfiguraci z DI a zaregistrovat novou s hodnotami pro test
-            services
-                .RemoveAll<ICisEnvironmentConfiguration>()
-                .AddSingleton<ICisEnvironmentConfiguration>(new TestCisEnvironmentConfiguration
-                {
-                    DefaultApplicationKey = applicationKey
-                });
+                // vyhodit puvodni konfiguraci z DI a zaregistrovat novou s hodnotami pro test
+                services
+                    .RemoveAll<ICisEnvironmentConfiguration>()
+                    .AddSingleton<ICisEnvironmentConfiguration>(new TestCisEnvironmentConfiguration
+                    {
+                        DefaultApplicationKey = applicationKey
+                    });
 
-            // nastavit service security auth validator
-            services
-                .RemoveAll<Infrastructure.Security.ILoginValidator>()
-                .AddSingleton<Infrastructure.Security.ILoginValidator, Infrastructure.Security.StaticLoginValidator>();
+                // nastavit service security auth validator
+                services
+                    .RemoveAll<Infrastructure.Security.ILoginValidator>()
+                    .AddSingleton<Infrastructure.Security.ILoginValidator, Infrastructure.Security.StaticLoginValidator>()
+                    .RemoveAll<CisServiceAuthenticationConfiguration>()
+                    .AddSingleton(new CisServiceAuthenticationConfiguration
+                    {
+                        Validator = CisServiceAuthenticationConfiguration.LoginValidators.StaticCollection
+                    });
 
-            // fake logger
-            if (CisWebFactoryConfiguration.UseNullLogger)
-                services.RemoveAll<ILoggerFactory>().AddSingleton<ILoggerFactory, NullLoggerFactory>();
+                // fake logger
+                if (CisWebFactoryConfiguration.UseNullLogger)
+                    services.RemoveAll<ILoggerFactory>().AddSingleton<ILoggerFactory, NullLoggerFactory>();
 
-            if (CisWebFactoryConfiguration.UseDbContextAutoMock)
-                CisWebFactoryConfiguration.DbMockAdapter.MockDatabase<TStartup>(services);
+                if (CisWebFactoryConfiguration.UseDbContextAutoMock)
+                    CisWebFactoryConfiguration.DbMockAdapter.MockDatabase<TStartup>(services);
 
-            _configureServices?.Invoke(services);
-        });
+                _configureServices?.Invoke(services);
+            });
+
+        builder.UseEnvironment("Testing");
 
         return base.CreateHost(builder);
     }

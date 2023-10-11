@@ -5,6 +5,20 @@ namespace DomainServices.CodebookService.Clients.Services;
 public class CodebookServiceMock 
     : CodebookServiceBaseMock, ICodebookServiceClient
 {
+    public override Task<List<WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem>> WorkflowTaskStates(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem>
+        {
+            new() { Id = 0, Name = "nový" },
+            new() { Id = 10, Name = "aktivován" },
+            new() { Id = 20, Name = "akceptován" },
+            new() { Id = 22, Name = "poz" },
+            new() { Id = 24, Name = "poz 2" },
+            new() { Id = 26, Name = "akceptován" },
+            new() { Id = 30, Name = "ukončen", Flag = WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types.EWorkflowTaskStateFlag.Inactive }
+        });
+    }
+
     public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> CaseStates(CancellationToken cancellationToken = default)
         => Helpers.GetGenericItems<SharedTypes.Enums.CaseStates>();
 

@@ -13,4 +13,6 @@ public struct LoggerEventIdCodes
 
     public const int SecurityUserWithoutAccess = 99030;
     public const int SecurityOpenIdError = 99031;
+    public const int SecurityOpenIdAuthenticationFailed = 99032;
+    public const int SecurityOpenIdRemoteFailure = 99033;
 }

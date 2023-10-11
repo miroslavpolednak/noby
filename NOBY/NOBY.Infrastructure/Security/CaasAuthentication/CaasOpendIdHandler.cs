@@ -64,18 +64,18 @@ internal sealed class CaasOpendIdHandler
             },
             OnAccessDenied = context =>
             {
-                createLogger(context.HttpContext)?.OpenIdError("OnAccessDenied");
-                throw new CisAuthorizationException("OpenId: OnAccessDenied");
+                createLogger(context.HttpContext)?.OpenIdError("OnAccessDenied", context.AccessDeniedPath);
+                return Task.CompletedTask;
             },
             OnAuthenticationFailed = context =>
             {
-                createLogger(context.HttpContext)?.OpenIdError("OnAuthenticationFailed");
-                throw new CisAuthorizationException("OpenId: OnAuthenticationFailed");
+                createLogger(context.HttpContext)?.OpenIdAuthenticationFailed(context.Exception);
+                return Task.CompletedTask;
             },
             OnRemoteFailure = context =>
             {
-                createLogger(context.HttpContext)?.OpenIdError("OnRemoteFailure");
-                throw new CisAuthorizationException("OpenId: OnRemoteFailure");
+                createLogger(context.HttpContext)?.OpenIdRemoteFailure(context.Failure);
+                return Task.CompletedTask;
             },
             OnTokenValidated = context =>
             {
@@ -93,9 +93,14 @@ internal sealed class CaasOpendIdHandler
 
     public const string CallbackPath = "/oidc-signin";
 
-    private static ILogger<CaasOpendIdHandler>? createLogger(HttpContext? context)
+    private static ILogger? createLogger(HttpContext? context)
     {
-        return context is null ? null : context.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger<CaasOpendIdHandler>();
+        if (context is null)
+        {
+            return null;
+        }
+
+        return context.RequestServices.GetRequiredService<ILogger<CaasOpendIdHandler>>();
     }
 
     /// <summary>

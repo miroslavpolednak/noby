@@ -71,7 +71,7 @@ public static class LoggingExtensions
 
             if (configuration.Logging is not null)
             {
-                var bootstrapper = new LoggerBootstraper(hostingContext, serviceProvider, configuration.Logging.LogType);
+                var bootstrapper = new LoggerBootstraper(hostingContext, serviceProvider, configuration.Logging);
 
                 bootstrapper.SetupFilters(loggerConfiguration);
 

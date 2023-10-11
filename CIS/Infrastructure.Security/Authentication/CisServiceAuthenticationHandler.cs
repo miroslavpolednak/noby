@@ -62,7 +62,7 @@ internal sealed class CisServiceAuthenticationHandler
         {
             // vytvorit identity
             var claimsIdentity = new ServiceUser.CisServiceIdentity(loginResult.Login!);
-
+            
             // autorizace uzivatele
             if (_configuration.AllowedUsers?.Any() ?? false)
             {
