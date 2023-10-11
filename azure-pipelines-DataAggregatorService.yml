@@ -82,7 +82,7 @@ steps:
     projects: '$(testsFile)'
     arguments: '--configuration debug'
     publishTestResults: true
-    testRunTitle: '$(System.TeamProject)_$(Build.DefinitionName) on $(Build.SourceBranchName)'
+    testRunTitle: '$(System.TeamProject)_$(Build.DefinitionName) on $(Build.SourceBranch)'
   env:
     ASPNETCORE_ENVIRONMENT: 'Testing'
 
