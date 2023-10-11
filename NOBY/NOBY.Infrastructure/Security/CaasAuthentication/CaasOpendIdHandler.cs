@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication;
 
 namespace NOBY.Infrastructure.Security.CaasAuthentication;
 
@@ -65,16 +66,28 @@ internal sealed class CaasOpendIdHandler
             OnAccessDenied = context =>
             {
                 createLogger(context.HttpContext)?.OpenIdError("OnAccessDenied", context.AccessDeniedPath);
+
+                context.Response.Redirect($"{_configuration.FailedSignInRedirectPath}?reason=authentication_access_denied");
+                context.HandleResponse();
+
                 return Task.CompletedTask;
             },
             OnAuthenticationFailed = context =>
             {
                 createLogger(context.HttpContext)?.OpenIdAuthenticationFailed(context.Exception);
+                
+                context.Response.Redirect($"{_configuration.FailedSignInRedirectPath}?reason=authentication_failed");
+                context.HandleResponse();
+                
                 return Task.CompletedTask;
             },
             OnRemoteFailure = context =>
             {
                 createLogger(context.HttpContext)?.OpenIdRemoteFailure(context.Failure);
+                
+                context.Response.Redirect($"{_configuration.FailedSignInRedirectPath}?reason=authentication_remote_failure");
+                context.HandleResponse();
+
                 return Task.CompletedTask;
             },
             OnTokenValidated = context =>

@@ -41,5 +41,10 @@ public sealed class AppConfigurationSecurity
     /// <summary>
     /// Vychozi URL na ktere bude uzivatel presmerovan po uspesnem prihlaseni, pokud neni mozne zjistit jeho puvodni URI.
     /// </summary>
-    public string DefaultRedirectPathAfterSignIn { get; set; } = "/#";
+    public string DefaultRedirectPathAfterSignIn { get; set; } = "/";
+
+    /// <summary>
+    /// URL na ktere bude presmerovan uzivatel v pripade, ze se neco nepovedlo pri autentizaci
+    /// </summary>
+    public string FailedSignInRedirectPath { get; set; } = "/";
 }

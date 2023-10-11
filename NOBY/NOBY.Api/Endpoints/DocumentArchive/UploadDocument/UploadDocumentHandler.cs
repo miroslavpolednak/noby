@@ -17,7 +17,7 @@ public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest, Guid
     public async Task<Guid> Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
     {
         var antivirusResult = await _fileAntivirus.CheckFile(request.File);
-        if (antivirusResult == IFileAntivirusService.CheckFileResults.Failed)
+        if (antivirusResult != IFileAntivirusService.CheckFileResults.Passed)
         {
             throw new NobyValidationException(90037);
         }
