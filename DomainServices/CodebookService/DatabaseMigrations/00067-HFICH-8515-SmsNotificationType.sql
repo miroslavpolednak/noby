@@ -1,0 +1,2 @@
+﻿INSERT [dbo].[SmsNotificationType] ([Id], [Code], [Description], [SmsText], [McsCode], [IsAuditLogEnabled]) VALUES
+        (10, N'KB_INSIGN_PROCESS', N'SMS s odkazem na podpisové pole, která se odesílá z inSign serveru pro MSC podepisovací metody VEP_DEVICE_CLIENT a VEP_DEVICE_CLIENT_CONTRACT (Vlastnoruční Elektronický Podpis na mobilním telefonu klienta ve webovém prohlížeči).', NULL, N'MCS_KB_INSIGN_001', 1)

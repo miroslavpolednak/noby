@@ -101,7 +101,15 @@ public class ConsumeSendEmailHandler : IRequestHandler<ConsumeSendEmailRequest, 
         }
         catch (Exception e)
         {
-            // todo: result.ErrorSet ?
+            var errorSet = new HashSet<ResultError>();
+            errorSet.UnionWith(result.ErrorSet);
+            errorSet.Add(new ResultError
+            {
+                // todo: code is not specified in IT ANA (used same Code as MCS uses)
+                Code = "SMTP-EXCEPTION",
+                Message = e.Message
+            });
+            result.ErrorSet = errorSet;
             result.State = NotificationState.Error;
             _logger.LogError(e, $"{nameof(ConsumeSendEmailHandler)} failed.");
         }
