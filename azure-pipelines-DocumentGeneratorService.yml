@@ -13,7 +13,7 @@ variables:
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
   projectFile: 'InternalServices/DocumentGeneratorService/Api/CIS.InternalServices.DocumentGeneratorService.Api.csproj'
-  testsFile: 'InternalServices/DocumentGeneratorService/Tests/CIS.InternalServices.DataAggregator.Tests.csproj'
+  testsFile: 'InternalServices/DocumentGeneratorService/Tests/CIS.InternalServices.DocumentGeneratorService.Tests.csproj'
   runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), ne(lower(variables['USESONARQUBE']), 'false'))]
 
 # custom BuildNumber
