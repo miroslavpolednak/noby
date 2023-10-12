@@ -67,15 +67,14 @@ internal sealed class CollateralValuationProcessChangedConsumer
             realEstateValuation.ValuationResultCurrentPrice = ConvertToNullableInt32(orderResultResponse.ValuationResultCurrentPrice);
             realEstateValuation.ValuationResultFuturePrice = ConvertToNullableInt32(orderResultResponse.ValuationResultFuturePrice);
 
-            var documents = string.IsNullOrEmpty(realEstateValuation.Documents)
-                ? new List<RealEstateValuationDocument>()
-                : JsonConvert.DeserializeObject<List<RealEstateValuationDocument>>(realEstateValuation.Documents)!;
-            
-            documents.Add(new RealEstateValuationDocument
+            var documents = new List<RealEstateValuationDocument>
             {
-                DocumentInfoPrice = taskDetail.RealEstateValuation.DocumentInfoPrice,
-                DocumentRecommendationForClient = taskDetail.RealEstateValuation.DocumentRecommendationForClient
-            });
+                new ()
+                {
+                    DocumentInfoPrice = taskDetail.RealEstateValuation.DocumentInfoPrice,
+                    DocumentRecommendationForClient = taskDetail.RealEstateValuation.DocumentRecommendationForClient
+                }
+            };
 
             realEstateValuation.Documents = JsonConvert.SerializeObject(documents);
         }
