@@ -6,7 +6,8 @@ from ..conftest import URLS
 from ..json.request.sms_template_json import json_req_sms_full_template, \
     json_req_sms_template_bad_basic_without_identifier, \
     json_req_sms_template_bad_basic_without_identifier_scheme, \
-    json_req_sms_template_bad_basic_without_identifier_identity, json_req_sms_full_template_e2e
+    json_req_sms_template_bad_basic_without_identifier_identity, json_req_sms_full_template_e2e, json_req_sms_case, \
+    json_req_sms_documentHash
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
@@ -85,3 +86,31 @@ def test_sms_template_bad_identifier_template(ns_url, auth_params, auth, json_da
     print(resp)
     result_error = resp.get('errors', {})
     assert result_error == expected_error
+
+
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_sms_documentHash, json_req_sms_case],
+                         ids=[
+                             "json_req_sms_documentHash",
+                             "json_req_sms_case"
+                         ])
+def test_sms_template_case_documentHash(ns_url,  auth_params, auth, json_data):
+    """SMS s template z tabulky CodebookService.dbo.SmsNotificationType"""
+    url_name = ns_url["url_name"]
+    url = ns_url["url"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/smsFromTemplate",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    notification = resp.json()
+    print(notification)
+    assert "notificationId" in notification
+    assert notification["notificationId"] != ""
+
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
