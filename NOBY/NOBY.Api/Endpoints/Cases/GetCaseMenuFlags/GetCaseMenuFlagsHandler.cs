@@ -36,10 +36,10 @@ internal sealed class GetCaseMenuFlagsHandler
             RealEstatesMenuItem = new GetCaseMenuFlagsItem
             {
                 Flag = GetCaseMenuFlagsTypes.NoFlag,
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State is not (int)CaseStates.InProgress or (int)CaseStates.ToBeCancelled
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.InProgress && caseInstance.State != (int)CaseStates.ToBeCancelled
             },
             DocumentsMenuItem = await getDocuments(documentsInQueue, cancellationToken),
-            CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken),
+            CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken)
         };
     }
 
