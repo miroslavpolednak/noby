@@ -7,7 +7,8 @@ import requests
 
 from ..conftest import URLS
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
-    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_basic_full_for_search
+    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, \
+    json_req_sms_basic_full_for_search
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
@@ -127,7 +128,7 @@ def test_get_sms_notification_search(ns_url,  auth_params, auth, json_data):
     expected_sms_data = json_req_sms_basic_full_for_search.copy()
 
     # Odebere processingPriority, customId, documentid, text z expected_sms_data - insg nechce tento atribut vracet
-    for attr in ["processingPriority", "customId", "documentId", "identifier", "text"]:
+    for attr in ["processingPriority", "customId", "documentId", "identifier", "text", "caseId"]:
         if attr in expected_sms_data:
             del expected_sms_data[attr]
 
@@ -181,11 +182,52 @@ def test_get_sms_notification_search_vulnerability(ns_url,  auth_params, auth):
     )
     expected_error = {'302': ['Invalid Identity.'],
                       '304': ['Invalid IdentityScheme.'],
-                      '305': ['Invalid DocumentId.'],
-                      '306': ['Invalid CustomId.']}
+                      '306': ['Invalid CustomId.'],
+                      '307': ['Invalid DocumentId.']}
     error = resp.json()['errors']
     assert error == expected_error, f'Expected {expected_error}, but got {error}'
 
     assert 'strict-transport-security' in resp.headers, \
         'Expected "strict-transport-security" to be in headers'
+
+
+
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_sms_basic_full_for_search])
+def test_get_sms_notification_search_caseId(ns_url,  auth_params, auth, json_data):
+    """test pro vygenerovani sms a jeji nasledne vyhledani
+    """
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    unique_custom_id = f"{uuid.uuid4()}"
+    json_req_sms_basic_full_for_search["customId"] = unique_custom_id
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/sms",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    notification_id = resp["notificationId"]
+    assert notification_id != ""
+
+    #volani search
+    session = requests.session()
+    resp = session.get(
+        URLS[url_name] + "/v1/notification/result/search",
+        params={
+            "customId": unique_custom_id,
+            "caseId": json_req_sms_basic_full_for_search["caseId"]
+        },
+        auth=(username, password),
+        verify=False
+    )
+    assert resp.status_code == 200
+    assert str(notification_id) in resp.text
+    assert str('"caseId":303062934') in resp.text
+
 
