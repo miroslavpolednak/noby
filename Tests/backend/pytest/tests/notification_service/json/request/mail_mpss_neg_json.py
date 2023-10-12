@@ -418,3 +418,198 @@ json_bad_req_mail_mpss_both_party_from = \
     }
   }
 
+
+#documentHash bez Hash
+json_req_mail_mpss_documentHash_without_hash = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_documentHash_withnout_hash"
+    },
+    "attachments": [],
+    "documentHash": {
+    "hashAlgorithm": "SHA-3"
+  }
+  }
+
+
+#documentHash bez hashAlgorithm
+json_req_mail_mpss_documentHash_without_hashAlgorithm = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_documentHash_withonut_hashAlgorithm"
+    },
+    "attachments": [],
+    "documentHash": {
+    "hash": "a3f4b2e8967d3a2c1b5f4e6090d7c3b2a4f8e9d0c6b5a432e9d0b3a295f7c8e1"
+  }
+  }
+
+#documentHash se špatným formátem hash
+json_req_mail_mpss_documentHash_with_bad_hash = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_documentHash_bad_hash"
+    },
+    "attachments": [],
+    "documentHash": {
+    "hash": "z3f4b2e8967d3a2c1b5f4e6090d7c3b2a4f8e9d0c6b5a432e9d0b3a295f7c8e1",
+    "hashAlgorithm": "SHA-3"
+  }
+  }
+
+
+#documentHash bad hashAlgoritm
+json_req_mail_mpss_documentHash_bad_hashAlgorithm = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_documentHash_SHA_512"
+    },
+    "attachments": [],
+    "documentHash": {
+    "hash": "a3f4b2e8967d3a2c1b5f4e6090d7c3b2a4f8e9d0c6b5a432e9d0b3a295f7c8e1",
+    "hashAlgorithm": "MMI-1989"
+  }
+  }
+
+json_req_mail_mpss_bad_from_mpss = \
+  {
+    "from": {
+      "value": "notification-service@relay.mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_basic_legal"
+    },
+    "attachments": []
+  }
+
+
+json_req_mail_mpss_bad_from = \
+  {
+    "from": {
+      "value": "notification-service@gmail.com",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_basic_legal"
+    },
+    "attachments": []
+  }

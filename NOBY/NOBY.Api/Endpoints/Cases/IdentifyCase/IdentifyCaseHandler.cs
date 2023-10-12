@@ -17,10 +17,10 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     {
         return request.Criterion switch
         {
-            Criterion.FormId => await handleByFormId(request.FormId!, cancellationToken),
+            Criterion.FormId => await handleByFormId(request.FormId!.Trim(), cancellationToken),
             Criterion.PaymentAccount => await handleByPaymentAccount(request.Account!, cancellationToken),
             Criterion.CaseId => await handleByCaseId(request.CaseId!.Value, cancellationToken),
-            Criterion.ContractNumber => await handleByContractNumber(request.ContractNumber!, cancellationToken),
+            Criterion.ContractNumber => await handleByContractNumber(request.ContractNumber!.Trim(), cancellationToken),
             _ => throw new NobyValidationException("Criterion unknown")
         };
     }
@@ -104,8 +104,8 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         { 
             PaymentAccount = new()
             { 
-                Prefix = account.Prefix, 
-                AccountNumber = account.Number 
+                Prefix = account.Prefix?.Trim(), 
+                AccountNumber = account.Number.Trim() 
             }
         };
         return await callProductService(request, cancellationToken);

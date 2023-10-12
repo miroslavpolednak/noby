@@ -60,8 +60,9 @@ public sealed class ErrorCodeMapper
             { 22016, new ErrorCodeDsToApiItem(90031, false) },
             { 17103, new ErrorCodeDsToApiItem(90023, false) },
             { 17102, new ErrorCodeDsToApiItem(90024, false) },
-            { 10020, new ErrorCodeDsToApiItem(90034, true) },
-            { 18087, new ErrorCodeDsToApiItem(90039, false) }
+            { 10020, new ErrorCodeDsToApiItem(90034, true)  },
+            { 18087, new ErrorCodeDsToApiItem(90039, false) },
+            { 19043, new ErrorCodeDsToApiItem(90021, false) }
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();

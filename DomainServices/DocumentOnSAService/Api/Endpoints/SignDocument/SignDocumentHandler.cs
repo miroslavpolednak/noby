@@ -143,18 +143,20 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             await SumlCall(houseHold!, cancellationToken);
         }
 
+        var wasUpdateOfCustomersSuccessful = true;
+
         if (houseHold is null)
         {
             // CRS
             if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.DANRESID.ToByte()) // 13
             {
-                await ProcessCrsDocumentOnSa(documentOnSa, salesArrangement, cancellationToken);
+                wasUpdateOfCustomersSuccessful = await ProcessCrsDocumentOnSa(documentOnSa, salesArrangement, cancellationToken);
             }
         }
         else
         {
             await SetFlowSwitch(houseHold!, cancellationToken);
-            await ProcessDocumentOnSaWithHousehold(salesArrangement, houseHold, documentOnSa, cancellationToken);
+            wasUpdateOfCustomersSuccessful = await ProcessDocumentOnSaWithHousehold(salesArrangement, houseHold, documentOnSa, cancellationToken);
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -173,6 +175,9 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
         }
+
+        if (!wasUpdateOfCustomersSuccessful)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnsuccessfulCustomerDataUpdateToCM);
 
         return new Empty();
     }
@@ -198,7 +203,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         );
     }
 
-    private async Task ProcessCrsDocumentOnSa(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task<bool> ProcessCrsDocumentOnSa(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var customerOnSa = CustomersOnSABuffer.Find(c => c.CustomerOnSAId == documentOnSa.CustomerOnSAId1!.Value)
                                     ?? await _customerOnSAService.GetCustomer(documentOnSa.CustomerOnSAId1!.Value, cancellationToken);
@@ -222,11 +227,14 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             {
                 _logger.LogError(exp, exp.Message);
                 await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
+                return false;
             }
         }
+
+        return true;
     }
 
-    private async Task ProcessDocumentOnSaWithHousehold(SalesArrangement salesArrangement, Household household, DocumentOnSa documentOnSa, CancellationToken cancellationToken)
+    private async Task<bool> ProcessDocumentOnSaWithHousehold(SalesArrangement salesArrangement, Household household, DocumentOnSa documentOnSa, CancellationToken cancellationToken)
     {
         var mandantId = await GetMandantId(salesArrangement, cancellationToken);
 
@@ -235,6 +243,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             throw new CisValidationException(90002, $"Mp products not supported (mandant {mandantId})");
         }
 
+        var errorsOfCustomerUpdate = new List<bool>();
         var customersOnSa = await GetCustomersOnSa(household, cancellationToken);
         foreach (var customerOnSa in customersOnSa)
         {
@@ -256,11 +265,14 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                 {
                     _logger.LogError(exp, exp.Message);
                     await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
+                    errorsOfCustomerUpdate.Add(true);
                 }
             }
         }
+
+        return !errorsOfCustomerUpdate.Any();
     }
-    
+
     private async Task CreateWfTask(CustomerOnSA customerOnSa, SalesArrangement salesArrangement, string message, CancellationToken cancellationToken)
     {
         dynamic parsedJson = JsonConvert.DeserializeObject(customerOnSa.CustomerChangeData)!;
