@@ -14,7 +14,8 @@ from ..json.request.mail_mpss_neg_json import json_bad_req_mail_mpss_empty_party
     json_req_mail_bad_identifier_scheme_mpss_basic, json_req_mail_mpss_bad_format_language, \
     json_req_mail_mpss_bad_content_format_text, json_req_mail_mpss_bad_natural_legal, \
     json_req_mail_mpss_documentHash_without_hashAlgorithm, json_req_mail_mpss_documentHash_without_hash, \
-    json_req_mail_mpss_documentHash_with_bad_hash, json_req_mail_mpss_documentHash_bad_hashAlgorithm
+    json_req_mail_mpss_documentHash_with_bad_hash, json_req_mail_mpss_documentHash_bad_hashAlgorithm, \
+    json_req_mail_mpss_bad_from, json_req_mail_mpss_bad_from_mpss
 
 
 # negativní testy
@@ -198,3 +199,23 @@ def test_mail_negative_documentHash(ns_url, auth_params, auth, json_data, expect
     print(resp)
     result_error = resp.json()['errors']
     assert result_error == expected_error
+
+
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_from,
+                                       json_req_mail_mpss_bad_from_mpss])
+def test_mail_negative_from(ns_url, auth_params, auth, json_data):
+    """negativní test pro test jazyka a formatu"""
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    assert resp.status_code == 400
+    error_message = resp.json()['errors']['PredicateValidator']
+    assert 'Allowed domain names for sender: kb.cz,mpss.cz.' in error_message

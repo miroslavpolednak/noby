@@ -185,6 +185,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
 
     cursor = db_connection.cursor()
     print(f"Notification ID: {notification_id}")
+    print(f"custom ID: {unique_custom_id}")
     #notification_id_db = str(resp["notificationId"])
     sleep(3)
     try:
@@ -200,16 +201,18 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
         found_records_1 = bool(results_1)
     except pyodbc.Error as e:
         pytest.fail(f"Failed to execute query 1: {e}")
+
     '''
+    print(f'(%\\\"customId\\\": \\\"{notification_id}\\\"%)')
     try:
         cursor.execute("""
                        SELECT * 
                        FROM AuditEvent
                        WHERE AuditEventTypeId = ? 
-                       AND JSON_VALUE(Detail, '$.body.objectsBefore.customId') = ?
+                       AND Detail LIKE ?
                        AND ABS(DATEDIFF(SECOND, TimeStamp, GETDATE())) <= 10
                        ORDER BY [TimeStamp] DESC
-                       """, ('AU_NOBY_012', unique_custom_id)
+                       """, ('AU_NOBY_012', f'(%\\\"customId\\\": \\\"{notification_id}\\\"%)')
                        )
         results_2 = cursor.fetchall()
         found_records_2 = bool(results_2)

@@ -554,3 +554,62 @@ json_req_mail_mpss_documentHash_bad_hashAlgorithm = \
     "hashAlgorithm": "MMI-1989"
   }
   }
+
+json_req_mail_mpss_bad_from_mpss = \
+  {
+    "from": {
+      "value": "notification-service@relay.mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_basic_legal"
+    },
+    "attachments": []
+  }
+
+
+json_req_mail_mpss_bad_from = \
+  {
+    "from": {
+      "value": "notification-service@gmail.com",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_mpss_basic_legal"
+    },
+    "attachments": []
+  }
