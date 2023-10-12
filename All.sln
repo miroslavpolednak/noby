@@ -208,6 +208,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\grpc-services.md = Docs\topics\grpc-services.md
 		Docs\topics\healthcheck.md = Docs\topics\healthcheck.md
 		Docs\topics\logging.md = Docs\topics\logging.md
+		Docs\topics\messaging-kafka.md = Docs\topics\messaging-kafka.md
 		Docs\topics\service-discovery.md = Docs\topics\service-discovery.md
 		Docs\topics\soap-client.md = Docs\topics\soap-client.md
 		Docs\topics\tempfilemanager.md = Docs\topics\tempfilemanager.md
@@ -334,8 +335,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00057-TemplateVersion_TemplateProcessingType_Column.sql = DomainServices\CodebookService\DatabaseMigrations\00057-TemplateVersion_TemplateProcessingType_Column.sql
 		DomainServices\CodebookService\DatabaseMigrations\00061-HFICH-7632.sql = DomainServices\CodebookService\DatabaseMigrations\00061-HFICH-7632.sql
 		DomainServices\CodebookService\DatabaseMigrations\00066-HFICH-8634.sql = DomainServices\CodebookService\DatabaseMigrations\00066-HFICH-8634.sql
-		DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql = DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql
 		DomainServices\CodebookService\DatabaseMigrations\00067-HFICH-8515-SmsNotificationType.sql = DomainServices\CodebookService\DatabaseMigrations\00067-HFICH-8515-SmsNotificationType.sql
+		DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql = DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
