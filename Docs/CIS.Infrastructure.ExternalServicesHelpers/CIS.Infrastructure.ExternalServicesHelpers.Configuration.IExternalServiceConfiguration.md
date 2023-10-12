@@ -53,11 +53,11 @@ bool IgnoreServerCertificateErrors { get; set; }
 Type of http client implementation - can be mock or real client or something else.
 
 ```csharp
-CIS.Foms.Enums.ServiceImplementationTypes ImplementationType { get; set; }
+CIS.Infrastructure.ExternalServicesHelpers.ServiceImplementationTypes ImplementationType { get; set; }
 ```
 
 #### Property Value
-[CIS.Foms.Enums.ServiceImplementationTypes](https://docs.microsoft.com/en-us/dotnet/api/CIS.Foms.Enums.ServiceImplementationTypes 'CIS.Foms.Enums.ServiceImplementationTypes')
+[CIS.Infrastructure.ExternalServicesHelpers.ServiceImplementationTypes](https://docs.microsoft.com/en-us/dotnet/api/CIS.Infrastructure.ExternalServicesHelpers.ServiceImplementationTypes 'CIS.Infrastructure.ExternalServicesHelpers.ServiceImplementationTypes')
 
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.LogRequestPayload'></a>
 
@@ -98,6 +98,38 @@ string? Password { get; set; }
 #### Property Value
 [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
 
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestRetryCount'></a>
+
+## IExternalServiceConfiguration.RequestRetryCount Property
+
+Apply retry policy on HttpRequest with supplied retry count
+
+```csharp
+System.Nullable<int> RequestRetryCount { get; set; }
+```
+
+#### Property Value
+[System.Nullable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')
+
+### Remarks
+Default is set to 3
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestRetryTimeout'></a>
+
+## IExternalServiceConfiguration.RequestRetryTimeout Property
+
+Time between consequent retry requests in seconds
+
+```csharp
+System.Nullable<int> RequestRetryTimeout { get; set; }
+```
+
+#### Property Value
+[System.Nullable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')
+
+### Remarks
+Default is set to 5s
+
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestTimeout'></a>
 
 ## IExternalServiceConfiguration.RequestTimeout Property
@@ -112,7 +144,20 @@ System.Nullable<int> RequestTimeout { get; set; }
 [System.Nullable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')
 
 ### Remarks
-Default is set to 10 seconds
+Default is set to 5 seconds
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseDefaultProxy'></a>
+
+## IExternalServiceConfiguration.UseDefaultProxy Property
+
+Pokud je true, pouzije pro HttpClient systemovou proxy
+
+```csharp
+bool UseDefaultProxy { get; set; }
+```
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
 
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseLogging'></a>
 
