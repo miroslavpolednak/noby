@@ -150,7 +150,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=33180E91-2CB3-4d2f-B6AD-5841EC8A836F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents/{deedOfOwnershipDocumentId:int}")]
-    [RealEstateValuationStateValidation]
+    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
