@@ -2,7 +2,6 @@
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
-using Microsoft.Extensions.Logging;
 using NOBY.Infrastructure.Configuration;
 
 namespace NOBY.Services.FileAntivirus;
@@ -13,16 +12,14 @@ internal sealed class IcapFileAntivirusService
 {
     private readonly string _ipAddress;
     private readonly int _port;
-    private readonly ILogger<IcapFileAntivirusService> _logger;
 
-    public IcapFileAntivirusService(AppConfiguration configuration, ILogger<IcapFileAntivirusService> logger)
+    public IcapFileAntivirusService(AppConfiguration configuration)
     {
-        _logger = logger;
         _ipAddress = configuration.IcapAntivirus?.IpAddress ?? throw new CisConfigurationException(0, "ICAP antivirus configuration not found");
         _port = configuration.IcapAntivirus.Port;
     }
 
-    public async Task<IFileAntivirusService.CheckFileResults> CheckFile(IFormFile file)
+    public Task<FileAntivirusResult> CheckFile(IFormFile file)
     {
         ICAP icap = new ICAP(_ipAddress, _port, "avscan");
         using (var ms = new MemoryStream())
@@ -31,26 +28,21 @@ internal sealed class IcapFileAntivirusService
 
             try
             {
-                _logger.LogDebug($"Start scanning {file.FileName}");
                 var scanResult = icap.ScanFile(ms);
-                _logger.LogDebug($"Scanning {file.FileName} finished with {scanResult}");
-
-                return scanResult ? IFileAntivirusService.CheckFileResults.Passed : IFileAntivirusService.CheckFileResults.Failed;
+                return Task.FromResult(new FileAntivirusResult(scanResult ? FileAntivirusResult.CheckFileResults.Passed : FileAntivirusResult.CheckFileResults.Failed));
             }
             catch (ICAP.ICAPException ex)
             {
-                _logger.LogWarning($"Scanning {file.FileName} timeouted: {ex.Message}");
-                return IFileAntivirusService.CheckFileResults.Timeouted;
+                return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Timeouted, ex.Message));
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"Scanning {file.FileName} throws exception", ex);
-                return IFileAntivirusService.CheckFileResults.Unknown;
+                return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Unknown, ex.Message));
             }
         }
     }
 
-    public async Task<IFileAntivirusService.CheckFileResults> CheckFile(byte[] file)
+    public Task<FileAntivirusResult> CheckFile(byte[] file)
     {
         ICAP icap = new ICAP(_ipAddress, _port, "avscan");
         using (var ms = new MemoryStream(file))
@@ -60,15 +52,15 @@ internal sealed class IcapFileAntivirusService
             try
             {
                 var scanResult = icap.ScanFile(ms);
-                return scanResult ? IFileAntivirusService.CheckFileResults.Passed : IFileAntivirusService.CheckFileResults.Failed;
+                return Task.FromResult(new FileAntivirusResult(scanResult ? FileAntivirusResult.CheckFileResults.Passed : FileAntivirusResult.CheckFileResults.Failed));
             }
             catch (ICAP.ICAPException ex)
             {
-                return IFileAntivirusService.CheckFileResults.Timeouted;
+                return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Timeouted, ex.Message));
             }
             catch (Exception ex)
             {
-                return IFileAntivirusService.CheckFileResults.Unknown;
+                return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Unknown, ex.Message));
             }
         }
     }
@@ -76,8 +68,7 @@ internal sealed class IcapFileAntivirusService
     public class ICAP : IDisposable
     {
         private String serverIP;
-        private int port;
-
+        
         private Socket sender;
 
         private String icapService;
@@ -112,15 +103,14 @@ internal sealed class IcapFileAntivirusService
         {
             this.icapService = icapService;
             this.serverIP = serverIP;
-            this.port = port;
-
+            
             //Initialize connection
             IPAddress ipAddress = IPAddress.Parse(serverIP);
             IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
             // Create a TCP/IP  socket.
             sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            sender.Connect(remoteEP);
+            sender.Connect(serverIP, port);
             
             if (previewSize != -1)
             {

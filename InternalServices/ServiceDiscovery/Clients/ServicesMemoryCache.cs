@@ -31,7 +31,12 @@ internal sealed class ServicesMemoryCache
                 {
                     // Key not in cache, so get data.
                     cacheEntry = await getServicesFromRemote(environmentName, cancellationToken);
-                    _cache.Set(environmentName, cacheEntry);
+                    _cache.Set(environmentName, cacheEntry, new MemoryCacheEntryOptions
+                    {
+                        Size = 1,
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                        Priority = CacheItemPriority.High
+                    });
                 }
             }
             finally
