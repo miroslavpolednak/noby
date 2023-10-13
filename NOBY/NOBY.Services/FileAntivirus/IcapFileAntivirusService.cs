@@ -10,18 +10,16 @@ namespace NOBY.Services.FileAntivirus;
 internal sealed class IcapFileAntivirusService
     : IFileAntivirusService
 {
-    private readonly string _ipAddress;
-    private readonly int _port;
+    private readonly AppConfiguration.IcapAntivirusConfiguration _configuration;
 
     public IcapFileAntivirusService(AppConfiguration configuration)
     {
-        _ipAddress = configuration.IcapAntivirus?.IpAddress ?? throw new CisConfigurationException(0, "ICAP antivirus configuration not found");
-        _port = configuration.IcapAntivirus.Port;
+        _configuration = configuration.IcapAntivirus ?? throw new CisConfigurationException(0, "ICAP antivirus configuration not found");
     }
 
     public Task<FileAntivirusResult> CheckFile(IFormFile file)
     {
-        ICAP icap = new ICAP(_ipAddress, _port, "avscan");
+        ICAP icap = new ICAP(_configuration.IpAddress, _configuration.Port, "avscan");
         using (var ms = new MemoryStream())
         {
             file.CopyTo(ms);
@@ -44,7 +42,7 @@ internal sealed class IcapFileAntivirusService
 
     public Task<FileAntivirusResult> CheckFile(byte[] file)
     {
-        ICAP icap = new ICAP(_ipAddress, _port, "avscan");
+        ICAP icap = new ICAP(_configuration.IpAddress, _configuration.Port, "avscan");
         using (var ms = new MemoryStream(file))
         {
             ms.Seek(0, SeekOrigin.Begin);
