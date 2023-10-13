@@ -80,6 +80,9 @@ internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangement
         if (customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Mailing))
             return;
 
+        if (customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Permanent && a.CountryId == 16))
+            return;
+
         if (customer.Contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Mobil && c.Mobile.IsPhoneConfirmed) &&
             customer.Contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Email && c.Email.IsEmailConfirmed))
             return;
@@ -87,9 +90,9 @@ internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangement
         ThrowValidationException();
     }
 
-    private static void ValidateContacts(IEnumerable<Contact> contacts)
+    private static void ValidateContacts(ICollection<Contact> contacts)
     {
-        if (contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Mobil))
+        if (contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Mobil) && contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Email))
             return;
 
         ThrowValidationException();
