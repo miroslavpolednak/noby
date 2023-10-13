@@ -2,6 +2,7 @@
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Extensions;
+using NOBY.Services.PermissionAccess;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
 
@@ -10,15 +11,18 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly INonWFLProductSalesArrangementAccess _nonWFLProductSalesArrangementAccess;
 
     public RefreshElectronicDocumentHandler(
         IDocumentOnSAServiceClient documentOnSAService,
         ICodebookServiceClient codebookService,
-        ISalesArrangementServiceClient salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService,
+        INonWFLProductSalesArrangementAccess nonWFLProductSalesArrangementAccess)
     {
         _documentOnSAService = documentOnSAService;
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
+        _nonWFLProductSalesArrangementAccess = nonWFLProductSalesArrangementAccess;
     }
 
     public async Task<RefreshElectronicDocumentResponse> Handle(RefreshElectronicDocumentRequest request, CancellationToken cancellationToken)
@@ -26,6 +30,9 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
         await _documentOnSAService.RefreshElectronicDocument(request.DocumentOnSAId, cancellationToken);
         // after refresh
         var docOnSa = await GetDocumentOnSa(request, cancellationToken);
+
+        if (docOnSa.Source != DomainServices.DocumentOnSAService.Contracts.Source.Workflow)
+            await _nonWFLProductSalesArrangementAccess.CheckNonWFLProductSalesArrangementAccess(docOnSa.SalesArrangementId, cancellationToken);
 
         return await MapToResponse(request, docOnSa, cancellationToken);
     }
