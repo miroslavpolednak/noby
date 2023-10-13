@@ -8,7 +8,7 @@ internal sealed class OrderRealEstateValuationHandler
 {
     public async Task Handle(OrderRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
-        var revInstance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, true, cancellationToken);
+        var revInstance = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
         var allowedTypes = await _estateValuationTypeService.GetAllowedTypes(request.RealEstateValuationId, request.CaseId, cancellationToken);
         if (!(allowedTypes?.Contains(request.ValuationTypeId) ?? false))
@@ -26,6 +26,11 @@ internal sealed class OrderRealEstateValuationHandler
                     throw new NobyValidationException(90032, "Valuation:Online OrderId or PreorderId already set or state is out of allowed range");
                 }
 
+                if (revInstance.IsRevaluationRequired && request.LocalSurveyPerson is null)
+                {
+                    throw new NobyValidationException(90032, "Valuation:Online LocalSurveyPerson is null");
+                }
+
                 await _realEstateValuationService.OrderOnlineValuation(new DomainServices.RealEstateValuationService.Contracts.OrderOnlineValuationRequest
                 {
                     RealEstateValuationId = request.RealEstateValuationId,
@@ -35,7 +40,7 @@ internal sealed class OrderRealEstateValuationHandler
 
             case RealEstateValuationTypes.Standard:
                 if (revInstance.OrderId.HasValue 
-                    || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(revInstance.ValuationStateId.GetValueOrDefault()))
+                    || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(revInstance.ValuationStateId))
                 {
                     throw new NobyValidationException(90032, "Valuation:Standard OrderId already set or state is out of allowed range");
                 }
