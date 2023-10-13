@@ -31,7 +31,7 @@ public sealed class AppConfiguration
 
     public sealed class IcapAntivirusConfiguration
     {
-        public string IpAddress { get; set; } = string.Empty;
+        public string ServerAddress { get; set; } = string.Empty;
         public int Port { get; set; }
     }
 }

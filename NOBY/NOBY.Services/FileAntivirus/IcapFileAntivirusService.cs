@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Net.Sockets;
-using System.Net;
 using System.Text;
 using NOBY.Infrastructure.Configuration;
 
@@ -19,7 +18,7 @@ internal sealed class IcapFileAntivirusService
 
     public Task<FileAntivirusResult> CheckFile(IFormFile file)
     {
-        ICAP icap = new ICAP(_configuration.IpAddress, _configuration.Port, "avscan");
+        ICAP icap = new ICAP(_configuration.ServerAddress, _configuration.Port, "avscan");
         using (var ms = new MemoryStream())
         {
             file.CopyTo(ms);
@@ -42,7 +41,7 @@ internal sealed class IcapFileAntivirusService
 
     public Task<FileAntivirusResult> CheckFile(byte[] file)
     {
-        ICAP icap = new ICAP(_configuration.IpAddress, _configuration.Port, "avscan");
+        ICAP icap = new ICAP(_configuration.ServerAddress, _configuration.Port, "avscan");
         using (var ms = new MemoryStream(file))
         {
             ms.Seek(0, SeekOrigin.Begin);
@@ -65,7 +64,7 @@ internal sealed class IcapFileAntivirusService
 
     public class ICAP : IDisposable
     {
-        private String serverIP;
+        private String serverAddress;
         
         private Socket sender;
 
@@ -97,10 +96,10 @@ internal sealed class IcapFileAntivirusService
         /// <param name="previewSize">Specify a preview size to overwrite server preferences</parm>
         /// <exception cref="ICAPException">Thrown when error occurs in communication with server</exception>
         /// <exception cref="SocketException">Thrown when error occurs in connection to server</exception>
-        public ICAP(String serverIP, int port, String icapService, int previewSize = -1)
+        public ICAP(String serverAddress, int port, String icapService, int previewSize = -1)
         {
             this.icapService = icapService;
-            this.serverIP = serverIP;
+            this.serverAddress = serverAddress;
             
             //Initialize connection
             //IPAddress ipAddress = IPAddress.Parse(serverIP);
@@ -108,7 +107,7 @@ internal sealed class IcapFileAntivirusService
 
             // Create a TCP/IP  socket.
             sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            sender.Connect(serverIP, port);
+            sender.Connect(serverAddress, port);
             
             if (previewSize != -1)
             {
@@ -163,8 +162,8 @@ internal sealed class IcapFileAntivirusService
             }
 
             byte[] requestBuffer = Encoding.ASCII.GetBytes(
-                "RESPMOD icap://" + serverIP + "/" + icapService + " ICAP/" + VERSION + "\r\n"
-                + "Host: " + serverIP + "\r\n"
+                "RESPMOD icap://" + serverAddress + "/" + icapService + " ICAP/" + VERSION + "\r\n"
+                + "Host: " + serverAddress + "\r\n"
                 + "User-Agent: " + USERAGENT + "\r\n"
                 + "Allow: 204\r\n"
                 + "Preview: " + previewSize + "\r\n"
@@ -271,8 +270,8 @@ internal sealed class IcapFileAntivirusService
         private string getOptions()
         {
             byte[] msg = Encoding.ASCII.GetBytes(
-                "OPTIONS icap://" + serverIP + "/" + icapService + " ICAP/" + VERSION + "\r\n"
-                + "Host: " + serverIP + "\r\n"
+                "OPTIONS icap://" + serverAddress + "/" + icapService + " ICAP/" + VERSION + "\r\n"
+                + "Host: " + serverAddress + "\r\n"
                 + "User-Agent: " + USERAGENT + "\r\n"
                 + "Encapsulated: null-body=0\r\n"
                 + "\r\n");
