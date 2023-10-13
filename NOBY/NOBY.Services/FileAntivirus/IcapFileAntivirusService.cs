@@ -101,10 +101,6 @@ internal sealed class IcapFileAntivirusService
             this.icapService = icapService;
             this.serverAddress = serverAddress;
             
-            //Initialize connection
-            //IPAddress ipAddress = IPAddress.Parse(serverIP);
-            //IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
-
             // Create a TCP/IP  socket.
             sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             sender.Connect(serverAddress, port);
