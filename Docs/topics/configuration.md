@@ -18,6 +18,7 @@ Kdykoliv je poté potřeba zjistit např. pro jaké prostředí je a aplikace pu
 `ICisEnvironmentConfiguration` obsahuje zejména tyto informace:
 - **DefaultApplicationKey** - systémový název spuštěné služby.
 - **EnvironmentName** - název aplikačního prostředí, pro které je služba spuštěna.
+- **DisableContractDescriptionPropagation** - nastavením na TRUE se vypíná gRPC reflection a Swagger UI.
 
 ## Nahrazování hodnot z appsettings.json proměnnými prostředí
 `AddCisEnvironmentConfiguration` zároveň nahrazuje data z *appsettings.json* proměnnými prostředí pomocí extension metody `AddCisEnvironmentVariables()`.

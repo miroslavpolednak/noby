@@ -12,9 +12,4 @@ internal sealed class MockKycClient
     {
         return Task.CompletedTask;
     }
-        
-    public Task SetFinancialProfile(long customerId, Contracts.EmploymentFinancialProfile request, CancellationToken cancellationToken = default(CancellationToken))
-    {
-        return Task.CompletedTask;
-    }
 }

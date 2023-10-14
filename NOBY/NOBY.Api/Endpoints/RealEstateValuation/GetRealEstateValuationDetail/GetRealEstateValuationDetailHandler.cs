@@ -32,9 +32,11 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
         var deeds = await _realEstateValuationService.GetDeedOfOwnershipDocuments(request.RealEstateValuationId, cancellationToken);
-        
+
         if (valuationDetail.CaseId != request.CaseId)
-            throw new CisAuthorizationException("The requested RealEstateValuation is not assigned to the requested Case");
+        {
+            throw new NobyValidationException(90032);
+        }
 
         var state = (await _codebookService.WorkflowTaskStatesNoby(cancellationToken)).First(x => x.Id == valuationDetail.ValuationStateId);
         var categories = await _codebookService.AcvAttachmentCategories(cancellationToken);

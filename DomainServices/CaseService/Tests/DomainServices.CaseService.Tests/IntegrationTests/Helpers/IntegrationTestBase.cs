@@ -3,6 +3,7 @@ using CIS.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
+using NSubstitute;
 using static DomainServices.CaseService.Contracts.v1.CaseService;
 
 namespace DomainServices.CaseService.Tests.IntegrationTests;
@@ -56,6 +57,9 @@ public abstract class IntegrationTestBase
         MockSbWebApi
             .Setup(t => t.CancelTask(It.Is<int>(i => i == 2), It.IsAny<CancellationToken>()))
             .Throws(new CisExtServiceValidationException(2, "exception"));
+        MockSbWebApi
+            .Setup(t => t.FindTasksByTaskId(It.IsAny<ExternalServices.SbWebApi.Dto.FindTasks.FindByTaskIdRequest>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.FromResult<IList<IReadOnlyDictionary<string, string>>>(new List<IReadOnlyDictionary<string, string>>()));
 
         MockEas = new Mock<global::ExternalServices.Eas.V1.IEasClient>();
         

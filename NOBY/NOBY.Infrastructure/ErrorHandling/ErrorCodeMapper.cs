@@ -43,6 +43,7 @@ public sealed class ErrorCodeMapper
             { 90033, new("Žadatel nenalezen na daném obchodním případu.") },
             { 90034, new("<Chyba simulace z DS>") },
             { 90035, new("Nepodařilo se stáhnout LV z katastru nemovitostí", "Je nám líto, ale v tuto chvíli se nedaří stáhnout požadovaný LV z katastru nemovitostí. Opakujte prosím akci později. Pokud se operace nezdaří do tří pracovních dnů, kontaktujte prosím zpracovatele.") },
+            { 90036, new("Nelze stornovat podpis u CRS žádosti po prohlášení za podepsanou.") },
             { 90037, new("Nahrávaný soubor je závadný", "Nahrávaný soubor je poškozen či může být závadný. Nahrání se nezdařilo.") },
             { 90038, new("Název vkládaného dokumentu je větší než povolených 64 znaků.") },
             { 90039, new("Klientské údaje nejsou validní", "Zkontrolujte klientské údaje všech žadatelů. Validace klientských údajů spustíte tlačítkem DALŠÍ na obrazovce Detailu subjektu.") },
@@ -60,8 +61,9 @@ public sealed class ErrorCodeMapper
             { 22016, new ErrorCodeDsToApiItem(90031, false) },
             { 17103, new ErrorCodeDsToApiItem(90023, false) },
             { 17102, new ErrorCodeDsToApiItem(90024, false) },
-            { 10020, new ErrorCodeDsToApiItem(90034, true) },
-            { 18087, new ErrorCodeDsToApiItem(90039, false) }
+            { 10020, new ErrorCodeDsToApiItem(90034, true)  },
+            { 18087, new ErrorCodeDsToApiItem(90039, false) },
+            { 19043, new ErrorCodeDsToApiItem(90021, false) }
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();

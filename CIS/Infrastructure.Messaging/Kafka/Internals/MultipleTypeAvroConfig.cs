@@ -1,4 +1,5 @@
 ﻿using Avro;
+using CIS.Infrastructure.Messaging.Exceptions;
 using CIS.Infrastructure.Messaging.Kafka.Internals.Abstraction;
 
 namespace CIS.Infrastructure.Messaging.Kafka.Internals;
@@ -17,7 +18,7 @@ public sealed class MultipleTypeAvroConfig
         var type = _types.SingleOrDefault(x => x.Schema.Fullname == writerSchema.Fullname);
         if (type == null)
         {
-            throw new ArgumentException($"Unexpected type {writerSchema.Fullname}. Supported types need to be added to this {nameof(MultipleTypeAvroConfig)} instance", nameof(writerSchema));
+            throw new KafkaMessageTypeNotSupportedException(writerSchema.Fullname);
         }
         return type.CreateReader(type.MessageType, writerSchema);
     }

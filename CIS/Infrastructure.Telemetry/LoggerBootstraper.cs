@@ -6,6 +6,7 @@ using Serilog;
 using Serilog.Enrichers.Span;
 using Serilog.Filters;
 using System.Reflection;
+using CIS.Core.Exceptions;
 
 namespace CIS.Infrastructure.Telemetry;
 
@@ -56,7 +57,12 @@ internal sealed class LoggerBootstraper
         
         // remove health checks from logging
         loggerConfiguration
-            .Filter.ByExcluding(Matching.WithProperty("RequestPath", CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl));
+            .Filter
+            .ByExcluding(Matching.WithProperty("RequestPath", CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl));
+
+        loggerConfiguration
+            .Filter
+            .ByExcluding(logEvent => logEvent.Exception is ICisLogExcludeException);
     }
 
     public void EnrichLogger(LoggerConfiguration loggerConfiguration)

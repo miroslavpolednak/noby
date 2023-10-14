@@ -29,6 +29,19 @@ DS:CustomerService
 ### Remarks
 [typ_sluzby]:[nazev_sluzby] - DS (Doménová služba), CIS (Infrastrukturní služba)
 
+<a name='CIS.Core.Configuration.ICisEnvironmentConfiguration.DisableContractDescriptionPropagation'></a>
+
+## ICisEnvironmentConfiguration.DisableContractDescriptionPropagation Property
+
+Nastavením na TRUE se vypne Swagger / gRPC Reflection
+
+```csharp
+bool DisableContractDescriptionPropagation { get; }
+```
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
+
 <a name='CIS.Core.Configuration.ICisEnvironmentConfiguration.DisableServiceDiscovery'></a>
 
 ## ICisEnvironmentConfiguration.DisableServiceDiscovery Property

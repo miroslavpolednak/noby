@@ -8,3 +8,4 @@ Nastavení konfigurace autentizace z appsettings.json.
 | :--- | :--- |
 | [CisSecurityConfiguration](CIS.Infrastructure.Security.Configuration.CisSecurityConfiguration.md 'CIS.Infrastructure.Security.Configuration.CisSecurityConfiguration') | Sekce v appsettings.json pro nastaveni autentizace |
 | [CisServiceAuthenticationConfiguration](CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.md 'CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration') | Konfigurace autentizace doménové služby |
+| [CisServiceAuthenticationConfiguration.AllowedUserConfiguration](CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.AllowedUserConfiguration.md 'CIS.Infrastructure.Security.Configuration.CisServiceAuthenticationConfiguration.AllowedUserConfiguration') | |

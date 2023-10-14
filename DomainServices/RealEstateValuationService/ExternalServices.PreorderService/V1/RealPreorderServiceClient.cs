@@ -16,7 +16,7 @@ internal sealed class RealPreorderServiceClient
         var model = await response.EnsureSuccessStatusAndReadJson<Contracts.OrderResultDTO>(StartupExtensions.ServiceName, cancellationToken);
         return new OrderResultResponse
         {
-            ValuationResultCurrentPrice = (decimal?)model.ResultPrices?.FirstOrDefault(t => t.PriceType == "STANDARD_PRICE_EXIST")?.Price,
+            ValuationResultCurrentPrice = (decimal?)model.ResultPrice.Price,
             ValuationResultFuturePrice = (decimal?)model.ResultPrices?.FirstOrDefault(t => t.PriceType == "STANDARD_PRICE_FUTURE")?.Price
         };
     }

@@ -31,3 +31,5 @@ public partial class SendDocumentPreviewRequest : IRequest<Empty>, CIS.Core.Vali
 public partial class RefreshElectronicDocumentRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
 
 public partial class GetDocumentOnSAByFormIdRequest : IRequest<GetDocumentOnSAByFormIdResponse>, CIS.Core.Validation.IValidatableRequest { }
+
+public partial class RefreshSalesArrangementStateRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }

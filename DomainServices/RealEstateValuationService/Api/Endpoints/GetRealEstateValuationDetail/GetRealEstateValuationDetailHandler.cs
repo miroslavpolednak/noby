@@ -45,7 +45,7 @@ internal sealed class GetRealEstateValuationDetailHandler
         // documents
         if (!string.IsNullOrEmpty(realEstate.Documents))
         {
-            response.Documents.AddRange(Newtonsoft.Json.JsonConvert.DeserializeObject<List<RealEstateValuationDocument>>(realEstate.Documents));
+            response.Documents.Add(System.Text.Json.JsonSerializer.Deserialize<RealEstateValuationDocument>(realEstate.Documents));
         }
 
         // specific details

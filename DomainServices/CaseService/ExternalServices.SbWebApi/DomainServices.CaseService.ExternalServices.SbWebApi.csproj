@@ -21,4 +21,7 @@
     <ProjectReference Include="..\..\UserService\Clients\DomainServices.UserService.Clients.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="DomainServices.CaseService.Tests" />
+	</ItemGroup>
 </Project>

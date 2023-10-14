@@ -29,7 +29,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int UnableGetExternalIdForDocumentOnSaId = 19025;
     public const int DocumentOnSaDoesntExistForFormId = 19026;
 
-    // Non BL validation
+    // Gap 
     public const int SalesArrangementIdIsRequired = 19030;
     public const int DocumentTypeIdIsRequired = 19031;
     public const int FormIdIsRequired = 19032;
@@ -42,6 +42,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int WorkflowRequestCaseIdRequired = 19040;
     public const int UnsupportedKindOfSigningRequest = 19041;
     public const int CannotGetNobyUserIdentifier = 19042;
+    public const int UnsuccessfulCustomerDataUpdateToCM = 19043;
 
     public static IErrorCodesDictionary Init()
     {
@@ -81,7 +82,8 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { UnsupportedDocumentTypeIdForServiceRequest, "Unsupported DocumentTypeId for ServiceRequest, supported DocumentTypeId (9,10,11,12)" },
             { WorkflowRequestCaseIdRequired, "For processing workflow request CaseId is required" },
             { UnsupportedKindOfSigningRequest, "Unsupported kind of signing request" },
-            {CannotGetNobyUserIdentifier, "Cannot get NOBY user identifier"}
+            { CannotGetNobyUserIdentifier, "Cannot get NOBY user identifier"},
+            { UnsuccessfulCustomerDataUpdateToCM, "Unsuccessful customer data update to CM"}
         });
 
         return Messages;

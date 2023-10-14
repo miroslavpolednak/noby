@@ -9,7 +9,5 @@ public interface IKycClient
 
     Task SetKyc(long customerId, Contracts.Kyc request, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task SetFinancialProfile(long customerId, Contracts.EmploymentFinancialProfile request, CancellationToken cancellationToken = default(CancellationToken));
-
     const string Version = "V1";
 }

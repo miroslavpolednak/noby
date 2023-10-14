@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.Security.ContextUser;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using DomainServices;
 using CIS.Infrastructure.Security.LoginValidator;
 
 namespace CIS.Infrastructure.Security;

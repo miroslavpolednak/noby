@@ -39,6 +39,8 @@
 
 [Auditní logování](./topics/audit.md)
 
+[Messaging - Kafka](./topics/messaging-kafka.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

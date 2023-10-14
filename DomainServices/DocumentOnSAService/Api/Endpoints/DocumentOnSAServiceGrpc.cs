@@ -58,14 +58,6 @@ internal sealed class DocumentOnSAServiceGrpc : Contracts.v1.DocumentOnSAService
     public override async Task<GetDocumentOnSAByFormIdResponse> GetDocumentOnSAByFormId(GetDocumentOnSAByFormIdRequest request, ServerCallContext context)
      => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<DomainServices.DocumentOnSAService.Contracts.v1.Test1Response> Test1(DomainServices.DocumentOnSAService.Contracts.v1.Test1Request request, ServerCallContext context)
-        => await _mediator.Send(new DomainServices.DocumentOnSAService.Api.Endpoints.Test.Test1MediatrRequest(), context.CancellationToken);
-    public override async Task<DomainServices.DocumentOnSAService.Contracts.v1.Test2Response> Test2(DomainServices.DocumentOnSAService.Contracts.v1.Test2Request request, ServerCallContext context)
-        => await _mediator.Send(new DomainServices.DocumentOnSAService.Api.Endpoints.Test.Test2MediatrRequest() { Id = request.Id }, context.CancellationToken);
-    public override async Task<DomainServices.DocumentOnSAService.Contracts.v1.Test3Response> Test3(DomainServices.DocumentOnSAService.Contracts.v1.Test3Request request, ServerCallContext context)
-        => await _mediator.Send(new DomainServices.DocumentOnSAService.Api.Endpoints.Test.Test3MediatrRequest() { Id = request.Id }, context.CancellationToken);
-    public override async Task<DomainServices.DocumentOnSAService.Contracts.v1.Test4Response> Test4(DomainServices.DocumentOnSAService.Contracts.v1.Test4Request request, ServerCallContext context)
-        => await _mediator.Send(new DomainServices.DocumentOnSAService.Api.Endpoints.Test.Test4MediatrRequest() { Id = request.Id }, context.CancellationToken);
-    public override async Task<Empty> Test5(DomainServices.DocumentOnSAService.Contracts.v1.Test5Request request, ServerCallContext context)
-        => await _mediator.Send(new DomainServices.DocumentOnSAService.Api.Endpoints.Test.Test5MediatrRequest() { Id = request.Id }, context.CancellationToken);
+    public override async Task<Empty> RefreshSalesArrangementState(RefreshSalesArrangementStateRequest request, ServerCallContext context)
+     => await _mediator.Send(request, context.CancellationToken);
 }

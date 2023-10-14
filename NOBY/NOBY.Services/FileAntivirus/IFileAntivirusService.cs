@@ -4,15 +4,7 @@ namespace NOBY.Services.FileAntivirus;
 
 public interface IFileAntivirusService
 {
-    Task<CheckFileResults> CheckFile(IFormFile file);
+    Task<FileAntivirusResult> CheckFile(IFormFile file);
 
-    Task<CheckFileResults> CheckFile(byte[] file);
-
-    public enum CheckFileResults
-    {
-        Unknown,
-        Passed,
-        Timeouted,
-        Failed
-    }
+    Task<FileAntivirusResult> CheckFile(byte[] file);
 }

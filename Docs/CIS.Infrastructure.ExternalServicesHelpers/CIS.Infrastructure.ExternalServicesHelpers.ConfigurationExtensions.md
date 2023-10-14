@@ -55,3 +55,57 @@ Chyba v konfiguraci služby - např. špatně zadaný typ implementace.
 
 [CIS.Core.Exceptions.CisConfigurationNotFound](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.Exceptions.CisConfigurationNotFound 'CIS.Core.Exceptions.CisConfigurationNotFound')  
 Konfigurace pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfigurationOfType_TClient,TConfiguration_(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder,string,string)'></a>
+
+## ConfigurationExtensions.AddExternalServiceConfigurationOfType<TClient,TConfiguration>(this WebApplicationBuilder, string, string) Method
+
+Načtení konfigurace externí služby a její vložení do DI.  
+Přetížení se používá pro případ, že externí služba má vlastní konfigurační třídu.
+
+```csharp
+public static TConfiguration AddExternalServiceConfigurationOfType<TClient,TConfiguration>(this Microsoft.AspNetCore.Builder.WebApplicationBuilder builder, string serviceName, string serviceImplementationVersion)
+    where TClient : class, CIS.Infrastructure.ExternalServicesHelpers.IExternalServiceClient
+    where TConfiguration : CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration<TClient>;
+```
+#### Type parameters
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfigurationOfType_TClient,TConfiguration_(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder,string,string).TClient'></a>
+
+`TClient`
+
+Typ klienta - interface pro danou verzi proxy nad API třetí strany
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfigurationOfType_TClient,TConfiguration_(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder,string,string).TConfiguration'></a>
+
+`TConfiguration`
+
+Typ konfiguracni tridy
+#### Parameters
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfigurationOfType_TClient,TConfiguration_(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder,string,string).builder'></a>
+
+`builder` [Microsoft.AspNetCore.Builder.WebApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Builder.WebApplicationBuilder 'Microsoft.AspNetCore.Builder.WebApplicationBuilder')
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfigurationOfType_TClient,TConfiguration_(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder,string,string).serviceName'></a>
+
+`serviceName` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+Název konzumované služby třetí strany
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfigurationOfType_TClient,TConfiguration_(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder,string,string).serviceImplementationVersion'></a>
+
+`serviceImplementationVersion` [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+Verze proxy nad API třetí strany
+
+#### Returns
+[TConfiguration](CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.md#CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfigurationOfType_TClient,TConfiguration_(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder,string,string).TConfiguration 'CIS.Infrastructure.ExternalServicesHelpers.ConfigurationExtensions.AddExternalServiceConfigurationOfType<TClient,TConfiguration>(this Microsoft.AspNetCore.Builder.WebApplicationBuilder, string, string).TConfiguration')
+
+#### Exceptions
+
+[CIS.Core.Exceptions.CisConfigurationException](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.Exceptions.CisConfigurationException 'CIS.Core.Exceptions.CisConfigurationException')  
+Chyba v konfiguraci služby - např. špatně zadaný typ implementace.
+
+[CIS.Core.Exceptions.CisConfigurationNotFound](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.Exceptions.CisConfigurationNotFound 'CIS.Core.Exceptions.CisConfigurationNotFound')  
+Konfigurace pro klíč ES:{serviceName}:{serviceImplementationVersion} nebyla nalezena v sekci ExternalServices v appsettings.json

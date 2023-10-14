@@ -208,6 +208,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\grpc-services.md = Docs\topics\grpc-services.md
 		Docs\topics\healthcheck.md = Docs\topics\healthcheck.md
 		Docs\topics\logging.md = Docs\topics\logging.md
+		Docs\topics\messaging-kafka.md = Docs\topics\messaging-kafka.md
 		Docs\topics\service-discovery.md = Docs\topics\service-discovery.md
 		Docs\topics\soap-client.md = Docs\topics\soap-client.md
 		Docs\topics\tempfilemanager.md = Docs\topics\tempfilemanager.md
@@ -333,6 +334,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00051-HFICH-7236.sql = DomainServices\CodebookService\DatabaseMigrations\00051-HFICH-7236.sql
 		DomainServices\CodebookService\DatabaseMigrations\00057-TemplateVersion_TemplateProcessingType_Column.sql = DomainServices\CodebookService\DatabaseMigrations\00057-TemplateVersion_TemplateProcessingType_Column.sql
 		DomainServices\CodebookService\DatabaseMigrations\00061-HFICH-7632.sql = DomainServices\CodebookService\DatabaseMigrations\00061-HFICH-7632.sql
+		DomainServices\CodebookService\DatabaseMigrations\00066-HFICH-8634.sql = DomainServices\CodebookService\DatabaseMigrations\00066-HFICH-8634.sql
+		DomainServices\CodebookService\DatabaseMigrations\00067-HFICH-8515-SmsNotificationType.sql = DomainServices\CodebookService\DatabaseMigrations\00067-HFICH-8515-SmsNotificationType.sql
+		DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql = DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -360,11 +364,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00019-MPSS2VSSKB_SB_ENDPOINTS.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00019-MPSS2VSSKB_SB_ENDPOINTS.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00020-release1.4.3.5_endpoint_updates.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00020-release1.4.3.5_endpoint_updates.sql
 		InternalServices\ServiceDiscovery\DatabaseMigrations\00021-Ruian.sql = InternalServices\ServiceDiscovery\DatabaseMigrations\00021-Ruian.sql
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7}"
-	ProjectSection(SolutionItems) = preProject
-		InternalServices\DocumentGeneratorService\DatabaseMigrations\00001-initial_creation.sql = InternalServices\DocumentGeneratorService\DatabaseMigrations\00001-initial_creation.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAggregatorService", "DataAggregatorService", "{EAA77847-CE7C-48E3-B918-1626CEB8B32B}"
@@ -447,6 +446,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00056_HFICH-7761.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00056_HFICH-7761.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00057_TaxResidencyTemplate.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00057_TaxResidencyTemplate.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00058_CustomerChange_PaymentAccount_User.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00058_CustomerChange_PaymentAccount_User.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00059_HFICH-7615_CustomerChange3602_AgentName.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00059_HFICH-7615_CustomerChange3602_AgentName.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -465,7 +465,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.Servic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{81F64DB6-77D4-4EFF-920C-CAC9FCE5EEC8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentGeneratorService.Tests", "InternalServices\DocumentGeneratorService\CIS.InternalServices.DocumentGeneratorService.ApiTests\CIS.InternalServices.DocumentGeneratorService.Tests.csproj", "{D691ECA3-BE81-40DF-8C31-870B77FF258C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentGeneratorService.Tests", "InternalServices\DocumentGeneratorService\Tests\CIS.InternalServices.DocumentGeneratorService.Tests.csproj", "{D691ECA3-BE81-40DF-8C31-870B77FF258C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.ProductService.ExternalServices.Pcp", "DomainServices\ProductService\ExternalServices.Pcp\DomainServices.ProductService.ExternalServices.Pcp.csproj", "{5F803B89-2B6B-4BD3-ACB0-F61156FB367C}"
 EndProject
@@ -525,7 +525,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NOBY.Services", "NOBY\NOBY.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.RuianAddress", "ExternalServices\RuianAddress\ExternalServices.RuianAddress.csproj", "{24EA7EA7-71C7-4BC6-B739-C483ECA97D3A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregator.Tests", "InternalServices\DataAggregatorService\Tests\CIS.InternalServices.DataAggregator.Tests\CIS.InternalServices.DataAggregator.Tests.csproj", "{AFEFB16A-2BCB-42E5-B1F9-3F5B6E7CC640}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DataAggregator.Tests", "InternalServices\DataAggregatorService\Tests\CIS.InternalServices.DataAggregator.Tests.csproj", "{AFEFB16A-2BCB-42E5-B1F9-3F5B6E7CC640}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CodebookService.ExternalServices.RDM", "DomainServices\CodebookService\ExternalServices.RDM\DomainServices.CodebookService.ExternalServices.RDM.csproj", "{FD90984C-25D1-422B-88F4-D164A8CC2E9F}"
 EndProject
@@ -1593,7 +1593,6 @@ Global
 		{575507BC-3755-40BB-AC02-E7B8823C6F90} = {1AB95406-90FE-4CAA-8536-6846B37A450E}
 		{DA6B2E80-1075-4DE9-A090-A0711F4F92F1} = {6C60ADF4-04DA-46C0-91BE-054BDC00A89E}
 		{DED5BF40-8A83-4B48-AD27-E14BBFE76338} = {376AF902-B4C3-4C31-9CA1-63F154C18A4C}
-		{EDD1379E-E2A3-49C6-8DB0-21A959FF8AD7} = {4184CEDA-0D2B-4BEC-8EE1-7D50B6A3E22E}
 		{EAA77847-CE7C-48E3-B918-1626CEB8B32B} = {0DC96AF3-B121-4ACA-92C2-1064CADBC228}
 		{53178B65-D475-4752-9BBF-E7708BC6FB61} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}
 		{0E0A617E-7D9E-4F79-983F-3E618505FE72} = {EAA77847-CE7C-48E3-B918-1626CEB8B32B}

@@ -5,6 +5,7 @@ using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
 using __Household = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Clients;
+using DomainServices.CodebookService.Clients;
 using SharedTypes.Enums;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
@@ -18,7 +19,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     {
         // customer instance
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
-        
+
         // customer from KB CM
         var (originalModel, customerIdentification) = await _changedDataService.GetCustomerFromCM<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
 
@@ -41,6 +42,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             };
             if (customerOnSA.CustomerIdentifiers is not null)
                 updateBaseRequest.Customer.CustomerIdentifiers.AddRange(customerOnSA.CustomerIdentifiers);
+
+            //
 
             await _customerOnSAService.UpdateCustomer(updateBaseRequest, cancellationToken);
 
@@ -70,6 +73,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 IdentificationMethodId = user.UserInfo.IsInternal ? 1 : 8
             };
         }
+
+        await RemoveTinMissingReasonIfTinIsNotRequired(originalModel?.NaturalPerson?.TaxResidences, cancellationToken);
 
         // ----- update naseho detailu instance customera
         // updatujeme CustomerChangeData a CustomerAdditionalData na nasi entite CustomerOnSA
@@ -103,6 +108,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
                 updateRequest.CustomerChangeMetadata.WasCRSChanged,
                 cancellationToken);
         }
+
+        await _documentOnSAService.RefreshSalesArrangementState(customerOnSA.SalesArrangementId, cancellationToken);
     }
 
     private async Task cancelSigning(
@@ -166,16 +173,15 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     /// </summary>
     private static __Household.CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request, dynamic? delta)
     {
-        var metadata = new __Household.CustomerChangeMetadata();
-
-        if (originalModel?.IsUSPerson != request.IsUSPerson)
+        var metadata = new __Household.CustomerChangeMetadata
         {
-            metadata.WasCRSChanged = true;
-        }
-        else if (!ModelComparers.AreObjectsEqual(request.NaturalPerson?.TaxResidences, originalModel?.NaturalPerson?.TaxResidences))
-        {
-            metadata.WasCRSChanged = true;
-        }
+            WasCRSChanged = (request.IsUSPerson ?? false) || 
+                            !ModelComparers.AreObjectsEqual(request.NaturalPerson?.TaxResidences, originalModel?.NaturalPerson?.TaxResidences)
+        };
+        
+        //HFICH-8593 temporary just to make sure, in D2+ there will be a more complex validation (hopefully)
+        if (metadata.WasCRSChanged && request.NaturalPerson?.TaxResidences?.ResidenceCountries?.Count > 8)
+            throw new NotImplementedException("We don't know how to update more than 8 tax residences yet");
 
         if (delta is not null)
         {
@@ -252,9 +258,27 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         return additionalData;
     }
 
+    private async Task RemoveTinMissingReasonIfTinIsNotRequired(Shared.TaxResidenceItem? original, CancellationToken cancellationToken)
+    {
+        if (original?.ResidenceCountries is null)
+            return;
+
+        var countries = await _codebookService.Countries(cancellationToken);
+        var tinMissingReasons = await _codebookService.TinNoFillReasonsByCountry(cancellationToken);
+
+        var taxResidencyCountries = original.ResidenceCountries.Select(r => new { Country = countries.FirstOrDefault(c => c.Id == r.CountryId), TaxResidency = r });
+        var taxResidencyCountriesWithTinRequiredFalse = taxResidencyCountries.Where(c => !tinMissingReasons.First(t => t.Id == c.Country?.ShortName).IsTinMandatory);
+
+        foreach (var taxResidency in taxResidencyCountriesWithTinRequiredFalse)
+        {
+            taxResidency.TaxResidency.TinMissingReasonDescription = null;
+        }
+    }
+
     private readonly CustomerWithChangedDataService _changedDataService;
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerServiceClient _customerService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -271,7 +295,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         IDocumentOnSAServiceClient documentOnSAService,
         ICurrentUserAccessor userAccessor,
         IHouseholdServiceClient householdService,
-        ICustomerServiceClient customerService)
+        ICustomerServiceClient customerService,
+        ICodebookServiceClient codebookService)
     {
         _documentOnSAService = documentOnSAService;
         _caseService = caseService;
@@ -282,5 +307,6 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         _userAccessor = userAccessor;
         _householdService = householdService;
         _customerService = customerService;
+        _codebookService = codebookService;
     }
 }
