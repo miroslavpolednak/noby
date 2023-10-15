@@ -123,6 +123,26 @@ namespace ExternalServices.MpHome.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ChangeResponse
+    {
+        /// <summary>
+        /// Id zmenenej položky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public long Id { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("performedAction")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public ActionType PerformedAction { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public enum ClientRelationshipType
     {
 
@@ -177,6 +197,20 @@ namespace ExternalServices.MpHome.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ContactChangesResponse
+    {
+        /// <summary>
+        /// List of updated contacts
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("contactList")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.Collections.Generic.ICollection<ChangeResponse>? ContactList { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ContactData
     {
 
@@ -196,27 +230,13 @@ namespace ExternalServices.MpHome.V1.Contracts
         public string Value { get; set; } = default!;
 
         /// <summary>
-        /// {true} ak je kontakt primárny. Pri nezadaní je {false}.
+        /// `true` ak je kontakt primárny. Pri nezadaní je `false`.
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("primary")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public bool Primary { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ContactChangesResponse
-    {
-        /// <summary>
-        /// List of updated contacts
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("contactList")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.Collections.Generic.ICollection<ChangeResponse>? ContactList { get; set; } = default!;
 
     }
 
@@ -262,7 +282,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public string? Value { get; set; } = default!;
 
         /// <summary>
-        /// {true} ak je kontakt primárny. Pri nezadaní je {false}.
+        /// `true` ak je kontakt primárny. Pri nezadaní je `false`.
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("primary")]
@@ -306,7 +326,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public string Value { get; set; } = default!;
 
         /// <summary>
-        /// {true} ak je kontakt primárny. Pri nezadaní je {false}.
+        /// `true` ak je kontakt primárny. Pri nezadaní je `false`.
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("primary")]
@@ -647,26 +667,6 @@ namespace ExternalServices.MpHome.V1.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ChangeResponse
-    {
-        /// <summary>
-        /// Id zmenenej položky
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("id")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long Id { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("performedAction")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public ActionType PerformedAction { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public enum IdentificationCardType
     {
 
@@ -882,7 +882,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public decimal? InterestRate { get; set; } = default!;
 
         /// <summary>
-        /// Delka Fixace Urokove Sazby
+        /// Perioda fixace
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("fixationPeriod")]
@@ -1032,6 +1032,15 @@ namespace ExternalServices.MpHome.V1.Contracts
         public string? PcpInstId { get; set; } = default!;
 
         /// <summary>
+        /// Datum první anuitní splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstAnnuityInstallmentDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.DateTime? FirstAnnuityInstallmentDate { get; set; } = default!;
+
+        /// <summary>
         /// ID spoření
         /// </summary>
 
@@ -1098,8 +1107,8 @@ namespace ExternalServices.MpHome.V1.Contracts
 
     /// <summary>
     /// Obsahuje popis chýb, ktoré vznikli pri validácii vstupných údajov,
-    /// <br/>kde ako {Key} do dictionary slúži názov nesprávne zadaného parametra
-    /// <br/>a {Value} je zoznam chybových hlášok.
+    /// <br/>kde ako `Key` do dictionary slúži názov nesprávne zadaného parametra
+    /// <br/>a `Value` je zoznam chybových hlášok.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ModelErrorWrapper
@@ -1181,7 +1190,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public double? InterestRate { get; set; } = default!;
 
         /// <summary>
-        /// Delka Fixace Urokove Sazby
+        /// Perioda fixace
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("fixationPeriod")]
@@ -1329,6 +1338,15 @@ namespace ExternalServices.MpHome.V1.Contracts
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string? PcpInstId { get; set; } = default!;
+
+        /// <summary>
+        /// Datum první anuitní splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstAnnuityInstallmentDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.DateTime? FirstAnnuityInstallmentDate { get; set; } = default!;
 
         /// <summary>
         /// definuje vztah úvěru k dalším osobám
@@ -1476,7 +1494,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public string? Nationality { get; set; } = default!;
 
         /// <summary>
-        /// Rezident - {true} ak má partner bydlisko v CZ
+        /// Rezident - `true` ak má partner bydlisko v CZ
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("resident")]
@@ -1485,7 +1503,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public bool Resident { get; set; } = default!;
 
         /// <summary>
-        /// {true} když se jedná o osobu ze Spojených států amerických
+        /// `true` když se jedná o osobu ze Spojených států amerických
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("usPerson")]
@@ -1494,7 +1512,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public bool UsPerson { get; set; } = default!;
 
         /// <summary>
-        /// {true} když se jedná o politicky exponovanou osobu
+        /// `true` když se jedná o politicky exponovanou osobu
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("pep")]
@@ -1651,7 +1669,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public string? Nationality { get; set; } = default!;
 
         /// <summary>
-        /// Rezident - {true} ak má partner bydlisko v CZ
+        /// Rezident - `true` ak má partner bydlisko v CZ
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("resident")]
@@ -1660,7 +1678,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public bool Resident { get; set; } = default!;
 
         /// <summary>
-        /// {true} když se jedná o osobu ze Spojených států amerických
+        /// `true` když se jedná o osobu ze Spojených států amerických
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("usPerson")]
@@ -1669,7 +1687,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public bool UsPerson { get; set; } = default!;
 
         /// <summary>
-        /// {true} když se jedná o politicky exponovanou osobu
+        /// `true` když se jedná o politicky exponovanou osobu
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("pep")]
@@ -1842,7 +1860,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public string? Nationality { get; set; } = default!;
 
         /// <summary>
-        /// Rezident - {true} ak má partner bydlisko v CZ
+        /// Rezident - `true` ak má partner bydlisko v CZ
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("resident")]
@@ -1851,7 +1869,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public bool Resident { get; set; } = default!;
 
         /// <summary>
-        /// {true} když se jedná o osobu ze Spojených států amerických
+        /// `true` když se jedná o osobu ze Spojených států amerických
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("usPerson")]
@@ -1860,7 +1878,7 @@ namespace ExternalServices.MpHome.V1.Contracts
         public bool UsPerson { get; set; } = default!;
 
         /// <summary>
-        /// {true} když se jedná o politicky exponovanou osobu
+        /// `true` když se jedná o politicky exponovanou osobu
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("pep")]
