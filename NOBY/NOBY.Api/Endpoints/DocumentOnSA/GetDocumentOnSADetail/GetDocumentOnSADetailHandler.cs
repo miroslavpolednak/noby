@@ -3,6 +3,7 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Extensions;
+using NOBY.Services.PermissionAccess;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 
@@ -11,27 +12,29 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
     private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
+    private readonly INonWFLProductSalesArrangementAccess _nonWFLProductSalesArrangementAccess;
 
     public GetDocumentOnSADetailHandler(
         IDocumentOnSAServiceClient documentOnSAServiceClient,
         ICodebookServiceClient codebookServiceClient,
-        ISalesArrangementServiceClient salesArrangementServiceClient)
+        ISalesArrangementServiceClient salesArrangementServiceClient,
+        INonWFLProductSalesArrangementAccess nonWFLProductSalesArrangementAccess)
     {
         _documentOnSAServiceClient = documentOnSAServiceClient;
         _codebookServiceClient = codebookServiceClient;
         _salesArrangementServiceClient = salesArrangementServiceClient;
+        _nonWFLProductSalesArrangementAccess = nonWFLProductSalesArrangementAccess;
     }
 
     public async Task<GetDocumentOnSADetailResponse> Handle(GetDocumentOnSADetailRequest request, CancellationToken cancellationToken)
     {
         var documentOnSas = await _documentOnSAServiceClient.GetDocumentsOnSAList(request.SalesArrangementId, cancellationToken);
 
-        var documentOnSa = documentOnSas.DocumentsOnSA.SingleOrDefault(d => d.DocumentOnSAId == request.DocumentOnSAId);
+        var documentOnSa = documentOnSas.DocumentsOnSA.SingleOrDefault(d => d.DocumentOnSAId == request.DocumentOnSAId)
+            ?? throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, $"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
 
-        if (documentOnSa is null)
-        {
-            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, $"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
-        }
+        if (documentOnSa.Source != Source.Workflow)
+            await _nonWFLProductSalesArrangementAccess.CheckNonWFLProductSalesArrangementAccess(documentOnSa.SalesArrangementId, cancellationToken);
 
         return await MapToResponse(documentOnSa, cancellationToken);
     }
