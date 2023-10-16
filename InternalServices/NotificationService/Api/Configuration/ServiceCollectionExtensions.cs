@@ -28,6 +28,10 @@ public static class ServiceCollectionExtensions
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailSenders)}.{nameof(EmailSenders.Mpss)} cannot be empty.")
             
             .Validate(config =>
+                config?.EmailDomainWhitelist != null,
+                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailDomainWhitelist)} required.")
+            
+            .Validate(config =>
                 config?.EmailFormats?.Any() ?? false,
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailFormats)} cannot be empty.")
             
