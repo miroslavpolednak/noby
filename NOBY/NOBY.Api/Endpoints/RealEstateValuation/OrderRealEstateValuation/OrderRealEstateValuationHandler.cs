@@ -26,9 +26,14 @@ internal sealed class OrderRealEstateValuationHandler
                     throw new NobyValidationException(90032, "Valuation:Online OrderId or PreorderId already set or state is out of allowed range");
                 }
 
-                if (revInstance.IsRevaluationRequired && request.LocalSurveyPerson is null)
+                if (revInstance.IsRevaluationRequired 
+                    && (string.IsNullOrEmpty(request.LocalSurveyPerson?.FunctionCode)
+                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.FirstName)
+                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.LastName)
+                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.MobilePhone?.PhoneNumber)
+                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.EmailAddress?.EmailAddress)))
                 {
-                    throw new NobyValidationException(90032, "Valuation:Online LocalSurveyPerson is null");
+                    throw new NobyValidationException(90032, "Valuation:Online LocalSurveyPerson is not filled");
                 }
 
                 await _realEstateValuationService.OrderOnlineValuation(new DomainServices.RealEstateValuationService.Contracts.OrderOnlineValuationRequest
