@@ -6,6 +6,7 @@ namespace CIS.InternalServices.NotificationService.Api.Messaging.Consumers.Email
 public class ConsumeSendEmailRequest : IRequest<ConsumeSendEmailResponse>
 {
     public Guid Id { get; set; }
+    public string Format { get; set; } = null!;
     public string From { get; set; } = null!;
     public string ReplyTo { get; set; } = null!;
     public string Subject { get; set; } = null!;

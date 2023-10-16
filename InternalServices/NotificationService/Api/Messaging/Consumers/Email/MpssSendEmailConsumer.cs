@@ -22,6 +22,7 @@ public class MpssSendEmailConsumer : IConsumer<MpssSendApi.v1.email.SendEmail>
             var request = new ConsumeSendEmailRequest
             {
                 Id = id,
+                Format = sendEmail.content.format,
                 From = sendEmail.sender.value,
                 ReplyTo = sendEmail.replyTo?.value ?? string.Empty,
                 Subject = sendEmail.subject,
