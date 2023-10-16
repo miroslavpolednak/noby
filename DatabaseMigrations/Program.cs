@@ -5,7 +5,17 @@ using Spectre.Console;
 
 return (int)Parser.Default
                   .ParseArguments<MigrateOptions>(args)
-                  .MapResult(RunDbUp, _ => ExitCode.UnknownError);
+                  .MapResult(options =>
+                  {
+                      try
+                      {
+                          return RunDbUp(options);
+                      }
+                      catch
+                      {
+                          return ExitCode.UnknownError;
+                      }
+                  }, _ => ExitCode.UnknownError);
 
 static ExitCode RunDbUp(MigrateOptions opts)
 {
