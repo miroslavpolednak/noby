@@ -9,11 +9,13 @@ using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Entity = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
+using Exception = System.Exception;
 
 namespace CIS.InternalServices.NotificationService.Api.Messaging.Consumers.Email;
 
 public class ConsumeSendEmailHandler : IRequestHandler<ConsumeSendEmailRequest, ConsumeSendEmailResponse>
 {
+    private readonly AppConfiguration _appConfiguration;
     private readonly IDateTime _dateTime;
     private readonly INotificationRepository _repository;
     private readonly ISmtpAdapterService _smtpAdapterService;
@@ -22,6 +24,7 @@ public class ConsumeSendEmailHandler : IRequestHandler<ConsumeSendEmailRequest, 
     private readonly ILogger<ConsumeSendEmailHandler> _logger;
 
     public ConsumeSendEmailHandler(
+        IOptions<AppConfiguration> appOptions,
         IDateTime dateTime,
         INotificationRepository repository,
         ISmtpAdapterService smtpAdapterService,
@@ -29,6 +32,7 @@ public class ConsumeSendEmailHandler : IRequestHandler<ConsumeSendEmailRequest, 
         IOptions<AppConfiguration> options,
         ILogger<ConsumeSendEmailHandler> logger)
     {
+        _appConfiguration = appOptions.Value;
         _dateTime = dateTime;
         _repository = repository;
         _smtpAdapterService = smtpAdapterService;
@@ -71,7 +75,13 @@ public class ConsumeSendEmailHandler : IRequestHandler<ConsumeSendEmailRequest, 
 
         return smtpAttachments;
     }
-    
+
+    private bool AreWhitelisted(IEnumerable<string> emails) => emails.All(IsWhitelisted);
+
+    private bool IsWhitelisted(string email) =>
+        !_appConfiguration.EmailDomainWhitelist.Any() ||
+        _appConfiguration.EmailDomainWhitelist.Any(w => email.EndsWith(w, StringComparison.OrdinalIgnoreCase));
+
     public async Task<ConsumeSendEmailResponse> Handle(ConsumeSendEmailRequest request, CancellationToken cancellationToken)
     {
         if (!TryGetResult(request, cancellationToken, out var result) || result is null)
@@ -84,34 +94,55 @@ public class ConsumeSendEmailHandler : IRequestHandler<ConsumeSendEmailRequest, 
             _logger.LogWarning($"{nameof(ConsumeSendEmailRequest)} with id = '{result.Id}' was already processed.");
             return new ConsumeSendEmailResponse();
         }
-        
+
         try
         {
-            var smtpAttachments =  await GetAttachments(request, cancellationToken);
+            var emails = request.To.Union(request.Cc).Union(request.Bcc).ToList();
+            if (!AreWhitelisted(emails))
+            {
+                throw new CisValidationException($"Could not send MPSS email to recipient outside the whitelist: {string.Join(", ", emails.Where(e => !IsWhitelisted(e)))}");
+            }
+
+            var smtpAttachments = await GetAttachments(request, cancellationToken);
 
             await _smtpAdapterService.SendEmail(
+                request.Format,
                 request.From, request.ReplyTo,
                 request.Subject, request.Content,
                 request.To, request.Cc, request.Bcc,
                 smtpAttachments
             );
-            
+
             result.State = NotificationState.Sent;
-            _logger.LogDebug($"{nameof(ConsumeSendEmailRequest)} was handled. MPSS Email was sent.");
+            _logger.LogDebug($"{nameof(ConsumeSendEmailRequest)} was handled. MPSS email was sent.");
         }
-        catch (Exception e)
+        catch (CisValidationException validationException)
         {
             var errorSet = new HashSet<ResultError>();
             errorSet.UnionWith(result.ErrorSet);
             errorSet.Add(new ResultError
             {
                 // todo: code is not specified in IT ANA (used same Code as MCS uses)
-                Code = "SMTP-EXCEPTION",
-                Message = e.Message
+                Code = "SMTP-WHITELIST-EXCEPTION",
+                Message = validationException.Message
             });
             result.ErrorSet = errorSet;
             result.State = NotificationState.Error;
-            _logger.LogError(e, $"{nameof(ConsumeSendEmailHandler)} failed.");
+            _logger.LogError(validationException, $"Could not send email from {nameof(ConsumeSendEmailHandler)}.");
+        }
+        catch (Exception exception)
+        {
+            var errorSet = new HashSet<ResultError>();
+            errorSet.UnionWith(result.ErrorSet);
+            errorSet.Add(new ResultError
+            {
+                // todo: code is not specified in IT ANA (used same Code as MCS uses)
+                Code = "SMTP-UNKNOWN-EXCEPTION",
+                Message = exception.Message
+            });
+            result.ErrorSet = errorSet;
+            result.State = NotificationState.Error;
+            _logger.LogError(exception, $"{nameof(ConsumeSendEmailHandler)} failed.");
         }
 
         result.ResultTimestamp = _dateTime.Now;
