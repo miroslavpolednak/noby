@@ -45,7 +45,8 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
         else if (taskDetail.TaskObject.TaskTypeId == 6
             && taskDetail.TaskObject.SignatureTypeId == (int)SignatureTypes.Paper
-            && taskDetail.TaskObject.PhaseTypeId == 2)
+            && taskDetail.TaskObject.PhaseTypeId == 2
+            && request.TaskResponseTypeId == 0)
         {
             throw new NobyValidationException("No attachments condition");
         }
