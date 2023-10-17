@@ -3,8 +3,8 @@ GO
 
 CREATE TABLE [dbo].[ProfessionCategory](
 	[ProfessionCategoryId] [int] NOT NULL,
-	[Name] [nvarchar](250) NULL,
-	[IsValid] [bit] NULL,
+	[Name] [nvarchar](250) NOT NULL,
+	[IsValid] [bit] NOT NULL,
  CONSTRAINT [PK_ProfessionCategory] PRIMARY KEY CLUSTERED 
 (
 	[ProfessionCategoryId] ASC
@@ -35,10 +35,10 @@ GO
 
 CREATE TABLE [dbo].[SigningMethodsForNaturalPerson](
 	[Code] [varchar](30) NOT NULL,
-	[Name] [nvarchar](250) NULL,
+	[Name] [nvarchar](250) NOT NULL,
 	[Description] [nvarchar](250) NULL,
-	[Order] [int] NULL,
-	[IsValid] [bit] NULL,
+	[Order] [int] NOT NULL,
+	[IsValid] [bit] NOT NULL,
  CONSTRAINT [PK_SigningMethodsForNaturalPerson] PRIMARY KEY CLUSTERED 
 (
 	[Code] ASC
@@ -48,7 +48,7 @@ GO
 
 CREATE TABLE [dbo].[SigningMethodsForNaturalPersonExtension](
 	[Code] [varchar](30) NOT NULL,
-	[StarbuildEnumId] [int] NULL,
+	[StarbuildEnumId] [int] NOT NULL,
  CONSTRAINT [PK_SigningMethodsForNaturalPersonExtension] PRIMARY KEY CLUSTERED 
 (
 	[Code] ASC
