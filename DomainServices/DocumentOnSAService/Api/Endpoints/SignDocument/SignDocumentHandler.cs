@@ -127,8 +127,6 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         UpdateDocumentOnSa(documentOnSa, signatureDate);
 
-        await AddSignatureIfNotSetYet(documentOnSa, salesArrangement, signatureDate, cancellationToken);
-
         // Update Mortgage.FirstSignatureDate
         if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()) // 4
             await UpdateFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
@@ -158,6 +156,8 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             await SetFlowSwitch(houseHold!, cancellationToken);
             wasUpdateOfCustomersSuccessful = await ProcessDocumentOnSaWithHousehold(salesArrangement, houseHold, documentOnSa, cancellationToken);
         }
+
+        await AddSignatureIfNotSetYet(documentOnSa, salesArrangement, signatureDate, cancellationToken);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

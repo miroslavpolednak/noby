@@ -294,7 +294,7 @@ internal sealed class IdentifiedSubjectService
 
     private static __Contracts.PrimaryPhone? CreatePrimaryPhone(IEnumerable<Contact> contacts)
     {
-        var phone = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil);
+        var phone = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil && !c.Mobile.IsPhoneConfirmed);
         if (string.IsNullOrWhiteSpace(phone?.Mobile?.PhoneNumber))
             return default;
 
@@ -308,7 +308,7 @@ internal sealed class IdentifiedSubjectService
 
     private static __Contracts.PrimaryEmail? CreatePrimaryEmail(IEnumerable<Contact> contacts)
     {
-        var email = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email);
+        var email = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email && !c.Email.IsEmailConfirmed);
 
         if (email is null)
             return default;
