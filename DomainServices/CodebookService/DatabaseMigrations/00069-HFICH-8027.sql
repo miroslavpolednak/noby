@@ -25,8 +25,7 @@ INSERT INTO [dbo].[ProfessionCategory] ([ProfessionCategoryId], [Name], [IsValid
 GO
 
 DELETE FROM SqlQuery WHERE SqlQueryId IN ('ProfessionCategories','ProfessionCategories1','ProfessionCategories2');
-UPDATE SqlQuery SET SqlQueryId='ProfessionCategories2' where SqlQueryId='ProfessionCategories';
-INSERT INTO SqlQuery (SqlQueryId, SqlQueryText, DatabaseProvider) VALUES ('ProfessionCategories1','SELECT * FROM dbo.ProfessionCategory',4);
+INSERT INTO SqlQuery (SqlQueryId, SqlQueryText, DatabaseProvider) VALUES ('ProfessionCategories1','SELECT ProfessionCategoryId ''Id'', [Name], IsValid FROM dbo.ProfessionCategory',4);
 INSERT INTO SqlQuery (SqlQueryId, SqlQueryText, DatabaseProvider) VALUES ('ProfessionCategories2','SELECT * FROM dbo.ProfessionCategoryExtension',4);
 GO
 
