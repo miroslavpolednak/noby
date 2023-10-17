@@ -13,7 +13,8 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
     json_req_mail_mpss_basic_content_format_application_mht, json_req_mail_mpss_null_party_from, \
     json_req_mail_mpss_without_party_from, json_req_mail_mpss_case, \
     json_req_mail_mpss_documentHash_SHA_256, json_req_mail_mpss_documentHash_SHA_3, \
-    json_req_mail_mpss_documentHash_SHA_512, json_req_mail_mpss_documentHash_SHA_384 \
+    json_req_mail_mpss_documentHash_SHA_512, json_req_mail_mpss_documentHash_SHA_384, \
+    json_req_mail_mpss_basic_format_text_plain, json_req_mail_mpss_basic_format_application_text \
  \
     # základní test
 
@@ -73,9 +74,11 @@ def test_mail_full(ns_url, auth_params, auth, json_data):
 
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_format_application_html,
-                                       json_req_mail_mpss_basic_format_text_html,
+                                        json_req_mail_mpss_basic_content_format_application_mht,
+                                        json_req_mail_mpss_basic_format_application_text,
                                        json_req_mail_mpss_basic_format_html,
-                                       json_req_mail_mpss_basic_content_format_application_mht])
+                                        json_req_mail_mpss_basic_format_text_html,
+                                       json_req_mail_mpss_basic_format_text_plain])
 def test_mail_content_format(ns_url, auth_params, auth, json_data):
     """kladny test"""
     url_name = ns_url["url_name"]
