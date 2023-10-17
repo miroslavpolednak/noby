@@ -7,6 +7,7 @@ using DomainServices.CodebookService.ExternalServices;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddApplicationConfiguration<DomainServices.CodebookService.Api.Configuration.AppConfiguration>()
     .EnableJsonTranscoding(options =>
     {
         options.OpenApiTitle = "Codebook Service API";
@@ -34,6 +35,9 @@ SharedComponents.GrpcServiceBuilder
 
             return new SqlQueryCollection(data);
         });
+
+        // background svc
+        builder.AddCisBackgroundService<DomainServices.CodebookService.Api.BackgroundServices.DownloadRdmCodebooksJob.DownloadRdmCodebooksJob>();
 
         builder.AddExternalService<IAcvEnumServiceClient>();
         builder.AddExternalService<IRDMClient>();
