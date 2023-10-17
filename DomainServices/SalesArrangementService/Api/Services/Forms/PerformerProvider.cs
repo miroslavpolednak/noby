@@ -33,15 +33,15 @@ internal class PerformerProvider
 
             if (op.PerformerCode == default)
                 return default;
+
+            var user = await _userService.GetUser(new SharedTypes.Types.UserIdentity(newestTask.PerformerLogin, UserIdentitySchemes.Kbad), cancellationToken);
+
+            return user.UserId;
         }
         catch (CisNotFoundException)
         {
             return default; //Ignore
         }
-
-        var user = await _userService.GetUser(new SharedTypes.Types.UserIdentity(newestTask.PerformerLogin, SharedTypes.Enums.UserIdentitySchemes.Mpad), cancellationToken);
-
-        return user.UserId;
     }
 
     private async Task<WorkflowTask?> LoadNewestTask(long caseId, CancellationToken cancellationToken)

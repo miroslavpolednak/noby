@@ -3,44 +3,53 @@ using DatabaseMigrations;
 using DbUp;
 using Spectre.Console;
 
-Parser.Default
-    .ParseArguments<MigrateOptions>(args)
-    .MapResult(
-        (MigrateOptions o) => runMigration(o),
-        e => -1
-    );
+return (int)Parser.Default
+                  .ParseArguments<MigrateOptions>(args)
+                  .MapResult(options =>
+                  {
+                      try
+                      {
+                          return RunDbUp(options);
+                      }
+                      catch
+                      {
+                          return ExitCode.UnknownError;
+                      }
+                  }, _ => ExitCode.UnknownError);
 
-int runMigration(MigrateOptions o)
+static ExitCode RunDbUp(MigrateOptions opts)
 {
-    ArgumentNullException.ThrowIfNullOrEmpty(o.ScriptFolder);
+    ArgumentException.ThrowIfNullOrEmpty(opts.ScriptFolder);
 
-    string folder = o.ScriptFolder;
-    if (o.ScriptFolder.EndsWith('\\') || o.ScriptFolder.EndsWith('/'))
-        folder = o.ScriptFolder[0..^1];
+    var folder = opts.ScriptFolder;
+    if (opts.ScriptFolder.EndsWith('\\') || opts.ScriptFolder.EndsWith('/'))
+        folder = opts.ScriptFolder[..^1];
 
     // check folder
     if (!Directory.Exists(folder))
     {
         AnsiConsole.MarkupLine($"[bold red]ERROR:[/] Folder [dim]'{folder}'[/] does not exist.");
-        return -3;
+        return ExitCode.DirectoryNotExist;
     }
 
-    var upgradeEngine = DeployChanges.To
-        .SqlDatabase(o.ConnecitonString)
-        .JournalToSqlTable("dbo", "MigrationHistory")
-        .WithScriptsFromFileSystem(folder)
-        .WithTransaction()
-        .LogToConsole()
-        .Build();
+    var upgradeEngine = DeployChanges.To.SqlDatabase(opts.ConnectionString)
+                                     .JournalToSqlTable("dbo", "MigrationHistory")
+                                     .WithScriptsFromFileSystem(folder)
+                                     .WithTransaction()
+                                     .LogToConsole()
+                                     .Build();
+
+    if (opts.MigrationExistsCheckOnly ?? false)
+        return upgradeEngine.IsUpgradeRequired() ? ExitCode.Success : ExitCode.NoMigrationAvailable;
 
     var result = upgradeEngine.PerformUpgrade();
 
     if (!result.Successful)
     {
         AnsiConsole.MarkupLine("[bold red]ERROR:[/] " + result.Error.Message);
-        return -2;
+        return ExitCode.MigrationFailed;
     }
 
     AnsiConsole.MarkupLine("[bold green]Success![/]");
-    return 0;
+    return ExitCode.Success;
 }
