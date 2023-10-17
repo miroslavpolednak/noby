@@ -1,35 +1,5 @@
 
 
-json_req_mail_mpss_negative_basic_format_text_plain = \
-  {
-    "from": {
-      "value": "notification-service@mpss.cz",
-      "party": {
-        "legalPerson": {
-          "name": "Notifikace"
-        }
-      }
-    },
-    "to": [
-      {
-        "value": "marek.mikel@mpss.cz",
-        "party": {
-          "legalPerson": {
-            "name": "Marek Mikel"
-          }
-        }
-      }
-    ],
-    "subject": "NS_test_MIKEL_json_req_mail_mpss_basic_format_text_plain",
-    "content": {
-      "format": "text/plain",
-      "language": "cs",
-      "text": "json_req_mail_mpss_basic_format_text_plain"
-    },
-    "attachments": []
-  }
-
-
 # ----------------------------------BAD REQUESTS
 # obsahuje špatně format a jazyk
 json_req_mail_mpss_bad_format_language = \
