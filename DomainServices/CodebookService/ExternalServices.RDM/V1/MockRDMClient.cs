@@ -9,4 +9,9 @@ internal sealed class MockRDMClient
     {
         throw new NotImplementedException();
     }
+
+    public Task<List<T>> GetCustomCodebookItems<T>(string codebookCode, CancellationToken cancellationToken = default) where T : class, new()
+    {
+        throw new NotImplementedException();
+    }
 }
