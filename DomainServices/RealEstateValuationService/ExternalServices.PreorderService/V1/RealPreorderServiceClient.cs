@@ -17,7 +17,7 @@ internal sealed class RealPreorderServiceClient
         return new OrderResultResponse
         {
             ValuationResultCurrentPrice = (decimal?)model.ResultPrice.Price,
-            ValuationResultFuturePrice = (decimal?)model.ResultPrices?.FirstOrDefault(t => t.PriceType == "STANDARD_PRICE_FUTURE")?.Price
+            ValuationResultFuturePrice = (decimal?)model.ResultPrices?.FirstOrDefault(t => t.PriceSourceType == "STANDARD_PRICE_FUTURE")?.Price
         };
     }
 
