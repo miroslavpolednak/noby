@@ -253,12 +253,17 @@ internal sealed class IdentifiedSubjectService
             PrimaryAddressFrom = primaryAddressFrom
         };  
     
-    private static __Contracts.ContactAddress CreateContactAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
-        new()
+    private static __Contracts.ContactAddress? CreateContactAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom)
+    {
+        if (requestAddress.IsAddressConfirmed ?? false)
+            return default;
+
+        return new __Contracts.ContactAddress
         {
             Address = address,
-            Confirmed = requestAddress.IsAddressConfirmed ?? false
+            Confirmed = false
         };
+    }
 
     private static __Contracts.TemporaryStayAddress CreateTemporaryStayAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
         new() { Address = address };
