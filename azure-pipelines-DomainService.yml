@@ -55,8 +55,8 @@ steps:
   inputs:
     SonarQube: 'NOBY - SonarQube'
     scannerMode: 'MSBuild'
-    projectKey: 'NOBY.DS.DataAggregatorService'
-    projectName: 'NOBY.DS.DataAggregatorService'
+    projectKey: 'NOBY.DS.$(Build.DefinitionName)'
+    projectName: 'NOBY.DS.$(Build.DefinitionName)'
     projectVersion: '1.0.0.$(Build.BuildId)'
     extraProperties: 'sonar.verbose=true'
 
