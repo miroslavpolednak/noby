@@ -18,47 +18,48 @@ internal sealed class IcapFileAntivirusService
 
     public Task<FileAntivirusResult> CheckFile(IFormFile file)
     {
-        ICAP icap = new ICAP(_configuration.ServerAddress, _configuration.Port, "avscan");
-        using (var ms = new MemoryStream())
+        try
         {
-            file.CopyTo(ms);
-
-            try
+            ICAP icap = new ICAP(_configuration.ServerAddress, _configuration.Port, "avscan");
+            using (var ms = new MemoryStream())
             {
+                file.CopyTo(ms);
+
                 var scanResult = icap.ScanFile(ms);
                 return Task.FromResult(new FileAntivirusResult(scanResult ? FileAntivirusResult.CheckFileResults.Passed : FileAntivirusResult.CheckFileResults.Failed));
             }
-            catch (ICAP.ICAPException ex)
-            {
-                return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Timeouted, ex.Message));
-            }
-            catch (Exception ex)
-            {
-                return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Unknown, ex.Message));
-            }
+        }
+        catch (ICAP.ICAPException ex)
+        {
+            return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Timeouted, ex.Message));
+        }
+        catch (Exception ex)
+        {
+            return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Unknown, ex.Message));
         }
     }
 
     public Task<FileAntivirusResult> CheckFile(byte[] file)
     {
-        ICAP icap = new ICAP(_configuration.ServerAddress, _configuration.Port, "avscan");
-        using (var ms = new MemoryStream(file))
+        try
         {
-            ms.Seek(0, SeekOrigin.Begin);
-
-            try
+            ICAP icap = new ICAP(_configuration.ServerAddress, _configuration.Port, "avscan");
+            using (var ms = new MemoryStream(file))
             {
+                ms.Seek(0, SeekOrigin.Begin);
+
+
                 var scanResult = icap.ScanFile(ms);
                 return Task.FromResult(new FileAntivirusResult(scanResult ? FileAntivirusResult.CheckFileResults.Passed : FileAntivirusResult.CheckFileResults.Failed));
             }
-            catch (ICAP.ICAPException ex)
-            {
-                return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Timeouted, ex.Message));
-            }
-            catch (Exception ex)
-            {
-                return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Unknown, ex.Message));
-            }
+        }
+        catch (ICAP.ICAPException ex)
+        {
+            return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Timeouted, ex.Message));
+        }
+        catch (Exception ex)
+        {
+            return Task.FromResult(new FileAntivirusResult(FileAntivirusResult.CheckFileResults.Unknown, ex.Message));
         }
     }
 
