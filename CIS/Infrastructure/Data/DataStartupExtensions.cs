@@ -41,7 +41,10 @@ public static class DataStartupExtensions
         string? connectionString = builder.Configuration.GetConnectionString(connectionStringKey);
         if (!string.IsNullOrEmpty(connectionString))
             builder.Services
-                .AddDbContext<TDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(enableSensitiveDataLogging), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+                .AddDbContext<TDbContext>(options => options
+                    .UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure())
+                    .EnableSensitiveDataLogging(enableSensitiveDataLogging)
+                    , ServiceLifetime.Scoped, ServiceLifetime.Singleton);
         
         return builder;
     }
@@ -57,7 +60,10 @@ public static class DataStartupExtensions
         if (!string.IsNullOrEmpty(connectionString))
         {
             builder.Services
-                .AddDbContext<TDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging(enableSensitiveDataLogging), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+                .AddDbContext<TDbContext>(options => options
+                    .UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure())
+                    .EnableSensitiveDataLogging(enableSensitiveDataLogging)
+                    , ServiceLifetime.Scoped, ServiceLifetime.Singleton);
         }
 
         return builder;
