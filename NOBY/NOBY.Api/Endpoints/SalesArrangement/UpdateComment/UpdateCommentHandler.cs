@@ -17,6 +17,8 @@ internal sealed  class UpdateCommentHandler : IRequestHandler<UpdateCommentReque
             throw new NobyValidationException($"Invalid SalesArrangement id = {request.SalesArrangementId}, must be of type {SalesArrangementCategories.ProductRequest}");
         }
 
+
+        salesArrangement.Mortgage ??= new SalesArrangementParametersMortgage();
         salesArrangement.Mortgage.Comment = request.Comment.Text ?? string.Empty;
 
         var updateParametersRequest = new UpdateSalesArrangementParametersRequest
