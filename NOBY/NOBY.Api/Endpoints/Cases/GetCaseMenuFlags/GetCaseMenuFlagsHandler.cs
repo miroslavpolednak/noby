@@ -52,7 +52,7 @@ internal sealed class GetCaseMenuFlagsHandler
             try
             {
                 var productInstance = await _productService.GetMortgage(caseId, cancellationToken);
-                response.IsActive = productInstance.Mortgage?.ContractSignedDate != null;
+                response.IsActive = !string.IsNullOrEmpty(productInstance.Mortgage?.PaymentAccount?.Number);
             }
             catch // je v poradku, ze toto nekdy spadne - produkt nemusi byt v KonsDb
             {
