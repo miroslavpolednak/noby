@@ -15,7 +15,8 @@ from ..json.request.mail_mpss_neg_json import json_bad_req_mail_mpss_empty_party
     json_req_mail_mpss_bad_content_format_text, json_req_mail_mpss_bad_natural_legal, \
     json_req_mail_mpss_documentHash_without_hashAlgorithm, json_req_mail_mpss_documentHash_without_hash, \
     json_req_mail_mpss_documentHash_with_bad_hash, json_req_mail_mpss_documentHash_bad_hashAlgorithm, \
-    json_req_mail_mpss_bad_from, json_req_mail_mpss_bad_from_mpss
+    json_req_mail_mpss_bad_from, json_req_mail_mpss_bad_from_mpss, json_req_mail_mpss_bad_whitelist_to, \
+    json_req_mail_mpss_bad_whitelist_cc, json_req_mail_mpss_bad_whitelist_bcc
 
 
 # negativní testy
@@ -217,3 +218,39 @@ def test_mail_negative_from(ns_url, auth_params, auth, json_data):
     assert resp.status_code == 400
     error_message = resp.json()['errors']['PredicateValidator'][0]
     assert 'Allowed domain names for sender: kb.cz, mpss.cz.' in error_message
+
+
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_whitelist_to,
+                                       json_req_mail_mpss_bad_whitelist_cc,
+                                       json_req_mail_mpss_bad_whitelist_bcc])
+def test_mail_negative_to_cc_bcc(ns_url, auth_params, auth, json_data):
+    """negativní test pro test jazyka a formatu"""
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    resp = resp.json()
+    print(resp)
+    assert "notificationId" in resp
+    notification_id = resp["notificationId"]
+    assert notification_id != ""
+
+    session = requests.session()
+    resp = session.get(
+        URLS[url_name] + f"/v1/notification/result/{notification_id}",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    assert resp.status_code == 200
+    error_code = resp.json()['errors'][0]['code']
+    error_message = resp.json()['errors'][0]['message']
+    assert error_code == "SMTP-WHITELIST-EXCEPTION"
+    assert 'Could not send MPSS email to recipient outside the whitelist: marek.mikel@gmail.com' in error_message

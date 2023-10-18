@@ -18,7 +18,7 @@ public static class NobyAuthentication
         var connectionString = builder.Configuration.GetConnectionString("dataProtection");
         if (!string.IsNullOrEmpty(connectionString))
         {
-            builder.Services.AddDbContext<DataProtectionKeysContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<DataProtectionKeysContext>(options => options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure()));
             builder.Services.AddDataProtection()
                 .SetApplicationName("NobyFeApi")
                 .PersistKeysToDbContext<DataProtectionKeysContext>()
