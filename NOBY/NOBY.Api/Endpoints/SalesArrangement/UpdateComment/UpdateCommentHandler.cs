@@ -16,27 +16,13 @@ internal sealed  class UpdateCommentHandler : IRequestHandler<UpdateCommentReque
         {
             throw new NobyValidationException($"Invalid SalesArrangement id = {request.SalesArrangementId}, must be of type {SalesArrangementCategories.ProductRequest}");
         }
-        
-        var mortgageParameters = new SalesArrangementParametersMortgage
-        {
-            Agent = salesArrangement.Mortgage?.Agent,
-            Comment = request.Comment.Text ?? string.Empty,
-            IncomeCurrencyCode = salesArrangement.Mortgage?.IncomeCurrencyCode ?? string.Empty,
-            ResidencyCurrencyCode = salesArrangement.Mortgage?.ResidencyCurrencyCode ?? string.Empty,
-            ContractSignatureTypeId = salesArrangement.Mortgage?.ContractSignatureTypeId,
-            ExpectedDateOfDrawing = salesArrangement.Mortgage?.ExpectedDateOfDrawing,
-            AgentConsentWithElCom = salesArrangement.Mortgage?.AgentConsentWithElCom,
-        };
 
-        if (salesArrangement.Mortgage?.LoanRealEstates.Any() ?? false)
-        {
-            mortgageParameters.LoanRealEstates.AddRange(salesArrangement.Mortgage?.LoanRealEstates);
-        }
-        
+        salesArrangement.Mortgage.Comment = request.Comment.Text ?? string.Empty;
+
         var updateParametersRequest = new UpdateSalesArrangementParametersRequest
         {
-            SalesArrangementId = request.SalesArrangementId,
-            Mortgage = mortgageParameters
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            Mortgage = salesArrangement.Mortgage
         };
         
         await _salesArrangementService.UpdateSalesArrangementParameters(updateParametersRequest, cancellationToken);
