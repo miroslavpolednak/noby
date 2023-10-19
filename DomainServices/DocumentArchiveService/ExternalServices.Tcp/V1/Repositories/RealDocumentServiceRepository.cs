@@ -30,7 +30,6 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
  ds.KOMPLETNI AS Completeness,
  fc.URL AS Url,
  fc.MIMETYPE AS MimeType,
- fc.FILENAME AS FileName,
  (
      SELECT  
      LISTAGG(dh.HESLO_KOD, ',')
