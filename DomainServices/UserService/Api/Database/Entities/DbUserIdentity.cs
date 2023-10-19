@@ -12,7 +12,7 @@ internal sealed class DbUserIdentity
     public long? brokerId { get; set; }
     public int? m04id { get; set; }
     public int? m17id { get; set; }
-    public int? oscis { get; set; }
+    public decimal? oscis { get; set; }
     public string? cpm { get; set; }
     public string? icp { get; set; }
     public string? ic { get; set; }
