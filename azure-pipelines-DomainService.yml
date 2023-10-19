@@ -1,26 +1,17 @@
 # ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- main
+trigger: none
 
 pool:
   name: MPSS Common
 
 variables:
-  buildConfiguration: 'Release'
-  buildPlatform: 'Any CPU'
-  projectFile: 'NOBY\NOBY.Api\NOBY.Api.csproj'
-  dbMigrationsDirectory: 'NOBY\DatabaseMigrations'
   runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), ne(lower(variables['USESONARQUBE']), 'false'))]
 
 # custom BuildNumber
 name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
 
 steps:
-
 #- task: UseDotNet@2
 #  inputs:
 #    packageType: 'sdk'
@@ -50,31 +41,43 @@ steps:
       Write-Host "Final version - " -NoNewline
       Write-Host $finalVersion
 
-
 - task: DotNetCoreCLI@2
+  displayName: DotNet - Restore
   inputs:
     command: 'restore'
     projects: '$(projectFile)'
     feedsToUse: 'config'
     nugetConfigPath: 'C:\Users\XX_TFSAGENT_MPSS\AppData\Roaming\NuGet\NuGet.Config'
-    noCache: false
+    noCache: true
 
 - task: SonarQubePrepare@5
   condition: and(succeeded(), eq(variables.runSonarQube, true))
   inputs:
     SonarQube: 'NOBY - SonarQube'
     scannerMode: 'MSBuild'
-    projectKey: 'NOBY.FEAPI'
-    projectName: 'NOBY.FEAPI'
+    projectKey: 'NOBY.DS.$(Build.DefinitionName)'
+    projectName: 'NOBY.DS.$(Build.DefinitionName)'
     projectVersion: '1.0.0.$(Build.BuildId)'
     extraProperties: 'sonar.verbose=true'
 
 - task: DotNetCoreCLI@2
+  displayName: DotNet - Build
   inputs:
     command: 'build'
     projects: '$(projectFile)'
-    arguments: '--configuration $(buildConfiguration) --output $(Build.BinariesDirectory)'
-    noCache: false
+    arguments: '--output $(Build.BinariesDirectory)'
+
+- task: DotNetCoreCLI@2
+  displayName: DotNet - Tests
+  condition: and(succeeded(), ne(variables.testsFile, ''))
+  inputs:
+    command: test
+    projects: '$(testsFile)'
+    arguments: '--configuration debug'
+    publishTestResults: true
+    testRunTitle: '$(System.TeamProject)_$(Build.DefinitionName) on $(Build.SourceBranch)'
+  env:
+    ASPNETCORE_ENVIRONMENT: 'Testing'
 
 - task: SonarQubeAnalyze@5
   condition: and(succeeded(), eq(variables.runSonarQube, true))
@@ -85,6 +88,7 @@ steps:
     pollingTimeoutSec: '300'
 
 - task: ArchiveFiles@2
+  displayName: 'Archive Build'
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
@@ -93,11 +97,12 @@ steps:
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish Build to Artifacts'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
-    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\NOBY\$(Build.DefinitionName)\$(Build.BuildNumber)'
+    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\$(Build.DefinitionName)\$(Build.BuildNumber)'
 
 - task: ArchiveFiles@2
   displayName: 'Archive DB Migrations'
@@ -115,4 +120,4 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_DB.zip'
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
-    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\NOBY\$(Build.DefinitionName)\$(Build.BuildNumber)'
+    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\DomainServices\$(Build.DefinitionName)\$(Build.BuildNumber)'

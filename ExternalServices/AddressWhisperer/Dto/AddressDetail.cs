@@ -13,12 +13,12 @@ public class AddressDetail
     public string? Street { get; set; }
 
     /// <summary>
-    /// Číslo orientační - pro CZ/SK adresy mapujeme z AddressWhispererBEService|streetNumber, pro ostatní z AddressWhispererBEService|landRegisterNumber
+    /// Číslo orientační - pro CZ/SK adresy mapujeme z AddressWhispererBEService|streetNumber, pro ostatní státy nemapujeme
     /// </summary>
     public string? StreetNumber { get; set; }
 
     /// <summary>
-    /// Číslo popisné - pro CZ/SK adresy mapujeme z AddressWhispererBEService|landRegisterNumber, pro ostatní státy nemapujeme
+    /// Číslo popisné - pro CZ/SK adresy mapujeme z AddressWhispererBEService|landRegisterNumber, pro ostatní z AddressWhispererBEService|landRegisterNumber a pokud je prázdné, tak z AddressWhispererBEService|streetNumber
     /// </summary>
     public string? HouseNumber { get; set; }
 

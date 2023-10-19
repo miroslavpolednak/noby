@@ -39,6 +39,7 @@ public static class AppConfigurationExtensions
                     Mcs = new HashSet<string> { "kb.cz" },
                     Mpss = new HashSet<string> { "mpss.cz" }
                 },
+                EmailDomainWhitelist = new HashSet<string>(),
                 KafkaTopics = new KafkaTopics()
                 {
                     McsResult = "mcs-result",

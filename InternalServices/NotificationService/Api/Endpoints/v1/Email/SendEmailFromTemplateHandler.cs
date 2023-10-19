@@ -57,7 +57,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
             .GetUsername();
         
         var hashAlgorithms = await _codebookService.HashAlgorithms(cancellationToken);
-        var hashAlgorithmCodes = string.Join(',', hashAlgorithms.Select(s => s.Code));
+        var hashAlgorithmCodes = string.Join(", ", hashAlgorithms.Select(s => s.Code));
         var hashAlgorithm = string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm)
             ? null
             : hashAlgorithms.FirstOrDefault(s => s.Code == request.DocumentHash.HashAlgorithm) ?? 

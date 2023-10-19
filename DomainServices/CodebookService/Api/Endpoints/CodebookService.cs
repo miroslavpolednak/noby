@@ -446,20 +446,9 @@ internal partial class CodebookService
     public override Task<ProfessionCategoriesResponse> ProfessionCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var extensions = _db.GetDynamicList(nameof(ProfessionCategories));
-
-            var items = new List<ProfessionCategoriesResponse.Types.ProfessionCategoryItem>() {
-                new() { Id = 0, Name = "odmítl sdělit", IsValid = true},
-                new() { Id = 1, Name = "státní zaměstnanec", IsValid = true},
-                new() { Id = 2, Name = "zaměstnanec subjektu se státní majetkovou účastí", IsValid = true},
-                new() { Id = 3, Name = "zaměstnanec subjektu se zahraničním vlastníkem", IsValid = true},
-                new() { Id = 4, Name = "podnikatel", IsValid = true},
-                new() { Id = 5, Name = "zaměstnanec soukromé společnosti", IsValid = true},
-                new() { Id = 6, Name = "bez zaměstnání", IsValid = true},
-                new() { Id = 7, Name = "nezjištěno", IsValid = true},
-                new() { Id = 8, Name = "kombinace profesí", IsValid = true},
-            };
-
+            var items = _db.GetList<ProfessionCategoriesResponse.Types.ProfessionCategoryItem>(nameof(ProfessionCategories), 1);
+            var extensions = _db.GetDynamicList(nameof(ProfessionCategories), 2);
+            
             items.ForEach(item =>
             {
                 var ext = extensions.FirstOrDefault(x => x.ProfessionCategoryId == item.Id);
@@ -476,6 +465,19 @@ internal partial class CodebookService
                 }
             });
             return (new ProfessionCategoriesResponse()).AddItems(items);
+        });
+
+    public override Task<SigningMethodsForNaturalPersonResponse> SigningMethodsForNaturalPerson(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(() =>
+        {
+            var items = _db.GetList<SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem>(nameof(SigningMethodsForNaturalPerson), 1);
+            var extensions = _db.GetDynamicList(nameof(SigningMethodsForNaturalPerson), 2);
+
+            items.ForEach(item =>
+            {
+                item.StarbuildEnumId = extensions.FirstOrDefault(x => x.Code == item.Code)?.StarbuildEnumId ?? 2;
+            });
+            return (new SigningMethodsForNaturalPersonResponse()).AddItems(items);
         });
 
     public override Task<GenericCodebookResponse> ProfessionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)

@@ -16,12 +16,12 @@
         </member>
         <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.StreetNumber">
             <summary>
-            Číslo orientační - pro CZ/SK adresy mapujeme z AddressWhispererBEService|streetNumber, pro ostatní z AddressWhispererBEService|landRegisterNumber
+            Číslo orientační - pro CZ/SK adresy mapujeme z AddressWhispererBEService|streetNumber, pro ostatní státy nemapujeme
             </summary>
         </member>
         <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.HouseNumber">
             <summary>
-            Číslo popisné - pro CZ/SK adresy mapujeme z AddressWhispererBEService|landRegisterNumber, pro ostatní státy nemapujeme
+            Číslo popisné - pro CZ/SK adresy mapujeme z AddressWhispererBEService|landRegisterNumber, pro ostatní z AddressWhispererBEService|landRegisterNumber a pokud je prázdné, tak z AddressWhispererBEService|streetNumber
             </summary>
         </member>
         <member name="P:ExternalServices.AddressWhisperer.Dto.AddressDetail.EvidenceNumber">

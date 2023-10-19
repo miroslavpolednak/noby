@@ -29,7 +29,7 @@ internal static class MortgageExtensions
             RepaymentAccountNumber = mortgage.RepaymentAccount?.Number,
             RepaymentAccountPrefix = mortgage.RepaymentAccount?.Prefix,
             EstimatedDuePaymentDate = mortgage.LoanDueDate,
-            RepaymentStartDate = mortgage.FirstAnnuityInstallmentDate,
+            FirstAnnuityInstallmentDate = mortgage.FirstAnnuityInstallmentDate,
             ServiceBranchId = mortgage.BranchConsultantId,
             ConsultantId = mortgage.CaseOwnerUserCurrentId,
             FirstRequestSignDate = mortgage.FirstSignatureDate,
