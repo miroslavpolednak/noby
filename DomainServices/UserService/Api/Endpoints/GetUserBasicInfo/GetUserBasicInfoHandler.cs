@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
+using SharedTypes.Enums;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserBasicInfo;
 
@@ -15,18 +16,18 @@ internal sealed class GetUserBasicInfoHandler
         {
             return Contracts.GetUserBasicInfoResponse.Parser.ParseFrom(cachedBytes);
         }
-    
+
         // vytahnout info o uzivateli z DB
-        var dbIdentities = (await _dbContext.UserBasicInfos
-            .FromSqlInterpolated($"SELECT v33jmeno, v33prijmeni FROM dbo.v33PMP_User WHERE v33id={request.UserId}")
-            .ToListAsync(cancellationToken)
-            ).FirstOrDefault()
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.UserId}");
+        var dbIdentities = (await _dbContext.UserIdentities
+                                            .FromSqlInterpolated($"EXECUTE [dbo].[getUserIdentities] @identitySchema={UserIdentitySchemes.V33Id}, @identityValue={request.UserId}")
+                                            .ToListAsync(cancellationToken)
+                           ).FirstOrDefault()
+                           ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.UserId}");
 
         // vytvorit finalni model
         var model = new Contracts.GetUserBasicInfoResponse
         {
-            DisplayName = $"{dbIdentities.v33jmeno} {dbIdentities.v33prijmeni}".Trim()
+            DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}".Trim()
         };
 
         await _distributedCache.SetAsync(Helpers.CreateUserBasicCacheKey(request.UserId), model.ToByteArray(), new DistributedCacheEntryOptions
