@@ -1,6 +1,6 @@
 ﻿using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
-using SharedTypes.GrpcTypes;
+using SharedTypes.Enums;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserBasicInfo;
 
@@ -19,7 +19,7 @@ internal sealed class GetUserBasicInfoHandler
 
         // vytahnout info o uzivateli z DB
         var dbIdentities = (await _dbContext.UserBasicInfos
-                                            .FromSqlInterpolated($"EXECUTE [dbo].[getUserIdentities] @identitySchema={UserIdentity.Types.UserIdentitySchemes.V33Id.ToString()}, @identityValue={request.UserId}")
+                                            .FromSqlInterpolated($"EXECUTE [dbo].[getUserIdentities] @identitySchema={UserIdentitySchemes.V33Id}, @identityValue={request.UserId}")
                                             .ToListAsync(cancellationToken)
                            ).FirstOrDefault()
                            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.UserId}");
