@@ -1,5 +1,6 @@
 # ASP.NET Core
 
+#Default none and then overriden in the Azure Pipeline settings
 trigger: none
 
 pool:
