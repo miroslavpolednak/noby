@@ -24,7 +24,7 @@ internal sealed class GetCaseDetailHandler
         Helpers.ThrowIfCaseIsCancelled(model.State);
 
         // auditni log
-        if (_currentUser.User!.Id != model.CaseOwner.UserId)
+        if (_currentUser.User?.Id != model.CaseOwner.UserId)
         {
             _auditLogger.Log(
                 AuditEventTypes.Noby009,
