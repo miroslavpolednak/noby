@@ -104,7 +104,16 @@ V rootu aplikace je nutné založit adresář Messaging. Pod tímto adresářem 
 Projekt.Api
  |-- Messaging
       |-- TypZpravy1
+           |-- Dto
+           |-- TypZpravy1.json
+           |-- TypZpravy1.cs
+           |-- TypZpravy1Consumer.cs 
       |-- TypZpravy2
+           |-- Dto
+           |-- TypZpravy2.json
+           |-- TypZpravy2.cs
+           |-- TypZpravy2Consumer.cs
+... 
 ```
 
 ### Napojení na MassTransit
