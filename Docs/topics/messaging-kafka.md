@@ -12,13 +12,10 @@ V KB nyní existují dvě instance Kafky v neprodukčním prostředí:
 - Business Kafka
 - Logman Kafka
 
-Logman kafka je stará instance Kafky, která nyní slouží primárně pro logování a postupně se migruje do Business Kafky.
-
-Pro nahlížení do Kafky slouží kukátko AKHQ, případně aplikace [Offset Explorer](https://www.kafkatool.com/download.html).
+Logman kafka je stará instance Kafky, která nyní slouží primárně pro logování a postupně se migruje do Business Kafky. Pro nahlížení do Kafky slouží kukátko AKHQ, případně aplikace [Offset Explorer](https://www.kafkatool.com/download.html).
 
 ## AKHQ
 
-Odkazy na existující:
 - [AKHQ Business Kafka](http://kafkabc-test-akhq.service.ist.consul-nprod.kb.cz:8080/ui/kafka-bc/topic)
 - [AKHQ Logman Kafka](http://kafkalogc-test-akhq.service.ist.consul-nprod.kb.cz:8080/ui/logc-consul/topic)
 
@@ -91,6 +88,7 @@ avrogen -s .\Schema_Stazene_Z_Apicurio.json .
 ### Jsonschema generator
 
 [Dokumentace](https://speed.kb.cz/documentation/net-sdk/tools/features/static/src/kb.speed.dotnet.tool.jsonschema.generator/)
+
 [Link ke stažení](https://nexus3.kb.cz/repository/nuget-all-v3/KB.Speed.Dotnet.Tool.Jsonschema.Generator/0.3.0.1)
 
 ## Příprava projektu pro komunikaci s Kafkou
@@ -99,7 +97,6 @@ Ve všech projektech používáme stejný pattern implementace Kafky:
 ### Adresářová struktura
 V rootu aplikace je nutné založit adresář Messaging. Pod tímto adresářem se vytvářejí podadresáře pro každý typ zprávy - tyto adresáře mají název typu zprávy.
 
----dopsat--- naming konvence pro pojmenovani souboru pod tema adresarema?
 ```
 Projekt.Api
  |-- Messaging
@@ -115,25 +112,6 @@ Projekt.Api
            |-- TypZpravy2Consumer.cs
 ... 
 ```
-
-### Napojení na MassTransit
-K napojení na messaging infrastrukturu dochází během startupu aplikace.
-
-```csharp
-SharedComponents.GrpcServiceBuilder
-    .CreateGrpcService(args, typeof(Program))
-    .Build((builder, appConfiguration) =>
-    {
-        builder.AddCisMessaging()
-            .AddKafka(typeof(Program).Assembly)
-            .AddConsumer<Api.Messaging.CaseStateChangedProcessingCompleted.CaseStateChanged_ProcessingCompletedConsumer>()
-            //...more consumers
-            .AddConsumerTopicAvro<ISbWorkflowInputProcessingEvent>("--topic name--")
-            //...more topics
-            .Build();
-    })
-```
-
 ### Konfigurace Messaging projektu
 Messaging, tj. i Kafka implementace, má svou vlastní konfiguraci v *appsettings.json*.
 Tato konfigurace se nachází v objektu `CisMessaging` v rootu konfiguračního souboru a má následující strkuturu:
@@ -149,17 +127,73 @@ Tato konfigurace se nachází v objektu `CisMessaging` v rootu konfiguračního 
         "SslCaCertificateStores": "Root,CA,Trust"
     }
 },
+
+"Apicurio": {
+    "Url": "",
+    "UseGroups": true,
+    "SchemaIdentificationType": "ContentId"
+},
+
+"AvroSerializer": {
+    "SerializerType": "Confluent",
+    "BufferBytes": 100,
+    "SubjectNameStrategy": "Record",
+    "AutoRegisterSchemas": false,
+    "UseLatestVersion": false
+},
+
+"AvroDeserializer": {
+    "DeserializerType": "Confluent"
+}
 ```
 
-## KB aktuálně podporuje dva formáty zpráv:
-- AVRO
-- JSON
+### Napojení na MassTransit
+Do topicu může chodit více typů zpráv. Pro každý topic je potřeba definovat značkovací interface. Pro produkování/konzumaci zpráv definujeme partial class k třídám, které chceme generovat do daného topicu. Tyto partial class implementují definovaný značkovací interface.
 
-### Konzumace / publikování AVRO zpráv
----dopsat---
-- avrogen
-- kde najit schemata
-- jak poznat, ze schema je blbe vygenerovane (mam za to, ze u nekterych kontraktu neco chybelo v definici zpravy a pak nefungovala? nejak se to potom muselo pregenerovat v KB?)
+př. chceme-li produkovat zprávy typu `namespaceA.MessageA` a `namespaceB.MessageB` do topicu `TopicA`
+
+1. defingujeme marker interface `ITopicA` pro topic `TopicA`
+2. registrujeme v DI topic producer
+3. definujeme partial class `MessageA` a `MessageB`, které implementují `ITopicA`
+
+```csharp
+// Partials.cs
+public interface ITopicA {}
+
+namespace namespaceA.MessageA
+{
+    public partial class MessageA : ITopicA {}
+}
+
+namespace namespaceA.MessageA
+{
+    public partial class MessageB : ITopicA {}
+}
+
+....
+```
+
+K napojení na messaging infrastrukturu dochází během startupu aplikace.
+
+```csharp
+SharedComponents.GrpcServiceBuilder
+    .CreateGrpcService(args, typeof(Program))
+    .Build((builder, appConfiguration) =>
+    {
+        builder.AddCisMessaging()
+            .AddKafka(typeof(Program).Assembly)
+            .AddConsumer<MessageAConsumer>()
+            .AddConsumer<MessageBConsumer>()
+            //...more consumers
+            .AddConsumerTopicAvro<ITopicA>("TopicA")
+            //...more topics
+            .AddProducerAvro<ITopicA>("TopicA")
+            .Build();
+    })
+
+public class MessageAConsumer : IConsumer<MessageA> { ... }
+public class MessageBConsumer : IConsumer<MessageB> { ... }
+```
 
 ### Konzumace / publikování JSON zpráv
 ---dopsat---
