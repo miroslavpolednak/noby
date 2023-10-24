@@ -70,11 +70,11 @@ V KB se používá schemata dvojího typu
 - Json
 
 Schemata se identifikují pomocí
-- Id (Groupa + Název + verze)
+- Id (Groupa + Název), verze
 - ContentId
 - GlobalId
 
-*pozn. Groupa slouží podobně jako namespace, přičemž je potřeba si dát pozor na naming. V některých případech je schema zaregistravané v defaultní groupě, nicméně název schematu obsahuje zmíněnou groupu, což může vést k omylům.*
+> pozn. Groupa slouží podobně jako namespace, přičemž je potřeba si dát pozor na naming. V některých případech je schema zaregistravané v defaultní groupě, nicméně název schematu obsahuje zmíněnou groupu, což může vést k omylům.*
 
 Schémata se dají vygenerovat pomocí toolů
 - pro Avro - Avrogen 1.11.1
@@ -85,7 +85,7 @@ Schémata se dají vygenerovat pomocí toolů
 
 Příklad pro vygenerování C# tříd
 ```
-avrogen -s .\CaseStateChanged_ProcessingCompleted.json .
+avrogen -s .\Schema_Stazene_Z_Apicurio.json .
 ```
 
 ### Jsonschema generator
@@ -102,9 +102,9 @@ V rootu aplikace je nutné založit adresář Messaging. Pod tímto adresářem 
 ---dopsat--- naming konvence pro pojmenovani souboru pod tema adresarema?
 ```
 Projekt.Api
-- Messaging
--- TypZpravy1
--- TypZpravy2
+ |-- Messaging
+      |-- TypZpravy1
+      |-- TypZpravy2
 ```
 
 ### Napojení na MassTransit
