@@ -1,0 +1,2 @@
+UPDATE EasFormSpecialDataField SET FieldPath = 'PerformerUser.Cpm' WHERE JsonPropertyName = 'obchodni_specialista_CPM'
+UPDATE EasFormSpecialDataField SET FieldPath = 'PerformerUser.Icp' WHERE JsonPropertyName = 'obchodni_specialista_ICP'
