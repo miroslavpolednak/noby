@@ -35,7 +35,8 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             {
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
-                TempFileId = t.Guid!.Value
+                TempFileId = t.Guid!.Value,
+                FormId = request.TaskTypeId == 6 ? taskDetail.TaskDetail?.Signing?.FormId : null
             })
             .ToList();
 
