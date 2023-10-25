@@ -37,11 +37,12 @@ public class SearchDocumentsOnSaOnCaseHandler : IRequestHandler<SearchDocumentsO
             var documentTypesForEaCodeMain = await _eaCodeMainHelper.GetDocumentTypeIdsAccordingEaCodeMain(request.EACodeMainId!.Value, cancellationToken);
 
             var documentsOnSaFiltered = documentsOnSaResponse.DocumentsOnSA
-               .Where(f => documentTypesForEaCodeMain.Contains(f.DocumentTypeId!.Value)
+               .Where(f => f.DocumentTypeId is not null
+                           && documentTypesForEaCodeMain.Contains(f.DocumentTypeId!.Value)
                            && !string.IsNullOrWhiteSpace(f.FormId)
                            && !f.IsFinal
                            && f.IsSigned);
-
+               
             formIds.AddRange(documentsOnSaFiltered.Select(d => d.FormId));
         }
 
