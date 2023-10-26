@@ -16,12 +16,12 @@ internal sealed class GetCustomerDetailWithChangesHandler
         // SA instance
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken);
 
-        await CheckProductTypeMandant(salesArrangement.CaseId, cancellationToken);
+        await checkProductTypeMandant(salesArrangement.CaseId, cancellationToken);
 
         return await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSA, cancellationToken);
     }
 
-    private async Task CheckProductTypeMandant(long caseId, CancellationToken cancellationToken)
+    private async Task checkProductTypeMandant(long caseId, CancellationToken cancellationToken)
     {
         var caseData = await _caseService.GetCaseDetail(caseId, cancellationToken);
 

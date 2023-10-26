@@ -6,11 +6,6 @@ namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 public sealed class CreateCustomerResponse
 {
     /// <summary>
-    /// Vstupní data se liší od dat z KB CM
-    /// </summary>
-    public bool IsInputDataDifferent { get; set; }
-
-    /// <summary>
     /// Klient byl při založení ztotožněn v základních registrech
     /// </summary>
     public bool IsVerified { get; set; }
@@ -22,8 +17,6 @@ public sealed class CreateCustomerResponse
     public NaturalPersonModel? NaturalPerson { get; set; }
 
     public Shared.JuridicalPerson? JuridicalPerson { get; set; }
-
-    public bool Updatable { get; set; }
 
     public Shared.LegalCapacityItem? LegalCapacity { get; set; }
 
