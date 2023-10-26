@@ -33,7 +33,7 @@ internal sealed class HouseholdCustomerChildMapper
             RoleCode = Helpers.GetEnumFromString<_C4M.RoleType>(customerRoles.FirstOrDefault(t => t.Id == customer.CustomerRoleId)?.RdmCode),
             Firstname = customer.Firstname,
             Surname = customer.Surname,
-            BirthName = customer.BirthName,
+            BirthName = string.IsNullOrWhiteSpace(customer.BirthName) ? customer.Surname : customer.BirthName,
             BirthDate = customer.BirthDate,
             BirthPlace = customer.BirthPlace,
             Address = customer.Address is null ? null : new _C4M.PrimaryAddress
