@@ -92,8 +92,8 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
                 rider.UsingKafka((context, k) =>
                 {
                     // kdyby vyhnila kafka, tak se zkousej porad rekonektit
-                    k.ReconnectBackoff = TimeSpan.FromMilliseconds(250);
-                    k.ReconnectBackoffMax = TimeSpan.FromMinutes(30);
+                    k.ReconnectBackoff = TimeSpan.FromMilliseconds(_configuration.ReconnectBackoff);
+                    k.ReconnectBackoffMax = TimeSpan.FromMinutes(_configuration.ReconnectBackoffMaxMinutes);
 
                     k.CreateKafkaHost(_configuration);
 

@@ -19,6 +19,63 @@
             Nastavení konfigurace autentizace z appsettings.json.
             </summary>
         </member>
+        <member name="T:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration">
+            <summary>
+            Konfigurace Kafky - zejmena z Confluent.Kafka.ClientConfig
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration.BootstrapServers">
+            <summary>
+            https://docs.confluent.io/platform/current/clients/confluent-kafka-dotnet/_site/api/Confluent.Kafka.ClientConfig.html#Confluent_Kafka_ClientConfig_BootstrapServers
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration.SslKeyLocation">
+            <summary>
+            https://docs.confluent.io/platform/current/clients/confluent-kafka-dotnet/_site/api/Confluent.Kafka.ClientConfig.html#Confluent_Kafka_ClientConfig_SslKeyLocation
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration.SslKeyPassword">
+            <summary>
+            https://docs.confluent.io/platform/current/clients/confluent-kafka-dotnet/_site/api/Confluent.Kafka.ClientConfig.html#Confluent_Kafka_ClientConfig_SslKeyPassword
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration.SecurityProtocol">
+            <summary>
+            https://docs.confluent.io/platform/current/clients/confluent-kafka-dotnet/_site/api/Confluent.Kafka.SecurityProtocol.html
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration.SslCaLocation">
+            <summary>
+            https://docs.confluent.io/platform/current/clients/confluent-kafka-dotnet/_site/api/Confluent.Kafka.ClientConfig.html#Confluent_Kafka_ClientConfig_SslCaLocation
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration.SslCaCertificateStores">
+            <summary>
+            https://docs.confluent.io/platform/current/clients/confluent-kafka-dotnet/_site/api/Confluent.Kafka.ClientConfig.html#Confluent_Kafka_ClientConfig_SslCaCertificateStores
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration.SslCertificateLocation">
+            <summary>
+            https://docs.confluent.io/platform/current/clients/confluent-kafka-dotnet/_site/api/Confluent.Kafka.ClientConfig.html#Confluent_Kafka_ClientConfig_SslCertificateLocation
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration.Debug">
+            <summary>
+            https://docs.confluent.io/platform/current/clients/confluent-kafka-dotnet/_site/api/Confluent.Kafka.ClientConfig.html#Confluent_Kafka_ClientConfig_Debug
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration.ReconnectBackoff">
+            <summary>
+            https://kafka.apache.org/documentation/#producerconfigs_reconnect.backoff.ms
+            </summary>
+            <remarks>Default: 250ms</remarks>
+        </member>
+        <member name="P:CIS.Infrastructure.Messaging.Configuration.IKafkaRiderConfiguration.ReconnectBackoffMaxMinutes">
+            <summary>
+            https://kafka.apache.org/documentation/#producerconfigs_reconnect.backoff.max.ms
+            </summary>
+            <remarks>Default: 30 minutes</remarks>
+        </member>
         <member name="T:CIS.Infrastructure.Messaging.Kafka.NamespaceDoc">
             <summary>
             Helpery pro konzumacia produkování zpráv do Kafky
