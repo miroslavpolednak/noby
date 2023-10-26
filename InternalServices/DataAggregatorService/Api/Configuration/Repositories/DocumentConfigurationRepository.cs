@@ -43,14 +43,22 @@ internal class DocumentConfigurationRepository
     {
         const string DynamicStringFormatsQuery =
             """
-            SELECT AcroFieldName, StringFormat, [Priority], DynamicStringFormatId, EqualToValue, FieldPath FROM vw_DocumentDynamicStringFormats
+            SELECT DynamicStringFormatId, AcroFieldName, StringFormat, [Priority], EqualToValue, FieldPath FROM vw_DocumentDynamicStringFormats
             WHERE DocumentId = @documentId AND DocumentVersion = @documentVersion
             ORDER BY AcroFieldName, [Priority]
             """;
 
         var formats = await _connectionProvider.ExecuteDapperQueryAsync(Query, cancellationToken);
 
-        return formats.ToLookup(f => f.AcroFieldName);
+        var groupedFormats = formats.GroupBy(f => f.DynamicStringFormatId).Select(formatGroup =>
+        {
+            var format = formatGroup.First();
+            format.Conditions.AddRange(formatGroup.Skip(1).SelectMany(f => f.Conditions));
+
+            return format;
+        });
+
+        return groupedFormats.ToLookup(f => f.AcroFieldName);
 
         Task<IEnumerable<DocumentDynamicStringFormat>> Query(IDbConnection conn)
         {
@@ -62,7 +70,7 @@ internal class DocumentConfigurationRepository
 
                     return format;
                 },
-                splitOn: "DynamicStringFormatId");
+                splitOn: "EqualToValue");
         }
     }
 
