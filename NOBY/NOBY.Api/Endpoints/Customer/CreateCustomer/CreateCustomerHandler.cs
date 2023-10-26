@@ -84,9 +84,7 @@ internal sealed class CreateCustomerHandler
         var updateResponse = await _customerOnSAService.UpdateCustomer(customerOnSA.ToUpdateRequest(customerKb), cancellationToken);
 
         // vytvorit response z API
-        var model = customerKb
-            .ToResponseDto(isVerified, resultCode)
-            .InputDataComparison(request);
+        var model = customerKb.ToResponseDto(isVerified, resultCode);
 
         if (customerOnSA.CustomerRoleId == (int)CustomerRoles.Debtor)
         {
