@@ -12,9 +12,9 @@ public static class CustomerHelper
         if (!customerDetail.NaturalPerson.DegreeBeforeId.HasValue)
             return FullName(customerDetail);
 
-        var degree = degreesBefore.First(d => d.Id == customerDetail.NaturalPerson.DegreeBeforeId.Value).Name;
+        var degree = degreesBefore.FirstOrDefault(d => d.Id != 0 && d.Id == customerDetail.NaturalPerson.DegreeBeforeId.Value)?.Name;
 
-        return $"{FullName(customerDetail)}, {degree}";
+        return string.IsNullOrWhiteSpace(degree) ? FullName(customerDetail) : $"{FullName(customerDetail)}, {degree}";
     }
 
     public static string NameWithDateOfBirth(string fullName, DateTime dateOfBirth)
