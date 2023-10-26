@@ -60,9 +60,10 @@ internal sealed class LoggerBootstraper
             .Filter
             .ByExcluding(Matching.WithProperty("RequestPath", CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl));
 
+        // vynechat vsechny chyby, ktere nechceme logovat
         loggerConfiguration
             .Filter
-            .ByExcluding(logEvent => logEvent.Exception is ICisLogExcludeException);
+            .ByExcluding(logEvent => logEvent.Exception is ICisExceptionExludedFromLog);
     }
 
     public void EnrichLogger(LoggerConfiguration loggerConfiguration)

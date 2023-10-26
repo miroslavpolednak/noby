@@ -13,6 +13,8 @@ internal sealed class KafkaRiderConfiguration
     public string? SslCaCertificateStores { get; set; } = null!;
     public string? SslCertificateLocation { get; set; } = null!;
     public string? Debug { get; set; }
+    public int ReconnectBackoff { get; set; } = 250;
+    public int ReconnectBackoffMaxMinutes { get; set; } = 30;
 
     internal void ValidateConfiguration()
     {

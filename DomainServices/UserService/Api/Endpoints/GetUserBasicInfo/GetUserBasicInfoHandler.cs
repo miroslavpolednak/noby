@@ -18,8 +18,8 @@ internal sealed class GetUserBasicInfoHandler
         }
     
         // vytahnout info o uzivateli z DB
-        var dbIdentities = (await _dbContext.UserBasicInfos
-                                            .FromSqlInterpolated($"EXECUTE [dbo].[getUserIdentities] @identitySchema={UserIdentity.Types.UserIdentitySchemes.V33Id.ToString()}, @identityValue={request.UserId}")
+        var userInfo = (await _dbContext.UserBasicInfos
+                                            .FromSqlInterpolated($"EXECUTE [dbo].[getUserDisplayName] @v33id={request.UserId}")
                                             .ToListAsync(cancellationToken)
                            ).FirstOrDefault()
                            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.UserId}");
@@ -27,7 +27,7 @@ internal sealed class GetUserBasicInfoHandler
         // vytvorit finalni model
         var model = new Contracts.GetUserBasicInfoResponse
         {
-            DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}".Trim()
+            DisplayName = userInfo.DisplayName
         };
 
         await _distributedCache.SetAsync(Helpers.CreateUserBasicCacheKey(request.UserId), model.ToByteArray(), new DistributedCacheEntryOptions
