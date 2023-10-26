@@ -124,7 +124,6 @@ internal static class CreateCustomerExtensions
             ResultCode = resultCode,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (SharedTypes.Types.Address)t!).ToList(),
-            IsInputDataDifferent = true,
             Contacts = new(),
             LegalCapacity = customer.NaturalPerson?.LegalCapacity is null ? null : new Shared.LegalCapacityItem
             {
@@ -146,25 +145,6 @@ internal static class CreateCustomerExtensions
             };
 
         return model;
-    }
-
-    public static CreateCustomerResponse InputDataComparison(this CreateCustomerResponse response, CreateCustomerRequest originalRequest)
-    {
-        if (
-            !stringCompare(originalRequest.Contacts?.MobilePhone?.PhoneNumber, response.Contacts?.MobilePhone?.PhoneNumber)
-            || !stringCompare(originalRequest.Contacts?.EmailAddress?.EmailAddress, response.Contacts?.EmailAddress?.EmailAddress)
-            || originalRequest.BirthDate != response.NaturalPerson?.DateOfBirth
-            || !stringCompare(originalRequest.BirthNumber, response.NaturalPerson?.BirthNumber)
-            || !stringCompare(originalRequest.BirthPlace, response.NaturalPerson?.PlaceOfBirth)
-            || originalRequest.CitizenshipCountryId != (response.NaturalPerson?.CitizenshipCountriesId?.FirstOrDefault() ?? 0)
-            || originalRequest.GenderId != ((int?)response.NaturalPerson?.Gender ?? 0)
-            || !stringCompare(originalRequest.FirstName, response.NaturalPerson?.FirstName)
-            || !stringCompare(originalRequest.LastName, response.NaturalPerson?.LastName)
-            || !(originalRequest.PrimaryAddress?.Equals(response.Addresses?.FirstOrDefault(t => t.AddressTypeId == (int)SharedTypes.Enums.AddressTypes.Permanent)) ?? true)
-        )
-            response.IsInputDataDifferent = true;
-
-        return response;
     }
 
     private static bool stringCompare(string? s1, string? s2)

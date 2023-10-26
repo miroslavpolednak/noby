@@ -1190,11 +1190,6 @@
             Trvalá adresa v ČR
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerResponse.IsInputDataDifferent">
-            <summary>
-            Vstupní data se liší od dat z KB CM
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerResponse.IsVerified">
             <summary>
             Klient byl při založení ztotožněn v základních registrech
