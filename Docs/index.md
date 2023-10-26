@@ -41,6 +41,8 @@
 
 [Messaging - Kafka](./topics/messaging-kafka.md)
 
+[Verzování FE API a doménových služeb](./topics/versioning.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS
