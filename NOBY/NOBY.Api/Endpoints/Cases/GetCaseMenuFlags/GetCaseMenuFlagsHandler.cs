@@ -31,7 +31,7 @@ internal sealed class GetCaseMenuFlagsHandler
             TasksMenuItem = new(),
             ChangeRequestsMenuItem = new GetCaseMenuFlagsItem
             {
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.ToBeCancelled
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.InProgress && caseInstance.State != (int)CaseStates.ToBeCancelled
             },
             RealEstatesMenuItem = new GetCaseMenuFlagsItem
             {
