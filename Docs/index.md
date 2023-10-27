@@ -41,7 +41,7 @@
 
 [Messaging - Kafka](./topics/messaging-kafka.md)
 
-[Verzování FE API a doménových služeb](./topics/versioning.md)
+[Versioning & GIT branching](./topics/versioning.md)
 
 ## Struktura solution - projekty a adresáře
 
