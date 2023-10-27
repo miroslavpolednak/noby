@@ -43,7 +43,7 @@ internal class DocumentConfigurationRepository
     {
         const string DynamicStringFormatsQuery =
             """
-            SELECT DynamicStringFormatId, AcroFieldName, StringFormat, [Priority], EqualToValue, FieldPath FROM vw_DocumentDynamicStringFormats
+            SELECT DynamicStringFormatId, AcroFieldName, StringFormat, [Priority], DynamicStringFormatId as StringFormatConditionGroupId, EqualToValue, FieldPath FROM vw_DocumentDynamicStringFormats
             WHERE DocumentId = @documentId AND DocumentVersion = @documentVersion
             ORDER BY AcroFieldName, [Priority]
             """;
@@ -70,7 +70,7 @@ internal class DocumentConfigurationRepository
 
                     return format;
                 },
-                splitOn: "EqualToValue");
+                splitOn: "StringFormatConditionGroupId");
         }
     }
 
