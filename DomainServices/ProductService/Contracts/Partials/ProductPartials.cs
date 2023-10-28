@@ -1,6 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-
-namespace DomainServices.ProductService.Contracts;
+﻿namespace DomainServices.ProductService.Contracts;
 
 public partial class GetProductListRequest
     : MediatR.IRequest<GetProductListResponse>, CIS.Core.Validation.IValidatableRequest
@@ -19,15 +17,15 @@ public partial class CreateMortgageRequest
 { }
 
 public partial class UpdateMortgageRequest
-    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class CreateContractRelationshipRequest
-    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class DeleteContractRelationshipRequest
-    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class GetCustomersOnProductRequest

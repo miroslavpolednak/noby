@@ -1,5 +1,4 @@
-﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace DomainServices.ProductService.Api.Endpoints.CreateMortgage;
 

@@ -1,24 +1,18 @@
-﻿using DomainServices.ProductService.Contracts;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
-using ExternalServices.MpHome.V1;
-using DomainServices.ProductService.Api.Database;
 
 namespace DomainServices.ProductService.Api.Endpoints.CreateMortgage;
 
-internal sealed class CreateMortgageHandler
-    : IRequestHandler<CreateMortgageRequest, CreateMortgageResponse>
+internal sealed class CreateMortgageHandler : IRequestHandler<CreateMortgageRequest, CreateMortgageResponse>
 {
-    #region Construction
-
     private readonly ICodebookServiceClient _codebookService;
     private readonly LoanRepository _repository;
     private readonly IMpHomeClient _mpHomeClient;
     private readonly ICaseServiceClient _caseService;
-    private readonly DomainServices.ProductService.ExternalServices.Pcp.V1.IPcpClient _pcpClient;
+    private readonly ExternalServices.Pcp.V1.IPcpClient _pcpClient;
 
     public CreateMortgageHandler(
-        DomainServices.ProductService.ExternalServices.Pcp.V1.IPcpClient pcpClient,
+        ExternalServices.Pcp.V1.IPcpClient pcpClient,
         ICodebookServiceClient codebookService,
         ICaseServiceClient caseService,
         LoanRepository repository,
@@ -31,33 +25,31 @@ internal sealed class CreateMortgageHandler
         _caseService = caseService;
     }
 
-    #endregion
-
-    public async Task<CreateMortgageResponse> Handle(Contracts.CreateMortgageRequest request, CancellationToken cancellation)
+    public async Task<CreateMortgageResponse> Handle(CreateMortgageRequest request, CancellationToken cancellationToken)
     {
-        var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellation);
-
-        if (await _repository.ExistsLoan(caseInstance.CaseId, cancellation))
-        {
-            throw new CisAlreadyExistsException(12005, nameof(caseInstance.CaseId), caseInstance.CaseId);
-        }
+        if (await _repository.LoanExists(request.CaseId, cancellationToken))
+            throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.AlreadyExists12005, request.CaseId);
 
         // create in pcp
-        string? newPcpId = null;
-        if (caseInstance.Customer?.Identity?.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
-        {
-            var pcpId = (await _codebookService.ProductTypes(cancellation)).First(t => t.Id == request.Mortgage.ProductTypeId).PcpProductId;
-            newPcpId = await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpId, cancellation);
-        }
+        var pcpId = await CreatePcpId(request, cancellationToken);
 
         // create in konsdb
-        var mortgageRequest = request.Mortgage.ToMortgageRequest(newPcpId);
-        await _mpHomeClient.UpdateLoan(caseInstance.CaseId, mortgageRequest, cancellation);
+        await _mpHomeClient.UpdateLoan(request.CaseId, request.Mortgage.ToMortgageRequest(pcpId), cancellationToken);
 
-        return new CreateMortgageResponse
-        {
-            ProductId = request.CaseId,
-        };
+        return new CreateMortgageResponse { ProductId = request.CaseId };
     }
 
+    private async Task<string?> CreatePcpId(CreateMortgageRequest request, CancellationToken cancellationToken)
+    {
+        var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
+
+        if (caseInstance.Customer?.Identity?.IdentityScheme != SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
+            return default;
+
+        var productTypes = await _codebookService.ProductTypes(cancellationToken);
+        var pcpProductId = productTypes.First(t => t.Id == request.Mortgage.ProductTypeId).PcpProductId;
+
+        return await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpProductId, cancellationToken);
+
+    }
 }

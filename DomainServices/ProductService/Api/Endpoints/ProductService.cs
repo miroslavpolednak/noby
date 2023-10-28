@@ -1,5 +1,4 @@
-﻿using DomainServices.ProductService.Contracts;
-using Google.Protobuf.WellKnownTypes;
+﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 
@@ -25,14 +24,23 @@ internal class ProductService : Contracts.v1.ProductService.ProductServiceBase
     public override async Task<CreateMortgageResponse> CreateMortgage(CreateMortgageRequest request, ServerCallContext context)
         => await _mediator.Send(request);
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateMortgage(UpdateMortgageRequest request, ServerCallContext context)
-        => await _mediator.Send(request);
+    public override async Task<Empty> UpdateMortgage(UpdateMortgageRequest request, ServerCallContext context)
+    {
+        await _mediator.Send(request);
+        return new Empty();
+    }
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> CreateContractRelationship(CreateContractRelationshipRequest request, ServerCallContext context)
-        => await _mediator.Send(request);
+    public override async Task<Empty> CreateContractRelationship(CreateContractRelationshipRequest request, ServerCallContext context)
+    {
+        await _mediator.Send(request);
+        return new Empty();
+    }
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteContractRelationship(DeleteContractRelationshipRequest request, ServerCallContext context)
-        => await _mediator.Send(request);
+    public override async Task<Empty> DeleteContractRelationship(DeleteContractRelationshipRequest request, ServerCallContext context)
+    {
+        await _mediator.Send(request);
+        return new Empty();
+    }
 
     public override async Task<GetCustomersOnProductResponse> GetCustomersOnProduct(GetCustomersOnProductRequest request, ServerCallContext context)
         => await _mediator.Send(request);
@@ -49,7 +57,6 @@ internal class ProductService : Contracts.v1.ProductService.ProductServiceBase
     public override async Task<Empty> CancelMortgage(CancelMortgageRequest request, ServerCallContext context)
     {
         await _mediator.Send(request, context.CancellationToken);
-
         return new Empty();
     }
 }

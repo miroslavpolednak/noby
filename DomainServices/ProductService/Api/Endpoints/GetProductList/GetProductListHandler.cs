@@ -1,33 +1,33 @@
-﻿using DomainServices.ProductService.Contracts;
+﻿namespace DomainServices.ProductService.Api.Endpoints.GetProductList;
 
-namespace DomainServices.ProductService.Api.Endpoints.GetProductList;
-
-internal sealed class GetProductListHandler
-    : IRequestHandler<GetProductListRequest, GetProductListResponse>
+internal sealed class GetProductListHandler : IRequestHandler<GetProductListRequest, GetProductListResponse>
 {
-    private readonly Database.LoanRepository _repository;
+    private readonly LoanRepository _repository;
 
-    public GetProductListHandler(Database.LoanRepository repository)
+    public GetProductListHandler(LoanRepository repository)
     {
         _repository = repository;
     }
     
-    public async Task<GetProductListResponse> Handle(GetProductListRequest request, CancellationToken cancellation)
+    public async Task<GetProductListResponse> Handle(GetProductListRequest request, CancellationToken cancellationToken)
     {
-        var response = new GetProductListResponse();
-
         // add mortgage product if exists
-        var loan = await _repository.GetLoan(request.CaseId, cancellation);
-        if (loan != null)
-        {
-            response.Products.Add(new GetProductListItem
-            {
-                ProductId = request.CaseId,
-                ProductTypeId = loan.ProductTypeId.GetValueOrDefault()
-            });
-        }
+        var loan = await _repository.GetLoan(request.CaseId, cancellationToken);
 
-        return response;
+        if (loan is null)
+            return new GetProductListResponse();
+
+        return new GetProductListResponse
+        {
+            Products =
+            {
+                new GetProductListItem
+                {
+                    ProductId = request.CaseId,
+                    ProductTypeId = loan.ProductTypeId.GetValueOrDefault()
+                }
+            }
+        };
     }
 
 }
