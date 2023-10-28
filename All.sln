@@ -209,6 +209,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\healthcheck.md = Docs\topics\healthcheck.md
 		Docs\topics\logging.md = Docs\topics\logging.md
 		Docs\topics\messaging-kafka.md = Docs\topics\messaging-kafka.md
+		Docs\topics\NOBY-GIT-FLOW.png = Docs\topics\NOBY-GIT-FLOW.png
 		Docs\topics\service-discovery.md = Docs\topics\service-discovery.md
 		Docs\topics\soap-client.md = Docs\topics\soap-client.md
 		Docs\topics\tempfilemanager.md = Docs\topics\tempfilemanager.md
@@ -216,6 +217,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\validation-feapi.md = Docs\topics\validation-feapi.md
 		Docs\topics\validation-grpc.md = Docs\topics\validation-grpc.md
 		Docs\topics\validation.md = Docs\topics\validation.md
+		Docs\topics\versioning.md = Docs\topics\versioning.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Testing", "CIS\Testing\CIS.Testing.csproj", "{02867ACA-A81B-40CD-87B3-FD97CF82DB04}"
