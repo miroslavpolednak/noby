@@ -4,5 +4,5 @@ internal class Collateral
 {
     public long ProductId { get; set; }
 
-    public long RealEstateTypeId { get; set; }
+    public long? RealEstateTypeId { get; set; }
 }
