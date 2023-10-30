@@ -7,12 +7,12 @@ using DomainServices.HouseholdService.Contracts.Dto;
 using Google.Protobuf.Collections;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DomainServices.HouseholdService.Clients.Services.Internal;
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
 public class CustomerChangeDataMerger : ICustomerChangeDataMerger
 {
-
     public JsonSerializerOptions JsonSerializationOptions { get; set; } = new()
     {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
@@ -24,7 +24,7 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
     /// <returns>json string</returns>
     public string? TrowAwayLocallyStoredCrsData(CustomerOnSA customerOnSA)
     {
-        var currentDelta = GetCustomerChangeDataDelta(customerOnSA);
+        var currentDelta = CustomerChangeData.TryCreate(customerOnSA.CustomerChangeData)?.Delta;
         var taxResidences = currentDelta?.NaturalPerson?.TaxResidences;
         if (taxResidences is not null)
         {
@@ -40,21 +40,21 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
     /// <returns>json string</returns>
     public string? TrowAwayLocallyStoredClientData(CustomerOnSA customerOnSA)
     {
-        var currentDelta = GetCustomerChangeDataDelta(customerOnSA);
+        var currentDelta = CustomerChangeData.TryCreate(customerOnSA.CustomerChangeData)?.Delta;
         var currentDeltaTaxResidences = currentDelta?.NaturalPerson?.TaxResidences;
 
         if (currentDeltaTaxResidences is not null)
         {
             var deltaWithCrsOnly = new CustomerChangeDataDelta
             {
-                NaturalPerson = new()
+                NaturalPerson = new NaturalPersonDelta
                 {
-                    TaxResidences = new()
+                    TaxResidences = new NaturalPersonDelta.TaxResidenceDelta
                     {
                         ValidFrom = currentDeltaTaxResidences.ValidFrom,
                         ResidenceCountries = currentDeltaTaxResidences.ResidenceCountries is not null && currentDeltaTaxResidences.ResidenceCountries.Any()
-                            ? new(currentDeltaTaxResidences.ResidenceCountries!)
-                            : new()
+                            ? new List<NaturalPersonDelta.TaxResidenceDelta.TaxResidenceItemDelta>(currentDeltaTaxResidences.ResidenceCountries!)
+                            : new List<NaturalPersonDelta.TaxResidenceDelta.TaxResidenceItemDelta>()
                     }
                 }
             };
@@ -69,65 +69,54 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
 
     public void MergeAll(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
     {
-        var delta = GetCustomerChangeDataDelta(customerOnSA);
+        var customerChangeData = CustomerChangeData.TryCreate(customerOnSA.CustomerChangeData);
 
-        if (delta is null)
+        if (customerChangeData is null)
             return;
 
-        MergeClientData(delta, customer.NaturalPerson, customer.Addresses, customer.Contacts);
+        MergeClientData(customerChangeData, customer.NaturalPerson, customer.Addresses, customer.Contacts);
 
-        customer.NaturalPerson.TaxResidence = MapDeltaToTaxResidence(delta.NaturalPerson?.TaxResidences) ?? customer.NaturalPerson.TaxResidence;
-        customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
-        customer.CustomerIdentification = MapDeltaToCustomerIdentification(delta.CustomerIdentification) ?? customer.CustomerIdentification;
+        customer.NaturalPerson.TaxResidence = MapDeltaToTaxResidence(customerChangeData.Delta.NaturalPerson?.TaxResidences) ?? customer.NaturalPerson.TaxResidence;
+        customer.IdentificationDocument = MapDeltaToIdentificationDocument(customerChangeData.Delta.IdentificationDocument) ?? customer.IdentificationDocument;
+        customer.CustomerIdentification = MapDeltaToCustomerIdentification(customerChangeData.Delta.CustomerIdentification) ?? customer.CustomerIdentification;
     }
 
     public void MergeClientData(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
     {
-        var delta = GetCustomerChangeDataDelta(customerOnSA);
+        var customerChangeData = CustomerChangeData.TryCreate(customerOnSA.CustomerChangeData);
 
-        if (delta is null)
+        if (customerChangeData is null)
             return;
 
-        MergeClientData(delta, customer.NaturalPerson, customer.Addresses, customer.Contacts);
+        MergeClientData(customerChangeData, customer.NaturalPerson, customer.Addresses, customer.Contacts);
 
-        customer.IdentificationDocument = MapDeltaToIdentificationDocument(delta.IdentificationDocument) ?? customer.IdentificationDocument;
-        customer.CustomerIdentification = MapDeltaToCustomerIdentification(delta.CustomerIdentification) ?? customer.CustomerIdentification;
+        customer.IdentificationDocument = MapDeltaToIdentificationDocument(customerChangeData.Delta.IdentificationDocument) ?? customer.IdentificationDocument;
+        customer.CustomerIdentification = MapDeltaToCustomerIdentification(customerChangeData.Delta.CustomerIdentification) ?? customer.CustomerIdentification;
     }
 
     public void MergeTaxResidence(NaturalPerson naturalPerson, CustomerOnSA customerOnSA)
     {
-        var delta = GetCustomerChangeDataDelta(customerOnSA)?.NaturalPerson?.TaxResidences;
+        var delta = CustomerChangeData.TryCreate(customerOnSA.CustomerChangeData)?.Delta.NaturalPerson?.TaxResidences;
 
         naturalPerson.TaxResidence = MapDeltaToTaxResidence(delta) ?? naturalPerson.TaxResidence;
     }
 
-    private static CustomerChangeDataDelta? GetCustomerChangeDataDelta(CustomerOnSA customerOnSA)
+    private static void MergeClientData(CustomerChangeData customerChangeData, NaturalPerson naturalPerson, RepeatedField<GrpcAddress> addresses, RepeatedField<Contact> contacts)
     {
-        if (string.IsNullOrWhiteSpace(customerOnSA.CustomerChangeData))
-            return default;
-
-        JsonSerializerOptions options = new()
-        {
-            PropertyNameCaseInsensitive = true
-        };
-
-        return JsonSerializer.Deserialize<CustomerChangeDataDelta>(customerOnSA.CustomerChangeData, options);
+        RewriteWithDelta(naturalPerson, customerChangeData);
+        RewriteWithDelta(addresses, customerChangeData.Delta.Addresses);
+        RewriteWithDelta(contacts, customerChangeData.Delta.MobilePhone, customerChangeData.Delta.EmailAddress);
     }
 
-    private static void MergeClientData(CustomerChangeDataDelta delta, NaturalPerson naturalPerson, RepeatedField<GrpcAddress> addresses, RepeatedField<Contact> contacts)
+    private static void RewriteWithDelta(NaturalPerson naturalPerson, CustomerChangeData customerChangeData)
     {
-        RewriteWithDelta(naturalPerson, delta.NaturalPerson);
-        RewriteWithDelta(addresses, delta.Addresses);
-        RewriteWithDelta(contacts, delta.MobilePhone, delta.EmailAddress);
-    }
+        var delta = customerChangeData.Delta.NaturalPerson;
 
-    private static void RewriteWithDelta(NaturalPerson naturalPerson, NaturalPersonDelta? delta)
-    {
         if (delta is null)
             return;
 
         naturalPerson.BirthNumber = delta.BirthNumber ?? naturalPerson.BirthNumber;
-        naturalPerson.DegreeBeforeId = delta.DegreeBeforeId ?? naturalPerson.DegreeBeforeId;
+        naturalPerson.DegreeBeforeId = customerChangeData.GetNaturalPersonAttributeOrDefault(nameof(delta.DegreeBeforeId), naturalPerson.DegreeBeforeId);
         naturalPerson.FirstName = delta.FirstName ?? naturalPerson.FirstName;
         naturalPerson.LastName = delta.LastName ?? naturalPerson.LastName;
         naturalPerson.DateOfBirth = delta.DateOfBirth ?? naturalPerson.DateOfBirth;
@@ -137,10 +126,10 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         naturalPerson.GenderId = delta.Gender != Genders.Unknown ? (int)delta.Gender : naturalPerson.GenderId;
         naturalPerson.MaritalStatusStateId = delta.MaritalStatusId ?? naturalPerson.MaritalStatusStateId;
         naturalPerson.EducationLevelId = delta.EducationLevelId ?? naturalPerson.EducationLevelId;
-        naturalPerson.ProfessionCategoryId = delta.ProfessionCategoryId ?? naturalPerson.ProfessionCategoryId;
-        naturalPerson.ProfessionId = delta.ProfessionId ?? naturalPerson.ProfessionId;
-        naturalPerson.NetMonthEarningAmountId = delta.NetMonthEarningAmountId ?? naturalPerson.NetMonthEarningAmountId;
-        naturalPerson.NetMonthEarningTypeId = delta.NetMonthEarningTypeId ?? naturalPerson.NetMonthEarningTypeId;
+        naturalPerson.ProfessionCategoryId = customerChangeData.GetNaturalPersonAttributeOrDefault(nameof(delta.ProfessionCategoryId), naturalPerson.ProfessionCategoryId);
+        naturalPerson.ProfessionId = customerChangeData.GetNaturalPersonAttributeOrDefault(nameof(delta.ProfessionId), naturalPerson.ProfessionId);
+        naturalPerson.NetMonthEarningAmountId = customerChangeData.GetNaturalPersonAttributeOrDefault(nameof(delta.NetMonthEarningAmountId), naturalPerson.NetMonthEarningAmountId);
+        naturalPerson.NetMonthEarningTypeId = customerChangeData.GetNaturalPersonAttributeOrDefault(nameof(delta.NetMonthEarningTypeId), naturalPerson.NetMonthEarningTypeId);
 
         if (delta.CitizenshipCountriesId is not null)
         {
@@ -154,8 +143,16 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         if (delta is null)
             return;
 
+        var confirmedContactAddress = addresses.FirstOrDefault(address => address is { AddressTypeId: (int)AddressTypes.Mailing, IsAddressConfirmed: true });
+        
         addresses.Clear();
-        addresses.AddRange(delta.Select(address => (GrpcAddress)address!));
+
+        //Add addresses from delta - it confirmed contact address exists then do not add mailing address
+        addresses.AddRange(delta.Where(address => confirmedContactAddress is null || address.AddressTypeId != (int)AddressTypes.Mailing).Select(address => (GrpcAddress)address!));
+
+        //Add confirmed contact address if exists
+        if (confirmedContactAddress is not null)
+            addresses.Add(confirmedContactAddress);
     }
 
     private static void RewriteWithDelta(RepeatedField<Contact> contacts, MobilePhoneDelta? mobileDelta, EmailAddressDelta? emailDelta)
@@ -168,7 +165,7 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
 
         contacts.Clear();
 
-        if (mobileDelta?.PhoneNumber != null)
+        if (mobilePhone?.Mobile.IsPhoneConfirmed != true && mobileDelta?.PhoneNumber != null)
         {
             mobilePhone = new Contact
             {
@@ -183,7 +180,7 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
             };
         }
 
-        if (emailDelta?.EmailAddress != null)
+        if (emailAddress?.Email.IsEmailConfirmed != true && emailDelta?.EmailAddress != null)
         {
             emailAddress = new Contact
             {
