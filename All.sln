@@ -340,6 +340,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00066-HFICH-8634.sql = DomainServices\CodebookService\DatabaseMigrations\00066-HFICH-8634.sql
 		DomainServices\CodebookService\DatabaseMigrations\00067-HFICH-8515-SmsNotificationType.sql = DomainServices\CodebookService\DatabaseMigrations\00067-HFICH-8515-SmsNotificationType.sql
 		DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql = DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql
+		DomainServices\CodebookService\DatabaseMigrations\00070-HFICH-9074.sql = DomainServices\CodebookService\DatabaseMigrations\00070-HFICH-9074.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
