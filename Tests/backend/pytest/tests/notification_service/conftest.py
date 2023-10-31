@@ -100,7 +100,7 @@ def auth_params():
         "XX_EPSY_RMT_USR_TEST": "5516...!!!sddsrgrgUTHTEREWQWeqee",
         "XX_SB_RMT_USR_TEST": "epdhqao965425800%!!%HRSOYIUREWQW",
         "XX_NOBY_RMT_USR_TEST": "ppmlesnrTWYSDYGDR!98538535634544",
-        "XX_KBINSG_RMT_USR_TEST": ""
+        "XX_KBINSG_RMT_USR_TEST": "hgfDRYTHSDIOJFd!!344546789......"
     }
 
 
