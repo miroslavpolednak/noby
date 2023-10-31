@@ -68,10 +68,7 @@ internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangement
 
         return;
 
-        bool IncomeValidation() => naturalPerson.NetMonthEarningAmountId.HasValue &&
-                                   (naturalPerson.ProfessionCategoryId != 0 && naturalPerson.NetMonthEarningTypeId.HasValue ||
-                                    naturalPerson.ProfessionCategoryId == 0 && !naturalPerson.NetMonthEarningTypeId.HasValue);
-
+        bool IncomeValidation() => naturalPerson.NetMonthEarningAmountId.HasValue && naturalPerson.NetMonthEarningTypeId.HasValue;
         bool EmploymentValidation() => naturalPerson.ProfessionCategoryId.HasValue && (naturalPerson.ProfessionCategoryId == 0 || naturalPerson.ProfessionId.HasValue);
         bool MaritalStatesValidation() => maritalStates.Any(m => m.Id != 0 && m.Id == naturalPerson.MaritalStatusStateId);
         bool EducationLevelsValidation() => educationLevels.Any(m => m.Id != 0 && m.Id == naturalPerson.EducationLevelId);

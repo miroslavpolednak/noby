@@ -35,7 +35,6 @@ internal sealed class ValidateSalesArrangementHandler
             return _serviceProvider.GetRequiredService<CheckFormWithCustomerDetailValidationStrategy>();
 
         return _serviceProvider.GetRequiredService<CheckFormSalesArrangementValidation>();
-
     }
 }
 
