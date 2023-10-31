@@ -40,6 +40,7 @@ public class MigrationDataParser : IMigrationDataParser
         await _dbContext.MigrationData.AddRangeAsync(couldNotProduce);
         await _dbContext.MigrationData.AddRangeAsync(receivedReport);
 
+        // todo:
         // await _dbContext.SaveChangesAsync();
     }
 
@@ -48,7 +49,15 @@ public class MigrationDataParser : IMigrationDataParser
         // todo:
         return new MigrationData
         {
-
+            ApplicationLog = applicationLog,
+            Timestamp = applicationLog.Timestamp,
+            LogType = applicationLog.LogType,
+            NotificationId = null,
+            RequestId = applicationLog.RequestId,
+            Payload = JsonConvert.SerializeObject(new HttpRequestParameters
+            {
+                // todo:
+            })
         };
     }
     
@@ -57,7 +66,15 @@ public class MigrationDataParser : IMigrationDataParser
         // todo:
         return new MigrationData
         {
-
+            ApplicationLog = applicationLog,
+            Timestamp = applicationLog.Timestamp,
+            LogType = applicationLog.LogType,
+            // NotificationId = todo: parse,
+            RequestId = applicationLog.RequestId,
+            Payload = JsonConvert.SerializeObject(new HttpResponseParameters
+            {
+                // todo:
+            })
         };
     }
     
@@ -98,7 +115,15 @@ public class MigrationDataParser : IMigrationDataParser
         // todo:
         return new MigrationData
         {
-
+            ApplicationLog = applicationLog,
+            Timestamp = applicationLog.Timestamp,
+            LogType = applicationLog.LogType,
+            // NotificationId = todo: parse
+            RequestId = applicationLog.RequestId,
+            Payload = JsonConvert.SerializeObject(new ProducedParameters
+            {
+                // todo:
+            })
         };
     }
 
@@ -107,7 +132,15 @@ public class MigrationDataParser : IMigrationDataParser
         // todo:
         return new MigrationData
         {
-
+            ApplicationLog = applicationLog,
+            Timestamp = applicationLog.Timestamp,
+            LogType = applicationLog.LogType,
+            NotificationId = null,
+            RequestId = applicationLog.RequestId,
+            Payload = JsonConvert.SerializeObject(new CouldNotProduceParameters
+            {
+                // todo:
+            })
         };
     }
     
@@ -116,7 +149,15 @@ public class MigrationDataParser : IMigrationDataParser
         // todo:
         return new MigrationData
         {
-
+            ApplicationLog = applicationLog,
+            Timestamp = applicationLog.Timestamp,
+            LogType = applicationLog.LogType,
+            // NotificationId = todo: parse,
+            RequestId = applicationLog.RequestId,
+            Payload = JsonConvert.SerializeObject(new ReceivedReportParameters
+            {
+                // todo:  
+            })
         };
     }
 }
