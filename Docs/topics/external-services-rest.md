@@ -88,7 +88,7 @@ Nastavení logování se řeší v konfiguraci *appsettings.json*.
       ...
       "UseLogging": true,           // zapnutí a vypnutí HTTP logování
       "LogRequestPayload": true,    // logování payloadu a hlaviček requestu
-      "LogResponsePayload": "Basic" // logování payloadu a hlaviček responsu
+      "LogResponsePayload": false // logování payloadu a hlaviček responsu
     }
   }
 }
