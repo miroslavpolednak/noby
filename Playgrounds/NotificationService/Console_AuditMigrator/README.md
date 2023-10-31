@@ -2,11 +2,19 @@
 
 Migrace aplikačních logů do auditních logů se provádí v několika iteracích, které na sobě navazují.
 
+Původní podoba auditních logů [link](https://wiki.kb.cz/pages/viewpage.action?pageId=507386569).
+
+Nová podoba auditních logů [link](https://wiki.kb.cz/pages/viewpage.action?pageId=689178372) sloupec Example.
+
+Implementace je v `Service/Application.cs`:
+
 ### 1. krok - Parsování .log souborů
 
 Aplikace nejdříve vyparsuje `.log` soubory a uloží jednotlivé řádky logu do tabulky `ApplicationLogs`.
 Aplikace uloží pouze relevantní řádky pro migraci dat ve standardní struktuře aplikačního logu.
 Zprocesované soubory si pak uloží do tabulky `ProcessedFiles`, aby nedocházelo k opakovanému parsování souborů.
+
+> .log soubory zajišťuje Zdeněk Siblík, nicméně jsou nahrané na serveru adpra191 ve složce `r:\_auditni_logy_` která má omezený přístup.
 
 ### 2. krok - Parsování dat určené pro migraci
 
