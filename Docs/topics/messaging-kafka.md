@@ -80,7 +80,7 @@ Schémata se dají vygenerovat pomocí toolů
 ### Avrogen
 [Link ke stažení](https://www.nuget.org/packages/Apache.Avro/1.11.1)
 
-Příklad pro vygenerování C# tříd
+Příklad pro vygenerování C# tříd pomocí avrogen
 ```
 avrogen -s .\Schema_Stazene_Z_Apicurio.json .
 ```
@@ -150,24 +150,24 @@ Tato konfigurace se nachází v objektu `CisMessaging` v rootu konfiguračního 
 ### Napojení na MassTransit
 Do topicu může chodit více typů zpráv. Pro každý topic je potřeba definovat značkovací interface. Pro produkování/konzumaci zpráv definujeme partial class k třídám, které chceme generovat do daného topicu. Tyto partial class implementují definovaný značkovací interface.
 
-př. chceme-li produkovat zprávy typu `namespaceA.MessageA` a `namespaceB.MessageB` do topicu `TopicA`
+př. chceme-li produkovat zprávy typu `namespaceA.MessageA` a `namespaceB.MessageB` do topicu `TopicExample`
 
-1. defingujeme marker interface `ITopicA` pro topic `TopicA`
+1. defingujeme marker interface `ITopicExample` pro topic `TopicExample`
 2. registrujeme v DI topic producer
-3. definujeme partial class `MessageA` a `MessageB`, které implementují `ITopicA`
+3. definujeme partial class `MessageA` a `MessageB`, které implementují `ITopicExample`
 
 ```csharp
 // Partials.cs
-public interface ITopicA {}
+public interface ITopicExample {}
 
-namespace namespaceA.MessageA
+namespace Example.NamespaceA
 {
-    public partial class MessageA : ITopicA {}
+    public partial class MessageA : ITopicExample {}
 }
 
-namespace namespaceA.MessageA
+namespace Example.NamespaceB
 {
-    public partial class MessageB : ITopicA {}
+    public partial class MessageB : ITopicExample {}
 }
 
 ....
@@ -182,22 +182,77 @@ SharedComponents.GrpcServiceBuilder
     {
         builder.AddCisMessaging()
             .AddKafka(typeof(Program).Assembly)
-            .AddConsumer<MessageAConsumer>()
-            .AddConsumer<MessageBConsumer>()
-            //...more consumers
-            .AddConsumerTopicAvro<ITopicA>("TopicA")
-            //...more topics
-            .AddProducerAvro<ITopicA>("TopicA")
+            .AddConsumer<MessageAConsumer>() // register consumer implementation
+            .AddConsumer<MessageBConsumer>() // register consumer implementation
+            // ... more consumer implementations
+
+            .AddConsumerTopicAvro<ITopicExample>("TopicExample") // register topic for consuming
+            // ... more topics for consuming
+            
+            .AddProducerAvro<ITopicExample>("TopicExample") // register topic for producing
+            // ... more topics for producing
             .Build();
     })
-
-public class MessageAConsumer : IConsumer<MessageA> { ... }
-public class MessageBConsumer : IConsumer<MessageB> { ... }
 ```
 
-### Konzumace / publikování JSON zpráv
----dopsat---
+### Produkování zpráv
 
-## Zobrazení a kontrola Kafka zpráv
----dopsat---
+Pro produkování zpráv `MessageA` a `MessageB` do topicu `TopicExample` pod značkovacím interfacem `ITopicExample` je potřeba si injectnout `ITopicProducer<ITopicExample>` do naší služby:
 
+```csharp
+public class MyService : IMyService
+{
+    private readonly ITopicProducer<ITopicExample> _exampleProducer;
+
+    public MyService(ITopicProducer<ITopicExample> exampleProducer)
+    {
+        _exampleProducer = exampleProducer;
+    }
+
+    public async Task ExecuteSomethingAsync(CancellationToken cancellationToken)
+    {
+        var headers = new Headers() { ... };
+        var pipe = new ProducerPipe<ITopicExample>(headers);
+
+        // producing Message A to topic ExampleTopic
+        await _exampleProducer.Produce(new MessageA(), headers, cancellationToken);
+        
+        // producing Message B to topic ExampleTopic
+        await _exampleProducer.Produce(new MessageB(), headers, cancellationToken);
+    }
+}
+```
+
+### Konzumace zpráv
+
+Pro konzumaci zpráv `MessageA` a `MessageB` do topicu `TopicExample` pod značkovacím interfacem `ITopicExample` je potřeba naimplementovat třídy, které dědí od `IConsumer<MessageA>` a `IConsumer<MessageB>`. Tyto implementace je potřeba zaregistrovat v DI containeru.
+
+```csharp
+// Consuming Message A from topic ExampleTopic
+public class MessageAConsumer : IConsumer<MessageA>
+{
+    public MessageAConsumer ( ... ) { ... }
+
+    public async Task Consume(ConsumeContext<MessageA> context)
+    {
+        var messageA = context.Message;
+        var cancellationToken = context.CancellationToken;
+        
+        await ExecuteSomethingAsync(messageA, cancellationToken);
+    }
+}
+
+// Consuming Message B from topic ExampleTopic
+public class MessageBConsumer : IConsumer<MessageB>
+{
+    public MessageBConsumer ( ... ) { ... }
+
+    public async Task Consume(ConsumeContext<MessageB> context)
+    {
+        var messageB = context.Message;
+        var cancellationToken = context.CancellationToken;
+        
+        await ExecuteSomethingAsync(messageB, cancellationToken);
+    }
+}
+```
