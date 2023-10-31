@@ -1,6 +1,7 @@
-﻿namespace CIS.Infrastructure.Telemetry.Configuration;
+﻿namespace CIS.Core.Configuration;
 
-internal sealed class CisTelemetryConfiguration
+public sealed class CisTelemetryConfiguration
+    : ICisTelemetryConfiguration
 {
-    public LoggingConfiguration? Logging { get; set; }
+    public Telemetry.ILoggingConfiguration? Logging { get; set; }
 }

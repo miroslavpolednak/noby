@@ -11,9 +11,11 @@ public sealed class PayloadLoggerBehavior<TRequest, TResponse>
 {
     private readonly ILogger<PayloadLoggerBehavior<TRequest, TResponse>> _logger;
     private JsonConvertByteString _byteStringConverter = new JsonConvertByteString();
+    private readonly Core.Configuration.ICisTelemetryConfiguration _telemetryConfiguration;
 
-    public PayloadLoggerBehavior(ILogger<PayloadLoggerBehavior<TRequest, TResponse>> logger)
+    public PayloadLoggerBehavior(ILogger<PayloadLoggerBehavior<TRequest, TResponse>> logger, Core.Configuration.ICisTelemetryConfiguration telemetryConfiguration)
     {
+        _telemetryConfiguration = telemetryConfiguration;
         _logger = logger;
     }
 
@@ -21,12 +23,15 @@ public sealed class PayloadLoggerBehavior<TRequest, TResponse>
     {
         string requestName = typeof(TRequest).Name;
 
-        using (_logger.BeginScope(new Dictionary<string, object>
+        if (_telemetryConfiguration.Logging?.Application?.LogRequestPayload ?? false)
+        {
+            using (_logger.BeginScope(new Dictionary<string, object>
             {
                 { "Payload", JsonConvert.SerializeObject(request, _byteStringConverter) }
             }))
-        {
-            _logger.RequestHandlerStarted(requestName);
+            {
+                _logger.RequestHandlerStarted(requestName);
+            }
         }
         
         var response = await next();
@@ -35,7 +40,7 @@ public sealed class PayloadLoggerBehavior<TRequest, TResponse>
         {
             _logger.RequestHandlerFinishedWithEmptyResult(requestName);
         }
-        else
+        else if (_telemetryConfiguration.Logging?.Application?.LogResponsePayload ?? false)
         {
             using (_logger.BeginScope(new Dictionary<string, object>
             {

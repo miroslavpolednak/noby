@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CIS.Core.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -33,7 +34,7 @@ public static class LoggingExtensions
             .GetSection(_configurationTelemetryKey)
             .Get<CisTelemetryConfiguration>()
             ?? throw new CIS.Core.Exceptions.CisConfigurationNotFound(_configurationTelemetryKey);
-        builder.Services.AddSingleton(configuration);
+        builder.Services.AddSingleton<Core.Configuration.ICisTelemetryConfiguration>(configuration);
 
         // pridani custom enricheru
         builder.Services.AddTransient<Enrichers.CisHeadersEnricher>();
@@ -67,7 +68,7 @@ public static class LoggingExtensions
     {
         builder.UseSerilog((hostingContext, serviceProvider, loggerConfiguration) =>
         {
-            var configuration = serviceProvider.GetRequiredService<CisTelemetryConfiguration>();
+            var configuration = serviceProvider.GetRequiredService<ICisTelemetryConfiguration>();
 
             if (configuration.Logging is not null)
             {

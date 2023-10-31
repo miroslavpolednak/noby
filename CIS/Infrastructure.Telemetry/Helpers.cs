@@ -50,8 +50,8 @@ public static class Helpers
     }
 
     internal static void AddOutputs(
-        LoggerConfiguration loggerConfiguration, 
-        LogConfiguration configuration,
+        LoggerConfiguration loggerConfiguration,
+        Core.Configuration.Telemetry.ILogConfiguration configuration,
         TelemetryConfiguration? telemetryConfiguration)
 #pragma warning restore CA1822 // Mark members as static
     {
