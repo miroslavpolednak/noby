@@ -20,7 +20,7 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
     json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e, \
-    json_req_sms_caseId, json_req_sms_documentHash
+    json_req_sms_caseId, json_req_sms_documentHash, json_req_sms_basic_kb_insg
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
@@ -80,7 +80,31 @@ def test_E2E_real_sms(ns_url, auth_params, auth, json_data, modified_json_data):
 # test pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
-def test_sms(ns_url, auth_params, auth, json_data):
+def test_sms_insg(ns_url, auth_params, auth, json_data):
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/sms",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    notification = resp.json()
+    print(notification)
+    assert "notificationId" in notification
+    notification_id = notification["notificationId"]
+    assert notification_id != ""
+
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
+
+
+# test pro additional parameters napr. --ns-url sit_url
+@pytest.mark.parametrize("auth", ["XX_KBINSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_sms_basic_kb_insg])
+def test_sms_kb_insg(ns_url, auth_params, auth, json_data):
     url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]

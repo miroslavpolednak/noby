@@ -103,7 +103,7 @@ def test_mail_negative_content_format(ns_url, auth_params, auth, json_data):
 
 
 # pro testy zabezpeceni, jake sms jsou mozne odespilat pres urcite uzivatele - pouzita vnorena parametrizace
-@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_NOBY_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_KBINSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal])
 def test_mail_bad_auth(auth_params, auth, json_data, ns_url):
     url_name = ns_url["url_name"]

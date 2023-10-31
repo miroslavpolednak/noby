@@ -140,7 +140,7 @@ def test_get_sms_notification_search(ns_url,  auth_params, auth, json_data):
     assert resp["requestData"]["smsData"] == expected_sms_data
 
 
-@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST, XX_KBINSG_RMT_USR_TEST"], indirect=True)
 def test_get_sms_notification_id_vulnerability(auth_params, auth, ns_url):
     """test zranitelnosti proti skriptování
     """
