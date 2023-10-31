@@ -2,7 +2,7 @@
 Podpora asynchroních front je umístěna v projektu `CIS.Infrastructure.Messaging`.
 Aktuálně se jedná o jedinou KB podporovanou službu - **Kafka**.
 
-Pro komunikaci s Kafkou používáme infrastrukturu KB připravenou pro SPEED, jmenovitě `KB.Speed.MassTransit.Kafka`.  
+Pro komunikaci s Kafkou používáme infrastrukturu KB připravenou pro SPEED, jmenovitě [`KB.Speed.MassTransit.Kafka`](https://speed.kb.cz/documentation/net-sdk/features/static/src/kb.speed.masstransit.kafka).  
 SPEED Nuget používáme hlavně proto, že KB má "specifickou" implementaci Kafky, pro kterou bychom museli vytvářet vlastní infra, kterou nám jinak poskytuje `KB.Speed.MassTransit.Kafka`.
 Tento Nuget interně používá [MassTransit](https://masstransit.io/), tj. naše implementace je vlastně implementací MassTransitu a můžeme vycházet z jeho dokumentace. Balíček je dostupný v [Nexus3 KB](https://nexus3.kb.cz) v repozitáří nuget-all-v3.
 
