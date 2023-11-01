@@ -1,21 +1,42 @@
 ﻿# Versioning & GIT branching
 
+## Procesy - JIRA, zadávání práce na vývoj, atd.
+
+### Vývoj nových features
+- každá US je označena FV ve které se má dodat
+- vše co je v aktuálním sprintu je možné mergovat do `master` branch, pokud nebude při předávce explicitně řečeno jinak
+- pokud není co dělat, je možné si vzít tasky z dalšího následujícího sprintu  
+-> tasky, které jsou připravené na vývoj (v dalším sprintu) mají tag **ReadyForDevelopment** a jsou přiřazené na konkrétního vývojáře / team leada  
+-> každý task, který se bere z jiného než aktuálního sprintu je nutné konzultovat s ITA, zda je možné ho mergovat rovnou do `master` nebo zda se jedná o změnu, která nesmí být součástí verze aktuálního sprintu  
+-> tasku vzatému z budoucího sprintu je změněna FV (??? na co a kdo to udělá) a je zařazen do aktuálního sprintu (??? co když je součástí US, která má více tasků, ale jen jeden z nich chceme dělat nyní)
+- chyby nalezené na `release` branch automaticky fixujeme i do `master` branch (??? jak vůbec poznáme, že bug je z `release` branch)
+
+### Opravy chyb
+- fix nalezeného bugu automaticky propisujeme do všech nižších prostředí, tj.:  
+-> bug na `production` je automaticky fixován i do `master` a `release`  
+-> bug na `release` je automaticky fixován i do `master`  
+-> bug na `master` je fixován pouze na `master`
+
+??? jak poznáme ze zadaného bugu o jaké prostředí se jedná?
+
 ## GIT branching
 
 ### Production flow
 Existuje pouze jeden branch s produkční verzí aplikace - `production`.
 
-V této větvy vznikají *tagy*, které označují jednotlivé fix version aplikace. Je tedy možné se kdykoliv vrátit / nasadit ke konkrétní fix version.
-Ve chvíli nasazení nové verze se poslední commit označí tagem předchozí fix version, tím tedy fakticky vzniká historie nasazovaných změn.
+V této větvy vznikají *tagy*, které označují jednotlivé **Fix Version** (FV) aplikace. Je tedy možné se kdykoliv vrátit / nasadit ke konkrétní Fix Version.
+Ve chvíli nasazení nové verze aplikace (tj. merge `release` do `production`) se poslední mergnutý commit označí tagem FV, tím tedy fakticky vzniká historie nasazovaných změn.
 
 **Hotfix bugu:**
-1) vytvoření bugfix branch z `production` branch - `bugfix-prod/HFICH-XXXX`
-2) oprava chyby / vytvoření nové feature
+1) vytvoření bugfix branch z `production` branch - `bugfix-prod/HFICH-XXXX`. Název nové branch musí vždy obsahovat ID bugu.
+2) oprava chyby
 3) otestování aplikace nasazením branch `bugfix-prod/HFICH-XXXX` na testovací prostředí
 4) merge branch `bugfix-prod/HFICH-XXXX` do `production`
-5) nasazení `production` branch na server
+5) nasazení na server z branch `production`
 
-Pokud se má stejná chyba opravit i v budoucí / dev verzi, je na zvážení programátora zda udělat cherry pick `bugfix-prod/HFICH-XXXX` do `master` nebo daný bug opravit v `master` samostatně.
+Chyba na produkci se automaticky musí opravit i na `master` a `release`.  
+Je na zvážení programátora zda udělat cherry pick `bugfix-prod/HFICH-XXXX` do `master` nebo daný bug opravit v `master` samostatně.
+Pokud se opravované místo na `master` a `production` zásadně liší, je na zvážení programátora zda dokáže opravu na master udělat nebo je potřeba konzultovat s ITA.
 
 ### Development flow
 Existuje pouze jeden branch do kterého se vyvíjí - `master`.
@@ -26,7 +47,7 @@ Pokud budou nalezeny chyby, opravují se jak do `release`, tak do `master` branc
 Pokud by se stalo, že oprava chyby není triviální nebo bude potřeba dodělat novou funkčnost, je na zvážení, zda aktuální `release` nezahodit a vytvořit nový `release` z aktuální verze `master` kde již daná funkčnost/bug bude opravený.
 
 **Vývoj nového JIRA tasku:**
-1) vytvoření feature branch z `master` - `feature/HFICH-XXXX`
+1) vytvoření feature branch z `master` - `feature/HFICH-XXXX`. Název nové branch vždy obsahuje ID US nebo Subtasku.
 2) vývoj v nově vytvořené branch
 3) merge `feature/HFICH-XXXX` do `master`
 
@@ -35,11 +56,10 @@ Pokud by se stalo, že oprava chyby není triviální nebo bude potřeba doděla
 2) cherry pick daného commitu do `release`
 
 **Nasazení `release` do produkce**
-1) *[optional]* nastavení tagu fix version na poslední commit v `production`
-2) merge `release` branch do `production` branch
-3) vyřešení případných merge conflicts
-4) nasazení nové verze `production` na testovací prostředí
-5) nasazení otestovaného buildu na produkci
+1) merge `release` branch do `production` branch
+2) vyřešení případných merge conflicts
+3) nasazení nové verze `production` na testovací prostředí
+4) nasazení otestovaného buildu na produkci
 
 ![NOBY GIT FLOW](./NOBY-GIT-FLOW.png)
 

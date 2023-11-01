@@ -1,7 +1,6 @@
 ﻿using DomainServices.HouseholdService.Clients;
 using _Case = DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.Clients;
-using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Notifications.Handlers;
 
@@ -31,8 +30,7 @@ internal sealed class UpdateCustomerOnCaseHandler
 
     public UpdateCustomerOnCaseHandler(
         ICustomerOnSAServiceClient customerService,
-        ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService)
+        ICaseServiceClient caseService)
     {
         _customerService = customerService;
         _caseService = caseService;
