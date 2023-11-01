@@ -94,6 +94,15 @@ json_req_sms_logovani_mpss_sb = \
     {
         "phoneNumber": "+420123456789",
         "processingPriority": 1,
+        "type": "KB_INSIGN_PROCESS",
+        "text": "kb logovani insg",
+        "customId": "log"
+    }
+
+json_req_sms_logovani_kb_insg = \
+    {
+        "phoneNumber": "+420123456789",
+        "processingPriority": 1,
         "type": "SB_NOTIFICATIONS_AUDITED_MP",
         "text": "mpss logovani SB",
         "customId": "log"
@@ -113,7 +122,7 @@ json_req_sms_bez_logovani_mpss_sb = \
         "phoneNumber": "+420123456789",
         "processingPriority": 1,
         "type": "SB_NOTIFICATIONS_MP",
-        "text": "kb bez logovani SB",
+        "text": "mpss bez logovani SB",
         "customId": "nelog"
     }
 

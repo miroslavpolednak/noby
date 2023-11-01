@@ -1,4 +1,5 @@
 import uuid
+import datetime
 from time import sleep
 from urllib.parse import urlencode, quote
 """
@@ -20,7 +21,8 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
     json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e, \
-    json_req_sms_caseId, json_req_sms_documentHash, json_req_sms_basic_kb_insg
+    json_req_sms_caseId, json_req_sms_documentHash, json_req_sms_basic_kb_insg, json_req_sms_logovani_mpss_sb, \
+    json_req_sms_bez_logovani_mpss_sb, json_req_sms_logovani_kb_insg
 from ..json.request.sms_template_json import json_req_sms_full_template
 
 
@@ -179,7 +181,10 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
     ("loguji", json_req_sms_logovani_kb_sb, True),
-    ("neloguji", json_req_sms_bez_logovani_kb_sb, False)
+    ("loguji", json_req_sms_logovani_mpss_sb, True),
+    ("loguji", json_req_sms_logovani_kb_insg, True),
+    ("neloguji", json_req_sms_bez_logovani_kb_sb, False),
+    ("neloguji", json_req_sms_bez_logovani_mpss_sb, False)
 ])
 def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
                  expected_result, db_url, db_connection):
@@ -206,6 +211,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
     assert "notificationId" in resp
     notification_id = resp["notificationId"]
     assert notification_id != ""
+    print(datetime.datetime.now())
 
     cursor = db_connection.cursor()
     print(f"Notification ID: {notification_id}")
@@ -226,23 +232,26 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
     except pyodbc.Error as e:
         pytest.fail(f"Failed to execute query 1: {e}")
 
-    '''
     print(f'(%\\\"customId\\\": \\\"{notification_id}\\\"%)')
+    sleep(3)
     try:
-        cursor.execute("""
-                       SELECT * 
-                       FROM AuditEvent
-                       WHERE AuditEventTypeId = ? 
-                       AND Detail LIKE ?
-                       AND ABS(DATEDIFF(SECOND, TimeStamp, GETDATE())) <= 10
-                       ORDER BY [TimeStamp] DESC
-                       """, ('AU_NOBY_012', f'(%\\\"customId\\\": \\\"{notification_id}\\\"%)')
-                       )
+        like_pattern = f'%"customId": "{unique_custom_id}"%'
+        query = """
+                SELECT * 
+                FROM AuditEvent
+                WHERE AuditEventTypeId = ? 
+                AND JSON_VALUE(Detail, '$.body.objectsBefore.rawHttpRequestBody') LIKE ?
+                ORDER BY [TimeStamp] DESC
+                """
+        print("SQL Query:", query)
+        print("Parameters:", ('AU_NOBY_012', like_pattern))
+        cursor.execute(query, ('AU_NOBY_012', like_pattern))
         results_2 = cursor.fetchall()
         found_records_2 = bool(results_2)
+        print("Results:", results_2)
     except pyodbc.Error as e:
         pytest.fail(f"Failed to execute query 2: {e}")
-    '''
+
     try:
         cursor.execute("""
                        SELECT * 
@@ -258,7 +267,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
         pytest.fail(f"Failed to execute query 3: {e}")
 
     assert found_records_1 == expected_result
-    #assert found_records_2 == expected_result
+    assert found_records_2 == expected_result
     assert found_records_3 == expected_result
 
 
