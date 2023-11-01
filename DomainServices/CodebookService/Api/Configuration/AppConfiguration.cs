@@ -7,5 +7,6 @@ internal sealed class AppConfiguration
     public sealed class RdmCodebookSettings
     {
         public string CodebookName { get; set; } = string.Empty;
+        public bool IsMapping { get; set; }
     }
 }

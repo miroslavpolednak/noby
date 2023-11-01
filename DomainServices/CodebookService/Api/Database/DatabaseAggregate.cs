@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace DomainServices.CodebookService.Api.Database;
 
+#pragma warning disable CS8603 // Possible null reference return.
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class DatabaseAggregate
 {
