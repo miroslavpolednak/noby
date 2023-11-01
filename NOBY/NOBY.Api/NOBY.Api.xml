@@ -4752,11 +4752,6 @@
             </remarks>
         </member>
         <!-- Badly formed XML comment ignored for member "T:NOBY.Api.Endpoints.Workflow.WorkflowHelpers" -->
-        <member name="T:NOBY.Api.Notifications.Handlers.CreateRiskBusinessCaseHandler">
-            <summary>
-            Zalozi RiskBusinessCase pro dany Sales Arrangement
-            </summary>
-        </member>
         <member name="M:NOBY.Api.StartupExtensions.NobyAppBuilder.UseNobyAuthStrategy(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
             routy pro autentizaci a signout uzivatele

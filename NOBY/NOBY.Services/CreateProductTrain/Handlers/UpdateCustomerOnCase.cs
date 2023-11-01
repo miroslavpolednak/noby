@@ -2,20 +2,20 @@
 using _Case = DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.Clients;
 
-namespace NOBY.Api.Notifications.Handlers;
+namespace NOBY.Services.CreateProductTrain.Handlers;
 
-internal sealed class UpdateCustomerOnCaseHandler
-    : INotificationHandler<MainCustomerUpdatedNotification>
+[ScopedService, SelfService]
+internal sealed class UpdateCustomerOnCase
 {
-    public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
+    public async Task Run(long caseId, int customerOnSAId, CancellationToken cancellationToken)
     {
         // detail customera
-        var customerInstance = await _customerService.GetCustomer(notification.CustomerOnSAId, cancellationToken);
+        var customerInstance = await _customerService.GetCustomer(customerOnSAId, cancellationToken);
 
-        if (customerInstance.CustomerRoleId == (int)SharedTypes.Enums.CustomerRoles.Debtor)
+        if (customerInstance.CustomerRoleId == (int)CustomerRoles.Debtor)
         {
             // update case detailu
-            await _caseService.UpdateCustomerData(notification.CaseId, new _Case.CustomerData
+            await _caseService.UpdateCustomerData(caseId, new _Case.CustomerData
             {
                 DateOfBirthNaturalPerson = customerInstance.DateOfBirthNaturalPerson,
                 FirstNameNaturalPerson = customerInstance.FirstNameNaturalPerson,
@@ -28,7 +28,7 @@ internal sealed class UpdateCustomerOnCaseHandler
     private readonly ICaseServiceClient _caseService;
     private readonly ICustomerOnSAServiceClient _customerService;
 
-    public UpdateCustomerOnCaseHandler(
+    public UpdateCustomerOnCase(
         ICustomerOnSAServiceClient customerService,
         ICaseServiceClient caseService)
     {

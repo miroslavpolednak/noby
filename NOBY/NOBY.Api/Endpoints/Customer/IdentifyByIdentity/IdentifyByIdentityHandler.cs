@@ -58,8 +58,7 @@ internal sealed class IdentifyByIdentityHandler
             // hlavni klient
             if (customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Debtor)
             {
-                var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers);
-                await _mediator.Publish(notification, cancellationToken);
+                await _createProductTrain.Run(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers, cancellationToken);
             }
             else // vytvoreni klienta v konsDb. Pro dluznika se to dela v notification, pro ostatni se to dubluje tady
             {
@@ -158,14 +157,14 @@ internal sealed class IdentifyByIdentityHandler
     private readonly Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
     private readonly IHouseholdServiceClient _householdService;
     private readonly IProductServiceClient _productService;
-    private readonly IMediator _mediator;
+    private readonly Services.CreateProductTrain.ICreateProductTrainService _createProductTrain;
     private readonly ICustomerServiceClient _customerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
     public IdentifyByIdentityHandler(
         IRollbackBag bag,
-        IMediator mediator,
+        Services.CreateProductTrain.ICreateProductTrainService createProductTrain,
         Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
         ISalesArrangementServiceClient salesArrangementService,
         ICustomerServiceClient customerService,
@@ -177,7 +176,7 @@ internal sealed class IdentifyByIdentityHandler
         _createOrUpdateCustomerKonsDb = createOrUpdateCustomerKonsDb;
         _householdService = householdService;
         _productService = productService;
-        _mediator = mediator;
+        _createProductTrain = createProductTrain;
         _salesArrangementService = salesArrangementService;
         _customerService = customerService;
         _customerOnSAService = customerOnSAService;
