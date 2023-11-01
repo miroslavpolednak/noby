@@ -48,7 +48,8 @@ public sealed class ErrorCodeMapper
             { 90038, new("Název vkládaného dokumentu je větší než povolených 64 znaků.") },
             { 90039, new("Klientské údaje nejsou validní", "Zkontrolujte klientské údaje všech žadatelů. Validace klientských údajů spustíte tlačítkem DALŠÍ na obrazovce Detailu subjektu.") },
             { 90040, new("Existuje rozpracovaná žádost o úvěr. Nelze vytvořit žádost o změnu.") },
-            { 90041, new("Smlouva je již podepsána. Nelze vytvořit tento typ změnové žádosti.") }
+            { 90041, new("Smlouva je již podepsána. Nelze vytvořit tento typ změnové žádosti.") },
+            { 90042, new("Nelze pokračovat, protože došlo ke změně daňové rezidence a klient má zadáno více jak 8 států daňové rezidence. Tuto změnu je možné provést pouze na pobočce.") }
         };
 
         Messages = messages.AsReadOnly();
