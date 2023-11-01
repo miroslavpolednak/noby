@@ -4,12 +4,13 @@
 
 ### Vývoj nových features
 - každá US je označena FV ve které se má dodat
+- nová feature / JIRA task se vždy vyvíjí ve vlastní branch (odvozené z poslední verze `master`) a merguje se po dokončení vývoje
+- vývojová branch se vždy jmenuje `feature/HFICH-XXXX`, kde HFICH-XXXX je ID tasku/US; za ID je možné dopsat vlastní komentář
 - vše co je v aktuálním sprintu je možné mergovat do `master` branch, pokud nebude při předávce explicitně řečeno jinak
 - pokud není co dělat, je možné si vzít tasky z dalšího následujícího sprintu  
 -> tasky, které jsou připravené na vývoj (v dalším sprintu) mají tag **ReadyForDevelopment** a jsou přiřazené na konkrétního vývojáře / team leada  
 -> každý task, který se bere z jiného než aktuálního sprintu je nutné konzultovat s ITA, zda je možné ho mergovat rovnou do `master` nebo zda se jedná o změnu, která nesmí být součástí verze aktuálního sprintu  
 -> tasku vzatému z budoucího sprintu je změněna FV (??? na co a kdo to udělá) a je zařazen do aktuálního sprintu (??? co když je součástí US, která má více tasků, ale jen jeden z nich chceme dělat nyní)
-- chyby nalezené na `release` branch automaticky fixujeme i do `master` branch (??? jak vůbec poznáme, že bug je z `release` branch)
 
 ### Opravy chyb
 - fix nalezeného bugu automaticky propisujeme do všech nižších prostředí, tj.:  
