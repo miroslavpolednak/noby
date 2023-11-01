@@ -20,23 +20,23 @@ Pokud se má stejná chyba opravit i v budoucí / dev verzi, je na zvážení pr
 ### Development flow
 Existuje pouze jeden branch do kterého se vyvíjí - `master`.
 
-Ve chvíli, kdy je kód připraven na release do produkce, vytvoří se z master nový branch - `preprod`.
-`preprod` branch se testuje na vlastním prostředí.
-Pokud budou nalezeny chyby, opravují se jak do `preprod`, tak do `master` branch.
-Pokud by se stalo, že oprava chyby není triviální nebo bude potřeba dodělat novou funkčnost, je na zvážení, zda aktuální `preprod` nezahodit a vytvořit nový `preprod` z aktuální verze `master` kde již daná funkčnost/bug bude opravený.
+Ve chvíli, kdy je kód připraven na release do produkce, vytvoří se z master nový branch - `release`.
+`release` branch se testuje na vlastním prostředí.
+Pokud budou nalezeny chyby, opravují se jak do `release`, tak do `master` branch.
+Pokud by se stalo, že oprava chyby není triviální nebo bude potřeba dodělat novou funkčnost, je na zvážení, zda aktuální `release` nezahodit a vytvořit nový `release` z aktuální verze `master` kde již daná funkčnost/bug bude opravený.
 
 **Vývoj nového JIRA tasku:**
 1) vytvoření feature branch z `master` - `feature/HFICH-XXXX`
 2) vývoj v nově vytvořené branch
 3) merge `feature/HFICH-XXXX` do `master`
 
-**Bugfix na `preprod`**
+**Bugfix na `release`**
 1) oprava chyby na `master` branch formou commitu - v commit message bude ID bugu
-2) cherry pick daného commitu do `preprod`
+2) cherry pick daného commitu do `release`
 
-**Nasazení `preprod` do produkce**
+**Nasazení `release` do produkce**
 1) *[optional]* nastavení tagu fix version na poslední commit v `production`
-2) merge `preprod` branch do `production` branch
+2) merge `release` branch do `production` branch
 3) vyřešení případných merge conflicts
 4) nasazení nové verze `production` na testovací prostředí
 5) nasazení otestovaného buildu na produkci

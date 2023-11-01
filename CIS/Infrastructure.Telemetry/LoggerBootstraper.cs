@@ -66,7 +66,7 @@ internal sealed class LoggerBootstraper
             .ByExcluding(logEvent => logEvent.Exception is ICisExceptionExludedFromLog);
     }
 
-    public void EnrichLogger(LoggerConfiguration loggerConfiguration)
+    public void EnrichLogger(LoggerConfiguration loggerConfiguration, LogConfiguration configuration)
     {
         loggerConfiguration
             .ReadFrom.Configuration(_generalConfiguration!)
@@ -77,6 +77,11 @@ internal sealed class LoggerBootstraper
             .Enrich.WithMachineName()
             .Enrich.WithProperty("Assembly", $"{_assemblyName!.Name}")
             .Enrich.WithProperty("Version", $"{_assemblyName!.Version}");
+
+        if (configuration.MaxPayloadLength.GetValueOrDefault() > 0)
+        {
+            loggerConfiguration.Enrich.With(new Enrichers.PayloadMaxLengthEnricher(configuration.MaxPayloadLength!.Value));
+        }
 
         // enrich from CIS env
         if (_cisConfiguration is not null)
