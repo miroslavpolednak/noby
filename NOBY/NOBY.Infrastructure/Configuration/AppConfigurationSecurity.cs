@@ -46,5 +46,5 @@ public sealed class AppConfigurationSecurity
     /// <summary>
     /// URL na ktere bude presmerovan uzivatel v pripade, ze se neco nepovedlo pri autentizaci
     /// </summary>
-    public string FailedSignInRedirectPath { get; set; } = "/";
+    public string FailedSignInRedirectPath { get; set; } = "/#/";
 }

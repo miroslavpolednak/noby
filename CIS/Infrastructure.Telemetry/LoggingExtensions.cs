@@ -33,7 +33,7 @@ public static class LoggingExtensions
             .GetSection(_configurationTelemetryKey)
             .Get<CisTelemetryConfiguration>()
             ?? throw new CIS.Core.Exceptions.CisConfigurationNotFound(_configurationTelemetryKey);
-        builder.Services.AddSingleton(configuration);
+        builder.Services.AddSingleton<CisTelemetryConfiguration>(configuration);
 
         // pridani custom enricheru
         builder.Services.AddTransient<Enrichers.CisHeadersEnricher>();
@@ -44,7 +44,16 @@ public static class LoggingExtensions
         // pridani request behaviour mediatru - loguje request a response objekty
         // logovat pouze u gRPC sluzeb
         if (configuration?.Logging?.LogType != LogBehaviourTypes.WebApi)
+        {
+            // logger
             builder.Services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(CisMediatR.PayloadLoggerBehavior<,>));
+            // logger configuration
+            builder.Services.AddSingleton(new CisMediatR.PayloadLogger.PayloadLoggerBehaviorConfiguration
+            {
+                LogRequestPayload = configuration!.Logging?.Application?.LogRequestPayload ?? false,
+                LogResponsePayload = configuration.Logging?.Application?.LogResponsePayload ?? false
+            });
+        }
 
         return builder;
     }
@@ -78,7 +87,7 @@ public static class LoggingExtensions
                 // general log setup
                 if (configuration?.Logging?.Application is not null)
                 {
-                    bootstrapper.EnrichLogger(loggerConfiguration);
+                    bootstrapper.EnrichLogger(loggerConfiguration, configuration.Logging.Application);
                     bootstrapper.AddOutputs(loggerConfiguration, configuration.Logging.Application);
                 }
             }

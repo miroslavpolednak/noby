@@ -19,6 +19,21 @@
             Konfigurace logování a telemerie
             </summary>
         </member>
+        <member name="P:CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.LogRequestPayload">
+            <summary>
+            True = do logu se ulozi plny request payload sluzby
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.LogResponsePayload">
+            <summary>
+            True = do logu se ulozi plny response payload sluzby
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.MaxPayloadLength">
+            <summary>
+            Maximální velikost obsahu vlastnosti Payload
+            </summary>
+        </member>
         <member name="P:CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.File">
             <summary>
             Logovani do souboru
@@ -62,6 +77,11 @@
         <member name="T:CIS.Infrastructure.Telemetry.Enrichers.CisHeadersEnricher">
             <summary>
             Doda do kontextu log item ID a Login uzivatele
+            </summary>
+        </member>
+        <member name="T:CIS.Infrastructure.Telemetry.Enrichers.PayloadMaxLengthEnricher">
+            <summary>
+            Enricher, ktery kontroluje delku vlastnosti Payload (pokud je v LogEvent) a byte length presahne trashold, trimuje Payload value na pozadovany max length
             </summary>
         </member>
         <member name="T:CIS.Infrastructure.Telemetry.LoggingExtensions">

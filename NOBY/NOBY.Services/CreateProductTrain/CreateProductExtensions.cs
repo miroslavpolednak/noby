@@ -1,7 +1,7 @@
 ﻿using DomainServices.OfferService.Contracts;
 using DomainServices.ProductService.Contracts;
 
-namespace NOBY.Api.Notifications.Handlers;
+namespace NOBY.Services.CreateProductTrain;
 
 internal static class CreateProductExtensions
 {

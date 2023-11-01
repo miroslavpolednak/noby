@@ -3,6 +3,21 @@
 public sealed class LogConfiguration
 {
     /// <summary>
+    /// True = do logu se ulozi plny request payload sluzby
+    /// </summary>
+    public bool LogRequestPayload { get; set; } = true;
+
+    /// <summary>
+    /// True = do logu se ulozi plny response payload sluzby
+    /// </summary>
+    public bool LogResponsePayload { get; set; } = true;
+
+    /// <summary>
+    /// Maximální velikost obsahu vlastnosti Payload
+    /// </summary>
+    public int? MaxPayloadLength { get; set; } = 1024 * 512;
+
+    /// <summary>
     /// Logovani do souboru
     /// </summary>
     public FileLogger? File { get; set; }
@@ -35,7 +50,7 @@ public sealed class LogConfiguration
     public sealed class FileLogger
     {
         public int RetainedFileCountLimit { get; set; } = 180;
-        public long FileSizeLimitBytes { get; set; } = 512*1024*1024;
+        public long FileSizeLimitBytes { get; set; } = 512 * 1024 * 1024;
         public bool RollOnFileSizeLimit { get; set; } = true;
         public string Path { get; set; } = "";
         public string Filename { get; set; } = "";

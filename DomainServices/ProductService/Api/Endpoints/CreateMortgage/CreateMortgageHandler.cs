@@ -28,28 +28,23 @@ internal sealed class CreateMortgageHandler : IRequestHandler<CreateMortgageRequ
     public async Task<CreateMortgageResponse> Handle(CreateMortgageRequest request, CancellationToken cancellationToken)
     {
         if (await _repository.LoanExists(request.CaseId, cancellationToken))
+        {
             throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.AlreadyExists12005, request.CaseId);
+        }
 
-        // create in pcp
-        var pcpId = await CreatePcpId(request, cancellationToken);
-
-        // create in konsdb
-        await _mpHomeClient.UpdateLoan(request.CaseId, request.Mortgage.ToMortgageRequest(pcpId), cancellationToken);
-
-        return new CreateMortgageResponse { ProductId = request.CaseId };
-    }
-
-    private async Task<string?> CreatePcpId(CreateMortgageRequest request, CancellationToken cancellationToken)
-    {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
-        if (caseInstance.Customer?.Identity?.IdentityScheme != SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
-            return default;
+        if (caseInstance.Customer?.Identity?.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
+        {
+            // create in pcp
+            var productTypes = await _codebookService.ProductTypes(cancellationToken);
+            var pcpProductId = productTypes.First(t => t.Id == request.Mortgage.ProductTypeId).PcpProductId;
+            var pcpId = await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpProductId, cancellationToken);
 
-        var productTypes = await _codebookService.ProductTypes(cancellationToken);
-        var pcpProductId = productTypes.First(t => t.Id == request.Mortgage.ProductTypeId).PcpProductId;
-
-        return await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpProductId, cancellationToken);
-
+            // create in konsdb
+            await _mpHomeClient.UpdateLoan(request.CaseId, request.Mortgage.ToMortgageRequest(pcpId), cancellationToken);
+        }
+        
+        return new CreateMortgageResponse { ProductId = request.CaseId };
     }
 }

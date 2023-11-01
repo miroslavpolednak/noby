@@ -4,75 +4,81 @@ using DomainServices.OfferService.Clients;
 using SharedTypes.GrpcTypes;
 using _Product = DomainServices.ProductService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using NOBY.Api.Endpoints.Offer.CreateMortgageCase;
+using Microsoft.Extensions.Logging;
+using CIS.Infrastructure.Logging;
 
-namespace NOBY.Api.Notifications.Handlers;
+namespace NOBY.Services.CreateProductTrain.Handlers;
 
-internal sealed class CreateProductHandler
-    : INotificationHandler<MainCustomerUpdatedNotification>
+[ScopedService, SelfService]
+internal sealed class CreateProduct
 {
-    public async Task Handle(MainCustomerUpdatedNotification notification, CancellationToken cancellationToken)
+    public async Task Run(
+        long caseId,
+        int salesArrangementId,
+        int customerOnSAId,
+        IEnumerable<Identity>? customerIdentifiers,
+        CancellationToken cancellationToken)
     {
-        var mpIdentity = notification.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+        var mpIdentity = customerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
         long? mpId = mpIdentity?.IdentityId;
         if (!mpId.HasValue)
         {
-            _logger.LogInformation($"CreateProductHandler for CaseId #{notification.CaseId} not proceeding / missing MP ID");
+            _logger.LogInformation($"CreateProductHandler for CaseId #{caseId} not proceeding / missing MP ID");
             return; // nema modre ID, nezajima me
         }
 
         try
         {
             // je to tady proto, ze produkt uz muze byt zalozeny, ale ja na instanci CustomerOnSA to nemam jak zjistit
-            await _productService.GetMortgage(notification.CaseId, cancellationToken);
-            _logger.LogInformation($"Product already exist for CaseId #{notification.CaseId}");
+            await _productService.GetMortgage(caseId, cancellationToken);
+            _logger.LogInformation($"Product already exist for CaseId #{caseId}");
             return;
         }
         catch { }
 
         // detail SA
-        var saInstance = await _salesArrangementService.GetSalesArrangement(notification.SalesArrangementId, cancellationToken);
+        var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
         if (!saInstance.OfferId.HasValue)
-            throw new CisValidationException($"SalesArrangement #{notification.SalesArrangementId} is not bound to Offer");
+            throw new CisValidationException($"SalesArrangement #{salesArrangementId} is not bound to Offer");
 
         // detail offer
         var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
 
         // zjistit, zda existuje customer v konsDb
-        await _createOrUpdateCustomerKonsDb.CreateOrUpdate(notification.CustomerIdentifiers!, cancellationToken);
+        await _createOrUpdateCustomerKonsDb.CreateOrUpdate(customerIdentifiers!, cancellationToken);
 
         //ContractNumber
-        var contractNumberResponse = await _salesArrangementService.SetContractNumber(notification.SalesArrangementId, notification.CustomerOnSAId, cancellationToken);
+        var contractNumberResponse = await _salesArrangementService.SetContractNumber(salesArrangementId, customerOnSAId, cancellationToken);
 
         // vytovrit produkt - musi se zalozit pred klientem!
         var request = new _Product.CreateMortgageRequest
         {
-            CaseId = notification.CaseId,
+            CaseId = caseId,
             Mortgage = offerInstance.ToDomainServiceRequest(mpId.Value, contractNumberResponse.ContractNumber)
         };
 
         request.Mortgage.CaseOwnerUserCurrentId = saInstance.Created.UserId;
 
         var result = await _productService.CreateMortgage(request, cancellationToken);
-        _bag.Add(CreateMortgageCaseRollback.BagKeyProductId, result);
+        _bag.Add("ProductId", result);
 
         _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
     }
 
-    private readonly Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
+    private readonly CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
     private readonly IRollbackBag _bag;
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IProductServiceClient _productService;
-    private readonly ILogger<CreateProductHandler> _logger;
+    private readonly ILogger<CreateProduct> _logger;
 
-    public CreateProductHandler(
-        Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
+    public CreateProduct(
+        CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
         IRollbackBag bag,
         IOfferServiceClient offerService,
         ISalesArrangementServiceClient salesArrangementService,
         IProductServiceClient productService,
-        ILogger<CreateProductHandler> logger)
+        ILogger<CreateProduct> logger)
     {
         _createOrUpdateCustomerKonsDb = createOrUpdateCustomerKonsDb;
         _bag = bag;
