@@ -16,7 +16,7 @@ import requests
 from ..conftest import URLS, greater_than_zero, ns_url, auth
 from ..json.request.seg_log import json_req_basic_log
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
-    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_sb, \
+    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb_E2E, json_req_sms_sb, \
     json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
@@ -24,6 +24,8 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_caseId, json_req_sms_documentHash, json_req_sms_basic_kb_insg, json_req_sms_logovani_mpss_sb, \
     json_req_sms_bez_logovani_mpss_sb, json_req_sms_logovani_kb_insg
 from ..json.request.sms_template_json import json_req_sms_full_template
+
+# test pro additional parameters napr. --ns-url sit_url
 
 
 @pytest.mark.skip(reason="pro ruční spouštění")
@@ -103,7 +105,7 @@ def test_sms_insg(ns_url, auth_params, auth, json_data):
         'Expected "strict-transport-security" to be in headers'
 
 
-# test pro additional parameters napr. --ns-url sit_url
+
 @pytest.mark.parametrize("auth", ["XX_KBINSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_kb_insg])
 def test_sms_kb_insg(ns_url, auth_params, auth, json_data):
@@ -179,7 +181,7 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
 
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
-    ("loguji", json_req_sms_logovani_kb_sb, True),
+    ("loguji", json_req_sms_logovani_kb_sb_E2E, True),
     ("loguji", json_req_sms_logovani_mpss_sb, True),
     ("loguji", json_req_sms_logovani_kb_insg, True),
     ("neloguji", json_req_sms_bez_logovani_kb_sb, False),
@@ -232,7 +234,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
         pytest.fail(f"Failed to execute query 1: {e}")
 
     print(f'(%\\\"customId\\\": \\\"{notification_id}\\\"%)')
-    sleep(3)
+    sleep(5)
     try:
         like_pattern = f'%"customId": "{unique_custom_id}"%'
         query = """
@@ -308,7 +310,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
 # NOBY vraci okej, ale v databázi padnou kombinace, ktere nemaji pro sebe MCS kod
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data",
-                         [json_req_sms_basic_insg, json_req_sms_basic_epsy_kb, json_req_sms_logovani_kb_sb])
+                         [json_req_sms_basic_insg, json_req_sms_basic_epsy_kb, json_req_sms_logovani_kb_sb_E2E])
 def test_sms_combination_security(ns_url, auth_params, auth, json_data):
     """test pro kombinaci všech uživatelů s basic sms"""
     url_name = ns_url["url_name"]
@@ -332,7 +334,7 @@ def test_sms_combination_security(ns_url, auth_params, auth, json_data):
                          [
                              ("XX_INSG_RMT_USR_TEST", json_req_sms_basic_insg),
                              ("XX_EPSY_RMT_USR_TEST", json_req_sms_basic_epsy_kb),
-                             ("XX_SB_RMT_USR_TEST", json_req_sms_logovani_kb_sb),
+                             ("XX_SB_RMT_USR_TEST", json_req_sms_logovani_kb_sb_E2E),
                          ], indirect=["auth"])
 def test_sms_basic_security(auth_params, auth, json_data, ns_url):
     """

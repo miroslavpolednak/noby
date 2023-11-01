@@ -76,7 +76,7 @@ json_req_sms_basic_phone_object = \
         "text": "insg s logovani"
     }
 
-json_req_sms_logovani_kb_sb = \
+json_req_sms_logovani_kb_sb_E2E = \
     {
         "phoneNumber": "+420123456789",
         "processingPriority": 1,
