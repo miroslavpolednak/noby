@@ -32,6 +32,16 @@
             Pokud v rámci pipeline handleru vrátí FluentValidation chyby, vyhodíme vyjímku CisValidationException a ukončí se flow requestu.
             </remarks>
         </member>
+        <member name="P:CIS.Infrastructure.CisMediatR.PayloadLogger.PayloadLoggerBehaviorConfiguration.LogRequestPayload">
+            <summary>
+            True = do logu se ulozi plny request payload sluzby
+            </summary>
+        </member>
+        <member name="P:CIS.Infrastructure.CisMediatR.PayloadLogger.PayloadLoggerBehaviorConfiguration.LogResponsePayload">
+            <summary>
+            True = do logu se ulozi plny response payload sluzby
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.CisMediatR.Rollback.IRollbackAction`1">
             <summary>
             Deklarace kontraktu pro tridu s kodem pro provedeni rollbacku Mediatr handleru.

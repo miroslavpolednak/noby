@@ -1,9 +1,6 @@
-﻿using CIS.Core.Configuration.Telemetry;
-
-namespace CIS.Infrastructure.Telemetry.Configuration;
+﻿namespace CIS.Infrastructure.Telemetry.Configuration;
 
 public sealed class LogConfiguration
-    : ILogConfiguration
 {
     /// <summary>
     /// True = do logu se ulozi plny request payload sluzby
@@ -16,14 +13,19 @@ public sealed class LogConfiguration
     public bool LogResponsePayload { get; set; } = true;
 
     /// <summary>
+    /// Maximální velikost obsahu vlastnosti Payload
+    /// </summary>
+    public int? MaxPayloadLength { get; set; } = 1024 * 512;
+
+    /// <summary>
     /// Logovani do souboru
     /// </summary>
-    public IFileLogger? File { get; set; }
+    public FileLogger? File { get; set; }
 
     /// <summary>
     /// Logovani do databaze
     /// </summary>
-    public IMsSqlLogger? Database { get; set; }
+    public MsSqlLogger? Database { get; set; }
 
     /// <summary>
     /// Logovat output do console
@@ -33,11 +35,11 @@ public sealed class LogConfiguration
     /// <summary>
     /// Logovani do Sequ
     /// </summary>
-    public ISeqLogger? Seq { get; set; }
+    public SeqLogger? Seq { get; set; }
 
-    public IApplicationInsightsLogger? ApplicationInsights { get; set; }
+    public ApplicationInsightsLogger? ApplicationInsights { get; set; }
 
-    public sealed class SeqLogger : ISeqLogger
+    public sealed class SeqLogger
     {
         public string ServerUrl { get; set; } = "";
     }
@@ -45,7 +47,7 @@ public sealed class LogConfiguration
     /// <summary>
     /// Nastaveni File sink dle https://github.com/serilog/serilog-sinks-file
     /// </summary>
-    public sealed class FileLogger : IFileLogger
+    public sealed class FileLogger
     {
         public int RetainedFileCountLimit { get; set; } = 180;
         public long FileSizeLimitBytes { get; set; } = 512 * 1024 * 1024;
@@ -54,12 +56,12 @@ public sealed class LogConfiguration
         public string Filename { get; set; } = "";
     }
 
-    public sealed class MsSqlLogger : IMsSqlLogger
+    public sealed class MsSqlLogger
     {
         public string ConnectionString { get; set; } = "";
     }
 
-    public sealed class ApplicationInsightsLogger : IApplicationInsightsLogger
+    public sealed class ApplicationInsightsLogger
     {
         public string ConnectionString { get; set; } = "";
     }

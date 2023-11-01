@@ -10,20 +10,21 @@ public sealed class PayloadLoggerBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
     private readonly ILogger<PayloadLoggerBehavior<TRequest, TResponse>> _logger;
-    private JsonConvertByteString _byteStringConverter = new JsonConvertByteString();
-    private readonly Core.Configuration.ICisTelemetryConfiguration _telemetryConfiguration;
+    private readonly PayloadLoggerBehaviorConfiguration? _configuration;
 
-    public PayloadLoggerBehavior(ILogger<PayloadLoggerBehavior<TRequest, TResponse>> logger, Core.Configuration.ICisTelemetryConfiguration telemetryConfiguration)
+    private static JsonConvertByteString _byteStringConverter = new JsonConvertByteString();
+
+    public PayloadLoggerBehavior(ILogger<PayloadLoggerBehavior<TRequest, TResponse>> logger, PayloadLoggerBehaviorConfiguration? configuration)
     {
-        _telemetryConfiguration = telemetryConfiguration;
+        _configuration = configuration;
         _logger = logger;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         string requestName = typeof(TRequest).Name;
-
-        if (_telemetryConfiguration.Logging?.Application?.LogRequestPayload ?? false)
+        
+        if (_configuration?.LogRequestPayload ?? false)
         {
             using (_logger.BeginScope(new Dictionary<string, object>
             {
@@ -40,7 +41,7 @@ public sealed class PayloadLoggerBehavior<TRequest, TResponse>
         {
             _logger.RequestHandlerFinishedWithEmptyResult(requestName);
         }
-        else if (_telemetryConfiguration.Logging?.Application?.LogResponsePayload ?? false)
+        else if (_configuration?.LogResponsePayload ?? false)
         {
             using (_logger.BeginScope(new Dictionary<string, object>
             {

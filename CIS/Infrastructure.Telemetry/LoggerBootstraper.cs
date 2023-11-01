@@ -7,7 +7,6 @@ using Serilog.Enrichers.Span;
 using Serilog.Filters;
 using System.Reflection;
 using CIS.Core.Exceptions;
-using CIS.Core.Configuration.Telemetry;
 
 namespace CIS.Infrastructure.Telemetry;
 
@@ -16,7 +15,7 @@ internal sealed class LoggerBootstraper
     private readonly AssemblyName? _assemblyName;
     private readonly ICisEnvironmentConfiguration? _cisConfiguration;
     private readonly IConfiguration? _generalConfiguration;
-    private readonly ILoggingConfiguration _configuration;
+    private readonly LoggingConfiguration _configuration;
     private readonly IServiceProvider _serviceProvider;
 
     static string[] _excludedGrpcRequestPaths = new[]
@@ -25,7 +24,7 @@ internal sealed class LoggerBootstraper
         "/grpc.health.v1.Health/Check"
     };
 
-    public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider, ILoggingConfiguration configuration)
+    public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider, LoggingConfiguration configuration)
     {
 #pragma warning disable CS8602 // Dereference of a possibly null reference. 
         _assemblyName = Assembly.GetEntryAssembly().GetName();
@@ -67,7 +66,7 @@ internal sealed class LoggerBootstraper
             .ByExcluding(logEvent => logEvent.Exception is ICisExceptionExludedFromLog);
     }
 
-    public void EnrichLogger(LoggerConfiguration loggerConfiguration)
+    public void EnrichLogger(LoggerConfiguration loggerConfiguration, LogConfiguration configuration)
     {
         loggerConfiguration
             .ReadFrom.Configuration(_generalConfiguration!)
@@ -78,6 +77,11 @@ internal sealed class LoggerBootstraper
             .Enrich.WithMachineName()
             .Enrich.WithProperty("Assembly", $"{_assemblyName!.Name}")
             .Enrich.WithProperty("Version", $"{_assemblyName!.Version}");
+
+        if (configuration.MaxPayloadLength.GetValueOrDefault() > 0)
+        {
+            loggerConfiguration.Enrich.With(new Enrichers.PayloadMaxLengthEnricher(configuration.MaxPayloadLength!.Value));
+        }
 
         // enrich from CIS env
         if (_cisConfiguration is not null)
@@ -90,7 +94,7 @@ internal sealed class LoggerBootstraper
         }
     }
 
-    public void AddOutputs(LoggerConfiguration loggerConfiguration, ILogConfiguration configuration)
+    public void AddOutputs(LoggerConfiguration loggerConfiguration, LogConfiguration configuration)
     {
         Helpers.AddOutputs(loggerConfiguration, configuration, _serviceProvider.GetService<TelemetryConfiguration>());
     }

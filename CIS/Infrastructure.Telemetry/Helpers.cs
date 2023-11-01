@@ -8,7 +8,7 @@ namespace CIS.Infrastructure.Telemetry;
 
 public static class Helpers
 {
-    const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff zzz} [{ThreadId}] [{Level:u}] [{TraceId}] [{SpanId}] [{ParentId}] [{CisAppKey}] [{Version}] [{Assembly}] [{SourceContext}] [{MachineName}] [{ClientIp}] [{CisUserId}] [{CisUserIdent}] [{RequestId}] [{RequestPath}] [{ConnectionId}] [{Message}] [{Exception}]{NewLine}";
+    const string _fileLoggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss,fff zzz} [{ThreadId}] [{Level:u}] [{TraceId}] [{SpanId}] [{ParentId}] [{CisAppKey}] [{Version}] [{Assembly}] [{SourceContext}] [{MachineName}] [{ClientIp}] [{CisUserId}] [{CisUserIdent}] [{RequestId}] [{RequestPath}] [{ConnectionId}] [{Message}] [{Exception}{Payload}]{NewLine}";
 
     public static (int? UserId, string? UserIdent) GetCurrentUser(ICurrentUserAccessor? userAccessor, IHttpContextAccessor httpContextAccessor)
     {
@@ -51,7 +51,7 @@ public static class Helpers
 
     internal static void AddOutputs(
         LoggerConfiguration loggerConfiguration,
-        Core.Configuration.Telemetry.ILogConfiguration configuration,
+        LogConfiguration configuration,
         TelemetryConfiguration? telemetryConfiguration)
 #pragma warning restore CA1822 // Mark members as static
     {

@@ -228,21 +228,6 @@
             Certifikát je uložený ve Windows Certificate store
             </summary>
         </member>
-        <member name="P:CIS.Core.Configuration.Telemetry.ILoggingConfiguration.LogType">
-            <summary>
-            Typ logu - gRPC nebo WebApi
-            </summary>
-        </member>
-        <member name="P:CIS.Core.Configuration.Telemetry.ILoggingConfiguration.Application">
-            <summary>
-            Jak se má logovat - nastavení sinků
-            </summary>
-        </member>
-        <member name="P:CIS.Core.Configuration.Telemetry.ILoggingConfiguration.IncludeOnlyPaths">
-            <summary>
-            Pokud je nastaveno, omezuje logování pouze na zadané RequestUrl
-            </summary>
-        </member>
         <member name="T:CIS.Core.Data.NamespaceDoc">
             <summary>
             Interfaces a implementace pro timestamp sloupce EF entit.

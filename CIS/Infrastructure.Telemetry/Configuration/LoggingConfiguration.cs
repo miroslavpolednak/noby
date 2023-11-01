@@ -1,10 +1,6 @@
-﻿using CIS.Core.Configuration;
-using CIS.Core.Configuration.Telemetry;
-
-namespace CIS.Infrastructure.Telemetry.Configuration;
+﻿namespace CIS.Infrastructure.Telemetry.Configuration;
 
 public sealed class LoggingConfiguration
-    : ILoggingConfiguration
 {
     /// <summary>
     /// Typ logu - gRPC nebo WebApi
@@ -14,7 +10,7 @@ public sealed class LoggingConfiguration
     /// <summary>
     /// Jak se má logovat - nastavení sinků
     /// </summary>
-    public ILogConfiguration? Application { get; set; }
+    public LogConfiguration? Application { get; set; }
 
     /// <summary>
     /// Pokud je nastaveno, omezuje logování pouze na zadané RequestUrl
