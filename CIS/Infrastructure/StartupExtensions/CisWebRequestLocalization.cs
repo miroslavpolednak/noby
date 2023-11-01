@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace CIS.Infrastructure.StartupExtensions
 {

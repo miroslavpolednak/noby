@@ -14,8 +14,8 @@
 
 ### Opravy chyb
 - fix nalezeného bugu automaticky propisujeme do všech nižších prostředí, tj.:  
--> bug na `production` je automaticky fixován i do `master` a `release`  
--> bug na `release` je automaticky fixován i do `master`  
+-> bug na `production` je automaticky fixován i do `master` a `stage`  
+-> bug na `stage` je automaticky fixován i do `master`  
 -> bug na `master` je fixován pouze na `master`
 
 ??? jak poznáme ze zadaného bugu o jaké prostředí se jedná?
@@ -26,7 +26,7 @@
 Existuje pouze jeden branch s produkční verzí aplikace - `production`.
 
 V této větvy vznikají *tagy*, které označují jednotlivé **Fix Version** (FV) aplikace. Je tedy možné se kdykoliv vrátit / nasadit ke konkrétní Fix Version.
-Ve chvíli nasazení nové verze aplikace (tj. merge `release` do `production`) se poslední mergnutý commit označí tagem FV, tím tedy fakticky vzniká historie nasazovaných změn.
+Ve chvíli nasazení nové verze aplikace (tj. merge `stage` do `production`) se poslední mergnutý commit označí tagem FV, tím tedy fakticky vzniká historie nasazovaných změn.
 
 **Hotfix bugu:**
 1) vytvoření bugfix branch z `production` branch - `bugfix-prod/HFICH-XXXX`. Název nové branch musí vždy obsahovat ID bugu.
@@ -35,29 +35,29 @@ Ve chvíli nasazení nové verze aplikace (tj. merge `release` do `production`) 
 4) merge branch `bugfix-prod/HFICH-XXXX` do `production`
 5) nasazení na server z branch `production`
 
-Chyba na produkci se automaticky musí opravit i na `master` a `release`.  
+Chyba na produkci se automaticky musí opravit i na `master` a `stage`.  
 Je na zvážení programátora zda udělat cherry pick `bugfix-prod/HFICH-XXXX` do `master` nebo daný bug opravit v `master` samostatně.
 Pokud se opravované místo na `master` a `production` zásadně liší, je na zvážení programátora zda dokáže opravu na master udělat nebo je potřeba konzultovat s ITA.
 
 ### Development flow
 Existuje pouze jeden branch do kterého se vyvíjí - `master`.
 
-Ve chvíli, kdy je kód připraven na release do produkce, vytvoří se z master nový branch - `release`.
-`release` branch se testuje na vlastním prostředí.
-Pokud budou nalezeny chyby, opravují se jak do `release`, tak do `master` branch.
-Pokud by se stalo, že oprava chyby není triviální nebo bude potřeba dodělat novou funkčnost, je na zvážení, zda aktuální `release` nezahodit a vytvořit nový `release` z aktuální verze `master` kde již daná funkčnost/bug bude opravený.
+Ve chvíli, kdy je kód připraven na release do produkce, vytvoří se z master nový branch - `stage`.
+`stage` branch se testuje na vlastním prostředí.
+Pokud budou nalezeny chyby, opravují se jak do `stage`, tak do `master` branch.
+Pokud by se stalo, že oprava chyby není triviální nebo bude potřeba dodělat novou funkčnost, je na zvážení, zda aktuální `stage` nezahodit a vytvořit nový `stage` z aktuální verze `master` kde již daná funkčnost/bug bude opravený.
 
 **Vývoj nového JIRA tasku:**
 1) vytvoření feature branch z `master` - `feature/HFICH-XXXX`. Název nové branch vždy obsahuje ID US nebo Subtasku.
 2) vývoj v nově vytvořené branch
 3) merge `feature/HFICH-XXXX` do `master`
 
-**Bugfix na `release`**
+**Bugfix na `stage`**
 1) oprava chyby na `master` branch formou commitu - v commit message bude ID bugu
-2) cherry pick daného commitu do `release`
+2) cherry pick daného commitu do `stage`
 
-**Nasazení `release` do produkce**
-1) merge `release` branch do `production` branch
+**Nasazení `stage` do produkce**
+1) merge `stage` branch do `production` branch
 2) vyřešení případných merge conflicts
 3) nasazení nové verze `production` na testovací prostředí
 4) nasazení otestovaného buildu na produkci
