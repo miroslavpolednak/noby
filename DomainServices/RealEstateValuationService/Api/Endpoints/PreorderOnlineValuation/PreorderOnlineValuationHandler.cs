@@ -18,14 +18,12 @@ internal sealed class PreorderOnlineValuationHandler
         {
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AddressPointIdNotFound);
         }
-        _logger.LogDebug("Get Aggregate finished");
-
+        
         var houseAndFlat = Services.OrderAggregate.GetHouseAndFlat(entity);
         // info o produktu
         var (collateralAmount, loanAmount, _, _) = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
         _ = int.TryParse(request.Data.BuildingAgeCode, out int ageCode);
-        _logger.LogDebug("Get Product props finished");
-
+        
         // KBModel
         var kbmodelRequest = new ExternalServices.LuxpiService.V1.Contracts.KBModelRequest
         {
@@ -42,9 +40,9 @@ internal sealed class PreorderOnlineValuationHandler
             kbmodelRequest.ActualPurchasePrice = Convert.ToDouble(collateralAmount.GetValueOrDefault(), CultureInfo.InvariantCulture);
         if (loanAmount.HasValue)
             kbmodelRequest.LoanAmount = Convert.ToDouble(loanAmount.GetValueOrDefault(), CultureInfo.InvariantCulture);
-        _logger.LogDebug("KbModel request prepared");
-
+        
         var kbmodelReponse = await _luxpiServiceClient.CreateKbmodelFlat(kbmodelRequest, addressPointId.Value, cancellationToken);
+        _logger.CreateKbmodelFlat(kbmodelReponse.ValuationId, kbmodelReponse.ResultPrice);
 
         // revaluation check
         var revaluationRequest = new ExternalServices.PreorderService.V1.Contracts.OnlineRevaluationCheckRequestDTO
@@ -57,7 +55,7 @@ internal sealed class PreorderOnlineValuationHandler
             RealEstateIds = realEstateIds
         };
         bool revaluationRequired = await _preorderService.RevaluationCheck(revaluationRequest, cancellationToken);
-        _logger.LogDebug("Revaluation finished");
+        _logger.RevaluationFinished(revaluationRequired);
 
         // update databaze hlavni entity
         entity.ValuationResultCurrentPrice = kbmodelReponse.ResultPrice;
@@ -75,8 +73,7 @@ internal sealed class PreorderOnlineValuationHandler
             DataBin = request.Data.ToByteArray()
         };
         _dbContext.RealEstateValuationOrders.Add(order);
-        _logger.LogDebug("Updating entities...");
-
+        
         await _dbContext.SaveChangesAsync(cancellationToken);
         
         return new Empty();

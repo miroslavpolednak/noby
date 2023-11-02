@@ -24,7 +24,7 @@ internal class CancelMortgageHandler : IRequestHandler<CancelMortgageRequest>
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Cancel mortgage failed");
+            _logger.CancelMortgageFailed(request.ProductId, ex);
         }
     }
 }

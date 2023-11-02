@@ -6,6 +6,8 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, string, Exception> _kafkaMessageCaseIdIncorrectFormat;
     private static readonly Action<ILogger, string, Exception> _kafkaMessageCurrentTaskIdIncorrectFormat;
     private static readonly Action<ILogger, long?, Exception> _kafkaRealEstateValuationByOrderIdNotFound;
+    private static readonly Action<ILogger, bool, Exception> _revaluationFinished;
+    private static readonly Action<ILogger, long, int, Exception> _createKbmodelFlat;
 
     static LoggerExtensions()
     {
@@ -28,6 +30,16 @@ internal static class LoggerExtensions
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.RealEstateValuationNotFound, nameof(RealEstateValuationByOrderIdNotFound)),
             "RealEstateValuation OrderId {OrderId} not found");
+
+        _revaluationFinished = LoggerMessage.Define<bool>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.RevaluationFinished, nameof(RevaluationFinished)),
+            "Revaluation finished with result {RevaluationRequired}");
+
+        _createKbmodelFlat = LoggerMessage.Define<long, int>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.CreateKbmodelFlat, nameof(CreateKbmodelFlat)),
+            "CreateKbmodelFlat for valuation {ValuationId} finished with result price {ResultPrice}");
     }
 
     public static void AttachmentDeleteFailed(this ILogger logger, long externalId, int realEstateValuationAttachmentId, Exception ex)
@@ -41,4 +53,10 @@ internal static class LoggerExtensions
 
     public static void RealEstateValuationByOrderIdNotFound(this ILogger logger, long? orderId)
         => _kafkaRealEstateValuationByOrderIdNotFound(logger, orderId, null!);
+
+    public static void RevaluationFinished(this ILogger logger, bool revaluationRequired)
+        => _revaluationFinished(logger, revaluationRequired, null!);
+
+    public static void CreateKbmodelFlat(this ILogger logger, long valuationId, int resultPrice)
+        => _createKbmodelFlat(logger, valuationId, resultPrice, null!);
 }
