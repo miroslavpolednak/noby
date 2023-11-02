@@ -6,13 +6,13 @@ internal sealed class LoggerEventIdCodes
     public const int SearchCasesStart = 13503;
     public const int UpdateCaseStateStart = 13504;
     public const int QueueRequestIdSaved = 13505;
-    public const int StarbuildStateUpdateFailed = 13023;
-    public const int StarbuildStateUpdateSuccess = 13024;
-    public const int KafkaMessageCaseIdIncorrectFormat = 13002;
-    public const int KafkaMessageCurrentTaskIdIncorrectFormat = 13003;
-    public const int KafkaMessageTaskIdSbIncorrectFormat = 13004;
-    public const int KafkaCaseIdNotFound = 13006;
-    public const int RequestNotFoundInCache = 13007;
-    public const int UpdateActiveTaskStart = 13008;
-    public const int BeforeUpdateActiveTasks = 13009;
+    public const int StarbuildStateUpdateFailed = 13506;
+    public const int StarbuildStateUpdateSuccess = 13507;
+    public const int KafkaMessageCaseIdIncorrectFormat = 13508;
+    public const int KafkaMessageCurrentTaskIdIncorrectFormat = 13509;
+    public const int KafkaMessageTaskIdSbIncorrectFormat = 13510;
+    public const int KafkaCaseIdNotFound = 13511;
+    public const int RequestNotFoundInCache = 13512;
+    public const int UpdateActiveTaskStart = 13513;
+    public const int BeforeUpdateActiveTasks = 13514;
 }

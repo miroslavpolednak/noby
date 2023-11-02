@@ -6,4 +6,6 @@ internal sealed class LoggerEventIdCodes
     public const int KafkaMessageCaseIdIncorrectFormat = 22502;
     public const int KafkaMessageCurrentTaskIdIncorrectFormat = 22503;
     public const int RealEstateValuationNotFound = 22504;
+    public const int RevaluationFinished = 22505;
+    public const int CreateKbmodelFlat = 22506;
 }

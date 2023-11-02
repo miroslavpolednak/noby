@@ -10,17 +10,17 @@ internal static class LoggerExtensions
     {
         _rdmCodebookLoading = LoggerMessage.Define<string>(
             LogLevel.Information,
-            new EventId(9001, nameof(RdmCodebookLoading)),
+            new EventId(LoggerEventIdCodes.RdmCodebookLoading, nameof(RdmCodebookLoading)),
             "RDM Codebook {CodebookName} being fetched");
 
         _rdmCodebookLoaded = LoggerMessage.Define<int, string>(
             LogLevel.Information,
-            new EventId(9002, nameof(RdmCodebookLoaded)),
+            new EventId(LoggerEventIdCodes.RdmCodebookLoaded, nameof(RdmCodebookLoaded)),
             "{Rows} rows of RDM Codebook {CodebookName} saved");
 
         _rdmCodebookLoadingException = LoggerMessage.Define<string>(
             LogLevel.Error,
-            new EventId(9003, nameof(RdmCodebookLoadingException)),
+            new EventId(LoggerEventIdCodes.RdmCodebookLoadingException, nameof(RdmCodebookLoadingException)),
             "RDM Codebook {CodebookName} load failed");
     }
 
