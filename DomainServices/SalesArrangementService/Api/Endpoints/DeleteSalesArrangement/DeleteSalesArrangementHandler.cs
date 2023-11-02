@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.DeleteSalesArrangement;
@@ -14,13 +13,11 @@ internal sealed class DeleteSalesArrangementHandler
 
         if (!request.HardDelete)
         {
-            // kontrola na kategorii
-            if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == saInstance.SalesArrangementTypeId).SalesArrangementCategory != 2)
-                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, saInstance.SalesArrangementTypeId);
-
             // kontrola na stav
             if (!_allowedStates.Contains(saInstance.State))
+            {
                 throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SalesArrangementCantDelete, saInstance.State);
+            }
         }
 
         // smazat SA
@@ -33,6 +30,13 @@ internal sealed class DeleteSalesArrangementHandler
         
         await _dbContext.SaveChangesAsync(cancellation);
 
+        // smazat navazne entity
+        var households = await _householdService.GetHouseholdList(request.SalesArrangementId, cancellation);
+        foreach (var household in households)
+        {
+            await _householdService.DeleteHousehold(household.HouseholdId, true, cancellation);
+        }
+
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
@@ -40,19 +44,18 @@ internal sealed class DeleteSalesArrangementHandler
     { 
         (int)SalesArrangementStates.NewArrangement, 
         (int)SalesArrangementStates.InProgress,
-        (int)SalesArrangementStates.NewArrangement,
         (int)SalesArrangementStates.ToSend,
         (int)SalesArrangementStates.InSigning
     };
 
-    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
+    private readonly HouseholdService.Clients.IHouseholdServiceClient _householdService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
 
     public DeleteSalesArrangementHandler(
-        CodebookService.Clients.ICodebookServiceClient codebookService,
+        HouseholdService.Clients.IHouseholdServiceClient householdService,
         Database.SalesArrangementServiceDbContext dbContext)
     {
-        _codebookService = codebookService;
+        _householdService = householdService;
         _dbContext = dbContext;
     }
 }
