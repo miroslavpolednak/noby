@@ -11,6 +11,7 @@ public interface ISulmClient
 
     public const string PurposeMLAP = "MLAP";
     public const string PurposeMPAP = "MPAP";
+    public const string PurposeMLAX = "MLAX";
 
     internal static string GetChannelCode(IList<SharedTypes.Types.UserIdentity> identities)
     {

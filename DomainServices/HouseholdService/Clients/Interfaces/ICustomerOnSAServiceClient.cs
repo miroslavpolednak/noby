@@ -22,7 +22,7 @@ public interface ICustomerOnSAServiceClient
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default);
+    Task DeleteCustomer(int customerOnSAId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci instanci vybraneho klienta
