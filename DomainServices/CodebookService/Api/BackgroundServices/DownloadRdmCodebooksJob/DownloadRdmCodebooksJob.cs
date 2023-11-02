@@ -19,7 +19,7 @@ internal sealed class DownloadRdmCodebooksJob
                 {
                    var rows = codebook.IsMapping 
                         ? await loadMapping(codebook.CodebookName, cancellationToken) 
-                        : await loadCodebook(codebook.CodebookName, cancellationToken);
+                        : await loadCodebook(codebook.CodebookName, codebook.Fields, cancellationToken);
 
                     _logger.RdmCodebookLoaded(codebook.CodebookName, rows);
                 }
@@ -53,14 +53,20 @@ internal sealed class DownloadRdmCodebooksJob
         return items?.Count ?? 0;
     }
 
-    private async Task<int> loadCodebook(string codebookName, CancellationToken cancellationToken)
+    private async Task<int> loadCodebook(string codebookName, string[]? fields, CancellationToken cancellationToken)
     {
         var items = await _rdmClient.GetCodebookItems(codebookName, cancellationToken);
 
         var dataToInsert = new List<object>(items.Count);
         foreach (var item in items)
         {
-            var props = item.CodebookEntryValues.Select(t => new KeyValuePair<string, string>(t.CodebookColumn.Code, t.CodebookEntryValueLanguageMutations.First().MutationValue!));
+            var values = item.CodebookEntryValues;
+            if (fields?.Any() ?? false)
+            {
+                values = values.Where(t => fields.Contains(t.CodebookColumn.Code)).ToList();
+            }
+
+            var props = values.Select(t => new KeyValuePair<string, string>(t.CodebookColumn.Code, t.CodebookEntryValueLanguageMutations.First().MutationValue!));
             var propsString = System.Text.Json.JsonSerializer.Serialize(props);
             dataToInsert.Add(new { item.Code, IsValid = item.State == "ACTIVE", Props = propsString });
         }
