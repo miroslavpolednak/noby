@@ -14,10 +14,16 @@ internal sealed class RealPreorderServiceClient
             .ConfigureAwait(false);
 
         var model = await response.EnsureSuccessStatusAndReadJson<Contracts.OrderResultDTO>(StartupExtensions.ServiceName, cancellationToken);
+        decimal? futurePrice = (decimal?)model.ResultPrices?.FirstOrDefault(t => t.PriceSourceType == "STANDARD_PRICE_FUTURE")?.Price;
+        if (!futurePrice.HasValue)
+        {
+            futurePrice = (decimal?)model.ResultPrices?.FirstOrDefault(t => t.PriceSourceType == "LAND_PRICE_FUTURE")?.Price;
+        }
+
         return new OrderResultResponse
         {
-            ValuationResultCurrentPrice = (decimal?)model.ResultPrice.Price,
-            ValuationResultFuturePrice = (decimal?)model.ResultPrices?.FirstOrDefault(t => t.PriceSourceType == "STANDARD_PRICE_FUTURE")?.Price
+            ValuationResultCurrentPrice = (decimal?)model.ResultPrices?.FirstOrDefault(t => t.PriceSourceType == "STANDARD_PRICE_EXIST")?.Price,
+            ValuationResultFuturePrice = futurePrice
         };
     }
 
