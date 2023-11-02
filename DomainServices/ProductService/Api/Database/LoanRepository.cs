@@ -205,7 +205,7 @@ internal class LoanRepository
                    [KodBanky] as BankCode,
                    [VariabilniSymbol] as VariableSymbol
             FROM [dbo].[Zavazky]
-            WHERE [UverId] = @caseId AND [TypZavazku] <> 0 AND [Castka] > 0 AND [Veritel] <> NULL
+            WHERE [UverId] = @caseId AND [TypZavazku] <> 0 AND [Castka] > 0 AND [Veritel] IS NOT NULL
             """;
 
         return _connectionProvider.ExecuteDapperRawSqlToListAsync<Obligation>(Query, param: new { caseId }, cancellationToken);
