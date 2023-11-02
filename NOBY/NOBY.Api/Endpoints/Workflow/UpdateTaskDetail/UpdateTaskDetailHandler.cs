@@ -2,21 +2,27 @@
 using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
+using DomainServices.CodebookService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.UpdateTaskDetail;
 
 internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetailRequest>
 {
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly ICaseServiceClient _caseService;
-    private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
-    private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
-    private static int[] _allowedTaskTypeIds = { 1, 6 };
-
     public async Task Handle(UpdateTaskDetailRequest request, CancellationToken cancellationToken)
     {
         var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var taskDetail = await _caseService.GetTaskDetail(request.TaskIdSB, cancellationToken);
+
+        var inactiveStates = (await _codebookService.WorkflowTaskStates(cancellationToken))
+            .Where(t => t.Flag.HasFlag(DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types.EWorkflowTaskStateFlag.Inactive))
+            .Select(t => t.Id)
+            .ToArray();
+
+        if (taskDetail.TaskObject.Cancelled
+            || inactiveStates.Contains(taskDetail.TaskObject.StateIdSb))
+        {
+            throw new NobyValidationException(90032, "Inactive task");
+        }
 
         if (!_allowedTaskTypeIds.Contains(taskDetail.TaskObject.TaskTypeId))
         {
@@ -30,7 +36,8 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             _currentUserAccessor);
 
         List<string>? documentIds = new();
-        var attachments = request.Attachments?
+        var attachments = request
+            .Attachments?
             .Select(t => new Services.UploadDocumentToArchive.DocumentMetadata
             {
                 Description = t.Description,
@@ -71,12 +78,21 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
     }
 
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
+    private readonly ICaseServiceClient _caseService;
+    private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
+    private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
+    private static int[] _allowedTaskTypeIds = { 1, 6 };
+
     public UpdateTaskDetailHandler(
+        ICodebookServiceClient codebookService,
         ICurrentUserAccessor currentUserAccessor,
         Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive,
         ICaseServiceClient caseService,
         Services.TempFileManager.ITempFileManagerService tempFileManager)
     {
+        _codebookService = codebookService;
         _currentUserAccessor = currentUserAccessor;
         _uploadDocumentToArchive = uploadDocumentToArchive;
         _caseService = caseService;
