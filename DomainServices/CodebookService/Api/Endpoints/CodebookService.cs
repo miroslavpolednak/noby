@@ -443,30 +443,6 @@ internal partial class CodebookService
             return (new ProductTypesResponse()).AddItems(items);
         });
 
-    public override Task<ProfessionCategoriesResponse> ProfessionCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() =>
-        {
-            var items = _db.GetList<ProfessionCategoriesResponse.Types.ProfessionCategoryItem>(nameof(ProfessionCategories), 1);
-            var extensions = _db.GetDynamicList(nameof(ProfessionCategories), 2);
-            
-            items.ForEach(item =>
-            {
-                var ext = extensions.FirstOrDefault(x => x.ProfessionCategoryId == item.Id);
-                if (ext is not null)
-                {
-                    if (!string.IsNullOrEmpty(ext.ProfessionTypeIds))
-                    {
-                        item.ProfessionTypeIds.AddRange(((string)ext.ProfessionTypeIds).ParseIDs());
-                    }
-                    if (!string.IsNullOrEmpty(ext.IncomeMainTypeAMLIds))
-                    {
-                        item.IncomeMainTypeAMLIds.AddRange(((string)ext.IncomeMainTypeAMLIds).ParseIDs());
-                    }
-                }
-            });
-            return (new ProfessionCategoriesResponse()).AddItems(items);
-        });
-
     public override Task<SigningMethodsForNaturalPersonResponse> SigningMethodsForNaturalPerson(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
