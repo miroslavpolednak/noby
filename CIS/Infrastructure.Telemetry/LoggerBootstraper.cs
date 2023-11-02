@@ -7,6 +7,8 @@ using Serilog.Enrichers.Span;
 using Serilog.Filters;
 using System.Reflection;
 using CIS.Core.Exceptions;
+using Microsoft.Extensions.DependencyModel;
+using Serilog.Settings.Configuration;
 
 namespace CIS.Infrastructure.Telemetry;
 
@@ -69,7 +71,7 @@ internal sealed class LoggerBootstraper
     public void EnrichLogger(LoggerConfiguration loggerConfiguration, LogConfiguration configuration)
     {
         loggerConfiguration
-            .ReadFrom.Configuration(_generalConfiguration!)
+            .ReadFrom.Configuration(_generalConfiguration!, new ConfigurationReaderOptions(DependencyContext.Default))
             .Enrich.With(_serviceProvider.GetRequiredService<Enrichers.CisHeadersEnricher>())
             .Enrich.WithSpan()
             .Enrich.WithClientIp()
