@@ -81,6 +81,10 @@ namespace DomainServices.CodebookService.ExternalServices.RDM.V1.Contracts
             set { _additionalProperties = value; }
         }
 
+        [System.Text.Json.Serialization.JsonPropertyName("codebookEntryValueLanguageMutations")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
+        public System.Collections.Generic.ICollection<GetCodebookResponse_CodebookEntryValueLanguageMutation> CodebookEntryValueLanguageMutations { get; set; } = default!;
     }
 
     /// <summary>
@@ -183,10 +187,7 @@ namespace DomainServices.CodebookService.ExternalServices.RDM.V1.Contracts
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
         public System.Collections.Generic.ICollection<GetCodebookResponse_CodebookEntryValue> CodebookEntryValues { get; set; } = new System.Collections.ObjectModel.Collection<GetCodebookResponse_CodebookEntryValue>();
 
-        [System.Text.Json.Serialization.JsonPropertyName("codebookEntryValueLanguageMutations")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.Collections.Generic.ICollection<GetCodebookResponse_CodebookEntryValueLanguageMutation> CodebookEntryValueLanguageMutations { get; set; } = default!;
+        
 
         private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
 
