@@ -1,0 +1,8 @@
+--powershell script pro pytesty
+.\automat_health_ps.ps1
+
+--python pro script pro pytest
+python automat_health.py
+
+--nebo pøímo python
+pytest health_checks.py --ns-url sit_url --html=D:\app\httpd\html\report_SIT.html

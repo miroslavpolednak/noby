@@ -105,6 +105,78 @@ json_req_mail_kb_bad_11_attachments = \
     ]
   }
 
+
+# from, to, max priloh
+json_req_mail_kb_max_attachments = \
+  {
+    "from": {
+      "value": "notification-service@kb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_attachment_kb",
+    "content": {
+      "format": "application/mht",
+      "language": "cs",
+      "text": "json_req_mail_kb_att"
+    },
+    "attachments": [
+      {
+        "filename": "1.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+      {
+        "filename": "2.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "3.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+      {
+        "filename": "4.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "5.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "6.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "7.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "8.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+      {
+        "filename": "9.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      },
+{
+        "filename": "10.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      }
+    ]
+  }
+
 #sender
 json_req_mail_kb_sender_kb = \
   {
@@ -127,35 +199,6 @@ json_req_mail_kb_sender_kb = \
       }
     ],
     "subject": "NS_test_MIKEL_sender_kb.cz",
-    "content": {
-      "format": "application/html",
-      "language": "cs",
-      "text": "Marek Mikel"
-    },
-    "attachments": []
-  }
-
-json_req_mail_kb_sender_kb_sluzby = \
-  {
-    "from": {
-      "value": "notification-service@kb-sluzby.cz",
-      "party": {
-        "legalPerson": {
-          "name": "Notifikace"
-        }
-      }
-    },
-    "to": [
-      {
-        "value": "marek.mikel@mpss.cz",
-        "party": {
-          "legalPerson": {
-            "name": "Marek Mikel"
-          }
-        }
-      }
-    ],
-    "subject": "NS_test_MIKEL_sender_kb-sluzby.cz",
     "content": {
       "format": "application/html",
       "language": "cs",
