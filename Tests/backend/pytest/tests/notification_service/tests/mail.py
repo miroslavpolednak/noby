@@ -5,7 +5,7 @@ import urllib3
 from Tests.backend.pytest.tests.notification_service.conftest import URLS
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-from ..json.request.mail_kb_json import json_req_mail_kb_basic_legal
+from ..json.request.mail_kb_json import json_req_mail_kb_basic_legal, json_req_mail_kb_max_attachments
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
     json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, \
     json_req_mail_mpss_max_attachments, json_req_mail_mpss_basic_format_html, \
@@ -99,8 +99,8 @@ def test_mail_content_format(ns_url, auth_params, auth, json_data):
 
 
 # test variant
-@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_mail_mpss_max_attachments])
+@pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_mail_kb_max_attachments])
 def test_mail_max_attachments(ns_url, auth_params, auth, json_data):
     """max priloh klady test"""
     url_name = ns_url["url_name"]
