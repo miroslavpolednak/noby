@@ -178,6 +178,38 @@ json_req_mail_kb_max_attachments = \
   }
 
 #sender
+json_req_mail_kb_sender_kb_attachment = \
+  {
+    "from": {
+      "value": "notification-service@kb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_sender_kb.cz",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "Marek Mikel"
+    },
+    "attachments": [{
+        "filename": "attachment.txt",
+        "binary": "77u/YXR0YWNobWVudCAx"
+      }]
+  }
+
 json_req_mail_kb_sender_kb = \
   {
     "from": {
@@ -203,6 +235,186 @@ json_req_mail_kb_sender_kb = \
       "format": "application/html",
       "language": "cs",
       "text": "Marek Mikel"
+    },
+    "attachments": []
+  }
+
+
+
+#tests current content.format
+json_req_mail_kb_basic_format_application_html = \
+  {
+    "from": {
+      "value": "notification-service@kb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_json_req_mail_kb_basic_format_application_html",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "json_req_mail_kb_basic_format_application_html"
+    },
+    "attachments": []
+  }
+
+json_req_mail_kb_basic_format_text_html = \
+  {
+    "from": {
+      "value": "notification-service@kb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_json_req_mail_kb_basic_format_text_html",
+    "content": {
+      "format": "text/html",
+      "language": "cs",
+      "text": "json_req_mail_kb_basic_format_text_html"
+    },
+    "attachments": []
+  }
+
+
+json_req_mail_kb_basic_format_html = \
+  {
+    "from": {
+      "value": "notification-service@kb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_json_req_mail_kb_basic_format_html",
+    "content": {
+      "format": "html",
+      "language": "cs",
+      "text": "json_req_mail_kb_basic_format_html"
+    },
+    "attachments": []
+  }
+
+json_req_mail_kb_basic_format_text_plain = \
+  {
+    "from": {
+      "value": "notification-service@kb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_json_req_mail_kb_basic_format_text_plain",
+    "content": {
+      "format": "text/plain",
+      "language": "cs",
+      "text": "json_req_mail_kb_basic_format_text_plain"
+    },
+    "attachments": []
+  }
+
+
+json_req_mail_kb_basic_format_application_text = \
+  {
+    "from": {
+      "value": "notification-service@kb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_json_req_mail_kb_basic_format_application_text",
+    "content": {
+      "format": "application/text",
+      "language": "cs",
+      "text": "json_req_mail_kb_basic_format_application_text"
+    },
+    "attachments": []
+  }
+
+
+json_req_mail_kb_basic_content_format_application_mht = \
+  {
+    "from": {
+      "value": "notification-service@kb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_basic_legal",
+    "content": {
+      "format": "application/mht",
+      "language": "cs",
+      "text": "json_req_mail_kb_content_format_application_mht"
     },
     "attachments": []
   }
