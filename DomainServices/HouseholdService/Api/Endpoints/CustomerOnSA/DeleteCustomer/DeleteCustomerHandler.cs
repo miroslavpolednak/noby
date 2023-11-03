@@ -24,22 +24,10 @@ internal sealed class DeleteCustomerHandler
             .Identities?
             .FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);
 
-        // zjistit zda ma customer rozjednany pripad
-        var identityToCheck = customer.Identities?.FirstOrDefault();
-        bool hasMoreSA = false;
-
-        if (identityToCheck is not null)
-        {
-            hasMoreSA = (await _dbContext
-                .CustomersIdentities
-                .CountAsync(t => t.IdentityScheme == identityToCheck.IdentityScheme && t.IdentityId == identityToCheck.IdentityId, cancellationToken)) > 1;
-        }
-
         // SULM
-        // Podmínka v zadání zůstává, protože po MVP se bude opět vracet 
-        if (kbIdentity is not null && !hasMoreSA)
+        if (kbIdentity is not null)
         {
-            await _sulmClient.StopUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMLAX, cancellationToken);
+            await _sulmClient.StartUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMLAX, cancellationToken);
         }
 
         // Invalidate DocumentsOnSa Crs
