@@ -410,7 +410,7 @@ json_req_mail_kb_basic_content_format_application_mht = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_basic_legal",
+    "subject": "NS_test_MIKEL_json_req_mail_kb_basic_format_application_mht",
     "content": {
       "format": "application/mht",
       "language": "cs",
