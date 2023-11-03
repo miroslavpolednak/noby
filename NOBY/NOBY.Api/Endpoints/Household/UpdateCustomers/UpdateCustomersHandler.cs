@@ -20,6 +20,13 @@ internal sealed class UpdateCustomersHandler
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(householdInstance.SalesArrangementId, cancellationToken);
         bool isProductSA = salesArrangement.IsProductSalesArrangement();
 
+        // prevent changin main debtor
+        if (householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main
+            && householdInstance.CustomerOnSAId1 != request.Customer1?.CustomerOnSAId)
+        {
+            throw new NobyValidationException("prevent changin main debtor");
+        }
+
         // zkontrolovat, zda neni customer jiz v jine domacnosti
         var allCustomers = await checkDoubledCustomers(householdInstance.SalesArrangementId, request, cancellationToken);
 

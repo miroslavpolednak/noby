@@ -45,8 +45,7 @@ internal sealed class DeleteHouseholdHandler
         {
             await _mediator.Send(new DeleteCustomerRequest
             {
-                CustomerOnSAId = household.CustomerOnSAId1.Value,
-                HardDelete = request.HardDelete
+                CustomerOnSAId = household.CustomerOnSAId1.Value
             }, cancellationToken);
         }
 
@@ -54,8 +53,7 @@ internal sealed class DeleteHouseholdHandler
         {
             await _mediator.Send(new DeleteCustomerRequest
             {
-                CustomerOnSAId = household.CustomerOnSAId2.Value,
-                HardDelete = request.HardDelete
+                CustomerOnSAId = household.CustomerOnSAId2.Value
             }, cancellationToken);
         }
 

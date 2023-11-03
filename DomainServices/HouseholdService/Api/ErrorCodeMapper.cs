@@ -29,7 +29,6 @@ internal sealed class ErrorCodeMapper
     public const int LoanPrincipalAmountNotAllowed =    16050;
     public const int InstallmentAmountNotAllowed =      16051;
     public const int CreditorIdAndNameInSameTime =      16052;
-    public const int CantDeleteDebtor =                 16053;
     public const int IncomeIdIsEmpty =                  16055;
     public const int Customer2WithoutCustomer1 =        16056;
     public const int HouseholdIdIsEmpty =               16080;
@@ -62,7 +61,6 @@ internal sealed class ErrorCodeMapper
             { LoanPrincipalAmountNotAllowed, "LoanPrincipalAmount not allowed for current ObligationTypeId" },
             { InstallmentAmountNotAllowed, "InstallmentAmount not allowed for current ObligationTypeId" },
             { CreditorIdAndNameInSameTime, "Creditor.CreditorId and Creditor.Name can't be set in the same time" },
-            { CantDeleteDebtor, "CustomerOnSA is in role=Debtor -> can't be deleted" },
             { IncomeIdIsEmpty, "IncomeId must be > 0" },
             { Customer2WithoutCustomer1, "CustomerOnSAId1 is not set although CustomerOnSAId2 is." },
             { HouseholdIdIsEmpty, "HouseholdId must be > 0" }
