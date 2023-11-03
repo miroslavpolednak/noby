@@ -176,3 +176,33 @@ json_req_mail_kb_max_attachments = \
       }
     ]
   }
+
+#sender
+json_req_mail_kb_sender_kb = \
+  {
+    "from": {
+      "value": "notification-service@kb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_sender_kb.cz",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "Marek Mikel"
+    },
+    "attachments": []
+  }

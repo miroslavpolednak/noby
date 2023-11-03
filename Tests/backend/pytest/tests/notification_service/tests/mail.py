@@ -6,7 +6,7 @@ from Tests.backend.pytest.tests.notification_service.conftest import URLS
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-from ..json.request.mail_kb_json import json_req_mail_kb_max_attachments, json_req_mail_kb_basic_legal, json_req_mail_kb_sender_kb_sluzby, \
+from ..json.request.mail_kb_json import json_req_mail_kb_max_attachments, json_req_mail_kb_basic_legal, \
     json_req_mail_kb_sender_kb
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
     json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, \
