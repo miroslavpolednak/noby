@@ -23,4 +23,5 @@ message RealEstateValuationListItem {
     bool DeveloperAllowed = 14;
     bool DeveloperApplied = 15;
     google.protobuf.Int64Value PreorderId = 16;
+    bool OnlineDisqualified = 17;
 }

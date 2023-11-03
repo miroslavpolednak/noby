@@ -34,7 +34,8 @@ internal sealed class CreateRealEstateValuationHandler
             RealEstateTypeId = request.RealEstateTypeId,
             ValuationStateId = request.ValuationStateId,
             ValuationTypeId = (int)request.ValuationTypeId,
-            RealEstateStateId = request.RealEstateStateId
+            RealEstateStateId = request.RealEstateStateId,
+            IsOnlineDisqualified = request.OnlineDisqualified
         };
         _dbContext.RealEstateValuations.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
