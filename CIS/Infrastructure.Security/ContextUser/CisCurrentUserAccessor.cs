@@ -47,16 +47,17 @@ public sealed class CisCurrentContextUserAccessor
     public async Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken = default)
     {
         if (!IsAuthenticated)
-            throw new InvalidOperationException("Missing authenticated user - can not fetch user details");
-        if (_userDetailsFetched) return _userDetails!;
-
-        var userService = _httpContext!.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Clients.IUserServiceClient>();
-        var userInstance = await userService.GetUserBasicInfo(_user!.Id, cancellationToken);
-        _userDetails = new CisUserDetails
         {
-            DisplayName = userInstance.DisplayName
-        };
+            throw new InvalidOperationException("Missing authenticated user - can not fetch user details");
+        }
 
+        if (_userDetailsFetched)
+        {
+            return _userDetails!;
+        }
+
+        var userCache = _httpContext!.HttpContext!.RequestServices.GetRequiredService<CisCurrentUserAccessorCache>();
+        _userDetails = await userCache.GetUser(_user!.Id, cancellationToken);
         _userDetailsFetched = true;
 
         return _userDetails;
