@@ -53,10 +53,10 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
         else if (taskDetail.TaskObject.TaskTypeId == 6
             && taskDetail.TaskObject.SignatureTypeId == (int)SignatureTypes.Paper
-            && taskDetail.TaskObject.PhaseTypeId == 2
-            && request.TaskResponseTypeId == 0)
+            && request.TaskResponseTypeId == 0
+            && _currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningAttachments))
         {
-            throw new NobyValidationException("No attachments condition");
+            throw new NobyValidationException(90032);
         }
 
         var completeTaskRequest = new CompleteTaskRequest
@@ -67,6 +67,10 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             TaskTypeId = request.TaskTypeId,
             TaskUserResponse = request.TaskUserResponse
         };
+        if (request.TaskTypeId == 6)
+        {
+            completeTaskRequest.CompletionTypeId = _currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningAttachments) ? 2 : 1;
+        }
 
         completeTaskRequest.TaskDocumentIds.AddRange(taskDetail.TaskDetail.TaskDocumentIds.Concat(documentIds));
 

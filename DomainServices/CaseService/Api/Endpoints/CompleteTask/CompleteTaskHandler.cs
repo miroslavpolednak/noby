@@ -1,7 +1,6 @@
 ﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 using DomainServices.UserService.Clients;
-using DomainServices.UserService.Clients.Authorization;
 
 namespace DomainServices.CaseService.Api.Endpoints.CompleteTask;
 
@@ -27,7 +26,7 @@ internal sealed class CompleteTaskHandler
             var permissions = await _userService.GetCurrentUserPermissions(cancellationToken);
 
             sbRequest.Metadata.Add("ukol_podpis_odpoved_typ", (request.TaskResponseTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
-            sbRequest.Metadata.Add("ukol_podpis_zpusob_ukonceni", (permissions.Contains((int)UserPermissions.WFL_TASK_DETAIL_SigningAttachments) ? 2 : 1).ToString(CultureInfo.InvariantCulture));
+            sbRequest.Metadata.Add("ukol_podpis_zpusob_ukonceni", (request.CompletionTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
         }
 
         await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
