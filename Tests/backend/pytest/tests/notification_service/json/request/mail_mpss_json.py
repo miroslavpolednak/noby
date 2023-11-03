@@ -424,7 +424,7 @@ json_req_mail_mpss_basic_format_application_text = \
     ],
     "subject": "NS_test_MIKEL_json_req_mail_mpss_basic_format_application_text",
     "content": {
-      "format": "text/plain",
+      "format": "application/text",
       "language": "cs",
       "text": "json_req_mail_mpss_basic_format_application_text"
     },
@@ -454,7 +454,7 @@ json_req_mail_mpss_basic_content_format_application_mht = \
     ],
     "subject": "NS_test_MIKEL_basic_legal",
     "content": {
-      "format": "text/html",
+      "format": "application/mht",
       "language": "cs",
       "text": "json_req_mail_mpss_content_format_application_mht"
     },
