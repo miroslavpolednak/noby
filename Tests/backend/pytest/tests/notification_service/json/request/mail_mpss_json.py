@@ -337,7 +337,7 @@ json_req_mail_mpss_basic_format_text_html = \
     "content": {
       "format": "text/html",
       "language": "cs",
-      "text": "json_req_mail_mpss_basic_format_text_html"
+      "text": "<html><head></head><body>Testovaci text</body></html>"
     },
     "attachments": []
   }
@@ -424,7 +424,7 @@ json_req_mail_mpss_basic_format_application_text = \
     ],
     "subject": "NS_test_MIKEL_json_req_mail_mpss_basic_format_application_text",
     "content": {
-      "format": "text/plain",
+      "format": "application/text",
       "language": "cs",
       "text": "json_req_mail_mpss_basic_format_application_text"
     },
@@ -452,11 +452,11 @@ json_req_mail_mpss_basic_content_format_application_mht = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_basic_legal",
+    "subject": "NS_test_MIKEL_json_req_mail_mpss_basic_format_application_mht",
     "content": {
-      "format": "text/html",
+      "format": "application/mht",
       "language": "cs",
-      "text": "json_req_mail_mpss_content_format_application_mht"
+      "text": "From: notification-service@mpss.cz\\nDate: Fri, 27 Oct 2023 15:01:21 +0200\\nSubject: NS_test_MIKEL_basic_legal\\nMessage-Id: <7780XLAOCLU4.6E3W4XBXTUA23@adpra193>\\nTo: marek.mikel@mpss.cz\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=utf-8\\n\\n<html>\\n...your HTML content...\\n</html>"
     },
     "attachments": []
   }
