@@ -68,8 +68,7 @@ public static class StartupExtensions
 
         // helper pro ziskani aktualniho uzivatele
         builder.Services.AddScoped<Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>();
-
-        //builder.Services.AddUserService(); // ja myslim, ze je to zde z historickych duvodu a neni to treba
+        builder.Services.AddTransient<CisCurrentUserAccessorCache>();
 
         return builder;
     }
