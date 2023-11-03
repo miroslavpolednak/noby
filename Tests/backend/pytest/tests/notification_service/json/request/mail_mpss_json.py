@@ -233,7 +233,7 @@ json_req_mail_mpss_max_attachments = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_atch?mpss",
+    "subject": "NS_test_MIKEL_atch_mpss",
     "content": {
       "format": "application/mht",
       "language": "cs",
