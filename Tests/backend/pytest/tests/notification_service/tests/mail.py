@@ -8,7 +8,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ..json.request.mail_kb_json import json_req_mail_kb_basic_legal, json_req_mail_kb_max_attachments
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
     json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, \
-    json_req_mail_mpss_max_attachments, json_req_mail_mpss_basic_format_html, \
+    json_req_mail_mpss_basic_format_html, \
     json_req_mail_mpss_basic_format_text_html, json_req_mail_mpss_basic_format_application_html, \
     json_req_mail_mpss_basic_content_format_application_mht, json_req_mail_mpss_null_party_from, \
     json_req_mail_mpss_without_party_from, json_req_mail_mpss_case, \
