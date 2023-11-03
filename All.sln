@@ -208,6 +208,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\grpc-services.md = Docs\topics\grpc-services.md
 		Docs\topics\healthcheck.md = Docs\topics\healthcheck.md
 		Docs\topics\logging.md = Docs\topics\logging.md
+		Docs\topics\messaging-kafka.md = Docs\topics\messaging-kafka.md
+		Docs\topics\NOBY-GIT-FLOW.png = Docs\topics\NOBY-GIT-FLOW.png
 		Docs\topics\service-discovery.md = Docs\topics\service-discovery.md
 		Docs\topics\soap-client.md = Docs\topics\soap-client.md
 		Docs\topics\tempfilemanager.md = Docs\topics\tempfilemanager.md
@@ -215,6 +217,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\validation-feapi.md = Docs\topics\validation-feapi.md
 		Docs\topics\validation-grpc.md = Docs\topics\validation-grpc.md
 		Docs\topics\validation.md = Docs\topics\validation.md
+		Docs\topics\versioning.md = Docs\topics\versioning.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Testing", "CIS\Testing\CIS.Testing.csproj", "{02867ACA-A81B-40CD-87B3-FD97CF82DB04}"
@@ -263,6 +266,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00011_ValidationText_FixedHouseholdNumber.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00011_ValidationText_FixedHouseholdNumber.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00012-HFICH-8304.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00012-HFICH-8304.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00013_HFICH-8480_IgnoreBusinessCaseId.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00013_HFICH-8480_IgnoreBusinessCaseId.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00014_HFICH-9109_BusinessCaseId_LoanApplicationAssessmentId_IncreasedVarcharTo200.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00014_HFICH-9109_BusinessCaseId_LoanApplicationAssessmentId_IncreasedVarcharTo200.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
@@ -334,8 +338,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00057-TemplateVersion_TemplateProcessingType_Column.sql = DomainServices\CodebookService\DatabaseMigrations\00057-TemplateVersion_TemplateProcessingType_Column.sql
 		DomainServices\CodebookService\DatabaseMigrations\00061-HFICH-7632.sql = DomainServices\CodebookService\DatabaseMigrations\00061-HFICH-7632.sql
 		DomainServices\CodebookService\DatabaseMigrations\00066-HFICH-8634.sql = DomainServices\CodebookService\DatabaseMigrations\00066-HFICH-8634.sql
-		DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql = DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql
 		DomainServices\CodebookService\DatabaseMigrations\00067-HFICH-8515-SmsNotificationType.sql = DomainServices\CodebookService\DatabaseMigrations\00067-HFICH-8515-SmsNotificationType.sql
+		DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql = DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql
+		DomainServices\CodebookService\DatabaseMigrations\00070-HFICH-9074.sql = DomainServices\CodebookService\DatabaseMigrations\00070-HFICH-9074.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
@@ -446,6 +451,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00057_TaxResidencyTemplate.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00057_TaxResidencyTemplate.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00058_CustomerChange_PaymentAccount_User.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00058_CustomerChange_PaymentAccount_User.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00059_HFICH-7615_CustomerChange3602_AgentName.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00059_HFICH-7615_CustomerChange3602_AgentName.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00060_HFICH-9183_Fixed_CaseSensitive_CPM_ICP.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00060_HFICH-9183_Fixed_CaseSensitive_CPM_ICP.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00061_Fixed_Domicile.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00061_Fixed_Domicile.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"

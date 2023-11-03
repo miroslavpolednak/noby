@@ -1,52 +1,46 @@
-﻿using DomainServices.ProductService.Api.Database;
-using DomainServices.ProductService.Contracts;
-
-namespace DomainServices.ProductService.Api.Endpoints.GetCaseId;
+﻿namespace DomainServices.ProductService.Api.Endpoints.GetCaseId;
 
 internal sealed class GetCaseIdHandler : IRequestHandler<GetCaseIdRequest, GetCaseIdResponse>
 {
-    public async Task<GetCaseIdResponse> Handle(GetCaseIdRequest request, CancellationToken cancellation)
-    {
-        switch (request.RequestParametersCase)
-        {
-            case GetCaseIdRequest.RequestParametersOneofCase.ContractNumber:
-                var caseId1 =  await _repository.GetCaseIdByContractNumber(request.ContractNumber.ContractNumber, cancellation);
-                if (!caseId1.HasValue)
-                {
-                    throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ContractNumberNotFound, request.ContractNumber.ContractNumber);
-                }
-                
-                return new GetCaseIdResponse { CaseId = caseId1.Value };
-
-            case GetCaseIdRequest.RequestParametersOneofCase.PaymentAccount:
-                var caseId2 =  await _repository.GetCaseIdByPaymentAccount(request.PaymentAccount.Prefix, request.PaymentAccount.AccountNumber, cancellation);
-                if (!caseId2.HasValue)
-                {
-                    throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, request.PaymentAccount.AccountNumber);
-                }
-                
-                return new GetCaseIdResponse { CaseId = caseId2.Value };
-
-            case GetCaseIdRequest.RequestParametersOneofCase.PcpId:
-            {
-                var caseId3 =  await _repository.GetCaseIdByPcpId(request.PcpId.PcpId, cancellation);
-                if (!caseId3.HasValue)
-                {
-                    throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PcpIdNotFound, request.PcpId.PcpId);
-                }
-
-                return new GetCaseIdResponse { CaseId = caseId3.Value };
-            }
-
-            default:
-                throw new NotImplementedException();
-        }
-    }
-
     private readonly LoanRepository _repository;
 
     public GetCaseIdHandler(LoanRepository repository)
     {
         _repository = repository;
+    }
+
+    public async Task<GetCaseIdResponse> Handle(GetCaseIdRequest request, CancellationToken cancellationToken)
+    {
+        var caseId = request.RequestParametersCase switch
+        {
+            GetCaseIdRequest.RequestParametersOneofCase.ContractNumber => await GetCaseIdByContractNumber(request.ContractNumber.ContractNumber, cancellationToken),
+            GetCaseIdRequest.RequestParametersOneofCase.PaymentAccount => await GetCaseIdByPaymentAccount(request.PaymentAccount, cancellationToken),
+            GetCaseIdRequest.RequestParametersOneofCase.PcpId => await GetCaseIdByPcpId(request.PcpId.PcpId, cancellationToken),
+            GetCaseIdRequest.RequestParametersOneofCase.None => throw new NotImplementedException(),
+            _ => throw new NotImplementedException()
+        };
+
+        return new GetCaseIdResponse { CaseId = caseId };
+    }
+
+    private async Task<long> GetCaseIdByContractNumber(string contractNumber, CancellationToken cancellationToken)
+    {
+        var caseId = await _repository.GetCaseIdByContractNumber(contractNumber, cancellationToken);
+
+        return caseId ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ContractNumberNotFound, contractNumber);
+    }
+
+    private async Task<long> GetCaseIdByPaymentAccount(PaymentAccountObject paymentAccount, CancellationToken cancellationToken)
+    {
+        var caseId = await _repository.GetCaseIdByPaymentAccount(paymentAccount.Prefix, paymentAccount.AccountNumber, cancellationToken);
+
+        return caseId ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, paymentAccount.AccountNumber);
+    }
+
+    private async Task<long> GetCaseIdByPcpId(string pcpId, CancellationToken cancellationToken)
+    {
+        var caseId = await _repository.GetCaseIdByPcpId(pcpId, cancellationToken);
+
+        return caseId ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PcpIdNotFound, pcpId);
     }
 }

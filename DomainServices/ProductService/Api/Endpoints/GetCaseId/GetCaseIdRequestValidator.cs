@@ -1,27 +1,26 @@
-﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetCaseId;
 
-internal sealed class GetCaseIdRequestValidator : AbstractValidator<Contracts.GetCaseIdRequest>
+internal sealed class GetCaseIdRequestValidator : AbstractValidator<GetCaseIdRequest>
 {
     public GetCaseIdRequestValidator()
     {
-        When(t => t.RequestParametersCase == Contracts.GetCaseIdRequest.RequestParametersOneofCase.ContractNumber, () =>
+        When(t => t.RequestParametersCase == GetCaseIdRequest.RequestParametersOneofCase.ContractNumber, () =>
         {
             RuleFor(t => t.ContractNumber.ContractNumber)
                 .NotEmpty()
                 .WithErrorCode(ErrorCodeMapper.ContractNumberNotFound);
         });
 
-        When(t => t.RequestParametersCase == Contracts.GetCaseIdRequest.RequestParametersOneofCase.PaymentAccount, () =>
+        When(t => t.RequestParametersCase == GetCaseIdRequest.RequestParametersOneofCase.PaymentAccount, () =>
         {
             RuleFor(t => t.PaymentAccount.AccountNumber)
                 .NotEmpty()
                 .WithErrorCode(ErrorCodeMapper.PaymentAccountNotFound);
         });
 
-        When(t => t.RequestParametersCase == Contracts.GetCaseIdRequest.RequestParametersOneofCase.PcpId,
+        When(t => t.RequestParametersCase == GetCaseIdRequest.RequestParametersOneofCase.PcpId,
              () =>
              {
                  RuleFor(t => t.PcpId.PcpId)

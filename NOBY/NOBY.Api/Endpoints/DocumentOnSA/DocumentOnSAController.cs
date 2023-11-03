@@ -196,7 +196,6 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="request"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/search")]
-    [NobySkipCaseOwnerStateAndProductSAValidation]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(typeof(SearchDocumentsOnSaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

@@ -16,10 +16,6 @@ internal sealed class UpdateSalesArrangementHandler
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
-        // kontrola na kategorii
-        /*if ((await _codebookService.SalesArrangementTypes(cancellation)).First(t => t.Id == entity.SalesArrangementTypeId).SalesArrangementCategory != 2)
-            throw new CisValidationException(18013, $"SalesArrangement type not supported");*/
-
         // pokud je zadost NEW, zmenit na InProgress
         if (entity.State == (int)SalesArrangementStates.NewArrangement)
         {

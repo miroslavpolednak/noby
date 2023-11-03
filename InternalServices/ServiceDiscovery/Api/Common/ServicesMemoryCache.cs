@@ -8,12 +8,12 @@ namespace CIS.InternalServices.ServiceDiscovery.Api.Common;
 [Core.Attributes.ScopedService, Core.Attributes.SelfService]
 internal sealed class ServicesMemoryCache
 {
-    private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 20 });
+    private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 50 });
     private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
 
     public static void Clear()
     {
-        _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 20 });
+        _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 50 });
     }
 
     /// <summary>

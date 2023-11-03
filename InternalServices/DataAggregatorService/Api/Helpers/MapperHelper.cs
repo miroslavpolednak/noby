@@ -30,47 +30,61 @@ internal static class MapperHelper
     {
         var memberNames = fullPropertyName.Split('.');
 
-        if (memberNames.Length == 1)
+        try
         {
-            return string.IsNullOrWhiteSpace(memberNames.First()) ? obj : ObjectAccessor.Create(obj)[memberNames.First()];
+            if (memberNames.Length == 1)
+            {
+                return string.IsNullOrWhiteSpace(memberNames.First()) ? obj : ObjectAccessor.Create(obj)[memberNames.First()];
+            }
+
+            var currentObject = obj;
+
+            foreach (var propertyName in memberNames)
+            {
+                var accessor = ObjectAccessor.Create(currentObject);
+                currentObject = accessor[propertyName];
+
+                if (currentObject is null)
+                    break;
+            }
+
+            return currentObject;
         }
-
-        var currentObject = obj;
-
-        foreach (var propertyName in memberNames)
+        catch (Exception ex)
         {
-            var accessor = ObjectAccessor.Create(currentObject);
-            currentObject = accessor[propertyName];
-
-            if (currentObject is null)
-                break;
+            throw new InvalidOperationException($"GetValue for property '{fullPropertyName}' of the {obj.GetType().FullName} threw exception", ex);
         }
-
-        return currentObject;
     }
 
     public static Type GetType(object obj, string fullPropertyName)
     {
         var memberNames = fullPropertyName.Split('.');
-
         var currentType = obj.GetType();
 
-        if (memberNames.Length == 1)
+        try
         {
-            if (string.IsNullOrWhiteSpace(memberNames.First()))
-                return currentType;
+            if (memberNames.Length == 1)
+            {
+                if (string.IsNullOrWhiteSpace(memberNames.First()))
+                    return currentType;
 
-            return TypeAccessor.Create(currentType).GetMembers().First(m => m.Name == memberNames.First()).Type;
+                return TypeAccessor.Create(currentType).GetMembers().First(m => m.Name == memberNames.First()).Type;
+            }
+
+            foreach (var propertyName in memberNames)
+            {
+                var members = TypeAccessor.Create(currentType).GetMembers();
+
+                currentType = members.First(m => m.Name == propertyName).Type;
+            }
+
+            return currentType;
+
         }
-
-        foreach (var propertyName in memberNames)
+        catch (Exception ex)
         {
-            var members = TypeAccessor.Create(currentType).GetMembers();
-
-            currentType = members.First(m => m.Name == propertyName).Type;
+            throw new InvalidOperationException($"GetType for property '{fullPropertyName}' of the {currentType.FullName} threw exception", ex);
         }
-
-        return currentType;
     }
 
     public static object ConvertObjectImplicitly(object obj)

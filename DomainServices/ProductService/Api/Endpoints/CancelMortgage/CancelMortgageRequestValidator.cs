@@ -1,6 +1,4 @@
-﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
-using DomainServices.ProductService.Contracts;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace DomainServices.ProductService.Api.Endpoints.CancelMortgage;
 

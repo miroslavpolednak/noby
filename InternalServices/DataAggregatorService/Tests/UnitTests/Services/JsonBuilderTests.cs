@@ -98,6 +98,6 @@ public class JsonBuilderTests
         _sut.Add(JsonPath, FieldPath);
         var act = () => _sut.Serialize(testObject, _serializerOptions);
 
-        act.Should().Throw<ArgumentOutOfRangeException>();
+        act.Should().Throw<InvalidOperationException>().WithInnerException<ArgumentOutOfRangeException>();
     }
 }

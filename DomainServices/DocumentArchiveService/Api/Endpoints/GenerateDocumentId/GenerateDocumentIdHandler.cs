@@ -1,12 +1,13 @@
 ﻿using CIS.Core.Configuration;
+using CIS.Core.ErrorCodes;
 using DomainServices.DocumentArchiveService.Api.Database.Repositories;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
-using _api = DomainServices.DocumentArchiveService.Api;
+
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GenerateDocumentId;
 
 internal sealed class GenerateDocumentIdHandler
-    : IRequestHandler<GenerateDocumentIdRequest, Contracts.GenerateDocumentIdResponse>
+    : IRequestHandler<GenerateDocumentIdRequest, GenerateDocumentIdResponse>
 {
     private readonly Configuration.AppConfiguration _configuration;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
@@ -25,16 +26,16 @@ internal sealed class GenerateDocumentIdHandler
         _cisEnvironment = cisEnvironment;
     }
 
-    public async Task<Contracts.GenerateDocumentIdResponse> Handle(GenerateDocumentIdRequest request, CancellationToken cancellation)
+    public async Task<GenerateDocumentIdResponse> Handle(GenerateDocumentIdRequest request, CancellationToken cancellation)
     {
         var envName = request.EnvironmentName == EnvironmentNames.Unknown ? FastEnum.Parse<EnvironmentNames>(ConvertToEnvEnumStr(_cisEnvironment.EnvironmentName!))
                                                                             : request.EnvironmentName;
 
         long seq = await _documentSequenceRepository.GetNextDocumentSeqValue(cancellation);
 
-        return new Contracts.GenerateDocumentIdResponse
+        return new GenerateDocumentIdResponse
         {
-            DocumentId = $"KBH{getLoginFromServiceUser()}{getEnvCode(envName)}{seq:D23}"
+            DocumentId = $"KBH{getLoginFromServiceUser()}{getEnvCode(envName)}{seq:D22}"
         };
     }
 
@@ -51,16 +52,16 @@ internal sealed class GenerateDocumentIdHandler
         }
     }
 
-    private static string getEnvCode(Contracts.EnvironmentNames environmentNames) => environmentNames switch
+    private static string getEnvCode(EnvironmentNames environmentNames) => environmentNames switch
     {
-        EnvironmentNames.Dev => "D",
-        EnvironmentNames.Fat => "F",
-        EnvironmentNames.Sit1 => "S",
-        EnvironmentNames.Uat => "U",
-        EnvironmentNames.Preprod => "P",
-        EnvironmentNames.Edu => "E",
-        EnvironmentNames.Prod => "R",
-        EnvironmentNames.Test => "T",
+        EnvironmentNames.Dev => "D0",
+        EnvironmentNames.Fat => "F0",
+        EnvironmentNames.Sit1 => "S1",
+        EnvironmentNames.Uat => "U0",
+        EnvironmentNames.Preprod => "P0",
+        EnvironmentNames.Edu => "E0",
+        EnvironmentNames.Prod => "00",
+        EnvironmentNames.Test => "T0",
         EnvironmentNames.Unknown => HandleUnsupportedEnv(environmentNames),
         _ => HandleUnsupportedEnv(environmentNames)
     };
@@ -75,11 +76,11 @@ internal sealed class GenerateDocumentIdHandler
         string? serviceUser = _serviceUserAccessor.User?.Name;
 
         if (_configuration.ServiceUser2LoginBinding is null || !_configuration.ServiceUser2LoginBinding.Any())
-            throw _api.ErrorCodeMapper.CreateConfigurationException(_api.ErrorCodeMapper.ServiceUser2LoginBindingConfigurationNotSet);
+            throw ErrorCodeMapperBase.CreateConfigurationException(ErrorCodeMapper.ServiceUser2LoginBindingConfigurationNotSet);
 
         if (_configuration.ServiceUser2LoginBinding.ContainsKey(serviceUser ?? "_default"))
             return _configuration.ServiceUser2LoginBinding[serviceUser ?? "_default"];
         else
-            throw _api.ErrorCodeMapper.CreateConfigurationException(_api.ErrorCodeMapper.ServiceUserNotFoundInServiceUser2LoginBinding, serviceUser);
+            throw ErrorCodeMapperBase.CreateConfigurationException(ErrorCodeMapper.ServiceUserNotFoundInServiceUser2LoginBinding, serviceUser);
     }
 }

@@ -7,6 +7,7 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using System.Text.RegularExpressions;
 using PaymentAccount = NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount;
 
 namespace NOBY.Api.Endpoints.Cases.IdentifyCase;
@@ -30,7 +31,10 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         var documentListRequest = new GetDocumentListRequest { FormId = formId };
         var documentListResponse = await _documentArchiveServiceClient.GetDocumentList(documentListRequest, cancellationToken);
 
-        var document = documentListResponse.Metadata.FirstOrDefault();
+        var document = documentListResponse
+            .Metadata
+            .Where(t => Regex.IsMatch(t.DocumentId[7..], "^[0-9]+$"))
+            .FirstOrDefault();
         var caseId = document?.CaseId;
 
         if (caseId == null)

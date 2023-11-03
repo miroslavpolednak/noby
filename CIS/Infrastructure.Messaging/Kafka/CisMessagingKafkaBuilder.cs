@@ -70,6 +70,12 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
 
     public ICisMessagingBuilder Build()
     {
+        // skip integration testing
+        if (_builder.AppBuilder.Environment.EnvironmentName == "Testing")
+        {
+            return _builder;
+        }
+
         if (_riderConfigurationActions.Count == 0)
         {
             throw new Core.Exceptions.CisConfigurationException(0, "Kafka Consumers and Producers collection is empty");
@@ -91,6 +97,10 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
 
                 rider.UsingKafka((context, k) =>
                 {
+                    // kdyby vyhnila kafka, tak se zkousej porad rekonektit
+                    k.ReconnectBackoff = TimeSpan.FromMilliseconds(_configuration.ReconnectBackoff);
+                    k.ReconnectBackoffMax = TimeSpan.FromMinutes(_configuration.ReconnectBackoffMaxMinutes);
+
                     k.CreateKafkaHost(_configuration);
 
                     k.UseSendFilter(typeof(Filters.KbHeadersSendFilter<>), context);

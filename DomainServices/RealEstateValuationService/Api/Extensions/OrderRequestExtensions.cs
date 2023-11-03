@@ -24,10 +24,7 @@ internal static class OrderRequestExtensions
             model.CremRealEstateIds = realEstateIds;
         }
         
-        if (attachments?.Any() ?? false)
-        {
-            model.AttachmentIds = attachments;
-        }
+        model.AttachmentIds = attachments ?? Array.Empty<long>();
     }
 
     public static void FillBaseStandardOrderData(

@@ -29,7 +29,10 @@ public static class DapperExtensions
     {
         await using var connection = connectionProvider.Create();
         await connection.OpenAsync(cancellationToken);
-        return await connection.ExecuteScalarAsync<T>(sqlQuery, param);
+
+        var command = new CommandDefinition(sqlQuery, parameters: param, cancellationToken: cancellationToken);
+
+        return await connection.ExecuteScalarAsync<T>(command);
     }
     
     public static async Task<T> ExecuteDapperQueryAsync<T>(this IConnectionProvider connectionProvider, Func<IDbConnection, Task<T>> getData, CancellationToken cancellationToken = default)

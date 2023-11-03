@@ -26,6 +26,6 @@ public class EmailAddressFromValidator : AbstractValidator<EmailAddress>
                 var domainName = _normalForm(email).Split('@').Last();
                 return allowedDomainNames.Contains(domainName);
             })
-            .WithMessage($"Allowed domain names for sender: {string.Join(',', allowedDomainNames)}.");
+            .WithMessage($"Allowed domain names for sender: {string.Join(", ", allowedDomainNames)}.");
     }
 }

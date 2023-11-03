@@ -37,8 +37,6 @@ public class DocumentServiceQueryResult
 
     public string MimeType { get; set; } = null!;
 
-    public string FileName { get; set; } = null!;
-
     public string MinorCodes { get; set; } = null!;
 
 }

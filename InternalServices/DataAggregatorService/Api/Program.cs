@@ -3,7 +3,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
-    .AddApplicationConfiguration<CIS.InternalServices.DataAggregatorService.Api.Configuration.AppConfiguration>()
+    .AddApplicationConfiguration<AppConfiguration>()
     .AddRequiredServices(services =>
     {
         services

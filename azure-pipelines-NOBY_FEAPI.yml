@@ -13,6 +13,7 @@ variables:
   buildConfiguration: 'Release'
   buildPlatform: 'Any CPU'
   projectFile: 'NOBY\NOBY.Api\NOBY.Api.csproj'
+  dbMigrationsDirectory: 'NOBY\DatabaseMigrations'
   runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), ne(lower(variables['USESONARQUBE']), 'false'))]
 
 # custom BuildNumber
@@ -59,7 +60,7 @@ steps:
     noCache: false
 
 - task: SonarQubePrepare@5
-  condition: eq(variables.runSonarQube, true)
+  condition: and(succeeded(), eq(variables.runSonarQube, true))
   inputs:
     SonarQube: 'NOBY - SonarQube'
     scannerMode: 'MSBuild'
@@ -76,10 +77,10 @@ steps:
     noCache: false
 
 - task: SonarQubeAnalyze@5
-  condition: eq(variables.runSonarQube, true)
+  condition: and(succeeded(), eq(variables.runSonarQube, true))
 
 - task: SonarQubePublish@5
-  condition: eq(variables.runSonarQube, true)
+  condition: and(succeeded(), eq(variables.runSonarQube, true))
   inputs:
     pollingTimeoutSec: '300'
 
@@ -94,6 +95,24 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
+    ArtifactName: 'drop'
+    publishLocation: 'FilePath'
+    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\NOBY\$(Build.DefinitionName)\$(Build.BuildNumber)'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive DB Migrations'
+  condition: and(succeeded(), ne(variables.dbMigrationsDirectory, ''))
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)/$(dbMigrationsDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_DB.zip'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish DB Migrations to Artifacts'
+  condition: and(succeeded(), ne(variables.dbMigrationsDirectory, ''))
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_DB.zip'
     ArtifactName: 'drop'
     publishLocation: 'FilePath'
     TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\NOBY\$(Build.DefinitionName)\$(Build.BuildNumber)'

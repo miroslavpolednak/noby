@@ -100,6 +100,7 @@ public class SmsAuditLogger : ISmsAuditLogger
                 bodyAfter: new Dictionary<string, string>
                 {
                     { "notificationId", notificationId.ToString() }
+                    // todo: maybe add traceId?
                 });
         }
     }
@@ -123,6 +124,7 @@ public class SmsAuditLogger : ISmsAuditLogger
                     { "documentHash", documentHash ?? string.Empty },
                     { "hashAlgorithm", hashAlgorithm ?? string.Empty }
                 }
+                // todo: maybe add traceId?
             );
         }
     }

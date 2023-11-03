@@ -60,13 +60,13 @@ Implements [IgnoreServerCertificateErrors](CIS.Infrastructure.ExternalServicesHe
 Type of http client implementation - can be mock or real client or something else.
 
 ```csharp
-public CIS.Foms.Enums.ServiceImplementationTypes ImplementationType { get; set; }
+public CIS.Infrastructure.ExternalServicesHelpers.ServiceImplementationTypes ImplementationType { get; set; }
 ```
 
 Implements [ImplementationType](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.ImplementationType 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.ImplementationType')
 
 #### Property Value
-[CIS.Foms.Enums.ServiceImplementationTypes](https://docs.microsoft.com/en-us/dotnet/api/CIS.Foms.Enums.ServiceImplementationTypes 'CIS.Foms.Enums.ServiceImplementationTypes')
+[CIS.Infrastructure.ExternalServicesHelpers.ServiceImplementationTypes](https://docs.microsoft.com/en-us/dotnet/api/CIS.Infrastructure.ExternalServicesHelpers.ServiceImplementationTypes 'CIS.Infrastructure.ExternalServicesHelpers.ServiceImplementationTypes')
 
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.LogRequestPayload'></a>
 
@@ -113,11 +113,41 @@ Implements [Password](CIS.Infrastructure.ExternalServicesHelpers.Configuration.I
 #### Property Value
 [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
 
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.RequestRetryCount'></a>
+
+## ExternalServiceConfiguration<TClient>.RequestRetryCount Property
+
+Pokud první request timeoutuje, zkus ještě X opakovat
+
+```csharp
+public System.Nullable<int> RequestRetryCount { get; set; }
+```
+
+Implements [RequestRetryCount](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestRetryCount 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestRetryCount')
+
+#### Property Value
+[System.Nullable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.RequestRetryTimeout'></a>
+
+## ExternalServiceConfiguration<TClient>.RequestRetryTimeout Property
+
+Mezi jednotlivými opakováními počkej X sekund
+
+```csharp
+public System.Nullable<int> RequestRetryTimeout { get; set; }
+```
+
+Implements [RequestRetryTimeout](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestRetryTimeout 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.RequestRetryTimeout')
+
+#### Property Value
+[System.Nullable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')
+
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.RequestTimeout'></a>
 
 ## ExternalServiceConfiguration<TClient>.RequestTimeout Property
 
-Default request timeout in seconds
+Default single request timeout in seconds
 
 ```csharp
 public System.Nullable<int> RequestTimeout { get; set; }
@@ -175,6 +205,21 @@ Implements [ServiceUrl](https://docs.microsoft.com/en-us/dotnet/api/CIS.Core.IIs
 
 #### Property Value
 [System.Uri](https://docs.microsoft.com/en-us/dotnet/api/System.Uri 'System.Uri')
+
+<a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.UseDefaultProxy'></a>
+
+## ExternalServiceConfiguration<TClient>.UseDefaultProxy Property
+
+Pokud je true, pouzije pro HttpClient systemovou proxy
+
+```csharp
+public bool UseDefaultProxy { get; set; }
+```
+
+Implements [UseDefaultProxy](CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.md#CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseDefaultProxy 'CIS.Infrastructure.ExternalServicesHelpers.Configuration.IExternalServiceConfiguration.UseDefaultProxy')
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
 
 <a name='CIS.Infrastructure.ExternalServicesHelpers.Configuration.ExternalServiceConfiguration_TClient_.UseLogging'></a>
 

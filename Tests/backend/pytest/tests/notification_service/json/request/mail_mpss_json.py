@@ -686,3 +686,63 @@ json_req_mail_mpss_documentHash_SHA_3 = \
     "hashAlgorithm": "SHA-3"
   }
   }
+
+#sender
+json_req_mail_mpss_sender_mpss = \
+  {
+    "from": {
+      "value": "notification-service@mpss.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_sender_mpss.cz",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "Marek Mikel"
+    },
+    "attachments": []
+  }
+
+
+json_req_mail_mpss_sender_vsskb = \
+  {
+    "from": {
+      "value": "notification-service@vsskb.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_sender_vsskb.cz",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "Marek Mikel"
+    },
+    "attachments": []
+  }

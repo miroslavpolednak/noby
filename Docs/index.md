@@ -39,6 +39,10 @@
 
 [Auditní logování](./topics/audit.md)
 
+[Messaging - Kafka](./topics/messaging-kafka.md)
+
+[Versioning & GIT branching](./topics/versioning.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

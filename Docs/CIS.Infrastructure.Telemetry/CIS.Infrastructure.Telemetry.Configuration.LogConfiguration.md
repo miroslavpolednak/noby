@@ -34,7 +34,7 @@ public CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.FileLogger? F
 ```
 
 #### Property Value
-[CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.FileLogger](https://docs.microsoft.com/en-us/dotnet/api/CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.FileLogger 'CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.FileLogger')
+[FileLogger](CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.FileLogger.md 'CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.FileLogger')
 
 <a name='CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.Seq'></a>
 

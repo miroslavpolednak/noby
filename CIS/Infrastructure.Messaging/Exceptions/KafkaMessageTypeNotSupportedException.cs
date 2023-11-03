@@ -2,7 +2,8 @@
 
 namespace CIS.Infrastructure.Messaging.Exceptions;
 
-public class KafkaMessageTypeNotSupportedException : Exception, ICisLogExcludeException
+public sealed class KafkaMessageTypeNotSupportedException 
+    : Exception, ICisExceptionExludedFromLog
 {
     public string Type { get; }
 

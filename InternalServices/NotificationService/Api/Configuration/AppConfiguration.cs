@@ -5,7 +5,9 @@ public class AppConfiguration
     public List<Consumer> Consumers { get; set; } = new();
 
     public EmailSenders EmailSenders { get; set; } = null!;
-    
+
+    public HashSet<string> EmailDomainWhitelist { get; set; } = new();
+
     public HashSet<string> EmailFormats { get; set; } = new();
     
     public HashSet<string> EmailLanguageCodes { get; set; } = new();

@@ -16,7 +16,6 @@ Derived
 &#8627; [CisConfigurationException](CIS.Core.Exceptions.CisConfigurationException.md 'CIS.Core.Exceptions.CisConfigurationException')  
 &#8627; [CisConfigurationNotFound](CIS.Core.Exceptions.CisConfigurationNotFound.md 'CIS.Core.Exceptions.CisConfigurationNotFound')  
 &#8627; [CisConfigurationNotRegisteredException](CIS.Core.Exceptions.CisConfigurationNotRegisteredException.md 'CIS.Core.Exceptions.CisConfigurationNotRegisteredException')  
-&#8627; [CisConflictException](CIS.Core.Exceptions.CisConflictException.md 'CIS.Core.Exceptions.CisConflictException')  
 &#8627; [CisException](CIS.Core.Exceptions.CisException.md 'CIS.Core.Exceptions.CisException')  
 &#8627; [CisInvalidApplicationKeyException](CIS.Core.Exceptions.CisInvalidApplicationKeyException.md 'CIS.Core.Exceptions.CisInvalidApplicationKeyException')  
 &#8627; [CisInvalidEnvironmentNameException](CIS.Core.Exceptions.CisInvalidEnvironmentNameException.md 'CIS.Core.Exceptions.CisInvalidEnvironmentNameException')  

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace DomainServices.CodebookService.Api.Database;
 
+#pragma warning disable CS8603 // Possible null reference return.
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class DatabaseAggregate
 {
@@ -75,7 +76,6 @@ internal sealed class DatabaseAggregate
     private IConnectionProvider getConnectionProvider(SqlQueryCollection.DatabaseProviders provider) => provider switch
     {
         SqlQueryCollection.DatabaseProviders.KonsDb => Konsdb,
-        SqlQueryCollection.DatabaseProviders.Xxd => Xxd,
         SqlQueryCollection.DatabaseProviders.XxdHf => Xxdhf,
         SqlQueryCollection.DatabaseProviders.Self => SelfDb,
         _ => throw new NotImplementedException()
@@ -85,19 +85,16 @@ internal sealed class DatabaseAggregate
     public readonly IConnectionProvider SelfDb;
     public readonly IConnectionProvider<IKonsdbDapperConnectionProvider> Konsdb;
     public readonly IConnectionProvider<IXxdHfDapperConnectionProvider> Xxdhf;
-    public readonly IConnectionProvider<IXxdDapperConnectionProvider> Xxd;
 
     public DatabaseAggregate(
         IConnectionProvider selfDb,
         Database.SqlQueryCollection sql,
         IConnectionProvider<IKonsdbDapperConnectionProvider> konsdb,
-        IConnectionProvider<IXxdHfDapperConnectionProvider> xxdhf,
-        IConnectionProvider<IXxdDapperConnectionProvider> xxd)
+        IConnectionProvider<IXxdHfDapperConnectionProvider> xxdhf)
     {
         Sql = sql;
         SelfDb = selfDb;
         Konsdb = konsdb;
         Xxdhf = xxdhf;
-        Xxd = xxd;
     }
 }

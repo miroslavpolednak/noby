@@ -21,10 +21,11 @@ internal class TempFileManagerService
         CancellationToken cancellationToken = default)
     {
         // overit validni extension
-        if (!_allowedFileExtensions.Contains(Path.GetExtension(file.FileName)))
+        if (!_allowedFileExtensions.Contains(Path.GetExtension(file.FileName), StringComparer.OrdinalIgnoreCase))
         {
-            throw new NOBY.Infrastructure.ErrorHandling.NobyValidationException($"Unsupported file extension {file.FileName}");
+            throw new NOBY.Infrastructure.ErrorHandling.NobyValidationException(90032);
         }
+
         // overit delku filename
         if (file.FileName.Length > 64)
         {

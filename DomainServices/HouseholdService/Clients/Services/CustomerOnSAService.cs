@@ -20,13 +20,12 @@ internal sealed class CustomerOnSAService
         return await _service.CreateCustomerAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task DeleteCustomer(int customerOnSAId, bool hardDelete = false, CancellationToken cancellationToken = default)
+    public async Task DeleteCustomer(int customerOnSAId, CancellationToken cancellationToken = default)
     {
         await _service.DeleteCustomerAsync(
             new()
             {
-                CustomerOnSAId = customerOnSAId,
-                HardDelete = hardDelete
+                CustomerOnSAId = customerOnSAId
             }, cancellationToken: cancellationToken);
     }
 

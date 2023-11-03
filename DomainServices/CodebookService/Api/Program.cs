@@ -7,6 +7,7 @@ using DomainServices.CodebookService.ExternalServices;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddApplicationConfiguration<DomainServices.CodebookService.Api.Configuration.AppConfiguration>()
     .EnableJsonTranscoding(options =>
     {
         options.OpenApiTitle = "Codebook Service API";
@@ -20,7 +21,6 @@ SharedComponents.GrpcServiceBuilder
         // add general Dapper repository
         builder.Services
             .AddDapper(builder.Configuration.GetConnectionString("default")!)
-            .AddDapper<IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd")!)
             .AddDapper<IXxdHfDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxdhf")!)
             .AddDapper<IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb")!);
 
@@ -34,6 +34,9 @@ SharedComponents.GrpcServiceBuilder
 
             return new SqlQueryCollection(data);
         });
+
+        // background svc
+        builder.AddCisBackgroundService<DomainServices.CodebookService.Api.BackgroundServices.DownloadRdmCodebooksJob.DownloadRdmCodebooksJob>();
 
         builder.AddExternalService<IAcvEnumServiceClient>();
         builder.AddExternalService<IRDMClient>();

@@ -3,6 +3,7 @@
 public interface ISmtpAdapterService
 {
     public Task SendEmail(
+        string format,
         string from, string replyTo, string subject, string content,
         IEnumerable<string> to, IEnumerable<string> cc, IEnumerable<string> bcc,
         IEnumerable<SmtpAttachment> attachments);

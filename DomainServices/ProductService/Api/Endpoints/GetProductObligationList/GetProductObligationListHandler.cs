@@ -1,29 +1,21 @@
-﻿using DomainServices.ProductService.Api.Database;
-using DomainServices.ProductService.Contracts;
-using Microsoft.EntityFrameworkCore;
-
-namespace DomainServices.ProductService.Api.Endpoints.GetProductObligationList;
+﻿namespace DomainServices.ProductService.Api.Endpoints.GetProductObligationList;
 
 internal sealed class GetProductObligationListHandler : IRequestHandler<GetProductObligationListRequest, GetProductObligationListResponse>
 {
     private readonly LoanRepository _loanRepository;
-    private readonly ProductServiceDbContext _dbContext;
 
-    public GetProductObligationListHandler(LoanRepository loanRepository, ProductServiceDbContext dbContext)
+    public GetProductObligationListHandler(LoanRepository loanRepository)
     {
         _loanRepository = loanRepository;
-        _dbContext = dbContext;
     }
 
-    public async Task<GetProductObligationListResponse> Handle(GetProductObligationListRequest request, CancellationToken cancellation)
+    public async Task<GetProductObligationListResponse> Handle(GetProductObligationListRequest request, CancellationToken cancellationToken)
     {
         // check if loan exists (against KonsDB)
-        if (!await _loanRepository.ExistsLoan(request.ProductId, cancellation))
-        {
+        if (!await _loanRepository.LoanExists(request.ProductId, cancellationToken))
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
-        }
-        
-        var obligations = await _dbContext.Obligations.Where(o => o.LoanId == request.ProductId && o.ObligationTypeId != 0 && o.Amount > 0 && o.CreditorName != null).ToListAsync(cancellation);
+
+        var obligations = await _loanRepository.GetObligations(request.ProductId, cancellationToken);
 
         var responseItems = obligations.Select(obligation =>
         {

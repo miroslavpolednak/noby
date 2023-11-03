@@ -1,6 +1,6 @@
 ﻿namespace CIS.Infrastructure.Telemetry.Configuration;
 
-internal sealed class LoggingConfiguration
+public sealed class LoggingConfiguration
 {
     /// <summary>
     /// Typ logu - gRPC nebo WebApi

@@ -12,5 +12,5 @@ internal sealed class DbUserAttribute
     public int? distributionChannelId { get; set; }
     public string? personOrgUnitName { get; set; }
     public string? dealerCompanyName { get; set; }
-    public string companyCin { get; set; } = string.Empty;
+    public string? companyCin { get; set; } = string.Empty;
 }

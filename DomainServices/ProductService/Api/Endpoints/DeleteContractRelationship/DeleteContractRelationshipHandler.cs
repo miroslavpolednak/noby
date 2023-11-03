@@ -1,42 +1,30 @@
-﻿using ExternalServices.MpHome.V1;
+﻿namespace DomainServices.ProductService.Api.Endpoints.DeleteContractRelationship;
 
-namespace DomainServices.ProductService.Api.Endpoints.DeleteContractRelationship;
-
-internal sealed class DeleteContractRelationshipHandler
-    : IRequestHandler<Contracts.DeleteContractRelationshipRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class DeleteContractRelationshipHandler : IRequestHandler<DeleteContractRelationshipRequest>
 {
-    #region Construction
-    private readonly Database.LoanRepository _repository;
+    private readonly LoanRepository _repository;
     private readonly IMpHomeClient _mpHomeClient;
 
     public DeleteContractRelationshipHandler(
-        Database.LoanRepository repository,
+        LoanRepository repository,
         IMpHomeClient mpHomeClient)
     {
         _repository = repository;
         _mpHomeClient = mpHomeClient;
     }
 
-    #endregion
-
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.DeleteContractRelationshipRequest request, CancellationToken cancellation)
+    public async Task Handle(DeleteContractRelationshipRequest request, CancellationToken cancellationToken)
     {
         // check if loan exists (against KonsDB)
-        if (!await _repository.ExistsLoan(request.ProductId, cancellation))
-        {
+        if (!await _repository.LoanExists(request.ProductId, cancellationToken))
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
-        }
 
         // check if relationship exists
-        if (!await _repository.ExistsRelationship(request.ProductId, request.PartnerId, cancellation))
-        {
+        if (!await _repository.RelationshipExists(request.ProductId, request.PartnerId, cancellationToken))
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12018, request.ProductId, request.PartnerId);
-        }
 
         // call endpoint
-        await _mpHomeClient.DeletePartnerLoanLink(request.ProductId, request.PartnerId, cancellation);
-
-        return new Google.Protobuf.WellKnownTypes.Empty();
+        await _mpHomeClient.DeletePartnerLoanLink(request.ProductId, request.PartnerId, cancellationToken);
     }
 
 }

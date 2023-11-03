@@ -33,23 +33,25 @@ internal sealed class CustomerWithChangedDataService
         // convert DS contract to FE model
         var (model, _) = await GetCustomerFromCM<TResponse>(customerOnSA, cancellationToken);
 
-        // changed data already exist in database
-        if (!string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
+        // changed data does not exist in database
+        if (string.IsNullOrEmpty(customerOnSA.CustomerChangeData))
+            return model;
+
+        // provide saved changes to original model
+        var original = JObject.FromObject(model);
+        var delta = JObject.Parse(string.IsNullOrEmpty(customerOnSA.CustomerChangeData) || customerOnSA.CustomerChangeData == "null" ? "{}" : customerOnSA.CustomerChangeData);
+
+        original.Merge(delta, new JsonMergeSettings
         {
-            // provide saved changes to original model
-            var original = JObject.FromObject(model);
-            var delta = JObject.Parse(string.IsNullOrEmpty(customerOnSA.CustomerChangeData) || customerOnSA.CustomerChangeData == "null" ? "{}" : customerOnSA.CustomerChangeData);
+            MergeArrayHandling = MergeArrayHandling.Replace,
+            MergeNullValueHandling = MergeNullValueHandling.Merge
+        });
 
-            original.Merge(delta, new JsonMergeSettings
-            {
-                MergeArrayHandling = MergeArrayHandling.Replace,
-                MergeNullValueHandling = MergeNullValueHandling.Merge
-            });
+        var updatedModel = original.ToObject<TResponse>()!;
 
-            return original.ToObject<TResponse>()!;
-        }
+        UseConfirmedContactAddressIfExists(model.Addresses, updatedModel);
 
-        return model;
+        return updatedModel;
     }
 
     private static TCustomerDetail fillResponseDto<TCustomerDetail>(__Customer.CustomerDetailResponse dsCustomer, __Household.CustomerOnSA customerOnSA)
@@ -140,6 +142,19 @@ internal sealed class CustomerWithChangedDataService
         }
         else
             return default(TEmail);
+    }
+
+    private static void UseConfirmedContactAddressIfExists(IEnumerable<SharedTypes.Types.Address>? originalAddresses, BaseCustomerDetail updatedModel)
+    {
+        var confirmedContactAddress = originalAddresses?.FirstOrDefault(address => address is { AddressTypeId: (int)AddressTypes.Mailing, IsAddressConfirmed: true });
+
+        if (confirmedContactAddress is null)
+            return;
+
+        updatedModel.Addresses ??= new List<SharedTypes.Types.Address>();
+
+        updatedModel.Addresses.RemoveAll(a => a.AddressTypeId == (int)AddressTypes.Mailing);
+        updatedModel.Addresses.Add(confirmedContactAddress);
     }
 
     private readonly ICustomerServiceClient _customerService;

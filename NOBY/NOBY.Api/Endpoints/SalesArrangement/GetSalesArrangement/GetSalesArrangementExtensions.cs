@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NOBY.Api.Endpoints.SalesArrangement.Dto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -101,6 +102,7 @@ internal static class GetSalesArrangementExtensions
                 AgreedPrefix = model.RepaymentAccount?.AgreedPrefix,
                 BankCode = model.RepaymentAccount?.BankCode,
                 Number = model.RepaymentAccount?.Number,
+                Prefix = model.RepaymentAccount?.Prefix,
                 OwnerDateOfBirth = model.RepaymentAccount?.OwnerDateOfBirth,
                 OwnerFirstName = model.RepaymentAccount?.OwnerFirstName,
                 OwnerLastName = model.RepaymentAccount?.OwnerLastName

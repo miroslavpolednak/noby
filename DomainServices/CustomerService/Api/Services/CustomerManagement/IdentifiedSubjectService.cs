@@ -253,12 +253,17 @@ internal sealed class IdentifiedSubjectService
             PrimaryAddressFrom = primaryAddressFrom
         };  
     
-    private static __Contracts.ContactAddress CreateContactAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
-        new()
+    private static __Contracts.ContactAddress? CreateContactAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom)
+    {
+        if (requestAddress.IsAddressConfirmed ?? false)
+            return default;
+
+        return new __Contracts.ContactAddress
         {
             Address = address,
-            Confirmed = requestAddress.IsAddressConfirmed ?? false
+            Confirmed = false
         };
+    }
 
     private static __Contracts.TemporaryStayAddress CreateTemporaryStayAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
         new() { Address = address };
@@ -294,7 +299,7 @@ internal sealed class IdentifiedSubjectService
 
     private static __Contracts.PrimaryPhone? CreatePrimaryPhone(IEnumerable<Contact> contacts)
     {
-        var phone = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil);
+        var phone = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil && !c.Mobile.IsPhoneConfirmed);
         if (string.IsNullOrWhiteSpace(phone?.Mobile?.PhoneNumber))
             return default;
 
@@ -308,7 +313,7 @@ internal sealed class IdentifiedSubjectService
 
     private static __Contracts.PrimaryEmail? CreatePrimaryEmail(IEnumerable<Contact> contacts)
     {
-        var email = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email);
+        var email = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email && !c.Email.IsEmailConfirmed);
 
         if (email is null)
             return default;

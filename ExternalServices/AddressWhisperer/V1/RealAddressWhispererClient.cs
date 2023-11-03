@@ -57,15 +57,20 @@ internal sealed class RealAddressWhispererClient
                 {
                     _ = int.TryParse(baseNode.Element(_ns2 + "cadastralAreaId")?.Value, out var katuzId);
 
+                    var houseNumber = baseNode.Element(_ns2 + "landRegisterNumber")?.Value;
+                    
+                    if (!isCzechOrSlovakia)
+                        houseNumber = string.IsNullOrWhiteSpace(houseNumber) ? baseNode.Element(_ns2 + "streetNumber")?.Value : houseNumber;
+
                     return new Dto.AddressDetail
                     {
                         City = baseNode.Element(_ns2 + "city")?.Value,
                         CityDistrict = baseNode.Element(_ns2 + "cityDistrict")?.Value,
                         Country = baseNode.Element(_ns2 + "country")?.Value,
-                        HouseNumber = isCzechOrSlovakia ? baseNode.Element(_ns2 + "landRegisterNumber")?.Value : default,
+                        HouseNumber = houseNumber,
                         Postcode = baseNode.Element(_ns2 + "postCode")?.Value,
                         Street = baseNode.Element(_ns2 + "street")?.Value,
-                        StreetNumber = isCzechOrSlovakia ? baseNode.Element(_ns2 + "streetNumber")?.Value : baseNode.Element(_ns2 + "landRegisterNumber")?.Value,
+                        StreetNumber = isCzechOrSlovakia ? baseNode.Element(_ns2 + "streetNumber")?.Value : default,
                         EvidenceNumber = isCzechOrSlovakia ? baseNode.Element(_ns2 + "evidenceNumber")?.Value : default,
                         DeliveryDetails = baseNode.Element(_ns2 + "deliveryDetails")?.Value,
                         PragueDistrict = baseNode.Element(_ns2 + "pragueDistrict")?.Value,

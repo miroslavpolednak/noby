@@ -12,27 +12,27 @@ internal static class LoggerExtensions
     {
         _noServicesForEnvironment = LoggerMessage.Define<string>(
             LogLevel.Warning,
-            new EventId(156, nameof(NoServicesForEnvironment)),
+            new EventId(LoggerEventIdCodes.NoServicesForEnvironment, nameof(NoServicesForEnvironment)),
             "No services exists for environment '{EnvironmentName}'");
 
         _foundServices = LoggerMessage.Define<int, string>(
             LogLevel.Trace,
-            new EventId(157, nameof(FoundServices)),
+            new EventId(LoggerEventIdCodes.FoundServices, nameof(FoundServices)),
             "Database: found {Count} services in {EnvironmentName}");
 
         _servicesFoundInCache = LoggerMessage.Define<string>(
             LogLevel.Trace,
-            new EventId(154, nameof(ServicesFoundInCache)),
+            new EventId(LoggerEventIdCodes.ServicesFoundInCache, nameof(ServicesFoundInCache)),
             "Services for {EnvironmentName} FOUND in cache");
 
         _servicesNotFoundInCache = LoggerMessage.Define<string>(
             LogLevel.Trace,
-            new EventId(152, nameof(ServicesNotFoundInCache)),
+            new EventId(LoggerEventIdCodes.ServicesNotFoundInCache, nameof(ServicesNotFoundInCache)),
             "Services for {EnvironmentName} NOT found in cache");
 
         _cacheCleared = LoggerMessage.Define(
             LogLevel.Information,
-            new EventId(158, nameof(CacheCleared)),
+            new EventId(LoggerEventIdCodes.CacheCleared, nameof(CacheCleared)),
             "Cache has been cleared");
     }
 

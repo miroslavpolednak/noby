@@ -57,22 +57,21 @@ internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangement
 
     private async Task ValidateIdentificationDetail(NaturalPerson naturalPerson, CancellationToken cancellationToken)
     {
-        if (!naturalPerson.NetMonthEarningAmountId.HasValue || 
-            !naturalPerson.NetMonthEarningTypeId.HasValue || 
-            !naturalPerson.ProfessionCategoryId.HasValue || 
-            (naturalPerson.ProfessionCategoryId.Value != 0 && !naturalPerson.ProfessionId.HasValue))
-        {
-            ThrowValidationException();
-        }
+        ValidateSuccessfullyOrThrow(IncomeValidation, "'e' Income");
+        ValidateSuccessfullyOrThrow(EmploymentValidation, "'f' Employment");
 
         var maritalStates = await _codebookService.MaritalStatuses(cancellationToken);
         var educationLevels = await _codebookService.EducationLevels(cancellationToken);
 
-        if (!maritalStates.Any(m => m.Id != 0 && m.Id == naturalPerson.MaritalStatusStateId))
-            ThrowValidationException();
+        ValidateSuccessfullyOrThrow(MaritalStatesValidation, "'a.i' MaritalStatusId");
+        ValidateSuccessfullyOrThrow(EducationLevelsValidation, "'a.ii' EducationLevelId");
 
-        if (!educationLevels.Any(m => m.Id != 0 && m.Id == naturalPerson.EducationLevelId))
-            ThrowValidationException();
+        return;
+
+        bool IncomeValidation() => naturalPerson.NetMonthEarningAmountId.HasValue && naturalPerson.NetMonthEarningTypeId.HasValue;
+        bool EmploymentValidation() => naturalPerson.ProfessionCategoryId.HasValue && (naturalPerson.ProfessionCategoryId == 0 || naturalPerson.ProfessionId.HasValue);
+        bool MaritalStatesValidation() => maritalStates.Any(m => m.Id != 0 && m.Id == naturalPerson.MaritalStatusStateId);
+        bool EducationLevelsValidation() => educationLevels.Any(m => m.Id != 0 && m.Id == naturalPerson.EducationLevelId);
     }
 
     private static void ValidateAddresses(CustomerDetailResponse customer)
@@ -80,39 +79,50 @@ internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangement
         if (customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Mailing))
             return;
 
-        if (customer.Contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Mobil && c.Mobile.IsPhoneConfirmed) &&
-            customer.Contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Email && c.Email.IsEmailConfirmed))
+        if (customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Permanent && a.CountryId == 16))
             return;
 
-        ThrowValidationException();
+        ValidateSuccessfullyOrThrow(ConfirmedContactsValidation, "'b.i.4' Both contacts are not confirmed");
+
+        return;
+
+        bool ConfirmedContactsValidation() =>
+            customer.Contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Mobil && c.Mobile.IsPhoneConfirmed) &&
+            customer.Contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Email && c.Email.IsEmailConfirmed);
     }
 
-    private static void ValidateContacts(IEnumerable<Contact> contacts)
+    private static void ValidateContacts(ICollection<Contact> contacts)
     {
-        if (contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Mobil))
-            return;
+        ValidateSuccessfullyOrThrow(ContactsValidation, "'c' Contacts");
 
-        ThrowValidationException();
+        return;
+
+        bool ContactsValidation() => contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Mobil) && contacts.Any(c => c.ContactTypeId == (int)ContactTypes.Email);
     }
 
     private async Task ValidateIdentificationDocument(IdentificationDocument? identificationDocument, CustomerIdentification? customerIdentification, CancellationToken cancellationToken)
     {
-        if (identificationDocument is null || customerIdentification is null)
-            ThrowValidationException();
-
-        if (customerIdentification!.IdentificationDate is not null && !string.IsNullOrWhiteSpace(customerIdentification.CzechIdentificationNumber))
-            return;
+        ValidateSuccessfullyOrThrow(CustomerIdentificationValidation, "'d.i' CustomerIdentification");
 
         var identificationDocumentTypes = await _codebookService.IdentificationDocumentTypes(cancellationToken);
 
-        if (identificationDocumentTypes.Any(i => i.Id != 0 && i.Id == identificationDocument!.IdentificationDocumentTypeId))
-            return;
+        ValidateSuccessfullyOrThrow(IdentificationDocumentTypeValidation, "'d.ii' IdentificationDocumentType");
 
-        ThrowValidationException();
+        return;
+
+        bool CustomerIdentificationValidation() => customerIdentification?.IdentificationDate != null && !string.IsNullOrWhiteSpace(customerIdentification.CzechIdentificationNumber);
+
+        bool IdentificationDocumentTypeValidation() => identificationDocument?.IdentificationDocumentTypeId is not null &&
+                                                       identificationDocumentTypes.Any(i => i.Id != 0 && i.Id == identificationDocument!.IdentificationDocumentTypeId);
     }
 
-    private static void ThrowValidationException() =>
-        throw new CisValidationException(18087, "Customer validation failed, check customers detail");
+    private static void ValidateSuccessfullyOrThrow(Func<bool> validation, string validationRule)
+    {
+        if (validation())
+            return;
+
+        throw new CisValidationException(18087, $"Customer validation failed. Validation rule: {validationRule}");
+    }
 
     private static IEnumerable<Identity> GetCustomerIdentities(IEnumerable<CustomerOnSA> customersOnSa) =>
         customersOnSa.Select(c =>

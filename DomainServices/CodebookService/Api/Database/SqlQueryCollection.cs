@@ -11,7 +11,6 @@ internal sealed class SqlQueryCollection
 
     public enum DatabaseProviders : byte
     {
-        Xxd = 1,
         XxdHf = 2,
         KonsDb = 3,
         Self = 4

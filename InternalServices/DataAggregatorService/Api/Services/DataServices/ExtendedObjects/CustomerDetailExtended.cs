@@ -17,7 +17,18 @@ internal class CustomerDetailExtended : ExtendedObject<CustomerDetailResponse>
 
     public string FullName => $"{NaturalPerson.FirstName} {NaturalPerson.LastName}";
 
-    public string FullNameWitDegree => !NaturalPerson.DegreeBeforeId.HasValue ? FullName : $"{FullName}, {CodebookManager.DegreesBefore.First(d => d.Id == NaturalPerson.DegreeBeforeId.Value).Name}";
+    public string FullNameWitDegree
+    {
+        get
+        {
+            if (!NaturalPerson.DegreeBeforeId.HasValue)
+                return FullName;
+
+            var degreeName = CodebookManager.DegreesBefore.FirstOrDefault(d => d.Id != 0 && d.Id == NaturalPerson.DegreeBeforeId.Value)?.Name;
+
+            return string.IsNullOrWhiteSpace(degreeName) ? FullName : $"{FullName}, {degreeName}";
+        }
+    }
 
     public CountriesResponse.Types.CountryItem? BirthCountry => CodebookManager.Countries.FirstOrDefault(c => c.Id == NaturalPerson.BirthCountryId);
 

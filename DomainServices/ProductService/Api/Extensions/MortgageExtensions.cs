@@ -1,8 +1,4 @@
-﻿using DomainServices.ProductService.Contracts;
-using ExternalServices.MpHome.V1.Contracts;
-using LoanPurpose = DomainServices.ProductService.Contracts.LoanPurpose;
-
-namespace DomainServices.ProductService.Api;
+﻿namespace DomainServices.ProductService.Api;
 
 internal static class MortgageExtensions
 {
@@ -29,7 +25,7 @@ internal static class MortgageExtensions
             RepaymentAccountNumber = mortgage.RepaymentAccount?.Number,
             RepaymentAccountPrefix = mortgage.RepaymentAccount?.Prefix,
             EstimatedDuePaymentDate = mortgage.LoanDueDate,
-            RepaymentStartDate = mortgage.FirstAnnuityInstallmentDate,
+            FirstAnnuityInstallmentDate = mortgage.FirstAnnuityInstallmentDate,
             ServiceBranchId = mortgage.BranchConsultantId,
             ConsultantId = mortgage.CaseOwnerUserCurrentId,
             FirstRequestSignDate = mortgage.FirstSignatureDate,
@@ -122,7 +118,7 @@ internal static class MortgageExtensions
     /// <summary>
     /// Maps db entity LoanPurpose (table dbo.UverUcely) to contract object LoanPurpose .
     /// </summary>
-    public static LoanPurpose ToLoanPurpose(this Database.Models.LoanPurpose loanPurpose) => new()
+    public static Contracts.LoanPurpose ToLoanPurpose(this Database.Models.LoanPurpose loanPurpose) => new()
     {
         LoanPurposeId = loanPurpose.LoanPurposeId,
         Sum = loanPurpose.Sum

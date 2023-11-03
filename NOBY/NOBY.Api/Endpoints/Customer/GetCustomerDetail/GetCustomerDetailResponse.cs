@@ -8,8 +8,6 @@ public sealed class GetCustomerDetailResponse
     
     public Shared.JuridicalPerson? JuridicalPerson { get; set; }
     
-    public bool Updatable { get; set; }
-    
     public Shared.LegalCapacityItem? LegalCapacity { get; set; }
     
     public List<SharedTypes.Types.Address>? Addresses { get; set; }

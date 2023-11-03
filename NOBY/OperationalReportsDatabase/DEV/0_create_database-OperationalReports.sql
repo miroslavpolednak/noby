@@ -2,7 +2,7 @@ USE [master]
 GO
 
 /****** Object:  Database [OperationalReports]    Script Date: 05.04.2022 19:29:47 ******/
-CREATE DATABASE [OperationalReports]
+CREATE DATABASE [NobyOperationalReports]
  CONTAINMENT = NONE
  ON  PRIMARY 
 ( NAME = N'OperationalReports', FILENAME = N'F:\MSSQL15.MSSQLSERVER\MSSQL\DATA\OperationalReports.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )

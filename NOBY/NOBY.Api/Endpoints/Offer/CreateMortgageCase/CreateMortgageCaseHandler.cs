@@ -79,8 +79,7 @@ internal sealed class CreateMortgageCaseHandler
         _logger.EntityCreated(nameof(Household), householdId);
 
         // mam identifikovaneho customera
-        var notification = new Notifications.MainCustomerUpdatedNotification(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers);
-        await _mediator.Publish(notification, cancellationToken);
+        await _createProductTrain.Run(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers, cancellationToken);
 
         var identifiedFlowSwitch = new EditableFlowSwitch
         {
@@ -88,7 +87,7 @@ internal sealed class CreateMortgageCaseHandler
             Value = request.Identity is not null
         };
 
-        await _salesArrangementService.SetFlowSwitches(notification.SalesArrangementId, new List<EditableFlowSwitch> { identifiedFlowSwitch }, cancellationToken);
+        await _salesArrangementService.SetFlowSwitches(salesArrangementId, new List<EditableFlowSwitch> { identifiedFlowSwitch }, cancellationToken);
 
         return new CreateMortgageCaseResponse
         {
@@ -142,11 +141,11 @@ internal sealed class CreateMortgageCaseHandler
     private readonly IOfferServiceClient _offerService;
     private readonly ILogger<CreateMortgageCaseHandler> _logger;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly IMediator _mediator;
+    private readonly Services.CreateProductTrain.ICreateProductTrainService _createProductTrain;
 
     public CreateMortgageCaseHandler(
         IRollbackBag bag,
-        IMediator mediator,
+        Services.CreateProductTrain.ICreateProductTrainService createProductTrain,
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
         ICustomerServiceClient customerService,
         ICustomerOnSAServiceClient customerOnSAService,
@@ -160,7 +159,7 @@ internal sealed class CreateMortgageCaseHandler
         _bag = bag;
         _customerService = customerService;
         _customerOnSAService = customerOnSAService;
-        _mediator = mediator;
+        _createProductTrain = createProductTrain;
         _userAccessor = userAccessor;
         _caseService = caseService;
         _householdService = householdService;

@@ -675,6 +675,11 @@
             Klíč v gRPC Trailers kolekci, který označuje záznam s názvem argumentu, který vyvolal vyjímku (CisArgumentException)
             </summary>
         </member>
+        <member name="T:CIS.Core.Exceptions.ICisExceptionExludedFromLog">
+            <summary>
+            Marker interface for exceptions that should not be logged.
+            </summary>
+        </member>
         <member name="T:CIS.Core.Exceptions.CisConfigurationException">
             <summary>
             Pokud nastavení konfigurace v appsettings.json pro danou konfigurační sekci nelze zvalidovat - tj. chybí nastavit některá z required props atd.

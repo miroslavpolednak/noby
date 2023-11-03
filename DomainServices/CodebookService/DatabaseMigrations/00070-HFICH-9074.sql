@@ -1,0 +1,4 @@
+UPDATE CodebookService.dbo.GeneralDocumentList SET Name=N'Informace k vyhodnocení rizik spojených s nemovitou zástavou', Filename=N'informace_k_vyhodnoceni_rizik_spojenych_s_nemovitou_zastavou.pdf', Format=N'PDF' WHERE Id=10;
+UPDATE CodebookService.dbo.GeneralDocumentList SET Name=N'Přehled investičních nákladů', Filename=N'prehled_investicnich_nakladu.xlsx', Format=N'XLSX' WHERE Id=11;
+UPDATE CodebookService.dbo.GeneralDocumentList SET Name=N'Navigátor příloh', Filename=N'navigator_priloh.xlsx', Format=N'XLSX' WHERE Id=12;
+UPDATE CodebookService.dbo.GeneralDocumentList SET Name=N'Zápis z jednání o HÚ (developerský projekt)', Filename=N'zapis_z_jednani_o_hu_developersky_projekt.pdf', Format=N'PDF' WHERE Id=13;

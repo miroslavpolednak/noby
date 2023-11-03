@@ -84,14 +84,11 @@ internal sealed class CreateCustomerHandler
         var updateResponse = await _customerOnSAService.UpdateCustomer(customerOnSA.ToUpdateRequest(customerKb), cancellationToken);
 
         // vytvorit response z API
-        var model = customerKb
-            .ToResponseDto(isVerified, resultCode)
-            .InputDataComparison(request);
+        var model = customerKb.ToResponseDto(isVerified, resultCode);
 
         if (customerOnSA.CustomerRoleId == (int)CustomerRoles.Debtor)
         {
-            var notification = new Notifications.MainCustomerUpdatedNotification(saInstance.CaseId, customerOnSA.SalesArrangementId, request.CustomerOnSAId, updateResponse.CustomerIdentifiers);
-            await _mediator.Publish(notification, cancellationToken);
+            await _createProductTrain.Run(saInstance.CaseId, customerOnSA.SalesArrangementId, request.CustomerOnSAId, updateResponse.CustomerIdentifiers, cancellationToken);
         }
         else
         {
@@ -155,7 +152,7 @@ internal sealed class CreateCustomerHandler
     }
 
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IMediator _mediator;
+    private readonly Services.CreateProductTrain.ICreateProductTrainService _createProductTrain;
     private readonly ILogger<CreateCustomerHandler> _logger;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ICustomerServiceClient _customerService;
@@ -166,7 +163,7 @@ internal sealed class CreateCustomerHandler
 
     public CreateCustomerHandler(
         ISalesArrangementServiceClient salesArrangementService,
-        IMediator mediator,
+        Services.CreateProductTrain.ICreateProductTrainService createProductTrain,
         ICustomerOnSAServiceClient customerOnSAService,
         ICustomerServiceClient customerService,
         IProductServiceClient productService,
@@ -176,7 +173,7 @@ internal sealed class CreateCustomerHandler
         ILogger<CreateCustomerHandler> logger)
     {
         _salesArrangementService = salesArrangementService;
-        _mediator = mediator;
+        _createProductTrain = createProductTrain;
         _customerOnSAService = customerOnSAService;
         _customerService = customerService;
         _productService = productService;

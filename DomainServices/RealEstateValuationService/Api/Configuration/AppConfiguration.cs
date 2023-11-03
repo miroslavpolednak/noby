@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.RealEstateValuationService.Api.Configuration;
 
-public class AppConfiguration
+internal sealed class AppConfiguration
 {
     public string? SbWorkflowProcessTopic { get; set; }
 

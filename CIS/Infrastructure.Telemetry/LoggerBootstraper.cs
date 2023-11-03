@@ -7,6 +7,8 @@ using Serilog.Enrichers.Span;
 using Serilog.Filters;
 using System.Reflection;
 using CIS.Core.Exceptions;
+using Microsoft.Extensions.DependencyModel;
+using Serilog.Settings.Configuration;
 
 namespace CIS.Infrastructure.Telemetry;
 
@@ -60,15 +62,16 @@ internal sealed class LoggerBootstraper
             .Filter
             .ByExcluding(Matching.WithProperty("RequestPath", CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl));
 
+        // vynechat vsechny chyby, ktere nechceme logovat
         loggerConfiguration
             .Filter
-            .ByExcluding(logEvent => logEvent.Exception is ICisLogExcludeException);
+            .ByExcluding(logEvent => logEvent.Exception is ICisExceptionExludedFromLog);
     }
 
-    public void EnrichLogger(LoggerConfiguration loggerConfiguration)
+    public void EnrichLogger(LoggerConfiguration loggerConfiguration, LogConfiguration configuration)
     {
         loggerConfiguration
-            .ReadFrom.Configuration(_generalConfiguration!)
+            .ReadFrom.Configuration(_generalConfiguration!, new ConfigurationReaderOptions(DependencyContext.Default))
             .Enrich.With(_serviceProvider.GetRequiredService<Enrichers.CisHeadersEnricher>())
             .Enrich.WithSpan()
             .Enrich.WithClientIp()
@@ -76,6 +79,11 @@ internal sealed class LoggerBootstraper
             .Enrich.WithMachineName()
             .Enrich.WithProperty("Assembly", $"{_assemblyName!.Name}")
             .Enrich.WithProperty("Version", $"{_assemblyName!.Version}");
+
+        if (configuration.MaxPayloadLength.GetValueOrDefault() > 0)
+        {
+            loggerConfiguration.Enrich.With(new Enrichers.PayloadMaxLengthEnricher(configuration.MaxPayloadLength!.Value));
+        }
 
         // enrich from CIS env
         if (_cisConfiguration is not null)

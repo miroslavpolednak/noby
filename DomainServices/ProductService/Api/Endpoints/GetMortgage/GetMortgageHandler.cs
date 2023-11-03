@@ -1,102 +1,77 @@
-﻿using DomainServices.CodebookService.Clients;
-using DomainServices.ProductService.Contracts;
-using Microsoft.EntityFrameworkCore;
+﻿using SharedTypes.GrpcTypes;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
 
-internal sealed class GetMortgageHandler
-    : IRequestHandler<GetMortgageRequest, GetMortgageResponse>
+internal sealed class GetMortgageHandler : IRequestHandler<GetMortgageRequest, GetMortgageResponse>
 {
-    private readonly Database.ProductServiceDbContext _dbContext;
-    private readonly Database.LoanRepository _repository;
-    private readonly ICodebookServiceClient _codebookService;
+    private readonly LoanRepository _repository;
 
-    #region Construction
-
-    public GetMortgageHandler(
-        Database.ProductServiceDbContext dbContext,
-        Database.LoanRepository repository,
-        ICodebookServiceClient codebookService)
+    public GetMortgageHandler(LoanRepository repository)
     {
         _repository = repository;
-        _codebookService = codebookService;
-        _dbContext = dbContext;
     }
-    #endregion
 
-    public async Task<GetMortgageResponse> Handle(GetMortgageRequest request, CancellationToken cancellation)
+    public async Task<GetMortgageResponse> Handle(GetMortgageRequest request, CancellationToken cancellationToken)
     {
-        var loan = await _repository.GetLoan(request.ProductId, cancellation);
+        var loan = await _repository.GetLoan(request.ProductId, cancellationToken) 
+                   ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
 
-        if (loan == null)
-        {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
-        }
-
-        var relationships = await _repository.GetRelationships(request.ProductId, cancellation);
+        var relationships = await _repository.GetRelationships(request.ProductId, cancellationToken);
 
         var mortgage = loan.ToMortgage(relationships);
 
-        // pcpid
-        mortgage.PcpId = await _dbContext.LoanReservations.Where(t => t.UverId == request.ProductId).Select(t => t.PcpInstId).FirstOrDefaultAsync(cancellation);
-
-        // nemovitosti
-        var realEstates = _dbContext
-            .Loans2RealEstates
-            .Include(t => t.RealEstate)
-            .AsNoTracking()
-            .Where(t => t.UverId == loan.Id)
-            .Select(t => new LoanRealEstate
-            {
-                RealEstatePurchaseTypeId = t.UcelKod,
-                RealEstateTypeId = Convert.ToInt32(t.NemovitostId)
-            })
-            .ToList();
-
-        var statements = await _repository.GetLoanStatement(loan.Id, cancellation);
-        
-        if (statements is not null)
-        {
-            mortgage.Statement.Address = new()
-            {
-                Street = statements.Street ?? string.Empty,
-                StreetNumber = statements.StreetNumber ?? string.Empty,
-                HouseNumber = statements.HouseNumber ?? string.Empty,
-                Postcode = statements.Postcode ?? string.Empty,
-                City = statements.City ?? string.Empty,
-                AddressPointId = statements.AddressPointId ?? string.Empty,
-                CountryId = statements.CountryId
-            };
-        }
-
-        if (realEstates.Any())
-        {
-            // zjistit zajisteni
-            var collateral = await _dbContext.Collaterals
-                .AsNoTracking()
-                .Where(t => t.UverId == loan.Id)
-                .Select(t => new { t.NemovitostId })
-                .ToListAsync(cancellation);
-            collateral.ForEach(t =>
-            {
-                var n = realEstates.FirstOrDefault(x => x.RealEstateTypeId == t.NemovitostId);
-                if (n is not null)
-                {
-                    n.IsCollateral = true;
-                }
-            });
-
-            mortgage.LoanRealEstates.AddRange(realEstates);
-        }
-
-        // duvody
-        var purposes = await _repository.GetLoanPurposes(request.ProductId, cancellation);
-        if (purposes.Any())
-        {
-            mortgage.LoanPurposes.AddRange(purposes.Select(t => t.ToLoanPurpose()));
-        }
+        mortgage.PcpId = await _repository.GetPcpIdByCaseId(request.ProductId, cancellationToken);
+        mortgage.Statement.Address = await GetStatementAddress(request.ProductId, cancellationToken);
+        mortgage.LoanRealEstates.AddRange(await GetLoanRealEstates(request.ProductId, cancellationToken));
+        mortgage.LoanPurposes.AddRange(await GetLoanPurposes(request.ProductId, cancellationToken));
 
         return new GetMortgageResponse { Mortgage = mortgage };
     }
+    private async Task<GrpcAddress?> GetStatementAddress(long caseId, CancellationToken cancellationToken)
+    {
+        var loanStatement = await _repository.GetLoanStatement(caseId, cancellationToken);
 
+        if (loanStatement is null)
+            return default;
+
+        return new GrpcAddress
+        {
+            Street = loanStatement.Street ?? string.Empty,
+            StreetNumber = loanStatement.StreetNumber ?? string.Empty,
+            HouseNumber = loanStatement.HouseNumber ?? string.Empty,
+            Postcode = loanStatement.Postcode ?? string.Empty,
+            City = loanStatement.City ?? string.Empty,
+            AddressPointId = loanStatement.AddressPointId ?? string.Empty,
+            CountryId = loanStatement.CountryId
+        };
+    }
+
+    private async Task<IEnumerable<LoanRealEstate>> GetLoanRealEstates(long caseId, CancellationToken cancellationToken)
+    {
+        var realEstates = await _repository.GetLoanRealEstates(caseId, cancellationToken);
+
+        if (!realEstates.Any())
+            return Enumerable.Empty<LoanRealEstate>();
+
+        var collateral = await _repository.GetCollateral(caseId, cancellationToken);
+
+        return realEstates.Select(r =>
+        {
+            var col = collateral.FirstOrDefault(c => c.RealEstateTypeId == r.RealEstateTypeId);
+
+            return new LoanRealEstate
+            {
+                RealEstateTypeId = (int)r.RealEstateTypeId,
+                RealEstatePurchaseTypeId = r.RealEstatePurchaseTypeId,
+                IsCollateral = col is not null
+            };
+        });
+    }
+
+    private async Task<IEnumerable<Contracts.LoanPurpose>> GetLoanPurposes(long caseId, CancellationToken cancellationToken)
+    {
+        var purposes = await _repository.GetLoanPurposes(caseId, cancellationToken);
+
+        return purposes.Select(p => p.ToLoanPurpose());
+    }
 }
