@@ -233,11 +233,11 @@ json_req_mail_mpss_max_attachments = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_basic_legal",
+    "subject": "NS_test_MIKEL_atch_mpss",
     "content": {
       "format": "application/mht",
       "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
+      "text": "json_req_mail_mpss_atch"
     },
     "attachments": [
       {
