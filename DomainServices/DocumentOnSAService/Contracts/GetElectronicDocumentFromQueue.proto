@@ -10,6 +10,8 @@ message GetElectronicDocumentFromQueueRequest{
 		MainDocument MainDocument = 1;
 		DocumentAttachment DocumentAttachment = 2;
 	}
+
+	bool GetMetadataOnly = 3;
 } 
 
 message GetElectronicDocumentFromQueueResponse{
@@ -17,6 +19,7 @@ message GetElectronicDocumentFromQueueResponse{
 	bytes BinaryData = 1;
     string MimeType = 2;
     string Filename = 3;
+	bool IsCustomerPreviewSendingAllowed = 4;
 }
 
 message MainDocument{

@@ -70,7 +70,8 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 },
                 IsPreviewSentToCustomer = s.IsPreviewSentToCustomer,
                 ExternalId = s.ExternalId,
-                Source = s.Source.MapToCisEnum()
+                Source = s.Source.MapToCisEnum(),
+                IsCustomerPreviewSendingAllowed = s.IsCustomerPreviewSendingAllowed
             }).OrderBy(o => o.DocumentTypeId).ThenBy(c => c.CustomerOnSa.CustomerOnSAId).ToList()
         };
     }

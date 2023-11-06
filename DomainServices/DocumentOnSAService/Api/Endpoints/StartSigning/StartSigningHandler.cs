@@ -61,7 +61,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(nameof(request));
-        
+
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
 
         var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
