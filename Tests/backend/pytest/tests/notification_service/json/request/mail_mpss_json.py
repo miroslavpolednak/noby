@@ -233,11 +233,11 @@ json_req_mail_mpss_max_attachments = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_basic_legal",
+    "subject": "NS_test_MIKEL_atch_mpss",
     "content": {
       "format": "application/mht",
       "language": "cs",
-      "text": "json_req_mail_mpss_basic_legal"
+      "text": "json_req_mail_mpss_atch"
     },
     "attachments": [
       {
@@ -337,7 +337,7 @@ json_req_mail_mpss_basic_format_text_html = \
     "content": {
       "format": "text/html",
       "language": "cs",
-      "text": "json_req_mail_mpss_basic_format_text_html"
+      "text": "<html><head></head><body>Testovaci text</body></html>"
     },
     "attachments": []
   }
@@ -424,7 +424,7 @@ json_req_mail_mpss_basic_format_application_text = \
     ],
     "subject": "NS_test_MIKEL_json_req_mail_mpss_basic_format_application_text",
     "content": {
-      "format": "text/plain",
+      "format": "application/text",
       "language": "cs",
       "text": "json_req_mail_mpss_basic_format_application_text"
     },
@@ -452,11 +452,11 @@ json_req_mail_mpss_basic_content_format_application_mht = \
         }
       }
     ],
-    "subject": "NS_test_MIKEL_basic_legal",
+    "subject": "NS_test_MIKEL_json_req_mail_mpss_basic_format_application_mht",
     "content": {
-      "format": "text/html",
+      "format": "application/mht",
       "language": "cs",
-      "text": "json_req_mail_mpss_content_format_application_mht"
+      "text": "From: \"notification-service@mpss.cz\"\\nSubject: Testovací MHT Soubor\\nDate: Wed, 1 Nov 2023 10:00:00 +0200\\nMIME-Version: 1.0\\nContent-Type: multipart/related; boundary=\"----=_NextPart_000_0000_01D3F6A2.BC237A30\"; type=\"text/html\"\\n\\n------=_NextPart_000_0000_01D3F6A2.BC237A30\\nContent-Type: text/html; charset=\"utf-8\"\\nContent-Transfer-Encoding: quoted-printable\\n\\n<!DOCTYPE html>\\n<html>\\n<head>\\n<title>Testovací Stránka</title>\\n</head>\\n<body>\\n<h1>Ahoj světe!</h1>\\n<p>Toto je testovací MHT obsah.</p>\\n</body>\\n</html>\\n\\n------=_NextPart_000_0000_01D3F6A2.BC237A30--"
     },
     "attachments": []
   }

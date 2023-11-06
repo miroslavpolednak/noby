@@ -1,4 +1,5 @@
 import uuid
+import datetime
 from time import sleep
 from urllib.parse import urlencode, quote
 """
@@ -15,13 +16,16 @@ import requests
 from ..conftest import URLS, greater_than_zero, ns_url, auth
 from ..json.request.seg_log import json_req_basic_log
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
-    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb, json_req_sms_sb, \
+    json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb_E2E, json_req_sms_sb, \
     json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
     json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e, \
-    json_req_sms_caseId, json_req_sms_documentHash
+    json_req_sms_caseId, json_req_sms_documentHash, json_req_sms_basic_kb_insg, json_req_sms_logovani_mpss_sb, \
+    json_req_sms_bez_logovani_mpss_sb, json_req_sms_logovani_kb_insg
 from ..json.request.sms_template_json import json_req_sms_full_template
+
+# test pro additional parameters napr. --ns-url sit_url
 
 
 @pytest.mark.skip(reason="pro ruční spouštění")
@@ -53,7 +57,7 @@ def test_sms_manualy(url_name, auth_params, auth, json_data):
     assert notification_id != ""
 
 
-@pytest.mark.skip(reason="real")
+#@pytest.mark.skip(reason="real")
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg_e2e])
 def test_E2E_real_sms(ns_url, auth_params, auth, json_data, modified_json_data):
@@ -80,7 +84,31 @@ def test_E2E_real_sms(ns_url, auth_params, auth, json_data, modified_json_data):
 # test pro additional parameters napr. --ns-url sit_url
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg])
-def test_sms(ns_url, auth_params, auth, json_data):
+def test_sms_insg(ns_url, auth_params, auth, json_data):
+    url_name = ns_url["url_name"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/sms",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    notification = resp.json()
+    print(notification)
+    assert "notificationId" in notification
+    notification_id = notification["notificationId"]
+    assert notification_id != ""
+
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
+
+
+
+@pytest.mark.parametrize("auth", ["XX_KBINSG_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_sms_basic_kb_insg])
+def test_sms_kb_insg(ns_url, auth_params, auth, json_data):
     url_name = ns_url["url_name"]
     username = auth[0]
     password = auth[1]
@@ -151,11 +179,13 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
     assert notification_id != ""
 
 
-# TODO: az bude čas, AU_NOBY_12 chytat na customId, ale je schované v \ takže není možnost přes JSONParser
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
-    ("loguji", json_req_sms_logovani_kb_sb, True),
-    ("neloguji", json_req_sms_bez_logovani_kb_sb, False)
+    ("loguji", json_req_sms_logovani_kb_sb_E2E, True),
+    ("loguji", json_req_sms_logovani_mpss_sb, True),
+    ("loguji", json_req_sms_logovani_kb_insg, True),
+    ("neloguji", json_req_sms_bez_logovani_kb_sb, False),
+    ("neloguji", json_req_sms_bez_logovani_mpss_sb, False)
 ])
 def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
                  expected_result, db_url, db_connection):
@@ -182,6 +212,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
     assert "notificationId" in resp
     notification_id = resp["notificationId"]
     assert notification_id != ""
+    print(datetime.datetime.now())
 
     cursor = db_connection.cursor()
     print(f"Notification ID: {notification_id}")
@@ -202,23 +233,26 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
     except pyodbc.Error as e:
         pytest.fail(f"Failed to execute query 1: {e}")
 
-    '''
     print(f'(%\\\"customId\\\": \\\"{notification_id}\\\"%)')
+    sleep(5)
     try:
-        cursor.execute("""
-                       SELECT * 
-                       FROM AuditEvent
-                       WHERE AuditEventTypeId = ? 
-                       AND Detail LIKE ?
-                       AND ABS(DATEDIFF(SECOND, TimeStamp, GETDATE())) <= 10
-                       ORDER BY [TimeStamp] DESC
-                       """, ('AU_NOBY_012', f'(%\\\"customId\\\": \\\"{notification_id}\\\"%)')
-                       )
+        like_pattern = f'%"customId": "{unique_custom_id}"%'
+        query = """
+                SELECT * 
+                FROM AuditEvent
+                WHERE AuditEventTypeId = ? 
+                AND JSON_VALUE(Detail, '$.body.objectsBefore.rawHttpRequestBody') LIKE ?
+                ORDER BY [TimeStamp] DESC
+                """
+        print("SQL Query:", query)
+        print("Parameters:", ('AU_NOBY_012', like_pattern))
+        cursor.execute(query, ('AU_NOBY_012', like_pattern))
         results_2 = cursor.fetchall()
         found_records_2 = bool(results_2)
+        print("Results:", results_2)
     except pyodbc.Error as e:
         pytest.fail(f"Failed to execute query 2: {e}")
-    '''
+
     try:
         cursor.execute("""
                        SELECT * 
@@ -234,7 +268,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
         pytest.fail(f"Failed to execute query 3: {e}")
 
     assert found_records_1 == expected_result
-    #assert found_records_2 == expected_result
+    assert found_records_2 == expected_result
     assert found_records_3 == expected_result
 
 
@@ -276,7 +310,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
 # NOBY vraci okej, ale v databázi padnou kombinace, ktere nemaji pro sebe MCS kod
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST", "XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data",
-                         [json_req_sms_basic_insg, json_req_sms_basic_epsy_kb, json_req_sms_logovani_kb_sb])
+                         [json_req_sms_basic_insg, json_req_sms_basic_epsy_kb, json_req_sms_logovani_kb_sb_E2E])
 def test_sms_combination_security(ns_url, auth_params, auth, json_data):
     """test pro kombinaci všech uživatelů s basic sms"""
     url_name = ns_url["url_name"]
@@ -300,7 +334,7 @@ def test_sms_combination_security(ns_url, auth_params, auth, json_data):
                          [
                              ("XX_INSG_RMT_USR_TEST", json_req_sms_basic_insg),
                              ("XX_EPSY_RMT_USR_TEST", json_req_sms_basic_epsy_kb),
-                             ("XX_SB_RMT_USR_TEST", json_req_sms_logovani_kb_sb),
+                             ("XX_SB_RMT_USR_TEST", json_req_sms_logovani_kb_sb_E2E),
                          ], indirect=["auth"])
 def test_sms_basic_security(auth_params, auth, json_data, ns_url):
     """

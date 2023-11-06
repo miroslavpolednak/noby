@@ -9,4 +9,6 @@ public class Attachment
     public string ContentType { get; set; } = null!;
 
     public byte[]? Content { get; set; }
+
+    public bool IsCustomerPreviewSendingAllowed { get; set; }
 }

@@ -70,6 +70,12 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
 
     public ICisMessagingBuilder Build()
     {
+        // skip integration testing
+        if (_builder.AppBuilder.Environment.EnvironmentName == "Testing")
+        {
+            return _builder;
+        }
+
         if (_riderConfigurationActions.Count == 0)
         {
             throw new Core.Exceptions.CisConfigurationException(0, "Kafka Consumers and Producers collection is empty");

@@ -16,6 +16,14 @@ json_req_sms_basic_insg = \
         "text": "e2e TEST insg bez logovani"
     }
 
+json_req_sms_basic_kb_insg = \
+    {
+        "phoneNumber": "+420123456789",
+        "processingPriority": 1,
+        "type": "KB_INSIGN_PROCESS",
+        "text": "e2e TEST KB insg bez logovani"
+    }
+
 json_req_sms_basic_insg_uat = \
     {
         "phoneNumber": "+420123456789",
@@ -68,7 +76,7 @@ json_req_sms_basic_phone_object = \
         "text": "insg s logovani"
     }
 
-json_req_sms_logovani_kb_sb = \
+json_req_sms_logovani_kb_sb_E2E = \
     {
         "phoneNumber": "+420123456789",
         "processingPriority": 1,
@@ -83,6 +91,15 @@ json_req_sms_logovani_kb_sb = \
     }
 
 json_req_sms_logovani_mpss_sb = \
+    {
+        "phoneNumber": "+420123456789",
+        "processingPriority": 1,
+        "type": "KB_INSIGN_PROCESS",
+        "text": "kb logovani insg",
+        "customId": "log"
+    }
+
+json_req_sms_logovani_kb_insg = \
     {
         "phoneNumber": "+420123456789",
         "processingPriority": 1,
@@ -105,7 +122,7 @@ json_req_sms_bez_logovani_mpss_sb = \
         "phoneNumber": "+420123456789",
         "processingPriority": 1,
         "type": "SB_NOTIFICATIONS_MP",
-        "text": "kb bez logovani SB",
+        "text": "mpss bez logovani SB",
         "customId": "nelog"
     }
 
