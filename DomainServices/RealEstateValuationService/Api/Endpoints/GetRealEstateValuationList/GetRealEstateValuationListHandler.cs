@@ -28,7 +28,7 @@ internal sealed class GetRealEstateValuationListHandler
                 Address = t.Address,
                 OrderId = t.OrderId,
                 PreorderId = t.PreorderId,
-                OnlineDisqualified = t.IsOnlineDisqualified,
+                IsOnlineDisqualified = t.IsOnlineDisqualified,
                 ValuationResultCurrentPrice = t.ValuationResultCurrentPrice,
                 ValuationResultFuturePrice = t.ValuationResultFuturePrice
             })

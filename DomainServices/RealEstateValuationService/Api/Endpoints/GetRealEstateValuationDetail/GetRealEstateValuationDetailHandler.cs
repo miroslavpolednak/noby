@@ -30,7 +30,7 @@ internal sealed class GetRealEstateValuationDetailHandler
             Address = realEstate.Address,
             OrderId = realEstate.OrderId,
             PreorderId = realEstate.PreorderId,
-            OnlineDisqualified = realEstate.IsOnlineDisqualified,
+            IsOnlineDisqualified = realEstate.IsOnlineDisqualified,
             ValuationResultCurrentPrice = realEstate.ValuationResultCurrentPrice,
             ValuationResultFuturePrice = realEstate.ValuationResultFuturePrice,
             RealEstateSubtypeId = realEstate.RealEstateSubtypeId,
