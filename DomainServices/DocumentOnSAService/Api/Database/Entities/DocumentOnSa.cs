@@ -63,6 +63,8 @@ public class DocumentOnSa : ICreated
 
     public int? EACodeMainId { get; set; }
 
+    public bool IsCustomerPreviewSendingAllowed { get; set; }
+
     public ICollection<EArchivIdsLinked> EArchivIdsLinkeds { get; } = new List<EArchivIdsLinked>();
     
     public ICollection<SigningIdentity> SigningIdentities { get; } = new List<SigningIdentity>();

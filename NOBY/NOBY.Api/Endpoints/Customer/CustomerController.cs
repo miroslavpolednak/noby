@@ -42,6 +42,7 @@ public class CustomerController : ControllerBase
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new [] { "Klient" })]
     [ProducesResponseType(typeof(SearchCustomers.SearchCustomersResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<SearchCustomers.SearchCustomersResponse> SearchCustomers([FromBody] SearchCustomers.SearchCustomersRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 

@@ -43,7 +43,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int UnsupportedKindOfSigningRequest = 19041;
     public const int CannotGetNobyUserIdentifier = 19042;
     public const int UnsuccessfulCustomerDataUpdateToCM = 19043;
-
+    public const int UnsupportedDocumentForSigningType = 19044;
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
@@ -83,7 +83,8 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { WorkflowRequestCaseIdRequired, "For processing workflow request CaseId is required" },
             { UnsupportedKindOfSigningRequest, "Unsupported kind of signing request" },
             { CannotGetNobyUserIdentifier, "Cannot get NOBY user identifier"},
-            { UnsuccessfulCustomerDataUpdateToCM, "Unsuccessful customer data update to CM"}
+            { UnsuccessfulCustomerDataUpdateToCM, "Unsuccessful customer data update to CM"},
+            { UnsupportedDocumentForSigningType, "Unsupported DocumentForSigningType {PropertyValue}" }
         });
 
         return Messages;

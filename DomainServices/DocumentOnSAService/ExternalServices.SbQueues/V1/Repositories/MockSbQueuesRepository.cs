@@ -5,7 +5,7 @@ namespace ExternalServices.SbQueues.V1.Repositories;
 
 public class MockSbQueuesRepository : ISbQueuesRepository
 {
-    public async Task<Attachment?> GetAttachmentById(string attachmentId, CancellationToken cancellationToken)
+    public async Task<Attachment?> GetAttachmentById(string attachmentId, bool getMetadataOnly, CancellationToken cancellationToken)
     {
         await Task.Yield();
         return new Attachment
@@ -17,7 +17,7 @@ public class MockSbQueuesRepository : ISbQueuesRepository
         };
     }
 
-    public async Task<Document?> GetDocumentByExternalId(string externalId, CancellationToken cancellationToken)
+    public async Task<Document?> GetDocumentByExternalId(string externalId, bool getMetadataOnly, CancellationToken cancellationToken)
     {
         await Task.Yield();
         return new Document

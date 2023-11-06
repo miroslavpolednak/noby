@@ -7,7 +7,7 @@ public interface ISbQueuesRepository : IExternalServiceClient
 {
     const string Version = "V1";
 
-    Task<Attachment?> GetAttachmentById(string attachmentId, CancellationToken cancellationToken);
+    Task<Attachment?> GetAttachmentById(string attachmentId, bool getMetadataOnly, CancellationToken cancellationToken);
 
-    Task<Document?> GetDocumentByExternalId(string documentId, CancellationToken cancellationToken);
+    Task<Document?> GetDocumentByExternalId(string documentId, bool getMetadataOnly, CancellationToken cancellationToken);
 }

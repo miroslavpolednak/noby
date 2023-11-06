@@ -6,9 +6,9 @@ using __Customer = DomainServices.CustomerService.Contracts;
 namespace NOBY.Api.Endpoints.Customer.SearchCustomers;
 
 internal sealed class SearchCustomersHandler
-    : IRequestHandler<SearchCustomersRequest, SearchCustomersResponse>
+    : IRequestHandler<SearchCustomersRequest, SearchCustomersResponse?>
 {
-    public async Task<SearchCustomersResponse> Handle(SearchCustomersRequest request, CancellationToken cancellationToken)
+    public async Task<SearchCustomersResponse?> Handle(SearchCustomersRequest request, CancellationToken cancellationToken)
     {
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
@@ -30,10 +30,7 @@ internal sealed class SearchCustomersHandler
             };
         }
 
-        return new SearchCustomersResponse()
-        {
-            Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, 0)
-        };
+        return null;
     }
 
     private static List<Paginable.MapperField> sortingMapper = new()

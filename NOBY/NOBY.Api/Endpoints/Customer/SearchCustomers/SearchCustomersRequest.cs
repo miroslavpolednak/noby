@@ -1,7 +1,7 @@
 ﻿namespace NOBY.Api.Endpoints.Customer.SearchCustomers;
 
 public sealed class SearchCustomersRequest
-    : IRequest<SearchCustomersResponse>
+    : IRequest<SearchCustomersResponse?>
 {
     /// <summary>
     /// Podle ceho se ma hledat

@@ -15,7 +15,20 @@ public class RealSbQueuesRepository : ISbQueuesRepository
         atch.ATTACHMENT_ID AS AttachmentId, 
         atch.[FILE_NAME] AS [FileName],
         'application/pdf' AS ContentType,
-        atch.ATTACHMENT_FILE AS Content
+        atch.ATTACHMENT_FILE AS Content,
+        atch.FLAG_SEND_TO_PREVIEW AS IsCustomerPreviewSendingAllowed
+        FROM SB_ATTACHMENT_INFO_S atch 
+        WHERE atch.ATTACHMENT_ID = @AttachmentId AND atch.CONSUMER = 'NOBY'
+        """;
+
+    private const string _attachmentSqlQueryWithoutContent =
+        """
+        SELECT 
+        atch.ATTACHMENT_ID AS AttachmentId, 
+        atch.[FILE_NAME] AS [FileName],
+        'application/pdf' AS ContentType,
+        NULL AS Content,
+        atch.FLAG_SEND_TO_PREVIEW AS IsCustomerPreviewSendingAllowed
         FROM SB_ATTACHMENT_INFO_S atch 
         WHERE atch.ATTACHMENT_ID = @AttachmentId AND atch.CONSUMER = 'NOBY'
         """;
@@ -26,7 +39,20 @@ public class RealSbQueuesRepository : ISbQueuesRepository
         di.DOCUMENT_ID AS DocumentId,
         di.DOCUMENT_NAME + '.pdf' AS [FileName],
         'application/pdf' AS ContentType,
-        di.DOCUMENT_FILE AS Content
+        di.DOCUMENT_FILE AS Content,
+        di.FLAG_SEND_TO_PREVIEW AS IsCustomerPreviewSendingAllowed
+        FROM SB_DOCUMENT_INFO_S di
+        WHERE di.DOCUMENT_ID = @DocumentId AND di.CONSUMER = 'NOBY'
+        """;
+
+    private const string _documentSqlQueryWithoutContent =
+        """
+        SELECT  
+        di.DOCUMENT_ID AS DocumentId,
+        di.DOCUMENT_NAME + '.pdf' AS [FileName],
+        'application/pdf' AS ContentType,
+        NULL AS Content,
+        di.FLAG_SEND_TO_PREVIEW AS IsCustomerPreviewSendingAllowed
         FROM SB_DOCUMENT_INFO_S di
         WHERE di.DOCUMENT_ID = @DocumentId AND di.CONSUMER = 'NOBY'
         """;
@@ -39,21 +65,37 @@ public class RealSbQueuesRepository : ISbQueuesRepository
         _connectionProvider = connectionProvider;
     }
 
-    public async Task<Attachment?> GetAttachmentById(string attachmentId, CancellationToken cancellationToken)
+    public async Task<Attachment?> GetAttachmentById(string attachmentId, bool getMetadataOnly, CancellationToken cancellationToken)
     {
         var parameters = new DynamicParameters();
         parameters.Add("@AttachmentId", attachmentId, DbType.Int64, ParameterDirection.Input);
 
-        return await _connectionProvider
-                            .ExecuteDapperFirstOrDefaultAsync<Attachment>(_attachmentSqlQuery, parameters);
+        if (getMetadataOnly)
+        {
+            return await _connectionProvider
+                          .ExecuteDapperFirstOrDefaultAsync<Attachment>(_attachmentSqlQueryWithoutContent, parameters, cancellationToken);
+        }
+        else
+        {
+            return await _connectionProvider
+                          .ExecuteDapperFirstOrDefaultAsync<Attachment>(_attachmentSqlQuery, parameters, cancellationToken);
+        }
     }
 
-    public async Task<Document?> GetDocumentByExternalId(string documentId, CancellationToken cancellationToken)
+    public async Task<Document?> GetDocumentByExternalId(string documentId, bool getMetadataOnly, CancellationToken cancellationToken)
     {
         var parameters = new DynamicParameters();
         parameters.Add("@DocumentId", documentId, DbType.Int64, ParameterDirection.Input);
 
-        return await _connectionProvider
-            .ExecuteDapperFirstOrDefaultAsync<Document>(_documentSqlQuery, parameters);
+        if (getMetadataOnly)
+        {
+            return await _connectionProvider
+           .ExecuteDapperFirstOrDefaultAsync<Document>(_documentSqlQueryWithoutContent, parameters, cancellationToken);
+        }
+        else
+        {
+            return await _connectionProvider
+            .ExecuteDapperFirstOrDefaultAsync<Document>(_documentSqlQuery, parameters, cancellationToken);
+        }
     }
 }
