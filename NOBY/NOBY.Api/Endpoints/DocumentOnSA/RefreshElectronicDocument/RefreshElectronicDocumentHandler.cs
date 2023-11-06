@@ -75,7 +75,8 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                 },
                 IsPreviewSentToCustomer = docOnSa.IsPreviewSentToCustomer,
                 ExternalId = docOnSa.ExternalId,
-                Source = docOnSa.Source.MapToCisEnum()
+                Source = docOnSa.Source.MapToCisEnum(),
+                IsCustomerPreviewSendingAllowed = docOnSa.IsCustomerPreviewSendingAllowed
             }
         };
     }

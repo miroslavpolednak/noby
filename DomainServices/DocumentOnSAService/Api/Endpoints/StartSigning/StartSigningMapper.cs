@@ -38,6 +38,7 @@ public class StartSigningMapper
     private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
+    private readonly IMediator _mediator;
 
     public StartSigningMapper(
         IDateTime dateTime,
@@ -47,7 +48,8 @@ public class StartSigningMapper
         IUserServiceClient userServiceClient,
         ICodebookServiceClient codebookServiceClient,
         ICaseServiceClient caseServiceClient,
-        IDocumentGeneratorServiceClient documentGeneratorServiceClient)
+        IDocumentGeneratorServiceClient documentGeneratorServiceClient,
+        IMediator mediator)
     {
         _dateTime = dateTime;
         _documentArchiveServiceClient = documentArchiveServiceClient;
@@ -57,6 +59,7 @@ public class StartSigningMapper
         _codebookServiceClient = codebookServiceClient;
         _caseServiceClient = caseServiceClient;
         _documentGeneratorServiceClient = documentGeneratorServiceClient;
+        _mediator = mediator;
     }
 
     public async Task<UploadDocumentRequest> MapUploadDocumentRequest(long referenceId, string filename, DocumentOnSa documentOnSa, CancellationToken cancellationToken)
@@ -155,6 +158,8 @@ public class StartSigningMapper
             _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AmendmentHasToBeOfTypeSigning)
         };
 
+        var isCustomerPreviewSendingAllowed = await GetIsCustomerPreviewSendingAllowed(signing, cancellationToken);
+
         var entity = new DocumentOnSa();
         entity.FormId = signing.FormId;
         entity.ExternalId = signing.DocumentForSigning;
@@ -169,6 +174,7 @@ public class StartSigningMapper
         entity.IsSigned = false;
         entity.IsArchived = false;
         entity.EACodeMainId = int.Parse(signing.EACodeMain, CultureInfo.InvariantCulture);
+        entity.IsCustomerPreviewSendingAllowed = isCustomerPreviewSendingAllowed;
         return entity;
     }
 
@@ -365,6 +371,56 @@ public class StartSigningMapper
         };
         entity.SigningIdentityJson.EmailAddress = signingIdentity.EmailAddress;
         return entity;
+    }
+
+    private async Task<bool> GetIsCustomerPreviewSendingAllowed(AmendmentSigning signing, CancellationToken cancellationToken)
+    {
+        if (signing.ProposalForEntry?.Count > 0)
+        {
+            var atchRequestProposalForE = new GetElectronicDocumentFromQueueRequest
+            {
+                DocumentAttachment = new()
+                {
+                    AttachmentId = signing.ProposalForEntry[0]
+                },
+                GetMetadataOnly = true
+            };
+
+            var atchResponse = await _mediator.Send(atchRequestProposalForE, cancellationToken);
+            return atchResponse.IsCustomerPreviewSendingAllowed;
+        }
+        else if (signing.DocumentForSigningType.Equals("A", StringComparison.OrdinalIgnoreCase))
+        {
+            var atchRequest = new GetElectronicDocumentFromQueueRequest
+            {
+                DocumentAttachment = new()
+                {
+                    AttachmentId = signing.DocumentForSigning
+                },
+                GetMetadataOnly = true
+            };
+
+            var atchResponse = await _mediator.Send(atchRequest, cancellationToken);
+            return atchResponse.IsCustomerPreviewSendingAllowed;
+        }
+        else if (signing.DocumentForSigningType.Equals("D", StringComparison.OrdinalIgnoreCase))
+        {
+            var docRequest = new GetElectronicDocumentFromQueueRequest
+            {
+                MainDocument = new()
+                {
+                    DocumentId = signing.DocumentForSigning
+                },
+                GetMetadataOnly = true
+            };
+
+            var docResponse = await _mediator.Send(docRequest, cancellationToken);
+            return docResponse.IsCustomerPreviewSendingAllowed;
+        }
+        else
+        {
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedDocumentForSigningType, signing.DocumentForSigningType);
+        }
     }
 }
 

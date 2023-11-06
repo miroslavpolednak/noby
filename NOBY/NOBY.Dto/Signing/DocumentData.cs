@@ -48,4 +48,6 @@ public class DocumentData
     public string? ExternalId { get; set; }
 
     public Source Source { get; set; }
+
+    public bool IsCustomerPreviewSendingAllowed { get; set; }
 }

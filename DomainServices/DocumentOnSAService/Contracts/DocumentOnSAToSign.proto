@@ -56,6 +56,8 @@ message DocumentOnSAToSign {
 	repeated string EArchivIdsLinked = 23;
 
 	google.protobuf.Int32Value EACodeMainId = 24;
+
+	bool IsCustomerPreviewSendingAllowed = 25;
 }
 
 message CustomerOnSa {

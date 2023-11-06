@@ -75,7 +75,8 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
                 },
                 IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer,
                 ExternalId = documentOnSa.ExternalId,
-                Source = documentOnSa.Source.MapToCisEnum()
+                Source = documentOnSa.Source.MapToCisEnum(),
+                IsCustomerPreviewSendingAllowed = documentOnSa.IsCustomerPreviewSendingAllowed
             }
         };
     }
