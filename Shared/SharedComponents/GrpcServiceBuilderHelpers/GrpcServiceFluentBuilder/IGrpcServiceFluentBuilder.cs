@@ -8,6 +8,12 @@ namespace SharedComponents.GrpcServiceBuilderHelpers;
 public interface IGrpcServiceFluentBuilder
 {
     /// <summary>
+    /// Skipne z registrace funkcnost pro ziskani kontextoveho uzivatele sluzby. Je potreba kdyz dana sluzba nepouziva UserService.
+    /// </summary>
+    /// <remarks>Odstranuje z pipeline zaroven Audit logging.</remarks>
+    IGrpcServiceFluentBuilder SkipServiceUserContext();
+
+    /// <summary>
     /// Možnost změny nastavení gRCP služeb. Supluje .AddGrpc(o)
     /// </summary>
     IGrpcServiceFluentBuilder AddGrpcServiceOptions(Action<GrpcServiceOptions> changeOptions);

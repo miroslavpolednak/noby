@@ -8,6 +8,12 @@ internal sealed class GrpcServiceFluentBuilder<TConfiguration>
     : GrpcServiceFluentBuilderBase, IGrpcServiceFluentBuilder<TConfiguration>
     where TConfiguration : class
 {
+    public IGrpcServiceFluentBuilder<TConfiguration> SkipServiceUserContext()
+    {
+        IntSkipServiceUserContext();
+        return this;
+    }
+
     public IGrpcServiceFluentBuilder<TConfiguration> AddGrpcServiceOptions(Action<GrpcServiceOptions> changeOptions)
     {
         IntAddGrpcServiceOptions(changeOptions);

@@ -57,6 +57,7 @@ try
         .AddCisTracing()
         .AddCisAudit()
         .AddCisServiceAuthentication()
+        .AddCisServiceUserContext()
         .Services
             .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
             .AddAttributedServices(typeof(Program));

@@ -20,6 +20,7 @@ internal class GrpcServiceBuilderSettings
     public ICisEnvironmentConfiguration EnvironmentConfiguration;
     public bool RunAsWindowsService;
 
+    public bool SkipServiceUserContext;
     public bool AddDistributedCache;
     public bool EnableJsonTranscoding;
     public FluentBuilderJsonTranscodingOptions? TranscodingOptions;
@@ -37,6 +38,7 @@ internal class GrpcServiceBuilderSettings
         // create new settings
         var newSettings = new GrpcServiceBuilderSettings<TConfiguration>
         {
+            SkipServiceUserContext = this.SkipServiceUserContext,
             AddGrpcServiceOptions = this.AddGrpcServiceOptions,
             AddDistributedCache = this.AddDistributedCache,
             AddCustomServices = this.AddCustomServices,

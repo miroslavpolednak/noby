@@ -50,4 +50,28 @@ internal partial class CodebookService
 
             return (new ProfessionCategoriesResponse()).AddItems(finalItems);
         });
+
+    public override Task<SigningMethodsForNaturalPersonResponse> SigningMethodsForNaturalPerson(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(() =>
+        {
+            var items = _db.SelfDb.GetRdmItems("CB_StandardMethodOfArrAcceptanceByNPType");
+            var extensions = _db.GetDynamicList(nameof(SigningMethodsForNaturalPerson));
+
+            var finalItems = items.Select(item =>
+            {
+                var obj = new SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem
+                {
+                    IsValid = item.IsValid,
+                    Name = item.Properties["Name"],
+                    Description = item.Properties["Description"],
+                    Order = item.SortOrder,
+                    Code = item.Code,
+                    StarbuildEnumId = extensions.FirstOrDefault(x => x.Code == item.Code)?.StarbuildEnumId ?? 2
+                };
+
+                return obj;
+            });
+
+            return (new SigningMethodsForNaturalPersonResponse()).AddItems(finalItems);
+        });
 }

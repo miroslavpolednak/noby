@@ -130,5 +130,10 @@
             Konfigurace autentizacniho middleware je v CisSecurity:ServiceAuthentication.
             </summary>
         </member>
+        <member name="M:CIS.Infrastructure.Security.StartupExtensions.AddCisServiceUserContext(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            helper pro ziskani aktualniho uzivatele
+            </summary>
+        </member>
     </members>
 </doc>

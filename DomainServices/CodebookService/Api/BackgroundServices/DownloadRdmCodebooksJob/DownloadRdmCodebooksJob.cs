@@ -68,7 +68,7 @@ internal sealed class DownloadRdmCodebooksJob
 
             var props = values.Select(t => new KeyValuePair<string, string>(t.CodebookColumn.Code, t.CodebookEntryValueLanguageMutations.First().MutationValue!));
             var propsString = System.Text.Json.JsonSerializer.Serialize(props);
-            dataToInsert.Add(new { item.Code, IsValid = item.State == "ACTIVE", Props = propsString });
+            dataToInsert.Add(new { item.Code, IsValid = item.State == "ACTIVE", item.SortOrder, Props = propsString });
         }
 
         using (var connection = _dbContext.Create())
@@ -76,7 +76,7 @@ internal sealed class DownloadRdmCodebooksJob
             connection.Open();
 
             await connection.ExecuteAsync($"DELETE FROM dbo.RdmCodebook WHERE RdmCodebookName='{codebookName}'");
-            await connection.ExecuteAsync($"INSERT INTO dbo.RdmCodebook (RdmCodebookName, EntryCode, EntryIsValid, EntryProperties) VALUES ('{codebookName}', @Code, @IsValid, @Props)", dataToInsert);
+            await connection.ExecuteAsync($"INSERT INTO dbo.RdmCodebook (RdmCodebookName, EntryCode, EntryIsValid, SortOrder, EntryProperties) VALUES ('{codebookName}', @Code, @IsValid, @SortOrder, @Props)", dataToInsert);
         }
 
         return items?.Count ?? 0;

@@ -6,6 +6,7 @@ namespace CIS.Infrastructure.Data;
 
 public static class DapperSynchronousExtensions
 {
+#pragma warning disable CS8603 // Possible null reference return.
     public static List<T> ExecuteDapperRawSqlToList<T>(this IConnectionProvider connectionProvider, string sqlQuery)
         => connectionProvider.ExecuteDapperQuery<List<T>>(c => c.Query<T>(sqlQuery).AsList());
     

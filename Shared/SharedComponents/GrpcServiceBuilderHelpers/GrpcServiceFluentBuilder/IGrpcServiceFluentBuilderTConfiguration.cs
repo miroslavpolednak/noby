@@ -9,6 +9,12 @@ public interface IGrpcServiceFluentBuilder<TConfiguration>
     where TConfiguration : class
 {
     /// <summary>
+    /// Skipne z registrace funkcnost pro ziskani kontextoveho uzivatele sluzby. Je potreba kdyz dana sluzba nepouziva UserService.
+    /// </summary>
+    /// <remarks>Odstranuje z pipeline zaroven Audit logging.</remarks>
+    IGrpcServiceFluentBuilder<TConfiguration> SkipServiceUserContext();
+
+    /// <summary>
     /// Možnost změny nastavení gRCP služeb. Supluje .AddGrpc(o)
     /// </summary>
     IGrpcServiceFluentBuilder<TConfiguration> AddGrpcServiceOptions(Action<GrpcServiceOptions> changeOptions);
