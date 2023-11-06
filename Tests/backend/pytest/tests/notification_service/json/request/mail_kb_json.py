@@ -414,6 +414,7 @@ json_req_mail_kb_basic_content_format_application_mht = \
     "content": {
       "format": "application/mht",
       "language": "cs",
-      "text":"From: notification-service@kb.cz\\nDate: Fri, 27 Oct 2023 15:01:21 +0200\\nSubject: NS_test_MIKEL_basic_legal\\nMessage-Id: <7780XLAOCLU4.6E3W4XBXTUA23@adpra193>\\nTo: marek.mikel@mpss.cz\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=utf-8\\n\\n<html>\\n...your HTML content...\\n</html>"    },
+       "text": "From: \"notification-service@kb.cz\"\\nSubject: Testovací MHT Soubor\\nDate: Wed, 1 Nov 2023 10:00:00 +0200\\nMIME-Version: 1.0\\nContent-Type: multipart/related; boundary=\"----=_NextPart_000_0000_01D3F6A2.BC237A30\"; type=\"text/html\"\\n\\n------=_NextPart_000_0000_01D3F6A2.BC237A30\\nContent-Type: text/html; charset=\"utf-8\"\\nContent-Transfer-Encoding: quoted-printable\\n\\n<!DOCTYPE html>\\n<html>\\n<head>\\n<title>Testovací Stránka</title>\\n</head>\\n<body>\\n<h1>Ahoj světe!</h1>\\n<p>Toto je testovací MHT obsah.</p>\\n</body>\\n</html>\\n\\n------=_NextPart_000_0000_01D3F6A2.BC237A30--"
+    },
     "attachments": []
   }
