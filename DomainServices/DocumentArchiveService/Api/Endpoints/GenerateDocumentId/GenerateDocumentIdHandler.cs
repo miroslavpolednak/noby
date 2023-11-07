@@ -41,14 +41,14 @@ internal sealed class GenerateDocumentIdHandler
 
     private static string ConvertToEnvEnumStr(string enumStr)
     {
-        enumStr = enumStr.ToLower();
+        enumStr = enumStr.ToLower(System.Globalization.CultureInfo.CurrentCulture);
         if (string.IsNullOrEmpty(enumStr) || enumStr.Length < 1)
         {
             return string.Empty;
         }
         else
         {
-            return char.ToUpper(enumStr[0]) + enumStr.Substring(1);
+            return char.ToUpper(enumStr[0]) + enumStr[1..];
         }
     }
 
