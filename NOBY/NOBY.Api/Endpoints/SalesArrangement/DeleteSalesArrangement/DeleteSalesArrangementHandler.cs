@@ -1,5 +1,6 @@
 ﻿using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.DeleteSalesArrangement;
 
@@ -9,6 +10,12 @@ internal sealed class DeleteSalesArrangementHandler
     public async Task Handle(DeleteSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+
+        // validace na stav SA
+        if (!_allowedSAStates.Contains(saInstance.State))
+        {
+            throw new NobyValidationException(90032);
+        }
 
         // pro urcite typy domacnosti smazat household
         if (_householdDeleteSATypes.Contains(saInstance.SalesArrangementTypeId))
@@ -24,7 +31,19 @@ internal sealed class DeleteSalesArrangementHandler
         await _salesArrangementService.DeleteSalesArrangement(request.SalesArrangementId, cancellationToken: cancellationToken);
     }
 
-    private static int[] _householdDeleteSATypes = new[] { 10, 11, 12 };
+    private static int[] _allowedSAStates = new[] 
+    { 
+        (int)SalesArrangementStates.InProgress,
+        (int)SalesArrangementStates.NewArrangement,
+        (int)SalesArrangementStates.InSigning,
+        (int)SalesArrangementStates.ToSend
+    };
+    private static int[] _householdDeleteSATypes = new[] 
+    {
+        (int)SalesArrangementTypes.CustomerChange3602A,
+        (int)SalesArrangementTypes.CustomerChange3602B,
+        (int)SalesArrangementTypes.CustomerChange3602C
+    };
 
     private readonly IHouseholdServiceClient _householdService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
