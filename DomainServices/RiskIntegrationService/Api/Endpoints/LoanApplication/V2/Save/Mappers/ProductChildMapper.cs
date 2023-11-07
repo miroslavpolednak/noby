@@ -168,18 +168,18 @@ internal sealed class ProductChildMapper
 
             if (realEstates.Count() == 1)
                 return realEstates.First().Code;
-            else if (realEstates.All(t => _financingTypeGroups["000001"].Contains(t.Code)))
-                return "000001";
-            else if (realEstates.All(t => _financingTypeGroups["000003"].Contains(t.Code)))
-                return "000003";
+            else if (realEstates.All(t => _financingTypeGroups["0000001"].Contains(t.Code)))
+                return "0000001";
+            else if (realEstates.All(t => _financingTypeGroups["0000003"].Contains(t.Code)))
+                return "0000003";
         }
 
-        return "000000";
+        return "0000000";
     }
 
-    private Dictionary<string, List<string>> _financingTypeGroups = new() { 
-        { "000001", new List<string>() { "000001", "000002" } },
-        { "000003", new List<string>() { "000003", "000004", "000005", "000006" } }
+    private static readonly Dictionary<string, List<string>> _financingTypeGroups = new() { 
+        { "0000001", new List<string>() { "0000001", "0000002" } },
+        { "0000003", new List<string>() { "0000003", "0000004", "0000005", "0000006" } }
     };
 
 
