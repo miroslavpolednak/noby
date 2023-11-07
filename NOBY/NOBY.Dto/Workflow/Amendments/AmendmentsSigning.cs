@@ -3,7 +3,7 @@
 /// <summary>
 /// Tento objekt je relevantní pouze pro typ úkolu Podepisování
 /// </summary>
-public class AmendmentsSigning
+public sealed class AmendmentsSigning
 {
     /// <summary>
     /// Podepisování: ID čárového kódu dokumentu k podpisu (formId)
@@ -48,4 +48,6 @@ public class AmendmentsSigning
     /// </summary>
     /// <example>01_23_046_111203_SF_0001</example>
     public string ProposalForEntry { get; set; } = null!;
+
+    public AmendmentsSigningEaCodeMain? EaCodeMain { get; set; }
 }
