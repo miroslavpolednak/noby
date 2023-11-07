@@ -27,12 +27,6 @@ public enum SalesArrangementStates : byte
     Cancelled = 3,
 
     [EnumMember]
-    [Display(Name = "Podepsáno")]
-    [CisStarbuildId(1)]
-    [Obsolete("Na confl je to preskrtnute, ale nevim o tom, ze by byl pokyn smazat...")]
-    IsSigned = 4,
-
-    [EnumMember]
     [CisDefaultValue]
     [Display(Name = "Nová")]
     [CisStarbuildId(1)]
