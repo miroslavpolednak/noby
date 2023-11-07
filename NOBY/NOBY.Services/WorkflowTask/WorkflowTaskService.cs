@@ -3,8 +3,6 @@ using DomainServices.CaseService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using NOBY.Services.DocumentHelper;
 using NOBY.Services.WorkflowMapper;
-using CIS.Core.Security;
-using NOBY.Infrastructure.Security;
 using NOBY.Infrastructure.ErrorHandling;
 
 namespace NOBY.Services.WorkflowTask;
@@ -62,16 +60,13 @@ internal sealed class WorkflowTaskService
     private readonly ICaseServiceClient _caseService;
     private readonly IDocumentHelperService _documentHelper;
     private readonly IWorkflowMapperService _mapper;
-    private readonly ICurrentUserAccessor _userAccessor;
 
     public WorkflowTaskService(
-            ICurrentUserAccessor userAccessor,
             IWorkflowMapperService mapper,
             ICaseServiceClient caseService,
             IDocumentArchiveServiceClient documentArchiveService,
             IDocumentHelperService documentHelper)
     {
-        _userAccessor = userAccessor;
         _mapper = mapper;
         _caseService = caseService;
         _documentArchiveService = documentArchiveService;

@@ -10,7 +10,6 @@ namespace NOBY.Services.WorkflowMapper;
 internal sealed class WorkflowMapperService
     : IWorkflowMapperService
 {
-
     public _Dto.WorkflowProcess MapProcess(_Case.ProcessTask task)
     {
         return new _Dto.WorkflowProcess
@@ -61,7 +60,7 @@ internal sealed class WorkflowMapperService
             Amendments = taskDetailItem.AmendmentsCase switch
             {
                 _Case.TaskDetailItem.AmendmentsOneofCase.Request => mapAmendmentsRequest(taskDetailItem.Request),
-                _Case.TaskDetailItem.AmendmentsOneofCase.Signing => mapAmendmentsSigning(task, taskDetailItem.Signing),
+                _Case.TaskDetailItem.AmendmentsOneofCase.Signing => await mapAmendmentsSigning(task, taskDetailItem.Signing, cancellationToken),
                 _Case.TaskDetailItem.AmendmentsOneofCase.ConsultationData => mapAmendmentsConsultationData(taskDetailItem.ConsultationData),
                 _Case.TaskDetailItem.AmendmentsOneofCase.PriceException => await mapAmendmentsPriceException(taskDetailItem.PriceException, cancellationToken),
                 _ => null
@@ -75,10 +74,12 @@ internal sealed class WorkflowMapperService
         SentToCustomer = request.SentToCustomer
     };
 
-    private _Dto.AmendmentsSigning mapAmendmentsSigning(_Case.WorkflowTask task, _Case.AmendmentSigning signing)
+    private async Task<_Dto.AmendmentsSigning> mapAmendmentsSigning(_Case.WorkflowTask task, _Case.AmendmentSigning signing, CancellationToken cancellationToken)
     {
         var stateId = (int)getWorkflowState(task);
         bool remove1 = (new[] { 3, 4, 5 }).Contains(stateId) || !_userAccessor.HasPermission(DomainServices.UserService.Clients.Authorization.UserPermissions.WFL_TASK_DETAIL_SigningDocuments);
+
+        var eaCodeMain = (await _codebookService.EaCodesMain(cancellationToken)).FirstOrDefault(t => t.Id == signing.EACodeMain);
 
         return new()
         {
@@ -87,7 +88,13 @@ internal sealed class WorkflowMapperService
             FormId = signing.FormId,
             DocumentForSigning = remove1 || stateId == 2 ? "" : signing.DocumentForSigning,
             DocumentForSigningType = signing.DocumentForSigningType,
-            ProposalForEntry = remove1 ? "" : (signing.ProposalForEntry == null || !signing.ProposalForEntry.Any() ? "" : signing.ProposalForEntry[0])
+            ProposalForEntry = remove1 ? "" : (signing.ProposalForEntry == null || !signing.ProposalForEntry.Any() ? "" : signing.ProposalForEntry[0]),
+            EaCodeMain = eaCodeMain == null ? null : new()
+            {
+                Id = eaCodeMain.Id,
+                DocumentType = eaCodeMain.Name,
+                Category = eaCodeMain.Category
+            }
         };
     }
     
