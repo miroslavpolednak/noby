@@ -72,6 +72,12 @@ internal sealed class GetRealEstateValuationTypesHandler
 
         var response = new GetRealEstateValuationTypesReponse();
         response.ValuationTypeId.AddRange(acvResponse.Select(t => (int)t));
+
+        if (revInstance.IsOnlineDisqualified && response.ValuationTypeId.Contains(1))
+        {
+            response.ValuationTypeId.Remove(1);
+        }
+
         return response;
     }
 
