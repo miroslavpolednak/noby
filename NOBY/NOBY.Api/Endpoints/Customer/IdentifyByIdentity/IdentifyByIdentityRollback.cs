@@ -1,6 +1,5 @@
 ﻿using CIS.Infrastructure.CisMediatR.Rollback;
 using DomainServices.HouseholdService.Clients;
-using NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
@@ -10,7 +9,7 @@ internal sealed class IdentifyByIdentityRollback
 {
     public async Task ExecuteRollback(Exception exception, IdentifyByIdentityRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        _logger.RollbackHandlerStarted(nameof(CreateMortgageCaseRollback));
+        _logger.RollbackHandlerStarted(nameof(IdentifyByIdentityRollback));
 
         // vratit zpatky data puvodniho customera
         if (_bag.ContainsKey(BagKeyCustomerOnSA))
