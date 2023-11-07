@@ -37,4 +37,5 @@ internal sealed class RealEstateValuation
     // zatim dam jako samostatne pole na Json data, ale casem sloucit treba s LoanPurposeDetails a nejakymi dalsimi poli, ktera pribudou
     // tezko rict, kdyz nevime jak ten objekt ma ve finale vypadat a dostavame zadani po kouskach
     public string? Documents { get; set; }
+    public bool IsOnlineDisqualified { get; set; }
 }

@@ -16,7 +16,10 @@ internal sealed class RealLuxpiServiceClient
         return model.Status switch
         {
             "OK" => createResponse(),
-            "KNOCKED_OUT" => throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelStatusFailed),
+            "KNOCKED_OUT" or "NO_PRICE_AVAILABLE" => new Dto.CreateKbmodelFlatResponse
+            {
+                NoPriceAvailable = true
+            },
             _ => throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelUnknownStatus, model.Status)
         };
 

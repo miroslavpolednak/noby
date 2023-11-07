@@ -74,6 +74,7 @@ public static class StartupExtensions
     /// </summary>
     public static WebApplicationBuilder AddCisServiceUserContext(this WebApplicationBuilder builder)
     {
+        // helper pro ziskani aktualniho uzivatele
         builder.Services.AddScoped<Core.Security.ICurrentUserAccessor, CisCurrentContextUserAccessor>();
         builder.Services.AddTransient<CisCurrentUserAccessorCache>();
 

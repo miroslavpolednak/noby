@@ -34,7 +34,7 @@ public sealed class ErrorCodeMapper
             { 90024, new("Chyba - pro klienta již existuje rozpracovaný obchodní případ", "Klient je účastníkem jiného obchodního případu čekajícího na schválení nebo zamítnutí. Pro více informací prosím kontaktujte tým zpracovatelů") },
             { 90025, new("Obchodní případ byl stornován.", "") },
             { 90026, new("Vámi hledaný obchodní případ byl vytvořen v jiném systému a není možné zde zobrazit jeho detail") },
-            { 90027, new("Diskvalifikace z online ocenění", "Při pokusu o online ocenění některý ze vstupních atributů přesáhl povolený rozsah pro možnost ocenění nemovitosti online.") },
+            { 90027, new("Diskvalifikace z online ocenění", "Pro danou nemovitost není možné dokončit Online ocenění. Je potřeba zvolit jiný typ ocenění.") },
             { 90028, new("Žádost v aktuální stavu nelze měnit.") },
             { 90029, new("Překročen počet objektů úvěru", "Maximální počet objektů úvěru je 3. Upravte počet objednávek ocenění s označením objekt úvěru.") },
             { 90030, new("Dokument s tímto EACodeMain není povolen pro NOBY uložit do eArchivu.") },

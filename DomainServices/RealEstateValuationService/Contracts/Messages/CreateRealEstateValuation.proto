@@ -15,6 +15,7 @@ message CreateRealEstateValuationRequest {
     bool IsRevaluationRequired = 7;
     bool DeveloperAllowed = 8;
     bool DeveloperApplied = 9;
+    bool IsOnlineDisqualified = 10;
 }
 
 message CreateRealEstateValuationResponse {
