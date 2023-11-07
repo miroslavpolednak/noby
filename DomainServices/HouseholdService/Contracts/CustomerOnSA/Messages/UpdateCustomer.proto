@@ -10,6 +10,8 @@ message UpdateCustomerRequest {
     int32 CustomerOnSAId = 1;
     
     CustomerOnSABase Customer = 2;
+
+    bool SkipValidations = 3;
 }
 
 message UpdateCustomerResponse {

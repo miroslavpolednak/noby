@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
 public class CreateCustomerRequest
-    : IRequest<CreateCustomerResponse>
+    : IRequest<CreateCustomerResponse>, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 {
     [JsonIgnore]
     internal int CustomerOnSAId { get; set; }
