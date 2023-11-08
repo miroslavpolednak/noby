@@ -2,6 +2,7 @@
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Repositories;
+using DomainServices.DocumentOnSAService.Api.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
@@ -42,14 +43,11 @@ public sealed class CheckDocumentsArchivedJob
         if (!unArchivedEArchiveLinkeds.Any())
             return;
 
-        _logger.LogInformation("{ServiceName}: {Count} unarchived documentsOnSa", typeof(CheckDocumentsArchivedJob).Name, unArchivedEArchiveLinkeds.Count);
+        _logger.UnarchivedDocumentsOnSa(typeof(CheckDocumentsArchivedJob).Name, unArchivedEArchiveLinkeds.Count);
 
         var successfullyArchivedDocumentIds = await GetSuccessfullyArchivedDocumentIds(unArchivedEArchiveLinkeds.Select(s => s.EArchivId)!, cancellationToken);
 
-        _logger.LogInformation("{ServiceName}:From {UnArchCount} unarchived documentsOnSa, {ArchCount} have been already archived}",
-                                   typeof(CheckDocumentsArchivedJob).Name,
-                                   unArchivedEArchiveLinkeds.Count,
-                                   successfullyArchivedDocumentIds.Count);
+        _logger.AlreadyArchived(typeof(CheckDocumentsArchivedJob).Name, unArchivedEArchiveLinkeds.Count, successfullyArchivedDocumentIds.Count);
 
         if (!successfullyArchivedDocumentIds.Any())
             return;
@@ -68,10 +66,9 @@ public sealed class CheckDocumentsArchivedJob
         var request = new GetDocumentsInQueueRequest();
         request.EArchivIds.AddRange(unArchivedDocOnSaEaIds);
         var documentInQueue = await _documentArchiveServiceClient.GetDocumentsInQueue(request, cancellationToken);
-        var successfullyArchivedDocumentIds = documentInQueue.QueuedDocuments
+        return documentInQueue.QueuedDocuments
                                               .Where(d => d.StatusInQueue == SuccessfullyArchivedStatus)
                                               .Select(s => s.EArchivId)
                                               .ToList();
-        return successfullyArchivedDocumentIds;
     }
 }
