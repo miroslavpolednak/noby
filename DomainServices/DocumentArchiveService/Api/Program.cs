@@ -18,6 +18,11 @@ SharedComponents.GrpcServiceBuilder
         options.OpenApiTitle = "DocumentArchive Service API";
         options.AddOpenApiXmlCommentFromBaseDirectory("DomainServices.DocumentArchiveService.xml");
     })
+    .AddRequiredServices(services =>
+    {
+        services
+            .AddUserService();
+    })
     .AddErrorCodeMapper(DomainServices.DocumentArchiveService.Api.ErrorCodeMapper.Init())
     .Build((builder, appConfiguration) =>
     {
