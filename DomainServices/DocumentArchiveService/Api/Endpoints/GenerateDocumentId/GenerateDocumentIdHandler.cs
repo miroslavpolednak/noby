@@ -35,7 +35,7 @@ internal sealed class GenerateDocumentIdHandler
 
         return new GenerateDocumentIdResponse
         {
-            DocumentId = $"KBH{getLoginFromServiceUser()}{getEnvCode(envName)}{seq:D22}"
+            DocumentId = $"KBH{getLoginFromServiceUser()}{getEnvCode(envName)}{seq:D23}"
         };
     }
 
