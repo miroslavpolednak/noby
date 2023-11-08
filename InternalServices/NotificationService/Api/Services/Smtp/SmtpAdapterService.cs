@@ -51,7 +51,7 @@ public class SmtpAdapterService : ISmtpAdapterService
 
     private AsyncRetryPolicy CreatePolicy()
     {
-        return Policy.Handle<MailKit.Security.SslHandshakeException>().WaitAndRetryAsync(_maxRetries, retryAttempt => TimeSpan.FromSeconds(1), onRetry: (exp, interval, retryCount) =>
+        return Policy.Handle<MailKit.Security.SslHandshakeException>().WaitAndRetryAsync(_maxRetries, retryAttempt => TimeSpan.FromSeconds(1), onRetry: (exp, interval, retryCount, context) =>
         {
             _logger.LogWarning(exp, $"SmtpClient RetryPolicy handle exception, retry count {retryCount}");
         });
