@@ -1,4 +1,5 @@
 ﻿using DomainServices.DocumentArchiveService.Api.Database;
+using DomainServices.DocumentArchiveService.Api.Extensions;
 using DomainServices.DocumentArchiveService.Api.Mappers;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1;
@@ -57,7 +58,7 @@ internal sealed class GetDocumentHandler : IRequestHandler<GetDocumentRequest, G
         }
         catch (Exception exp) when (request.GetLocalCopyAsBackup)
         {
-            _logger.LogError(exp, exp.Message);
+            _logger.LocalDocCopyIfNotExistInEArchive(exp);
             return await TryFindDocumentInQueue(request, cancellationToken);
         }
     }
