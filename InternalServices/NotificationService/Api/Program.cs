@@ -59,6 +59,7 @@ try
         .AddCisServiceAuthentication()
         .AddCisServiceUserContext()
         .Services
+            .AddUserService()
             .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
             .AddAttributedServices(typeof(Program));
 
