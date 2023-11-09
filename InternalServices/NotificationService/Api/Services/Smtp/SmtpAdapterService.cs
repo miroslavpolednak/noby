@@ -29,7 +29,10 @@ public class SmtpAdapterService : ISmtpAdapterService
         IEnumerable<string> to, IEnumerable<string> cc, IEnumerable<string> bcc,
         IEnumerable<SmtpAttachment> attachments)
     {
-        using var client = new SmtpClient();
+        using var client = new SmtpClient()
+        {
+            CheckCertificateRevocation = false
+        };
 
         await _retryPolicy.ExecuteAsync(async () =>
                await client.ConnectAsync(_smtpConfiguration.Host, _smtpConfiguration.Port, _smtpConfiguration.SecureSocket)
