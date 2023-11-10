@@ -1,9 +1,11 @@
-﻿using System.ComponentModel;
+﻿using NOBY.Infrastructure.Swagger;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
+[RollbackDescription("- volá CustomerOnSAService.UpdateCustomer() se snapshotem instance customera ze začátku requestu")]
 public class CreateCustomerRequest
     : IRequest<CreateCustomerResponse>, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 {

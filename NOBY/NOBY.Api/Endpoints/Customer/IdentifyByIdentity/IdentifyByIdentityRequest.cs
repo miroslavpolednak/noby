@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using NOBY.Infrastructure.Swagger;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
+[RollbackDescription("- volá CustomerOnSAService.UpdateCustomer() se snapshotem instance customera ze začátku requestu")]
 public sealed class IdentifyByIdentityRequest
     : IRequest<MediatR.Unit>, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 {
