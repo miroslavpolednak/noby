@@ -129,7 +129,7 @@ json_req_mail_kb_max_attachments = \
     ],
     "subject": "NS_test_MIKEL_attachment_kb",
     "content": {
-      "format": "application/mht",
+      "format": "text/plain",
       "language": "cs",
       "text": "json_req_mail_kb_att"
     },
