@@ -4,6 +4,7 @@ using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Retry;
+using System.Net.Security;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Smtp;
 
@@ -32,10 +33,13 @@ public class SmtpAdapterService : ISmtpAdapterService
         using var client = new SmtpClient()
         {
             CheckCertificateRevocation = false,
-            // snizujeme default timeout z 120s na 60s
-            Timeout = 60000,
-            // podle Zdendy Siblika zatim cert verime
-            //ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true
+            Timeout = _smtpConfiguration.Timeout * 1000,
+            ServerCertificateValidationCallback = (sender, certificate, chain, errors) => {
+                if (errors == SslPolicyErrors.None)
+                    return true;
+
+                return _smtpConfiguration.DisableServerCertificateValidation;
+            }
         };
 
         await _retryPolicy.ExecuteAsync(async () =>
