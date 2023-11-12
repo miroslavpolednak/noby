@@ -29,7 +29,14 @@ public class SmtpAdapterService : ISmtpAdapterService
         IEnumerable<string> to, IEnumerable<string> cc, IEnumerable<string> bcc,
         IEnumerable<SmtpAttachment> attachments)
     {
-        using var client = new SmtpClient();
+        using var client = new SmtpClient()
+        {
+            CheckCertificateRevocation = false,
+            // snizujeme default timeout z 120s na 60s
+            Timeout = 60000,
+            // podle Zdendy Siblika zatim cert verime
+            //ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true
+        };
 
         await _retryPolicy.ExecuteAsync(async () =>
                await client.ConnectAsync(_smtpConfiguration.Host, _smtpConfiguration.Port, _smtpConfiguration.SecureSocket)
