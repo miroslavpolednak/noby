@@ -44,7 +44,7 @@ appConfiguration.CheckAppConfiguration();
         .AddCisAudit();
 
     // authentication
-    builder.AddCisServiceAuthentication();
+    builder.AddCisServiceAuthentication().AddCisServiceUserContext();
 
     // add this service
     builder.AddDocumentOnSAServiceService();

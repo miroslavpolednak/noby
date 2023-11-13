@@ -2,14 +2,14 @@
 using DomainServices.HouseholdService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 
-namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
+namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
-internal sealed class IdentifyByIdentityRollback
-    : IRollbackAction<IdentifyByIdentityRequest>
+internal sealed class CreateCustomerRollback
+    : IRollbackAction<CreateCustomerRequest>
 {
-    public async Task ExecuteRollback(Exception exception, IdentifyByIdentityRequest request, CancellationToken cancellationToken = default)
+    public async Task ExecuteRollback(Exception exception, CreateCustomerRequest request, CancellationToken cancellationToken = default)
     {
-        _logger.RollbackHandlerStarted(nameof(IdentifyByIdentityRollback));
+        _logger.RollbackHandlerStarted(nameof(CreateCustomerRollback));
 
         // vratit zpatky data puvodniho customera
         if (_bag.ContainsKey(BagKeyCustomerOnSA))
@@ -27,12 +27,12 @@ internal sealed class IdentifyByIdentityRollback
     public const string BagKeyCustomerOnSA = "BagKeyCustomerOnSA";
 
     private readonly IRollbackBag _bag;
-    private readonly ILogger<IdentifyByIdentityRollback> _logger;
+    private readonly ILogger<CreateCustomerRollback> _logger;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    
-    public IdentifyByIdentityRollback(
+
+    public CreateCustomerRollback(
         IRollbackBag bag,
-        ILogger<IdentifyByIdentityRollback> logger,
+        ILogger<CreateCustomerRollback> logger,
         ICustomerOnSAServiceClient customerOnSAService)
     {
         _logger = logger;

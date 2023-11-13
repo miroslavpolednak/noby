@@ -6,6 +6,11 @@ namespace SharedComponents.GrpcServiceBuilderHelpers;
 
 internal abstract class GrpcServiceFluentBuilderBase
 {
+    protected void IntSkipServiceUserContext()
+    {
+        _settings.SkipServiceUserContext = true;
+    }
+
     protected void IntAddGrpcServiceOptions(Action<GrpcServiceOptions> changeOptions)
     {
         _settings.AddGrpcServiceOptions = changeOptions;

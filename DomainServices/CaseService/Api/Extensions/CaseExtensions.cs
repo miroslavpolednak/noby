@@ -133,9 +133,13 @@ internal static class CaseExtensions
                         FormId = taskData.GetValueOrDefault("ukol_podpis_dokument_form_id") ?? "",
                         Expiration = taskData.GetDate("ukol_podpis_lhuta_do"),
                         DocumentForSigning = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_id") ?? "",
-                        DocumentForSigningType = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_typ") ?? "",
-                        EACodeMain = taskData.GetValueOrDefault("ukol_podpis_dokument_typ")
+                        DocumentForSigningType = taskData.GetValueOrDefault("ukol_podpis_dokument_ep_typ") ?? ""
                     };
+
+                    if (int.TryParse(taskData.GetValueOrDefault("ukol_podpis_dokument_typ"), out int eACodeMain))
+                    {
+                        taskDetail.Signing.EACodeMain = eACodeMain;
+                    }
 
                     if (!string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_podpis_prilohy_ep_id")))
                     {

@@ -55,6 +55,11 @@ public interface ICustomerOnSAServiceClient
     Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Update dat o customerovi s puvodni instance daneho customera - pro potreby rollbacku
+    /// </summary>
+    Task<UpdateCustomerResponse> UpdateCustomer(CustomerOnSA originalCustomer, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Vytvoreni noveho prijmu
     /// </summary>
     /// <returns><see cref="int{}"/>IncomeId</returns>

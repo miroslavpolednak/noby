@@ -4,6 +4,7 @@ using DomainServices.DocumentOnSAService.Contracts;
 using ExternalServices.ESignatures.V1;
 using FastEnumUtility;
 using Microsoft.EntityFrameworkCore;
+using DomainServices.DocumentOnSAService.Api.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
 
@@ -67,7 +68,7 @@ public sealed class UpdateDocumentStatusJob
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                _logger.UpdateDocumentStatusFailed(documentOnSa.DocumentOnSAId, ex);
             }
         }
     }

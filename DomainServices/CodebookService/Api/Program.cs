@@ -13,6 +13,7 @@ SharedComponents.GrpcServiceBuilder
         options.OpenApiTitle = "Codebook Service API";
         options.AddOpenApiXmlCommentFromBaseDirectory("DomainServices.CodebookService.Contracts.xml");
     })
+    .SkipServiceUserContext()
     .AddErrorCodeMapper(DomainServices.CodebookService.Api.ErrorCodeMapper.Init())
     .Build(builder =>
     {

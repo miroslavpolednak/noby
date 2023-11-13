@@ -45,7 +45,7 @@ message AmendmentSigning {
 	string DocumentForSigning = 3;
 	repeated string ProposalForEntry = 4;
 	string DocumentForSigningType = 5;
-	google.protobuf.StringValue EACodeMain = 6;
+	google.protobuf.Int32Value EACodeMain = 6;
 }
 
 message AmendmentRequest {

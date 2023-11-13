@@ -7,4 +7,6 @@ public class SmtpConfiguration
     public string Host { get; set; } = null!;
     public int Port { get; set; }
     public SecureSocketOptions SecureSocket { get; set; } = SecureSocketOptions.None;
+    public int Timeout { get; set; } = 60;
+    public bool DisableServerCertificateValidation { get; set; }
 }

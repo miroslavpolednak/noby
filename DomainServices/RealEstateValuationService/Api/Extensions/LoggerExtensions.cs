@@ -7,7 +7,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, string, Exception> _kafkaMessageCurrentTaskIdIncorrectFormat;
     private static readonly Action<ILogger, long?, Exception> _kafkaRealEstateValuationByOrderIdNotFound;
     private static readonly Action<ILogger, bool, Exception> _revaluationFinished;
-    private static readonly Action<ILogger, long, int, Exception> _createKbmodelFlat;
+    private static readonly Action<ILogger, bool, long, int, Exception> _createKbmodelFlat;
 
     static LoggerExtensions()
     {
@@ -36,10 +36,10 @@ internal static class LoggerExtensions
             new EventId(LoggerEventIdCodes.RevaluationFinished, nameof(RevaluationFinished)),
             "Revaluation finished with result {RevaluationRequired}");
 
-        _createKbmodelFlat = LoggerMessage.Define<long, int>(
+        _createKbmodelFlat = LoggerMessage.Define<bool, long, int>(
             LogLevel.Information,
             new EventId(LoggerEventIdCodes.CreateKbmodelFlat, nameof(CreateKbmodelFlat)),
-            "CreateKbmodelFlat for valuation {ValuationId} finished with result price {ResultPrice}");
+            "CreateKbmodelFlat: noPriceAvailable {NoPriceAvailable}; valuation {ValuationId} finished with result price {ResultPrice}");
     }
 
     public static void AttachmentDeleteFailed(this ILogger logger, long externalId, int realEstateValuationAttachmentId, Exception ex)
@@ -57,6 +57,6 @@ internal static class LoggerExtensions
     public static void RevaluationFinished(this ILogger logger, bool revaluationRequired)
         => _revaluationFinished(logger, revaluationRequired, null!);
 
-    public static void CreateKbmodelFlat(this ILogger logger, long valuationId, int resultPrice)
-        => _createKbmodelFlat(logger, valuationId, resultPrice, null!);
+    public static void CreateKbmodelFlat(this ILogger logger, bool noPriceAvailable, long valuationId, int resultPrice)
+        => _createKbmodelFlat(logger, noPriceAvailable, valuationId, resultPrice, null!);
 }

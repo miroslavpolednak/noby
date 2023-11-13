@@ -6,9 +6,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SharedComponents.GrpcServiceBuilderHelpers;
 
-internal class GrpcServiceFluentBuilder
+internal sealed class GrpcServiceFluentBuilder
     : GrpcServiceFluentBuilderBase, IGrpcServiceFluentBuilder
 {
+    public IGrpcServiceFluentBuilder SkipServiceUserContext()
+    {
+        IntSkipServiceUserContext();
+        return this;
+    }
+
     public IGrpcServiceFluentBuilder AddGrpcServiceOptions(Action<GrpcServiceOptions> changeOptions)
     {
         IntAddGrpcServiceOptions(changeOptions);

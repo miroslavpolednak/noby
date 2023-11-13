@@ -42,7 +42,16 @@ internal sealed class PreorderOnlineValuationHandler
             kbmodelRequest.LoanAmount = Convert.ToDouble(loanAmount.GetValueOrDefault(), CultureInfo.InvariantCulture);
         
         var kbmodelReponse = await _luxpiServiceClient.CreateKbmodelFlat(kbmodelRequest, addressPointId.Value, cancellationToken);
-        _logger.CreateKbmodelFlat(kbmodelReponse.ValuationId, kbmodelReponse.ResultPrice);
+        _logger.CreateKbmodelFlat(kbmodelReponse.NoPriceAvailable, kbmodelReponse.ValuationId, kbmodelReponse.ResultPrice);
+
+        // byl diskvalifikovan z online. Ulozit informaci a vyhodit chybu.
+        if (kbmodelReponse.NoPriceAvailable)
+        {
+            entity.IsOnlineDisqualified = true;
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.LuxpiKbModelStatusFailed);
+        }
 
         // revaluation check
         var revaluationRequest = new ExternalServices.PreorderService.V1.Contracts.OnlineRevaluationCheckRequestDTO

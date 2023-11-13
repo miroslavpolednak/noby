@@ -32,10 +32,17 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             _settings.Builder
                 // logging
                 .AddCisLogging()
-                .AddCisAudit()
                 .AddCisTracing()
                 // authentication
                 .AddCisServiceAuthentication();
+
+            // end user context
+            if (!_settings.SkipServiceUserContext)
+            {
+                _settings.Builder
+                    .AddCisServiceUserContext()
+                    .AddCisAudit();
+            }
 
             // rollback
             if (_settings.AddRollbackCapability)

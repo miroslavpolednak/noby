@@ -1,6 +1,9 @@
-﻿using DomainServices.DocumentOnSAService.Api.Database;
+﻿using CIS.Core.Configuration;
+using DomainServices.DocumentArchiveService.Contracts;
+using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
+using FastEnumUtility;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GenerateFormId;
@@ -8,13 +11,16 @@ namespace DomainServices.DocumentOnSAService.Api.Endpoints.GenerateFormId;
 public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, GenerateFormIdResponse>
 {
     private readonly DocumentOnSAServiceDbContext _dbContext;
+    private readonly ICisEnvironmentConfiguration _cisEnvironment;
+    private const short _maxVersion = 99;
+    private const string _defaultSystem = "N";
 
-    private const short MaxVersion = 99;
-    private const string DefaultSystem = "N";
-
-    public GenerateFormIdHandler(DocumentOnSAServiceDbContext dbContext)
+    public GenerateFormIdHandler(
+        DocumentOnSAServiceDbContext dbContext,
+        ICisEnvironmentConfiguration cisEnvironment)
     {
         _dbContext = dbContext;
+        _cisEnvironment = cisEnvironment;
     }
 
     public async Task<GenerateFormIdResponse> Handle(GenerateFormIdRequest request, CancellationToken cancellationToken)
@@ -28,7 +34,7 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
         // New with final version
         if (generatedFormId is null && request.IsFormIdFinal)
         {
-            version = MaxVersion;
+            version = _maxVersion;
             sequenceId = await CreateNewFormId(request, version, cancellationToken);
         }
         // New with init version
@@ -40,11 +46,11 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
         // Exist with request to final version
         else if (generatedFormId is not null && request.IsFormIdFinal)
         {
-            version = UpdateVersionOfFormId(generatedFormId, false, MaxVersion);
+            version = UpdateVersionOfFormId(generatedFormId, false, _maxVersion);
             sequenceId = generatedFormId.Id;
         }
         // Exist with max version (99)
-        else if (generatedFormId is not null && generatedFormId.Version >= MaxVersion && !request.IsFormIdFinal)
+        else if (generatedFormId is not null && generatedFormId.Version >= _maxVersion && !request.IsFormIdFinal)
         {
             //Generate new record in table (new sequence[id]) and set version to 1
             version = 1;
@@ -72,25 +78,27 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
         };
     }
 
-    private static string CreateFormId(long sequenceId, short version)
+    private string CreateFormId(long sequenceId, short version)
     {
-        if (version > MaxVersion)
-            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.VersionHaveToBeLowerThanMaxVersion, MaxVersion);
+        if (version > _maxVersion)
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.VersionHaveToBeLowerThanMaxVersion, _maxVersion);
 
-        var identifier = sequenceId * 100 + version;
+        var identifier = (sequenceId * 100) + version;
 
-        return $"{DefaultSystem}{identifier:D14}";
+        var envName = FastEnum.Parse<EnvironmentNames>(ConvertToEnvEnumStr(_cisEnvironment.EnvironmentName!));
+
+        return $"{_defaultSystem}{GetEnvCode(envName)}{identifier:D12}";
     }
 
     private static short UpdateVersionOfFormId(GeneratedFormId generatedFormId, bool increaseVersion, short version = 0)
     {
         if (increaseVersion)
         {
-            generatedFormId.Version += 1;
+            generatedFormId.Version++;
         }
         else
         {
-            generatedFormId.Version = version == 0 && version != MaxVersion ? throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SetVersionDirectlyError, MaxVersion) : version;
+            generatedFormId.Version = version == 0 && version != _maxVersion ? throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SetVersionDirectlyError, _maxVersion) : version;
         }
 
         return generatedFormId.Version;
@@ -108,5 +116,37 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
         await _dbContext.GeneratedFormId.AddAsync(entity, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return entity.Id;
+    }
+
+    private static string GetEnvCode(EnvironmentNames environmentNames) => environmentNames switch
+    {
+        EnvironmentNames.Dev => "D0",
+        EnvironmentNames.Fat => "F0",
+        EnvironmentNames.Sit1 => "S1",
+        EnvironmentNames.Uat => "U0",
+        EnvironmentNames.Preprod => "P0",
+        EnvironmentNames.Edu => "E0",
+        EnvironmentNames.Prod => "00",
+        EnvironmentNames.Test => "T0",
+        EnvironmentNames.Unknown => HandleUnsupportedEnv(environmentNames),
+        _ => HandleUnsupportedEnv(environmentNames)
+    };
+
+    private static string HandleUnsupportedEnv(EnvironmentNames environmentNames)
+    {
+        throw new ArgumentException($"Unsupported kind of environment {environmentNames.FastToString()}");
+    }
+
+    private static string ConvertToEnvEnumStr(string enumStr)
+    {
+        enumStr = enumStr.ToLower(System.Globalization.CultureInfo.CurrentCulture);
+        if (string.IsNullOrEmpty(enumStr) || enumStr.Length < 1)
+        {
+            return string.Empty;
+        }
+        else
+        {
+            return char.ToUpper(enumStr[0]) + enumStr[1..];
+        }
     }
 }

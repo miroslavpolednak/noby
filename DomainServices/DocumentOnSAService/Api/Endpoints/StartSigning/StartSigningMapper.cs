@@ -173,8 +173,8 @@ public class StartSigningMapper
         entity.IsValid = true;
         entity.IsSigned = false;
         entity.IsArchived = false;
-        entity.EACodeMainId = int.Parse(signing.EACodeMain, CultureInfo.InvariantCulture);
         entity.IsCustomerPreviewSendingAllowed = isCustomerPreviewSendingAllowed;
+        entity.EACodeMainId = signing.EACodeMain;
         return entity;
     }
 

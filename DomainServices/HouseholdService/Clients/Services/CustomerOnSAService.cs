@@ -1,5 +1,6 @@
 ﻿using SharedTypes.GrpcTypes;
 using DomainServices.HouseholdService.Contracts;
+using DomainServices.HouseholdService.Contracts.v1;
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
@@ -70,6 +71,30 @@ internal sealed class CustomerOnSAService
     public async Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default)
     {
         return await _service.UpdateCustomerAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task<UpdateCustomerResponse> UpdateCustomer(CustomerOnSA originalCustomer, CancellationToken cancellationToken = default)
+    {
+        var modelToUpdate = new UpdateCustomerRequest
+        {
+            SkipValidations = true,
+            CustomerOnSAId = originalCustomer.CustomerOnSAId,
+            Customer = new CustomerOnSABase
+            {
+                DateOfBirthNaturalPerson = originalCustomer.DateOfBirthNaturalPerson,
+                FirstNameNaturalPerson = originalCustomer.FirstNameNaturalPerson,
+                Name = originalCustomer.Name,
+                LockedIncomeDateTime = originalCustomer.LockedIncomeDateTime,
+                MaritalStatusId = originalCustomer.MaritalStatusId
+            }
+        };
+
+        if (originalCustomer.CustomerIdentifiers is not null)
+        {
+            modelToUpdate.Customer.CustomerIdentifiers.Add(originalCustomer.CustomerIdentifiers);
+        }
+
+        return await _service.UpdateCustomerAsync(modelToUpdate, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateCustomerDetail(UpdateCustomerDetailRequest request, CancellationToken cancellationToken = default)

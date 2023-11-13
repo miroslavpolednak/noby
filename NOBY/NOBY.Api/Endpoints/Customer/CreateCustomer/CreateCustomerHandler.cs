@@ -8,6 +8,8 @@ using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using Mandants = SharedTypes.GrpcTypes.Mandants;
+using CIS.Infrastructure.CisMediatR.Rollback;
+using NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -82,6 +84,7 @@ internal sealed class CreateCustomerHandler
 
         // update customerOnSA. Dostanu nove PartnerId
         var updateResponse = await _customerOnSAService.UpdateCustomer(customerOnSA.ToUpdateRequest(customerKb), cancellationToken);
+        _bag.Add(CreateCustomerRollback.BagKeyCustomerOnSA, customerOnSA);
 
         // vytvorit response z API
         var model = customerKb.ToResponseDto(isVerified, resultCode);
@@ -151,6 +154,7 @@ internal sealed class CreateCustomerHandler
         }
     }
 
+    private readonly IRollbackBag _bag;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly Services.CreateProductTrain.ICreateProductTrainService _createProductTrain;
     private readonly ILogger<CreateCustomerHandler> _logger;
@@ -162,6 +166,7 @@ internal sealed class CreateCustomerHandler
     private readonly Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
 
     public CreateCustomerHandler(
+        IRollbackBag rollbackBag,
         ISalesArrangementServiceClient salesArrangementService,
         Services.CreateProductTrain.ICreateProductTrainService createProductTrain,
         ICustomerOnSAServiceClient customerOnSAService,
@@ -172,6 +177,7 @@ internal sealed class CreateCustomerHandler
         Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
         ILogger<CreateCustomerHandler> logger)
     {
+        _bag = rollbackBag;
         _salesArrangementService = salesArrangementService;
         _createProductTrain = createProductTrain;
         _customerOnSAService = customerOnSAService;

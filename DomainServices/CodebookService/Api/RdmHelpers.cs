@@ -12,7 +12,7 @@ internal static class RdmHelpers
         connection.Open();
         var list = connectionProvider.ExecuteDapperQuery(c =>
         {
-            return c.Query("SELECT EntryIsValid, EntryCode, EntryProperties FROM dbo.RdmCodebook WHERE RdmCodebookName=@name", new { name = codebookName }).ToList();
+            return c.Query("SELECT EntryIsValid, EntryCode, EntryProperties, SortOrder FROM dbo.RdmCodebook WHERE RdmCodebookName=@name", new { name = codebookName }).ToList();
         });
 
         return list
@@ -56,6 +56,7 @@ internal static class RdmHelpers
         public string Code { get; set; } = string.Empty;
         public bool IsValid { get; set; }
         public Dictionary<string, string> Properties { get; set; } = null!;
+        public int SortOrder { get; set; }
     }
 
     public sealed class RdmMappingItem

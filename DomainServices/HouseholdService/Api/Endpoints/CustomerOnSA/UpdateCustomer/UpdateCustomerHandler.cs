@@ -19,11 +19,20 @@ internal sealed class UpdateCustomerHandler
         // helper aby se nemuselo porad null checkovat
         entity.Identities ??= new List<Database.Entities.CustomerOnSAIdentity>();
 
-        // customerOnSA byl jiz updatovan z KB CM
-        bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == IdentitySchemes.Kb);
-
+        // v tomto pripade natvrdo beru identity z requestu a nezajima me, jake mel pred tim
+        if (request.SkipValidations)
+        {
+            entity.Identities.Clear();
+            if (request.Customer.CustomerIdentifiers is not null)
+            {
+                foreach (var identity in request.Customer.CustomerIdentifiers)
+                {
+                    entity.Identities.AddRange(request.Customer.CustomerIdentifiers.Select(t => new Database.Entities.CustomerOnSAIdentity(t, entity.CustomerOnSAId)));
+                }
+            }
+        }
         // vychazim z toho, ze identitu klienta nelze menit. Tj. z muze prijit prazdna kolekce CustomerIdentifiers v requestu, ale to neznamena, ze jiz existujici identity na COnSA odstranim.
-        if (request.Customer.CustomerIdentifiers is not null && request.Customer.CustomerIdentifiers.Any())
+        else if (request.Customer.CustomerIdentifiers is not null && request.Customer.CustomerIdentifiers.Any())
         {
             // kontrola, zda dane schema jiz nema s jinym ID
             if (request.Customer.CustomerIdentifiers.Any(t => entity.Identities.Any(x => (int)x.IdentityScheme == (int)t.IdentityScheme && x.IdentityId != t.IdentityId)))
@@ -36,6 +45,9 @@ internal sealed class UpdateCustomerHandler
 
             entity.Identities.AddRange(newSchemasToAdd.Select(t => new Database.Entities.CustomerOnSAIdentity(t, entity.CustomerOnSAId)));
         }
+
+        // customerOnSA byl jiz updatovan z KB CM
+        bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == IdentitySchemes.Kb);
 
         // provolat sulm - pokud jiz ma nebo mu byla akorat pridana KB identita
         var kbIdentity = entity.Identities.FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);

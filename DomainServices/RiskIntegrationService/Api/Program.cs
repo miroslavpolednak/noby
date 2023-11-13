@@ -44,7 +44,7 @@ try
     builder.Services.AddAttributedServices(typeof(Program));
 
     // authentication
-    builder.AddCisServiceAuthentication();
+    builder.AddCisServiceAuthentication().AddCisServiceUserContext();
 
     // add this service
     builder.AddRipService();

@@ -1,5 +1,8 @@
-﻿namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
+﻿using NOBY.Infrastructure.Swagger;
 
+namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
+
+[RollbackDescription("- maže domácnost s customerOnSA<br/>- maže SalesArrangement<br/>- maže Case")]
 public sealed class CreateMortgageCaseRequest
     : IRequest<CreateMortgageCaseResponse>, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 {

@@ -34,6 +34,7 @@ using Newtonsoft.Json;
 using static DomainServices.HouseholdService.Contracts.GetCustomerChangeMetadataResponse.Types;
 using _CustomerService = DomainServices.CustomerService.Contracts;
 using Source = DomainServices.DocumentOnSAService.Api.Database.Enums.Source;
+using DomainServices.DocumentOnSAService.Api.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocument;
 
@@ -225,7 +226,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             }
             catch (Exception exp) when (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
             {
-                _logger.LogError(exp, exp.Message);
+                _logger.UpdateCustomerFailed(customerOnSa.CustomerOnSAId, exp);
                 await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
                 return false;
             }
@@ -263,7 +264,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                 }
                 catch (Exception exp) when (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
                 {
-                    _logger.LogError(exp, exp.Message);
+                    _logger.UpdateCustomerFailed(customerOnSa.CustomerOnSAId, exp);
                     await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
                     errorsOfCustomerUpdate.Add(true);
                 }
@@ -342,12 +343,12 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         var customers = new List<CustomerOnSA>();
         if (household.CustomerOnSAId1 is not null)
         {
-            customers.Add(CustomersOnSABuffer.FirstOrDefault(c => c.CustomerOnSAId == household.CustomerOnSAId1.Value)
+            customers.Add(CustomersOnSABuffer.Find(c => c.CustomerOnSAId == household.CustomerOnSAId1.Value)
                                     ?? await _customerOnSAService.GetCustomer(household.CustomerOnSAId1.Value, cancellationToken));
         }
         if (household.CustomerOnSAId2 is not null)
         {
-            customers.Add(CustomersOnSABuffer.FirstOrDefault(c => c.CustomerOnSAId == household.CustomerOnSAId2.Value)
+            customers.Add(CustomersOnSABuffer.Find(c => c.CustomerOnSAId == household.CustomerOnSAId2.Value)
                                     ?? await _customerOnSAService.GetCustomer(household.CustomerOnSAId2.Value, cancellationToken));
         }
 
@@ -440,7 +441,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     private async Task AddSignatureIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, System.DateTime signatureDate, CancellationToken cancellationToken)
     {
         if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()
-            && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId).AllAsync(r => !r.IsSigned, cancellationToken))
+            && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId && d.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()).AllAsync(r => !r.IsSigned, cancellationToken))
         {
             var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, signatureDate, cancellationToken);
 

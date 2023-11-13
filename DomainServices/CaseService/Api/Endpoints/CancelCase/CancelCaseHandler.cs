@@ -35,13 +35,6 @@ internal sealed class CancelCaseHandler
         // druh storna podle datumu prvniho podpisu
         CaseStates newCaseState = await firstSignatureDateIsSet(salesArrangementId, documents, cancellation) ? CaseStates.ToBeCancelled : CaseStates.Cancelled;
 
-        // nastavit storno v nasi DB
-        await _mediator.Send(new UpdateCaseStateRequest
-        {
-            CaseId = request.CaseId,
-            State = (int)newCaseState
-        }, cancellation);
-
         if (newCaseState == CaseStates.ToBeCancelled) // pokud mame datum prvniho podpisu
         {
             // odeslat do SB
@@ -81,6 +74,13 @@ internal sealed class CancelCaseHandler
 
         // nastavit stav na SA
         await _salesArrangementService.DeleteSalesArrangement(salesArrangementId, true, cancellation);
+
+        // nastavit storno v nasi DB
+        await _mediator.Send(new UpdateCaseStateRequest
+        {
+            CaseId = request.CaseId,
+            State = (int)newCaseState
+        }, cancellation);
 
         // auditni log
         _auditLogger.Log(
