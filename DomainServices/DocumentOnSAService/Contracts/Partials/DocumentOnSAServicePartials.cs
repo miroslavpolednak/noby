@@ -33,3 +33,7 @@ public partial class RefreshElectronicDocumentRequest : IRequest<Empty>, CIS.Cor
 public partial class GetDocumentOnSAByFormIdRequest : IRequest<GetDocumentOnSAByFormIdResponse>, CIS.Core.Validation.IValidatableRequest { }
 
 public partial class RefreshSalesArrangementStateRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
+
+public partial class SetProcessingDateInSbQueuesRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
+
+
