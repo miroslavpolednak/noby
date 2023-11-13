@@ -79,4 +79,9 @@ public interface IDocumentOnSAServiceClient
     /// Metoda slouží k updatu stavu sales arrangementu dle aktuálního stavu podepisování.
     /// </summary>
     Task RefreshSalesArrangementState(int salesArrangementId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Doplnění data zpracování k podepisovanému úkolu při jeho ukončení
+    /// </summary>
+    Task SetProcessingDateInSbQueues(int taskIdsSb, long caseId, CancellationToken cancellationToken = default);
 }

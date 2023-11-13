@@ -6,6 +6,7 @@ public static class LoggerExtensions
     private static readonly Action<ILogger, string, int, int, Exception> _alreadyArchived;
     private static readonly Action<ILogger, int, Exception> _updateDocumentStatusFailed;
     private static readonly Action<ILogger, int, Exception> _updateCustomerFailed;
+    private static readonly Action<ILogger, long, Exception> _updateOfSbQueuesFailed;
 
     static LoggerExtensions()
     {
@@ -28,7 +29,15 @@ public static class LoggerExtensions
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.UpdateCustomerFailed, nameof(UpdateCustomerFailed)),
            "Update customerOnSa {CustomerOnSaId} failed");
+
+        _updateOfSbQueuesFailed = LoggerMessage.Define<long>(
+            LogLevel.Error,
+            new EventId(LoggerEventIdCodes.UpdateOfSbQueuesFailed, nameof(UpdateOfSbQueuesFailed)),
+           "Update of sb queues failed for documentId {DocumentId}");
     }
+
+    public static void UpdateOfSbQueuesFailed(this ILogger logger, long documentId, Exception exception)
+      => _updateOfSbQueuesFailed(logger, documentId, exception);
 
     public static void UnarchivedDocumentsOnSa(this ILogger logger, string serviceName, int count)
      => _unarchivedDocumentsOnSa(logger, serviceName, count, default!);

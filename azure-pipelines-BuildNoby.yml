@@ -1,0 +1,51 @@
+#Runs builds of FE-API and all Backend services (except ServiceDiscovery)
+
+trigger: none
+
+pool:
+  name: MPSS Common
+
+steps:
+- task: TriggerBuild@4
+  displayName: Build BE services
+  inputs:
+    buildDefinition: >-
+                    CaseService, CodebookService, CustomerService, DataAggregatorService, DocumentArchiveService,
+                    DocumentGeneratorService, DocumentOnSAService, HouseholdService, NotificationService,
+                    OfferService, ProductService, RealEstateValuationService, RiskIntegrationService,
+                    SalesArrangementService, UserService
+    definitionIsInCurrentTeamProject: true
+    queueBuildForUserThatTriggeredBuild: true
+    ignoreSslCertificateErrors: true
+    useSameSourceVersion: false
+    useCustomSourceVersion: false
+    useSameBranch: true
+    waitForQueuedBuildsToFinish: false
+    storeInEnvironmentVariable: false
+    authenticationMethod: 'OAuth Token'
+    enableBuildInQueueCondition: true
+    includeCurrentBuildDefinition: true
+    dependentOnSuccessfulBuildCondition: false
+    dependentOnFailedBuildCondition: false
+    checkbuildsoncurrentbranch: false
+    failTaskIfConditionsAreNotFulfilled: false
+
+- task: TriggerBuild@4
+  displayName: Build FE API
+  inputs:
+    buildDefinition: 'FEAPI'
+    definitionIsInCurrentTeamProject: true
+    queueBuildForUserThatTriggeredBuild: true
+    ignoreSslCertificateErrors: true
+    useSameSourceVersion: false
+    useCustomSourceVersion: false
+    useSameBranch: true
+    waitForQueuedBuildsToFinish: false
+    storeInEnvironmentVariable: false
+    authenticationMethod: 'OAuth Token'
+    enableBuildInQueueCondition: true
+    includeCurrentBuildDefinition: true
+    dependentOnSuccessfulBuildCondition: false
+    dependentOnFailedBuildCondition: false
+    checkbuildsoncurrentbranch: false
+    failTaskIfConditionsAreNotFulfilled: false
