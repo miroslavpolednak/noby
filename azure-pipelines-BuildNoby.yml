@@ -20,12 +20,7 @@ steps:
     useSameSourceVersion: false
     useCustomSourceVersion: false
     useSameBranch: true
-    waitForQueuedBuildsToFinish: true
-    waitForQueuedBuildsToFinishRefreshTime: '30'
-    failTaskIfBuildsNotSuccessful: true
-    cancelBuildsIfAnyFails: false
-    treatPartiallySucceededBuildAsSuccessful: false
-    downloadBuildArtifacts: false
+    waitForQueuedBuildsToFinish: false
     storeInEnvironmentVariable: false
     authenticationMethod: 'OAuth Token'
     enableBuildInQueueCondition: true
@@ -45,12 +40,7 @@ steps:
     useSameSourceVersion: false
     useCustomSourceVersion: false
     useSameBranch: true
-    waitForQueuedBuildsToFinish: true
-    waitForQueuedBuildsToFinishRefreshTime: '30'
-    failTaskIfBuildsNotSuccessful: true
-    cancelBuildsIfAnyFails: false
-    treatPartiallySucceededBuildAsSuccessful: false
-    downloadBuildArtifacts: false
+    waitForQueuedBuildsToFinish: false
     storeInEnvironmentVariable: false
     authenticationMethod: 'OAuth Token'
     enableBuildInQueueCondition: true
