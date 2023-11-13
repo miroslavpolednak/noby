@@ -22,7 +22,8 @@ SharedComponents.GrpcServiceBuilder
             .AddCodebookService()
             .AddHouseholdService()
             .AddProductService()
-            .AddUserService();
+            .AddUserService()
+            .AddDocumentOnSAService();
     })
     .Build((builder, appConfiguration) =>
     {

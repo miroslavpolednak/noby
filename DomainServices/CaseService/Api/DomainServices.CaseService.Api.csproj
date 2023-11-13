@@ -30,6 +30,7 @@
 		<ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
 		<ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
+		<ProjectReference Include="..\..\DocumentOnSAService\Clients\DomainServices.DocumentOnSAService.Clients.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.CaseService.Contracts.csproj" />
 		<ProjectReference Include="..\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj" />
 	</ItemGroup>
