@@ -1,10 +1,13 @@
 ﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
+using DomainServices.CodebookService.Clients;
+using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.UserService.Clients;
+using static DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types;
 
 namespace DomainServices.CaseService.Api.Endpoints.CompleteTask;
 
-internal sealed class CompleteTaskHandler 
+internal sealed class CompleteTaskHandler
     : IRequestHandler<CompleteTaskRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(CompleteTaskRequest request, CancellationToken cancellationToken)
@@ -27,9 +30,11 @@ internal sealed class CompleteTaskHandler
 
             sbRequest.Metadata.Add("ukol_podpis_odpoved_typ", (request.TaskResponseTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
             sbRequest.Metadata.Add("ukol_podpis_zpusob_ukonceni", (request.CompletionTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
-        }
 
-        await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
+            await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
+
+            await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskIdSb, request.CaseId, cancellationToken);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
@@ -43,11 +48,22 @@ internal sealed class CompleteTaskHandler
         };
 
     private readonly IUserServiceClient _userService;
+    private readonly IMediator _mediator;
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ISbWebApiClient _sbWebApiClient;
-    
-    public CompleteTaskHandler(ISbWebApiClient sbWebApiClient, IUserServiceClient userService)
+
+    public CompleteTaskHandler(
+        ISbWebApiClient sbWebApiClient,
+        IUserServiceClient userService,
+        IMediator mediator,
+        ICodebookServiceClient codebookService,
+        IDocumentOnSAServiceClient documentOnSAService)
     {
         _userService = userService;
+        _mediator = mediator;
+        _codebookService = codebookService;
+        _documentOnSAService = documentOnSAService;
         _sbWebApiClient = sbWebApiClient;
     }
 }

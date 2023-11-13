@@ -2,12 +2,12 @@
 using CIS.Infrastructure.StartupExtensions;
 using ExternalServices.SbQueues.Abstraction;
 using ExternalServices.SbQueues.Configuration;
-using ExternalServices.SbQueues.V1;
 using ExternalServices.SbQueues.V1.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CIS.Infrastructure.ExternalServicesHelpers;
+using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
 
 namespace ExternalServices.SbQueues;
 

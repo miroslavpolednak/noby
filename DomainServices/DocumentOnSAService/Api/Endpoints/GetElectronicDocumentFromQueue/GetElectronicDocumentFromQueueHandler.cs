@@ -1,5 +1,5 @@
 ﻿using DomainServices.DocumentOnSAService.Contracts;
-using ExternalServices.SbQueues.V1;
+using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
 using Google.Protobuf;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetElectronicDocumentFromQueue;

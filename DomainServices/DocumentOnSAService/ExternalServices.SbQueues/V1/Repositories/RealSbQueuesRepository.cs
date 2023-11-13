@@ -2,6 +2,7 @@
 using CIS.Core.Data;
 using CIS.Infrastructure.Data;
 using Dapper;
+using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
 using ExternalServices.SbQueues.Abstraction;
 using ExternalServices.SbQueues.V1.Model;
 
@@ -57,6 +58,34 @@ public class RealSbQueuesRepository : ISbQueuesRepository
         WHERE di.DOCUMENT_ID = @DocumentId AND di.CONSUMER = 'NOBY'
         """;
 
+    private const string _updateAttachmentProcessingDateSql =
+        """
+           UPDATE dbo.SB_ATTACHMENT_INFO_S 
+           SET DATUM_ZPRACOVANIA = @DateTime 
+           WHERE DOCUMENT_ID = @DocumentId
+           """;
+
+    public const string _updateDocumentProcessingDateSql =
+        """
+            UPDATE dbo.SB_DOCUMENT_INFO_S 
+            SET DATUM_ZPRACOVANIA = @DateTime 
+            WHERE DOCUMENT_ID = @DocumentId
+            """;
+
+    public const string _updateClientProcessingDateSql =
+        """
+            UPDATE dbo.SB_CLIENT_INFO_S 
+            SET DATUM_ZPRACOVANIA = @DateTime
+            WHERE DOCUMENT_ID = @DocumentId
+            """;
+
+    public const string _getDocumentIdSql =
+        """
+        SELECT A.DOCUMENT_ID 
+        FROM dbo.SB_ATTACHMENT_INFO_S A 
+        WHERE A.ATTACHMENT_ID = @AttachmentId
+        """;
+
     private readonly IConnectionProvider<ISbQueuesDapperConnectionProvider> _connectionProvider;
 
     public RealSbQueuesRepository(IConnectionProvider<ISbQueuesDapperConnectionProvider> connectionProvider)
@@ -97,5 +126,42 @@ public class RealSbQueuesRepository : ISbQueuesRepository
             return await _connectionProvider
             .ExecuteDapperFirstOrDefaultAsync<Document>(_documentSqlQuery, parameters, cancellationToken);
         }
+    }
+
+    public async Task UpdateAttachmentProcessingDate(long documentId, DateTime? processingDate, CancellationToken cancellationToken)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("@DocumentId", documentId, DbType.Int64, ParameterDirection.Input);
+        parameters.Add("@DateTime", processingDate, DbType.DateTime, ParameterDirection.Input);
+
+        await _connectionProvider.ExecuteDapperQueryAsync(async c => await c.ExecuteAsync(_updateAttachmentProcessingDateSql, parameters), cancellationToken);
+    }
+
+    public async Task UpdateClientProcessingDate(long documentId, DateTime? processingDate, CancellationToken cancellationToken)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("@DocumentId", documentId, DbType.Int64, ParameterDirection.Input);
+        parameters.Add("@DateTime", processingDate, DbType.DateTime, ParameterDirection.Input);
+
+        await _connectionProvider.ExecuteDapperQueryAsync(async c => await c.ExecuteAsync(_updateClientProcessingDateSql, parameters), cancellationToken);
+
+    }
+
+    public async Task UpdateDocumentProcessingDate(long documentId, DateTime? processingDate, CancellationToken cancellationToken)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("@DocumentId", documentId, DbType.Int64, ParameterDirection.Input);
+        parameters.Add("@DateTime", processingDate, DbType.DateTime, ParameterDirection.Input);
+
+        await _connectionProvider.ExecuteDapperQueryAsync(async c => await c.ExecuteAsync(_updateDocumentProcessingDateSql, parameters), cancellationToken);
+    }
+
+    public async Task<long> GetDocumentIdAccordingAtchId(string attachmentId, CancellationToken cancellationToken)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("@AttachmentId", attachmentId, DbType.Int64, ParameterDirection.Input);
+
+        return await _connectionProvider
+                         .ExecuteDapperFirstOrDefaultAsync<long>(_getDocumentIdSql, parameters, cancellationToken);
     }
 }

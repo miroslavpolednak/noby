@@ -5,6 +5,10 @@ using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsAr
 using DomainServices.DocumentOnSAService.Api.Configuration;
 using ExternalServices;
 using ExternalServices.SbQueues;
+using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
+using ExternalServices.Eas.V1;
+using ExternalServices.Sulm.V1;
+using ExternalServices.ESignatures.V1;
 
 namespace DomainServices.DocumentOnSAService.Api.Extensions;
 
@@ -33,16 +37,16 @@ internal static class StartupExtensions
                     .AddDocumentGeneratorService();
 
         // EAS svc
-        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
+        builder.AddExternalService<IEasClient>();
 
         // sulm
-        builder.AddExternalService<ExternalServices.Sulm.V1.ISulmClient>();
+        builder.AddExternalService<ISulmClient>();
 
         // ePodpisy
-        builder.AddExternalService<ExternalServices.ESignatures.V1.IESignaturesClient>();
+        builder.AddExternalService<IESignaturesClient>();
         
         // ePodpisy fronta
-        builder.AddExternalService<ExternalServices.SbQueues.V1.ISbQueuesRepository>();
+        builder.AddExternalService<ISbQueuesRepository>();
         
         // registrace background jobu
         builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
