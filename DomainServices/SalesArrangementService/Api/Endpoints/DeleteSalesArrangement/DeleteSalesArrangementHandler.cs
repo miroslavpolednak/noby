@@ -20,22 +20,22 @@ internal sealed class DeleteSalesArrangementHandler
             }
         }
 
-        // smazat SA
-        _dbContext.Remove(saInstance);
-        
-        // smazat parametry
-        await _dbContext.SalesArrangementsParameters
-            .Where(t => t.SalesArrangementId == request.SalesArrangementId)
-            .ExecuteDeleteAsync(cancellation);
-        
-        await _dbContext.SaveChangesAsync(cancellation);
-
         // smazat navazne entity
         var households = await _householdService.GetHouseholdList(request.SalesArrangementId, cancellation);
         foreach (var household in households)
         {
             await _householdService.DeleteHousehold(household.HouseholdId, true, cancellation);
         }
+
+        // smazat SA
+        _dbContext.Remove(saInstance);
+
+        // smazat parametry
+        await _dbContext.SalesArrangementsParameters
+            .Where(t => t.SalesArrangementId == request.SalesArrangementId)
+            .ExecuteDeleteAsync(cancellation);
+
+        await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

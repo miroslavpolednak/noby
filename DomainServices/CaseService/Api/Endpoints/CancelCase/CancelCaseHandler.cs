@@ -72,15 +72,15 @@ internal sealed class CancelCaseHandler
         // dojde k odeslání elektronicky podepsaných dokumentů do archivu (getDocumentsOnSAList nad produktovou žádostí zafiltrovaný na IsSigned = true a SignatureTypeId = 3)
         await setDocumentArchived(documents, cancellation);
 
-        // nastavit stav na SA
-        await _salesArrangementService.DeleteSalesArrangement(salesArrangementId, true, cancellation);
-
         // nastavit storno v nasi DB
         await _mediator.Send(new UpdateCaseStateRequest
         {
             CaseId = request.CaseId,
             State = (int)newCaseState
         }, cancellation);
+
+        // nastavit stav na SA
+        await _salesArrangementService.DeleteSalesArrangement(salesArrangementId, true, cancellation);
 
         // auditni log
         _auditLogger.Log(
