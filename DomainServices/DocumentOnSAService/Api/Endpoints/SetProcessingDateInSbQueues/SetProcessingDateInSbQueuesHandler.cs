@@ -68,7 +68,6 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
             }
         }
 
-
         return new Empty();
     }
 
