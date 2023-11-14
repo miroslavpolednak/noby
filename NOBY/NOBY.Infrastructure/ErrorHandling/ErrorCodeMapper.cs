@@ -18,11 +18,11 @@ public sealed class ErrorCodeMapper
             { 90008, new("Chyba - služba na ztotožnění subjektu v Základních registrech není dostupná.", "V žádosti je ovšem možné pokračovat v zadávání subjektu na detailní obrazovce.") },
             { 90009, new("Checkform odhalil chyby.") },
             { 90010, new("Chyba synchronizace dat.", "Klientská data na obchodním případu se zobrazí až po zpracování žádosti ve StarBuildu.", ApiErrorItemServerity.Warning) },
-            { 90011, new("Zůstatek pro čerpání je menší nebo rovný nule. Formulář nelze vytvořit") },
-            { 90012, new("Aktuální datum překračuje datum první anuitní splátky. Formulář nelze vytvořit") },
-            { 90013, new("Neexistuje úvěrový účet. Formulář nelze vytvořit") },
-            { 90014, new("Smlouva není podepsána. Formulář pro změnu nelze vytvořit.") },
-            { 90015, new("Není vyplněna žádost o změnu Dlužníka. Nelze vytvořit změnu.") },
+            { 90011, new("Zůstatek pro čerpání je menší nebo rovný nule. Žádost nelze vytvořit") },
+            { 90012, new("Aktuální datum překračuje datum první anuitní splátky. Žádost nelze vytvořit") },
+            { 90013, new("Neexistuje úvěrový účet. Žádost nelze vytvořit") },
+            { 90014, new("Smlouva není podepsána. Žádost nelze vytvořit") },
+            { 90015, new("Není vyplněna žádost o změnu Dlužníka. Nelze vytvořit žádost změnu.") },
             { 90016, new("Nabídka nemá platnou garanci.") },
             { 90017, new("Nelze simulovat s garancí.", "Žádost neexistuje nebo neobsahuje platné datum garance.") },
             { 90018, new("Nelze pokračovat bez schválené individuální ceny.") },
@@ -37,7 +37,7 @@ public sealed class ErrorCodeMapper
             { 90027, new("Diskvalifikace z online ocenění", "Pro danou nemovitost není možné dokončit Online ocenění. Je potřeba zvolit jiný typ ocenění.") },
             { 90028, new("Žádost v aktuální stavu nelze měnit.") },
             { 90029, new("Překročen počet objektů úvěru", "Maximální počet objektů úvěru je 3. Upravte počet objednávek ocenění s označením objekt úvěru.") },
-            { 90030, new("Dokument s tímto EACodeMain není povolen pro NOBY uložit do eArchivu.") },
+            { 90030, new("Chyba - soubor s tímto typem dokumentu není povoleno vložit do eArchivu") },
             { 90031, new("Chybí nemovitost k ocenění", "Je potřeba doplnit LV s alespoň jednou nemovitostí označenou k ocenění.") },
             { 90032, new("Nepovolená operace", "Vámi požadovaná operace není se zadanými parametry povolena.") },
             { 90033, new("Žadatel nenalezen na daném obchodním případu.") },
@@ -49,7 +49,8 @@ public sealed class ErrorCodeMapper
             { 90039, new("Klientské údaje nejsou validní", "Zkontrolujte klientské údaje všech žadatelů. Validace klientských údajů spustíte tlačítkem DALŠÍ na obrazovce Detailu subjektu.") },
             { 90040, new("Existuje rozpracovaná žádost o úvěr. Nelze vytvořit žádost o změnu.") },
             { 90041, new("Smlouva je již podepsána. Nelze vytvořit tento typ změnové žádosti.") },
-            { 90042, new("Nelze pokračovat, protože došlo ke změně daňové rezidence a klient má zadáno více jak 8 států daňové rezidence. Tuto změnu je možné provést pouze na pobočce.") }
+            { 90042, new("Nelze pokračovat, protože došlo ke změně daňové rezidence a klient má zadáno více jak 8 států daňové rezidence. Tuto změnu je možné provést pouze na pobočce.") },
+            { 90043, new("Nenalezeno") }
         };
 
         Messages = messages.AsReadOnly();
