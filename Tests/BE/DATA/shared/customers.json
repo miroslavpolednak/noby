@@ -1,0 +1,106 @@
+[
+    {
+        "alias": "RegistrovanaA",
+        "identity": {
+            "id": 951083155,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "RegistrovanaB",
+        "identity": {
+            "id": 951083163,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "Rozvedena",
+        "identity": {
+            "id": 951083171,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "Rozvedeny",
+        "identity": {
+            "id": 951083120,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "Svobodna",
+        "identity": {
+            "id": 951083147,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "Svobodny",
+        "identity": {
+            "id": 951083139,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "SvobodnyA",
+        "identity": {
+            "id": 951083219,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "SvobodnyB",
+        "identity": {
+            "id": 951083227,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "Vdova",
+        "identity": {
+            "id": 951083198,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "Vdovec",
+        "identity": {
+            "id": 951083200,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "Vdana",
+        "identity": {
+            "id": 951083059,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "Zenaty",
+        "identity": {
+            "id": 951082144,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    },
+    {
+        "alias": "ZenatyMarek",
+        "identity": {
+            "id": 951082267,
+            "scheme": 2
+        },
+        "environments": ["DEV", "FAT", "SIT1"]
+    }
+]
