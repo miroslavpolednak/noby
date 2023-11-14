@@ -41,7 +41,6 @@ internal sealed class ErrorCodeMapper
     public const int AgentNotFound = 18078;
     public const int SalesArrangementStateIsEmpty = 18079;
     public const int RepaymentAccountCantChange = 18081;
-    public const int ContractNumberIsAlreadySet = 18084;
     public const int NotAllCustomersOnSaAreIdentified = 18085;
     public const int ApplicantIsNotSet = 18086;
     
@@ -83,7 +82,6 @@ internal sealed class ErrorCodeMapper
             { AgentNotFound, "Agent {PropertyValue} not found amoung customersOnSA for current SA" },
             { SalesArrangementStateIsEmpty, "SalesArrangement State must be > 0" },
             { RepaymentAccountCantChange, "Repayment account cannot be changed with IsAccountNumberMissing set to false" },
-            { ContractNumberIsAlreadySet, "Contract number on SalesArrangement {PropertyValue} already exists." },
             { NotAllCustomersOnSaAreIdentified, "Some of the CustomersOnSa are not identified." },
             { ApplicantIsNotSet, "The Applicant is not set." },
         });

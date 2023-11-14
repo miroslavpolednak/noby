@@ -41,14 +41,20 @@ internal class SetContractNumberHandler : IRequestHandler<SetContractNumberReque
         {
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SATypeNotSupported, salesArrangement.SalesArrangementTypeId);
         }
-        CheckIfContractNumberIsAlreadySet(salesArrangement);
+        
+        if (!string.IsNullOrWhiteSpace(salesArrangement.ContractNumber))
+        {
+            var contractNumber = await GetContractNumber(request.CustomerOnSaId, salesArrangement.CaseId, cancellationToken);
 
-        var contractNumber = await GetContractNumber(request.CustomerOnSaId, salesArrangement.CaseId, cancellationToken);
+            await UpdateSalesArrangement(salesArrangement, contractNumber, cancellationToken);
+            await UpdateCase(salesArrangement.CaseId, contractNumber, cancellationToken);
 
-        await UpdateSalesArrangement(salesArrangement, contractNumber, cancellationToken);
-        await UpdateCase(salesArrangement.CaseId, contractNumber, cancellationToken);
-
-        return new SetContractNumberResponse { ContractNumber = contractNumber };
+            return new SetContractNumberResponse { ContractNumber = contractNumber };
+        }
+        else
+        {
+            return new SetContractNumberResponse { ContractNumber = salesArrangement.ContractNumber };
+        }
     }
 
     private async Task<SalesArrangement> LoadSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
@@ -59,14 +65,6 @@ internal class SetContractNumberHandler : IRequestHandler<SetContractNumberReque
                                .Select(DatabaseExpressions.SalesArrangementDetail())
                                .FirstOrDefaultAsync(cancellationToken)
                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, salesArrangementId);
-    }
-
-    private static void CheckIfContractNumberIsAlreadySet(SalesArrangement salesArrangement)
-    {
-        if (string.IsNullOrWhiteSpace(salesArrangement.ContractNumber))
-            return;
-
-        throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.ContractNumberIsAlreadySet, salesArrangement.SalesArrangementId);
     }
 
     private async Task<string> GetContractNumber(int customerOnSaId, long caseId, CancellationToken cancellationToken)
