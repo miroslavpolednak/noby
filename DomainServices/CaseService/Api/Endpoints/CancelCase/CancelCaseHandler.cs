@@ -32,6 +32,9 @@ internal sealed class CancelCaseHandler
             .DocumentsOnSA
             .ToList();
 
+        // dojde k provolání stopDocumentOnSASigning pro všechny rozpodepsané dokumenty (getDocumentsToSignList zafiltrovaný na IsSigned = false a DocumentOnSAId in not null)
+        await stopSigning(salesArrangementId, cancellation);
+
         // druh storna podle datumu prvniho podpisu
         CaseStates newCaseState = await firstSignatureDateIsSet(salesArrangementId, documents, cancellation) ? CaseStates.ToBeCancelled : CaseStates.Cancelled;
 
@@ -65,9 +68,6 @@ internal sealed class CancelCaseHandler
                 }, cancellation);
             }
         }
-
-        // dojde k provolání stopDocumentOnSASigning pro všechny rozpodepsané dokumenty (getDocumentsToSignList zafiltrovaný na IsSigned = false a DocumentOnSAId in not null)
-        await stopSigning(salesArrangementId, cancellation);
 
         // dojde k odeslání elektronicky podepsaných dokumentů do archivu (getDocumentsOnSAList nad produktovou žádostí zafiltrovaný na IsSigned = true a SignatureTypeId = 3)
         await setDocumentArchived(documents, cancellation);
