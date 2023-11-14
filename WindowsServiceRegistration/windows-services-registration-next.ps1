@@ -1,4 +1,4 @@
-param([string]$env, [string]$exec, [string]$services)
+﻿param([string]$env, [string]$exec, [string]$services)
 
 
 class SVC {
@@ -194,7 +194,7 @@ class SVC {
 }
 
 function GetEnvironments() {
-    return @("DEV", "FAT", "SIT1", "UAT", "PREPROD");
+    return @("DEV", "FAT", "SIT1", "UAT", "PREPROD", "PROD");
 }
 
 function GetServices([string]$env) {
@@ -237,7 +237,7 @@ function ShowHelp([string] $env) {
     $services_str = ($services | % {[SVC]::ToShortServiceName($_.svc_name)}) -join ",";
     $row_services = "- 'services' [{0}], default: all services" -f $services_str;
 
-    $row_exec = "- 'exec' [status, create, remote], default: 'status'";
+    $row_exec = "- 'exec' [status, create, remove, start, stop], default: 'status'";
 
 
     $rows = @(
@@ -344,7 +344,7 @@ function CheckServices([string] $services_str) {
 }
 
 function GetCredential([string] $env) {
-    [string] $user_name = if ($env -in @("PREPROD", "PROD")) {"VSSKB\XX_NOBY_SVC_USR_PROD"} Else {"VSSKB\XX_NOBY_SVC_USR_TEST"};
+    [string] $user_name = if ($env -in @("PROD")) {"VSSKB\XX_NOBY_SVC_USR_PROD"} Else {"VSSKB\XX_NOBY_SVC_USR_TEST"};
     
     Write-Host "Credential must be provided." -ForegroundColor DarkYellow
 
