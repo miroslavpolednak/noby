@@ -504,6 +504,7 @@ message ProfessionCategoriesResponse {
 	   bool IsValid = 3;
 	   repeated int32 ProfessionTypeIds = 4;
 	   repeated int32 IncomeMainTypeAMLIds = 5;
+	   bool IsValidNoby = 6;
 	}
 }
 

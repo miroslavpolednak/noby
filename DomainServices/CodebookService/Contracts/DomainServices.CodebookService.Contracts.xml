@@ -872,6 +872,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.ProfessionCategoriesResponse.Types.ProfessionCategoryItem.IncomeMainTypeAMLIdsFieldNumber">
             <summary>Field number for the "IncomeMainTypeAMLIds" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProfessionCategoriesResponse.Types.ProfessionCategoryItem.IsValidNobyFieldNumber">
+            <summary>Field number for the "IsValidNoby" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.ProofTypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>

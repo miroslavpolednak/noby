@@ -39,6 +39,8 @@ internal partial class CodebookService
                 var ext = extensions.FirstOrDefault(x => x.ProfessionCategoryId == obj.Id);
                 if (ext is not null)
                 {
+                    obj.IsValidNoby = ext.IsValidNoby;
+
                     if (!string.IsNullOrEmpty(ext.IncomeMainTypeAMLIds))
                     {
                         obj.IncomeMainTypeAMLIds.AddRange(((string)ext.IncomeMainTypeAMLIds).ParseIDs());
