@@ -13,6 +13,8 @@ public sealed class LoggingHttpHandler
     private readonly bool _logResponsePayload;
     private readonly ILogger _logger;
 
+    private const int _maxPayloadTrashold = 1024 * 512;
+
     public LoggingHttpHandler(HttpMessageHandler innerHandler, ILogger logger, bool logRequestPayload = true, bool logResponsePayload = true)
         : base(innerHandler)
     {
@@ -45,7 +47,9 @@ public sealed class LoggingHttpHandler
             }
             else
             {
-                payloadData.Add("Payload", await request.Content!.ReadAsStringAsync(cancellationToken));
+                var payload = await request.Content!.ReadAsStringAsync(cancellationToken);
+                CIS.Core.StringExtensions.TrimUtf8String(ref payload, _maxPayloadTrashold);
+                payloadData.Add("Payload", payload);
             }
 
             using (_logger.BeginScope(payloadData))
@@ -71,9 +75,11 @@ public sealed class LoggingHttpHandler
         // logovat vsechen response
         if (response?.Content is not null && _logResponsePayload)
         {
+            var payload = response.Content == null ? string.Empty : await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            CIS.Core.StringExtensions.TrimUtf8String(ref payload, _maxPayloadTrashold);
             using (_logger.BeginScope(new Dictionary<string, object>
             {
-                { "Payload", await getRawResponse() },
+                { "Payload", payload },
                 { "Headers", response.Headers?.ToDictionary(x => x.Key, v => string.Join(';', v.Value)) }
             }))
             {
@@ -85,10 +91,7 @@ public sealed class LoggingHttpHandler
             _logger.HttpResponseFinished(request, statusCode);
         }
 
-        return response!;
-
-        async Task<string> getRawResponse()
-            => response.Content == null ? "" : await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        return response!;     
     }
 }
 

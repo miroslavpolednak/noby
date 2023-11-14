@@ -10,15 +10,14 @@ public static class StringExtensions
     public static string CastCamelCaseToDashDelimited(this string source)
         => _castCamelCaseToDashDelimitedRegex.Replace(source, "-$1").ToLower(System.Globalization.CultureInfo.InvariantCulture);
 
-    public static string TrimUtf8String(ref string input, int maxSizeInBytes)
+    public static void TrimUtf8String(ref string input, int maxSizeInBytes)
     {
         byte[] bytes = Encoding.UTF8.GetBytes(input);
 
         if (bytes.Length > maxSizeInBytes)
         {
             Array.Resize(ref bytes, maxSizeInBytes);
+            input = Encoding.UTF8.GetString(bytes);
         }
-
-        return Encoding.UTF8.GetString(bytes);
     }
 }

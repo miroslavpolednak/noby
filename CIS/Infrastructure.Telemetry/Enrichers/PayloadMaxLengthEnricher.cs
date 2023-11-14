@@ -25,11 +25,8 @@ internal sealed class PayloadMaxLengthEnricher
             if (logEvent.Properties[_payloadKey] is ScalarValue eventValue && eventValue.Value != null)
             {
                 var payload = eventValue.ToString("l", null);
-                if (Encoding.UTF8.GetBytes(payload).Length > _trashold)
-                {
-                    var newValue = CIS.Core.StringExtensions.TrimUtf8String(ref payload, _trashold) + " fuck off";
-                    logEvent.AddOrUpdateProperty(new LogEventProperty("Payload", new ScalarValue(newValue)));
-                }
+                CIS.Core.StringExtensions.TrimUtf8String(ref payload, _trashold);
+                logEvent.AddOrUpdateProperty(new LogEventProperty("Payload", new ScalarValue(payload)));
             }
         }
     }
