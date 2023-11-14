@@ -42,7 +42,7 @@ internal class SetContractNumberHandler : IRequestHandler<SetContractNumberReque
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.SATypeNotSupported, salesArrangement.SalesArrangementTypeId);
         }
         
-        if (!string.IsNullOrWhiteSpace(salesArrangement.ContractNumber))
+        if (string.IsNullOrWhiteSpace(salesArrangement.ContractNumber))
         {
             var contractNumber = await GetContractNumber(request.CustomerOnSaId, salesArrangement.CaseId, cancellationToken);
 
