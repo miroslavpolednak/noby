@@ -48,20 +48,23 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
 
         await GetDocumentIds(tasksList, taskIdSbForSpecifiedDocumentId, signingWithTaskDetail, cancellationToken);
 
-        var documentIdForRequestTaskId = taskIdSbForSpecifiedDocumentId.Where(t => t.taskIdSb == request.TaskIdSb).Select(s => s.documentId).First();
-        var groupForDucumentId = taskIdSbForSpecifiedDocumentId.Where(d => d.documentId == documentIdForRequestTaskId);
-        var nonFinalTaskForGroup = tasksInNonFinalState.Where(r => groupForDucumentId.Select(s => s.taskIdSb).Contains(r.TaskIdSb));
-
-        if (!nonFinalTaskForGroup.Any()) // Indicate last completed task in group for documentId
+        var documentIdForRequestTaskId = taskIdSbForSpecifiedDocumentId.Where(t => t.taskIdSb == request.TaskIdSb).Select(s => s.documentId).FirstOrDefault();
+        if (documentIdForRequestTaskId != 0)
         {
-            try
+            var groupForDucumentId = taskIdSbForSpecifiedDocumentId.Where(d => d.documentId == documentIdForRequestTaskId);
+            var nonFinalTaskForGroup = tasksInNonFinalState.Where(r => groupForDucumentId.Select(s => s.taskIdSb).Contains(r.TaskIdSb));
+
+            if (!nonFinalTaskForGroup.Any()) // Indicate last completed task in group for documentId
             {
-                await UpdateSbQueues(currentDate, documentIdForRequestTaskId, cancellationToken);
-            }
-            catch (Exception exp)
-            {
-                await UpdateSbQueues(null, documentIdForRequestTaskId, cancellationToken);
-                _logger.UpdateOfSbQueuesFailed(documentIdForRequestTaskId, exp);
+                try
+                {
+                    await UpdateSbQueues(currentDate, documentIdForRequestTaskId, cancellationToken);
+                }
+                catch (Exception exp)
+                {
+                    await UpdateSbQueues(null, documentIdForRequestTaskId, cancellationToken);
+                    _logger.UpdateOfSbQueuesFailed(documentIdForRequestTaskId, exp);
+                }
             }
         }
 

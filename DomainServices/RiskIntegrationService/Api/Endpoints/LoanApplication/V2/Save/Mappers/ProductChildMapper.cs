@@ -26,7 +26,7 @@ internal sealed class ProductChildMapper
             LoanApplicationCollateral = product.Collaterals?.Select(tranformCollateral(collaterals, _riskApplicationType?.MandantId))?.ToList(),
             AmountRequired = product.RequiredAmount.ToAmount(),
             AmountInvestment = product.InvestmentAmount.ToAmount(),
-            AmountOwnResources = product.OwnResourcesAmount.ToAmount(),
+            AmountOwnResources = product.OwnResourcesAmount.GetValueOrDefault().ToAmount(),
             AmountForeignResources = product.ForeignResourcesAmount.ToAmount(),
             Maturity = product.LoanDuration,
             Annuity = Convert.ToInt64(product.LoanPaymentAmount ?? 0),

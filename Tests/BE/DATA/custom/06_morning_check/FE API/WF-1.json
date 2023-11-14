@@ -1,0 +1,33 @@
+{
+  "label": "zenaty, koupě, hpp, zavazek bez, manual podpis, ocenění standard",
+  "priority": 1,
+  "tags": [
+    "offer",
+    "case",
+    "snippets"
+  ],
+  "assertions": [
+    {
+      "LIST": "REPLACE(ASTs-OfferCasePost)"
+    }
+  ],
+  "workflow": [
+    {
+      "LIST": "REPLACE(WF-Offer_10m_200_96-Case_Zenaty)"
+    },
+    {
+      "path": "case.households",
+      "type": "add",
+      "data": {
+          "householdTypeId":  "HouseholdType(type=Codebtor)"
+      },
+      "assertions": [
+          {
+              "api_req": "POST api/household",
+              "assert": "status_code == 200",
+              "stop_on": "AssertFailure"
+          }
+      ]
+    }
+  ]
+}
