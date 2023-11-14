@@ -53,19 +53,22 @@ internal sealed class CancelCaseHandler
                 var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation);
 
                 // zavolat RIP
-                var identity = _currentUser.GetUserIdentityFromHeaders();
-                await _riskBusinessCaseService.CommitCase(new RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCommitCaseRequest
+                if (!string.IsNullOrEmpty(saInstance.RiskBusinessCaseId))
                 {
-                    SalesArrangementId = salesArrangementId,
-                    ProductTypeId = entity.ProductTypeId,
-                    RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
-                    FinalResult = request.IsUserInvoked ? RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseFinalResults.CANCELLED_BY_CLIENT : RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseFinalResults.TIMEOUT_BY_EXT_SYS,
-                    UserIdentity = identity is null ? null : new RiskIntegrationService.Contracts.Shared.Identity
+                    var identity = _currentUser.GetUserIdentityFromHeaders();
+                    await _riskBusinessCaseService.CommitCase(new RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCommitCaseRequest
                     {
-                        IdentityScheme = identity.Scheme.ToString(),
-                        IdentityId = identity.Identity
-                    }
-                }, cancellation);
+                        SalesArrangementId = salesArrangementId,
+                        ProductTypeId = entity.ProductTypeId,
+                        RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
+                        FinalResult = request.IsUserInvoked ? RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseFinalResults.CANCELLED_BY_CLIENT : RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseFinalResults.TIMEOUT_BY_EXT_SYS,
+                        UserIdentity = identity is null ? null : new RiskIntegrationService.Contracts.Shared.Identity
+                        {
+                            IdentityScheme = identity.Scheme.ToString(),
+                            IdentityId = identity.Identity
+                        }
+                    }, cancellation);
+                }
             }
         }
 
