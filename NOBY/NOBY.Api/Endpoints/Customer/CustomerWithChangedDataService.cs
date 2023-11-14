@@ -72,7 +72,7 @@ internal sealed class CustomerWithChangedDataService
                 TinMissingReasonDescription = c.TinMissingReasonDescription
             }).ToList()
         };
-        person.ProfessionCategoryId = dsCustomer.NaturalPerson?.ProfessionCategoryId;
+        person.ProfessionCategoryId = dsCustomer.NaturalPerson?.ProfessionCategoryId ?? 0;
         person.ProfessionId = dsCustomer.NaturalPerson?.ProfessionId;
         person.NetMonthEarningAmountId = dsCustomer.NaturalPerson?.NetMonthEarningAmountId;
         person.NetMonthEarningTypeId = dsCustomer.NaturalPerson?.NetMonthEarningTypeId;

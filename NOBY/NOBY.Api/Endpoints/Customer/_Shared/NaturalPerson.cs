@@ -8,7 +8,7 @@ public sealed class NaturalPerson
     /// </summary>
     public int? EducationLevelId { get; set; }
 
-    public int? ProfessionCategoryId { get; set; }
+    public int ProfessionCategoryId { get; set; }
 
     public int? ProfessionId { get; set; }
 

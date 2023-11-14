@@ -11,7 +11,7 @@ namespace NOBY.Infrastructure.ErrorHandling.Internals;
 /// </remarks>
 public sealed class NobyValidationBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+    where TRequest : notnull
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 

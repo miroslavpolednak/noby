@@ -2,10 +2,10 @@
 
 namespace NOBY.Api.Endpoints.Customer.Identify;
 
-internal sealed class IdentifyValidator
+internal sealed class IdentifyRequestValidator
     : AbstractValidator<IdentifyRequest>
 {
-    public IdentifyValidator()
+    public IdentifyRequestValidator()
     {
         RuleFor(t => t.FirstName)
             .NotEmpty();
