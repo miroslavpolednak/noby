@@ -15,7 +15,7 @@ public sealed class LogConfiguration
     /// <summary>
     /// Maximální velikost obsahu vlastnosti Payload
     /// </summary>
-    public int? MaxPayloadLength { get; set; } = 1024 * 512;
+    public int? MaxPayloadLength { get; set; } = 1000000;
 
     /// <summary>
     /// Logovani do souboru
