@@ -1,4 +1,4 @@
-﻿using SharedTypes.Enums;
+﻿using DomainServices.DocumentOnSAService.Clients;
 using SharedAudit;
 using DomainServices.SalesArrangementService.Api.Services.Forms;
 using DomainServices.SalesArrangementService.Contracts;
@@ -11,21 +11,21 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
     private readonly FormsService _formsService;
     private readonly FormsDocumentService _formsDocumentService;
     private readonly PerformerProvider _performerProvider;
-    private readonly IMediator _mediator;
+    private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IAuditLogger _auditLogger;
 
     public SendToCmpHandler(
         IAuditLogger auditLogger,
-        IMediator mediator,
         FormsService formsService,
         FormsDocumentService formsDocumentService,
-        PerformerProvider performerProvider)
+        PerformerProvider performerProvider,
+        IDocumentOnSAServiceClient documentOnSAService)
     {
         _auditLogger = auditLogger;
-        _mediator = mediator;
         _formsService = formsService;
         _formsDocumentService = formsDocumentService;
         _performerProvider = performerProvider;
+        _documentOnSAService = documentOnSAService;
     }
 
     public async Task<Empty> Handle(SendToCmpRequest request, CancellationToken cancellationToken)
@@ -35,58 +35,89 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
 
         if (saType.IsFormSentToCmp)
         {
+            salesArrangement = await ValidateAndReloadSalesArrangement(salesArrangement.SalesArrangementId, cancellationToken);
+
             await ProcessEasForm(salesArrangement, (SalesArrangementCategories)saType.SalesArrangementCategory, request.IsCancelled, cancellationToken);
         }
+        
+        await _formsService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, SalesArrangementStates.InApproval, cancellationToken);
 
-        //https://jira.kb.cz/browse/HFICH-4684 
-        await _mediator.Send(new UpdateSalesArrangementStateRequest
-        {
-            SalesArrangementId = request.SalesArrangementId,
-            State = (int)SalesArrangementStates.InApproval
-        }, cancellationToken);
-
-        // auditni log
-        _auditLogger.Log(
-            AuditEventTypes.Noby005,
-            "Žádost byla dokončena",
-            products: new List<AuditLoggerHeaderItem>()
-            {
-                new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
-                new(AuditConstants.ProductNamesSalesArrangement, request.SalesArrangementId)
-            }
-        );
+        AuditLog(salesArrangement);
 
         return new Empty();
     }
-    private Task ProcessEasForm(SalesArrangement salesArrangement, SalesArrangementCategories category, bool isCancelled, CancellationToken cancellationToken) =>
-        category switch
+
+    private async Task<SalesArrangement> ValidateAndReloadSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        await _documentOnSAService.RefreshSalesArrangementState(salesArrangementId, cancellationToken);
+
+        var salesArrangement = await _formsService.LoadSalesArrangement(salesArrangementId, cancellationToken);
+
+        if (salesArrangement.State != (int)SalesArrangementStates.ToSend)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CannotBeSent, salesArrangement.State);
+
+        return salesArrangement;
+    }
+
+    private async Task ProcessEasForm(SalesArrangement salesArrangement, SalesArrangementCategories salesArrangementCategory, bool isCancelled, CancellationToken cancellationToken)
+    {
+        switch (salesArrangementCategory)
         {
-            SalesArrangementCategories.ProductRequest => ProcessProductRequest(salesArrangement, isCancelled, cancellationToken),
-            SalesArrangementCategories.ServiceRequest => ProcessServiceRequest(salesArrangement, cancellationToken),
-            _ => throw new NotImplementedException()
-        };
+            case SalesArrangementCategories.ProductRequest:
+                await ProcessProductRequest(salesArrangement, isCancelled, cancellationToken);
+                break;
+
+            case SalesArrangementCategories.ServiceRequest:
+                await ProcessServiceRequest(salesArrangement, cancellationToken);
+                break;
+
+            case SalesArrangementCategories.Unknown:
+            default:
+                throw new NotImplementedException();
+        }
+    }
 
     private async Task ProcessProductRequest(SalesArrangement salesArrangement, bool isCancelled, CancellationToken cancellationToken)
     {
-        var dynamicValues = await _formsService.CreateProductDynamicFormValues(salesArrangement, cancellationToken).ToListAsync(cancellationToken);
+        var dynamicFormValues = await _formsService.CreateProductDynamicFormValues(salesArrangement, cancellationToken).ToArrayAsync(cancellationToken);
 
-        var finalDocumentsOnSa = await Task.WhenAll(dynamicValues.Select(value => _formsDocumentService.CreateFinalDocumentOnSa(salesArrangement.SalesArrangementId, value, cancellationToken)));
+        await _performerProvider.SetDynamicValuesPerformerUserId(salesArrangement.CaseId, dynamicFormValues, cancellationToken);
 
-        dynamicValues.First(v => v.DocumentTypeId == (int)DocumentTypes.ZADOSTHU).PerformerUserId = await _performerProvider.LoadPerformerUserId(salesArrangement.CaseId, cancellationToken);
+        var finalDocumentsOnSa = await _formsDocumentService.CreateFinalDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken, dynamicFormValues).ToListAsync(cancellationToken);
 
-        var easFormResponse = await _formsService.LoadProductForm(salesArrangement, dynamicValues, isCancelled, cancellationToken);
+        var easFormResponse = await _formsService.LoadProductForm(salesArrangement, dynamicFormValues, isCancelled, cancellationToken);
 
         await _formsDocumentService.SaveEasForms(easFormResponse, salesArrangement, finalDocumentsOnSa, cancellationToken);
     }
 
     private async Task ProcessServiceRequest(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        var dynamicValues = await _formsService.CreateServiceDynamicFormValues(salesArrangement, cancellationToken);
+        var dynamicFormValues = await _formsService.CreateServiceDynamicFormValues(salesArrangement, cancellationToken);
 
-        var finalDocumentOnSa = await _formsDocumentService.CreateFinalDocumentOnSa(salesArrangement.SalesArrangementId, dynamicValues, cancellationToken);
+        if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.Drawing)
+        {
+            var easFormResponse = await _formsService.LoadServiceForm(salesArrangement, dynamicFormValues, cancellationToken);
 
-        var easFormResponse = await _formsService.LoadServiceForm(salesArrangement, new[] { dynamicValues }, cancellationToken);
+            await _formsDocumentService.SaveEasForms(easFormResponse, salesArrangement, cancellationToken);
+        }
+        else
+        {
+            var finalDocumentOnSa = await _formsDocumentService.CreateFinalDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken, dynamicFormValues).ToArrayAsync(cancellationToken);
 
-        await _formsDocumentService.SaveEasForms(easFormResponse, salesArrangement, new[] { finalDocumentOnSa }, cancellationToken);
+            var easFormResponse = await _formsService.LoadServiceForm(salesArrangement, dynamicFormValues, cancellationToken);
+
+            await _formsDocumentService.SaveEasForms(easFormResponse, salesArrangement, finalDocumentOnSa, cancellationToken);
+        }
+    }
+
+    private void AuditLog(SalesArrangement salesArrangement)
+    {
+        var products = new List<AuditLoggerHeaderItem>
+        {
+            new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
+            new(AuditConstants.ProductNamesSalesArrangement, salesArrangement.SalesArrangementId)
+        };
+
+        _auditLogger.Log(AuditEventTypes.Noby005, message: "Žádost byla dokončena", products: products);
     }
 }

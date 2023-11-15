@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using CIS.Core;
+using System.Runtime.CompilerServices;
 using CIS.Core.Attributes;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
@@ -26,7 +26,6 @@ internal sealed class FormsDocumentService
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentArchiveRepository _documentArchiveRepository;
-    private readonly IDateTime _dateTime;
     private readonly IUserServiceClient _userService;
 
     public FormsDocumentService(IDocumentOnSAServiceClient documentOnSAService,
@@ -34,7 +33,6 @@ internal sealed class FormsDocumentService
                                 IDocumentGeneratorServiceClient documentGeneratorService,
                                 ICodebookServiceClient codebookService,
                                 IDocumentArchiveRepository documentArchiveRepository,
-                                IDateTime dateTime,
                                 IUserServiceClient userService)
     {
         _documentOnSAService = documentOnSAService;
@@ -42,8 +40,24 @@ internal sealed class FormsDocumentService
         _documentGeneratorService = documentGeneratorService;
         _codebookService = codebookService;
         _documentArchiveRepository = documentArchiveRepository;
-        _dateTime = dateTime;
         _userService = userService;
+    }
+
+    public async IAsyncEnumerable<CreateDocumentOnSAResponse> CreateFinalDocumentsOnSa(int salesArrangementId, [EnumeratorCancellation] CancellationToken cancellationToken, params DynamicFormValues[] dynamicValues)
+    {
+        foreach (var dynamicValue in dynamicValues)
+        {
+            var request = new CreateDocumentOnSARequest
+            {
+                SalesArrangementId = salesArrangementId,
+                DocumentTypeId = dynamicValue.DocumentTypeId,
+                FormId = await _documentOnSAService.GenerateFormId(new GenerateFormIdRequest { IsFormIdFinal = true }, cancellationToken),
+                EArchivId = await _documentArchiveService.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken),
+                IsFinal = true
+            };
+
+            yield return await _documentOnSAService.CreateDocumentOnSA(request, cancellationToken);
+        }
     }
 
     /// <summary>
@@ -60,41 +74,63 @@ internal sealed class FormsDocumentService
 
         var entities = await Task.WhenAll(
             formsWithDataSentenses
-                .Select(r => PrepareEntity(r.docOnSa, r.form, salesArrangement, easFormResponse.ContractNumber, user, cancellationToken)));
+                .Select(r => PrepareEntity(r.form, salesArrangement, r.docOnSa.DocumentOnSa.DocumentOnSAId!.Value, easFormResponse.ContractNumber, user, cancellationToken)));
 
         await _documentArchiveRepository.SaveDataSentenseWithForm(entities, cancellationToken);
     }
 
-    private async Task<DocumentInterface> PrepareEntity(CreateDocumentOnSAResponse docOnSa, Form form, SalesArrangement salesArrangement, string contractNumber, User user, CancellationToken cancellationToken)
+    public async Task SaveEasForms(GetEasFormResponse easFormResponse, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        var entity = new DocumentInterface();
-        entity.DocumentId = docOnSa.DocumentOnSa.EArchivId;
-        var generatedDocument = await GenerateDocument(salesArrangement, docOnSa, cancellationToken);
-        entity.DocumentData = generatedDocument.Data.ToArrayUnsafe();
-        entity.FileName = await GetFileName(docOnSa.DocumentOnSa, cancellationToken);
-        entity.FileNameSuffix = Path.GetExtension(entity.FileName)[1..];
-        entity.CaseId = salesArrangement.CaseId;
-        entity.AuthorUserLogin = GetAuthorUserLogin(user);
-        entity.ContractNumber = contractNumber;
-        entity.FormId = docOnSa.DocumentOnSa.FormId;
-        entity.CreatedOn = _dateTime.Now.Date;
-        entity.EaCodeMainId = form.DefaultValues.EaCodeMainId ?? 0;
-        entity.Kdv = 1; // true
-        entity.SendDocumentOnly = 0; //false
-        entity.DataSentence = new FormInstanceInterface
+        var user = await _userService.GetUser(salesArrangement.Created.UserId!.Value, cancellationToken);
+
+        var formsToSave = new List<DocumentInterface>(easFormResponse.Forms.Count);
+
+        foreach (var form in easFormResponse.Forms)
+        {
+            var documentOnSaResponse = await _documentOnSAService.GetDocumentOnSAByFormId(form.DynamicFormValues.FormId, cancellationToken);
+
+            var entity = await PrepareEntity(form, salesArrangement, documentOnSaResponse.DocumentOnSa.DocumentOnSAId!.Value, easFormResponse.ContractNumber, user, cancellationToken);
+
+            formsToSave.Add(entity);
+        }
+
+        await _documentArchiveRepository.SaveDataSentenseWithForm(formsToSave.ToArray(), cancellationToken);
+    }
+
+    private async Task<DocumentInterface> PrepareEntity(Form form, SalesArrangement salesArrangement, int documentOnSaId, string contractNumber, User user, CancellationToken cancellationToken)
+    {
+        var generatedDocument = await GenerateDocument(salesArrangement, documentOnSaId, form.DynamicFormValues, cancellationToken);
+
+        var entity = new DocumentInterface
         {
             DocumentId = form.DynamicFormValues.DocumentId,
-            FormType = form.DefaultValues.FormType,
-            FormKind = "N",
-            Cpm = user.UserInfo.Cpm ?? string.Empty,
-            Icp = user.UserInfo.Icp ?? string.Empty,
-            Status = 100,
-            CreatedAt = _dateTime.Now,
-            Storno = 0,
-            DataType = 1,
-            JsonDataClob = form.Json,
-            FormIdentifier = form.FormIdentifier
+            DocumentData = generatedDocument.Data.ToArrayUnsafe(),
+            FileName = await GetFileName(documentOnSaId, form.DynamicFormValues.DocumentTypeId, cancellationToken),
+            CaseId = salesArrangement.CaseId,
+            AuthorUserLogin = GetAuthorUserLogin(user),
+            ContractNumber = contractNumber,
+            FormId = form.DynamicFormValues.FormId,
+            CreatedOn = DateTime.Now.Date,
+            EaCodeMainId = form.DefaultValues.EaCodeMainId ?? 0,
+            Kdv = 1, // true
+            SendDocumentOnly = 0, //false
+            DataSentence = new FormInstanceInterface
+            {
+                DocumentId = form.DynamicFormValues.DocumentId,
+                FormType = form.DefaultValues.FormType,
+                FormKind = "N",
+                Cpm = user.UserInfo.Cpm ?? string.Empty,
+                Icp = user.UserInfo.Icp ?? string.Empty,
+                Status = 100,
+                CreatedAt = DateTime.Now,
+                Storno = 0,
+                DataType = 1,
+                JsonDataClob = form.Json,
+                FormIdentifier = form.FormIdentifier
+            }
         };
+
+        entity.FileNameSuffix = Path.GetExtension(entity.FileName)[1..];
 
         return entity;
     }
@@ -103,45 +139,18 @@ internal sealed class FormsDocumentService
     {
         if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
             return user.UserInfo.Icp;
-        else if (!string.IsNullOrWhiteSpace(user.UserInfo.Cpm))
+
+        if (!string.IsNullOrWhiteSpace(user.UserInfo.Cpm))
             return user.UserInfo.Cpm;
-        else
-            return user.UserId.ToString(CultureInfo.InvariantCulture);
+
+        return user.UserId.ToString(CultureInfo.InvariantCulture);
     }
 
-    public async Task<CreateDocumentOnSAResponse> CreateFinalDocumentOnSa(int salesArrangementId, DynamicFormValues dynamicValue, CancellationToken cancellationToken)
+    private async Task<Document> GenerateDocument(SalesArrangement salesArrangement, int documentOnSaId, DynamicFormValues dynamicFormValues, CancellationToken cancellationToken)
     {
-        var request = new CreateDocumentOnSARequest
-        {
-            SalesArrangementId = salesArrangementId,
-            DocumentTypeId = dynamicValue.DocumentTypeId,
-            FormId = await _documentOnSAService.GenerateFormId(new GenerateFormIdRequest { IsFormIdFinal = true }, cancellationToken),
-            EArchivId = await _documentArchiveService.GenerateDocumentId(new GenerateDocumentIdRequest(), cancellationToken),
-            IsFinal = true
-        };
+        var documentOnSaData = await _documentOnSAService.GetDocumentOnSAData(documentOnSaId, cancellationToken);
 
-        return await _documentOnSAService.CreateDocumentOnSA(request, cancellationToken);
-    }
-
-    public async Task<Document> GenerateDocument(SalesArrangement salesArrangement, CreateDocumentOnSAResponse documentOnSaResponse, CancellationToken cancellationToken)
-    {
-        var documentOnSaData = await _documentOnSAService.GetDocumentOnSAData(documentOnSaResponse.DocumentOnSa.DocumentOnSAId!.Value, cancellationToken);
-
-        var generateDocumentRequest = CreateDocumentRequest(documentOnSaResponse.DocumentOnSa, documentOnSaData, salesArrangement);
-
-        return await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
-    }
-
-    private async Task<string> GetFileName(DocumentOnSAToSign documentOnSa, CancellationToken cancellationToken)
-    {
-        var templates = await _codebookService.DocumentTypes(cancellationToken);
-        var fileName = templates.First(t => t.Id == (int)documentOnSa.DocumentTypeId!).FileName;
-        return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
-    }
-
-    private static GenerateDocumentRequest CreateDocumentRequest(DocumentOnSAToSign documentOnSa, GetDocumentOnSADataResponse documentOnSaData, SalesArrangement salesArrangement)
-    {
-        return new GenerateDocumentRequest
+        var generateDocumentRequest = new GenerateDocumentRequest
         {
             DocumentTypeId = documentOnSaData.DocumentTypeId!.Value,
             DocumentTemplateVersionId = documentOnSaData.DocumentTemplateVersionId!.Value,
@@ -149,8 +158,18 @@ internal sealed class FormsDocumentService
             ForPreview = false,
             OutputType = OutputFileType.Pdfa,
             Parts = { CreateDocPart(documentOnSaData) },
-            DocumentFooter = CreateFooter(salesArrangement, documentOnSa)
+            DocumentFooter = CreateFooter(salesArrangement, dynamicFormValues)
         };
+
+        return await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
+    }
+
+    private async Task<string> GetFileName(int documentOnSaId, int documentTypeId, CancellationToken cancellationToken)
+    {
+        var templates = await _codebookService.DocumentTypes(cancellationToken);
+        var fileName = templates.First(t => t.Id == documentTypeId).FileName;
+
+        return $"{fileName}_{documentOnSaId}_{DateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
     }
 
     private static GenerateDocumentPart CreateDocPart(GetDocumentOnSADataResponse documentOnSaData)
@@ -167,14 +186,14 @@ internal sealed class FormsDocumentService
         return docPart;
     }
 
-    private static DocumentFooter CreateFooter(SalesArrangement salesArrangement, DocumentOnSAToSign documentOnSA)
+    private static DocumentFooter CreateFooter(SalesArrangement salesArrangement, DynamicFormValues dynamicFormValues)
     {
         return new DocumentFooter
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
             CaseId = salesArrangement.CaseId,
-            DocumentId = documentOnSA.EArchivId,
-            BarcodeText = documentOnSA.FormId
+            DocumentId = dynamicFormValues.DocumentId,
+            BarcodeText = dynamicFormValues.FormId
         };
     }
 }

@@ -121,7 +121,7 @@ internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangement
         if (validation())
             return;
 
-        throw new CisValidationException(18087, $"Customer validation failed. Validation rule: {validationRule}");
+        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CustomerValidationFailed, validation);
     }
 
     private static IEnumerable<Identity> GetCustomerIdentities(IEnumerable<CustomerOnSA> customersOnSa) =>

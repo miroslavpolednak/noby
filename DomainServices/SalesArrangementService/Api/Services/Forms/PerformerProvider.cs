@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Attributes;
+using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
@@ -20,7 +21,14 @@ internal class PerformerProvider
         _codebookService = codebookService;
     }
 
-    public async Task<int?> LoadPerformerUserId(long caseId, CancellationToken cancellationToken)
+    public async Task SetDynamicValuesPerformerUserId(long caseId, IEnumerable<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
+    {
+        var loanDynamicValue = dynamicFormValues.First(d => d.DocumentTypeId == (int)DocumentTypes.ZADOSTHU);
+
+        loanDynamicValue.PerformerUserId = await LoadPerformerUserId(caseId, cancellationToken);
+    }
+
+    private async Task<int?> LoadPerformerUserId(long caseId, CancellationToken cancellationToken)
     {
         var newestTask = await LoadNewestTask(caseId, cancellationToken);
 

@@ -43,6 +43,8 @@ internal sealed class ErrorCodeMapper
     public const int RepaymentAccountCantChange = 18081;
     public const int NotAllCustomersOnSaAreIdentified = 18085;
     public const int ApplicantIsNotSet = 18086;
+    public const int CustomerValidationFailed = 18087;
+    public const int CannotBeSent = 18088;
     
     public static IErrorCodesDictionary Init()
     {
@@ -84,6 +86,8 @@ internal sealed class ErrorCodeMapper
             { RepaymentAccountCantChange, "Repayment account cannot be changed with IsAccountNumberMissing set to false" },
             { NotAllCustomersOnSaAreIdentified, "Some of the CustomersOnSa are not identified." },
             { ApplicantIsNotSet, "The Applicant is not set." },
+            { CustomerValidationFailed, "Customer validation failed. Validation rule: {PropertyValue}" },
+            { CannotBeSent, "SalesArrangement cannot be sent in this state {PropertyValue}" }
         });
 
         return Messages;

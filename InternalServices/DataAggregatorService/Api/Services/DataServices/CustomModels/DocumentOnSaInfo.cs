@@ -14,6 +14,8 @@ internal class DocumentOnSaInfo
 
     public DocumentOnSAToSign? FinalDocument { get; private set; }
 
+    public DocumentOnSAToSign? LastSignedDocument { get; private set; }
+
     public int SignatureMethodId { get; private set; }
 
     public DateTime? FirstSignatureDate { get; private set; }
@@ -25,6 +27,7 @@ internal class DocumentOnSaInfo
         var documentsOnSa = GetDocumentsOnSa(documentTypeId).ToList();
 
         FinalDocument = documentsOnSa.FirstOrDefault(d => d.IsFinal);
+        LastSignedDocument = documentsOnSa.OrderByDescending(d => d.SignatureDateTime).FirstOrDefault(d => d.IsSigned && d.IsValid);
         SignatureMethodId = GetSignatureTypeId(documentsOnSa);
         FirstSignatureDate = GetFirstSignatureDate(documentsOnSa);
         FormIdList = GetFormIdList(documentsOnSa);

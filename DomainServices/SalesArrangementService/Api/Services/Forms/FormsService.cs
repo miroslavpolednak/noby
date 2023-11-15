@@ -33,6 +33,17 @@ internal sealed class FormsService
         return _mediator.Send(new GetSalesArrangementRequest { SalesArrangementId = salesArrangementId }, cancellationToken);
     }
 
+    public Task UpdateSalesArrangementState(int salesArrangementId, SalesArrangementStates state, CancellationToken cancellationToken)
+    {
+        var request = new UpdateSalesArrangementStateRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            State = (int)state
+        };
+
+        return _mediator.Send(request, cancellationToken);
+    }
+
     public async Task<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> LoadSalesArrangementType(int salesArrangementTypeId, CancellationToken cancellationToken)
     {
         var types = await _codebookService.SalesArrangementTypes(cancellationToken);
@@ -65,7 +76,7 @@ internal sealed class FormsService
         };
     }
 
-    public Task<GetEasFormResponse> LoadServiceForm(SalesArrangement salesArrangement, IEnumerable<DynamicFormValues> dynamicFormValues, CancellationToken cancellationToken)
+    public Task<GetEasFormResponse> LoadServiceForm(SalesArrangement salesArrangement, DynamicFormValues dynamicFormValues, CancellationToken cancellationToken)
     {
         return _dataAggregatorService.GetEasForm(new GetEasFormRequest
         {

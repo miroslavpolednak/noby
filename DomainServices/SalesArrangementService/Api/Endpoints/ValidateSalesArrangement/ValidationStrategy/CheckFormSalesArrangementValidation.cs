@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Attributes;
-using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 
@@ -65,7 +64,7 @@ internal class CheckFormSalesArrangementValidation : ISalesArrangementValidation
     {
         var dynamicFormValues = await _formsService.CreateServiceDynamicFormValues(salesArrangement, cancellationToken);
 
-        return await _formsService.LoadServiceForm(salesArrangement, new[] { dynamicFormValues }, cancellationToken);
+        return await _formsService.LoadServiceForm(salesArrangement, dynamicFormValues, cancellationToken);
     }
 
     private async Task<List<ValidationMessage>> SendAndValidateForm(Eas.EasWrapper.CheckFormData checkFormData, CancellationToken cancellationToken)
