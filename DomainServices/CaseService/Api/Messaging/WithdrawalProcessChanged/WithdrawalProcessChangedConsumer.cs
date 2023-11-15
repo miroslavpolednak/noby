@@ -26,12 +26,12 @@ internal sealed class WithdrawalProcessChangedConsumer
         
         if (!int.TryParse(context.Message.currentTask.id, out var currentTaskId))
         {
-            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
+            _logger.KafkaMessageCaseIdIncorrectFormat(nameof(WithdrawalProcessChangedConsumer), context.Message.@case.caseId.id);
         }
         
         if (!long.TryParse(context.Message.@case.caseId.id, out var caseId))
         {
-            _logger.KafkaMessageCaseIdIncorrectFormat(context.Message.@case.caseId.id);
+            _logger.KafkaMessageCaseIdIncorrectFormat(nameof(WithdrawalProcessChangedConsumer), context.Message.@case.caseId.id);
         }
         
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId }, token);

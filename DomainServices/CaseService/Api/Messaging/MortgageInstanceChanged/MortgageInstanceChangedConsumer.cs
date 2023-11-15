@@ -7,23 +7,36 @@ internal sealed class MortgageInstanceChangedConsumer
 {
     public async Task Consume(ConsumeContext<cz.kb.api.mortgageservicingevents.v1.MortgageInstanceChanged> context)
     {
-        var message = context.Message;
-        var cancellationToken = context.CancellationToken;
-        //message.New.ApplicationSalesArrangement.salesArrangementId.id
+        _logger.KafkaConsumerStarted(nameof(MortgageInstanceChangedConsumer));
 
-        var instance = await _dbContext.Cases.FirstOrDefaultAsync(t => t.CaseId == 1, cancellationToken);
-        if (instance is not null)
+        if (long.TryParse(context.Message.New.Starbuild.id, out long caseId))
         {
-            instance.TargetAmount = (decimal)message.New.loanAmount.limit;
+            var instance = await _dbContext.Cases.FirstOrDefaultAsync(t => t.CaseId == caseId, context.CancellationToken);
+            if (instance is not null)
+            {
+                instance.TargetAmount = (decimal)context.Message.New.loanAmount.limit;
 
-            await _dbContext.SaveChangesAsync(cancellationToken);
+                await _dbContext.SaveChangesAsync(context.CancellationToken);
+
+                _logger.KafkaMortgageChangedFinished(instance.TargetAmount);
+            }
+            else
+            {
+                _logger.KafkaCaseIdNotFound(nameof(MortgageInstanceChangedConsumer), caseId);
+            }
+        }
+        else
+        {
+            _logger.KafkaMessageCaseIdIncorrectFormat(nameof(MortgageInstanceChangedConsumer), context.Message.New.Starbuild.id);
         }
     }
 
+    private readonly ILogger<MortgageInstanceChangedConsumer> _logger;
     private readonly Database.CaseServiceDbContext _dbContext;
 
-    public MortgageInstanceChangedConsumer(Database.CaseServiceDbContext dbContext)
+    public MortgageInstanceChangedConsumer(Database.CaseServiceDbContext dbContext, ILogger<MortgageInstanceChangedConsumer> logger)
     {
         _dbContext = dbContext;
+        _logger = logger;
     }
 }

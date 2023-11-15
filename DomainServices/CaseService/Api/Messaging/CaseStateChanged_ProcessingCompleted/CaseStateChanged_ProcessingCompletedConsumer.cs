@@ -33,7 +33,7 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
 
         if (entity is null)
         {
-            _logger.KafkaCaseIdNotFound(cache.CaseId);
+            _logger.KafkaCaseIdNotFound(nameof(CaseStateChanged_ProcessingCompletedConsumer), cache.CaseId);
             return;
         }
 
