@@ -9,16 +9,27 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, int, long, Exception> _queueRequestIdSaved;
     private static readonly Action<ILogger, long, int, Exception> _starbuildStateUpdateFailed;
     private static readonly Action<ILogger, long, int, Exception> _starbuildStateUpdateSuccess;
-    private static readonly Action<ILogger, string, Exception> _kafkaMessageCaseIdIncorrectFormat;
-    private static readonly Action<ILogger, string, Exception> _kafkaMessageCurrentTaskIdIncorrectFormat;
-    private static readonly Action<ILogger, string, Exception> _kafkaMessageTaskIdSbIncorrectFormat;
-    private static readonly Action<ILogger, long, Exception> _kafkaCaseIdNotFound;
+    private static readonly Action<ILogger, string, string, Exception> _kafkaMessageCaseIdIncorrectFormat;
+    private static readonly Action<ILogger, string, string, Exception> _kafkaMessageCurrentTaskIdIncorrectFormat;
+    private static readonly Action<ILogger, string, long, Exception> _kafkaCaseIdNotFound;
     private static readonly Action<ILogger, long, Exception> _requestNotFoundInCache;
     private static readonly Action<ILogger, long, int, Exception> _updateActiveTaskStart;
     private static readonly Action<ILogger, bool, bool, Exception> _beforeUpdateActiveTasks;
+    private static readonly Action<ILogger, string, Exception> _kafkaConsumerStarted;
+    private static readonly Action<ILogger, decimal, Exception> _kafkaMortgageChangedFinished;
 
     static LoggerExtensions()
     {
+        _kafkaMortgageChangedFinished = LoggerMessage.Define<decimal>(
+            LogLevel.Debug,
+            new EventId(LoggerEventIdCodes.KafkaConsumerStarted, nameof(KafkaMortgageChangedFinished)),
+            "Kafka message processing in MortgageInstanceChangedConsumer: TargetAmount set to {Amount}");
+
+        _kafkaConsumerStarted = LoggerMessage.Define<string>(
+            LogLevel.Debug,
+            new EventId(LoggerEventIdCodes.KafkaConsumerStarted, nameof(KafkaConsumerStarted)),
+            "Kafka message processing in {Consumer}: Started");
+
         _newCaseIdCreated = LoggerMessage.Define<long>(
             LogLevel.Debug,
             new EventId(LoggerEventIdCodes.NewCaseIdCreated, nameof(NewCaseIdCreated)),
@@ -54,25 +65,20 @@ internal static class LoggerExtensions
             new EventId(LoggerEventIdCodes.StarbuildStateUpdateSuccess, nameof(StarbuildStateUpdateSuccess)),
             "Case state changed in Starbuild for {CaseId} by requestId {StateId}");
 
-        _kafkaMessageCaseIdIncorrectFormat = LoggerMessage.Define<string>(
+        _kafkaMessageCaseIdIncorrectFormat = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.KafkaMessageCaseIdIncorrectFormat, nameof(KafkaMessageCaseIdIncorrectFormat)),
-            "Message CaseId {CaseId} is not in valid format");
+            "Kafka message processing in {Consumer}: CaseId {CaseId} is not in valid format");
 
-        _kafkaMessageCurrentTaskIdIncorrectFormat = LoggerMessage.Define<string>(
+        _kafkaMessageCurrentTaskIdIncorrectFormat = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.KafkaMessageCurrentTaskIdIncorrectFormat, nameof(KafkaMessageCurrentTaskIdIncorrectFormat)),
-            "Message CurrentTaskId {CurrentTaskId} is not in valid format");
+            "Kafka message processing in {Consumer}: CurrentTaskId {CurrentTaskId} is not in valid format");
         
-        _kafkaMessageTaskIdSbIncorrectFormat = LoggerMessage.Define<string>(
-            LogLevel.Error,
-            new EventId(LoggerEventIdCodes.KafkaMessageTaskIdSbIncorrectFormat, nameof(KafkaMessageTaskIdSbIncorrectFormat)),
-            "Message TaskIdSb {TaskIdSb} is not in valid format");
-        
-        _kafkaCaseIdNotFound = LoggerMessage.Define<long>(
+        _kafkaCaseIdNotFound = LoggerMessage.Define<string, long>(
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.KafkaCaseIdNotFound, nameof(KafkaCaseIdNotFound)),
-            "Kafka message processing: Case {CaseId} not found");
+            "Kafka message processing in {Consumer}: Case {CaseId} not found");
 
         _requestNotFoundInCache = LoggerMessage.Define<long>(
             LogLevel.Error,
@@ -89,6 +95,12 @@ internal static class LoggerExtensions
             new EventId(LoggerEventIdCodes.BeforeUpdateActiveTasks, nameof(BeforeUpdateActiveTasks)),
             "UpdateActiveTask for isActive = {IsActive} and activeTaskFound = {ActiveTaskFound}");
     }
+
+    public static void KafkaMortgageChangedFinished(this ILogger logger, decimal amount)
+        => _kafkaMortgageChangedFinished(logger, amount, null!);
+
+    public static void KafkaConsumerStarted(this ILogger logger, string consumerTypeName)
+        => _kafkaConsumerStarted(logger, consumerTypeName, null!);
 
     public static void NewCaseIdCreated(this ILogger logger, long caseId)
         => _newCaseIdCreated(logger, caseId, null!);
@@ -111,17 +123,14 @@ internal static class LoggerExtensions
     public static void StarbuildStateUpdateSuccess(this ILogger logger, long caseId, int requestId)
         => _starbuildStateUpdateSuccess(logger, caseId, requestId, null!);
 
-    public static void KafkaMessageCaseIdIncorrectFormat(this ILogger logger, string caseId)
-        => _kafkaMessageCaseIdIncorrectFormat(logger, caseId, null!);
+    public static void KafkaMessageCaseIdIncorrectFormat(this ILogger logger, string consumerTypeName, string caseId)
+        => _kafkaMessageCaseIdIncorrectFormat(logger, consumerTypeName, caseId, null!);
 
-    public static void KafkaMessageCurrentTaskIdIncorrectFormat(this ILogger logger, string currentTaskId)
-        => _kafkaMessageCurrentTaskIdIncorrectFormat(logger, currentTaskId, null!);
+    public static void KafkaMessageCurrentTaskIdIncorrectFormat(this ILogger logger, string consumerTypeName, string currentTaskId)
+        => _kafkaMessageCurrentTaskIdIncorrectFormat(logger, consumerTypeName, currentTaskId, null!);
     
-    public static void KafkaMessageTaskIdSbIncorrectFormat(this ILogger logger, string caseId)
-        => _kafkaMessageTaskIdSbIncorrectFormat(logger, caseId, null!);
-    
-    public static void KafkaCaseIdNotFound(this ILogger logger, long caseId)
-        => _kafkaCaseIdNotFound(logger, caseId, null!);
+    public static void KafkaCaseIdNotFound(this ILogger logger, string consumerTypeName, long caseId)
+        => _kafkaCaseIdNotFound(logger, consumerTypeName, caseId, null!);
 
     public static void RequestNotFoundInCache(this ILogger logger, long caseId)
         => _requestNotFoundInCache(logger, caseId, null!);

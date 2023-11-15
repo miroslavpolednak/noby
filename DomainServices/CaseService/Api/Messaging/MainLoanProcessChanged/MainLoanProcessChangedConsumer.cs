@@ -13,7 +13,7 @@ internal sealed class MainLoanProcessChangedConsumer
         
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
-            _logger.KafkaMessageCaseIdIncorrectFormat(message.@case.caseId.id);
+            _logger.KafkaMessageCaseIdIncorrectFormat(nameof(MainLoanProcessChangedConsumer), message.@case.caseId.id);
         }
 
         var caseState = message.processData.@private.mainLoanProcessData.processPhase.code;

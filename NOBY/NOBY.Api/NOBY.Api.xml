@@ -1569,6 +1569,11 @@
             Stupeň vzdělání
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Customer.Shared.NaturalPerson.ProfessionCategoryId">
+            <summary>
+            Kategorie profese, validováno oproti číselníku ProfessionCategory (se zohledněním validních hodnot - IsValid a IsValidNoby)
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipIds(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Seznam ISKN id listů vlastnictví pro daný adresní bod
