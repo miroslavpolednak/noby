@@ -50,6 +50,7 @@ SharedComponents.GrpcServiceBuilder
             .AddConsumer<DomainServices.CaseService.Api.Messaging.WithdrawalProcessChanged.WithdrawalProcessChangedConsumer>()
             .AddConsumerTopicAvro<ISbWorkflowProcessEvent>(appConfiguration.SbWorkflowProcessTopic!)
             .AddConsumerTopicAvro<ISbWorkflowInputProcessingEvent>(appConfiguration.SbWorkflowInputProcessingTopic!)
+            .AddConsumerTopicAvro<IMortgageServicingMortgageChangesTopic>(appConfiguration.MortgageServicingMortgageChangesTopic!)
             .Build();
     })
     .MapGrpcServices(app =>

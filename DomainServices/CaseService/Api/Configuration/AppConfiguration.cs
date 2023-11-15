@@ -6,6 +6,8 @@ internal sealed class AppConfiguration
 
     public string? SbWorkflowInputProcessingTopic { get; set; }
 
+    public string? MortgageServicingMortgageChangesTopic { get; set; }
+
     public void Validate()
     {
         if (string.IsNullOrEmpty(SbWorkflowProcessTopic))
@@ -15,6 +17,10 @@ internal sealed class AppConfiguration
         if (string.IsNullOrEmpty(SbWorkflowInputProcessingTopic))
         {
             throw new CisConfigurationException(0, $"{nameof(SbWorkflowInputProcessingTopic)} Kafka topic is empty");
+        }
+        if (string.IsNullOrEmpty(MortgageServicingMortgageChangesTopic))
+        {
+            throw new CisConfigurationException(0, $"{nameof(MortgageServicingMortgageChangesTopic)} Kafka topic is empty");
         }
     }
 }
