@@ -24,9 +24,9 @@ internal sealed class UpdateCustomerService
             LastName = cmCustomer.NaturalPerson.LastName,
             DateOfBirth = cmCustomer.NaturalPerson.DateOfBirth,
             // firmu neresime?
-            ClientType = (cmCustomer.NaturalPerson.CitizenshipCountriesId?.Any(t => t == defaultCountry) ?? false) && !string.IsNullOrEmpty(cmCustomer.NaturalPerson.BirthNumber)
-                ? ExternalServices.Eas.Dto.ClientDataModel.ClientTypes.FO 
-                : ExternalServices.Eas.Dto.ClientDataModel.ClientTypes.Foreigner
+            ClientType = string.IsNullOrWhiteSpace(cmCustomer.NaturalPerson.BirthNumber)
+                ? ExternalServices.Eas.Dto.ClientDataModel.ClientTypes.Foreigner
+                : ExternalServices.Eas.Dto.ClientDataModel.ClientTypes.FO
         };
 
         int? id = (await _easClient.CreateNewOrGetExisingClient(model, cancellationToken)).Id;
