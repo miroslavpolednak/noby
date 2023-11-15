@@ -10,7 +10,7 @@ internal sealed class UpdateCustomerDetailWithChangesRequestValidator
     {
         RuleFor(t => t.NaturalPerson!.ProfessionCategoryId)
             .NotNull()
-            .MustAsync(async (categoryId, cancellationToken) => (await codebookService.ProfessionCategories(cancellationToken)).Any(t => t.Id == categoryId))
+            .MustAsync(async (categoryId, cancellationToken) => (await codebookService.ProfessionCategories(cancellationToken)).Any(t => t.IsValid && t.IsValidNoby && t.Id == categoryId))
             .When(t => t.NaturalPerson is not null);
     }
 }

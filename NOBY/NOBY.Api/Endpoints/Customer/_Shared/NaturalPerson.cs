@@ -8,6 +8,9 @@ public sealed class NaturalPerson
     /// </summary>
     public int? EducationLevelId { get; set; }
 
+    /// <summary>
+    /// Kategorie profese, validováno oproti číselníku ProfessionCategory (se zohledněním validních hodnot - IsValid a IsValidNoby)
+    /// </summary>
     public int ProfessionCategoryId { get; set; }
 
     public int? ProfessionId { get; set; }
