@@ -10,7 +10,10 @@ public enum ApiErrorItemServerity
     [Display(Name = "Chyba")]
     Error = 1,
 
-    [Display(Name = "Varovani")]
-    Warning = 2
+    [Display(Name = "Varování")]
+    Warning = 2,
+
+    [Display(Name = "Informace")]
+    Info = 3
 }
 

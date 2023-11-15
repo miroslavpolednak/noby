@@ -14,7 +14,7 @@ public sealed class ErrorCodeMapper
             { 90003, new("Dokument nelze manuálně podepsat.") },
             { 90005, new("Chyba - tento subjekt nejde zvolit", "V rámci žádosti musí být subjekt vždy unikátní a není možné jej přiřadit vícekrát. Zvolte prosím jiný subjekt.") },
             { 90006, new("Chyba - bylo nalezeno více klientů dle zadaných kritérií.", "V žádosti není možné pokračovat, před jejich úpravou v KB. Požádejte prosím Klienta, aby se obrátil na pobočku KB, kde bude provedena jednoznačná identifikace.") },
-            { 90007, new("Subjekt se nepodařilo ztotožnit v Základních registrech, nebo dalších návazných systémech.", "Zadaným kritériím neodpovídá žádný záznam, ale můžete změnit zadané údaje, nebo pokračovat v zadávání subjektu na detailní obrazovce.", ApiErrorItemServerity.Warning) },
+            { 90007, new("Subjekt se nepodařilo ztotožnit v Základních registrech, nebo dalších návazných systémech.", "Zadaným kritériím neodpovídá žádný záznam, ale můžete změnit zadané údaje, nebo pokračovat v zadávání subjektu na detailní obrazovce.", ApiErrorItemServerity.Info) },
             { 90008, new("Chyba - služba na ztotožnění subjektu v Základních registrech není dostupná.", "V žádosti je ovšem možné pokračovat v zadávání subjektu na detailní obrazovce.") },
             { 90009, new("Checkform odhalil chyby.") },
             { 90010, new("Chyba synchronizace dat.", "Klientská data na obchodním případu se zobrazí až po zpracování žádosti ve StarBuildu.", ApiErrorItemServerity.Warning) },
