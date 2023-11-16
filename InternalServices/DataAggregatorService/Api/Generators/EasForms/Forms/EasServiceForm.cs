@@ -16,10 +16,18 @@ internal class EasServiceForm<TFormData> : EasForm<TFormData> where TFormData : 
     {
         var dynamicValues = dynamicFormValues.First();
 
-        dynamicValues.FormId = _formData.Custom.DocumentOnSa.FinalDocument?.FormId;
-        dynamicValues.DocumentId = _formData.Custom.DocumentOnSa.FinalDocument?.EArchivId;
-
         var easFormType = EasFormTypeFactory.GetEasFormType(dynamicValues.DocumentTypeId);
+
+        if (easFormType == EasFormType.F3700)
+        {
+            dynamicValues.FormId = _formData.Custom.DocumentOnSa.LastSignedDocument?.FormId;
+            dynamicValues.DocumentId = _formData.Custom.DocumentOnSa.LastSignedDocument?.EArchivId;
+        }
+        else
+        {
+            dynamicValues.FormId = _formData.Custom.DocumentOnSa.FinalDocument?.FormId;
+            dynamicValues.DocumentId = _formData.Custom.DocumentOnSa.FinalDocument?.EArchivId;
+        }
 
         yield return new Form
         {
