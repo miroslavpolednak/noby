@@ -91,6 +91,11 @@ public sealed class GenericServerExceptionInterceptor
             _logger.ServerUncoughtRpcException(e);
             throw new RpcException(new Status(StatusCode.Internal, e.Message, e), e.Message);
         }
+        catch (Exception e) {
+            setHttpStatus(StatusCodes.Status500InternalServerError);
+            _logger.ServerUncoughtRpcException(e);
+            throw new RpcException(new Status(StatusCode.Internal, e.Message, e), e.Message);
+        }
 
         void setHttpStatus(int code)
         {
