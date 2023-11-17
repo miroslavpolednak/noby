@@ -114,11 +114,10 @@
             Extension metody do startupu aplikace pro registraci tracingu.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.Telemetry.TracingExtensions.AddCisTracing(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String)">
+        <member name="M:CIS.Infrastructure.Telemetry.TracingExtensions.AddCisTracing(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
             Register Open Tracing instrumentation
             </summary>
-            <param name="serviceName">Nazev sluzby, ktery se zobrazi v exporteru. Pokud neni zadano, hleda se v ICisEnvironmentConfiguration[DefaultApplicationKey]</param>
         </member>
     </members>
 </doc>

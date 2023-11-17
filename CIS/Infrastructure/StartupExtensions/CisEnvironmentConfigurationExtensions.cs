@@ -4,11 +4,11 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CIS.Infrastructure.StartupExtensions;
 
-public static class CisEnvironmentConfiguration
+public static class CisEnvironmentConfigurationExtensions
 {
     public static ICisEnvironmentConfiguration AddCisEnvironmentConfiguration(this WebApplicationBuilder builder)
     {
-        Configuration.CisEnvironmentConfiguration cisConfiguration = new();
+        CisEnvironmentConfiguration cisConfiguration = new();
         builder.Configuration.GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName).Bind(cisConfiguration);
 
         CheckAndRegisterConfiguration(builder, cisConfiguration);
@@ -21,7 +21,7 @@ public static class CisEnvironmentConfiguration
 
     public static ICisEnvironmentConfiguration AddCisEnvironmentConfiguration(this WebApplicationBuilder builder, Action<ICisEnvironmentConfiguration> options)
     {
-        var cisConfiguration = new Configuration.CisEnvironmentConfiguration();
+        var cisConfiguration = new CisEnvironmentConfiguration();
         builder.Configuration.GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName).Bind(cisConfiguration);
 
         options.Invoke(cisConfiguration);

@@ -43,7 +43,7 @@ internal sealed class StartupLogger
 
         // dotahnout konfiguraci
         var configuration = builder.Configuration
-            .GetSection(LoggingExtensions._configurationTelemetryKey + ":Logging:Application")
+            .GetSection(LoggingExtensions._configurationTelemetryKey + ":Application")
             .Get<LogConfiguration>()!;
         // env name
         var envName = builder.Configuration.GetValue<string>(Core.CisGlobalConstants.EnvironmentConfigurationSectionName + ":EnvironmentName") ?? "";

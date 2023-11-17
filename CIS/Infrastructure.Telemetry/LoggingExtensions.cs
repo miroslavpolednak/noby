@@ -31,9 +31,9 @@ public static class LoggingExtensions
         // get configuration from json file
         var configuration = builder.Configuration
             .GetSection(_configurationTelemetryKey)
-            .Get<CisTelemetryConfiguration>()
+            .Get<LoggingConfiguration>()
             ?? throw new CIS.Core.Exceptions.CisConfigurationNotFound(_configurationTelemetryKey);
-        builder.Services.AddSingleton<CisTelemetryConfiguration>(configuration);
+        builder.Services.AddSingleton(configuration);
 
         // pridani custom enricheru
         builder.Services.AddTransient<Enrichers.CisHeadersEnricher>();
@@ -43,15 +43,15 @@ public static class LoggingExtensions
 
         // pridani request behaviour mediatru - loguje request a response objekty
         // logovat pouze u gRPC sluzeb
-        if (configuration?.Logging?.LogType != LogBehaviourTypes.WebApi)
+        if (configuration?.LogType != LogBehaviourTypes.WebApi)
         {
             // logger
             builder.Services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(CisMediatR.PayloadLoggerBehavior<,>));
             // logger configuration
             builder.Services.AddSingleton(new CisMediatR.PayloadLogger.PayloadLoggerBehaviorConfiguration
             {
-                LogRequestPayload = configuration!.Logging?.Application?.LogRequestPayload ?? false,
-                LogResponsePayload = configuration.Logging?.Application?.LogResponsePayload ?? false
+                LogRequestPayload = configuration!.Application?.LogRequestPayload ?? false,
+                LogResponsePayload = configuration.Application?.LogResponsePayload ?? false
             });
         }
 
@@ -76,19 +76,19 @@ public static class LoggingExtensions
     {
         builder.UseSerilog((hostingContext, serviceProvider, loggerConfiguration) =>
         {
-            var configuration = serviceProvider.GetRequiredService<CisTelemetryConfiguration>();
+            var configuration = serviceProvider.GetRequiredService<LoggingConfiguration>();
 
-            if (configuration.Logging is not null)
+            if (configuration is not null)
             {
-                var bootstrapper = new LoggerBootstraper(hostingContext, serviceProvider, configuration.Logging);
+                var bootstrapper = new LoggerBootstraper(hostingContext, serviceProvider, configuration);
 
                 bootstrapper.SetupFilters(loggerConfiguration);
 
                 // general log setup
-                if (configuration?.Logging?.Application is not null)
+                if (configuration?.Application is not null)
                 {
-                    bootstrapper.EnrichLogger(loggerConfiguration, configuration.Logging.Application);
-                    bootstrapper.AddOutputs(loggerConfiguration, configuration.Logging.Application);
+                    bootstrapper.EnrichLogger(loggerConfiguration, configuration.Application);
+                    bootstrapper.AddOutputs(loggerConfiguration, configuration.Application);
                 }
             }
         });
@@ -96,5 +96,5 @@ public static class LoggingExtensions
         return builder;
     }
 
-    internal const string _configurationTelemetryKey = "CisTelemetry";
+    internal const string _configurationTelemetryKey = "CisTelemetry:Logging";
 }

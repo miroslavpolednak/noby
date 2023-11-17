@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 Console.WriteLine("run!");
 
 var serviceProvider = new ServiceCollection()
-    .AddSingleton<ICisEnvironmentConfiguration>(new CisEnvironmentConfiguration
+    .AddSingleton<ICisEnvironmentConfiguration>(new CIS.Core.Configuration.CisEnvironmentConfiguration
     {
         EnvironmentName = "uat",
         DefaultApplicationKey = "console",

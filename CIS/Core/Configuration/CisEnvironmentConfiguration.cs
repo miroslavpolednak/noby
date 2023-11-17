@@ -1,7 +1,7 @@
-﻿namespace CIS.Infrastructure.Configuration;
+﻿namespace CIS.Core.Configuration;
 
 public sealed class CisEnvironmentConfiguration
-    : Core.Configuration.ICisEnvironmentConfiguration
+    : ICisEnvironmentConfiguration
 {
     public string? DefaultApplicationKey { get; set; }
 
