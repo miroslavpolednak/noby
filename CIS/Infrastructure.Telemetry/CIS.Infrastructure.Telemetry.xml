@@ -74,6 +74,11 @@
             Pokud je nastaveno, omezuje logování pouze na zadané RequestUrl
             </summary>
         </member>
+        <member name="P:CIS.Infrastructure.Telemetry.Configuration.TracingConfiguration.UseConsole">
+            <summary>
+            Logovat output do console
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.Telemetry.Enrichers.CisHeadersEnricher">
             <summary>
             Doda do kontextu log item ID a Login uzivatele

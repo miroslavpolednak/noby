@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -23,60 +24,66 @@ public static class TracingExtensions
             .GetSection(_configurationTelemetryKey)
             .Get<TracingConfiguration>();
         
-        if (configuration?.Connection is null || configuration.Provider == TracingProviders.None)
+        if (configuration is null
+            || (string.IsNullOrWhiteSpace(configuration.OTLP?.CollectorUrl) && !configuration.UseConsole))
         {
             return builder;
         }
-
+        
         // musim takhle, protoze OT registrace neumoznuje nijak pristup na service provider
         var envConfiguration = builder.Configuration
             .GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName)
             .Get<CisEnvironmentConfiguration>();
 
-        builder.Services.AddSingleton(configuration);
+        builder
+            .Services
+            .AddOpenTelemetry()
+            .ConfigureResource(res =>
+            {
+                res.AddService(envConfiguration!.DefaultApplicationKey!);
+                res.AddAttributes(new List<KeyValuePair<string, object>>
+                {
+                    new ("CisEnvironment", envConfiguration.EnvironmentName!)
+                });
+            })
+            .WithTracing(tracing =>
+            {
+                tracing
+                    .AddSqlClientInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddAspNetCoreInstrumentation()
+                    .AddWcfInstrumentation()
+                    .AddGrpcClientInstrumentation(options => options.SuppressDownstreamInstrumentation = true);
 
-        switch (configuration.Provider)
-        {
-            case TracingProviders.OpenTelemetry:
-                builder
-                    .Services
-                    .AddOpenTelemetry()
-                    .ConfigureResource(res =>
+                // add OTLP
+                if (!string.IsNullOrWhiteSpace(configuration.OTLP?.CollectorUrl))
+                {
+                    tracing.AddOtlpExporter(opts =>
                     {
-                        res.AddService(envConfiguration!.DefaultApplicationKey!);
-                        res.AddAttributes(new List<KeyValuePair<string, object>>
-                        {
-                            new ("CisEnvironment", envConfiguration.EnvironmentName!)
-                        });
-                    })
-                    .WithTracing(tracing =>
-                    {
-                        tracing
-                            .AddEntityFrameworkCoreInstrumentation()
-                            .AddSqlClientInstrumentation()
-                            .AddHttpClientInstrumentation()
-                            .AddAspNetCoreInstrumentation()
-                            .AddWcfInstrumentation()
-                            .AddGrpcClientInstrumentation(options => options.SuppressDownstreamInstrumentation = true)
-                            .AddOtlpExporter(opts =>
-                            {
-                                opts.Endpoint = new Uri(configuration.Connection!.Url!);
-                            });
-
-                    })
-                    .WithMetrics(metrics =>
-                    {
-                        metrics
-                          .AddAspNetCoreInstrumentation()
-                          .AddHttpClientInstrumentation()
-                          .AddOtlpExporter(opts =>
-                          {
-                              opts.Endpoint = new Uri(configuration.Connection!.Url!);
-                          });
+                        opts.Endpoint = new Uri(configuration.OTLP.CollectorUrl!);
                     });
-                break;
-        }
-        
+                }
+
+                if (configuration.UseConsole)
+                {
+                    tracing.AddConsoleExporter();
+                }
+            })
+            .WithMetrics(metrics =>
+            {
+                metrics
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation();
+
+                if (!string.IsNullOrWhiteSpace(configuration.OTLP?.CollectorUrl))
+                {
+                    metrics.AddOtlpExporter(opts =>
+                    {
+                        opts.Endpoint = new Uri(configuration.OTLP.CollectorUrl!);
+                    });
+                }
+            });
+
 
         return builder;
     }

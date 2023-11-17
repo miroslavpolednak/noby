@@ -2,18 +2,15 @@
 
 public sealed class TracingConfiguration
 {
-    public TracingProviders Provider { get; set; }
+    /// <summary>
+    /// Logovat output do console
+    /// </summary>
+    public bool UseConsole { get; set; }
 
-    public ConnectionConfiguration? Connection { get; set; }
+    public OtlpConfiguration? OTLP { get; set; }
 }
 
-public sealed class ConnectionConfiguration
+public sealed class OtlpConfiguration
 {
-    public string? Url { get; set; }
-}
-
-public enum TracingProviders
-{
-    None = 0,
-    OpenTelemetry = 1
+    public string? CollectorUrl { get; set; }
 }
