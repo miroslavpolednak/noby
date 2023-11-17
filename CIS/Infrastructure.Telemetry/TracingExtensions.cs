@@ -40,7 +40,7 @@ public static class TracingExtensions
             .AddOpenTelemetry()
             .ConfigureResource(res =>
             {
-                res.AddService(envConfiguration!.DefaultApplicationKey!);
+                res.AddService(envConfiguration!.DefaultApplicationKey!, envConfiguration.EnvironmentName);
                 res.AddAttributes(new List<KeyValuePair<string, object>>
                 {
                     new ("CisEnvironment", envConfiguration.EnvironmentName!)
