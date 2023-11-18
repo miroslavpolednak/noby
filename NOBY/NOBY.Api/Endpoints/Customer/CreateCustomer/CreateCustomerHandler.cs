@@ -9,7 +9,7 @@ using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using Mandants = SharedTypes.GrpcTypes.Mandants;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
+using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -18,6 +18,9 @@ internal sealed class CreateCustomerHandler
 {
     public async Task<CreateCustomerResponse> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
+        await _customerService.ValidateMobilePhone(request.Contacts?.MobilePhone, cancellationToken);
+        await _customerService.ValidateEmail(request.Contacts?.EmailAddress, cancellationToken);
+
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
         var customerOnSaList = await _customerOnSAService.GetCustomerList(customerOnSA.SalesArrangementId, cancellationToken);
 

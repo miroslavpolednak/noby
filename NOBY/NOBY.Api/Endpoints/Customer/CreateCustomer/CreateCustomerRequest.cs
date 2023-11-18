@@ -68,7 +68,6 @@ public class CreateCustomerRequest
     /// <summary>
     /// Trvalá adresa v ČR
     /// </summary>
-    [Required]
     public Dto.Address? PrimaryAddress { get; set; }
 
     [Required]

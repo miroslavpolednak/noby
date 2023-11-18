@@ -9,6 +9,7 @@ using DomainServices.CodebookService.Clients;
 using SharedTypes.Enums;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
+using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
@@ -17,6 +18,9 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
 {
     public async Task Handle(UpdateCustomerDetailWithChangesRequest request, CancellationToken cancellationToken)
     {
+        await _customerService.ValidateMobilePhone(request.MobilePhone, cancellationToken);
+        await _customerService.ValidateEmail(request.EmailAddress, cancellationToken);
+
         // customer instance
         var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
 
