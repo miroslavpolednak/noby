@@ -2,7 +2,7 @@
 
 namespace DomainServices.ProductService.Api.Endpoints.CancelMortgage;
 
-internal class CancelMortgageRequestValidator : AbstractValidator<CancelMortgageRequest>
+internal sealed class CancelMortgageRequestValidator : AbstractValidator<CancelMortgageRequest>
 {
     public CancelMortgageRequestValidator()
     {

@@ -19,13 +19,17 @@ internal sealed class GetUserBasicInfoHandler
         var userInfo = (await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
             "[dbo].[getUserDisplayName]", 
             new { v33id = request.UserId }, 
-            cancellationToken))
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.UserId}");
+            cancellationToken));
+
+        if (string.IsNullOrEmpty(userInfo?.DisplayName))
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.UserId}");
+        }
 
         // vytvorit finalni model
         var model = new Contracts.GetUserBasicInfoResponse
         {
-            DisplayName = userInfo.DisplayName
+            DisplayName = userInfo!.DisplayName
         };
 
         await _distributedCache.SetAsync(Helpers.CreateUserBasicCacheKey(request.UserId), model.ToByteArray(), new DistributedCacheEntryOptions

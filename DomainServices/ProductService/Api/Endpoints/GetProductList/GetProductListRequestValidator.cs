@@ -2,7 +2,7 @@
 
 namespace DomainServices.ProductService.Api.Endpoints.GetProductList;
 
-internal class GetProductListRequestValidator : AbstractValidator<Contracts.GetProductListRequest>
+internal sealed class GetProductListRequestValidator : AbstractValidator<Contracts.GetProductListRequest>
 {
     public GetProductListRequestValidator()
     {

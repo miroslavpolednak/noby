@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.ProductService.Api.Database.Models;
 
-internal class Collateral
+internal sealed class Collateral
 {
     public long ProductId { get; set; }
 

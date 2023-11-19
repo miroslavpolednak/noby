@@ -3,7 +3,6 @@ package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "NullableGrpcDecimal.proto";
-import "google/protobuf/wrappers.proto";
 
 message GetRealEstateValuationTypesRequest {
     int32 RealEstateValuationId = 1;

@@ -3,7 +3,7 @@
 public sealed class CodebookObject<T>
     where T : class, new()
 {
-    public ICodebookList<T> Codebook { get; set; }
+    public ICodebookList<T> Codebook { get; set; } = null!;
 }
 
 public interface ICodebookList<T>

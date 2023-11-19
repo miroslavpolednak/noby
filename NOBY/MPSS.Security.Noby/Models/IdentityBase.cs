@@ -1,6 +1,9 @@
-﻿using System;
+﻿using System.Globalization;
 using System.Security.Principal;
 using System.Text;
+
+#pragma warning disable CA1305 // Specify IFormatProvider
+#pragma warning disable CA2201 // Do not raise reserved exception types
 
 namespace MPSS.Security.Noby;
 
@@ -9,7 +12,7 @@ namespace MPSS.Security.Noby;
 /// <para>Promenna _Switches se pouziva k ulozeni dulezitych hodnot, ktere by nemeli byt primo pristupne pro vyvojare.</para>
 /// </summary>
 [Serializable]
-internal class IdentityBase : IIdentity
+internal sealed class IdentityBase : IIdentity
 {
     #region internal properties
     internal string SessionId;
@@ -198,7 +201,7 @@ internal class IdentityBase : IIdentity
         ident.LastPermission = Convert.ToInt32(arr[12]);
         ident.LastImpersonate = Convert.ToInt32(arr[13]);
         int switches;
-        int.TryParse(arr[15], out switches);
+        int.TryParse(arr[15], CultureInfo.InvariantCulture, out switches);
         ident._Switches = switches;
         ident.m17ID = Convert.ToInt32(arr[16]);
         ident.BrokerId = Convert.ToInt32(arr[17]);

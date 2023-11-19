@@ -2,7 +2,7 @@
 
 namespace DomainServices.CustomerService.Api.Endpoints.FormatAddress;
 
-internal class FormatAddressRequestValidator : AbstractValidator<FormatAddressRequest>
+internal sealed class FormatAddressRequestValidator : AbstractValidator<FormatAddressRequest>
 {
     public FormatAddressRequestValidator()
     {

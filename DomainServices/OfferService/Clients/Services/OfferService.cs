@@ -19,6 +19,7 @@ internal sealed class OfferService
             {
                 OfferId = offerId
             }, cancellationToken: cancellationToken);
+            _cacheGetMortgageOfferResponseId = offerId;
         }
         return _cacheGetMortgageOfferResponse;
     }

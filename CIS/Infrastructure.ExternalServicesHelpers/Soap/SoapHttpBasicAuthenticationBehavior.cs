@@ -6,7 +6,7 @@ using System.ServiceModel;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.Soap;
 
-internal class SoapHttpBasicAuthenticationBehavior
+internal sealed class SoapHttpBasicAuthenticationBehavior
     : IEndpointBehavior
 {
     private readonly IExternalServiceConfiguration _configuration;

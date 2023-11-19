@@ -10,7 +10,7 @@ using DomainServices.SalesArrangementService.Contracts;
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement.ValidationStrategy;
 
 [ScopedService, SelfService]
-internal class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangementValidationStrategy
+internal sealed class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangementValidationStrategy
 {
     private readonly CheckFormSalesArrangementValidation _checkFormValidation;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;

@@ -2,7 +2,7 @@
 
 namespace DomainServices.CodebookService.Clients.Services;
 
-internal partial class CodebookService
+internal sealed partial class CodebookService
     : ICodebookServiceClient
 {
     public async Task<GetOperatorResponse> GetOperator(string performerLogin, CancellationToken cancellationToken = default) 

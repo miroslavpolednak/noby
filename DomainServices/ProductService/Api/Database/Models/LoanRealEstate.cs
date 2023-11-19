@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.ProductService.Api.Database.Models;
 
-internal class LoanRealEstate
+internal sealed class LoanRealEstate
 {
     public long RealEstateTypeId { get; set; }
 

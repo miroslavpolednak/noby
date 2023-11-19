@@ -3,7 +3,7 @@ using DomainServices.HouseholdService.Contracts.Dto;
 
 namespace DomainServices.HouseholdService.Clients.Services.Internal;
 
-internal class CustomerChangeData
+internal sealed class CustomerChangeData
 {
     private readonly JsonDocument _jsonDocument;
 

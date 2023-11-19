@@ -3,7 +3,6 @@ package DomainServices.ProductService;
 option csharp_namespace = "DomainServices.ProductService.Contracts";
 
 import "google/protobuf/wrappers.proto";
-import "GrpcDecimal.proto";
 import "NullableGrpcDecimal.proto";
 import "NullableGrpcDate.proto";
 import "Messages/Types.proto";

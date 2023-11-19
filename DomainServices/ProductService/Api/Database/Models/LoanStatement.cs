@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.ProductService.Api.Database.Models;
 
-internal class LoanStatement
+internal sealed class LoanStatement
 {
     public long Id { get; set; }
     public string? Street { get; set; }

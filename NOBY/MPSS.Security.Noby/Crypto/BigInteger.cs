@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
+
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 
 namespace MPSS.Security.Noby;
 
 #if !(NETCF_1_0 || NETCF_2_0 || SILVERLIGHT)
 [Serializable]
 #endif
-internal class BigInteger
+internal sealed class BigInteger
 {
     // The primes b/w 2 and ~2^10
     /*
@@ -105,8 +107,8 @@ internal class BigInteger
     private const long IMASK = 0xffffffffL;
     private static readonly ulong UIMASK = (ulong)IMASK;
 
-    private static readonly int[] ZeroMagnitude = new int[0];
-    private static readonly byte[] ZeroEncoding = new byte[0];
+    private static readonly int[] ZeroMagnitude = Array.Empty<int>();
+    private static readonly byte[] ZeroEncoding = Array.Empty<byte>();
 
     public static readonly BigInteger Zero = new BigInteger(0, ZeroMagnitude, false);
     public static readonly BigInteger One = createUValueOf(1);
@@ -266,7 +268,7 @@ internal class BigInteger
         }
 
         // strip leading zeros from the string str
-        while (index < str.Length && Int32.Parse(str[index].ToString(), style) == 0)
+        while (index < str.Length && int.Parse(str[index].ToString(), style, CultureInfo.InvariantCulture) == 0)
         {
             index++;
         }
@@ -295,7 +297,7 @@ internal class BigInteger
             do
             {
                 string s = str.Substring(index, chunk);
-                ulong i = ulong.Parse(s, style);
+                ulong i = ulong.Parse(s, style, CultureInfo.InvariantCulture);
                 BigInteger bi = createUValueOf(i);
 
                 switch (radix)
@@ -327,7 +329,7 @@ internal class BigInteger
         if (index < str.Length)
         {
             string s = str.Substring(index);
-            ulong i = ulong.Parse(s, style);
+            ulong i = ulong.Parse(s, style, CultureInfo.InvariantCulture);
             BigInteger bi = createUValueOf(i);
 
             if (b.sign > 0)
@@ -1160,13 +1162,16 @@ internal class BigInteger
         return biggies;
     }
 
-    public override bool Equals(
-        object obj)
+    public override bool Equals(object? obj)
     {
         if (obj == this)
             return true;
 
+        if (obj == null)
+            return false;
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         BigInteger biggie = obj as BigInteger;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         if (biggie == null)
             return false;
 
@@ -1582,7 +1587,7 @@ internal class BigInteger
         BigInteger a,
         BigInteger b,
         BigInteger u1Out,
-        BigInteger u2Out)
+        BigInteger? u2Out)
     {
         BigInteger u1 = One;
         BigInteger u3 = a;
@@ -1642,6 +1647,7 @@ internal class BigInteger
         if (sign == 0)
             return Zero;
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         int[] zVal = null;
         int[] yAccum = null;
         int[] yVal;
@@ -2777,11 +2783,11 @@ internal class BigInteger
 
         if (radix == 16)
         {
-            sb.Append(magnitude[0].ToString("x"));
+            sb.Append(magnitude[0].ToString("x", CultureInfo.InvariantCulture));
 
             for (int i = 1; i < magnitude.Length; i++)
             {
-                sb.Append(magnitude[i].ToString("x8"));
+                sb.Append(magnitude[i].ToString("x8", CultureInfo.InvariantCulture));
             }
         }
         else if (radix == 2)
@@ -2819,7 +2825,7 @@ internal class BigInteger
                 else
                 {
                     // see how to interact with different bases
-                    S.Add(b.magnitude[0].ToString("d"));
+                    S.Add(b.magnitude[0].ToString("d", CultureInfo.InvariantCulture));
                 }
                 u = u.Divide(bs);
             }

@@ -1,9 +1,11 @@
 ﻿namespace MPSS.Security.Noby;
+#pragma warning disable CA2254 // Template should be a static expression
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
 
 /// <summary>
 /// Trida zajistujici serializaci a deserializace objektu SecurityCookie.
 /// </summary>
-internal class SecurityCookieStringFormatter : ISecurityCookieFormatter
+internal sealed class SecurityCookieStringFormatter : ISecurityCookieFormatter
 {
     /// <summary>
     /// Globalni konfigurace pro soucasnou instanci tridy

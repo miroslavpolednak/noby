@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DomainServices.RealEstateValuationService.Api.Database.Entities;
 
 [Table("DeedOfOwnershipDocument", Schema = "dbo")]
-internal class DeedOfOwnershipDocument
+internal sealed class DeedOfOwnershipDocument
     : CIS.Core.Data.BaseCreated
 {
     [Key]

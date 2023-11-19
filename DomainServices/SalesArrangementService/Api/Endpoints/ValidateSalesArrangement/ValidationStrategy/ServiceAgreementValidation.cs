@@ -6,7 +6,7 @@ using DomainServices.SalesArrangementService.Contracts;
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement.ValidationStrategy;
 
 [ScopedService, SelfService]
-internal class ServiceAgreementValidation : ISalesArrangementValidationStrategy
+internal sealed class ServiceAgreementValidation : ISalesArrangementValidationStrategy
 {
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
 

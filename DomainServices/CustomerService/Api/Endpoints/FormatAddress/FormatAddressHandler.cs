@@ -2,7 +2,7 @@
 
 namespace DomainServices.CustomerService.Api.Endpoints.FormatAddress;
 
-internal class FormatAddressHandler : IRequestHandler<FormatAddressRequest, FormatAddressResponse>
+internal sealed class FormatAddressHandler : IRequestHandler<FormatAddressRequest, FormatAddressResponse>
 {
     private readonly ICodebookServiceClient _codebookService;
 

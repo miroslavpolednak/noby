@@ -1,9 +1,11 @@
-﻿namespace MPSS.Security.Noby;
+﻿using System.Globalization;
+
+namespace MPSS.Security.Noby;
 
 /// <summary>
 /// Kontajner pro informace potrebne pro validaci cookie.
 /// </summary>
-internal class CookieValidator
+internal sealed class CookieValidator
 {
     /// <summary>
     /// IP adresa klienta.
@@ -23,7 +25,7 @@ internal class CookieValidator
     public CookieValidator(HttpContext context)
     {
         this.DisableValidation = false;
-        this.IP = context.Connection.RemoteIpAddress.ToString();
+        this.IP = context.Connection.RemoteIpAddress?.ToString() ?? "";
         this.UserAgent = context.Request.Headers["User-Agent"].ToString();
     }
 

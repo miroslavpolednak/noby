@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.ProductService.Api.Database.Models;
 
-internal class CovenantPhase
+internal sealed class CovenantPhase
 {
     public long CaseId { get; set; }
     public string? Name { get; set; }

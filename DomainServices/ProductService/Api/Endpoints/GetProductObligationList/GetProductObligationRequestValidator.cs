@@ -2,7 +2,7 @@
 
 namespace DomainServices.ProductService.Api.Endpoints.GetProductObligationList;
 
-internal class GetProductObligationRequestValidator : AbstractValidator<GetProductObligationListRequest>
+internal sealed class GetProductObligationRequestValidator : AbstractValidator<GetProductObligationListRequest>
 {
     public GetProductObligationRequestValidator()
     {

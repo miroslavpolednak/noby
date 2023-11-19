@@ -6,6 +6,7 @@ using DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2;
 using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using Google.Protobuf;
 using ExternalServices.EasSimulationHT.V1;
+using System.Globalization;
 
 namespace DomainServices.OfferService.Api.Endpoints.SimulateMortgage;
 
@@ -118,7 +119,7 @@ internal sealed class SimulateMortgageHandler
         
         var creditWorthinessRequest = new CreditWorthinessSimpleCalculateRequest
         {
-            PrimaryCustomerId = kbCustomerIdentity?.IdentityId.ToString(),
+            PrimaryCustomerId = kbCustomerIdentity?.IdentityId.ToString(CultureInfo.InvariantCulture),
             ResourceProcessId = request.ResourceProcessId,
             ChildrenCount = request.CreditWorthinessSimpleInputs.ChildrenCount ?? 0,
             TotalMonthlyIncome = request.CreditWorthinessSimpleInputs.TotalMonthlyIncome,

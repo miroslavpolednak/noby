@@ -5,7 +5,7 @@ using DomainServices.SalesArrangementService.Contracts;
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement.ValidationStrategy;
 
 [ScopedService, SelfService]
-internal class CheckFormSalesArrangementValidation : ISalesArrangementValidationStrategy
+internal sealed class CheckFormSalesArrangementValidation : ISalesArrangementValidationStrategy
 {
     private static readonly int[] ValidCommonValues = { 0, 6 };
 

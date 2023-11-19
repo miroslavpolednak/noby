@@ -2,7 +2,7 @@
 
 namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
 
-internal class GetMortgageRequestValidator : AbstractValidator<Contracts.GetMortgageRequest>
+internal sealed class GetMortgageRequestValidator : AbstractValidator<Contracts.GetMortgageRequest>
 {
     public GetMortgageRequestValidator()
     {

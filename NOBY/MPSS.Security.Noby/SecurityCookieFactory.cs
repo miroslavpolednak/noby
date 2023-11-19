@@ -3,7 +3,7 @@
 /// <summary>
 /// Trida pro praci s objektem SecurityCookie. Umoznuje vytvoreni nove SecurityCookie nebo overeni platnosti stavajici SecurityCookie.
 /// </summary>
-internal class SecurityCookieFactory
+internal sealed class SecurityCookieFactory
 {
     /// <summary>
     /// Vraci tridu, ktera zajistuje formatovani security cookie.

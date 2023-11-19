@@ -2,7 +2,7 @@
 
 namespace DomainServices.ProductService.Api.Endpoints.UpdateMortgage;
 
-internal class UpdateMortgageRequestValidator : AbstractValidator<Contracts.UpdateMortgageRequest>
+internal sealed class UpdateMortgageRequestValidator : AbstractValidator<Contracts.UpdateMortgageRequest>
 {
     public UpdateMortgageRequestValidator()
     {

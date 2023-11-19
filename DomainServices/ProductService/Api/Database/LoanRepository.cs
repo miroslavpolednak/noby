@@ -5,7 +5,7 @@ using DomainServices.ProductService.Api.Database.Models;
 namespace DomainServices.ProductService.Api.Database;
 
 [ScopedService, SelfService]
-internal class LoanRepository
+internal sealed class LoanRepository
 {
     private readonly IConnectionProvider _connectionProvider;
     

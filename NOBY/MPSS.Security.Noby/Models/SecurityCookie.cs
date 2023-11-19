@@ -1,5 +1,7 @@
 ﻿using System.Text;
 
+#pragma warning disable CA1305 // Specify IFormatProvider
+
 namespace MPSS.Security.Noby;
 
 /// <summary>
@@ -7,7 +9,7 @@ namespace MPSS.Security.Noby;
 /// <para>Obsahuje vlastnosti pro overovani platnosti cookie.</para>
 /// </summary>
 [Serializable]
-internal class SecurityCookie
+internal sealed class SecurityCookie
 {
     internal static char[] Separator = new char[] { '~' };
 
@@ -72,7 +74,9 @@ internal class SecurityCookie
         }
         catch (Exception err)
         {
+#pragma warning disable CA2201 // Do not raise reserved exception types
             throw new Exception("SecurityCookie.GetFromString(): error converting LastUpdate to DateTime from '" + arr[0] + "'", err);
+#pragma warning restore CA2201 // Do not raise reserved exception types
         }
 
         return cookie;

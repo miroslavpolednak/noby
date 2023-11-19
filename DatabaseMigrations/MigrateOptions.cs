@@ -3,7 +3,7 @@
 namespace DatabaseMigrations;
 
 [Verb("migrate")]
-internal class MigrateOptions
+internal sealed class MigrateOptions
 {
     [Option('c', "connectionstring", Required = true, HelpText = "Connection string to database.")]
     public string? ConnectionString { get; set; }

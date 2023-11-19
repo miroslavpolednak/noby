@@ -22,7 +22,7 @@ internal sealed class Error
 
     [System.Text.Json.Serialization.JsonPropertyName("code")]
     [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-    public string Code { get; set; }
+    public string Code { get; set; } = null!;
 
     /// <summary>
     /// Error message
@@ -30,7 +30,7 @@ internal sealed class Error
 
     [System.Text.Json.Serialization.JsonPropertyName("message")]
     [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-    public string Message { get; set; }
+    public string Message { get; set; } = null!;
 
     /// <summary>
     /// Error uuid
@@ -38,7 +38,7 @@ internal sealed class Error
 
     [System.Text.Json.Serialization.JsonPropertyName("uuid")]
     [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-    public string Uuid { get; set; }
+    public string Uuid { get; set; } = null!;
 
     /// <summary>
     /// Error detail
@@ -47,9 +47,9 @@ internal sealed class Error
     [System.Text.Json.Serialization.JsonPropertyName("detail")]
 
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
-    public object Detail { get; set; }
+    public object Detail { get; set; } = null!;
 
-    private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+    private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
 
     [System.Text.Json.Serialization.JsonExtensionData]
     public System.Collections.Generic.IDictionary<string, object> AdditionalProperties

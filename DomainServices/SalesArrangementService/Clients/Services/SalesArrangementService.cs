@@ -208,7 +208,7 @@ internal sealed class SalesArrangementService
         _cacheGetSalesArrangement = null;
     }
 
-    private List<FlowSwitch> _cacheGetFlowSwitches;
+    private List<FlowSwitch>? _cacheGetFlowSwitches;
     private int? _cacheGetFlowSwitchesId;
     private SalesArrangement? _cacheGetSalesArrangement;
     private ValidateSalesArrangementIdResponse? _cacheValidateSalesArrangementId;

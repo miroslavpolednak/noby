@@ -1,9 +1,11 @@
 ﻿using System.Text;
 using System.Security.Cryptography;
 
+#pragma warning disable CA5373 // Do not use obsolete key derivation function
+
 namespace MPSS.Security.Noby;
 
-internal class RijndaelCrypto : ICrypto
+internal sealed class RijndaelCrypto : ICrypto
 {
 #pragma warning disable SYSLIB0022 // Type or member is obsolete
     // env typ pro soucasnou instanci
@@ -24,7 +26,7 @@ internal class RijndaelCrypto : ICrypto
         return CreateDecryptor(config.RijndealPassword, config.RijndaelPwdIterations, config.RijndaelStrength, getB(config.RijndaelVector), getB(config.RijndaelSalt));
     }
 
-    private byte[] getB(string s)
+    private static byte[] getB(string s)
     {
         return ASCIIEncoding.ASCII.GetBytes(s);
     }

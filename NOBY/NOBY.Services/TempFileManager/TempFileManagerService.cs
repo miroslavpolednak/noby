@@ -5,7 +5,7 @@ using NOBY.Infrastructure.Configuration;
 namespace NOBY.Services.TempFileManager;
 
 [TransientService, AsImplementedInterfacesService]
-internal class TempFileManagerService
+internal sealed class TempFileManagerService
     : ITempFileManagerService
 {
     public async Task<TempFile> Save(

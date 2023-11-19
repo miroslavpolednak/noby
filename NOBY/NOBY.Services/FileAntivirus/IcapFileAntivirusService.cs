@@ -3,6 +3,11 @@ using System.Net.Sockets;
 using System.Text;
 using NOBY.Infrastructure.Configuration;
 
+#pragma warning disable CA1305 // Specify IFormatProvider
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+#pragma warning disable CS8601 // Possible null reference assignment.
+#pragma warning disable CA1310 // Specify StringComparison for correctness
+
 namespace NOBY.Services.FileAntivirus;
 
 [TransientService, AsImplementedInterfacesService]
@@ -63,7 +68,7 @@ internal sealed class IcapFileAntivirusService
         }
     }
 
-    public class ICAP : IDisposable
+    public sealed class ICAP : IDisposable
     {
         private String serverAddress;
         
@@ -118,7 +123,7 @@ internal sealed class IcapFileAntivirusService
                 responseMap.TryGetValue("StatusCode", out tempString);
                 if (tempString != null)
                 {
-                    int status = Convert.ToInt16(tempString);
+                    int status = Convert.ToInt16(tempString, CultureInfo.InvariantCulture);
 
                     switch (status)
                     {
@@ -126,7 +131,7 @@ internal sealed class IcapFileAntivirusService
                             responseMap.TryGetValue("Preview", out tempString);
                             if (tempString != null)
                             {
-                                stdPreviewSize = Convert.ToInt16(tempString);
+                                stdPreviewSize = Convert.ToInt16(tempString, CultureInfo.InvariantCulture);
                             }; break;
                         default: throw new ICAPException("Could not get preview size from server");
                     }
@@ -251,7 +256,7 @@ internal sealed class IcapFileAntivirusService
                     int y = response.IndexOf("</title>", x);
                     String statusCode = response.Substring(x + 7, y - x - 7);
 
-                    if (statusCode.Equals("ProxyAV: Access Denied"))
+                    if (statusCode.Equals("ProxyAV: Access Denied", StringComparison.OrdinalIgnoreCase))
                     {
                         return false;
                     }
@@ -312,7 +317,7 @@ internal sealed class IcapFileAntivirusService
         /// </summary>
         /// <param name="response">A raw response header as a String.</parm>
         /// <returns>Dictionary of the key,value pairs of the response</returns>
-        private Dictionary<String, String> parseHeader(String response)
+        private static Dictionary<String, String> parseHeader(String response)
         {
             Dictionary<String, String> headers = new Dictionary<String, String>();
 

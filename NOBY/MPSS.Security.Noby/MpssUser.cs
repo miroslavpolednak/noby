@@ -7,7 +7,7 @@ namespace MPSS.Security.Noby;
 /// Kontajner detailu uzivatele (ve vlastnosti Identity).
 /// </summary>
 [Serializable]
-internal class MpssUser : ClaimsPrincipal
+internal sealed class MpssUser : ClaimsPrincipal
 {
     public override IIdentity Identity => _Identity;
     private readonly IdentityBase _Identity;

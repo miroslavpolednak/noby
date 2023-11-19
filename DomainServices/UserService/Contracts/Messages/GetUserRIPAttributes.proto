@@ -3,7 +3,6 @@ package DomainServices.UserService;
 option csharp_namespace = "DomainServices.UserService.Contracts";
 
 import "google/protobuf/wrappers.proto";
-import "UserIdentity.proto";
 
 message GetUserRIPAttributesRequest {
 	string Identity = 1;

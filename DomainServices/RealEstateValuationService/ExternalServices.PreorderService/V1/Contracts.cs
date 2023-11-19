@@ -5,6 +5,7 @@
 //----------------------
 
 #nullable enable
+#pragma warning disable CS8766 // Nullability of reference types in return type doesn't match implicitly implemented member (possibly because of nullability attributes).
 
 using System.Text.Json.Serialization;
 
@@ -258,7 +259,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
 
         [System.Text.Json.Serialization.JsonPropertyName("contactPersonName")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string? ContactPersonName { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("contactPersonEmail")]

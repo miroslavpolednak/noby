@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.ProductService.Api.Database.Models;
 
-internal class Covenant
+internal sealed class Covenant
 {
     public long CaseId { get; set; }
     public int Order { get; set; }

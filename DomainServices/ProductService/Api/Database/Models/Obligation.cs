@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.ProductService.Api.Database.Models;
 
-internal class Obligation
+internal sealed class Obligation
 {
     public long ProductId { get; set; }
 

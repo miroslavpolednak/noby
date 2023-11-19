@@ -8,7 +8,7 @@ using DomainServices.UserService.Clients;
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
 [ScopedService, SelfService]
-internal class PerformerProvider
+internal sealed class PerformerProvider
 {
     private readonly ICaseServiceClient _caseService;
     private readonly IUserServiceClient _userService;

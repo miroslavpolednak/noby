@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.ProductService.Api.Database.Models;
 
-internal class Loan
+internal sealed class Loan
 {
 	public long Id { get; set; }
 	public long? PartnerId { get; set; }

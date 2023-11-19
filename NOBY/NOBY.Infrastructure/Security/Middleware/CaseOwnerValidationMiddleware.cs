@@ -138,7 +138,7 @@ public sealed class CaseOwnerValidationMiddleware
             => int.Parse(routeValues![key]!.ToString()!, CultureInfo.InvariantCulture);
     }
 
-    private async Task<(long CaseId, int SalesArrangementTypeId)> getSalesArrangement(HttpContext context, int salesArrangementId, bool fromDetail, CancellationToken cancellationToken)
+    private static async Task<(long CaseId, int SalesArrangementTypeId)> getSalesArrangement(HttpContext context, int salesArrangementId, bool fromDetail, CancellationToken cancellationToken)
     {
         var salesArrangementService = context.RequestServices.GetRequiredService<ISalesArrangementServiceClient>();
         return fromDetail switch

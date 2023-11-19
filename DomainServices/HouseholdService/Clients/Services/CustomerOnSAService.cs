@@ -64,6 +64,7 @@ internal sealed class CustomerOnSAService
                     SalesArrangementId = salesArrangementId
                 }, cancellationToken: cancellationToken)
             ).Customers.ToList();
+            _cacheGetCustomerListId = salesArrangementId;
         }
         return _cacheGetCustomerList;
     }

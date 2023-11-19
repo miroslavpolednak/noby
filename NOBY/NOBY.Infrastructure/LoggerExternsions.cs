@@ -39,8 +39,12 @@ internal static class LoggerExtensions
         => _openIdError(logger, eventName, message, null!);
 
     public static void OpenIdAuthenticationFailed(this ILogger logger, Exception? ex)
+#pragma warning disable CS8604 // Possible null reference argument.
         => _openIdAuthenticationFailed(logger, ex?.Message ?? "unknown reason", ex);
+#pragma warning restore CS8604 // Possible null reference argument.
 
     public static void OpenIdRemoteFailure(this ILogger logger, Exception? ex)
+#pragma warning disable CS8604 // Possible null reference argument.
         => _openIdRemoteFailure(logger, ex?.Message ?? "unknown reason", ex);
+#pragma warning restore CS8604 // Possible null reference argument.
 }

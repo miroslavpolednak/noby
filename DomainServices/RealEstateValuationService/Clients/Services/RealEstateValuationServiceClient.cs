@@ -186,7 +186,7 @@ internal sealed class RealEstateValuationServiceClient
     }
 
     private RealEstateValuationDetail? _cacheGetRealEstateValuationDetail = null!;
-    private ValidateRealEstateValuationIdResponse? _cacheValidateRealEstateValuationId = null;
+    private ValidateRealEstateValuationIdResponse? _cacheValidateRealEstateValuationId;
 
     private readonly Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient _service;
 

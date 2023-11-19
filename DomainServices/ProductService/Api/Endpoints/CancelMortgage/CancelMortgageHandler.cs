@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.ProductService.Api.Endpoints.CancelMortgage;
 
-internal class CancelMortgageHandler : IRequestHandler<CancelMortgageRequest>
+internal sealed class CancelMortgageHandler : IRequestHandler<CancelMortgageRequest>
 {
     private readonly IMpHomeClient _mpHomeClient;
     private readonly LoanRepository _repository;

@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using SharedTypes.GrpcTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
@@ -9,24 +8,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SetContractNumber;
 
-internal class SetContractNumberHandler : IRequestHandler<SetContractNumberRequest, SetContractNumberResponse>
+internal sealed class SetContractNumberHandler : IRequestHandler<SetContractNumberRequest, SetContractNumberResponse>
 {
     private readonly SalesArrangementServiceDbContext _dbContext;
-    private readonly ICodebookServiceClient _codebookService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly Eas.IEasClient _easClient;
     private readonly ICaseServiceClient _caseService;
     private readonly IMediator _mediator;
 
     public SetContractNumberHandler(SalesArrangementServiceDbContext dbContext,
-                                    ICodebookServiceClient codebookService,
                                     ICustomerOnSAServiceClient customerOnSAService,
                                     Eas.IEasClient easClient,
                                     ICaseServiceClient caseService,
                                     IMediator mediator)
     {
         _dbContext = dbContext;
-        _codebookService = codebookService;
         _customerOnSAService = customerOnSAService;
         _easClient = easClient;
         _caseService = caseService;

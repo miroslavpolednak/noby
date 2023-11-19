@@ -3,6 +3,7 @@ using _Case = DomainServices.CaseService.Contracts;
 using _Dto = NOBY.Dto.Workflow;
 using CIS.Core.Security;
 using NOBY.Infrastructure.Security;
+using NOBY.Infrastructure.ErrorHandling;
 
 namespace NOBY.Services.WorkflowMapper;
 
@@ -151,7 +152,7 @@ internal sealed class WorkflowMapperService
             2 => getPriceExceptionState(task),
             3 or 7 => _Dto.WorkflowTaskStates.Sent,
             6 => getSignatureState(task),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new NobyValidationException($"TaskTypeId {task.TaskTypeId} out of range")
         };
     }
 
@@ -160,7 +161,7 @@ internal sealed class WorkflowMapperService
         {
             1 => _Dto.WorkflowTaskStates.ForProcessing,
             2 => _Dto.WorkflowTaskStates.Sent,
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new NobyValidationException($"PhaseTypeId {task.PhaseTypeId} out of range")
         };
 
     private static _Dto.WorkflowTaskStates getPriceExceptionState(_Case.WorkflowTask task) =>
@@ -168,7 +169,7 @@ internal sealed class WorkflowMapperService
         {
             1 => _Dto.WorkflowTaskStates.Sent,
             2 => _Dto.WorkflowTaskStates.Completed,
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new NobyValidationException($"PhaseTypeId {task.PhaseTypeId} out of range")
         };
     
     private static _Dto.WorkflowTaskStates getSignatureState(_Case.WorkflowTask task) =>
@@ -176,14 +177,14 @@ internal sealed class WorkflowMapperService
         {
             SignatureTypes.Paper => getPaperSignatureState(task),
             SignatureTypes.Electronic => getDigitalSignatureState(task),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new NobyValidationException($"SignatureTypeId {task.SignatureTypeId} out of range")
         };
 
     private static _Dto.WorkflowTaskStates getDigitalSignatureState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
             1 => _Dto.WorkflowTaskStates.ForProcessing,
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new NobyValidationException($"PhaseTypeId {task.PhaseTypeId} out of range")
         };
 
     private static _Dto.WorkflowTaskStates getPaperSignatureState(_Case.WorkflowTask task) =>
@@ -192,7 +193,7 @@ internal sealed class WorkflowMapperService
             1 => _Dto.WorkflowTaskStates.ForProcessing,
             2 => _Dto.WorkflowTaskStates.OperationalSupport,
             3 => _Dto.WorkflowTaskStates.Sent,
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new NobyValidationException($"PhaseTypeId {task.PhaseTypeId} out of range")
         };
 
     private readonly ICurrentUserAccessor _userAccessor;
