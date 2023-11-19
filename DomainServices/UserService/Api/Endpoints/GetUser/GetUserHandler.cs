@@ -1,6 +1,4 @@
-﻿using DomainServices.UserService.Api.Database.Entities;
-using Google.Protobuf;
-using Microsoft.EntityFrameworkCore;
+﻿using Google.Protobuf;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUser;
 
@@ -21,21 +19,22 @@ internal sealed class GetUserHandler
         }
 
         // vytahnout info o uzivateli z DB
-        var dbIdentities = (await _dbContext.UserIdentities
-            .FromSqlInterpolated($"EXECUTE [dbo].[getUserIdentities] @identitySchema={request.Identity.IdentityScheme.ToString()}, @identityValue={request.Identity.Identity}")
-            .ToListAsync(cancellationToken)
-            ).FirstOrDefault()
+        var dbIdentities = (await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<Dto.DbUserIdentity>(
+            "[dbo].[getUserIdentities]",
+            new { identitySchema = request.Identity.IdentityScheme.ToString(), identityValue = request.Identity.Identity },
+            cancellationToken))
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.Identity.IdentityScheme}={request.Identity.Identity}");
 
         // dotahnout atributy
-        var dbAttributes = (await _dbContext.DbUserAttributes
-            .FromSqlInterpolated($"EXECUTE [dbo].[getUserAttributes] @v33id={dbIdentities.v33id}")
-            .ToListAsync(cancellationToken)
-            ).FirstOrDefault();
+        var dbAttributes = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
+            "[dbo].[getUserAttributes]",
+            new { v33id = dbIdentities.v33id },
+            cancellationToken);
 
-        var dbPermissions = await _dbContext.DbUserPermissions
-            .FromSqlInterpolated($"EXECUTE [dbo].[getPermissions] @ApplicationCode='NOBY', @v33id={dbIdentities.v33id}")
-            .ToListAsync(cancellationToken);
+        var dbPermissions = await _db.ExecuteDapperStoredProcedureSqlToListAsync<dynamic>(
+            "[dbo].[getPermissions]",
+            new { ApplicationCode = "NOBY", v33id = dbIdentities.v33id },
+            cancellationToken);
 
         // vytvorit finalni model
         var model = new Contracts.User
@@ -45,7 +44,7 @@ internal sealed class GetUserHandler
             {
                 FirstName = dbIdentities.firstname ?? "",
                 LastName = dbIdentities.surname ?? "",
-                Cin = string.IsNullOrWhiteSpace(dbAttributes?.companyCin) ? GetDefaultCustomerIdentificationNumber(dbIdentities) : dbAttributes.companyCin,
+                Cin = string.IsNullOrWhiteSpace(dbAttributes?.companyCin) ? getDefaultCustomerIdentificationNumber(dbIdentities) : dbAttributes?.companyCin,
                 Cpm = dbIdentities.cpm,
                 Icp = dbIdentities.icp,
                 DisplayName = $"{dbIdentities.firstname} {dbIdentities.surname}".Trim(), //Trim because some users have full name only in the Surname field
@@ -82,7 +81,18 @@ internal sealed class GetUserHandler
         return model;
     }
 
-    private static void fillIdentities(DbUserIdentity dbIdentities, Contracts.User user)
+    private static string getDefaultCustomerIdentificationNumber(Dto.DbUserIdentity dbIdentities)
+    {
+        if (!string.IsNullOrWhiteSpace(dbIdentities.kbad))
+            return "45317054";
+
+        if (!string.IsNullOrWhiteSpace(dbIdentities.mpad))
+            return "63998017";
+
+        return string.Empty;
+    }
+
+    private static void fillIdentities(Dto.DbUserIdentity dbIdentities, Contracts.User user)
     {
         if (dbIdentities.brokerId.HasValue)
             user.UserIdentifiers.Add(new SharedTypes.GrpcTypes.UserIdentity
@@ -134,26 +144,15 @@ internal sealed class GetUserHandler
             });
     }
 
-    private static string GetDefaultCustomerIdentificationNumber(DbUserIdentity dbIdentities)
-    {
-        if (!string.IsNullOrWhiteSpace(dbIdentities.kbad))
-            return "45317054";
-
-        if (!string.IsNullOrWhiteSpace(dbIdentities.mpad))
-            return "63998017";
-
-        return string.Empty;
-    }
-
     private const int _minutesInCache = 30;
-    private readonly Database.UserServiceDbContext _dbContext;
+    private readonly IConnectionProvider _db;
     private readonly IDistributedCache _distributedCache;
 
     public GetUserHandler(
-        Database.UserServiceDbContext dbContext,
+        IConnectionProvider db,
         IDistributedCache distributedCache)
     {
-        _dbContext = dbContext;
+        _db = db;
         _distributedCache = distributedCache;
     }
 }

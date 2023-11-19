@@ -61,6 +61,10 @@ internal sealed class LoggerBootstraper
         loggerConfiguration
             .Filter
             .ByExcluding(Matching.WithProperty("RequestPath", CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl));
+        // divno HC
+        loggerConfiguration
+            .Filter
+            .ByExcluding(Matching.WithProperty("RequestPath", "/health.html"));
 
         // vynechat vsechny chyby, ktere nechceme logovat
         loggerConfiguration

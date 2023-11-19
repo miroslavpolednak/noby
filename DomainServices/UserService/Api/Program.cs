@@ -1,10 +1,13 @@
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.UserService.Api.Database;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .AddDistributedCache()
     .AddErrorCodeMapper(DomainServices.UserService.Api.ErrorCodeMapper.Init())
+    .AddRequiredServices(services =>
+    {
+        services.AddUserService();
+    })
     .EnableJsonTranscoding(options =>
     {
         options.OpenApiTitle = "User Service API";
@@ -14,8 +17,8 @@ SharedComponents.GrpcServiceBuilder
     })
     .Build(builder =>
     {
-        // dbcontext
-        builder.AddEntityFramework<UserServiceDbContext>();
+        builder.Services
+            .AddDapper(builder.Configuration.GetConnectionString("default")!);
     })
     .MapGrpcServices(app =>
     {

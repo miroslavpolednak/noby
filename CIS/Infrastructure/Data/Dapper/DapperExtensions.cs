@@ -24,6 +24,12 @@ public static class DapperExtensions
     public static async Task<T?> ExecuteDapperFirstOrDefaultAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default)
         => await connectionProvider.ExecuteDapperQueryAsync<T?>(async c => await c.QueryFirstOrDefaultAsync<T>(sqlQuery, param), cancellationToken);
 
+    public static async Task<T?> ExecuteDapperStoredProcedureFirstOrDefaultAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default)
+        => await connectionProvider.ExecuteDapperQueryAsync<T?>(async c => await c.QueryFirstOrDefaultAsync<T>(sqlQuery, param, commandType: CommandType.StoredProcedure), cancellationToken);
+
+    public static async Task<List<T>> ExecuteDapperStoredProcedureSqlToListAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default)
+        => await connectionProvider.ExecuteDapperQueryAsync<List<T>>(async c => (await c.QueryAsync<T>(sqlQuery, param, commandType: CommandType.StoredProcedure)).AsList(), cancellationToken);
+
     public static async Task<T?> ExecuteDapperScalarAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery,
         object param, CancellationToken cancellationToken = default)
     {

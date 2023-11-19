@@ -1,5 +1,4 @@
 ﻿using Google.Protobuf;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserPermissions;
 
@@ -16,9 +15,10 @@ internal sealed class GetUserPermissionsHandler
             return Contracts.GetUserPermissionsResponse.Parser.ParseFrom(cachedBytes);
         }
 
-        var dbPermissions = await _dbContext.DbUserPermissions
-            .FromSqlInterpolated($"EXECUTE [dbo].[getPermissions] @ApplicationCode='NOBY', @v33id={request.UserId}")
-            .ToListAsync(cancellationToken);
+        var dbPermissions = await _db.ExecuteDapperStoredProcedureSqlToListAsync<dynamic>(
+            "[dbo].[getPermissions]",
+            new { ApplicationCode = "NOBY", v33id = request.UserId },
+            cancellationToken);
 
         // vytvorit finalni model
         var model = new Contracts.GetUserPermissionsResponse();
@@ -40,14 +40,14 @@ internal sealed class GetUserPermissionsHandler
     }
 
     private const int _minutesInCache = 30;
-    private readonly Database.UserServiceDbContext _dbContext;
+    private readonly IConnectionProvider _db;
     private readonly IDistributedCache _distributedCache;
 
     public GetUserPermissionsHandler(
-        Database.UserServiceDbContext dbContext,
+        IConnectionProvider db,
         IDistributedCache distributedCache)
     {
-        _dbContext = dbContext;
+        _db = db;
         _distributedCache = distributedCache;
     }
 }

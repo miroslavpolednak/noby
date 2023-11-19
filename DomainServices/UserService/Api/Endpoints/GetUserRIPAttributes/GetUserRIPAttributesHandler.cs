@@ -1,5 +1,4 @@
 ﻿using DomainServices.UserService.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserRIPAttributes;
 
@@ -11,10 +10,11 @@ internal sealed class GetUserRIPAttributesHandler
         try
         {
             // vytahnout info o uzivateli z DB
-            var dbIdentity = (await _dbContext.DbUserRIPAttributes
-                .FromSqlInterpolated($"EXECUTE [dbo].[p_GetPersonHF_RIP] @identity={request.Identity}, @identityScheme={request.IdentityScheme}")
-                .ToListAsync(cancellationToken)
-                ).FirstOrDefault() ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.IdentityScheme}={request.Identity}"); ;
+            var dbIdentity = (await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
+                "[dbo].[p_GetPersonHF_RIP]",
+                new { identity = request.Identity, identityScheme = request.IdentityScheme },
+                cancellationToken))
+                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.IdentityScheme}={request.Identity}");
 
             return new UserRIPAttributes()
             {
@@ -34,10 +34,10 @@ internal sealed class GetUserRIPAttributesHandler
         }
     }
 
-    private readonly Database.UserServiceDbContext _dbContext;
+    private readonly IConnectionProvider _db;
 
-    public GetUserRIPAttributesHandler(Database.UserServiceDbContext dbContext)
+    public GetUserRIPAttributesHandler(IConnectionProvider db)
     {
-        _dbContext = dbContext;
+        _db = db;
     }
 }

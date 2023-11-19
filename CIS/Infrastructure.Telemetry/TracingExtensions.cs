@@ -51,7 +51,18 @@ public static class TracingExtensions
                 tracing
                     .AddSqlClientInstrumentation()
                     .AddHttpClientInstrumentation()
-                    .AddAspNetCoreInstrumentation()
+                    .AddAspNetCoreInstrumentation(options =>
+                    {
+                        options.Filter = httpContext =>
+                        {
+                            if (_exludedRequestPaths.Contains(httpContext.Request.Path.Value))
+                            {
+                                return false;
+                            }
+
+                            return true;
+                        };
+                    })
                     .AddWcfInstrumentation()
                     .AddGrpcClientInstrumentation(options => options.SuppressDownstreamInstrumentation = true);
 
@@ -87,6 +98,13 @@ public static class TracingExtensions
 
         return builder;
     }
+
+    private static string[] _exludedRequestPaths = new[]
+    {
+        "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo",
+        "/grpc.health.v1.Health/Check",
+        "/health/html"
+    };
 
     internal const string _configurationTelemetryKey = "CisTelemetry:Tracing";
 }

@@ -1,6 +1,4 @@
 ﻿using Google.Protobuf;
-using Microsoft.EntityFrameworkCore;
-using SharedTypes.GrpcTypes;
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserBasicInfo;
 
@@ -18,11 +16,11 @@ internal sealed class GetUserBasicInfoHandler
         }
     
         // vytahnout info o uzivateli z DB
-        var userInfo = (await _dbContext.UserBasicInfos
-                                            .FromSqlInterpolated($"EXECUTE [dbo].[getUserDisplayName] @v33id={request.UserId}")
-                                            .ToListAsync(cancellationToken)
-                           ).FirstOrDefault()
-                           ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.UserId}");
+        var userInfo = (await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
+            "[dbo].[getUserDisplayName]", 
+            new { v33id = request.UserId }, 
+            cancellationToken))
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.UserId}");
 
         // vytvorit finalni model
         var model = new Contracts.GetUserBasicInfoResponse
@@ -40,14 +38,14 @@ internal sealed class GetUserBasicInfoHandler
     }
 
     private const int _minutesInCache = 30;
-    private readonly Database.UserServiceDbContext _dbContext;
+    private readonly IConnectionProvider _db;
     private readonly IDistributedCache _distributedCache;
 
     public GetUserBasicInfoHandler(
-        Database.UserServiceDbContext dbContext,
+        IConnectionProvider db,
         IDistributedCache distributedCache)
     {
-        _dbContext = dbContext;
+        _db = db;
         _distributedCache = distributedCache;
     }
 }
