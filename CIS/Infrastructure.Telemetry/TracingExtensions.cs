@@ -103,7 +103,7 @@ public static class TracingExtensions
     {
         "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo",
         "/grpc.health.v1.Health/Check",
-        "/health/html"
+        "/health.html"
     };
 
     internal const string _configurationTelemetryKey = "CisTelemetry:Tracing";
