@@ -21,4 +21,14 @@ internal class IncomeEmployment : IncomeBase
         new[] { Employment?.Employer?.Cin, Employment?.Employer?.BirthNumber }.FirstOrDefault(str => !string.IsNullOrEmpty(str));
 
     public int DocumentType => 6;
+
+    public string? IncomeConfirmationContact
+    {
+        get
+        {
+            var contact = Employment?.IncomeConfirmation?.ConfirmationContact;
+
+            return contact is null ? default : $"{contact.PhoneIDC}{contact.PhoneNumber}";
+        }
+    }
 }

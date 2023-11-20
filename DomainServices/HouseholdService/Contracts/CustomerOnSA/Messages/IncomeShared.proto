@@ -39,7 +39,12 @@ message IncomeConfirmationData {
     bool IsIssuedByExternalAccountant = 1;
     cis.types.NullableGrpcDate ConfirmationDate = 2;
     string ConfirmationPerson = 3;
-    string ConfirmationContact = 4;
+    ConfirmationContactDto ConfirmationContact = 4;    
+}
+
+message ConfirmationContactDto {
+    google.protobuf.StringValue PhoneNumber = 1;
+    google.protobuf.StringValue PhoneIDC = 2;
 }
 
 message IncomeDataEmployement {

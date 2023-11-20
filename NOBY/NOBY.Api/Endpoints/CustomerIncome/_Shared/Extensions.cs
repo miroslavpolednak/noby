@@ -43,7 +43,11 @@ internal static class Extensions
         => new()
         {
             IsIssuedByExternalAccountant = contract.IsIssuedByExternalAccountant,
-            ConfirmationContact = contract.ConfirmationContact ?? "",
+            ConfirmationContact = contract.ConfirmationContact is null ? null : new()
+            {
+                PhoneIDC = contract.ConfirmationContact.PhoneIDC,
+                PhoneNumber = contract.ConfirmationContact.PhoneNumber
+            },
             ConfirmationDate = contract.ConfirmationDate,
             ConfirmationPerson = contract.ConfirmationPerson ?? ""
         };
