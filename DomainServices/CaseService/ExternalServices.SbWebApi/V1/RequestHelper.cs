@@ -22,7 +22,7 @@ internal static class RequestHelper
 
         var commonResult = commonResultGetter(responseObject);
 
-        int returnVal = commonResult?.Return_val ?? 0;
+        int returnVal = commonResult?.Return_val ?? -999;
         if (returnVal != 0)
         {
             if (returnVal2ErrorCodesMapping?.Any(t => t.ReturnVal == returnVal) ?? false)
