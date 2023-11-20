@@ -31,9 +31,18 @@ message GetDocumentListRequest {
 	string UserLogin = 8;
 
 	google.protobuf.StringValue FormId = 9;
+
+	SourceArchive SourceArchive = 10;  
 }
 
 message GetDocumentListResponse{
 	// Metadata dokumentu
 	repeated DocumentMetadata Metadata = 1;
+}
+
+// Unknown je default (prohledávají se všechny dostupné archívy a výsledek je merge nalezených záznamů)
+enum SourceArchive {
+  Unknown = 0;
+  Sdf = 1;
+  Tcp = 2;
 }

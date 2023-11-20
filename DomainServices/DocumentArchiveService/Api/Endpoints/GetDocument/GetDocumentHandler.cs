@@ -107,7 +107,7 @@ internal sealed class GetDocumentHandler : IRequestHandler<GetDocumentRequest, G
     {
         var response = new GetDocumentResponse
         {
-            Metadata = _documentMapper.MapSdfDocumentMetadata(cspResponse.Metadata),
+            Metadata = _documentMapper.MapSdfDocumentMetadata(cspResponse.Metadata, cspResponse.DmsDocInfo),
             Content = new()
         };
 

@@ -12,6 +12,7 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int StateInQueueNotAllowed = 14019;
     public const int DocumentWithEArchiveIdNotExistInQueue = 14020;
     public const int CaseIdInqueueNotExist = 1421;
+    public const int CannotGetFilenameFromSdfArchive = 1422;
 
     public static IErrorCodesDictionary Init()
     {
@@ -25,6 +26,7 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { StateInQueueNotAllowed, "Given state isn't allowed in queue"},
             { DocumentWithEArchiveIdNotExistInQueue, "Document with specified EArchiveId doesn't exist in queue" },
             { CaseIdInqueueNotExist, "CaseId in queue doesn't exist." },
+            { CannotGetFilenameFromSdfArchive, "Cannot get filename from sdf archive"}
         });
 
         return Messages;
