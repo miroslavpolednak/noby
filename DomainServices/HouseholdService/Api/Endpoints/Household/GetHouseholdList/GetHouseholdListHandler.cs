@@ -13,23 +13,15 @@ internal sealed class GetHouseholdListHandler
             .Select(Database.HouseholdExpressions.HouseholdDetail())
             .ToListAsync(cancellationToken);
 
-        // kontrola na existenci SA
-        if (!model.Any())
-        {
-            await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-        }
-
         var response = new GetHouseholdListResponse();
         response.Households.AddRange(model);
         return response;
     }
 
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly Database.HouseholdServiceDbContext _dbContext;
 
-    public GetHouseholdListHandler(Database.HouseholdServiceDbContext dbContext, SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
+    public GetHouseholdListHandler(Database.HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
-        _salesArrangementService = salesArrangementService;
     }
 }
