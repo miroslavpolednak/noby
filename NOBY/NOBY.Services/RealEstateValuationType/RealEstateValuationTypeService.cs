@@ -22,7 +22,7 @@ internal sealed class RealEstateValuationTypeService
         var caseInstance = await _caseService.ValidateCaseId(caseId, false, cancellationToken);
         if (caseInstance.State!.Value == (int)CaseStates.InProgress)
         {
-            var productSA = await _salesArrangementService.GetProductSalesArrangement(caseId, cancellationToken);
+            var productSA = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First();
             var offerInstance = await _offerService.GetMortgageOfferDetail(productSA.OfferId!.Value, cancellationToken);
 
             dsRequest.LoanAmount = offerInstance.SimulationResults.LoanAmount;

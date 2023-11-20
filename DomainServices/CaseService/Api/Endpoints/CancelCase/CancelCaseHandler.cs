@@ -24,7 +24,8 @@ internal sealed class CancelCaseHandler
         }
 
         // produktovy SA
-        var salesArrangementId = (await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellation))
+        var salesArrangementId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellation))
+            .First()
             .SalesArrangementId;
 
         // dokumenty v podpisovani

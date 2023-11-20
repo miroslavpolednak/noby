@@ -103,7 +103,7 @@ internal sealed class OrderAggregate
     {
         if (caseState == (int)CaseStates.InProgress)
         {
-            var (_, offerId) = await _salesArrangementService.GetProductSalesArrangement(caseId, cancellationToken);
+            var offerId = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First().OfferId;
             var offer = await _offerService.GetMortgageOfferDetail(offerId!.Value, cancellationToken);
 
             var collateralAmount = offer.SimulationInputs.CollateralAmount;

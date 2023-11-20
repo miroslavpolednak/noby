@@ -1,6 +1,7 @@
 ﻿using SharedTypes.Enums;
 using SharedTypes.Types;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
 
@@ -8,51 +9,76 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
 {
     public async Task<GetCaseParametersResponse> Handle(GetCaseParametersRequest request, CancellationToken cancellationToken)
     {
+        var response = new GetCaseParametersResponse();
+
+        // instance case
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
-        
-        return caseInstance.State == (int)CaseStates.InProgress
-            ? await getCaseInProgress(caseInstance, cancellationToken)
-            : await getCaseFromSb(caseInstance, cancellationToken);
+
+        // seznam produktovych SA
+        var saList = await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken);
+        var saInProgress = saList.FirstOrDefault(t => t.State is (int)SalesArrangementStates.NewArrangement or (int)SalesArrangementStates.InProgress);
+        if (saInProgress is not null)
+        {
+            response.SalesArrangementInProgress = new SalesArrangementInProgressDto
+            {
+                SalesArrangementId = saInProgress.SalesArrangementId,
+                ProductName = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == caseInstance.Data.ProductTypeId).Name,
+            };
+        }
+
+        response.CaseParameters.AddRange(caseInstance.State == (int)CaseStates.InProgress
+            ? await getCaseInProgress(caseInstance, saList, cancellationToken)
+            : await getCaseFromSb(caseInstance, cancellationToken));
+
+        return response;
     }
 
-    private async Task<GetCaseParametersResponse> getCaseInProgress(DomainServices.CaseService.Contracts.Case caseInstance, CancellationToken cancellationToken)
+    private async Task<List<Dto.CaseParameters>> getCaseInProgress(
+        DomainServices.CaseService.Contracts.Case caseInstance,
+        List<GetProductSalesArrangementsResponse.Types.SalesArrangement> salesArrangements,
+        CancellationToken cancellationToken)
     {
         // codebook
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
         var loanKindTypes = await _codebookService.LoanKinds(cancellationToken);
         var loanPurposeTypes = await _codebookService.LoanPurposes(cancellationToken);
-        
-        // get product SAId
-        var salesArrangementId = await _salesArrangementService.GetProductSalesArrangement(caseInstance.CaseId, cancellationToken);
-        // get SA instance
-        var salesArrangementInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId.SalesArrangementId, cancellationToken);
 
-        // get Offer
-        var offerInstance = await _offerService.GetMortgageOfferDetail(salesArrangementInstance.OfferId!.Value, cancellationToken);
+        List<Dto.CaseParameters> response = new();
 
-        // load User
-        var caseOwnerOrig = await getUserInstance(caseInstance.CaseOwner?.UserId, cancellationToken);
-        
-        return new GetCaseParametersResponse
+        foreach (var sa in salesArrangements)
         {
-            ProductType = productTypes.FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.ProductTypeId),
-            ContractNumber = salesArrangementInstance.ContractNumber,
-            LoanAmount = offerInstance.SimulationResults.LoanAmount,
-            LoanInterestRate = offerInstance.SimulationResults.LoanInterestRateProvided,
-            DrawingDateTo = offerInstance.SimulationResults.DrawingDateTo,
-            LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount,
-            LoanKind = loanKindTypes.FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId),
-            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod,
-            LoanPurposes = mapLoanPurposes(offerInstance.SimulationInputs.LoanPurposes, loanPurposeTypes).ToList(),
-            ExpectedDateOfDrawing = salesArrangementInstance.Mortgage?.ExpectedDateOfDrawing,
-            LoanDueDate = offerInstance.SimulationResults.LoanDueDate,
-            PaymentDay = offerInstance.SimulationInputs.PaymentDay,
-            FirstAnnuityPaymentDate = offerInstance.SimulationResults.AnnuityPaymentsDateFrom,
-            CaseOwnerOrigUser = getCaseOwnerOrigUser(caseOwnerOrig, null)
-        };
+            // get SA instance
+            var salesArrangementInstance = await _salesArrangementService.GetSalesArrangement(sa.SalesArrangementId, cancellationToken);
+
+            // get Offer
+            var offerInstance = await _offerService.GetMortgageOfferDetail(salesArrangementInstance.OfferId!.Value, cancellationToken);
+
+            // load User
+            var caseOwnerOrig = await getUserInstance(caseInstance.CaseOwner?.UserId, cancellationToken);
+            
+            response.Add(new Dto.CaseParameters
+            {
+                ProductType = productTypes.FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.ProductTypeId),
+                ContractNumber = salesArrangementInstance.ContractNumber,
+                LoanAmount = offerInstance.SimulationResults.LoanAmount,
+                LoanInterestRate = offerInstance.SimulationResults.LoanInterestRateProvided,
+                DrawingDateTo = offerInstance.SimulationResults.DrawingDateTo,
+                LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount,
+                LoanKind = loanKindTypes.FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId),
+                FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod,
+                LoanPurposes = mapLoanPurposes(offerInstance.SimulationInputs.LoanPurposes, loanPurposeTypes).ToList(),
+                ExpectedDateOfDrawing = salesArrangementInstance.Mortgage?.ExpectedDateOfDrawing,
+                LoanDueDate = offerInstance.SimulationResults.LoanDueDate,
+                PaymentDay = offerInstance.SimulationInputs.PaymentDay,
+                FirstAnnuityPaymentDate = offerInstance.SimulationResults.AnnuityPaymentsDateFrom,
+                CaseOwnerOrigUser = getCaseOwnerOrigUser(caseOwnerOrig, null)
+            });
+        }
+        
+        return response;
     }
 
-    private async Task<GetCaseParametersResponse> getCaseFromSb(DomainServices.CaseService.Contracts.Case caseInstance, CancellationToken cancellationToken)
+    private async Task<List<Dto.CaseParameters>> getCaseFromSb(DomainServices.CaseService.Contracts.Case caseInstance, CancellationToken cancellationToken)
     {
         // codebook
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
@@ -65,7 +91,9 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         var caseOwnerOrig = await getUserInstance(mortgageData.CaseOwnerUserOrigId, cancellationToken);
         var caseOwnerCurrent = await getUserInstance(mortgageData.CaseOwnerUserCurrentId, cancellationToken);
 
-        var response = new GetCaseParametersResponse
+        List<Dto.CaseParameters> response = new();
+
+        var parameters = new Dto.CaseParameters
         {
             FirstAnnuityPaymentDate = mortgageData.FirstAnnuityInstallmentDate,
             ProductType = productTypes.First(t => t.Id == mortgageData.ProductTypeId),
@@ -95,14 +123,15 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
             FixedRatePeriodRefix = mortgageData.FixedRatePeriodRefix,
             CaseOwnerOrigUser = getCaseOwnerOrigUser(caseOwnerOrig, caseOwnerCurrent)
         };
+        
 
         if (mortgageData.Statement is not null)
         {
             var statementTypes = await _codebookService.StatementTypes(cancellationToken);
             var statementSubscriptionTypes = await _codebookService.StatementSubscriptionTypes(cancellationToken);
             var statementFrequencies = await _codebookService.StatementFrequencies(cancellationToken);
-                
-            response.Statement = new StatementDto
+
+            parameters.Statement = new StatementDto
             {
                 TypeId = mortgageData.Statement.TypeId,
                 TypeShortName = statementTypes.FirstOrDefault(x => x.Id == mortgageData.Statement.TypeId)?.ShortName,
@@ -119,10 +148,11 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
                     mortgageData.Statement.Address.SingleLineAddressPoint = await _customerService.FormatAddress(mortgageData.Statement.Address, cancellationToken);
                 }
 
-                response.Statement.Address = (SharedTypes.Types.Address)mortgageData.Statement.Address!;
+                parameters.Statement.Address = (SharedTypes.Types.Address)mortgageData.Statement.Address!;
             }
         }
 
+        response.Add(parameters);
         return response;
     }
 

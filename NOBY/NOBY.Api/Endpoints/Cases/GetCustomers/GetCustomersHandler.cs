@@ -4,7 +4,6 @@ using SharedTypes.GrpcTypes;
 using System.ComponentModel.DataAnnotations;
 using CIS.Core;
 using NOBY.Api.Extensions;
-using CIS.Core.Security;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomers;
 
@@ -23,12 +22,12 @@ internal sealed class GetCustomersHandler
 
         if (caseInstance.State == (int)SharedTypes.Enums.CaseStates.InProgress)
         {
-            var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+            var saId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First().SalesArrangementId;
             // z parameters nacist Agent
-            var saDetail = await _salesArrangementService.GetSalesArrangement(saId.SalesArrangementId, cancellationToken);
+            var saDetail = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
             
             // vsichni customeri z CustomerOnSA
-            var customers = await _customerOnSAService.GetCustomerList(saId.SalesArrangementId, cancellationToken);
+            var customers = await _customerOnSAService.GetCustomerList(saId, cancellationToken);
 
             // vybrat a transformovat jen vlastnik, spoludluznik
             customerIdentities = customers

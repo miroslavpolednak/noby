@@ -9,9 +9,7 @@ using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.HouseholdService.Clients;
-using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.UserService.Clients;
 using FastEnumUtility;
 using Google.Protobuf;
@@ -29,7 +27,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
     {
         var documentTypeItem = await getDocumentType(_documentType, cancellationToken);
         
-        var salesArrangement = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+        var salesArrangement = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First();
         var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var customerOnSas = await _customerOnSaService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
         var caseState = (await _codebookService.CaseStates(cancellationToken)).First(s => s.Id == caseDetail.State);
