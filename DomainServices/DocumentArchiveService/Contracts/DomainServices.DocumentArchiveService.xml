@@ -61,6 +61,9 @@
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.FormIdFieldNumber">
             <summary>Field number for the "FormId" field.</summary>
         </member>
+        <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest.SourceArchiveFieldNumber">
+            <summary>Field number for the "SourceArchive" field.</summary>
+        </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest.DocumentIdFieldNumber">
             <summary>Field number for the "documentId" field.</summary>
         </member>
@@ -183,7 +186,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.UploadDocument(DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest,Grpc.Core.ServerCallContext)">
             <summary>
-            Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+            Metoda slouží k uložení dokumentu do eArchivu (SDF archivu).
             </summary>
             <param name="request">The request received from the client.</param>
             <param name="context">The context of the server-side call handler being invoked.</param>
@@ -191,7 +194,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.GetDocument(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.ServerCallContext)">
             <summary>
-            Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            Metoda slouží k získání detailu dokumentu z eArchívu (SDF a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
             </summary>
             <param name="request">The request received from the client.</param>
             <param name="context">The context of the server-side call handler being invoked.</param>
@@ -199,7 +202,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceBase.GetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.ServerCallContext)">
             <summary>
-            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (SDF a TCP) na základě vstupních parametrů
             </summary>
             <param name="request">The request received from the client.</param>
             <param name="context">The context of the server-side call handler being invoked.</param>
@@ -277,7 +280,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.UploadDocument(DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
-            Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+            Metoda slouží k uložení dokumentu do eArchivu (SDF archivu).
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
@@ -287,7 +290,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.UploadDocument(DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest,Grpc.Core.CallOptions)">
             <summary>
-            Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+            Metoda slouží k uložení dokumentu do eArchivu (SDF archivu).
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>
@@ -295,7 +298,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.UploadDocumentAsync(DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
-            Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+            Metoda slouží k uložení dokumentu do eArchivu (SDF archivu).
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
@@ -305,7 +308,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.UploadDocumentAsync(DomainServices.DocumentArchiveService.Contracts.UploadDocumentRequest,Grpc.Core.CallOptions)">
             <summary>
-            Metoda slouží k uložení dokumentu do eArchivu (CSP archivu).
+            Metoda slouží k uložení dokumentu do eArchivu (SDF archivu).
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>
@@ -313,7 +316,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocument(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
-            Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            Metoda slouží k získání detailu dokumentu z eArchívu (SDF a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
@@ -323,7 +326,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocument(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.CallOptions)">
             <summary>
-            Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            Metoda slouží k získání detailu dokumentu z eArchívu (SDF a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>
@@ -331,7 +334,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
-            Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            Metoda slouží k získání detailu dokumentu z eArchívu (SDF a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
@@ -341,7 +344,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentRequest,Grpc.Core.CallOptions)">
             <summary>
-            Metoda slouží k získání detailu dokumentu z eArchívu (CSP a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
+            Metoda slouží k získání detailu dokumentu z eArchívu (SDF a TCP), jeho kompletních metadat a kopie samotného dokumentu (binární data - BLOB) na základě DocumentId
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>
@@ -349,7 +352,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
-            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (SDF a TCP) na základě vstupních parametrů
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
@@ -359,7 +362,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentList(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
             <summary>
-            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (SDF a TCP) na základě vstupních parametrů
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>
@@ -367,7 +370,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
-            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (SDF a TCP) na základě vstupních parametrů
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
@@ -377,7 +380,7 @@
         </member>
         <member name="M:DomainServices.DocumentArchiveService.Contracts.v1.DocumentArchiveService.DocumentArchiveServiceClient.GetDocumentListAsync(DomainServices.DocumentArchiveService.Contracts.GetDocumentListRequest,Grpc.Core.CallOptions)">
             <summary>
-            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (CSP a TCP) na základě vstupních parametrů
+            Metoda slouží k získání seznamu dokumentů (metadata) z eArchivu (SDF a TCP) na základě vstupních parametrů
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>
@@ -664,6 +667,11 @@
         </member>
         <member name="P:DomainServices.DocumentArchiveService.Contracts.GetDocumentListReflection.Descriptor">
             <summary>File descriptor for GetDocumentList.proto</summary>
+        </member>
+        <member name="T:DomainServices.DocumentArchiveService.Contracts.SourceArchive">
+            <summary>
+            Unknown je default (prohledávají se všechny dostupné archívy a výsledek je merge nalezených záznamů)
+            </summary>
         </member>
         <member name="F:DomainServices.DocumentArchiveService.Contracts.GetDocumentListResponse.MetadataFieldNumber">
             <summary>Field number for the "Metadata" field.</summary>

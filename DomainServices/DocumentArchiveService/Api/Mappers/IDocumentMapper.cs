@@ -8,7 +8,7 @@ namespace DomainServices.DocumentArchiveService.Api.Mappers;
 
 public interface IDocumentMapper
 {
-    DocumentMetadata MapSdfDocumentMetadata(MetadataValue[] values);
+    DocumentMetadata MapSdfDocumentMetadata(MetadataValue[] values, DmsDocumentInfo dmsDocumentInfo);
 
     FindSdfDocumentsQuery MapSdfFindDocumentQuery(GetDocumentListRequest request);
 

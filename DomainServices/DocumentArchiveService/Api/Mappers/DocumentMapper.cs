@@ -8,14 +8,14 @@ namespace DomainServices.DocumentArchiveService.Api.Mappers;
 
 public class DocumentMapper : IDocumentMapper
 {
-    public DocumentMetadata MapSdfDocumentMetadata(MetadataValue[] values)
+    public DocumentMetadata MapSdfDocumentMetadata(MetadataValue[] values, DmsDocumentInfo dmsDocumentInfo)
     {
         var metadata = new DocumentMetadata();
         var caseId = Array.Find(values, r => r.AttributeName == "OP_Cislo_pripadu")?.Value;
         metadata.CaseId = long.TryParse(caseId, out var caseIdOut) ? caseIdOut : null;
         metadata.DocumentId = Array.Find(values, r => r.AttributeName == "DOK_ID_dokumentu_zdrojoveho_systemu")?.Value ?? string.Empty;
         metadata.EaCodeMainId = int.TryParse(Array.Find(values, r => r.AttributeName == "DOK_Heslo_hlavni_ID")?.Value, out var outEaCodeMainId) ? outEaCodeMainId : null;
-        metadata.Filename = Array.Find(values, r => r.AttributeName == "DOK_Nazev_souboru")?.Value ?? string.Empty;
+        metadata.Filename = GetFilename(values, dmsDocumentInfo);
         metadata.Description = Array.Find(values, r => r.AttributeName == "DOK_Popis")?.Value ?? string.Empty;
         metadata.OrderId = int.TryParse(Array.Find(values, r => r.AttributeName == "DOK_ID_oceneni")?.Value, out var outOrderId) ? outOrderId : null;
         metadata.CreatedOn = DateTime.TryParse(Array.Find(values, r => r.AttributeName == "DOK_Datum_prijeti")?.Value, out var outCreatedOn) ? outCreatedOn : default;
@@ -122,5 +122,27 @@ public class DocumentMapper : IDocumentMapper
             .Select(s => { int i; return int.TryParse(s, out i) ? i : (int?)null; })
             .Where(i => i.HasValue)
             .Select(i => i!.Value);
+    }
+
+    private static string GetFilename(MetadataValue[] values, DmsDocumentInfo dmsDocumentInfo)
+    {
+        var docFileName = Array.Find(values, r => r.AttributeName == "DOK_Nazev_souboru")?.Value;
+
+        if (!string.IsNullOrWhiteSpace(docFileName) && Path.HasExtension(docFileName))
+        {
+            return docFileName;
+        }
+        else if (!string.IsNullOrWhiteSpace(docFileName) && !Path.HasExtension(docFileName))
+        {
+            return docFileName + Path.GetExtension(dmsDocumentInfo.DmsName) ?? throw new ArgumentException("DmsName doesn't has file extension");
+        }
+        else if (string.IsNullOrWhiteSpace(docFileName) && !string.IsNullOrWhiteSpace(dmsDocumentInfo.DmsName))
+        {
+            return dmsDocumentInfo.DmsName;
+        }
+        else
+        {
+            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.CannotGetFilenameFromSdfArchive);
+        }
     }
 }
