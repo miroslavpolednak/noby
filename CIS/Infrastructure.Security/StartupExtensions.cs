@@ -35,6 +35,8 @@ public static class StartupExtensions
         
         // header parser
         builder.Services.TryAddSingleton<IAuthHeaderParser, AuthHeaderParser>();
+        // add di validator
+        builder.Services.AddSingleton<NativeAdLoginValidator>();
 
         // login validator
         builder.Services.TryAddSingleton<ILoginValidator>(provider =>
