@@ -29,4 +29,6 @@ public static class CisGlobalConstants
     /// Name of section in appsettings.json which holds CIS environment configuration
     /// </summary>
     public const string EnvironmentConfigurationSectionName = "CisEnvironmentConfiguration";
+
+    public const string ServiceAuthenticationSectionName = "CisSecurity:ServiceAuthentication";
 }

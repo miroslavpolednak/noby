@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using CIS.Infrastructure.Security.Configuration;
+using Microsoft.Extensions.Options;
 using System.DirectoryServices.Protocols;
 
 namespace CIS.Infrastructure.Security.LoginValidator;
@@ -7,28 +8,26 @@ internal sealed class NativeAdLoginValidator
     : ILoginValidator
 {
     private readonly ILogger<ILoginValidator> _logger;
-    private IOptionsMonitor<CisServiceAuthenticationOptions> _options;
+    private CisServiceAuthenticationConfiguration _configuration;
 
-    public NativeAdLoginValidator(ILogger<ILoginValidator> logger, IOptionsMonitor<CisServiceAuthenticationOptions> options)
+    public NativeAdLoginValidator(ILogger<ILoginValidator> logger, IOptions<CisServiceAuthenticationConfiguration> configuration)
     {
-        _options = options;
+        _configuration = configuration.Value;
         _logger = logger;
     }
 
     public Task<bool> Validate(string login, string password)
     {
-        var opt = _options.Get(InternalServicesAuthentication.DefaultSchemeName);
-
         try
         {
-            using (var ldapConnection = new LdapConnection($"{opt.AdHost}:{opt.AdPort}"))
+            using (var ldapConnection = new LdapConnection($"{_configuration.AdHost}:{_configuration.AdPort}"))
             {
                 ldapConnection.AuthType = AuthType.Negotiate;
                 ldapConnection.SessionOptions.ProtocolVersion = 3;
-                ldapConnection.SessionOptions.SecureSocketLayer = opt.IsSsl;
+                ldapConnection.SessionOptions.SecureSocketLayer = _configuration.IsSsl;
                 ldapConnection.SessionOptions.VerifyServerCertificate += (sender, certificate) => true;
 
-                ldapConnection.Bind(new System.Net.NetworkCredential(login, password, opt.Domain));
+                ldapConnection.Bind(new System.Net.NetworkCredential(login, password, _configuration.Domain));
             }
 
             return Task.FromResult(true);
@@ -37,9 +36,9 @@ internal sealed class NativeAdLoginValidator
         {
             using (_logger.BeginScope(new Dictionary<string, object>
             {
-                { "AdHost", opt.AdHost ?? "" },
-                { "AdPort", opt.AdPort },
-                { "Domain", opt.Domain ?? "" },
+                { "AdHost", _configuration.AdHost ?? "" },
+                { "AdPort", _configuration.AdPort ?? 0 },
+                { "Domain", _configuration.Domain ?? "" },
                 { "Password", password }
             }))
             {

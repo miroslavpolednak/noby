@@ -98,34 +98,36 @@ public class WebApplicationFactoryFixture<TStartup>
             {
                 // ziskat korektni app key dane sluzby
                 var config = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-                var applicationKey = config
+                
+                var newEnvironmentConfiguration = config
                     .GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName)
-                    .GetValue<string>("DefaultApplicationKey");
+                    .Get<CisEnvironmentConfiguration>();
+                var newAuthenticationConfiguration = config
+                    .GetSection(Core.CisGlobalConstants.ServiceAuthenticationSectionName)
+                    .Get<CisServiceAuthenticationConfiguration>();
 
                 // vyhodit puvodni konfiguraci z DI a zaregistrovat novou s hodnotami pro test
                 services
                     .RemoveAll<ICisEnvironmentConfiguration>()
-                    .AddSingleton<ICisEnvironmentConfiguration>(new TestCisEnvironmentConfiguration
-                    {
-                        DefaultApplicationKey = applicationKey
-                    });
+                    .AddSingleton<ICisEnvironmentConfiguration>(newEnvironmentConfiguration!);
 
                 // nastavit service security auth validator
-                services
+                /*services
                     .RemoveAll<Infrastructure.Security.ILoginValidator>()
                     .AddSingleton<Infrastructure.Security.ILoginValidator, Infrastructure.Security.StaticLoginValidator>()
                     .RemoveAll<CisServiceAuthenticationConfiguration>()
-                    .AddSingleton(new CisServiceAuthenticationConfiguration
-                    {
-                        Validator = CisServiceAuthenticationConfiguration.LoginValidators.StaticCollection
-                    });
+                    .AddSingleton(newAuthenticationConfiguration!);*/
 
                 // fake logger
                 if (CisWebFactoryConfiguration.UseNullLogger)
+                {
                     services.RemoveAll<ILoggerFactory>().AddSingleton<ILoggerFactory, NullLoggerFactory>();
+                }
 
                 if (CisWebFactoryConfiguration.UseDbContextAutoMock)
+                {
                     CisWebFactoryConfiguration.DbMockAdapter.MockDatabase<TStartup>(services);
+                }
 
                 _configureServices?.Invoke(services);
             });
