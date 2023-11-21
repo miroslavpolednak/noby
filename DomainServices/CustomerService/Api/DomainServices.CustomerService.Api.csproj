@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
 <PropertyGroup>
-	  <TargetFramework>net7.0</TargetFramework>
+	  <TargetFramework>net8.0</TargetFramework>
 	  <Authors>Filip Tuma</Authors>
 	  <Product>MPSS DomainServices</Product>
 	  <LangVersion>preview</LangVersion>
@@ -18,11 +18,11 @@
   
   <ItemGroup>
 	<PackageReference Include="Dapper" Version="2.1.21" />
-    <PackageReference Include="MediatR" Version="12.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
 	<PackageReference Include="Grpc.AspNetCore" Version="2.59.0" />
 	<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.59.0" />
-    <PackageReference Include="System.ServiceModel.Http" Version="6.1.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="6.2.0" />
   </ItemGroup>
 
   <ItemGroup>

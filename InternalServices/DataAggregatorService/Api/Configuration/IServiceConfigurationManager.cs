@@ -1,6 +1,6 @@
 ﻿namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
-internal interface IConfigurationManager
+internal interface IServiceConfigurationManager
 {
     Task<Document.DocumentConfiguration> LoadDocumentConfiguration(Document.DocumentKey documentKey,  CancellationToken cancellationToken);
 

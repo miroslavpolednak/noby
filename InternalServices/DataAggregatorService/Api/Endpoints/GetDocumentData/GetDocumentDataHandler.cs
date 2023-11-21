@@ -7,11 +7,11 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Endpoints.GetDocumentDa
 
 internal class GetDocumentDataHandler : IRequestHandler<GetDocumentDataRequest, GetDocumentDataResponse>
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly IServiceConfigurationManager _configurationManager;
     private readonly DataServicesLoader _dataServicesLoader;
     private readonly DocumentDataFactory _documentDataFactory;
 
-    public GetDocumentDataHandler(IConfigurationManager configurationManager, DataServicesLoader dataServicesLoader, DocumentDataFactory documentDataFactory)
+    public GetDocumentDataHandler(IServiceConfigurationManager configurationManager, DataServicesLoader dataServicesLoader, DocumentDataFactory documentDataFactory)
     {
         _configurationManager = configurationManager;
         _dataServicesLoader = dataServicesLoader;

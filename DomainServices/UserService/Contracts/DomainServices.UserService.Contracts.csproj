@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
 	  <Company>Wookiee.Apps s.r.o.</Company>
 	  <Product>Common Infrastructure Solution</Product>
 	  <Nullable>enable</Nullable>
@@ -23,7 +23,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.13" />
+		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

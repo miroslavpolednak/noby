@@ -6,7 +6,7 @@ namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.GetDocument
 
 internal static class DocumentConfigurationMock
 {
-    public static void MockDocumentFields(this IConfigurationManager configurationManager)
+    public static void MockDocumentFields(this IServiceConfigurationManager configurationManager)
     {
         var documentConfiguration = new DocumentConfiguration
         {
@@ -34,7 +34,7 @@ internal static class DocumentConfigurationMock
                             .Returns(documentConfiguration);
     }
 
-    public static void MockTable(this IConfigurationManager configurationManager)
+    public static void MockTable(this IServiceConfigurationManager configurationManager)
     {
         var documentConfiguration = new DocumentConfiguration()
         {

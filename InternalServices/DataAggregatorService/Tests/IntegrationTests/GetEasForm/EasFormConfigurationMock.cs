@@ -7,7 +7,7 @@ namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.GetEasForm;
 
 internal static class EasFormConfigurationMock
 {
-    public static void MockProductRequest(this IConfigurationManager configuration)
+    public static void MockProductRequest(this IServiceConfigurationManager configuration)
     {
         var easFormConfiguration = new EasFormConfiguration
         {
@@ -30,7 +30,7 @@ internal static class EasFormConfigurationMock
         configuration.LoadEasFormConfiguration(Arg.Is<EasFormKey>(x => x.RequestType == EasFormRequestType.Product), Arg.Any<CancellationToken>()).Returns(easFormConfiguration);
     }
 
-    public static void MockServiceRequest(this IConfigurationManager configuration)
+    public static void MockServiceRequest(this IServiceConfigurationManager configuration)
     {
         var easFormConfiguration = new EasFormConfiguration
         {

@@ -2,14 +2,14 @@
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
-internal class CachedConfigurationManager : IConfigurationManager
+internal class CachedConfigurationManager : IServiceConfigurationManager
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly IServiceConfigurationManager _configurationManager;
     private readonly IMemoryCache _memoryCache;
 
     private readonly MemoryCacheEntryOptions _cacheEntryOptions;
 
-    public CachedConfigurationManager(IConfigurationManager configurationManager, IMemoryCache memoryCache, AppConfiguration configuration)
+    public CachedConfigurationManager(IServiceConfigurationManager configurationManager, IMemoryCache memoryCache, AppConfiguration configuration)
     {
         _configurationManager = configurationManager;
         _memoryCache = memoryCache;

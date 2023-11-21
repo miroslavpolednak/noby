@@ -6,10 +6,10 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Endpoints.GetEasForm;
 
 internal class GetEasFormHandler : IRequestHandler<GetEasFormRequest, GetEasFormResponse>
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly IServiceConfigurationManager _configurationManager;
     private readonly EasFormFactory _easFormFactory;
 
-    public GetEasFormHandler(IConfigurationManager configurationManager, EasFormFactory easFormFactory)
+    public GetEasFormHandler(IServiceConfigurationManager configurationManager, EasFormFactory easFormFactory)
     {
         _configurationManager = configurationManager;
         _easFormFactory = easFormFactory;

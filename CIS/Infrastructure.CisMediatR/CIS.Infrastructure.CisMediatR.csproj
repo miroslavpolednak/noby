@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFramework>net7.0</TargetFramework>
+	  <TargetFramework>net8.0</TargetFramework>
 	  <Product>Common Infrastructure Solution</Product>
 	  <Authors>Filip Tuma</Authors>
 	  <Nullable>enable</Nullable>
@@ -22,9 +22,9 @@
 	<ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="Google.Protobuf" Version="3.25.1" />
-    <PackageReference Include="MediatR" Version="12.1.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
   </ItemGroup>

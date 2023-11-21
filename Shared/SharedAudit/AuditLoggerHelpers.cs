@@ -12,6 +12,7 @@ public static class AuditLoggerHelpers
 
     public static string GenerateSHA3(byte[] data)
     {
-        return "";
+        var hashed = SHA3_512.HashData(data);
+        return Convert.ToBase64String(hashed);
     }
 }

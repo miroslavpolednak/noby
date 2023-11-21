@@ -3,7 +3,7 @@
 namespace CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
 [TransientService, AsImplementedInterfacesService]
-internal class ConfigurationManager : IConfigurationManager
+internal class ConfigurationManager : IServiceConfigurationManager
 {
     private readonly ConfigurationRepositoryFactory _repositoryFactory;
 

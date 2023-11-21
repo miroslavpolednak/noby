@@ -7,11 +7,11 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Endpoints.GetRiskLoanAp
 
 internal class GetRiskLoanApplicationDataHandler : IRequestHandler<GetRiskLoanApplicationDataRequest, GetRiskLoanApplicationDataResponse>
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly IServiceConfigurationManager _configurationManager;
     private readonly DataServicesLoader _dataServicesLoader;
     private readonly RiskLoanApplicationData _data;
 
-    public GetRiskLoanApplicationDataHandler(IConfigurationManager configurationManager, DataServicesLoader dataServicesLoader, RiskLoanApplicationData data)
+    public GetRiskLoanApplicationDataHandler(IServiceConfigurationManager configurationManager, DataServicesLoader dataServicesLoader, RiskLoanApplicationData data)
     {
         _configurationManager = configurationManager;
         _dataServicesLoader = dataServicesLoader;

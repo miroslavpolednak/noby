@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <OutputType>Library</OutputType>
     <Product>Common Infrastructure Solution</Product>
     <Authors>Filip Tuma</Authors>
@@ -31,9 +31,9 @@
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.59.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.59.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.59.0" />
-    <PackageReference Include="MediatR" Version="12.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
   </ItemGroup>
 

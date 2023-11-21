@@ -18,7 +18,7 @@ namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.Common;
 
 public class IntegrationTestBase
 {
-    internal IConfigurationManager ConfigurationManager { get; } = Substitute.For<IConfigurationManager>();
+    internal IServiceConfigurationManager ConfigurationManager { get; } = Substitute.For<IServiceConfigurationManager>();
     protected ISalesArrangementServiceClient SalesArrangementServiceClient { get; } = Substitute.For<ISalesArrangementServiceClient>();
     protected ICaseServiceClient CaseServiceClient { get; } = Substitute.For<ICaseServiceClient>();
     protected IOfferServiceClient OfferServiceClient { get; } = Substitute.For<IOfferServiceClient>();
@@ -50,7 +50,7 @@ public class IntegrationTestBase
                    services.RemoveAll<ICodebookServiceClient>().AddSingleton<ICodebookServiceClient, CodebookServiceMock>();
 
                    //Services mocks
-                   services.RemoveAll<IConfigurationManager>().AddTransient(_ => ConfigurationManager);
+                   services.RemoveAll<IServiceConfigurationManager>().AddTransient(_ => ConfigurationManager);
                    services.RemoveAll<ISalesArrangementServiceClient>().AddTransient(_ => SalesArrangementServiceClient);
                    services.RemoveAll<ICaseServiceClient>().AddTransient(_ => CaseServiceClient);
                    services.RemoveAll<IOfferServiceClient>().AddTransient(_ => OfferServiceClient);

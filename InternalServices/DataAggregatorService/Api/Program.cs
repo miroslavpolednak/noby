@@ -24,7 +24,7 @@ SharedComponents.GrpcServiceBuilder
         if (appConfiguration.UseCacheForConfiguration)
         {
             builder.Services.AddMemoryCache();
-            builder.Services.Decorate<IConfigurationManager, CachedConfigurationManager>();
+            builder.Services.Decorate<IServiceConfigurationManager, CachedConfigurationManager>();
         }
     })
     .MapGrpcServices(app =>
