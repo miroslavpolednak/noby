@@ -18,4 +18,14 @@ public static class ConfigurationExtensions
         configurationBuilder.Add(new CisEnvironmentVariablesConfigurationSource { Prefix = prefix });
         return configurationBuilder;
     }
+
+    public static IConfigurationBuilder AddConjurEnvironmentVariables(
+        this IConfigurationBuilder configurationBuilder,
+        IConfiguration configuration,
+        string environmentName)
+    {
+        configurationBuilder.Add(new ConjurEnvironmentVariablesSource(configuration) { EnvironmentPrefix = environmentName });
+
+        return configurationBuilder;
+    }
 }
