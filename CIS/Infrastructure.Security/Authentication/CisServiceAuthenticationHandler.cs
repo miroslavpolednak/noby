@@ -19,7 +19,7 @@ internal sealed class CisServiceAuthenticationHandler
     private readonly CisServiceAuthenticationConfiguration _configuration;
 
     public CisServiceAuthenticationHandler(
-        CisServiceAuthenticationConfiguration configuration,
+        IOptions<CisServiceAuthenticationConfiguration> configuration,
         IOptionsMonitor<CisServiceAuthenticationOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
@@ -28,7 +28,7 @@ internal sealed class CisServiceAuthenticationHandler
         ILoginValidator adValidator)
     : base(options, logger, encoder, clock)
     {
-        _configuration = configuration;
+        _configuration = configuration.Value;
         _adValidator = adValidator;
         _headerParser = headerParser;
         _logger = logger.CreateLogger<CisServiceAuthenticationHandler>();

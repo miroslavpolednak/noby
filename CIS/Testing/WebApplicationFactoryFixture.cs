@@ -102,21 +102,11 @@ public class WebApplicationFactoryFixture<TStartup>
                 var newEnvironmentConfiguration = config
                     .GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName)
                     .Get<CisEnvironmentConfiguration>();
-                var newAuthenticationConfiguration = config
-                    .GetSection(Core.CisGlobalConstants.ServiceAuthenticationSectionName)
-                    .Get<CisServiceAuthenticationConfiguration>();
-
+                
                 // vyhodit puvodni konfiguraci z DI a zaregistrovat novou s hodnotami pro test
                 services
                     .RemoveAll<ICisEnvironmentConfiguration>()
                     .AddSingleton<ICisEnvironmentConfiguration>(newEnvironmentConfiguration!);
-
-                // nastavit service security auth validator
-                /*services
-                    .RemoveAll<Infrastructure.Security.ILoginValidator>()
-                    .AddSingleton<Infrastructure.Security.ILoginValidator, Infrastructure.Security.StaticLoginValidator>()
-                    .RemoveAll<CisServiceAuthenticationConfiguration>()
-                    .AddSingleton(newAuthenticationConfiguration!);*/
 
                 // fake logger
                 if (CisWebFactoryConfiguration.UseNullLogger)

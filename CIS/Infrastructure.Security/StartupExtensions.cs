@@ -54,7 +54,9 @@ public static class StartupExtensions
         });
 
         // native auth/authorization
-        builder.Services.AddAuthentication(InternalServicesAuthentication.DefaultSchemeName);
+        builder.Services
+            .AddAuthentication(InternalServicesAuthentication.DefaultSchemeName)
+            .AddScheme<CisServiceAuthenticationOptions, CisServiceAuthenticationHandler>(InternalServicesAuthentication.DefaultSchemeName, options => { });
         builder.Services.AddAuthorization();
 
         // helper pro ziskani instance technickeho uzivatele
