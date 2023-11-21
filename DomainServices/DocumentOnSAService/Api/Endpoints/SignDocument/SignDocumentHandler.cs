@@ -128,13 +128,9 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         UpdateDocumentOnSa(documentOnSa, signatureDate);
 
-        // Update Mortgage.FirstSignatureDate
-        if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()) // 4
-            await UpdateFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
-
         var houseHold = documentOnSa.HouseholdId.HasValue
-            ? await _householdService.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken)
-            : null;
+                    ? await _householdService.GetHousehold(documentOnSa.HouseholdId!.Value, cancellationToken)
+                    : null;
 
         // SUML call for all those document types, household should be not null 
         if (IsDocumentTypeWithHousehold(documentOnSa.DocumentTypeId.GetValueOrDefault()))
@@ -449,6 +445,9 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             {
                 throw new CisValidationException(ErrorCodeMapper.EasAddFirstSignatureDateReturnedErrorState, $"Eas AddFirstSignatureDate returned error state: {result.CommonValue} with message: {result.CommonText}");
             }
+
+            // Update Mortgage.FirstSignatureDate
+            await UpdateFirstSignatureDate(signatureDate, salesArrangement, cancellationToken);
         }
     }
 
