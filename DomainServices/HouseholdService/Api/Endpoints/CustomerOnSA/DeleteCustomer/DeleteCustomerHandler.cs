@@ -75,7 +75,11 @@ internal sealed class DeleteCustomerHandler
         foreach (var doc in documentOnSAToSigns)
         {
             // Have to be call one by one
-            await _documentOnSAServiceClient.StopSigning(new() { DocumentOnSAId = doc.DocumentOnSAId!.Value }, cancellationToken);
+            await _documentOnSAServiceClient.StopSigning(new() 
+            { 
+                DocumentOnSAId = doc.DocumentOnSAId!.Value,
+                SkipValidations = true
+            }, cancellationToken);
         }
     }
 
