@@ -16,6 +16,9 @@ public static class CisEnvironmentConfigurationExtensions
         // get env variables
         builder.Configuration.AddCisEnvironmentVariables($"{cisConfiguration.EnvironmentName}_");
 
+        if (cisConfiguration.SecretsSource == SecretsSource.ConjurEnvironmentVariables)
+            builder.Configuration.AddConjurEnvironmentVariables(builder.Configuration, cisConfiguration.EnvironmentName!);
+
         return cisConfiguration;
     }
 

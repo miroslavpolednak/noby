@@ -7,6 +7,8 @@ public sealed class CisEnvironmentConfiguration
 
     public string? EnvironmentName { get; set; }
 
+    public SecretsSource SecretsSource { get; set; }
+
     public string? ServiceDiscoveryUrl { get; set; }
 
     public string? InternalServicesLogin { get; set; }
