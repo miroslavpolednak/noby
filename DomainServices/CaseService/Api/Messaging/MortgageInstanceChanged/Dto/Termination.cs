@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class Termination : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Termination"",""doc"":"" CDM entity name(s): Termination."",""namespace"":""cz.kb.api.mortgageservicingevents.v1.mortgageinstance"",""fields"":[{""name"":""deactivatedExactlyOn"",""doc"":""Date when product instance item was terminated or will be terminated (any way, e.g. canceled, loan repaid, account closed). CDM attribute class name: DeactivatedExactlyOn. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""long"",""logicalType"":""timestamp-millis""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Termination"",""doc"":"" CDM entity name(s): Termination."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageinstance"",""fields"":[{""name"":""deactivatedExactlyOn"",""doc"":""Date when product instance item was terminated or will be terminated (any way, e.g. canceled, loan repaid, account closed). CDM attribute class name: DeactivatedExactlyOn. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""long"",""logicalType"":""timestamp-millis""}}]}");
 		/// <summary>
 		/// Date when product instance item was terminated or will be terminated (any way, e.g. canceled, loan repaid, account closed). CDM attribute class name: DeactivatedExactlyOn. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>

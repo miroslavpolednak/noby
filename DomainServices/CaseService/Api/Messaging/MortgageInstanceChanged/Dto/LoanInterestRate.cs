@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -22,28 +22,28 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"LoanInterestRate\",\"doc\":\"Specific interest rate of propo" +
 				"sed or sold loan business product. This is only THE (primary) interest rate. Thi" +
 				"s is NOT any other interest rate on product. CDM entity name(s): LoanInterestRat" +
-				"e.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v1.mortgageinstance\",\"fields\"" +
+				"e.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\"" +
 				":[{\"name\":\"fixedRatePeriod\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name" +
 				"\":\"FixedRatePeriod\",\"doc\":\"Time that interest rate is fixed and can not change. " +
 				"CDM entity name(s): FixedRatePeriod.\",\"namespace\":\"cz.kb.api.mortgageservicingev" +
-				"ents.v1.mortgageinstance\",\"fields\":[{\"name\":\"nextRefixDate\",\"doc\":\".Date, when t" +
-				"he next fixed period of the loan (mortgage) has to be defined.Datum pristi refix" +
-				"ace urokove sazby uveru (hypoteky). CDM attribute class name: FixedRatePeriodNex" +
-				"tRefixDate. Standard avro date represented by the number of days from the unix e" +
-				"poch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Cons" +
-				"ider using converters to date class in code generator (see KB Integration Platfo" +
-				"rm wiki for schema registry chapter).\",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"" +
-				"}},{\"name\":\"period\",\"doc\":\".Total length of period in units. If no units are giv" +
-				"en, default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute" +
-				" has simple type ST_PositiveInt with description: Integer with a constraint. The" +
-				" value must be a positive number, i.e. zero is excluded.\",\"type\":\"int\"}]}]},{\"na" +
-				"me\":\"value\",\"doc\":\"Resulting interest rate, i.e. what customer sees.Urokova mira" +
-				" uveru.(High level) vbs + srn + margin. CDM attribute class name: LoanInterestRa" +
-				"teValue. Attribute has simple type ST_InterestRate with description: Urok.Repres" +
-				"ents an interest rate or its part, (Interest rate, SRN, Margin).E. g. 1.0 (=100%" +
-				"), 0.25 (=25%)Limited at 100000%\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\"" +
-				",\"precision\":11,\"scale\":8}}]}");
-		private cz.kb.api.mortgageservicingevents.v1.mortgageinstance.FixedRatePeriod _fixedRatePeriod;
+				"ents.v2.mortgageinstance\",\"fields\":[{\"name\":\"nextRefixDate\",\"doc\":\"Date, when th" +
+				"e next fixed period of the loan (mortgage) has to be defined.Datum pristi refixa" +
+				"ce urokove sazby uveru (hypoteky). CDM attribute class name: FixedRatePeriodNext" +
+				"RefixDate. Standard avro date represented by the number of days from the unix ep" +
+				"och, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consi" +
+				"der using converters to date class in code generator (see KB Integration Platfor" +
+				"m wiki for schema registry chapter).\",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"}" +
+				"},{\"name\":\"period\",\"doc\":\"Total length of period in units. If no units are given" +
+				", default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute h" +
+				"as simple type ST_PositiveInt with description: Integer with a constraint. The v" +
+				"alue must be a positive number, i.e. zero is excluded.\",\"type\":\"int\"}]}]},{\"name" +
+				"\":\"value\",\"doc\":\"Resulting interest rate, i.e. what customer sees.Urokova mira u" +
+				"veru.(High level) vbs + srn + margin. CDM attribute class name: LoanInterestRate" +
+				"Value. Attribute has simple type ST_InterestRate with description: Urok.Represen" +
+				"ts an interest rate or its part, (Interest rate, SRN, Margin).E. g. 1.0 (=100%)," +
+				" 0.25 (=25%)Limited at 100000%\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"" +
+				"precision\":11,\"scale\":8}}]}");
+		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.FixedRatePeriod _fixedRatePeriod;
 		/// <summary>
 		/// Resulting interest rate, i.e. what customer sees.Urokova mira uveru.(High level) vbs + srn + margin. CDM attribute class name: LoanInterestRateValue. Attribute has simple type ST_InterestRate with description: Urok.Represents an interest rate or its part, (Interest rate, SRN, Margin).E. g. 1.0 (=100%), 0.25 (=25%)Limited at 100000%
 		/// </summary>
@@ -55,7 +55,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				return LoanInterestRate._SCHEMA;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v1.mortgageinstance.FixedRatePeriod fixedRatePeriod
+		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.FixedRatePeriod fixedRatePeriod
 		{
 			get
 			{
@@ -93,7 +93,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 		{
 			switch (fieldPos)
 			{
-			case 0: this.fixedRatePeriod = (cz.kb.api.mortgageservicingevents.v1.mortgageinstance.FixedRatePeriod)fieldValue; break;
+			case 0: this.fixedRatePeriod = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.FixedRatePeriod)fieldValue; break;
 			case 1: this.value = (Avro.AvroDecimal)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};

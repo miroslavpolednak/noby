@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,13 +19,13 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class DrawdownPeriod : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""DrawdownPeriod"",""doc"":""Defines when loan can be withdrawn. CDM entity name(s): DrawdownPeriod."",""namespace"":""cz.kb.api.mortgageservicingevents.v1.mortgageinstance"",""fields"":[{""name"":""dateFrom"",""doc"":""Defines exact date when withdrawal of the loan can be started. CDM attribute class name: DrawdownPeriodDateFrom. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""int"",""logicalType"":""date""}},{""name"":""dateUntil"",""doc"":"".Defines exact date when all purposes on the loan must be completely withdrawn. CDM attribute class name: DrawdownPeriodDateUntil. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""default"":null,""type"":[""null"",{""type"":""int"",""logicalType"":""date""}]}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""DrawdownPeriod"",""doc"":""Defines when loan can be withdrawn. CDM entity name(s): DrawdownPeriod."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageinstance"",""fields"":[{""name"":""dateFrom"",""doc"":""Defines exact date when withdrawal of the loan can be started. CDM attribute class name: DrawdownPeriodDateFrom. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""int"",""logicalType"":""date""}},{""name"":""dateUntil"",""doc"":""Defines exact date when all purposes on the loan must be completely withdrawn. CDM attribute class name: DrawdownPeriodDateUntil. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""default"":null,""type"":[""null"",{""type"":""int"",""logicalType"":""date""}]}]}");
 		/// <summary>
 		/// Defines exact date when withdrawal of the loan can be started. CDM attribute class name: DrawdownPeriodDateFrom. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>
 		private System.DateTime _dateFrom;
 		/// <summary>
-		/// .Defines exact date when all purposes on the loan must be completely withdrawn. CDM attribute class name: DrawdownPeriodDateUntil. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
+		/// Defines exact date when all purposes on the loan must be completely withdrawn. CDM attribute class name: DrawdownPeriodDateUntil. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>
 		private System.Nullable<System.DateTime> _dateUntil;
 		public virtual global::Avro.Schema Schema
@@ -50,7 +50,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .Defines exact date when all purposes on the loan must be completely withdrawn. CDM attribute class name: DrawdownPeriodDateUntil. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
+		/// Defines exact date when all purposes on the loan must be completely withdrawn. CDM attribute class name: DrawdownPeriodDateUntil. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>
 		public System.Nullable<System.DateTime> dateUntil
 		{

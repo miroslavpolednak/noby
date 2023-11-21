@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,13 +19,13 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class FixedRatePeriod : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""FixedRatePeriod"",""doc"":""Time that interest rate is fixed and can not change. CDM entity name(s): FixedRatePeriod."",""namespace"":""cz.kb.api.mortgageservicingevents.v1.mortgageinstance"",""fields"":[{""name"":""nextRefixDate"",""doc"":"".Date, when the next fixed period of the loan (mortgage) has to be defined.Datum pristi refixace urokove sazby uveru (hypoteky). CDM attribute class name: FixedRatePeriodNextRefixDate. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""int"",""logicalType"":""date""}},{""name"":""period"",""doc"":"".Total length of period in units. If no units are given, default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute has simple type ST_PositiveInt with description: Integer with a constraint. The value must be a positive number, i.e. zero is excluded."",""type"":""int""}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""FixedRatePeriod"",""doc"":""Time that interest rate is fixed and can not change. CDM entity name(s): FixedRatePeriod."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageinstance"",""fields"":[{""name"":""nextRefixDate"",""doc"":""Date, when the next fixed period of the loan (mortgage) has to be defined.Datum pristi refixace urokove sazby uveru (hypoteky). CDM attribute class name: FixedRatePeriodNextRefixDate. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""int"",""logicalType"":""date""}},{""name"":""period"",""doc"":""Total length of period in units. If no units are given, default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute has simple type ST_PositiveInt with description: Integer with a constraint. The value must be a positive number, i.e. zero is excluded."",""type"":""int""}]}");
 		/// <summary>
-		/// .Date, when the next fixed period of the loan (mortgage) has to be defined.Datum pristi refixace urokove sazby uveru (hypoteky). CDM attribute class name: FixedRatePeriodNextRefixDate. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
+		/// Date, when the next fixed period of the loan (mortgage) has to be defined.Datum pristi refixace urokove sazby uveru (hypoteky). CDM attribute class name: FixedRatePeriodNextRefixDate. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>
 		private System.DateTime _nextRefixDate;
 		/// <summary>
-		/// .Total length of period in units. If no units are given, default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute has simple type ST_PositiveInt with description: Integer with a constraint. The value must be a positive number, i.e. zero is excluded.
+		/// Total length of period in units. If no units are given, default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute has simple type ST_PositiveInt with description: Integer with a constraint. The value must be a positive number, i.e. zero is excluded.
 		/// </summary>
 		private int _period;
 		public virtual global::Avro.Schema Schema
@@ -36,7 +36,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .Date, when the next fixed period of the loan (mortgage) has to be defined.Datum pristi refixace urokove sazby uveru (hypoteky). CDM attribute class name: FixedRatePeriodNextRefixDate. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
+		/// Date, when the next fixed period of the loan (mortgage) has to be defined.Datum pristi refixace urokove sazby uveru (hypoteky). CDM attribute class name: FixedRatePeriodNextRefixDate. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>
 		public System.DateTime nextRefixDate
 		{
@@ -50,7 +50,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .Total length of period in units. If no units are given, default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute has simple type ST_PositiveInt with description: Integer with a constraint. The value must be a positive number, i.e. zero is excluded.
+		/// Total length of period in units. If no units are given, default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute has simple type ST_PositiveInt with description: Integer with a constraint. The value must be a positive number, i.e. zero is excluded.
 		/// </summary>
 		public int period
 		{

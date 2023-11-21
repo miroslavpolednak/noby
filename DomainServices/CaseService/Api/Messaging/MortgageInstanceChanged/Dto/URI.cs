@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class URI : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""URI"",""doc"":""Uniform Resource IdentifierNapr./typicky http odkaz. CDM entity name(s): URI."",""namespace"":""cz.kb.api.mortgageservicingevents.v1.mortgageinstance"",""fields"":[{""name"":""value"",""doc"":""Complete URI. CDM attribute class name: URIValue. Attribute has simple type ST_URI with description: A string representing a URI. Limited to 2047 characters."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,2048}$""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""URI"",""doc"":""Uniform Resource IdentifierNapr./typicky http odkaz. CDM entity name(s): URI."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageinstance"",""fields"":[{""name"":""value"",""doc"":""Complete URI. CDM attribute class name: URIValue. Attribute has simple type ST_URI with description: A string representing a URI. Limited to 2047 characters."",""type"":{""type"":""string"",""avro.java.string"":""String"",""pattern"":""^.{0,2048}$""}}]}");
 		/// <summary>
 		/// Complete URI. CDM attribute class name: URIValue. Attribute has simple type ST_URI with description: A string representing a URI. Limited to 2047 characters.
 		/// </summary>

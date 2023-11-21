@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -22,9 +22,9 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"PartyInMktItemInstanceInfo\",\"doc\":\"Information entity. D" +
 				"escribes party occurrence in context of a marketing item instance (product, serv" +
 				"ice, frame agreement, bundle,...). CDM entity name(s): PartyInMktItemInstanceInf" +
-				"o.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v1.mortgageinstance\",\"fields\"" +
+				"o.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\"" +
 				":[{\"name\":\"customer\",\"type\":{\"type\":\"record\",\"name\":\"Customer\",\"doc\":\" CDM entit" +
-				"y name(s): Customer.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v1.mortgage" +
+				"y name(s): Customer.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgage" +
 				"instance\",\"fields\":[{\"name\":\"customerId\",\"doc\":\" CDM attribute class name: Custo" +
 				"merCustomerId.\",\"type\":\"long\"}]}},{\"name\":\"partyInMktItemInstanceRole\",\"type\":{\"" +
 				"type\":\"record\",\"name\":\"PartyInMktItemInstanceRole\",\"doc\":\"The role that a party " +
@@ -34,13 +34,13 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				"i produktu.Muze byt specificka pro kazdy produkt, spolecna v ramci skupiny produ" +
 				"ktu nebo dokonce pro vsechny produkty.Napr. zadatel, spoluzadatel, rucitel pro s" +
 				"potrebni uvery. CDM entity name(s): PartyInMktItemInstanceRole.\",\"namespace\":\"cz" +
-				".kb.api.mortgageservicingevents.v1.mortgageinstance\",\"fields\":[{\"name\":\"partyInM" +
+				".kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"partyInM" +
 				"ktItemInstanceRoleCode\",\"type\":{\"type\":\"record\",\"name\":\"PartyInMktItemInstanceRo" +
 				"leCode\",\"doc\":\"Multicodebook property representing code of role (unique identifi" +
 				"er) that parties in general can have on products.It is multicodebook because rol" +
 				"es always exists, but differs per product groups and are not managed centrally. " +
 				"CDM entity name(s): PartyInMktItemInstanceRoleCode.\",\"namespace\":\"cz.kb.api.mort" +
-				"gageservicingevents.v1.mortgageinstance\",\"fields\":[{\"name\":\"code\",\"doc\":\"Human r" +
+				"gageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"code\",\"doc\":\"Human r" +
 				"eadable unique identifier of role on product instance. MultiCodebook value itsel" +
 				"f.Unique across all products. Attribute has specific codebook type: CB_CustomerI" +
 				"nMortgageInstanceRole. CDM attribute class name: PartyInMktItemInstanceRoleCodeC" +
@@ -48,8 +48,8 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				"s information that value can be from more than one codebook. Codebook type: CB_C" +
 				"ustomerInMortgageInstanceRole.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"Stri" +
 				"ng\",\"pattern\":\"^.{0,100}$\"}}]}}]}}]}");
-		private cz.kb.api.mortgageservicingevents.v1.mortgageinstance.Customer _customer;
-		private cz.kb.api.mortgageservicingevents.v1.mortgageinstance.PartyInMktItemInstanceRole _partyInMktItemInstanceRole;
+		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.Customer _customer;
+		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.PartyInMktItemInstanceRole _partyInMktItemInstanceRole;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -57,7 +57,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				return PartyInMktItemInstanceInfo._SCHEMA;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v1.mortgageinstance.Customer customer
+		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.Customer customer
 		{
 			get
 			{
@@ -68,7 +68,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				this._customer = value;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v1.mortgageinstance.PartyInMktItemInstanceRole partyInMktItemInstanceRole
+		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.PartyInMktItemInstanceRole partyInMktItemInstanceRole
 		{
 			get
 			{
@@ -92,8 +92,8 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 		{
 			switch (fieldPos)
 			{
-			case 0: this.customer = (cz.kb.api.mortgageservicingevents.v1.mortgageinstance.Customer)fieldValue; break;
-			case 1: this.partyInMktItemInstanceRole = (cz.kb.api.mortgageservicingevents.v1.mortgageinstance.PartyInMktItemInstanceRole)fieldValue; break;
+			case 0: this.customer = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.Customer)fieldValue; break;
+			case 1: this.partyInMktItemInstanceRole = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.PartyInMktItemInstanceRole)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

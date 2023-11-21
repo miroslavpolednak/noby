@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -14,34 +14,34 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	using global::Avro.Specific;
 	
 	/// <summary>
-	/// This entity represents information about account as is used in payment landscape. For example has properties current balance, account number, iban, currency, available balance,.. . If this entity represents multicurrency (MCY) master account (multicurrency=true):: the account is called master (parent) account; it acts as envelope for supported currencies subaccounts set; balances and limits attributes represent aggregated values from the currencies subaccounts (converted to base currency); currency represents base (nominated) currency of master account.; payment domain systems work only with master account information or identification (single master account number plus currency); transactions, holds and interests occure only on specific currency subaccounts.;In KB finance called 'aplikacni ucet'.This is not product sales entity. Do not confuse with CurrentAccountProduct. Also do not represents general ledger accounts.. ## A representation of a product instance as implemented in bank's core systems, systems delivering product's functionality to customer. CDM entity name(s): Account,TechnicalItemInstance.
+	/// A representation of a product instance as implemented in bank's core systems, systems delivering product's functionality to customer.. ## This entity represents information about account as is used in payment landscape. For example has properties current balance, account number, iban, currency, available balance,.. . If this entity represents multicurrency (MCY) master account (multicurrency=true):: the account is called master (parent) account; it acts as envelope for supported currencies subaccounts set; balances and limits attributes represent aggregated values from the currencies subaccounts (converted to base currency); currency represents base (nominated) currency of master account.; payment domain systems work only with master account information or identification (single master account number plus currency); transactions, holds and interests occure only on specific currency subaccounts.;In KB finance called 'aplikacni ucet'.This is not product sales entity. Do not confuse with CurrentAccountProduct. Also do not represents general ledger accounts. CDM entity name(s): TechnicalItemInstance,Account.
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class Account : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"Account\",\"doc\":\"This entity represents information about" +
-				" account as is used in payment landscape. For example has properties current bal" +
-				"ance, account number, iban, currency, available balance,.. . If this entity repr" +
-				"esents multicurrency (MCY) master account (multicurrency=true):: the account is " +
-				"called master (parent) account; it acts as envelope for supported currencies sub" +
-				"accounts set; balances and limits attributes represent aggregated values from th" +
-				"e currencies subaccounts (converted to base currency); currency represents base " +
-				"(nominated) currency of master account.; payment domain systems work only with m" +
-				"aster account information or identification (single master account number plus c" +
-				"urrency); transactions, holds and interests occure only on specific currency sub" +
-				"accounts.;In KB finance called \'aplikacni ucet\'.This is not product sales entity" +
-				". Do not confuse with CurrentAccountProduct. Also do not represents general ledg" +
-				"er accounts.. ## A representation of a product instance as implemented in bank\'s" +
-				" core systems, systems delivering product\'s functionality to customer. CDM entit" +
-				"y name(s): Account,TechnicalItemInstance.\",\"namespace\":\"cz.kb.api.mortgageservic" +
-				"ingevents.v1.mortgageinstance\",\"fields\":[{\"name\":\"accountNumber\",\"type\":{\"type\":" +
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"Account\",\"doc\":\"A representation of a product instance a" +
+				"s implemented in bank\'s core systems, systems delivering product\'s functionality" +
+				" to customer.. ## This entity represents information about account as is used in" +
+				" payment landscape. For example has properties current balance, account number, " +
+				"iban, currency, available balance,.. . If this entity represents multicurrency (" +
+				"MCY) master account (multicurrency=true):: the account is called master (parent)" +
+				" account; it acts as envelope for supported currencies subaccounts set; balances" +
+				" and limits attributes represent aggregated values from the currencies subaccoun" +
+				"ts (converted to base currency); currency represents base (nominated) currency o" +
+				"f master account.; payment domain systems work only with master account informat" +
+				"ion or identification (single master account number plus currency); transactions" +
+				", holds and interests occure only on specific currency subaccounts.;In KB financ" +
+				"e called \'aplikacni ucet\'.This is not product sales entity. Do not confuse with " +
+				"CurrentAccountProduct. Also do not represents general ledger accounts. CDM entit" +
+				"y name(s): TechnicalItemInstance,Account.\",\"namespace\":\"cz.kb.api.mortgageservic" +
+				"ingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"accountNumber\",\"type\":{\"type\":" +
 				"\"record\",\"name\":\"AccountNumber\",\"doc\":\"AccountNumber: .AccountNumberPrefix; .Acc" +
-				"ountNumberCore; .AccountNumberBankCode; .AccountNumberIban;. ## IBAN (Internatio" +
-				"nal Bank Account Number) representation of the account number by ISO 13616 - for" +
-				" detail description see attribute notes. ## Account identification number define" +
-				"d by CNB for domestic paymentshttps://www.cnb.cz/export/sites/cnb/cs/legislativa" +
-				"/.galleries/vyhlasky/vyhlaska_169_2011.pdf. CDM entity name(s): AccountNumberIBA" +
-				"N,AccountNumberCNB.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v1.mortgagei" +
+				"ountNumberCore; .AccountNumberBankCode; .AccountNumberIban;. ## Account identifi" +
+				"cation number defined by CNB for domestic paymentshttps://www.cnb.cz/export/site" +
+				"s/cnb/cs/legislativa/.galleries/vyhlasky/vyhlaska_169_2011.pdf. ## IBAN (Interna" +
+				"tional Bank Account Number) representation of the account number by ISO 13616 - " +
+				"for detail description see attribute notes. CDM entity name(s): AccountNumberCNB" +
+				",AccountNumberIBAN.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgagei" +
 				"nstance\",\"fields\":[{\"name\":\"bankCode\",\"doc\":\"Bank code: 4 digits; contains value" +
 				"s from \'Directory of payment system codes\' by CNB (https://www.cnb.cz/en/payment" +
 				"s/accounts-bank-codes/); e.g.: for \'1234-567890/0100\' the bank code is \'0100\';. " +
@@ -72,7 +72,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				"ggests, it defines state of product instance in its core system.It is multicodeb" +
 				"ook as state of technical product instance is generic concept and will differ ac" +
 				"ross technical product instance core systems. CDM entity name(s): TechnicalItemI" +
-				"nstanceState.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v1.mortgageinstanc" +
+				"nstanceState.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstanc" +
 				"e\",\"fields\":[{\"name\":\"class\",\"doc\":\"Attribute that defines codebook that is used" +
 				" in attribute state. CDM attribute class name: TechnicalItemInstanceStateClass. " +
 				"Codebook type: CB_TechnicalProductInstanceStateClass.\",\"type\":{\"type\":\"string\",\"" +
@@ -82,8 +82,8 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				"okValue with description: Represents information that value can be from more tha" +
 				"n one codebook. Codebook type: CB_Undefined.\",\"type\":{\"type\":\"string\",\"avro.java" +
 				".string\":\"String\",\"pattern\":\"^.{0,100}$\"}}]}]}]}");
-		private cz.kb.api.mortgageservicingevents.v1.mortgageinstance.AccountNumber _accountNumber;
-		private cz.kb.api.mortgageservicingevents.v1.mortgageinstance.TechnicalItemInstanceState _AccountState;
+		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.AccountNumber _accountNumber;
+		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.TechnicalItemInstanceState _AccountState;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -91,7 +91,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				return Account._SCHEMA;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v1.mortgageinstance.AccountNumber accountNumber
+		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.AccountNumber accountNumber
 		{
 			get
 			{
@@ -102,7 +102,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				this._accountNumber = value;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v1.mortgageinstance.TechnicalItemInstanceState AccountState
+		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.TechnicalItemInstanceState AccountState
 		{
 			get
 			{
@@ -126,8 +126,8 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 		{
 			switch (fieldPos)
 			{
-			case 0: this.accountNumber = (cz.kb.api.mortgageservicingevents.v1.mortgageinstance.AccountNumber)fieldValue; break;
-			case 1: this.AccountState = (cz.kb.api.mortgageservicingevents.v1.mortgageinstance.TechnicalItemInstanceState)fieldValue; break;
+			case 0: this.accountNumber = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.AccountNumber)fieldValue; break;
+			case 1: this.AccountState = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.TechnicalItemInstanceState)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class LoanIndividualInstallment : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""LoanIndividualInstallment"",""doc"":""Individual/concrete repayment of loan - one loan installment. CDM entity name(s): LoanIndividualInstallment."",""namespace"":""cz.kb.api.mortgageservicingevents.v1.mortgageinstance"",""fields"":[{""name"":""amount"",""doc"":""Total amount that has to paid as one loan installment. CDM attribute class name: LoanIndividualInstallmentAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money."",""type"":{""type"":""bytes"",""logicalType"":""decimal"",""precision"":17,""scale"":2}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""LoanIndividualInstallment"",""doc"":""Individual/concrete repayment of loan - one loan installment. CDM entity name(s): LoanIndividualInstallment."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageinstance"",""fields"":[{""name"":""amount"",""doc"":""Total amount that has to paid as one loan installment. CDM attribute class name: LoanIndividualInstallmentAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money."",""type"":{""type"":""bytes"",""logicalType"":""decimal"",""precision"":17,""scale"":2}}]}");
 		/// <summary>
 		/// Total amount that has to paid as one loan installment. CDM attribute class name: LoanIndividualInstallmentAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>

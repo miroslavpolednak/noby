@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	public partial class Customer : global::Avro.Specific.ISpecificRecord
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"Customer\",\"doc\":\" CDM entity name(s): Customer.\",\"namesp" +
-				"ace\":\"cz.kb.api.mortgageservicingevents.v1.mortgageinstance\",\"fields\":[{\"name\":\"" +
+				"ace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"" +
 				"customerId\",\"doc\":\" CDM attribute class name: CustomerCustomerId.\",\"type\":\"long\"" +
 				"}]}");
 		/// <summary>

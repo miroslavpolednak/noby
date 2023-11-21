@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class LoanAmount : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""LoanAmount"",""doc"":""Vyska uveruInformation about loan amount. This is static information. Change only with sale or maintenance action. CDM entity name(s): LoanAmount."",""namespace"":""cz.kb.api.mortgageservicingevents.v1.mortgageinstance"",""fields"":[{""name"":""limit"",""doc"":""Vyska uveru, ktora bola schvalena. (Pozor, nie je nutne suma, ktoru si klient skutocne poziacia)Allowed loan limit. It is maximum amount that customer can borrow from bank.E.g. credit card limit, overdraft limit, or contracted consumer loan amount. CDM attribute class name: LoanAmountLimit. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money."",""type"":{""type"":""bytes"",""logicalType"":""decimal"",""precision"":17,""scale"":2}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""LoanAmount"",""doc"":""Vyska uveruInformation about loan amount. This is static information. Change only with sale or maintenance action. CDM entity name(s): LoanAmount."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageinstance"",""fields"":[{""name"":""limit"",""doc"":""Vyska uveru, ktora bola schvalena. (Pozor, nie je nutne suma, ktoru si klient skutocne poziacia)Allowed loan limit. It is maximum amount that customer can borrow from bank.E.g. credit card limit, overdraft limit, or contracted consumer loan amount. CDM attribute class name: LoanAmountLimit. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money."",""type"":{""type"":""bytes"",""logicalType"":""decimal"",""precision"":17,""scale"":2}}]}");
 		/// <summary>
 		/// Vyska uveru, ktora bola schvalena. (Pozor, nie je nutne suma, ktoru si klient skutocne poziacia)Allowed loan limit. It is maximum amount that customer can borrow from bank.E.g. credit card limit, overdraft limit, or contracted consumer loan amount. CDM attribute class name: LoanAmountLimit. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>

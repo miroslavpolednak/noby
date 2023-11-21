@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -21,74 +21,74 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"LoanBalance\",\"doc\":\"Information entity with various loan" +
 				"/credit balance information on given date.. CDM entity name(s): LoanBalance.\",\"n" +
-				"amespace\":\"cz.kb.api.mortgageservicingevents.v1.mortgageinstance\",\"fields\":[{\"na" +
-				"me\":\"amountNotYetWithdrawn\",\"doc\":\".Amount money that was not yet withdrawn from" +
-				" this loan. CDM attribute class name: LoanBalanceAmountNotYetWithdrawn. Attribut" +
-				"e has simple type ST_AmountMoney with description: Castka.Decimal number represe" +
-				"nting an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logica" +
-				"lType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"amountWithdrawn\",\"doc\":\".A" +
-				"mount money that was already withdrawn from this loan. CDM attribute class name:" +
-				" LoanBalanceAmountWithdrawn. Attribute has simple type ST_AmountMoney with descr" +
-				"iption: Castka.Decimal number representing an amount of money.\",\"default\":null,\"" +
-				"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]" +
-				"},{\"name\":\"interestAmount\",\"doc\":\".Actual interest amount to be paid. CDM attrib" +
-				"ute class name: LoanBalanceInterestAmount. Attribute has simple type ST_AmountMo" +
-				"ney with description: Castka.Decimal number representing an amount of money.\",\"d" +
-				"efault\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":" +
-				"17,\"scale\":2}]},{\"name\":\"lateFee\",\"doc\":\".All non_standard=late yet unpaid fees " +
-				"related to loan soldproduct. (additional fees, fees for late repayment of instal" +
-				"lment). CDM attribute class name: LoanBalanceLateFee. Attribute has simple type " +
-				"ST_AmountMoney with description: Castka.Decimal number representing an amount of" +
-				" money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"" +
-				"precision\":17,\"scale\":2}]},{\"name\":\"loanFee\",\"doc\":\".All standard yet unpaid fee" +
-				"s related to this loan soldproduct. CDM attribute class name: LoanBalanceLoanFee" +
-				". Attribute has simple type ST_AmountMoney with description: Castka.Decimal numb" +
-				"er representing an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"byte" +
-				"s\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"overdueInstallme" +
-				"ntAmount\",\"doc\":\".Sum of overdue installments amount.Has to be disputed!!. CDM a" +
-				"ttribute class name: LoanBalanceOverdueInstallmentAmount. Attribute has simple t" +
-				"ype ST_AmountMoney with description: Castka.Decimal number representing an amoun" +
-				"t of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decima" +
-				"l\",\"precision\":17,\"scale\":2}]},{\"name\":\"principalAmount\",\"doc\":\".Actual (not yet" +
-				" repaid) principal amount. Relevant for loans. CDM attribute class name: LoanBal" +
-				"ancePrincipalAmount. Attribute has simple type ST_AmountMoney with description: " +
-				"Castka.Decimal number representing an amount of money.\",\"default\":null,\"type\":[\"" +
-				"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name" +
-				"\":\"totalAmount\",\"doc\":\".If loan was to be completely repaid at this time, this i" +
-				"s total amount that would be needed. CDM attribute class name: LoanBalanceTotalA" +
-				"mount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal" +
-				" number representing an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":" +
-				"\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]}]}");
+				"amespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"na" +
+				"me\":\"amountNotYetWithdrawn\",\"doc\":\"Amount money that was not yet withdrawn from " +
+				"this loan. CDM attribute class name: LoanBalanceAmountNotYetWithdrawn. Attribute" +
+				" has simple type ST_AmountMoney with description: Castka.Decimal number represen" +
+				"ting an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logical" +
+				"Type\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"amountWithdrawn\",\"doc\":\"Amo" +
+				"unt money that was already withdrawn from this loan. CDM attribute class name: L" +
+				"oanBalanceAmountWithdrawn. Attribute has simple type ST_AmountMoney with descrip" +
+				"tion: Castka.Decimal number representing an amount of money.\",\"default\":null,\"ty" +
+				"pe\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]}," +
+				"{\"name\":\"interestAmount\",\"doc\":\"Actual interest amount to be paid. CDM attribute" +
+				" class name: LoanBalanceInterestAmount. Attribute has simple type ST_AmountMoney" +
+				" with description: Castka.Decimal number representing an amount of money.\",\"defa" +
+				"ult\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17," +
+				"\"scale\":2}]},{\"name\":\"lateFee\",\"doc\":\"All non_standard=late yet unpaid fees rela" +
+				"ted to loan soldproduct. (additional fees, fees for late repayment of installmen" +
+				"t). CDM attribute class name: LoanBalanceLateFee. Attribute has simple type ST_A" +
+				"mountMoney with description: Castka.Decimal number representing an amount of mon" +
+				"ey.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"prec" +
+				"ision\":17,\"scale\":2}]},{\"name\":\"loanFee\",\"doc\":\"All standard yet unpaid fees rel" +
+				"ated to this loan soldproduct. CDM attribute class name: LoanBalanceLoanFee. Att" +
+				"ribute has simple type ST_AmountMoney with description: Castka.Decimal number re" +
+				"presenting an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"l" +
+				"ogicalType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"overdueInstallmentAmo" +
+				"unt\",\"doc\":\"Sum of overdue installments amount.Has to be disputed!!. CDM attribu" +
+				"te class name: LoanBalanceOverdueInstallmentAmount. Attribute has simple type ST" +
+				"_AmountMoney with description: Castka.Decimal number representing an amount of m" +
+				"oney.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"pr" +
+				"ecision\":17,\"scale\":2}]},{\"name\":\"principalAmount\",\"doc\":\"Actual (not yet repaid" +
+				") principal amount. Relevant for loans. CDM attribute class name: LoanBalancePri" +
+				"ncipalAmount. Attribute has simple type ST_AmountMoney with description: Castka." +
+				"Decimal number representing an amount of money.\",\"default\":null,\"type\":[\"null\",{" +
+				"\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"tota" +
+				"lAmount\",\"doc\":\"If loan was to be completely repaid at this time, this is total " +
+				"amount that would be needed. CDM attribute class name: LoanBalanceTotalAmount. A" +
+				"ttribute has simple type ST_AmountMoney with description: Castka.Decimal number " +
+				"representing an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\"," +
+				"\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]}]}");
 		/// <summary>
-		/// .Amount money that was not yet withdrawn from this loan. CDM attribute class name: LoanBalanceAmountNotYetWithdrawn. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// Amount money that was not yet withdrawn from this loan. CDM attribute class name: LoanBalanceAmountNotYetWithdrawn. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		private System.Nullable<Avro.AvroDecimal> _amountNotYetWithdrawn;
 		/// <summary>
-		/// .Amount money that was already withdrawn from this loan. CDM attribute class name: LoanBalanceAmountWithdrawn. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// Amount money that was already withdrawn from this loan. CDM attribute class name: LoanBalanceAmountWithdrawn. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		private System.Nullable<Avro.AvroDecimal> _amountWithdrawn;
 		/// <summary>
-		/// .Actual interest amount to be paid. CDM attribute class name: LoanBalanceInterestAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// Actual interest amount to be paid. CDM attribute class name: LoanBalanceInterestAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		private System.Nullable<Avro.AvroDecimal> _interestAmount;
 		/// <summary>
-		/// .All non_standard=late yet unpaid fees related to loan soldproduct. (additional fees, fees for late repayment of installment). CDM attribute class name: LoanBalanceLateFee. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// All non_standard=late yet unpaid fees related to loan soldproduct. (additional fees, fees for late repayment of installment). CDM attribute class name: LoanBalanceLateFee. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		private System.Nullable<Avro.AvroDecimal> _lateFee;
 		/// <summary>
-		/// .All standard yet unpaid fees related to this loan soldproduct. CDM attribute class name: LoanBalanceLoanFee. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// All standard yet unpaid fees related to this loan soldproduct. CDM attribute class name: LoanBalanceLoanFee. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		private System.Nullable<Avro.AvroDecimal> _loanFee;
 		/// <summary>
-		/// .Sum of overdue installments amount.Has to be disputed!!. CDM attribute class name: LoanBalanceOverdueInstallmentAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// Sum of overdue installments amount.Has to be disputed!!. CDM attribute class name: LoanBalanceOverdueInstallmentAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		private System.Nullable<Avro.AvroDecimal> _overdueInstallmentAmount;
 		/// <summary>
-		/// .Actual (not yet repaid) principal amount. Relevant for loans. CDM attribute class name: LoanBalancePrincipalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// Actual (not yet repaid) principal amount. Relevant for loans. CDM attribute class name: LoanBalancePrincipalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		private System.Nullable<Avro.AvroDecimal> _principalAmount;
 		/// <summary>
-		/// .If loan was to be completely repaid at this time, this is total amount that would be needed. CDM attribute class name: LoanBalanceTotalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// If loan was to be completely repaid at this time, this is total amount that would be needed. CDM attribute class name: LoanBalanceTotalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		private System.Nullable<Avro.AvroDecimal> _totalAmount;
 		public virtual global::Avro.Schema Schema
@@ -99,7 +99,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .Amount money that was not yet withdrawn from this loan. CDM attribute class name: LoanBalanceAmountNotYetWithdrawn. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// Amount money that was not yet withdrawn from this loan. CDM attribute class name: LoanBalanceAmountNotYetWithdrawn. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		public System.Nullable<Avro.AvroDecimal> amountNotYetWithdrawn
 		{
@@ -113,7 +113,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .Amount money that was already withdrawn from this loan. CDM attribute class name: LoanBalanceAmountWithdrawn. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// Amount money that was already withdrawn from this loan. CDM attribute class name: LoanBalanceAmountWithdrawn. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		public System.Nullable<Avro.AvroDecimal> amountWithdrawn
 		{
@@ -127,7 +127,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .Actual interest amount to be paid. CDM attribute class name: LoanBalanceInterestAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// Actual interest amount to be paid. CDM attribute class name: LoanBalanceInterestAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		public System.Nullable<Avro.AvroDecimal> interestAmount
 		{
@@ -141,7 +141,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .All non_standard=late yet unpaid fees related to loan soldproduct. (additional fees, fees for late repayment of installment). CDM attribute class name: LoanBalanceLateFee. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// All non_standard=late yet unpaid fees related to loan soldproduct. (additional fees, fees for late repayment of installment). CDM attribute class name: LoanBalanceLateFee. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		public System.Nullable<Avro.AvroDecimal> lateFee
 		{
@@ -155,7 +155,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .All standard yet unpaid fees related to this loan soldproduct. CDM attribute class name: LoanBalanceLoanFee. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// All standard yet unpaid fees related to this loan soldproduct. CDM attribute class name: LoanBalanceLoanFee. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		public System.Nullable<Avro.AvroDecimal> loanFee
 		{
@@ -169,7 +169,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .Sum of overdue installments amount.Has to be disputed!!. CDM attribute class name: LoanBalanceOverdueInstallmentAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// Sum of overdue installments amount.Has to be disputed!!. CDM attribute class name: LoanBalanceOverdueInstallmentAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		public System.Nullable<Avro.AvroDecimal> overdueInstallmentAmount
 		{
@@ -183,7 +183,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .Actual (not yet repaid) principal amount. Relevant for loans. CDM attribute class name: LoanBalancePrincipalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// Actual (not yet repaid) principal amount. Relevant for loans. CDM attribute class name: LoanBalancePrincipalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		public System.Nullable<Avro.AvroDecimal> principalAmount
 		{
@@ -197,7 +197,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 			}
 		}
 		/// <summary>
-		/// .If loan was to be completely repaid at this time, this is total amount that would be needed. CDM attribute class name: LoanBalanceTotalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// If loan was to be completely repaid at this time, this is total amount that would be needed. CDM attribute class name: LoanBalanceTotalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		public System.Nullable<Avro.AvroDecimal> totalAmount
 		{

@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -21,17 +21,17 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"SalesArrangement\",\"doc\":\"Entity representing any formal " +
 				"\'agreement\' within any sales related area. CDM entity name(s): SalesArrangement." +
-				"\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v1.mortgageinstance\",\"fields\":[" +
+				"\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[" +
 				"{\"name\":\"arrangementAcceptance\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"" +
 				"name\":\"ArrangementAcceptance\",\"doc\":\"\'Root of\' acceptance of arrangement. I.e. c" +
 				"overs all properties and relationships regarding acceptance of arrangement.Examp" +
 				"le of acceptance of arrangement is signing of contract. CDM entity name(s): Arra" +
-				"ngementAcceptance.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v1.mortgagein" +
+				"ngementAcceptance.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgagein" +
 				"stance\",\"fields\":[{\"name\":\"ArrangementAcceptanceByFirstApplicant\",\"type\":{\"type\"" +
 				":\"record\",\"name\":\"ArrangemenAcceptanceByNaturalPerson\",\"doc\":\"Official agreement" +
 				" of one party to something(e.g. agreement, application).E.g. signature of one pe" +
 				"rson. CDM entity name(s): ArrangementAcceptanceByNaturalPerson.\",\"namespace\":\"cz" +
-				".kb.api.mortgageservicingevents.v1.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc" +
+				".kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc" +
 				"\":\"Date when party accepted the arrangement. CDM attribute class name: Arrangeme" +
 				"ntAcceptanceByNaturalPersonOn. Standard avro date represented by the number of d" +
 				"ays from the unix epoch, see avro specification: https://avro.apache.org/docs/1." +
@@ -43,15 +43,15 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				"ent is very large scope = across all product groups, ids will not be united.Seco" +
 				"nd reason is existence of public id, sales arrangement identifier given to custo" +
 				"mer and therefore different from internal one. CDM entity name(s): SalesArrangem" +
-				"entId.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v1.mortgageinstance\",\"fie" +
+				"entId.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fie" +
 				"lds\":[{\"name\":\"id\",\"doc\":\"Multi attribute identifier value itself. CDM attribute" +
 				" class name: SalesArrangementIdId. Attribute has simple type ST_IdString100Defau" +
 				"lt with description: Standard data type to be used as ID, i.e. unique identifier" +
 				". Longer vevrsion - 100 characters. It is not supposed to be human-readable.E.g." +
 				": AgreementID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^." +
 				"{0,100}$\"}}]}]}]}");
-		private cz.kb.api.mortgageservicingevents.v1.mortgageinstance.ArrangementAcceptance _arrangementAcceptance;
-		private cz.kb.api.mortgageservicingevents.v1.mortgageinstance.SalesArrangementId _salesArrangementId;
+		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.ArrangementAcceptance _arrangementAcceptance;
+		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.SalesArrangementId _salesArrangementId;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -59,7 +59,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				return SalesArrangement._SCHEMA;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v1.mortgageinstance.ArrangementAcceptance arrangementAcceptance
+		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.ArrangementAcceptance arrangementAcceptance
 		{
 			get
 			{
@@ -70,7 +70,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 				this._arrangementAcceptance = value;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v1.mortgageinstance.SalesArrangementId salesArrangementId
+		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.SalesArrangementId salesArrangementId
 		{
 			get
 			{
@@ -94,8 +94,8 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 		{
 			switch (fieldPos)
 			{
-			case 0: this.arrangementAcceptance = (cz.kb.api.mortgageservicingevents.v1.mortgageinstance.ArrangementAcceptance)fieldValue; break;
-			case 1: this.salesArrangementId = (cz.kb.api.mortgageservicingevents.v1.mortgageinstance.SalesArrangementId)fieldValue; break;
+			case 0: this.arrangementAcceptance = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.ArrangementAcceptance)fieldValue; break;
+			case 1: this.salesArrangementId = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.SalesArrangementId)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

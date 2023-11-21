@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.api.mortgageservicingevents.v1.mortgageinstance
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class ContractArrangementAcceptance : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""ContractArrangementAcceptance"",""doc"":""'Root of' acceptance of arrangement. I.e. covers all properties and relationships regarding acceptance of arrangement.Example of acceptance of arrangement is signing of contract. CDM entity name(s): ArrangementAcceptance."",""namespace"":""cz.kb.api.mortgageservicingevents.v1.mortgageinstance"",""fields"":[{""name"":""on"",""doc"":""Date when overall assent was reached. CDM attribute class name: ArrangementAcceptanceOn. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""int"",""logicalType"":""date""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""ContractArrangementAcceptance"",""doc"":""'Root of' acceptance of arrangement. I.e. covers all properties and relationships regarding acceptance of arrangement.Example of acceptance of arrangement is signing of contract. CDM entity name(s): ArrangementAcceptance."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageinstance"",""fields"":[{""name"":""on"",""doc"":""Date when overall assent was reached. CDM attribute class name: ArrangementAcceptanceOn. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""int"",""logicalType"":""date""}}]}");
 		/// <summary>
 		/// Date when overall assent was reached. CDM attribute class name: ArrangementAcceptanceOn. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>

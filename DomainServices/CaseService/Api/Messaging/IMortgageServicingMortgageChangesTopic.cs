@@ -8,7 +8,7 @@ namespace DomainServices.CaseService.Api.Messaging
     }
 }
 
-namespace cz.kb.api.mortgageservicingevents.v1
+namespace cz.kb.api.mortgageservicingevents.v2
 {
     public partial class MortgageInstanceChanged : IMortgageServicingMortgageChangesTopic
     {
