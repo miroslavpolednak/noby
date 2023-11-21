@@ -57,7 +57,7 @@ internal static class FormValidations
 
         var customerIdsInvalid = customerIdsWithoutIdentityMp.Concat(customerIdsWithoutIdentityKb).ToList();
 
-        if (customerIdsInvalid.Any())
+        if (customerIdsInvalid.Count != 0)
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation3, string.Join(StringJoinSeparator, customerIdsInvalid));
         }
@@ -112,7 +112,7 @@ internal static class FormValidations
 
         var customerIdsInvalid = missingCustomerIdsOnHouseholds.Concat(missingCustomerIdsOnArrangement).ToList();
 
-        if (customerIdsInvalid.Any())
+        if (customerIdsInvalid.Count != 0)
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.FormValidation10, string.Join(StringJoinSeparator, customerIdsInvalid));
         }

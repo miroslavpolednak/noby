@@ -15,7 +15,7 @@ internal sealed class GetCustomerListHandler
             .Select(CustomerOnSAServiceExpressions.CustomerDetail())
             .ToListAsync(cancellationToken);
 
-        if (!customers.Any())
+        if (customers.Count == 0)
         {
             await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         }

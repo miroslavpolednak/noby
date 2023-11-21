@@ -13,7 +13,7 @@ internal sealed class UpdateDeedOfOwnershipDocumentHandler
             .FirstOrDefaultAsync(t => t.DeedOfOwnershipDocumentId == request.DeedOfOwnershipDocumentId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DeedOfOwnershipDocumentNotFound, request.DeedOfOwnershipDocumentId);
 
-        if (request.RealEstateIds is not null && request.RealEstateIds.Any())
+        if (request.RealEstateIds is not null && request.RealEstateIds.Count != 0)
         {
             entity.RealEstateIds = System.Text.Json.JsonSerializer.Serialize(request.RealEstateIds);
         }

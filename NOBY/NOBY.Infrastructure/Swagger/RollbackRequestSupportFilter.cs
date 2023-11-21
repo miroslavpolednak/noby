@@ -16,7 +16,7 @@ public sealed class RollbackRequestSupportFilter
             operation.Description += "<br/><br/><strong>Rollback support</strong>";
             
             var description = request.ParameterType.GetCustomAttributes(typeof(RollbackDescriptionAttribute), false);
-            if (description is not null && description.Any())
+            if (description is not null && description.Length != 0)
             {
                 operation.Description += $"<br/>{((RollbackDescriptionAttribute)description.First()).Description}";
             }

@@ -89,7 +89,7 @@ public sealed class CreateOrUpdateCustomerKonsDbService
                 IdentificationDocumentTypeId = customerDetail.IdentificationDocument.IdentificationDocumentTypeId,
                 ValidTo = customerDetail.IdentificationDocument.ValidTo
             };
-        if (customerDetail.Addresses is not null && customerDetail.Addresses.Any())
+        if (customerDetail.Addresses is not null && customerDetail.Addresses.Count != 0)
             request.Addresses.Add(customerDetail.Addresses.Where(x => x.AddressTypeId == 1).Select(x => new GrpcAddress
             {
                 Street = x.Street,

@@ -17,7 +17,7 @@ internal sealed class GetSalesArrangementsListHandler
             .ToListAsync(cancellation);
 
         // kontrola na existenci case - kvuli efektivite jen pokud se nevrati zadny SA
-        if (!list.Any())
+        if (list.Count == 0)
         {
             await _caseService.ValidateCaseId(request.CaseId, true, cancellation);
         }

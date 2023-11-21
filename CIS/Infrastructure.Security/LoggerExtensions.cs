@@ -14,7 +14,7 @@ internal static class LoggerExtensions
     static LoggerExtensions()
     {
         _authHeaderNotFound = LoggerMessage.Define(
-            LogLevel.Error,
+            LogLevel.Debug,
             new EventId(525, nameof(AuthHeaderNotFound)),
             "Authorization header not found");
 

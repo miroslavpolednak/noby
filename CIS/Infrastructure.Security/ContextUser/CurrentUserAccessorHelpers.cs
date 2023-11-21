@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Security;
 using CIS.Infrastructure.Security.ContextUser;
+using Microsoft.Extensions.Primitives;
 
 namespace CIS.Infrastructure.Security;
 
@@ -8,16 +9,16 @@ public static class CurrentUserAccessorHelpers
     public static int? GetUserIdFromHeaders(HttpRequest request)
     {
         int? partyId = null;
-        if (request.Headers.ContainsKey(SecurityConstants.ContextUserHttpHeaderUserIdKey)
-            && int.TryParse(request.Headers[SecurityConstants.ContextUserHttpHeaderUserIdKey].First(), out int i))
+        if (request.Headers.TryGetValue(SecurityConstants.ContextUserHttpHeaderUserIdKey, out StringValues value) && int.TryParse(value[0], out int i))
+        {
             partyId = i;
+        }
         return partyId;
     }
 
     public static string? GetUserIdentFromHeaders(HttpRequest request)
     {
-        return request.Headers.ContainsKey(SecurityConstants.ContextUserHttpHeaderUserIdentKey) 
-            ? request.Headers[SecurityConstants.ContextUserHttpHeaderUserIdentKey].First() : null;
+        return request.Headers.TryGetValue(SecurityConstants.ContextUserHttpHeaderUserIdentKey, out StringValues value) ? value[0] : null;
     }
 
     public static SharedTypes.Types.UserIdentity? GetUserIdentityFromHeaders(HttpRequest? request)

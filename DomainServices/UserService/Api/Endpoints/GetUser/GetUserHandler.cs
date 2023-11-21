@@ -61,7 +61,7 @@ internal sealed class GetUserHandler
         fillIdentities(dbIdentities, model);
 
         // set is internal
-        model.UserInfo.IsInternal = !model.UserIdentifiers.Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.BrokerId) && model.UserIdentifiers.Any();
+        model.UserInfo.IsInternal = !model.UserIdentifiers.Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.BrokerId) && model.UserIdentifiers.Count != 0;
 
         // perms
         dbPermissions.ForEach(t =>

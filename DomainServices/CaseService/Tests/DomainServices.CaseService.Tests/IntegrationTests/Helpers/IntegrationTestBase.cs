@@ -19,7 +19,20 @@ public abstract class IntegrationTestBase
         Fixture = fixture;
 
         configureWebHost();
-        setupMocks();
+
+        MockSbWebApi = new Mock<DomainServices.CaseService.ExternalServices.SbWebApi.V1.ISbWebApiClient>();
+        MockSbWebApi
+            .Setup(t => t.CancelTask(It.Is<int>(i => i == 1), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+        MockSbWebApi
+            .Setup(t => t.CancelTask(It.Is<int>(i => i == 2), It.IsAny<CancellationToken>()))
+            .Throws(new CisExtServiceValidationException(2, "exception"));
+        MockSbWebApi
+            .Setup(t => t.FindTasksByTaskId(It.IsAny<ExternalServices.SbWebApi.Dto.FindTasks.FindByTaskIdRequest>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.FromResult<IList<IReadOnlyDictionary<string, string>>>(new List<IReadOnlyDictionary<string, string>>()));
+
+        MockEas = new Mock<global::ExternalServices.Eas.V1.IEasClient>();
+
         PrepareDatabase();
     }
 
@@ -46,23 +59,6 @@ public abstract class IntegrationTestBase
                 services.Replace(new ServiceDescriptor(typeof(global::ExternalServices.Eas.V1.IEasClient), t => MockEas.Object, ServiceLifetime.Scoped));
                 services.Replace(new ServiceDescriptor(typeof(DomainServices.CaseService.ExternalServices.SbWebApi.V1.ISbWebApiClient), t => MockSbWebApi.Object, ServiceLifetime.Scoped));
             });
-    }
-
-    private void setupMocks()
-    {
-        MockSbWebApi = new Mock<DomainServices.CaseService.ExternalServices.SbWebApi.V1.ISbWebApiClient>();
-        MockSbWebApi
-            .Setup(t => t.CancelTask(It.Is<int>(i => i == 1), It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
-        MockSbWebApi
-            .Setup(t => t.CancelTask(It.Is<int>(i => i == 2), It.IsAny<CancellationToken>()))
-            .Throws(new CisExtServiceValidationException(2, "exception"));
-        MockSbWebApi
-            .Setup(t => t.FindTasksByTaskId(It.IsAny<ExternalServices.SbWebApi.Dto.FindTasks.FindByTaskIdRequest>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.FromResult<IList<IReadOnlyDictionary<string, string>>>(new List<IReadOnlyDictionary<string, string>>()));
-
-        MockEas = new Mock<global::ExternalServices.Eas.V1.IEasClient>();
-        
     }
 
     protected virtual void PrepareDatabase()

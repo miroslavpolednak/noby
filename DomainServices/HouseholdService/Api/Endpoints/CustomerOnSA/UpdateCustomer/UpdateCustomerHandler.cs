@@ -32,7 +32,7 @@ internal sealed class UpdateCustomerHandler
             }
         }
         // vychazim z toho, ze identitu klienta nelze menit. Tj. z muze prijit prazdna kolekce CustomerIdentifiers v requestu, ale to neznamena, ze jiz existujici identity na COnSA odstranim.
-        else if (request.Customer.CustomerIdentifiers is not null && request.Customer.CustomerIdentifiers.Any())
+        else if (request.Customer.CustomerIdentifiers is not null && request.Customer.CustomerIdentifiers.Count != 0)
         {
             // kontrola, zda dane schema jiz nema s jinym ID
             if (request.Customer.CustomerIdentifiers.Any(t => entity.Identities.Any(x => (int)x.IdentityScheme == (int)t.IdentityScheme && x.IdentityId != t.IdentityId)))

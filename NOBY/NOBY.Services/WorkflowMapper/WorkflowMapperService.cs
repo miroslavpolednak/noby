@@ -78,7 +78,7 @@ internal sealed class WorkflowMapperService
     private async Task<_Dto.AmendmentsSigning> mapAmendmentsSigning(_Case.WorkflowTask task, _Case.AmendmentSigning signing, CancellationToken cancellationToken)
     {
         var stateId = (int)getWorkflowState(task);
-        bool remove1 = (new[] { 3, 4, 5 }).Contains(stateId) || !_userAccessor.HasPermission(DomainServices.UserService.Clients.Authorization.UserPermissions.WFL_TASK_DETAIL_SigningDocuments);
+        bool remove1 = _amendmentsSigningStates.Contains(stateId) || !_userAccessor.HasPermission(DomainServices.UserService.Clients.Authorization.UserPermissions.WFL_TASK_DETAIL_SigningDocuments);
 
         var eaCodeMain = (await _codebookService.EaCodesMain(cancellationToken)).FirstOrDefault(t => t.Id == signing.EACodeMain);
 
@@ -89,7 +89,7 @@ internal sealed class WorkflowMapperService
             FormId = signing.FormId,
             DocumentForSigning = remove1 || stateId == 2 ? "" : signing.DocumentForSigning,
             DocumentForSigningType = signing.DocumentForSigningType,
-            ProposalForEntry = remove1 ? "" : (signing.ProposalForEntry == null || !signing.ProposalForEntry.Any() ? "" : signing.ProposalForEntry[0]),
+            ProposalForEntry = remove1 ? "" : (signing.ProposalForEntry == null || signing.ProposalForEntry.Count == 0 ? "" : signing.ProposalForEntry[0]),
             EaCodeMain = eaCodeMain == null ? null : new()
             {
                 Id = eaCodeMain.Id,
@@ -195,6 +195,8 @@ internal sealed class WorkflowMapperService
             3 => _Dto.WorkflowTaskStates.Sent,
             _ => throw new NobyValidationException($"PhaseTypeId {task.PhaseTypeId} out of range")
         };
+
+    private static int[] _amendmentsSigningStates = new[] { 3, 4, 5 };
 
     private readonly ICurrentUserAccessor _userAccessor;
     private readonly ICodebookServiceClient _codebookService;

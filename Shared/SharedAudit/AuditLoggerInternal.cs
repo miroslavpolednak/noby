@@ -34,10 +34,7 @@ internal sealed class AuditLoggerInternal
         ICisEnvironmentConfiguration environmentConfiguration,
         AuditLogConfiguration auditConfiguration)
     {
-        if (auditConfiguration is null)
-        {
-            throw new ArgumentNullException(nameof(auditConfiguration));
-        }
+        ArgumentNullException.ThrowIfNull(auditConfiguration);
 
         _databaseWriter = new Database.DatabaseWriter(auditConfiguration.ConnectionString);
         _loggerDefaults = new AuditLoggerDefaults(serverIp, environmentConfiguration.DefaultApplicationKey!, auditConfiguration.EamApplication, auditConfiguration.EamVersion, environmentConfiguration.EnvironmentName!);

@@ -81,7 +81,7 @@ internal static class MortgageExtensions
             IsCancelled = loan.IsCancelled
         };
 
-        if (relationships.Any())
+        if (relationships.Count != 0)
         {
             mortgage.Relationships.AddRange(relationships.Select(ToRelationship));
         }

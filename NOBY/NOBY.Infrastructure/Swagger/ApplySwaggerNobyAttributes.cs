@@ -14,7 +14,7 @@ public sealed class ApplySwaggerNobyAttributes
 
         // prava
         var authorizeAttributes = context.MethodInfo.GetCustomAttributes(typeof(NobyAuthorizeAttribute), false);
-        if (authorizeAttributes is not null && authorizeAttributes.Any())
+        if (authorizeAttributes is not null && authorizeAttributes.Length != 0)
         {
             string perms = string.Join("<br/><font color=\"lightgrey\">[AND]</font><br/>", authorizeAttributes.Select(t => string.Join(" <font color=\"lightgrey\">[AND]</font> ", ((NobyAuthorizeAttribute)t).RequiredPermissions)));
             operation.Description += $"{_requiredPermissionsLabel}<br/>{perms}";

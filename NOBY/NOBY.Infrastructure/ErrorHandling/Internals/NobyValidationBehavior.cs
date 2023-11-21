@@ -28,7 +28,7 @@ public sealed class NobyValidationBehavior<TRequest, TResponse>
             .Where(validationFailure => validationFailure != null)
             .ToList();
 
-        if (validationFailures.Any())
+        if (validationFailures.Count != 0)
         {
             var errors = validationFailures.Select(t =>
             {

@@ -137,7 +137,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         });
 
         // ulozit pokud byli nejake switches nastaveny
-        if (flowSwitchesToSet.Any())
+        if (flowSwitchesToSet.Count != 0)
         {
             var flowSwitchesRequest = new Contracts.SetFlowSwitchesRequest
             {

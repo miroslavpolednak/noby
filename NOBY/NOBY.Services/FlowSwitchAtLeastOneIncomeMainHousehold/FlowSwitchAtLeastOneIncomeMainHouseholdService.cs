@@ -23,16 +23,16 @@ public sealed class FlowSwitchAtLeastOneIncomeMainHouseholdService
         {
             incomes.AddRange(await _customerOnSAService.GetIncomeList(household.CustomerOnSAId1.Value, cancellationToken));
         }
-        if (household.CustomerOnSAId2.HasValue && !incomes.Any())
+        if (household.CustomerOnSAId2.HasValue && incomes.Count == 0)
         {
             incomes.AddRange(await _customerOnSAService.GetIncomeList(household.CustomerOnSAId2.Value, cancellationToken));
         }
 
-        if (incomes.Any() && household.HouseholdTypeId == (int)HouseholdTypes.Main)
+        if (incomes.Count != 0 && household.HouseholdTypeId == (int)HouseholdTypes.Main)
         {
             await saveSwitch(household.SalesArrangementId, flowSwitchManager, true, cancellationToken);
         }
-        else if (!incomes.Any() && household.HouseholdTypeId == (int)HouseholdTypes.Main)
+        else if (incomes.Count == 0 && household.HouseholdTypeId == (int)HouseholdTypes.Main)
         {
             await saveSwitch(household.SalesArrangementId, flowSwitchManager, false, cancellationToken);
         }

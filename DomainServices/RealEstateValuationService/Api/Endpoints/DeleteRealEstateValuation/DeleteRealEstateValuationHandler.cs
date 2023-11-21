@@ -35,7 +35,7 @@ internal sealed class DeleteRealEstateValuationHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // odstranit z ACV - je nam jedno jestli se to povede, takze do try catch
-        if (attachments.Any())
+        if (attachments.Count != 0)
         {
             foreach (var attachment in attachments)
             {

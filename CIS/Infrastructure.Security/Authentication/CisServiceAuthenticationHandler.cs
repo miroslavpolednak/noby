@@ -1,6 +1,7 @@
 ﻿using CIS.Infrastructure.Security.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -37,8 +38,10 @@ internal sealed class CisServiceAuthenticationHandler
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         // http header obsahuje Authorization key
-        if (Context.Request.Headers.ContainsKey("Authorization"))
-            return await HandleAuthenticateInternalAsync(Context.Request.Headers["Authorization"]!);
+        if (Context.Request.Headers.TryGetValue("Authorization", out StringValues value))
+        {
+            return await HandleAuthenticateInternalAsync(value.FirstOrDefault() ?? string.Empty);
+        }
         else
         {
             _logger.AuthHeaderNotFound();

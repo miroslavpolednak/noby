@@ -25,9 +25,11 @@ internal sealed class GetCustomersOnProductHandler : IRequestHandler<GetCustomer
 
         // Zjištění seznamu klientů na produktu, vyhodit tvrdou chybu pokud je množina prázdná (nesmí se stávat, pokud není nekonzistence dat)
         var customers = await _repository.GetRelationships(request.ProductId, cancellationToken);
-        
-        if (!customers.Any())
+
+        if (customers.Count == 0)
+        {
             throw ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.InvalidArgument12020);
+        }
 
         return new GetCustomersOnProductResponse
         {

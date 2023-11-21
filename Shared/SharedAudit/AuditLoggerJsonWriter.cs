@@ -113,14 +113,14 @@ internal static class AuditLoggerJsonWriter
         }
         #endregion actor
 
-        if (context.Identities is not null && context.Identities.Any())
+        if (context.Identities is not null && context.Identities.Count != 0)
         {
             output.Write(",\"identity\":[");
             writeHeaderIdentity(output, context.Identities);
             output.Write("]");
         }
 
-        if (context.Products is not null && context.Products.Any())
+        if (context.Products is not null && context.Products.Count != 0)
         {
             output.Write(",\"product\":[");
             writeHeaderProduct(output, context.Products);

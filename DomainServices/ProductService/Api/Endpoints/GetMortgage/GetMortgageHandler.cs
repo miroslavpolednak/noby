@@ -50,8 +50,10 @@ internal sealed class GetMortgageHandler : IRequestHandler<GetMortgageRequest, G
     {
         var realEstates = await _repository.GetLoanRealEstates(caseId, cancellationToken);
 
-        if (!realEstates.Any())
+        if (realEstates.Count == 0)
+        {
             return Enumerable.Empty<LoanRealEstate>();
+        }
 
         var collateral = await _repository.GetCollateral(caseId, cancellationToken);
 

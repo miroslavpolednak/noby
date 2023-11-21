@@ -1,16 +1,11 @@
 ﻿using CIS.Core.Security;
-using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.UserService.Clients.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using NOBY.Infrastructure.Security.Attributes;
-using DomainServices.SalesArrangementService.Contracts.v1;
-using DomainServices.HouseholdService.Contracts.v1;
 
 namespace NOBY.Infrastructure.Security.Middleware;
 

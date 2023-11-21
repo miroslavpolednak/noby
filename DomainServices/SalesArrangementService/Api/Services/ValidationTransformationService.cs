@@ -13,7 +13,7 @@ internal sealed partial class ValidationTransformationServiceFactory
         public List<Contracts.ValidationMessage> TransformErrors(string json, Dictionary<string, Eas.CheckFormV2.ErrorDto[]>? errors)
         {
             // no errors -> empty list
-            if (errors is null || !errors.Any()) return new List<Contracts.ValidationMessage>(0);
+            if (errors is null || errors.Count == 0) return new List<Contracts.ValidationMessage>(0);
 
             // init method result
             var transformedItems = new List<Contracts.ValidationMessage>(errors.Count);
@@ -54,7 +54,7 @@ internal sealed partial class ValidationTransformationServiceFactory
             var message = new Contracts.ValidationMessageNoby();
 
             var matches = _arrayIndexesRegex.Matches(item.Parameter);
-            if (matches.Any())
+            if (matches.Count != 0)
             {
                 titem = getTransformationItem(_arrayIndexesRegex.Replace(item.Parameter, _parameterReplaceEvaluator));
                 string[] arguments = matches.Select(m =>
