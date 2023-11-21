@@ -39,6 +39,15 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
         var documentOnSa = await _dbContext.DocumentOnSa.FindAsync(request.DocumentOnSAId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
 
+        var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
+
+        if (salesArrangement.State != (int)SalesArrangementStates.InSigning // 7
+            && salesArrangement.State != (int)SalesArrangementStates.ToSend // 8
+            && !request.SkipValidations)
+        {
+            throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
+        }
+
         if (documentOnSa.SignatureTypeId == SignatureTypes.Electronic.ToByte() && request.NotifyESignatures) // 3
             await _eSignaturesClient.DeleteDocument(documentOnSa.ExternalId!, cancellationToken);
 
@@ -46,32 +55,22 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
-
         _auditLogger.Log(
-            AuditEventTypes.Noby008,
-            "Podepsaný dokument byl stornován",
-            products: new List<AuditLoggerHeaderItem>
-            {
+                    AuditEventTypes.Noby008,
+                    "Podepsaný dokument byl stornován",
+                    products: new List<AuditLoggerHeaderItem>
+                    {
                 new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
                 new(AuditConstants.ProductNamesSalesArrangement, documentOnSa.SalesArrangementId),
                 new(AuditConstants.ProductNamesForm, documentOnSa.FormId),
-            }
-        );
+                    }
+                );
 
         if (documentOnSa.Source == Source.Workflow)
             return new Empty();
 
         // SA state
-        if (salesArrangement.State == (int)SalesArrangementStates.InSigning // 7
-             || salesArrangement.State == (int)SalesArrangementStates.ToSend) // 8
-        {
-            await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
-        }
-        else
-        {
-            throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
-        }
+        await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
 
         return new Empty();
     }
