@@ -83,7 +83,7 @@ internal static class LoggerExtensions
         _requestNotFoundInCache = LoggerMessage.Define<long>(
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.RequestNotFoundInCache, nameof(RequestNotFoundInCache)),
-            "Kafka message processing: Case {CaseId} not found in cache");
+            "Kafka message processing in CaseStateChanged_ProcessingCompletedConsumer: Request {RequestId} not found in cache");
         
         _updateActiveTaskStart = LoggerMessage.Define<long, int>(
             LogLevel.Debug,
