@@ -32,7 +32,7 @@ public sealed class ContextUserForwardingClientInterceptor
             if (userAccessor?.IsAuthenticated ?? false)
             {
                 Metadata metadata = new();
-                if (context.Options.Headers is not null && context.Options.Headers.Any())
+                if (context.Options.Headers is not null && context.Options.Headers.Count != 0)
                     foreach (var m in context.Options.Headers)
                         metadata.Add(m);
                 

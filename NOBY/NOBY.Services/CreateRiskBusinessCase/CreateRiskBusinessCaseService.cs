@@ -33,7 +33,7 @@ public sealed class CreateRiskBusinessCaseService
 
         // household
         var households = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
-        if (!households.Any())
+        if (households.Count == 0)
         {
             throw new CisValidationException(400003, "CreateRiskBusinessCaseService: household does not exist");
         }

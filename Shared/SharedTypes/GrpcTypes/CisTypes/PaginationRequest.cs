@@ -3,7 +3,7 @@
 public partial class PaginationRequest 
     : CIS.Core.Types.IPaginableRequest
 {
-    public bool HasSorting => Sorting is not null && Sorting.Any();
+    public bool HasSorting => Sorting is not null && Sorting.Count != 0;
     public Type TypeOfSortingField => typeof(PaginationSortingField);
     public IEnumerable<CIS.Core.Types.IPaginableSortingField>? GetSorting() => Sorting;
 
@@ -12,6 +12,8 @@ public partial class PaginationRequest
         this.PageSize = request.PageSize;
         this.RecordOffset = request.RecordOffset;
         if (request.HasSorting)
+        {
             this.Sorting.AddRange(request.GetSorting()!.Select(t => new PaginationSortingField() { Field = t.Field, Descending = t.Descending }));
+        }
     }
 }

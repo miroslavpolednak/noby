@@ -25,8 +25,7 @@ public sealed class LoggingHttpHandler
 
     public LoggingHttpHandler(ILoggerFactory loggerFactory)
     {
-        if (loggerFactory == null)
-            throw new ArgumentNullException(nameof(loggerFactory));
+        ArgumentNullException.ThrowIfNull(loggerFactory);
 
         _logger = loggerFactory.CreateLogger<LoggingHttpHandler>();
     }

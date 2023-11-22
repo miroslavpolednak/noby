@@ -5,7 +5,9 @@ namespace ExternalServices.Eas.V1;
 internal sealed class MockEasClient 
     : IEasClient
 {
+#pragma warning disable CA1822 // Mark members as static
     public Task<ESBI_SIMULATION_RESULTS> RunSimulation(ESBI_SIMULATION_INPUT_PARAMETERS input, CancellationToken cancellationToken)
+#pragma warning restore CA1822 // Mark members as static
     {
         return Task.FromResult<ESBI_SIMULATION_RESULTS>(new ESBI_SIMULATION_RESULTS
         {

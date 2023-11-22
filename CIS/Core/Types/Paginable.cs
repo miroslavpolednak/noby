@@ -10,7 +10,7 @@ public sealed class Paginable
     public int PageSize { get; init; }
     public List<SortField>? Sorting { get; private set; }
 
-    public bool HasSorting => Sorting is not null && Sorting.Any();
+    public bool HasSorting => Sorting is not null && Sorting.Count != 0;
     public Type TypeOfSortingField => typeof(SortField);
 
     public IEnumerable<IPaginableSortingField>? GetSorting() => Sorting;

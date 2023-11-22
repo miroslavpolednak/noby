@@ -46,7 +46,7 @@ public static class StartupExtensions
             .ToList();
 
         // nejsou zadne auto discover sluzby
-        if (!foundServices.Any())
+        if (foundServices.Count == 0)
         {
             return builder;
         }

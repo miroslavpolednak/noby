@@ -37,12 +37,15 @@ public static class CisEnvironmentConfigurationExtensions
     private static void CheckAndRegisterConfiguration(WebApplicationBuilder builder, ICisEnvironmentConfiguration cisConfiguration)
     {
         if (string.IsNullOrEmpty(cisConfiguration.DefaultApplicationKey))
-            throw new ArgumentNullException("Application Key is empty, cannot initialize CIS Environment Configuration", "ApplicationKey");
-        if (string.IsNullOrEmpty(cisConfiguration.EnvironmentName))
-            throw new ArgumentNullException("Environment Name is empty, cannot initialize CIS Environment Configuration", "EnvironmentName");
-        /*if (string.IsNullOrEmpty(cisConfiguration.ServiceDiscoveryUrl))
-            throw new ArgumentNullException("Service Discovery Url is empty, cannot initialize CIS Environment Configuration", "ServiceDiscoveryUrl");*/
+        {
+            throw new ArgumentNullException(nameof(cisConfiguration), "Application Key is empty, cannot initialize CIS Environment Configuration: ApplicationKey");
+        }
 
+        if (string.IsNullOrEmpty(cisConfiguration.EnvironmentName))
+        {
+            throw new ArgumentNullException(nameof(cisConfiguration), "Environment Name is empty, cannot initialize CIS Environment Configuration: EnvironmentName");
+        }
+        
         builder.Services.TryAddSingleton(cisConfiguration);
     }
 }

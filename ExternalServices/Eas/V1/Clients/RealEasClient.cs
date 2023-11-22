@@ -53,7 +53,7 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
             var request = new S_KLIENTDATA[] { clientData.MapToEas() };
             var result = await Client.GetKlientData_NewKlientAsync(request).WithCancellation(cancellationToken);
 
-            if (result.GetKlientData_NewKlientResult is null || !result.GetKlientData_NewKlientResult.Any())
+            if (result.GetKlientData_NewKlientResult is null || result.GetKlientData_NewKlientResult.Length == 0)
                 throw new CIS.Core.Exceptions.CisValidationException(9104, "EAS GetKlientData_NewKlientResult is empty");
 
             var r = result.GetKlientData_NewKlientResult[0];

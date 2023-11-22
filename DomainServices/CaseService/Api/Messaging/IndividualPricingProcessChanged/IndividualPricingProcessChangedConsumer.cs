@@ -38,7 +38,7 @@ internal sealed class IndividualPricingProcessChangedConsumer
             _ => Enumerable.Empty<EditableFlowSwitch>(),
         }).ToList();
         
-        if (flowSwitches.Any())
+        if (flowSwitches.Count != 0)
         {
             var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, token);
             var productSaleArrangements = salesArrangementResponse.SalesArrangements

@@ -7,7 +7,7 @@ internal static class AppConfigurationExtensions
     /// </summary>
     public static string GetItChannelFromServiceUser(this AppConfiguration configuration, string? serviceUser)
     {
-        if (configuration.ServiceUser2ItChannelBinding is null || !configuration.ServiceUser2ItChannelBinding.Any())
+        if (configuration.ServiceUser2ItChannelBinding is null || configuration.ServiceUser2ItChannelBinding.Count == 0)
             throw ErrorCodeMapper.CreateConfigurationException(ErrorCodeMapper.ServiceUserIsNull);
 
         if (configuration.ServiceUser2ItChannelBinding.TryGetValue(serviceUser ?? "_default", out string? v))

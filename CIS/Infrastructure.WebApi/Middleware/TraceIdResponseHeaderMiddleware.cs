@@ -23,8 +23,8 @@ public class TraceIdResponseHeaderMiddleware
     {
         context.Response.OnStarting(() =>
         {
-            context.Response.Headers.Add("trace-id", Activity.Current?.Id ?? context.TraceIdentifier);
-            context.Response.Headers.Add("api-ver", _appVersion);
+            context.Response.Headers.Append("trace-id", Activity.Current?.Id ?? context.TraceIdentifier);
+            context.Response.Headers.Append("api-ver", _appVersion);
 
             return Task.CompletedTask;
         });

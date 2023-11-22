@@ -68,7 +68,7 @@ internal sealed class ServicesMemoryCache
             })
             .ToListAsync(cancellationToken);
         
-        if (!list.Any())
+        if (list.Count == 0)
         {
             _logger.NoServicesForEnvironment(environmentName);
             throw new CisNotFoundException(103, $"Services not found for environment '{environmentName}'");

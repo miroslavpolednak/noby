@@ -48,7 +48,8 @@ internal sealed class LoggerBootstraper
                 .Filter
                 .ByExcluding(Matching.WithProperty<string>("RequestPath", t => _excludedGrpcRequestPaths.Contains(t, StringComparer.OrdinalIgnoreCase)));
         }
-        
+
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
         if (_configuration.IncludeOnlyPaths?.Any() ?? false)
         {
             // cokoliv jineho nez /api zahazovat
@@ -56,7 +57,8 @@ internal sealed class LoggerBootstraper
                 .Filter
                 .ByExcluding(Matching.WithProperty<string>("RequestPath", t => !_configuration.IncludeOnlyPaths.Any(x => t.StartsWith(x, StringComparison.OrdinalIgnoreCase))));
         }
-        
+#pragma warning restore CA1860 // Avoid using 'Enumerable.Any()' extension method
+
         // remove health checks from logging
         loggerConfiguration
             .Filter

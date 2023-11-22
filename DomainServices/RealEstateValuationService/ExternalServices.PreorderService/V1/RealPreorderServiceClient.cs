@@ -103,7 +103,7 @@ internal sealed class RealPreorderServiceClient
 
         var result = await response.EnsureSuccessStatusAndReadJson<List<Contracts.AttachmentDTO>>(StartupExtensions.ServiceName, cancellationToken);
 
-        if (!result.Any())
+        if (result.Count == 0)
         {
             throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.PreorderSvcUploadAttachmentNoFile);
         }

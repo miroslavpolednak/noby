@@ -59,7 +59,7 @@ public sealed class RealEstateValuationListItem
     /// </summary>
     /// <example>Probíhá ocenění</example>
     [Required]
-    public string ValuationStateName { get; set; }
+    public string ValuationStateName { get; set; } = string.Empty;
 
     /// <summary>
     /// True pokud jde o nemovitost, která je objektem úvěru

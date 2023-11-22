@@ -127,7 +127,7 @@ internal sealed class RealAddressWhispererClient
                     });
                 }
 
-                if (responseModel.Any())
+                if (responseModel.Count != 0)
                     return new List<Dto.FoundSuggestion>(responseModel);
                 else
                     return new List<Dto.FoundSuggestion>(0);

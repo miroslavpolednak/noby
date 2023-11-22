@@ -134,7 +134,7 @@ public static class KafkaExtensions
             .Where(type => typeof(TTopicMarker).IsAssignableFrom(type) && !type.IsInterface)
             .ToList();
         
-        if (!types.Any())
+        if (types.Count == 0)
         {
             throw new Core.Exceptions.CisArgumentException(0, $"No contracts implementing {typeof(TTopicMarker)} found.");
         }

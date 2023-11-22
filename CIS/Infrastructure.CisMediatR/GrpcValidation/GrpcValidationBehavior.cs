@@ -29,7 +29,7 @@ public sealed class GrpcValidationBehavior<TRequest, TResponse>
             .Where(validationFailure => validationFailure != null)
             .ToList();
 
-        if (validationFailures.Any())
+        if (validationFailures.Count != 0)
         {
             var customStateException = validationFailures.FirstOrDefault(t => t.CustomState is not null && t.CustomState is GrpcValidationBehaviorExceptionTypes);
 

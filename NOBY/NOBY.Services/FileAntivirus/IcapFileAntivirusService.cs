@@ -358,7 +358,7 @@ internal sealed class IcapFileAntivirusService
         /// <summary>
         /// A basic excpetion to show ICAP-related errors
         /// </summary>
-        public class ICAPException : Exception
+        public sealed class ICAPException : Exception
         {
             public ICAPException(string message)
                 : base(message)

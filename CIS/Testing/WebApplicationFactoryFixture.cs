@@ -52,7 +52,7 @@ public class WebApplicationFactoryFixture<TStartup>
             interceptors.Add(Services.GetRequiredService<GenericClientExceptionInterceptor>());
         }
 
-        if (interceptors.Any())
+        if (interceptors.Count != 0)
         {
             var invoker = Channel.Intercept(interceptors.ToArray());
             return (TService)Activator.CreateInstance(typeof(TService), new object[] { invoker })!;
@@ -140,7 +140,7 @@ public class WebApplicationFactoryFixture<TStartup>
         if (CisWebFactoryConfiguration.UseNobyAuthenticationHeader)
             SetAuthHeader(client);
 
-        if (CisWebFactoryConfiguration.Header is not null && CisWebFactoryConfiguration.Header.Any())
+        if (CisWebFactoryConfiguration.Header is not null && CisWebFactoryConfiguration.Header.Count != 0)
             SetCustomHeader(client, CisWebFactoryConfiguration.Header);
 
         return client;

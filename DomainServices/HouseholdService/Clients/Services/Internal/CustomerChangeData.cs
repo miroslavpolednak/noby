@@ -9,6 +9,11 @@ internal sealed class CustomerChangeData
 
     private JsonElement? _naturalPersonElement;
 
+    private static JsonSerializerOptions _options = new JsonSerializerOptions()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     private CustomerChangeData(string customerChangeData)
     {
         _jsonDocument = JsonDocument.Parse(customerChangeData);
@@ -38,12 +43,7 @@ internal sealed class CustomerChangeData
 
     private CustomerChangeDataDelta ParseDelta()
     {
-        var options = new JsonSerializerOptions()
-        {
-            PropertyNameCaseInsensitive = true
-        };
-
-        return _jsonDocument.Deserialize<CustomerChangeDataDelta>(options) ?? new CustomerChangeDataDelta();
+        return _jsonDocument.Deserialize<CustomerChangeDataDelta>(_options) ?? new CustomerChangeDataDelta();
     }
 
     private void InitializeNaturalPersonElement()

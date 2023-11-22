@@ -19,7 +19,7 @@ public static class CisWebApiCors
             {
                 x.AddPolicy(NobyCorsPolicyName, policyBuilder =>
                     {
-                        if (cisConfiguration.AllowedOrigins is not null && cisConfiguration.AllowedOrigins.Any())
+                        if (cisConfiguration.AllowedOrigins is not null && cisConfiguration.AllowedOrigins.Length != 0)
                             policyBuilder.WithOrigins(cisConfiguration.AllowedOrigins);
                         
                         policyBuilder

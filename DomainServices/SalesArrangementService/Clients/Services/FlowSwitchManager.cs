@@ -25,7 +25,7 @@ internal sealed class FlowSwitchManager
 
     public async Task SaveFlowSwitches(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        if (_flowSwitches.Any())
+        if (_flowSwitches.Count != 0)
         {
             await _client.SetFlowSwitches(salesArrangementId, _flowSwitches, cancellationToken);
         }

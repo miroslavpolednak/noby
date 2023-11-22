@@ -15,7 +15,7 @@ public class PaginationRequestValidator
             .GreaterThan(0).WithMessage("Pagination PageSize must be > 0");
 
         RuleForEach(t => t.Sorting)
-            .SetValidator(new PaginationSortFieldValidator()).When(t => t.Sorting is not null && t.Sorting.Any());
+            .SetValidator(new PaginationSortFieldValidator()).When(t => t.Sorting is not null && t.Sorting.Count != 0);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 }

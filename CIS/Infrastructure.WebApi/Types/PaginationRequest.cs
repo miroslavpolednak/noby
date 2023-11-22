@@ -23,7 +23,7 @@ public class PaginationRequest
     public List<PaginationSortingField>? Sorting { get; init; }
 
     [JsonIgnore]
-    public bool HasSorting => Sorting is not null && Sorting.Any();
+    public bool HasSorting => Sorting is not null && Sorting.Count != 0;
     
     /// <summary>
     /// Pro interoperabilitu s gRPC typem PaginationRequest

@@ -8,10 +8,7 @@ public sealed class MultipleTypeAvroConfigBuilder<TBase>
     
     public MultipleTypeAvroConfigBuilder<TBase> AddType(Type messageType, Schema readerSchema)
     {
-        if (readerSchema is null)
-        {
-            throw new ArgumentNullException(nameof(readerSchema));
-        }
+        ArgumentNullException.ThrowIfNull(readerSchema);
 
         if (_types.Any(x => x.Schema.Fullname == readerSchema.Fullname))
         {

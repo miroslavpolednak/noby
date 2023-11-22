@@ -20,10 +20,7 @@ public class RepeatedFieldBehavior : ISpecimenBuilderTransformation
 
     public ISpecimenBuilderNode Transform(ISpecimenBuilder? builder)
     {
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
+        ArgumentNullException.ThrowIfNull(builder);
 
         return new Postprocessor(
             builder,
@@ -50,15 +47,8 @@ public class RepeatedFieldPropertiesCommand : ISpecimenCommand
 
     public void Execute(object specimen, ISpecimenContext context)
     {
-        if (specimen == null)
-        {
-            throw new ArgumentNullException(nameof(specimen));
-        }
-
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+        ArgumentNullException.ThrowIfNull(specimen);
+        ArgumentNullException.ThrowIfNull(context);
 
         Type specimenType = specimen.GetType();
         foreach (PropertyInfo? pi in PropertyQuery.SelectProperties(specimenType))

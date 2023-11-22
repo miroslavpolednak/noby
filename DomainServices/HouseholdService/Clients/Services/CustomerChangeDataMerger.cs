@@ -52,7 +52,7 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
                     TaxResidences = new NaturalPersonDelta.TaxResidenceDelta
                     {
                         ValidFrom = currentDeltaTaxResidences.ValidFrom,
-                        ResidenceCountries = currentDeltaTaxResidences.ResidenceCountries is not null && currentDeltaTaxResidences.ResidenceCountries.Any()
+                        ResidenceCountries = currentDeltaTaxResidences.ResidenceCountries is not null && currentDeltaTaxResidences.ResidenceCountries.Count != 0
                             ? new List<NaturalPersonDelta.TaxResidenceDelta.TaxResidenceItemDelta>(currentDeltaTaxResidences.ResidenceCountries!)
                             : new List<NaturalPersonDelta.TaxResidenceDelta.TaxResidenceItemDelta>()
                     }
