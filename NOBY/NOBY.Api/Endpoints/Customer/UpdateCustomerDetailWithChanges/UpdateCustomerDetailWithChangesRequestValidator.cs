@@ -25,5 +25,11 @@ internal sealed class UpdateCustomerDetailWithChangesRequestValidator : Abstract
             .Cascade(CascadeMode.Stop)
             .BirthNumberValidation(r => r.NaturalPerson!.DateOfBirth!.Value)
             .WithErrorCode(CustomerValidationErrorCode);
+
+        When(r => r.IdentificationDocument is not null,
+             () =>
+             {
+                 RuleFor(r => r.IdentificationDocument!).SetValidator(new IdentificationDocumentValidator());
+             });
     }
 }
