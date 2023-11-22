@@ -32,11 +32,7 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
 
     public async Task StopSigning(StopSigningRequest request, CancellationToken cancellationToken = default)
     {
-        await _client.StopSigningAsync(new StopSigningRequest
-        {
-            DocumentOnSAId = request.DocumentOnSAId,
-            NotifyESignatures = request.NotifyESignatures
-        }, cancellationToken: cancellationToken);
+        await _client.StopSigningAsync(request, cancellationToken: cancellationToken);
     }
 
     public async Task<GetDocumentOnSADataResponse> GetDocumentOnSAData(int documentOnSAId, CancellationToken cancellationToken = default)

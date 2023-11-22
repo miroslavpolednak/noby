@@ -33,7 +33,6 @@ internal sealed class NotifyStarbuildHandler
             request.RiskBusinessCaseId = productSaInstance.RiskBusinessCaseId;
         }
 
-        //TODO login
         var sbRequest = new ExternalServices.SbWebApi.Dto.CaseStateChanged.CaseStateChangedRequest
         {
             CaseId = caseInstance.CaseId,

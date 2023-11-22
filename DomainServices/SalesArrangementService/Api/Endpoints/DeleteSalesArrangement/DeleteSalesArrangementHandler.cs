@@ -31,7 +31,8 @@ internal sealed class DeleteSalesArrangementHandler
         _dbContext.Remove(saInstance);
 
         // smazat parametry
-        await _dbContext.SalesArrangementsParameters
+        await _dbContext
+            .SalesArrangementsParameters
             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
             .ExecuteDeleteAsync(cancellation);
 

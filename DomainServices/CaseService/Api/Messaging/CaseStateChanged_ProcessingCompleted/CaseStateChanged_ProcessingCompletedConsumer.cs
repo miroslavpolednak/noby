@@ -28,8 +28,8 @@ internal sealed class CaseStateChanged_ProcessingCompletedConsumer
             return;
         }
 
-        var entity = (await _dbContext.Cases
-            .FirstOrDefaultAsync(t => t.CaseId == cache.CaseId, context.CancellationToken));
+        var entity = await _dbContext.Cases
+            .FirstOrDefaultAsync(t => t.CaseId == cache.CaseId, context.CancellationToken);
 
         if (entity is null)
         {
