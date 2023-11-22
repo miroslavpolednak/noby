@@ -61,6 +61,16 @@ public class LoanApplicationCustomerIncomes
         public string? EmployerIdentificationNumber => new[] { Income?.Employer?.Cin, Income?.Employer?.BirthNumber }.FirstOrDefault(str => !string.IsNullOrWhiteSpace(str));
 
         public string EmployerName => Income?.Employer?.Name ?? string.Empty;
+
+        public string? IncomeConfirmationContact
+        {
+            get
+            {
+                var contact = Income?.IncomeConfirmation?.ConfirmationContact;
+
+                return contact is null ? default : $"{contact.PhoneIDC}{contact.PhoneNumber}";
+            }
+        }
     }
 
     public class EntrepreneurIncome
