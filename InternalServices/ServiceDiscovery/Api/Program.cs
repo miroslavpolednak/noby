@@ -32,6 +32,7 @@ try
     // logging, tracing
     builder
         .AddCisLogging()
+        .AddCisLoggingPayloadBehavior()
         .AddCisTracing();
 
     // add general Dapper repository
