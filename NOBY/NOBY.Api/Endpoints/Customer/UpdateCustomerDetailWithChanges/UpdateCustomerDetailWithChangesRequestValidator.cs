@@ -6,6 +6,8 @@ namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
 internal sealed class UpdateCustomerDetailWithChangesRequestValidator : AbstractValidator<UpdateCustomerDetailWithChangesRequest>
 {
+    private const int CustomerValidationErrorCode = 90032;
+
     public UpdateCustomerDetailWithChangesRequestValidator(ICodebookServiceClient codebookService)
     {
         RuleFor(t => t.NaturalPerson!.ProfessionCategoryId)
@@ -17,17 +19,11 @@ internal sealed class UpdateCustomerDetailWithChangesRequestValidator : Abstract
             .Cascade(CascadeMode.Stop)
             .NotNull()
             .BirthDateValidation()
-            .WithErrorCode(90032);
+            .WithErrorCode(CustomerValidationErrorCode);
 
         RuleFor(r => r.NaturalPerson!.BirthNumber)
             .Cascade(CascadeMode.Stop)
             .BirthNumberValidation(r => r.NaturalPerson!.DateOfBirth!.Value)
-            .WithErrorCode(90032);
-
-        When(r => r.EmailAddress is not null,
-             () =>
-             {
-                 RuleFor(r => r.EmailAddress!.EmailAddress).NotEmpty().EmailAddress().WithErrorCode(90032);
-             });
+            .WithErrorCode(CustomerValidationErrorCode);
     }
 }

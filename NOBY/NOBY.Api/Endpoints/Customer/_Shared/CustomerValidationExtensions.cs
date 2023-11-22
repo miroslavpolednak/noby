@@ -45,7 +45,7 @@ internal static class CustomerValidationExtensions
                           .MaximumLength(10)
                           .Must((request, birthNumber) =>
                           {
-                              var checkNumber = int.Parse(birthNumber.AsSpan(7, birthNumber!.Length - 6), CultureInfo.InvariantCulture);
+                              var checkNumber = int.Parse(birthNumber.AsSpan(6, birthNumber!.Length - 6), CultureInfo.InvariantCulture);
 
                               if (birthNumber.Length == 9 && checkNumber == 0)
                                   return false;
@@ -72,7 +72,7 @@ internal static class CustomerValidationExtensions
         if (month < 1 || month > 12 || day < 1 || day > DateTime.DaysInMonth(year, month))
             return default;
 
-        if (birthNumber.Length == 10 && int.Parse(birthNumber, CultureInfo.InvariantCulture) % 11 != 0)
+        if (birthNumber.Length == 10 && ulong.Parse(birthNumber, CultureInfo.InvariantCulture) % 11 != 0)
             return default;
 
         return new DateTime(year, month, day);
