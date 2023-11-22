@@ -30,4 +30,6 @@ message CreateCustomerRequest {
 
 message CreateCustomerResponse {
 	cis.types.Identity CreatedCustomerIdentity = 1;
+
+	bool IsVerified = 2;
 }

@@ -17,14 +17,11 @@ internal sealed class CreateCustomerHandler : IRequestHandler<CreateCustomerRequ
 
     public async Task<CreateCustomerResponse> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
-        return new CreateCustomerResponse
+        return request.Mandant switch
         {
-            CreatedCustomerIdentity = request.Mandant switch
-            {
-                Mandants.Kb => await _identifiedSubjectService.CreateSubject(request, cancellationToken),
-                Mandants.Mp => await _mpDigiClient.CreatePartner(request, cancellationToken),
-                _ => throw new InvalidEnumArgumentException()
-            }
+            Mandants.Kb => await _identifiedSubjectService.CreateSubject(request, cancellationToken),
+            Mandants.Mp => await _mpDigiClient.CreatePartner(request, cancellationToken),
+            _ => throw new InvalidEnumArgumentException()
         };
     }
 }

@@ -37,7 +37,7 @@ internal sealed class IdentifiedSubjectService
         _kycClient = kycClient;
     }
 
-    public async Task<Identity> CreateSubject(CreateCustomerRequest request, CancellationToken cancellationToken)
+    public async Task<CreateCustomerResponse> CreateSubject(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
         await InitializeCodebooks(cancellationToken);
 
@@ -48,7 +48,11 @@ internal sealed class IdentifiedSubjectService
         if (response.Error is not null) 
             _errorMap.ResolveValidationError(response.Error);
 
-        return new Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response.Result!), IdentitySchemes.Kb);
+        return new CreateCustomerResponse
+        {
+            CreatedCustomerIdentity = new Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response.Result!), IdentitySchemes.Kb),
+            IsVerified = response.Result?.CreatedSubject?.VerifiedInBr ?? false
+        };
     }
 
     public async Task UpdateSubject(UpdateCustomerRequest request, CancellationToken cancellationToken)
