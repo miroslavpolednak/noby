@@ -44,6 +44,7 @@ public class CreateCustomerRequest
     /// Místo narození
     /// </summary>
     /// <example>Praha</example>
+    [MinLength(2)]
     public string? BirthPlace { get; set; }
 
     /// <summary>

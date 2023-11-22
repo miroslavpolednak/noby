@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
@@ -8,6 +9,7 @@ public sealed class UpdateCustomerDetailWithChangesRequest
     [JsonIgnore]
     public int CustomerOnSAId { get; set; }
 
+    [EmailAddress]
     public NOBY.Dto.EmailAddressDto? EmailAddress { get; set; }
 
     public NOBY.Dto.PhoneNumberDto? MobilePhone { get; set; }
