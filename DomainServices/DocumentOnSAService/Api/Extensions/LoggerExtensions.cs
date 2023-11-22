@@ -18,7 +18,7 @@ public static class LoggerExtensions
         _alreadyArchived = LoggerMessage.Define<string, int, int>(
             LogLevel.Information,
             new EventId(LoggerEventIdCodes.AlreadyArchived, nameof(AlreadyArchived)),
-          "{ServiceName}:From {UnArchCount} unarchived documentsOnSa, {ArchCount} have been already archived}");
+          "{ServiceName}:From {UnArchCount} unarchived documentsOnSa, {ArchCount} have been already archived");
 
         _updateDocumentStatusFailed = LoggerMessage.Define<int>(
             LogLevel.Error,
