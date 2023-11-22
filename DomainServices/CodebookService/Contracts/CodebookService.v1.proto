@@ -21,7 +21,7 @@ service CodebookService {
 		};
    }
 
-   rpc AddressTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+   rpc AddressTypes (google.protobuf.Empty) returns (AddressTypesResponse) {
 	   option (google.api.http) = {
 			get: "/v1/address-types"
 		};

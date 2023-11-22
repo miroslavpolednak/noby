@@ -14,8 +14,21 @@ internal partial class CodebookService
     public override Task<GenericCodebookResponse> AcademicDegreesBefore(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 
-    public override Task<GenericCodebookResponse> AddressTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<SharedTypes.Enums.AddressTypes>(true);
+    public override Task<AddressTypesResponse> AddressTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+    {
+        var items = FastEnum.GetValues<SharedTypes.Enums.AddressTypes>()
+           .Where(t => t != SharedTypes.Enums.AddressTypes.Unknown)
+           .Select(t => new AddressTypesResponse.Types.AddressTypeItem
+           {
+               Id = (int)t,
+               Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+               IsValid = true,
+               IsValidNoby = (int)t is 1 or 2
+           })
+           .ToList()!;
+
+        return Task.FromResult((new AddressTypesResponse()).AddItems(items));
+    }
 
     public override Task<GenericCodebookResponse> AcvAttachmentCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();

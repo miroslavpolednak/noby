@@ -4,6 +4,17 @@ option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 
 import "google/protobuf/wrappers.proto";
 
+message AddressTypesResponse {
+	repeated AddressTypeItem Items = 1;
+
+	message AddressTypeItem {
+		int32 Id = 1;
+		string Name = 2;
+		bool IsValid = 3;
+		bool IsValidNoby = 4;
+	}
+}
+
 message BankCodesResponse {
 	repeated BankCodeItem Items = 1;
 
