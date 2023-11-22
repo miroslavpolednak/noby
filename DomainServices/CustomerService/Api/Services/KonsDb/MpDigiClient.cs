@@ -43,7 +43,7 @@ public class MpDigiClient
         async Task ContactTypes() => _contactTypes = await _codebook.ContactTypes(cancellationToken);
     }
 
-    public async Task<Identity> CreatePartner(CreateCustomerRequest request, CancellationToken cancellationToken)
+    public async Task<CreateCustomerResponse> CreatePartner(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
         var mpIdentity = request.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
 
@@ -60,7 +60,10 @@ public class MpDigiClient
 
         await _mpHomeClient.UpdatePartner(mpIdentity.IdentityId, partnerRequest, cancellationToken);
 
-        return new Identity(mpIdentity.IdentityId, IdentitySchemes.Mp);
+        return new CreateCustomerResponse
+        {
+            CreatedCustomerIdentity = new Identity(mpIdentity.IdentityId, IdentitySchemes.Mp)
+        };
     }
 
     public async Task UpdatePartner(UpdateCustomerRequest request, CancellationToken cancellationToken)
