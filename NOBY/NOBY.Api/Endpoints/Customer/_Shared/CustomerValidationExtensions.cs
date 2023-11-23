@@ -18,7 +18,7 @@ internal static class CustomerValidationExtensions
 
         var phoneNumber = $"{mobilePhone.PhoneIDC}{mobilePhone.PhoneNumber}";
 
-        await ValidateContact(customerService, ContactType.Email, phoneNumber, cancellationToken);
+        await ValidateContact(customerService, ContactType.Phone, phoneNumber, cancellationToken);
     }
 
     public static async Task ValidateEmail(
