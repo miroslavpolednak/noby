@@ -12,8 +12,8 @@ internal class IdentificationDocumentValidator : AbstractValidator<Identificatio
 
     public IdentificationDocumentValidator()
     {
-        RuleFor(document => document.ValidTo).LessThan(DateTime.Today);
-        RuleFor(document => document.IssuedOn).GreaterThan(DateTime.Today);
+        RuleFor(document => document.ValidTo).GreaterThan(DateTime.Today);
+        RuleFor(document => document.IssuedOn).LessThanOrEqualTo(DateTime.Today);
 
         When(document => document.IssuingCountryId == 16,
              () =>

@@ -17,10 +17,14 @@ internal class CreateCustomerRequestValidator : AbstractValidator<CreateCustomer
             .BirthDateValidation()
             .WithErrorCode(90032);
 
-        RuleFor(r => r.BirthNumber)
-            .Cascade(CascadeMode.Stop)
-            .BirthNumberValidation(r => r.BirthDate)
-            .WithErrorCode(90032);
+        When(r => !string.IsNullOrWhiteSpace(r.BirthNumber),
+             () =>
+             {
+                 RuleFor(r => r.BirthNumber)
+                     .Cascade(CascadeMode.Stop)
+                     .BirthNumberValidation(r => r.BirthDate)
+                     .WithErrorCode(90032);
+             });
 
         When(r => !string.IsNullOrWhiteSpace(r.BirthPlace),
              () =>

@@ -40,7 +40,8 @@ internal static class CustomerValidationExtensions
 
     public static IRuleBuilderOptions<T, string> BirthNumberValidation<T>(this IRuleBuilder<T, string?> ruleBuilder, Func<T, DateTime> birthDateGetter)
     {
-        return ruleBuilder.Matches(@"^\d+$")
+        return ruleBuilder.NotEmpty()
+                          .Matches(@"^\d+$")
                           .MinimumLength(9)
                           .MaximumLength(10)
                           .Must((request, birthNumber) =>

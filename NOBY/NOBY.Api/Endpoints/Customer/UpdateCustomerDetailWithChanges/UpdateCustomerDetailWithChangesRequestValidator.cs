@@ -21,10 +21,14 @@ internal sealed class UpdateCustomerDetailWithChangesRequestValidator : Abstract
             .BirthDateValidation()
             .WithErrorCode(CustomerValidationErrorCode);
 
-        RuleFor(r => r.NaturalPerson!.BirthNumber)
-            .Cascade(CascadeMode.Stop)
-            .BirthNumberValidation(r => r.NaturalPerson!.DateOfBirth!.Value)
-            .WithErrorCode(CustomerValidationErrorCode);
+        When(r => !string.IsNullOrWhiteSpace(r.NaturalPerson!.BirthNumber),
+             () =>
+             {
+                 RuleFor(r => r.NaturalPerson!.BirthNumber)
+                     .Cascade(CascadeMode.Stop)
+                     .BirthNumberValidation(r => r.NaturalPerson!.DateOfBirth!.Value)
+                     .WithErrorCode(CustomerValidationErrorCode);
+             });
 
         When(r => r.IdentificationDocument is not null,
              () =>
