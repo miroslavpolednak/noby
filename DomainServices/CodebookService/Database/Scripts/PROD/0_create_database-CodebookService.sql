@@ -5,9 +5,9 @@ GO
 CREATE DATABASE [CodebookService]
  CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'CodebookService', FILENAME = N'S:\Data_Silver_01_SQL\CodebookService.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'CodebookService', FILENAME = N'S:\Data_Silver_18_SQL\CodebookService.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'CodebookService_log', FILENAME = N'S:\Data_Silver_01_SQL\CodebookService_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'CodebookService_log', FILENAME = N'S:\Data_Silver_16_SQL\CodebookService_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
  WITH CATALOG_COLLATION = DATABASE_DEFAULT
 GO
 
