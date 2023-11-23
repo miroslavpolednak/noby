@@ -48,10 +48,10 @@ SharedComponents.GrpcServiceBuilder
             .AddConsumer<DomainServices.CaseService.Api.Messaging.InformationRequestProcessChanged.InformationRequestProcessChangedConsumer>()
             .AddConsumer<DomainServices.CaseService.Api.Messaging.MainLoanProcessChanged.MainLoanProcessChangedConsumer>()
             .AddConsumer<DomainServices.CaseService.Api.Messaging.WithdrawalProcessChanged.WithdrawalProcessChangedConsumer>()
-            .AddConsumer<DomainServices.CaseService.Api.Messaging.MortgageInstanceChanged.MortgageInstanceChangedConsumer>()
+            //.AddConsumer<DomainServices.CaseService.Api.Messaging.MortgageInstanceChanged.MortgageInstanceChangedConsumer>()
             .AddConsumerTopicAvro<ISbWorkflowProcessEvent>(appConfiguration.SbWorkflowProcessTopic!)
             .AddConsumerTopicAvro<ISbWorkflowInputProcessingEvent>(appConfiguration.SbWorkflowInputProcessingTopic!)
-            .AddConsumerTopicAvro<IMortgageServicingMortgageChangesTopic>(appConfiguration.MortgageServicingMortgageChangesTopic!)
+            //.AddConsumerTopicAvro<IMortgageServicingMortgageChangesTopic>(appConfiguration.MortgageServicingMortgageChangesTopic!)
             .Build();
     })
     .MapGrpcServices(app =>
