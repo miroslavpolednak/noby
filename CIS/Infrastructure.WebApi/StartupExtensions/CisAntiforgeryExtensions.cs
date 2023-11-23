@@ -23,11 +23,11 @@ public static class CisAntiforgeryExtensions
 
     public static IApplicationBuilder UseCisAntiforgery(this IApplicationBuilder app)
     {
-        app.UseMiddleware<AntiforgeryMiddleware>();
-        return app;
+        return app.UseMiddleware<AntiforgeryMiddleware>();
     }
 
-    internal sealed class AntiforgeryMiddleware : IMiddleware
+    internal sealed class AntiforgeryMiddleware 
+        : IMiddleware
     {
         private static string[] _restrictedMethods = new[] { "POST", "DELETE", "PUT" };
         private readonly IAntiforgery _antiforgery;

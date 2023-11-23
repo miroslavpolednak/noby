@@ -21,7 +21,7 @@ public static class DistributedCachingStartupExtensions
             .Get<CisDistributedCacheConfiguration>()
             ?? throw new Core.Exceptions.CisConfigurationNotFound(JsonCacheConfigurationKey);
 
-        builder.Services.AddSingleton<ICisDistributedCacheConfiguration>(Configuration);
+        builder.Services.AddSingleton(Configuration);
 
         return Configuration.CacheType switch
         {

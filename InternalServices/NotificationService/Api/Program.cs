@@ -54,6 +54,7 @@ try
     builder
         .AddCisCoreFeatures()
         .AddCisLogging()
+        .AddCisLoggingPayloadBehavior()
         .AddCisTracing()
         .AddCisAudit()
         .AddCisServiceAuthentication()

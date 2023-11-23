@@ -40,6 +40,7 @@ appConfiguration.CheckAppConfiguration();
     // logging 
     builder
         .AddCisLogging()
+        .AddCisLoggingPayloadBehavior()
         .AddCisTracing()
         .AddCisAudit();
 

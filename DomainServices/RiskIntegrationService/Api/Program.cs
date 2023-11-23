@@ -38,6 +38,7 @@ try
     // logging 
     builder
         .AddCisLogging()
+        .AddCisLoggingPayloadBehavior()
         .AddCisTracing();
 
     // health checks
