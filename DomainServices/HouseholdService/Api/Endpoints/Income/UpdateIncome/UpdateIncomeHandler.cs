@@ -52,7 +52,7 @@ internal sealed class UpdateIncomeHandler
         => typeId switch
         {
             CustomerIncomeTypes.Employement => string.IsNullOrEmpty(request.Employement?.Employer.Name) ? "-" : request.Employement?.Employer.Name,
-            CustomerIncomeTypes.Enterprise => "-",
+            CustomerIncomeTypes.Entrepreneur => "-",
             CustomerIncomeTypes.Rent => "-",
             CustomerIncomeTypes.Other => await getOtherIncomeName(request.Other.IncomeOtherTypeId, cancellationToken),
             _ => throw new NotImplementedException("This customer income type serializer for getIncomeSource is not implemented")
@@ -66,7 +66,7 @@ internal sealed class UpdateIncomeHandler
         {
             CustomerIncomeTypes.Employement => request.Employement,
             CustomerIncomeTypes.Other => request.Other,
-            CustomerIncomeTypes.Enterprise => request.Entrepreneur,
+            CustomerIncomeTypes.Entrepreneur => request.Entrepreneur,
             CustomerIncomeTypes.Rent => request.Rent,
             _ => throw new NotImplementedException("This customer income type serializer is not implemented")
         };

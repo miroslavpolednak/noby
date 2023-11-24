@@ -40,12 +40,14 @@ public static class DataStartupExtensions
         // add DbContext
         string? connectionString = builder.Configuration.GetConnectionString(connectionStringKey);
         if (!string.IsNullOrEmpty(connectionString))
+        {
             builder.Services
                 .AddDbContext<TDbContext>(options => options
                     .UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure())
                     .EnableSensitiveDataLogging(enableSensitiveDataLogging)
                     , ServiceLifetime.Scoped, ServiceLifetime.Singleton);
-        
+        }
+
         return builder;
     }
 

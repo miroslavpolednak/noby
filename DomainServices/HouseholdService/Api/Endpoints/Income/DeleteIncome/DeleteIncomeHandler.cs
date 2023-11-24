@@ -1,4 +1,5 @@
 ﻿using DomainServices.HouseholdService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.DeleteIncome;
 
@@ -17,13 +18,17 @@ internal sealed class DeleteIncomeHandler
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.IncomeNotFound, request.IncomeId);
         }
 
+        await _documentDataStorage.Delete(request.IncomeId, cancellationToken);
+
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly Database.HouseholdServiceDbContext _dbContext;
 
-    public DeleteIncomeHandler(Database.HouseholdServiceDbContext dbContext)
+    public DeleteIncomeHandler(Database.HouseholdServiceDbContext dbContext, IDocumentDataStorage documentDataStorage)
     {
+        _documentDataStorage = documentDataStorage;
         _dbContext = dbContext;
     }
 }

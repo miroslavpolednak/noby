@@ -84,7 +84,7 @@ internal class Customer
         });
 
     public IncomeEntrepreneur? IncomeEntrepreneur =>
-        _customerIncomes[CustomerIncomeTypes.Enterprise].Select(i => new IncomeEntrepreneur(i, Incomes[i.IncomeId])
+        _customerIncomes[CustomerIncomeTypes.Entrepreneur].Select(i => new IncomeEntrepreneur(i, Incomes[i.IncomeId])
         {
             Number = CustomerOnSA.Incomes.IndexOf(i)
         }).FirstOrDefault(); 

@@ -13,7 +13,7 @@ public class LoanApplicationIncome
 
     public decimal? IncomeEmployment => IncomeSum(CustomerIncomeTypes.Employement);
 
-    public decimal? IncomeEnterprise => IncomeSum(CustomerIncomeTypes.Enterprise);
+    public decimal? IncomeEnterprise => IncomeSum(CustomerIncomeTypes.Entrepreneur);
 
     public decimal? IncomeRent => IncomeSum(CustomerIncomeTypes.Rent);
 

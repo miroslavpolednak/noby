@@ -1,5 +1,6 @@
 using CIS.Infrastructure.StartupExtensions;
 using ExternalServices;
+using SharedComponents.DocumentDataStorage;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -21,6 +22,8 @@ SharedComponents.GrpcServiceBuilder
         builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
         // sulm
         builder.AddExternalService<ExternalServices.Sulm.V1.ISulmClient>();
+
+        builder.AddDocumentDataStorage();
 
         // dbcontext
         builder.AddEntityFramework<DomainServices.HouseholdService.Api.Database.HouseholdServiceDbContext>();
