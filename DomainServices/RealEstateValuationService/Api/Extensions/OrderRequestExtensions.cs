@@ -34,7 +34,7 @@ internal static class OrderRequestExtensions
         SpecificDetailHouseAndFlatObject? houseAndFlat,
         in Services.OrderAggregate.GetProductPropertiesResult productProps)
     {
-        model.ProductOwner = "02";
+        model.ProductOwner = "01";
         model.ContactPersonName = $"{currentUser.UserInfo.FirstName};{currentUser.UserInfo.LastName}";
         model.ContactPersonEmail = currentUser.UserInfo.Email;
         model.ContactPersonTel = currentUser.UserInfo.PhoneNumber;
