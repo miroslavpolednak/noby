@@ -111,7 +111,7 @@ internal sealed class CreateCustomerHandler
                 "Identifikovaný klient byl přiřazen k žádosti",
                 identities: new List<AuditLoggerHeaderItem>
                 {
-                    new(kbIdentity.IdentityScheme.ToString(), kbIdentity.IdentityId)
+                    new("KBID", kbIdentity.IdentityId)
                 },
                 products: new List<AuditLoggerHeaderItem>
                 {
