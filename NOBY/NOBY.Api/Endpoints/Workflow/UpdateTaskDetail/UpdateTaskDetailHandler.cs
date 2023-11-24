@@ -70,6 +70,11 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         if (request.TaskTypeId == 6)
         {
             completeTaskRequest.CompletionTypeId = _currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningAttachments) ? 2 : 1;
+
+            if (completeTaskRequest.CompletionTypeId == 2 && !request.TaskResponseTypeId.HasValue)
+            {
+                throw new NobyValidationException(90032);
+            }
         }
 
         completeTaskRequest.TaskDocumentIds.AddRange(taskDetail.TaskDetail.TaskDocumentIds.Concat(documentIds));
