@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -48,6 +49,8 @@ internal sealed class RealPcpClient
     </dto:productInstance>
 </v12:createRequest>
    </soapenv:Body>" + _soapEnvelopeEnd;
+
+        _logger.LogDebug(soap);
 
         using (HttpContent content = new StringContent(soap, Encoding.UTF8, "text/xml"))
         using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress))
@@ -107,9 +110,11 @@ internal sealed class RealPcpClient
 
     private readonly HttpClient _httpClient;
     private readonly IExternalServiceConfiguration<IPcpClient> _configuration;
+    private readonly ILogger<RealPcpClient> _logger;
 
-    public RealPcpClient(HttpClient httpClient, IExternalServiceConfiguration<IPcpClient> configuration)
+    public RealPcpClient(HttpClient httpClient, IExternalServiceConfiguration<IPcpClient> configuration, ILogger<RealPcpClient> logger)
     {
+        _logger = logger;
         _configuration = configuration;
         _httpClient = httpClient;
     }
