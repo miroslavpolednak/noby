@@ -45,9 +45,27 @@ public interface IDocumentDataStorage
     Task<(int? Version, TData? Data)> GetData<TData>(int entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData;
 
+    /// <summary>
+    /// Založí nebo updatuje data pro entitu v databázi.
+    /// </summary>
+    /// <typeparam name="TData">Kontrakt pro serializaci objektu</typeparam>
+    /// <param name="data">Objekt, který se má uložit do databáze</param>
+    /// <param name="entityId">ID entity pro která mají být data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    /// <param name="removeOtherStoredEntityTypes">Pokud bude nastaveno na true, odstraní se z databáze všechna ostatní data pro danou entitu.</param>
     Task InsertOrUpdateData<TData>(TData data, int entityId, bool removeOtherStoredEntityTypes = false, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData;
 
+    /// <summary>
+    /// Založí nebo updatuje data pro entitu v databázi. Nejdříve mapuje zdrojový objekt na kontrakt dat a poté uloží data do databáze.
+    /// </summary>
+    /// <remarks>
+    /// Aby mapování fungovalo, musí být vytvořen mapper IDocumentDataMapper pro danou kombinaci TData a TDestination.
+    /// </remarks>
+    /// <typeparam name="TSource">Zdrojový objekt, který je mapován na kontrakt dat v databázi</typeparam>
+    /// <typeparam name="TData">Kontrakt pro serializaci objektu</typeparam>
+    /// <param name="data">Objekt, který se má uložit do databáze</param>
+    /// <param name="entityId">ID entity pro která mají být data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    /// <param name="removeOtherStoredEntityTypes">Pokud bude nastaveno na true, odstraní se z databáze všechna ostatní data pro danou entitu.</param>
     Task InsertOrUpdateDataWithMapper<TData, TSource>(TSource mappedEntity, int entityId, bool removeOtherStoredEntityTypes = false, CancellationToken cancellationToken = default)
         where TSource : class
         where TData : class, IDocumentData;

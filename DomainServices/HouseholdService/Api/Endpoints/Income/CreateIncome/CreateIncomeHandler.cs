@@ -24,15 +24,15 @@ internal sealed class CreateIncomeHandler
         switch ((CustomerIncomeTypes)request.IncomeTypeId)
         {
             case CustomerIncomeTypes.Employement:
-                await _documentDataStorage.InsertOrUpdateDataWithMapper<Database.DocumentDataEntities.IncomeEmployement, IncomeDataEmployement>(request.Employement, entity.CustomerOnSAIncomeId, true, cancellationToken);
+                await _documentDataStorage.InsertOrUpdateDataWithMapper<Database.DocumentDataEntities.IncomeEmployement, IncomeDataEmployement>(request.Employement, entity.CustomerOnSAIncomeId, cancellationToken: cancellationToken);
                 break;
 
             case CustomerIncomeTypes.Entrepreneur:
-                await _documentDataStorage.InsertOrUpdateDataWithMapper<Database.DocumentDataEntities.IncomeEntrepreneur, IncomeDataEntrepreneur>(request.Entrepreneur, entity.CustomerOnSAIncomeId, true, cancellationToken);
+                await _documentDataStorage.InsertOrUpdateDataWithMapper<Database.DocumentDataEntities.IncomeEntrepreneur, IncomeDataEntrepreneur>(request.Entrepreneur, entity.CustomerOnSAIncomeId, cancellationToken: cancellationToken);
                 break;
 
             case CustomerIncomeTypes.Other:
-                await _documentDataStorage.InsertOrUpdateDataWithMapper<Database.DocumentDataEntities.IncomeOther, IncomeDataOther>(request.Other, entity.CustomerOnSAIncomeId, true, cancellationToken);
+                await _documentDataStorage.InsertOrUpdateDataWithMapper<Database.DocumentDataEntities.IncomeOther, IncomeDataOther>(request.Other, entity.CustomerOnSAIncomeId, cancellationToken: cancellationToken);
                 break;
         }
 
@@ -55,10 +55,8 @@ internal sealed class CreateIncomeHandler
         => (CustomerIncomeTypes)request.IncomeTypeId switch
         {
             CustomerIncomeTypes.Employement => string.IsNullOrEmpty(request.Employement?.Employer.Name) ? "-" : request.Employement?.Employer.Name,
-            CustomerIncomeTypes.Entrepreneur => "-",
-            CustomerIncomeTypes.Rent => "-",
             CustomerIncomeTypes.Other => await getOtherIncomeName(request.Other.IncomeOtherTypeId, cancellationToken),
-            _ => throw new NotImplementedException("This customer income type serializer for getIncomeSource is not implemented")
+            _ => "-"
         };
 
     private async Task<string?> getOtherIncomeName(int? id, CancellationToken cancellationToken)
