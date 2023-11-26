@@ -11,7 +11,7 @@ internal sealed class GetIncomeHandler
         var documentEntity = await _documentDataStorage.FirstOrDefault<Database.DocumentDataEntities.Income>(request.IncomeId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.IncomeNotFound, request.IncomeId);
 
-        var model = await _incomeMapper.MapDataToSingle(documentEntity.Data!);
+        var model = _incomeMapper.MapDataToSingle(documentEntity.Data!);
 
         model.IncomeId = documentEntity.DocumentDataStorageId;
         model.CustomerOnSAId = documentEntity.EntityId;

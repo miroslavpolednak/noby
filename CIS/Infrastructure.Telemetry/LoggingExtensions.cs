@@ -63,7 +63,7 @@ public static class LoggingExtensions
 
     /// <summary>
     /// pridani request behaviour mediatru - loguje request a response objekty
-    /// logovat pouze u gRPC sluzeb <summary>
+    /// logovat pouze u gRPC sluzeb
     /// </summary>
     public static WebApplicationBuilder AddCisLoggingPayloadBehavior(this WebApplicationBuilder builder) 
     {

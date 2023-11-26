@@ -1,13 +1,27 @@
 ﻿using CIS.Core.Attributes;
 using DomainServices.HouseholdService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Services;
 
 [TransientService, SelfService]
 internal sealed class IncomeFromDataMapper
 {
+    public IncomeInList MapDataToList(DocumentDataItem<Database.DocumentDataEntities.Income> item)
+    {
+        return new IncomeInList
+        {
+            IncomeId = item.DocumentDataStorageId,
+            IncomeTypeId = (int)item.Data!.IncomeTypeId,
+            CurrencyCode = item.Data.CurrencyCode,
+            Sum = item.Data.Sum,
+            IncomeSource = item.Data.IncomeSource,
+            HasProofOfIncome = item.Data.HasProofOfIncome
+        };
+    }
+
 #pragma warning disable CA1822 // Mark members as static
-    public Task<Income> MapDataToSingle(Database.DocumentDataEntities.Income data)
+    public Income MapDataToSingle(Database.DocumentDataEntities.Income data)
 #pragma warning restore CA1822 // Mark members as static
     {
         var model = new Income
@@ -49,7 +63,7 @@ internal sealed class IncomeFromDataMapper
             default:
                 throw new NotImplementedException("This customer income type deserializer is not implemented");
         }
-        return Task.FromResult(model);
+        return model;
     }
 
     private static IncomeDataEmployement mapEmployementFromData(Database.DocumentDataEntities.Income.IncomeEmployement data)

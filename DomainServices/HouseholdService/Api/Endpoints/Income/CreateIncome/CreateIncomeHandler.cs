@@ -12,7 +12,7 @@ internal sealed class CreateIncomeHandler
 
         var id = await _documentDataStorage.Add(request.CustomerOnSAId, documentEntity, cancellationToken);
 
-        _logger.EntityCreated(nameof(Database.Entities.CustomerOnSAIncome), id);
+        _logger.EntityCreated(nameof(Database.DocumentDataEntities.Income), id);
 
         return new CreateIncomeResponse
         {

@@ -1,13 +1,14 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using FluentValidation;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.CreateIncome;
 
 internal sealed class CreateIncomeRequestValidator
     : AbstractValidator<CreateIncomeRequest>
 {
-    public CreateIncomeRequestValidator(ICodebookServiceClient codebookService, Database.HouseholdServiceDbContext dbContext)
+    public CreateIncomeRequestValidator(ICodebookServiceClient codebookService, Database.HouseholdServiceDbContext dbContext, IDocumentDataStorage documentDataStorage)
     {
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0)
@@ -28,9 +29,8 @@ internal sealed class CreateIncomeRequestValidator
             {
                 CustomerIncomeTypes incomeType = (CustomerIncomeTypes)incomeTypeId;
 
-                int totalIncomesOfType = await dbContext
-                    .CustomersIncomes
-                    .CountAsync(t => t.CustomerOnSAId == request.CustomerOnSAId && t.IncomeTypeId == incomeType, cancellationToken);
+                var incomes = await documentDataStorage.GetList<Database.DocumentDataEntities.Income>(request.CustomerOnSAId, cancellationToken);
+                int totalIncomesOfType = incomes.Count(t => t.Data?.IncomeTypeId == incomeType);
 
                 return !IncomeHelpers.AlreadyHasMaxIncomes(incomeType, totalIncomesOfType);
             })
