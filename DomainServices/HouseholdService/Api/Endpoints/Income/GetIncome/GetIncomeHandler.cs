@@ -8,56 +8,23 @@ internal sealed class GetIncomeHandler
 {
     public async Task<Contracts.Income> Handle(GetIncomeRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext
-            .CustomersIncomes
-            .AsNoTracking()
-            .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
-            .FirstOrDefaultAsync(cancellationToken)
+        var documentEntity = await _documentDataStorage.FirstOrDefault<Database.DocumentDataEntities.Income>(request.IncomeId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.IncomeNotFound, request.IncomeId);
 
-        var model = new Contracts.Income
-        {
-            IncomeId = entity.CustomerOnSAIncomeId,
-            IncomeTypeId = (int)entity.IncomeTypeId,
-            CustomerOnSAId = entity.CustomerOnSAId,
-            BaseData = new IncomeBaseData
-            {
-                CurrencyCode = entity.CurrencyCode,
-                Sum = entity.Sum
-            }
-        };
+        var model = await _incomeMapper.MapDataToSingle(documentEntity.Data!);
 
-        switch (entity.IncomeTypeId)
-        {
-            case CustomerIncomeTypes.Employement:
-                model.Employement = (await _documentDataStorage.GetDataWithMapper<Database.DocumentDataEntities.IncomeEmployement, IncomeDataEmployement>(entity.CustomerOnSAIncomeId, cancellationToken)).Data;
-                break;
+        model.IncomeId = documentEntity.DocumentDataStorageId;
+        model.CustomerOnSAId = documentEntity.EntityId;
 
-            case CustomerIncomeTypes.Other:
-                model.Other = (await _documentDataStorage.GetDataWithMapper<Database.DocumentDataEntities.IncomeOther, IncomeDataOther>(entity.CustomerOnSAIncomeId, cancellationToken)).Data;
-                break;
-
-            case CustomerIncomeTypes.Entrepreneur:
-                model.Entrepreneur = (await _documentDataStorage.GetDataWithMapper<Database.DocumentDataEntities.IncomeEntrepreneur, IncomeDataEntrepreneur>(entity.CustomerOnSAIncomeId, cancellationToken)).Data;
-                break;
-
-            case CustomerIncomeTypes.Rent:
-                model.Rent = new IncomeDataRent();
-                break;
-
-            default:
-                throw new NotImplementedException("This customer income type deserializer is not implemented");
-        }
-    
         return model;
     }
 
     private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly Services.IncomeFromDataMapper _incomeMapper;
 
-    public GetIncomeHandler(Database.HouseholdServiceDbContext dbContext, IDocumentDataStorage documentDataStorage)
+    public GetIncomeHandler(IDocumentDataStorage documentDataStorage, Services.IncomeFromDataMapper incomeMapper)
     {
         _documentDataStorage = documentDataStorage;
-        _dbContext = dbContext;
+        _incomeMapper = incomeMapper;
     }
 }

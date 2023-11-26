@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 
 namespace SharedComponents.DocumentDataStorage;
 
-internal class DocumentDataStorageProvider
+internal sealed class DocumentDataStorageProvider
     : IDocumentDataStorage
 {
     public static TData? Deserialize<TData>(ReadOnlySpan<char> data)
@@ -19,113 +18,122 @@ internal class DocumentDataStorageProvider
         return JsonSerializer.Serialize(data, _jsonSerializerOptions);
     }
 
-    public async Task<(int? Version, TDestination? Data)> GetDataWithMapper<TData, TDestination>(int entityId, CancellationToken cancellationToken = default)
-        where TDestination : class
+    public async Task<DocumentDataItem<TData>?> FirstOrDefault<TData>(int documentDataStorageId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
     {
-        var service = _serviceProvider.GetService<IDocumentDataMapper<TData, TDestination>>();
+        var entity = await _dbContext
+            .DocumentsData
+            .AsNoTracking()
+            .Where(t => t.DocumentDataStorageId == documentDataStorageId)
+            .FirstOrDefaultAsync(cancellationToken);
 
-        if (service is null)
+        if (entity is null)
         {
-            throw new ArgumentNullException(nameof(TDestination), $"Mapper for IDocumentData<{typeof(TData).Name},{typeof(TDestination).Name}> not found");
+            return null;
         }
 
-        var model = await GetData<TData>(entityId, cancellationToken);
-        if (model.Version.HasValue)
+        if (entity.DocumentDataType != typeof(TData).Name)
         {
-            return (model.Version, service!.MapFromDocumentData(model.Data!));
+            throw new InvalidOperationException($"DocumentDataStorageId {documentDataStorageId} is not of type {typeof(TData).Name}");
         }
-        else
-        {
-            return (null, default(TDestination));
-        }
+
+        return getInner<TData>(entity);
     }
 
-    public async Task<(int? Version, TData? Data)> GetData<TData>(int entityId, CancellationToken cancellationToken = default)
+    public async Task<List<DocumentDataItem<TData>>> GetList<TData>(int entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
     {
         string entityType = typeof(TData).Name;
 
-        var loadedEntity = await _dbContext
+        var entity = await _dbContext
             .DocumentsData
             .AsNoTracking()
             .Where(t => t.DocumentDataEntityId == entityId && t.DocumentDataType == entityType)
-            .Select(t => new { t.Data, t.DocumentDataVersion })
-            .FirstOrDefaultAsync(cancellationToken);
+            .ToListAsync(cancellationToken);
 
-        if (string.IsNullOrEmpty(loadedEntity?.Data))
-        {
-            return (null, default(TData));
-        }
-        else
-        {
-            return (loadedEntity.DocumentDataVersion, Deserialize<TData>(loadedEntity.Data));
-        }
-    }
-
-    public async Task InsertOrUpdateDataWithMapper<TData, TSource>(TSource mappedEntity, int entityId, bool removeOtherStoredEntityTypes = false, CancellationToken cancellationToken = default)
-        where TSource : class
-        where TData : class, IDocumentData
-    {
-        var service = _serviceProvider.GetService<IDocumentDataMapper<TData, TSource>>();
-        
-        if (service is null)
-        {
-            throw new ArgumentNullException(nameof(TSource), $"Mapper for IDocumentData<{typeof(TData).Name},{typeof(TSource).Name}> not found");
-        }
-
-        await InsertOrUpdateData(service!.MapToDocumentData(mappedEntity), entityId, removeOtherStoredEntityTypes, cancellationToken);
-    }
-
-    public async Task InsertOrUpdateData<TData>(TData data, int entityId, bool removeOtherStoredEntityTypes = false, CancellationToken cancellationToken = default)
-        where TData : class, IDocumentData
-    {
-        string entityType = typeof(TData).Name;
-
-        // odstranit data ulozena ke stejne entite ale pod jinym Type klicem
-        if (removeOtherStoredEntityTypes)
-        {
-            await _dbContext
-                .DocumentsData
-                .Where(t => t.DocumentDataEntityId == entityId && t.DocumentDataType != entityType)
-                .ExecuteDeleteAsync(cancellationToken);
-        }
-
-        var loadedEntity = await _dbContext
-            .DocumentsData
-            .FirstOrDefaultAsync(t => t.DocumentDataEntityId == entityId && t.DocumentDataType == entityType, cancellationToken);
-
-        if (loadedEntity is null)
-        {
-            loadedEntity = new Database.DocumentDataStorage
+        return entity.Select(t =>
             {
-                DocumentDataEntityId = entityId,
-                DocumentDataType = entityType
-            };
-            _dbContext.DocumentsData.Add(loadedEntity);
-        }
+                if (t.DocumentDataType != entityType)
+                {
+                    throw new InvalidOperationException($"DocumentDataStorageId {t.DocumentDataStorageId} is not of type {typeof(TData).Name}");
+                }
 
-        loadedEntity.DocumentDataVersion = data.Version;
-        loadedEntity.Data = Serialize(data);
+                return getInner<TData>(t);
+            })
+            .ToList();
+    }
+
+    public async Task<int> Add<TData>(int entityId, TData data, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
+    {
+        var entity = new Database.DocumentDataStorage
+        {
+            DocumentDataEntityId = entityId,
+            DocumentDataType = typeof(TData).Name
+        };
+        _dbContext.DocumentsData.Add(entity);
+
+        updateEntityFromData(entity, data);
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return entity.DocumentDataStorageId;
+    }
+
+    public async Task Update<TData>(int documentDataStorageId, TData data, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
+    {
+        var entity = await _dbContext
+            .DocumentsData
+            .FirstAsync(t => t.DocumentDataStorageId == documentDataStorageId, cancellationToken);
+
+        updateEntityFromData(entity, data);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task Delete(int entityId, CancellationToken cancellationToken = default)
+    public async Task UpdateByEntityId<TData>(int entityId, TData data, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
     {
-        await _dbContext.DocumentsData
-            .Where(t => t.DocumentDataEntityId == entityId)
+        var entityType = typeof(TData).Name;
+
+        var entity = await _dbContext
+            .DocumentsData
+            .SingleAsync(t => t.DocumentDataEntityId == entityId && t.DocumentDataType == entityType, cancellationToken);
+
+        updateEntityFromData(entity, data);
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<int> Delete(int documentDataStorageId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.DocumentsData
+            .Where(t => t.DocumentDataStorageId == documentDataStorageId)
             .ExecuteDeleteAsync(cancellationToken);
     }
 
-    public async Task Delete<TData>(int entityId, CancellationToken cancellationToken = default)
+    public async Task<int> DeleteByEntityId<TData>(int entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
     {
         string entityType = typeof(TData).Name;
 
-        await _dbContext.DocumentsData
+        return await _dbContext.DocumentsData
             .Where(t => t.DocumentDataEntityId == entityId && t.DocumentDataType == entityType)
             .ExecuteDeleteAsync(cancellationToken);
+    }
+
+    private static void updateEntityFromData<TData>(Database.DocumentDataStorage entity, TData data)
+        where TData : class, IDocumentData
+    {
+        entity.DocumentDataVersion = data.Version;
+        entity.Data = Serialize(data);
+    }
+
+    private static DocumentDataItem<TData> getInner<TData>(Database.DocumentDataStorage entity)
+        where TData : class, IDocumentData
+    {
+        return new DocumentDataItem<TData>(entity.DocumentDataStorageId, entity.DocumentDataVersion, entity.DocumentDataEntityId, Deserialize<TData>(entity.Data));
     }
 
     private readonly IServiceProvider _serviceProvider;

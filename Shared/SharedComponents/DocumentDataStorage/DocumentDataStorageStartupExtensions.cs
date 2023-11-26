@@ -16,12 +16,6 @@ public static class DocumentDataStorageStartupExtensions
             return new DocumentDataStorageProvider(dbContext, provider);
         });
 
-        // zaregistrovat mappery
-        builder.Services.Scan(scan => scan
-            .FromEntryAssembly()
-            .AddClasses(classes => classes.AssignableTo(typeof(IDocumentDataMapper<,>)))
-            .AsImplementedInterfaces());
-
         return builder;
     }
 }

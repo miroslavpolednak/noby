@@ -16,71 +16,32 @@ public interface IDocumentDataStorage
         where TData : class, IDocumentData
         => throw new NotImplementedException();
 
-    /// <summary>
-    /// Načte data z databáze a vytvoří z nich požadovanou entitu. Tuto entitu pak pomocí mapperu zkonvertuje do nového objektu - např. response objektu služby.
-    /// </summary>
-    /// <remarks>
-    /// Aby mapování fungovalo, musí být vytvořen mapper IDocumentDataMapper pro danou kombinaci TData a TDestination.
-    /// </remarks>
-    /// <typeparam name="TData">Kontrakt pro deserializaci</typeparam>
-    /// <typeparam name="TDestination">Cílový objekt do kterého mají být data z databáze přemapována</typeparam>
-    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
-    /// <returns>
-    /// Pokud byla požadovaná data nalezena, vrátí jejich deserializovanou reprezentaci a číslo verze kontraktu ve kterém jsou data uložena.
-    /// Pokud v databázi požadovaná data neexistují, vrátí Version=null.
-    /// </returns>
-    Task<(int? Version, TDestination? Data)> GetDataWithMapper<TData, TDestination>(int entityId, CancellationToken cancellationToken = default)
-        where TDestination : class
+    Task<DocumentDataItem<TData>?> FirstOrDefault<TData>(int documentDataStorageId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData;
 
-    /// <summary>
-    /// Načte data z databáze a vytvoří z nich požadovanou entitu
-    /// </summary>
-    /// <typeparam name="TData">Kontrakt pro deserializaci</typeparam>
-    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
-    /// <returns>
-    /// Pokud byla požadovaná data nalezena, vrátí jejich deserializovanou reprezentaci a číslo verze kontraktu ve kterém jsou data uložena.
-    /// Pokud v databázi požadovaná data neexistují, vrátí Version=null.
-    /// </returns>
-    Task<(int? Version, TData? Data)> GetData<TData>(int entityId, CancellationToken cancellationToken = default)
+    Task<List<DocumentDataItem<TData>>> GetList<TData>(int entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData;
 
-    /// <summary>
-    /// Založí nebo updatuje data pro entitu v databázi.
-    /// </summary>
-    /// <typeparam name="TData">Kontrakt pro serializaci objektu</typeparam>
-    /// <param name="data">Objekt, který se má uložit do databáze</param>
-    /// <param name="entityId">ID entity pro která mají být data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
-    /// <param name="removeOtherStoredEntityTypes">Pokud bude nastaveno na true, odstraní se z databáze všechna ostatní data pro danou entitu.</param>
-    Task InsertOrUpdateData<TData>(TData data, int entityId, bool removeOtherStoredEntityTypes = false, CancellationToken cancellationToken = default)
+    Task<int> Add<TData>(int entityId, TData data, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData;
 
-    /// <summary>
-    /// Založí nebo updatuje data pro entitu v databázi. Nejdříve mapuje zdrojový objekt na kontrakt dat a poté uloží data do databáze.
-    /// </summary>
-    /// <remarks>
-    /// Aby mapování fungovalo, musí být vytvořen mapper IDocumentDataMapper pro danou kombinaci TData a TDestination.
-    /// </remarks>
-    /// <typeparam name="TSource">Zdrojový objekt, který je mapován na kontrakt dat v databázi</typeparam>
-    /// <typeparam name="TData">Kontrakt pro serializaci objektu</typeparam>
-    /// <param name="data">Objekt, který se má uložit do databáze</param>
-    /// <param name="entityId">ID entity pro která mají být data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
-    /// <param name="removeOtherStoredEntityTypes">Pokud bude nastaveno na true, odstraní se z databáze všechna ostatní data pro danou entitu.</param>
-    Task InsertOrUpdateDataWithMapper<TData, TSource>(TSource mappedEntity, int entityId, bool removeOtherStoredEntityTypes = false, CancellationToken cancellationToken = default)
-        where TSource : class
+    Task Update<TData>(int documentDataStorageId, TData data, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData;
+
+    Task UpdateByEntityId<TData>(int entityId, TData data, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData;
 
     /// <summary>
     /// Smaže data uložená pro danou entitu v databázi.
     /// </summary>
-    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
-    Task Delete(int entityId, CancellationToken cancellationToken = default);
+    /// <param name="documentDataStorageId">ID záznamu</param>
+    Task<int> Delete(int documentDataStorageId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Smaže data uložená v databázi pro kombinaci entity a typu kontraktu.
     /// </summary>
     /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
     /// <typeparam name="TData">Typ kontraktu, který má být smazán</typeparam>
-    Task Delete<TData>(int entityId, CancellationToken cancellationToken = default)
+    Task<int> DeleteByEntityId<TData>(int entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData;
 }
