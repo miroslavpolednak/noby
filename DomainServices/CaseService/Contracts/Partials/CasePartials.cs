@@ -10,6 +10,10 @@ public partial class CreateCaseRequest
     : MediatR.IRequest<CreateCaseResponse>, CIS.Core.Validation.IValidatableRequest, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 { }
 
+public partial class CreateExistingCaseRequest
+    : MediatR.IRequest<CreateCaseResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
+
 public partial class GetCaseDetailRequest
     : MediatR.IRequest<Case>, CIS.Core.Validation.IValidatableRequest
 { }

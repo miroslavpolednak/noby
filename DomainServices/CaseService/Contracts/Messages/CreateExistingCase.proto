@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "Messages/CustomerData.proto";
+import "Messages/CaseData.proto";
+
+message CreateExistingCaseRequest {
+	int64 CaseId = 1;
+	int32 State = 2;
+	CaseData Data = 3;
+	CustomerData Customer = 4;
+	int32 CaseOwnerUserId = 5;
+}

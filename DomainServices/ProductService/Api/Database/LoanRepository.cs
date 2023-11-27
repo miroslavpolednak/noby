@@ -55,7 +55,9 @@ internal sealed class LoanRepository
                    [HuVypisTyp] as StatementTypeId,
                    [VypisEmail1] as EmailAddress1,
                    [VypisEmail2] as EmailAddress2,
-                   [Neaktivni] as IsCancelled
+                   [Neaktivni] as IsCancelled,
+                   StavHU as MortgageState,
+                   DatumDocerpani as DrawingFinishedDate
             FROM [dbo].[Uver]
             WHERE [Id] = @caseId AND [Neaktivni] = 0
             """;

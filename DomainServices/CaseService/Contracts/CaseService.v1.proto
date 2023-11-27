@@ -6,6 +6,7 @@ import "google/protobuf/empty.proto";
 import "Messages/SearchCases.proto";
 import "Messages/CompleteTask.proto";
 import "Messages/CreateCase.proto";
+import "Messages/CreateExistingCase.proto";
 import "Messages/Case.proto";
 import "Messages/LinkOwnerToCase.proto";
 import "Messages/UpdateCaseData.proto";
@@ -28,6 +29,8 @@ service CaseService {
    rpc CompleteTask (CompleteTaskRequest) returns (google.protobuf.Empty);
 
    rpc CreateCase (CreateCaseRequest) returns (CreateCaseResponse);
+
+   rpc CreateExistingCase (CreateExistingCaseRequest) returns (CreateCaseResponse);
    
    rpc GetCaseDetail (GetCaseDetailRequest) returns (Case);
    

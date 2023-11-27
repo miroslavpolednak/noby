@@ -78,7 +78,9 @@ internal static class MortgageExtensions
             FirstSignatureDate = loan.FirstSignatureDate,
             RepaymentAccount = ParseRepaymentAccount(loan),
             Statement = ParseStatementObject(loan),
-            IsCancelled = loan.IsCancelled
+            IsCancelled = loan.IsCancelled,
+            MortgageState = loan.MortgageState,
+            DrawingFinishedDate = loan.DrawingFinishedDate
         };
 
         if (relationships.Count != 0)

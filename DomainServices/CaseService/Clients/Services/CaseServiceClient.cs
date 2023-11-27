@@ -26,6 +26,12 @@ internal sealed class CaseServiceClient
         return result.CaseId;
     }
 
+    public async Task<long> CreateExistingCase(CreateExistingCaseRequest model, CancellationToken cancellationToken = default)
+    {
+        var result = await _service.CreateExistingCaseAsync(model, cancellationToken: cancellationToken);
+        return result.CaseId;
+    }
+
     public async Task<List<GetCaseCountsResponse.Types.CaseCountsItem>> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default)
     {
         var result = await _service.GetCaseCountsAsync(
