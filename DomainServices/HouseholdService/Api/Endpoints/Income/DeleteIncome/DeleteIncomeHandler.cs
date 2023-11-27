@@ -8,7 +8,7 @@ internal sealed class DeleteIncomeHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
     {
-        var deletedRows = await _documentDataStorage.Delete(request.IncomeId, cancellationToken);
+        var deletedRows = await _documentDataStorage.Delete<Database.DocumentDataEntities.Income>(request.IncomeId);
 
         if (deletedRows == 0)
         {

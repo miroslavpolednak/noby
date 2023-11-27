@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CIS.Core.Data;
+using CIS.Infrastructure.Data;
+using Dapper;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace SharedComponents.DocumentDataStorage;
@@ -6,13 +9,13 @@ namespace SharedComponents.DocumentDataStorage;
 internal sealed class DocumentDataStorageProvider
     : IDocumentDataStorage
 {
-    public static TData? Deserialize<TData>(ReadOnlySpan<char> data)
+    public TData? Deserialize<TData>(ReadOnlySpan<char> data)
         where TData : class, IDocumentData
     {
         return JsonSerializer.Deserialize<TData>(data);
     }
 
-    public static string Serialize<TData>(TData? data)
+    public string Serialize<TData>(TData? data)
         where TData : class, IDocumentData
     {
         return JsonSerializer.Serialize(data, _jsonSerializerOptions);
@@ -21,129 +24,138 @@ internal sealed class DocumentDataStorageProvider
     public async Task<DocumentDataItem<TData>?> FirstOrDefault<TData>(int documentDataStorageId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
     {
-        var entity = await _dbContext
-            .DocumentsData
-            .AsNoTracking()
-            .Where(t => t.DocumentDataStorageId == documentDataStorageId)
-            .FirstOrDefaultAsync(cancellationToken);
+        var entity = await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<Database.DocumentDataStorageItem>(
+            $"SELECT DocumentDataStorageId, DocumentDataVersion, DocumentDataEntityId, Data FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataStorageId=@documentDataStorageId",
+            new { documentDataStorageId  }, 
+            cancellationToken);
 
-        if (entity is null)
-        {
-            return null;
-        }
-
-        if (entity.DocumentDataType != typeof(TData).Name)
-        {
-            throw new InvalidOperationException($"DocumentDataStorageId {documentDataStorageId} is not of type {typeof(TData).Name}");
-        }
-
-        return getInner<TData>(entity);
+        return entity is null ? null : getInner<TData>(entity);
     }
 
     public async Task<List<DocumentDataItem<TData>>> GetList<TData>(int entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
     {
-        string entityType = typeof(TData).Name;
+        var entities = await _connectionProvider.ExecuteDapperRawSqlToListAsync<Database.DocumentDataStorageItem>(
+            $"SELECT DocumentDataStorageId, DocumentDataVersion, DocumentDataEntityId, Data FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataEntityId=@entityId", 
+            new { entityId }, 
+            cancellationToken);
 
-        var entity = await _dbContext
-            .DocumentsData
-            .AsNoTracking()
-            .Where(t => t.DocumentDataEntityId == entityId && t.DocumentDataType == entityType)
-            .ToListAsync(cancellationToken);
-
-        return entity.Select(t =>
-            {
-                if (t.DocumentDataType != entityType)
-                {
-                    throw new InvalidOperationException($"DocumentDataStorageId {t.DocumentDataStorageId} is not of type {typeof(TData).Name}");
-                }
-
-                return getInner<TData>(t);
-            })
-            .ToList();
+        return entities.Select(t => getInner<TData>(t)).ToList();
     }
 
     public async Task<int> Add<TData>(int entityId, TData data, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
     {
-        var entity = new Database.DocumentDataStorage
+        var varsToInsert = new
         {
             DocumentDataEntityId = entityId,
-            DocumentDataType = typeof(TData).Name
+            DocumentDataVersion = data.Version,
+            Data = Serialize(data),
+            CreatedUserId = _currentUserAccessor.IsAuthenticated ? _currentUserAccessor.User!.Id : 0,
+            CreatedTime = _dateTime.Now
         };
-        _dbContext.DocumentsData.Add(entity);
 
-        updateEntityFromData(entity, data);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return entity.DocumentDataStorageId;
+        int id = await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<int>(@$"
+            INSERT INTO {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} 
+            (DocumentDataEntityId, DocumentDataVersion, Data, CreatedUserId, CreatedTime) 
+            OUTPUT inserted.DocumentDataStorageId 
+            VALUES 
+            (@DocumentDataEntityId, @DocumentDataVersion, @Data, @CreatedUserId, @CreatedTime)", 
+            varsToInsert, 
+            cancellationToken);
+        
+        return id;
     }
 
-    public async Task Update<TData>(int documentDataStorageId, TData data, CancellationToken cancellationToken = default)
+    public async Task Update<TData>(int documentDataStorageId, TData data)
         where TData : class, IDocumentData
     {
-        var entity = await _dbContext
-            .DocumentsData
-            .FirstAsync(t => t.DocumentDataStorageId == documentDataStorageId, cancellationToken);
+        var varsToUpdate = new
+        {
+            DocumentDataStorageId = documentDataStorageId,
+            DocumentDataVersion = data.Version,
+            Data = Serialize(data),
+            ModifiedUserId  = _currentUserAccessor.IsAuthenticated ? _currentUserAccessor.User!.Id : 0
+        };
 
-        updateEntityFromData(entity, data);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        using (var connection = _connectionProvider.Create())
+        {
+            connection.Open();
+            await connection.ExecuteAsync(
+                $"UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} SET DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId WHERE DocumentDataStorageId=@DocumentDataStorageId",
+                varsToUpdate);
+        }
     }
 
-    public async Task UpdateByEntityId<TData>(int entityId, TData data, CancellationToken cancellationToken = default)
+    public async Task UpdateByEntityId<TData>(int entityId, TData data)
         where TData : class, IDocumentData
     {
-        var entityType = typeof(TData).Name;
+        var varsToUpdate = new
+        {
+            DocumentDataEntityId = entityId,
+            DocumentDataVersion = data.Version,
+            Data = Serialize(data),
+            ModifiedUserId = _currentUserAccessor.IsAuthenticated ? _currentUserAccessor.User!.Id : 0
+        };
 
-        var entity = await _dbContext
-            .DocumentsData
-            .SingleAsync(t => t.DocumentDataEntityId == entityId && t.DocumentDataType == entityType, cancellationToken);
-
-        updateEntityFromData(entity, data);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        using (var connection = _connectionProvider.Create())
+        {
+            connection.Open();
+            await connection.ExecuteAsync(
+                $"UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} SET DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId WHERE DocumentDataEntityId=@DocumentDataEntityId",
+                varsToUpdate);
+        }
     }
 
-    public async Task<int> Delete(int documentDataStorageId, CancellationToken cancellationToken = default)
-    {
-        return await _dbContext.DocumentsData
-            .Where(t => t.DocumentDataStorageId == documentDataStorageId)
-            .ExecuteDeleteAsync(cancellationToken);
-    }
-
-    public async Task<int> DeleteByEntityId<TData>(int entityId, CancellationToken cancellationToken = default)
+    public async Task<int> Delete<TData>(int documentDataStorageId)
         where TData : class, IDocumentData
     {
-        string entityType = typeof(TData).Name;
-
-        return await _dbContext.DocumentsData
-            .Where(t => t.DocumentDataEntityId == entityId && t.DocumentDataType == entityType)
-            .ExecuteDeleteAsync(cancellationToken);
+        using (var connection = _connectionProvider.Create())
+        {
+            connection.Open();
+            return await connection.ExecuteAsync(
+                $"DELETE FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataStorageId = @documentDataStorageId", 
+                new { documentDataStorageId });
+        }
     }
 
-    private static void updateEntityFromData<TData>(Database.DocumentDataStorage entity, TData data)
+    public async Task<int> DeleteByEntityId<TData>(int entityId)
         where TData : class, IDocumentData
     {
-        entity.DocumentDataVersion = data.Version;
-        entity.Data = Serialize(data);
+        using (var connection = _connectionProvider.Create())
+        {
+            connection.Open();
+            return await connection.ExecuteAsync(
+                $"DELETE FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataEntityId = @entityId", 
+                new { entityId });
+        }
     }
 
-    private static DocumentDataItem<TData> getInner<TData>(Database.DocumentDataStorage entity)
+    private DocumentDataItem<TData> getInner<TData>(Database.DocumentDataStorageItem entity)
         where TData : class, IDocumentData
     {
         return new DocumentDataItem<TData>(entity.DocumentDataStorageId, entity.DocumentDataVersion, entity.DocumentDataEntityId, Deserialize<TData>(entity.Data));
     }
 
-    private readonly IServiceProvider _serviceProvider;
-    private readonly Database.DocumentDataDbContext _dbContext;
+    private static string getEntityType<TData>()
+        where TData : class, IDocumentData
+    {
+        return typeof(TData).Name;
+    }
+
+    private readonly CIS.Core.Security.ICurrentUserAccessor _currentUserAccessor;
+    private readonly CIS.Core.IDateTime _dateTime;
+    private readonly IConnectionProvider<Database.IDocumentDataStorageConnection> _connectionProvider;
 
     private static JsonSerializerOptions _jsonSerializerOptions = JsonSerializerOptions.Default;
 
-    public DocumentDataStorageProvider(Database.DocumentDataDbContext dbContext, IServiceProvider serviceProvider)
+    public DocumentDataStorageProvider(
+        CIS.Core.Security.ICurrentUserAccessor currentUserAccessor, 
+        CIS.Core.IDateTime dateTime, 
+        IConnectionProvider<Database.IDocumentDataStorageConnection> connectionProvider)
     {
-        _serviceProvider = serviceProvider;
-        _dbContext = dbContext;
+        _currentUserAccessor = currentUserAccessor;
+        _dateTime = dateTime;
+        _connectionProvider = connectionProvider;
     }
 }

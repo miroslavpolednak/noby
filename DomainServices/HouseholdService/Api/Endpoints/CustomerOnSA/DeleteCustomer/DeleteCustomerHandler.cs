@@ -61,7 +61,7 @@ internal sealed class DeleteCustomerHandler
             .ExecuteDeleteAsync(cancellationToken);
 
         // smazat prijmy
-        await _documentDataStorage.DeleteByEntityId<Database.DocumentDataEntities.Income>(customerOnSAId, cancellationToken);
+        await _documentDataStorage.DeleteByEntityId<Database.DocumentDataEntities.Income>(customerOnSAId);
 
         // smazat zavazky
         await _dbContext.CustomersObligations

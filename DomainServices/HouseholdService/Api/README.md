@@ -35,6 +35,8 @@ grpcurl -insecure -d "{\"ObligationId\":2,\"ObligationTypeId\":2}" -H "Authoriza
 grpcurl -insecure -d "{\"CustomerOnSAId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/GetObligationList
 
 grpcurl -insecure -d "{\"IncomeId\":1}" -H "Authorization: Basic YTph" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/GetIncome
+grpcurl -insecure -d "{\"CustomerOnSAId\":3}" -H "Authorization: Basic YTph" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/GetIncomeList
+grpcurl -insecure -d "{\"IncomeId\":1}" -H "Authorization: Basic YTph" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/DeleteIncome
 grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1,\"BaseData\":{\"Sum\":{\"units\":200000,\"nanos\":0},\"CurrencyCode\":\"CZK\"},\"Employement\":{\"HasProofOfIncome\":true,\"ForeignIncomeTypeId\":2,\"HasWageDeduction\":true,\"Employer\":{\"Name\":\"aaaa\"}}}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/CreateIncome
 
 ## run batch

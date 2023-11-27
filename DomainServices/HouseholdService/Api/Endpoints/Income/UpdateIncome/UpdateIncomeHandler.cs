@@ -10,7 +10,7 @@ internal sealed class UpdateIncomeHandler
     {
         var documentEntity = await _incomeMapper.MapToDocumentData(request.IncomeTypeId, request.BaseData, request.Employement, request.Entrepreneur, request.Other, cancellationToken);
 
-        await _documentDataStorage.Update(request.IncomeId, documentEntity, cancellationToken);
+        await _documentDataStorage.Update(request.IncomeId, documentEntity);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
