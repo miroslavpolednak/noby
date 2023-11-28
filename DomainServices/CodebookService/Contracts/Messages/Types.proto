@@ -12,6 +12,8 @@ message AddressTypesResponse {
 		string Name = 2;
 		bool IsValid = 3;
 		bool IsValidNoby = 4;
+		string Code = 5;
+		int32 SbJsonValue = 6;
 	}
 }
 

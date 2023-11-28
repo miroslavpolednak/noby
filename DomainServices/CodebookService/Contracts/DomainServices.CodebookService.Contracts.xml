@@ -55,6 +55,12 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.AddressTypesResponse.Types.AddressTypeItem.IsValidNobyFieldNumber">
             <summary>Field number for the "IsValidNoby" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.AddressTypesResponse.Types.AddressTypeItem.CodeFieldNumber">
+            <summary>Field number for the "Code" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.AddressTypesResponse.Types.AddressTypeItem.SbJsonValueFieldNumber">
+            <summary>Field number for the "SbJsonValue" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.BankCodesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
