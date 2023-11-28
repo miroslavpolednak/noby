@@ -21,9 +21,11 @@ internal partial class CodebookService
            .Select(t => new AddressTypesResponse.Types.AddressTypeItem
            {
                Id = (int)t,
+               Code = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? "",
                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
                IsValid = true,
-               IsValidNoby = (int)t is 1 or 2
+               IsValidNoby = (int)t is 1 or 2,
+               SbJsonValue = (int)t
            })
            .ToList()!;
 

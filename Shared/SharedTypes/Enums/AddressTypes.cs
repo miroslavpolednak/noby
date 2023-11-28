@@ -13,15 +13,15 @@ public enum AddressTypes : byte
     [EnumMember]
     Unknown = 0,
 
-    [Display(Name = "Trvalá adresa")]
+    [Display(Name = "Trvalá adresa", ShortName = "PERMANENT")]
     [EnumMember]
     Permanent = 1,
 
-    [Display(Name = "Kontaktní")]
+    [Display(Name = "Kontaktní", ShortName = "MAILING")]
     [EnumMember]
     Mailing = 2,
 
-    [Display(Name = "Jiný pobyt")]
+    [Display(Name = "Jiný pobyt", ShortName = "OTHER")]
     [EnumMember]
     Other = 3
 }
