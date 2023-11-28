@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
+using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
@@ -32,7 +33,7 @@ public class CodebookMap : ICodebookMap
     {
         AddCodebook((s, ct) => s.AcademicDegreesAfter(ct));
         AddCodebook((s, ct) => s.AcademicDegreesBefore(ct));
-        AddCodebook((s, ct) => s.AddressTypes(ct));
+        AddCodebook((s, ct) => s.AddressTypes(ct), c => c.Cast<DomainServices.CodebookService.Contracts.v1.AddressTypesResponse.Types.AddressTypeItem>());
         AddCodebook((s, ct) => s.AcvAttachmentCategories(ct));
         AddCodebook((s, ct) => s.BankCodes(ct));
         AddCodebook((s, ct) => s.CaseStates(ct));
