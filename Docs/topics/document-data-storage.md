@@ -1,5 +1,5 @@
 ﻿# Ukládání datových struktur
-Pro ukládání obecných datových struktur (instance dat) ve formátu JSON používáme .
+Existují případy, kdy nechceme pracovat s daty v klasické relační struktuře, ale potřebujeme uložit "hmotu" dat ve formátu JSON.
 
 ## Příklady použítí:
 
