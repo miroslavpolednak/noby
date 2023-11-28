@@ -189,6 +189,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\database-migrations.md = Docs\topics\database-migrations.md
 		Docs\topics\database.md = Docs\topics\database.md
 		Docs\topics\distributed-cache.md = Docs\topics\distributed-cache.md
+		Docs\topics\document-data-storage.md = Docs\topics\document-data-storage.md
 		Docs\topics\documentation.md = Docs\topics\documentation.md
 		Docs\topics\external-services-rest.md = Docs\topics\external-services-rest.md
 		Docs\topics\external-services-soap.md = Docs\topics\external-services-soap.md
@@ -228,6 +229,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\HouseholdService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\HouseholdService\DatabaseMigrations\00001-initial_creation.sql
 		DomainServices\HouseholdService\DatabaseMigrations\00002-HFICH-6368.sql = DomainServices\HouseholdService\DatabaseMigrations\00002-HFICH-6368.sql
+		DomainServices\HouseholdService\DatabaseMigrations\00003-DocDataStorageMigration.sql = DomainServices\HouseholdService\DatabaseMigrations\00003-DocDataStorageMigration.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.CustomerManagement", "DomainServices\CustomerService\ExternalServices.CustomerManagement\DomainServices.CustomerService.ExternalServices.CustomerManagement.csproj", "{D88FFFB8-826B-4626-892C-5A4DE6EB1095}"

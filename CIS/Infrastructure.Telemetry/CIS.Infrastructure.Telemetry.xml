@@ -109,7 +109,12 @@
             Přidá logování request a response do MediatR pipeline.
             </remarks>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:CIS.Infrastructure.Telemetry.LoggingExtensions.AddCisLoggingPayloadBehavior(Microsoft.AspNetCore.Builder.WebApplicationBuilder)" -->
+        <member name="M:CIS.Infrastructure.Telemetry.LoggingExtensions.AddCisLoggingPayloadBehavior(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            pridani request behaviour mediatru - loguje request a response objekty
+            logovat pouze u gRPC sluzeb
+            </summary>
+        </member>
         <member name="M:CIS.Infrastructure.Telemetry.LoggingExtensions.CloseAndFlush">
             <summary>
             Pri ukonceni aplikaci se ujisti, ze vsechny sinky jsou vyprazdnene

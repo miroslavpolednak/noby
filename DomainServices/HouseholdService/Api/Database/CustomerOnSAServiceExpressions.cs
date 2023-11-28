@@ -19,19 +19,6 @@ internal static class CustomerOnSAServiceExpressions
         };
     }
 
-    public static Expression<Func<Entities.CustomerOnSAIncome, Contracts.IncomeInList>> Income()
-    {
-        return t => new Contracts.IncomeInList
-        {
-            IncomeId = t.CustomerOnSAIncomeId,
-            IncomeTypeId = (int)t.IncomeTypeId,
-            CurrencyCode = t.CurrencyCode ?? "",
-            Sum = t.Sum,
-            IncomeSource = t.IncomeSource ?? "",
-            HasProofOfIncome = t.HasProofOfIncome
-        };
-    }
-
     public static Expression<Func<Entities.CustomerOnSAObligation, Contracts.Obligation>> Obligation()
     {
         return entity => new Contracts.Obligation

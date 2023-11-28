@@ -1,4 +1,5 @@
 ﻿using DomainServices.HouseholdService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.DeleteIncome;
 
@@ -7,10 +8,7 @@ internal sealed class DeleteIncomeHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
     {
-        var deletedRows = await _dbContext
-            .CustomersIncomes
-            .Where(t => t.CustomerOnSAIncomeId == request.IncomeId)
-            .ExecuteDeleteAsync(cancellationToken);
+        var deletedRows = await _documentDataStorage.Delete<Database.DocumentDataEntities.Income>(request.IncomeId);
 
         if (deletedRows == 0)
         {
@@ -20,10 +18,10 @@ internal sealed class DeleteIncomeHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly IDocumentDataStorage _documentDataStorage;
 
-    public DeleteIncomeHandler(Database.HouseholdServiceDbContext dbContext)
+    public DeleteIncomeHandler(IDocumentDataStorage documentDataStorage)
     {
-        _dbContext = dbContext;
+        _documentDataStorage = documentDataStorage;
     }
 }

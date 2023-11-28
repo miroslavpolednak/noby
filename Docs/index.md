@@ -43,6 +43,8 @@
 
 [Versioning & GIT branching](./topics/versioning.md)
 
+[Ukládání datových struktur v JSON formátu](./topics/document-data-storage.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

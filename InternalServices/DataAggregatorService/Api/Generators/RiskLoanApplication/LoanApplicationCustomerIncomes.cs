@@ -37,7 +37,7 @@ public class LoanApplicationCustomerIncomes
         _customerIncomes[CustomerIncomeTypes.Employement].Select(incomeInList => new EmploymentIncomes(incomeInList, _incomes[incomeInList.IncomeId])).ToList();
 
     private EntrepreneurIncome? GetEntrepreneurIncome() => 
-        _customerIncomes[CustomerIncomeTypes.Enterprise].Select(incomeInList => new EntrepreneurIncome(incomeInList, _incomes[incomeInList.IncomeId])).FirstOrDefault();
+        _customerIncomes[CustomerIncomeTypes.Entrepreneur].Select(incomeInList => new EntrepreneurIncome(incomeInList, _incomes[incomeInList.IncomeId])).FirstOrDefault();
 
     private List<OtherIncome> GetOtherIncomes() =>
         _customerIncomes[CustomerIncomeTypes.Other].Select(incomeInList => new OtherIncome(incomeInList, _incomes[incomeInList.IncomeId])).ToList();

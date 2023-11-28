@@ -143,12 +143,6 @@ internal sealed class CustomerOnSAService
     {
         await _service.UpdateIncomeAsync(request, cancellationToken: cancellationToken);
     }
-
-    public async Task UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default)
-    {
-        await _service.UpdateIncomeBaseDataAsync(request, cancellationToken: cancellationToken);
-    }
-
     #endregion Income
 
     #region Obligation

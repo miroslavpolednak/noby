@@ -20,7 +20,7 @@ internal sealed class GetObligationListHandler
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CustomerOnSANotFound, request.CustomerOnSAId);
         }
 
-        _logger.FoundItems(list.Count, nameof(Database.Entities.CustomerOnSAIncome));
+        _logger.FoundItems(list.Count, nameof(Database.Entities.CustomerOnSAObligation));
 
         var response = new GetObligationListResponse();
         response.Obligations.AddRange(list);

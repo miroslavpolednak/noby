@@ -14,7 +14,6 @@ import "Messages/GetIncome.proto";
 import "Messages/GetIncomeList.proto";
 import "Messages/Income.proto";
 import "Messages/UpdateIncome.proto";
-import "Messages/UpdateIncomeBaseData.proto";
 import "Messages/Obligation.proto";
 import "Messages/CreateObligation.proto";
 import "Messages/GetObligationList.proto";
@@ -55,8 +54,6 @@ service CustomerOnSAService {
     rpc CreateIncome (CreateIncomeRequest) returns (CreateIncomeResponse);
 
     rpc UpdateIncome (UpdateIncomeRequest) returns (google.protobuf.Empty);
-
-    rpc UpdateIncomeBaseData (UpdateIncomeBaseDataRequest) returns (google.protobuf.Empty);
 
     rpc DeleteIncome (DeleteIncomeRequest) returns (google.protobuf.Empty);
 

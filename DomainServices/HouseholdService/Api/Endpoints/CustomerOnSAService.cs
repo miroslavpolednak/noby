@@ -64,9 +64,6 @@ internal sealed class CustomerOnSAService
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateIncome(UpdateIncomeRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, ServerCallContext context)
-        => await _mediator.Send(request, context.CancellationToken);
-
     public override async Task<ValidateCustomerOnSAIdResponse> ValidateCustomerOnSAId(ValidateCustomerOnSAIdRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 

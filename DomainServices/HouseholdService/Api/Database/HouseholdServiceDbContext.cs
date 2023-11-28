@@ -12,7 +12,6 @@ internal sealed class HouseholdServiceDbContext
         : base(aggregate) { }
 
     public DbSet<Entities.CustomerOnSA> Customers { get; set; }
-    public DbSet<Entities.CustomerOnSAIncome> CustomersIncomes { get; set; }
     public DbSet<Entities.CustomerOnSAObligation> CustomersObligations { get; set; }
     public DbSet<Entities.CustomerOnSAIdentity> CustomersIdentities { get; set; }
     public DbSet<Entities.Household> Households { get; set; }

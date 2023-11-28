@@ -24,9 +24,7 @@ grpcurl -insecure -d "{\"HouseholdId\":1,\"CustomerOnSAId1\":1}" -H "Authorizati
 grpcurl -insecure -d "{\"CustomerOnSAId\":1}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30018 DomainServices.HouseholdService.v1.HouseholdService/GetHouseholdIdByCustomerOnSAId
 
 grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/CreateIncome
-grpcurl -insecure -d "{\"IncomeId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/GetIncome
 grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1,\"BaseData\":{\"Sum\":20000,\"CurrencyCode\":\"CZK\"}}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/CreateIncome
-grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1,\"Employement\":{\"IsForeignIncome\":true,\"ForeignIncomeTypeId\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/CreateIncome
 grpcurl -insecure -d "{\"IncomeId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/DeleteIncome
 grpcurl -insecure -d "{\"IncomeId\":2,\"BaseData\":{\"Sum\":2000},\"Employement\":{\"IsForeignIncome\":true,\"ForeignIncomeTypeId\":2}}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/UpdateIncome
 grpcurl -insecure -d "{\"CustomerOnSAId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/GetIncomeList
@@ -35,6 +33,11 @@ grpcurl -insecure -d "{\"ObligationId\":1}" -H "Authorization: Basic YTph" 127.0
 grpcurl -insecure -d "{\"ObligationId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/DeleteObligation
 grpcurl -insecure -d "{\"ObligationId\":2,\"ObligationTypeId\":2}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/UpdateObligation
 grpcurl -insecure -d "{\"CustomerOnSAId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/GetObligationList
+
+grpcurl -insecure -d "{\"IncomeId\":1}" -H "Authorization: Basic YTph" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/GetIncome
+grpcurl -insecure -d "{\"CustomerOnSAId\":3}" -H "Authorization: Basic YTph" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/GetIncomeList
+grpcurl -insecure -d "{\"IncomeId\":1}" -H "Authorization: Basic YTph" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/DeleteIncome
+grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"IncomeTypeId\":1,\"BaseData\":{\"Sum\":{\"units\":200000,\"nanos\":0},\"CurrencyCode\":\"CZK\"},\"Employement\":{\"HasProofOfIncome\":true,\"ForeignIncomeTypeId\":2,\"HasWageDeduction\":true,\"Employer\":{\"Name\":\"aaaa\"}}}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/CreateIncome
 
 ## run batch
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"

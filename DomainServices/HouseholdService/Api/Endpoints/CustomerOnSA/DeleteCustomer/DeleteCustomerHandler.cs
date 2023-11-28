@@ -1,6 +1,7 @@
 ﻿using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.HouseholdService.Contracts;
+using SharedComponents.DocumentDataStorage;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteCustomer;
@@ -60,9 +61,7 @@ internal sealed class DeleteCustomerHandler
             .ExecuteDeleteAsync(cancellationToken);
 
         // smazat prijmy
-        await _dbContext.CustomersIncomes
-            .Where(t => t.CustomerOnSAId == customerOnSAId)
-            .ExecuteDeleteAsync(cancellationToken);
+        await _documentDataStorage.DeleteByEntityId<Database.DocumentDataEntities.Income>(customerOnSAId);
 
         // smazat zavazky
         await _dbContext.CustomersObligations
@@ -101,17 +100,20 @@ internal sealed class DeleteCustomerHandler
         }, cancellationToken);
     }
 
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly SulmService.ISulmClientHelper _sulmClient;
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
 
     public DeleteCustomerHandler(
+        IDocumentDataStorage documentDataStorage,
         SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         SulmService.ISulmClientHelper sulmClient,
         Database.HouseholdServiceDbContext dbContext,
         IDocumentOnSAServiceClient documentOnSAServiceClient)
     {
+        _documentDataStorage = documentDataStorage;
         _salesArrangementService = salesArrangementService;
         _sulmClient = sulmClient;
         _dbContext = dbContext;

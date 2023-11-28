@@ -98,13 +98,6 @@ public interface ICustomerOnSAServiceClient
     Task UpdateIncome(UpdateIncomeRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Update zakladnich dat o prijmu
-    /// </summary>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16055; IncomeId must be > 0</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
-    Task UpdateIncomeBaseData(UpdateIncomeBaseDataRequest request, CancellationToken cancellationToken = default);
-
-    /// <summary>
     /// Vytvoreni noveho zavazku
     /// </summary>
     /// <returns><see cref="int"/>ObligationId</returns>

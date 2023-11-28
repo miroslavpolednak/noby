@@ -38,7 +38,7 @@ internal sealed class UpdateIncomeHandler
                         model.Other = o2.ToDomainServiceRequest();
                     break;
 
-                case SharedTypes.Enums.CustomerIncomeTypes.Enterprise:
+                case SharedTypes.Enums.CustomerIncomeTypes.Entrepreneur:
                     var o3 = System.Text.Json.JsonSerializer.Deserialize<Dto.IncomeDataEntrepreneur>(dataString, _jsonSerializerOptions);
                     if (o3 is not null) //TODO kdyz je to null, mam resit nejakou validaci?
                         model.Entrepreneur = o3.ToDomainServiceRequest();
