@@ -1,7 +1,15 @@
-CREATE SCHEMA DDS;
+IF NOT EXISTS ( SELECT  schema_name FROM    information_schema.schemata WHERE   schema_name = 'DDS' )
+BEGIN
+EXEC sp_executesql N'CREATE SCHEMA DDS'
+END
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DDS].[Income]') AND type in (N'U'))
+ALTER TABLE [DDS].[Income] SET ( SYSTEM_VERSIONING = OFF  )
+GO
 DROP TABLE IF EXISTS [DDS].[Income]
+GO
+DROP TABLE IF EXISTS [DDS].[IncomeHistory]
 GO
 CREATE TABLE [DDS].[Income](
 	[DocumentDataStorageId] [int] IDENTITY(1,1) NOT NULL,
@@ -11,11 +19,18 @@ CREATE TABLE [DDS].[Income](
 	[CreatedUserId] [int] NOT NULL,
 	[CreatedTime] [datetime] NOT NULL,
 	[ModifiedUserId] [int] NULL,
+	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
+	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL
  CONSTRAINT [PK_Income] PRIMARY KEY CLUSTERED 
 (
 	[DocumentDataStorageId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+	PERIOD FOR SYSTEM_TIME ([ValidFrom], [ValidTo])
+) ON [PRIMARY]
+WITH
+(
+	SYSTEM_VERSIONING = ON (HISTORY_TABLE = [DDS].[IncomeHistory])
+)
 GO
 
 DROP INDEX IF EXISTS [Idx_EntityId] ON [DDS].[Income]
@@ -87,10 +102,7 @@ select A.CustomerOnSAIncomeId, A.CustomerOnSAId, 1, A.CreatedUserId, A.CreatedTi
 SET IDENTITY_INSERT [DDS].[Income] OFF;
 GO
 
-
 ALTER TABLE [dbo].[CustomerOnSAIncome] SET ( SYSTEM_VERSIONING = OFF  )
-GO
-DROP TABLE IF EXISTS [dbo].[CustomerOnSAIncome]
 GO
 DROP TABLE IF EXISTS [dbo].[CustomerOnSAIncomeHistory]
 GO
