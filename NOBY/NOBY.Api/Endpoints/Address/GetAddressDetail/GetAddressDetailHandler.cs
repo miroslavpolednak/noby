@@ -11,12 +11,14 @@ internal sealed class GetAddressDetailHandler
     private readonly IAddressWhispererClient _addressWhisperer;
     private readonly IRuianAddressClient _ruianAddress;
     private readonly ICodebookServiceClient _codebookService;
+    private readonly ILogger<GetAddressDetailHandler> _logger;
 
-    public GetAddressDetailHandler(IAddressWhispererClient addressWhisperer, IRuianAddressClient ruianAddress, ICodebookServiceClient codebookService)
+    public GetAddressDetailHandler(IAddressWhispererClient addressWhisperer, IRuianAddressClient ruianAddress, ICodebookServiceClient codebookService, ILogger<GetAddressDetailHandler> logger)
     {
         _addressWhisperer = addressWhisperer;
         _ruianAddress = ruianAddress;
         _codebookService = codebookService;
+        _logger = logger;
     }
 
     public async Task<GetAddressDetailResponse> Handle(GetAddressDetailRequest request, CancellationToken cancellationToken)
@@ -28,8 +30,9 @@ internal sealed class GetAddressDetailHandler
 
             return await GetAddressWhispererDetail(request, cancellationToken);
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "GetAddressDetail external service call failed: " + ex.Message);
             throw new NobyValidationException(90020);
         }
     }
