@@ -40,6 +40,7 @@ internal sealed class CreateExistingCaseHandler
         {
             CaseId = request.CaseId,
 
+            State = request.State,
             StateUpdatedInStarbuild = (int)UpdatedInStarbuildStates.Ok,
             StateUpdateTime = _dbContext.CisDateTime.Now,
             ProductTypeId = request.Data.ProductTypeId,
