@@ -14,7 +14,7 @@ variables:
   buildPlatform: 'Any CPU'
   projectFile: 'NOBY\NOBY.Api\NOBY.Api.csproj'
   dbMigrationsDirectory: 'NOBY\DatabaseMigrations'
-  runSonarQube: $[or(contains(lower(variables['Build.SourceBranch']), 'release'), ne(lower(variables['USESONARQUBE']), 'false'))]
+  runSonarQube: $[or(eq(lower(variables['Build.SourceBranchName']), 'stage'), eq(lower(variables['Build.SourceBranchName']), 'production'), ne(lower(variables['USESONARQUBE']), 'false'))]
 
 # custom BuildNumber
 name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
