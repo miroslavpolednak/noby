@@ -30,16 +30,10 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
 
     public async Task<Empty> Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _formsService.LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
-        var saType = await _formsService.LoadSalesArrangementType(salesArrangement.SalesArrangementTypeId, cancellationToken);
+        var salesArrangement = await LoadAndValidateSalesArrangement(request.SalesArrangementId, cancellationToken);
 
-        if (saType.IsFormSentToCmp)
-        {
-            salesArrangement = await ValidateAndReloadSalesArrangement(salesArrangement.SalesArrangementId, cancellationToken);
+        await ProcessEasFormIfNeeded(salesArrangement, request.IsCancelled, cancellationToken);
 
-            await ProcessEasForm(salesArrangement, (SalesArrangementCategories)saType.SalesArrangementCategory, request.IsCancelled, cancellationToken);
-        }
-        
         await _formsService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, SalesArrangementStates.InApproval, cancellationToken);
 
         AuditLog(salesArrangement);
@@ -47,7 +41,7 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
         return new Empty();
     }
 
-    private async Task<SalesArrangement> ValidateAndReloadSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
+    private async Task<SalesArrangement> LoadAndValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
     {
         await _documentOnSAService.RefreshSalesArrangementState(salesArrangementId, cancellationToken);
 
@@ -59,9 +53,14 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
         return salesArrangement;
     }
 
-    private async Task ProcessEasForm(SalesArrangement salesArrangement, SalesArrangementCategories salesArrangementCategory, bool isCancelled, CancellationToken cancellationToken)
+    private async Task ProcessEasFormIfNeeded(SalesArrangement salesArrangement, bool isCancelled, CancellationToken cancellationToken)
     {
-        switch (salesArrangementCategory)
+        var saType = await _formsService.LoadSalesArrangementType(salesArrangement.SalesArrangementTypeId, cancellationToken);
+
+        if (!saType.IsFormSentToCmp)
+            return;
+
+        switch ((SalesArrangementCategories)saType.SalesArrangementCategory)
         {
             case SalesArrangementCategories.ProductRequest:
                 await ProcessProductRequest(salesArrangement, isCancelled, cancellationToken);
