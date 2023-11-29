@@ -21,10 +21,9 @@ public static class ConfigurationExtensions
 
     public static IConfigurationBuilder AddConjurEnvironmentVariables(
         this IConfigurationBuilder configurationBuilder,
-        IConfiguration configuration,
-        string environmentName)
+        IConfiguration configuration)
     {
-        configurationBuilder.Add(new ConjurEnvironmentVariablesSource(configuration) { EnvironmentPrefix = environmentName });
+        configurationBuilder.Add(new ConjurEnvironmentVariablesSource(configuration));
 
         return configurationBuilder;
     }
