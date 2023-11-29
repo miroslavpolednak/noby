@@ -61,8 +61,7 @@ internal static class Extensions
             EmploymentTypeId = contract.EmploymentTypeId,
             JobDescription = contract.JobDescription,
             IsInProbationaryPeriod = contract.IsInProbationaryPeriod,
-            IsInTrialPeriod = contract.IsInTrialPeriod,
-            GrossAnnualIncome = contract.GrossAnnualIncome
+            IsInTrialPeriod = contract.IsInTrialPeriod
         };
 
     public static Dto.WageDeductionDataDto ToApiResponse(this _HO.WageDeductionData contract)

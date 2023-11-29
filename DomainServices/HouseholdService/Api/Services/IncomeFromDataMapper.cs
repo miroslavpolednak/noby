@@ -97,7 +97,6 @@ internal sealed class IncomeFromDataMapper
                 FirstWorkContractSince = data.Job.FirstWorkContractSince,
                 CurrentWorkContractTo = data.Job.CurrentWorkContractTo,
                 EmploymentTypeId = data.Job.EmploymentTypeId,
-                GrossAnnualIncome = data.Job.GrossAnnualIncome,
                 IsInProbationaryPeriod = data.Job.IsInProbationaryPeriod,
                 IsInTrialPeriod = data.Job.IsInTrialPeriod,
                 JobDescription = data.Job.JobDescription
