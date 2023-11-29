@@ -33,6 +33,21 @@ Implementace `IDocumentData` vynucuje implementaci vlastnosti `Version`, která 
 
 > Verzování nicméně není povinné a nemá žádný dopad na funkčnost service `IDocumentDataStorage` - jedná se pouze o informativní údaj.
 
+## Adresářová struktura - umístění modelů
+C# modely umisťujeme do adresáře s database features. Zde mají vlastní podadresář **DocumentDataEntities**.
+
+```
+[Api]
+  [Database]
+    [DocumentDataEntities]
+	  Income.cs			// JSON schema
+	  Household.cs			// JSON schema
+	  ...
+	[Entities]
+	  ...
+	MyDbContext.cs
+```
+
 ## Příklady použití:
 
 ```csharp
