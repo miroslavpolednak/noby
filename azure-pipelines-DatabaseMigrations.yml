@@ -61,7 +61,7 @@ steps:
   inputs:
     SonarQube: 'NOBY - SonarQube'
     scannerMode: 'MSBuild'
-    projectKey: 'NOBY.Tools.DatabaseMigrations'
+    projectKey: 'AZURE--MPSS--CIS--OneSolution--NOBY.Tools.DatabaseMigrations'
     projectName: 'NOBY.Tools.DatabaseMigrations'
     projectVersion: '1.0.0.$(Build.BuildId)'
     extraProperties: 'sonar.verbose=true'
