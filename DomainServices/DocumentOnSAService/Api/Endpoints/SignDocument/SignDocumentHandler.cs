@@ -251,6 +251,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                 {
                     var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
                     _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
+
+                    //Do not update TaxResidence (event do not send TaxResidence already set in CM)
+                    customerDetail.NaturalPerson.TaxResidence = null;
+
                     var updateCustomerRequest = MapUpdateCustomerRequest(mandantId.Value, customerDetail);
                     await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
                     //Throw away locally stored Client data (keep CRS changes) 
