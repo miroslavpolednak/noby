@@ -99,6 +99,19 @@ internal sealed class LinkModelationToSalesArrangementHandler
             });
         }
 
+
+        // HFICH-9611
+        if (offerInstanceOld is not null
+            && (offerInstanceOld.SimulationInputs.LoanKindId == 2001 && offerInstance.SimulationInputs.LoanKindId == 2000)
+            && (offerInstanceOld.SimulationInputs.LoanPurposes.All(t => t.LoanPurposeId == 201) && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId != 201)))
+        {
+            flowSwitchesToSet.Add(new()
+            {
+                FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce,
+                Value = false
+            });
+        }
+
         //  Pokud parametry původně nalinkované Offer (konkrétně parametr Offer.BasicParameters.GuranteeDateTo, všechny DiscountPercentage z kolekce SimulationInputs.Fees a parametr SimulationInputs.InterestRateDiscount), nejsou stejné jako  odpovídající parametry na nové offer
         if (offerInstanceOld is not null)
         {
