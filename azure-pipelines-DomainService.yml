@@ -56,7 +56,7 @@ steps:
   inputs:
     SonarQube: 'NOBY - SonarQube'
     scannerMode: 'MSBuild'
-    projectKey: 'NOBY.DS.$(Build.DefinitionName)'
+    projectKey: 'AZURE--MPSS--CIS--OneSolution--NOBY.DS.$(Build.DefinitionName)'
     projectName: 'NOBY.DS.$(Build.DefinitionName)'
     projectVersion: '1.0.0.$(Build.BuildId)'
     extraProperties: 'sonar.verbose=true'
