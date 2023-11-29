@@ -24,9 +24,16 @@ public sealed class CreateCaseFromExternalSourcesService
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState);
 
         // instance uzivatele
-        var customerIdentity =  new SharedTypes.GrpcTypes.Identity(, IdentitySchemes.Kb);
+        var customerIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
         var customer = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);
 
+        // prioritne chceme pouzit customera z CM
+        var kbIdentity = customer.Identities.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb);
+        if (kbIdentity is not null)
+        {
+            customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
+        }
+        
         // vytvorit case
         var createCaseRequest = new DomainServices.CaseService.Contracts.CreateExistingCaseRequest
         {
@@ -50,6 +57,15 @@ public sealed class CreateCaseFromExternalSourcesService
         };
         await _caseService.CreateExistingCase(createCaseRequest, cancellationToken);
 
+        // zalozit SA
+        var saRequest = new DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest
+        {
+            CaseId = caseId,
+            ContractNumber = mortgageInstance.ContractNumber,
+            SalesArrangementTypeId = 1,
+            State = (int)SalesArrangementStates.InApproval
+        };
+        await _salesArrangementService.CreateSalesArrangement(saRequest, cancellationToken);
     }
 
     private static int getState(MortgageData mortgageInstance)

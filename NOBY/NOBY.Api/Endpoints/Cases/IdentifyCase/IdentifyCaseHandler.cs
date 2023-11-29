@@ -59,15 +59,17 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId.Value, false, cancellationToken);
         if (!caseInstance.Exists)
         {
-            return new IdentifyCaseResponse();
+            await _createCaseFromExternalSources.CreateCase(caseId.Value, cancellationToken);
         }
-
-        SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
+        else
+        {
+            SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
+        }
 
         var taskList = await _caseServiceClient.GetTaskList(caseId.Value, cancellationToken);
         var taskSubList = taskList.Where(t => t.TaskTypeId == 6).ToList();
 
-        if (!taskSubList.Any())
+        if (taskSubList.Count == 0)
         {
             return new IdentifyCaseResponse { CaseId = caseId };
         }
@@ -131,10 +133,16 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     {
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
 
-        if (!caseInstance.Exists) return new IdentifyCaseResponse();
-
-        SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
-
+        if (!caseInstance.Exists)
+        {
+            // osetrena vyjimka - spoustime logiku na vytvoreni case z konsDB
+            await _createCaseFromExternalSources.CreateCase(caseId, cancellationToken);
+        }
+        else
+        {
+            SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
+        }
+        
         return new IdentifyCaseResponse { CaseId = caseId };
     }
 
@@ -158,8 +166,10 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService _createCaseFromExternalSources;
 
     public IdentifyCaseHandler(
+        Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService createCaseFromExternalSources,
         ICurrentUserAccessor currentUser,
         IMediator mediator,
         IProductServiceClient productServiceClient,
@@ -168,6 +178,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
         IDocumentOnSAServiceClient documentOnSAService,
         ISalesArrangementServiceClient salesArrangementService)
     {
+        _createCaseFromExternalSources = createCaseFromExternalSources;
         _currentUser = currentUser;
         _mediator = mediator;
         _productServiceClient = productServiceClient;
