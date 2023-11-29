@@ -31,12 +31,37 @@ public interface IDocumentDataStorage
         where TData : class, IDocumentData;
 
     /// <summary>
+    /// Vrátí instance dat dle ID entity.
+    /// </summary>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    Task<List<DocumentDataItem<TData>>> GetList<TData>(string entityId, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData;
+
+    /// <summary>
+    /// Založí novou instanci dat pro danou entitu.
+    /// </summary>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    /// <param name="data">Instance dat</param>
+    Task<int> Add<TData>(TData data, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData;
+
+    /// <summary>
     /// Založí novou instanci dat pro danou entitu.
     /// </summary>
     /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
     /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
     /// <param name="data">Instance dat</param>
     Task<int> Add<TData>(int entityId, TData data, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData;
+
+    /// <summary>
+    /// Založí novou instanci dat pro danou entitu.
+    /// </summary>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    /// <param name="data">Instance dat</param>
+    Task<int> Add<TData>(string entityId, TData data, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData;
 
     /// <summary>
@@ -61,6 +86,18 @@ public interface IDocumentDataStorage
         where TData : class, IDocumentData;
 
     /// <summary>
+    /// Updatuje instanci dat v databázi dle ID entity pro která byla data uložena.
+    /// </summary>
+    /// <remarks>
+    /// Pokud je pro dané ID entity uloženo více instancí dat, updatuje všechny instance!
+    /// </remarks>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    /// <param name="data">Instance dat</param>
+    Task UpdateByEntityId<TData>(string entityId, TData data)
+        where TData : class, IDocumentData;
+
+    /// <summary>
     /// Smaže instanci dat v tabulce dané entity dle primárního klíče documentDataStorageId.
     /// </summary>
     /// <param name="documentDataStorageId">ID instance dat</param>
@@ -74,5 +111,13 @@ public interface IDocumentDataStorage
     /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
     /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
     Task<int> DeleteByEntityId<TData>(int entityId)
+        where TData : class, IDocumentData;
+
+    /// <summary>
+    /// Smaže všechny instance dat uložená v tabulce dané entity dle ID entity.
+    /// </summary>
+    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    Task<int> DeleteByEntityId<TData>(string entityId)
         where TData : class, IDocumentData;
 }

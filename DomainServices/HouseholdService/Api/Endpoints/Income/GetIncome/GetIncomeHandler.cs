@@ -14,7 +14,7 @@ internal sealed class GetIncomeHandler
         var model = _incomeMapper.MapDataToSingle(documentEntity.Data!);
 
         model.IncomeId = documentEntity.DocumentDataStorageId;
-        model.CustomerOnSAId = documentEntity.EntityId;
+        model.CustomerOnSAId = documentEntity.EntityIdInt;
 
         return model;
     }

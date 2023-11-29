@@ -1,6 +1,9 @@
-﻿namespace SharedComponents.DocumentDataStorage;
+﻿using System.Globalization;
 
-public sealed record DocumentDataItem<TData>(int DocumentDataStorageId, int Version, int EntityId, TData? Data)
+namespace SharedComponents.DocumentDataStorage;
+
+public sealed record DocumentDataItem<TData>(int DocumentDataStorageId, int Version, TData? Data, string? EntityId)
     where TData : class, IDocumentData
 {
+    public int EntityIdInt { get => Convert.ToInt32(EntityId, CultureInfo.InvariantCulture); }
 }
