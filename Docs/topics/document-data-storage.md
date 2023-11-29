@@ -11,6 +11,13 @@ Abychom docílili koherentní práce s JSON daty, všechny DS/API používají p
 Tato service zajišťuje serializaci/deserializaci JSON objektů a jejich uložení/načtení z databáze. 
 `IDocumentDataStorage` se nachází v projektu `SharedComponents`.
 
+## EntityId vs ID záznamu
+Každý záznam v databázi je uložen pod vlastním ID [int32] (toto ID se vrací při založení záznamu metodou `Add()`). 
+Zároveň je možné záznamy ukládat také s ID entity (`EntityId`) ke které se daná data vztahují - např. pokud se jedná o data o příjmech klienta, může být toto ID = *CustomerOnSAId*.
+ID entity je kvůli univerzálnosti vnitřně ukládáno jako string, nicméně ve většině případů budeme používat int.
+
+> `EntityId` je nepovinný parametr, je tedy možné ukládat data i bez vazby na konkrétní entitu.
+
 ## Přidání nového JSON schéma do aplikace
 1) založení C# modelu - jedná se o C# třídu, která odpovídá požadovanému JSON schématu. 
 Tato třída musí implementovat interface `SharedComponents.DocumentDataStorage.IDocumentData`. 
@@ -69,10 +76,12 @@ var deletedRows = await _documentDataStorage.DeleteByEntityId<MyModel>(entityId)
 ## SQL skript pro vytvoření tabulky JSON dat
 *{{table_name}}* musí být nahrazeno názvem tabulky.
 
+> Tabulka může být a nemusí historizovaná - záleží na zvážení konkrétního use case.
+
 ```sql
 CREATE TABLE [DDS].[{{table_name}}](
 	[DocumentDataStorageId] [int] IDENTITY(1,1) NOT NULL,
-	[DocumentDataEntityId] [int] NOT NULL,
+	[DocumentDataEntityId] [varchar](50) NULL,
 	[DocumentDataVersion] [int] NOT NULL,
 	[Data] [nvarchar](max) NULL,
 	[CreatedUserId] [int] NOT NULL,
