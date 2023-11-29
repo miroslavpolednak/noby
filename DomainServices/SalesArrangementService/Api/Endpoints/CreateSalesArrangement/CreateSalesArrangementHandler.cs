@@ -25,7 +25,7 @@ internal sealed class CreateSalesArrangementHandler
         };
 
         // get default SA state
-        saEntity.State = (await _codebookService.SalesArrangementStates(cancellation)).First(t => t.IsDefault).Id;
+        saEntity.State = request.State ?? (await _codebookService.SalesArrangementStates(cancellation)).First(t => t.IsDefault).Id;
 
         // ulozit do DB
         _dbContext.SalesArrangements.Add(saEntity);

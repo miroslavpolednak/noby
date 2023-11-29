@@ -20,6 +20,8 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
     Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default);
 
+    Task<long> CreateExistingCase(CreateExistingCaseRequest model, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Vraci pocet CASE pro daneho uzivatele v jednotlivych stavech
     /// </summary>

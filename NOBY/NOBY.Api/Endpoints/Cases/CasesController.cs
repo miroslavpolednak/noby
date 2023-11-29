@@ -77,7 +77,7 @@ public class CasesController : ControllerBase
     /// <param name="caseId">ID Case-u</param>
     /// <returns>Zakladni informace o Case-u.</returns>
     [HttpGet("{caseId:long}")]
-    [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
+    [NobySkipCaseOwnerValidation]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(Dto.CaseModel), StatusCodes.Status200OK)]
@@ -139,6 +139,7 @@ public class CasesController : ControllerBase
     [HttpPost("identify")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobySkipCaseOwnerValidation]
     [NobyAuthorize(UserPermissions.DASHBOARD_IdentifyCase)]
     [SwaggerOperation(Tags = new[] { "Case" })]
     [ProducesResponseType(typeof(IdentifyCase.IdentifyCaseResponse), StatusCodes.Status200OK)]

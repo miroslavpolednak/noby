@@ -21,6 +21,8 @@ message CreateSalesArrangementRequest {
 	google.protobuf.Int32Value OfferId = 3;
 	
 	string ContractNumber = 4;
+
+	google.protobuf.Int32Value State = 5;
 	
 	oneof Data {
         SalesArrangementParametersMortgage Mortgage = 20;

@@ -40,4 +40,6 @@ internal sealed class Loan
 	public string? EmailAddress1 { get; set; }
     public string? EmailAddress2 { get; set; }
     public bool IsCancelled { get; set; }
+    public int? MortgageState { get; set; }
+	public DateTime? DrawingFinishedDate { get; set; }
 }

@@ -16,6 +16,7 @@
 
 	<ItemGroup>
 	  <None Remove="Messages\CancelCase.proto" />
+	  <None Remove="Messages\CreateExistingCase.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -57,6 +58,7 @@
 		<Protobuf Include="Messages/CancelTask.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages/CreateTask.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\CancelCase.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Messages\CreateExistingCase.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\ValidateCaseId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\WorkflowTask.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	</ItemGroup>

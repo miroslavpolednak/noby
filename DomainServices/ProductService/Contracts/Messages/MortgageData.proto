@@ -45,4 +45,6 @@ message MortgageData {
 	google.protobuf.StringValue PcpId = 35;
 	cis.types.NullableGrpcDate FirstSignatureDate = 36;
 	bool IsCancelled = 37;
+	cis.types.NullableGrpcDate DrawingFinishedDate = 38;
+	google.protobuf.Int32Value MortgageState = 39;
 }
