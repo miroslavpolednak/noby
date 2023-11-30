@@ -30,7 +30,7 @@ internal sealed class IncomeMapper
         switch (model.IncomeTypeId)
         {
             case CustomerIncomeTypes.Employement:
-                model.Employement = mapEmployementToData(dataEmployement!);
+                model.Employement = mapEmployementToData(dataEmployement);
                 break;
 
             case CustomerIncomeTypes.Entrepreneur:
@@ -66,8 +66,10 @@ internal sealed class IncomeMapper
         };
     }
 
-    public __Contracts.Income MapFromDataToSingle(Income data)
+    public __Contracts.Income MapFromDataToSingle(Income? data)
     {
+        if (data is null) return new __Contracts.Income();
+
         var model = new __Contracts.Income
         {
             IncomeTypeId = (int)data.IncomeTypeId,
@@ -110,8 +112,10 @@ internal sealed class IncomeMapper
         return model;
     }
 
-    private static Income.IncomeEmployement mapEmployementToData(__Contracts.IncomeDataEmployement source)
+    private static Income.IncomeEmployement mapEmployementToData(__Contracts.IncomeDataEmployement? source)
     {
+        if (source == null) return new Income.IncomeEmployement();
+
         return new Income.IncomeEmployement
         {
             ForeignIncomeTypeId = source.ForeignIncomeTypeId,
@@ -170,8 +174,10 @@ internal sealed class IncomeMapper
     private async Task<string?> getOtherIncomeName(int? id, CancellationToken cancellationToken)
         => id.HasValue ? (await _codebookService.IncomeOtherTypes(cancellationToken)).FirstOrDefault(t => t.Id == id)?.Name : "-";
 
-    private static __Contracts.IncomeDataEmployement mapEmployementFromData(Income.IncomeEmployement data)
+    private static __Contracts.IncomeDataEmployement mapEmployementFromData(Income.IncomeEmployement? data)
     {
+        if (data is null) return new __Contracts.IncomeDataEmployement();
+
         return new __Contracts.IncomeDataEmployement
         {
             ForeignIncomeTypeId = data.ForeignIncomeTypeId,

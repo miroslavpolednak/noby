@@ -8,8 +8,10 @@ namespace DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mapp
 [TransientService, SelfService]
 internal sealed class ObligationMapper
 {
-    public Obligation MapToData(__Contracts.IObligation source)
+    public Obligation MapToData(__Contracts.IObligation? source)
     {
+        if (source == null) return new Obligation();
+
         return new Obligation
         {
             ObligationState = source.ObligationState,
@@ -44,7 +46,7 @@ internal sealed class ObligationMapper
 
     public __Contracts.Obligation? MapFromDataToSingle(Obligation? data)
     {
-        if (data is null) return null;
+        if (data is null) return new __Contracts.Obligation();
 
         return new __Contracts.Obligation
         {
