@@ -450,6 +450,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00061_Fixed_Domicile.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00061_Fixed_Domicile.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00062_HFICH-9433_Drawing_LastSignedDocument.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00062_HFICH-9433_Drawing_LastSignedDocument.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00063_HFICH-8191_EmploymentIncome_ConfirmationContact.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00063_HFICH-8191_EmploymentIncome_ConfirmationContact.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00064_HFICH-7080_EasForm_RemovedGrossAnnualIncome.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00064_HFICH-7080_EasForm_RemovedGrossAnnualIncome.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
