@@ -2,7 +2,6 @@
 
 public class JobDataDto
 {
-    public decimal? GrossAnnualIncome  { get; set; }
     public string? JobDescription { get; set; }
     public bool IsInProbationaryPeriod { get; set; }
     public bool IsInTrialPeriod { get; set; }

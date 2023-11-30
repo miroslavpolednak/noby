@@ -145,7 +145,6 @@ internal sealed class IncomeMapper
                 FirstWorkContractSince = source.Job.FirstWorkContractSince,
                 CurrentWorkContractTo = source.Job.CurrentWorkContractTo,
                 EmploymentTypeId = source.Job.EmploymentTypeId,
-                GrossAnnualIncome = source.Job.GrossAnnualIncome,
                 IsInProbationaryPeriod = source.Job.IsInProbationaryPeriod,
                 IsInTrialPeriod = source.Job.IsInTrialPeriod,
                 JobDescription = source.Job.JobDescription
@@ -207,7 +206,6 @@ internal sealed class IncomeMapper
                 FirstWorkContractSince = data.Job.FirstWorkContractSince,
                 CurrentWorkContractTo = data.Job.CurrentWorkContractTo,
                 EmploymentTypeId = data.Job.EmploymentTypeId,
-                GrossAnnualIncome = data.Job.GrossAnnualIncome,
                 IsInProbationaryPeriod = data.Job.IsInProbationaryPeriod,
                 IsInTrialPeriod = data.Job.IsInTrialPeriod,
                 JobDescription = data.Job.JobDescription

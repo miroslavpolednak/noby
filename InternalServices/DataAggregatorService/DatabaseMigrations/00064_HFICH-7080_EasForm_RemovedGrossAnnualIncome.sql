@@ -1,0 +1,1 @@
+DELETE FROM EasFormSpecialDataField WHERE FieldPath = 'HouseholdData.Customers[].IncomesEmployment[].Employment.Job.GrossAnnualIncome'

@@ -47,7 +47,6 @@ internal sealed class Income
 
         internal sealed class JobData
         {
-            public decimal? GrossAnnualIncome { get; set; }
             public string? JobDescription { get; set; }
             public bool IsInProbationaryPeriod { get; set; }
             public bool IsInTrialPeriod { get; set; }
