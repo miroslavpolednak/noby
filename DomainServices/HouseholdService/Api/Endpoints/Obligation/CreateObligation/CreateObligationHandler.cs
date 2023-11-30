@@ -1,4 +1,6 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
+using DomainServices.HouseholdService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.CreateObligation;
 
@@ -7,43 +9,29 @@ internal sealed class CreateObligationHandler
 {
     public async Task<CreateObligationResponse> Handle(CreateObligationRequest request, CancellationToken cancellationToken)
     {
-        var entity = new Database.Entities.CustomerOnSAObligation
-        {
-            CustomerOnSAId = request.CustomerOnSAId,
-            ObligationState = request.ObligationState,
-            ObligationTypeId = request.ObligationTypeId!.Value,
-            InstallmentAmount = request.InstallmentAmount,
-            LoanPrincipalAmount = request.LoanPrincipalAmount,
-            CreditCardLimit = request.CreditCardLimit,
-            AmountConsolidated = request.AmountConsolidated,
-            CreditorId = request.Creditor?.CreditorId ?? "",
-            CreditorName = request.Creditor?.Name ?? "",
-            CreditorIsExternal = request.Creditor?.IsExternal,
-            CorrectionTypeId = request.Correction?.CorrectionTypeId,
-            CreditCardLimitCorrection = request.Correction?.CreditCardLimitCorrection,
-            InstallmentAmountCorrection = request.Correction?.InstallmentAmountCorrection,
-            LoanPrincipalAmountCorrection = request.Correction?.LoanPrincipalAmountCorrection
-        };
+        var documentEntity = _mapper.MapToData(request);
 
-        _dbContext.CustomersObligations.Add(entity);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        var id = await _documentDataStorage.Add(request.CustomerOnSAId, documentEntity, cancellationToken);
 
-        _logger.EntityCreated(nameof(Database.Entities.CustomerOnSAObligation), entity.CustomerOnSAObligationId);
+        _logger.EntityCreated(nameof(Database.Entities.CustomerOnSAObligation), id);
 
         return new CreateObligationResponse
         {
-            ObligationId = entity.CustomerOnSAObligationId
+            ObligationId = id
         };
     }
 
-    private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly IDocumentDataStorage _documentDataStorage;
+    private readonly ObligationMapper _mapper;
     private readonly ILogger<CreateObligationHandler> _logger;
 
     public CreateObligationHandler(
-        Database.HouseholdServiceDbContext dbContext,
+        IDocumentDataStorage documentDataStorage,
+        ObligationMapper mapper,
         ILogger<CreateObligationHandler> logger)
     {
-        _dbContext = dbContext;
+        _documentDataStorage = documentDataStorage;
+        _mapper = mapper;
         _logger = logger;
     }
 }

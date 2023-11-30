@@ -1,4 +1,5 @@
 ﻿using DomainServices.HouseholdService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.DeleteObligation;
 
@@ -7,10 +8,7 @@ internal sealed class DeleteObligationHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteObligationRequest request, CancellationToken cancellationToken)
     {
-        var deletedRows = await _dbContext
-            .CustomersObligations
-            .Where(t => t.CustomerOnSAObligationId == request.ObligationId)
-            .ExecuteDeleteAsync(cancellationToken);
+        var deletedRows = await _documentDataStorage.Delete<Database.DocumentDataEntities.Obligation>(request.ObligationId);
 
         if (deletedRows == 0)
         {
@@ -20,10 +18,10 @@ internal sealed class DeleteObligationHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly IDocumentDataStorage _documentDataStorage;
 
-    public DeleteObligationHandler(Database.HouseholdServiceDbContext dbContext)
+    public DeleteObligationHandler(IDocumentDataStorage documentDataStorage)
     {
-        _dbContext = dbContext;
+        _documentDataStorage = documentDataStorage;
     }
 }

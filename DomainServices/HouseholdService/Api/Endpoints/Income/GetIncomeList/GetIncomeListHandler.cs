@@ -1,4 +1,5 @@
-﻿using SharedComponents.DocumentDataStorage;
+﻿using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.GetIncomeList;
 
@@ -16,7 +17,7 @@ internal sealed class GetIncomeListHandler
 
         _logger.FoundItems(list.Count, nameof(Database.DocumentDataEntities.Income));
 
-        var incomes = list.Select(t => _incomeMapper.MapDataToList(t));
+        var incomes = list.Select(t => _incomeMapper.MapFromDataToList(t));
 
         var response = new Contracts.GetIncomeListResponse();
         response.Incomes.AddRange(incomes);
@@ -25,11 +26,11 @@ internal sealed class GetIncomeListHandler
 
     private readonly Database.HouseholdServiceDbContext _dbContext;
     private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly Services.IncomeFromDataMapper _incomeMapper;
+    private readonly IncomeMapper _incomeMapper;
     private readonly ILogger<GetIncomeListHandler> _logger;
 
     public GetIncomeListHandler(
-        Services.IncomeFromDataMapper incomeMapper,
+        IncomeMapper incomeMapper,
         Database.HouseholdServiceDbContext dbContext,
         IDocumentDataStorage documentDataStorage,
         ILogger<GetIncomeListHandler> logger)

@@ -2,6 +2,7 @@
 using DomainServices.HouseholdService.Api.Database;
 using DomainServices.HouseholdService.Contracts;
 using SharedComponents.DocumentDataStorage;
+using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetCustomer;
 
@@ -51,19 +52,19 @@ internal sealed class GetCustomerHandler
 
         // incomes
         var incomes = await _documentDataStorage.GetList<Database.DocumentDataEntities.Income>(request.CustomerOnSAId, cancellationToken);
-        customerInstance.Incomes.AddRange(incomes.Select(t => _incomeMapper.MapDataToList(t)));
+        customerInstance.Incomes.AddRange(incomes.Select(t => _incomeMapper.MapFromDataToList(t)));
 
         return customerInstance;
     }
 
-    private readonly Services.IncomeFromDataMapper _incomeMapper;
+    private readonly IncomeMapper _incomeMapper;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly HouseholdServiceDbContext _dbContext;
 
     public GetCustomerHandler(
         HouseholdServiceDbContext dbContext, 
         IDocumentDataStorage documentDataStorage,
-        Services.IncomeFromDataMapper incomeMapper)
+        IncomeMapper incomeMapper)
     {
         _documentDataStorage = documentDataStorage;
         _dbContext = dbContext;

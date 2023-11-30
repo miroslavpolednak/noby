@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
+using DomainServices.HouseholdService.Contracts;
 using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.GetIncome;
@@ -11,7 +12,7 @@ internal sealed class GetIncomeHandler
         var documentEntity = await _documentDataStorage.FirstOrDefault<Database.DocumentDataEntities.Income>(request.IncomeId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.IncomeNotFound, request.IncomeId);
 
-        var model = _incomeMapper.MapDataToSingle(documentEntity.Data!);
+        var model = _incomeMapper.MapFromDataToSingle(documentEntity.Data!);
 
         model.IncomeId = documentEntity.DocumentDataStorageId;
         model.CustomerOnSAId = documentEntity.EntityIdInt;
@@ -20,9 +21,9 @@ internal sealed class GetIncomeHandler
     }
 
     private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly Services.IncomeFromDataMapper _incomeMapper;
+    private readonly IncomeMapper _incomeMapper;
 
-    public GetIncomeHandler(IDocumentDataStorage documentDataStorage, Services.IncomeFromDataMapper incomeMapper)
+    public GetIncomeHandler(IDocumentDataStorage documentDataStorage, IncomeMapper incomeMapper)
     {
         _documentDataStorage = documentDataStorage;
         _incomeMapper = incomeMapper;

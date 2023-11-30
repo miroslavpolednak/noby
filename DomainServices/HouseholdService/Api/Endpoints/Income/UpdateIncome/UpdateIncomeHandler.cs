@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
+using DomainServices.HouseholdService.Contracts;
 using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.UpdateIncome;
@@ -8,7 +9,7 @@ internal sealed class UpdateIncomeHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)
     {
-        var documentEntity = await _incomeMapper.MapToDocumentData(request.IncomeTypeId, request.BaseData, request.Employement, request.Entrepreneur, request.Other, cancellationToken);
+        var documentEntity = await _incomeMapper.MapToData(request.IncomeTypeId, request.BaseData, request.Employement, request.Entrepreneur, request.Other, cancellationToken);
 
         await _documentDataStorage.Update(request.IncomeId, documentEntity);
 
@@ -16,10 +17,10 @@ internal sealed class UpdateIncomeHandler
     }
 
     private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly Services.IncomeToDataMapper _incomeMapper;
+    private readonly IncomeMapper _incomeMapper;
 
     public UpdateIncomeHandler(
-        Services.IncomeToDataMapper incomeMapper,
+        IncomeMapper incomeMapper,
         IDocumentDataStorage documentDataStorage)
     {
         _documentDataStorage = documentDataStorage;

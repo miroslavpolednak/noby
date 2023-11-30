@@ -1,4 +1,6 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
+using DomainServices.HouseholdService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.GetObligation;
 
@@ -7,20 +9,23 @@ internal sealed class GetObligationHandler
 {
     public async Task<Contracts.Obligation> Handle(GetObligationRequest request, CancellationToken cancellationToken)
     {
-        var model = await _dbContext.CustomersObligations
-            .AsNoTracking()
-            .Where(t => t.CustomerOnSAObligationId == request.ObligationId)
-            .Select(Database.CustomerOnSAServiceExpressions.Obligation())
-            .FirstOrDefaultAsync(cancellationToken)
+        var documentEntity = await _documentDataStorage.FirstOrDefault<Database.DocumentDataEntities.Obligation>(request.ObligationId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ObligationNotFound, request.ObligationId);
+
+        var model = _mapper.MapFromDataToSingle(documentEntity.Data!);
+
+        model.ObligationId = documentEntity.DocumentDataStorageId;
+        model.CustomerOnSAId = documentEntity.EntityIdInt;
 
         return model;
     }
 
-    private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly IDocumentDataStorage _documentDataStorage;
+    private readonly ObligationMapper _mapper;
 
-    public GetObligationHandler(Database.HouseholdServiceDbContext dbContext)
+    public GetObligationHandler(IDocumentDataStorage documentDataStorage, ObligationMapper mapper)
     {
-        _dbContext = dbContext;
+        _documentDataStorage = documentDataStorage;
+        _mapper = mapper;
     }
 }
