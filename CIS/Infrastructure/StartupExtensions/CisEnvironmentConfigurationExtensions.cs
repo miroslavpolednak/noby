@@ -9,15 +9,22 @@ public static class CisEnvironmentConfigurationExtensions
     public static ICisEnvironmentConfiguration AddCisEnvironmentConfiguration(this WebApplicationBuilder builder)
     {
         CisEnvironmentConfiguration cisConfiguration = new();
-        builder.Configuration.GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName).Bind(cisConfiguration);
 
-        CheckAndRegisterConfiguration(builder, cisConfiguration);
+        var cisConfigurationSection = builder.Configuration.GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName);
+        cisConfigurationSection.Bind(cisConfiguration);
 
         // get env variables
         builder.Configuration.AddCisEnvironmentVariables($"{cisConfiguration.EnvironmentName}_");
 
         if (cisConfiguration.SecretsSource == SecretsSource.ConjurEnvironmentVariables)
+        {
             builder.Configuration.AddConjurEnvironmentVariables(builder.Configuration);
+
+            //Rebind configuration
+            cisConfigurationSection.Bind(cisConfiguration);
+        }
+
+        CheckAndRegisterConfiguration(builder, cisConfiguration);
 
         return cisConfiguration;
     }
