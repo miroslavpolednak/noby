@@ -43,12 +43,8 @@ internal sealed class GetCustomerHandler
             customerInstance.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new Identity(t.IdentityId, t.IdentityScheme)));
 
         // obligations
-        var obligations = await _dbContext.CustomersObligations
-            .AsNoTracking()
-            .Where(t => t.CustomerOnSAId == request.CustomerOnSAId)
-            .Select(CustomerOnSAServiceExpressions.Obligation())
-            .ToListAsync(cancellationToken);
-        customerInstance.Obligations.AddRange(obligations);
+        var obligations = await _documentDataStorage.GetList<Database.DocumentDataEntities.Obligation>(request.CustomerOnSAId, cancellationToken);
+        customerInstance.Obligations.AddRange(obligations.Select(t => _obligationMapper.MapFromDataToList(t)));
 
         // incomes
         var incomes = await _documentDataStorage.GetList<Database.DocumentDataEntities.Income>(request.CustomerOnSAId, cancellationToken);
@@ -58,16 +54,19 @@ internal sealed class GetCustomerHandler
     }
 
     private readonly IncomeMapper _incomeMapper;
+    private readonly ObligationMapper _obligationMapper;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly HouseholdServiceDbContext _dbContext;
 
     public GetCustomerHandler(
         HouseholdServiceDbContext dbContext, 
         IDocumentDataStorage documentDataStorage,
-        IncomeMapper incomeMapper)
+        IncomeMapper incomeMapper,
+        ObligationMapper obligationMapper)
     {
         _documentDataStorage = documentDataStorage;
         _dbContext = dbContext;
         _incomeMapper = incomeMapper;
+        _obligationMapper = obligationMapper;
     }
 }

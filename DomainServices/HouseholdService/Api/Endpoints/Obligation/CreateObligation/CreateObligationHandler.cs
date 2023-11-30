@@ -13,7 +13,7 @@ internal sealed class CreateObligationHandler
 
         var id = await _documentDataStorage.Add(request.CustomerOnSAId, documentEntity, cancellationToken);
 
-        _logger.EntityCreated(nameof(Database.Entities.CustomerOnSAObligation), id);
+        _logger.EntityCreated(nameof(Database.DocumentDataEntities.Obligation), id);
 
         return new CreateObligationResponse
         {

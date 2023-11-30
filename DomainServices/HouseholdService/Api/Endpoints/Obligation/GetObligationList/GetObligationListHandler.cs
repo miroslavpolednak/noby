@@ -18,7 +18,7 @@ internal sealed class GetObligationListHandler
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CustomerOnSANotFound, request.CustomerOnSAId);
         }
 
-        _logger.FoundItems(list.Count, nameof(Database.Entities.CustomerOnSAObligation));
+        _logger.FoundItems(list.Count, nameof(Database.DocumentDataEntities.Obligation));
 
         var obligations = list.Select(t => _mapper.MapFromDataToList(t));
 

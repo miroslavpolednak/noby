@@ -64,9 +64,7 @@ internal sealed class DeleteCustomerHandler
         await _documentDataStorage.DeleteByEntityId<Database.DocumentDataEntities.Income>(customerOnSAId);
 
         // smazat zavazky
-        await _dbContext.CustomersObligations
-            .Where(t => t.CustomerOnSAId == customerOnSAId)
-            .ExecuteDeleteAsync(cancellationToken);
+        await _documentDataStorage.DeleteByEntityId<Database.DocumentDataEntities.Obligation>(customerOnSAId);
     }
 
     private async Task StopSigning(IEnumerable<DocumentOnSAToSign> documentOnSAToSigns, CancellationToken cancellationToken)

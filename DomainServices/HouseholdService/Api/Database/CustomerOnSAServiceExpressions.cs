@@ -18,32 +18,4 @@ internal static class CustomerOnSAServiceExpressions
             MaritalStatusId = t.MaritalStatusId
         };
     }
-
-    public static Expression<Func<Entities.CustomerOnSAObligation, Contracts.Obligation>> Obligation()
-    {
-        return entity => new Contracts.Obligation
-        {
-            CustomerOnSAId = entity.CustomerOnSAId,
-            ObligationState = entity.ObligationState,
-            InstallmentAmount = entity.InstallmentAmount,
-            CreditCardLimit = entity.CreditCardLimit,
-            LoanPrincipalAmount = entity.LoanPrincipalAmount,
-            AmountConsolidated = entity.AmountConsolidated,
-            ObligationTypeId = entity.ObligationTypeId,
-            ObligationId = entity.CustomerOnSAObligationId,
-            Creditor = new Contracts.ObligationCreditor
-            {
-                CreditorId = entity.CreditorId ?? "",
-                IsExternal = entity.CreditorIsExternal,
-                Name = entity.CreditorName ?? ""
-            },
-            Correction = new Contracts.ObligationCorrection
-            {
-                CorrectionTypeId = entity.CorrectionTypeId,
-                CreditCardLimitCorrection = entity.CreditCardLimitCorrection,
-                InstallmentAmountCorrection = entity.InstallmentAmountCorrection,
-                LoanPrincipalAmountCorrection = entity.LoanPrincipalAmountCorrection
-            }
-        };
-    }
 }
