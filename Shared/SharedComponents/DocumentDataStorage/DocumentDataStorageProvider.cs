@@ -110,7 +110,7 @@ internal sealed class DocumentDataStorageProvider
         {
             connection.Open();
             await connection.ExecuteAsync(
-                $"UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} SET DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId WHERE DocumentDataStorageId=@DocumentDataStorageId",
+                $"UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} SET Data=@Data, DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId WHERE DocumentDataStorageId=@DocumentDataStorageId",
                 varsToUpdate);
         }
     }
@@ -134,7 +134,7 @@ internal sealed class DocumentDataStorageProvider
         {
             connection.Open();
             await connection.ExecuteAsync(
-                $"UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} SET DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId WHERE DocumentDataEntityId=@DocumentDataEntityId",
+                $"UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} SET Data=@Data, DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId WHERE DocumentDataEntityId=@DocumentDataEntityId",
                 varsToUpdate);
         }
     }
