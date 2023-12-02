@@ -90,7 +90,7 @@ public class RealSbQueuesRepository : ISbQueuesRepository
 
     public RealSbQueuesRepository(IConnectionProvider<ISbQueuesDapperConnectionProvider> connectionProvider)
     {
-        SqlMapper.Settings.CommandTimeout = 10;
+        SqlMapper.Settings.CommandTimeout = 60;
         _connectionProvider = connectionProvider;
     }
 
