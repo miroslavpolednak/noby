@@ -1,4 +1,7 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Api.Database;
+using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
+using DomainServices.HouseholdService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetCustomerChangeMetadata;
 
@@ -10,24 +13,38 @@ internal sealed class GetCustomerChangeMetadataHandler
         var customers = await _dbContext
             .Customers
             .AsNoTracking()
-            .Where(t => t.SalesArrangementId == request.SalesArrangementId && t.ChangeMetadataBin != null)
-            .Select(t => new { t.CustomerOnSAId, t.SalesArrangementId, t.CaseId, t.ChangeMetadataBin })
-            .ToListAsync(cancellationToken);
+            .Where(t => t.SalesArrangementId == request.SalesArrangementId)
+            .Select(t => t.CustomerOnSAId)
+            .ToArrayAsync(cancellationToken);
 
-        GetCustomerChangeMetadataResponse response = new();
-        response.CustomersOnSAMetadata.AddRange(customers.Select(t => new GetCustomerChangeMetadataResponse.Types.GetCustomerChangeMetadataResponseItem
+        var additionalData = await _documentDataStorage.GetList<Database.DocumentDataEntities.CustomerOnSAData>(customers!, cancellationToken);
+        var convertedData = additionalData.Select(t =>
         {
-            CustomerOnSAId = t.CustomerOnSAId,
-            CustomerChangeMetadata = CustomerChangeMetadata.Parser.ParseFrom(t.ChangeMetadataBin)
-        }));
+            var (_, customerChangeMetadata) = _customerMapper.MapFromDataToSingle(t?.Data);
+            return new GetCustomerChangeMetadataResponse.Types.GetCustomerChangeMetadataResponseItem
+            {
+                CustomerOnSAId = t.EntityIdInt,
+                CustomerChangeMetadata = customerChangeMetadata
+            };
+        });
+        
+        GetCustomerChangeMetadataResponse response = new();
+        response.CustomersOnSAMetadata.AddRange(convertedData);
 
         return response;
     }
 
-    private readonly Database.HouseholdServiceDbContext _dbContext;
+    private readonly HouseholdServiceDbContext _dbContext;
+    private readonly CustomerOnSADataMapper _customerMapper;
+    private readonly IDocumentDataStorage _documentDataStorage;
 
-    public GetCustomerChangeMetadataHandler(Database.HouseholdServiceDbContext dbContext)
+    public GetCustomerChangeMetadataHandler(
+        IDocumentDataStorage documentDataStorage, 
+        CustomerOnSADataMapper customerMapper,
+        HouseholdServiceDbContext dbContext)
     {
         _dbContext = dbContext;
+        _documentDataStorage = documentDataStorage;
+        _customerMapper = customerMapper;
     }
 }

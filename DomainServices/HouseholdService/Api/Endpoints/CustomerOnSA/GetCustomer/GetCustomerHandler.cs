@@ -32,15 +32,18 @@ internal sealed class GetCustomerHandler
             CustomerChangeData = entity.ChangeData
         };
 
-        if (entity.AdditionalDataBin != null)
-            customerInstance.CustomerAdditionalData = CustomerAdditionalData.Parser.ParseFrom(entity.AdditionalDataBin);
+        // document data
+        var additionalData = await _documentDataStorage.FirstOrDefault<Database.DocumentDataEntities.CustomerOnSAData>(request.CustomerOnSAId, cancellationToken);
+        var (customerAdditionalData, customerChangeMetadata) = _customerMapper.MapFromDataToSingle(additionalData?.Data);
 
-        if (entity.ChangeMetadataBin != null)
-            customerInstance.CustomerChangeMetadata = CustomerChangeMetadata.Parser.ParseFrom(entity.ChangeMetadataBin);
+        customerInstance.CustomerAdditionalData = customerAdditionalData;
+        customerInstance.CustomerChangeMetadata = customerChangeMetadata;
 
         // identity
         if (entity.Identities is not null)
+        {
             customerInstance.CustomerIdentifiers.AddRange(entity.Identities.Select(t => new Identity(t.IdentityId, t.IdentityScheme)));
+        }
 
         // obligations
         var obligations = await _documentDataStorage.GetList<Database.DocumentDataEntities.Obligation>(request.CustomerOnSAId, cancellationToken);
@@ -53,17 +56,20 @@ internal sealed class GetCustomerHandler
         return customerInstance;
     }
 
+    private readonly CustomerOnSADataMapper _customerMapper;
     private readonly IncomeMapper _incomeMapper;
     private readonly ObligationMapper _obligationMapper;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly HouseholdServiceDbContext _dbContext;
 
     public GetCustomerHandler(
+        CustomerOnSADataMapper customerMapper,
         HouseholdServiceDbContext dbContext, 
         IDocumentDataStorage documentDataStorage,
         IncomeMapper incomeMapper,
         ObligationMapper obligationMapper)
     {
+        _customerMapper = customerMapper;
         _documentDataStorage = documentDataStorage;
         _dbContext = dbContext;
         _incomeMapper = incomeMapper;

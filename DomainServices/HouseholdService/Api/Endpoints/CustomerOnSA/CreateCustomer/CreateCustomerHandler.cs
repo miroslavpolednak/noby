@@ -7,6 +7,10 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using Google.Protobuf;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using SharedComponents.DocumentDataStorage;
+using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
+using System.Threading;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
 
@@ -57,32 +61,13 @@ internal sealed class CreateCustomerHandler
             }
         }
 
-        // additional data - set defaults
-        // https://jira.kb.cz/browse/HFICH-4551
-        CustomerAdditionalData additionalData = new()
-        {
-            IsAddressWhispererUsed = false,
-            HasRelationshipWithKB = false,
-            HasRelationshipWithKBEmployee = false,
-            HasRelationshipWithCorporate = false,
-            IsPoliticallyExposed = false,
-            IsUSPerson = false,
-            LegalCapacity = new()
-            {
-                RestrictionTypeId = 2
-            }
-        };
-        entity.AdditionalData = Newtonsoft.Json.JsonConvert.SerializeObject(additionalData);
-        entity.AdditionalDataBin = additionalData.ToByteArray();
-
-        CustomerChangeMetadata changeMetadata = new();
-        entity.ChangeMetadata = Newtonsoft.Json.JsonConvert.SerializeObject(changeMetadata);
-        entity.ChangeMetadataBin = changeMetadata.ToByteArray();
-
         // ulozit do DB
         _dbContext.Customers.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
         _logger.EntityCreated(nameof(Database.Entities.CustomerOnSA), entity.CustomerOnSAId);
+
+        // ulozit document data
+        await saveDocumentData(entity.CustomerOnSAId, cancellationToken);
 
         // update case detailu
         if (kbIdentity is not null && entity.CustomerRoleId == CustomerRoles.Debtor)
@@ -124,6 +109,28 @@ internal sealed class CreateCustomerHandler
         return model;
     }
 
+    private async Task saveDocumentData(int customerOnSAId, CancellationToken cancellationToken)
+    {
+        Database.DocumentDataEntities.CustomerOnSAData documentEntity = new()
+        {
+            AdditionalData = new()
+            {
+                IsAddressWhispererUsed = false,
+                HasRelationshipWithKB = false,
+                HasRelationshipWithKBEmployee = false,
+                HasRelationshipWithCorporate = false,
+                IsPoliticallyExposed = false,
+                IsUSPerson = false,
+                LegalCapacity = new()
+                {
+                    RestrictionTypeId = 2
+                }
+            }
+        };
+
+        await _documentDataStorage.Add(customerOnSAId, documentEntity, cancellationToken);
+    }
+
     private async Task updateCase(long caseId, Database.Entities.CustomerOnSA entity, SharedTypes.GrpcTypes.Identity identity, CancellationToken cancellationToken)
     {
         // update case service
@@ -136,6 +143,7 @@ internal sealed class CreateCustomerHandler
         }, cancellationToken);
     }
 
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly IAuditLogger _auditLogger;
     private readonly ICaseServiceClient _caseService;
     private readonly SulmService.ISulmClientHelper _sulmClient;
@@ -146,6 +154,7 @@ internal sealed class CreateCustomerHandler
     private readonly ILogger<CreateCustomerHandler> _logger;
 
     public CreateCustomerHandler(
+        IDocumentDataStorage documentDataStorage,
         IAuditLogger auditLogger,
         ICustomerServiceClient customerService,
         ISalesArrangementServiceClient salesArrangementService,
@@ -155,6 +164,7 @@ internal sealed class CreateCustomerHandler
         Database.HouseholdServiceDbContext dbContext,
         ILogger<CreateCustomerHandler> logger)
     {
+        _documentDataStorage = documentDataStorage;
         _auditLogger = auditLogger;
         _caseService = caseService;
         _customerService = customerService;

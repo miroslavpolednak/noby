@@ -35,14 +35,22 @@ internal sealed class DocumentDataStorageProvider
 
     public async Task<List<DocumentDataItem<TData>>> GetList<TData>(int entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
-        => await GetList<TData>(entityId.ToString(CultureInfo.InvariantCulture), cancellationToken);
+        => await GetList<TData>(new[] { entityId.ToString(CultureInfo.InvariantCulture) }, cancellationToken);
+
+    public async Task<List<DocumentDataItem<TData>>> GetList<TData>(int[] entityIds, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
+        => await GetList<TData>(entityIds.Select(t => t.ToString(CultureInfo.InvariantCulture)).ToArray(), cancellationToken);
 
     public async Task<List<DocumentDataItem<TData>>> GetList<TData>(string entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
+        => await GetList<TData>(new[] { entityId }, cancellationToken);
+
+    public async Task<List<DocumentDataItem<TData>>> GetList<TData>(string[] entityIds, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
     {
         var entities = await _connectionProvider.ExecuteDapperRawSqlToListAsync<Database.DocumentDataStorageItem>(
-            $"SELECT DocumentDataStorageId, DocumentDataVersion, DocumentDataEntityId, Data FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataEntityId=@entityId", 
-            new { entityId }, 
+            $"SELECT DocumentDataStorageId, DocumentDataVersion, DocumentDataEntityId, Data FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataEntityId IN @entityIds", 
+            new { entityIds }, 
             cancellationToken);
 
         return entities.Select(t => getInner<TData>(t)).ToList();
