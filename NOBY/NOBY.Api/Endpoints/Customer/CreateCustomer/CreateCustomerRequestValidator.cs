@@ -10,20 +10,17 @@ internal class CreateCustomerRequestValidator : AbstractValidator<CreateCustomer
     public CreateCustomerRequestValidator()
     {
         RuleFor(r => r.CustomerOnSAId).NotEmpty().WithErrorCode(CustomerValidationErrorCode);
-        RuleFor(r => r.FirstName).NotNull().MinimumLength(1).WithErrorCode(CustomerValidationErrorCode);
-        RuleFor(r => r.LastName).NotNull().MinimumLength(1).WithErrorCode(CustomerValidationErrorCode);
+        RuleFor(r => r.FirstName).NotEmpty().WithErrorCode(CustomerValidationErrorCode);
+        RuleFor(r => r.LastName).NotEmpty().WithErrorCode(CustomerValidationErrorCode);
 
-        RuleFor(r => r.BirthDate)
-            .BirthDateValidation()
-            .WithErrorCode(90032);
+        RuleFor(r => r.BirthDate).BirthDateValidation(CustomerValidationErrorCode);
 
         When(r => !string.IsNullOrWhiteSpace(r.BirthNumber),
              () =>
              {
                  RuleFor(r => r.BirthNumber)
                      .Cascade(CascadeMode.Stop)
-                     .BirthNumberValidation(r => r.BirthDate)
-                     .WithErrorCode(90032);
+                     .BirthNumberValidation(r => r.BirthDate, CustomerValidationErrorCode);
              });
 
         When(r => !string.IsNullOrWhiteSpace(r.BirthPlace),
@@ -34,8 +31,7 @@ internal class CreateCustomerRequestValidator : AbstractValidator<CreateCustomer
 
         RuleFor(r => r.IdentificationDocument!)
             .Cascade(CascadeMode.Stop)
-            .NotNull()
-            .SetValidator(new IdentificationDocumentValidator())
-            .WithErrorCode(90032);
+            .NotNull().WithErrorCode(CustomerValidationErrorCode)
+            .SetValidator(new IdentificationDocumentValidator());
     }
 }

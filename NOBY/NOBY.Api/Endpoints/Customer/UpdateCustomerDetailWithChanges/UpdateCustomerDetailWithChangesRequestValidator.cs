@@ -17,17 +17,15 @@ internal sealed class UpdateCustomerDetailWithChangesRequestValidator : Abstract
 
         RuleFor(r => r.NaturalPerson!.DateOfBirth)
             .Cascade(CascadeMode.Stop)
-            .NotNull()
-            .BirthDateValidation()
-            .WithErrorCode(CustomerValidationErrorCode);
+            .NotNull().WithErrorCode(CustomerValidationErrorCode)
+            .BirthDateValidation(CustomerValidationErrorCode);
 
         When(r => !string.IsNullOrWhiteSpace(r.NaturalPerson!.BirthNumber),
              () =>
              {
                  RuleFor(r => r.NaturalPerson!.BirthNumber)
                      .Cascade(CascadeMode.Stop)
-                     .BirthNumberValidation(r => r.NaturalPerson!.DateOfBirth!.Value)
-                     .WithErrorCode(CustomerValidationErrorCode);
+                     .BirthNumberValidation(r => r.NaturalPerson!.DateOfBirth!.Value, CustomerValidationErrorCode);
              });
 
         When(r => r.IdentificationDocument is not null,

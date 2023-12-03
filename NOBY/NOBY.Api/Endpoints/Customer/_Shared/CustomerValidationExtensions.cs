@@ -32,18 +32,17 @@ internal static class CustomerValidationExtensions
         await ValidateContact(customerService, ContactType.Email, emailAddress.EmailAddress, cancellationToken);
     }
 
-    public static IRuleBuilderOptions<T, DateTime> BirthDateValidation<T>(this IRuleBuilder<T, DateTime> ruleBuilder) => 
-        ruleBuilder.LessThanOrEqualTo(DateTime.Today).GreaterThanOrEqualTo(new DateTime(1850, 1, 1));
+    public static IRuleBuilderOptions<T, DateTime> BirthDateValidation<T>(this IRuleBuilder<T, DateTime> ruleBuilder, int errorCode) =>
+        ruleBuilder.InclusiveBetween(new DateTime(1850, 1, 1), DateTime.Today).WithErrorCode(errorCode);
 
-    public static IRuleBuilderOptions<T, DateTime?> BirthDateValidation<T>(this IRuleBuilder<T, DateTime?> ruleBuilder) =>
-        ruleBuilder.LessThanOrEqualTo(DateTime.Today).GreaterThanOrEqualTo(new DateTime(1850, 1, 1));
+    public static IRuleBuilderOptions<T, DateTime?> BirthDateValidation<T>(this IRuleBuilder<T, DateTime?> ruleBuilder, int errorCode) =>
+        ruleBuilder.InclusiveBetween(new DateTime(1850, 1, 1), DateTime.Today).WithErrorCode(errorCode);
 
-    public static IRuleBuilderOptions<T, string> BirthNumberValidation<T>(this IRuleBuilder<T, string?> ruleBuilder, Func<T, DateTime> birthDateGetter)
+    public static IRuleBuilderOptions<T, string> BirthNumberValidation<T>(this IRuleBuilder<T, string?> ruleBuilder, Func<T, DateTime> birthDateGetter, int errorCode)
     {
-        return ruleBuilder.NotEmpty()
-                          .Matches(@"^\d+$")
-                          .MinimumLength(9)
-                          .MaximumLength(10)
+        return ruleBuilder.NotEmpty().WithErrorCode(errorCode)
+                          .Matches(@"^\d+$").WithErrorCode(errorCode)
+                          .Length(9, 10).WithErrorCode(errorCode)
                           .Must((request, birthNumber) =>
                           {
                               var checkNumber = int.Parse(birthNumber.AsSpan(6, birthNumber!.Length - 6), CultureInfo.InvariantCulture);
@@ -54,7 +53,7 @@ internal static class CustomerValidationExtensions
                               var birthDateByBirthNumber = TryParseBirthNumber(birthNumber);
 
                               return birthDateByBirthNumber.HasValue && birthDateByBirthNumber.Equals(birthDateGetter(request).Date);
-                          });
+                          }).WithErrorCode(errorCode);
     }
 
     private static DateTime? TryParseBirthNumber(string birthNumber)
