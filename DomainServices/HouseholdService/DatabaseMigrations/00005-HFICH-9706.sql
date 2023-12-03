@@ -91,5 +91,13 @@ ALTER TABLE [dbo].[CustomerOnSA] DROP COLUMN ChangeMetadata;
 GO
 ALTER TABLE [dbo].[CustomerOnSA] DROP COLUMN ChangeMetadataBin;
 GO
+ALTER TABLE [dbo].[CustomerOnSAHistory] DROP COLUMN AdditionalDataBin;
+GO
+ALTER TABLE [dbo].[CustomerOnSAHistory] DROP COLUMN AdditionalData;
+GO
+ALTER TABLE [dbo].[CustomerOnSAHistory] DROP COLUMN ChangeMetadata;
+GO
+ALTER TABLE [dbo].[CustomerOnSAHistory] DROP COLUMN ChangeMetadataBin;
+GO
 ALTER TABLE [dbo].[CustomerOnSA] SET ( SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[CustomerOnSAHistory])  );
 GO
