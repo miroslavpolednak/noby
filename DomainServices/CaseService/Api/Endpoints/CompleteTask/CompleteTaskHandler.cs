@@ -28,7 +28,7 @@ internal sealed class CompleteTaskHandler
 
             await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
 
-            await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskIdSb, request.CaseId, cancellationToken);
+            await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskId, request.CaseId, cancellationToken);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
