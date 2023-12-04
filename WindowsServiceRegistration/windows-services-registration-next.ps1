@@ -194,7 +194,7 @@ class SVC {
 }
 
 function GetEnvironments() {
-    return @("DEV", "FAT", "SIT1", "UAT", "PREPROD", "PROD");
+    return @("DEV", "FAT", "SIT1", "UAT", "QUALITY", "PREPROD", "PROD");
 }
 
 function GetServices([string]$env) {
