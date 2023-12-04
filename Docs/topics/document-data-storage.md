@@ -25,6 +25,7 @@ Tento interface vyžaduji implementaci pouze jedné vlastnoti: `Version` - viz. 
 2) kontrola, zda v dané databázi již existuje schéma **DDS**. Pokud ne, je třeba založit.
 3) založení tabulky pro JSON data. Název tabulky odpovídá názvu modelu z bodu 1. 
 SQL create skript pro tabulku je uveden [níže](#sql-skript-pro-vytvoření-tabulky-json-dat).
+4) přidat komponentu *DocumentDataStorage* do DI v program.cs `builder.AddDocumentDataStorage();`
 
 ## Verzování JSON schématů
 Pro přehlednost je možné verzovat změny ve schématech. 
@@ -51,6 +52,17 @@ C# modely umisťujeme do adresáře s database features. Zde mají vlastní poda
 ## Příklady použití:
 
 ```csharp
+** program.cs **
+----------------
+SharedComponents.GrpcServiceBuilder
+	.Build(builder =>
+    {
+        builder.AddDocumentDataStorage();
+    })
+
+
+** MyHandler.cs **
+------------------
 private readonly IDocumentDataStorage _documentDataStorage;
 
 ...

@@ -39,6 +39,22 @@ public interface IDocumentDataStorage
         where TData : class, IDocumentData;
 
     /// <summary>
+    /// Vrátí instance dat dle ID entit.
+    /// </summary>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    /// <param name="entityId">ID entit pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    Task<List<DocumentDataItem<TData>>> GetList<TData>(int[] entityIds, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData;
+
+    /// <summary>
+    /// Vrátí instance dat dle ID entit.
+    /// </summary>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    /// <param name="entityId">ID entit pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    Task<List<DocumentDataItem<TData>>> GetList<TData>(string[] entityIds, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData;
+
+    /// <summary>
     /// Založí novou instanci dat pro danou entitu.
     /// </summary>
     /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
