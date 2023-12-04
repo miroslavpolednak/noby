@@ -24,6 +24,6 @@ public class GenerateDocumentIdTests : IntegrationTestBase
         response.DocumentId.Should().Contain("KBH");
         response.DocumentId.Should().Contain("XX");
         response.DocumentId.Should().Contain("T");
-        response.DocumentId.Should().HaveLength(29);
+        response.DocumentId.Should().HaveLength(30);
     }
 }

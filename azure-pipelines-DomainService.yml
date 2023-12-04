@@ -70,8 +70,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: DotNet - Tests
-  #condition: and(succeeded(), ne(variables.testsFile, '')) - needs some changes because of new configuration
-  condition: false
+  condition: and(succeeded(), ne(variables.testsFile, '')) - needs some changes because of new configuration
   inputs:
     command: test
     projects: '$(testsFile)'

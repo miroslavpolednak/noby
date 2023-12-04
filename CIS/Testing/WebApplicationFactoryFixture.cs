@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using System.Net.Http.Headers;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Hosting;
-using CIS.Infrastructure.Security.Configuration;
 
 namespace CIS.Testing;
 
@@ -86,28 +85,17 @@ public class WebApplicationFactoryFixture<TStartup>
         ArgumentNullException.ThrowIfNull(nameof(builder));
 
         builder
+            .ConfigureHostConfiguration(config =>
+            {
+                config.SetBasePath(Directory.GetCurrentDirectory())
+                      .AddJsonFile(CisWebFactoryConfiguration.AppSettingsName, optional: false);
+            })
             .ConfigureAppConfiguration((context, config) =>
             {
-                config
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile(CisWebFactoryConfiguration.AppSettingsName, optional: false);
-
                 _configureAppConfiguration?.Invoke(context, config);
             })
             .ConfigureServices(services =>
             {
-                // ziskat korektni app key dane sluzby
-                var config = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-                
-                var newEnvironmentConfiguration = config
-                    .GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName)
-                    .Get<CisEnvironmentConfiguration>();
-                
-                // vyhodit puvodni konfiguraci z DI a zaregistrovat novou s hodnotami pro test
-                services
-                    .RemoveAll<ICisEnvironmentConfiguration>()
-                    .AddSingleton<ICisEnvironmentConfiguration>(newEnvironmentConfiguration!);
-
                 // fake logger
                 if (CisWebFactoryConfiguration.UseNullLogger)
                 {
