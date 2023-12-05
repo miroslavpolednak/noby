@@ -4,7 +4,6 @@ using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -15,6 +14,7 @@ using ExternalServices.ESignatures.V1;
 using FastEnumUtility;
 using Microsoft.EntityFrameworkCore;
 using __Household = DomainServices.HouseholdService.Contracts;
+using DomainServices.DocumentOnSAService.Api.Common;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
@@ -33,6 +33,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IESignaturesClient _eSignaturesClient;
+    private readonly ICommonSigningMethods _commonSigning;
 
     public StartSigningHandler(
         DocumentOnSAServiceDbContext dbContext,
@@ -44,7 +45,8 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         StartSigningMapper startSigningMapper,
         ICurrentUserAccessor currentUser,
         ICaseServiceClient caseServiceClient,
-        IESignaturesClient eSignaturesClient)
+        IESignaturesClient eSignaturesClient,
+        ICommonSigningMethods commonSigning)
     {
         _dbContext = dbContext;
         _mediator = mediator;
@@ -56,6 +58,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         _currentUser = currentUser;
         _caseServiceClient = caseServiceClient;
         _eSignaturesClient = eSignaturesClient;
+        _commonSigning = commonSigning;
     }
 
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
@@ -64,7 +67,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
 
-        var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
+        var salesArrangementType = await _commonSigning.GetSalesArrangementType(salesArrangement, cancellationToken);
 
         DocumentOnSa documentOnSaEntity;
         if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ProductRequest.ToByte())
@@ -230,12 +233,6 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         return houseHold is null
             ? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ForSpecifiedDocumentTypeIdCannotFindHousehold, documentTypeId)
             : houseHold;
-    }
-
-    private async Task<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
-    {
-        var salesArrangementTypes = await _codebookServiceClient.SalesArrangementTypes(cancellationToken);
-        return salesArrangementTypes.Single(r => r.Id == salesArrangement.SalesArrangementTypeId);
     }
 
     private static int GetHouseholdTypeId(DocumentTypes documentType) => documentType switch
