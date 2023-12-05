@@ -65,14 +65,14 @@ internal sealed class GetRealEstateValuationDetailHandler
             .ToListAsync(cancellationToken);
     }
 
-    private readonly Database.DocumentDataEntities.Mappers.RealEstateValudationDataMapper _mapper;
+    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly RealEstateValuationServiceDbContext _dbContext;
 
     public GetRealEstateValuationDetailHandler(
         RealEstateValuationServiceDbContext dbContext, 
         IDocumentDataStorage documentDataStorage,
-        Database.DocumentDataEntities.Mappers.RealEstateValudationDataMapper mapper)
+        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper)
     {
         _mapper = mapper;
         _documentDataStorage = documentDataStorage;

@@ -50,12 +50,12 @@ internal sealed class UpdateRealEstateValuationDetailHandler
 
     private static int[] _stateIdsForValidation = new[] { 4, 5 };
 
-    private readonly Database.DocumentDataEntities.Mappers.RealEstateValudationDataMapper _mapper;
+    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly RealEstateValuationServiceDbContext _dbContext;
 
     public UpdateRealEstateValuationDetailHandler(
-        Database.DocumentDataEntities.Mappers.RealEstateValudationDataMapper mapper,
+        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper,
         IDocumentDataStorage documentDataStorage,
         RealEstateValuationServiceDbContext dbContext)
     {

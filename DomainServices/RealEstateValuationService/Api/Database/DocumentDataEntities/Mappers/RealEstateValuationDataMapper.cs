@@ -4,7 +4,7 @@ namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEnt
 
 #pragma warning disable CA1822 // Mark members as static
 [TransientService, SelfService]
-internal sealed class RealEstateValudationDataMapper
+internal sealed class RealEstateValuationDataMapper
 {
     public void MapToData(Contracts.UpdateRealEstateValuationDetailRequest request, RealEstateValudationData? data)
     {
@@ -47,6 +47,13 @@ internal sealed class RealEstateValudationDataMapper
         }
     }
 
+    public Contracts.RealEstateValuationDetail MapFromDataToSingle(RealEstateValudationData? data)
+    {
+        var result = new Contracts.RealEstateValuationDetail();
+        MapFromDataToSingle(data, result);
+        return result;
+    }
+    
     public void MapFromDataToSingle(RealEstateValudationData? data, Contracts.RealEstateValuationDetail realEstateValuation)
     {
         if (data?.LoanPurposeDetails is not null)
