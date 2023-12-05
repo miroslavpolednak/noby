@@ -9,6 +9,7 @@ using Ixtent.ContentServer.ExtendedServices.Model;
 using CIS.Core.Extensions;
 using Polly;
 using CIS.Infrastructure.ExternalServicesHelpers.Soap;
+using System.Globalization;
 
 namespace DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Clients;
 internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedServices>, ISdfClient
@@ -120,7 +121,7 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
             {
                 Attribute = "OP_Cislo_pripadu",
                 InputGroup = "Obchodni_pripad",
-                Value = query.CaseId.ToString()
+                Value = query.CaseId.Value.ToString(CultureInfo.InvariantCulture)
             });
         }
 
@@ -142,7 +143,7 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
                 Attribute = "DOK_Datum_prijeti",
                 InputGroup = "Dokument",
                 //Format 2022-08-02
-                Value = query.CreatedOn.Value.ToString("yyyy-MM-dd")
+                Value = query.CreatedOn.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
             });
         }
 
@@ -172,7 +173,7 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
             {
                 Attribute = "DOK_ID_oceneni",
                 InputGroup = "Dokument",
-                Value = query.OrderId.Value.ToString()
+                Value = query.OrderId.Value.ToString(CultureInfo.InvariantCulture)
             });
         }
 
@@ -181,7 +182,7 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
             queryParameters.Add(new QueryParameter
             {
                 Attribute = "DOK_Vazba_pro_SP",
-                InputGroup = "Obchodni_pripad",
+                InputGroup = "Dokument",
                 Value = query.FolderDocumentId
             });
         }

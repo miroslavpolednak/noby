@@ -3,7 +3,6 @@ using CIS.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
-using NSubstitute;
 using static DomainServices.CaseService.Contracts.v1.CaseService;
 
 namespace DomainServices.CaseService.Tests.IntegrationTests;
@@ -11,7 +10,7 @@ namespace DomainServices.CaseService.Tests.IntegrationTests;
 public abstract class IntegrationTestBase 
     : IClassFixture<WebApplicationFactoryFixture<Program>>
 {
-    protected Mock<DomainServices.CaseService.ExternalServices.SbWebApi.V1.ISbWebApiClient> MockSbWebApi { get; private set; }
+    protected Mock<ExternalServices.SbWebApi.V1.ISbWebApiClient> MockSbWebApi { get; private set; }
     protected Mock<global::ExternalServices.Eas.V1.IEasClient> MockEas { get; private set; }
 
     public IntegrationTestBase(WebApplicationFactoryFixture<Program> fixture)
@@ -20,7 +19,7 @@ public abstract class IntegrationTestBase
 
         configureWebHost();
 
-        MockSbWebApi = new Mock<DomainServices.CaseService.ExternalServices.SbWebApi.V1.ISbWebApiClient>();
+        MockSbWebApi = new Mock<ExternalServices.SbWebApi.V1.ISbWebApiClient>();
         MockSbWebApi
             .Setup(t => t.CancelTask(It.Is<int>(i => i == 1), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
@@ -57,11 +56,11 @@ public abstract class IntegrationTestBase
                 services.Replace(new ServiceDescriptor(typeof(SalesArrangementService.Clients.ISalesArrangementServiceClient), t => sa.Object, ServiceLifetime.Transient));
                 services.Replace(new ServiceDescriptor(typeof(DocumentOnSAService.Clients.IDocumentOnSAServiceClient), t => doc.Object, ServiceLifetime.Transient));
                 services.Replace(new ServiceDescriptor(typeof(global::ExternalServices.Eas.V1.IEasClient), t => MockEas.Object, ServiceLifetime.Scoped));
-                services.Replace(new ServiceDescriptor(typeof(DomainServices.CaseService.ExternalServices.SbWebApi.V1.ISbWebApiClient), t => MockSbWebApi.Object, ServiceLifetime.Scoped));
+                services.Replace(new ServiceDescriptor(typeof(ExternalServices.SbWebApi.V1.ISbWebApiClient), t => MockSbWebApi.Object, ServiceLifetime.Scoped));
             });
     }
 
-    protected virtual void PrepareDatabase()
+    private void PrepareDatabase()
     {
         using var scope = Fixture.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<Api.Database.CaseServiceDbContext>();
