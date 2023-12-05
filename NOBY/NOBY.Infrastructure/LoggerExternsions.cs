@@ -8,6 +8,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, string, string, Exception> _openIdError;
     private static readonly Action<ILogger, string, Exception> _openIdAuthenticationFailed;
     private static readonly Action<ILogger, string, Exception> _openIdRemoteFailure;
+    private static readonly Action<ILogger, string, Exception> _authenticationUserNotFound;
 
     static LoggerExtensions()
     {
@@ -30,7 +31,15 @@ internal static class LoggerExtensions
             LogLevel.Warning,
             new EventId(LoggerEventIdCodes.SecurityOpenIdRemoteFailure, nameof(OpenIdRemoteFailure)),
             "OpenID OnRemoteFailure: {Message}");
+
+        _authenticationUserNotFound = LoggerMessage.Define<string>(
+            LogLevel.Warning,
+            new EventId(LoggerEventIdCodes.SecurityUserNotFound, nameof(UserNotFound)),
+            "Cookie handler: user '{Login}' does not exist");
     }
+
+    public static void UserNotFound(this ILogger logger, string login, Exception ex)
+        => _authenticationUserNotFound(logger, login, ex);
 
     public static void UserWithoutAccess(this ILogger logger, string login)
         => _userWithoutAccess(logger, login, null!);

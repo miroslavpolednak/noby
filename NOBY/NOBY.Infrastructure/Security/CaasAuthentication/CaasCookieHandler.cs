@@ -46,9 +46,20 @@ internal sealed class CaasCookieHandler
                 var userServiceClient = context.HttpContext.RequestServices.GetRequiredService<IUserServiceClient>();
 
                 // zavolat user service a zjistit, jestli muze uzivatel do aplikace
-                var userInstance = await userServiceClient.GetUser(currentLogin);
+                DomainServices.UserService.Contracts.User? userInstance = null;
+
+                try
+                {
+                    userInstance = await userServiceClient.GetUser(currentLogin);
+                }
+                catch (Exception ex)
+                {
+                    createLogger(context.HttpContext).UserNotFound(currentLogin, ex);
+                    throw new CisAuthorizationException("Cookie handler: user does not exist");
+                }
+
                 // ziskat instanci uzivatele z xxv
-                var permissions = await userServiceClient.GetUserPermissions(userInstance.UserId);
+                var permissions = await userServiceClient.GetUserPermissions(userInstance!.UserId);
 
                 // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
                 if (!permissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
@@ -71,8 +82,8 @@ internal sealed class CaasCookieHandler
                 context.Principal = principal;
 
                 // zalogovat prihlaseni uzivatele
-                var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
-                logger.Log(
+                var auditLogger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
+                auditLogger.Log(
                     AuditEventTypes.Noby002,
                     $"Uživatel {currentLogin} se přihlásil do aplikace.",
                     bodyAfter: new Dictionary<string, string>() 
