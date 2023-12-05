@@ -12,6 +12,8 @@ namespace NOBY.Services.UploadDocumentToArchive;
 internal sealed class UploadDocumentToArchiveService
     : IUploadDocumentToArchiveService
 {
+    private const string _defaultContractNumber = "HF00111111125";
+
     public async Task<List<string>> Upload(long caseId, string? contractNumber, List<DocumentMetadata> attachments, CancellationToken cancellationToken)
     {
         // instance uzivatele
@@ -32,7 +34,7 @@ internal sealed class UploadDocumentToArchiveService
                 {
                     CaseId = caseId,
                     DocumentId = documentId,
-                    ContractNumber = contractNumber ?? "HF00111111125",
+                    ContractNumber = string.IsNullOrWhiteSpace(contractNumber) ? _defaultContractNumber : contractNumber,
                     CreatedOn = _dateTime.Now.Date,
                     AuthorUserLogin = _documentHelper.GetAuthorUserLoginForDocumentUpload(user),
                     Description = attachment.Description ?? string.Empty,
