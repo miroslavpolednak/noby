@@ -55,7 +55,9 @@ internal sealed class CaasCookieHandler
                 catch (Exception ex)
                 {
                     createLogger(context.HttpContext).UserNotFound(currentLogin, ex);
-                    throw new CisAuthorizationException("Cookie handler: user does not exist");
+                    context.Response.Redirect($"{_configuration.FailedSignInRedirectPath}?reason=authentication_notfound");
+                    //throw new CisAuthorizationException("Cookie handler: user does not exist");
+                    return;
                 }
 
                 // ziskat instanci uzivatele z xxv
