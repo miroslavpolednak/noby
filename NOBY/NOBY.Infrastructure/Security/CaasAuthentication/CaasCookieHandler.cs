@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 using System.Security.Claims;
+using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication;
 
 namespace NOBY.Infrastructure.Security.CaasAuthentication;
 
@@ -38,6 +40,19 @@ internal sealed class CaasCookieHandler
 
         options.Events = new CookieAuthenticationEvents
         {
+            OnRedirectToAccessDenied = context =>
+            {
+                if (isAjaxRequest(context.Request))
+                {
+                    context.Response.Headers.Location = $"{_configuration.FailedSignInRedirectPath}?reason=authentication_accessdenied";
+                    context.Response.StatusCode = 403;
+                }
+                else
+                {
+                    context.Response.Redirect($"{_configuration.FailedSignInRedirectPath}?reason=authentication_accessdenied");
+                }
+                return Task.CompletedTask;
+            },
             OnSigningIn = async context =>
             {
                 // login, ktery prisel z CAASu
@@ -55,12 +70,12 @@ internal sealed class CaasCookieHandler
                 catch (Exception ex)
                 {
                     createLogger(context.HttpContext).UserNotFound(currentLogin, ex);
-                    context.Response.Redirect($"{_configuration.FailedSignInRedirectPath}?reason=authentication_notfound");
-                    //throw new CisAuthorizationException("Cookie handler: user does not exist");
+                    context.Principal = new ClaimsPrincipal();
+                    context.Properties.RedirectUri = $"{_configuration.FailedSignInRedirectPath}?reason=authentication_notfound";
                     return;
                 }
 
-                // ziskat instanci uzivatele z xxv
+                // ziskat prava uzivatele z xxv
                 var permissions = await userServiceClient.GetUserPermissions(userInstance!.UserId);
 
                 // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
@@ -88,8 +103,8 @@ internal sealed class CaasCookieHandler
                 auditLogger.Log(
                     AuditEventTypes.Noby002,
                     $"Uživatel {currentLogin} se přihlásil do aplikace.",
-                    bodyAfter: new Dictionary<string, string>() 
-                    { 
+                    bodyAfter: new Dictionary<string, string>()
+                    {
                         { "login", currentLogin },
                         { "app_version", appVersion }
                     });
@@ -100,6 +115,12 @@ internal sealed class CaasCookieHandler
                 return Task.CompletedTask;
             }
         };
+    }
+
+    private static bool isAjaxRequest(HttpRequest request)
+    {
+        return string.Equals(request.Query[HeaderNames.XRequestedWith], "XMLHttpRequest", StringComparison.Ordinal) ||
+            string.Equals(request.Headers.XRequestedWith, "XMLHttpRequest", StringComparison.Ordinal);
     }
 
     private static ILogger<CaasCookieHandler> createLogger(HttpContext context)
