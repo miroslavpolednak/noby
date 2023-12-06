@@ -244,4 +244,12 @@ public class CodebookServiceMock
             new() { Id = 0, Name = "Unknown" }
         });
     }
+
+    public override Task<List<BankCodesResponse.Types.BankCodeItem>> BankCodes(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(new List<BankCodesResponse.Types.BankCodeItem>
+        {
+            new() { BankCode = "0000", Name = "Unknown", ShortName = "UNK" }
+        });
+    }
 }

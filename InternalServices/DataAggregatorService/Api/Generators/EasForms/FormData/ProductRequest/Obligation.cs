@@ -1,4 +1,6 @@
-﻿namespace CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms.FormData.ProductRequest;
+﻿using DomainServices.CodebookService.Contracts.v1;
+
+namespace CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms.FormData.ProductRequest;
 
 internal class Obligation
 {
@@ -12,6 +14,8 @@ internal class Obligation
     {
         init => _obligationTypeExists = value.Contains(ObligationData.ObligationTypeId!.Value);
     }
+
+    public required List<BankCodesResponse.Types.BankCodeItem> BankCodes { get; init; }
 
     public decimal? Correction =>
         _obligationTypeExists ? ObligationData.Correction?.LoanPrincipalAmountCorrection : ObligationData.Correction?.CreditCardLimitCorrection;
@@ -29,6 +33,17 @@ internal class Obligation
             }
 
             return (decimal?)ObligationData.AmountConsolidated < ObligationData.CreditCardLimit;
+        }
+    }
+
+    public string CreditorName
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(ObligationData.Creditor.Name))
+                return ObligationData.Creditor.Name;
+
+            return BankCodes.Where(bc => bc.BankCode == ObligationData.Creditor.CreditorId).Select(bc => bc.Name).FirstOrDefault(string.Empty);
         }
     }
 }

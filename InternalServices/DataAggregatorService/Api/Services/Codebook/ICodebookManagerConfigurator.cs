@@ -27,4 +27,5 @@ public interface ICodebookManagerConfigurator
     ICodebookManagerConfigurator EducationLevels();
     ICodebookManagerConfigurator SignatureTypes();
     ICodebookManagerConfigurator TinNoFillReasonsByCountry();
+    ICodebookManagerConfigurator BankCodes();
 }
