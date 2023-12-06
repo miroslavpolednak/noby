@@ -1,0 +1,140 @@
+[
+  {
+    "note": "User signin returns code 200",
+    "api_req": "POST api/users/signin",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Create Offer returns code 200 and 'offerId'",
+    "api_req": "POST api/offer/mortgage",
+    "assert": "status_code == 200 and isinstance(content['offerId'], int)",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Create Case returns code 200 and IDs (offerId, caseId, salesArrangementId, householdId, customerOnSAId)",
+    "api_req": "POST api/offer/mortgage/create-case",
+    "assert": "status_code == 200 and isinstance(content['offerId'], int) and isinstance(content['caseId'], int) and isinstance(content['salesArrangementId'], int) and isinstance(content['householdId'], int) and isinstance(content['customerOnSAId'], int)",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Create Income returns code 200",
+    "api_req": "POST api/customer-on-sa/0/income",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Create Obligation returns code 200",
+    "api_req": "POST api/customer-on-sa/0/obligation",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Set Household parameters returns code 200",
+    "api_req": "PUT api/household/0",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Set SA parameters returns code 200",
+    "api_req": "PUT api/sales-arrangement/parameters",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Signing start returns code 200 and 'documentOnSAId'",
+    "api_req": "POST api/sales-arrangement/0/signing/start",
+    "assert": "status_code == 200 and isinstance(content['documentOnSAId'], int)",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Sign manually returns code 200",
+    "api_req": "POST api/sales-arrangement/0/document-on-sa/0/sign-manually",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Get document details returns code 200",
+    "api_req": "GET api/sales-arrangement/0/signing/0",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Document upload returns code 200",
+    "api_req": "POST api/document",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Save documets to archive returns code 202",
+    "api_req": "POST api/case/0/documents",
+    "assert": "status_code == 202",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "GET LoanApplicationAssessment returns code 200",
+    "api_req": "GET api/sales-arrangement/0/loan-application-assessment?newAssessmentRequired=true",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Create RealEstateValuation returns code 200 and response is integer",
+    "api_req": "POST api/case/0/real-estate-valuations",
+    "assert": "status_code == 200 and isinstance(content, int)",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Update RealEstateValuation returns code 204",
+    "api_req": "PUT api/case/0/real-estate-valuations/0",
+    "assert": "status_code == 204",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Delete RealEstateValuation returns code 204",
+    "api_req": "DELETE api/case/0/real-estate-valuations/0",
+    "assert": "status_code == 204",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "GetRealEstateValuationTypes returns code 200 and response is list",
+    "api_req": "POST api/case/0/real-estate-valuations/valuation-types",
+    "assert": "status_code == 200 and isinstance(content, list)",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Upload document returns code 200 and response is string",
+    "api_req": "POST api/document",
+    "assert": "status_code == 200 and isinstance(content, str)",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Save RealEstateValuation Attachment returns code 200",
+    "api_req": "POST api/case/0/real-estate-valuations/0/attachments",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "Order RealEstateValuation returns code 204",
+    "api_req": "POST api/case/0/real-estate-valuations/0/order",
+    "assert": "status_code == 204",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "SA validate returns code 200 and categories",
+    "api_req": "GET api/sales-arrangement/0/validate",
+    "assert": "status_code == 200 and isinstance(content, dict) and 'categories' in content.keys() and isinstance(content['categories'], list)",
+    "stop_on": "AssertFailure"
+  },
+  {
+    "note": "SentToCMP returns code 200",
+    "api_req": "POST api/sales-arrangement/0/send?ignoreWarnings=true",
+    "assert": "status_code == 200",
+    "stop_on": "AssertFailure"
+  },
+  {
+      "note": "UpdateKonsDB - check if just one row was updated",
+      "request": "db: UPDATE KonsDb.dbo.Uver",
+      "assert": "affected_rows == 1",
+      "stop_on": "AssertFailure"
+    }
+]

@@ -33,11 +33,14 @@ def test_get_sms_notification_id_states(auth_params, auth, json_data, ns_url):
     notification_id = resp["notificationId"]
     assert notification_id != ""
 
+    # Pro druhý GET request potřebujete přihlašovací údaje NOBY uživatele
+    noby_username = "XX_NOBY_RMT_USR_TEST"
+    noby_password = auth_params[noby_username]
     session = requests.session()
     resp = session.get(
         URLS[url_name] + f"/v1/notification/result/{notification_id}",
         json=json_data,
-        auth=(username, password),
+        auth=(noby_username, noby_password),
         verify=False
     )
     resp = resp.json()
@@ -64,11 +67,14 @@ def test_get_sms_notification_id_states(auth_params, auth, json_data, ns_url):
     time.sleep(15)
 
     #vola GET opet, abz si overil doruceni
+    # Pro druhý GET request potřebujete přihlašovací údaje NOBY uživatele
+    noby_username = "XX_NOBY_RMT_USR_TEST"
+    noby_password = auth_params[noby_username]
     session = requests.session()
     resp = session.get(
         URLS[url_name] + f"/v1/notification/result/{notification_id}",
         json=json_data,
-        auth=(username, password),
+        auth=(noby_username, noby_password),
         verify=False
     )
     resp = resp.json()
@@ -104,6 +110,8 @@ def test_get_sms_notification_search(ns_url,  auth_params, auth, json_data):
     assert notification_id != ""
 
     #volani search
+    noby_username = "XX_NOBY_RMT_USR_TEST"
+    noby_password = auth_params[noby_username]
     session = requests.session()
     resp = session.get(
         URLS[url_name] + "/v1/notification/result/search",
@@ -113,7 +121,7 @@ def test_get_sms_notification_search(ns_url,  auth_params, auth, json_data):
             "customId": unique_custom_id,
             "documentId": json_req_sms_basic_full_for_search["documentId"]
         },
-        auth=(username, password),
+        auth=(noby_username, noby_password),
         verify=False
     )
 
@@ -216,6 +224,9 @@ def test_get_sms_notification_search_caseId(ns_url,  auth_params, auth, json_dat
     assert notification_id != ""
 
     #volani search
+    # Pro druhý GET request potřebujete přihlašovací údaje NOBY uživatele
+    noby_username = "XX_NOBY_RMT_USR_TEST"
+    noby_password = auth_params[noby_username]
     session = requests.session()
     resp = session.get(
         URLS[url_name] + "/v1/notification/result/search",
@@ -223,7 +234,7 @@ def test_get_sms_notification_search_caseId(ns_url,  auth_params, auth, json_dat
             "customId": unique_custom_id,
             "caseId": json_req_sms_basic_full_for_search["caseId"]
         },
-        auth=(username, password),
+        auth=(noby_username, noby_password),
         verify=False
     )
     assert resp.status_code == 200
