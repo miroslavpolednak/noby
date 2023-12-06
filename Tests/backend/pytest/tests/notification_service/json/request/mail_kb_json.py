@@ -239,6 +239,63 @@ json_req_mail_kb_sender_kb = \
     "attachments": []
   }
 
+json_req_mail_kb_sender_kb_sluzby = \
+  {
+    "from": {
+      "value": "notification-service@kbsluzby.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_sender_kbsluzby.cz",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "Marek Mikel"
+    },
+    "attachments": []
+  }
+
+json_req_mail_kb_sender_kbinfo = \
+  {
+    "from": {
+      "value": "notification-service@kbinfo.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_sender_kbinfo.cz",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "Marek Mikel"
+    },
+    "attachments": []
+  }
 
 
 #tests current content.format

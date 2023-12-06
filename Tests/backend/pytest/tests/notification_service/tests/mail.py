@@ -12,7 +12,7 @@ from ..json.request.mail_kb_json import json_req_mail_kb_max_attachments, json_r
     json_req_mail_kb_sender_kb, json_req_mail_kb_sender_kb_attachment, json_req_mail_kb_basic_format_application_html, \
     json_req_mail_kb_basic_content_format_application_mht, json_req_mail_kb_basic_format_application_text, \
     json_req_mail_kb_basic_format_html, json_req_mail_kb_basic_format_text_html, \
-    json_req_mail_kb_basic_format_text_plain
+    json_req_mail_kb_basic_format_text_plain, json_req_mail_kb_sender_kbinfo, json_req_mail_kb_sender_kb_sluzby
 from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
     json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, \
     json_req_mail_mpss_basic_format_html, \
@@ -23,8 +23,7 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
     json_req_mail_mpss_documentHash_SHA_512, json_req_mail_mpss_documentHash_SHA_384, \
     json_req_mail_mpss_basic_format_text_plain, json_req_mail_mpss_basic_format_application_text, \
     json_req_mail_mpss_max_attachments, \
-    json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_vsskb \
-
+    json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_vsskb, json_req_mail_mpss_sender_mpss_info
 
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal,
@@ -244,13 +243,16 @@ def test_mail_documentHash(ns_url, auth_params, auth, json_data):
 
 #zatím bez json_req_mail_mpss_sender_vsskb a json_req_mail_kb_sender_kb_sluzby
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_mail_mpss_sender_mpss,
-                                       json_req_mail_kb_sender_kb,
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_mpss_info,
+                                       json_req_mail_kb_sender_kb, json_req_mail_kb_sender_kb_sluzby, json_req_mail_kb_sender_kbinfo,
                                         json_req_mail_kb_sender_kb_attachment
                                        ],
                          ids=[
                              "json_req_mail_mpss_sender_mpss",
+                             "json_req_mail_mpss_sender_mpss_info",
                              "json_req_mail_kb_sender_kb",
+                             "json_req_mail_kb_sender_kb_sluzby",
+                             "json_req_mail_kb_sender_kbinfo",
                             "json_req_mail_kb_sender_kb_attachment"
                          ]
                          )
