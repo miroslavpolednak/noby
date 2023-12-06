@@ -236,6 +236,7 @@ def test_mail_negative_to_cc_bcc(ns_url, auth_params, auth, json_data):
         auth=(username, password),
         verify=False
     )
+    assert resp.status_code == 200
     resp = resp.json()
     print(resp)
     assert "notificationId" in resp
@@ -250,7 +251,7 @@ def test_mail_negative_to_cc_bcc(ns_url, auth_params, auth, json_data):
     resp = session.get(
         URLS[url_name] + f"/v1/notification/result/{notification_id}",
         json=json_data,
-        auth=(noby_username, noby_username),
+        auth=(noby_username, noby_password),
         verify=False
     )
     assert resp.status_code == 200
