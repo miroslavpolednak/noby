@@ -23,7 +23,7 @@ internal sealed class UpdateCustomerDetailHandler
 
         var documentEntity = _mapper.MapToData(request.CustomerAdditionalData, request.CustomerChangeMetadata);
 
-        await _documentDataStorage.Update(request.CustomerOnSAId, documentEntity);
+        await _documentDataStorage.UpdateByEntityId(request.CustomerOnSAId, documentEntity);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

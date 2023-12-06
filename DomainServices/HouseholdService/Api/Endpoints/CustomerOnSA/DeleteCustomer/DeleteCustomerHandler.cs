@@ -60,6 +60,9 @@ internal sealed class DeleteCustomerHandler
             .Where(t => t.CustomerOnSAId == customerOnSAId)
             .ExecuteDeleteAsync(cancellationToken);
 
+        // smazat data customera
+        await _documentDataStorage.DeleteByEntityId<Database.DocumentDataEntities.CustomerOnSAData>(customerOnSAId);
+
         // smazat prijmy
         await _documentDataStorage.DeleteByEntityId<Database.DocumentDataEntities.Income>(customerOnSAId);
 
