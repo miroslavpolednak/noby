@@ -2,6 +2,7 @@
 using CIS.Infrastructure.Data;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System.Globalization;
 using System.Text.Json;
 
@@ -28,6 +29,17 @@ internal sealed class DocumentDataStorageProvider
         var entity = await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<Database.DocumentDataStorageItem>(
             $"SELECT DocumentDataStorageId, DocumentDataVersion, DocumentDataEntityId, Data FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataStorageId=@documentDataStorageId",
             new { documentDataStorageId  }, 
+            cancellationToken);
+
+        return entity is null ? null : getInner<TData>(entity);
+    }
+
+    public async Task<DocumentDataItem<TData>?> FirstOrDefaultByEntityId<TData>(int entityId, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
+    {
+        var entity = await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<Database.DocumentDataStorageItem>(
+            $"SELECT DocumentDataStorageId, DocumentDataVersion, DocumentDataEntityId, Data FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataEntityId=@entityId",
+            new { entityId },
             cancellationToken);
 
         return entity is null ? null : getInner<TData>(entity);
@@ -120,6 +132,21 @@ internal sealed class DocumentDataStorageProvider
             await connection.ExecuteAsync(
                 $"UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} SET Data=@Data, DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId WHERE DocumentDataStorageId=@DocumentDataStorageId",
                 varsToUpdate);
+        }
+    }
+
+    public async Task AddOrUpdateByEntityId<TData>(int entityId, TData data, CancellationToken cancellationToken)
+        where TData : class, IDocumentData
+    {
+        var existingId = await _connectionProvider.ExecuteDapperScalarAsync<int?>($"SELECT TOP 1 DocumentDataStorageId FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataEntityId=@entityId", new { entityId }, cancellationToken);
+
+        if (!existingId.HasValue)
+        {
+            await Add(entityId, data, cancellationToken);
+        }
+        else
+        {
+            await Update(existingId.Value, data);
         }
     }
 
