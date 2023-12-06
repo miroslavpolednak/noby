@@ -242,11 +242,15 @@ def test_mail_negative_to_cc_bcc(ns_url, auth_params, auth, json_data):
     notification_id = resp["notificationId"]
     assert notification_id != ""
 
+    # Pro druhý GET request potřebujete přihlašovací údaje NOBY uživatele
+    noby_username = "XX_NOBY_RMT_USR_TEST"
+    noby_password = auth_params[noby_username]
+
     session = requests.session()
     resp = session.get(
         URLS[url_name] + f"/v1/notification/result/{notification_id}",
         json=json_data,
-        auth=(username, password),
+        auth=(noby_username, noby_username),
         verify=False
     )
     assert resp.status_code == 200
