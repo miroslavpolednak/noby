@@ -7,6 +7,8 @@ using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using MassTransit;
 using Newtonsoft.Json;
+using SharedComponents.DocumentDataStorage;
+using System.Threading;
 
 namespace DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged;
 
@@ -67,13 +69,16 @@ internal sealed class CollateralValuationProcessChangedConsumer
             realEstateValuation.ValuationResultCurrentPrice = ConvertToNullableInt32(orderResultResponse.ValuationResultCurrentPrice);
             realEstateValuation.ValuationResultFuturePrice = ConvertToNullableInt32(orderResultResponse.ValuationResultFuturePrice);
 
-            var documents = new RealEstateValuationDocument
+            var loadedDetail = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(realEstateValuation.RealEstateValuationId, token);
+            loadedDetail!.Data!.Documents = new(1)
             {
-                DocumentInfoPrice = taskDetail.RealEstateValuation.DocumentInfoPrice,
-                DocumentRecommendationForClient = taskDetail.RealEstateValuation.DocumentRecommendationForClient
+                new Database.DocumentDataEntities.RealEstateValudationData.RealEstateValuationDocument
+                {
+                    DocumentInfoPrice = taskDetail.RealEstateValuation.DocumentInfoPrice,
+                    DocumentRecommendationForClient = taskDetail.RealEstateValuation.DocumentRecommendationForClient
+                }
             };
-
-            realEstateValuation.Documents = JsonConvert.SerializeObject(documents);
+            await _documentDataStorage.UpdateByEntityId(realEstateValuation.RealEstateValuationId, loadedDetail.Data);
         }
 
         realEstateValuation.ValuationStateId = 4;
@@ -83,18 +88,21 @@ internal sealed class CollateralValuationProcessChangedConsumer
     {
         return value.HasValue ? Convert.ToInt32(value.Value) : null;
     }
-    
+
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly RealEstateValuationServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseService;
     private readonly IPreorderServiceClient _preorderServiceClient;
     private readonly ILogger<CollateralValuationProcessChangedConsumer> _logger;
 
     public CollateralValuationProcessChangedConsumer(
+        IDocumentDataStorage documentDataStorage,
         RealEstateValuationServiceDbContext dbContext,
         ICaseServiceClient caseService,
         IPreorderServiceClient preorderServiceClient,
         ILogger<CollateralValuationProcessChangedConsumer> logger)
     {
+        _documentDataStorage = documentDataStorage;
         _dbContext = dbContext;
         _caseService = caseService;
         _preorderServiceClient = preorderServiceClient;

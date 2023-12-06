@@ -27,7 +27,23 @@ public interface IDocumentDataStorage
     /// </summary>
     /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
     /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    Task<DocumentDataItem<TData>?> FirstOrDefaultByEntityId<TData>(string entityId, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData;
+
+    /// <summary>
+    /// Vrátí nalezenou instanci dat dle její entity. Pokud instance data neexistuje, vrací NULL.
+    /// </summary>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
     Task<DocumentDataItem<TData>?> FirstOrDefaultByEntityId<TData>(int entityId, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData;
+
+    /// <summary>
+    /// Vrátí nalezenou instanci dat dle její entity. Pokud instance data neexistuje, vrací NULL.
+    /// </summary>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    Task<DocumentDataItem<TData>?> FirstOrDefaultByEntityId<TData>(long entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData;
 
     /// <summary>
@@ -77,6 +93,15 @@ public interface IDocumentDataStorage
     /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
     /// <param name="data">Instance dat</param>
     Task<int> Add<TData>(int entityId, TData data, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData;
+
+    /// <summary>
+    /// Založí novou instanci dat pro danou entitu.
+    /// </summary>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    /// <param name="data">Instance dat</param>
+    Task<int> Add<TData>(long entityId, TData data, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData;
 
     /// <summary>

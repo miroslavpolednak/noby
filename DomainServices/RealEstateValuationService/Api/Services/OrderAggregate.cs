@@ -6,7 +6,7 @@ using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using Google.Protobuf;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.RealEstateValuationService.Api.Services;
 
@@ -71,32 +71,16 @@ internal sealed class OrderAggregate
         entity.ValuationSentDate = _dbContext.CisDateTime.Now;
         entity.ValuationStateId = (int)newValuationState;
 
-        if (data is not null)
-        {
-            var orderEntity = new Database.Entities.RealEstateValuationOrder
-            {
-                RealEstateValuationId = entity.RealEstateValuationId,
-                Data = Newtonsoft.Json.JsonConvert.SerializeObject(data),
-                DataBin = data.ToByteArray()
-            };
-            _dbContext.RealEstateValuationOrders.Add(orderEntity);
-        }
-
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        // ulozeni detailu objednavky
+        await _documentDataStorage.Add(orderId, _mapperOrder.MapToData(data), cancellationToken);
     }
 
-    public static SpecificDetailHouseAndFlatObject? GetHouseAndFlat(Database.Entities.RealEstateValuation entity)
+    public async Task<SpecificDetailHouseAndFlatObject?> GetHouseAndFlat(int realEstateValuationId, CancellationToken cancellationToken)
     {
-        if (entity.SpecificDetailBin is not null)
-        {
-            switch (Helpers.GetRealEstateType(entity))
-            {
-                case SharedTypes.Enums.RealEstateTypes.Hf:
-                case SharedTypes.Enums.RealEstateTypes.Hff:
-                    return SpecificDetailHouseAndFlatObject.Parser.ParseFrom(entity.SpecificDetailBin);
-            }
-        }
-        return null;
+        var revDetailData = (await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(realEstateValuationId, cancellationToken))?.Data;
+        return _mapperValuation.MapFromDataToSingle(revDetailData).HouseAndFlatDetails;
     }
 
     public async Task<GetProductPropertiesResult> GetProductProperties(int caseState, long caseId, CancellationToken cancellationToken)
@@ -134,6 +118,9 @@ internal sealed class OrderAggregate
     {
     }
 
+    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationOrderDataMapper _mapperOrder;
+    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapperValuation;
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly IProductServiceClient _productService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -142,6 +129,9 @@ internal sealed class OrderAggregate
     private readonly ICaseServiceClient _caseService;
     
     public OrderAggregate(
+        Database.DocumentDataEntities.Mappers.RealEstateValuationOrderDataMapper mapperOrder,
+        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapperValuation,
+        IDocumentDataStorage documentDataStorage,
         IProductServiceClient productService,
         ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
@@ -149,6 +139,9 @@ internal sealed class OrderAggregate
         RealEstateValuationServiceDbContext dbContext,
         ICaseServiceClient caseService)
     {
+        _mapperOrder = mapperOrder;
+        _mapperValuation = mapperValuation;
+        _documentDataStorage = documentDataStorage;
         _productService = productService;
         _codebookService = codebookService;
         _offerService = offerService;

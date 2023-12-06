@@ -1,5 +1,6 @@
 ﻿using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.CreateRealEstateValuation;
 
@@ -40,6 +41,9 @@ internal sealed class CreateRealEstateValuationHandler
         _dbContext.RealEstateValuations.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
+        // zalozit prazdny detail
+        await _documentDataStorage.Add(entity.RealEstateValuationId, new Database.DocumentDataEntities.RealEstateValudationData(), cancellationToken);
+
         return new CreateRealEstateValuationResponse
         {
             RealEstateValuationId = entity.RealEstateValuationId
@@ -48,11 +52,13 @@ internal sealed class CreateRealEstateValuationHandler
 
     private static int[] _stateIdsForValidation = new[] { 4, 5 };
 
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
     private readonly RealEstateValuationServiceDbContext _dbContext;
 
-    public CreateRealEstateValuationHandler(RealEstateValuationServiceDbContext dbContext, CaseService.Clients.ICaseServiceClient caseService)
+    public CreateRealEstateValuationHandler(RealEstateValuationServiceDbContext dbContext, CaseService.Clients.ICaseServiceClient caseService, IDocumentDataStorage documentDataStorage)
     {
+        _documentDataStorage = documentDataStorage;
         _dbContext = dbContext;
         _caseService = caseService;
     }
