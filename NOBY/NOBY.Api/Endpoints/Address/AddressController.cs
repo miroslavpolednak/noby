@@ -50,6 +50,7 @@ public class AddressController : ControllerBase
     /// </remarks>
     /// <returns></returns>
     [HttpPost("katuz/search")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
