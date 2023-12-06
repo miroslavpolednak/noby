@@ -339,12 +339,6 @@ service CodebookService {
 		};
    }
 
-   rpc Nationalities (google.protobuf.Empty) returns (GenericCodebookResponse) {
-	   option (google.api.http) = {
-			get: "/v1/nationalities"
-		};
-   }
-
    rpc NetMonthEarnings (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/net-month-earnings"
