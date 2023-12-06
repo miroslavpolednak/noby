@@ -39,6 +39,11 @@ internal sealed class GetRealEstateValuationDetailHandler
             BagmanRealEstateTypeId = realEstate.BagmanRealEstateTypeId
         };
 
+        if (!string.IsNullOrEmpty(realEstate.PossibleValuationTypeId))
+        {
+            response.PossibleValuationTypeId.AddRange(realEstate.PossibleValuationTypeId!.Split(',').Select(t => Convert.ToInt32(t, CultureInfo.InvariantCulture)));
+        }
+
         // attachments
         response.Attachments.AddRange(await getAttachments(request.RealEstateValuationId, cancellationToken));
 

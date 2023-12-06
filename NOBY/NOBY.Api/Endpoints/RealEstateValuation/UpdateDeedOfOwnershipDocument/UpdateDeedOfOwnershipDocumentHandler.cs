@@ -7,6 +7,12 @@ public class UpdateDeedOfOwnershipDocumentHandler
 {
     public async Task Handle(UpdateDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
     {
+        var revInstance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, false, cancellationToken);
+        if (revInstance.PossibleValuationTypeId?.Any() ?? false)
+        {
+            throw new NobyValidationException(90032, "PossibleValuationTypeId is not empty");
+        }
+
         await _realEstateValuationService.UpdateDeedOfOwnershipDocument(request.DeedOfOwnershipDocumentId, request.RealEstateIds, cancellationToken);
     }
     

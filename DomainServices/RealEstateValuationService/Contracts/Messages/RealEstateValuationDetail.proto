@@ -31,6 +31,7 @@ message RealEstateValuationDetail {
     google.protobuf.StringValue BagmanRealEstateTypeId = 21;
     repeated RealEstateValuationDocument Documents = 22;
     bool IsOnlineDisqualified = 23;
+    repeated int32 PossibleValuationTypeId = 24;
 
     oneof SpecificDetail {
         SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 50;

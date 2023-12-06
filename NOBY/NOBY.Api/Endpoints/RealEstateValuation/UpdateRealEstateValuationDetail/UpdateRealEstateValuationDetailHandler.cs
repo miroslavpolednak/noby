@@ -97,6 +97,11 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
             throw new NobyValidationException(90032, "request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate");
         }
 
+        if (valuationDetail.PossibleValuationTypeId is not null)
+        {
+            throw new NobyValidationException(90032, "PossibleValuationTypeId is not null");
+        }
+
         var variant = RealEstateVariantHelper.GetRealEstateVariant(valuationDetail.RealEstateTypeId);
 
         ParseAndSetSpecificDetails(request, variant);

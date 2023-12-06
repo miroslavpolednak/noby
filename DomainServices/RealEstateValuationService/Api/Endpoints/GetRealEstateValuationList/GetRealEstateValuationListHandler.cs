@@ -12,7 +12,13 @@ internal sealed class GetRealEstateValuationListHandler
             .AsNoTracking()
             .Where(t => t.CaseId == request.CaseId)
             .OrderBy(t => t.RealEstateValuationId)
-            .Select(t => new Contracts.RealEstateValuationListItem
+            .ToListAsync(cancellationToken);
+
+        var response = new GetRealEstateValuationListResponse();
+
+        response.RealEstateValuationList.AddRange(list.Select(t =>
+        {
+            var item = new RealEstateValuationListItem
             {
                 RealEstateTypeId = t.RealEstateTypeId,
                 CaseId = t.CaseId,
@@ -31,11 +37,16 @@ internal sealed class GetRealEstateValuationListHandler
                 IsOnlineDisqualified = t.IsOnlineDisqualified,
                 ValuationResultCurrentPrice = t.ValuationResultCurrentPrice,
                 ValuationResultFuturePrice = t.ValuationResultFuturePrice
-            })
-            .ToListAsync(cancellationToken);
+            };
 
-        var response = new GetRealEstateValuationListResponse();
-        response.RealEstateValuationList.AddRange(list);
+            if (!string.IsNullOrEmpty(t.PossibleValuationTypeId)) 
+            {
+                item.PossibleValuationTypeId.AddRange(t.PossibleValuationTypeId!.Split(',').Select(t => Convert.ToInt32(t, CultureInfo.InvariantCulture)));
+            }
+
+            return item;
+        }));
+
         return response;
     }
 

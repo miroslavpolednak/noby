@@ -3,9 +3,9 @@ using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.V1;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
-using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using SharedComponents.DocumentDataStorage;
+using System.Diagnostics.Eventing.Reader;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.PreorderOnlineValuation;
 
@@ -49,6 +49,22 @@ internal sealed class PreorderOnlineValuationHandler
         if (kbmodelReponse.NoPriceAvailable)
         {
             entity.IsOnlineDisqualified = true;
+
+            var possibleTypes = entity.PossibleValuationTypeId?.Split(',').Select(t => Convert.ToInt32(t, CultureInfo.InvariantCulture)).ToArray() ?? Array.Empty<int>();
+            if (possibleTypes.Contains(1) && possibleTypes.Length == 1)
+            {
+                entity.PossibleValuationTypeId = null;
+            }
+            else if (possibleTypes.Contains(1))
+            {
+                var newPossibleTypes = possibleTypes.Where(t => t != 1).ToArray();
+                entity.PossibleValuationTypeId = string.Join(",", newPossibleTypes);
+                if (newPossibleTypes.Length == 1)
+                {
+                    entity.ValuationTypeId = newPossibleTypes[0];
+                }
+            }
+
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.LuxpiKbModelStatusFailed);

@@ -1,6 +1,7 @@
 ﻿using SharedTypes.Enums;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
+using System.Threading;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.GetRealEstateValuationTypes;
 
@@ -73,12 +74,35 @@ internal sealed class GetRealEstateValuationTypesHandler
         var response = new GetRealEstateValuationTypesReponse();
         response.ValuationTypeId.AddRange(acvResponse.Select(t => (int)t));
 
+        // Uložení výsledku ACV trychtýře a zvoleného typu ocenění do Noby DB
+        await saveValuationType(request.RealEstateValuationId, response.ValuationTypeId.ToArray(), cancellationToken);
+
         if (revInstance.IsOnlineDisqualified && response.ValuationTypeId.Contains(1))
         {
             response.ValuationTypeId.Remove(1);
         }
 
         return response;
+    }
+
+    public async Task saveValuationType(int realEstateValuationId, int[] valuationTypeId, CancellationToken cancellationToken)
+    {
+        var revEntity = await _dbContext
+            .RealEstateValuations
+            .FirstAsync(t => t.RealEstateValuationId == realEstateValuationId, cancellationToken);
+        
+        revEntity.PossibleValuationTypeId = string.Join(",", valuationTypeId);
+
+        if (valuationTypeId.Length == 1)
+        {
+            revEntity.ValuationTypeId = valuationTypeId[0];
+        }
+        else if (valuationTypeId.Any(t => t == 1))
+        {
+            revEntity.ValuationTypeId = 1;
+        }
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private readonly IMediator _mediator;
