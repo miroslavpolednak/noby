@@ -41,16 +41,23 @@ CREATE NONCLUSTERED INDEX [Idx_EntityId] ON [DDS].[RealEstateValuationOrderData]
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
 
-SET IDENTITY_INSERT [DDS].[RealEstateValuationOrderData] ON;
+INSERT INTO [DDS].[RealEstateValuationOrderData]
+([DocumentDataEntityId],[DocumentDataVersion],[CreatedUserId],[CreatedTime],[ModifiedUserId],[Data])
+select A.RealEstateValuationOrderId, 1, A.CreatedUserId, A.CreatedTime, A.ModifiedUserId, 
+'{"RealEstateValuationOrderType":2,"Standard":'+A.[Data]+'}'
+from [dbo].[RealEstateValuationOrder] A
+where RealEstateValuationOrderType=0 
 GO
 
 INSERT INTO [DDS].[RealEstateValuationOrderData]
-(DocumentDataStorageId,[DocumentDataEntityId],[DocumentDataVersion],[CreatedUserId],[CreatedTime],[ModifiedUserId],[Data])
-select A.RealEstateValuationId, A.RealEstateValuationId, 1, A.CreatedUserId, A.CreatedTime, A.ModifiedUserId, 
-'{'+(case when len(A.LoanPurposeDetails)>0 then SUBSTRING(A.LoanPurposeDetails, 2, len(A.LoanPurposeDetails)-2) else '' end)+(case when len(A.Documents)>0 then (case when len(A.LoanPurposeDetails)>0 then ',' else '' end)+'"Documents":['+A.Documents+']' else '' end)+'}'
-from RealEstateValuation A
-where A.SpecificDetail is null
+([DocumentDataEntityId],[DocumentDataVersion],[CreatedUserId],[CreatedTime],[ModifiedUserId],[Data])
+select A.RealEstateValuationOrderId, 1, A.CreatedUserId, A.CreatedTime, A.ModifiedUserId, 
+'{"RealEstateValuationOrderType":1,"OnlinePreorder":'+A.[Data]+'}'
+from [dbo].[RealEstateValuationOrder] A
+where RealEstateValuationOrderType=1
 GO
 
-SET IDENTITY_INSERT [DDS].[RealEstateValuationOrderData] OFF;
+ALTER TABLE [dbo].[RealEstateValuationOrder] SET ( SYSTEM_VERSIONING = OFF  )
+GO
+drop table RealEstateValuationOrderHistory;
 GO
