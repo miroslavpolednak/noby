@@ -1,6 +1,9 @@
-﻿namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities.Mappers;
+﻿using CIS.Core.Attributes;
+
+namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities.Mappers;
 
 #pragma warning disable CA1822 // Mark members as static
+[TransientService, SelfService]
 internal sealed class RealEstateValuationOrderDataMapper
 {
     public RealEstateValuationOrderData MapToData(Contracts.OrdersStandard? data)

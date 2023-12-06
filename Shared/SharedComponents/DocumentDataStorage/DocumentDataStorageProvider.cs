@@ -36,6 +36,14 @@ internal sealed class DocumentDataStorageProvider
 
     public async Task<DocumentDataItem<TData>?> FirstOrDefaultByEntityId<TData>(int entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
+        => await FirstOrDefaultByEntityId<TData>(entityId.ToString(CultureInfo.InvariantCulture), cancellationToken);
+
+    public async Task<DocumentDataItem<TData>?> FirstOrDefaultByEntityId<TData>(long entityId, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
+        => await FirstOrDefaultByEntityId<TData>(entityId.ToString(CultureInfo.InvariantCulture), cancellationToken);
+
+    public async Task<DocumentDataItem<TData>?> FirstOrDefaultByEntityId<TData>(string entityId, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
     {
         var entity = await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<Database.DocumentDataStorageItem>(
             $"SELECT DocumentDataStorageId, DocumentDataVersion, DocumentDataEntityId, Data FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataEntityId=@entityId",
@@ -90,6 +98,10 @@ internal sealed class DocumentDataStorageProvider
     }
 
     public async Task<int> Add<TData>(int entityId, TData data, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
+        => await Add(entityId.ToString(CultureInfo.InvariantCulture), data, cancellationToken);
+
+    public async Task<int> Add<TData>(long entityId, TData data, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
         => await Add(entityId.ToString(CultureInfo.InvariantCulture), data, cancellationToken);
 
