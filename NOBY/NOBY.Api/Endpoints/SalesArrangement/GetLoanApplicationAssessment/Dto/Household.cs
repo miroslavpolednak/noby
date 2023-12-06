@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto;
+﻿using SharedTypes.Enums;
+
+namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto;
 
 public class Household
 {
@@ -7,6 +9,13 @@ public class Household
     /// </summary>
     public long? HouseholdId { get; set; }
 
+    public HouseholdRisk Risk { get; set; }
+
+    public List<HouseholdCustomerObligations> CustomerObligations { get; set; }
+}
+
+public sealed class HouseholdRisk
+{
     /// <summary>
     /// Limit výše úvěru
     /// </summary>
@@ -55,4 +64,30 @@ public class Household
     public decimal? DTI { get; set; }
     public long? DSTI { get; set; }
     public long? CIR { get; set; }
+}
+
+public sealed class HouseholdCustomerObligations
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public DateTime? DateOfBirth { get; set; }
+    public CustomerRoles Role { get; set; }
+
+    public List<HouseholdObligationItem>? Existing { get; set; }
+
+    public List<HouseholdObligationItem>? Requested { get; set; }
+}
+
+public sealed class HouseholdObligationItem
+{
+    public string ObligationTypeName { get; set; }
+    public ObligationSource Source { get; set; }
+    public string CreditorName { get; set; }
+    public int LoanPrincipalAmount { get; set; }
+
+    public enum ObligationSource
+    {
+        Noby = 1,
+        C4M = 2
+    }
 }
