@@ -453,6 +453,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00062_HFICH-9433_Drawing_LastSignedDocument.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00062_HFICH-9433_Drawing_LastSignedDocument.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00063_HFICH-8191_EmploymentIncome_ConfirmationContact.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00063_HFICH-8191_EmploymentIncome_ConfirmationContact.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00064_HFICH-7080_EasForm_RemovedGrossAnnualIncome.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00064_HFICH-7080_EasForm_RemovedGrossAnnualIncome.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00065_HFICH-9809_CreditorName.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00065_HFICH-9809_CreditorName.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -506,10 +507,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{A57610AF-B011-4FAB-974B-B3FB39A6703E}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql
-		DomainServices\RealEstateValuationService\DatabaseMigrations\00002-HFICH-7569.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00002-HFICH-7569.sql
-		DomainServices\RealEstateValuationService\DatabaseMigrations\00003-HFICH-9250.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00003-HFICH-9250.sql
-		DomainServices\RealEstateValuationService\DatabaseMigrations\00004-detail_to_dds.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00004-detail_to_dds.sql
-		DomainServices\RealEstateValuationService\DatabaseMigrations\00005-order_to_dds.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00005-order_to_dds.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.Api", "DomainServices\RealEstateValuationService\Api\DomainServices.RealEstateValuationService.Api.csproj", "{8291DE0E-0447-471D-A402-B44B3FF30ED5}"
