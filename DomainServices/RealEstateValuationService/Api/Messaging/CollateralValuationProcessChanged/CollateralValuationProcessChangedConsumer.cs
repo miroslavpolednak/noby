@@ -65,24 +65,20 @@ internal sealed class CollateralValuationProcessChangedConsumer
     {
         if (!taskDetail.RealEstateValuation.OnlineValuation)
         {
-            int id = Convert.ToInt32(realEstateValuation.OrderId!.Value);
-
-            var orderResultResponse = await _preorderServiceClient.GetOrderResult(id, token);
+            var orderResultResponse = await _preorderServiceClient.GetOrderResult(realEstateValuation.OrderId!.Value, token);
             realEstateValuation.ValuationResultCurrentPrice = ConvertToNullableInt32(orderResultResponse.ValuationResultCurrentPrice);
             realEstateValuation.ValuationResultFuturePrice = ConvertToNullableInt32(orderResultResponse.ValuationResultFuturePrice);
 
-            // updatovat detail REV
-            var revDetailData = (await _documentDataStorage.FirstOrDefault<Database.DocumentDataEntities.RealEstateValudationData>(id, token))?.Data;
-            revDetailData ??= new Database.DocumentDataEntities.RealEstateValudationData();
-            revDetailData.Documents = new()
+            var loadedDetail = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(realEstateValuation.RealEstateValuationId, token);
+            loadedDetail!.Data!.Documents = new(1)
             {
-                new()
+                new Database.DocumentDataEntities.RealEstateValudationData.RealEstateValuationDocument
                 {
                     DocumentInfoPrice = taskDetail.RealEstateValuation.DocumentInfoPrice,
                     DocumentRecommendationForClient = taskDetail.RealEstateValuation.DocumentRecommendationForClient
                 }
             };
-            await _documentDataStorage.Update(id, revDetailData!);
+            await _documentDataStorage.UpdateByEntityId(realEstateValuation.RealEstateValuationId, loadedDetail.Data);
         }
 
         realEstateValuation.ValuationStateId = 4;
