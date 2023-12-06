@@ -1,14 +1,17 @@
 ﻿namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities;
 
+/// <summary>
+/// DocumentDataEntityId = RealEstateValuationId
+/// </summary>
 internal sealed class RealEstateValudationData
     : SharedComponents.DocumentDataStorage.IDocumentData
 {
     public int Version => 1;
 
-    public SpecificDetailHouseAndFlatObject? HouseAndFlatDetails { get; set; }
-    public SpecificDetailParcelObject? ParcelDetails { get; set; }
+    public SpecificDetailHouseAndFlatObject? HouseAndFlat { get; set; }
+    public SpecificDetailParcelObject? Parcel { get; set; }
     public List<RealEstateValuationDocument>? Documents { get; set; }
-    public List<int>? LoanPurposeDetails { get; set; }
+    public List<int>? LoanPurposes { get; set; }
 
     public sealed class SpecificDetailHouseAndFlatObject
     {

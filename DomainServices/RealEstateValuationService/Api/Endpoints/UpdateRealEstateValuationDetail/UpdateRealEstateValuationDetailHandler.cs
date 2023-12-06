@@ -43,7 +43,7 @@ internal sealed class UpdateRealEstateValuationDetailHandler
         var revDetailData = (await _documentDataStorage.FirstOrDefault<Database.DocumentDataEntities.RealEstateValudationData>(request.RealEstateValuationId, cancellationToken))?.Data;
         _mapper.MapToData(request, revDetailData);
 
-        await _documentDataStorage.Update(request.RealEstateValuationId, revDetailData!);
+        await _documentDataStorage.AddOrUpdateByEntityId(request.RealEstateValuationId, revDetailData!, cancellationToken);
 
         return new Empty();
     }

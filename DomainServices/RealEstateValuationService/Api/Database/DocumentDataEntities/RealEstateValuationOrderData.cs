@@ -2,6 +2,9 @@
 
 namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities;
 
+/// <summary>
+/// DocumentDataEntityId = RealEstateValuationId
+/// </summary>
 internal sealed class RealEstateValuationOrderData
     : SharedComponents.DocumentDataStorage.IDocumentData
 {

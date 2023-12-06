@@ -10,14 +10,14 @@ internal sealed class RealEstateValuationDataMapper
     {
         data ??= new RealEstateValudationData();
 
-        data.LoanPurposeDetails = request.LoanPurposeDetails?.LoanPurposes is null ? null : request.LoanPurposeDetails.LoanPurposes.ToList();
-        data.HouseAndFlatDetails = null;
-        data.ParcelDetails = null;
+        data.LoanPurposes = request.LoanPurposeDetails?.LoanPurposes is null ? null : request.LoanPurposeDetails.LoanPurposes.ToList();
+        data.HouseAndFlat = null;
+        data.Parcel = null;
 
         switch (request.SpecificDetailCase)
         {
             case Contracts.UpdateRealEstateValuationDetailRequest.SpecificDetailOneofCase.HouseAndFlatDetails:
-                data.HouseAndFlatDetails = new()
+                data.HouseAndFlat = new()
                 {
                     PoorCondition = request.HouseAndFlatDetails.PoorCondition,
                     OwnershipRestricted = request.HouseAndFlatDetails.OwnershipRestricted,
@@ -35,7 +35,7 @@ internal sealed class RealEstateValuationDataMapper
                 break;
 
             case Contracts.UpdateRealEstateValuationDetailRequest.SpecificDetailOneofCase.ParcelDetails:
-                data.ParcelDetails = new()
+                data.Parcel = new()
                 {
                     ParcelNumbers = request.ParcelDetails.ParcelNumbers.Select(t => new RealEstateValudationData.SpecificDetailParcelNumber
                     {
@@ -56,10 +56,10 @@ internal sealed class RealEstateValuationDataMapper
     
     public void MapFromDataToSingle(RealEstateValudationData? data, Contracts.RealEstateValuationDetail realEstateValuation)
     {
-        if (data?.LoanPurposeDetails is not null)
+        if (data?.LoanPurposes is not null)
         {
             realEstateValuation.LoanPurposeDetails ??= new Contracts.LoanPurposeDetailsObject();
-            realEstateValuation.LoanPurposeDetails.LoanPurposes.AddRange(data.LoanPurposeDetails);
+            realEstateValuation.LoanPurposeDetails.LoanPurposes.AddRange(data.LoanPurposes);
         }
 
         if (data?.Documents is not null)
@@ -71,21 +71,21 @@ internal sealed class RealEstateValuationDataMapper
             }));
         }
 
-        if (data?.HouseAndFlatDetails is not null)
+        if (data?.HouseAndFlat is not null)
         {
             realEstateValuation.HouseAndFlatDetails = new()
             {
-                PoorCondition = data.HouseAndFlatDetails.PoorCondition,
-                OwnershipRestricted = data.HouseAndFlatDetails.OwnershipRestricted,
+                PoorCondition = data.HouseAndFlat.PoorCondition,
+                OwnershipRestricted = data.HouseAndFlat.OwnershipRestricted,
                 FlatOnlyDetails = new()
                 {
-                    SpecialPlacement = data.HouseAndFlatDetails.FlatOnlyDetails?.SpecialPlacement ?? false,
-                    Basement = data.HouseAndFlatDetails.FlatOnlyDetails?.Basement ?? false
+                    SpecialPlacement = data.HouseAndFlat.FlatOnlyDetails?.SpecialPlacement ?? false,
+                    Basement = data.HouseAndFlat.FlatOnlyDetails?.Basement ?? false
                 },
                 FinishedHouseAndFlatDetails = new()
                 {
-                    LeaseApplicable = data.HouseAndFlatDetails.FinishedHouseAndFlatDetails?.LeaseApplicable ?? false,
-                    Leased = data.HouseAndFlatDetails.FinishedHouseAndFlatDetails?.Leased ?? false
+                    LeaseApplicable = data.HouseAndFlat.FinishedHouseAndFlatDetails?.LeaseApplicable ?? false,
+                    Leased = data.HouseAndFlat.FinishedHouseAndFlatDetails?.Leased ?? false
                 }
             };
         }
