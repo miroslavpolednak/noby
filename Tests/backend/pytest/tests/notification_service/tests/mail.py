@@ -23,8 +23,7 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
     json_req_mail_mpss_documentHash_SHA_512, json_req_mail_mpss_documentHash_SHA_384, \
     json_req_mail_mpss_basic_format_text_plain, json_req_mail_mpss_basic_format_application_text, \
     json_req_mail_mpss_max_attachments, \
-    json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_vsskb \
-
+    json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_vsskb
 
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal,
@@ -81,8 +80,8 @@ def test_mail_full(ns_url, auth_params, auth, json_data):
 
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [
-                                       json_req_mail_mpss_basic_content_format_application_mht,
-                                                                              ])
+    json_req_mail_mpss_basic_content_format_application_mht,
+])
 def test_mail_content_format(ns_url, auth_params, auth, json_data):
     """kladny test"""
     url_name = ns_url["url_name"]
@@ -242,16 +241,16 @@ def test_mail_documentHash(ns_url, auth_params, auth, json_data):
         'Expected "strict-transport-security" to be in headers'
 
 
-#zatím bez json_req_mail_mpss_sender_vsskb a json_req_mail_kb_sender_kb_sluzby
+# zatím bez json_req_mail_kb_sender_kb_sluzby
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_sender_mpss,
                                        json_req_mail_kb_sender_kb,
-                                        json_req_mail_kb_sender_kb_attachment
+                                       json_req_mail_kb_sender_kb_attachment
                                        ],
                          ids=[
                              "json_req_mail_mpss_sender_mpss",
                              "json_req_mail_kb_sender_kb",
-                            "json_req_mail_kb_sender_kb_attachment"
+                             "json_req_mail_kb_sender_kb_attachment"
                          ]
                          )
 def test_mail_sender(ns_url, auth_params, auth, json_data):
@@ -272,6 +271,29 @@ def test_mail_sender(ns_url, auth_params, auth, json_data):
     assert "notificationId" in notification
     notification_id = notification["notificationId"]
     assert notification_id != ""
+
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
+
+
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_sender_vsskb]
+                         )
+def test_mail_sender_failed(ns_url, auth_params, auth, json_data):
+    """kladny test"""
+    url_name = ns_url["url_name"]
+    url = ns_url["url"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    assert resp.status_code == 400
+
 
     assert 'strict-transport-security' in resp.headers, \
         'Expected "strict-transport-security" to be in headers'
