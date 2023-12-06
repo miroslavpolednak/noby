@@ -18,8 +18,8 @@
 	</PropertyGroup>
 	
   <ItemGroup>
-    <PackageReference Include="CronExpressionDescriptor" Version="2.21.0" />
-    <PackageReference Include="Dapper" Version="2.1.21" />
+    <PackageReference Include="CronExpressionDescriptor" Version="2.31.0" />
+    <PackageReference Include="Dapper" Version="2.1.24" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
