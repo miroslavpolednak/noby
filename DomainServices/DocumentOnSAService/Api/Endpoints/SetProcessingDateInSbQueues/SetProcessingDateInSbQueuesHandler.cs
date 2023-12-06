@@ -40,7 +40,8 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
 
         var workflowTaskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
         var nonFinalStates = workflowTaskStates.Where(s => s.Flag == EWorkflowTaskStateFlag.None).Select(s => s.Id);
-        var tasksList = (await _caseService.GetTaskList(request.CaseId, cancellationToken)).Where(t => t.TaskTypeId == 6);
+        var tasksList = (await _caseService.GetTaskList(request.CaseId, cancellationToken)).Where(t => t.TaskTypeId == 6 && t.SignatureTypeId == 1);
+        // Check if task is in request is here (tasksList) if not => end 
         var tasksInNonFinalState = tasksList.Where(t => nonFinalStates.Contains(t.StateIdSb));
 
         List<(long documentId, int taskIdSb)> taskIdSbForSpecifiedDocumentId = new();
