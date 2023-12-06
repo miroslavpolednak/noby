@@ -230,8 +230,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\HouseholdService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\HouseholdService\DatabaseMigrations\00001-initial_creation.sql
 		DomainServices\HouseholdService\DatabaseMigrations\00002-HFICH-6368.sql = DomainServices\HouseholdService\DatabaseMigrations\00002-HFICH-6368.sql
 		DomainServices\HouseholdService\DatabaseMigrations\00003-DocDataStorageMigration.sql = DomainServices\HouseholdService\DatabaseMigrations\00003-DocDataStorageMigration.sql
-		DomainServices\HouseholdService\DatabaseMigrations\00004-ObligationsMigration.sql = DomainServices\HouseholdService\DatabaseMigrations\00004-ObligationsMigration.sql
-		DomainServices\HouseholdService\DatabaseMigrations\00005-HFICH-9706.sql = DomainServices\HouseholdService\DatabaseMigrations\00005-HFICH-9706.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.CustomerManagement", "DomainServices\CustomerService\ExternalServices.CustomerManagement\DomainServices.CustomerService.ExternalServices.CustomerManagement.csproj", "{D88FFFB8-826B-4626-892C-5A4DE6EB1095}"
@@ -337,6 +335,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CodebookService\DatabaseMigrations\00067-HFICH-8515-SmsNotificationType.sql = DomainServices\CodebookService\DatabaseMigrations\00067-HFICH-8515-SmsNotificationType.sql
 		DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql = DomainServices\CodebookService\DatabaseMigrations\00068-Removed_Invalid_IsFormIdRequest_EaCodesMain.sql
 		DomainServices\CodebookService\DatabaseMigrations\00070-HFICH-9074.sql = DomainServices\CodebookService\DatabaseMigrations\00070-HFICH-9074.sql
+		DomainServices\CodebookService\DatabaseMigrations\00074-HFICH-9360_GeneralDocuments_Update.sql = DomainServices\CodebookService\DatabaseMigrations\00074-HFICH-9360_GeneralDocuments_Update.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED5BF40-8A83-4B48-AD27-E14BBFE76338}"
