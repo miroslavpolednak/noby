@@ -266,16 +266,16 @@ public class DocumentOnSAController : ControllerBase
     /// Zjistí stav aktuálně podepisovaného dokumentu. ToDo doplnit EaDiagram + role 
     /// </remarks>
     /// <param name="salesArrangementId"></param>
-    /// <param name="documentOnSaId"></param>
-    [HttpGet("sales-arrangement/{salesArrangementId:int}/signing/{documentOnSAId:int}/status")]
+    /// <param name="documentOnSAId"></param>
+    [HttpGet("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/status")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
     [ProducesResponseType(typeof(GetDocumentOnSAStatusResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetDocumentOnSAStatusResponse> GetDocumentOnSAStatus(
           [FromRoute] int salesArrangementId,
-          [FromRoute] int documentOnSaId,
+          [FromRoute] int documentOnSAId,
           CancellationToken cancellationToken
         )
-        => await _mediator.Send(new GetDocumentOnSAStatusRequest(salesArrangementId, documentOnSaId), cancellationToken);
+        => await _mediator.Send(new GetDocumentOnSAStatusRequest(salesArrangementId, documentOnSAId), cancellationToken);
 
 }
