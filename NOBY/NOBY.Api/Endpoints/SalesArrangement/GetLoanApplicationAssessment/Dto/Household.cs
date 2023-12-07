@@ -9,9 +9,9 @@ public class Household
     /// </summary>
     public long? HouseholdId { get; set; }
 
-    public HouseholdRisk Risk { get; set; }
+    public HouseholdRisk Risk { get; set; } = null!;
 
-    public List<HouseholdCustomerObligations> CustomerObligations { get; set; }
+    public List<HouseholdCustomerObligations>? CustomerObligations { get; set; }
 }
 
 public sealed class HouseholdRisk
@@ -68,8 +68,8 @@ public sealed class HouseholdRisk
 
 public sealed class HouseholdCustomerObligations
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public DateTime? DateOfBirth { get; set; }
     public CustomerRoles Role { get; set; }
 
@@ -80,14 +80,23 @@ public sealed class HouseholdCustomerObligations
 
 public sealed class HouseholdObligationItem
 {
-    public string ObligationTypeName { get; set; }
+    public string ObligationTypeName { get; set; } = string.Empty;
     public ObligationSource Source { get; set; }
-    public string CreditorName { get; set; }
-    public int LoanPrincipalAmount { get; set; }
+    public string CreditorName { get; set; } = string.Empty;
+    public Amount? LoanPrincipalAmount { get; set; }
+    public Amount? InstallmentAmount { get; set; }
+    public Amount? CreditCardLimit { get; set; }
+    public int? CorrectionTypeId { get; set; }
 
     public enum ObligationSource
     {
         Noby = 1,
         C4M = 2
+    }
+
+    public sealed class Amount
+    {
+        public int Value { get; set; }
+        public string Currency { get; set; } = string.Empty;
     }
 }
