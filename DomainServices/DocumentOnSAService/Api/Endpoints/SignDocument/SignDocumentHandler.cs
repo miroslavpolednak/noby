@@ -398,10 +398,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             _ => throw new CisValidationException("Unsupported HouseholdType")
         };
 
-        await _salesArrangementService.SetFlowSwitches(houseHold.SalesArrangementId, new()
-            {
-                new() { FlowSwitchId = (int)flowSwitchId, Value = false }
-            }, cancellationToken);
+        await _salesArrangementService.SetFlowSwitch(houseHold.SalesArrangementId, flowSwitchId, false, cancellationToken);
     }
 
     private async Task UpdateFirstSignatureDateKonsDb(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)

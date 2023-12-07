@@ -2,10 +2,7 @@
 using CIS.Core.Security;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
-using DomainServices.SalesArrangementService.Clients;
 using DomainServices.OfferService.Clients;
-using DomainServices.RiskIntegrationService.Clients.LoanApplication.V2;
-using DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2;
 using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Contracts;
@@ -14,6 +11,7 @@ using DomainServices.RiskIntegrationService.Contracts.Shared;
 using DomainServices.UserService.Clients;
 using SharedTypes.Enums;
 using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
+using DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
@@ -33,6 +31,9 @@ internal sealed class GetLoanApplicationAssessmentHandler
 
         // instance of Offer
         var offer = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
+
+        // customers
+        var customers = await _customerOnSAService.GetCustomerList(saInstance.SalesArrangementId, cancellationToken);
 
         // create new assesment, if required
         if (request.NewAssessmentRequired)
@@ -57,16 +58,30 @@ internal sealed class GetLoanApplicationAssessmentHandler
 
         var assessment = await _riskBusinessCaseService.GetAssessment(assessmentRequest, cancellationToken);
 
-        return await createResult(assessment, offer, cancellationToken);
+        foreach (var customer in customers)
+        {
+
+            await _customerExposureService.Calculate(new DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2.CustomerExposureCalculateRequest
+            {
+                LoanApplicationDataVersion = "",
+                SalesArrangementId = saInstance.SalesArrangementId,
+                RiskBusinessCaseId = saInstance.RiskBusinessCaseId
+            }, cancellationToken);
+        }
+
+        return await createResult(assessment, offer, customers, cancellationToken);
     }
 
-    private async Task<GetLoanApplicationAssessmentResponse> createResult(LoanApplicationAssessmentResponse assessment, GetMortgageOfferResponse offer, CancellationToken cancellationToken)
+    private async Task<GetLoanApplicationAssessmentResponse> createResult(
+        LoanApplicationAssessmentResponse assessment, 
+        GetMortgageOfferResponse offer, 
+        List<CustomerOnSA> customers, 
+        CancellationToken cancellationToken)
     {
         var response = assessment.ToApiResponse(offer);
 
         if (response.AssessmentResult == 502 && (response.Reasons?.Any(t => t.Code == "060009") ?? false))
         {
-            var customers = await _customerOnSAService.GetCustomerList(request.SalesArrangementId, cancellationToken);
             foreach (var customer in customers)
             {
                 var obligations = await _customerOnSAService.GetObligationList(customer.CustomerOnSAId, cancellationToken);
@@ -83,12 +98,12 @@ internal sealed class GetLoanApplicationAssessmentHandler
 
     private async Task createNewAssessment(
         DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, 
-        GetMortgageOfferResponse offer, 
+        GetMortgageOfferResponse offer,
+        List<CustomerOnSA> customers,
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(salesArrangement.RiskBusinessCaseId))
         {
-            var customers = await _customerOnSAService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
             var debtor = customers.First(t => t.CustomerRoleId == (int)CustomerRoles.Debtor);
 
             salesArrangement.RiskBusinessCaseId = await _createRiskBusinessCase.Create(salesArrangement.CaseId, salesArrangement.SalesArrangementId, debtor.CustomerOnSAId, debtor.CustomerIdentifiers, cancellationToken);
@@ -139,10 +154,11 @@ internal sealed class GetLoanApplicationAssessmentHandler
                                                                       cancellationToken);
     }
 
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
-    private readonly ILoanApplicationServiceClient _loanApplicationService;
-    private readonly IRiskBusinessCaseServiceClient _riskBusinessCaseService;
+    private readonly DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient _loanApplicationService;
+    private readonly DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService;
+    private readonly DomainServices.RiskIntegrationService.Clients.CustomerExposure.V2.ICustomerExposureServiceClient _customerExposureService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IDataAggregatorServiceClient _dataAggregatorService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
@@ -150,16 +166,18 @@ internal sealed class GetLoanApplicationAssessmentHandler
     private readonly NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService _createRiskBusinessCase;
 
     public GetLoanApplicationAssessmentHandler(
+        DomainServices.RiskIntegrationService.Clients.CustomerExposure.V2.ICustomerExposureServiceClient customerExposureService,
         NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService createRiskBusinessCase,
-        ISalesArrangementServiceClient salesArrangementService,
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
-        ILoanApplicationServiceClient loanApplicationService,
-        IRiskBusinessCaseServiceClient riskBusinessCaseService,
+        DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient loanApplicationService,
+        DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
         ICustomerOnSAServiceClient customerOnSAService,
         IDataAggregatorServiceClient dataAggregatorService,
         ICurrentUserAccessor currentUserAccessor,
         IUserServiceClient userService)
     {
+        _customerExposureService = customerExposureService;
         _createRiskBusinessCase = createRiskBusinessCase;
         _customerOnSAService = customerOnSAService;
         _dataAggregatorService = dataAggregatorService;

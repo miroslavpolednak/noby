@@ -110,14 +110,7 @@ internal sealed class UpdateParametersHandler
 
     private async Task setFlowSwitches(_SA.SalesArrangement saInstance, CancellationToken cancellationToken)
     {
-        await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
-        {
-            new()
-            {
-                FlowSwitchId = (int)FlowSwitches.ParametersSavedAtLeastOnce,
-                Value = true
-            }
-        }, cancellationToken);
+        await _salesArrangementService.SetFlowSwitch(saInstance.SalesArrangementId, FlowSwitches.ParametersSavedAtLeastOnce, true, cancellationToken);
     }
 
     private static int[] _disallowedStates = new[]

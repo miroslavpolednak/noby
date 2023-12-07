@@ -138,14 +138,7 @@ internal sealed class CreateCustomerHandler
                 _ => throw new NobyValidationException("Unsupported HouseholdType")
             };
 
-            await _salesArrangementService.SetFlowSwitches(household.SalesArrangementId, new()
-            {
-                new()
-                {
-                    FlowSwitchId = (int)flowSwitchId,
-                    Value = true
-                }
-            }, cancellationToken);
+            await _salesArrangementService.SetFlowSwitch(household.SalesArrangementId, flowSwitchId, true, cancellationToken);
         }
 
         bool isIdentified()

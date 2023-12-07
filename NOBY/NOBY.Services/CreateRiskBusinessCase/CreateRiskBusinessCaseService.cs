@@ -51,7 +51,6 @@ public sealed class CreateRiskBusinessCaseService
         
         return createRBCResponse.RiskBusinessCaseId;
 
-        #region local fce
         async Task<string> getRiskSegment()
         {
             var loanApplicationRequest = new DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.LoanApplicationSaveRequest
@@ -83,7 +82,6 @@ public sealed class CreateRiskBusinessCaseService
 
             return await _loanApplicationService.Save(loanApplicationRequest, cancellationToken);
         }
-        #endregion local fce
     }
 
     private readonly IHouseholdServiceClient _householdService;
