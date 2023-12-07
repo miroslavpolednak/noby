@@ -9,5 +9,5 @@ public class KatuzSearchResponse
     /// </summary>
     public int PageSize { get; set; }
 
-    public ICollection<KatuzLine> Rows { get; set; } = null!;
+    public ICollection<KatuzLine>? Rows { get; set; }
 }

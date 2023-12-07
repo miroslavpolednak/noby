@@ -5,10 +5,10 @@ public class KatuzLine
     /// <summary>
     /// Id katastrálního území (KATUZ)
     /// </summary>
-    public long Id { get; set; }
+    public long KatuzId { get; set; }
 
     /// <summary>
     /// Textová reprezentace katastrálního území
     /// </summary>
-    public string Title { get; set; } = null!;
+    public string KatuzTitle { get; set; } = null!;
 }
