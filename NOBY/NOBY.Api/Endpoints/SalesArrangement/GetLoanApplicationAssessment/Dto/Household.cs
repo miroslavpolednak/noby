@@ -97,6 +97,7 @@ public sealed class HouseholdObligationItem
     public sealed class Amount
     {
         public int Value { get; set; }
+        public int? Correction { get; set; }
         public string Currency { get; set; } = string.Empty;
     }
 }

@@ -13,50 +13,13 @@ using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
 using DomainServices.UserService.Clients;
 using SharedTypes.Enums;
+using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
 internal sealed class GetLoanApplicationAssessmentHandler
     : IRequestHandler<GetLoanApplicationAssessmentRequest, GetLoanApplicationAssessmentResponse>
 {
-
-    #region Construction
-
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly ILoanApplicationServiceClient _loanApplicationService;
-    private readonly IRiskBusinessCaseServiceClient _riskBusinessCaseService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly IDataAggregatorServiceClient _dataAggregatorService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IUserServiceClient _userService;
-    private readonly NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService _createRiskBusinessCase;
-
-
-    public GetLoanApplicationAssessmentHandler(
-        NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService createRiskBusinessCase,
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        ILoanApplicationServiceClient loanApplicationService,
-        IRiskBusinessCaseServiceClient riskBusinessCaseService,
-        ICustomerOnSAServiceClient customerOnSAService,
-        IDataAggregatorServiceClient dataAggregatorService,
-        ICurrentUserAccessor currentUserAccessor,
-        IUserServiceClient userService)
-    {
-        _createRiskBusinessCase = createRiskBusinessCase;
-        _customerOnSAService = customerOnSAService;
-        _dataAggregatorService = dataAggregatorService;
-        _currentUserAccessor = currentUserAccessor;
-        _userService = userService;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _loanApplicationService = loanApplicationService;
-        _riskBusinessCaseService = riskBusinessCaseService;
-    }
-
-    #endregion
-
     public async Task<GetLoanApplicationAssessmentResponse> Handle(GetLoanApplicationAssessmentRequest request, CancellationToken cancellationToken)
     {
         // instance SA
@@ -64,31 +27,19 @@ internal sealed class GetLoanApplicationAssessmentHandler
 
         // if LoanApplication wasn't created so far, request without NewAssessmentRequired = true is senseless
         if (!request.NewAssessmentRequired && string.IsNullOrWhiteSpace(saInstance.LoanApplicationAssessmentId))
+        {
             throw new NobyValidationException($"LoanApplicationAssessmentId is missing for SA #{saInstance.SalesArrangementId}");
+        }
 
+        // instance of Offer
         var offer = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
 
         // create new assesment, if required
         if (request.NewAssessmentRequired)
         {
-            if (string.IsNullOrWhiteSpace(saInstance.RiskBusinessCaseId))
-            {
-                var customers = await _customerOnSAService.GetCustomerList(saInstance.SalesArrangementId, cancellationToken);
-                var debtor = customers.First(t => t.CustomerRoleId == (int)CustomerRoles.Debtor);
+            await createNewAssessment(saInstance, offer, cancellationToken);
 
-                saInstance.RiskBusinessCaseId = await _createRiskBusinessCase.Create(saInstance.CaseId, saInstance.SalesArrangementId, debtor.CustomerOnSAId, debtor.CustomerIdentifiers, cancellationToken);
-            }
-
-            await CreateNewAssessment(saInstance, offer, cancellationToken);
-
-            await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
-            {
-                new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.ScoringPerformedAtleastOnce,
-                    Value = true
-                }
-            }, cancellationToken);
+            await _salesArrangementService.SetFlowSwitch(saInstance.SalesArrangementId, FlowSwitches.ScoringPerformedAtleastOnce, true, cancellationToken);
         }
 
         // load assesment by ID
@@ -106,7 +57,11 @@ internal sealed class GetLoanApplicationAssessmentHandler
 
         var assessment = await _riskBusinessCaseService.GetAssessment(assessmentRequest, cancellationToken);
 
-        // convert to ApiResponse
+        return await createResult(assessment, offer, cancellationToken);
+    }
+
+    private async Task<GetLoanApplicationAssessmentResponse> createResult(LoanApplicationAssessmentResponse assessment, GetMortgageOfferResponse offer, CancellationToken cancellationToken)
+    {
         var response = assessment.ToApiResponse(offer);
 
         if (response.AssessmentResult == 502 && (response.Reasons?.Any(t => t.Code == "060009") ?? false))
@@ -126,8 +81,19 @@ internal sealed class GetLoanApplicationAssessmentHandler
         return response;
     }
 
-    private async Task CreateNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetMortgageOfferResponse offer, CancellationToken cancellationToken)
+    private async Task createNewAssessment(
+        DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, 
+        GetMortgageOfferResponse offer, 
+        CancellationToken cancellationToken)
     {
+        if (string.IsNullOrWhiteSpace(salesArrangement.RiskBusinessCaseId))
+        {
+            var customers = await _customerOnSAService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
+            var debtor = customers.First(t => t.CustomerRoleId == (int)CustomerRoles.Debtor);
+
+            salesArrangement.RiskBusinessCaseId = await _createRiskBusinessCase.Create(salesArrangement.CaseId, salesArrangement.SalesArrangementId, debtor.CustomerOnSAId, debtor.CustomerIdentifiers, cancellationToken);
+        }
+
         var dataRequest = new GetRiskLoanApplicationDataRequest
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
@@ -171,5 +137,37 @@ internal sealed class GetLoanApplicationAssessmentHandler
                                                                       salesArrangement.CommandId,
                                                                       createAssessmentResponse.RiskBusinessCaseExpirationDate,
                                                                       cancellationToken);
+    }
+
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IOfferServiceClient _offerService;
+    private readonly ILoanApplicationServiceClient _loanApplicationService;
+    private readonly IRiskBusinessCaseServiceClient _riskBusinessCaseService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly IDataAggregatorServiceClient _dataAggregatorService;
+    private readonly ICurrentUserAccessor _currentUserAccessor;
+    private readonly IUserServiceClient _userService;
+    private readonly NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService _createRiskBusinessCase;
+
+    public GetLoanApplicationAssessmentHandler(
+        NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService createRiskBusinessCase,
+        ISalesArrangementServiceClient salesArrangementService,
+        IOfferServiceClient offerService,
+        ILoanApplicationServiceClient loanApplicationService,
+        IRiskBusinessCaseServiceClient riskBusinessCaseService,
+        ICustomerOnSAServiceClient customerOnSAService,
+        IDataAggregatorServiceClient dataAggregatorService,
+        ICurrentUserAccessor currentUserAccessor,
+        IUserServiceClient userService)
+    {
+        _createRiskBusinessCase = createRiskBusinessCase;
+        _customerOnSAService = customerOnSAService;
+        _dataAggregatorService = dataAggregatorService;
+        _currentUserAccessor = currentUserAccessor;
+        _userService = userService;
+        _salesArrangementService = salesArrangementService;
+        _offerService = offerService;
+        _loanApplicationService = loanApplicationService;
+        _riskBusinessCaseService = riskBusinessCaseService;
     }
 }
