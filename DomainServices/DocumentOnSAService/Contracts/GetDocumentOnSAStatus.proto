@@ -1,0 +1,21 @@
+syntax = "proto3";
+package DomainServices.DocumentOnSAService.GetDocumentOnSAStatus;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Enums.proto";
+
+message GetDocumentOnSAStatusRequest {
+	
+	int32 SalesArrangementId = 1;
+	int32 DocumentOnSAId = 2;
+}
+
+message GetDocumentOnSAStatusResponse {
+	
+	int32 DocumentOnSAId = 1;
+	bool IsValid = 2;
+	bool IsSigned = 3;
+	DomainServices.DocumentOnSAService.Enums.Source Source = 4;
+	repeated string EArchivIdsLinked = 5;
+}

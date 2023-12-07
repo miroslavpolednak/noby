@@ -26,6 +26,7 @@ using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.DocumentOnSAService.Api.Common;
+using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 
@@ -44,6 +45,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
     internal ICustomerServiceClient CustomerServiceClient { get; }
     internal IDocumentGeneratorServiceClient DocumentGeneratorServiceClient { get; }
     internal ISalesArrangementStateManager SalesArrangementStateManager { get; }
+    internal ISbQueuesRepository SbQueuesRepository { get; }
 
     public IntegrationTestBase(WebApplicationFactoryFixture<Program> fixture)
     {
@@ -61,7 +63,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         CustomerServiceClient = Substitute.For<ICustomerServiceClient>();
         DocumentGeneratorServiceClient = Substitute.For<IDocumentGeneratorServiceClient>();
         SalesArrangementStateManager = Substitute.For<ISalesArrangementStateManager>();
-
+        SbQueuesRepository = Substitute.For<ISbQueuesRepository>(); 
         ConfigureWebHost();
 
         PrepareDatabase();
@@ -102,7 +104,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
             services.RemoveAll<ICustomerServiceClient>().AddScoped(_ => CustomerServiceClient);
             services.RemoveAll<IDocumentGeneratorServiceClient>().AddScoped(_ => DocumentGeneratorServiceClient);
             services.RemoveAll<ISalesArrangementStateManager>().AddScoped(_ => SalesArrangementStateManager);
-
+            services.RemoveAll<ISbQueuesRepository>().AddScoped(_ => SbQueuesRepository);
         });
     }
 
