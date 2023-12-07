@@ -92,12 +92,12 @@
             Stát - AddressWhispererBEService|country
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.Id">
+        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.KatuzId">
             <summary>
             Id katastrálního území (KATUZ)
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.Title">
+        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.KatuzTitle">
             <summary>
             Textová reprezentace katastrálního území
             </summary>
