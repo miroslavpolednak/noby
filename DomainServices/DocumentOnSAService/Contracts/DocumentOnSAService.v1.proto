@@ -20,6 +20,7 @@ import "RefreshElectronicDocument.proto";
 import "GetDocumentOnSAByFormId.proto";
 import "RefreshSalesArrangementState.proto";
 import "SetProcessingDateInSbQueues.proto";
+import "GetDocumentOnSAStatus.proto";
 
 service DocumentOnSAService{
 	rpc GenerateFormId(DomainServices.DocumentOnSAService.GenerateFormId.GenerateFormIdRequest) returns (DomainServices.DocumentOnSAService.GenerateFormId.GenerateFormIdResponse);
@@ -39,4 +40,5 @@ service DocumentOnSAService{
 	rpc GetDocumentOnSAByFormId(DomainServices.DocumentOnSAService.GetDocumentOnSAByFormId.GetDocumentOnSAByFormIdRequest) returns(DomainServices.DocumentOnSAService.GetDocumentOnSAByFormId.GetDocumentOnSAByFormIdResponse);
 	rpc RefreshSalesArrangementState(DomainServices.DocumentOnSAService.RefreshSalesArrangementState.RefreshSalesArrangementStateRequest) returns(google.protobuf.Empty);
 	rpc SetProcessingDateInSbQueues(DomainServices.DocumentOnSAService.SetProcessingDateInSbQueues.SetProcessingDateInSbQueuesRequest) returns(google.protobuf.Empty);
+	rpc GetDocumentOnSAStatus(DomainServices.DocumentOnSAService.GetDocumentOnSAStatus.GetDocumentOnSAStatusRequest) returns(DomainServices.DocumentOnSAService.GetDocumentOnSAStatus.GetDocumentOnSAStatusResponse);
 }

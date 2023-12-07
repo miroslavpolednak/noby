@@ -97,6 +97,11 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
 
     public async Task SetProcessingDateInSbQueues(int taskIdsSb, long caseId, CancellationToken cancellationToken = default)
     {
-        await _client.SetProcessingDateInSbQueuesAsync(new() { TaskIdSb = taskIdsSb, CaseId = caseId}, cancellationToken: cancellationToken);
+        await _client.SetProcessingDateInSbQueuesAsync(new() { TaskIdSb = taskIdsSb, CaseId = caseId }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<GetDocumentOnSAStatusResponse> GetDocumentOnSAStatus(int salesArrangementId, int documentOnSAId, CancellationToken cancellationToken = default)
+    {
+        return await _client.GetDocumentOnSAStatusAsync(new() { SalesArrangementId = salesArrangementId, DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
     }
 }

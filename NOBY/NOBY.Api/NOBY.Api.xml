@@ -1971,6 +1971,16 @@
             <param name="salesArrangementId"></param>
             <param name="documentOnSaId"></param>
         </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSAStatus(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Stav podepisovaného dokumentu 
+            </summary>
+            <remarks>
+            Zjistí stav aktuálně podepisovaného dokumentu. ToDo doplnit EaDiagram + role 
+            </remarks>
+            <param name="salesArrangementId"></param>
+            <param name="documentOnSAId"></param>
+        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningHandler.ValidateSalesArrangement(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Checkform 

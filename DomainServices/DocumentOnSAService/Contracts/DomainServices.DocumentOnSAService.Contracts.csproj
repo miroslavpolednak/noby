@@ -50,6 +50,7 @@
 		<Protobuf Include="./GetDocumentOnSAByFormId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="./RefreshSalesArrangementState.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="./SetProcessingDateInSbQueues.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="./GetDocumentOnSAStatus.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		
 	</ItemGroup>
 </Project>
