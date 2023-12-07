@@ -73,13 +73,14 @@ public sealed class HouseholdCustomerObligations
     public DateTime? DateOfBirth { get; set; }
     public CustomerRoles Role { get; set; }
 
-    public List<HouseholdObligationItem>? Existing { get; set; }
+    public List<HouseholdObligationItem>? ExistingObligations { get; set; }
 
-    public List<HouseholdObligationItem>? Requested { get; set; }
+    public List<HouseholdObligationItem>? RequestedObligations { get; set; }
 }
 
 public sealed class HouseholdObligationItem
 {
+    public int Id { get; set; }
     public string ObligationTypeName { get; set; } = string.Empty;
     public ObligationSource Source { get; set; }
     public string CreditorName { get; set; } = string.Empty;

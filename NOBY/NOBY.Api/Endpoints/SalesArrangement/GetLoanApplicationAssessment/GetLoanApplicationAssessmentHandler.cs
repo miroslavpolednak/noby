@@ -38,7 +38,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         // create new assesment, if required
         if (request.NewAssessmentRequired)
         {
-            await createNewAssessment(saInstance, offer, cancellationToken);
+            await createNewAssessment(saInstance, offer, customers, cancellationToken);
 
             await _salesArrangementService.SetFlowSwitch(saInstance.SalesArrangementId, FlowSwitches.ScoringPerformedAtleastOnce, true, cancellationToken);
         }

@@ -854,6 +854,7 @@
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
+             - <a href="https://wiki.kb.cz/display/HT/SigningMethodsForNaturalPerson+%28CB_StandardMethodOfArrAcceptanceByNPType%29+-+MOCK">SigningMethodsForNaturalPerson</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
              - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchemas</a>
              - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructures</a>
@@ -3122,47 +3123,47 @@
             ID domácnosti
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.LoanApplicationLimit">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.LoanApplicationLimit">
             <summary>
             Limit výše úvěru
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.LoanApplicationInstallmentLimit">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.LoanApplicationInstallmentLimit">
             <summary>
             Limit výše splátky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyIncome">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyIncome">
             <summary>
             Celkové příjmy
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyCostsWithoutInstallments">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyCostsWithoutInstallments">
             <summary>
             Celkové výdaje (bez splátek)
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyInstallmentsInKBAmount">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInKBAmount">
             <summary>
             Celkové stávající splátky v KB
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyEntrepreneurInstallmentsInKBAmount">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyEntrepreneurInstallmentsInKBAmount">
             <summary>
             Celkové stávající splátky FOP v KB
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyInstallmentsInMPSS">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInMPSS">
             <summary>
             Celkové stávající splátky MPSS
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyInstallmentsInOFI">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInOFI">
             <summary>
             Celkové prohlášené splátky (klient)
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.MonthlyInstallmentsInCBCB">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInCBCB">
             <summary>
             Celkové nalezené splátky (ext. registry)
             </summary>

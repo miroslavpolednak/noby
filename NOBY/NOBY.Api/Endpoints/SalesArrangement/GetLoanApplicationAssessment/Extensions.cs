@@ -36,18 +36,21 @@ internal static class Extensions
             Households = response.HouseholdsDetails?.Select(h => new Dto.Household
             {
                 HouseholdId = h.HouseholdId,
-                MonthlyIncome = h.Detail?.RiskCharacteristics?.MonthlyIncome?.Amount,
-                MonthlyCostsWithoutInstallments = h.Detail?.RiskCharacteristics?.MonthlyCostsWithoutInstallments?.Amount,
-                MonthlyInstallmentsInMPSS = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInMPSS?.Amount,
-                MonthlyInstallmentsInOFI = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInOFI?.Amount,
-                MonthlyInstallmentsInCBCB = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInCBCB?.Amount,
-                MonthlyInstallmentsInKBAmount = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInKB?.Amount,
-                MonthlyEntrepreneurInstallmentsInKBAmount = h.Detail?.RiskCharacteristics?.MonthlyEntrepreneurInstallmentsInKB?.Amount,
-                CIR = h.Detail?.Limit?.Cir,
-                DTI = h.Detail?.Limit?.Dti,
-                DSTI = h.Detail?.Limit?.Dsti,
-                LoanApplicationLimit = h.Detail?.Limit?.Limit?.Amount,
-                LoanApplicationInstallmentLimit = h.Detail?.Limit?.InstallmentLimit?.Amount,
+                Risk = new HouseholdRisk
+                {
+                    MonthlyIncome = h.Detail?.RiskCharacteristics?.MonthlyIncome?.Amount,
+                    MonthlyCostsWithoutInstallments = h.Detail?.RiskCharacteristics?.MonthlyCostsWithoutInstallments?.Amount,
+                    MonthlyInstallmentsInMPSS = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInMPSS?.Amount,
+                    MonthlyInstallmentsInOFI = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInOFI?.Amount,
+                    MonthlyInstallmentsInCBCB = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInCBCB?.Amount,
+                    MonthlyInstallmentsInKBAmount = h.Detail?.RiskCharacteristics?.MonthlyInstallmentsInKB?.Amount,
+                    MonthlyEntrepreneurInstallmentsInKBAmount = h.Detail?.RiskCharacteristics?.MonthlyEntrepreneurInstallmentsInKB?.Amount,
+                    CIR = h.Detail?.Limit?.Cir,
+                    DTI = h.Detail?.Limit?.Dti,
+                    DSTI = h.Detail?.Limit?.Dsti,
+                    LoanApplicationLimit = h.Detail?.Limit?.Limit?.Amount,
+                    LoanApplicationInstallmentLimit = h.Detail?.Limit?.InstallmentLimit?.Amount,
+                }
             }).ToList(),
             RiskBusinesscaseExpirationDate = response!.RiskBusinessCaseExpirationDate,
             AssessmentResult = response.AssessmentResult,
