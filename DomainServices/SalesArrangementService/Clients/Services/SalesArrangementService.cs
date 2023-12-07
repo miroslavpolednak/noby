@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
+using SharedTypes.Enums;
 
 namespace DomainServices.SalesArrangementService.Clients.Services;
 
@@ -175,6 +176,21 @@ internal sealed class SalesArrangementService
             SalesArrangementId = salesArrangementId
         };
         request.FlowSwitches.AddRange(flowSwitches);
+
+        await _service.SetFlowSwitchesAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task SetFlowSwitch(int salesArrangementId, FlowSwitches flowSwitch, bool value, CancellationToken cancellationToken = default)
+    {
+        var request = new SetFlowSwitchesRequest
+        {
+            SalesArrangementId = salesArrangementId
+        };
+        request.FlowSwitches.Add(new EditableFlowSwitch
+        {
+            FlowSwitchId = (int)flowSwitch,
+            Value = value
+        });
 
         await _service.SetFlowSwitchesAsync(request, cancellationToken: cancellationToken);
     }

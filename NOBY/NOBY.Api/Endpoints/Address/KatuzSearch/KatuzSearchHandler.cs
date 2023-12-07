@@ -21,8 +21,8 @@ internal class KatuzSearchHandler : IRequestHandler<KatuzSearchRequest, KatuzSea
             PageSize = result.Count,
             Rows = result.Select(k => new KatuzLine
             {
-                Id = k.Id,
-                Title = k.Name ?? string.Empty
+                KatuzId = k.Id,
+                KatuzTitle = k.Name ?? string.Empty
             }).ToList()
         };
     }

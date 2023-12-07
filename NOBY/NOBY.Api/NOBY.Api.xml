@@ -92,12 +92,12 @@
             Stát - AddressWhispererBEService|country
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.Id">
+        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.KatuzId">
             <summary>
             Id katastrálního území (KATUZ)
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.Title">
+        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.KatuzTitle">
             <summary>
             Textová reprezentace katastrálního území
             </summary>
@@ -889,7 +889,6 @@
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
-             - <a href="https://wiki.kb.cz/display/HT/SigningMethodsForNaturalPerson+%28CB_StandardMethodOfArrAcceptanceByNPType%29+-+MOCK">SigningMethodsForNaturalPerson</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
              - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchemas</a>
              - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructures</a>
