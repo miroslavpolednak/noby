@@ -20,18 +20,26 @@ internal sealed class RealEstateValuationDataMapper
                 data.HouseAndFlat = new()
                 {
                     PoorCondition = request.HouseAndFlatDetails.PoorCondition,
-                    OwnershipRestricted = request.HouseAndFlatDetails.OwnershipRestricted,
-                    FlatOnlyDetails = new()
+                    OwnershipRestricted = request.HouseAndFlatDetails.OwnershipRestricted
+                };
+
+                if (request.HouseAndFlatDetails.FlatOnlyDetails is not null)
+                {
+                    data.HouseAndFlat.FlatOnlyDetails = new()
                     {
                         SpecialPlacement = request.HouseAndFlatDetails.FlatOnlyDetails.SpecialPlacement,
                         Basement = request.HouseAndFlatDetails.FlatOnlyDetails.Basement
-                    },
-                    FinishedHouseAndFlatDetails = new()
+                    };
+                }
+
+                if (request.HouseAndFlatDetails.FinishedHouseAndFlatDetails is not null)
+                {
+                    data.HouseAndFlat.FinishedHouseAndFlatDetails = new()
                     {
                         LeaseApplicable = request.HouseAndFlatDetails.FinishedHouseAndFlatDetails.LeaseApplicable,
                         Leased = request.HouseAndFlatDetails.FinishedHouseAndFlatDetails.Leased
-                    }
-                };
+                    };
+                }
                 break;
 
             case Contracts.UpdateRealEstateValuationDetailRequest.SpecificDetailOneofCase.ParcelDetails:
@@ -77,15 +85,15 @@ internal sealed class RealEstateValuationDataMapper
             {
                 PoorCondition = data.HouseAndFlat.PoorCondition,
                 OwnershipRestricted = data.HouseAndFlat.OwnershipRestricted,
-                FlatOnlyDetails = new()
+                FlatOnlyDetails = data.HouseAndFlat.FlatOnlyDetails is null ? null : new()
                 {
-                    SpecialPlacement = data.HouseAndFlat.FlatOnlyDetails?.SpecialPlacement ?? false,
-                    Basement = data.HouseAndFlat.FlatOnlyDetails?.Basement ?? false
+                    SpecialPlacement = data.HouseAndFlat.FlatOnlyDetails.SpecialPlacement,
+                    Basement = data.HouseAndFlat.FlatOnlyDetails.Basement
                 },
-                FinishedHouseAndFlatDetails = new()
+                FinishedHouseAndFlatDetails = data.HouseAndFlat.FinishedHouseAndFlatDetails is null ? null : new()
                 {
-                    LeaseApplicable = data.HouseAndFlat.FinishedHouseAndFlatDetails?.LeaseApplicable ?? false,
-                    Leased = data.HouseAndFlat.FinishedHouseAndFlatDetails?.Leased ?? false
+                    LeaseApplicable = data.HouseAndFlat.FinishedHouseAndFlatDetails.LeaseApplicable,
+                    Leased = data.HouseAndFlat.FinishedHouseAndFlatDetails.Leased
                 }
             };
         }
