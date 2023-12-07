@@ -140,14 +140,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             }
 
             // set flow switches
-            await _salesArrangementService.SetFlowSwitches(salesArrangementId, new()
-            {
-                new()
-                {
-                    FlowSwitchId = (int)(household.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning),
-                    Value = true
-                }
-            }, cancellationToken);
+            await _salesArrangementService.SetFlowSwitch(salesArrangementId, (household.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning), true, cancellationToken);
         }
         
         if (wasCRSChanged) // zmena CRS
