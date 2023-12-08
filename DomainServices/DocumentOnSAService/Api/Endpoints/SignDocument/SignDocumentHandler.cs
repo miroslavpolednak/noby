@@ -402,7 +402,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await _productService.UpdateMortgage(new UpdateMortgageRequest { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
-    private async Task UpdateFirstSignatureDateSa(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task UpdateFirstSignatureDateSaParams(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         salesArrangement.Mortgage.FirstSignatureDate = signatureDate;
         await _salesArrangementService.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
@@ -434,13 +434,13 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     private async Task AddFirstSignatureDateIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, DateTime signatureDate, CancellationToken cancellationToken)
     {
-        //var salesArrangementType = await _commonSigningMethods.GetSalesArrangementType(salesArrangement, cancellationToken);
-        //if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte()
-        //    && salesArrangement.Mortgage.FirstSignatureDate is null)
-        //{
-        //    //SalesArrangement parameters
-        //    await UpdateFirstSignatureDateSa(signatureDate, salesArrangement, cancellationToken);
-        //}
+        var salesArrangementType = await _commonSigningMethods.GetSalesArrangementType(salesArrangement, cancellationToken);
+        if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte()
+            && salesArrangement.Mortgage.FirstSignatureDate is null)
+        {
+            //SalesArrangement FirstSignatureDate
+            await UpdateSalesArrangementFirstSignatureDate(salesArrangement, signatureDate, cancellationToken);
+        }
 
         if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()
         && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId && d.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()).AllAsync(r => !r.IsSigned, cancellationToken))
@@ -452,11 +452,25 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                 throw new CisValidationException(ErrorCodeMapper.EasAddFirstSignatureDateReturnedErrorState, $"Eas AddFirstSignatureDate returned error state: {result.CommonValue} with message: {result.CommonText}");
             }
 
-            //SalesArrangement parameters
-            await UpdateFirstSignatureDateSa(signatureDate, salesArrangement, cancellationToken);
             //KonsDb 
             await UpdateFirstSignatureDateKonsDb(signatureDate, salesArrangement, cancellationToken);
+
+            //SalesArrangement FirstSignatureDate
+            await UpdateSalesArrangementFirstSignatureDate(salesArrangement, signatureDate, cancellationToken);
+
+            //SalesArrangement parameters FirstSignatureDate
+            await UpdateFirstSignatureDateSaParams(signatureDate, salesArrangement, cancellationToken);
         }
+    }
+
+    private async Task UpdateSalesArrangementFirstSignatureDate(SalesArrangement salesArrangement, DateTime signatureDate, CancellationToken cancellationToken)
+    {
+        await _salesArrangementService.UpdateSalesArrangement(new()
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            FirstSignatureDate = Timestamp.FromDateTime(DateTime.SpecifyKind(signatureDate, DateTimeKind.Utc))
+        }
+        , cancellationToken);
     }
 
     private void UpdateDocumentOnSa(DocumentOnSa documentOnSa, System.DateTime signatureDate)

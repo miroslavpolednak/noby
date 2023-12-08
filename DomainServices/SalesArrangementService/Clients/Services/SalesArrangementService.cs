@@ -87,15 +87,9 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateSalesArrangement(UpdateSalesArrangementRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        await _service.UpdateSalesArrangementAsync(
-           new()
-           {
-               SalesArrangementId = salesArrangementId,
-               ContractNumber = contractNumber ?? "",
-               RiskBusinessCaseId = riskBusinessCaseId ?? ""
-           }, cancellationToken: cancellationToken);
+        await _service.UpdateSalesArrangementAsync(request, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellationToken = default(CancellationToken))
