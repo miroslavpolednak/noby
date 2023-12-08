@@ -167,14 +167,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             return new Empty();
 
         // SA state
-        if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
-        {
-            await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
-        }
-        else
-        {
-            throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
-        }
+        await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
 
         if (!wasUpdateOfCustomersSuccessful)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnsuccessfulCustomerDataUpdateToCM);
