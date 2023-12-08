@@ -402,7 +402,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await _productService.UpdateMortgage(new UpdateMortgageRequest { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
-    private async Task UpdateFirstSignatureDateSa(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task UpdateFirstSignatureDateSaParams(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         salesArrangement.Mortgage.FirstSignatureDate = signatureDate;
         await _salesArrangementService.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
@@ -439,12 +439,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             && salesArrangement.Mortgage.FirstSignatureDate is null)
         {
             //SalesArrangement FirstSignatureDate
-            await _salesArrangementService.UpdateSalesArrangement(new()
-            {
-                SalesArrangementId = salesArrangement.SalesArrangementId,
-                FirstSignatureDate = Timestamp.FromDateTime(DateTime.SpecifyKind(signatureDate, DateTimeKind.Local))
-            }
-            ,cancellationToken);
+            await UpdateSalesArrangementFirstSignatureDate(salesArrangement, signatureDate, cancellationToken);
         }
 
         if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()
@@ -461,16 +456,21 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             await UpdateFirstSignatureDateKonsDb(signatureDate, salesArrangement, cancellationToken);
 
             //SalesArrangement FirstSignatureDate
-            await _salesArrangementService.UpdateSalesArrangement(new()
-            {
-                SalesArrangementId = salesArrangement.SalesArrangementId,
-                FirstSignatureDate = Timestamp.FromDateTime(DateTime.SpecifyKind(signatureDate, DateTimeKind.Local))
-            }
-            , cancellationToken);
+            await UpdateSalesArrangementFirstSignatureDate(salesArrangement, signatureDate, cancellationToken);
 
-            //SalesArrangement parameters
-            await UpdateFirstSignatureDateSa(signatureDate, salesArrangement, cancellationToken);
+            //SalesArrangement parameters FirstSignatureDate
+            await UpdateFirstSignatureDateSaParams(signatureDate, salesArrangement, cancellationToken);
         }
+    }
+
+    private async Task UpdateSalesArrangementFirstSignatureDate(SalesArrangement salesArrangement, DateTime signatureDate, CancellationToken cancellationToken)
+    {
+        await _salesArrangementService.UpdateSalesArrangement(new()
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            FirstSignatureDate = Timestamp.FromDateTime(DateTime.SpecifyKind(signatureDate, DateTimeKind.Utc))
+        }
+        , cancellationToken);
     }
 
     private void UpdateDocumentOnSa(DocumentOnSa documentOnSa, System.DateTime signatureDate)
