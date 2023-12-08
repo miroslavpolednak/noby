@@ -99,7 +99,7 @@ internal sealed class LoanRepository
     {
         const string Query =
             """
-            SELECT [UverId] as ProductId, [NemovitostId] as RealEstateTypeId
+            SELECT [UverId] as ProductId, [NemovitostId] as RealEstateId
             FROM [dbo].[Zabezpeceni]
             WHERE [UverId] = @caseId
             """;
@@ -185,8 +185,9 @@ internal sealed class LoanRepository
     {
         const string Query =
             """
-            SELECT [NemovitostId] as RealEstateTypeId, [UcelKod] as RealEstatePurchaseTypeId
+            SELECT [NemovitostId] as RealEstateId, [TypKod] as RealEstateTypeId, [UcelKod] as RealEstatePurchaseTypeId
             FROM [dbo].[UverNemovitost]
+            INNER JOIN [dbo].[Nemovitost] ON [Id] = [NemovitostId]
             WHERE [UverId] = @caseId
             """;
 

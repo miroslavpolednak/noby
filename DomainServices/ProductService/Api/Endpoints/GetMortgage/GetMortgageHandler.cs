@@ -59,7 +59,7 @@ internal sealed class GetMortgageHandler : IRequestHandler<GetMortgageRequest, G
 
         return realEstates.Select(r =>
         {
-            var col = collateral.FirstOrDefault(c => c.RealEstateTypeId == r.RealEstateTypeId);
+            var col = collateral.FirstOrDefault(c => c.RealEstateId == r.RealEstateId);
 
             return new LoanRealEstate
             {
