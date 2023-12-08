@@ -64,7 +64,7 @@ public interface ISalesArrangementServiceClient
     /// <summary>
     /// Update obsahu SA
     /// </summary>
-    Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, CancellationToken cancellationToken = default);
+    Task UpdateSalesArrangement(UpdateSalesArrangementRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update parametru SA

@@ -64,7 +64,7 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
                 IsValid = documentOnSa.IsValid,
                 IsSigned = documentOnSa.IsSigned,
                 IsArchived = documentOnSa.IsArchived,
-                SignatureDateTime = documentOnSa.SignatureDateTime is not null ? Timestamp.FromDateTime(DateTime.SpecifyKind(documentOnSa.SignatureDateTime.Value, DateTimeKind.Utc)) : null,
+                SignatureDateTime = documentOnSa.SignatureDateTime is not null ? Timestamp.FromDateTime(DateTime.SpecifyKind(documentOnSa.SignatureDateTime.Value, DateTimeKind.Local)) : null,
                 SignatureConfirmedBy = documentOnSa.SignatureConfirmedBy,
                 IsFinal = documentOnSa.IsFinal,
                 SignatureTypeId = documentOnSa.SignatureTypeId,

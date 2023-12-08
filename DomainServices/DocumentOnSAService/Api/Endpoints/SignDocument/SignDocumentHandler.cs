@@ -434,13 +434,18 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     private async Task AddFirstSignatureDateIfNotSetYet(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, DateTime signatureDate, CancellationToken cancellationToken)
     {
-        //var salesArrangementType = await _commonSigningMethods.GetSalesArrangementType(salesArrangement, cancellationToken);
-        //if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte()
-        //    && salesArrangement.Mortgage.FirstSignatureDate is null)
-        //{
-        //    //SalesArrangement parameters
-        //    await UpdateFirstSignatureDateSa(signatureDate, salesArrangement, cancellationToken);
-        //}
+        var salesArrangementType = await _commonSigningMethods.GetSalesArrangementType(salesArrangement, cancellationToken);
+        if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte()
+            && salesArrangement.Mortgage.FirstSignatureDate is null)
+        {
+            //SalesArrangement FirstSignatureDate
+            await _salesArrangementService.UpdateSalesArrangement(new()
+            {
+                SalesArrangementId = salesArrangement.SalesArrangementId,
+                FirstSignatureDate = Timestamp.FromDateTime(DateTime.SpecifyKind(signatureDate, DateTimeKind.Local))
+            }
+            ,cancellationToken);
+        }
 
         if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()
         && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId && d.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()).AllAsync(r => !r.IsSigned, cancellationToken))
@@ -452,10 +457,19 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                 throw new CisValidationException(ErrorCodeMapper.EasAddFirstSignatureDateReturnedErrorState, $"Eas AddFirstSignatureDate returned error state: {result.CommonValue} with message: {result.CommonText}");
             }
 
-            //SalesArrangement parameters
-            await UpdateFirstSignatureDateSa(signatureDate, salesArrangement, cancellationToken);
             //KonsDb 
             await UpdateFirstSignatureDateKonsDb(signatureDate, salesArrangement, cancellationToken);
+
+            //SalesArrangement FirstSignatureDate
+            await _salesArrangementService.UpdateSalesArrangement(new()
+            {
+                SalesArrangementId = salesArrangement.SalesArrangementId,
+                FirstSignatureDate = Timestamp.FromDateTime(DateTime.SpecifyKind(signatureDate, DateTimeKind.Local))
+            }
+            , cancellationToken);
+
+            //SalesArrangement parameters
+            await UpdateFirstSignatureDateSa(signatureDate, salesArrangement, cancellationToken);
         }
     }
 
