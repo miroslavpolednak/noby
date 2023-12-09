@@ -20,6 +20,7 @@ using CIS.InternalServices.NotificationService.Api.Services.User;
 using CIS.InternalServices.NotificationService.Api.Swagger;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using SharedComponents.DocumentDataStorage;
 
 var winSvc = args.Any(t => t.Equals("winsvc"));
 var webAppOptions = winSvc
@@ -93,7 +94,10 @@ try
 
     // smtp
     builder.AddSmtpClient();
-    
+
+    // ukladani payloadu - document data storage
+    builder.AddDocumentDataStorage(connectionStringKey: "nobyDb");
+
     // swagger
     builder.AddCustomSwagger();
 

@@ -67,19 +67,19 @@ public static class ServiceCollectionExtensions
             .Validate(config => !string.IsNullOrEmpty(config?.SecretKey),
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.SecretKey)} required.");
         
-        builder.Services
-            .AddOptions<SmtpConfiguration>()
-            .Bind(builder.Configuration.GetSection(nameof(SmtpConfiguration)))
-            .Validate(
-                config => !string.IsNullOrEmpty(config?.Host),
-                $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Host)} required.")
-            .Validate(
-                config => config?.Port != 0,
-                $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Port)} required and cannot be 0.")
-            .Validate(
-                config => config?.Timeout >= 10 && config?.Timeout <= 300,
-                $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Timeout)} is required and value must be between 10 and 300 seconds.")
-            .ValidateOnStart();
+        //builder.Services
+        //    .AddOptions<SmtpConfiguration>()
+        //    .Bind(builder.Configuration.GetSection(nameof(SmtpConfiguration)))
+        //    .Validate(
+        //        config => !string.IsNullOrEmpty(config?.Host),
+        //        $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Host)} required.")
+        //    .Validate(
+        //        config => config?.Port != 0,
+        //        $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Port)} required and cannot be 0.")
+        //    .Validate(
+        //        config => config?.Timeout >= 10 && config?.Timeout <= 300,
+        //        $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Timeout)} is required and value must be between 10 and 300 seconds.")
+        //    .ValidateOnStart();
         
         return builder;
     }

@@ -32,8 +32,8 @@ public static class ServiceCollectionExtensions
             .AddCisMessaging()
             .AddKafka()
             // Mcs
-                .AddConsumer<McsResultConsumer>()
-                .AddConsumerTopicAvro<IMcsResultTopic>(topics.McsResult)
+                //.AddConsumer<McsResultConsumer>()
+                //.AddConsumerTopicAvro<IMcsResultTopic>(topics.McsResult)
                 .AddProducerAvro<IMcsSenderTopic>(topics.McsSender)
             // Mpss
                 .AddConsumer<MpssSendEmailConsumer>()

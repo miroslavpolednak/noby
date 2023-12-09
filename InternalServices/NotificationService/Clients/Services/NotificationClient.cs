@@ -22,25 +22,25 @@ public class NotificationClient : INotificationClient
     public async Task<SendSmsResponse> SendSms(SendSmsRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendSms));
-        return await _notificationService.SendSms(request, token);
+        return await _notificationService.SendSms(request, default);
     }
 
     public async Task<SendSmsFromTemplateResponse> SendSmsFromTemplate(SendSmsFromTemplateRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendSmsFromTemplate));
-        return await _notificationService.SendSmsFromTemplate(request, token);
+        return await _notificationService.SendSmsFromTemplate(request, default);
     }
 
     public async Task<SendEmailResponse> SendEmail(SendEmailRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendEmail));
-        return await _notificationService.SendEmail(request, token);
+        return await _notificationService.SendEmail(request, default);
     }
 
     public async Task<SendEmailFromTemplateResponse> SendEmailFromTemplate(SendEmailFromTemplateRequest request, CancellationToken token)
     {
         _logger.RequestHandlerStarted(nameof(SendEmailFromTemplate));
-        return await _notificationService.SendEmailFromTemplate(request, token);
+        return await _notificationService.SendEmailFromTemplate(request, default);
     }
 
     public async Task<SearchResultsResponse> SearchResults(SearchResultsRequest request, CancellationToken token)
