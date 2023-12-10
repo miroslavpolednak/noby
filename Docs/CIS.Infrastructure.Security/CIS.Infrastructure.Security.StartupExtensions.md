@@ -31,6 +31,24 @@ public static Microsoft.AspNetCore.Builder.WebApplicationBuilder AddCisServiceAu
 #### Returns
 [Microsoft.AspNetCore.Builder.WebApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Builder.WebApplicationBuilder 'Microsoft.AspNetCore.Builder.WebApplicationBuilder')
 
+<a name='CIS.Infrastructure.Security.StartupExtensions.AddCisServiceUserContext(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder)'></a>
+
+## StartupExtensions.AddCisServiceUserContext(this WebApplicationBuilder) Method
+
+helper pro ziskani aktualniho uzivatele
+
+```csharp
+public static Microsoft.AspNetCore.Builder.WebApplicationBuilder AddCisServiceUserContext(this Microsoft.AspNetCore.Builder.WebApplicationBuilder builder);
+```
+#### Parameters
+
+<a name='CIS.Infrastructure.Security.StartupExtensions.AddCisServiceUserContext(thisMicrosoft.AspNetCore.Builder.WebApplicationBuilder).builder'></a>
+
+`builder` [Microsoft.AspNetCore.Builder.WebApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Builder.WebApplicationBuilder 'Microsoft.AspNetCore.Builder.WebApplicationBuilder')
+
+#### Returns
+[Microsoft.AspNetCore.Builder.WebApplicationBuilder](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Builder.WebApplicationBuilder 'Microsoft.AspNetCore.Builder.WebApplicationBuilder')
+
 <a name='CIS.Infrastructure.Security.StartupExtensions.UseCisServiceUserContext(thisMicrosoft.AspNetCore.Builder.IApplicationBuilder)'></a>
 
 ## StartupExtensions.UseCisServiceUserContext(this IApplicationBuilder) Method
