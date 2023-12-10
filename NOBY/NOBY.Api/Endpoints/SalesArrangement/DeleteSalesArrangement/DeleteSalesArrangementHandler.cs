@@ -1,6 +1,6 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.DeleteSalesArrangement;
 
@@ -10,6 +10,12 @@ internal sealed class DeleteSalesArrangementHandler
     public async Task Handle(DeleteSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
+
+        if (saCategory.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
+        {
+            throw new NobyValidationException("Product SA can not be deleted");
+        }
 
         // validace na stav SA
         if (!_allowedSAStates.Contains(saInstance.State))
@@ -47,9 +53,11 @@ internal sealed class DeleteSalesArrangementHandler
 
     private readonly IHouseholdServiceClient _householdService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICodebookServiceClient _codebookService;
 
-    public DeleteSalesArrangementHandler(ISalesArrangementServiceClient salesArrangementService, IHouseholdServiceClient householdService)
+    public DeleteSalesArrangementHandler(ISalesArrangementServiceClient salesArrangementService, IHouseholdServiceClient householdService, ICodebookServiceClient codebookService)
     {
+        _codebookService = codebookService;
         _householdService = householdService;
         _salesArrangementService = salesArrangementService;
     }
