@@ -39,7 +39,7 @@ public class DocumentArchiveController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocument(
         [FromQuery] FileContentDispositions contentDisposition,
-        [FromQuery] Source source,
+        [FromQuery] GetDocument.Source source,
         [FromQuery] string? documentId,
         [FromQuery] string? externalId,
         CancellationToken cancellationToken)

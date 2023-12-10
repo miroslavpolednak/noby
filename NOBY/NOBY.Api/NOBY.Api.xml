@@ -3807,7 +3807,8 @@
             Smazaní SalesArrangement-u
             </summary>
             <remarks>
-             Smazání pouze servisních žádostí (validace na servisní žádosti je v doménových službách).<br /><br />
+             Smazání pouze servisních žádostí.
+             
              <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=513586F4-297B-4e72-BF55-2207943157C6"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID</param>
