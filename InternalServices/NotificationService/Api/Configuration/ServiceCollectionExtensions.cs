@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using CIS.Infrastructure.StartupExtensions;
+using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
+using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Configuration;
 
@@ -66,21 +68,29 @@ public static class ServiceCollectionExtensions
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.AccessKey)} required.")
             .Validate(config => !string.IsNullOrEmpty(config?.SecretKey),
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.SecretKey)} required.");
-        
-        //builder.Services
-        //    .AddOptions<SmtpConfiguration>()
-        //    .Bind(builder.Configuration.GetSection(nameof(SmtpConfiguration)))
-        //    .Validate(
-        //        config => !string.IsNullOrEmpty(config?.Host),
-        //        $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Host)} required.")
-        //    .Validate(
-        //        config => config?.Port != 0,
-        //        $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Port)} required and cannot be 0.")
-        //    .Validate(
-        //        config => config?.Timeout >= 10 && config?.Timeout <= 300,
-        //        $"{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Timeout)} is required and value must be between 10 and 300 seconds.")
-        //    .ValidateOnStart();
-        
+
+        string sendEmailsJobConfiguration = $"{CisBackgroundServiceExtensions.ConfigurationSectionKey}:{nameof(SendEmailsJob)}:{CisBackgroundServiceExtensions.CustomConfigurationSectionKey}";
+
+        builder.Services
+            .AddOptions<SendEmailsJobConfiguration>()
+            .Bind(builder.Configuration.GetSection(sendEmailsJobConfiguration))
+            .Validate(
+                config => !string.IsNullOrEmpty(config?.SmtpConfiguration.Host),
+                $"{sendEmailsJobConfiguration}.{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Host)} required.")
+            .Validate(
+                config => config?.SmtpConfiguration.Port != 0,
+                $"{sendEmailsJobConfiguration}.{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Port)} required and cannot be 0.")
+            .Validate(
+                config => config?.SmtpConfiguration.Timeout >= 10 && config?.SmtpConfiguration.Timeout <= 300,
+                $"{sendEmailsJobConfiguration}.{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Timeout)} is required and value must be between 10 and 300 seconds.")
+            .Validate(
+                config => config?.EmailSlaInMinutes > 0,
+                $"{sendEmailsJobConfiguration}.EmailSlaInMinutes required and cannot be 0.")
+            .Validate(
+                config => config?.NumberOfEmailsAtOnce > 0,
+                $"{sendEmailsJobConfiguration}.NumberOfEmailsAtOnce required and cannot be 0.")
+            .ValidateOnStart();
+
         return builder;
     }
 
@@ -93,12 +103,7 @@ public static class ServiceCollectionExtensions
     {
         return builder.GetConfiguration<S3Configuration>();
     }
-    
-    public static SmtpConfiguration GetSmtpConfiguration(this WebApplicationBuilder builder)
-    {
-        return builder.GetConfiguration<SmtpConfiguration>();
-    }
-    
+
     private static TConfiguration GetConfiguration<TConfiguration>(this WebApplicationBuilder builder)
         where TConfiguration : class
     {

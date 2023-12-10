@@ -8,12 +8,12 @@ public sealed class SendEmailsJobConfiguration
 
     public int NumberOfEmailsAtOnce { get; set; }
 
-    public required SmtpConfiguration SmtpConfiguration { get; set; }
+    public SmtpConfiguration SmtpConfiguration { get; set; } = default!;
 }
 
 public class SmtpConfiguration
 {
-    public string Host { get; set; } = null!;
+    public string Host { get; set; } = default!;
 
     public int Port { get; set; }
 

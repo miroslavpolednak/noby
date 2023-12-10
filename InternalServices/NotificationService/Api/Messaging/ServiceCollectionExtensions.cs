@@ -36,8 +36,8 @@ public static class ServiceCollectionExtensions
                 //.AddConsumerTopicAvro<IMcsResultTopic>(topics.McsResult)
                 .AddProducerAvro<IMcsSenderTopic>(topics.McsSender)
             // Mpss
-                .AddConsumer<MpssSendEmailConsumer>()
-                .AddConsumerTopicAvro<IMpssSendEmailTopic>(topics.NobySendEmail)
+                //.AddConsumer<MpssSendEmailConsumer>()
+                //.AddConsumerTopicAvro<IMpssSendEmailTopic>(topics.NobySendEmail)
                 .AddProducerAvro<IMpssSendEmailTopic>(topics.NobySendEmail)
             .Build();
 

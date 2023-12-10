@@ -139,23 +139,23 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
             }
             else if (result.SenderType == Contracts.Statistics.Dto.SenderType.MP)
             {
-                var sendEmail = new MpssSendApi.v1.email.SendEmail
-                {
-                    id = result.Id.ToString(),
-                    notificationConsumer = MpssEmailMappers.MapToMpss(consumerId),
-                    sender = request.From.MapToMpss(),
-                    to = request.To.MapToMpss().ToList(),
-                    bcc = request.Bcc.MapToMpss().ToList(),
-                    cc = request.Cc.MapToMpss().ToList(),
-                    replyTo = request.ReplyTo?.MapToMpss(),
-                    subject = request.Subject,
-                    content = request.Content.MapToMpss(),
-                    attachments = attachmentKeyFilenames
-                        .Select(kv => MpssEmailMappers.MapToMpss(kv.Key, kv.Value))
-                        .ToList()
-                };
+                //var sendEmail = new MpssSendApi.v1.email.SendEmail
+                //{
+                //    id = result.Id.ToString(),
+                //    notificationConsumer = MpssEmailMappers.MapToMpss(consumerId),
+                //    sender = request.From.MapToMpss(),
+                //    to = request.To.MapToMpss().ToList(),
+                //    bcc = request.Bcc.MapToMpss().ToList(),
+                //    cc = request.Cc.MapToMpss().ToList(),
+                //    replyTo = request.ReplyTo?.MapToMpss(),
+                //    subject = request.Subject,
+                //    content = request.Content.MapToMpss(),
+                //    attachments = attachmentKeyFilenames
+                //        .Select(kv => MpssEmailMappers.MapToMpss(kv.Key, kv.Value))
+                //        .ToList()
+                //};
 
-                await _mpssEmailProducer.SendEmail(sendEmail, cancellationToken);
+                //await _mpssEmailProducer.SendEmail(sendEmail, cancellationToken);
 
                 // ulozit payload pro nasledne odeslani v backgroudjobu
                 SendEmail email = new()

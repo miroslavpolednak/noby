@@ -1,16 +1,15 @@
-﻿using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
+﻿using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Api.Configuration;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
+using CIS.InternalServices.NotificationService.Api.Services.Smtp;
 using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.DocumentDataStorage;
 using System.Net.Security;
 using CIS.Core;
 using CIS.Core.Exceptions;
-using System.Linq;
-using CIS.InternalServices.NotificationService.Api.Services.Smtp;
-using System.Threading;
+using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 
@@ -25,14 +24,14 @@ public sealed class SendEmailsJob
     private readonly IDateTime _dateTime;
 
     public SendEmailsJob(
-        AppConfiguration appConfiguration,
+        IOptions<AppConfiguration> appConfiguration,
         SendEmailsJobConfiguration configuration, 
         NotificationDbContext dbContext, 
         IDocumentDataStorage documentDataStorage,
         ILogger<SendEmailsJob> logger,
         IDateTime dateTime)
     {
-        _appConfiguration = appConfiguration;
+        _appConfiguration = appConfiguration.Value;
         _configuration = configuration;
         _dbContext = dbContext;
         _documentDataStorage = documentDataStorage;
@@ -46,10 +45,12 @@ public sealed class SendEmailsJob
         await UpdateExpired(cancellationToken);
 
         // vytahnout emaily k odeslani
+        var random = new Random();
         var emails = await _dbContext.EmailResults
             .Where(t => t.State == NotificationState.InProgress && t.SenderType == Contracts.Statistics.Dto.SenderType.MP)
+            // TODO: pokud proslo UpdateExpired, je tahle podminka zbytecna
             .Where(t => t.RequestTimestamp >= _dateTime.Now.AddMinutes(_configuration.EmailSlaInMinutes * -1) || t.Resent)
-            .OrderBy(t => t.RequestTimestamp)
+            .OrderBy(t => Guid.NewGuid())
             .Take(_configuration.NumberOfEmailsAtOnce)
             .ToListAsync(cancellationToken);
 
@@ -80,24 +81,26 @@ public sealed class SendEmailsJob
         {
             try
             {
+                // zkontrolovat jestli id neni uz odeslano / neodesila se v jine instanci
                 // vlozit id do tabulky, aby nedoslo k nasobnemu odeslani z vice instanci NS
-                await _dbContext.Database.ExecuteSqlInterpolatedAsync($"Insert Into SentNotification Values {email.Id}", default);
-            } catch(Exception ex)
+                // pokud id existuje, vraci se -1, proc nevraci 0 (rows affected)?
+                if ((await _dbContext.Database.ExecuteSqlInterpolatedAsync(@$"
+                        If (Not Exists(Select * From SentNotification Where Id = {email.Id}))
+                            Insert Into SentNotification Values ({email.Id})", default)) != 1)
+                    continue;
+            } catch
             {
                 // id nejde vlozit (zamknout), pokracujeme na dalsi email
-                continue;
-            }
-
-            // zkontrolovat jestli ma email payload
-            if (!emailPayloads.Any(t => t.EntityId == email.Id.ToString()))
-            {
-                _logger.LogWarning($"Cannot handle {nameof(SendEmailsJob)}, because original request payload with id = '{email.Id}' was not found.");
                 continue;
             }
             
             try
             {
-                var payload = emailPayloads.First(t => t.EntityId == email.Id.ToString()).Data!.Data!;
+                var payload = emailPayloads.FirstOrDefault(t => t.EntityId == email.Id.ToString())?.Data!.Data!;
+
+                if (payload is null)
+                    throw new CisNotFoundException(0, $"Request payload for email result id {email.Id} was not found.");
+
                 // zkontrolovat whitelist
                 // TODO: proc je to tady a ne ve validaci requestu?
                 if (_appConfiguration.EmailDomainWhitelist.Any())
@@ -128,13 +131,33 @@ public sealed class SendEmailsJob
                 // nastavit result
                 email.State = NotificationState.Sent;
                 email.ResultTimestamp = _dateTime.Now;
-                email.Errors = string.Empty;
+                email.ErrorSet = new HashSet<ResultError>();
                 email.Resent = false;
 
                 await _dbContext.SaveChangesAsync(default);
 
                 // odeslat
                 await client.SendAsync(message, cancellationToken = default);
+
+                // odstranit payload
+                await _documentDataStorage.DeleteByEntityId<SendEmail>(email.Id.ToString());
+            }
+            catch (CisNotFoundException ex)
+            {
+                var errorSet = new HashSet<ResultError>();
+                errorSet.UnionWith(email.ErrorSet);
+                errorSet.Add(new ResultError
+                {
+                    // todo: code is not specified in IT ANA (used same Code as MCS uses)
+                    Code = "SMTP-WHITELIST-EXCEPTION",
+                    Message = ex.Message
+                });
+                email.ErrorSet = errorSet;
+                // znovuodeslani uz nechceme
+                email.State = NotificationState.Error;
+                await _dbContext.SaveChangesAsync(default);
+
+                _logger.LogError(ex, $"Cannot handle {nameof(SendEmailsJob)}, original request payload with id '{email.Id}' was not found.");
             }
             catch (CisValidationException validationException)
             {
@@ -147,20 +170,29 @@ public sealed class SendEmailsJob
                     Message = validationException.Message
                 });
                 email.ErrorSet = errorSet;
+                // znovuodeslani uz nechceme
                 email.State = NotificationState.Error;
+                await _dbContext.SaveChangesAsync(default);
+
                 _logger.LogError(validationException, $"Could not send email from {nameof(SendEmailsJob)}.");
             }
             catch (Exception exception)
             {
-                var errorSet = new HashSet<ResultError>();
-                errorSet.UnionWith(email.ErrorSet);
-                errorSet.Add(new ResultError
+                // odstranit zamek, chceme zkusit odeslat znovu
+                await _dbContext.Database.ExecuteSqlInterpolatedAsync($"Delete From SentNotification Where Id = {email.Id}", default);
+
+                var errorSet = new HashSet<ResultError>
                 {
-                    // todo: code is not specified in IT ANA (used same Code as MCS uses)
-                    Code = "SMTP-UNKNOWN-EXCEPTION",
-                    Message = exception.Message
-                });
+                    new ResultError
+                    {
+                        // todo: code is not specified in IT ANA (used same Code as MCS uses)
+                        Code = "SMTP-UNKNOWN-EXCEPTION",
+                        Message = exception.Message
+                    }
+                };
                 email.ErrorSet = errorSet;
+                await _dbContext.SaveChangesAsync(default);
+
                 _logger.LogError(exception, $"{nameof(SendEmailsJob)} failed.");
             }
         }

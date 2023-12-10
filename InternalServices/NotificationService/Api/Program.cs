@@ -21,6 +21,7 @@ using CIS.InternalServices.NotificationService.Api.Swagger;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SharedComponents.DocumentDataStorage;
+using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 
 var winSvc = args.Any(t => t.Equals("winsvc"));
 var webAppOptions = winSvc
@@ -94,6 +95,9 @@ try
 
     // smtp
     builder.AddSmtpClient();
+    // registrace background jobu
+    builder.AddCisBackgroundService<SendEmailsJob>();
+    builder.AddCisBackgroundServiceCustomConfiguration<SendEmailsJob, SendEmailsJobConfiguration>();
 
     // ukladani payloadu - document data storage
     builder.AddDocumentDataStorage(connectionStringKey: "nobyDb");
