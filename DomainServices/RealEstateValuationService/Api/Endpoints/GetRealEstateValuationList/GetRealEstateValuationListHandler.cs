@@ -39,9 +39,9 @@ internal sealed class GetRealEstateValuationListHandler
                 ValuationResultFuturePrice = t.ValuationResultFuturePrice
             };
 
-            if (!string.IsNullOrEmpty(t.PossibleValuationTypeId)) 
+            if (t.PossibleValuationTypeId is not null) 
             {
-                item.PossibleValuationTypeId.AddRange(t.PossibleValuationTypeId!.Split(',').Select(t => Convert.ToInt32(t, CultureInfo.InvariantCulture)));
+                item.PossibleValuationTypeId.AddRange(t.PossibleValuationTypeId);
             }
 
             return item;

@@ -18,5 +18,5 @@ internal sealed class DeedOfOwnershipDocument
     public int DeedOfOwnershipNumber { get; set; }
     public string? Address { get; set; }
     public long? AddressPointId { get; set; }
-    public string? RealEstateIds { get; set; }
+    public List<long>? RealEstateIds { get; set; }
 }

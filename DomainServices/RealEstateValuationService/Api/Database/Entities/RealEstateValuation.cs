@@ -31,5 +31,5 @@ internal sealed class RealEstateValuation
     public string? ACVRealEstateTypeId { get; set; }
     public string? BagmanRealEstateTypeId { get; set; }
     public bool IsOnlineDisqualified { get; set; }
-    public string? PossibleValuationTypeId { get; set; }
+    public List<int>? PossibleValuationTypeId { get; set; }
 }

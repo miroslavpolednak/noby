@@ -35,21 +35,10 @@ internal sealed class GetRealEstateValuationTypesHandler
             .Where(t => t.RealEstateValuationId == request.RealEstateValuationId)
             .Select(t => t.RealEstateIds)
             .ToListAsync(cancellationToken);
-        var realEstateIds = deedsRealEstateIds.SelectMany(t =>
+        if (deedsRealEstateIds.Any(t => t is null || t.Count == 0))
         {
-            if (string.IsNullOrEmpty(t))
-            {
-                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId); 
-            }
-
-            var arr = System.Text.Json.JsonSerializer.Deserialize<long[]>(t);
-            if (arr is null || arr.Length == 0)
-            {
-                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId);
-            }
-
-            return arr;
-        }).ToArray();
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.MissingRealEstateId);
+        }
         
         var purposes = await _codebookService.LoanPurposes(cancellationToken);
         var acvRequest = new ExternalServices.PreorderService.V1.Contracts.AvailableValuationTypesRequestDTO
@@ -65,7 +54,7 @@ internal sealed class GetRealEstateValuationTypesHandler
                                   .Where(t => !string.IsNullOrEmpty(t))
                                   .Cast<string>()
                                   .ToList(),
-            RealEstateIds = realEstateIds,
+            RealEstateIds = deedsRealEstateIds.SelectMany(t => t!).Distinct().ToArray(),
             DealType = request.DealType ?? "",
             LoanAmount = request.LoanAmount
         };
@@ -75,7 +64,7 @@ internal sealed class GetRealEstateValuationTypesHandler
         response.ValuationTypeId.AddRange(acvResponse.Select(t => (int)t));
 
         // Uložení výsledku ACV trychtýře a zvoleného typu ocenění do Noby DB
-        await saveValuationType(request.RealEstateValuationId, response.ValuationTypeId.ToArray(), cancellationToken);
+        await saveValuationType(request.RealEstateValuationId, response.ValuationTypeId.ToList(), cancellationToken);
 
         if (revInstance.IsOnlineDisqualified && response.ValuationTypeId.Contains(1))
         {
@@ -85,15 +74,15 @@ internal sealed class GetRealEstateValuationTypesHandler
         return response;
     }
 
-    public async Task saveValuationType(int realEstateValuationId, int[] valuationTypeId, CancellationToken cancellationToken)
+    public async Task saveValuationType(int realEstateValuationId, List<int> valuationTypeId, CancellationToken cancellationToken)
     {
         var revEntity = await _dbContext
             .RealEstateValuations
             .FirstAsync(t => t.RealEstateValuationId == realEstateValuationId, cancellationToken);
         
-        revEntity.PossibleValuationTypeId = string.Join(",", valuationTypeId);
+        revEntity.PossibleValuationTypeId = valuationTypeId;
 
-        if (valuationTypeId.Length == 1)
+        if (valuationTypeId.Count == 1)
         {
             revEntity.ValuationTypeId = valuationTypeId[0];
         }

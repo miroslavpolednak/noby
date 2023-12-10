@@ -29,9 +29,9 @@ internal sealed class ValidateRealEstateValuationIdHandler
             PreorderId = entity?.PreorderId
         };
 
-        if (entity is not null && !string.IsNullOrEmpty(entity.PossibleValuationTypeId))
+        if (entity?.PossibleValuationTypeId is not null)
         {
-            response.PossibleValuationTypeId.AddRange(entity.PossibleValuationTypeId!.Split(',').Select(t => Convert.ToInt32(t, CultureInfo.InvariantCulture)));
+            response.PossibleValuationTypeId.AddRange(entity.PossibleValuationTypeId);
         }
 
         return response;

@@ -40,11 +40,9 @@ internal sealed class OrderAggregate
 
         // realestateids
         var realEstateIds = deedOfOwnerships
-            .Where(t => !string.IsNullOrEmpty(t.RealEstateIds))
-            .SelectMany(t =>
-            {
-                return System.Text.Json.JsonSerializer.Deserialize<long[]>(t.RealEstateIds!)!;
-            })
+            .Where(t => t.RealEstateIds != null)
+            .SelectMany(t => t.RealEstateIds!)
+            .Distinct()
             .ToArray();
 
         // case detail

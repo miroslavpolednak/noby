@@ -50,18 +50,17 @@ internal sealed class PreorderOnlineValuationHandler
         {
             entity.IsOnlineDisqualified = true;
 
-            var possibleTypes = entity.PossibleValuationTypeId?.Split(',').Select(t => Convert.ToInt32(t, CultureInfo.InvariantCulture)).ToArray() ?? Array.Empty<int>();
+            var possibleTypes = entity.PossibleValuationTypeId?.ToArray() ?? Array.Empty<int>();
             if (possibleTypes.Contains(1) && possibleTypes.Length == 1)
             {
                 entity.PossibleValuationTypeId = null;
             }
             else if (possibleTypes.Contains(1))
             {
-                var newPossibleTypes = possibleTypes.Where(t => t != 1).ToArray();
-                entity.PossibleValuationTypeId = string.Join(",", newPossibleTypes);
-                if (newPossibleTypes.Length == 1)
+                entity.PossibleValuationTypeId = possibleTypes.Where(t => t != 1).ToList();
+                if (entity.PossibleValuationTypeId.Count == 1)
                 {
-                    entity.ValuationTypeId = newPossibleTypes[0];
+                    entity.ValuationTypeId = entity.PossibleValuationTypeId[0];
                 }
             }
 
