@@ -16,6 +16,7 @@
 
 	<ItemGroup>
 	  <None Remove="Messages\OrderDTSValuation.proto" />
+	  <None Remove="Messages\UpdateValuationTypeByRealEstateValuation.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -42,6 +43,7 @@
 		<Protobuf Include="Messages\GetDeedOfOwnershipDocument.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\GetDeedOfOwnershipDocuments.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\DeleteRealEstateValuationAttachment.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Messages\UpdateValuationTypeByRealEstateValuation.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\ValidateRealEstateValuationId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\SetForeignRealEstateTypesByRealEstateValuation.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />

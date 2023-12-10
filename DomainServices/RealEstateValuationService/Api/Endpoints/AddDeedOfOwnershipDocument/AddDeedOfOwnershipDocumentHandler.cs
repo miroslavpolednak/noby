@@ -3,6 +3,8 @@ using DomainServices.RealEstateValuationService.Contracts;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.AddDeedOfOwnershipDocument;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 internal sealed class AddDeedOfOwnershipDocumentHandler
     : IRequestHandler<AddDeedOfOwnershipDocumentRequest, AddDeedOfOwnershipDocumentResponse>
 {
@@ -24,12 +26,9 @@ internal sealed class AddDeedOfOwnershipDocumentHandler
             CremDeedOfOwnershipDocumentId = request.CremDeedOfOwnershipDocumentId,
             KatuzId = request.KatuzId,
             KatuzTitle = request.KatuzTitle,
-            AddressPointId = request.AddressPointId
+            AddressPointId = request.AddressPointId,
+            RealEstateIds = (request.RealEstateIds?.Any() ?? false) ? request.RealEstateIds.ToList() : null
         };
-        if (request.RealEstateIds is not null && request.RealEstateIds.Count != 0)
-        {
-            entity.RealEstateIds = System.Text.Json.JsonSerializer.Serialize(request.RealEstateIds);
-        }
         _dbContext.DeedOfOwnershipDocuments.Add(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);

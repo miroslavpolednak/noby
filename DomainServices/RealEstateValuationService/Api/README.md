@@ -31,5 +31,7 @@ grpcurl -insecure -d "{\"RealEstateValuationId\":1,\"Title\":\"test\",\"FileName
 grpcurl -insecure -d "{\"RealEstateValuationId\":4}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" 172.30.35.51:30021 DomainServices.RealEstateValuationService.v1.RealEstateValuationService/GetDeedOfOwnershipDocuments
 grpcurl -insecure -d "{\"RealEstateValuationId\":1,\"DealType\":\"HYPO\"}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" 172.30.35.51:30021 DomainServices.RealEstateValuationService.v1.RealEstateValuationService/GetRealEstateValuationTypes
 
+grpcurl -insecure -d "{\"RealEstateValuationId\":1}" -H "Authorization: Basic YTph" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" 127.0.0.1:30021 DomainServices.RealEstateValuationService.v1.RealEstateValuationService/ValidateRealEstateValuationId
+
 ## run batch
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\RealEstateValuationService\Api\DomainServices.RealEstateValuationService.Api.csproj"

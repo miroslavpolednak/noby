@@ -120,6 +120,15 @@ internal sealed class RealEstateValuationServiceClient
         }, cancellationToken: cancellationToken);
     }
 
+    public async Task UpdateValuationTypeByRealEstateValuation(int realEstateValuationId, int valuationTypeId, CancellationToken cancellationToken = default)
+    {
+        await _service.UpdateValuationTypeByRealEstateValuationAsync(new()
+        {
+            RealEstateValuationId = realEstateValuationId,
+            ValuationTypeId = valuationTypeId
+        }, cancellationToken: cancellationToken);
+    }
+
     public async Task<int> CreateRealEstateValuationAttachment(CreateRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken = default)
     {
         return (await _service.CreateRealEstateValuationAttachmentAsync(request, cancellationToken: cancellationToken)).RealEstateValuationAttachmentId;
