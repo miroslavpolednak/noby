@@ -1,6 +1,7 @@
 ﻿using _OS = DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
 using EasWrapper = ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
+using static DomainServices.OfferService.Api.Database.DocumentDataEntities.OfferData;
 
 namespace DomainServices.OfferService.Api;
 
@@ -31,7 +32,7 @@ internal static class EasSimulationExtensions
 
 
     // loan
-    private static EasWrapper.SimSettingsUver ToReqLoan(this _OS.MortgageSimulationInputs inputs, Dictionary<int, DrawingDurationsResponse.Types.DrawingDurationItem> drawingDurationsById, Dictionary<int, DrawingTypesResponse.Types.DrawingTypeItem> drawingTypeById)
+    private static EasWrapper.SimSettingsUver ToReqLoan(this SimulationInputsData inputs, Dictionary<int, DrawingDurationsResponse.Types.DrawingDurationItem> drawingDurationsById, Dictionary<int, DrawingTypesResponse.Types.DrawingTypeItem> drawingTypeById)
     {
         var uver = new EasWrapper.SimSettingsUver
         {
@@ -59,12 +60,6 @@ internal static class EasSimulationExtensions
             uver.typCerpani = typCerpani.Value;
         }
 
-        if (inputs.GuaranteeDateFrom != null)
-        {
-            uver.rozhodnyDenSazby = inputs.GuaranteeDateFrom;
-            uver.datumZalozeni = inputs.GuaranteeDateFrom;
-        }
-
         uver.kanal = 6; // [MOCK] (default 6)
 
         return uver;
@@ -72,7 +67,7 @@ internal static class EasSimulationExtensions
 
 
     // interest rate
-    private static EasWrapper.SimSettingsUrokovaSazba ToReqInterestRate(this _OS.MortgageSimulationInputs inputs)
+    private static EasWrapper.SimSettingsUrokovaSazba ToReqInterestRate(this SimulationInputsData inputs)
     {
         var urokovaSazba = new EasWrapper.SimSettingsUrokovaSazba
         {
@@ -195,7 +190,7 @@ internal static class EasSimulationExtensions
     /// <summary>
     /// Converts Offer object [SimulationInputs] to EasSimulationHT object [SimulationHTRequest].
     /// </summary>
-    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs, _OS.BasicParameters basicParameters, Dictionary<int, DrawingDurationsResponse.Types.DrawingDurationItem> drawingDurationsById, Dictionary<int, DrawingTypesResponse.Types.DrawingTypeItem> drawingTypeById)
+    public static EasWrapper.SimulationHTRequest ToEasSimulationRequest(this _OS.MortgageSimulationInputs inputs, BasicParametersData basicParameters, Dictionary<int, DrawingDurationsResponse.Types.DrawingDurationItem> drawingDurationsById, Dictionary<int, DrawingTypesResponse.Types.DrawingTypeItem> drawingTypeById)
     {
         //return SampleRequest;
 

@@ -12,25 +12,5 @@ internal sealed class Offer
 
     public Guid ResourceProcessId { get; set; }
 
-    public string BasicParameters { get; set; } = default!;
-
-    public string SimulationInputs { get; set; } = default!;
-
-    public string SimulationResults { get; set; } = default!;
-
-    public string AdditionalSimulationResults { get; set; } = default!;
-
     public bool IsCreditWorthinessSimpleRequested { get; set; }
-
-    public string? CreditWorthinessSimpleInputs { get; set; }
-
-    public byte[] BasicParametersBin { get; set; } = default!;
-
-    public byte[] SimulationInputsBin { get; set; } = default!;
-
-    public byte[] SimulationResultsBin { get; set; } = default!;
-
-    public byte[] AdditionalSimulationResultsBin { get; set; } = default!;
-
-    public byte[]? CreditWorthinessSimpleInputsBin { get; set; }
 }

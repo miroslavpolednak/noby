@@ -1,6 +1,7 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Contracts;
 using Microsoft.EntityFrameworkCore;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetOfferDeveloper;
 
@@ -9,29 +10,21 @@ internal sealed class GetOfferDeveloperHandler
 {
     public async Task<GetOfferDeveloperResponse> Handle(GetOfferDeveloperRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext
-            .Offers
-            .AsNoTracking()
-            .Where(t => t.OfferId == request.OfferId)
-            .Select(t => new
-            {
-                t.SimulationInputsBin
-            })
-            .FirstOrDefaultAsync(cancellationToken)
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.OfferData>(request.OfferId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, request.OfferId);
+        var inputs = offerData.Data!.SimulationInputs;
 
-        var simulationInputs = MortgageSimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin);
         var response = new GetOfferDeveloperResponse
         {
-            DeveloperId = simulationInputs.Developer?.DeveloperId,
-            ProjectId = simulationInputs.Developer?.ProjectId
+            DeveloperId = inputs.Developer?.DeveloperId,
+            ProjectId = inputs.Developer?.ProjectId
         };
 
-        if (simulationInputs.Developer?.DeveloperId != null && simulationInputs.Developer?.ProjectId != null)
+        if (inputs.Developer?.DeveloperId != null && inputs.Developer?.ProjectId != null)
         {
             response.IsDeveloperSet = true;
 
-            var project = await _codebookService.GetDeveloperProject(simulationInputs.Developer.DeveloperId.Value, simulationInputs.Developer.ProjectId.Value, cancellationToken);
+            var project = await _codebookService.GetDeveloperProject(inputs.Developer.DeveloperId.Value, inputs.Developer.ProjectId.Value, cancellationToken);
 
             response.IsDeveloperAllowed = _allowedMassValuations.Contains(project.MassEvaluation);
         }
@@ -41,12 +34,14 @@ internal sealed class GetOfferDeveloperHandler
 
     private static int[] _allowedMassValuations = new int[] { -1, 1 };
 
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly Database.OfferServiceDbContext _dbContext;
 
-    public GetOfferDeveloperHandler(Database.OfferServiceDbContext dbContext, ICodebookServiceClient codebookService)
+    public GetOfferDeveloperHandler(
+        IDocumentDataStorage documentDataStorage,
+        ICodebookServiceClient codebookService)
     {
+        _documentDataStorage = documentDataStorage;
         _codebookService = codebookService;
-        _dbContext = dbContext;
     }
 }
