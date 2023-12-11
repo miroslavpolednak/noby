@@ -158,6 +158,8 @@ public sealed class HouseholdObligationItem
     /// </summary>
     public bool ZavazekFOP { get; set; }
 
+    public List<string>? Spoludluznici { get; set; }
+
     /// <summary>
     /// Kód skupiny
     /// </summary>
