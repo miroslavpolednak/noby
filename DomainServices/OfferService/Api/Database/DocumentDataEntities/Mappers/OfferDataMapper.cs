@@ -52,12 +52,12 @@ internal sealed class OfferDataMapper
                 RealEstateInsurance = inputs.MarketingActions.RealEstateInsurance,
                 UserVip = inputs.MarketingActions.UserVip
             },
-            RealEstateInsurance = new()
+            RealEstateInsurance = inputs.RealEstateInsurance is null ? null : new()
             {
                 Frequency = inputs.RealEstateInsurance.Frequency,
                 Sum = inputs.RealEstateInsurance.Sum
             },
-            RiskLifeInsurance = new()
+            RiskLifeInsurance = inputs.RiskLifeInsurance is null ? null : new()
             {
                 Frequency = inputs.RiskLifeInsurance.Frequency,
                 Sum = inputs.RiskLifeInsurance.Sum

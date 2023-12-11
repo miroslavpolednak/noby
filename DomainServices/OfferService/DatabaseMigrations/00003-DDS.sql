@@ -118,7 +118,35 @@ CREATE NONCLUSTERED INDEX [Idx_EntityId] ON [DDS].[CreditWorthinessSimpleData]
 GO
 
 
-
+select --A.OfferId, 1, A.CreatedUserId, A.CreatedTime,
+	A.basicparameters,
+	'{'
+	+'"BasicParameters":{"FinancialResourcesOwn":'+(case when B.FinancialResourcesOwn is null then 'null' else cast(B.FinancialResourcesOwn as varchar(20)) end)+',"FinancialResourcesOther":'+(case when B.FinancialResourcesOther is null then 'null' else cast(B.FinancialResourcesOther as varchar(20)) end)+',"StatementTypeId":'+cast(isnull(B.StatementTypeId,0) as varchar(20))
+	+',"GuaranteeDateTo":'+(case when B.GuaranteeDateTo_y is null then 'null' else '"'+cast(B.GuaranteeDateTo_y as varchar(4))+'-'+FORMAT(B.GuaranteeDateTo_m, 'D2')+'-'+FORMAT(B.GuaranteeDateTo_d, 'D2')+'T00:00:00"' end)+'}'
+	+'"SimulationInputs":{}'
+	+'"SimulationOutputs":{}'
+	+'}'
+	from dbo.Offer A 
+	inner join (select y.*, X.OfferId from dbo.Offer X
+		CROSS APPLY OPENJSON (X.BasicParameters) 
+		with (
+			FinancialResourcesOwn int '$.FinancialResourcesOwn.Units', 
+			FinancialResourcesOther int '$.FinancialResourcesOther.Units', 
+			StatementTypeId int '$.StatementTypeId', 
+			GuaranteeDateTo_d int '$.GuaranteeDateTo.Day',
+			GuaranteeDateTo_m int '$.GuaranteeDateTo.Month',
+			GuaranteeDateTo_y int '$.GuaranteeDateTo.Year'
+		) as Y) as B ON B.OfferId=A.OfferId
+	inner join (select y.*, X.OfferId from dbo.Offer X
+		CROSS APPLY OPENJSON (X.BasicParameters) 
+		with (
+			FinancialResourcesOwn int '$.FinancialResourcesOwn.Units', 
+			FinancialResourcesOther int '$.FinancialResourcesOther.Units', 
+			StatementTypeId int '$.StatementTypeId', 
+			GuaranteeDateTo_d int '$.GuaranteeDateTo.Day',
+			GuaranteeDateTo_m int '$.GuaranteeDateTo.Month',
+			GuaranteeDateTo_y int '$.GuaranteeDateTo.Year'
+		) as Y) as C ON C.OfferId=A.OfferId
 
 
 DROP TABLE IF EXISTS Offer_backup;
