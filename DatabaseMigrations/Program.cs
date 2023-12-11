@@ -1,7 +1,9 @@
 ﻿using CommandLine;
 using DatabaseMigrations;
+using DatabaseMigrations.ScriptProviders;
 using DbUp;
 using Spectre.Console;
+using System.Reflection;
 
 return (int)Parser.Default
                   .ParseArguments<MigrateOptions>(args)
@@ -32,12 +34,28 @@ static ExitCode RunDbUp(MigrateOptions opts)
         return ExitCode.DirectoryNotExist;
     }
 
-    var upgradeEngine = DeployChanges.To.SqlDatabase(opts.ConnectionString)
+    var upgradeEngineBuilder = DeployChanges.To.SqlDatabase(opts.ConnectionString)
                                      .JournalToSqlTable("dbo", "MigrationHistory")
-                                     .WithScriptsFromFileSystem(folder)
                                      .WithTransaction()
                                      .LogToConsole()
-                                     .Build();
+                                     .WithScriptsFromFileSystem(folder);
+
+    // add C# scripts to migrations
+    if (!string.IsNullOrEmpty(opts.CodeScriptAssembly))
+    {
+        if (!File.Exists(opts.CodeScriptAssembly))
+        {
+            AnsiConsole.MarkupLine($"[bold red]ERROR:[/] Code scripts assembly [dim]'{opts.CodeScriptAssembly}'[/] does not exist.");
+            return ExitCode.CodeAssemblyNotExist;
+        }
+
+        var codeAssembly = Assembly.LoadFrom(opts.CodeScriptAssembly);
+        upgradeEngineBuilder = upgradeEngineBuilder
+            .WithScripts(new ScriptFromScriptClassesScriptProvider(codeAssembly))
+            .LogScriptOutput();
+    }
+    
+    var upgradeEngine = upgradeEngineBuilder.Build();
 
     if (opts.MigrationExistsCheckOnly ?? false)
         return upgradeEngine.IsUpgradeRequired() ? ExitCode.Success : ExitCode.NoMigrationAvailable;
