@@ -33,7 +33,7 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
         var documentOnSa = documentOnSas.DocumentsOnSA.SingleOrDefault(d => d.DocumentOnSAId == request.DocumentOnSAId)
             ?? throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, $"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
 
-        if (documentOnSa.Source != Source.Workflow)
+        if (documentOnSa.Source != DomainServices.DocumentOnSAService.Contracts.Source.Workflow)
             await _nonWFLProductSalesArrangementAccess.CheckNonWFLProductSalesArrangementAccess(documentOnSa.SalesArrangementId, cancellationToken);
 
         return await MapToResponse(documentOnSa, cancellationToken);

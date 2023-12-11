@@ -63,4 +63,7 @@ internal sealed class DocumentOnSAServiceGrpc : Contracts.v1.DocumentOnSAService
 
     public override async Task<Empty> SetProcessingDateInSbQueues(SetProcessingDateInSbQueuesRequest request, ServerCallContext context)
      => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<GetDocumentOnSAStatusResponse> GetDocumentOnSAStatus(GetDocumentOnSAStatusRequest request, ServerCallContext context)
+     => await _mediator.Send(request, context.CancellationToken);
 }

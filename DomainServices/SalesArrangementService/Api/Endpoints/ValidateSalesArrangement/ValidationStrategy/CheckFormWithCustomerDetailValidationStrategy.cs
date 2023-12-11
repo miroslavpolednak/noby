@@ -121,7 +121,7 @@ internal sealed class CheckFormWithCustomerDetailValidationStrategy : ISalesArra
         if (validation())
             return;
 
-        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CustomerValidationFailed, validation);
+        throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CustomerValidationFailed, validationRule);
     }
 
     private static IEnumerable<Identity> GetCustomerIdentities(IEnumerable<CustomerOnSA> customersOnSa) =>

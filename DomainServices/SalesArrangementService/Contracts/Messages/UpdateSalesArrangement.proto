@@ -2,10 +2,14 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
+import "google/protobuf/timestamp.proto";
+
 message UpdateSalesArrangementRequest {
 	int32 SalesArrangementId = 1;
 	
 	string ContractNumber = 2;
 
 	string RiskBusinessCaseId = 4;
+
+	google.protobuf.Timestamp FirstSignatureDate = 5;
 }

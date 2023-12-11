@@ -167,14 +167,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             return new Empty();
 
         // SA state
-        if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
-        {
-            await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
-        }
-        else
-        {
-            throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
-        }
+        await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
 
         if (!wasUpdateOfCustomersSuccessful)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnsuccessfulCustomerDataUpdateToCM);
@@ -398,10 +391,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             _ => throw new CisValidationException("Unsupported HouseholdType")
         };
 
-        await _salesArrangementService.SetFlowSwitches(houseHold.SalesArrangementId, new()
-            {
-                new() { FlowSwitchId = (int)flowSwitchId, Value = false }
-            }, cancellationToken);
+        await _salesArrangementService.SetFlowSwitch(houseHold.SalesArrangementId, flowSwitchId, false, cancellationToken);
     }
 
     private async Task UpdateFirstSignatureDateKonsDb(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
@@ -412,7 +402,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await _productService.UpdateMortgage(new UpdateMortgageRequest { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
     }
 
-    private async Task UpdateFirstSignatureDateSa(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task UpdateFirstSignatureDateSaParams(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         salesArrangement.Mortgage.FirstSignatureDate = signatureDate;
         await _salesArrangementService.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
@@ -446,10 +436,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     {
         var salesArrangementType = await _commonSigningMethods.GetSalesArrangementType(salesArrangement, cancellationToken);
         if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte()
-            && salesArrangement.Mortgage.FirstSignatureDate is null)
+            && salesArrangement.FirstSignatureDate is null)
         {
-            //SalesArrangement parameters
-            await UpdateFirstSignatureDateSa(signatureDate, salesArrangement, cancellationToken);
+            //SalesArrangement FirstSignatureDate
+            await UpdateSalesArrangementFirstSignatureDate(salesArrangement, signatureDate, cancellationToken);
         }
 
         if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()
@@ -462,11 +452,25 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                 throw new CisValidationException(ErrorCodeMapper.EasAddFirstSignatureDateReturnedErrorState, $"Eas AddFirstSignatureDate returned error state: {result.CommonValue} with message: {result.CommonText}");
             }
 
-            //SalesArrangement parameters
-            await UpdateFirstSignatureDateSa(signatureDate, salesArrangement, cancellationToken);
             //KonsDb 
             await UpdateFirstSignatureDateKonsDb(signatureDate, salesArrangement, cancellationToken);
+
+            //SalesArrangement FirstSignatureDate
+            await UpdateSalesArrangementFirstSignatureDate(salesArrangement, signatureDate, cancellationToken);
+
+            //SalesArrangement parameters FirstSignatureDate
+            await UpdateFirstSignatureDateSaParams(signatureDate, salesArrangement, cancellationToken);
         }
+    }
+
+    private async Task UpdateSalesArrangementFirstSignatureDate(SalesArrangement salesArrangement, DateTime signatureDate, CancellationToken cancellationToken)
+    {
+        await _salesArrangementService.UpdateSalesArrangement(new()
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            FirstSignatureDate = Timestamp.FromDateTime(DateTime.SpecifyKind(signatureDate, DateTimeKind.Utc))
+        }
+        , cancellationToken);
     }
 
     private void UpdateDocumentOnSa(DocumentOnSa documentOnSa, System.DateTime signatureDate)

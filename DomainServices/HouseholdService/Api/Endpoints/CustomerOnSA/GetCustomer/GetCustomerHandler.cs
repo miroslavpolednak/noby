@@ -33,7 +33,7 @@ internal sealed class GetCustomerHandler
         };
 
         // document data
-        var additionalData = await _documentDataStorage.FirstOrDefault<Database.DocumentDataEntities.CustomerOnSAData>(request.CustomerOnSAId, cancellationToken);
+        var additionalData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.CustomerOnSAData>(request.CustomerOnSAId, cancellationToken);
         var (customerAdditionalData, customerChangeMetadata) = _customerMapper.MapFromDataToSingle(additionalData?.Data);
 
         customerInstance.CustomerAdditionalData = customerAdditionalData;

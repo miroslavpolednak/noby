@@ -66,7 +66,7 @@ internal sealed class DownloadRdmCodebooksJob
                 values = values.Where(t => fields.Contains(t.CodebookColumn.Code)).ToList();
             }
 
-            var props = values.Select(t => new KeyValuePair<string, string>(t.CodebookColumn.Code, t.CodebookEntryValueLanguageMutations.First().MutationValue!));
+            var props = values.Select(t => new KeyValuePair<string, string>(t.CodebookColumn.Code, t.CodebookColumn.ValueName));
             var propsString = System.Text.Json.JsonSerializer.Serialize(props);
             dataToInsert.Add(new { item.Code, IsValid = item.State == "ACTIVE", item.SortOrder, Props = propsString });
         }

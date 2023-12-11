@@ -6,7 +6,7 @@ internal sealed class CreateSalesArrangementHandler
     public async Task<CreateSalesArrangementResponse> Handle(CreateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         // kontrola na kategorii
-        if ((await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == request.SalesArrangementTypeId)?.SalesArrangementCategory != 2)
+        if ((await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == request.SalesArrangementTypeId)?.SalesArrangementCategory != (int)SalesArrangementCategories.ProductRequest)
             throw new CisValidationException($"SalesArrangement type not supported");
 
         // pokud neprojde validace, primo ve Validate() se vyhodi exception

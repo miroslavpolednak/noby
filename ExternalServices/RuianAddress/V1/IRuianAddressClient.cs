@@ -9,4 +9,5 @@ public interface IRuianAddressClient : IExternalServiceClient
 
     Task<Contracts.AddressDTO> GetAddressDetail(long addressId, CancellationToken cancellationToken);
     Task<ICollection<Contracts.AddressDTO>> FindAddresses(string searchText, int pageSize, CancellationToken cancellationToken);
+    Task<ICollection<Contracts.TerritoryDTO>> FindTerritory(string searchText, int pageSize, CancellationToken cancellationToken);
 }

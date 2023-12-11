@@ -19,6 +19,7 @@ internal class HouseholdData
     private Dictionary<int, string> _genders = null!;
     private ILookup<string, int> _obligationTypes = null!;
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _legalCapacityTypes = null!;
+    private List<BankCodesResponse.Types.BankCodeItem> _bankCodes = null!;
 
     private int _firstEmploymentTypeId;
 
@@ -59,7 +60,7 @@ internal class HouseholdData
 
     public void ConfigureCodebooks(ICodebookManagerConfigurator configurator)
     {
-        configurator.DegreesBefore().Genders().EmploymentTypes().ObligationTypes().LegalCapacityRestrictionTypes();
+        configurator.DegreesBefore().Genders().EmploymentTypes().ObligationTypes().LegalCapacityRestrictionTypes().BankCodes();
     }
 
     public void PrepareCodebooks(CodebookManager codebookManager)
@@ -69,6 +70,7 @@ internal class HouseholdData
         _firstEmploymentTypeId = codebookManager.EmploymentTypes.OrderBy(e => e.Id).Select(e => e.Id).FirstOrDefault();
         _obligationTypes =codebookManager.ObligationTypes.ToLookup(o => o.ObligationProperty, o => o.Id);
         _legalCapacityTypes = codebookManager.LegalCapacityRestrictionTypes;
+        _bankCodes = codebookManager.BankCodes;
     }
     
     public void SetHouseholdData(int householdId)
@@ -153,6 +155,7 @@ internal class HouseholdData
                 GenderCodes = _genders,
                 ObligationTypes = _obligationTypes,
                 LegalCapacityTypes = _legalCapacityTypes,
+                BankCodes = _bankCodes,
                 IsSpouseInDebt = IsSpouseInDebt
             };
         }

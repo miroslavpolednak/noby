@@ -34,9 +34,9 @@ internal sealed class GetDeedOfOwnershipDocumentsHandler
                 AddressPointId = t.AddressPointId,
                 DeedOfOwnershipNumber = t.DeedOfOwnershipNumber
             };
-            if (!string.IsNullOrEmpty(t.RealEstateIds))
+            if (t.RealEstateIds is not null)
             {
-                o.RealEstateIds.AddRange(System.Text.Json.JsonSerializer.Deserialize<long[]>(t.RealEstateIds));
+                o.RealEstateIds.AddRange(t.RealEstateIds);
             }
             return o;
         }));

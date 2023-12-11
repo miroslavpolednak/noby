@@ -15,4 +15,5 @@ message ValidateRealEstateValuationIdResponse {
 	google.protobuf.Int32Value ValuationStateId = 3;
 	google.protobuf.Int64Value OrderId = 4;
 	google.protobuf.Int64Value PreorderId = 5;
+	repeated int32 PossibleValuationTypeId = 6;
 }

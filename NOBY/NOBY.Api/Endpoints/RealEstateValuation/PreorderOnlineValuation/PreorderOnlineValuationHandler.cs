@@ -8,8 +8,9 @@ internal sealed class PreorderOnlineValuationHandler
 {
     public async Task Handle(PreorderOnlineValuationRequest request, CancellationToken cancellationToken)
     {
-        var allowedTypes = await _estateValuationTypeService.GetAllowedTypes(request.RealEstateValuationId, request.CaseId, cancellationToken);
-        if (!allowedTypes.Contains(RealEstateValuationTypes.Online))
+        var revInstance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, false, cancellationToken);
+        if ((revInstance.PossibleValuationTypeId is null || !revInstance.PossibleValuationTypeId.Contains((int)RealEstateValuationTypes.Online))
+            || revInstance.PreorderId.HasValue)
         {
             throw new NobyValidationException(90032, "RealEstateValuation type not allowed");
         }
@@ -28,12 +29,10 @@ internal sealed class PreorderOnlineValuationHandler
         }, cancellationToken);
     }
 
-    private readonly Services.RealEstateValuationType.IRealEstateValuationTypeService _estateValuationTypeService;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
-    public PreorderOnlineValuationHandler(IRealEstateValuationServiceClient realEstateValuationService, Services.RealEstateValuationType.IRealEstateValuationTypeService estateValuationTypeService)
+    public PreorderOnlineValuationHandler(IRealEstateValuationServiceClient realEstateValuationService)
     {
         _realEstateValuationService = realEstateValuationService;
-        _estateValuationTypeService = estateValuationTypeService;
     }
 }

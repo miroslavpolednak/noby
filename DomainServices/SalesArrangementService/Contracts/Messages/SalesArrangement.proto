@@ -51,6 +51,8 @@ message SalesArrangement {
 
 	google.protobuf.StringValue OfferDocumentId = 18;
 
+	cis.types.NullableGrpcDate FirstSignatureDate = 19;
+
 	oneof Parameters {
         DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 30;
 		DomainServices.SalesArrangementService.SalesArrangementParametersDrawing Drawing = 31;

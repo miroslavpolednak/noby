@@ -36,6 +36,45 @@ public CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.FileLogger? F
 #### Property Value
 [FileLogger](CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.FileLogger.md 'CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.FileLogger')
 
+<a name='CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.LogRequestPayload'></a>
+
+## LogConfiguration.LogRequestPayload Property
+
+True = do logu se ulozi plny request payload sluzby
+
+```csharp
+public bool LogRequestPayload { get; set; }
+```
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
+
+<a name='CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.LogResponsePayload'></a>
+
+## LogConfiguration.LogResponsePayload Property
+
+True = do logu se ulozi plny response payload sluzby
+
+```csharp
+public bool LogResponsePayload { get; set; }
+```
+
+#### Property Value
+[System.Boolean](https://docs.microsoft.com/en-us/dotnet/api/System.Boolean 'System.Boolean')
+
+<a name='CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.MaxPayloadLength'></a>
+
+## LogConfiguration.MaxPayloadLength Property
+
+Maximální velikost obsahu vlastnosti Payload
+
+```csharp
+public System.Nullable<int> MaxPayloadLength { get; set; }
+```
+
+#### Property Value
+[System.Nullable&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')[System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Nullable-1 'System.Nullable`1')
+
 <a name='CIS.Infrastructure.Telemetry.Configuration.LogConfiguration.Seq'></a>
 
 ## LogConfiguration.Seq Property

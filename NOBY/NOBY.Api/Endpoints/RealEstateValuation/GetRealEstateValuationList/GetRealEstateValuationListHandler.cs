@@ -103,7 +103,8 @@ internal sealed class GetRealEstateValuationListHandler
                 ValuationResultFuturePrice = t.ValuationResultFuturePrice,
                 IsRevaluationRequired = t.IsRevaluationRequired,
                 DeveloperAllowed = t.DeveloperAllowed,
-                DeveloperApplied = t.DeveloperApplied
+                DeveloperApplied = t.DeveloperApplied,
+                PossibleValuationTypeId = t.PossibleValuationTypeId?.ToList()
             };
 
             return model;

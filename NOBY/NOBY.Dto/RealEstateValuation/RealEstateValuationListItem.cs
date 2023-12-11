@@ -124,6 +124,11 @@ public sealed class RealEstateValuationListItem
     /// <example>false</example>
     [Required]
     public bool DeveloperApplied { get; set; }
+
+    /// <summary>
+    /// Možné typy ocenění oddělené čárkami, 1 - online, 2 - dts, 3 - standard (výsledek ACV trychtýře)
+    /// </summary>
+    public List<int>? PossibleValuationTypeId { get; set; }
 }
 
 //ITA chce enumy - me to neprijde dobre, fakticky se i na DS pouzivaji jen id, ale...

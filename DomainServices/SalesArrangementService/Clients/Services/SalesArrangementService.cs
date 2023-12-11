@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
+using SharedTypes.Enums;
 
 namespace DomainServices.SalesArrangementService.Clients.Services;
 
@@ -86,15 +87,9 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateSalesArrangement(UpdateSalesArrangementRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
-        await _service.UpdateSalesArrangementAsync(
-           new()
-           {
-               SalesArrangementId = salesArrangementId,
-               ContractNumber = contractNumber ?? "",
-               RiskBusinessCaseId = riskBusinessCaseId ?? ""
-           }, cancellationToken: cancellationToken);
+        await _service.UpdateSalesArrangementAsync(request, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellationToken = default(CancellationToken))
@@ -175,6 +170,21 @@ internal sealed class SalesArrangementService
             SalesArrangementId = salesArrangementId
         };
         request.FlowSwitches.AddRange(flowSwitches);
+
+        await _service.SetFlowSwitchesAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task SetFlowSwitch(int salesArrangementId, FlowSwitches flowSwitch, bool value, CancellationToken cancellationToken = default)
+    {
+        var request = new SetFlowSwitchesRequest
+        {
+            SalesArrangementId = salesArrangementId
+        };
+        request.FlowSwitches.Add(new EditableFlowSwitch
+        {
+            FlowSwitchId = (int)flowSwitch,
+            Value = value
+        });
 
         await _service.SetFlowSwitchesAsync(request, cancellationToken: cancellationToken);
     }

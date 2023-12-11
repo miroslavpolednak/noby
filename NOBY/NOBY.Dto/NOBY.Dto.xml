@@ -415,6 +415,11 @@
             </summary>
             <example>false</example>
         </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.PossibleValuationTypeId">
+            <summary>
+            Možné typy ocenění oddělené čárkami, 1 - online, 2 - dts, 3 - standard (výsledek ACV trychtýře)
+            </summary>
+        </member>
         <member name="T:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails">
             <summary>
             Objekt je použit pouze v případě, že jde o variantu nemovitosti HF (Dům a byt) nebo HF+F (Byt)

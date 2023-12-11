@@ -6,3 +6,4 @@ global using NOBY.Infrastructure.ErrorHandling;
 global using NOBY.Infrastructure.Security;
 global using DomainServices.UserService.Clients.Authorization;
 global using NOBY.Infrastructure.Security.Attributes;
+global using SharedTypes.Enums;
