@@ -2,7 +2,7 @@
   "profiles": {
     "DatabaseMigrations": {
       "commandName": "Project",
-      "commandLineArgs": "migrate -f \"c:/temp3\" -c \"Data Source=localhost;Initial Catalog=MpssIntegration;Integrated Security=True;Encrypt=True;TrustServerCertificate=Yes;\""
+      "commandLineArgs": "migrate -f \"d:/_migr\" -c \"Data Source=localhost;Initial Catalog=MpssIntegration;Integrated Security=True;Encrypt=True;TrustServerCertificate=Yes;\""
     }
   }
 }

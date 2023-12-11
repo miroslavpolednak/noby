@@ -11,6 +11,9 @@ internal sealed class MigrateOptions
     [Option('f', "folder", Required = true, HelpText = "Folder containing sql scripts.")]
     public string? ScriptFolder { get; set; }
 
+    [Option('a', "codeassembly", Required = false, HelpText = "Folder containing C# scripts.")]
+    public string? CodeScriptAssembly { get; set; }
+
     [Option('e', "checkOnly", Required = false, Default = false, HelpText = "Only performs check that the migrations are available")]
     public bool? MigrationExistsCheckOnly { get; set; }
 }
