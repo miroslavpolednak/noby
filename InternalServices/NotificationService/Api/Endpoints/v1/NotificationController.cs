@@ -3,6 +3,8 @@ using CIS.InternalServices.NotificationService.Api.Endpoints.Infrastructure.Audi
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.InternalServices.NotificationService.Contracts.Statistics;
+using CIS.InternalServices.NotificationService.Contracts.Resend;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -128,5 +130,51 @@ public class NotificationController : ControllerBase
 
         return response.Results;
     }
-    
+
+    /// <summary>
+    /// Zobrazit statistiky podle zadaných kritérií
+    /// </summary>
+    /// <remarks>
+    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+    /// </remarks>
+    [HttpGet("result/statistics")]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
+    [ProducesResponseType(typeof(Contracts.Statistics.Dto.Statistics), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<Contracts.Statistics.Dto.Statistics> GetStatistics([FromQuery] GetStatisticsRequest getStatisticsRequest, CancellationToken token)
+    {
+        var response = await _mediator.Send(getStatisticsRequest, token);
+
+        return response.Statistics;
+    }
+
+    /// <summary>
+    /// Zobrazit detailní statistiky podle zadaných kritérií
+    /// </summary>
+    /// <remarks>
+    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+    /// </remarks>
+    [HttpGet("result/detailed-statistics")]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
+    [ProducesResponseType(typeof(GetDetailedStatisticsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<GetDetailedStatisticsResponse> GetDetailedStatistics([FromQuery] GetDetailedStatisticsRequest getDetailedStatisticsRequest, CancellationToken token)
+        => await _mediator.Send(getDetailedStatisticsRequest, token);
+
+    /// <summary>
+    /// Znovu odešle notifikaci
+    /// </summary>
+    /// <remarks>
+    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+    /// </remarks>
+    [HttpGet("resend/{id}")]
+    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task Resend([Required] Guid id, CancellationToken token)
+        => await _mediator.Send(new ResendRequest { NotificationId = id }, token);
+
 }

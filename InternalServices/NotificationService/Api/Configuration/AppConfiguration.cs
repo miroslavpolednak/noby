@@ -28,6 +28,10 @@ public class Consumer
     public bool CanSendSms { get; set; } = false;
     
     public bool CanReadResult { get; set; } = false;
+
+    public bool CanReceiveStatistics { get; set; }
+
+    public bool CanResendNotifications { get; set; }
 }
 
 public class EmailSenders

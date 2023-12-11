@@ -4,7 +4,7 @@ using CIS.InternalServices.NotificationService.Contracts.Statistics.Dto;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 
-public class EmailResult : Result
+public class EmailResult : Abstraction.Result
 {
     public SenderType SenderType { get; set; }
 

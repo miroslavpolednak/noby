@@ -2,8 +2,10 @@
 using CIS.InternalServices.NotificationService.Clients.Interfaces;
 using CIS.InternalServices.NotificationService.Contracts;
 using CIS.InternalServices.NotificationService.Contracts.Email;
+using CIS.InternalServices.NotificationService.Contracts.Resend;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.InternalServices.NotificationService.Contracts.Statistics;
 using Microsoft.Extensions.Logging;
 
 namespace CIS.InternalServices.NotificationService.Clients.Services;
@@ -53,5 +55,23 @@ public class NotificationClient : INotificationClient
     {
         _logger.RequestHandlerStarted(nameof(GetResult));
         return await _notificationService.GetResult(request, token);
+    }
+
+    public async Task<GetStatisticsResponse> GetStatistics(GetStatisticsRequest request, CancellationToken token)
+    {
+        _logger.RequestHandlerStarted(nameof(GetStatistics));
+        return await _notificationService.GetStatistics(request, token);
+    }
+
+    public async Task<GetDetailedStatisticsResponse> GetDetailedStatistics(GetDetailedStatisticsRequest request, CancellationToken token)
+    {
+        _logger.RequestHandlerStarted(nameof(GetDetailedStatistics));
+        return await _notificationService.GetDetailedStatistics(request, token);
+    }
+
+    public async Task Resend(ResendRequest request, CancellationToken token)
+    {
+        _logger.RequestHandlerStarted(nameof(Resend));
+        await _notificationService.Resend(request, token);
     }
 }
