@@ -1,5 +1,4 @@
 ﻿using DomainServices.DocumentOnSAService.Api.Database;
-using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,20 +15,27 @@ public class GetDocumentOnSAStatusHandler : IRequestHandler<GetDocumentOnSAStatu
 
     public async Task<GetDocumentOnSAStatusResponse> Handle(GetDocumentOnSAStatusRequest request, CancellationToken cancellationToken)
     {
-        var docOnSa = await _dbContext.DocumentOnSa
-            .AsNoTracking()
-            .Include(i => i.EArchivIdsLinkeds)
-            .FirstOrDefaultAsync(d => d.SalesArrangementId == request.SalesArrangementId
-                                                            && d.DocumentOnSAId == request.DocumentOnSAId, cancellationToken)
+        var docOnsa = await _dbContext.DocumentOnSa
+            .Where(d => d.SalesArrangementId == request.SalesArrangementId
+                        && d.DocumentOnSAId == request.DocumentOnSAId)
+            .Select(s => new
+            {
+                s.DocumentOnSAId,
+                s.IsSigned,
+                s.IsValid,
+                s.Source,
+                EArchivIdsLinked = s.EArchivIdsLinkeds.Select(s => s.EArchivId)
+            })
+            .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSaDoesntExistForSalesArrangement, request.SalesArrangementId);
 
         return new()
         {
-            DocumentOnSAId = docOnSa.DocumentOnSAId,
-            IsSigned = docOnSa.IsSigned,
-            IsValid = docOnSa.IsValid,
-            Source = (Source)docOnSa.Source,
-            EArchivIdsLinked = { docOnSa.EArchivIdsLinkeds.Select(s => s.EArchivId) }
+            DocumentOnSAId = docOnsa.DocumentOnSAId,
+            IsSigned = docOnsa.IsSigned,
+            IsValid = docOnsa.IsValid,
+            Source = (Source)docOnsa.Source,
+            EArchivIdsLinked = { docOnsa.EArchivIdsLinked }
         };
     }
 }
