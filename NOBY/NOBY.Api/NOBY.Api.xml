@@ -3168,6 +3168,136 @@
             Celkové nalezené splátky (ext. registry)
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdCustomerObligations.FirstName">
+            <summary>
+            Jméno klienta
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdCustomerObligations.LastName">
+            <summary>
+            Příjmení klienta
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdCustomerObligations.DateOfBirth">
+            <summary>
+            Datum narození klienta
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdCustomerObligations.Role">
+            <summary>
+            Role klienta
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdCustomerObligations.ExistingObligations">
+            <summary>
+            Existující závazky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdCustomerObligations.RequestedObligations">
+            <summary>
+            Rozpracované závazky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.ObligationTypeId">
+            <summary>
+            Typ závazku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.ObligationTypeName">
+            <summary>
+            Typ závazku - název
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.Source">
+            <summary>
+            Stav závazku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.CreditorName">
+            <summary>
+            Věřitel
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.LoanPrincipalAmount">
+            <summary>
+            Nesplacená jistina
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.InstallmentAmount">
+            <summary>
+            Splátka
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.CreditCardLimit">
+            <summary>
+            Limit
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.CorrectionTypeId">
+            <summary>
+            Korekce
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.ObligationLaExposureId">
+            <summary>
+            Kategorie závazku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.ObligationLaExposureName">
+            <summary>
+            Kategorie závazku - název
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.ZavazekFOP">
+            <summary>
+            Závazek FOP
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.KbGroupInstanceCode">
+            <summary>
+            Kód skupiny
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.DrawingAmount">
+            <summary>
+            Vyčerpaná částka
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.BankAccount">
+            <summary>
+            Číslo  úvěrového účtu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.ContractDate">
+            <summary>
+            Datum poskytnutí
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.MaturityDate">
+            <summary>
+            Datum splatnosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.CbcbDataLastUpdate">
+            <summary>
+            Datum aktualizace dat v CBCB
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.Amount.Value">
+            <summary>
+            Částka před korekcí
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.Amount.Correction">
+            <summary>
+            Částka po korekci
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.Amount.CurrencyCode">
+            <summary>
+            Kód měny
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.Limit">
             <summary>
             Limit výše úvěru
