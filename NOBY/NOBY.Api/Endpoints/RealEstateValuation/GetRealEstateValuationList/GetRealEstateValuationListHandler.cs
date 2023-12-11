@@ -104,7 +104,7 @@ internal sealed class GetRealEstateValuationListHandler
                 IsRevaluationRequired = t.IsRevaluationRequired,
                 DeveloperAllowed = t.DeveloperAllowed,
                 DeveloperApplied = t.DeveloperApplied,
-                PossibleValuationTypeId = t.PossibleValuationTypeId?.ToList()
+                PossibleValuationTypeId = t.PossibleValuationTypeId?.Select(t => (RealEstateValuationValuationTypes)t).ToList()
             };
 
             return model;

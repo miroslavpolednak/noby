@@ -10,10 +10,10 @@ internal sealed class SetValuationTypeIdHandler
     {
         var instance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, true, cancellationToken);
 
-        if ((instance.ValuationStateId == (int)RealEstateValuationStates.DoplneniDokumentu && request.ValuationTypeId != SetValuationTypeIdRequestValuationTypes.Standard)
+        if ((instance.ValuationStateId == (int)RealEstateValuationStates.DoplneniDokumentu && request.ValuationTypeId != RealEstateValuationValuationTypes.Standard)
             || instance.OrderId.HasValue
             || (instance.PossibleValuationTypeId is not null && !instance.PossibleValuationTypeId.Contains((int)request.ValuationTypeId))
-            || (request.ValuationTypeId == SetValuationTypeIdRequestValuationTypes.Dts && (instance.PossibleValuationTypeId?.Contains(1) ?? false))
+            || (request.ValuationTypeId == RealEstateValuationValuationTypes.Dts && (instance.PossibleValuationTypeId?.Contains(1) ?? false))
         )
         {
             throw new NobyValidationException(90032);
