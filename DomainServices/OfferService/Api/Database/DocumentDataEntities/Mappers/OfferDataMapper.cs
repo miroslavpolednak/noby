@@ -113,9 +113,12 @@ internal sealed class OfferDataMapper
         return model;
     }
 
-    public (__Contracts.BasicParameters BasicParameters, __Contracts.MortgageSimulationInputs SimulationInputs, __Contracts.MortgageSimulationResults SimulationResults) MapFromDataToSingle(BasicParametersData basicParameters, SimulationInputsData simulationInputs, SimulationOutputsData simulationOutputs)
+    public (__Contracts.BasicParameters? BasicParameters, __Contracts.MortgageSimulationInputs? SimulationInputs, __Contracts.MortgageSimulationResults? SimulationResults) MapFromDataToSingle(
+        BasicParametersData? basicParameters, 
+        SimulationInputsData? simulationInputs, 
+        SimulationOutputsData? simulationOutputs)
     {
-        var basicParametersModel = new __Contracts.BasicParameters
+        __Contracts.BasicParameters? basicParametersModel = basicParameters is null ? null : new __Contracts.BasicParameters
         {
             StatementTypeId = basicParameters.StatementTypeId,
             FinancialResourcesOther = basicParameters.FinancialResourcesOther,
@@ -123,100 +126,108 @@ internal sealed class OfferDataMapper
             GuaranteeDateTo = basicParameters.GuaranteeDateTo
         };
 
-        var simulationInputsModel = new __Contracts.MortgageSimulationInputs
+        __Contracts.MortgageSimulationInputs? simulationInputsModel = null;
+        if (simulationInputs is not null)
         {
-            CollateralAmount = simulationInputs.CollateralAmount,
-            DrawingDurationId = simulationInputs.DrawingDurationId,
-            DrawingTypeId = simulationInputs.DrawingTypeId,
-            ExpectedDateOfDrawing = simulationInputs.ExpectedDateOfDrawing,
-            FixedRatePeriod = simulationInputs.FixedRatePeriod,
-            GuaranteeDateFrom = simulationInputs.GuaranteeDateFrom,
-            InterestRateDiscount = simulationInputs.InterestRateDiscount,
-            IsEmployeeBonusRequested = simulationInputs.IsEmployeeBonusRequested,
-            LoanAmount = simulationInputs.LoanAmount,
-            LoanDuration = simulationInputs.LoanDuration,
-            LoanKindId = simulationInputs.LoanKindId,
-            PaymentDay = simulationInputs.PaymentDay,
-            ProductTypeId = simulationInputs.ProductTypeId,
-            MarketingActions = simulationInputs.MarketingActions is null ? null : new()
+            simulationInputsModel = new __Contracts.MortgageSimulationInputs
             {
-                Domicile = simulationInputs.MarketingActions.Domicile,
-                HealthRiskInsurance = simulationInputs.MarketingActions.HealthRiskInsurance,
-                IncomeLoanRatioDiscount = simulationInputs.MarketingActions.IncomeLoanRatioDiscount,
-                RealEstateInsurance = simulationInputs.MarketingActions.RealEstateInsurance,
-                UserVip = simulationInputs.MarketingActions.UserVip
-            },
-            RealEstateInsurance = simulationInputs.RealEstateInsurance is null ? null : new()
+                CollateralAmount = simulationInputs.CollateralAmount,
+                DrawingDurationId = simulationInputs.DrawingDurationId,
+                DrawingTypeId = simulationInputs.DrawingTypeId,
+                ExpectedDateOfDrawing = simulationInputs.ExpectedDateOfDrawing,
+                FixedRatePeriod = simulationInputs.FixedRatePeriod,
+                GuaranteeDateFrom = simulationInputs.GuaranteeDateFrom,
+                InterestRateDiscount = simulationInputs.InterestRateDiscount,
+                IsEmployeeBonusRequested = simulationInputs.IsEmployeeBonusRequested,
+                LoanAmount = simulationInputs.LoanAmount,
+                LoanDuration = simulationInputs.LoanDuration,
+                LoanKindId = simulationInputs.LoanKindId,
+                PaymentDay = simulationInputs.PaymentDay,
+                ProductTypeId = simulationInputs.ProductTypeId,
+                MarketingActions = simulationInputs.MarketingActions is null ? null : new()
+                {
+                    Domicile = simulationInputs.MarketingActions.Domicile,
+                    HealthRiskInsurance = simulationInputs.MarketingActions.HealthRiskInsurance,
+                    IncomeLoanRatioDiscount = simulationInputs.MarketingActions.IncomeLoanRatioDiscount,
+                    RealEstateInsurance = simulationInputs.MarketingActions.RealEstateInsurance,
+                    UserVip = simulationInputs.MarketingActions.UserVip
+                },
+                RealEstateInsurance = simulationInputs.RealEstateInsurance is null ? null : new()
+                {
+                    Frequency = simulationInputs.RealEstateInsurance.Frequency,
+                    Sum = simulationInputs.RealEstateInsurance.Sum
+                },
+                RiskLifeInsurance = simulationInputs.RiskLifeInsurance is null ? null : new()
+                {
+                    Frequency = simulationInputs.RiskLifeInsurance.Frequency,
+                    Sum = simulationInputs.RiskLifeInsurance.Sum
+                },
+                Developer = simulationInputs.Developer is null ? null : new()
+                {
+                    Description = simulationInputs.Developer.Description,
+                    DeveloperId = simulationInputs.Developer.DeveloperId,
+                    ProjectId = simulationInputs.Developer.ProjectId
+                },
+                FeeSettings = simulationInputs.FeeSettings is null ? null : new()
+                {
+                    IsStatementCharged = simulationInputs.FeeSettings.IsStatementCharged,
+                    FeeTariffPurpose = simulationInputs.FeeSettings.FeeTariffPurpose
+                }
+            };
+
+            if (simulationInputs.LoanPurposes is not null)
             {
-                Frequency = simulationInputs.RealEstateInsurance.Frequency,
-                Sum = simulationInputs.RealEstateInsurance.Sum
-            },
-            RiskLifeInsurance = simulationInputs.RiskLifeInsurance is null ? null : new()
-            {
-                Frequency = simulationInputs.RiskLifeInsurance.Frequency,
-                Sum = simulationInputs.RiskLifeInsurance.Sum
-            },
-            Developer = simulationInputs.Developer is null ? null : new()
-            {
-                Description = simulationInputs.Developer.Description,
-                DeveloperId = simulationInputs.Developer.DeveloperId,
-                ProjectId = simulationInputs.Developer.ProjectId
-            },
-            FeeSettings = simulationInputs.FeeSettings is null ? null : new()
-            {
-                IsStatementCharged = simulationInputs.FeeSettings.IsStatementCharged,
-                FeeTariffPurpose = simulationInputs.FeeSettings.FeeTariffPurpose
+                simulationInputsModel.LoanPurposes.AddRange(simulationInputs.LoanPurposes.Select(t => new __Contracts.LoanPurpose
+                {
+                    LoanPurposeId = t.LoanPurposeId,
+                    Sum = t.Sum
+                }));
             }
-        };
 
-        if (simulationInputs.LoanPurposes is not null)
-        {
-            simulationInputsModel.LoanPurposes.AddRange(simulationInputs.LoanPurposes.Select(t => new __Contracts.LoanPurpose
+            if (simulationInputs.Fees is not null)
             {
-                LoanPurposeId = t.LoanPurposeId,
-                Sum = t.Sum
-            }));
-        }
-        
-        if (simulationInputs.Fees is not null)
-        {
-            simulationInputsModel.Fees.AddRange(simulationInputs.Fees.Select(t => new __Contracts.InputFee
-            {
-                DiscountPercentage = t.DiscountPercentage,
-                FeeId = t.FeeId
-            }));
+                simulationInputsModel.Fees.AddRange(simulationInputs.Fees.Select(t => new __Contracts.InputFee
+                {
+                    DiscountPercentage = t.DiscountPercentage,
+                    FeeId = t.FeeId
+                }));
+            }
         }
 
-        var simulationResultsModel = new __Contracts.MortgageSimulationResults
+        __Contracts.MortgageSimulationResults? simulationResultsModel = null;
+        if (simulationOutputs is not null)
         {
-            ContractSignedDate = simulationOutputs.ContractSignedDate,
-            AnnuityPaymentsCount = simulationOutputs.AnnuityPaymentsCount,
-            AnnuityPaymentsDateFrom = simulationOutputs.AnnuityPaymentsDateFrom,
-            Aprc = simulationOutputs.Aprc,
-            DrawingDateTo = simulationOutputs.DrawingDateTo,
-            EmployeeBonusDeviation = simulationOutputs.EmployeeBonusDeviation,
-            EmployeeBonusLoanCode = simulationOutputs.EmployeeBonusLoanCode,
-            LoanAmount = simulationOutputs.LoanAmount,
-            LoanDueDate = simulationOutputs.LoanDueDate,
-            LoanInterestRate = simulationOutputs.LoanInterestRate,
-            LoanInterestRateAnnounced = simulationOutputs.LoanInterestRateAnnounced,
-            LoanInterestRateAnnouncedType = simulationOutputs.LoanInterestRateAnnouncedType,
-            LoanInterestRateProvided = simulationOutputs.LoanInterestRateProvided,
-            LoanPaymentAmount = simulationOutputs.LoanPaymentAmount,
-            LoanToValue = simulationOutputs.LoanToValue,
-            LoanTotalAmount = simulationOutputs.LoanTotalAmount,
-            MarketingActionsDeviation = simulationOutputs.MarketingActionsDeviation,
-            LoanDuration = simulationOutputs.LoanDuration
-        };
-
-        if (simulationOutputs.Warnings is not null)
-        {
-            simulationResultsModel.Warnings.AddRange(simulationOutputs.Warnings.Select(t => new __Contracts.SimulationResultWarning
+            simulationResultsModel = new __Contracts.MortgageSimulationResults
             {
-                WarningCode = t.WarningCode,
-                WarningInternalMessage = t.WarningInternalMessage,
-                WarningText = t.WarningText
-            }));
+                ContractSignedDate = simulationOutputs.ContractSignedDate,
+                AnnuityPaymentsCount = simulationOutputs.AnnuityPaymentsCount,
+                AnnuityPaymentsDateFrom = simulationOutputs.AnnuityPaymentsDateFrom,
+                Aprc = simulationOutputs.Aprc,
+                DrawingDateTo = simulationOutputs.DrawingDateTo,
+                EmployeeBonusDeviation = simulationOutputs.EmployeeBonusDeviation,
+                EmployeeBonusLoanCode = simulationOutputs.EmployeeBonusLoanCode,
+                LoanAmount = simulationOutputs.LoanAmount,
+                LoanDueDate = simulationOutputs.LoanDueDate,
+                LoanInterestRate = simulationOutputs.LoanInterestRate,
+                LoanInterestRateAnnounced = simulationOutputs.LoanInterestRateAnnounced,
+                LoanInterestRateAnnouncedType = simulationOutputs.LoanInterestRateAnnouncedType,
+                LoanInterestRateProvided = simulationOutputs.LoanInterestRateProvided,
+                LoanPaymentAmount = simulationOutputs.LoanPaymentAmount,
+                LoanToValue = simulationOutputs.LoanToValue,
+                LoanTotalAmount = simulationOutputs.LoanTotalAmount,
+                MarketingActionsDeviation = simulationOutputs.MarketingActionsDeviation,
+                LoanDuration = simulationOutputs.LoanDuration
+            };
+
+            if (simulationOutputs.Warnings is not null)
+            {
+                simulationResultsModel.Warnings.AddRange(simulationOutputs.Warnings.Select(t => new __Contracts.SimulationResultWarning
+                {
+                    WarningCode = t.WarningCode,
+                    WarningInternalMessage = t.WarningInternalMessage,
+                    WarningText = t.WarningText
+                }));
+            }
         }
 
         return (basicParametersModel, simulationInputsModel, simulationResultsModel);

@@ -67,7 +67,7 @@ internal sealed class SimulateMortgageHandler
             Created = new ModificationStamp(entity),
             BasicParameters = request.BasicParameters,
             SimulationInputs = request.SimulationInputs,
-            SimulationResults = results,
+            SimulationResults = _mapper.MapFromDataToSingle(null, null, documentEntity.SimulationOutputs).SimulationResults,
             AdditionalSimulationResults = additionalResults,
             CreditWorthinessSimpleResults = creditWorthinessResult
         };
