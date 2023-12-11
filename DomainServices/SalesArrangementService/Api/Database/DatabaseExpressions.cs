@@ -23,7 +23,8 @@ internal static class DatabaseExpressions
             Created = new SharedTypes.GrpcTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime),
             OfferGuaranteeDateFrom = t.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = t.OfferGuaranteeDateTo,
-            RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate
+            RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate,
+            FirstSignatureDate = t.FirstSignatureDate
         };
     }
 }

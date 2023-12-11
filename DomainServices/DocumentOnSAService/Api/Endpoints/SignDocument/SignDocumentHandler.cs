@@ -436,7 +436,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     {
         var salesArrangementType = await _commonSigningMethods.GetSalesArrangementType(salesArrangement, cancellationToken);
         if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte()
-            && salesArrangement.Mortgage.FirstSignatureDate is null)
+            && salesArrangement.FirstSignatureDate is null)
         {
             //SalesArrangement FirstSignatureDate
             await UpdateSalesArrangementFirstSignatureDate(salesArrangement, signatureDate, cancellationToken);
