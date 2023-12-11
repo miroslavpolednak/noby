@@ -67,7 +67,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
 
         var response = new GetCaseParametersResponse
         {
-            FirstAnnuityPaymentDate = mortgageData.FirstAnnuityInstallmentDate,
+            FirstAnnuityPaymentDate = mortgageData.FirstAnnuityPaymentDate,
             ProductType = productTypes.First(t => t.Id == mortgageData.ProductTypeId),
             ContractNumber = mortgageData.ContractNumber,
             LoanAmount = mortgageData.LoanAmount,

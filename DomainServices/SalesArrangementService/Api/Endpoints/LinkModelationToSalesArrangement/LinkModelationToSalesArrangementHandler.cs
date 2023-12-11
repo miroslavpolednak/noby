@@ -91,7 +91,6 @@ internal sealed class LinkModelationToSalesArrangementHandler
                 ProductId = 1,
                 Mortgage = new()
                 {
-                    PartnerId = null, //??????
                     LoanAmount = offer.SimulationInputs.LoanAmount,
                     LoanInterestRate = offer.SimulationResults.LoanInterestRate,
                     FixedRatePeriod = offer.SimulationInputs.FixedRatePeriod,
@@ -100,7 +99,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
                     ExpectedDateOfDrawing = offer.SimulationInputs.ExpectedDateOfDrawing,
                     LoanDueDate = offer.SimulationResults.LoanDueDate,
                     PaymentDay = offer.SimulationInputs.PaymentDay,
-                    FirstAnnuityInstallmentDate = offer.SimulationResults.AnnuityPaymentsDateFrom
+                    FirstAnnuityPaymentDate = offer.SimulationResults.AnnuityPaymentsDateFrom
                 }
             };
 
