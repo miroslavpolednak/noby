@@ -7,6 +7,8 @@ using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using Google.Protobuf;
 using ExternalServices.EasSimulationHT.V1;
 using System.Globalization;
+using SharedComponents.DocumentDataStorage;
+using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
 
 namespace DomainServices.OfferService.Api.Endpoints.SimulateMortgage;
 
@@ -27,24 +29,21 @@ internal sealed class SimulateMortgageHandler
         // get simulation outputs
         var easSimulationReq = request.SimulationInputs.ToEasSimulationRequest(request.BasicParameters, drawingDurationsById, drawingTypeById);
         var easSimulationRes = await _easSimulationHTClient.RunSimulationHT(easSimulationReq, cancellationToken);
-        var results = easSimulationRes.ToSimulationResults();
+
         var additionalResults = easSimulationRes.ToAdditionalSimulationResults();
 
-        MortgageCreditWorthinessSimpleResults? creditWorthinessResult = null;
-        if (request.IsCreditWorthinessSimpleRequested) 
-            creditWorthinessResult = await CalculateCreditWorthinessSimple(request, results, cancellationToken);
+        // bonita
+        MortgageCreditWorthinessSimpleResults? creditWorthinessResult = request.IsCreditWorthinessSimpleRequested switch
+        {
+            true => await calculateCreditWorthinessSimple(request, easSimulationRes, cancellationToken),
+            _ => null
+        };
 
         // save to DB
         var entity = new Database.Entities.Offer
         {
             ResourceProcessId = Guid.Parse(request.ResourceProcessId),
-            BasicParametersBin = request.BasicParameters.ToByteArray(),
-            SimulationInputsBin = request.SimulationInputs.ToByteArray(),
-            SimulationResultsBin = results.ToByteArray(),
             AdditionalSimulationResultsBin = additionalResults.ToByteArray(),
-            BasicParameters = Newtonsoft.Json.JsonConvert.SerializeObject(request.BasicParameters),
-            SimulationInputs = Newtonsoft.Json.JsonConvert.SerializeObject(request.SimulationInputs),
-            SimulationResults = Newtonsoft.Json.JsonConvert.SerializeObject(results),
             AdditionalSimulationResults = Newtonsoft.Json.JsonConvert.SerializeObject(additionalResults),
             IsCreditWorthinessSimpleRequested = request.IsCreditWorthinessSimpleRequested,
             CreditWorthinessSimpleInputs = request.CreditWorthinessSimpleInputs is null ? null : Newtonsoft.Json.JsonConvert.SerializeObject(request.CreditWorthinessSimpleInputs),
@@ -53,6 +52,11 @@ internal sealed class SimulateMortgageHandler
         _dbContext.Offers.Add(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        // ulozit json data simulace
+        var documentEntity = _mapper.MapToData(request.BasicParameters, request.SimulationInputs, easSimulationRes);
+        var id = await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
+
         _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
         // create response
@@ -113,7 +117,7 @@ internal sealed class SimulateMortgageHandler
         }
     }
 
-    private async Task<MortgageCreditWorthinessSimpleResults> CalculateCreditWorthinessSimple(SimulateMortgageRequest request, MortgageSimulationResults simulationResults, CancellationToken cancellationToken)
+    private async Task<MortgageCreditWorthinessSimpleResults> calculateCreditWorthinessSimple(SimulateMortgageRequest request, SimulationHTResponse simulationResults, CancellationToken cancellationToken)
     {
         var kbCustomerIdentity = request.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
         
@@ -141,10 +145,10 @@ internal sealed class SimulateMortgageHandler
             Product = new CreditWorthinessProduct
             {
                 ProductTypeId = request.SimulationInputs.ProductTypeId,
-                LoanDuration = simulationResults.LoanDuration,
-                LoanInterestRate = simulationResults.LoanInterestRate,
-                LoanAmount = (int)(decimal)simulationResults.LoanAmount,
-                LoanPaymentAmount = (int)((decimal?)simulationResults.LoanPaymentAmount ?? 0m),
+                LoanDuration = simulationResults.uverVysledky.splatnostUveru,
+                LoanInterestRate = simulationResults.urokovaSazba.urokovaSazba,
+                LoanAmount = (int)(decimal)simulationResults.uverVysledky.vyseUveru,
+                LoanPaymentAmount = (int)((decimal?)simulationResults.uverVysledky.splatkaUveru ?? 0m),
                 FixedRatePeriod = request.SimulationInputs.FixedRatePeriod ?? 0
             }
         };
@@ -168,6 +172,8 @@ internal sealed class SimulateMortgageHandler
         }
     }
 
+    private readonly Database.DocumentDataEntities.Mappers.OfferDataMapper _mapper;
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly ILogger<SimulateMortgageHandler> _logger;
     private readonly ICodebookServiceClient _codebookService;
     private readonly IEasSimulationHTClient _easSimulationHTClient;
@@ -175,6 +181,8 @@ internal sealed class SimulateMortgageHandler
     private readonly OfferServiceDbContext _dbContext;
 
     public SimulateMortgageHandler(
+        Database.DocumentDataEntities.Mappers.OfferDataMapper mapper,
+        IDocumentDataStorage documentDataStorage,
         OfferServiceDbContext dbContext,
         ILogger<SimulateMortgageHandler> logger,
         ICodebookServiceClient codebookService,
@@ -182,6 +190,8 @@ internal sealed class SimulateMortgageHandler
         ICreditWorthinessServiceClient creditWorthinessService
     )
     {
+        _mapper = mapper;
+        _documentDataStorage = documentDataStorage;
         _logger = logger;
         _codebookService = codebookService;
         _easSimulationHTClient = easSimulationHTClient;

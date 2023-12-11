@@ -273,39 +273,6 @@ internal static class EasSimulationExtensions
 
     #region ResponseToResults
 
-    // loan
-    private static _OS.MortgageSimulationResults AddResResults(this _OS.MortgageSimulationResults results, EasWrapper.UverVysledky res)
-    {
-        results.LoanAmount = res.vyseUveru;
-        results.LoanDuration = res.splatnostUveru;
-        results.LoanDueDate = res.splatnostUveruDatum;
-        results.LoanPaymentAmount = res.splatkaUveru;
-        results.LoanInterestRateProvided = res.sazbaPoskytnuta;
-        results.EmployeeBonusLoanCode = res.kodZvyhodneni;
-        results.LoanToValue = res.LTV;
-        results.ContractSignedDate = res.datumPodpisuSmlouvy;
-        results.DrawingDateTo = res.datumDocerpani;
-        results.AnnuityPaymentsDateFrom = res.datumZahajeniAnuitnihoSplaceni;
-        results.AnnuityPaymentsCount = res.pocetAnuitnichSplatek;
-        results.Aprc = res.rpsn;
-        results.LoanTotalAmount = res.celkoveNakladyUveru;
-        //results.AprcRefix = res.rpsnRefix;
-        //results.LoanTotalAmountRefix = res.celkoveNakladyUveruRefix;
-
-        return results;
-    }
-
-
-    // interest rate
-    private static _OS.MortgageSimulationResults AddResResults(this _OS.MortgageSimulationResults results, EasWrapper.UrokovaSazba res)
-    {
-        results.LoanInterestRate = res.urokovaSazba;
-        results.LoanInterestRateAnnounced = res.vyhlasovana;
-        results.LoanInterestRateAnnouncedType = res.vyhlasovanaTyp;
-
-        return results;
-    }
-
 
     // payment schedule (simple)
     private static _OS.AdditionalMortgageSimulationResults AddResResults(this _OS.AdditionalMortgageSimulationResults results, EasWrapper.SplS[] res)
@@ -371,29 +338,6 @@ internal static class EasSimulationExtensions
         var items = res.Select(i => toResultFee(i));
 
         results.Fees.AddRange(items);
-
-        return results;
-    }
-
-
-    /// <summary>
-    /// Converts EasSimulationHT object [SimulationHTResponse] to Offer object [SimulationResults].
-    /// </summary>
-    public static _OS.MortgageSimulationResults ToSimulationResults(this EasWrapper.SimulationHTResponse easSimulationResponse)
-    {
-        var results = new _OS.MortgageSimulationResults()
-            .AddResResults(easSimulationResponse.uverVysledky)                  // loan
-            .AddResResults(easSimulationResponse.urokovaSazba);                  // interest rate
-
-        if (easSimulationResponse.errorInfo?.warningy?.Any() ?? false)
-        {
-            results.Warnings.AddRange(easSimulationResponse.errorInfo.warningy.Select(t => new _OS.SimulationResultWarning
-            {
-                WarningCode = t.kodWarningu,
-                WarningInternalMessage = t.internalMsg ?? "",
-                WarningText = t.textWarningu ?? ""
-            }));
-        }
 
         return results;
     }
