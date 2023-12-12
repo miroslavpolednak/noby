@@ -20,7 +20,7 @@ public sealed class DDSInitialTransformation
         {
             connection.Open();
 
-            cmd.CommandText = "SELECT OfferId, CreatedUserId, CreatedTime, CreditWorthinessSimpleInputsBin, AdditionalSimulationResultsBin FROM dbo.Offer WHERE CreatedUserId IS NOT NULL AND SimulationInputsBin IS NOT NULL";
+            cmd.CommandText = "SELECT OfferId, CreatedUserId, CreatedTime, CreditWorthinessSimpleInputsBin, AdditionalSimulationResultsBin, SimulationInputsBin, SimulationResultsBin, BasicParametersBin FROM dbo.Offer WHERE CreatedUserId IS NOT NULL AND SimulationInputsBin IS NOT NULL";
             using (var reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
@@ -39,13 +39,25 @@ public sealed class DDSInitialTransformation
                     }
 
                     // additional
-                    /*var addBin = getBinary(reader, "AdditionalSimulationResultsBin");
+                    var addBin = getBinary(reader, "AdditionalSimulationResultsBin");
                     if (addBin is not null)
                     {
                         var addResults = Contracts.AdditionalMortgageSimulationResults.Parser.ParseFrom(addBin);
-                        var mappedAddData = new Database.DocumentDataEntities.AdditionalSimulationResultsData();
-                        insertDDS(connection, "[AdditionalSimulationResultsData]", offerId, createdUserId, createdTime, mappedAddData);
-                    }*/
+                        insertDDS(connection, "[AdditionalSimulationResultsData]", offerId, createdUserId, createdTime, mapAdditionalData(addResults));
+                    }
+
+                    var inputsBin = getBinary(reader, "SimulationInputsBin");
+                    var resultsBin = getBinary(reader, "SimulationResultsBin");
+                    var paramsBin = getBinary(reader, "BasicParametersBin");
+                    if (paramsBin is not null)
+                    {
+                        var inputsModel = Contracts.MortgageSimulationInputs.Parser.ParseFrom(inputsBin);
+                        var resultsModel = Contracts.MortgageSimulationResults.Parser.ParseFrom(resultsBin);
+                        var paramsModel = Contracts.BasicParameters.Parser.ParseFrom(paramsBin);
+                        
+                        var mappedAddData = mapOfferData(inputsModel, resultsModel, paramsModel);
+                        insertDDS(connection, "[OfferData]", offerId, createdUserId, createdTime, mappedAddData);
+                    }
 
                     // final stamp
                     //updateRow(connection, offerId);
@@ -54,6 +66,99 @@ public sealed class DDSInitialTransformation
         }
 
         return string.Empty;
+    }
+
+    private static Database.DocumentDataEntities.OfferData mapOfferData(Contracts.MortgageSimulationInputs inputs, Contracts.MortgageSimulationResults simulationOutputs, Contracts.BasicParameters basic)
+    {
+        var mapper = new Database.DocumentDataEntities.Mappers.OfferDataMapper();
+
+        return new Database.DocumentDataEntities.OfferData
+        {
+            SimulationInputs = mapper.MapToDataInputs(inputs),
+            BasicParameters = mapper.MapToDataBasicParameters(basic),
+            SimulationOutputs = new DocumentDataEntities.OfferData.SimulationOutputsData
+            {
+                ContractSignedDate = simulationOutputs.ContractSignedDate,
+                AnnuityPaymentsCount = simulationOutputs.AnnuityPaymentsCount,
+                AnnuityPaymentsDateFrom = simulationOutputs.AnnuityPaymentsDateFrom,
+                Aprc = simulationOutputs.Aprc,
+                DrawingDateTo = simulationOutputs.DrawingDateTo,
+                EmployeeBonusDeviation = simulationOutputs.EmployeeBonusDeviation,
+                EmployeeBonusLoanCode = simulationOutputs.EmployeeBonusLoanCode,
+                LoanAmount = simulationOutputs.LoanAmount,
+                LoanDueDate = simulationOutputs.LoanDueDate,
+                LoanInterestRate = simulationOutputs.LoanInterestRate,
+                LoanInterestRateAnnounced = simulationOutputs.LoanInterestRateAnnounced,
+                LoanInterestRateAnnouncedType = simulationOutputs.LoanInterestRateAnnouncedType,
+                LoanInterestRateProvided = simulationOutputs.LoanInterestRateProvided,
+                LoanPaymentAmount = simulationOutputs.LoanPaymentAmount,
+                LoanToValue = simulationOutputs.LoanToValue,
+                LoanTotalAmount = simulationOutputs.LoanTotalAmount,
+                MarketingActionsDeviation = simulationOutputs.MarketingActionsDeviation,
+                LoanDuration = simulationOutputs.LoanDuration,
+                Warnings = simulationOutputs
+                    .Warnings?
+                    .Select(t => new DocumentDataEntities.OfferData.SimulationResultWarningData
+                    {
+                        WarningCode = t.WarningCode,
+                        WarningInternalMessage = t.WarningInternalMessage,
+                        WarningText = t.WarningText
+                    })
+                    .ToList()
+    }
+        };
+    }
+
+    private static Database.DocumentDataEntities.AdditionalSimulationResultsData mapAdditionalData(Contracts.AdditionalMortgageSimulationResults data)
+    {
+        return new Database.DocumentDataEntities.AdditionalSimulationResultsData
+        {
+            Fees = data
+                .Fees?
+                .Select(t => new Database.DocumentDataEntities.AdditionalSimulationResultsData.FeeData
+                {
+                    FeeId = t.FeeId,
+                    DiscountPercentage = t.DiscountPercentage,
+                    TariffSum = t.TariffSum,
+                    ComposedSum = t.ComposedSum,
+                    FinalSum = t.FinalSum,
+                    MarketingActionId = t.MarketingActionId,
+                    Name = t.Name,
+                    ShortNameForExample = t.ShortNameForExample,
+                    TariffName = t.TariffName,
+                    UsageText = t.UsageText,
+                    TariffTextWithAmount = t.TariffTextWithAmount,
+                    CodeKB = t.CodeKB,
+                    DisplayAsFreeOfCharge = t.DisplayAsFreeOfCharge,
+                    IncludeInRPSN = t.IncludeInRPSN,
+                    Periodicity = t.Periodicity,
+                    AccountDateFrom = t.AccountDateFrom
+                })
+                .ToList(),
+            MarketingActions = data
+                .MarketingActions?
+                .Select(t => new Database.DocumentDataEntities.AdditionalSimulationResultsData.MarketingActionData
+                {
+                    Code = t.Code,
+                    Requested = t.Requested,
+                    Applied = t.Applied,
+                    MarketingActionId = t.MarketingActionId,
+                    Deviation = t.Deviation,
+                    Name = t.Name
+                })
+                .ToList(),
+            PaymentScheduleSimple = data
+                .PaymentScheduleSimple?
+                .Select(t => new Database.DocumentDataEntities.AdditionalSimulationResultsData.PaymentScheduleData
+                {
+                    PaymentIndex = t.PaymentIndex,
+                    PaymentNumber = t.PaymentNumber,
+                    Date = t.Date,
+                    Type = t.Type,
+                    Amount = t.Amount
+                })
+                .ToList()
+        };
     }
 
     private static void insertDDS(SqlConnection connection, in string tableName, in int offerId, in int createdUserId, in DateTime createdTime, in object data)
