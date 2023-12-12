@@ -68,10 +68,10 @@ public class GetStatisticsHandler
         return new GetStatisticsResponse() { Statistics = statistics };
 
         int GetEmailCount(Contracts.Result.Dto.NotificationState state)
-            => data.Where(t => t.Channel == Contracts.Result.Dto.NotificationChannel.Email && t.State == state).Count();
+            => data.Where(t => t.Channel == Contracts.Result.Dto.NotificationChannel.Email && t.State == state).FirstOrDefault()?.Count ?? 0;
 
         int GetSmsCount(Contracts.Result.Dto.NotificationState state)
-            => data.Where(t => t.Channel == Contracts.Result.Dto.NotificationChannel.Sms && t.State == state).Count();
+            => data.Where(t => t.Channel == Contracts.Result.Dto.NotificationChannel.Sms && t.State == state).FirstOrDefault()?.Count ?? 0;
     }
 
     private readonly NotificationDbContext _dbContext;

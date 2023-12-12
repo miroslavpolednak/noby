@@ -139,15 +139,11 @@ public class NotificationController : ControllerBase
     /// </remarks>
     [HttpGet("result/statistics")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    [ProducesResponseType(typeof(Contracts.Statistics.Dto.Statistics), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetStatisticsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<Contracts.Statistics.Dto.Statistics> GetStatistics([FromQuery] GetStatisticsRequest getStatisticsRequest, CancellationToken token)
-    {
-        var response = await _mediator.Send(getStatisticsRequest, token);
-
-        return response.Statistics;
-    }
+    public async Task<GetStatisticsResponse> GetStatistics([FromQuery] GetStatisticsRequest getStatisticsRequest, CancellationToken token)
+        => await _mediator.Send(getStatisticsRequest, token);
 
     /// <summary>
     /// Zobrazit detailní statistiky podle zadaných kritérií
