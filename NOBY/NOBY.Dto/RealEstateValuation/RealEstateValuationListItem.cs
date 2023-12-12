@@ -127,7 +127,7 @@ public sealed class RealEstateValuationListItem
     public bool DeveloperApplied { get; set; }
 
     /// <summary>
-    /// Možné typy ocenění oddělené čárkami, 1 - online, 2 - dts, 3 - standard (výsledek ACV trychtýře)
+    /// Možné typy ocenění (výsledek ACV trychtýře), 1 - online, 2 - dts, 3 - standard
     /// </summary>
     public List<RealEstateValuationValuationTypes>? PossibleValuationTypeId { get; set; }
 }

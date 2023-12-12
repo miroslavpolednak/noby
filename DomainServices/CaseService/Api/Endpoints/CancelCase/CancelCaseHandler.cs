@@ -20,7 +20,7 @@ internal sealed class CancelCaseHandler
         // Pokud stav case není 1 (příprava žádosti) vracíme chybu, nelze stornovat
         if (entity.State != (int)CaseStates.InProgress)
         {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToCancelCase);
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableToCancelCase, request.CaseId);
         }
 
         // produktovy SA
