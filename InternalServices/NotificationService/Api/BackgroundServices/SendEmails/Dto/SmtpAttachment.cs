@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.NotificationService.Api.Services.Smtp;
+﻿namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails.Dto;
 
 public class SmtpAttachment
 {

@@ -75,4 +75,26 @@ public class UserAdapterService : IUserAdapterService
 
         return this;
     }
+
+    public UserAdapterService CheckReceiveStatisticsAccess()
+    {
+        var username = GetUsername();
+        if (!_consumers[username].CanReceiveStatistics)
+        {
+            throw new CisAuthorizationException($"Forbidden for username '{username}'.");
+        }
+
+        return this;
+    }
+
+    public UserAdapterService CheckResendNotificationsAccess()
+    {
+        var username = GetUsername();
+        if (!_consumers[username].CanResendNotifications)
+        {
+            throw new CisAuthorizationException($"Forbidden for username '{username}'.");
+        }
+
+        return this;
+    }
 }

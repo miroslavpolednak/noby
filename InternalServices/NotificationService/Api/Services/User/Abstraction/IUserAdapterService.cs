@@ -11,4 +11,8 @@ public interface IUserAdapterService
     UserAdapterService CheckSendSmsAccess();
 
     UserAdapterService CheckReadResultAccess();
+
+    UserAdapterService CheckReceiveStatisticsAccess();
+
+    UserAdapterService CheckResendNotificationsAccess();
 }

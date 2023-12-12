@@ -44,6 +44,30 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
             </remarks>
         </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v1.NotificationController.GetStatistics(CIS.InternalServices.NotificationService.Contracts.Statistics.GetStatisticsRequest,System.Threading.CancellationToken)">
+            <summary>
+            Zobrazit statistiky podle zadaných kritérií
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+            </remarks>
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v1.NotificationController.GetDetailedStatistics(CIS.InternalServices.NotificationService.Contracts.Statistics.GetDetailedStatisticsRequest,System.Threading.CancellationToken)">
+            <summary>
+            Zobrazit detailní statistiky podle zadaných kritérií
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+            </remarks>
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v1.NotificationController.Resend(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Znovu odešle notifikaci
+            </summary>
+            <remarks>
+            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
+            </remarks>
+        </member>
         <member name="T:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.Initial">
             <inheritdoc />
         </member>

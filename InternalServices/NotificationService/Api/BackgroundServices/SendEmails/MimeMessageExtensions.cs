@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using MimeKit;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Smtp;
+namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 
 public static class MimeMessageExtensions
 {
-    public static MimeMessage Create() => new ();
+    public static MimeMessage Create() => new();
 
     public static MimeMessage AddFrom(this MimeMessage message, string from)
     {
@@ -28,7 +28,7 @@ public static class MimeMessageExtensions
         message.Subject = subject;
         return message;
     }
-    
+
     public static MimeMessage AddTo(this MimeMessage message, IEnumerable<string> to)
     {
         foreach (var t in to)
@@ -38,10 +38,10 @@ public static class MimeMessageExtensions
                 message.To.Add(MailboxAddress.Parse(t));
             }
         }
-        
+
         return message;
     }
-    
+
     public static MimeMessage AddCc(this MimeMessage message, IEnumerable<string> cc)
     {
         foreach (var c in cc)
@@ -51,10 +51,10 @@ public static class MimeMessageExtensions
                 message.Cc.Add(MailboxAddress.Parse(c));
             }
         }
-        
+
         return message;
     }
-    
+
     public static MimeMessage AddBcc(this MimeMessage message, IEnumerable<string> bcc)
     {
         foreach (var b in bcc)
@@ -64,11 +64,11 @@ public static class MimeMessageExtensions
                 message.Bcc.Add(MailboxAddress.Parse(b));
             }
         }
-        
+
         return message;
     }
-    
-    public static MimeMessage AddContent(this MimeMessage message, string format, string content, IEnumerable<SmtpAttachment> attachments)
+
+    public static MimeMessage AddContent(this MimeMessage message, string format, string content, IEnumerable<Dto.SmtpAttachment> attachments)
     {
         var bodyBuilder = new BodyBuilder();
 
@@ -79,15 +79,15 @@ public static class MimeMessageExtensions
         else
         {
             bodyBuilder.TextBody = content;
-        }    
-        
+        }
+
         foreach (var attachment in attachments)
         {
             bodyBuilder.Attachments.Add(attachment.Filename, attachment.Binary);
         }
 
         message.Body = bodyBuilder.ToMessageBody();
-        
+
         return message;
     }
 }
