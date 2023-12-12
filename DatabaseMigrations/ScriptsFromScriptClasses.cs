@@ -1,7 +1,6 @@
 ﻿using DbUp.Engine.Transactions;
 using DbUp.Engine;
 using System.Reflection;
-using System.ComponentModel;
 
 namespace DatabaseMigrations.ScriptProviders;
 
@@ -23,9 +22,9 @@ internal sealed class ScriptFromScriptClassesScriptProvider
             .Where(type => script.IsAssignableFrom(type) && type.IsClass)
             .Select(s =>
             {
-                var scriptNameAttribute = s.GetCustomAttribute<DisplayNameAttribute>(false);
+                var scriptNameAttribute = s.GetCustomAttribute<DatabaseMigrationsSupport.DbUpScriptNameAttribute>(false);
                 var scriptName = scriptNameAttribute != null
-                    ? scriptNameAttribute.DisplayName + ".cs"
+                    ? scriptNameAttribute.ScriptName + ".cs"
                     : s.FullName + ".cs";
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.

@@ -1,12 +1,12 @@
 ﻿using DbUp.Engine;
 using Microsoft.Data.SqlClient;
-using System.ComponentModel;
 using System.Data;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace DomainServices.OfferService.Api.Database.CodeMigrations;
 
-[DisplayName("0-DDSInitialTransformation")]
+[DatabaseMigrationsSupport.DbUpScriptName("00004_DDS_script")]
 public sealed class DDSInitialTransformation
     : IScript
 {
@@ -15,12 +15,17 @@ public sealed class DDSInitialTransformation
         var worthinessMapper = new Database.DocumentDataEntities.Mappers.CreditWorthinessSimpleDataMapper();
         
         var cmd = dbCommandFactory();
-        
+        int rows = 0;
+
         using (SqlConnection connection = new SqlConnection(cmd.Connection!.ConnectionString))
         {
             connection.Open();
+            
+            cmd.CommandText = @"
+SELECT OfferId, CreatedUserId, CreatedTime, CreditWorthinessSimpleInputsBin, AdditionalSimulationResultsBin, SimulationInputsBin, SimulationResultsBin, BasicParametersBin 
+FROM dbo.Offer
+WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId FROM [DDS].[OfferData])";
 
-            cmd.CommandText = "SELECT OfferId, CreatedUserId, CreatedTime, CreditWorthinessSimpleInputsBin, AdditionalSimulationResultsBin, SimulationInputsBin, SimulationResultsBin, BasicParametersBin FROM dbo.Offer WHERE CreatedUserId IS NOT NULL AND SimulationInputsBin IS NOT NULL";
             using (var reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
@@ -59,11 +64,12 @@ public sealed class DDSInitialTransformation
                         insertDDS(connection, "[OfferData]", offerId, createdUserId, createdTime, mappedAddData);
                     }
 
-                    // final stamp
-                    //updateRow(connection, offerId);
+                    rows++;
                 }
             }
         }
+
+        Console.WriteLine($"00003_DDSInitialTransformation: Processed {rows} rows");
 
         return string.Empty;
     }
@@ -165,6 +171,8 @@ public sealed class DDSInitialTransformation
     {
         using (SqlCommand command = new SqlCommand($"INSERT INTO [DDS].{tableName} ([DocumentDataEntityId],[DocumentDataVersion],[Data],[CreatedUserId],[CreatedTime]) VALUES (@id, 1, @data, @userId, @time)", connection))
         {
+            command.CommandTimeout = 5;
+
             command.Parameters.AddWithValue("@id", offerId);
             command.Parameters.AddWithValue("@data", JsonSerializer.Serialize(data, _jsonSerializerOptions));
             command.Parameters.AddWithValue("@userId", createdUserId);
@@ -186,15 +194,8 @@ public sealed class DDSInitialTransformation
         return buffer;
     }
 
-    private static void updateRow(SqlConnection connection, in int offerId)
+    private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
     {
-        using (SqlCommand command = new SqlCommand("UPDATE dbo.Offer SET CreditWorthinessSimpleInputs=NULL WHERE OfferId=@id", connection))
-        {
-            command.Parameters.AddWithValue("@id", offerId);
-
-            command.ExecuteNonQuery();
-        }
-    }
-
-    private static JsonSerializerOptions _jsonSerializerOptions = JsonSerializerOptions.Default;
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
 }
