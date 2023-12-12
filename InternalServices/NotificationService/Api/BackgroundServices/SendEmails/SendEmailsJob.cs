@@ -1,7 +1,6 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
-using CIS.InternalServices.NotificationService.Api.Services.Smtp;
 using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.DocumentDataStorage;
@@ -110,7 +109,7 @@ public sealed class SendEmailsJob
                 .AddTo(payload.To.Select(t => t.Value))
                 .AddCc(payload.Cc.Select(t => t.Value))
                 .AddBcc(payload.Bcc.Select(t => t.Value))
-                .AddContent(payload.Content.Format, payload.Content.Text, payload.Attachments.Select(t => new SmtpAttachment
+                .AddContent(payload.Content.Format, payload.Content.Text, payload.Attachments.Select(t => new Dto.SmtpAttachment
                 {
                     Filename = t.Filename,
                     Binary = Convert.FromBase64String(t.Binary)

@@ -44,16 +44,10 @@ public static class ServiceCollectionExtensions
             .Validate(config =>
                     !string.IsNullOrEmpty(config?.KafkaTopics?.McsSender),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.McsSender)} required.")
-            .Validate(config =>
-                    !string.IsNullOrEmpty(config?.KafkaTopics?.NobySendEmail),
-                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.KafkaTopics)}.{nameof(KafkaTopics.NobySendEmail)} required.")
             
             .Validate(config =>
                 !string.IsNullOrEmpty(config?.S3Buckets?.Mcs),
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.S3Buckets)}.{nameof(S3Buckets.Mcs)} required.")
-            .Validate(config =>
-                    !string.IsNullOrEmpty(config?.S3Buckets?.Mpss),
-                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.S3Buckets)}.{nameof(S3Buckets.Mpss)} required.")
             .ValidateOnStart();
         
         builder.Services

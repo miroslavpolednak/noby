@@ -8,7 +8,6 @@ using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Endpoints.v1;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
-using CIS.InternalServices.NotificationService.Api.Services.Smtp;
 using ProtoBuf.Grpc.Server;
 using DomainServices;
 using CIS.InternalServices;
@@ -92,9 +91,6 @@ try
     
     // s3 client
     builder.AddS3Client();
-
-    // smtp
-    builder.AddSmtpClient();
 
     // registrace background jobu
     builder.AddBackroundJobs();

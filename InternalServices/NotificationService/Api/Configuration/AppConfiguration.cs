@@ -44,13 +44,9 @@ public class KafkaTopics
     public string McsResult { get; set; } = null!;
     
     public string McsSender { get; set; } = null!;
-
-    public string NobySendEmail { get; set; } = null!;
 }
 
 public class S3Buckets
 {
     public string Mcs { get; set; } = null!;
-
-    public string Mpss { get; set; } = null!;
 }
