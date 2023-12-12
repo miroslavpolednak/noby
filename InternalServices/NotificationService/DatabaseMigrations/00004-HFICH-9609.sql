@@ -1,35 +1,29 @@
-﻿BEGIN TRANSACTION;
+﻿ALTER TABLE dbo.EmailResult ADD
+	[SenderType] tinyint NOT NULL CONSTRAINT DF_EmailResult_SenderType DEFAULT 0,
+	[Resent] bit NOT NULL CONSTRAINT DF_EmailResult_Resent DEFAULT 0
 GO
 
-DROP INDEX [IX_SmsResult_CustomId_Identity_IdentityScheme_DocumentId] ON [SmsResult];
+CREATE TABLE [dbo].[SentNotification](
+	[Id] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_SentNotification] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 
-DROP INDEX [IX_EmailResult_CustomId_Identity_IdentityScheme_DocumentId] ON [EmailResult];
+Create SCHEMA DDS
 GO
-
-ALTER TABLE [SmsResult] ADD [CaseId] bigint NULL;
-GO
-
-ALTER TABLE [SmsResult] ADD [DocumentHash] nvarchar(max) NULL;
-GO
-
-ALTER TABLE [SmsResult] ADD [HashAlgorithm] nvarchar(max) NULL;
-GO
-
-ALTER TABLE [EmailResult] ADD [CaseId] bigint NULL;
-GO
-
-ALTER TABLE [EmailResult] ADD [DocumentHash] nvarchar(max) NULL;
-GO
-
-ALTER TABLE [EmailResult] ADD [HashAlgorithm] nvarchar(max) NULL;
-GO
-
-CREATE INDEX [IX_SmsResult_CustomId_Identity_IdentityScheme_DocumentId_CaseId] ON [SmsResult] ([CustomId], [Identity], [IdentityScheme], [DocumentId], [CaseId]);
-GO
-
-CREATE INDEX [IX_EmailResult_CustomId_Identity_IdentityScheme_DocumentId_CaseId] ON [EmailResult] ([CustomId], [Identity], [IdentityScheme], [DocumentId], [CaseId]);
-GO
-
-COMMIT;
-GO
+CREATE TABLE [DDS].[SendEmail](
+	[DocumentDataStorageId] [int] IDENTITY(1,1) NOT NULL,
+	[DocumentDataEntityId] [varchar](50) NULL,
+	[DocumentDataVersion] [int] NOT NULL,
+	[Data] [nvarchar](max) NULL,
+	[CreatedUserId] [int] NOT NULL,
+	[CreatedTime] [datetime] NOT NULL,
+	[ModifiedUserId] [int] NULL
+ CONSTRAINT [PK_SendEmail] PRIMARY KEY CLUSTERED 
+(
+	[DocumentDataStorageId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
