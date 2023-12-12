@@ -4,6 +4,7 @@ using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using __Offer = DomainServices.OfferService.Contracts;
 using __SA = DomainServices.SalesArrangementService.Contracts;
+using DomainServices.OfferService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.LinkModelationToSalesArrangement;
 
@@ -20,7 +21,9 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         // kontrola zda SA uz neni nalinkovan na stejnou Offer na kterou je request
         if (salesArrangementInstance.OfferId == request.OfferId)
+        {
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AlreadyLinkedToOffer, request.SalesArrangementId);
+        }
 
         // instance Case
         var caseInstance = await _caseService.GetCaseDetail(salesArrangementInstance.CaseId, cancellation);
@@ -71,7 +74,46 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // nastavit flowSwitches
         await setFlowSwitches(salesArrangementInstance.CaseId, request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
 
+        // Aktualizace dat modelace v KonsDB
+        await updateMortgage(caseInstance.CaseId, offerInstance, cancellation);
+        
         return new Google.Protobuf.WellKnownTypes.Empty();
+    }
+
+    private async Task updateMortgage(long caseId, GetMortgageOfferResponse offer, CancellationToken cancellationToken)
+    {
+        var products = await _productService.GetProductList(caseId, cancellationToken);
+
+        if (products.Products.Count > 0)
+        {
+            var request = new ProductService.Contracts.UpdateMortgageRequest
+            {
+                ProductId = 1,
+                Mortgage = new()
+                {
+                    LoanAmount = offer.SimulationInputs.LoanAmount,
+                    LoanInterestRate = offer.SimulationResults.LoanInterestRate,
+                    FixedRatePeriod = offer.SimulationInputs.FixedRatePeriod,
+                    LoanPaymentAmount = offer.SimulationResults.LoanPaymentAmount,
+                    LoanKindId = offer.SimulationInputs.LoanKindId,
+                    ExpectedDateOfDrawing = offer.SimulationInputs.ExpectedDateOfDrawing,
+                    LoanDueDate = offer.SimulationResults.LoanDueDate,
+                    PaymentDay = offer.SimulationInputs.PaymentDay,
+                    FirstAnnuityPaymentDate = offer.SimulationResults.AnnuityPaymentsDateFrom
+                }
+            };
+
+            if (offer.SimulationInputs.LoanPurposes is not null)
+            {
+                request.Mortgage.LoanPurposes.AddRange(offer.SimulationInputs.LoanPurposes.Select(t => new ProductService.Contracts.LoanPurpose
+                {
+                    Sum = t.Sum,
+                    LoanPurposeId = t.LoanPurposeId
+                }));
+            }
+
+            await _productService.UpdateMortgage(request, cancellationToken);
+        }
     }
 
     /// <summary>
@@ -216,6 +258,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         }
     }
 
+    private readonly ProductService.Clients.IProductServiceClient _productService;
     private readonly CaseService.Clients.ICaseServiceClient _caseService;
     private readonly OfferService.Clients.IOfferServiceClient _offerService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
@@ -223,12 +266,14 @@ internal sealed class LinkModelationToSalesArrangementHandler
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
     public LinkModelationToSalesArrangementHandler(
+        ProductService.Clients.IProductServiceClient productService,
         IRealEstateValuationServiceClient realEstateValuationService,
         IMediator mediator,
         CaseService.Clients.ICaseServiceClient caseService,
         Database.SalesArrangementServiceDbContext dbContext,
         OfferService.Clients.IOfferServiceClient offerService)
     {
+        _productService = productService;
         _realEstateValuationService = realEstateValuationService;
         _mediator = mediator;
         _caseService = caseService;
