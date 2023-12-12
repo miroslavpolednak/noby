@@ -24,7 +24,6 @@ internal static class UpdateParametersExtensions
             IncomeCurrencyCode = parameters.IncomeCurrencyCode,
             ResidencyCurrencyCode = parameters.ResidencyCurrencyCode,
             Agent = parameters.Agent,
-            AgentConsentWithElCom = parameters.AgentConsentWithElCom,
             Comment = originalParameter.Comment,
             FirstSignatureDate = originalParameter.FirstSignatureDate
         };
