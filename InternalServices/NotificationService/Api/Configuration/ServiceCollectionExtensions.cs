@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
+using CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
 using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Configuration;
@@ -28,10 +29,6 @@ public static class ServiceCollectionExtensions
             .Validate(config =>
                     config?.EmailSenders?.Mpss?.Any() ?? false,
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailSenders)}.{nameof(EmailSenders.Mpss)} cannot be empty.")
-            
-            .Validate(config =>
-                config?.EmailDomainWhitelist != null,
-                $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.EmailDomainWhitelist)} required.")
             
             .Validate(config =>
                 config?.EmailFormats?.Any() ?? false,
@@ -70,7 +67,6 @@ public static class ServiceCollectionExtensions
                 $"{nameof(S3Configuration)}.{nameof(S3Configuration.SecretKey)} required.");
 
         string sendEmailsJobConfiguration = $"{CisBackgroundServiceExtensions.ConfigurationSectionKey}:{nameof(SendEmailsJob)}:{CisBackgroundServiceExtensions.CustomConfigurationSectionKey}";
-
         builder.Services
             .AddOptions<SendEmailsJobConfiguration>()
             .Bind(builder.Configuration.GetSection(sendEmailsJobConfiguration))
@@ -84,11 +80,19 @@ public static class ServiceCollectionExtensions
                 config => config?.SmtpConfiguration.Timeout >= 10 && config?.SmtpConfiguration.Timeout <= 300,
                 $"{sendEmailsJobConfiguration}.{nameof(SmtpConfiguration)}.{nameof(SmtpConfiguration.Timeout)} is required and value must be between 10 and 300 seconds.")
             .Validate(
-                config => config?.EmailSlaInMinutes > 0,
-                $"{sendEmailsJobConfiguration}.EmailSlaInMinutes required and cannot be 0.")
-            .Validate(
                 config => config?.NumberOfEmailsAtOnce > 0,
                 $"{sendEmailsJobConfiguration}.NumberOfEmailsAtOnce required and cannot be 0.")
+            .Validate(config => config?.EmailDomainWhitelist != null,
+                $"{sendEmailsJobConfiguration}.EmailDomainWhitelist required.")
+            .ValidateOnStart();
+
+        string setExpiredEmailsJobConfiguration = $"{CisBackgroundServiceExtensions.ConfigurationSectionKey}:{nameof(SetExpiredEmailsJob)}:{CisBackgroundServiceExtensions.CustomConfigurationSectionKey}";
+        builder.Services
+            .AddOptions<SetExpiredEmailsJobConfiguration>()
+            .Bind(builder.Configuration.GetSection(setExpiredEmailsJobConfiguration))
+            .Validate(
+                config => config?.EmailSlaInMinutes > 0,
+                $"{setExpiredEmailsJobConfiguration}.EmailSlaInMinutes required and cannot be 0.")
             .ValidateOnStart();
 
         return builder;

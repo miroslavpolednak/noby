@@ -1,5 +1,4 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
-using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Api.Services.Smtp;
@@ -9,14 +8,12 @@ using SharedComponents.DocumentDataStorage;
 using System.Net.Security;
 using CIS.Core;
 using CIS.Core.Exceptions;
-using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 
 public sealed class SendEmailsJob
     : Infrastructure.BackgroundServices.ICisBackgroundServiceJob
 {
-    private readonly AppConfiguration _appConfiguration;
     private readonly SendEmailsJobConfiguration _configuration;
     private readonly NotificationDbContext _dbContext;
     private readonly IDocumentDataStorage _documentDataStorage;
@@ -24,14 +21,12 @@ public sealed class SendEmailsJob
     private readonly IDateTime _dateTime;
 
     public SendEmailsJob(
-        IOptions<AppConfiguration> appConfiguration,
         SendEmailsJobConfiguration configuration, 
         NotificationDbContext dbContext, 
         IDocumentDataStorage documentDataStorage,
         ILogger<SendEmailsJob> logger,
         IDateTime dateTime)
     {
-        _appConfiguration = appConfiguration.Value;
         _configuration = configuration;
         _dbContext = dbContext;
         _documentDataStorage = documentDataStorage;
@@ -41,20 +36,15 @@ public sealed class SendEmailsJob
 
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
-        // nastavit unsent emailum ktere uz nejsou k odeslani
-        await UpdateExpired(cancellationToken);
-
         // vytahnout emaily k odeslani
         var random = new Random();
         var emails = await _dbContext.EmailResults
             .Where(t => t.State == NotificationState.InProgress && t.SenderType == Contracts.Statistics.Dto.SenderType.MP)
-            // TODO: pokud proslo UpdateExpired, je tahle podminka zbytecna
-            .Where(t => t.RequestTimestamp >= _dateTime.Now.AddMinutes(_configuration.EmailSlaInMinutes * -1) || t.Resent)
             .OrderBy(t => Guid.NewGuid())
             .Take(_configuration.NumberOfEmailsAtOnce)
             .ToListAsync(cancellationToken);
 
-        if (!emails.Any())
+        if (emails.Count == 0)
             return;
 
         // vytvorit smtp klienta
@@ -102,8 +92,7 @@ public sealed class SendEmailsJob
                     throw new CisNotFoundException(0, $"Request payload for email result id {email.Id} was not found.");
 
                 // zkontrolovat whitelist
-                // TODO: proc je to tady a ne ve validaci requestu?
-                if (_appConfiguration.EmailDomainWhitelist.Any())
+                if (_configuration.EmailDomainWhitelist.Count != 0)
                 {
                     var emailAddresses = payload.To.Select(t => t.Value)
                     .Union(payload.Cc.Select(t => t.Value))
@@ -138,9 +127,6 @@ public sealed class SendEmailsJob
 
                 // odeslat
                 await client.SendAsync(message, cancellationToken = default);
-
-                // odstranit payload
-                await _documentDataStorage.DeleteByEntityId<SendEmail>(email.Id.ToString());
             }
             catch (CisNotFoundException ex)
             {
@@ -178,9 +164,6 @@ public sealed class SendEmailsJob
             }
             catch (Exception exception)
             {
-                // odstranit zamek, chceme zkusit odeslat znovu
-                await _dbContext.Database.ExecuteSqlInterpolatedAsync($"Delete From SentNotification Where Id = {email.Id}", default);
-
                 var errorSet = new HashSet<ResultError>
                 {
                     new ResultError
@@ -190,11 +173,25 @@ public sealed class SendEmailsJob
                         Message = exception.Message
                     }
                 };
+                // nastavit state zpet na InProgress
+                // pokud jde puvodne resent, bude se email zkouset odeslat tak dlouho, nez ho zneplatni SetExpiredEmailsJob
+                email.State = NotificationState.InProgress;
                 email.ErrorSet = errorSet;
                 await _dbContext.SaveChangesAsync(default);
 
+                // odstranit zamek, chceme zkusit odeslat znovu
+                await _dbContext.Database.ExecuteSqlInterpolatedAsync($"Delete From SentNotification Where Id = {email.Id}", default);
+
                 _logger.LogError(exception, $"{nameof(SendEmailsJob)} failed.");
             }
+
+            // odstranit payload
+            try
+            {
+                if (email.State == NotificationState.Sent)
+                    await _documentDataStorage.DeleteByEntityId<SendEmail>(email.Id.ToString());
+            }
+            catch { }
         }
 
         await client.DisconnectAsync(true, default);
@@ -202,24 +199,6 @@ public sealed class SendEmailsJob
     }
 
     private bool IsWhitelisted(string email) =>
-        !_appConfiguration.EmailDomainWhitelist.Any() ||
-        _appConfiguration.EmailDomainWhitelist.Any(w => email.EndsWith(w, StringComparison.OrdinalIgnoreCase));
-
-    private async Task UpdateExpired(CancellationToken cancellationToken)
-    {
-        var emails = await _dbContext.EmailResults
-            .Where(t => t.State == NotificationState.InProgress && t.SenderType == Contracts.Statistics.Dto.SenderType.MP)
-            .Where(t => t.RequestTimestamp < _dateTime.Now.AddMinutes(_configuration.EmailSlaInMinutes * -1) && !t.Resent)
-            .ToListAsync(cancellationToken);
-
-        if (emails.Any())
-        {
-            foreach (var email in emails)
-            {
-                email.State = NotificationState.Unsent;
-                email.ResultTimestamp = _dateTime.Now;
-            }
-            await _dbContext.SaveChangesAsync(cancellationToken);
-        }
-    }
+        _configuration.EmailDomainWhitelist.Count == 0 ||
+        _configuration.EmailDomainWhitelist.Any(w => email.EndsWith(w, StringComparison.OrdinalIgnoreCase));
 }

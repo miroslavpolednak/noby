@@ -4,9 +4,9 @@ namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEm
 
 public sealed class SendEmailsJobConfiguration
 {
-    public int EmailSlaInMinutes { get; set; }
-
     public int NumberOfEmailsAtOnce { get; set; }
+
+    public HashSet<string> EmailDomainWhitelist { get; set; } = new();
 
     public SmtpConfiguration SmtpConfiguration { get; set; } = default!;
 }

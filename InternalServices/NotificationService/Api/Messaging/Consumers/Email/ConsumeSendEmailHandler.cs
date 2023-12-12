@@ -78,9 +78,9 @@ public class ConsumeSendEmailHandler : IRequestHandler<ConsumeSendEmailRequest, 
 
     private bool AreWhitelisted(IEnumerable<string> emails) => emails.All(IsWhitelisted);
 
-    private bool IsWhitelisted(string email) =>
-        !_appConfiguration.EmailDomainWhitelist.Any() ||
-        _appConfiguration.EmailDomainWhitelist.Any(w => email.EndsWith(w, StringComparison.OrdinalIgnoreCase));
+    private bool IsWhitelisted(string email) => false;
+        //!_appConfiguration.EmailDomainWhitelist.Any() ||
+        //_appConfiguration.EmailDomainWhitelist.Any(w => email.EndsWith(w, StringComparison.OrdinalIgnoreCase));
 
     public async Task<ConsumeSendEmailResponse> Handle(ConsumeSendEmailRequest request, CancellationToken cancellationToken)
     {
