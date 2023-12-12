@@ -19,5 +19,5 @@ public class Result
     public DateTime? RequestTimestamp { get; set; }
 
     [ProtoMember(5)]
-    public SenderType Mandant { get; set; }
+    public SenderType? Mandant { get; set; }
 }

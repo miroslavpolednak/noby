@@ -1,13 +1,13 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Services.Repositories;
+using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Statistics;
-using CIS.InternalServices.NotificationService.Contracts.Statistics.Dto;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Statistics;
 
-public class GetDetailedStatisticsHandler
+internal sealed class GetDetailedStatisticsHandler
     : IRequestHandler<GetDetailedStatisticsRequest, GetDetailedStatisticsResponse>
 {
     public async Task<GetDetailedStatisticsResponse> Handle(GetDetailedStatisticsRequest request, CancellationToken cancellationToken)
@@ -17,6 +17,7 @@ public class GetDetailedStatisticsHandler
         var dateFrom = request.StatisticsDate.Date;
         var dateTo = dateFrom.AddDays(1);
 
+        // statistiky
         var statistics = await _mediator.Send(new GetStatisticsRequest
         {
             Channels = request.Channels,
@@ -25,6 +26,7 @@ public class GetDetailedStatisticsHandler
             TimeTo = dateTo
         }, cancellationToken);
 
+        // notifikace
         var query = _dbContext.Results
             .Where(t => t.RequestTimestamp >= dateFrom && t.RequestTimestamp <= dateTo)
             .AsQueryable();
@@ -38,11 +40,19 @@ public class GetDetailedStatisticsHandler
         var data = await query
             .Select(t => new Contracts.Statistics.Dto.Result
             {
-
+                NotificationId = t.Id,
+                Channel = t.Channel,
+                Mandant = (t is EmailResult) ? ((EmailResult)t).SenderType : null,
+                RequestTimestamp = t.RequestTimestamp,
+                State = t.State
             })
             .ToListAsync(cancellationToken);
 
-        return new GetDetailedStatisticsResponse() { Statistics = statistics.Statistics };
+        return new GetDetailedStatisticsResponse()
+        {
+            Statistics = statistics.Statistics,
+            Results = data
+        };
     }
 
     private readonly NotificationDbContext _dbContext;

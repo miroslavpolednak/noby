@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Statistics;
 
-public class GetStatisticsHandler
+internal sealed class GetStatisticsHandler
     : IRequestHandler<GetStatisticsRequest, GetStatisticsResponse>
 {
     public async Task<GetStatisticsResponse> Handle(GetStatisticsRequest request, CancellationToken cancellationToken)
@@ -20,12 +20,7 @@ public class GetStatisticsHandler
             query = query.Where(t => request.States.Contains(t.State));
 
         if (request.Channels != null && request.Channels.Count > 0)
-        {
-            //query = query.Where(t => (new List<int> { 1, 2 }).Contains((int)t.Channel));
-            //var i = new List<int> { 1, 2 };
-            //query = query.Where(t => i.Contains((int)t.Channel));
-            query = query.Where(t => request.Channels.Select(t => (int)t).ToList().Any(tt => tt == (int)t.Channel));
-        }
+            query = query.Where(t => request.Channels.Contains(t.Channel));
 
         if (request.TimeFrom != null)
             query = query.Where(t => t.RequestTimestamp >= request.TimeFrom);

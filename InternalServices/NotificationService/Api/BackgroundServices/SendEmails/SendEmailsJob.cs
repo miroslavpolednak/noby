@@ -37,7 +37,6 @@ public sealed class SendEmailsJob
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
         // vytahnout emaily k odeslani
-        var random = new Random();
         var emails = await _dbContext.EmailResults
             .Where(t => t.State == NotificationState.InProgress && t.SenderType == Contracts.Statistics.Dto.SenderType.MP)
             .OrderBy(t => Guid.NewGuid())
