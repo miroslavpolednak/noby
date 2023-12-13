@@ -19,7 +19,8 @@ SharedComponents.GrpcServiceBuilder
             .AddRealEstateValuationService()
             .AddDocumentGeneratorService()
             .AddDataAggregatorService()
-            .AddRealEstateValuationService();
+            .AddRealEstateValuationService()
+            .AddProductService();
     })
     .Build(builder =>
     {
