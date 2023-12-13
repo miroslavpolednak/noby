@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
 
@@ -68,6 +67,7 @@ public sealed class ParametersDrawingAgent
 }
 
 public sealed class ParametersDrawingPayout
+    : NOBY.Dto.BankAccount
 {
     public int? ProductObligationId { get; set; }
 
@@ -80,21 +80,6 @@ public sealed class ParametersDrawingPayout
     /// Výše čerpané částky
     /// </summary>
     public decimal? DrawingAmount { get; set; }
-
-    /// <summary>
-    /// Předčíslí účtu
-    /// </summary>
-    public string? PrefixAccount { get; set; }
-
-    /// <summary>
-    /// Číslo účtu
-    /// </summary>
-    public string? AccountNumber { get; set; }
-
-    /// <summary>
-    /// Kód banky
-    /// </summary>
-    public string? BankCode { get; set; }
 
     /// <summary>
     /// Variabilní symbol
@@ -121,21 +106,7 @@ public sealed class ParametersDrawingPayout
 /// Účet pro splácení
 /// </summary>
 public sealed class ParametersDrawingRepaymentAccount
+    : NOBY.Dto.BankAccount
 {
     public bool IsAccountNumberMissing { get; set; }
-
-    /// <summary>
-    /// Předčíslí účtu pro splácení
-    /// </summary>
-    public string? Prefix { get; set; }
-
-    /// <summary>
-    /// Číslo účtu pro splácení
-    /// </summary>
-    public string? Number { get; set; }
-
-    /// <summary>
-    /// Kód banky účtu pro splácení
-    /// </summary>
-    public string? BankCode { get; set; }
 }
