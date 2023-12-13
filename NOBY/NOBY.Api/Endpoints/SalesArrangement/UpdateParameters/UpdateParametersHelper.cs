@@ -5,6 +5,8 @@ using System.Text.Json;
 using CIS.Core.Attributes;
 using _dto = NOBY.Api.Endpoints.SalesArrangement.Dto;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
 [SelfService, TransientService]
@@ -48,6 +50,33 @@ internal sealed class UpdateParametersHelper
 
             case _dto.ParametersDrawing m:
                 await validateApplicant(m.Applicant, salesArrangement.CaseId);
+                
+                if (m.PayoutList?.Any() ?? false)
+                {
+                    throw new NobyValidationException(90032);
+                }
+                
+                if ((m.Agent?.IsActive ?? false) 
+                    && (
+                        string.IsNullOrEmpty(m.Agent.FirstName)
+                        || string.IsNullOrEmpty(m.Agent.LastName)
+                        || string.IsNullOrEmpty(m.Agent.IdentificationDocument?.Number)
+                        || m.Agent.IdentificationDocument?.IdentificationDocumentTypeId == null
+                        || !m.Agent.DateOfBirth.HasValue
+                        )
+                    )
+                {
+                    throw new NobyValidationException(90032);
+                }
+
+                if (m.PayoutList is not null)
+                {
+                }
+
+                if (m.RepaymentAccount is not null)
+                {
+                }
+
                 break;
         }
 

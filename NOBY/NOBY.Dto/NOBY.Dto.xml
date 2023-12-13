@@ -4,17 +4,17 @@
         <name>NOBY.Dto</name>
     </assembly>
     <members>
-        <member name="P:NOBY.Dto.BankAccount.Prefix">
+        <member name="P:NOBY.Dto.BankAccount.AccountPrefix">
             <summary>
             Předčíslí účtu
             </summary>
         </member>
-        <member name="P:NOBY.Dto.BankAccount.Number">
+        <member name="P:NOBY.Dto.BankAccount.AccountNumber">
             <summary>
             Číslo účtu
             </summary>
         </member>
-        <member name="P:NOBY.Dto.BankAccount.BankCode">
+        <member name="P:NOBY.Dto.BankAccount.AccountBankCode">
             <summary>
             Kód banky
             </summary>
