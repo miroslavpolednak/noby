@@ -88,7 +88,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             var request = new ProductService.Contracts.UpdateMortgageRequest
             {
-                ProductId = 1,
+                ProductId = caseId,
                 Mortgage = new()
                 {
                     LoanAmount = offer.SimulationInputs.LoanAmount,
