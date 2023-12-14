@@ -16,8 +16,13 @@ public partial class BankAccountValidatorService : IBankAccountValidatorService
         _codebookService = codebookService;
     }
 
-    public bool IsBankAccountValid(IBankAccount bankAccount)
+    public bool IsBankAccountValid(IBankAccount? bankAccount)
     {
+        if (bankAccount is null)
+        {
+            return true;
+        }
+
         return IsBankAccountValid(bankAccount.AccountPrefix, bankAccount.AccountNumber ?? string.Empty);
     }
 
@@ -32,11 +37,21 @@ public partial class BankAccountValidatorService : IBankAccountValidatorService
         return controlNumber % 11 == 0;
     }
 
-    public async Task<bool> IsBankCodeValid(string bankCode, CancellationToken cancellationToken = default)
+    public bool IsBankCodeValid(string? bankCode, CancellationToken cancellationToken = default)
     {
-        var bankCodes = await _codebookService.BankCodes(cancellationToken);
+        if (bankCode is null)
+        {
+            return true;
+        }
+
+        var bankCodes = _codebookService.BankCodes(cancellationToken).GetAwaiter().GetResult();
 
         return bankCodes.Any(c => c.BankCode.Equals(bankCode, StringComparison.Ordinal));
+    }
+
+    public bool IsBankAccoungAndCodeValid(IBankAccount? bankAccount, CancellationToken cancellationToken = default)
+    {
+        return IsBankAccountValid(bankAccount) && IsBankCodeValid(bankAccount?.AccountBankCode, cancellationToken);
     }
 
     [GeneratedRegex(@"[^\d]")]

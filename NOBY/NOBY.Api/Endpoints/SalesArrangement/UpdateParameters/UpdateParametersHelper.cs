@@ -69,12 +69,10 @@ internal sealed class UpdateParametersHelper
                     throw new NobyValidationException(90032);
                 }
 
-                if (m.PayoutList is not null)
+                if ((m.PayoutList?.Any(t => !_bankAccountValidator.IsBankAccoungAndCodeValid(t)) ?? false)
+                    || !_bankAccountValidator.IsBankAccoungAndCodeValid(m.RepaymentAccount))
                 {
-                }
-
-                if (m.RepaymentAccount is not null)
-                {
+                    throw new NobyValidationException(90032, "Invalid bank account");
                 }
 
                 break;
@@ -128,10 +126,12 @@ internal sealed class UpdateParametersHelper
 
     private readonly IProductServiceClient _productService;
     private readonly ICodebookServiceClient _codebookService;
+    private readonly Services.Validators.IBankAccountValidatorService _bankAccountValidator;
 
-    public UpdateParametersHelper(ICodebookServiceClient codebookService, IProductServiceClient productService)
+    public UpdateParametersHelper(ICodebookServiceClient codebookService, IProductServiceClient productService, Services.Validators.IBankAccountValidatorService bankAccountValidator)
     {
         _productService = productService;
         _codebookService = codebookService;
+        _bankAccountValidator = bankAccountValidator;
     }
 }
