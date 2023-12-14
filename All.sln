@@ -458,6 +458,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00064_HFICH-7080_EasForm_RemovedGrossAnnualIncome.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00064_HFICH-7080_EasForm_RemovedGrossAnnualIncome.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00066_HFICH-9837_FIrstSignatureDate_MovedToRootSA.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00066_HFICH-9837_FIrstSignatureDate_MovedToRootSA.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00067_HFICH-9504_RemovedAgentConsent.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00067_HFICH-9504_RemovedAgentConsent.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00068_HFICH-9948_GeneralChange_SwitchedTwoFields.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00068_HFICH-9948_GeneralChange_SwitchedTwoFields.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00069_HFICH-9903_Offer_EmptyText.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00069_HFICH-9903_Offer_EmptyText.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
