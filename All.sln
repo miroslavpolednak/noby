@@ -427,7 +427,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\NotificationService\DatabaseMigrations\00002-HFICH-5458-drop_text.sql = InternalServices\NotificationService\DatabaseMigrations\00002-HFICH-5458-drop_text.sql
 		InternalServices\NotificationService\DatabaseMigrations\00003-HFICH-8192-CaseId-DocumentHash.sql = InternalServices\NotificationService\DatabaseMigrations\00003-HFICH-8192-CaseId-DocumentHash.sql
 		InternalServices\NotificationService\DatabaseMigrations\00004-HFICH-9609.sql = InternalServices\NotificationService\DatabaseMigrations\00004-HFICH-9609.sql
-		InternalServices\NotificationService\DatabaseMigrations\00005-HFICH-9609-2.sql = InternalServices\NotificationService\DatabaseMigrations\00005-HFICH-9609-2.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D5315192-5730-455C-B586-D964F840F401}"
