@@ -31,7 +31,7 @@ public sealed class SetExpiredEmailsJob
         // nastavit unsent emailum ktere uz nejsou k odeslani
         var emails = await _dbContext.EmailResults
             .Where(t => t.State == NotificationState.InProgress && t.SenderType == Contracts.Statistics.Dto.SenderType.MP)
-            .Where(t => t.RequestTimestamp < _dateTime.Now.AddMinutes(_configuration.EmailSlaInMinutes * -1) && !t.Resent)
+            .Where(t => t.RequestTimestamp < _dateTime.Now.AddMinutes(_configuration.EmailSlaInMinutes * -1) && !t.Resend)
             .ToListAsync(cancellationToken);
 
         if (emails.Count != 0)
@@ -42,7 +42,7 @@ public sealed class SetExpiredEmailsJob
                 email.ResultTimestamp = _dateTime.Now;
             }
             await _dbContext.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation($"Number of emails marked as Unsent: {emails.Count}, EmailSlaInMinutes: {_configuration.EmailSlaInMinutes}");
+            _logger.LogInformation($"Number of emails marked as Unsent from {nameof(SetExpiredEmailsJob)}: {emails.Count}, EmailSlaInMinutes: {_configuration.EmailSlaInMinutes}");
         }
     }
 }

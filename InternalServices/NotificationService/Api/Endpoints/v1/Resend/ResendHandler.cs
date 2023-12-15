@@ -22,7 +22,7 @@ internal sealed class ResendHandler
             ?? throw new CisNotFoundException(ErrorHandling.ErrorCodeMapper.ResultNotFound, $"Result with id = '{request.NotificationId}' not found."); ;
 
         email.State = Contracts.Result.Dto.NotificationState.InProgress;
-        email.Resent = true;
+        email.Resend = true;
 
         await _dbContext.Database.ExecuteSqlInterpolatedAsync($"Delete From SentNotification Where Id = {email.Id}", default);
 
