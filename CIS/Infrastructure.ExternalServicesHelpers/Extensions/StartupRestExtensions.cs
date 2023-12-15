@@ -1,9 +1,11 @@
 ﻿using CIS.Core.Exceptions.ExternalServices;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Http.Resilience;
 using Polly;
-using Polly.Extensions.Http;
+using Polly.Retry;
 using Polly.Timeout;
+using System.Net;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers;
 
@@ -26,7 +28,8 @@ public static class StartupRestExtensions
         where TClient : class, IExternalServiceClient
         where TImplementation : class, TClient
         where TConfiguration : IExternalServiceConfiguration
-        => builder
+    {
+        var client = builder
             .Services
             .AddHttpClient<TClient, TImplementation>((services, client) =>
             {
@@ -75,36 +78,38 @@ public static class StartupRestExtensions
                 }
                 else
                     return clientHandler;
-            })
-            // set retry policy
-            .AddPolicyHandler((services, req) =>
-            {
-                var configuration = services.GetRequiredService<TConfiguration>();
-                var logger = services.GetRequiredService<ILogger<TClient>>();
-
-                if (configuration.RequestRetryCount.GetValueOrDefault() == 0)
-                {
-                    return Policy.NoOpAsync<HttpResponseMessage>();
-                }
-                else
-                {
-                    return HttpPolicyExtensions
-                        .HandleTransientHttpError()
-                        .Or<TimeoutRejectedException>()
-                        .Or<CisExtServiceUnavailableException>()
-                        .Or<CisExtServiceServerErrorException>()
-                        .WaitAndRetryAsync(configuration.RequestRetryCount!.Value, (c) => TimeSpan.FromSeconds(getRequestRetryTimeout(configuration)), (res, timeSpan, count, context) =>
-                        {
-                            logger.HttpRequestRetry(typeof(TClient).Name, count);
-                        });
-                }
-            })
-            // set timeout requestu
-            .AddPolicyHandler((services, req) =>
-            {
-                var configuration = services.GetRequiredService<TConfiguration>();
-                return Policy.TimeoutAsync<HttpResponseMessage>(getRequestTimeout(configuration));
             });
+
+            // set resiliency
+            client.AddResilienceHandler($"CisExtService_{typeof(TClient)}", static (ResiliencePipelineBuilder<HttpResponseMessage> builder, ResilienceHandlerContext context) =>
+            {
+                var configuration = context.ServiceProvider.GetRequiredService<TConfiguration>();
+
+                if (configuration.RequestRetryCount.GetValueOrDefault() > 0)
+                {
+                    builder.AddRetry(new RetryStrategyOptions<HttpResponseMessage>
+                    {
+                        BackoffType = DelayBackoffType.Linear,
+                        UseJitter = false,
+                        MaxRetryAttempts = configuration.RequestRetryCount!.Value,
+                        Delay = TimeSpan.FromSeconds(getRequestRetryTimeout(configuration)),
+                        ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+                            .HandleResult(response => (int)response.StatusCode >= 500 || response.StatusCode == HttpStatusCode.RequestTimeout)
+                            .Handle<TimeoutRejectedException>()
+                            .Handle<CisExtServiceUnavailableException>()
+                            .Handle<CisExtServiceServerErrorException>()
+                    });
+                }
+
+                builder.AddTimeout(new TimeoutStrategyOptions
+                {
+                    Timeout = TimeSpan.FromSeconds(getRequestTimeout(configuration))
+                });
+            });
+
+        return client;
+    }
+        
 
     private static int getRequestRetryTimeout(IExternalServiceConfiguration configuration)
         => configuration.RequestRetryTimeout ?? _defaultRetryTimeout;
