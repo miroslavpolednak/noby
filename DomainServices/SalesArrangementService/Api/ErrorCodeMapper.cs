@@ -45,7 +45,8 @@ internal sealed class ErrorCodeMapper
     public const int ApplicantIsNotSet = 18086;
     public const int CustomerValidationFailed = 18087;
     public const int CannotBeSent = 18088;
-    
+    public const int PcpIdIsEmpty = 18089;
+
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
@@ -87,7 +88,8 @@ internal sealed class ErrorCodeMapper
             { NotAllCustomersOnSaAreIdentified, "Some of the CustomersOnSa are not identified." },
             { ApplicantIsNotSet, "The Applicant is not set." },
             { CustomerValidationFailed, "Customer validation failed. Validation rule: {PropertyValue}" },
-            { CannotBeSent, "SalesArrangement cannot be sent in this state {PropertyValue}" }
+            { CannotBeSent, "SalesArrangement cannot be sent in this state {PropertyValue}" },
+            { PcpIdIsEmpty, "PcpId is empty" }
         });
 
         return Messages;

@@ -33,18 +33,23 @@ internal sealed class CreateMortgageHandler : IRequestHandler<CreateMortgageRequ
         }
 
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
+        string? pcpId = null;
 
         if (caseInstance.Customer?.Identity?.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
         {
             // create in pcp
             var productTypes = await _codebookService.ProductTypes(cancellationToken);
             var pcpProductId = productTypes.First(t => t.Id == request.Mortgage.ProductTypeId).PcpProductId;
-            var pcpId = await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpProductId, cancellationToken);
+            pcpId = await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpProductId, cancellationToken);
 
             // create in konsdb
             await _mpHomeClient.UpdateLoan(request.CaseId, request.Mortgage.ToMortgageRequest(pcpId), cancellationToken);
         }
         
-        return new CreateMortgageResponse { ProductId = request.CaseId };
+        return new CreateMortgageResponse 
+        { 
+            ProductId = request.CaseId,
+            PcpId = pcpId
+        };
     }
 }

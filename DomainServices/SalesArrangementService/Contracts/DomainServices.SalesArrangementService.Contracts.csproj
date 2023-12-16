@@ -16,6 +16,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Messages\UpdatePcpId.proto" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.25.1" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.59.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.60.0">
@@ -29,6 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Protobuf Include="Messages\UpdatePcpId.proto" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 
 		<Protobuf Include="Messages\GetProductSalesArrangement.proto" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />

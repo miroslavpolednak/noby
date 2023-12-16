@@ -104,6 +104,8 @@ public interface ISalesArrangementServiceClient
 
     Task SetFlowSwitch(int salesArrangementId, FlowSwitches flowSwitch, bool value, CancellationToken cancellationToken = default);
 
+    Task UpdatePcpId(int salesArrangementId, string pcpId, CancellationToken cancellationToken = default);
+
     Task<SetContractNumberResponse> SetContractNumber(int salesArrangementId, int customerOnSaId, CancellationToken cancellationToken = default);
 
     Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(int salesArrangementId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default);

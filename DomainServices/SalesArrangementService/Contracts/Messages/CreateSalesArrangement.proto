@@ -23,6 +23,8 @@ message CreateSalesArrangementRequest {
 	string ContractNumber = 4;
 
 	google.protobuf.Int32Value State = 5;
+
+	google.protobuf.StringValue PcpId = 6;
 	
 	oneof Data {
         SalesArrangementParametersMortgage Mortgage = 20;

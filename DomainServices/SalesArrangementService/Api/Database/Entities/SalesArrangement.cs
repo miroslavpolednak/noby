@@ -42,4 +42,6 @@ internal sealed class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUs
     public string? OfferDocumentId { get; set; }
 
     public DateTime? FirstSignatureDate { get; set; }
+
+    public string? PcpId { get; set; }
 }

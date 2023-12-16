@@ -23,7 +23,7 @@ public interface IProductServiceClient
     /// Vytvoření produktu KB Hypotéky
     /// </summary>
     /// <returns>ProductId</returns>
-    Task<long> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default);
+    Task<CreateMortgageResponse> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Aktualizace produktu KB Hypotéky
