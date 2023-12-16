@@ -5,7 +5,13 @@ SharedComponents
     .GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .AddErrorCodeMapper(DomainServices.ProductService.Api.ErrorCodeMapper.Init())
-    .AddRequiredServices(services => services.AddCodebookService().AddCaseService())
+    .AddRequiredServices(services =>
+    {
+        services
+            .AddCodebookService()
+            .AddUserService()
+            .AddCaseService();
+    })
     .Build(builder =>
     {
         // EAS svc
