@@ -31,6 +31,12 @@ static ExitCode RunDbUp(MigrateOptions opts)
                                               .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
                                               .CreateLogger();
     }
+    else
+    {
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
+            .CreateLogger();
+    }
 
     Log.Information("Starting");
 
@@ -44,12 +50,24 @@ static ExitCode RunDbUp(MigrateOptions opts)
         return ExitCode.DirectoryNotExist;
     }
 
+    DatabaseMigrationsSupport.Settings.SetOptions(opts);
+
     var upgradeEngineBuilder = DeployChanges.To.SqlDatabase(opts.ConnectionString)
                                      .JournalToSqlTable("dbo", "MigrationHistory")
-                                     .WithTransaction()
                                      .LogToAutodetectedLog()
                                      .LogScriptOutput()
                                      .WithScriptsFromFileSystem(folder);
+
+    if (opts.NoTransaction.GetValueOrDefault())
+    {
+        Log.Information("Running without transaction");
+        upgradeEngineBuilder = upgradeEngineBuilder.WithoutTransaction();
+    }
+    else
+    {
+        Log.Information("Running in transaction");
+        upgradeEngineBuilder = upgradeEngineBuilder.WithTransaction();
+    }
 
     // add C# scripts to migrations
     if (!string.IsNullOrEmpty(opts.CodeScriptAssembly))
@@ -59,6 +77,8 @@ static ExitCode RunDbUp(MigrateOptions opts)
             Log.Error($"Code scripts assembly '{opts.CodeScriptAssembly}' does not exist.");
             return ExitCode.CodeAssemblyNotExist;
         }
+
+        Log.Information("Using code migrations");
 
         var codeAssembly = Assembly.LoadFrom(opts.CodeScriptAssembly);
         upgradeEngineBuilder = upgradeEngineBuilder

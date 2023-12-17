@@ -3,7 +3,8 @@
 namespace DatabaseMigrations;
 
 [Verb("migrate")]
-internal sealed class MigrateOptions
+internal sealed class MigrateOptions 
+    : DatabaseMigrationsSupport.IMigrateOptions
 {
     [Option('c', "connectionstring", Required = true, HelpText = "Connection string to database.")]
     public string? ConnectionString { get; set; }
@@ -19,4 +20,7 @@ internal sealed class MigrateOptions
 
     [Option('l', "logFile", Required = false, HelpText = "Path to log file")]
     public string? LogFile { get; set; }
+
+    [Option('t', "notransaction", Required = false, HelpText = "Sets DbUp transaction behavior: true = WithoutTransaction()")]
+    public bool? NoTransaction { get; set; }
 }

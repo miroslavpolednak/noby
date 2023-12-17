@@ -17,7 +17,7 @@ public sealed class DDSInitialTransformation
         var cmd = dbCommandFactory();
         int rows = 0;
 
-        using (SqlConnection connection = new SqlConnection(cmd.Connection!.ConnectionString))
+        using (SqlConnection connection = new SqlConnection(DatabaseMigrationsSupport.Settings.Options.ConnectionString))
         {
             connection.Open();
             
@@ -172,7 +172,7 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
         using (SqlCommand command = new SqlCommand($"INSERT INTO [DDS].{tableName} ([DocumentDataEntityId],[DocumentDataVersion],[Data],[CreatedUserId],[CreatedTime]) VALUES (@id, 1, @data, @userId, @time)", connection))
         {
             command.CommandTimeout = 5;
-
+            
             command.Parameters.AddWithValue("@id", offerId);
             command.Parameters.AddWithValue("@data", JsonSerializer.Serialize(data, _jsonSerializerOptions));
             command.Parameters.AddWithValue("@userId", createdUserId);

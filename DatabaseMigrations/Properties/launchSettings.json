@@ -2,7 +2,7 @@
   "profiles": {
     "DatabaseMigrations": {
       "commandName": "Project",
-      "commandLineArgs": "migrate -f \"d:/_migr\" -c \"Data Source=localhost;Initial Catalog=MpssIntegration;Integrated Security=True;Encrypt=True;TrustServerCertificate=Yes;\" -a \"d:\\Visual Studio Projects\\MPSS-FOMS\\DomainServices\\OfferService\\Api\\bin\\Debug\\net8.0\\DomainServices.OfferService.Api.dll\""
+      "commandLineArgs": "-c \"server=adpra173.vsstest.local;database=OfferService;uid=testsql;pwd=Rud514;Encrypt=True;TrustServerCertificate=Yes;\" -f \"d:\\Visual Studio Projects\\MPSS-FOMS\\DomainServices\\OfferService\\DatabaseMigrations\" -a \"d:\\Visual Studio Projects\\MPSS-FOMS\\DomainServices\\OfferService\\Api\\bin\\Debug\\net8.0\\DomainServices.OfferService.Api.dll\""
     }
   }
 }
