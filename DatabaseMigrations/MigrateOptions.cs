@@ -16,4 +16,7 @@ internal sealed class MigrateOptions
 
     [Option('e', "checkOnly", Required = false, Default = false, HelpText = "Only performs check that the migrations are available")]
     public bool? MigrationExistsCheckOnly { get; set; }
+
+    [Option('l', "logFile", Required = false, HelpText = "Path to log file")]
+    public string? LogFile { get; set; }
 }
