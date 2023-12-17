@@ -43,6 +43,8 @@ K tomu slouží atribut `DbUpScriptName`, který umožňuje nastavit jméno migr
 
 > Aby migrační konzolová aplikace spustila .NET migrace, je nutné při jejím startu použít parametr "**a**", který nastavuje cestu k DLL s Api projektem dané služby
 
+Pro případ, že je v migraci potřeba otevřít novou SqlConnection nebo znát nastavení migračního toolu, je k dispozici konfigurace pod kterou byl migrační tool spuštěn v objektu `DatabaseMigrationsSupport.Settings.Options`.
+
 ### Příklad migračního skriptu
 ```csharp
 [DatabaseMigrationsSupport.DbUpScriptName("00002_my_script")]

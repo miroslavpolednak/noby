@@ -196,6 +196,7 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
 
     private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
     {
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        IgnoreReadOnlyProperties = true
     };
 }
