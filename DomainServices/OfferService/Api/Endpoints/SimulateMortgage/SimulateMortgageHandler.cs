@@ -4,9 +4,11 @@ using SharedTypes.GrpcTypes;
 using DomainServices.OfferService.Api.Database;
 using DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2;
 using DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
-using Google.Protobuf;
 using ExternalServices.EasSimulationHT.V1;
 using System.Globalization;
+using SharedComponents.DocumentDataStorage;
+using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
+using DomainServices.OfferService.Api.Database.DocumentDataEntities;
 
 namespace DomainServices.OfferService.Api.Endpoints.SimulateMortgage;
 
@@ -24,49 +26,58 @@ internal sealed class SimulateMortgageHandler
         // load codebook DrawingType for remaping Id -> StarbildId
         var drawingTypeById = (await _codebookService.DrawingTypes(cancellationToken)).ToDictionary(i => i.Id);
 
-        // get simulation outputs
-        var easSimulationReq = request.SimulationInputs.ToEasSimulationRequest(request.BasicParameters, drawingDurationsById, drawingTypeById);
-        var easSimulationRes = await _easSimulationHTClient.RunSimulationHT(easSimulationReq, cancellationToken);
-        var results = easSimulationRes.ToSimulationResults();
-        var additionalResults = easSimulationRes.ToAdditionalSimulationResults();
+        var mappedInputs = _offerMapper.MapToDataInputs(request.SimulationInputs);
+        var mappedBasicParams = _offerMapper.MapToDataBasicParameters(request.BasicParameters);
 
-        MortgageCreditWorthinessSimpleResults? creditWorthinessResult = null;
-        if (request.IsCreditWorthinessSimpleRequested) 
-            creditWorthinessResult = await CalculateCreditWorthinessSimple(request, results, cancellationToken);
+        // get simulation outputs
+        var easSimulationReq = mappedInputs.ToEasSimulationRequest(mappedBasicParams, drawingDurationsById, drawingTypeById);
+        var easSimulationRes = await _easSimulationHTClient.RunSimulationHT(easSimulationReq, cancellationToken);
 
         // save to DB
         var entity = new Database.Entities.Offer
         {
             ResourceProcessId = Guid.Parse(request.ResourceProcessId),
-            BasicParametersBin = request.BasicParameters.ToByteArray(),
-            SimulationInputsBin = request.SimulationInputs.ToByteArray(),
-            SimulationResultsBin = results.ToByteArray(),
-            AdditionalSimulationResultsBin = additionalResults.ToByteArray(),
-            BasicParameters = Newtonsoft.Json.JsonConvert.SerializeObject(request.BasicParameters),
-            SimulationInputs = Newtonsoft.Json.JsonConvert.SerializeObject(request.SimulationInputs),
-            SimulationResults = Newtonsoft.Json.JsonConvert.SerializeObject(results),
-            AdditionalSimulationResults = Newtonsoft.Json.JsonConvert.SerializeObject(additionalResults),
-            IsCreditWorthinessSimpleRequested = request.IsCreditWorthinessSimpleRequested,
-            CreditWorthinessSimpleInputs = request.CreditWorthinessSimpleInputs is null ? null : Newtonsoft.Json.JsonConvert.SerializeObject(request.CreditWorthinessSimpleInputs),
-            CreditWorthinessSimpleInputsBin = request.CreditWorthinessSimpleInputs?.ToByteArray(),
+            IsCreditWorthinessSimpleRequested = request.IsCreditWorthinessSimpleRequested
         };
         _dbContext.Offers.Add(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-        _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
-        // create response
-        return new SimulateMortgageResponse
+        // ulozit json data simulace
+        var documentEntity = new Database.DocumentDataEntities.OfferData
+        {
+            SimulationInputs = mappedInputs,
+            BasicParameters = mappedBasicParams,
+            SimulationOutputs = _offerMapper.MapToDataOutputs(easSimulationRes),
+        };
+        await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
+
+        // additional data
+        var documentEntityAdditionalData = _additionalDataMapper.MapToData(easSimulationRes);
+        await _documentDataStorage.Add(entity.OfferId, documentEntityAdditionalData, cancellationToken);
+
+        var response = new SimulateMortgageResponse
         {
             OfferId = entity.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             Created = new ModificationStamp(entity),
             BasicParameters = request.BasicParameters,
             SimulationInputs = request.SimulationInputs,
-            SimulationResults = results,
-            AdditionalSimulationResults = additionalResults,
-            CreditWorthinessSimpleResults = creditWorthinessResult
+            SimulationResults = _offerMapper.MapFromDataToSingle(null, null, documentEntity.SimulationOutputs).SimulationResults,
+            AdditionalSimulationResults = _additionalDataMapper.MapFromDataToSingle(documentEntityAdditionalData)
         };
+
+        // bonita
+        if (request.IsCreditWorthinessSimpleRequested)
+        {
+            var worthinessResult = await calculateCreditWorthinessSimple(entity.OfferId, request, easSimulationRes, cancellationToken);
+            var (_, worthinessOutputs) = _worthinessMapper.MapFromDataToSingle(worthinessResult);
+            response.CreditWorthinessSimpleResults = worthinessOutputs;
+        }
+
+        _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
+
+        return response;
     }
 
     private async Task setUpDefaults(SimulateMortgageRequest request, CancellationToken cancellation)
@@ -113,24 +124,28 @@ internal sealed class SimulateMortgageHandler
         }
     }
 
-    private async Task<MortgageCreditWorthinessSimpleResults> CalculateCreditWorthinessSimple(SimulateMortgageRequest request, MortgageSimulationResults simulationResults, CancellationToken cancellationToken)
+    private async Task<CreditWorthinessSimpleData> calculateCreditWorthinessSimple(int offerId, SimulateMortgageRequest request, SimulationHTResponse simulationResults, CancellationToken cancellationToken)
     {
         var kbCustomerIdentity = request.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
-        
-        var creditWorthinessRequest = new CreditWorthinessSimpleCalculateRequest
+
+        CreditWorthinessSimpleCalculateResponse? result = null;
+
+        try
         {
-            PrimaryCustomerId = kbCustomerIdentity?.IdentityId.ToString(CultureInfo.InvariantCulture),
-            ResourceProcessId = request.ResourceProcessId,
-            ChildrenCount = request.CreditWorthinessSimpleInputs.ChildrenCount ?? 0,
-            TotalMonthlyIncome = request.CreditWorthinessSimpleInputs.TotalMonthlyIncome,
-            ExpensesSummary = request.CreditWorthinessSimpleInputs.ExpensesSummary is null
+            var creditWorthinessRequest = new CreditWorthinessSimpleCalculateRequest
+            {
+                PrimaryCustomerId = kbCustomerIdentity?.IdentityId.ToString(CultureInfo.InvariantCulture),
+                ResourceProcessId = request.ResourceProcessId,
+                ChildrenCount = request.CreditWorthinessSimpleInputs.ChildrenCount ?? 0,
+                TotalMonthlyIncome = request.CreditWorthinessSimpleInputs.TotalMonthlyIncome,
+                ExpensesSummary = request.CreditWorthinessSimpleInputs.ExpensesSummary is null
                 ? null
                 : new CreditWorthinessSimpleExpensesSummary
                 {
                     Rent = request.CreditWorthinessSimpleInputs.ExpensesSummary.Rent,
                     Other = request.CreditWorthinessSimpleInputs.ExpensesSummary.Other
                 },
-            ObligationsSummary = request.CreditWorthinessSimpleInputs.ObligationsSummary is null
+                ObligationsSummary = request.CreditWorthinessSimpleInputs.ObligationsSummary is null
                 ? null
                 : new CreditWorthinessSimpleObligationsSummary
                 {
@@ -138,36 +153,30 @@ internal sealed class SimulateMortgageHandler
                     AuthorizedOverdraftsAmount = request.CreditWorthinessSimpleInputs.ObligationsSummary.AuthorizedOverdraftsTotalAmount,
                     LoansInstallmentsAmount = request.CreditWorthinessSimpleInputs.ObligationsSummary.LoansInstallmentsAmount,
                 },
-            Product = new CreditWorthinessProduct
-            {
-                ProductTypeId = request.SimulationInputs.ProductTypeId,
-                LoanDuration = simulationResults.LoanDuration,
-                LoanInterestRate = simulationResults.LoanInterestRate,
-                LoanAmount = (int)(decimal)simulationResults.LoanAmount,
-                LoanPaymentAmount = (int)((decimal?)simulationResults.LoanPaymentAmount ?? 0m),
-                FixedRatePeriod = request.SimulationInputs.FixedRatePeriod ?? 0
-            }
-        };
-
-        try
-        {
-            var result = await _creditWorthinessService.SimpleCalculate(creditWorthinessRequest, cancellationToken);
-
-            return new MortgageCreditWorthinessSimpleResults
-            {
-                InstallmentLimit = (int)result.InstallmentLimit,
-                MaxAmount = (int)result.MaxAmount,
-                RemainsLivingAnnuity = (int?)result.RemainsLivingAnnuity,
-                RemainsLivingInst = (int?)result.RemainsLivingInst,
-                WorthinessResult = (WorthinessResult)result.WorthinessResult
+                Product = new CreditWorthinessProduct
+                {
+                    ProductTypeId = request.SimulationInputs.ProductTypeId,
+                    LoanDuration = simulationResults.uverVysledky.splatnostUveru,
+                    LoanInterestRate = simulationResults.urokovaSazba.urokovaSazba,
+                    LoanAmount = (int)(decimal)simulationResults.uverVysledky.vyseUveru,
+                    LoanPaymentAmount = (int)((decimal?)simulationResults.uverVysledky.splatkaUveru ?? 0m),
+                    FixedRatePeriod = request.SimulationInputs.FixedRatePeriod ?? 0
+                }
             };
+            result = await _creditWorthinessService.SimpleCalculate(creditWorthinessRequest, cancellationToken);
         }
-        catch
-        {
-            return new MortgageCreditWorthinessSimpleResults { WorthinessResult = WorthinessResult.Unknown };
-        }
+        catch { }
+
+        var documentEntity = _worthinessMapper.MapToData(request.CreditWorthinessSimpleInputs, result);
+        await _documentDataStorage.Add(offerId, documentEntity, cancellationToken);
+
+        return documentEntity;
     }
 
+    private readonly Database.DocumentDataEntities.Mappers.CreditWorthinessSimpleDataMapper _worthinessMapper;
+    private readonly Database.DocumentDataEntities.Mappers.OfferDataMapper _offerMapper;
+    private readonly Database.DocumentDataEntities.Mappers.AdditionalSimulationResultsDataMapper _additionalDataMapper;
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly ILogger<SimulateMortgageHandler> _logger;
     private readonly ICodebookServiceClient _codebookService;
     private readonly IEasSimulationHTClient _easSimulationHTClient;
@@ -175,6 +184,10 @@ internal sealed class SimulateMortgageHandler
     private readonly OfferServiceDbContext _dbContext;
 
     public SimulateMortgageHandler(
+        Database.DocumentDataEntities.Mappers.CreditWorthinessSimpleDataMapper worthinessMapper,
+        Database.DocumentDataEntities.Mappers.AdditionalSimulationResultsDataMapper additionalDataMapper,
+        Database.DocumentDataEntities.Mappers.OfferDataMapper offerMapper,
+        IDocumentDataStorage documentDataStorage,
         OfferServiceDbContext dbContext,
         ILogger<SimulateMortgageHandler> logger,
         ICodebookServiceClient codebookService,
@@ -182,6 +195,10 @@ internal sealed class SimulateMortgageHandler
         ICreditWorthinessServiceClient creditWorthinessService
     )
     {
+        _worthinessMapper = worthinessMapper;
+        _additionalDataMapper = additionalDataMapper;
+        _offerMapper = offerMapper;
+        _documentDataStorage = documentDataStorage;
         _logger = logger;
         _codebookService = codebookService;
         _easSimulationHTClient = easSimulationHTClient;

@@ -17,8 +17,11 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="dbup-sqlserver" Version="5.0.37" />
     <PackageReference Include="Spectre.Console" Version="0.48.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\DatabaseMigrationsSupport\DatabaseMigrationsSupport.csproj" />
   </ItemGroup>
 
 </Project>
