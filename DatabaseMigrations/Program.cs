@@ -67,7 +67,7 @@ static ExitCode RunDbUp(MigrateOptions opts)
     
     var upgradeEngine = upgradeEngineBuilder.Build();
 
-    if (upgradeEngine.IsUpgradeRequired())
+    if (!upgradeEngine.IsUpgradeRequired())
     {
         Log.Information("No migration is available");
 
