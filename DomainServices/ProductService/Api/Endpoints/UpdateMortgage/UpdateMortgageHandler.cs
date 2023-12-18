@@ -1,6 +1,7 @@
 ﻿using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using SharedTypes.Enums;
 
 namespace DomainServices.ProductService.Api.Endpoints.UpdateMortgage;
 
@@ -9,18 +10,22 @@ internal sealed class UpdateMortgageHandler
 {
     public async Task Handle(UpdateMortgageRequest request, CancellationToken cancellationToken)
     {
-        if (!await _repository.LoanExists(request.ProductId, cancellationToken))
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+        //if (!await _repository.LoanExists(request.ProductId, cancellationToken))
+        //    throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
 
-
+        // get data from other DS
         var productSA = await _salesArrangementService.GetProductSalesArrangement(request.ProductId, cancellationToken);
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(productSA.SalesArrangementId, cancellationToken);
         var offer = await _offerService.GetMortgageOfferDetail(salesArrangement.OfferId!.Value, cancellationToken);
-
+        var customers = await _customerOnSAService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
 
         var mortgageRequest = new MortgageRequest
         {
-            PartnerId = null,
+            PartnerId = customers
+                .FirstOrDefault(t => t.CustomerRoleId == (int)CustomerRoles.Debtor)
+                ?.CustomerIdentifiers
+                .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)
+                ?.IdentityId ?? 0,
             LoanContractNumber = salesArrangement.ContractNumber,
             MonthlyInstallment = offer.SimulationResults.LoanPaymentAmount,
             LoanAmount = (double?)offer.SimulationInputs.LoanAmount,
@@ -32,14 +37,21 @@ internal sealed class UpdateMortgageHandler
             InstallmentDay = offer.SimulationInputs.PaymentDay,
             LoanPurposes = offer.SimulationInputs.LoanPurposes?.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
             {
-                Amount = t.Sum,
+                Amount = (double)t.Sum,
                 LoanPurposeId = t.LoanPurposeId
             }).ToList(),
             ProductCodeUv = offer.SimulationInputs.ProductTypeId,
             EstimatedDuePaymentDate = offer.SimulationResults.LoanDueDate,
             PcpInstId = salesArrangement.PcpId,
             FirstAnnuityInstallmentDate = offer.SimulationResults.AnnuityPaymentsDateFrom,
-            Relationships = null
+            Relationships = customers
+                .Where(t => t.CustomerIdentifiers.Any(tt => tt.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp))
+                .Select(t => new LoanContractRelationship
+                {
+                    ContractRelationshipType = (ContractRelationshipType)t.CustomerRoleId,
+                    PartnerId = t.CustomerIdentifiers.First(tt => tt.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp).IdentityId
+                })
+                .ToList()
         };
 
         await _mpHomeClient.UpdateLoan(request.ProductId, mortgageRequest, cancellationToken);
@@ -58,6 +70,7 @@ internal sealed class UpdateMortgageHandler
         ISalesArrangementServiceClient salesArrangementService, 
         IOfferServiceClient offerService)
     {
+
         _customerOnSAService = customerOnSAService;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;

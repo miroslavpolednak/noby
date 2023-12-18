@@ -75,20 +75,9 @@ internal sealed class LinkModelationToSalesArrangementHandler
         await setFlowSwitches(salesArrangementInstance.CaseId, request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
 
         // Aktualizace dat modelace v KonsDB
-        //!!! docasne zakomentovano na prani AR
-        //await updateMortgage(caseInstance.CaseId, cancellation);
-        
+        await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
+
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private async Task updateMortgage(long caseId, CancellationToken cancellationToken)
-    {
-        var products = await _productService.GetProductList(caseId, cancellationToken);
-
-        if (products.Products.Count > 0)
-        {
-            await _productService.UpdateMortgage(caseId, cancellationToken);
-        }
     }
 
     /// <summary>
