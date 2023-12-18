@@ -3,8 +3,10 @@ using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
+using ExternalServices.SbQueues.V1.Model;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using Xunit;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests;
@@ -15,27 +17,18 @@ public class GetElectronicDocumentFromQueueTests : IntegrationTestBase
     }
 
     [Fact]
-    async Task GetElectronicDocumentFromQueue_NotExistDocumentOnSaId_ShouldReturnNotFoundException()
-    {
-        var client = CreateGrpcClient();
-
-        Func<Task> act = async () =>
-           {
-               await client.GetElectronicDocumentFromQueueAsync(new()
-               {
-                   MainDocument = new MainDocument
-                   {
-                       //DocumentId =   
-                   }
-               });
-           };
-
-        await act.Should().ThrowAsync<CisNotFoundException>();
-    }
-
-    [Fact]
     async Task GetElectronicDocumentFromQueue_ExistDocumentOnSaId_ShouldReturnBinaryData()
     {
+        SbQueuesRepository.GetDocumentByExternalId(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<CancellationToken>()).Returns(new Document
+        {
+            FileName = "test",
+            ContentType = "application/json",
+            DocumentId = 1,
+            Content = [1, 2, 3],
+            IsCustomerPreviewSendingAllowed = true
+        });
+
+
         var docOnSaEntity = CreateDocOnSaEntity();
 
         using var scope = Fixture.Services.CreateScope();

@@ -3,8 +3,10 @@ using CIS.Testing;
 using DomainServices.DocumentOnSAService.Api;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
+using DomainServices.SalesArrangementService.Contracts;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using Xunit;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests;
@@ -13,6 +15,9 @@ public class LinkEArchivIdToDocumentOnSATests : IntegrationTestBase
 {
     public LinkEArchivIdToDocumentOnSATests(WebApplicationFactoryFixture<Program> fixture) : base(fixture)
     {
+        // Mocks
+        ArrangementServiceClient.GetSalesArrangement(Arg.Any<int>(), Arg.Any<CancellationToken>())
+           .ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = 1, CaseId = 2, SalesArrangementTypeId = 1, State = 1 });
     }
 
     [Fact]
@@ -30,6 +35,8 @@ public class LinkEArchivIdToDocumentOnSATests : IntegrationTestBase
     [Fact]
     public async Task LinkEArchivIdToDocumentOnSA_PassValidParams_ShouldLinkEarchiveIdCorrectly()
     {
+       
+
         var docOnSaEntity = CreateDocOnSaEntity();
 
         using var scope = Fixture.Services.CreateScope();
