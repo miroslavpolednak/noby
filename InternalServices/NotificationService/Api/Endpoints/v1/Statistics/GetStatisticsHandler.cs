@@ -42,21 +42,21 @@ internal sealed class GetStatisticsHandler
         {
             Email = new Status
             {
-                DELIVERED = GetEmailCount(Contracts.Result.Dto.NotificationState.Delivered),
-                ERROR = GetEmailCount(Contracts.Result.Dto.NotificationState.Error),
-                INPROGRESS = GetEmailCount(Contracts.Result.Dto.NotificationState.InProgress),
-                INVALID = GetEmailCount(Contracts.Result.Dto.NotificationState.Invalid),
-                SENT = GetEmailCount(Contracts.Result.Dto.NotificationState.Sent),
-                UNSENT = GetEmailCount(Contracts.Result.Dto.NotificationState.Unsent)
+                Delivered = GetEmailCount(Contracts.Result.Dto.NotificationState.Delivered),
+                Error = GetEmailCount(Contracts.Result.Dto.NotificationState.Error),
+                InProgress = GetEmailCount(Contracts.Result.Dto.NotificationState.InProgress),
+                Invalid = GetEmailCount(Contracts.Result.Dto.NotificationState.Invalid),
+                Sent = GetEmailCount(Contracts.Result.Dto.NotificationState.Sent),
+                Unsent = GetEmailCount(Contracts.Result.Dto.NotificationState.Unsent)
             },
             SMS = new Status 
             {
-                DELIVERED = GetSmsCount(Contracts.Result.Dto.NotificationState.Delivered),
-                ERROR = GetSmsCount(Contracts.Result.Dto.NotificationState.Error),
-                INPROGRESS = GetSmsCount(Contracts.Result.Dto.NotificationState.InProgress),
-                INVALID = GetSmsCount(Contracts.Result.Dto.NotificationState.Invalid),
-                SENT = GetSmsCount(Contracts.Result.Dto.NotificationState.Sent),
-                UNSENT = GetSmsCount(Contracts.Result.Dto.NotificationState.Unsent)
+                Delivered = GetSmsCount(Contracts.Result.Dto.NotificationState.Delivered),
+                Error = GetSmsCount(Contracts.Result.Dto.NotificationState.Error),
+                InProgress = GetSmsCount(Contracts.Result.Dto.NotificationState.InProgress),
+                Invalid = GetSmsCount(Contracts.Result.Dto.NotificationState.Invalid),
+                Sent = GetSmsCount(Contracts.Result.Dto.NotificationState.Sent),
+                Unsent = GetSmsCount(Contracts.Result.Dto.NotificationState.Unsent)
             }
         };
 

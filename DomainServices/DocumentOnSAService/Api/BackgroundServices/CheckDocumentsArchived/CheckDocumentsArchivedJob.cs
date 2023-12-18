@@ -10,7 +10,7 @@ namespace DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumen
 public sealed class CheckDocumentsArchivedJob
     : CIS.Infrastructure.BackgroundServices.ICisBackgroundServiceJob
 {
-    private const short SuccessfullyArchivedStatus = 400;
+    private const short _successfullyArchivedStatus = 400;
 
     private readonly CheckDocumentsArchivedJobConfiguration _configuration;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
@@ -40,7 +40,7 @@ public sealed class CheckDocumentsArchivedJob
                                             .Take(_configuration.MaxBatchSize)
                                             .ToListAsync(cancellationToken);
 
-        if (!unArchivedEArchiveLinkeds.Any())
+        if (unArchivedEArchiveLinkeds.Count == 0)
             return;
 
         _logger.UnarchivedDocumentsOnSa(typeof(CheckDocumentsArchivedJob).Name, unArchivedEArchiveLinkeds.Count);
@@ -49,7 +49,7 @@ public sealed class CheckDocumentsArchivedJob
 
         _logger.AlreadyArchived(typeof(CheckDocumentsArchivedJob).Name, unArchivedEArchiveLinkeds.Count, successfullyArchivedDocumentIds.Count);
 
-        if (!successfullyArchivedDocumentIds.Any())
+        if (successfullyArchivedDocumentIds.Count == 0)
             return;
 
 
@@ -67,7 +67,7 @@ public sealed class CheckDocumentsArchivedJob
         request.EArchivIds.AddRange(unArchivedDocOnSaEaIds);
         var documentInQueue = await _documentArchiveServiceClient.GetDocumentsInQueue(request, cancellationToken);
         return documentInQueue.QueuedDocuments
-                                              .Where(d => d.StatusInQueue == SuccessfullyArchivedStatus)
+                                              .Where(d => d.StatusInQueue == _successfullyArchivedStatus)
                                               .Select(s => s.EArchivId)
                                               .ToList();
     }

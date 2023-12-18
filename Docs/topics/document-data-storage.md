@@ -84,10 +84,13 @@ var id = await _documentDataStorage.Add(entityId, document, cancellationToken);
 await _documentDataStorage.Update(id, document);
 
 // update existující instance dat dle ID entity
-await UpdateByEntityId.Update(entityId, document);
+await _documentDataStorage.UpdateByEntityId(entityId, document);
 
 // získat z databáze instanci dat dle ID instance
 var loadedDocument = await _documentDataStorage.FirstOrDefault<MyModel>(id, cancellationToken)
+
+// získat z databáze instanci dat dle ID entity
+var loadedDocument = await _documentDataStorage.FirstOrDefaultByEntityId<MyModel>(entityId, cancellationToken)
 
 // získat seznam instancí dat dle ID entity
 var listOfDocuments = await _documentDataStorage.GetList<MyModel>(entityId, cancellationToken);

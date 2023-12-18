@@ -45,6 +45,8 @@ public sealed class SendEmailsJob
         if (emails.Count == 0)
             return;
 
+        _logger.LogInformation($"Number of emails to send from {nameof(SendEmailsJob)}: {emails.Count}");
+
         // vytvorit smtp klienta
         using var client = new SmtpClient()
         {
@@ -119,7 +121,7 @@ public sealed class SendEmailsJob
                 email.State = NotificationState.Sent;
                 email.ResultTimestamp = _dateTime.Now;
                 email.ErrorSet = new HashSet<ResultError>();
-                email.Resent = false;
+                email.Resend = false;
 
                 await _dbContext.SaveChangesAsync(default);
 
@@ -133,7 +135,7 @@ public sealed class SendEmailsJob
                 errorSet.Add(new ResultError
                 {
                     // todo: code is not specified in IT ANA (used same Code as MCS uses)
-                    Code = "SMTP-WHITELIST-EXCEPTION",
+                    Code = "SMTP-NON-EXISTING-PAYLOAD",
                     Message = ex.Message
                 });
                 email.ErrorSet = errorSet;
@@ -172,7 +174,7 @@ public sealed class SendEmailsJob
                     }
                 };
                 // nastavit state zpet na InProgress
-                // pokud jde puvodne resent, bude se email zkouset odeslat tak dlouho, nez ho zneplatni SetExpiredEmailsJob
+                // pokud jde puvodne resend, bude se email zkouset odeslat tak dlouho, nez ho zneplatni SetExpiredEmailsJob
                 email.State = NotificationState.InProgress;
                 email.ErrorSet = errorSet;
                 await _dbContext.SaveChangesAsync(default);
@@ -194,6 +196,7 @@ public sealed class SendEmailsJob
 
         await client.DisconnectAsync(true, default);
 
+        _logger.LogInformation($"Number of emails sent from {nameof(SendEmailsJob)}: {emails.Where(t => t.State == NotificationState.Sent).Count()}");
     }
 
     private bool IsWhitelisted(string email) =>

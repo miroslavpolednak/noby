@@ -11,7 +11,7 @@ namespace NOBY.Api.Endpoints.Test;
 public class TestController : ControllerBase
 {
     [HttpPost("rollback")]
-    public async Task<RollbackResponse> SendToCmp([FromQuery] int? id)
+    public async Task<RollbackResponse> Rollback([FromQuery] int? id)
         => await _mediator.Send(new RollbackRequest(id));
 
     /// <summary>

@@ -46,6 +46,7 @@ internal sealed class GetDetailedStatisticsHandler
                 RequestTimestamp = t.RequestTimestamp,
                 State = t.State
             })
+            .OrderBy(t => t.RequestTimestamp)
             .ToListAsync(cancellationToken);
 
         return new GetDetailedStatisticsResponse()

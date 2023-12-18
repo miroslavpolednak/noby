@@ -1,6 +1,6 @@
 ﻿ALTER TABLE dbo.EmailResult ADD
 	[SenderType] tinyint NOT NULL CONSTRAINT DF_EmailResult_SenderType DEFAULT 0,
-	[Resent] bit NOT NULL CONSTRAINT DF_EmailResult_Resent DEFAULT 0
+	[Resend] bit NOT NULL CONSTRAINT DF_EmailResult_Resend DEFAULT 0
 GO
 
 CREATE TABLE [dbo].[SentNotification](

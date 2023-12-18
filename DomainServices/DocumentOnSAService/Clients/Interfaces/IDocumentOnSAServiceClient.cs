@@ -83,7 +83,7 @@ public interface IDocumentOnSAServiceClient
     /// <summary>
     /// Doplnění data zpracování k podepisovanému úkolu při jeho ukončení
     /// </summary>
-    Task SetProcessingDateInSbQueues(int taskIdsSb, long caseId, CancellationToken cancellationToken = default);
+    Task SetProcessingDateInSbQueues(long taskId, long caseId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vrátí hodnoty potřebné k určení stavu dokumentu
