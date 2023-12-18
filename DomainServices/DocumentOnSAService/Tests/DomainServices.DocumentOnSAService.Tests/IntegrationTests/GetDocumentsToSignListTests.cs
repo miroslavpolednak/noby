@@ -10,6 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Xunit;
 using static DomainServices.HouseholdService.Contracts.GetCustomerChangeMetadataResponse.Types;
+using DomainServices.HouseholdService.Contracts.v1;
+using static DomainServices.HouseholdService.Contracts.v1.CustomerOnSAService;
+using SharedTypes.GrpcTypes;
+using DomainServices.CustomerService.Contracts;
 
 namespace DomainServices.DocumentOnSAService.Tests.IntegrationTests;
 
@@ -49,6 +53,16 @@ public class GetDocumentsToSignListTestsPart1 : IntegrationTestBase
         });
 
         ESignaturesClient.GetDocumentStatus(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(EDocumentStatuses.NEW);
+
+        CustomerOnSAServiceClient.GetCustomer(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(new CustomerOnSA
+        {
+            CustomerIdentifiers = { new SharedTypes.GrpcTypes.Identity { IdentityId = 2, IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb } },
+        });
+
+        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerDetailResponse
+        {
+            NaturalPerson = new NaturalPerson { FirstName = "Test", LastName ="Test" }
+        });
 
         var docOnSaEntity = CreateDocOnSaEntity(householdId: 1);
 
@@ -90,6 +104,16 @@ public class GetDocumentsToSignListTestsPart2 : IntegrationTestBase
         ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>())
              //SalesArrangementTypeId = 10 -> DocumentTypeId = 12
              .ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = _salesArrangementId, CaseId = 2, SalesArrangementTypeId = 10 });
+
+        CustomerOnSAServiceClient.GetCustomer(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(new CustomerOnSA
+        {
+            CustomerIdentifiers = { new SharedTypes.GrpcTypes.Identity { IdentityId = 2, IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb } },
+        });
+
+        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerDetailResponse
+        {
+            NaturalPerson = new NaturalPerson { FirstName = "Test", LastName = "Test" }
+        });
     }
 
     [Fact]
@@ -153,6 +177,16 @@ public class GetDocumentsToSignListTestsPart3 : IntegrationTestBase
 
         ESignaturesClient.GetDocumentStatus(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(EDocumentStatuses.NEW);
 
+        CustomerOnSAServiceClient.GetCustomer(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(new CustomerOnSA
+        {
+            CustomerIdentifiers = { new SharedTypes.GrpcTypes.Identity { IdentityId = 2, IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb } },
+        });
+
+        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerDetailResponse
+        {
+            NaturalPerson = new NaturalPerson { FirstName = "Test", LastName = "Test" }
+        });
+
         // Real productRequest
         var docOnSaEntityProductRequest = CreateDocOnSaEntity(householdId: 1, documentTypeId: DocumentTypes.ZADOSTHU.ToByte());
 
@@ -199,6 +233,16 @@ public class GetDocumentsToSignListTestsPart4 : IntegrationTestBase
         ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>())
              //SalesArrangementTypeId = 10 -> DocumentTypeId = 12
              .ReturnsForAnyArgs(new SalesArrangement { SalesArrangementId = _salesArrangementId, CaseId = 2, SalesArrangementTypeId = 10 });
+
+        CustomerOnSAServiceClient.GetCustomer(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(new CustomerOnSA
+        {
+            CustomerIdentifiers = { new SharedTypes.GrpcTypes.Identity { IdentityId = 2, IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb } },
+        });
+
+        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerDetailResponse
+        {
+            NaturalPerson = new NaturalPerson { FirstName = "Test", LastName = "Test" }
+        });
     }
 
     [Fact]

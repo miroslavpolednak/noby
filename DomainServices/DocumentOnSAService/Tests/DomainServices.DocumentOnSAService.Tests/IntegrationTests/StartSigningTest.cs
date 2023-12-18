@@ -7,6 +7,7 @@ using DomainServices.CaseService.Contracts;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
+using ExternalServices.SbQueues.V1.Model;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using FastEnumUtility;
@@ -30,13 +31,17 @@ public class StartSigningServiceRequestsTests : IntegrationTestBase
             SalesArrangementId = 1,
             State = 1,
             CaseId = 2,
-            SalesArrangementTypeId = 6 // Service request
+            SalesArrangementTypeId = 6, // Service request
+            Drawing = new SalesArrangementParametersDrawing()
+            {
+                Applicant = { new Identity()
+                {
+                    IdentityId = 1,
+                    IdentityScheme = Identity.Types.IdentitySchemes.Kb,
+                }}
+            }
         };
-        sa.Drawing.Applicant.Add(new Identity()
-        {
-            IdentityId = 1,
-            IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb,
-        });
+       
         ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(sa);
 
         var resp = new GetDocumentDataResponse
@@ -120,7 +125,7 @@ public class StartSigningServiceRequestsTests : IntegrationTestBase
         response.DocumentOnSa.DocumentOnSAId.Should().Be(1);
         response.DocumentOnSa.DocumentTypeId.Should().Be(documentTypeId);
         response.DocumentOnSa.EArchivId.Should().Be(eArchiveId);
-        response.DocumentOnSa.FormId.Should().Be("N00000000000101");
+        response.DocumentOnSa.FormId.Should().Be("NT0000000000101");
         response.DocumentOnSa.IsValid.Should().BeTrue();
         response.DocumentOnSa.SignatureTypeId.Should().Be((int)SignatureTypes.Paper);
 
@@ -135,7 +140,7 @@ public class StartSigningServiceRequestsTests : IntegrationTestBase
         docOnSaEntity!.DocumentOnSAId.Should().Be(1);
         docOnSaEntity!.DocumentTypeId.Should().Be(documentTypeId);
         docOnSaEntity!.EArchivId.Should().Be(eArchiveId);
-        docOnSaEntity!.FormId.Should().Be("N00000000000101");
+        docOnSaEntity!.FormId.Should().Be("NT0000000000101");
         docOnSaEntity!.IsValid.Should().BeTrue();
         docOnSaEntity.CustomerOnSAId1.Should().Be(customerOnSaId);
         docOnSaEntity!.CustomerOnSAId2.Should().Be(customerOnSaId2);
@@ -156,13 +161,17 @@ public class StartSigningServiceRequestsTestsPart2 : IntegrationTestBase
             SalesArrangementId = 1,
             State = 1,
             CaseId = 2,
-            SalesArrangementTypeId = 6 // Service request
+            SalesArrangementTypeId = 6, // Service request
+            Drawing = new SalesArrangementParametersDrawing()
+            {
+                Applicant = { new Identity()
+                {
+                    IdentityId = 1,
+                    IdentityScheme = Identity.Types.IdentitySchemes.Kb,
+                }}
+            }
         };
-        sa.Drawing.Applicant.Add(new Identity()
-        {
-            IdentityId = 1,
-            IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb,
-        });
+       
         ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(sa);
 
         var resp = new GetDocumentDataResponse
@@ -232,7 +241,7 @@ public class StartSigningServiceRequestsTestsPart2 : IntegrationTestBase
         response.DocumentOnSa.DocumentOnSAId.Should().Be(1);
         response.DocumentOnSa.DocumentTypeId.Should().Be(documentTypeId);
         response.DocumentOnSa.EArchivId.Should().Be(eArchiveId);
-        response.DocumentOnSa.FormId.Should().Be("N00000000000101");
+        response.DocumentOnSa.FormId.Should().Be("NT0000000000101");
         response.DocumentOnSa.IsValid.Should().BeTrue();
         response.DocumentOnSa.SignatureTypeId.Should().Be((int)SignatureTypes.Paper);
 
@@ -245,7 +254,7 @@ public class StartSigningServiceRequestsTestsPart2 : IntegrationTestBase
         docOnSaEntity.Should().NotBeNull();
         docOnSaEntity!.EArchivId.Should().Be(eArchiveId);
         docOnSaEntity!.IsValid.Should().BeTrue();
-        response.DocumentOnSa.FormId.Should().Be("N00000000000101");
+        response.DocumentOnSa.FormId.Should().Be("NT0000000000101");
     }
 }
 
@@ -436,7 +445,7 @@ public class StartSigningProductsRequestsTestsPart2 : IntegrationTestBase
         response.Should().NotBeNull();
         response.DocumentOnSa.DocumentTypeId.Should().Be(documentTypeId);
         response.DocumentOnSa.EArchivId.Should().Be(eArchiveId);
-        response.DocumentOnSa.FormId.Should().Be("N00000000000101");
+        response.DocumentOnSa.FormId.Should().Be("NT0000000000101");
         response.DocumentOnSa.IsValid.Should().BeTrue();
         response.DocumentOnSa.SignatureTypeId.Should().Be((int)SignatureTypes.Paper);
 
@@ -497,12 +506,30 @@ public class StartSigningProductsRequestsTestsPart3 : IntegrationTestBase
                 {
                     FormId = workflowFormId,
                     DocumentForSigning = eArchiveId,
-
+                    DocumentForSigningType = "A"
                 }
             }
         };
 
         CaseServiceClient.GetTaskDetail(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(getTaskDetailResponse);
+
+        SbQueuesRepository.GetDocumentByExternalId(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<CancellationToken>()).Returns(new Document
+        {
+            FileName = "test",
+            ContentType = "application/json",
+            DocumentId = 1,
+            Content = [1, 2, 3],
+            IsCustomerPreviewSendingAllowed = true
+        });
+
+        SbQueuesRepository.GetAttachmentById(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<CancellationToken>()).Returns(new Attachment
+        {
+            FileName = "test",
+            ContentType = "application/json",
+            AttachmentId = 1,
+            Content = [1, 2, 3],
+            IsCustomerPreviewSendingAllowed = true
+        });
     }
 
     [Fact]
@@ -520,6 +547,7 @@ public class StartSigningProductsRequestsTestsPart3 : IntegrationTestBase
             SalesArrangementId = salesArrangementId,
             CaseId = caseId,
             TaskId = taskId,
+            TaskIdSb = taskId,
             SignatureTypeId = (int)SignatureTypes.Paper,
         });
 
@@ -542,5 +570,6 @@ public class StartSigningProductsRequestsTestsPart3 : IntegrationTestBase
         docOnSaEntity!.CaseId.Should().Be(caseId);
         docOnSaEntity!.TaskId.Should().Be(taskId);
         docOnSaEntity!.ExternalId.Should().Be(eArchiveId);
+        docOnSaEntity.IsCustomerPreviewSendingAllowed.Should().BeTrue();
     }
 }

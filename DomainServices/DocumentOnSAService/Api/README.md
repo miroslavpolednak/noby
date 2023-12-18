@@ -66,6 +66,10 @@ grpcurl -insecure -d "{\"SalesArrangementId\":31620}" -H "Authorization: Basic W
 ```
 grpcurl -insecure -d "{\"SalesArrangementId\":28008,\"DocumentOnSAId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/GetDocumentOnSAStatus
 ```
+### SetProcessingDateInSbQueues
+```
+grpcurl -insecure -d "{\"TaskId\":6937082,\"CaseId\":303068304}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30019 DomainServices.DocumentOnSAService.v1.DocumentOnSAService/SetProcessingDateInSbQueues
+```
 ### Migrations
 1) Open Package manager console
 2) Set project with dbcontext as startpup project (DomainServices.DocumentArchiveService.Api)
