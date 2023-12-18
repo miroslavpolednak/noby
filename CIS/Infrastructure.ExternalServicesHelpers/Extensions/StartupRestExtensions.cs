@@ -37,6 +37,7 @@ public static class StartupRestExtensions
 
                 // service url
                 client.BaseAddress = configuration.ServiceUrl;
+
                 // musi byt nastaveny, jinak je default na 100
                 client.Timeout = TimeSpan.FromSeconds(
                     (getRequestTimeout(configuration) * (configuration.RequestRetryCount.GetValueOrDefault() + 1))
@@ -81,7 +82,7 @@ public static class StartupRestExtensions
             });
 
             // set resiliency
-            client.AddResilienceHandler($"CisExtService_{typeof(TClient)}", static (ResiliencePipelineBuilder<HttpResponseMessage> builder, ResilienceHandlerContext context) =>
+            client.AddResilienceHandler($"{typeof(TClient)}", static (ResiliencePipelineBuilder<HttpResponseMessage> builder, ResilienceHandlerContext context) =>
             {
                 var configuration = context.ServiceProvider.GetRequiredService<TConfiguration>();
 
@@ -89,7 +90,7 @@ public static class StartupRestExtensions
                 {
                     builder.AddRetry(new RetryStrategyOptions<HttpResponseMessage>
                     {
-                        BackoffType = DelayBackoffType.Linear,
+                        BackoffType = DelayBackoffType.Constant,
                         UseJitter = false,
                         MaxRetryAttempts = configuration.RequestRetryCount!.Value,
                         Delay = TimeSpan.FromSeconds(getRequestRetryTimeout(configuration)),
