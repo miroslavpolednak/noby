@@ -36,4 +36,19 @@ internal class RealRuianAddressClient : IRuianAddressClient
 
         return pagedResult.Items ?? new Collection<Contracts.AddressDTO>();
     }
+
+    public async Task<ICollection<Contracts.TerritoryDTO>> FindTerritory(string searchText, int pageSize, CancellationToken cancellationToken)
+    {
+        var queryBuilder = new QueryBuilder
+        {
+            { "name", searchText },
+            { "limit", pageSize.ToString(CultureInfo.InvariantCulture) }
+        };
+
+        var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}/territories/find", queryBuilder!), cancellationToken);
+
+        var pagedResult = await response.EnsureSuccessStatusAndReadJson<Contracts.TerritoryDTOPagedResponse>(StartupExtensions.ServiceName, cancellationToken);
+
+        return pagedResult.Items ?? new Collection<Contracts.TerritoryDTO>();
+    }
 }

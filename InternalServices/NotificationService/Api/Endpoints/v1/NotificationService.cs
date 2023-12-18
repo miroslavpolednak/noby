@@ -1,7 +1,9 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts;
 using CIS.InternalServices.NotificationService.Contracts.Email;
+using CIS.InternalServices.NotificationService.Contracts.Resend;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.InternalServices.NotificationService.Contracts.Statistics;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1;
@@ -31,5 +33,14 @@ public class NotificationService : INotificationService
         => await _mediator.Send(request, token);
 
     public async Task<SearchResultsResponse> SearchResults(SearchResultsRequest request, CancellationToken token)
+        => await _mediator.Send(request, token);
+
+    public async Task<GetStatisticsResponse> GetStatistics(GetStatisticsRequest request, CancellationToken token)
+        => await _mediator.Send(request, token);
+
+    public async Task<GetDetailedStatisticsResponse> GetDetailedStatistics(GetDetailedStatisticsRequest request, CancellationToken token)
+        => await _mediator.Send(request, token);
+
+    public async Task Resend(ResendRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
 }

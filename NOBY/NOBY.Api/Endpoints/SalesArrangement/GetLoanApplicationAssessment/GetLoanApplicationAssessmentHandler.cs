@@ -81,14 +81,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
 
             await CreateNewAssessment(saInstance, offer, cancellationToken);
 
-            await _salesArrangementService.SetFlowSwitches(saInstance.SalesArrangementId, new()
-            {
-                new()
-                {
-                    FlowSwitchId = (int)FlowSwitches.ScoringPerformedAtleastOnce,
-                    Value = true
-                }
-            }, cancellationToken);
+            await _salesArrangementService.SetFlowSwitch(saInstance.SalesArrangementId, FlowSwitches.ScoringPerformedAtleastOnce, true, cancellationToken);
         }
 
         // load assesment by ID

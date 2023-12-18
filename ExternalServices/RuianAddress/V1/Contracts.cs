@@ -1527,7 +1527,7 @@ namespace ExternalServices.RuianAddress.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public long Id { get; set; } = default!;
+        public int Id { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("townId")]
 

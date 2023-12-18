@@ -52,6 +52,8 @@ public class CodebookManager : ICodebookManagerConfigurator
 
     public List<DomainServices.CodebookService.Contracts.v1.TinNoFillReasonsByCountryResponse.Types.TinNoFillReasonsByCountryItem> TinNoFillReasonsByCountry { get; private set; } = null!;
 
+    public List<DomainServices.CodebookService.Contracts.v1.BankCodesResponse.Types.BankCodeItem> BankCodes { get; private set; } = null!;
+
     Task ICodebookManagerConfigurator.Load(ICodebookServiceClient codebookService, CancellationToken cancellationToken)
     {
         return Task.WhenAll(_codebooksToLoad.Values.Select(call => call(codebookService, cancellationToken)));
@@ -207,6 +209,13 @@ public class CodebookManager : ICodebookManagerConfigurator
     ICodebookManagerConfigurator ICodebookManagerConfigurator.TinNoFillReasonsByCountry()
     {
         AddToLoad(async (service, ct) => TinNoFillReasonsByCountry = await service.TinNoFillReasonsByCountry(ct));
+
+        return this;
+    }
+
+    ICodebookManagerConfigurator ICodebookManagerConfigurator.BankCodes()
+    {
+        AddToLoad(async (service, ct) => BankCodes = await service.BankCodes(ct));
 
         return this;
     }

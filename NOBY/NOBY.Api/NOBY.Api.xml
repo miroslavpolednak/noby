@@ -22,6 +22,16 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=312CA931-1DA0-4be2-AF0D-4D71962845F2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Address.AddressController.KatuzSearch(NOBY.Api.Endpoints.Address.KatuzSearch.KatuzSearchRequest,System.Threading.CancellationToken)">
+            <summary>
+            Našeptávání katastrálních území (KATUZ)
+            </summary>
+            <remarks>
+            Provolá  CREM službu RUIAN:FindTerritory a vrátí stránkovaný seznam katuz setřízený abecedně podle jména katastrálního území.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=46994CE5-FC35-4ad8-97D6-5217CFBE2F27"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <returns></returns>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.SessionId">
             <summary>
             SessionId generované přímo na frontendu (unikátní GUID)
@@ -80,6 +90,31 @@
         <member name="P:NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailResponse.CountryId">
             <summary>
             Stát - AddressWhispererBEService|country
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.KatuzId">
+            <summary>
+            Id katastrálního území (KATUZ)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.KatuzTitle">
+            <summary>
+            Textová reprezentace katastrálního území
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.KatuzSearchRequest.SearchText">
+            <summary>
+            Pattern, podle kterého vyhledáváme
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.KatuzSearchRequest.PageSize">
+            <summary>
+            Počet vrácených záznamů
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.KatuzSearchResponse.PageSize">
+            <summary>
+            Počet vrácených záznamů
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.CancelCase.CancelCaseResponse.State">
@@ -854,7 +889,6 @@
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
-             - <a href="https://wiki.kb.cz/display/HT/SigningMethodsForNaturalPerson+%28CB_StandardMethodOfArrAcceptanceByNPType%29+-+MOCK">SigningMethodsForNaturalPerson</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
              - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchemas</a>
              - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructures</a>
@@ -1937,6 +1971,17 @@
             <param name="salesArrangementId"></param>
             <param name="documentOnSaId"></param>
         </member>
+        <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSAStatus(System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Stav podepisovaného dokumentu 
+            </summary>
+            <remarks>
+            Zjistí stav aktuálně podepisovaného dokumentu. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3D2BB37-E844-4117-B316-A649C39D82F6 "><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+            <param name="salesArrangementId"></param>
+            <param name="documentOnSAId"></param>
+        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningHandler.ValidateSalesArrangement(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Checkform 
@@ -2858,6 +2903,16 @@
             </summary>
             <example>0</example>
         </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SetValuationTypeId(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SetValuationTypeId.SetValuationTypeIdRequest,System.Threading.CancellationToken)">
+            <summary>
+            Nastavení typu Ocenění nemovitosti
+            </summary>
+            <remarks>
+            Nastavení typu Ocenění. Slouží při možnosti uživatele vybrat typ Ocenění ze Standardu a DTS nebo při přechodu uživatele z Online ocenění na Standard.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=740D6F1C-FF1E-437e-96BD-01C6553C0F9A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.CreateRealEstateValuation(System.Int64,NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest,System.Threading.CancellationToken)">
             <summary>
             Založení Ocenění nemovitosti
@@ -3025,6 +3080,16 @@
             ID nově vytvořené přílohy ocenění
             </summary>
             <example>97355</example>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.SetValuationTypeId.SetValuationTypeIdRequest">
+            <summary>
+            Hodnota valuationTypeId
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SetValuationTypeId.SetValuationTypeIdRequest.ValuationTypeId">
+            <summary>
+            Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
+            </summary>
         </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.UpdateDeedOfOwnershipDocument.UpdateDeedOfOwnershipDocumentRequest">
             <summary>
@@ -3763,7 +3828,8 @@
             Smazaní SalesArrangement-u
             </summary>
             <remarks>
-             Smazání pouze servisních žádostí (validace na servisní žádosti je v doménových službách).<br /><br />
+             Smazání pouze servisních žádostí.
+             
              <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=513586F4-297B-4e72-BF55-2207943157C6"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID</param>
@@ -4401,11 +4467,6 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.Agent">
             <summary>
             Zmocnenec - CustomerOnSAId
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersMortgage.AgentConsentWithElCom">
-            <summary>
-            Souhlas zmocněnce s elektronickou komunikací
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ValidateCategory.CategoryName">

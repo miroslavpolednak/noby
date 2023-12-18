@@ -1,5 +1,8 @@
 ﻿namespace DomainServices.HouseholdService.Api.Database.DocumentDataEntities;
 
+/// <summary>
+/// EntityId == CustomerOnSAId
+/// </summary>
 internal sealed class CustomerOnSAData
     : SharedComponents.DocumentDataStorage.IDocumentData
 {

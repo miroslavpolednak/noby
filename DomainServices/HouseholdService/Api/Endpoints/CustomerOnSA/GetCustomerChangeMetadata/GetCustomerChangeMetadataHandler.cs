@@ -17,19 +17,20 @@ internal sealed class GetCustomerChangeMetadataHandler
             .Select(t => t.CustomerOnSAId)
             .ToArrayAsync(cancellationToken);
 
-        var additionalData = await _documentDataStorage.GetList<Database.DocumentDataEntities.CustomerOnSAData>(customers!, cancellationToken);
-        var convertedData = additionalData.Select(t =>
-        {
-            var (_, customerChangeMetadata) = _customerMapper.MapFromDataToSingle(t?.Data);
-            return new GetCustomerChangeMetadataResponse.Types.GetCustomerChangeMetadataResponseItem
-            {
-                CustomerOnSAId = t.EntityIdInt,
-                CustomerChangeMetadata = customerChangeMetadata
-            };
-        });
-        
         GetCustomerChangeMetadataResponse response = new();
-        response.CustomersOnSAMetadata.AddRange(convertedData);
+        var additionalData = await _documentDataStorage.GetList<Database.DocumentDataEntities.CustomerOnSAData>(customers!, cancellationToken);
+        
+        foreach (var customerOnSAId in customers)
+        {
+            var data = additionalData.FirstOrDefault(t => t.EntityIdInt == customerOnSAId);
+
+            var (_, customerChangeMetadata) = _customerMapper.MapFromDataToSingle(data?.Data);
+            response.CustomersOnSAMetadata.Add(new GetCustomerChangeMetadataResponse.Types.GetCustomerChangeMetadataResponseItem()
+            {
+                CustomerOnSAId = customerOnSAId,
+                CustomerChangeMetadata = customerChangeMetadata ?? new CustomerChangeMetadata()
+            });
+        }
 
         return response;
     }

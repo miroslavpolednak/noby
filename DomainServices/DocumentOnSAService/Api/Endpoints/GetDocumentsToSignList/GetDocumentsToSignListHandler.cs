@@ -1,5 +1,4 @@
 ﻿using SharedTypes.Enums;
-using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Mappers;
@@ -9,6 +8,7 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
+using DomainServices.DocumentOnSAService.Api.Common;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetDocumentsToSignList;
 
@@ -20,6 +20,7 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
     private readonly IDocumentOnSaMapper _documentOnSaMapper;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
+    private readonly ICommonSigningMethods _commonSigningMethods;
 
     public GetDocumentsToSignListHandler(
            DocumentOnSAServiceDbContext dbContext,
@@ -27,7 +28,8 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
            ICodebookServiceClient codebookServiceClients,
            IDocumentOnSaMapper documentOnSaMapper,
            IHouseholdServiceClient householdClient,
-           ICustomerOnSAServiceClient customerOnSAServiceClient)
+           ICustomerOnSAServiceClient customerOnSAServiceClient,
+           ICommonSigningMethods commonSigningMethods)
     {
         _dbContext = dbContext;
         _arrangementServiceClient = arrangementServiceClient;
@@ -35,13 +37,14 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         _documentOnSaMapper = documentOnSaMapper;
         _householdClient = householdClient;
         _customerOnSAServiceClient = customerOnSAServiceClient;
+        _commonSigningMethods = commonSigningMethods;
     }
 
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
-        var salesArrangementType = await GetSalesArrangementType(salesArrangement, cancellationToken);
+        var salesArrangementType = await _commonSigningMethods.GetSalesArrangementType(salesArrangement, cancellationToken);
 
         var documentOnSaEntities = await _dbContext.DocumentOnSa
             .AsNoTracking()
@@ -156,12 +159,5 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
                 yield return virtualCrs;
             }
         }
-    }
-
-    private async Task<SalesArrangementTypesResponse.Types.SalesArrangementTypeItem> GetSalesArrangementType(SalesArrangement salesArrangement, CancellationToken cancellationToken)
-    {
-        var salesArrangementTypes = await _codebookServiceClients.SalesArrangementTypes(cancellationToken);
-        var salesArrangementType = salesArrangementTypes.Single(r => r.Id == salesArrangement.SalesArrangementTypeId);
-        return salesArrangementType;
     }
 }

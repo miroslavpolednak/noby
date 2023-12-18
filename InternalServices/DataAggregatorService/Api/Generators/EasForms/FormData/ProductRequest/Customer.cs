@@ -35,6 +35,8 @@ internal class Customer
 
     public required List<GenericCodebookResponse.Types.GenericCodebookItem> LegalCapacityTypes { private get; init; }
 
+    public required List<BankCodesResponse.Types.BankCodeItem> BankCodes { private get; init; }
+
     public CustomerOnSA CustomerOnSA { get; }
 
     public bool? IsSpouseInDebt { get; init; }
@@ -106,7 +108,8 @@ internal class Customer
         {
             Number = index + 1,
             ObligationData = obligation,
-            ObligationTypeIds = ObligationTypes["amount"]
+            ObligationTypeIds = ObligationTypes["amount"],
+            BankCodes = BankCodes
         });
 
     public bool HasLockedIncomeDateTime => ((DateTime?)CustomerOnSA.LockedIncomeDateTime).HasValue;

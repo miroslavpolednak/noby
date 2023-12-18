@@ -56,3 +56,7 @@ public const string GrpcTrailerCisCodeKey = ciscode;
 
 #### Field Value
 [System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')
+
+| Interfaces | |
+| :--- | :--- |
+| [ICisExceptionExludedFromLog](CIS.Core.Exceptions.ICisExceptionExludedFromLog.md 'CIS.Core.Exceptions.ICisExceptionExludedFromLog') | Marker interface for exceptions that should not be logged. |

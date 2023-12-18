@@ -1,5 +1,6 @@
 ﻿using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.DeleteRealEstateValuation;
 
@@ -34,6 +35,9 @@ internal sealed class DeleteRealEstateValuationHandler
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
+        // smazat data
+        await _documentDataStorage.Delete<Database.DocumentDataEntities.RealEstateValudationData>(request.RealEstateValuationId);
+
         // odstranit z ACV - je nam jedno jestli se to povede, takze do try catch
         if (attachments.Count != 0)
         {
@@ -53,15 +57,18 @@ internal sealed class DeleteRealEstateValuationHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly ILogger<DeleteRealEstateValuationHandler> _logger;
     private readonly ExternalServices.PreorderService.V1.IPreorderServiceClient _preorderService;
     private readonly RealEstateValuationServiceDbContext _dbContext;
 
     public DeleteRealEstateValuationHandler(
+        IDocumentDataStorage documentDataStorage,
         RealEstateValuationServiceDbContext dbContext, 
         ILogger<DeleteRealEstateValuationHandler> logger, 
         ExternalServices.PreorderService.V1.IPreorderServiceClient preorderService)
     {
+        _documentDataStorage = documentDataStorage;
         _preorderService = preorderService;
         _dbContext = dbContext;
         _logger = logger;

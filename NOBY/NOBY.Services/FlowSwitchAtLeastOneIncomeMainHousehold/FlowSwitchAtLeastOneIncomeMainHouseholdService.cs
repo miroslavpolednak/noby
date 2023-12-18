@@ -46,14 +46,7 @@ public sealed class FlowSwitchAtLeastOneIncomeMainHouseholdService
         }
         else
         {
-            await _salesArrangementService.SetFlowSwitches(salesArrangementId, new()
-            {
-                new() 
-                {
-                    FlowSwitchId = (int)SharedTypes.Enums.FlowSwitches.AtLeast1IncomeMainHousehold, 
-                    Value = flowSwitchValue 
-                }
-            }, cancellationToken);
+            await _salesArrangementService.SetFlowSwitch(salesArrangementId, SharedTypes.Enums.FlowSwitches.AtLeast1IncomeMainHousehold, flowSwitchValue, cancellationToken);
         }
     }
 

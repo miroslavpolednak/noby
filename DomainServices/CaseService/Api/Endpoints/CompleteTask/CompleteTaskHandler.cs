@@ -25,10 +25,14 @@ internal sealed class CompleteTaskHandler
         {
             sbRequest.Metadata.Add("ukol_podpis_odpoved_typ", (request.TaskResponseTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
             sbRequest.Metadata.Add("ukol_podpis_zpusob_ukonceni", (request.CompletionTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
+        }
 
-            await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
+        await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
 
-            await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskId, request.CaseId, cancellationToken);
+        if (request.TaskTypeId == 6)
+        {
+            // ToDo uncomment after update sb queues fix and linked server account hh has to have write permission  
+            // await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskId, request.CaseId, cancellationToken);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();

@@ -2,6 +2,8 @@
 using CIS.InternalServices.NotificationService.Contracts.Email;
 using CIS.InternalServices.NotificationService.Contracts.Result;
 using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.InternalServices.NotificationService.Contracts.Statistics;
+using CIS.InternalServices.NotificationService.Contracts.Resend;
 
 namespace CIS.InternalServices.NotificationService.Contracts;
 
@@ -25,4 +27,13 @@ public interface INotificationService
 
     [OperationContract]
     Task<SearchResultsResponse> SearchResults(SearchResultsRequest request, CancellationToken token);
+
+    [OperationContract]
+    Task<GetStatisticsResponse> GetStatistics(GetStatisticsRequest request, CancellationToken token);
+
+    [OperationContract]
+    Task<GetDetailedStatisticsResponse> GetDetailedStatistics(GetDetailedStatisticsRequest request, CancellationToken token);
+
+    [OperationContract]
+    Task Resend(ResendRequest request, CancellationToken token);
 }

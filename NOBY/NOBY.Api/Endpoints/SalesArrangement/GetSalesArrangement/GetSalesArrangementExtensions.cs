@@ -22,7 +22,6 @@ internal static class GetSalesArrangementExtensions
             IncomeCurrencyCode = mortgage.IncomeCurrencyCode,
             ResidencyCurrencyCode = mortgage.ResidencyCurrencyCode,
             Agent = mortgage.Agent,
-            AgentConsentWithElCom = mortgage.AgentConsentWithElCom,
             LoanRealEstates = mortgage.LoanRealEstates is null ? null : mortgage.LoanRealEstates.Select(x => new LoanRealEstateDto
             {
                 IsCollateral = x.IsCollateral,

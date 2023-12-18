@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+﻿using CIS.Core.Exceptions.ExternalServices;
+using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Polly;
 using Polly.Extensions.Http;
@@ -90,6 +91,8 @@ public static class StartupRestExtensions
                     return HttpPolicyExtensions
                         .HandleTransientHttpError()
                         .Or<TimeoutRejectedException>()
+                        .Or<CisExtServiceUnavailableException>()
+                        .Or<CisExtServiceServerErrorException>()
                         .WaitAndRetryAsync(configuration.RequestRetryCount!.Value, (c) => TimeSpan.FromSeconds(getRequestRetryTimeout(configuration)), (res, timeSpan, count, context) =>
                         {
                             logger.HttpRequestRetry(typeof(TClient).Name, count);

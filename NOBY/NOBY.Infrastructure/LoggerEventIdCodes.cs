@@ -15,4 +15,5 @@ public struct LoggerEventIdCodes
     public const int SecurityOpenIdError = 99031;
     public const int SecurityOpenIdAuthenticationFailed = 99032;
     public const int SecurityOpenIdRemoteFailure = 99033;
+    public const int SecurityUserNotFound = 99034;
 }

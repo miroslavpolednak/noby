@@ -10,6 +10,30 @@ namespace NOBY.Api.Endpoints.RealEstateValuation;
 public sealed class RealEstateValuationController : ControllerBase
 {
     /// <summary>
+    /// Nastavení typu Ocenění nemovitosti
+    /// </summary>
+    /// <remarks>
+    /// Nastavení typu Ocenění. Slouží při možnosti uživatele vybrat typ Ocenění ze Standardu a DTS nebo při přechodu uživatele z Online ocenění na Standard.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=740D6F1C-FF1E-437e-96BD-01C6553C0F9A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/valuation-type-id")]
+    [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
+    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano, RealEstateValuationStates.DoplneniDokumentu)]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SetValuationTypeId(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] SetValuationTypeId.SetValuationTypeIdRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
+
+    /// <summary>
     /// Založení Ocenění nemovitosti
     /// </summary>
     /// <remarks>
@@ -312,6 +336,7 @@ public sealed class RealEstateValuationController : ControllerBase
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/order")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
+    [RealEstateValuationStateValidation]
     [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

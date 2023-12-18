@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 using System.Security.Claims;
+using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication;
 
 namespace NOBY.Infrastructure.Security.CaasAuthentication;
 
@@ -38,6 +40,19 @@ internal sealed class CaasCookieHandler
 
         options.Events = new CookieAuthenticationEvents
         {
+            OnRedirectToAccessDenied = context =>
+            {
+                if (isAjaxRequest(context.Request))
+                {
+                    context.Response.Headers.Location = $"{_configuration.FailedSignInRedirectPath}?reason=authentication_access_denied";
+                    context.Response.StatusCode = 403;
+                }
+                else
+                {
+                    context.Response.Redirect($"{_configuration.FailedSignInRedirectPath}?reason=authentication_access_denied");
+                }
+                return Task.CompletedTask;
+            },
             OnSigningIn = async context =>
             {
                 // login, ktery prisel z CAASu
@@ -46,9 +61,22 @@ internal sealed class CaasCookieHandler
                 var userServiceClient = context.HttpContext.RequestServices.GetRequiredService<IUserServiceClient>();
 
                 // zavolat user service a zjistit, jestli muze uzivatel do aplikace
-                var userInstance = await userServiceClient.GetUser(currentLogin);
-                // ziskat instanci uzivatele z xxv
-                var permissions = await userServiceClient.GetUserPermissions(userInstance.UserId);
+                DomainServices.UserService.Contracts.User? userInstance = null;
+
+                try
+                {
+                    userInstance = await userServiceClient.GetUser(currentLogin);
+                }
+                catch (Exception ex)
+                {
+                    createLogger(context.HttpContext).UserNotFound(currentLogin, ex);
+                    context.Principal = new ClaimsPrincipal();
+                    context.Properties.RedirectUri = $"{_configuration.FailedSignInRedirectPath}?reason=authentication_notfound";
+                    return;
+                }
+
+                // ziskat prava uzivatele z xxv
+                var permissions = await userServiceClient.GetUserPermissions(userInstance!.UserId);
 
                 // kontrola, zda ma uzivatel pravo na aplikaci jako takovou
                 if (!permissions.Contains((int)UserPermissions.APPLICATION_BasicAccess))
@@ -71,12 +99,12 @@ internal sealed class CaasCookieHandler
                 context.Principal = principal;
 
                 // zalogovat prihlaseni uzivatele
-                var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
-                logger.Log(
+                var auditLogger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
+                auditLogger.Log(
                     AuditEventTypes.Noby002,
                     $"Uživatel {currentLogin} se přihlásil do aplikace.",
-                    bodyAfter: new Dictionary<string, string>() 
-                    { 
+                    bodyAfter: new Dictionary<string, string>()
+                    {
                         { "login", currentLogin },
                         { "app_version", appVersion }
                     });
@@ -87,6 +115,12 @@ internal sealed class CaasCookieHandler
                 return Task.CompletedTask;
             }
         };
+    }
+
+    private static bool isAjaxRequest(HttpRequest request)
+    {
+        return string.Equals(request.Query[HeaderNames.XRequestedWith], "XMLHttpRequest", StringComparison.Ordinal) ||
+            string.Equals(request.Headers.XRequestedWith, "XMLHttpRequest", StringComparison.Ordinal);
     }
 
     private static ILogger<CaasCookieHandler> createLogger(HttpContext context)
