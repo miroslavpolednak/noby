@@ -6,20 +6,20 @@ namespace CIS.InternalServices.NotificationService.Contracts.Statistics.Dto;
 public class Status
 {
     [ProtoMember(1)]
-    public int? DELIVERED { get; set; }
+    public int? Delivered { get; set; }
 
     [ProtoMember(2)]
-    public int? ERROR { get; set; }
+    public int? Error { get; set; }
 
     [ProtoMember(3)]
-    public int? INPROGRESS { get; set; }
+    public int? InProgress { get; set; }
 
     [ProtoMember(4)]
-    public int? SENT { get; set; }
+    public int? Sent { get; set; }
 
     [ProtoMember(5)]
-    public int? UNSENT { get; set; }
+    public int? Unsent { get; set; }
 
     [ProtoMember(6)]
-    public int? INVALID { get; set; }
+    public int? Invalid { get; set; }
 }

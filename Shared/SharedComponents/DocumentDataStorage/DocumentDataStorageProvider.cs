@@ -2,8 +2,8 @@
 using CIS.Infrastructure.Data;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using System.Globalization;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace SharedComponents.DocumentDataStorage;
@@ -230,7 +230,10 @@ internal sealed class DocumentDataStorageProvider
     private readonly CIS.Core.IDateTime _dateTime;
     private readonly IConnectionProvider<Database.IDocumentDataStorageConnection> _connectionProvider;
 
-    private static JsonSerializerOptions _jsonSerializerOptions = JsonSerializerOptions.Default;
+    private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
+    {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
 
     public DocumentDataStorageProvider(
         CIS.Core.Security.ICurrentUserAccessor currentUserAccessor, 
