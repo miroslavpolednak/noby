@@ -83,7 +83,7 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
         return new User { Username = Configuration.Username, Password = Configuration.Password };
     }
 
-    private GetDocumentByExternalIdOptions CreateOptionsDocByExternalId(bool withContent, string userLogin)
+    private static GetDocumentByExternalIdOptions CreateOptionsDocByExternalId(bool withContent, string userLogin)
     {
         var options = new GetDocumentByExternalIdOptions
         {
@@ -97,17 +97,13 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
         return options;
     }
 
-    private AsyncRetryPolicy CreatePolicy()
+    private static AsyncRetryPolicy CreatePolicy()
     {
         return Policy.Handle<FaultException>().RetryAsync(_maxRetries, onRetry: (exp, retryCount) =>
         {
             if (exp.Message.Contains("DocumentNotFound"))
             {
                 throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CspDocumentNotFound);
-            }
-            else if (exp.Message.Contains("Invalid username/password specified"))
-            {
-                _logger.LogInformation("Sdf reported: Invalid username/password specified");
             }
         });
     }
