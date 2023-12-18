@@ -109,6 +109,10 @@ internal sealed class CustomerManagementErrorMap
                  "CM_EMAIL_DUMMY_EMAIL",
                  "CM_EMAIL_CONTAINS_DIACRITICS",
                  "CM_IDDOC_CUST_IDENT_MISSING_IDDOC");
+
+        AddError(11035,
+                 "KB CM: Unsupported combination of identification document type and issuing country",
+                 "CM_IDDOC_ISSUING_COUNTRY_INVALID_FOR_DOCUMENT_TYPE");
     }
 
     private void AddError(int errorNumberCode, string description, params string[] errorCodes)

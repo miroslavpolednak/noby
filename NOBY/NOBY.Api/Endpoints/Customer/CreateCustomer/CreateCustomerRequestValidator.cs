@@ -33,5 +33,13 @@ internal class CreateCustomerRequestValidator : AbstractValidator<CreateCustomer
             .Cascade(CascadeMode.Stop)
             .NotNull().WithErrorCode(CustomerValidationErrorCode)
             .SetValidator(new IdentificationDocumentValidator());
+
+        When(r => r.PrimaryAddress is not null && !string.IsNullOrWhiteSpace(r.PrimaryAddress.PragueDistrict),
+             () =>
+             {
+                 RuleFor(r => r.PrimaryAddress!.PragueDistrict!)
+                     .Must(dis => dis.StartsWith("Praha", StringComparison.OrdinalIgnoreCase))
+                     .WithErrorCode(CustomerValidationErrorCode);
+             });
     }
 }

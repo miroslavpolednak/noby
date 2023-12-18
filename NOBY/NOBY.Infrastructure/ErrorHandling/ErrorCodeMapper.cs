@@ -50,7 +50,8 @@ public sealed class ErrorCodeMapper
             { 90040, new("Existuje rozpracovaná žádost o úvěr. Nelze vytvořit žádost o změnu.") },
             { 90041, new("Smlouva je již podepsána. Nelze vytvořit tento typ změnové žádosti.") },
             { 90042, new("Nelze pokračovat, protože došlo ke změně daňové rezidence a klient má zadáno více jak 8 států daňové rezidence. Tuto změnu je možné provést pouze na pobočce.") },
-            { 90043, new("Nenalezeno") }
+            { 90043, new("Nenalezeno") },
+            { 90044, new("Nepovolená hodnota pro Typ dokladu v rámci vybraného Státu vydání dokladu") }
         };
 
         Messages = messages.AsReadOnly();

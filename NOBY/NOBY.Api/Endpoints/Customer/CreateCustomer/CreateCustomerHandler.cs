@@ -73,6 +73,11 @@ internal sealed class CreateCustomerHandler
             _logger.LogInformation("CreateCustomer: registry failed", ex);
             throw new NobyValidationException(90008, 500);
         }
+        catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11035")
+        {
+            _logger.LogInformation("CreateCustomer: Special handling of identification document type and issuing country combination", ex);
+            throw new NobyValidationException(90044);
+        }
         catch
         {
             // rethrow? nevim co tady...

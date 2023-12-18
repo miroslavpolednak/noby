@@ -113,7 +113,9 @@ internal sealed class CheckFormWithCustomerDetailValidationStrategy : ISalesArra
         bool CustomerIdentificationValidation() => customerIdentification?.IdentificationDate != null && !string.IsNullOrWhiteSpace(customerIdentification.CzechIdentificationNumber);
 
         bool IdentificationDocumentTypeValidation() => identificationDocument?.IdentificationDocumentTypeId is not null &&
-                                                       identificationDocumentTypes.Any(i => i.Id != 0 && i.Id == identificationDocument!.IdentificationDocumentTypeId);
+                                                       identificationDocumentTypes.Any(i => i.Id != 0 && i.Id == identificationDocument!.IdentificationDocumentTypeId) &&
+                                                       (identificationDocument.IssuingCountryId == 16 && identificationDocument.IdentificationDocumentTypeId is 1 or 2 or 3 ||
+                                                        identificationDocument.IssuingCountryId != 16 && identificationDocument.IdentificationDocumentTypeId is 2 or 4);
     }
 
     private static void ValidateSuccessfullyOrThrow(Func<bool> validation, string validationRule)
