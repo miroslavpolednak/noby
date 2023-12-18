@@ -119,6 +119,7 @@ public class SalesArrangementController : ControllerBase
     /// Seznam klientů navázaných na Sales Arrangement.
     /// </summary>
     /// <remarks>
+    /// Vrátí seznam klientů navázaných na SalesArrangement.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=439685F4-2313-4dfe-A374-8EE45F1C8E86"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
@@ -190,6 +191,7 @@ public class SalesArrangementController : ControllerBase
     /// Vrátí komentář produktové žádosti. <br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
+    /// <param name="salesArrangementId">ID Sales Arrangementu</param>
     [HttpGet("{salesArrangementId:int}/comment")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
