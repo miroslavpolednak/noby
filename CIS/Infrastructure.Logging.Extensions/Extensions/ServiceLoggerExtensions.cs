@@ -71,7 +71,7 @@ public static class ServiceLoggerExtensions
         => _extServiceUnavailable(logger, parentServiceName, ex);
 
     public static void ExtServiceServerError(this ILogger logger, string parentServiceName, Exception ex)
-        => _extServiceUnavailable(logger, parentServiceName, ex);
+        => _extServiceServerError(logger, parentServiceName, ex);
 
     /// <summary>
     /// Pokud služba třetí strany vrátí nestandardní chybové hlášení - ne 500 nebo 400 a chceme to zalogovat.
