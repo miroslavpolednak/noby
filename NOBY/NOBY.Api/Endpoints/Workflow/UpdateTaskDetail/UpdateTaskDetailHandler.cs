@@ -65,7 +65,8 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             TaskIdSb = request.TaskIdSB,
             TaskResponseTypeId = request.TaskResponseTypeId,
             TaskTypeId = request.TaskTypeId,
-            TaskUserResponse = request.TaskUserResponse
+            TaskUserResponse = request.TaskUserResponse,
+            TaskId = request.TaskId
         };
         if (request.TaskTypeId == 6)
         {
