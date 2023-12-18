@@ -28,7 +28,7 @@ public interface IProductServiceClient
     /// <summary>
     /// Aktualizace produktu KB Hypotéky
     /// </summary>
-    Task UpdateMortgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default);
+    Task UpdateMortgage(long productId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vytvoření vazby customer/product

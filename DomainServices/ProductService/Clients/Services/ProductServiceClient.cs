@@ -24,9 +24,12 @@ internal sealed class ProductServiceClient : IProductServiceClient
         return await _service.CreateMortgageAsync(request, cancellationToken: cancellationToken);
     }
     
-    public async Task UpdateMortgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default)
+    public async Task UpdateMortgage(long productId, CancellationToken cancellationToken = default)
     {
-        await _service.UpdateMortgageAsync(request, cancellationToken: cancellationToken);
+        await _service.UpdateMortgageAsync(new UpdateMortgageRequest
+        {
+            ProductId = productId
+        }, cancellationToken: cancellationToken);
     }
 
     public async Task CreateContractRelationship(long partnerId, long productId, int contractRelationshipTypeId, CancellationToken cancellationToken = default)

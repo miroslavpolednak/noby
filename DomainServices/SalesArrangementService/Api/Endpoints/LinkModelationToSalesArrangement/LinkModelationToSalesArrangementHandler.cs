@@ -76,44 +76,18 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         // Aktualizace dat modelace v KonsDB
         //!!! docasne zakomentovano na prani AR
-        //await updateMortgage(caseInstance.CaseId, offerInstance, cancellation);
+        //await updateMortgage(caseInstance.CaseId, cancellation);
         
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private async Task updateMortgage(long caseId, GetMortgageOfferResponse offer, CancellationToken cancellationToken)
+    private async Task updateMortgage(long caseId, CancellationToken cancellationToken)
     {
         var products = await _productService.GetProductList(caseId, cancellationToken);
 
         if (products.Products.Count > 0)
         {
-            var request = new ProductService.Contracts.UpdateMortgageRequest
-            {
-                ProductId = caseId,
-                Mortgage = new()
-                {
-                    LoanAmount = offer.SimulationInputs.LoanAmount,
-                    LoanInterestRate = offer.SimulationResults.LoanInterestRate,
-                    FixedRatePeriod = offer.SimulationInputs.FixedRatePeriod,
-                    LoanPaymentAmount = offer.SimulationResults.LoanPaymentAmount,
-                    LoanKindId = offer.SimulationInputs.LoanKindId,
-                    ExpectedDateOfDrawing = offer.SimulationInputs.ExpectedDateOfDrawing,
-                    LoanDueDate = offer.SimulationResults.LoanDueDate,
-                    PaymentDay = offer.SimulationInputs.PaymentDay,
-                    FirstAnnuityPaymentDate = offer.SimulationResults.AnnuityPaymentsDateFrom
-                }
-            };
-
-            if (offer.SimulationInputs.LoanPurposes is not null)
-            {
-                request.Mortgage.LoanPurposes.AddRange(offer.SimulationInputs.LoanPurposes.Select(t => new ProductService.Contracts.LoanPurpose
-                {
-                    Sum = t.Sum,
-                    LoanPurposeId = t.LoanPurposeId
-                }));
-            }
-
-            await _productService.UpdateMortgage(request, cancellationToken);
+            await _productService.UpdateMortgage(caseId, cancellationToken);
         }
     }
 

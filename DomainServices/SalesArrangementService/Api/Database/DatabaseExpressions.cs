@@ -9,6 +9,7 @@ internal static class DatabaseExpressions
         return t => new Contracts.SalesArrangement
         {
             OfferDocumentId = t.OfferDocumentId,
+            PcpId = t.PcpId,
             SalesArrangementId = t.SalesArrangementId,
             CaseId = t.CaseId,
             State = t.State,
