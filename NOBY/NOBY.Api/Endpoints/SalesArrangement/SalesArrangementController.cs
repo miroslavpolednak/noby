@@ -110,6 +110,7 @@ public class SalesArrangementController : ControllerBase
     [HttpGet("list/{caseId:long}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [ProducesResponseType(typeof(List<Dto.SalesArrangementListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<Dto.SalesArrangementListItem>> GetSalesArrangements([FromRoute] long caseId, CancellationToken cancellationToken)

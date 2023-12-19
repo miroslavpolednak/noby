@@ -43,7 +43,7 @@ internal sealed class GetRealEstateValuationListHandler
     /// </summary>
     private async Task<List<RealEstateValuationListItem>?> getComputedValuations(long caseId, CancellationToken cancellationToken)
     {
-        var saId = (await _salesArrangementService.GetProductSalesArrangement(caseId, cancellationToken)).SalesArrangementId;
+        var saId = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First().SalesArrangementId;
         var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
 
         if (saInstance.Mortgage is null)

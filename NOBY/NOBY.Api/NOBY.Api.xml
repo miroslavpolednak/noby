@@ -342,6 +342,161 @@
             Příznak
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseOwnerUserDto.BranchName">
+            <summary>
+            Pobočka/společnost třetí strany
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseOwnerUserDto.ConsultantName">
+            <summary>
+            Poradce (Jméno Příjmení)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseOwnerUserDto.Cpm">
+            <summary>
+            ČPM
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseOwnerUserDto.Icp">
+            <summary>
+            IČP
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseOwnerUserDto.UserIdentifiers">
+            <summary>
+            Všechny identity uživatele z XXVVSS
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseOwnerUserDto.IsInternal">
+            <summary>
+            Flag, zda se jedná o interního uživatele, či externistu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.ProductType">
+            <summary>
+            Typ úvěru (číselník).
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.ContractNumber">
+            <summary>
+            ČÍslo smlouvy.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.LoanAmount">
+            <summary>
+            Výše úvěru.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.LoanInterestRate">
+            <summary>
+            Aktuální úroková sazba.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.ContractSignedDate">
+            <summary>
+            Datum poskytnutí uvěrové smlouvy.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.FixedRateValidTo">
+            <summary>
+            Platnost úrokové sazby do.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.Principal">
+            <summary>
+            Aktuální zůstatek jistiny.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.AvailableForDrawing">
+            <summary>
+            Nevyčerpaná částka
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.DrawingDateTo">
+            <summary>
+            Datum ukončení čerpání.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.LoanKind">
+            <summary>
+            Druh uveru (číselník).
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.CurrentAmount">
+            <summary>
+            Dlužná částka včetně příslušenství.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.FixedRatePeriod">
+            <summary>
+            Délka fixace úrokové sazby.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.PaymentAccount">
+            <summary>
+            Číslo účtu pro splátky.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.CurrentOverdueAmount">
+            <summary>
+            Aktuální částka po splatnosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.AllOverdueFees">
+            <summary>
+            Všechny poplatky po splatnosti.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.OverdueDaysNumber">
+            <summary>
+            Počet dní po splatnosti.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.LoanPurposes">
+            <summary>
+            Účely úvěru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.ExpectedDateOfDrawing">
+            <summary>
+            Datum zahájení čerpání.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.InterestInArrears">
+            <summary>
+            Úrok z prodlení.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.LoanDueDate">
+            <summary>
+            Datum splatnosti - předpoklad/skutečnost.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.PaymentDay">
+            <summary>
+            Den splácení.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.LoanInterestRateRefix">
+            <summary>
+            Nová úroková sazba.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.LoanInterestRateValidFromRefix">
+            <summary>
+            Platnost nové úrokové sazby od.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseParameters.FixedRatePeriodRefix">
+            <summary>
+            Délka nové fixace v měsících.
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.LoanPurposeItem.Sum">
             <summary>
             Výše účelu v Kč
@@ -386,161 +541,6 @@
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.Address">
             <summary>
             Adresa - bydliste, kontaktni atd.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ProductType">
-            <summary>
-            Typ úvěru (číselník).
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ContractNumber">
-            <summary>
-            ČÍslo smlouvy.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanAmount">
-            <summary>
-            Výše úvěru.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanInterestRate">
-            <summary>
-            Aktuální úroková sazba.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ContractSignedDate">
-            <summary>
-            Datum poskytnutí uvěrové smlouvy.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.FixedRateValidTo">
-            <summary>
-            Platnost úrokové sazby do.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.Principal">
-            <summary>
-            Aktuální zůstatek jistiny.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.AvailableForDrawing">
-            <summary>
-            Nevyčerpaná částka
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.DrawingDateTo">
-            <summary>
-            Datum ukončení čerpání.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanPaymentAmount">
-            <summary>
-            Výše měsíční splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanKind">
-            <summary>
-            Druh uveru (číselník).
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.CurrentAmount">
-            <summary>
-            Dlužná částka včetně příslušenství.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.FixedRatePeriod">
-            <summary>
-            Délka fixace úrokové sazby.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.PaymentAccount">
-            <summary>
-            Číslo účtu pro splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.CurrentOverdueAmount">
-            <summary>
-            Aktuální částka po splatnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.AllOverdueFees">
-            <summary>
-            Všechny poplatky po splatnosti.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.OverdueDaysNumber">
-            <summary>
-            Počet dní po splatnosti.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanPurposes">
-            <summary>
-            Účely úvěru
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.ExpectedDateOfDrawing">
-            <summary>
-            Datum zahájení čerpání.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.InterestInArrears">
-            <summary>
-            Úrok z prodlení.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanDueDate">
-            <summary>
-            Datum splatnosti - předpoklad/skutečnost.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.PaymentDay">
-            <summary>
-            Den splácení.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanInterestRateRefix">
-            <summary>
-            Nová úroková sazba.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.LoanInterestRateValidFromRefix">
-            <summary>
-            Platnost nové úrokové sazby od.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.GetCaseParametersResponse.FixedRatePeriodRefix">
-            <summary>
-            Délka nové fixace v měsících.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.BranchName">
-            <summary>
-            Pobočka/společnost třetí strany
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.ConsultantName">
-            <summary>
-            Poradce (Jméno Příjmení)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.Cpm">
-            <summary>
-            ČPM
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.Icp">
-            <summary>
-            IČP
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.UserIdentifiers">
-            <summary>
-            Všechny identity uživatele z XXVVSS
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.CaseOwnerUserDto.IsInternal">
-            <summary>
-            Flag, zda se jedná o interního uživatele, či externistu
             </summary>
         </member>
         <member name="T:NOBY.Api.Endpoints.Cases.GetCovenants.GetCovenantsResponse">

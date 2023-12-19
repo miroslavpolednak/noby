@@ -30,7 +30,7 @@ public interface ISalesArrangementServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<SalesArrangement> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default);
 
-    Task<(int SalesArrangementId, int? OfferId)> GetProductSalesArrangement(long caseId, CancellationToken cancellationToken = default);
+    Task<List<GetProductSalesArrangementsResponse.Types.SalesArrangement>> GetProductSalesArrangements(long caseId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci detail nalinkovaneho Sales Arrangement na zaklade OfferId
