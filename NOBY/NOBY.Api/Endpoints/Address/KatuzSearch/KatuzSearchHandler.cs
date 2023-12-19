@@ -23,7 +23,7 @@ internal class KatuzSearchHandler : IRequestHandler<KatuzSearchRequest, KatuzSea
             {
                 KatuzId = k.Id,
                 KatuzTitle = k.Name ?? string.Empty
-            }).ToList()
+            }).OrderBy(k => k.KatuzTitle).ToList()
         };
     }
 }
