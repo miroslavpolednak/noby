@@ -13,4 +13,9 @@ internal class MockRuianAddressClient : IRuianAddressClient
     {
         return Task.FromResult<ICollection<AddressDTO>>(new List<AddressDTO>());
     }
+
+    public Task<ICollection<TerritoryDTO>> FindTerritory(string searchText, int pageSize, CancellationToken cancellationToken)
+    {
+        return Task.FromResult<ICollection<TerritoryDTO>>(new List<TerritoryDTO>());
+    }
 }

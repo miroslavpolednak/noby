@@ -12,6 +12,9 @@ public class UsersController : ControllerBase
     /// <summary>
     /// Informace a oprávnění o přihlášeném uživateli
     /// </summary>
+    /// <remarks>
+    /// Pokud je uživatel přihlášen (existuje platná auth cookie), vrací základní informace o uživateli.
+    /// </remarks>
     /// <returns>Instance přihlášeného uživatele.</returns>
     [HttpGet("users")]
     [ProducesResponseType(typeof(GetCurrentUser.GetCurrentUserResponse), StatusCodes.Status200OK)]

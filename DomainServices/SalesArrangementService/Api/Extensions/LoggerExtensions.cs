@@ -5,6 +5,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, int, long, int?, Exception> _createSalesArrangementStarted;
     private static readonly Action<ILogger, int, int, Exception> _linkToModelationStarted;
     private static readonly Action<ILogger, int, int, Exception> _updateStateStarted;
+    private static readonly Action<ILogger, int, Exception> _deleteServiceSalesArrangements;
 
     static LoggerExtensions()
     {
@@ -22,6 +23,11 @@ internal static class LoggerExtensions
             LogLevel.Debug,
             new EventId(LoggerEventIdCodes.UpdateStateStarted, nameof(UpdateStateStarted)),
             "Update SA #{SalesArrangementId} State to {State}");
+
+        _deleteServiceSalesArrangements = LoggerMessage.Define<int>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.DeleteServiceSalesArrangement, nameof(DeleteServiceSalesArrangement)),
+            "{SaForDeleteCount} SalesArrangements gonna be deleted");
     }
 
     public static void CreateSalesArrangementStarted(this ILogger logger, int salesArrangementTypeId, long caseId, int? offerId)
@@ -32,4 +38,7 @@ internal static class LoggerExtensions
 
     public static void UpdateStateStarted(this ILogger logger, int salesArrangementId, int state)
         => _updateStateStarted(logger, salesArrangementId, state, null!);
+
+    public static void DeleteServiceSalesArrangement(this ILogger logger, int SaForDeleteCount)
+        => _deleteServiceSalesArrangements(logger, SaForDeleteCount, null!);
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.Extensions.DependencyInjection;
-using SharedTypes.Enums;
 using CIS.Core.Exceptions;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 

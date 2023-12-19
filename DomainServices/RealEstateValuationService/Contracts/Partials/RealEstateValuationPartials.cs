@@ -38,6 +38,10 @@ public partial class UpdateStateByRealEstateValuationRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }
 
+public partial class UpdateValuationTypeByRealEstateValuationRequest
+    : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
+{ }
+
 public partial class AddDeedOfOwnershipDocumentRequest
     : MediatR.IRequest<AddDeedOfOwnershipDocumentResponse>, CIS.Core.Validation.IValidatableRequest
 { }

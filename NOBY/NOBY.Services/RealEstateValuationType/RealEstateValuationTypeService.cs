@@ -20,36 +20,44 @@ internal sealed class RealEstateValuationTypeService
         };
 
         var caseInstance = await _caseService.ValidateCaseId(caseId, false, cancellationToken);
-        if (caseInstance.State!.Value == (int)CaseStates.InProgress)
-        {
-            var productSA = await _salesArrangementService.GetProductSalesArrangement(caseId, cancellationToken);
-            var offerInstance = await _offerService.GetMortgageOfferDetail(productSA.OfferId!.Value, cancellationToken);
+        var detail = await _realEstateValuationService.GetRealEstateValuationDetail(realEstateValuationId, cancellationToken);
 
-            dsRequest.LoanAmount = offerInstance.SimulationResults.LoanAmount;
-            if (offerInstance.SimulationInputs.LoanPurposes?.Any() ?? false)
-            {
-                dsRequest.LoanPurposes.AddRange(offerInstance.SimulationInputs.LoanPurposes.Select(t => t.LoanPurposeId));
-            }
+        if (detail.PossibleValuationTypeId?.Any() ?? false)
+        {
+            return detail.PossibleValuationTypeId.Select(t => (RealEstateValuationTypes)t).ToList();
         }
         else
         {
-            var product = await _productService.GetMortgage(caseId, cancellationToken);
-            if (product.Mortgage is null)
+            if (caseInstance.State!.Value == (int)CaseStates.InProgress)
             {
-                throw new NobyValidationException("Product.Mortgage object is null");
-            }
-            var detail = await _realEstateValuationService.GetRealEstateValuationDetail(realEstateValuationId, cancellationToken);
+                var productSA = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First();
+                var offerInstance = await _offerService.GetMortgageOfferDetail(productSA.OfferId!.Value, cancellationToken);
 
-            dsRequest.LoanAmount = product.Mortgage.CurrentAmount;
-            if (detail.LoanPurposeDetails?.LoanPurposes?.Any() ?? false)
-            {
-                dsRequest.LoanPurposes.AddRange(detail.LoanPurposeDetails.LoanPurposes);
+                dsRequest.LoanAmount = offerInstance.SimulationResults.LoanAmount;
+                if (offerInstance.SimulationInputs.LoanPurposes?.Any() ?? false)
+                {
+                    dsRequest.LoanPurposes.AddRange(offerInstance.SimulationInputs.LoanPurposes.Select(t => t.LoanPurposeId));
+                }
             }
+            else
+            {
+                var product = await _productService.GetMortgage(caseId, cancellationToken);
+                if (product.Mortgage is null)
+                {
+                    throw new NobyValidationException("Product.Mortgage object is null");
+                }
+
+                dsRequest.LoanAmount = product.Mortgage.CurrentAmount;
+                if (detail.LoanPurposeDetails?.LoanPurposes?.Any() ?? false)
+                {
+                    dsRequest.LoanPurposes.AddRange(detail.LoanPurposeDetails.LoanPurposes);
+                }
+            }
+
+            var result = await _realEstateValuationService.GetRealEstateValuationTypes(dsRequest, cancellationToken);
+
+            return result.Select(t => t).ToList();
         }
-
-        var result = await _realEstateValuationService.GetRealEstateValuationTypes(dsRequest, cancellationToken);
-
-        return result.Select(t => t).ToList();
     }
 
     private readonly IProductServiceClient _productService;

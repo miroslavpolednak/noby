@@ -26,7 +26,7 @@ internal sealed class IdentifyHandler
                 IssuingCountryId = request.IssuingCountryId,
                 Number = request.IdentificationDocumentNumber ?? ""
             },
-            Mandant = Mandants.Kb
+            Mandant = SharedTypes.GrpcTypes.Mandants.Kb
         };
 
         // ID klienta

@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpLogging;
 using CIS.Infrastructure.WebApi;
 using NOBY.Infrastructure.Configuration;
 using SharedAudit;
+using Microsoft.FeatureManagement;
+using SharedTypes;
 
 var builder = WebApplication.CreateBuilder(args);
 

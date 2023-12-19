@@ -36,4 +36,4 @@ public partial class RefreshSalesArrangementStateRequest : IRequest<Empty>, CIS.
 
 public partial class SetProcessingDateInSbQueuesRequest : IRequest<Empty>, CIS.Core.Validation.IValidatableRequest { }
 
-
+public partial class GetDocumentOnSAStatusRequest : IRequest<GetDocumentOnSAStatusResponse>, CIS.Core.Validation.IValidatableRequest { }

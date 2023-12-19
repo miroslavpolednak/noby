@@ -26,9 +26,9 @@ internal sealed class GetProductObligationListHandler : IRequestHandler<GetProdu
                            CreditorName = p.CreditorName,
                            PaymentAccount = new BankAccount
                            {
-                               Number = p.PaymentAccount?.Number,
-                               Prefix = p.PaymentAccount?.Prefix,
-                               BankCode = p.PaymentAccount?.BankCode
+                               AccountNumber = p.PaymentAccount?.Number,
+                               AccountPrefix = p.PaymentAccount?.Prefix,
+                               AccountBankCode = p.PaymentAccount?.BankCode
                            },
                            PaymentSymbols = new PaymentSymbols
                            {

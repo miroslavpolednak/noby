@@ -27,7 +27,7 @@ public sealed class CreateRiskBusinessCaseService
 
         // case
         var caseInstance = await _caseService.GetCaseDetail(caseId, cancellationToken);
-        
+
         // offer
         var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
 
@@ -47,8 +47,13 @@ public sealed class CreateRiskBusinessCaseService
         var createRBCResponse = await _riskBusinessCaseService.CreateCase(salesArrangementId, offerInstance.ResourceProcessId, cancellationToken);
 
         // ulozit na SA
-        await _salesArrangementService.UpdateSalesArrangement(salesArrangementId, saInstance.ContractNumber, createRBCResponse.RiskBusinessCaseId, cancellationToken);
-        
+        await _salesArrangementService.UpdateSalesArrangement(new()
+        {
+            SalesArrangementId = salesArrangementId,
+            ContractNumber = saInstance.ContractNumber ?? "",
+            RiskBusinessCaseId = createRBCResponse.RiskBusinessCaseId ?? ""
+        }, cancellationToken);
+
         return createRBCResponse.RiskBusinessCaseId;
 
         async Task<string> getRiskSegment()

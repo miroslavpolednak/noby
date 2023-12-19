@@ -245,6 +245,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{4FDD79BE-4EC7-4394-8088-4F9527AF510D}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\OfferService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\OfferService\DatabaseMigrations\00001-initial_creation.sql
+		DomainServices\OfferService\DatabaseMigrations\00002-HFICH-5706_CreditWorthiness.sql = DomainServices\OfferService\DatabaseMigrations\00002-HFICH-5706_CreditWorthiness.sql
+		DomainServices\OfferService\DatabaseMigrations\00003-DDS.sql = DomainServices\OfferService\DatabaseMigrations\00003-DDS.sql
+		DomainServices\OfferService\DatabaseMigrations\00005-DDS2.sql = DomainServices\OfferService\DatabaseMigrations\00005-DDS2.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
@@ -263,6 +266,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00012-HFICH-8304.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00012-HFICH-8304.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00013_HFICH-8480_IgnoreBusinessCaseId.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00013_HFICH-8480_IgnoreBusinessCaseId.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00014_HFICH-9109_BusinessCaseId_LoanApplicationAssessmentId_IncreasedVarcharTo200.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00014_HFICH-9109_BusinessCaseId_LoanApplicationAssessmentId_IncreasedVarcharTo200.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00015-indexes.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00015-indexes.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00016-HFICH-9835_FirstSignatureDate.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00016-HFICH-9835_FirstSignatureDate.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
@@ -424,6 +429,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\NotificationService\DatabaseMigrations\00001-initial_creation.sql = InternalServices\NotificationService\DatabaseMigrations\00001-initial_creation.sql
 		InternalServices\NotificationService\DatabaseMigrations\00002-HFICH-5458-drop_text.sql = InternalServices\NotificationService\DatabaseMigrations\00002-HFICH-5458-drop_text.sql
 		InternalServices\NotificationService\DatabaseMigrations\00003-HFICH-8192-CaseId-DocumentHash.sql = InternalServices\NotificationService\DatabaseMigrations\00003-HFICH-8192-CaseId-DocumentHash.sql
+		InternalServices\NotificationService\DatabaseMigrations\00004-HFICH-9609.sql = InternalServices\NotificationService\DatabaseMigrations\00004-HFICH-9609.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D5315192-5730-455C-B586-D964F840F401}"
@@ -453,7 +459,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00062_HFICH-9433_Drawing_LastSignedDocument.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00062_HFICH-9433_Drawing_LastSignedDocument.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00063_HFICH-8191_EmploymentIncome_ConfirmationContact.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00063_HFICH-8191_EmploymentIncome_ConfirmationContact.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00064_HFICH-7080_EasForm_RemovedGrossAnnualIncome.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00064_HFICH-7080_EasForm_RemovedGrossAnnualIncome.sql
-		InternalServices\DataAggregatorService\DatabaseMigrations\00065_HFICH-9809_CreditorName.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00065_HFICH-9809_CreditorName.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00066_HFICH-9837_FIrstSignatureDate_MovedToRootSA.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00066_HFICH-9837_FIrstSignatureDate_MovedToRootSA.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00067_HFICH-9504_RemovedAgentConsent.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00067_HFICH-9504_RemovedAgentConsent.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00068_HFICH-9948_GeneralChange_SwitchedTwoFields.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00068_HFICH-9948_GeneralChange_SwitchedTwoFields.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00069_HFICH-9903_Offer_EmptyText.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00069_HFICH-9903_Offer_EmptyText.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -507,6 +516,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{A57610AF-B011-4FAB-974B-B3FB39A6703E}"
 	ProjectSection(SolutionItems) = preProject
 		DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00001-Initial.sql
+		DomainServices\RealEstateValuationService\DatabaseMigrations\00002-HFICH-7569.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00002-HFICH-7569.sql
+		DomainServices\RealEstateValuationService\DatabaseMigrations\00003-HFICH-9250.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00003-HFICH-9250.sql
+		DomainServices\RealEstateValuationService\DatabaseMigrations\00004-detail_to_dds.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00004-detail_to_dds.sql
+		DomainServices\RealEstateValuationService\DatabaseMigrations\00005-order_to_dds.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00005-order_to_dds.sql
+		DomainServices\RealEstateValuationService\DatabaseMigrations\00006-HFICH-9587.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00006-HFICH-9587.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.Api", "DomainServices\RealEstateValuationService\Api\DomainServices.RealEstateValuationService.Api.csproj", "{8291DE0E-0447-471D-A402-B44B3FF30ED5}"
@@ -547,6 +561,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_AuditMigrator", "Playgrounds\NotificationService\Console_AuditMigrator\Console_AuditMigrator.csproj", "{45018043-D485-49AB-BC5B-CA5FB40BEDC5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSAService.ExternalServices.SbQueues", "DomainServices\DocumentOnSAService\ExternalServices.SbQueues\DomainServices.DocumentOnSAService.ExternalServices.SbQueues.csproj", "{28886FD7-48D1-45FE-B45C-B4EACE52D954}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrationsSupport", "Shared\DatabaseMigrationsSupport\DatabaseMigrationsSupport.csproj", "{4CB599F5-6387-4664-B788-D7AB553D91D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1468,6 +1484,14 @@ Global
 		{28886FD7-48D1-45FE-B45C-B4EACE52D954}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28886FD7-48D1-45FE-B45C-B4EACE52D954}.Release|x64.ActiveCfg = Release|Any CPU
 		{28886FD7-48D1-45FE-B45C-B4EACE52D954}.Release|x64.Build.0 = Release|Any CPU
+		{4CB599F5-6387-4664-B788-D7AB553D91D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CB599F5-6387-4664-B788-D7AB553D91D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CB599F5-6387-4664-B788-D7AB553D91D9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4CB599F5-6387-4664-B788-D7AB553D91D9}.Debug|x64.Build.0 = Debug|Any CPU
+		{4CB599F5-6387-4664-B788-D7AB553D91D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CB599F5-6387-4664-B788-D7AB553D91D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CB599F5-6387-4664-B788-D7AB553D91D9}.Release|x64.ActiveCfg = Release|Any CPU
+		{4CB599F5-6387-4664-B788-D7AB553D91D9}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1586,7 +1610,7 @@ Global
 		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
 		{D82D72DD-125A-4023-8A6F-D950BE363BD2} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 		{525199C6-C932-4365-BC9C-3E92A07C8BD2} = {D82D72DD-125A-4023-8A6F-D950BE363BD2}
-		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E} = {D07D1FE1-DFC2-404C-9D4B-9A8732945D84}
 		{2FB17E85-DD83-4D49-835B-331A7056BB40} = {376AF902-B4C3-4C31-9CA1-63F154C18A4C}
 		{CF32FE07-6D1B-47E9-B96B-91DBD0BCD9A0} = {2FB17E85-DD83-4D49-835B-331A7056BB40}
 		{81F64DB6-77D4-4EFF-920C-CAC9FCE5EEC8} = {4184CEDA-0D2B-4BEC-8EE1-7D50B6A3E22E}
@@ -1624,6 +1648,7 @@ Global
 		{94611281-5652-4129-A480-A6D5185C344C} = {D18ADD8E-CF48-40D2-8CC9-F8506417BF31}
 		{45018043-D485-49AB-BC5B-CA5FB40BEDC5} = {6AF68A4E-BDE9-4A1A-BA14-4AF3BB038CC2}
 		{28886FD7-48D1-45FE-B45C-B4EACE52D954} = {234188C5-FF3F-4C38-831C-FB404B56A5C1}
+		{4CB599F5-6387-4664-B788-D7AB553D91D9} = {D18ADD8E-CF48-40D2-8CC9-F8506417BF31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

@@ -30,7 +30,7 @@ public interface ISalesArrangementServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement unavailable</exception>
     Task<SalesArrangement> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default);
 
-    Task<(int SalesArrangementId, int? OfferId)> GetProductSalesArrangement(long caseId, CancellationToken cancellationToken = default);
+    Task<List<GetProductSalesArrangementsResponse.Types.SalesArrangement>> GetProductSalesArrangements(long caseId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci detail nalinkovaneho Sales Arrangement na zaklade OfferId
@@ -64,7 +64,7 @@ public interface ISalesArrangementServiceClient
     /// <summary>
     /// Update obsahu SA
     /// </summary>
-    Task UpdateSalesArrangement(int salesArrangementId, string? contractNumber, string? riskBusinessCaseId, CancellationToken cancellationToken = default);
+    Task UpdateSalesArrangement(UpdateSalesArrangementRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update parametru SA
@@ -103,6 +103,8 @@ public interface ISalesArrangementServiceClient
     Task SetFlowSwitches(int salesArrangementId, List<EditableFlowSwitch> flowSwitches, CancellationToken cancellationToken = default);
 
     Task SetFlowSwitch(int salesArrangementId, FlowSwitches flowSwitch, bool value, CancellationToken cancellationToken = default);
+
+    Task UpdatePcpId(int salesArrangementId, string pcpId, CancellationToken cancellationToken = default);
 
     Task<SetContractNumberResponse> SetContractNumber(int salesArrangementId, int customerOnSaId, CancellationToken cancellationToken = default);
 

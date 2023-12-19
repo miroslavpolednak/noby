@@ -21,7 +21,8 @@ internal sealed class CreateSalesArrangementHandler
             SalesArrangementTypeId = request.SalesArrangementTypeId,
             StateUpdateTime = _dbContext.CisDateTime.Now,
             ContractNumber = request.ContractNumber,
-            ChannelId = user.UserInfo.ChannelId
+            ChannelId = user.UserInfo.ChannelId,
+            PcpId = request.PcpId
         };
 
         // get default SA state

@@ -4,17 +4,17 @@
         <name>NOBY.Dto</name>
     </assembly>
     <members>
-        <member name="P:NOBY.Dto.BankAccount.Prefix">
+        <member name="P:NOBY.Dto.BankAccount.AccountPrefix">
             <summary>
             Předčíslí účtu
             </summary>
         </member>
-        <member name="P:NOBY.Dto.BankAccount.Number">
+        <member name="P:NOBY.Dto.BankAccount.AccountNumber">
             <summary>
             Číslo účtu
             </summary>
         </member>
-        <member name="P:NOBY.Dto.BankAccount.BankCode">
+        <member name="P:NOBY.Dto.BankAccount.AccountBankCode">
             <summary>
             Kód banky
             </summary>
@@ -414,6 +414,11 @@
             True pokud je aplikované hromadné ocenění z developerského projektu
             </summary>
             <example>false</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.PossibleValuationTypeId">
+            <summary>
+            Možné typy ocenění (výsledek ACV trychtýře), 1 - online, 2 - dts, 3 - standard
+            </summary>
         </member>
         <member name="T:NOBY.Dto.RealEstateValuation.SpecificDetails.HouseAndFlatDetails">
             <summary>

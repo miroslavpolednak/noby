@@ -33,5 +33,13 @@ internal sealed class UpdateCustomerDetailWithChangesRequestValidator : Abstract
              {
                  RuleFor(r => r.IdentificationDocument!).SetValidator(new IdentificationDocumentValidator());
              });
+
+        When(r => r.Addresses is not null && r.Addresses.Any(),
+             () =>
+             {
+                 RuleForEach(r => r.Addresses!)
+                     .Where(address => !string.IsNullOrWhiteSpace(address.PragueDistrict))
+                     .Must(address => address.PragueDistrict!.StartsWith("Praha", StringComparison.OrdinalIgnoreCase));
+             });
     }
 }

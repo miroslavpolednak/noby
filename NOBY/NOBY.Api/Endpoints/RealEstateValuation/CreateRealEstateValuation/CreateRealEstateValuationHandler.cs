@@ -35,7 +35,7 @@ internal sealed class CreateRealEstateValuationHandler
 
         if (caseInstance.State == (int)CaseStates.InProgress)
         {
-            var saInstance = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
+            var saInstance = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First();
 
             // kontrola HFICH-4168
             var flowSwitches = await _salesArrangementService.GetFlowSwitches(saInstance.SalesArrangementId, cancellationToken);

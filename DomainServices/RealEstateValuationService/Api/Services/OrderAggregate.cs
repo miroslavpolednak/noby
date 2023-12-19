@@ -40,11 +40,9 @@ internal sealed class OrderAggregate
 
         // realestateids
         var realEstateIds = deedOfOwnerships
-            .Where(t => !string.IsNullOrEmpty(t.RealEstateIds))
-            .SelectMany(t =>
-            {
-                return System.Text.Json.JsonSerializer.Deserialize<long[]>(t.RealEstateIds!)!;
-            })
+            .Where(t => t.RealEstateIds != null)
+            .SelectMany(t => t.RealEstateIds!)
+            .Distinct()
             .ToArray();
 
         // case detail
@@ -87,7 +85,7 @@ internal sealed class OrderAggregate
     {
         if (caseState == (int)CaseStates.InProgress)
         {
-            var (_, offerId) = await _salesArrangementService.GetProductSalesArrangement(caseId, cancellationToken);
+            var offerId = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First().OfferId;
             var offer = await _offerService.GetMortgageOfferDetail(offerId!.Value, cancellationToken);
 
             var collateralAmount = offer.SimulationInputs.CollateralAmount;

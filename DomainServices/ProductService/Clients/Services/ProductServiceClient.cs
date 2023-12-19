@@ -1,29 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using DomainServices.ProductService.Contracts;
+﻿using DomainServices.ProductService.Contracts;
 
 namespace DomainServices.ProductService.Clients.Services;
 
 internal sealed class ProductServiceClient : IProductServiceClient
 {
-
-    #region Construction
-
-    private readonly ILogger<ProductServiceClient> _logger;
-    private readonly Contracts.v1.ProductService.ProductServiceClient _service;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-
-    public ProductServiceClient(
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        ILogger<ProductServiceClient> logger,
-        Contracts.v1.ProductService.ProductServiceClient service)
-    {
-        _userAccessor = userAccessor;
-        _service = service;
-        _logger = logger;
-    }
-
-    #endregion
-
     public async Task<GetProductListResponse> GetProductList(long caseId, CancellationToken cancellationToken = default)
     {
         return await _service.GetProductListAsync(new GetProductListRequest { CaseId = caseId }, cancellationToken: cancellationToken);
@@ -39,15 +19,17 @@ internal sealed class ProductServiceClient : IProductServiceClient
         return await _service.GetMortgageAsync(new GetMortgageRequest { ProductId = productId }, cancellationToken: cancellationToken);
     }
 
-    public async Task<long> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default)
+    public async Task<CreateMortgageResponse> CreateMortgage(CreateMortgageRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await _service.CreateMortgageAsync(request, cancellationToken: cancellationToken);
-        return result.ProductId;
+        return await _service.CreateMortgageAsync(request, cancellationToken: cancellationToken);
     }
     
-    public async Task UpdateMortgage(UpdateMortgageRequest request, CancellationToken cancellationToken = default)
+    public async Task UpdateMortgage(long productId, CancellationToken cancellationToken = default)
     {
-        await _service.UpdateMortgageAsync(request, cancellationToken: cancellationToken);
+        await _service.UpdateMortgageAsync(new UpdateMortgageRequest
+        {
+            ProductId = productId
+        }, cancellationToken: cancellationToken);
     }
 
     public async Task CreateContractRelationship(long partnerId, long productId, int contractRelationshipTypeId, CancellationToken cancellationToken = default)
@@ -95,5 +77,12 @@ internal sealed class ProductServiceClient : IProductServiceClient
     public async Task CancelMortgage(long caseId, CancellationToken cancellationToken = default)
     {
         await _service.CancelMortgageAsync(new CancelMortgageRequest { ProductId = caseId }, cancellationToken: cancellationToken);
+    }
+
+    private readonly Contracts.v1.ProductService.ProductServiceClient _service;
+
+    public ProductServiceClient(Contracts.v1.ProductService.ProductServiceClient service)
+    {
+        _service = service;
     }
 }

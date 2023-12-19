@@ -12,7 +12,7 @@ internal sealed class SalesArrangementService : Contracts.v1.SalesArrangementSer
     public SalesArrangementService(IMediator mediator)
         => _mediator = mediator;
 
-    public override async Task<GetProductSalesArrangementResponse> GetProductSalesArrangement(GetProductSalesArrangementRequest request, ServerCallContext context)
+    public override async Task<GetProductSalesArrangementsResponse> GetProductSalesArrangements(GetProductSalesArrangementsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<CreateSalesArrangementResponse> CreateSalesArrangement(CreateSalesArrangementRequest request, ServerCallContext context)
@@ -64,5 +64,8 @@ internal sealed class SalesArrangementService : Contracts.v1.SalesArrangementSer
         await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(ValidateSalesArrangementIdRequest request, ServerCallContext context) =>
+        await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdatePcpId(UpdatePcpIdRequest request, ServerCallContext context) =>
         await _mediator.Send(request, context.CancellationToken);
 }

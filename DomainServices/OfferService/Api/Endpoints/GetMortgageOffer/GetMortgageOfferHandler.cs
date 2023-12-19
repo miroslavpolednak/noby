@@ -1,5 +1,6 @@
 ﻿using DomainServices.OfferService.Contracts;
 using Microsoft.EntityFrameworkCore;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetMortgageOffer;
 
@@ -17,29 +18,39 @@ internal sealed class GetMortgageOfferHandler
                t.ResourceProcessId,
                t.CreatedUserId,
                t.CreatedUserName,
-               t.CreatedTime,
-               t.BasicParametersBin,
-               t.SimulationInputsBin,
-               t.SimulationResultsBin
+               t.CreatedTime
            })
            .FirstOrDefaultAsync(cancellationToken) 
            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, request.OfferId);
+
+        // json data
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.OfferData>(request.OfferId, cancellationToken);
+        var mappedOfferData = _offerMapper.MapFromDataToSingle(offerData!.Data!.BasicParameters, offerData.Data.SimulationInputs, offerData.Data.SimulationOutputs);
 
         var model = new GetMortgageOfferResponse
         {
             OfferId = request.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
             Created = new SharedTypes.GrpcTypes.ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime),
-            BasicParameters = BasicParameters.Parser.ParseFrom(entity.BasicParametersBin),
-            SimulationInputs = MortgageSimulationInputs.Parser.ParseFrom(entity.SimulationInputsBin),
-            SimulationResults = MortgageSimulationResults.Parser.ParseFrom(entity.SimulationResultsBin)
+            BasicParameters = mappedOfferData.BasicParameters,
+            SimulationInputs = mappedOfferData.SimulationInputs,
+            SimulationResults = mappedOfferData.SimulationResults
         };
 
         return model;
     }
 
+    private readonly IDocumentDataStorage _documentDataStorage;
+    private readonly Database.DocumentDataEntities.Mappers.OfferDataMapper _offerMapper;
     private readonly Database.OfferServiceDbContext _dbContext;
 
-    public GetMortgageOfferHandler(Database.OfferServiceDbContext dbContext)
-        => _dbContext = dbContext;
+    public GetMortgageOfferHandler(
+        Database.OfferServiceDbContext dbContext,
+        IDocumentDataStorage documentDataStorage,
+        Database.DocumentDataEntities.Mappers.OfferDataMapper offerMapper)
+    {
+        _documentDataStorage = documentDataStorage;
+        _dbContext = dbContext;
+        _offerMapper = offerMapper;
+    }
 }

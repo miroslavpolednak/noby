@@ -24,7 +24,6 @@ internal static class UpdateParametersExtensions
             IncomeCurrencyCode = parameters.IncomeCurrencyCode,
             ResidencyCurrencyCode = parameters.ResidencyCurrencyCode,
             Agent = parameters.Agent,
-            AgentConsentWithElCom = parameters.AgentConsentWithElCom,
             Comment = originalParameter.Comment,
             FirstSignatureDate = originalParameter.FirstSignatureDate
         };
@@ -48,10 +47,10 @@ internal static class UpdateParametersExtensions
             IsImmediateDrawing = parameters.IsImmediateDrawing,
             RepaymentAccount = parameters.RepaymentAccount is null ? null : new()
             {
-                BankCode = parameters.RepaymentAccount.BankCode,
+                BankCode = parameters.RepaymentAccount.AccountBankCode,
                 IsAccountNumberMissing = parameters.RepaymentAccount.IsAccountNumberMissing,
-                Number = parameters.RepaymentAccount.Number,
-                Prefix = parameters.RepaymentAccount.Prefix
+                Number = parameters.RepaymentAccount.AccountNumber,
+                Prefix = parameters.RepaymentAccount.AccountPrefix
             },
             Agent = new()
             {
@@ -80,11 +79,11 @@ internal static class UpdateParametersExtensions
                 SpecificSymbolUcetKeSplaceni = x.SpecificSymbol,
                 AccountNumber = x.AccountNumber,
                 ConstantSymbol = x.ConstantSymbol,
-                BankCode = x.BankCode,
+                BankCode = x.AccountBankCode,
                 DrawingAmount = x.DrawingAmount,
                 VariableSymbol = x.VariableSymbol,
                 PayoutTypeId = x.PayoutTypeId ?? 0,
-                PrefixAccount = x.PrefixAccount
+                PrefixAccount = x.AccountPrefix
             }));
 
         return model;
@@ -119,12 +118,12 @@ internal static class UpdateParametersExtensions
                 AgreedBankCode = originalParameter?.RepaymentAccount?.AgreedBankCode,
                 AgreedNumber = originalParameter?.RepaymentAccount?.AgreedNumber,
                 AgreedPrefix = originalParameter?.RepaymentAccount?.AgreedPrefix,
-                BankCode = parameters.RepaymentAccount.BankCode,
-                Number = parameters.RepaymentAccount.Number,
+                BankCode = parameters.RepaymentAccount.AccountBankCode,
+                Number = parameters.RepaymentAccount.AccountNumber,
                 OwnerDateOfBirth = parameters.RepaymentAccount.OwnerDateOfBirth,
                 OwnerFirstName = parameters.RepaymentAccount.OwnerFirstName,
                 OwnerLastName = parameters.RepaymentAccount.OwnerLastName,
-                Prefix = parameters.RepaymentAccount.Prefix
+                Prefix = parameters.RepaymentAccount.AccountPrefix
             },
             LoanPaymentAmount = new()
             {
@@ -251,9 +250,9 @@ internal static class UpdateParametersExtensions
                 OwnerDateOfBirth = parameters.RepaymentAccount?.OwnerDateOfBirth,
                 OwnerFirstName = parameters.RepaymentAccount?.OwnerFirstName,
                 OwnerLastName = parameters.RepaymentAccount?.OwnerLastName,
-                BankCode = parameters.RepaymentAccount?.BankCode,
-                Number = parameters.RepaymentAccount?.Number,
-                Prefix = parameters.RepaymentAccount?.Prefix
+                BankCode = parameters.RepaymentAccount?.AccountBankCode,
+                Number = parameters.RepaymentAccount?.AccountNumber,
+                Prefix = parameters.RepaymentAccount?.AccountPrefix
             },
             CommentToChangeRequest = new()
             {

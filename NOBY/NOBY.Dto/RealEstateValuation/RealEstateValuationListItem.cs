@@ -1,4 +1,5 @@
 ﻿using DomainServices.RealEstateValuationService.Contracts;
+using SharedTypes.Enums;
 
 namespace NOBY.Dto.RealEstateValuation;
 
@@ -124,6 +125,11 @@ public sealed class RealEstateValuationListItem
     /// <example>false</example>
     [Required]
     public bool DeveloperApplied { get; set; }
+
+    /// <summary>
+    /// Možné typy ocenění (výsledek ACV trychtýře), 1 - online, 2 - dts, 3 - standard
+    /// </summary>
+    public List<RealEstateValuationValuationTypes>? PossibleValuationTypeId { get; set; }
 }
 
 //ITA chce enumy - me to neprijde dobre, fakticky se i na DS pouzivaji jen id, ale...

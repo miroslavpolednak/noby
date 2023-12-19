@@ -38,7 +38,7 @@ message MortgageData {
 	google.protobuf.Int64Value BranchConsultantId = 28;
 	google.protobuf.Int64Value CaseOwnerUserCurrentId = 29;
 	google.protobuf.Int64Value CaseOwnerUserOrigId = 30;
-	cis.types.NullableGrpcDate FirstAnnuityInstallmentDate = 31;
+	cis.types.NullableGrpcDate FirstAnnuityPaymentDate = 31;
 	PaymentAccount RepaymentAccount = 32;
 	repeated LoanRealEstate LoanRealEstates = 33;
 	StatementObject Statement = 34;

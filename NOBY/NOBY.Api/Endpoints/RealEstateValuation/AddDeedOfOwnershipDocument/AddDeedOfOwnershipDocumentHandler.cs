@@ -7,6 +7,12 @@ internal sealed class AddDeedOfOwnershipDocumentHandler
 {
     public async Task<int> Handle(AddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
     {
+        var revInstance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, false, cancellationToken);
+        if (revInstance.PossibleValuationTypeId?.Any() ?? false)
+        {
+            throw new NobyValidationException(90032, "PossibleValuationTypeId is not empty");
+        }
+
         if (request.DeedOfOwnershipDocument is null)
         {
             throw new ArgumentNullException(nameof(request), "DeedOfOwnershipDocument is empty");

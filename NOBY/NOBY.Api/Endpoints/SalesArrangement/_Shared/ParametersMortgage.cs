@@ -19,10 +19,5 @@ public class ParametersMortgage
 	/// Zmocnenec - CustomerOnSAId
 	/// </summary>
 	public int? Agent { get; set; }
-
-    /// <summary>
-    /// Souhlas zmocněnce s elektronickou komunikací
-    /// </summary>
-    public bool? AgentConsentWithElCom { get; set; }
 }
 

@@ -66,7 +66,8 @@ internal class DocumentConfigurationRepository
                 new CommandDefinition(DynamicStringFormatsQuery, parameters: documentKey.CreateSqlParams(), cancellationToken: cancellationToken),
                 (format, condition) =>
                 {
-                    format.Conditions.Add(condition);
+                    if (!string.IsNullOrWhiteSpace(condition.FieldPath))
+                        format.Conditions.Add(condition);
 
                     return format;
                 },

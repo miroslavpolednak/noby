@@ -39,17 +39,14 @@ public static class AppConfigurationExtensions
                     Mcs = new HashSet<string> { "kb.cz" },
                     Mpss = new HashSet<string> { "mpss.cz" }
                 },
-                EmailDomainWhitelist = new HashSet<string>(),
                 KafkaTopics = new KafkaTopics()
                 {
                     McsResult = "mcs-result",
-                    McsSender = "mcs-sender",
-                    NobySendEmail = "noby-email"
+                    McsSender = "mcs-sender"
                 },
                 S3Buckets = new S3Buckets
                 {
-                    Mcs = "mcs-bucket",
-                    Mpss = "mpss-bucket"
+                    Mcs = "mcs-bucket"
                 },
                 EmailLanguageCodes = new HashSet<string> { "cs" }
             });

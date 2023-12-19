@@ -4,6 +4,7 @@ using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using __Offer = DomainServices.OfferService.Contracts;
 using __SA = DomainServices.SalesArrangementService.Contracts;
+using DomainServices.OfferService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.LinkModelationToSalesArrangement;
 
@@ -20,7 +21,9 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         // kontrola zda SA uz neni nalinkovan na stejnou Offer na kterou je request
         if (salesArrangementInstance.OfferId == request.OfferId)
+        {
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AlreadyLinkedToOffer, request.SalesArrangementId);
+        }
 
         // instance Case
         var caseInstance = await _caseService.GetCaseDetail(salesArrangementInstance.CaseId, cancellation);
@@ -71,6 +74,9 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // nastavit flowSwitches
         await setFlowSwitches(salesArrangementInstance.CaseId, request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
 
+        // Aktualizace dat modelace v KonsDB
+        await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
+
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
@@ -102,8 +108,10 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         // HFICH-9611
         if (offerInstanceOld is not null
-            && (offerInstanceOld.SimulationInputs.LoanKindId == 2001 && offerInstance.SimulationInputs.LoanKindId == 2000)
-            && (offerInstanceOld.SimulationInputs.LoanPurposes.All(t => t.LoanPurposeId == 201) && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId != 201)))
+            && (
+                (offerInstanceOld.SimulationInputs.LoanKindId == 2001 && offerInstance.SimulationInputs.LoanKindId == 2000)
+                || (offerInstanceOld.SimulationInputs.LoanPurposes.All(t => t.LoanPurposeId == 201) && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId != 201)))
+            )
         {
             flowSwitchesToSet.Add(new()
             {
@@ -214,6 +222,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         }
     }
 
+    private readonly ProductService.Clients.IProductServiceClient _productService;
     private readonly CaseService.Clients.ICaseServiceClient _caseService;
     private readonly OfferService.Clients.IOfferServiceClient _offerService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
@@ -221,12 +230,14 @@ internal sealed class LinkModelationToSalesArrangementHandler
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
     public LinkModelationToSalesArrangementHandler(
+        ProductService.Clients.IProductServiceClient productService,
         IRealEstateValuationServiceClient realEstateValuationService,
         IMediator mediator,
         CaseService.Clients.ICaseServiceClient caseService,
         Database.SalesArrangementServiceDbContext dbContext,
         OfferService.Clients.IOfferServiceClient offerService)
     {
+        _productService = productService;
         _realEstateValuationService = realEstateValuationService;
         _mediator = mediator;
         _caseService = caseService;

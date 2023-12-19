@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using NOBY.Api.Endpoints.Test.Rollback;
 using NOBY.Services.FileAntivirus;
+using Microsoft.FeatureManagement;
+using SharedTypes;
 
 namespace NOBY.Api.Endpoints.Test;
 
@@ -11,7 +13,7 @@ namespace NOBY.Api.Endpoints.Test;
 public class TestController : ControllerBase
 {
     [HttpPost("rollback")]
-    public async Task<RollbackResponse> SendToCmp([FromQuery] int? id)
+    public async Task<RollbackResponse> Rollback([FromQuery] int? id)
         => await _mediator.Send(new RollbackRequest(id));
 
     /// <summary>
@@ -20,9 +22,10 @@ public class TestController : ControllerBase
     /// <remarks>Toto jsou remarks</remarks>
     [HttpGet("t1")]
     [Infrastructure.Swagger.SwaggerEaDiagram("https://eadiagram.com/neco")]
-    public async Task T1()
+    public async Task<string> T1()
     {
-        throw new CisValidationException(111, "moje chybova hlaska");
+        var manager = _context.HttpContext.RequestServices.GetRequiredService<IFeatureManager>();
+        return await manager.IsEnabledAsync(FeatureFlagsConstants.BlueBang) ? "true" : "false";
     }
 
     [HttpGet("t2")]

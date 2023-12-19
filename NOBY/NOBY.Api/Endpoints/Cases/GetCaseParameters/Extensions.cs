@@ -64,9 +64,9 @@ internal static class Extensions
 
         return new BankAccount
         {
-            Prefix = paymentAccount.Prefix,
-            Number = paymentAccount.Number,
-            BankCode = paymentAccount.BankCode,
+            AccountPrefix = paymentAccount.Prefix,
+            AccountNumber = paymentAccount.Number,
+            AccountBankCode = paymentAccount.BankCode,
         };
     }
 

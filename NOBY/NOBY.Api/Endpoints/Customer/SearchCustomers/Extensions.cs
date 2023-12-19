@@ -19,7 +19,7 @@ internal static class Extensions
                 BirthNumber = request.BirthNumber ?? "",
                 DateOfBirth = request.DateOfBirth
             },
-            Mandant = Mandants.Kb
+            Mandant = SharedTypes.GrpcTypes.Mandants.Kb
         };
 
         if (!string.IsNullOrEmpty(request.Contacts?.MobilePhone?.PhoneNumber))

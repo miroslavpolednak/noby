@@ -10,10 +10,9 @@ internal sealed class OrderRealEstateValuationHandler
     {
         var revInstance = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
-        var allowedTypes = await _estateValuationTypeService.GetAllowedTypes(request.RealEstateValuationId, request.CaseId, cancellationToken);
-        if (!(allowedTypes?.Contains(request.ValuationTypeId) ?? false))
+        if (!(revInstance.PossibleValuationTypeId?.Contains((int)request.ValuationTypeId) ?? false))
         {
-            throw new NobyValidationException(90032, "Allowed types is null");
+            throw new NobyValidationException(90032, "PossibleValuationTypeId does not contain ValuationTypeId");
         }
 
         switch (request.ValuationTypeId)
@@ -81,13 +80,9 @@ internal sealed class OrderRealEstateValuationHandler
         };
 
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-    private readonly Services.RealEstateValuationType.IRealEstateValuationTypeService _estateValuationTypeService;
 
-    public OrderRealEstateValuationHandler(
-        Services.RealEstateValuationType.IRealEstateValuationTypeService estateValuationTypeService,
-        IRealEstateValuationServiceClient realEstateValuationService)
+    public OrderRealEstateValuationHandler(IRealEstateValuationServiceClient realEstateValuationService)
     {
-        _estateValuationTypeService = estateValuationTypeService;
         _realEstateValuationService = realEstateValuationService;
     }
 }

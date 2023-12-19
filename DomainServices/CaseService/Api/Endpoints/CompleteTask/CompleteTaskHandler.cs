@@ -32,9 +32,9 @@ internal sealed class CompleteTaskHandler
         if (request.TaskTypeId == 6)
         {
             // ToDo uncomment after update sb queues fix and linked server account hh has to have write permission  
-            // await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskIdSb, request.CaseId, cancellationToken);
+            // await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskId, request.CaseId, cancellationToken);
         }
-        
+
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 

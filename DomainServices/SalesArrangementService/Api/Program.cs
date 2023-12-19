@@ -19,7 +19,8 @@ SharedComponents.GrpcServiceBuilder
             .AddRealEstateValuationService()
             .AddDocumentGeneratorService()
             .AddDataAggregatorService()
-            .AddRealEstateValuationService();
+            .AddRealEstateValuationService()
+            .AddProductService();
     })
     .Build(builder =>
     {
@@ -33,6 +34,7 @@ SharedComponents.GrpcServiceBuilder
         // background svc
         builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckJob>();
         builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelCase.CancelCaseJob>();
+        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelServiceSalesArrangement.CancelServiceSalesArrangementJob>();
     })
     .MapGrpcServices(app =>
     {

@@ -26,9 +26,9 @@ internal sealed class GetDeedOfOwnershipDocumentHandler
             DeedOfOwnershipNumber = entity.DeedOfOwnershipNumber
         };
 
-        if (!string.IsNullOrEmpty(entity.RealEstateIds))
+        if (entity.RealEstateIds is not null)
         {
-            response.RealEstateIds.AddRange(System.Text.Json.JsonSerializer.Deserialize<long[]>(entity.RealEstateIds));
+            response.RealEstateIds.AddRange(entity.RealEstateIds);
         }
     
         return response;

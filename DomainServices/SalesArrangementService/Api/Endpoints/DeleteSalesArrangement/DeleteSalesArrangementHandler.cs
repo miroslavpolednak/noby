@@ -41,13 +41,13 @@ internal sealed class DeleteSalesArrangementHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private static int[] _allowedStates = new[] 
-    { 
-        (int)SalesArrangementStates.NewArrangement, 
+    private static readonly int[] _allowedStates =
+    [
+        (int)SalesArrangementStates.NewArrangement,
         (int)SalesArrangementStates.InProgress,
         (int)SalesArrangementStates.ToSend,
         (int)SalesArrangementStates.InSigning
-    };
+    ];
 
     private readonly HouseholdService.Clients.IHouseholdServiceClient _householdService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;

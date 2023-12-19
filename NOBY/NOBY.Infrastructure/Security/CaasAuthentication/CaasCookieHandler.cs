@@ -44,12 +44,12 @@ internal sealed class CaasCookieHandler
             {
                 if (isAjaxRequest(context.Request))
                 {
-                    context.Response.Headers.Location = $"{_configuration.FailedSignInRedirectPath}?reason=authentication_accessdenied";
+                    context.Response.Headers.Location = $"{_configuration.FailedSignInRedirectPath}?reason=authentication_access_denied";
                     context.Response.StatusCode = 403;
                 }
                 else
                 {
-                    context.Response.Redirect($"{_configuration.FailedSignInRedirectPath}?reason=authentication_accessdenied");
+                    context.Response.Redirect($"{_configuration.FailedSignInRedirectPath}?reason=authentication_access_denied");
                 }
                 return Task.CompletedTask;
             },

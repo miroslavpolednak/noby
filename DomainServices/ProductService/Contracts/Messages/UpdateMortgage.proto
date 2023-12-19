@@ -6,5 +6,4 @@ import "Messages/MortgageData.proto";
 
 message UpdateMortgageRequest {
     int64 ProductId = 1;
-    MortgageData Mortgage = 2;		 
 }
