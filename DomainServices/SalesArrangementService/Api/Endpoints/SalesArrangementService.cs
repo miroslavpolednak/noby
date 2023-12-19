@@ -65,4 +65,7 @@ internal sealed class SalesArrangementService : Contracts.v1.SalesArrangementSer
 
     public override async Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(ValidateSalesArrangementIdRequest request, ServerCallContext context) =>
         await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdatePcpId(UpdatePcpIdRequest request, ServerCallContext context) =>
+        await _mediator.Send(request, context.CancellationToken);
 }

@@ -394,14 +394,6 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         await _salesArrangementService.SetFlowSwitch(houseHold.SalesArrangementId, flowSwitchId, false, cancellationToken);
     }
 
-    private async Task UpdateFirstSignatureDateKonsDb(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
-    {
-        var mortgageResponse = await _productService.GetMortgage(salesArrangement.CaseId, cancellationToken);
-        mortgageResponse.Mortgage.FirstSignatureDate = signatureDate;
-
-        await _productService.UpdateMortgage(new UpdateMortgageRequest { ProductId = salesArrangement.CaseId, Mortgage = mortgageResponse.Mortgage }, cancellationToken);
-    }
-
     private async Task UpdateFirstSignatureDateSaParams(DateTime signatureDate, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         salesArrangement.Mortgage.FirstSignatureDate = signatureDate;
@@ -452,14 +444,14 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                 throw new CisValidationException(ErrorCodeMapper.EasAddFirstSignatureDateReturnedErrorState, $"Eas AddFirstSignatureDate returned error state: {result.CommonValue} with message: {result.CommonText}");
             }
 
-            //KonsDb 
-            await UpdateFirstSignatureDateKonsDb(signatureDate, salesArrangement, cancellationToken);
-
             //SalesArrangement FirstSignatureDate
             await UpdateSalesArrangementFirstSignatureDate(salesArrangement, signatureDate, cancellationToken);
 
             //SalesArrangement parameters FirstSignatureDate
             await UpdateFirstSignatureDateSaParams(signatureDate, salesArrangement, cancellationToken);
+
+            //KonsDb 
+            await _productService.UpdateMortgage(salesArrangement.CaseId, cancellationToken);
         }
     }
 

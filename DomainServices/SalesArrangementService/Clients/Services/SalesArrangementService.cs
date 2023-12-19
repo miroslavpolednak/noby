@@ -67,6 +67,15 @@ internal sealed class SalesArrangementService
             }, cancellationToken: cancellationToken);
         return result.IsExisting ? result.Instance : null;
     }
+    
+    public async Task UpdatePcpId(int salesArrangementId, string pcpId, CancellationToken cancellationToken = default)
+    {
+        await _service.UpdatePcpIdAsync(new UpdatePcpIdRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            PcpId = pcpId
+        }, cancellationToken: cancellationToken);
+    }
 
     public async Task LinkModelationToSalesArrangement(int salesArrangementId, int offerId, CancellationToken cancellationToken = default)
     {

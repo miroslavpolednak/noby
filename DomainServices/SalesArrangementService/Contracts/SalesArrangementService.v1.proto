@@ -21,6 +21,7 @@ import "Messages/SendToCmp.proto";
 import "Messages/GetFlowSwitches.proto";
 import "Messages/SetFlowSwitches.proto";
 import "Messages/SetContractNumber.proto";
+import "Messages/UpdatePcpId.proto";
 import "Messages/ValidateSalesArrangementId.proto";
 
 service SalesArrangementService {
@@ -68,4 +69,6 @@ service SalesArrangementService {
 	rpc SetContractNumber (SetContractNumberRequest) returns (SetContractNumberResponse);
 
 	rpc ValidateSalesArrangementId (ValidateSalesArrangementIdRequest) returns (ValidateSalesArrangementIdResponse);
+
+	rpc UpdatePcpId (UpdatePcpIdRequest) returns (google.protobuf.Empty);
 }

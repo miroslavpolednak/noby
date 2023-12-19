@@ -9,14 +9,6 @@ internal sealed class UpdateMortgageRequestValidator : AbstractValidator<Contrac
         RuleFor(t => t.ProductId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.InvalidArgument12014);
-
-        RuleFor(t => t.Mortgage.ProductTypeId)
-            .GreaterThan(0)
-            .WithErrorCode(ErrorCodeMapper.InvalidArgument12009);
-
-        RuleFor(t => t.Mortgage.PartnerId)
-            .GreaterThan(0)
-            .WithErrorCode(ErrorCodeMapper.InvalidArgument12010);
     }
 }
 

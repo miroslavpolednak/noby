@@ -62,7 +62,9 @@ internal sealed class CreateProduct
         var result = await _productService.CreateMortgage(request, cancellationToken);
         _bag.Add("ProductId", result);
 
-        _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result);
+        await _salesArrangementService.UpdatePcpId(salesArrangementId, result.PcpId, cancellationToken);
+
+        _logger.EntityCreated(nameof(_Product.CreateMortgageRequest), result.ProductId);
     }
 
     private readonly CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
