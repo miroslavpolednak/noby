@@ -25,7 +25,7 @@ public class TestController : ControllerBase
     public async Task<string> T1()
     {
         var manager = _context.HttpContext.RequestServices.GetRequiredService<IFeatureManager>();
-        return await manager.IsEnabledAsync(FeatureFlagsConstants.Flag1) ? "true" : "false";
+        return await manager.IsEnabledAsync(FeatureFlagsConstants.BlueBang) ? "true" : "false";
     }
 
     [HttpGet("t2")]

@@ -2,5 +2,8 @@
 
 public static class FeatureFlagsConstants
 {
-    public const string Flag1 = "Flag1";
+    /// <summary>
+    /// Flag oznacujici zda jsou zapnute modre produkty nebo ne (TRUE jsou zapnute)
+    /// </summary>
+    public const string BlueBang = "BlueBang";
 }
