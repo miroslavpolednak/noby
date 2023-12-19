@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.ServiceModel.Channels;
 using System.ServiceModel;
-using Polly.Retry;
 using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using Ixtent.ContentServer.ExtendedServices.Model.WebService;
 using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Model;
@@ -16,7 +15,7 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
 {
     private const int _maxRetries = 3;
 
-    private readonly AsyncRetryPolicy _retryPolicy;
+    private readonly ResiliencePipeline _retryPolicy;
     private readonly ILogger<RealSdfClient> _logger;
 
     protected override string ServiceName => StartupExtensions.ServiceName;
@@ -38,9 +37,9 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
         // There is a bug on external service site (EArchiv), even if username and password are correct,
         // external service return exception (invalid username or password) sometimes.
         // Retry logic policy eliminate this problem
-        var result = await _retryPolicy.ExecuteAsync(async () =>
+        var result = await _retryPolicy.ExecuteAsync(async (cancellation) =>
                                    await Client.GetDocumentByExternalIdAsync(user, query.DocumentId, options)
-                                  .WithCancellation(cancellation));
+                                  .WithCancellation(cancellation), cancellation);
 
         return result;
     }
@@ -60,9 +59,9 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
 
         SearchQueryOptions searchQuery = CreateQueryParameters(query);
 
-        var result = await _retryPolicy.ExecuteAsync(async () =>
+        var result = await _retryPolicy.ExecuteAsync(async (cancellationToken) =>
                                  await Client.FindDocumentsAsync(user, searchQuery, options)
-                                .WithCancellation(cancellationToken));
+                                .WithCancellation(cancellationToken), cancellationToken);
 
         return result;
     }
@@ -97,15 +96,23 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
         return options;
     }
 
-    private static AsyncRetryPolicy CreatePolicy()
+    private static ResiliencePipeline CreatePolicy()
     {
-        return Policy.Handle<FaultException>().RetryAsync(_maxRetries, onRetry: (exp, retryCount) =>
-        {
-            if (exp.Message.Contains("DocumentNotFound"))
+        return new ResiliencePipelineBuilder()
+            .AddRetry(new Polly.Retry.RetryStrategyOptions()
             {
-                throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CspDocumentNotFound);
-            }
-        });
+                ShouldHandle = new PredicateBuilder().Handle<FaultException>(),
+                MaxRetryAttempts = _maxRetries,
+                OnRetry = static res =>
+                {
+                    if ((res.Outcome.Exception?.Message ?? "").Contains("DocumentNotFound"))
+                    {
+                        throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CspDocumentNotFound);
+                    }
+                    return ValueTask.CompletedTask;
+                }
+            })
+            .Build();
     }
 
     private static SearchQueryOptions CreateQueryParameters(FindSdfDocumentsQuery query)
