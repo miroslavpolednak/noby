@@ -10,9 +10,6 @@ internal sealed class UpdateMortgageHandler
 {
     public async Task Handle(UpdateMortgageRequest request, CancellationToken cancellationToken)
     {
-        //if (!await _repository.LoanExists(request.ProductId, cancellationToken))
-        //    throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
-
         // get data from other DS
         var productSA = await _salesArrangementService.GetProductSalesArrangement(request.ProductId, cancellationToken);
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(productSA.SalesArrangementId, cancellationToken);
@@ -60,11 +57,9 @@ internal sealed class UpdateMortgageHandler
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly LoanRepository _repository;
     private readonly IMpHomeClient _mpHomeClient;
 
     public UpdateMortgageHandler(
-        LoanRepository repository, 
         IMpHomeClient mpHomeClient, 
         ICustomerOnSAServiceClient customerOnSAService,
         ISalesArrangementServiceClient salesArrangementService, 
@@ -74,7 +69,6 @@ internal sealed class UpdateMortgageHandler
         _customerOnSAService = customerOnSAService;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
-        _repository = repository;
         _mpHomeClient = mpHomeClient;
     }
 }
