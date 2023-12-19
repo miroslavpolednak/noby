@@ -3493,36 +3493,6 @@
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.Dto.PaymentAccount.AgreedPrefix">
-            <summary>
-            Předčíslí účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.Dto.PaymentAccount.AgreedNumber">
-            <summary>
-            Číslo účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.Dto.PaymentAccount.AgreedBankCode">
-            <summary>
-            Kód banky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.Dto.PaymentAccount.Prefix">
-            <summary>
-            Předčíslí účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.Dto.PaymentAccount.Number">
-            <summary>
-            Číslo účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.Dto.PaymentAccount.BankCode">
-            <summary>
-            Kód banky
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.Dto.PaymentAccount.OwnerFirstName">
             <summary>
             Jméno majitele účtu
@@ -4050,21 +4020,6 @@
             Sekce aktivní
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.Prefix">
-            <summary>
-            Předčíslí účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.Number">
-            <summary>
-            Číslo účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.BankCode">
-            <summary>
-            Kód banky
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto.PaymentAccount.OwnerFirstName">
             <summary>
             Jméno majitele účtu
@@ -4297,21 +4252,6 @@
             Výše čerpané částky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.PrefixAccount">
-            <summary>
-            Předčíslí účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.AccountNumber">
-            <summary>
-            Číslo účtu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.BankCode">
-            <summary>
-            Kód banky
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingPayout.VariableSymbol">
             <summary>
             Variabilní symbol
@@ -4335,21 +4275,6 @@
         <member name="T:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingRepaymentAccount">
             <summary>
             Účet pro splácení
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingRepaymentAccount.Prefix">
-            <summary>
-            Předčíslí účtu pro splácení
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingRepaymentAccount.Number">
-            <summary>
-            Číslo účtu pro splácení
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.Dto.ParametersDrawingRepaymentAccount.BankCode">
-            <summary>
-            Kód banky účtu pro splácení
             </summary>
         </member>
         <member name="T:NOBY.Api.Endpoints.SalesArrangement.Dto.Collateral">

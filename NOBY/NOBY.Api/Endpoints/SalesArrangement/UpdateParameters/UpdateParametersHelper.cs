@@ -5,6 +5,8 @@ using System.Text.Json;
 using CIS.Core.Attributes;
 using _dto = NOBY.Api.Endpoints.SalesArrangement.Dto;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
 [SelfService, TransientService]
@@ -48,6 +50,31 @@ internal sealed class UpdateParametersHelper
 
             case _dto.ParametersDrawing m:
                 await validateApplicant(m.Applicant, salesArrangement.CaseId);
+                
+                if (m.PayoutList?.Any() ?? false)
+                {
+                    throw new NobyValidationException(90032);
+                }
+                
+                if ((m.Agent?.IsActive ?? false) 
+                    && (
+                        string.IsNullOrEmpty(m.Agent.FirstName)
+                        || string.IsNullOrEmpty(m.Agent.LastName)
+                        || string.IsNullOrEmpty(m.Agent.IdentificationDocument?.Number)
+                        || m.Agent.IdentificationDocument?.IdentificationDocumentTypeId == null
+                        || !m.Agent.DateOfBirth.HasValue
+                        )
+                    )
+                {
+                    throw new NobyValidationException(90032);
+                }
+
+                if ((m.PayoutList?.Any(t => !_bankAccountValidator.IsBankAccoungAndCodeValid(t)) ?? false)
+                    || !_bankAccountValidator.IsBankAccoungAndCodeValid(m.RepaymentAccount))
+                {
+                    throw new NobyValidationException(90032, "Invalid bank account");
+                }
+
                 break;
         }
 
@@ -99,10 +126,12 @@ internal sealed class UpdateParametersHelper
 
     private readonly IProductServiceClient _productService;
     private readonly ICodebookServiceClient _codebookService;
+    private readonly Services.Validators.IBankAccountValidatorService _bankAccountValidator;
 
-    public UpdateParametersHelper(ICodebookServiceClient codebookService, IProductServiceClient productService)
+    public UpdateParametersHelper(ICodebookServiceClient codebookService, IProductServiceClient productService, Services.Validators.IBankAccountValidatorService bankAccountValidator)
     {
         _productService = productService;
         _codebookService = codebookService;
+        _bankAccountValidator = bankAccountValidator;
     }
 }
