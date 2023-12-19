@@ -11,7 +11,9 @@ internal class Address
 
     public int? AddressTypeId => _address.AddressTypeId;
 
-    public string Street => string.IsNullOrWhiteSpace(_address.Street) ? _address.City : _address.Street;
+    public string Street =>
+        new[] { _address.Street, _address.CityDistrict, _address.City }
+            .FirstOrDefault(adr => !string.IsNullOrWhiteSpace(adr), string.Empty);
 
     public string HouseNumber => _address.HouseNumber;
 
