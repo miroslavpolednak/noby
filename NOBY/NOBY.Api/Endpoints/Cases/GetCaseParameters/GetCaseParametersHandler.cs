@@ -9,7 +9,10 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
 {
     public async Task<GetCaseParametersResponse> Handle(GetCaseParametersRequest request, CancellationToken cancellationToken)
     {
-        var response = new GetCaseParametersResponse();
+        var response = new GetCaseParametersResponse
+        {
+            CaseParameters = new List<CaseParameters>()
+        };
 
         // instance case
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);

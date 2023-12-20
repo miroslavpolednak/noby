@@ -23,11 +23,22 @@ public static class CisMediatrStartupExtensions
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RollbackBehavior<,>));
 
         // najit vsechny handlery
-        services.Scan(selector => selector
-            .FromAssembliesOf(types)
-            .AddClasses(x => x.AssignableTo(typeof(IRollbackAction<>)))
-            .AsImplementedInterfaces()
-            .WithTransientLifetime());
+        if (types.Length == 0)
+        {
+            services.Scan(selector => selector
+                .FromEntryAssembly()
+                .AddClasses(x => x.AssignableTo(typeof(IRollbackAction<>)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+        }
+        else
+        {
+            services.Scan(selector => selector
+                .FromAssembliesOf(types)
+                .AddClasses(x => x.AssignableTo(typeof(IRollbackAction<>)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+        }
 
         return services;
     }

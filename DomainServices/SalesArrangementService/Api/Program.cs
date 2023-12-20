@@ -4,6 +4,7 @@ using ExternalServices;
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .AddErrorCodeMapper(DomainServices.SalesArrangementService.Api.ErrorCodeMapper.Init())
+    .AddRollbackCapability()
     .AddRequiredServices(services =>
     {
         services

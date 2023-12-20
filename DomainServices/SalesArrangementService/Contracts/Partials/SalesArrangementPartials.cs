@@ -1,7 +1,7 @@
 ﻿namespace DomainServices.SalesArrangementService.Contracts;
 
 public partial class CreateSalesArrangementRequest
-    : MediatR.IRequest<CreateSalesArrangementResponse>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<CreateSalesArrangementResponse>, CIS.Core.Validation.IValidatableRequest, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 { }
 
 public partial class GetSalesArrangementRequest

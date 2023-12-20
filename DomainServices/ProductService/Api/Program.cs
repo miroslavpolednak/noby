@@ -10,6 +10,9 @@ SharedComponents
         services
             .AddCodebookService()
             .AddUserService()
+            .AddOfferService()
+            .AddSalesArrangementService()
+            .AddHouseholdService()
             .AddCaseService();
     })
     .Build(builder =>
