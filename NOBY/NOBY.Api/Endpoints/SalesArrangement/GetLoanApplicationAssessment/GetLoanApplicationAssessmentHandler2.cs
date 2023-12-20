@@ -19,30 +19,50 @@ internal sealed class GetLoanApplicationAssessmentHandler2
             await _salesArrangementService.UpdateLoanAssessmentParameters(new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
             {
                 SalesArrangementId = saInstance.SalesArrangementId,
+                RiskBusinessCaseId = createResult.RiskBusinessCaseId,
                 RiskSegment = createResult.RiskSegment,
                 LoanApplicationDataVersion = createResult.LoanApplicationDataVersion
             }, cancellationToken);
         }
-        else if (string.IsNullOrEmpty(saInstance.LoanApplicationDataVersion) || request.NewAssessmentRequired)
+        else if (string.IsNullOrEmpty(saInstance.LoanApplicationDataVersion))
         {
-            var laResult = await _riskCaseProcessor.SaveLoanApplication(saInstance.SalesArrangementId, saInstance.CaseId, saInstance.OfferId!.Value, cancellationToken);
-            
-            await _salesArrangementService.UpdateLoanAssessmentParameters(new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
-            {
-                SalesArrangementId = saInstance.SalesArrangementId,
-                RiskSegment = laResult.RiskSegment,
-                LoanApplicationDataVersion = laResult.LoanApplicationDataVersion
-            }, cancellationToken);
+            await updateLoanAssesment(saInstance, cancellationToken);
         }
-
-        if (request.NewAssessmentRequired)
+        else if (request.NewAssessmentRequired)
         {
             if (!_currentUser.HasPermission(UserPermissions.SCORING_Perform))
             {
                 throw new CisAuthorizationException("SCORING_Perform permission missing");
             }
 
+            await updateLoanAssesment(saInstance, cancellationToken);
         }
+
+        if (request.NewAssessmentRequired)
+        {
+            
+
+        }
+        else if (string.IsNullOrEmpty(saInstance.LoanApplicationAssessmentId))
+        {
+            throw new NobyValidationException("LoanApplicationAssessmentId is empty");
+        }
+        else
+        {
+
+        }
+    }
+
+    private async Task updateLoanAssesment(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, CancellationToken cancellationToken)
+    {
+        var laResult = await _riskCaseProcessor.SaveLoanApplication(saInstance.SalesArrangementId, saInstance.CaseId, saInstance.OfferId!.Value, cancellationToken);
+
+        await _salesArrangementService.UpdateLoanAssessmentParameters(new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
+        {
+            SalesArrangementId = saInstance.SalesArrangementId,
+            RiskSegment = laResult.RiskSegment,
+            LoanApplicationDataVersion = laResult.LoanApplicationDataVersion
+        }, cancellationToken);
     }
 
     private readonly ICurrentUserAccessor _currentUser;

@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using SharedTypes.Types;
+﻿using SharedTypes.Types;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 using DomainServices.SalesArrangementService.Contracts;
 
