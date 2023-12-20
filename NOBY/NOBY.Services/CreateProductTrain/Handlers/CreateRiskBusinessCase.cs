@@ -10,19 +10,24 @@ namespace NOBY.Services.CreateProductTrain.Handlers;
 internal sealed class CreateRiskBusinessCase
 {
     public async Task Run(
-        long caseId,
         int salesArrangementId,
-        int customerOnSAId,
-        IEnumerable<SharedTypes.GrpcTypes.Identity>? customerIdentifiers,
         CancellationToken cancellationToken)
     {
         //SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
+
         if (string.IsNullOrEmpty(saInstance.RiskBusinessCaseId))
         {
             try
             {
-                await _createRiskBusiness.Create(caseId, salesArrangementId, customerOnSAId, customerIdentifiers, cancellationToken);
+                var riskCase = await _riskCaseProcessor.CreateOrUpdateRiskCase(salesArrangementId, cancellationToken);
+
+                await _salesArrangementService.UpdateLoanAssessmentParameters(new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
+                {
+                    SalesArrangementId = saInstance.SalesArrangementId,
+                    CommandId = saInstance.CommandId,
+                    RiskSegment = riskCase.RiskSegment
+                }, cancellationToken);
             }
             catch (CisValidationException ex)
             {
@@ -37,12 +42,15 @@ internal sealed class CreateRiskBusinessCase
 
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ILogger<CreateRiskBusinessCase> _logger;
-    private readonly Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService _createRiskBusiness;
+    private readonly Services.RiskCaseProcessor.RiskCaseProcessorService _riskCaseProcessor;
 
-    public CreateRiskBusinessCase(Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService createRiskBusiness, ISalesArrangementServiceClient salesArrangementService, ILogger<CreateRiskBusinessCase> logger)
+    public CreateRiskBusinessCase(
+        Services.RiskCaseProcessor.RiskCaseProcessorService riskCaseProcessor, 
+        ISalesArrangementServiceClient salesArrangementService, 
+        ILogger<CreateRiskBusinessCase> logger)
     {
         _salesArrangementService = salesArrangementService;
-        _createRiskBusiness = createRiskBusiness;
+        _riskCaseProcessor = riskCaseProcessor;
         _logger = logger;
     }
 }

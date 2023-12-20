@@ -135,17 +135,9 @@ internal sealed class SalesArrangementService
            }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default)
+    public async Task UpdateLoanAssessmentParameters(UpdateLoanAssessmentParametersRequest request, CancellationToken cancellationToken = default)
     {
-        await _service.UpdateLoanAssessmentParametersAsync(
-           new()
-           {
-               SalesArrangementId = salesArrangementId,
-               LoanApplicationAssessmentId = loanApplicationAssessmentId ?? "",
-               RiskSegment = riskSegment ?? "",
-               CommandId = commandId ?? "",
-               RiskBusinessCaseExpirationDate = riskBusinessCaseExpirationDate,
-           }, cancellationToken: cancellationToken);
+        await _service.UpdateLoanAssessmentParametersAsync(request, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateOfferDocumentId(int salesArrangementId, string offerDocumentId, CancellationToken cancellationToken = default)

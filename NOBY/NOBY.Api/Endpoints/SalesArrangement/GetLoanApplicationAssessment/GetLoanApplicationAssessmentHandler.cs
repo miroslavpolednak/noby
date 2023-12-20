@@ -1,15 +1,7 @@
-﻿using System.Text.Json;
-using CIS.Core.Security;
-using CIS.InternalServices.DataAggregatorService.Clients;
-using CIS.InternalServices.DataAggregatorService.Contracts;
-using DomainServices.OfferService.Clients;
+﻿using DomainServices.OfferService.Clients;
 using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Contracts;
-using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
-using DomainServices.RiskIntegrationService.Contracts.Shared;
-using DomainServices.UserService.Clients;
-using SharedTypes.Enums;
 using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 using DomainServices.HouseholdService.Contracts;
 
@@ -38,7 +30,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         // create new assesment, if required
         if (request.NewAssessmentRequired)
         {
-            await createNewAssessment(saInstance, offer, customers, cancellationToken);
+            await createNewAssessment(saInstance, offer, cancellationToken);
 
             await _salesArrangementService.SetFlowSwitch(saInstance.SalesArrangementId, FlowSwitches.ScoringPerformedAtleastOnce, true, cancellationToken);
         }
@@ -99,93 +91,55 @@ internal sealed class GetLoanApplicationAssessmentHandler
     private async Task createNewAssessment(
         DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, 
         GetMortgageOfferResponse offer,
-        List<CustomerOnSA> customers,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(salesArrangement.RiskBusinessCaseId))
-        {
-            var debtor = customers.First(t => t.CustomerRoleId == (int)CustomerRoles.Debtor);
-
-            salesArrangement.RiskBusinessCaseId = await _createRiskBusinessCase.Create(salesArrangement.CaseId, salesArrangement.SalesArrangementId, debtor.CustomerOnSAId, debtor.CustomerIdentifiers, cancellationToken);
-        }
-
-        var dataRequest = new GetRiskLoanApplicationDataRequest
-        {
-            SalesArrangementId = salesArrangement.SalesArrangementId,
-            CaseId = salesArrangement.CaseId,
-            OfferId = salesArrangement.OfferId!.Value
-        };
-
-        var response = await _dataAggregatorService.GetRiskLoanApplicationData(dataRequest, cancellationToken);
-
-        var loanApplicationSaveRequest = JsonSerializer.Deserialize<LoanApplicationSaveRequest>(response.Json)!;
-
-        var user = await _userService.GetUser(_currentUserAccessor.User!.Id, cancellationToken);
-        var userIdentity = user.UserIdentifiers.FirstOrDefault();
-
-        loanApplicationSaveRequest.UserIdentity = userIdentity is null ? null : new Identity
-        {
-            IdentityId = userIdentity.Identity,
-            IdentityScheme = userIdentity.IdentityScheme.ToString()
-        };
-
-        var riskSegment = await _loanApplicationService.Save(loanApplicationSaveRequest, cancellationToken);
+        // vytvorit RBC a LA (pokud neexistuji)
+        var riskCase = await _riskCaseProcessor.CreateOrUpdateRiskCase(salesArrangement.SalesArrangementId, cancellationToken);
 
         // create assesment
         var createAssessmentRequest = new RiskBusinessCaseCreateAssessmentRequest
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
-            RiskBusinessCaseId = salesArrangement.RiskBusinessCaseId,
+            RiskBusinessCaseId = riskCase.RiskBusinessCaseId,
             // Timestamp, který jsme si uložili pro danou verzi žádosti (dat žádosti), kterou jsme předali v RIP(v2) - POST LoanApplication a tímto danou verzi požadujeme vyhodnotit
-            LoanApplicationDataVersion = loanApplicationSaveRequest.LoanApplicationDataVersion,
+            LoanApplicationDataVersion = riskCase.LoanApplicationDataVersion,
             AssessmentMode = RiskBusinessCaseAssessmentModes.SC,
             GrantingProcedureCode = offer.SimulationInputs.IsEmployeeBonusRequested == true ? RiskBusinessCaseGrantingProcedureCodes.EMP : RiskBusinessCaseGrantingProcedureCodes.STD,
         };
 
         var createAssessmentResponse = await _riskBusinessCaseService.CreateAssessment(createAssessmentRequest, cancellationToken);
-        salesArrangement.LoanApplicationAssessmentId = createAssessmentResponse.LoanApplicationAssessmentId;
 
         // update sales arrangement (loanApplicationAssessmentId, riskSegment)
-        await _salesArrangementService.UpdateLoanAssessmentParameters(salesArrangement.SalesArrangementId,
-                                                                      salesArrangement.LoanApplicationAssessmentId,
-                                                                      riskSegment,
-                                                                      salesArrangement.CommandId,
-                                                                      createAssessmentResponse.RiskBusinessCaseExpirationDate,
-                                                                      cancellationToken);
+        await _salesArrangementService.UpdateLoanAssessmentParameters(new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            CommandId = salesArrangement.CommandId,
+            LoanApplicationAssessmentId = createAssessmentResponse.LoanApplicationAssessmentId,
+            RiskBusinessCaseExpirationDate = createAssessmentResponse.RiskBusinessCaseExpirationDate,
+            RiskSegment = riskCase.RiskSegment
+        }, cancellationToken);
     }
 
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
-    private readonly DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient _loanApplicationService;
     private readonly DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService;
     private readonly DomainServices.RiskIntegrationService.Clients.CustomerExposure.V2.ICustomerExposureServiceClient _customerExposureService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly IDataAggregatorServiceClient _dataAggregatorService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IUserServiceClient _userService;
-    private readonly NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService _createRiskBusinessCase;
+    private readonly NOBY.Services.RiskCaseProcessor.RiskCaseProcessorService _riskCaseProcessor;
 
     public GetLoanApplicationAssessmentHandler(
         DomainServices.RiskIntegrationService.Clients.CustomerExposure.V2.ICustomerExposureServiceClient customerExposureService,
-        NOBY.Services.CreateRiskBusinessCase.CreateRiskBusinessCaseService createRiskBusinessCase,
+        NOBY.Services.RiskCaseProcessor.RiskCaseProcessorService riskCaseProcessor,
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
-        DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient loanApplicationService,
         DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
-        ICustomerOnSAServiceClient customerOnSAService,
-        IDataAggregatorServiceClient dataAggregatorService,
-        ICurrentUserAccessor currentUserAccessor,
-        IUserServiceClient userService)
+        ICustomerOnSAServiceClient customerOnSAService)
     {
         _customerExposureService = customerExposureService;
-        _createRiskBusinessCase = createRiskBusinessCase;
+        _riskCaseProcessor = riskCaseProcessor;
         _customerOnSAService = customerOnSAService;
-        _dataAggregatorService = dataAggregatorService;
-        _currentUserAccessor = currentUserAccessor;
-        _userService = userService;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
-        _loanApplicationService = loanApplicationService;
         _riskBusinessCaseService = riskBusinessCaseService;
     }
 }

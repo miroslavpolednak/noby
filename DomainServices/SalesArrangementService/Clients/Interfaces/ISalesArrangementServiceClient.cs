@@ -89,7 +89,7 @@ public interface ISalesArrangementServiceClient
     /// <summary>
     /// Update LAID
     /// </summary>
-    Task UpdateLoanAssessmentParameters(int salesArrangementId, string? loanApplicationAssessmentId, string? riskSegment, string? commandId, DateTime? riskBusinessCaseExpirationDate, CancellationToken cancellationToken = default);
+    Task UpdateLoanAssessmentParameters(UpdateLoanAssessmentParametersRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Smazani zadosti

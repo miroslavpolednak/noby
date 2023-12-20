@@ -3,7 +3,6 @@ using DomainServices.UserService.Clients;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients;
-using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangement;
 

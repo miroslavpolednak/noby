@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.SalesArrangementService.Api.Database;
+﻿using DomainServices.SalesArrangementService.Api.Database;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +14,13 @@ internal sealed class UpdateLoanAssessmentParametersHandler
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation) 
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
-        entity.LoanApplicationAssessmentId = request.LoanApplicationAssessmentId;
         entity.RiskSegment = request.RiskSegment;
         entity.CommandId = request.CommandId;
+        
+        entity.LoanApplicationAssessmentId = request.LoanApplicationAssessmentId;
         entity.RiskBusinessCaseExpirationDate = request.RiskBusinessCaseExpirationDate;
+        
+        entity.RiskBusinessCaseId = request.RiskBusinessCaseId;
 
         // pokud je zadost NEW, zmenit na InProgress
         if (entity.State == (int)SalesArrangementStates.NewArrangement)
