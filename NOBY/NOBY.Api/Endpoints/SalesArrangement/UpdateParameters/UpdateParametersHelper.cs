@@ -51,7 +51,7 @@ internal sealed class UpdateParametersHelper
             case _dto.ParametersDrawing m:
                 await validateApplicant(m.Applicant, salesArrangement.CaseId);
                 
-                if (m.PayoutList?.Any() ?? false)
+                if (m.PayoutList is null || m.PayoutList.Count == 0)
                 {
                     throw new NobyValidationException(90032);
                 }
