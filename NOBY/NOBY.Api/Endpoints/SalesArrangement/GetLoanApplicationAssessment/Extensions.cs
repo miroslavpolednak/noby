@@ -8,8 +8,6 @@ internal static class Extensions
 {
     public static GetLoanApplicationAssessmentResponse ToApiResponse(this cRS.V1.LoanApplicationAssessmentResponse response, cOffer.GetMortgageOfferResponse? offer)
     {
-        //https://wiki.kb.cz/pages/viewpage.action?pageId=464683017
-
         return new GetLoanApplicationAssessmentResponse
         {
             Application = new LoanApplication

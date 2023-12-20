@@ -3188,49 +3188,14 @@
             ID domácnosti
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.LoanApplicationLimit">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.Risk">
             <summary>
-            Limit výše úvěru
+            Risková data
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.LoanApplicationInstallmentLimit">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.CustomerObligations">
             <summary>
-            Limit výše splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyIncome">
-            <summary>
-            Celkové příjmy
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyCostsWithoutInstallments">
-            <summary>
-            Celkové výdaje (bez splátek)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInKBAmount">
-            <summary>
-            Celkové stávající splátky v KB
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyEntrepreneurInstallmentsInKBAmount">
-            <summary>
-            Celkové stávající splátky FOP v KB
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInMPSS">
-            <summary>
-            Celkové stávající splátky MPSS
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInOFI">
-            <summary>
-            Celkové prohlášené splátky (klient)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInCBCB">
-            <summary>
-            Celkové nalezené splátky (ext. registry)
+            Závazky
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdCustomerObligations.FirstName">
@@ -3248,7 +3213,7 @@
             Datum narození klienta
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdCustomerObligations.Role">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdCustomerObligations.RoleId">
             <summary>
             Role klienta
             </summary>
@@ -3273,7 +3238,7 @@
             Typ závazku - název
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.Source">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.ObligationSourceId">
             <summary>
             Stav závazku
             </summary>
@@ -3361,6 +3326,51 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.Amount.CurrencyCode">
             <summary>
             Kód měny
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.LoanApplicationLimit">
+            <summary>
+            Limit výše úvěru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.LoanApplicationInstallmentLimit">
+            <summary>
+            Limit výše splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyIncome">
+            <summary>
+            Celkové příjmy
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyCostsWithoutInstallments">
+            <summary>
+            Celkové výdaje (bez splátek)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInKBAmount">
+            <summary>
+            Celkové stávající splátky v KB
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyEntrepreneurInstallmentsInKBAmount">
+            <summary>
+            Celkové stávající splátky FOP v KB
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInMPSS">
+            <summary>
+            Celkové stávající splátky MPSS
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInOFI">
+            <summary>
+            Celkové prohlášené splátky (klient)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdRisk.MonthlyInstallmentsInCBCB">
+            <summary>
+            Celkové nalezené splátky (ext. registry)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.LoanApplication.Limit">
