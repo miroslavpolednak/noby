@@ -34,11 +34,20 @@ public sealed class RiskCaseProcessorService
         }
 
         // ziskat segment
+        var laResult = await SaveLoanApplication(saInstance.SalesArrangementId, saInstance.CaseId, saInstance.OfferId.Value, cancellationToken);
+        // set risk segment
+        saInstance.RiskSegment = laResult.RiskSegment;
+
+        return (saInstance.RiskSegment, saInstance.RiskBusinessCaseId, laResult.LoanApplicationDataVersion);
+    }
+
+    public async Task<(string RiskSegment, string LoanApplicationDataVersion)> SaveLoanApplication(int salesArrangementId, long caseId, int offerId, CancellationToken cancellationToken)
+    {
         var dataRequest = new GetRiskLoanApplicationDataRequest
         {
-            SalesArrangementId = saInstance.SalesArrangementId,
-            CaseId = saInstance.CaseId,
-            OfferId = saInstance.OfferId!.Value
+            SalesArrangementId = salesArrangementId,
+            CaseId = caseId,
+            OfferId = offerId
         };
         var response = await _dataAggregatorService.GetRiskLoanApplicationData(dataRequest, cancellationToken);
 
@@ -50,11 +59,11 @@ public sealed class RiskCaseProcessorService
             IdentityId = user.UserIdentifiers[0].Identity,
             IdentityScheme = user.UserIdentifiers[0].IdentityScheme.ToString()
         };
-        
-        // set risk segment
-        saInstance.RiskSegment = await _loanApplicationService.Save(loanApplicationSaveRequest, cancellationToken);
 
-        return (saInstance.RiskSegment, saInstance.RiskBusinessCaseId, loanApplicationSaveRequest.LoanApplicationDataVersion);
+        // set risk segment
+        var riskSegment = await _loanApplicationService.Save(loanApplicationSaveRequest, cancellationToken);
+
+        return (riskSegment, loanApplicationSaveRequest.LoanApplicationDataVersion);
     }
 
     private readonly IDataAggregatorServiceClient _dataAggregatorService;
