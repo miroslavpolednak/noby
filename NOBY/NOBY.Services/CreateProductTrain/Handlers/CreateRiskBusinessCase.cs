@@ -25,8 +25,8 @@ internal sealed class CreateRiskBusinessCase
                 await _salesArrangementService.UpdateLoanAssessmentParameters(new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
                 {
                     SalesArrangementId = saInstance.SalesArrangementId,
-                    CommandId = saInstance.CommandId,
-                    RiskSegment = riskCase.RiskSegment
+                    RiskSegment = riskCase.RiskSegment,
+                    LoanApplicationDataVersion = riskCase.LoanApplicationDataVersion
                 }, cancellationToken);
             }
             catch (CisValidationException ex)

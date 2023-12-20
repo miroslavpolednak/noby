@@ -14,14 +14,31 @@ internal sealed class UpdateLoanAssessmentParametersHandler
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation) 
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
-        entity.RiskSegment = request.RiskSegment;
-        entity.CommandId = request.CommandId;
-        
-        entity.LoanApplicationAssessmentId = request.LoanApplicationAssessmentId;
-        entity.RiskBusinessCaseExpirationDate = request.RiskBusinessCaseExpirationDate;
-        
-        entity.RiskBusinessCaseId = request.RiskBusinessCaseId;
+        if (!string.IsNullOrEmpty(request.RiskSegment))
+        {
+            entity.RiskSegment = request.RiskSegment;
+        }
 
+        if (!string.IsNullOrEmpty(request.CommandId))
+        {
+            entity.CommandId = request.CommandId;
+        }
+
+        if (!string.IsNullOrEmpty(request.LoanApplicationAssessmentId))
+        {
+            entity.LoanApplicationAssessmentId = request.LoanApplicationAssessmentId;
+        }
+
+        if (!string.IsNullOrEmpty(request.RiskBusinessCaseId))
+        {
+            entity.RiskBusinessCaseId = request.RiskBusinessCaseId;
+        }
+           
+        if (request.RiskBusinessCaseExpirationDate is not null)
+        {
+            entity.RiskBusinessCaseExpirationDate = request.RiskBusinessCaseExpirationDate;
+        }
+        
         // pokud je zadost NEW, zmenit na InProgress
         if (entity.State == (int)SalesArrangementStates.NewArrangement)
         {

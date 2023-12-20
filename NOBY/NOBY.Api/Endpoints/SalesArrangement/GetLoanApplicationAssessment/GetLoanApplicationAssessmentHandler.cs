@@ -116,6 +116,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
             CommandId = salesArrangement.CommandId,
             LoanApplicationAssessmentId = createAssessmentResponse.LoanApplicationAssessmentId,
             RiskBusinessCaseExpirationDate = createAssessmentResponse.RiskBusinessCaseExpirationDate,
+            LoanApplicationDataVersion = riskCase.LoanApplicationDataVersion,
             RiskSegment = riskCase.RiskSegment
         }, cancellationToken);
     }
