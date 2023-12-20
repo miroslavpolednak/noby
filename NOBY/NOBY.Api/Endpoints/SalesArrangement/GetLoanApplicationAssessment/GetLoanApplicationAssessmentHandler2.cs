@@ -13,16 +13,23 @@ internal sealed class GetLoanApplicationAssessmentHandler2
         // neexistuje RBC -> vytvorit novy a ulozit
         if (string.IsNullOrEmpty(saInstance.RiskBusinessCaseId))
         {
-            await _riskCaseProcessor.CreateOrUpdateRiskCase(saInstance.SalesArrangementId, cancellationToken);
+            var createResult = await _riskCaseProcessor.CreateOrUpdateRiskCase(saInstance.SalesArrangementId, cancellationToken);
 
             // update
+            await _salesArrangementService.UpdateLoanAssessmentParameters(new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
+            {
+                SalesArrangementId = saInstance.SalesArrangementId,
+                RiskSegment = createResult.RiskSegment,
+                LoanApplicationDataVersion = createResult.LoanApplicationDataVersion
+            }, cancellationToken);
         }
-        else if (string.IsNullOrEmpty(saInstance.LoanApplicationDataVersion))
+        else if (string.IsNullOrEmpty(saInstance.LoanApplicationDataVersion) || request.NewAssessmentRequired)
         {
             var laResult = await _riskCaseProcessor.SaveLoanApplication(saInstance.SalesArrangementId, saInstance.CaseId, saInstance.OfferId!.Value, cancellationToken);
             
             await _salesArrangementService.UpdateLoanAssessmentParameters(new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
             {
+                SalesArrangementId = saInstance.SalesArrangementId,
                 RiskSegment = laResult.RiskSegment,
                 LoanApplicationDataVersion = laResult.LoanApplicationDataVersion
             }, cancellationToken);
@@ -34,6 +41,7 @@ internal sealed class GetLoanApplicationAssessmentHandler2
             {
                 throw new CisAuthorizationException("SCORING_Perform permission missing");
             }
+
         }
     }
 
