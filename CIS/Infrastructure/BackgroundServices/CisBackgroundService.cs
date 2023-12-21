@@ -95,7 +95,7 @@ internal sealed class CisBackgroundService<TBackgroundService>
                 if (canJobRun)
                 {
                     // Technical timeout, when job will execute very fast and the exception (Execution Timeout Expired) does not have time to be thrown out
-                    await Task.Delay(TimeSpan.FromSeconds(_technicalTimeout + 2), stoppingToken);
+                    await Task.Delay(TimeSpan.FromSeconds(_technicalTimeout + 5), stoppingToken);
                     await releaseLock(connection, resource, _lockOwner);
                 }
 
