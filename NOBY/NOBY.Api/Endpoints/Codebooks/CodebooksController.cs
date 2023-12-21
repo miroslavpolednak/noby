@@ -1,9 +1,11 @@
-﻿using DomainServices.CodebookService.Clients;
+﻿using Asp.Versioning;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Codebooks;
 
 [ApiController]
+[ApiVersion(1)]
 [Route("api/codebooks")]
 public class CodebooksController : ControllerBase
 {

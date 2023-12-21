@@ -4,12 +4,14 @@ using NOBY.Api.Endpoints.Test.Rollback;
 using NOBY.Services.FileAntivirus;
 using Microsoft.FeatureManagement;
 using SharedTypes;
+using Asp.Versioning;
 
 namespace NOBY.Api.Endpoints.Test;
 
 [ApiController]
 [Route("api/test")]
 [AllowAnonymous]
+[ApiVersion(1)]
 public class TestController : ControllerBase
 {
     [HttpPost("rollback")]
@@ -29,6 +31,7 @@ public class TestController : ControllerBase
     }
 
     [HttpGet("t2")]
+    [Obsolete("Use v2 version")]
     public async Task T2()
     {
         var logger = _context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
@@ -43,6 +46,7 @@ public class TestController : ControllerBase
     }
 
     [HttpGet("t3")]
+    [Obsolete("Use v2 version")]
     public async Task<string> T3()
     {
         var client = _context.HttpContext.RequestServices.GetRequiredService<IFileAntivirusService>();

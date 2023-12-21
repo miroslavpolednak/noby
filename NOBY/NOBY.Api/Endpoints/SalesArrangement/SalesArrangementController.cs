@@ -1,9 +1,11 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using Asp.Versioning;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement;
 
 [ApiController]
 [Route("api/sales-arrangement")]
+[ApiVersion(1)]
 public class SalesArrangementController : ControllerBase
 {
     /// <summary>

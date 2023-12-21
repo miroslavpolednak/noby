@@ -3,13 +3,14 @@ using NOBY.Infrastructure.Configuration;
 using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Http.Extensions;
 using NOBY.Infrastructure.Security.Middleware;
+using Asp.Versioning.ApiExplorer;
 
 namespace NOBY.Api.StartupExtensions;
 
 internal static class NobyAppBuilder
 {
     public static IApplicationBuilder UseNobySpa(this IApplicationBuilder app)
-        => app.MapWhen(_isSpaCall, appBuilder => 
+        => app.MapWhen(_isSpaCall, appBuilder =>
         {
             appBuilder.UseSpaStaticFiles();
             appBuilder.UseStaticFiles("/docs");
@@ -77,13 +78,20 @@ internal static class NobyAppBuilder
             appBuilder.MapNobyAuthenticationEndpoints();
         });
 
-    public static IApplicationBuilder UseNobySwagger(this IApplicationBuilder app)
+    public static IApplicationBuilder UseNobySwagger(this IApplicationBuilder app, IReadOnlyList<ApiVersionDescription> descriptions)
         => app
         .UseSwagger()
         .UseSwaggerUI(c =>
         {
+            // build a swagger endpoint for each discovered API version
+            foreach (var description in descriptions)
+            {
+                var url = $"/swagger/{description.GroupName}/swagger.json";
+                var name = description.GroupName.ToUpperInvariant();
+                c.SwaggerEndpoint(url, name);
+            }
+
             c.DisplayOperationId();
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "NOBY FRONTEND API");
         });
 
     public static IApplicationBuilder UseRedirectStrategy(this IApplicationBuilder app)
@@ -98,7 +106,7 @@ internal static class NobyAppBuilder
             });
         });
 
-    private static readonly Func<HttpContext, bool> _isApiCall = (HttpContext context) 
+    private static readonly Func<HttpContext, bool> _isApiCall = (HttpContext context)
         => context.Request.Path.StartsWithSegments("/api");
 
     private static readonly Func<HttpContext, bool> _isRedirectCall = (HttpContext context)
@@ -107,12 +115,12 @@ internal static class NobyAppBuilder
     private static readonly Func<HttpContext, bool> _isAuthCall = (HttpContext context)
         => context.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment);
 
-    private static readonly Func<HttpContext, bool> _isHealthCheck = (HttpContext context) 
+    private static readonly Func<HttpContext, bool> _isHealthCheck = (HttpContext context)
         => context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);
 
-    private static readonly Func<HttpContext, bool> _isSpaCall = (HttpContext context) 
-        => !context.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment) 
-            && !context.Request.Path.StartsWithSegments("/api") 
-            && !context.Request.Path.StartsWithSegments("/swagger") 
-            && !context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);       
+    private static readonly Func<HttpContext, bool> _isSpaCall = (HttpContext context)
+        => !context.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment)
+            && !context.Request.Path.StartsWithSegments("/api")
+            && !context.Request.Path.StartsWithSegments("/swagger")
+            && !context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);
 }

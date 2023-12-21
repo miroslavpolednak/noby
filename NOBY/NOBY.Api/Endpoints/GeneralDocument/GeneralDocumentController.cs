@@ -1,10 +1,12 @@
-﻿using NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments;
+﻿using Asp.Versioning;
+using NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.GeneralDocument;
 
 [ApiController]
 [Route("api/general-documents")]
+[ApiVersion(1)]
 public class GeneralDocumentController : ControllerBase
 {
     /// <summary>

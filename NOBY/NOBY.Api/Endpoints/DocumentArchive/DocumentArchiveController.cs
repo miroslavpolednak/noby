@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.gRPC;
+﻿using Asp.Versioning;
+using CIS.Infrastructure.gRPC;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
@@ -11,6 +12,7 @@ namespace NOBY.Api.Endpoints.DocumentArchive;
 
 [ApiController]
 [Route("api")]
+[ApiVersion(1)]
 public class DocumentArchiveController : ControllerBase
 {
     private readonly IMediator _mediator;

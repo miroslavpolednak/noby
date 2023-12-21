@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.HttpLogging;
 using CIS.Infrastructure.WebApi;
 using NOBY.Infrastructure.Configuration;
 using SharedAudit;
-using Microsoft.FeatureManagement;
-using SharedTypes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +30,9 @@ try
         .AddCisLogging()
         .AddCisAudit()
         .AddCisTracing()
+        .AddCisApiVersioning()
         .AddCisHealthChecks();
+
     builder.Services.AddCisSecurityHeaders();
 
     // add .NET logging
@@ -110,7 +110,8 @@ try
     // swagger
     if (!envConfiguration.DisableContractDescriptionPropagation)
     {
-        app.UseNobySwagger();
+        var descriptions = app.DescribeApiVersions();
+        app.UseNobySwagger(descriptions);
     }
 
     log.ApplicationRun();

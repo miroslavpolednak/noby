@@ -1,4 +1,5 @@
-﻿using SharedTypes.Enums;
+﻿using Asp.Versioning;
+using SharedTypes.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
@@ -7,6 +8,7 @@ namespace NOBY.Api.Endpoints.RealEstateValuation;
 
 [ApiController]
 [Route("api/case")]
+[ApiVersion(1)]
 public sealed class RealEstateValuationController : ControllerBase
 {
     /// <summary>

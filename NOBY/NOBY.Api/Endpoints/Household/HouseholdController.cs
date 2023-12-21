@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using Asp.Versioning;
+using DomainServices.SalesArrangementService.Contracts;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Household;
@@ -8,6 +9,7 @@ namespace NOBY.Api.Endpoints.Household;
 /// </summary>
 [ApiController]
 [Route("api")]
+[ApiVersion(1)]
 public class HouseholdController : ControllerBase
 {
     /// <summary>
