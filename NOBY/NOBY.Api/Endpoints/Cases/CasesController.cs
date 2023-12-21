@@ -1,10 +1,12 @@
-﻿using NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
+﻿using Asp.Versioning;
+using NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Cases;
 
 [ApiController]
 [Route("api/case")]
+[ApiVersion(1)]
 public class CasesController : ControllerBase
 {
     private readonly IMediator _mediator;

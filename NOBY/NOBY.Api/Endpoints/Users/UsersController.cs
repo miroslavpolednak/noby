@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NOBY.Api.Endpoints.Users;
 
 [ApiController]
 [Route("api")]
+[ApiVersion(1)]
 public class UsersController : ControllerBase
 {
     private readonly IMediator _mediator;

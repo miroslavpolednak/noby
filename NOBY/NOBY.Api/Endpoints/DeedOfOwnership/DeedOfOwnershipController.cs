@@ -1,10 +1,12 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using Asp.Versioning;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
 
 namespace NOBY.Api.Endpoints.DeedOfOwnership;
 
 [ApiController]
 [Route("api/deed-of-ownership")]
+[ApiVersion(1)]
 public sealed class DeedOfOwnershipController : ControllerBase
 {
     /// <summary>

@@ -12,11 +12,13 @@ using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
 using NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAStatus;
+using Asp.Versioning;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 [ApiController]
 [Route("api")]
+[ApiVersion(1)]
 public class DocumentOnSAController : ControllerBase
 {
     private readonly IMediator _mediator;

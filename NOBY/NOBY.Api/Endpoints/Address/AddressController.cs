@@ -1,9 +1,11 @@
 ﻿using System.Net.Mime;
+using Asp.Versioning;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Address;
 
 [ApiController]
+[ApiVersion(1)]
 [Route("api")]
 public class AddressController : ControllerBase
 {
