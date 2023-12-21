@@ -17,7 +17,7 @@ internal sealed class CisBackgroundService<TBackgroundService>
     private readonly string _serviceName;
 
     /// <summary>
-    /// [s]
+    /// [s] // Time for getting job lock, if job in not capable get applock in this time, job gonna be terminated (SqlException with message Execution Timeout Expired)
     /// </summary>
     const int _technicalTimeout = 2;
     const string _lockMode = "Exclusive";
@@ -41,8 +41,6 @@ internal sealed class CisBackgroundService<TBackgroundService>
         // log cron settings
         logServiceRegistered();
 
-        // Time for getting job lock, if job in not capable get applock in this time, job gonna be terminated (SqlException with message Execution Timeout Expired)
-        SqlMapper.Settings.CommandTimeout = _technicalTimeout; //[s] 
     }
 
     public string? ConnectionString { get; set; }
@@ -112,7 +110,8 @@ internal sealed class CisBackgroundService<TBackgroundService>
         var result = await connection.QueryFirstOrDefaultAsync<int>(
             "sp_getapplock",
             new { Resource = resource, LockMode = lockMode, LockOwner = lockOwner },
-            commandType: CommandType.StoredProcedure);
+            commandType: CommandType.StoredProcedure,
+            commandTimeout: _technicalTimeout);
 
         if (result < 0)
         {
