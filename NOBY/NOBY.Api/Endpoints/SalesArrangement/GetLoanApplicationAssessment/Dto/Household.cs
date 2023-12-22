@@ -5,12 +5,17 @@ public sealed class Household
     /// <summary>
     /// ID domácnosti
     /// </summary>
-    public long? HouseholdId { get; set; }
+    public long HouseholdId { get; set; }
+
+    /// <summary>
+    /// Typ domácnosti
+    /// </summary>
+    public int HouseholdTypeId { get; set; }
 
     /// <summary>
     /// Risková data
     /// </summary>
-    public HouseholdRisk Risk { get; set; } = null!;
+    public HouseholdRisk? Risk { get; set; } = null!;
 
     /// <summary>
     /// Závazky

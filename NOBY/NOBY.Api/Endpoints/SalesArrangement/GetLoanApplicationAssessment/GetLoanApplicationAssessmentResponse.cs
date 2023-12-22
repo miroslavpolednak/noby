@@ -22,7 +22,7 @@ public class GetLoanApplicationAssessmentResponse
     /// <summary>
     /// Domácnosti
     /// </summary>
-    public List<Dto.Household>? Households { get; set; }
+    public List<Dto.Household> Households { get; set; } = null!;
 
     public bool DisplayAssessmentResultInfoText { get; set; }
 }

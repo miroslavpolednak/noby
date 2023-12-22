@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto;
+﻿using NOBY.Dto;
+
+namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto;
 
 public sealed class HouseholdObligationItem
 {
@@ -57,7 +59,7 @@ public sealed class HouseholdObligationItem
     /// <summary>
     /// Závazek FOP
     /// </summary>
-    public bool ZavazekFOP { get; set; }
+    public PersonKinds PersonKind { get; set; }
 
     public List<string>? Codebtors { get; set; }
 
@@ -69,12 +71,12 @@ public sealed class HouseholdObligationItem
     /// <summary>
     /// Vyčerpaná částka
     /// </summary>
-    public int DrawingAmount { get; set; }
+    public decimal? DrawingAmount { get; set; }
 
     /// <summary>
     /// Číslo  úvěrového účtu
     /// </summary>
-    public string? BankAccount { get; set; }
+    public BankAccount? BankAccount { get; set; }
 
     /// <summary>
     /// Datum poskytnutí
@@ -93,10 +95,24 @@ public sealed class HouseholdObligationItem
 
     public sealed class Amount
     {
+        public static Amount? Create(decimal? value, string? currencyCode = null)
+        {
+            if (!value.HasValue)
+            {
+                return null;
+            }
+
+            return new Amount
+            {
+                Value = value.Value,
+                CurrencyCode = currencyCode ?? "CZK"
+            };
+        }
+
         /// <summary>
         /// Částka před korekcí
         /// </summary>
-        public int Value { get; set; }
+        public decimal Value { get; set; }
 
         /// <summary>
         /// Částka po korekci
@@ -110,3 +126,8 @@ public sealed class HouseholdObligationItem
     }
 }
 
+public enum PersonKinds
+{
+    NaturalPerson = 1,
+    JuridicalPerson = 2
+}
