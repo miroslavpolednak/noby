@@ -43,7 +43,8 @@ internal sealed class GetLoanApplicationAssessmentResultService
             Application = assessment.ToLoanApplicationApiResponse(offer),
             Reasons = assessment.ToReasonsApiResponse(),
             Households = new(households.Count),
-            DisplayAssessmentResultInfoText = assessment.GetDisplayAssessmentResultInfoTextToReasonsApiResponse(customers, obligations)
+            DisplayAssessmentResultInfoText = assessment.GetDisplayAssessmentResultInfoTextToReasonsApiResponse(customers, obligations),
+            DisplayWarningExposureDoesNotWork = exposure is null
         };
 
         // vytvoreni response - households

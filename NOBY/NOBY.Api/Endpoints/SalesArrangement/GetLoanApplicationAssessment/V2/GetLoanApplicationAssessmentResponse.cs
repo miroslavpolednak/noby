@@ -26,5 +26,8 @@ public class GetLoanApplicationAssessmentResponse
 
     public bool DisplayAssessmentResultInfoText { get; set; }
 
+    /// <summary>
+    /// Informace o tom, zda bylo možné provolat C4M Exposure endpoint. (True=služba Exposure je nedostupná/nepodařilo se jí provolat)
+    /// </summary>
     public bool DisplayWarningExposureDoesNotWork { get; set; }
 }
