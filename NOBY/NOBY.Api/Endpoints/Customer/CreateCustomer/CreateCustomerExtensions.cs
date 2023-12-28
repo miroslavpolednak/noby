@@ -125,7 +125,7 @@ internal static class CreateCustomerExtensions
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (SharedTypes.Types.Address)t!).ToList(),
             Contacts = new(),
-            LegalCapacity = customer.NaturalPerson?.LegalCapacity is null ? null : new Shared.LegalCapacityItem
+            LegalCapacity = customer.NaturalPerson?.LegalCapacity is null ? null : new SharedDto.LegalCapacityItem
             {
                 RestrictionTypeId = customer.NaturalPerson.LegalCapacity.RestrictionTypeId,
                 RestrictionUntil = customer.NaturalPerson.LegalCapacity.RestrictionUntil

@@ -1,12 +1,12 @@
 ﻿using DomainServices.OfferService.Clients;
-using NOBY.Api.Endpoints.Offer.Dto;
+using NOBY.Api.Endpoints.Offer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Offer.GetFullPaymentScheduleByOfferId;
 
 internal sealed class GetFullPaymentScheduleByOfferIdHandler
-    : IRequestHandler<GetFullPaymentScheduleByOfferIdRequest, Dto.GetFullPaymentScheduleResponse>
+    : IRequestHandler<GetFullPaymentScheduleByOfferIdRequest, SharedDto.GetFullPaymentScheduleResponse>
 {
-    public async Task<Dto.GetFullPaymentScheduleResponse> Handle(GetFullPaymentScheduleByOfferIdRequest request, CancellationToken cancellationToken)
+    public async Task<SharedDto.GetFullPaymentScheduleResponse> Handle(GetFullPaymentScheduleByOfferIdRequest request, CancellationToken cancellationToken)
     {
         try
         {

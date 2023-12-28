@@ -39,9 +39,9 @@ public class OfferController : ControllerBase
     [HttpGet("mortgage/sales-arrangement/{salesArrangementId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Modelace" })]
-    [ProducesResponseType(typeof(Dto.GetMortgageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SharedDto.GetMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Dto.GetMortgageResponse> GetMortgageBySalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<SharedDto.GetMortgageResponse> GetMortgageBySalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageBySalesArrangement.GetMortgageBySalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
@@ -93,10 +93,10 @@ public class OfferController : ControllerBase
     [HttpGet("mortgage/{offerId:int}/full-payment-schedule")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Modelace" })]
-    [ProducesResponseType(typeof(Dto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SharedDto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Dto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
+    public async Task<SharedDto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);
 
     /// <summary>

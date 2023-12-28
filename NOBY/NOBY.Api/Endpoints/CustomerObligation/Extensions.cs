@@ -2,9 +2,9 @@
 
 internal static class Extensions
 {
-    public static Dto.ObligationFullDto ToApiResponse(this DomainServices.HouseholdService.Contracts.Obligation obligationInstance)
+    public static SharedDto.ObligationFullDto ToApiResponse(this DomainServices.HouseholdService.Contracts.Obligation obligationInstance)
     {
-        var model = new Dto.ObligationFullDto
+        var model = new SharedDto.ObligationFullDto
         {
             CustomerOnSAId = obligationInstance.CustomerOnSAId,
             ObligationState = obligationInstance.ObligationState,
@@ -16,7 +16,7 @@ internal static class Extensions
             AmountConsolidated = obligationInstance.AmountConsolidated
         };
         if (obligationInstance.Correction is not null)
-            model.Correction = new Dto.ObligationCorrectionDto
+            model.Correction = new SharedDto.ObligationCorrectionDto
             {
                 CorrectionTypeId = obligationInstance.Correction.CorrectionTypeId,
                 CreditCardLimitCorrection = obligationInstance.Correction.CreditCardLimitCorrection,
@@ -24,7 +24,7 @@ internal static class Extensions
                 LoanPrincipalAmountCorrection = obligationInstance.Correction.LoanPrincipalAmountCorrection
             };
         if (obligationInstance.Creditor is not null)
-            model.Creditor = new Dto.ObligationCreditorDto
+            model.Creditor = new SharedDto.ObligationCreditorDto
             {
                 CreditorId = obligationInstance.Creditor.CreditorId,
                 IsExternal = obligationInstance.Creditor.IsExternal,

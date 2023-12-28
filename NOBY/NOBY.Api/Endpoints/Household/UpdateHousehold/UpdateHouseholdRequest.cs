@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using NOBY.Api.Endpoints.Household.Dto;
+using NOBY.Api.Endpoints.Household.SharedDto;
 
 namespace NOBY.Api.Endpoints.Household.UpdateHousehold;
 

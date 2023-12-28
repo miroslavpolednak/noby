@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using NOBY.Api.Endpoints.Customer.Shared;
+using NOBY.Api.Endpoints.Customer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 

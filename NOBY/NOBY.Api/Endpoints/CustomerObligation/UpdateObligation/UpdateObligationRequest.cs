@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.CustomerObligation.UpdateObligation;
 
 public sealed class UpdateObligationRequest
-    : Dto.ObligationDto, IRequest
+    : SharedDto.ObligationDto, IRequest
 {
     [JsonIgnore]
     public int ObligationId { get; set; }

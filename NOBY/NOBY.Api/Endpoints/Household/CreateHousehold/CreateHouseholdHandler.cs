@@ -8,9 +8,9 @@ using _HO = DomainServices.HouseholdService.Contracts;
 namespace NOBY.Api.Endpoints.Household.CreateHousehold;
 
 internal sealed class CreateHouseholdHandler
-    : IRequestHandler<CreateHouseholdRequest, Dto.HouseholdInList>
+    : IRequestHandler<CreateHouseholdRequest, SharedDto.HouseholdInList>
 {
-    public async Task<Dto.HouseholdInList> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
+    public async Task<SharedDto.HouseholdInList> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         if (!saInstance.IsProductSalesArrangement() && !request.HardCreate)
@@ -60,7 +60,7 @@ internal sealed class CreateHouseholdHandler
         // ulozit flow switches
         await _flowSwitchManager.SaveFlowSwitches(request.SalesArrangementId, cancellationToken);
 
-        return new Dto.HouseholdInList
+        return new SharedDto.HouseholdInList
         {
             HouseholdId = householdId,
             HouseholdTypeId = request.HouseholdTypeId,

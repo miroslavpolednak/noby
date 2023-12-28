@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
-using NOBY.Api.Endpoints.CustomerIncome.Dto;
+using NOBY.Api.Endpoints.CustomerIncome.SharedDto;
 using NOBY.Dto.Attributes;
 
 namespace NOBY.Api.Endpoints.CustomerIncome.CreateIncome;
 
 public sealed class CreateIncomeRequest
-    : Dto.BaseIncome, IRequest<int>
+    : SharedDto.BaseIncome, IRequest<int>
 {
     [JsonIgnore]
     internal int? CustomerOnSAId;

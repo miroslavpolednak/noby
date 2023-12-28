@@ -14,7 +14,7 @@ using DomainServices.UserService.Clients;
 using FastEnumUtility;
 using Google.Protobuf;
 using NOBY.Api.Endpoints.Document.GeneralDocument;
-using NOBY.Api.Endpoints.Document.Shared;
+using NOBY.Api.Endpoints.Document.SharedDto;
 using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.Cases.CancelCase;

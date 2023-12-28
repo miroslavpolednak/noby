@@ -1,10 +1,10 @@
-﻿using NOBY.Api.Endpoints.CustomerIncome.Dto;
+﻿using NOBY.Api.Endpoints.CustomerIncome.SharedDto;
 using NOBY.Dto.Attributes;
 
 namespace NOBY.Api.Endpoints.CustomerIncome.GetIncome;
 
 public sealed class GetIncomeResponse
-    : Dto.BaseIncome
+    : SharedDto.BaseIncome
 {
     /// <summary>
     /// Druh prijmu

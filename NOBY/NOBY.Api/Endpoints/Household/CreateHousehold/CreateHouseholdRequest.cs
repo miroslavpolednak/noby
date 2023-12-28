@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Household.CreateHousehold;
 
 public class CreateHouseholdRequest
-    : IRequest<Dto.HouseholdInList>
+    : IRequest<SharedDto.HouseholdInList>
 {
     [JsonIgnore]
     internal int SalesArrangementId { get; set; }

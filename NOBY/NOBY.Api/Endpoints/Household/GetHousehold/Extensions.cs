@@ -26,7 +26,7 @@ internal static class Extensions
             RoleId = model.CustomerRoleId,
             MaritalStatusId = model.MaritalStatusId,
             LockedIncomeDateTime = model.LockedIncomeDateTime,
-            Incomes = model.Incomes is null ? null : model.Incomes.Select(x => new CustomerIncome.Dto.IncomeBaseData
+            Incomes = model.Incomes is null ? null : model.Incomes.Select(x => new CustomerIncome.SharedDto.IncomeBaseData
             {
                 Sum = x.Sum,
                 CurrencyCode = x.CurrencyCode,
@@ -38,8 +38,8 @@ internal static class Extensions
             Obligations = model.Obligations is null ? null : model.Obligations.Select(x => x.ToApiResponse()).ToList()
         };
 
-    static Dto.HouseholdExpenses? mapExpenses(this __Contracts.Expenses model)
-        => new Dto.HouseholdExpenses()
+    static SharedDto.HouseholdExpenses? mapExpenses(this __Contracts.Expenses model)
+        => new SharedDto.HouseholdExpenses()
             {
                 InsuranceExpenseAmount = model.InsuranceExpenseAmount,
                 SavingExpenseAmount = model.SavingExpenseAmount,
@@ -47,8 +47,8 @@ internal static class Extensions
                 OtherExpenseAmount = model.OtherExpenseAmount
             };
 
-    static Dto.HouseholdData? mapData(this __Contracts.HouseholdData model)
-        => new Dto.HouseholdData()
+    static SharedDto.HouseholdData? mapData(this __Contracts.HouseholdData model)
+        => new SharedDto.HouseholdData()
             {
                 AreBothPartnersDeptors = model.AreBothPartnersDeptors,
                 PropertySettlementId = model.PropertySettlementId,

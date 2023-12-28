@@ -1,7 +1,7 @@
 ﻿namespace NOBY.Api.Endpoints.Household.UpdateCustomers.Dto;
 
 public class CustomerDto 
-    : Endpoints.Household.Dto.BaseCustomer
+    : Endpoints.Household.SharedDto.BaseCustomer
 {
     /// <summary>
     /// Příznak zamknutí příjmů daného CustomerOnSA

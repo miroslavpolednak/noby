@@ -10,5 +10,5 @@ public sealed class SearchCasesResponse
     /// <summary>
     /// Kolekce nalezenych Case-s.
     /// </summary>
-    public List<Dto.CaseModel>? Rows { get; set; }
+    public List<SharedDto.CaseModel>? Rows { get; set; }
 }

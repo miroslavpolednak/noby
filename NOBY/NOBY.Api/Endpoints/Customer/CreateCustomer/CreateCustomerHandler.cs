@@ -9,7 +9,7 @@ using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using Mandants = SharedTypes.GrpcTypes.Mandants;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using NOBY.Api.Endpoints.Customer.Shared;
+using NOBY.Api.Endpoints.Customer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
