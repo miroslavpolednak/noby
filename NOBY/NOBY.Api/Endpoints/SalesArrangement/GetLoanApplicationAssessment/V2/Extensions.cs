@@ -4,7 +4,7 @@ using cOffer = DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
+namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2;
 
 internal static class Extensions
 {
@@ -208,8 +208,8 @@ internal static class Extensions
             LoanPaymentAmount = offer?.SimulationResults?.LoanPaymentAmount,
         };
 
-    public static HouseholdRisk ToHouseholdRiskApiResponse(this cRS.V1.LoanApplicationAssessmentHouseholdDetail household)
-        => new HouseholdRisk
+    public static Dto.HouseholdRisk ToHouseholdRiskApiResponse(this cRS.V1.LoanApplicationAssessmentHouseholdDetail household)
+        => new Dto.HouseholdRisk
         {
             MonthlyIncome = household.Detail?.RiskCharacteristics?.MonthlyIncome?.Amount,
             MonthlyCostsWithoutInstallments = household.Detail?.RiskCharacteristics?.MonthlyCostsWithoutInstallments?.Amount,

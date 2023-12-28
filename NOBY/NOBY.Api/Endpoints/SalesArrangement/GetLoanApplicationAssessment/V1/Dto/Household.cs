@@ -1,7 +1,12 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto;
+﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V1.Dto;
 
-public sealed class HouseholdRisk
+public class Household
 {
+    /// <summary>
+    /// ID domácnosti
+    /// </summary>
+    public long? HouseholdId { get; set; }
+
     /// <summary>
     /// Limit výše úvěru
     /// </summary>

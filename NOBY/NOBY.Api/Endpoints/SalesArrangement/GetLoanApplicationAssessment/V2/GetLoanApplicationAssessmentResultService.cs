@@ -6,9 +6,8 @@ using DomainServices.OfferService.Contracts;
 using DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 using DomainServices.UserService.Clients;
-using System.Collections.Generic;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
+namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2;
 
 [ScopedService, SelfService]
 internal sealed class GetLoanApplicationAssessmentResultService

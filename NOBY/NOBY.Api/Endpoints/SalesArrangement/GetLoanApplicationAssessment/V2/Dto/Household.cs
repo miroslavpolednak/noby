@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto;
+﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto;
 
 public sealed class Household
 {

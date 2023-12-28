@@ -1,6 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetComment;
 

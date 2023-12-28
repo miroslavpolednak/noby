@@ -5,7 +5,7 @@ using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 using DomainServices.UserService.Clients;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
+namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2;
 
 internal sealed class GetLoanApplicationAssessmentHandler
     : IRequestHandler<GetLoanApplicationAssessmentRequest, GetLoanApplicationAssessmentResponse>

@@ -3,20 +3,20 @@
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomers;
 
 internal sealed class GetCustomersHandler
-    : IRequestHandler<GetCustomersRequest, List<Dto.CustomerListItem>>
+    : IRequestHandler<GetCustomersRequest, List<SharedDto.CustomerListItem>>
 {
     //TODO tohle se bude nejspis cele predelavat, nema smysl to moc resit
-    public async Task<List<Dto.CustomerListItem>> Handle(GetCustomersRequest request, CancellationToken cancellationToken)
+    public async Task<List<SharedDto.CustomerListItem>> Handle(GetCustomersRequest request, CancellationToken cancellationToken)
     {
         // najit existujici customeryOnSA
         var customersOnSA = await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken);
 
-        List<Dto.CustomerListItem> model = new();
+        List<SharedDto.CustomerListItem> model = new();
         
         //TODO idealne natahnout z customerService vsechny najednou?
         foreach (var t in customersOnSA)
         {
-            var c = new Dto.CustomerListItem()
+            var c = new SharedDto.CustomerListItem()
             {
                 Id = t.CustomerOnSAId,
                 FirstName = t.FirstNameNaturalPerson,

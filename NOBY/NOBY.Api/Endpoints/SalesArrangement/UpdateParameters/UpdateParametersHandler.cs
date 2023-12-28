@@ -3,7 +3,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using _dto = NOBY.Api.Endpoints.SalesArrangement.Dto;
+using _dto = NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using FastEnumUtility;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;

@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.Dto;
+﻿namespace NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 
 /// <summary>
 /// Účel úvěru

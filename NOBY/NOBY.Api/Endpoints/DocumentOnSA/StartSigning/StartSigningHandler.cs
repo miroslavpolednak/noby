@@ -9,7 +9,7 @@ using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
-using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using _DocOnSA = DomainServices.DocumentOnSAService.Contracts;
 using ValidateSalesArrangementRequest = NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement.ValidateSalesArrangementRequest;
 using NOBY.Api.Extensions;

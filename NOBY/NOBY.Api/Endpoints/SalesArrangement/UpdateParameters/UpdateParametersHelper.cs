@@ -3,7 +3,7 @@ using DomainServices.ProductService.Clients;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 using System.Text.Json;
 using CIS.Core.Attributes;
-using _dto = NOBY.Api.Endpoints.SalesArrangement.Dto;
+using _dto = NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 
 #pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 
