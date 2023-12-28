@@ -64,21 +64,29 @@ internal sealed class GetLoanApplicationAssessmentHandler
         return await _riskBusinessCaseService.GetAssessment(assessmentRequest, cancellationToken);
     }
 
-    private async Task<CustomerExposureCalculateResponse> getExposure(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, CancellationToken cancellationToken)
+    private async Task<CustomerExposureCalculateResponse?> getExposure(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, CancellationToken cancellationToken)
     {
         var user = await _userService.GetUser(_currentUser.User!.Id, cancellationToken);
-        
-        return await _customerExposureService.Calculate(new DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2.CustomerExposureCalculateRequest
+
+        // exposure muze selhat...
+        try
         {
-            LoanApplicationDataVersion = saInstance.LoanApplicationDataVersion,
-            SalesArrangementId = saInstance.SalesArrangementId,
-            RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
-            UserIdentity = new DomainServices.RiskIntegrationService.Contracts.Shared.Identity
+            return await _customerExposureService.Calculate(new CustomerExposureCalculateRequest
             {
-                IdentityId = user.UserIdentifiers[0].Identity,
-                IdentityScheme = user.UserIdentifiers[0].IdentityScheme.ToString()
-            }
-        }, cancellationToken);
+                LoanApplicationDataVersion = saInstance.LoanApplicationDataVersion,
+                SalesArrangementId = saInstance.SalesArrangementId,
+                RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
+                UserIdentity = new DomainServices.RiskIntegrationService.Contracts.Shared.Identity
+                {
+                    IdentityId = user.UserIdentifiers[0].Identity,
+                    IdentityScheme = user.UserIdentifiers[0].IdentityScheme.ToString()
+                }
+            }, cancellationToken);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     private async Task createNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, GetMortgageOfferResponse offer, CancellationToken cancellationToken)

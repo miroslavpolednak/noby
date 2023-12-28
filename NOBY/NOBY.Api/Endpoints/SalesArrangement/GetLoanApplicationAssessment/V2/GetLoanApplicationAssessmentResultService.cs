@@ -15,7 +15,7 @@ internal sealed class GetLoanApplicationAssessmentResultService
     public async Task<GetLoanApplicationAssessmentResponse> CreateResult(
         int salesArrangementId,
         LoanApplicationAssessmentResponse assessment,
-        CustomerExposureCalculateResponse exposure,
+        CustomerExposureCalculateResponse? exposure,
         GetMortgageOfferResponse offer,
         CancellationToken cancellationToken)
     {
@@ -78,10 +78,10 @@ internal sealed class GetLoanApplicationAssessmentResultService
     private Dto.HouseholdCustomerObligations getCustomer(
         CustomerOnSA customer,
         List<Obligation> obligations,
-        CustomerExposureCalculateResponse exposure, 
+        CustomerExposureCalculateResponse? exposure, 
         List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes)
     {
-        var customerExposure = exposure.Customers?.FirstOrDefault(t => t.InternalCustomerId == customer.CustomerOnSAId);
+        var customerExposure = exposure?.Customers?.FirstOrDefault(t => t.InternalCustomerId == customer.CustomerOnSAId);
 
         Dto.HouseholdCustomerObligations obligationCustomer = new()
         {
@@ -89,14 +89,23 @@ internal sealed class GetLoanApplicationAssessmentResultService
             FirstName = customer.FirstNameNaturalPerson,
             LastName = customer.Name,
             RoleId = (CustomerRoles)customer.CustomerRoleId,
-            ExistingObligations = getExistingObligations(customerExposure, obligationTypes, obligations)
+            
         };
 
-        if (_currentUser.HasPermission(UserPermissions.CLIENT_EXPOSURE_DisplayRequestedExposure))
+        if (exposure is null)
         {
-            obligationCustomer.RequestedObligations = getRequestedObligations(customerExposure, obligationTypes);
+            obligationCustomer.ExistingObligations = obligations.CreateHouseholdObligations(obligationTypes).OrderBy(t => t.ObligationTypeOrder).ToList();
         }
+        else
+        {
+            obligationCustomer.ExistingObligations = getExistingObligations(customerExposure, obligationTypes, obligations);
 
+            if (_currentUser.HasPermission(UserPermissions.CLIENT_EXPOSURE_DisplayRequestedExposure))
+            {
+                obligationCustomer.RequestedObligations = getRequestedObligations(customerExposure, obligationTypes);
+            }
+        }
+        
         return obligationCustomer;
     }
 
@@ -154,7 +163,7 @@ internal sealed class GetLoanApplicationAssessmentResultService
         // zavazky NOBY
         obligations.AddRange(nobyObligations.CreateHouseholdObligations(obligationTypes));
 
-        return obligations.OrderBy(t => t.ObligationTypeOrder).ToList();
+        return obligations.OrderBy(t => t.ObligationSourceId).ThenBy(t => t.ObligationTypeOrder).ToList();
     }
 
     private readonly ICurrentUserAccessor _currentUser;

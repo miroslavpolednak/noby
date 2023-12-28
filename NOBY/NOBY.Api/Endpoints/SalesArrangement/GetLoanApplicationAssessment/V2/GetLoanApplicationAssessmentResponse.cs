@@ -25,4 +25,6 @@ public class GetLoanApplicationAssessmentResponse
     public List<Dto.Household> Households { get; set; } = null!;
 
     public bool DisplayAssessmentResultInfoText { get; set; }
+
+    public bool DisplayWarningExposureDoesNotWork { get; set; }
 }
