@@ -40,5 +40,8 @@ public enum UserPermissions : int
     WFL_TASK_DETAIL_SigningView = 235,
     WFL_TASK_CreateAndCancel = 236,
     DOCUMENT_SIGNING_Manage = 237,
-    DOCUMENT_SIGNING_DownloadWorkflowDocument = 238
+    DOCUMENT_SIGNING_DownloadWorkflowDocument = 238,
+    CLIENT_EXPOSURE_Perform = 239,
+    CLIENT_EXPOSURE_DisplayRequestedExposure = 240,
+    WFL_TASK_DETAIL_RetentionManage = 241
 }

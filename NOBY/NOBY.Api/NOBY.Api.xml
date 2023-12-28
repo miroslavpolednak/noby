@@ -3188,12 +3188,17 @@
             ID domácnosti
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.HouseholdTypeId">
+            <summary>
+            Typ domácnosti
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.Risk">
             <summary>
             Risková data
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.CustomerObligations">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.Household.Customers">
             <summary>
             Závazky
             </summary>
@@ -3240,7 +3245,7 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.ObligationSourceId">
             <summary>
-            Stav závazku
+            Stav závazku. 1=NOBY, 2=C4M
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.CreditorName">
@@ -3278,7 +3283,7 @@
             Kategorie závazku - název
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.ZavazekFOP">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto.HouseholdObligationItem.PersonKind">
             <summary>
             Závazek FOP
             </summary>

@@ -20,5 +20,5 @@ public sealed class Household
     /// <summary>
     /// Závazky
     /// </summary>
-    public List<HouseholdCustomerObligations>? CustomerObligations { get; set; }
+    public List<HouseholdCustomerObligations>? Customers { get; set; }
 }

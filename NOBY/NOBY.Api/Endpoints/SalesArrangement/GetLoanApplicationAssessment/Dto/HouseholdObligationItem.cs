@@ -1,9 +1,13 @@
 ﻿using NOBY.Dto;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto;
 
 public sealed class HouseholdObligationItem
 {
+    [JsonIgnore]
+    internal int ObligationTypeOrder;
+
     public int Id { get; set; }
 
     /// <summary>
@@ -17,7 +21,7 @@ public sealed class HouseholdObligationItem
     public string ObligationTypeName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Stav závazku
+    /// Stav závazku. 1=NOBY, 2=C4M
     /// </summary>
     public int ObligationSourceId { get; set; }
 
@@ -109,6 +113,21 @@ public sealed class HouseholdObligationItem
             };
         }
 
+        public static Amount? Create(decimal? value, decimal? correction)
+        {
+            if (!value.HasValue)
+            {
+                return null;
+            }
+
+            return new Amount
+            {
+                Value = value.Value,
+                Correction = correction.HasValue ? value.Value - correction.Value : null,
+                CurrencyCode = "CZK"
+            };
+        }
+
         /// <summary>
         /// Částka před korekcí
         /// </summary>
@@ -117,7 +136,7 @@ public sealed class HouseholdObligationItem
         /// <summary>
         /// Částka po korekci
         /// </summary>
-        public int? Correction { get; set; }
+        public decimal? Correction { get; set; }
 
         /// <summary>
         /// Kód měny

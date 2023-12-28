@@ -17,7 +17,7 @@ internal static class Extensions
     {
         return items.Select(t =>
         {
-            var item = Extensions.CreateHouseholdItem(
+            var item = CreateHouseholdItem(
                 2,
                 obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
                 _creditorNameKB,
@@ -34,7 +34,7 @@ internal static class Extensions
     {
         return items.Select(t =>
             {
-                var item = Extensions.CreateHouseholdItem(
+                var item = CreateHouseholdItem(
                     2,
                     obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
                     _creditorNameJPU,
@@ -53,7 +53,7 @@ internal static class Extensions
     {
         return items.Select(t =>
             {
-                var item = Extensions.CreateHouseholdItem(
+                var item = CreateHouseholdItem(
                     2,
                     obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
                     _creditorNameKB,
@@ -77,28 +77,53 @@ internal static class Extensions
     }
 
     public static List<Dto.HouseholdObligationItem> CreateHouseholdObligations(
-        this List<CustomerExposureExistingCBCBItem> items,
+        this List<DomainServices.HouseholdService.Contracts.Obligation> items,
         List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes)
     {
         return items.Select(t =>
             {
-                var item = Extensions.CreateHouseholdItem(
-                    2,
-                    obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
-                    _creditorNameJPU,
-                    t.LoanTypeCategory,
-                    t.InstallmentAmount,
-                    t.ExposureAmount,
-                    t.ContractDate,
-                    t.MaturityDate);
-                item.KbGroupInstanceCode = t.KbGroupInstanceCode;
-                item.CbcbDataLastUpdate = t.CbcbDataLastUpdate;
-                return item;
+                var obligationType = obligationTypes.First(x => x.Id == t.ObligationTypeId);
+                bool isLimit = obligationType?.ObligationProperty.Equals("limit", StringComparison.OrdinalIgnoreCase) ?? false;
+
+                return new Dto.HouseholdObligationItem
+                {
+                    ObligationTypeOrder = obligationType?.Order ?? 0,
+                    ObligationSourceId = 1,
+                    PersonKind = Dto.PersonKinds.NaturalPerson,
+                    ObligationTypeId = obligationType?.Id ?? 0,
+                    ObligationTypeName = obligationType?.Name ?? "Neznázmý",
+                    LoanPrincipalAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(t.LoanPrincipalAmount, t.Correction?.LoanPrincipalAmountCorrection),
+                    InstallmentAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(t.InstallmentAmount, t.Correction?.InstallmentAmountCorrection),
+                    CreditCardLimit = !isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(t.CreditCardLimit, t.Correction?.CreditCardLimitCorrection),
+                    CreditorName = t.Creditor?.IsExternal ?? false ? _creditorNameJPU : _creditorNameKB,
+                };
             })
             .ToList();
     }
 
-    public static Dto.HouseholdObligationItem CreateHouseholdItem(
+    public static List<Dto.HouseholdObligationItem> CreateHouseholdObligations(
+        this List<CustomerExposureExistingCBCBItem> items,
+        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes)
+    {
+        return items.Select(t =>
+        {
+            var item = CreateHouseholdItem(
+                2,
+                obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
+                _creditorNameJPU,
+                t.LoanTypeCategory,
+                t.InstallmentAmount,
+                t.ExposureAmount,
+                t.ContractDate,
+                t.MaturityDate);
+            item.KbGroupInstanceCode = t.KbGroupInstanceCode;
+            item.CbcbDataLastUpdate = t.CbcbDataLastUpdate;
+            return item;
+        })
+            .ToList();
+    }
+
+    private static Dto.HouseholdObligationItem CreateHouseholdItem(
         in int sourceId,
         ObligationTypesResponse.Types.ObligationTypeItem? obligationType,
         in string creditorName,
@@ -109,9 +134,10 @@ internal static class Extensions
         in DateTime? maturityDate = null)
     {
         bool isLimit = obligationType?.ObligationProperty.Equals("limit", StringComparison.OrdinalIgnoreCase) ?? false;
-
+        
         return new Dto.HouseholdObligationItem
         {
+            ObligationTypeOrder = obligationType?.Order ?? 0,
             ObligationSourceId = sourceId,
             PersonKind = Dto.PersonKinds.NaturalPerson,
             ObligationTypeId = obligationType?.Id ?? 0,
@@ -123,7 +149,7 @@ internal static class Extensions
             CreditorName = creditorName,
             ContractDate = contractDate,
             MaturityDate = maturityDate
-    };
+        };
     }
 
     public static bool GetDisplayAssessmentResultInfoTextToReasonsApiResponse(
