@@ -1,4 +1,4 @@
-﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
+﻿using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using NOBY.Dto.Attributes;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement;

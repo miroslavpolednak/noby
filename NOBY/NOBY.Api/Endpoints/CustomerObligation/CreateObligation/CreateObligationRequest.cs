@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.CustomerObligation.CreateObligation;
 
 public sealed class CreateObligationRequest
-    : Dto.ObligationDto, IRequest<int>
+    : SharedDto.ObligationDto, IRequest<int>
 {
     [JsonIgnore]
     internal int? CustomerOnSAId;

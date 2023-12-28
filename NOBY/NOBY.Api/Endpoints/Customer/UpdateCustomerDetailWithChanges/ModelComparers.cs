@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using KellermanSoftware.CompareNetObjects;
-using NOBY.Api.Endpoints.Customer.Shared;
+using NOBY.Api.Endpoints.Customer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 

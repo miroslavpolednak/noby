@@ -7,9 +7,9 @@ using SharedTypes.Enums;
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangements;
 
 internal sealed class GetSalesArrangementsHandler
-    : IRequestHandler<GetSalesArrangementsRequest, List<Dto.SalesArrangementListItem>>
+    : IRequestHandler<GetSalesArrangementsRequest, List<SharedDto.SalesArrangementListItem>>
 {
-    public async Task<List<Dto.SalesArrangementListItem>> Handle(GetSalesArrangementsRequest request, CancellationToken cancellationToken)
+    public async Task<List<SharedDto.SalesArrangementListItem>> Handle(GetSalesArrangementsRequest request, CancellationToken cancellationToken)
     {
         var result = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken);
 
@@ -19,7 +19,7 @@ internal sealed class GetSalesArrangementsHandler
 
         var model = result.SalesArrangements
             .Where(t => t.State != (int)SalesArrangementStates.NewArrangement)
-            .Select(t => new Dto.SalesArrangementListItem
+            .Select(t => new SharedDto.SalesArrangementListItem
             {
                 SalesArrangementId = t.SalesArrangementId,
                 SalesArrangementTypeId = t.SalesArrangementTypeId,

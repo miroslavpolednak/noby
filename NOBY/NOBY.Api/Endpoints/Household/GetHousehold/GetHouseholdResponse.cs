@@ -16,12 +16,12 @@ public class GetHouseholdResponse
     /// <summary>
     /// Sekce Ostatni parametry
     /// </summary>
-    public Dto.HouseholdData? Data { get; set; }
+    public SharedDto.HouseholdData? Data { get; set; }
 
     /// <summary>
     /// Sekce Vydaje domacnosti
     /// </summary>
-    public Dto.HouseholdExpenses? Expenses { get; set; }
+    public SharedDto.HouseholdExpenses? Expenses { get; set; }
 
     /// <summary>
     /// Klient 1= sef domacnosti

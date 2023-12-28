@@ -1,9 +1,9 @@
 ﻿namespace NOBY.Api.Endpoints.Cases.GetCaseById;
 
 internal sealed class GetCaseByIdHandler
-    : IRequestHandler<GetCaseByIdRequest, Dto.CaseModel>
+    : IRequestHandler<GetCaseByIdRequest, SharedDto.CaseModel>
 {
-    public async Task<Dto.CaseModel> Handle(GetCaseByIdRequest request, CancellationToken cancellationToken)
+    public async Task<SharedDto.CaseModel> Handle(GetCaseByIdRequest request, CancellationToken cancellationToken)
     {
         DomainServices.CaseService.Contracts.Case? caseInstance = null;
 
@@ -22,7 +22,7 @@ internal sealed class GetCaseByIdHandler
         
         // case owner
         var userInstance = await _userService.GetUser(caseInstance!.CaseOwner.UserId, cancellationToken);
-        model.CaseOwner = new Dto.CaseOwnerModel
+        model.CaseOwner = new SharedDto.CaseOwnerModel
         {
             Cpm = userInstance.UserInfo.Cpm,
             Icp = userInstance.UserInfo.Icp

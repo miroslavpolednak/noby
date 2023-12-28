@@ -1,5 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Clients;
-using NOBY.Api.Endpoints.Document.Shared;
+using NOBY.Api.Endpoints.Document.SharedDto;
 
 namespace NOBY.Api.Endpoints.Document.GeneralDocument;
 

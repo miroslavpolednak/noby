@@ -9,7 +9,7 @@ using DomainServices.CodebookService.Clients;
 using SharedTypes.Enums;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
-using NOBY.Api.Endpoints.Customer.Shared;
+using NOBY.Api.Endpoints.Customer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
@@ -254,7 +254,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         return additionalData;
     }
 
-    private async Task RemoveTinMissingReasonIfTinIsNotRequired(Shared.TaxResidenceItem? original, CancellationToken cancellationToken)
+    private async Task RemoveTinMissingReasonIfTinIsNotRequired(SharedDto.TaxResidenceItem? original, CancellationToken cancellationToken)
     {
         if (original?.ResidenceCountries is null)
             return;

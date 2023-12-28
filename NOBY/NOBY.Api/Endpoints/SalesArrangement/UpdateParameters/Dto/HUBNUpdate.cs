@@ -1,5 +1,5 @@
 ﻿using SharedTypes.Types;
-using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto;

@@ -27,7 +27,7 @@ public sealed class CustomerChangeDetail
     /// Komentář k žádosti o změnu
     /// </summary>
     [Required]
-    public SalesArrangement.Dto.CommentToChangeRequest? CommentToChangeRequest { get; set; }
+    public SalesArrangement.SharedDto.CommentToChangeRequest? CommentToChangeRequest { get; set; }
 }
 
 public sealed class CustomerChangeDetailApplicant

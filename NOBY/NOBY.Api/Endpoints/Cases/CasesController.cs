@@ -82,9 +82,9 @@ public class CasesController : ControllerBase
     [NobySkipCaseOwnerValidation]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Case" })]
-    [ProducesResponseType(typeof(Dto.CaseModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SharedDto.CaseModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Dto.CaseModel> GetCaseById([FromRoute] long caseId, CancellationToken cancellationToken)
+    public async Task<SharedDto.CaseModel> GetCaseById([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCaseById.GetCaseByIdRequest(caseId), cancellationToken);
 
     /// <summary>

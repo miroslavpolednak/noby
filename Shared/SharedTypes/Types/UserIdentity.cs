@@ -51,4 +51,16 @@ public sealed class UserIdentity
         Identity = identity;
         Scheme = parsedScheme;
     }
+
+    public bool Equals(UserIdentity other)
+    {
+        return other != null &&
+               Identity == other.Identity &&
+               Scheme == other.Scheme;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Identity, Scheme);
+    }
 }

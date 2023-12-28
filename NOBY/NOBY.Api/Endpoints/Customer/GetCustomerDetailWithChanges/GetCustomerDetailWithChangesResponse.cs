@@ -1,7 +1,7 @@
 ﻿namespace NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
 
 public sealed class GetCustomerDetailWithChangesResponse
-    : Shared.BaseCustomerDetail, Shared.ICustomerDetailConfirmedContacts
+    : SharedDto.BaseCustomerDetail, SharedDto.ICustomerDetailConfirmedContacts
 {
     public NOBY.Dto.EmailAddressConfirmedDto? EmailAddress { get; set; }
 

@@ -25,7 +25,8 @@ internal static class DatabaseExpressions
             OfferGuaranteeDateFrom = t.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = t.OfferGuaranteeDateTo,
             RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate,
-            FirstSignatureDate = t.FirstSignatureDate
+            FirstSignatureDate = t.FirstSignatureDate,
+            LoanApplicationDataVersion = t.LoanApplicationDataVersion
         };
     }
 }

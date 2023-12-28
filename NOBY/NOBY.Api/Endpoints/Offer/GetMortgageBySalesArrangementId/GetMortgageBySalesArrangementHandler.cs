@@ -1,13 +1,13 @@
 ﻿using DomainServices.OfferService.Clients;
-using NOBY.Api.Endpoints.Offer.Dto;
+using NOBY.Api.Endpoints.Offer.SharedDto;
 using Abstraction = DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 
 internal sealed class GetMortgageBySalesArrangementHandler
-    : IRequestHandler<GetMortgageBySalesArrangementRequest, Dto.GetMortgageResponse>
+    : IRequestHandler<GetMortgageBySalesArrangementRequest, SharedDto.GetMortgageResponse>
 {
-    public async Task<Dto.GetMortgageResponse> Handle(GetMortgageBySalesArrangementRequest request, CancellationToken cancellationToken)
+    public async Task<SharedDto.GetMortgageResponse> Handle(GetMortgageBySalesArrangementRequest request, CancellationToken cancellationToken)
     {
         // ziskat offerId z SA
         var salesArrangementInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);

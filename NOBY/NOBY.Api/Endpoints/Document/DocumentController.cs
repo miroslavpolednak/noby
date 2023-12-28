@@ -2,8 +2,8 @@
 using System.Net.Mime;
 using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
-using NOBY.Api.Endpoints.Document.Shared;
 using Asp.Versioning;
+using NOBY.Api.Endpoints.Document.SharedDto;
 
 namespace NOBY.Api.Endpoints.Document;
 

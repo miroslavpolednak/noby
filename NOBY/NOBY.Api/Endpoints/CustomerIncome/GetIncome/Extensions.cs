@@ -4,22 +4,22 @@ namespace NOBY.Api.Endpoints.CustomerIncome.GetIncome;
 
 internal static class Extensions
 {
-    public static Dto.IncomeDataOther ToApiResponse(this _HO.IncomeDataOther contract)
-        => new Dto.IncomeDataOther
+    public static SharedDto.IncomeDataOther ToApiResponse(this _HO.IncomeDataOther contract)
+        => new SharedDto.IncomeDataOther
         {
             IncomeOtherTypeId = contract.IncomeOtherTypeId
         };
 
-    public static Dto.IncomeDataEntrepreneur ToApiResponse(this _HO.IncomeDataEntrepreneur contract)
-        => new Dto.IncomeDataEntrepreneur
+    public static SharedDto.IncomeDataEntrepreneur ToApiResponse(this _HO.IncomeDataEntrepreneur contract)
+        => new SharedDto.IncomeDataEntrepreneur
         {
             BirthNumber = contract.BirthNumber,
             Cin = contract.Cin,
             CountryOfResidenceId = contract.CountryOfResidenceId
         };
 
-    public static Dto.IncomeDataEmployement ToApiResponse(this _HO.IncomeDataEmployement contract)
-        => new Dto.IncomeDataEmployement
+    public static SharedDto.IncomeDataEmployement ToApiResponse(this _HO.IncomeDataEmployement contract)
+        => new SharedDto.IncomeDataEmployement
         {
             ForeignIncomeTypeId = contract.ForeignIncomeTypeId,
             HasProofOfIncome = contract.HasProofOfIncome,
@@ -30,8 +30,8 @@ internal static class Extensions
             WageDeduction = contract.WageDeduction?.ToApiResponse()
         };
 
-    public static Dto.EmployerDataDto ToApiResponse(this _HO.EmployerData contract)
-        => new Dto.EmployerDataDto
+    public static SharedDto.EmployerDataDto ToApiResponse(this _HO.EmployerData contract)
+        => new SharedDto.EmployerDataDto
         {
             BirthNumber = contract.BirthNumber,
             Cin = contract.Cin,
@@ -39,8 +39,8 @@ internal static class Extensions
             CountryId = contract.CountryId
         };
 
-    public static Dto.IncomeConfirmationDataDto ToApiResponse(this _HO.IncomeConfirmationData contract)
-        => new Dto.IncomeConfirmationDataDto
+    public static SharedDto.IncomeConfirmationDataDto ToApiResponse(this _HO.IncomeConfirmationData contract)
+        => new SharedDto.IncomeConfirmationDataDto
         {
             IsIssuedByExternalAccountant = contract.IsIssuedByExternalAccountant,
             ConfirmationContact = contract.ConfirmationContact is null ? null : new()
@@ -52,8 +52,8 @@ internal static class Extensions
             ConfirmationPerson = contract.ConfirmationPerson
         };
 
-    public static Dto.JobDataDto ToApiResponse(this _HO.JobData contract)
-        => new Dto.JobDataDto
+    public static SharedDto.JobDataDto ToApiResponse(this _HO.JobData contract)
+        => new SharedDto.JobDataDto
         {
             CurrentWorkContractSince = contract.CurrentWorkContractSince,
             FirstWorkContractSince = contract.FirstWorkContractSince,
@@ -64,8 +64,8 @@ internal static class Extensions
             IsInTrialPeriod = contract.IsInTrialPeriod
         };
 
-    public static Dto.WageDeductionDataDto ToApiResponse(this _HO.WageDeductionData contract)
-        => new Dto.WageDeductionDataDto
+    public static SharedDto.WageDeductionDataDto ToApiResponse(this _HO.WageDeductionData contract)
+        => new SharedDto.WageDeductionDataDto
         {
             DeductionDecision = contract.DeductionDecision,
             DeductionOther = contract.DeductionOther,

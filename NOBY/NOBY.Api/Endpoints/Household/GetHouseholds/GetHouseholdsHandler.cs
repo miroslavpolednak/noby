@@ -4,9 +4,9 @@ using DomainServices.HouseholdService.Clients;
 namespace NOBY.Api.Endpoints.Household.GetHouseholds;
 
 internal sealed class GetHouseholdsHandler
-    : IRequestHandler<GetHouseholdsRequest, List<Dto.HouseholdInList>>
+    : IRequestHandler<GetHouseholdsRequest, List<SharedDto.HouseholdInList>>
 {
-    public async Task<List<Dto.HouseholdInList>> Handle(GetHouseholdsRequest request, CancellationToken cancellationToken)
+    public async Task<List<SharedDto.HouseholdInList>> Handle(GetHouseholdsRequest request, CancellationToken cancellationToken)
     {
         // vsechny households
         var households = await _householdService.GetHouseholdList(request.SalesArrangementId, cancellationToken);
@@ -14,7 +14,7 @@ internal sealed class GetHouseholdsHandler
         var householdTypes = await _codebookService.HouseholdTypes(cancellationToken);
 
         return households
-            .Select(t => new Dto.HouseholdInList
+            .Select(t => new SharedDto.HouseholdInList
             {
                 HouseholdId = t.HouseholdId,
                 HouseholdTypeId = t.HouseholdTypeId,

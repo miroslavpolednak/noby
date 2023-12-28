@@ -44,4 +44,6 @@ internal sealed class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUs
     public DateTime? FirstSignatureDate { get; set; }
 
     public string? PcpId { get; set; }
+
+    public string? LoanApplicationDataVersion { get; set; }
 }

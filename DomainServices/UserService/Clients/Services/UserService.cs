@@ -53,24 +53,36 @@ internal class UserService
 
     public async Task<Contracts.User> GetUser(SharedTypes.Types.UserIdentity identity, CancellationToken cancellationToken = default)
     {
-        if (identity.Scheme == SharedTypes.Enums.UserIdentitySchemes.V33Id)
+        int hash = identity.GetHashCode();
+        if (_cachedGetUser is not null && _cachedGetUserHash == hash)
         {
-            // pokud bude user nalezen v kesi
-            if (_distributedCacheProvider.UseDistributedCache)
+            return _cachedGetUser;
+        }
+        
+        Contracts.User? user = null;
+        
+        if (identity.Scheme == SharedTypes.Enums.UserIdentitySchemes.V33Id && _distributedCacheProvider.UseDistributedCache)
+        {
+            var cachedUser = await _distributedCacheProvider.DistributedCacheInstance!.GetAsync(Helpers.CreateUserCacheKey(identity.Identity), cancellationToken);
+            if (cachedUser is not null)
             {
-                var cachedUser = await _distributedCacheProvider.DistributedCacheInstance!.GetAsync(Helpers.CreateUserCacheKey(identity.Identity), cancellationToken);
-                if (cachedUser is not null)
-                {
-                    return Contracts.User.Parser.ParseFrom(cachedUser);
-                }
+                user = Contracts.User.Parser.ParseFrom(cachedUser);
             }
         }
 
-        return await _service.GetUserAsync(
-            new Contracts.GetUserRequest
-            {
-                Identity = identity,
-            }, cancellationToken: cancellationToken);
+        if (user is null)
+        {
+            user = await _service.GetUserAsync(
+                new Contracts.GetUserRequest
+                {
+                    Identity = identity,
+                }, cancellationToken: cancellationToken);
+        }
+
+        _cachedGetUser = user;
+        _cachedGetUserHash = hash;
+
+        return user;
     }
 
     public async Task<int[]> GetUserPermissions(int userId, CancellationToken cancellationToken = default)
@@ -102,6 +114,9 @@ internal class UserService
     {
         return await _service.GetUserRIPAttributesAsync(new GetUserRIPAttributesRequest { Identity = identity, IdentityScheme = identityScheme }, cancellationToken: cancellationToken);
     }
+
+    private Contracts.User? _cachedGetUser = null;
+    private int? _cachedGetUserHash = null;
 
     private readonly Contracts.v1.UserService.UserServiceClient _service;
     private readonly UserServiceClientCacheProvider _distributedCacheProvider;

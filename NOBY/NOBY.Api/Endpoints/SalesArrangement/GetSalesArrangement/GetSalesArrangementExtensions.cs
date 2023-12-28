@@ -1,5 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
-using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement;

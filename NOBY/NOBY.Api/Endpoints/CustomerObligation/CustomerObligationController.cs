@@ -33,15 +33,15 @@ public class CustomerObligationController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="obligationId">ID závazku</param>
     /// <returns>
-    /// <see cref="Dto.ObligationFullDto"/>
+    /// <see cref="SharedDto.ObligationFullDto"/>
     /// </returns>
     [HttpGet("{customerOnSAId:int}/obligation/{obligationId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
-    [ProducesResponseType(typeof(Dto.ObligationFullDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SharedDto.ObligationFullDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Dto.ObligationFullDto> GetObligation([FromRoute] int customerOnSAId, [FromRoute] int obligationId, CancellationToken cancellationToken)
+    public async Task<SharedDto.ObligationFullDto> GetObligation([FromRoute] int customerOnSAId, [FromRoute] int obligationId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetObligation.GetObligationRequest(customerOnSAId, obligationId), cancellationToken);
 
     /// <summary>

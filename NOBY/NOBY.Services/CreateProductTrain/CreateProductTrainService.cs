@@ -17,14 +17,14 @@ internal sealed class CreateProductTrainService
 
         await _product.Run(caseId, salesArrangementId, customerOnSAId, customerIdentifiers, cancellationToken);
 
-        await _createRiskBusinessCase.Run(caseId, salesArrangementId, customerOnSAId, customerIdentifiers, cancellationToken);
+        await _createRiskBusinessCase.Run(salesArrangementId, cancellationToken);
     }
 
     private readonly CreateProduct _product;
     private readonly UpdateCustomerOnCase _updateCustomer;
-    private readonly Handlers.CreateRiskBusinessCase _createRiskBusinessCase;
+    private readonly CreateRiskBusinessCase _createRiskBusinessCase;
 
-    public CreateProductTrainService(CreateProduct createProduct, UpdateCustomerOnCase updateCustomer, Handlers.CreateRiskBusinessCase createRiskBusinessCase)
+    public CreateProductTrainService(CreateProduct createProduct, UpdateCustomerOnCase updateCustomer, CreateRiskBusinessCase createRiskBusinessCase)
     {
         _updateCustomer = updateCustomer;
         _createRiskBusinessCase = createRiskBusinessCase;

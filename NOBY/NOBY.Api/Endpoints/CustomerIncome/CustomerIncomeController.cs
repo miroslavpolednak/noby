@@ -36,7 +36,7 @@ public class CustomerIncomeController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID příjmu</param>
     /// <returns>
-    /// <see cref="Dto.IncomeDataEmployement"/>
+    /// <see cref="SharedDto.IncomeDataEmployement"/>
     /// </returns>
     [HttpGet("{customerOnSAId:int}/income/{incomeId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]

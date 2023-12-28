@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using NOBY.Api.Endpoints.CustomerIncome.Dto;
+using NOBY.Api.Endpoints.CustomerIncome.SharedDto;
 using NOBY.Dto.Attributes;
 
 namespace NOBY.Api.Endpoints.CustomerIncome.UpdateIncome;
 
 public sealed class UpdateIncomeRequest
-    : Dto.BaseIncome, IRequest
+    : SharedDto.BaseIncome, IRequest
 {
     [JsonIgnore]
     public int IncomeId { get; set; }

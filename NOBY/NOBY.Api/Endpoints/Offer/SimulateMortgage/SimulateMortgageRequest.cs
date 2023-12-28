@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using SharedTypes.Types;
-using NOBY.Api.Endpoints.Offer.Dto;
+using NOBY.Api.Endpoints.Offer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
 public sealed class SimulateMortgageRequest
-    : Dto.MortgageInputs, IRequest<SimulateMortgageResponse>
+    : SharedDto.MortgageInputs, IRequest<SimulateMortgageResponse>
 {
     /// <summary>
     /// Unikatni identifikator pro session simulace.

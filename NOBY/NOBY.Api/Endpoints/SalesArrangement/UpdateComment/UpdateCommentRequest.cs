@@ -1,4 +1,4 @@
-﻿using NOBY.Api.Endpoints.SalesArrangement.Dto;
+﻿using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateComment;
 

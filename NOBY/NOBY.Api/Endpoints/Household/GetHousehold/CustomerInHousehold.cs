@@ -1,14 +1,14 @@
 ﻿namespace NOBY.Api.Endpoints.Household.GetHousehold;
 
 public class CustomerInHousehold
-    : Dto.BaseCustomer
+    : SharedDto.BaseCustomer
 {
     public int? MaritalStatusId { get; set; }
 
     /// <summary>
     /// Prijmy customera
     /// </summary>
-    public List<CustomerIncome.Dto.IncomeBaseData>? Incomes { get; set; }
+    public List<CustomerIncome.SharedDto.IncomeBaseData>? Incomes { get; set; }
 
     /// <summary>
     /// Role klienta
@@ -26,5 +26,5 @@ public class CustomerInHousehold
     /// <summary>
     /// Zavazky customera
     /// </summary>
-    public List<CustomerObligation.Dto.ObligationFullDto>? Obligations { get; set; }
+    public List<CustomerObligation.SharedDto.ObligationFullDto>? Obligations { get; set; }
 }
