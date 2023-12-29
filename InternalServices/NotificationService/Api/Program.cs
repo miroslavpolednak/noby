@@ -96,7 +96,7 @@ try
     builder.AddBackroundJobs();
 
     // ukladani payloadu - document data storage
-    builder.AddDocumentDataStorage(connectionStringKey: "nobyDb");
+    builder.AddDocumentDataStorage();
 
     // swagger
     builder.AddCustomSwagger();
