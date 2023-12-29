@@ -62,11 +62,11 @@ internal sealed class GetStatisticsHandler
 
         return new GetStatisticsResponse() { Statistics = statistics };
 
-        int GetEmailCount(Contracts.Result.Dto.NotificationState state)
-            => data.Where(t => t.Channel == Contracts.Result.Dto.NotificationChannel.Email && t.State == state).FirstOrDefault()?.Count ?? 0;
+        int? GetEmailCount(Contracts.Result.Dto.NotificationState state)
+            => data.Where(t => t.Channel == Contracts.Result.Dto.NotificationChannel.Email && t.State == state).FirstOrDefault()?.Count;
 
-        int GetSmsCount(Contracts.Result.Dto.NotificationState state)
-            => data.Where(t => t.Channel == Contracts.Result.Dto.NotificationChannel.Sms && t.State == state).FirstOrDefault()?.Count ?? 0;
+        int? GetSmsCount(Contracts.Result.Dto.NotificationState state)
+            => data.Where(t => t.Channel == Contracts.Result.Dto.NotificationChannel.Sms && t.State == state).FirstOrDefault()?.Count;
     }
 
     private readonly NotificationDbContext _dbContext;
