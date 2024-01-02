@@ -143,22 +143,22 @@ internal sealed class GetLoanApplicationAssessmentResultService
 
         if (customerExposure?.ExistingCBCBNaturalPersonExposureItem is not null)
         {
-            obligations.AddRange(customerExposure.ExistingCBCBNaturalPersonExposureItem.CreateHouseholdObligations(obligationTypes));
+            obligations.AddRange(customerExposure.ExistingCBCBNaturalPersonExposureItem.CreateHouseholdObligations(obligationTypes, false));
         }
 
         if (customerExposure?.ExistingKBGroupNaturalPersonExposures is not null)
         {
-            obligations.AddRange(customerExposure.ExistingKBGroupNaturalPersonExposures.CreateHouseholdObligations(obligationTypes));
+            obligations.AddRange(customerExposure.ExistingKBGroupNaturalPersonExposures.CreateHouseholdObligations(obligationTypes, false));
         }
 
         if (customerExposure?.ExistingCBCBJuridicalPersonExposureItem is not null)
         {
-            obligations.AddRange(customerExposure.ExistingCBCBJuridicalPersonExposureItem.CreateHouseholdObligations(obligationTypes));
+            obligations.AddRange(customerExposure.ExistingCBCBJuridicalPersonExposureItem.CreateHouseholdObligations(obligationTypes, true));
         }
 
         if (customerExposure?.ExistingKBGroupJuridicalPersonExposures is not null)
         {
-            obligations.AddRange(customerExposure.ExistingKBGroupJuridicalPersonExposures.CreateHouseholdObligations(obligationTypes));
+            obligations.AddRange(customerExposure.ExistingKBGroupJuridicalPersonExposures.CreateHouseholdObligations(obligationTypes, true));
         }
 
         // zavazky NOBY
