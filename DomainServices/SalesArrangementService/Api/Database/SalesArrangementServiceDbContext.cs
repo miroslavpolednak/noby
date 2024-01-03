@@ -3,19 +3,14 @@ using CIS.Infrastructure.Data;
 
 namespace DomainServices.SalesArrangementService.Api.Database;
 
-internal sealed class SalesArrangementServiceDbContext 
-    : BaseDbContext<SalesArrangementServiceDbContext>
+internal sealed class SalesArrangementServiceDbContext(BaseDbContextAggregate<SalesArrangementServiceDbContext> aggregate)
+        : BaseDbContext<SalesArrangementServiceDbContext>(aggregate)
 {
-#pragma warning disable CS8618
-    public SalesArrangementServiceDbContext(BaseDbContextAggregate<SalesArrangementServiceDbContext> aggregate)
-#pragma warning restore CS8618
-        : base(aggregate) { }
-
-    public DbSet<Entities.FormValidationTransformation> FormValidationTransformations { get; set; }
-    public DbSet<Entities.SalesArrangement> SalesArrangements { get; set; }
-    public DbSet<Entities.SalesArrangementParameters> SalesArrangementsParameters { get; set; }
-    public DbSet<Entities.FlowSwitch> FlowSwitches { get; set; }
-    public DbSet<Queries.CaseSaParametersQuery> CaseSaParametersQuery { get; set; }
+    public DbSet<Entities.FormValidationTransformation> FormValidationTransformations => Set<Entities.FormValidationTransformation>();
+    public DbSet<Entities.SalesArrangement> SalesArrangements => Set<Entities.SalesArrangement>();
+    public DbSet<Entities.SalesArrangementParameters> SalesArrangementsParameters => Set<Entities.SalesArrangementParameters>();
+    public DbSet<Entities.FlowSwitch> FlowSwitches => Set<Entities.FlowSwitch>();
+    public DbSet<Queries.CaseSaParametersQuery> CaseSaParametersQuery => Set<Queries.CaseSaParametersQuery>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

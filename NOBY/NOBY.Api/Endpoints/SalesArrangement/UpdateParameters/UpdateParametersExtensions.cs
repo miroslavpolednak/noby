@@ -76,7 +76,7 @@ internal static class UpdateParametersExtensions
             {
                 ProductObligationId = x.ProductObligationId,
                 Order = x.Order,
-                SpecificSymbolUcetKeSplaceni = x.SpecificSymbol,
+                SpecificSymbol = x.SpecificSymbol,
                 AccountNumber = x.AccountNumber,
                 ConstantSymbol = x.ConstantSymbol,
                 BankCode = x.AccountBankCode,
