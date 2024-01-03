@@ -23,7 +23,7 @@ internal sealed class OrderOnlineValuationHandler
         {
             ValuationRequestId = entity.PreorderId.GetValueOrDefault(),
             ClientName = $"{customer.NaturalPerson?.FirstName} {customer.NaturalPerson?.LastName}",
-            ClientEmail = customer.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email)?.Email?.EmailAddress,
+            ClientEmail = customer.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email)?.Email?.EmailAddress
         };
         orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
 
