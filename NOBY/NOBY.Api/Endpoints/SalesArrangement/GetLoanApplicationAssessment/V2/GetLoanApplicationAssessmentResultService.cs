@@ -28,12 +28,12 @@ internal sealed class GetLoanApplicationAssessmentResultService
 
         // get obligations for each customer
         //TODO new DS endpoint for all obligations on SA?
-        Dictionary<int, List<Obligation>> obligations = new();
-        customers.ForEach(async customer =>
+        Dictionary<int, List<Obligation>> obligations = new(customers.Count);
+        foreach (var customer in customers)
         {
             var list = await _customerOnSAService.GetObligationList(customer.CustomerOnSAId, cancellationToken);
             obligations[customer.CustomerOnSAId] = list ?? new List<Obligation>(0);
-        });
+        }
 
         // vytvoreni response
         GetLoanApplicationAssessmentResponse response = new()
@@ -61,13 +61,13 @@ internal sealed class GetLoanApplicationAssessmentResultService
             if (household.CustomerOnSAId1.HasValue)
             {
                 var c = customers.First(t => t.CustomerOnSAId == household.CustomerOnSAId1.Value);
-                householdResponse.Customers.Add(getCustomer(c, obligations[household.CustomerOnSAId1.Value], exposure, obligationTypes));
+                householdResponse.Customers.Add(getCustomer(c, obligations[c.CustomerOnSAId], exposure, obligationTypes));
             }
 
             if (household.CustomerOnSAId2.HasValue)
             {
                 var c = customers.First(t => t.CustomerOnSAId == household.CustomerOnSAId2.Value);
-                householdResponse.Customers.Add(getCustomer(c, obligations[household.CustomerOnSAId2.Value], exposure, obligationTypes));
+                householdResponse.Customers.Add(getCustomer(c, obligations[c.CustomerOnSAId], exposure, obligationTypes));
             }
 
             response.Households.Add(householdResponse);
