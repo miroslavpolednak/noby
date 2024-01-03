@@ -3,6 +3,7 @@ using DomainServices.RealEstateValuationService.Api.Extensions;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using DomainServices.UserService.Clients;
+using DomainServices.CustomerService.Clients;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.OrderDTSValuation;
 
@@ -19,6 +20,8 @@ internal sealed class OrderDTSValuationHandler
         var currentUser = await _userService.GetCurrentUser(cancellationToken);
         // info o produktu
         var productProps = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
+        // klient
+        var customer = await _customerService.GetCustomerDetail(caseInstance.Customer.Identity, cancellationToken);
 
         long orderId = entity.RealEstateTypeId switch
         {
@@ -40,7 +43,7 @@ internal sealed class OrderDTSValuationHandler
                 LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO()
             };
 
-            orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
+            orderRequest.FillBaseOrderData(caseInstance, customer, currentUser, realEstateIds, attachments);
             orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);
 
             return (await _preorderService.CreateOrder(orderRequest, cancellationToken)).OrderId;
@@ -53,7 +56,7 @@ internal sealed class OrderDTSValuationHandler
                 LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO()
             };
 
-            orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
+            orderRequest.FillBaseOrderData(caseInstance, customer, currentUser, realEstateIds, attachments);
             orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);
 
             return (await _preorderService.CreateOrder(orderRequest, cancellationToken)).OrderId;
@@ -63,12 +66,15 @@ internal sealed class OrderDTSValuationHandler
     private readonly Services.OrderAggregate _aggregate;
     private readonly IPreorderServiceClient _preorderService;
     private readonly IUserServiceClient _userService;
+    private readonly ICustomerServiceClient _customerService;
 
     public OrderDTSValuationHandler(
+        ICustomerServiceClient customerService,
         Services.OrderAggregate aggregate,
         IPreorderServiceClient preorderService,
         IUserServiceClient userService)
     {
+        _customerService = customerService;
         _aggregate = aggregate;
         _preorderService = preorderService;
         _userService = userService;

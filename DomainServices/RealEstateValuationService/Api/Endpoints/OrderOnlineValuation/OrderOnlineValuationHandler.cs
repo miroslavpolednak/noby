@@ -21,11 +21,9 @@ internal sealed class OrderOnlineValuationHandler
 
         var orderRequest = new ExternalServices.PreorderService.V1.Contracts.OnlineMPRequestDTO
         {
-            ValuationRequestId = entity.PreorderId.GetValueOrDefault(),
-            ClientName = $"{customer.NaturalPerson?.FirstName} {customer.NaturalPerson?.LastName}",
-            ClientEmail = customer.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email)?.Email?.EmailAddress
+            ValuationRequestId = entity.PreorderId.GetValueOrDefault()
         };
-        orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
+        orderRequest.FillBaseOrderData(caseInstance, customer, currentUser, realEstateIds, attachments);
 
         var orderResponse = await _preorderService.CreateOrder(orderRequest, cancellationToken);
 
