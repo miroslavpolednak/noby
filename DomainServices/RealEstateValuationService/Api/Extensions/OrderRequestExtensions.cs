@@ -35,7 +35,7 @@ internal static class OrderRequestExtensions
         in Services.OrderAggregate.GetProductPropertiesResult productProps)
     {
         model.ProductOwner = "01";
-        model.ContactPersonName = $"{currentUser.UserInfo.FirstName};{currentUser.UserInfo.LastName}";
+        model.ContactPersonName = $"{currentUser.UserInfo.FirstName} {currentUser.UserInfo.LastName}";
         model.ContactPersonEmail = currentUser.UserInfo.Email;
         model.ContactPersonTel = currentUser.UserInfo.PhoneNumber;
         model.BagmanRealEstateTypeId = entity.BagmanRealEstateTypeId ?? "";
