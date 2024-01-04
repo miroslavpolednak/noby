@@ -29,7 +29,7 @@ internal sealed class OrderStandardValuationHandler
             LocalSurveyEmail = request.Data?.Email,
             LocalSurveyPhone = $"{request.Data?.PhoneIDC}{request.Data?.PhoneNumber}",
             LocalSurveyFunction = request.Data?.RealEstateValuationLocalSurveyFunctionCode,
-            LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO(),
+            LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO()
         };
         orderRequest.FillBaseOrderData(caseInstance, customer, currentUser, realEstateIds, attachments);
         orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);

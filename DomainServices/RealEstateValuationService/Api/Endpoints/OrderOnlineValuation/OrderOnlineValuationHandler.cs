@@ -21,10 +21,14 @@ internal sealed class OrderOnlineValuationHandler
 
         var orderRequest = new ExternalServices.PreorderService.V1.Contracts.OnlineMPRequestDTO
         {
-            ValuationRequestId = entity.PreorderId.GetValueOrDefault()
+            ValuationRequestId = entity.PreorderId.GetValueOrDefault(),
+            LocalSurveyPerson = $"{request.Data?.FirstName} {request.Data?.LastName}",
+            LocalSurveyEmail = request.Data?.Email,
+            LocalSurveyPhone = $"{request.Data?.PhoneIDC}{request.Data?.PhoneNumber}",
+            LocalSurveyFunction = request.Data?.RealEstateValuationLocalSurveyFunctionCode
         };
         orderRequest.FillBaseOrderData(caseInstance, customer, currentUser, realEstateIds, attachments);
-
+        
         var orderResponse = await _preorderService.CreateOrder(orderRequest, cancellationToken);
 
         // ulozeni vysledku
