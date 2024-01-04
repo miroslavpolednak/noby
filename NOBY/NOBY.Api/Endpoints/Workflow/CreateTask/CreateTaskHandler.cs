@@ -56,7 +56,7 @@ internal sealed class CreateTaskHandler
             OrderId = request.OrderId
         };
         // pokud existuji nahrane prilohy
-        if (documentIds.Any())
+        if (documentIds.Count != 0)
         {
             dsRequest.TaskDocumentsId.AddRange(documentIds);
         }

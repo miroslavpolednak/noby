@@ -126,7 +126,8 @@ public sealed class SendEmailsJob
                 await _dbContext.SaveChangesAsync(default);
 
                 // odeslat
-                await client.SendAsync(message, cancellationToken = default);
+                var response = await client.SendAsync(message, cancellationToken = default);
+                _logger.LogInformation($"Email '{email.Id}' was sent: {response}");
             }
             catch (CisNotFoundException ex)
             {

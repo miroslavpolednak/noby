@@ -63,7 +63,7 @@ public sealed class HouseholdObligationItem
     /// <summary>
     /// Závazek FOP
     /// </summary>
-    public PersonKinds PersonKind { get; set; }
+    public bool IsEntrepreneur { get; set; }
 
     public List<string>? Codebtors { get; set; }
 
@@ -143,10 +143,4 @@ public sealed class HouseholdObligationItem
         /// </summary>
         public string CurrencyCode { get; set; } = string.Empty;
     }
-}
-
-public enum PersonKinds
-{
-    NaturalPerson = 1,
-    JuridicalPerson = 2
 }

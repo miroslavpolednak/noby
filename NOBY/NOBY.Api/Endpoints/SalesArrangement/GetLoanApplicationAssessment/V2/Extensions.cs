@@ -22,7 +22,8 @@ internal static class Extensions
                 obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
                 _creditorNameKB,
                 t.LoanTypeCategory,
-                t.InstallmentAmount);
+                t.InstallmentAmount,
+                false);
             return item;
         })
             .ToList();
@@ -39,7 +40,8 @@ internal static class Extensions
                     obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
                     _creditorNameJPU,
                     t.LoanTypeCategory,
-                    t.InstallmentAmount);
+                    t.InstallmentAmount,
+                    false);
                 item.KbGroupInstanceCode = t.KbGroupInstanceCode;
                 item.CbcbDataLastUpdate = t.CbcbDataLastUpdate;
                 return item;
@@ -49,7 +51,8 @@ internal static class Extensions
 
     public static List<Dto.HouseholdObligationItem> CreateHouseholdObligations(
         this List<CustomerExposureExistingKBGroupItem> items,
-        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes)
+        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes,
+        bool isEntrepreneur)
     {
         return items.Select(t =>
             {
@@ -59,6 +62,7 @@ internal static class Extensions
                     _creditorNameKB,
                     t.LoanTypeCategory, 
                     t.InstallmentAmount,
+                    isEntrepreneur,
                     t.ExposureAmount,
                     t.ContractDate,
                     t.MaturityDate);
@@ -89,7 +93,6 @@ internal static class Extensions
                 {
                     ObligationTypeOrder = obligationType?.Order ?? 0,
                     ObligationSourceId = 1,
-                    PersonKind = Dto.PersonKinds.NaturalPerson,
                     ObligationTypeId = obligationType?.Id ?? 0,
                     ObligationTypeName = obligationType?.Name ?? "Neznázmý",
                     LoanPrincipalAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(t.LoanPrincipalAmount, t.Correction?.LoanPrincipalAmountCorrection),
@@ -103,7 +106,8 @@ internal static class Extensions
 
     public static List<Dto.HouseholdObligationItem> CreateHouseholdObligations(
         this List<CustomerExposureExistingCBCBItem> items,
-        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes)
+        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes,
+        bool isEntrepreneur)
     {
         return items.Select(t =>
         {
@@ -113,6 +117,7 @@ internal static class Extensions
                 _creditorNameJPU,
                 t.LoanTypeCategory,
                 t.InstallmentAmount,
+                isEntrepreneur,
                 t.ExposureAmount,
                 t.ContractDate,
                 t.MaturityDate);
@@ -129,6 +134,7 @@ internal static class Extensions
         in string creditorName,
         in int? loanTypeCategory,
         in decimal? installmentAmount,
+        in bool isEntrepreneur,
         in decimal? exposureAmount = null,
         in DateTime? contractDate = null,
         in DateTime? maturityDate = null)
@@ -139,7 +145,7 @@ internal static class Extensions
         {
             ObligationTypeOrder = obligationType?.Order ?? 0,
             ObligationSourceId = sourceId,
-            PersonKind = Dto.PersonKinds.NaturalPerson,
+            IsEntrepreneur = isEntrepreneur,
             ObligationTypeId = obligationType?.Id ?? 0,
             ObligationTypeName = obligationType?.Name ?? "Neznázmý",
             LoanPrincipalAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(exposureAmount),

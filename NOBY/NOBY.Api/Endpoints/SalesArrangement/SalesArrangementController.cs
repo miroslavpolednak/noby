@@ -76,6 +76,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="GetLoanApplicationAssessment.V1.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
     [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
     [ApiVersion("1", Deprecated = true)]
+    [Obsolete]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
@@ -97,7 +98,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
     /// <param name="newAssessmentRequired">Požadováno nové posouzení</param>
     /// <returns><see cref="GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
-    [HttpGet("{salesArrangementId:int}/loan-application-assessment/v2")]
+    [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
     [ApiVersion("2")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
