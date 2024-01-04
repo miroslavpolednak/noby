@@ -14,7 +14,7 @@ internal sealed class MortgageData : IDocumentData
 
     public int? ContractSignatureTypeId { get; set; }
 
-    public IEnumerable<LoanRealEstateData> LoanRealEstates { get; set;  } = Enumerable.Empty<LoanRealEstateData>();
+    public ICollection<LoanRealEstateData> LoanRealEstates { get; set; } = new List<LoanRealEstateData>();
 
     public int? Agent { get; set; }
 

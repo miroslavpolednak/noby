@@ -9,7 +9,6 @@ CREATE TABLE [DDS].[SalesArrangementParameters](
 	[DocumentDataStorageId] [int] IDENTITY(1,1) NOT NULL,
 	[DocumentDataEntityId] [varchar](50) NULL,
 	[DocumentDataVersion] [int] NOT NULL,
-	[SalesArrangementParametersType] [tinyint] NOT NULL,
 	[Data] [nvarchar](MAX) NULL,
 	[CreatedUserId] [int] NOT NULL,
 	[CreatedTime] [datetime] NOT NULL,

@@ -62,8 +62,8 @@ public sealed class DDSInitialTransformation : IScript
 
             var insertSqlCommands = convertedRecords
                 .Select(r => $"""
-                              INSERT INTO [DDS].[SalesArrangementParameters] ([DocumentDataEntityId],[DocumentDataVersion],[SalesArrangementParametersType],[Data],[CreatedUserId],[CreatedTime],[ModifiedUserId])
-                              VALUES ({r.SalesArrangementId}, 1, {r.SalesArrangementParametersType}, '{JsonSerializer.Serialize(r.ParametersObj, _jsonSerializerOptions)}', {r.CreatedUserId}, '{r.CreatedTime}', {r.ModifiedUserId});
+                              INSERT INTO [DDS].[SalesArrangementParameters] ([DocumentDataEntityId],[DocumentDataVersion],[Data],[CreatedUserId],[CreatedTime],[ModifiedUserId])
+                              VALUES ({r.SalesArrangementId}, 1, '{JsonSerializer.Serialize(r.ParametersObj, _jsonSerializerOptions)}', {r.CreatedUserId}, '{r.CreatedTime}', {r.ModifiedUserId});
                               """);
 
             cmd.CommandText = string.Join(Environment.NewLine, insertSqlCommands);
@@ -86,35 +86,18 @@ public sealed class DDSInitialTransformation : IScript
         var buffer = new byte[bufferSize];
         reader.GetBytes(fieldIndex, 0, buffer, 0, (int)bufferSize);
 
-        switch (salesArrangementType)
+        return salesArrangementType switch
         {
-            case SalesArrangementTypes.Mortgage:
-                var mortgage = SalesArrangementParametersMortgage.Parser.ParseFrom(buffer);
-                return mortgage.MapMortgage();
-            case SalesArrangementTypes.Drawing:
-                var drawing = SalesArrangementParametersDrawing.Parser.ParseFrom(buffer);
-                return drawing.MapDrawing();
-            case SalesArrangementTypes.GeneralChange:
-                var generalChange = SalesArrangementParametersGeneralChange.Parser.ParseFrom(buffer);
-                return generalChange.MapGeneralChange();
-            case SalesArrangementTypes.HUBN:
-                var HUBN = SalesArrangementParametersHUBN.Parser.ParseFrom(buffer);
-                return HUBN.MapHUBN();
-            case SalesArrangementTypes.CustomerChange:
-                var customerChange = SalesArrangementParametersCustomerChange.Parser.ParseFrom(buffer);
-                return customerChange.MapCustomerChange();
-            case SalesArrangementTypes.CustomerChange3602A:
-                var customerChange3602A = SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(buffer);
-                return customerChange3602A.MapCustomerChange3602();
-            case SalesArrangementTypes.CustomerChange3602B:
-                var customerChange3602B = SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(buffer);
-                return customerChange3602B.MapCustomerChange3602();
-            case SalesArrangementTypes.CustomerChange3602C:
-                var customerChange3602C = SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(buffer);
-                return customerChange3602C.MapCustomerChange3602();
-            default:
-                throw new InvalidOperationException($"Cannot convert sales arrangement type {salesArrangementType}");
-        }
+            SalesArrangementTypes.Mortgage => SalesArrangementParametersMortgage.Parser.ParseFrom(buffer).MapMortgage(),
+            SalesArrangementTypes.Drawing => SalesArrangementParametersDrawing.Parser.ParseFrom(buffer).MapDrawing(),
+            SalesArrangementTypes.GeneralChange => SalesArrangementParametersGeneralChange.Parser.ParseFrom(buffer).MapGeneralChange(),
+            SalesArrangementTypes.HUBN => SalesArrangementParametersHUBN.Parser.ParseFrom(buffer).MapHUBN(),
+            SalesArrangementTypes.CustomerChange => SalesArrangementParametersCustomerChange.Parser.ParseFrom(buffer).MapCustomerChange(),
+            SalesArrangementTypes.CustomerChange3602A => SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(buffer).MapCustomerChange3602(),
+            SalesArrangementTypes.CustomerChange3602B => SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(buffer).MapCustomerChange3602(),
+            SalesArrangementTypes.CustomerChange3602C => SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(buffer).MapCustomerChange3602(),
+            _ => throw new InvalidOperationException($"Cannot convert sales arrangement type {salesArrangementType}")
+        };
     }
 
     public class SalesArrangementParameters
