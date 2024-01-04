@@ -39,7 +39,7 @@ internal static class GetSalesArrangementExtensions
             {
                 ProductObligationId = x.ProductObligationId,   
                 Order = x.Order,
-                SpecificSymbol = x.SpecificSymbolUcetKeSplaceni,
+                SpecificSymbol = x.SpecificSymbol,
                 AccountNumber = x.AccountNumber,
                 ConstantSymbol = x.ConstantSymbol,
                 AccountBankCode = x.BankCode,
@@ -58,7 +58,7 @@ internal static class GetSalesArrangementExtensions
             Agent = model.Agent is null ? new ParametersDrawingAgent() : new()
             {
                 IsActive = model.Agent.IsActive,
-                DateOfBirth = (DateTime?)model.Agent.DateOfBirth,
+                DateOfBirth = model.Agent.DateOfBirth,
                 FirstName = model.Agent.FirstName,
                 LastName = model.Agent.LastName,
                 IdentificationDocument = model.Agent?.IdentificationDocument is null ? null : new()

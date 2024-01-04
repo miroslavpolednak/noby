@@ -23,6 +23,8 @@ internal sealed class DocumentDataStorageProvider
         return JsonSerializer.Serialize(data, _jsonSerializerOptions);
     }
 
+    public string Serialize(IDocumentData? data) => JsonSerializer.Serialize(data, _jsonSerializerOptions);
+
     public async Task<DocumentDataItem<TData>?> FirstOrDefault<TData>(int documentDataStorageId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
     {
@@ -53,6 +55,20 @@ internal sealed class DocumentDataStorageProvider
         return entity is null ? null : getInner<TData>(entity);
     }
 
+    public async Task<DocumentDataItem<TData>?> FirstOrDefaultByEntityId<TData>(int entityId, string tableName, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
+    {
+        var getSql = $"""
+                      SELECT DocumentDataStorageId, DocumentDataVersion, DocumentDataEntityId, Data
+                      FROM {DocumentDataStorageConstants.DatabaseSchema}.{tableName}
+                      WHERE DocumentDataEntityId=@entityId
+                      """;
+
+        var entity = await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<Database.DocumentDataStorageItem>(getSql, new { entityId }, cancellationToken);
+
+        return entity is null ? null : getInner<TData>(entity);
+    }
+
     public async Task<List<DocumentDataItem<TData>>> GetList<TData>(int entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
         => await GetList<TData>(new[] { entityId.ToString(CultureInfo.InvariantCulture) }, cancellationToken);
@@ -76,98 +92,71 @@ internal sealed class DocumentDataStorageProvider
         return entities.Select(t => getInner<TData>(t)).ToList();
     }
 
-    public async Task<int> Add<TData>(TData data, CancellationToken cancellationToken = default)
+    public Task<int> Add<TEntityId, TData>(TEntityId entityId, TData data, CancellationToken cancellationToken = default)
+        where TEntityId : IConvertible
         where TData : class, IDocumentData
     {
+        return Add(entityId, getEntityType<TData>(), data, cancellationToken);
+    }
+
+    public Task<int> Add<TEntityId>(TEntityId entityId, string tableName, IDocumentData data, CancellationToken cancellationToken = default) 
+        where TEntityId : IConvertible
+    {
+        var insertSql = $"""
+                         INSERT INTO {DocumentDataStorageConstants.DatabaseSchema}.{tableName}
+                         (DocumentDataEntityId, DocumentDataVersion, Data, CreatedUserId, CreatedTime)
+                         OUTPUT inserted.DocumentDataStorageId
+                         VALUES (@DocumentDataEntityId, @DocumentDataVersion, @Data, @CreatedUserId, @CreatedTime)
+                         """;
+
         var varsToInsert = new
         {
+            DocumentDataEntityId = entityId.ToString(CultureInfo.InvariantCulture),
             DocumentDataVersion = data.Version,
             Data = Serialize(data),
             CreatedUserId = _currentUserAccessor.IsAuthenticated ? _currentUserAccessor.User!.Id : 0,
             CreatedTime = _dateTime.Now
         };
 
-        return await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<int>(@$"
-            INSERT INTO {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} 
-            (DocumentDataVersion, Data, CreatedUserId, CreatedTime) 
-            OUTPUT inserted.DocumentDataStorageId 
-            VALUES 
-            (@DocumentDataVersion, @Data, @CreatedUserId, @CreatedTime)",
-            varsToInsert,
-            cancellationToken);
+        return _connectionProvider.ExecuteDapperFirstOrDefaultAsync<int>(insertSql, varsToInsert, cancellationToken);
     }
 
-    public async Task<int> Add<TData>(int entityId, TData data, CancellationToken cancellationToken = default)
-        where TData : class, IDocumentData
-        => await Add(entityId.ToString(CultureInfo.InvariantCulture), data, cancellationToken);
-
-    public async Task<int> Add<TData>(long entityId, TData data, CancellationToken cancellationToken = default)
-        where TData : class, IDocumentData
-        => await Add(entityId.ToString(CultureInfo.InvariantCulture), data, cancellationToken);
-
-    public async Task<int> Add<TData>(string entityId, TData data, CancellationToken cancellationToken = default)
-        where TData : class, IDocumentData
+    public Task Update<TData>(int documentDataStorageId, TData data) where TData : class, IDocumentData
     {
-        var varsToInsert = new
-        {
-            DocumentDataEntityId = entityId,
-            DocumentDataVersion = data.Version,
-            Data = Serialize(data),
-            CreatedUserId = _currentUserAccessor.IsAuthenticated ? _currentUserAccessor.User!.Id : 0,
-            CreatedTime = _dateTime.Now
-        };
-
-        return await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<int>(@$"
-            INSERT INTO {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} 
-            (DocumentDataEntityId, DocumentDataVersion, Data, CreatedUserId, CreatedTime) 
-            OUTPUT inserted.DocumentDataStorageId 
-            VALUES 
-            (@DocumentDataEntityId, @DocumentDataVersion, @Data, @CreatedUserId, @CreatedTime)", 
-            varsToInsert, 
-            cancellationToken);
+        return Update(documentDataStorageId, getEntityType<TData>(), data);
     }
 
-    public async Task Update<TData>(int documentDataStorageId, TData data)
-        where TData : class, IDocumentData
+    public async Task Update(int documentDataStorageId, string tableName, IDocumentData data)
     {
         var varsToUpdate = new
         {
             DocumentDataStorageId = documentDataStorageId,
             DocumentDataVersion = data.Version,
             Data = Serialize(data),
-            ModifiedUserId  = _currentUserAccessor.IsAuthenticated ? _currentUserAccessor.User!.Id : 0
+            ModifiedUserId = _currentUserAccessor.IsAuthenticated ? _currentUserAccessor.User!.Id : 0
         };
 
-        using (var connection = _connectionProvider.Create())
-        {
-            connection.Open();
-            await connection.ExecuteAsync(
-                $"UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} SET Data=@Data, DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId WHERE DocumentDataStorageId=@DocumentDataStorageId",
-                varsToUpdate);
-        }
+        var updateSql = $"""
+                         UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{tableName}
+                         SET Data=@Data, DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId
+                         WHERE DocumentDataStorageId=@DocumentDataStorageId
+                         """;
+
+        await using var connection = _connectionProvider.Create();
+
+        await connection.OpenAsync();
+        await connection.ExecuteAsync(updateSql, varsToUpdate);
     }
 
-    public async Task AddOrUpdateByEntityId<TData>(int entityId, TData data, CancellationToken cancellationToken)
+    public Task UpdateByEntityId<TEntityId, TData>(TEntityId entityId, TData data)
+        where TEntityId : IConvertible
         where TData : class, IDocumentData
     {
-        var existingId = await _connectionProvider.ExecuteDapperScalarAsync<int?>($"SELECT TOP 1 DocumentDataStorageId FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataEntityId=@entityId", new { entityId }, cancellationToken);
-
-        if (!existingId.HasValue)
-        {
-            await Add(entityId, data, cancellationToken);
-        }
-        else
-        {
-            await Update(existingId.Value, data);
-        }
+        return UpdateByEntityId(entityId, getEntityType<TData>(), data);
     }
 
-    public async Task UpdateByEntityId<TData>(int entityId, TData data)
-        where TData : class, IDocumentData
-        => await UpdateByEntityId(entityId.ToString(CultureInfo.InvariantCulture), data);
-
-    public async Task UpdateByEntityId<TData>(string entityId, TData data)
-        where TData : class, IDocumentData
+    public async Task UpdateByEntityId<TEntityId>(TEntityId entityId, string tableName, IDocumentData data)
+        where TEntityId : IConvertible
     {
         var varsToUpdate = new
         {
@@ -177,41 +166,68 @@ internal sealed class DocumentDataStorageProvider
             ModifiedUserId = _currentUserAccessor.IsAuthenticated ? _currentUserAccessor.User!.Id : 0
         };
 
-        using (var connection = _connectionProvider.Create())
+        var updateSql = $"""
+                         UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{tableName}
+                         SET Data=@Data, DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId
+                         WHERE DocumentDataEntityId=@DocumentDataEntityId
+                         """;
+
+        await using var connection = _connectionProvider.Create();
+        await connection.OpenAsync();
+
+        await connection.ExecuteAsync(updateSql, varsToUpdate);
+    }
+
+    public Task AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, TData data, CancellationToken cancellationToken)
+        where TEntityId : IConvertible
+        where TData : class, IDocumentData
+    {
+        return AddOrUpdateByEntityId(entityId, getEntityType<TData>(), data, cancellationToken);
+    }
+
+    public async Task AddOrUpdateByEntityId<TEntityId>(TEntityId entityId, string tableName, IDocumentData data, CancellationToken cancellationToken) 
+        where TEntityId : IConvertible
+    {
+        var existingIdSql = $"""
+                             SELECT TOP 1 DocumentDataStorageId FROM {DocumentDataStorageConstants.DatabaseSchema}.{tableName}
+                             WHERE DocumentDataEntityId=@entityId
+                             """;
+
+        var existingId = await _connectionProvider.ExecuteDapperScalarAsync<int?>(existingIdSql, new { entityId }, cancellationToken);
+
+        if (existingId.HasValue)
         {
-            connection.Open();
-            await connection.ExecuteAsync(
-                $"UPDATE {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} SET Data=@Data, DocumentDataVersion=@DocumentDataVersion, ModifiedUserId=@ModifiedUserId WHERE DocumentDataEntityId=@DocumentDataEntityId",
-                varsToUpdate);
+            await Update(existingId.Value, tableName, data);
+
+            return;
         }
+
+        await Add(entityId, tableName, data, cancellationToken);
     }
 
     public async Task<int> Delete<TData>(int documentDataStorageId)
         where TData : class, IDocumentData
     {
-        using (var connection = _connectionProvider.Create())
-        {
-            connection.Open();
-            return await connection.ExecuteAsync(
-                $"DELETE FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataStorageId = @documentDataStorageId", 
-                new { documentDataStorageId });
-        }
+        await using var connection = _connectionProvider.Create();
+        await connection.OpenAsync();
+
+        return await connection.ExecuteAsync($"DELETE FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataStorageId = @documentDataStorageId", new { documentDataStorageId });
     }
 
-    public async Task<int> DeleteByEntityId<TData>(int entityId)
-        where TData : class, IDocumentData
-        => await DeleteByEntityId<TData>(entityId.ToString(CultureInfo.InvariantCulture));
-
-    public async Task<int> DeleteByEntityId<TData>(string entityId)
+    public Task<int> DeleteByEntityId<TEntityId, TData>(TEntityId entityId)
+        where TEntityId : IConvertible
         where TData : class, IDocumentData
     {
-        using (var connection = _connectionProvider.Create())
-        {
-            connection.Open();
-            return await connection.ExecuteAsync(
-                $"DELETE FROM {DocumentDataStorageConstants.DatabaseSchema}.{getEntityType<TData>()} WHERE DocumentDataEntityId = @entityId", 
-                new { entityId });
-        }
+        return DeleteByEntityId(entityId, getEntityType<TData>());
+    }
+
+    public async Task<int> DeleteByEntityId<TEntityId>(TEntityId entityId, string tableName) 
+        where TEntityId : IConvertible
+    {
+        await using var connection = _connectionProvider.Create();
+        await connection.OpenAsync();
+
+        return await connection.ExecuteAsync($"DELETE FROM {DocumentDataStorageConstants.DatabaseSchema}.{tableName} WHERE DocumentDataEntityId = @entityId", new { entityId = entityId.ToString(CultureInfo.InvariantCulture) });
     }
 
     private DocumentDataItem<TData> getInner<TData>(Database.DocumentDataStorageItem entity)
@@ -230,7 +246,7 @@ internal sealed class DocumentDataStorageProvider
     private readonly CIS.Core.IDateTime _dateTime;
     private readonly IConnectionProvider<Database.IDocumentDataStorageConnection> _connectionProvider;
 
-    private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };

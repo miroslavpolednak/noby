@@ -21,5 +21,5 @@ internal class SalesArrangementPayout
 
     public string ConstantSymbol => _item.ConstantSymbol;
 
-    public string SpecificSymbol => _item.SpecificSymbolUcetKeSplaceni;
+    public string SpecificSymbol => _item.SpecificSymbol;
 }
