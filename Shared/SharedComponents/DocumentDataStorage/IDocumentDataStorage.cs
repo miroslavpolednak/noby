@@ -171,4 +171,7 @@ public interface IDocumentDataStorage
     /// <typeparam name="TEntityId">Generické ID entity</typeparam>
     Task<int> DeleteByEntityId<TEntityId>(TEntityId entityId, string tableName) 
         where TEntityId : IConvertible;
+
+    Task<DocumentDataItem<TData>?> FirstOrDefaultByEntityId<TData>(int entityId, string tableName, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData;
 }

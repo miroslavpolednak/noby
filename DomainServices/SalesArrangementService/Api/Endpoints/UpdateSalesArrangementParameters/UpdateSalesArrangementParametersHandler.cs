@@ -29,7 +29,7 @@ internal sealed class UpdateSalesArrangementParametersHandler : IRequestHandler<
 
         if (saInfoInstance.SalesArrangementTypeId == (int)SalesArrangementTypes.Drawing)
         {
-            var drawingParameters = await _documentDataStorage.FirstOrDefaultByEntityId<DrawingData>(request.SalesArrangementId, cancellationToken);
+            var drawingParameters = await _documentDataStorage.FirstOrDefaultByEntityId<DrawingData>(request.SalesArrangementId, SalesArrangementParametersConst.TableName, cancellationToken);
 
             ValidateDrawingRepaymentAccount(request.Drawing, drawingParameters?.Data);
         }

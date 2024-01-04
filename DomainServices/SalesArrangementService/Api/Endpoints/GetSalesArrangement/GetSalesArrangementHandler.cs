@@ -23,43 +23,43 @@ internal sealed class GetSalesArrangementHandler
         switch ((SalesArrangementTypes)model.SalesArrangementTypeId)
         {
             case SalesArrangementTypes.Mortgage:
-                var mortgageDoc = await _documentDataStorage.FirstOrDefaultByEntityId<MortgageData>(model.SalesArrangementId, cancellation);
-                model.Mortgage = mortgageDoc?.Data?.MapMortgage();
+                var mortgageData = await GetParametersData<MortgageData>(model.SalesArrangementId, cancellation);
+                model.Mortgage = mortgageData?.MapMortgage();
                 break;
 
             case SalesArrangementTypes.Drawing:
-                var drawingDoc = await _documentDataStorage.FirstOrDefaultByEntityId<DrawingData>(model.SalesArrangementId, cancellation);
-                model.Drawing = drawingDoc?.Data?.MapDrawing();
+                var drawingData = await GetParametersData<DrawingData>(model.SalesArrangementId, cancellation);
+                model.Drawing = drawingData?.MapDrawing();
                 break;
 
             case SalesArrangementTypes.GeneralChange:
-                var generalChangeDoc = await _documentDataStorage.FirstOrDefaultByEntityId<GeneralChangeData>(model.SalesArrangementId, cancellation);
-                model.GeneralChange = generalChangeDoc?.Data?.MapGeneralChange();
+                var generalChangeData = await GetParametersData<GeneralChangeData>(model.SalesArrangementId, cancellation);
+                model.GeneralChange = generalChangeData?.MapGeneralChange();
                 break;
 
             case SalesArrangementTypes.HUBN:
-                var hubnDoc = await _documentDataStorage.FirstOrDefaultByEntityId<HUBNData>(model.SalesArrangementId, cancellation);
-                model.HUBN = hubnDoc?.Data?.MapHUBN();
+                var hubnData = await GetParametersData<HUBNData>(model.SalesArrangementId, cancellation);
+                model.HUBN = hubnData?.MapHUBN();
                 break;
 
             case SalesArrangementTypes.CustomerChange:
-                var customerChangeDoc = await _documentDataStorage.FirstOrDefaultByEntityId<CustomerChangeData>(model.SalesArrangementId, cancellation);
-                model.CustomerChange = customerChangeDoc?.Data?.MapCustomerChange();
+                var customerChangeData = await GetParametersData<CustomerChangeData>(model.SalesArrangementId, cancellation);
+                model.CustomerChange = customerChangeData?.MapCustomerChange();
                 break;
 
             case SalesArrangementTypes.CustomerChange3602A:
-                var customerChange3602ADoc = await _documentDataStorage.FirstOrDefaultByEntityId<CustomerChange3602Data>(model.SalesArrangementId, cancellation);
-                model.CustomerChange3602A = customerChange3602ADoc?.Data?.MapCustomerChange3602();
+                var customerChange3602AData = await GetParametersData<CustomerChange3602Data>(model.SalesArrangementId, cancellation);
+                model.CustomerChange3602A = customerChange3602AData?.MapCustomerChange3602();
                 break;
 
             case SalesArrangementTypes.CustomerChange3602B:
-                var customerChange3602BDoc = await _documentDataStorage.FirstOrDefaultByEntityId<CustomerChange3602Data>(model.SalesArrangementId, cancellation);
-                model.CustomerChange3602B = customerChange3602BDoc?.Data?.MapCustomerChange3602();
+                var customerChange3602BData = await GetParametersData<CustomerChange3602Data>(model.SalesArrangementId, cancellation);
+                model.CustomerChange3602B = customerChange3602BData?.MapCustomerChange3602();
                 break;
 
             case SalesArrangementTypes.CustomerChange3602C:
-                var customerChange3602CDoc = await _documentDataStorage.FirstOrDefaultByEntityId<CustomerChange3602Data>(model.SalesArrangementId, cancellation);
-                model.CustomerChange3602C = customerChange3602CDoc?.Data?.MapCustomerChange3602();
+                var customerChange3602CData = await GetParametersData<CustomerChange3602Data>(model.SalesArrangementId, cancellation);
+                model.CustomerChange3602C = customerChange3602CData?.MapCustomerChange3602();
                 break;
 
             default:
@@ -67,6 +67,14 @@ internal sealed class GetSalesArrangementHandler
         }
 
         return model;
+    }
+
+    private async Task<TData?> GetParametersData<TData>(int salesArrangementId, CancellationToken cancellationToken) 
+        where TData : class, IDocumentData
+    {
+        var documentData = await _documentDataStorage.FirstOrDefaultByEntityId<TData>(salesArrangementId, SalesArrangementParametersConst.TableName, cancellationToken);
+
+        return documentData?.Data;
     }
 
     private readonly SalesArrangementServiceDbContext _dbContext;

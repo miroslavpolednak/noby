@@ -2,5 +2,5 @@
 
 public static class SalesArrangementParametersConst
 {
-    public const string TableName = "SalesArrangementsParameters";
+    public const string TableName = "SalesArrangementParameters";
 }

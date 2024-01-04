@@ -55,6 +55,20 @@ internal sealed class DocumentDataStorageProvider
         return entity is null ? null : getInner<TData>(entity);
     }
 
+    public async Task<DocumentDataItem<TData>?> FirstOrDefaultByEntityId<TData>(int entityId, string tableName, CancellationToken cancellationToken = default)
+        where TData : class, IDocumentData
+    {
+        var getSql = $"""
+                      SELECT DocumentDataStorageId, DocumentDataVersion, DocumentDataEntityId, Data
+                      FROM {DocumentDataStorageConstants.DatabaseSchema}.{tableName}
+                      WHERE DocumentDataEntityId=@entityId
+                      """;
+
+        var entity = await _connectionProvider.ExecuteDapperFirstOrDefaultAsync<Database.DocumentDataStorageItem>(getSql, new { entityId }, cancellationToken);
+
+        return entity is null ? null : getInner<TData>(entity);
+    }
+
     public async Task<List<DocumentDataItem<TData>>> GetList<TData>(int entityId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
         => await GetList<TData>(new[] { entityId.ToString(CultureInfo.InvariantCulture) }, cancellationToken);
