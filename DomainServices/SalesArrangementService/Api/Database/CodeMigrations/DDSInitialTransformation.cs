@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using DbUp.Engine;
@@ -63,7 +64,7 @@ public sealed class DDSInitialTransformation : IScript
             var insertSqlCommands = convertedRecords
                 .Select(r => $"""
                               INSERT INTO [DDS].[SalesArrangementParameters] ([DocumentDataEntityId],[DocumentDataVersion],[Data],[CreatedUserId],[CreatedTime],[ModifiedUserId])
-                              VALUES ({r.SalesArrangementId}, 1, '{JsonSerializer.Serialize(r.ParametersObj, _jsonSerializerOptions)}', {r.CreatedUserId}, '{r.CreatedTime}', {r.ModifiedUserId});
+                              VALUES ({r.SalesArrangementId}, 1, '{JsonSerializer.Serialize(r.ParametersObj, _jsonSerializerOptions)}', {r.CreatedUserId}, '{r.CreatedTime.ToString(CultureInfo.InvariantCulture)}', {r.ModifiedUserId});
                               """);
 
             cmd.CommandText = string.Join(Environment.NewLine, insertSqlCommands);
