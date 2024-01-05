@@ -8,9 +8,9 @@ internal sealed class MortgageData : IDocumentData
 
     public DateTime? ExpectedDateOfDrawing { get; set; }
 
-    public string IncomeCurrencyCode { get; set; } = null!;
+    public string? IncomeCurrencyCode { get; set; }
 
-    public string ResidencyCurrencyCode { get; set; } = null!;
+    public string? ResidencyCurrencyCode { get; set; }
 
     public int? ContractSignatureTypeId { get; set; }
 
@@ -18,7 +18,7 @@ internal sealed class MortgageData : IDocumentData
 
     public int? Agent { get; set; }
 
-    public string Comment { get; set; } = null!;
+    public string? Comment { get; set; }
 
     public DateTime? FirstSignatureDate { get; set; }
 

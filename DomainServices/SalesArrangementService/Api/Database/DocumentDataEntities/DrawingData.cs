@@ -43,7 +43,7 @@ internal sealed class DrawingData : IDocumentData
     {
         public bool IsAccountNumberMissing { get; set; }
 
-        public string Prefix { get; set; } = null!;
+        public string? Prefix { get; set; } = null!;
 
         public string Number { get; set; } = null!;
 
@@ -58,7 +58,7 @@ internal sealed class DrawingData : IDocumentData
 
         public decimal? DrawingAmount { get; set; }
 
-        public string PrefixAccount { get; set; } = null!;
+        public string? PrefixAccount { get; set; } = null!;
 
         public string AccountNumber { get; set; } = null!;
 

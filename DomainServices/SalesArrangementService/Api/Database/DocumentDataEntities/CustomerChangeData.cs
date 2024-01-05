@@ -68,7 +68,7 @@ internal sealed class CustomerChangeData : IDocumentData
     public class CustomerChangePaymentAccountData
     {
         public bool IsActive { get; set; }
-        public string AgreedPrefix { get; set; } = null!;
+        public string? AgreedPrefix { get; set; } = null!;
         public string AgreedNumber { get; set; } = null!;
         public string AgreedBankCode { get; set; } = null!;
         public string? Prefix { get; set; }

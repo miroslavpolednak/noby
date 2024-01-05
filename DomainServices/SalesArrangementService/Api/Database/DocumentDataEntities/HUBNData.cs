@@ -42,7 +42,7 @@ internal sealed class HUBNData : IDocumentData
 
     public class HUBNCollateralIdentificationData
     {
-        public string RealEstateIdentification { get; set; } = null!;
+        public string? RealEstateIdentification { get; set; } = null!;
     }
 
     public class HUBNExpectedDateOfDrawingData

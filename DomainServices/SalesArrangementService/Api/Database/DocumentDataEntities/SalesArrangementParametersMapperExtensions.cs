@@ -11,8 +11,8 @@ internal static class SalesArrangementParametersMapperExtensions
         return new SalesArrangementParametersMortgage
         {
             ExpectedDateOfDrawing = mortgageData.ExpectedDateOfDrawing,
-            IncomeCurrencyCode = mortgageData.IncomeCurrencyCode,
-            ResidencyCurrencyCode = mortgageData.ResidencyCurrencyCode,
+            IncomeCurrencyCode = mortgageData.IncomeCurrencyCode ?? "",
+            ResidencyCurrencyCode = mortgageData.ResidencyCurrencyCode ?? "",
             ContractSignatureTypeId = mortgageData.ContractSignatureTypeId,
             LoanRealEstates =
             {
@@ -24,7 +24,7 @@ internal static class SalesArrangementParametersMapperExtensions
                 })
             },
             Agent = mortgageData.Agent,
-            Comment = mortgageData.Comment,
+            Comment = mortgageData.Comment ?? "",
             FirstSignatureDate = mortgageData.FirstSignatureDate
         };
     }
@@ -69,7 +69,7 @@ internal static class SalesArrangementParametersMapperExtensions
             RepaymentAccount = drawingData.RepaymentAccount is null ? null : new SalesArrangementParametersDrawing.Types.SalesArrangementParametersDrawingRepaymentAccount
             {
                 IsAccountNumberMissing = drawingData.RepaymentAccount.IsAccountNumberMissing,
-                Prefix = drawingData.RepaymentAccount.Prefix,
+                Prefix = drawingData.RepaymentAccount.Prefix ?? "",
                 Number = drawingData.RepaymentAccount.Number,
                 BankCode = drawingData.RepaymentAccount.BankCode
             },
@@ -80,7 +80,7 @@ internal static class SalesArrangementParametersMapperExtensions
                     ProductObligationId = x.ProductObligationId,
                     Order = x.Order,
                     DrawingAmount = x.DrawingAmount,
-                    PrefixAccount = x.PrefixAccount,
+                    PrefixAccount = x.PrefixAccount ?? "",
                     AccountNumber = x.AccountNumber,
                     BankCode = x.BankCode,
                     VariableSymbol = x.VariableSymbol,
@@ -168,7 +168,7 @@ internal static class SalesArrangementParametersMapperExtensions
             },
             CollateralIdentification = hubnData.CollateralIdentification is null ? null : new SalesArrangementParametersHUBN.Types.CollateralIdentificationObject
             {
-                RealEstateIdentification = hubnData.CollateralIdentification.RealEstateIdentification
+                RealEstateIdentification = hubnData.CollateralIdentification.RealEstateIdentification ?? ""
             },
             ExpectedDateOfDrawing = hubnData.ExpectedDateOfDrawing is null ? null : new SalesArrangementParametersHUBN.Types.ExpectedDateOfDrawingObject
             {
@@ -248,8 +248,8 @@ internal static class SalesArrangementParametersMapperExtensions
             Collateral = generalChangeData.Collateral is null ? null : new SalesArrangementParametersGeneralChange.Types.CollateralObject
             {
                 IsActive = generalChangeData.Collateral.IsActive,
-                AddLoanRealEstateCollateral = generalChangeData.Collateral.AddLoanRealEstateCollateral,
-                ReleaseLoanRealEstateCollateral = generalChangeData.Collateral.ReleaseLoanRealEstateCollateral
+                AddLoanRealEstateCollateral = generalChangeData.Collateral.AddLoanRealEstateCollateral ?? "",
+                ReleaseLoanRealEstateCollateral = generalChangeData.Collateral.ReleaseLoanRealEstateCollateral ?? ""
             },
             PaymentDay = generalChangeData.PaymentDay is null ? null : new SalesArrangementParametersGeneralChange.Types.PaymentDayObject
             {
@@ -262,19 +262,19 @@ internal static class SalesArrangementParametersMapperExtensions
                 IsActive = generalChangeData.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = generalChangeData.DrawingDateTo.AgreedDrawingDateTo,
                 ExtensionDrawingDateToByMonths = generalChangeData.DrawingDateTo.ExtensionDrawingDateToByMonths,
-                CommentToDrawingDateTo = generalChangeData.DrawingDateTo.CommentToDrawingDateTo
+                CommentToDrawingDateTo = generalChangeData.DrawingDateTo.CommentToDrawingDateTo ?? ""
             },
             RepaymentAccount = generalChangeData.RepaymentAccount is null ? null : new SalesArrangementParametersGeneralChange.Types.PaymentAccountObject
             {
                 IsActive = generalChangeData.RepaymentAccount.IsActive,
-                AgreedPrefix = generalChangeData.RepaymentAccount.AgreedPrefix,
-                AgreedNumber = generalChangeData.RepaymentAccount.AgreedNumber,
-                AgreedBankCode = generalChangeData.RepaymentAccount.AgreedBankCode,
-                Prefix = generalChangeData.RepaymentAccount.Prefix,
-                Number = generalChangeData.RepaymentAccount.Number,
-                BankCode = generalChangeData.RepaymentAccount.BankCode,
-                OwnerFirstName = generalChangeData.RepaymentAccount.OwnerFirstName,
-                OwnerLastName = generalChangeData.RepaymentAccount.OwnerLastName,
+                AgreedPrefix = generalChangeData.RepaymentAccount.AgreedPrefix ?? "",
+                AgreedNumber = generalChangeData.RepaymentAccount.AgreedNumber ?? "",
+                AgreedBankCode = generalChangeData.RepaymentAccount.AgreedBankCode ?? "",
+                Prefix = generalChangeData.RepaymentAccount.Prefix ?? "",
+                Number = generalChangeData.RepaymentAccount.Number ?? "",
+                BankCode = generalChangeData.RepaymentAccount.BankCode ?? "",
+                OwnerFirstName = generalChangeData.RepaymentAccount.OwnerFirstName ?? "",
+                OwnerLastName = generalChangeData.RepaymentAccount.OwnerLastName ?? "",
                 OwnerDateOfBirth = generalChangeData.RepaymentAccount.OwnerDateOfBirth
             },
             LoanPaymentAmount = generalChangeData.LoanPaymentAmount is null ? null : new SalesArrangementParametersGeneralChange.Types.LoanPaymentAmountObject
@@ -299,24 +299,24 @@ internal static class SalesArrangementParametersMapperExtensions
                     generalChangeData.LoanRealEstate.LoanRealEstates.Select(realEstate => new SalesArrangementParametersGeneralChange.Types.LoanRealEstatesItem
                     {
                         RealEstateTypeId = realEstate.RealEstateTypeId,
-                        RealEstatePurchaseTypeId = realEstate.RealEstatePurchaseTypeId,
+                        RealEstatePurchaseTypeId = realEstate.RealEstatePurchaseTypeId
                     })
                 }
             },
             LoanPurpose = generalChangeData.LoanPurpose is null ? null : new SalesArrangementParametersGeneralChange.Types.LoanPurposeObject
             {
                 IsActive = generalChangeData.LoanPurpose.IsActive,
-                LoanPurposesComment = generalChangeData.LoanPurpose.LoanPurposesComment
+                LoanPurposesComment = generalChangeData.LoanPurpose.LoanPurposesComment ?? ""
             },
             DrawingAndOtherConditions = generalChangeData.DrawingAndOtherConditions is null ? null : new SalesArrangementParametersGeneralChange.Types.DrawingAndOtherConditionsObject
             {
                 IsActive = generalChangeData.DrawingAndOtherConditions.IsActive,
-                CommentToChangeContractConditions = generalChangeData.DrawingAndOtherConditions.CommentToChangeContractConditions
+                CommentToChangeContractConditions = generalChangeData.DrawingAndOtherConditions.CommentToChangeContractConditions ?? ""
             },
             CommentToChangeRequest = generalChangeData.CommentToChangeRequest is null ? null : new SalesArrangementParametersGeneralChange.Types.CommentToChangeRequestObject
             {
                 IsActive = generalChangeData.CommentToChangeRequest.IsActive,
-                GeneralComment = generalChangeData.CommentToChangeRequest.GeneralComment
+                GeneralComment = generalChangeData.CommentToChangeRequest.GeneralComment ?? ""
             }
         };
     }
@@ -454,25 +454,25 @@ internal static class SalesArrangementParametersMapperExtensions
             {
                 IsActive = customerChangeData.Agent.IsActive,
                 ActualAgent = customerChangeData.Agent.ActualAgent,
-                NewAgent = customerChangeData.Agent.NewAgent
+                NewAgent = customerChangeData.Agent.NewAgent ?? ""
             },
             RepaymentAccount = customerChangeData.RepaymentAccount is null ? null : new SalesArrangementParametersCustomerChange.Types.PaymentAccountObject
             {
                 IsActive = customerChangeData.RepaymentAccount.IsActive,
-                AgreedPrefix = customerChangeData.RepaymentAccount.AgreedPrefix,
+                AgreedPrefix = customerChangeData.RepaymentAccount.AgreedPrefix ?? "",
                 AgreedNumber = customerChangeData.RepaymentAccount.AgreedNumber,
                 AgreedBankCode = customerChangeData.RepaymentAccount.AgreedBankCode,
-                Prefix = customerChangeData.RepaymentAccount.Prefix,
-                Number = customerChangeData.RepaymentAccount.Number,
-                BankCode = customerChangeData.RepaymentAccount.BankCode,
-                OwnerFirstName = customerChangeData.RepaymentAccount.OwnerFirstName,
-                OwnerLastName = customerChangeData.RepaymentAccount.OwnerLastName,
+                Prefix = customerChangeData.RepaymentAccount.Prefix ?? "",
+                Number = customerChangeData.RepaymentAccount.Number ?? "",
+                BankCode = customerChangeData.RepaymentAccount.BankCode ?? "",
+                OwnerFirstName = customerChangeData.RepaymentAccount.OwnerFirstName ?? "",
+                OwnerLastName = customerChangeData.RepaymentAccount.OwnerLastName ?? "",
                 OwnerDateOfBirth = customerChangeData.RepaymentAccount.OwnerDateOfBirth
             },
             CommentToChangeRequest = customerChangeData.CommentToChangeRequest is null ? null : new SalesArrangementParametersCustomerChange.Types.CommentToChangeRequestObject
             {
                 IsActive = customerChangeData.CommentToChangeRequest.IsActive,
-                GeneralComment = customerChangeData.CommentToChangeRequest.GeneralComment
+                GeneralComment = customerChangeData.CommentToChangeRequest.GeneralComment ?? ""
             }
         };
     }
