@@ -15,11 +15,6 @@ public interface IDocumentDataStorage
         where TData : class, IDocumentData;
 
     /// <summary>
-    /// Serializace instance dat na string do databáze
-    /// </summary>
-    string Serialize(IDocumentData? data);
-
-    /// <summary>
     /// Vrátí nalezenou instanci dat dle jejího primárního klíče. Pokud instance data neexistuje, vrací NULL.
     /// </summary>
     /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
@@ -101,7 +96,7 @@ public interface IDocumentDataStorage
     /// <param name="data">Instance dat</param>
     Task<int> Add<TEntityId, TData>(TEntityId entityId, string tableName, TData data, CancellationToken cancellationToken = default)
         where TEntityId : IConvertible
-        where TData : IDocumentData;
+        where TData : class, IDocumentData;
 
     /// <summary>
     /// Updatuje instanci dat v databázi dle daného primární klíče documentDataStorageId.
@@ -138,7 +133,7 @@ public interface IDocumentDataStorage
     /// <param name="data">Instance dat</param>
     Task UpdateByEntityId<TEntityId, TData>(TEntityId entityId, string tableName, TData data)
         where TEntityId : IConvertible
-        where TData : IDocumentData;
+        where TData : class, IDocumentData;
 
     Task AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, TData data, CancellationToken cancellationToken)
         where TEntityId : IConvertible
@@ -146,7 +141,7 @@ public interface IDocumentDataStorage
 
     Task AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, string tableName, TData data, CancellationToken cancellationToken)
         where TEntityId : IConvertible
-        where TData : IDocumentData;
+        where TData : class, IDocumentData;
 
     /// <summary>
     /// Smaže instanci dat v tabulce dané entity dle primárního klíče documentDataStorageId.

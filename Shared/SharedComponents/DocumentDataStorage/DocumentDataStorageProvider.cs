@@ -23,8 +23,6 @@ internal sealed class DocumentDataStorageProvider
         return JsonSerializer.Serialize(data, _jsonSerializerOptions);
     }
 
-    public string Serialize(IDocumentData? data) => JsonSerializer.Serialize(data, _jsonSerializerOptions);
-
     public async Task<DocumentDataItem<TData>?> FirstOrDefault<TData>(int documentDataStorageId, CancellationToken cancellationToken = default)
         where TData : class, IDocumentData
     {
@@ -101,7 +99,7 @@ internal sealed class DocumentDataStorageProvider
 
     public Task<int> Add<TEntityId, TData>(TEntityId entityId, string tableName, TData data, CancellationToken cancellationToken = default) 
         where TEntityId : IConvertible
-        where TData : IDocumentData
+        where TData : class, IDocumentData
     {
         var insertSql = $"""
                          INSERT INTO {DocumentDataStorageConstants.DatabaseSchema}.{tableName}
@@ -122,13 +120,14 @@ internal sealed class DocumentDataStorageProvider
         return _connectionProvider.ExecuteDapperFirstOrDefaultAsync<int>(insertSql, varsToInsert, cancellationToken);
     }
 
-    public Task Update<TData>(int documentDataStorageId, TData data) where TData : class, IDocumentData
+    public Task Update<TData>(int documentDataStorageId, TData data) 
+        where TData : class, IDocumentData
     {
         return Update(documentDataStorageId, getEntityType<TData>(), data);
     }
 
     public async Task Update<TData>(int documentDataStorageId, string tableName, TData data)
-        where TData : IDocumentData
+        where TData : class, IDocumentData
     {
         var varsToUpdate = new
         {
@@ -159,7 +158,7 @@ internal sealed class DocumentDataStorageProvider
 
     public async Task UpdateByEntityId<TEntityId, TData>(TEntityId entityId, string tableName, TData data)
         where TEntityId : IConvertible
-        where TData : IDocumentData
+        where TData : class, IDocumentData
     {
         var varsToUpdate = new
         {
@@ -190,7 +189,7 @@ internal sealed class DocumentDataStorageProvider
 
     public async Task AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, string tableName, TData data, CancellationToken cancellationToken) 
         where TEntityId : IConvertible
-        where TData : IDocumentData
+        where TData : class, IDocumentData
     {
         var existingIdSql = $"""
                              SELECT TOP 1 DocumentDataStorageId FROM {DocumentDataStorageConstants.DatabaseSchema}.{tableName}
