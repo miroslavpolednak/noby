@@ -8,7 +8,7 @@ internal sealed class RealLuxpiServiceClient
     public async Task<Dto.CreateKbmodelFlatResponse> CreateKbmodelFlat(Contracts.KBModelRequest request, long id, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PostAsJsonAsync(_httpClient.BaseAddress + $"api/KBModel/flat/address/{id}", request, cancellationToken)
+            .PostAsJsonAsync(new Uri(_httpClient.BaseAddress!, $"api/KBModel/flat/address/{id}"), request, cancellationToken)
             .ConfigureAwait(false);
 
         var model = await response.EnsureSuccessStatusAndReadJson<Contracts.ValuationRequest>(StartupExtensions.ServiceName, cancellationToken);
