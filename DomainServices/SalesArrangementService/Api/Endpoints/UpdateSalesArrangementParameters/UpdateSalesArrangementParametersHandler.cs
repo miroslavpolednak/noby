@@ -31,7 +31,8 @@ internal sealed class UpdateSalesArrangementParametersHandler : IRequestHandler<
         {
             var drawingParameters = await _documentDataStorage.FirstOrDefaultByEntityId<DrawingData>(request.SalesArrangementId, SalesArrangementParametersConst.TableName, cancellationToken);
 
-            ValidateDrawingRepaymentAccount(request.Drawing, drawingParameters?.Data);
+            if (drawingParameters is not null)
+                ValidateDrawingRepaymentAccount(request.Drawing, drawingParameters.Data);
         }
 
         // SA parameters
