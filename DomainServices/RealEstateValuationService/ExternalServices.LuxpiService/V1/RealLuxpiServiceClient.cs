@@ -8,7 +8,7 @@ internal sealed class RealLuxpiServiceClient
     public async Task<Dto.CreateKbmodelFlatResponse> CreateKbmodelFlat(Contracts.KBModelRequest request, long id, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PostAsJsonAsync(new Uri(_httpClient.BaseAddress!, $"api/KBModel/flat/address/{id}"), request, cancellationToken)
+            .PostAsJsonAsync(getUrl(), request, cancellationToken)
             .ConfigureAwait(false);
 
         var model = await response.EnsureSuccessStatusAndReadJson<Contracts.ValuationRequest>(StartupExtensions.ServiceName, cancellationToken);
@@ -22,6 +22,11 @@ internal sealed class RealLuxpiServiceClient
             },
             _ => throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelUnknownStatus, model.Status)
         };
+
+        string getUrl()
+        {
+            return _httpClient.BaseAddress!.AbsoluteUri + (_httpClient.BaseAddress!.AbsoluteUri[^1] == '/' ? "" : "/") + $"api/KBModel/flat/address/{id}";
+        }
 
         Dto.CreateKbmodelFlatResponse createResponse()
         {
@@ -39,7 +44,7 @@ internal sealed class RealLuxpiServiceClient
     }
 
     private readonly HttpClient _httpClient;
-
+    
     public RealLuxpiServiceClient(HttpClient httpClient)
     {
         _httpClient = httpClient;

@@ -9,9 +9,9 @@ internal sealed class RealTokenService
     {
         var content = new StringContent("\"" + apiKey + "\"", new System.Net.Http.Headers.MediaTypeHeaderValue("application/json-patch+json"));
         var response = await _httpClient
-            .PostAsync(new Uri(_httpClient.BaseAddress!, "api/Authetication/request-by-apikey"), content, cancellationToken)
+            .PostAsync(_url, content, cancellationToken)
             .ConfigureAwait(false);
-
+        
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
 #pragma warning disable CS8603 // Possible null reference return.
         return await response!.SafeReadAsStringAsync(cancellationToken);
@@ -19,9 +19,16 @@ internal sealed class RealTokenService
     }
 
     private readonly HttpClient _httpClient;
+    // neni thread safe, tady je to jedno
+    private static string? _url;
 
     public RealTokenService(HttpClient httpClient)
     {
         _httpClient = httpClient;
+
+        if (string.IsNullOrEmpty(_url))
+        {
+            _url = _httpClient.BaseAddress!.AbsoluteUri + (_httpClient.BaseAddress!.AbsoluteUri[^1] == '/' ? "" : "/") + "api/Authetication/request-by-apikey";
+        }
     }
 }

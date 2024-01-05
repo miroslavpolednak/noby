@@ -10,7 +10,7 @@ internal sealed class RealPreorderServiceClient
     public async Task<OrderResultResponse> GetOrderResult(long orderId, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .GetAsync(new Uri(_httpClient.BaseAddress!, $"order/{orderId}/result"), cancellationToken)
+            .GetAsync(getUrl(_httpClient.BaseAddress!, $"order/{orderId}/result"), cancellationToken)
             .ConfigureAwait(false);
         
         var model = await response.EnsureSuccessStatusAndReadJson<Contracts.OrderResultDTO>(StartupExtensions.ServiceName, cancellationToken);
@@ -30,7 +30,7 @@ internal sealed class RealPreorderServiceClient
     public async Task<bool> RevaluationCheck(Contracts.OnlineRevaluationCheckRequestDTO request, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PostAsJsonAsync(new Uri(_httpClient.BaseAddress!, "lookup/revaluationcheck"), request, cancellationToken)
+            .PostAsJsonAsync(getUrl(_httpClient.BaseAddress!, "lookup/revaluationcheck"), request, cancellationToken)
             .ConfigureAwait(false);
 
         var model = await response.EnsureSuccessStatusAndReadJson<Contracts.RevaluationRequiredResponse>(StartupExtensions.ServiceName, cancellationToken);
@@ -40,7 +40,7 @@ internal sealed class RealPreorderServiceClient
     public async Task<List<SharedTypes.Enums.RealEstateValuationTypes>> GetValuationTypes(Contracts.AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PostAsJsonAsync(new Uri(_httpClient.BaseAddress!, "lookup/valuationtypes"), request, cancellationToken)
+            .PostAsJsonAsync(getUrl(_httpClient.BaseAddress!, "lookup/valuationtypes"), request, cancellationToken)
             .ConfigureAwait(false);
 
         var acvResponse = await response.EnsureSuccessStatusAndReadJson<List<string>>(StartupExtensions.ServiceName, cancellationToken);
@@ -60,7 +60,7 @@ internal sealed class RealPreorderServiceClient
     {
         var (path, errorCode) = getInfo();
         var response = await _httpClient
-            .PostAsJsonAsync(new Uri(_httpClient.BaseAddress!, path), request, cancellationToken)
+            .PostAsJsonAsync(getUrl(_httpClient.BaseAddress!, path), request, cancellationToken)
             .ConfigureAwait(false);
 
         var acvResponse = await response.EnsureSuccessStatusAndReadJson<Contracts.OrderDTO>(StartupExtensions.ServiceName, new Dictionary<HttpStatusCode, int>
@@ -98,7 +98,7 @@ internal sealed class RealPreorderServiceClient
         content.Add(contentFile, "FromFile", fileName);
 
         var response = await _httpClient
-            .PostAsync(new Uri(_httpClient.BaseAddress!, "attachment"), content, cancellationToken)
+            .PostAsync(getUrl(_httpClient.BaseAddress!, "attachment"), content, cancellationToken)
             .ConfigureAwait(false);
 
         var result = await response.EnsureSuccessStatusAndReadJson<List<Contracts.AttachmentDTO>>(StartupExtensions.ServiceName, cancellationToken);
@@ -114,10 +114,15 @@ internal sealed class RealPreorderServiceClient
     public async Task DeleteAttachment(long externalId, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .DeleteAsync(new Uri(_httpClient.BaseAddress, $"attachment/{externalId}"), cancellationToken)
+            .DeleteAsync(getUrl(_httpClient.BaseAddress!, $"attachment/{externalId}"), cancellationToken)
             .ConfigureAwait(false);
 
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+    }
+
+    private static string getUrl(Uri uri, in string path)
+    {
+        return uri.AbsoluteUri + (uri.AbsoluteUri[^1] == '/' ? "" : "/") + path;
     }
 
     private readonly HttpClient _httpClient;
