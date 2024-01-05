@@ -99,8 +99,9 @@ public interface IDocumentDataStorage
     /// <typeparam name="TEntityId">Generické ID entity</typeparam>
     /// <param name="tableName">Název DDS tabulky</param>
     /// <param name="data">Instance dat</param>
-    Task<int> Add<TEntityId>(TEntityId entityId, string tableName, IDocumentData data, CancellationToken cancellationToken = default)
-        where TEntityId : IConvertible;
+    Task<int> Add<TEntityId, TData>(TEntityId entityId, string tableName, TData data, CancellationToken cancellationToken = default)
+        where TEntityId : IConvertible
+        where TData : IDocumentData;
 
     /// <summary>
     /// Updatuje instanci dat v databázi dle daného primární klíče documentDataStorageId.
@@ -135,15 +136,17 @@ public interface IDocumentDataStorage
     /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
     /// <param name="tableName">Název DDS tabulky</param>
     /// <param name="data">Instance dat</param>
-    Task UpdateByEntityId<TEntityId>(TEntityId entityId, string tableName, IDocumentData data)
-        where TEntityId : IConvertible;
+    Task UpdateByEntityId<TEntityId, TData>(TEntityId entityId, string tableName, TData data)
+        where TEntityId : IConvertible
+        where TData : IDocumentData;
 
     Task AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, TData data, CancellationToken cancellationToken)
         where TEntityId : IConvertible
         where TData : class, IDocumentData;
 
-    Task AddOrUpdateByEntityId<TEntityId>(TEntityId entityId, string tableName, IDocumentData data, CancellationToken cancellationToken)
-        where TEntityId : IConvertible;
+    Task AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, string tableName, TData data, CancellationToken cancellationToken)
+        where TEntityId : IConvertible
+        where TData : IDocumentData;
 
     /// <summary>
     /// Smaže instanci dat v tabulce dané entity dle primárního klíče documentDataStorageId.

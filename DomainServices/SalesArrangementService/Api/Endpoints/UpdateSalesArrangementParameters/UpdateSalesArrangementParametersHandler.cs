@@ -36,8 +36,7 @@ internal sealed class UpdateSalesArrangementParametersHandler : IRequestHandler<
         }
 
         // SA parameters
-        var parametersData = GetParametersData((SalesArrangementTypes)saInfoInstance.SalesArrangementTypeId, request);
-        await _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, parametersData, cancellationToken);
+        await AddOrUpdateParameters((SalesArrangementTypes)saInfoInstance.SalesArrangementTypeId, request, cancellationToken);
 
         // set flow switches
         await SetFlowSwitches(request.SalesArrangementId, saInfoInstance.OfferGuaranteeDateTo, cancellationToken);
@@ -91,18 +90,18 @@ internal sealed class UpdateSalesArrangementParametersHandler : IRequestHandler<
         requestAccount.IsAccountNumberMissing = false;
     }
 
-    private static IDocumentData GetParametersData(SalesArrangementTypes salesArrangementType, Contracts.UpdateSalesArrangementParametersRequest request)
+    private Task AddOrUpdateParameters(SalesArrangementTypes salesArrangementType, Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken)
     {
         return salesArrangementType switch
         {
-            SalesArrangementTypes.Mortgage => request.Mortgage.MapMortgage(),
-            SalesArrangementTypes.Drawing => request.Drawing.MapDrawing(),
-            SalesArrangementTypes.GeneralChange => request.GeneralChange.MapGeneralChange(),
-            SalesArrangementTypes.HUBN => request.HUBN.MapHUBN(),
-            SalesArrangementTypes.CustomerChange => request.CustomerChange.MapCustomerChange(),
-            SalesArrangementTypes.CustomerChange3602A => request.CustomerChange3602A.MapCustomerChange3602(),
-            SalesArrangementTypes.CustomerChange3602B => request.CustomerChange3602B.MapCustomerChange3602(),
-            SalesArrangementTypes.CustomerChange3602C => request.CustomerChange3602C.MapCustomerChange3602(),
+            SalesArrangementTypes.Mortgage => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.Mortgage.MapMortgage(), cancellationToken),
+            SalesArrangementTypes.Drawing => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.Drawing.MapDrawing(), cancellationToken),
+            SalesArrangementTypes.GeneralChange => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.GeneralChange.MapGeneralChange(), cancellationToken),
+            SalesArrangementTypes.HUBN => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.HUBN.MapHUBN(), cancellationToken),
+            SalesArrangementTypes.CustomerChange => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange.MapCustomerChange(), cancellationToken),
+            SalesArrangementTypes.CustomerChange3602A => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange3602A.MapCustomerChange3602(), cancellationToken),
+            SalesArrangementTypes.CustomerChange3602B => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange3602B.MapCustomerChange3602(), cancellationToken),
+            SalesArrangementTypes.CustomerChange3602C => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange3602C.MapCustomerChange3602(), cancellationToken),
             _ => throw new ArgumentOutOfRangeException(nameof(salesArrangementType), salesArrangementType, null)
         };
     }
