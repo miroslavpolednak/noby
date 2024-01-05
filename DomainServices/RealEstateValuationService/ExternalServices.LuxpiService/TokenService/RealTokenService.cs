@@ -9,7 +9,7 @@ internal sealed class RealTokenService
     {
         var content = new StringContent("\"" + apiKey + "\"", new System.Net.Http.Headers.MediaTypeHeaderValue("application/json-patch+json"));
         var response = await _httpClient
-            .PostAsync(_httpClient.BaseAddress + "api/Authetication/request-by-apikey", content, cancellationToken)
+            .PostAsync(new Uri(_httpClient.BaseAddress!, "api/Authetication/request-by-apikey"), content, cancellationToken)
             .ConfigureAwait(false);
 
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
