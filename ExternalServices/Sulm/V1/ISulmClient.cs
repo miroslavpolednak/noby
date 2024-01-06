@@ -13,9 +13,9 @@ public interface ISulmClient
     public const string PurposeMPAP = "MPAP";
     public const string PurposeMLAX = "MLAX";
 
-    internal static string GetChannelCode(IList<SharedTypes.Types.UserIdentity> identities)
+    internal static string GetChannelCode(IList<SharedTypes.Types.UserIdentity>? identities)
     {
-        return identities.Any(t => t.Scheme == SharedTypes.Enums.UserIdentitySchemes.BrokerId)
+        return identities?.Any(t => t.Scheme == SharedTypes.Enums.UserIdentitySchemes.BrokerId) ?? false
             ? "CH0001" : "CH0002";
     }
 }

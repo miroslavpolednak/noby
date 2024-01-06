@@ -19,12 +19,13 @@ internal sealed class SulmClientHelper
         await _sulmClient.StopUse(kbCustomerId, identities, purposeCode, cancellationToken);
     }
 
-    private async Task<List<SharedTypes.Types.UserIdentity>> getUserIdentities(CancellationToken cancellationToken)
+    private async Task<List<SharedTypes.Types.UserIdentity>?> getUserIdentities(CancellationToken cancellationToken)
     {
         if (!_userAccessor.IsAuthenticated)
         {
-            throw new CIS.Core.Exceptions.CisValidationException(0, "SULM integration: context user not found");
+            return null;
         }
+
         var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
         return userInstance.UserIdentifiers
             .Select(t => (SharedTypes.Types.UserIdentity)t!)
