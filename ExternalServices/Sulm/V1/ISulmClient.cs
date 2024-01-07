@@ -3,9 +3,9 @@
 public interface ISulmClient
     : IExternalServiceClient
 {
-    Task StopUse(long kbCustomerId, IList<SharedTypes.Types.UserIdentity> identities, string purposeCode, CancellationToken cancellationToken = default(CancellationToken));
+    Task StopUse(long kbCustomerId, string purposeCode, IList<SharedTypes.Types.UserIdentity>? identities, CancellationToken cancellationToken = default(CancellationToken));
 
-    Task StartUse(long kbCustomerId, IList<SharedTypes.Types.UserIdentity> identities, string purposeCode, CancellationToken cancellationToken = default(CancellationToken));
+    Task StartUse(long kbCustomerId, string purposeCode, IList<SharedTypes.Types.UserIdentity>? identities, CancellationToken cancellationToken = default(CancellationToken));
 
     const string Version = "V1";
 

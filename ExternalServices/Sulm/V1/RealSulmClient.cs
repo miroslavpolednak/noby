@@ -1,5 +1,6 @@
 ﻿using CIS.Core;
 using CIS.Core.Configuration;
+using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using ExternalServices.Sulm.V1.Contracts;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Json;
@@ -11,8 +12,8 @@ internal sealed class RealSulmClient
 {
     public async Task StartUse(
         long kbCustomerId,
-        IList<SharedTypes.Types.UserIdentity>? userIdentities,
         string purposeCode,
+        IList<SharedTypes.Types.UserIdentity>? userIdentities,
         CancellationToken cancellationToken = default)
     {
         var request = createRegisterRequest(kbCustomerId, userIdentities, purposeCode);
@@ -28,9 +29,9 @@ internal sealed class RealSulmClient
     }
 
     public async Task StopUse(
-        long kbCustomerId, 
+        long kbCustomerId,
+        string purposeCode,
         IList<SharedTypes.Types.UserIdentity>? userIdentities, 
-        string purposeCode, 
         CancellationToken cancellationToken = default)
     {
         var request = terminateRegisterRequest(kbCustomerId, userIdentities, purposeCode);
@@ -99,8 +100,8 @@ internal sealed class RealSulmClient
         {
             return new SharedTypes.Types.UserIdentity
             {
-                Scheme = SharedTypes.Enums.UserIdentitySchemes.Mpad,
-                Identity = "mpssNobyK8sServicesUser"
+                Scheme = SharedTypes.Enums.UserIdentitySchemes.KbUms,
+                Identity = _configuration.Username ?? ""
             };
         }
         return identity;
@@ -115,9 +116,11 @@ internal sealed class RealSulmClient
     private const string _apiBasePath = "api/customers/sulm/v1/client/purpose/";
 
     private readonly HttpClient _httpClient;
+    private readonly IExternalServiceConfiguration<ISulmClient> _configuration;
 
-    public RealSulmClient(HttpClient httpClient)
+    public RealSulmClient(HttpClient httpClient, IExternalServiceConfiguration<ISulmClient> configuration)
     {
+        _configuration = configuration;
         _httpClient = httpClient;
     }
 }

@@ -5,18 +5,18 @@ namespace ExternalServices.Sulm.V1;
 internal sealed class SulmClientHelper
     : ISulmClientHelper
 {
-    public async Task StartUse(long kbCustomerId, string purposeCode, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task StartUse(long kbCustomerId, string purposeCode, CancellationToken cancellationToken = default)
     {
         var identities = await getUserIdentities(cancellationToken);
 
-        await _sulmClient.StartUse(kbCustomerId, identities, purposeCode, cancellationToken);
+        await _sulmClient.StartUse(kbCustomerId, purposeCode, identities, cancellationToken);
     }
 
-    public async Task StopUse(long kbCustomerId, string purposeCode, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task StopUse(long kbCustomerId, string purposeCode, CancellationToken cancellationToken = default)
     {
         var identities = await getUserIdentities(cancellationToken);
 
-        await _sulmClient.StopUse(kbCustomerId, identities, purposeCode, cancellationToken);
+        await _sulmClient.StopUse(kbCustomerId, purposeCode, identities, cancellationToken);
     }
 
     private async Task<List<SharedTypes.Types.UserIdentity>?> getUserIdentities(CancellationToken cancellationToken)
