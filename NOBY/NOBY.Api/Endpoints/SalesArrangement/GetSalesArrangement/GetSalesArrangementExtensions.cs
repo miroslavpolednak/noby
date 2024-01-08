@@ -97,9 +97,9 @@ internal static class GetSalesArrangementExtensions
                 IsActive = model.RepaymentAccount?.IsActive ?? false,
                 AgreedBankAccount = model.RepaymentAccount is null ? null : new NOBY.Dto.BankAccount
                 {
-                    AccountPrefix = model.RepaymentAccount.Prefix,
-                    AccountNumber = model.RepaymentAccount.Number,
-                    AccountBankCode = model.RepaymentAccount.BankCode,
+                    AccountPrefix = model.RepaymentAccount.AgreedPrefix,
+                    AccountNumber = model.RepaymentAccount.AgreedNumber,
+                    AccountBankCode = model.RepaymentAccount.AgreedBankCode,
                 },
                 AccountBankCode = model.RepaymentAccount?.BankCode,
                 AccountNumber = model.RepaymentAccount?.Number,
