@@ -22,7 +22,7 @@ public partial class GrpcDate
     public static implicit operator DateTime(GrpcDate grpcDate)
         => new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day);
 
-    public static implicit operator DateTime?(GrpcDate grpcDate)
+    public static implicit operator DateTime?(GrpcDate? grpcDate)
         => grpcDate == null ? null : new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day);
 
     public static implicit operator GrpcDate(DateTime value)
