@@ -64,7 +64,7 @@ internal sealed class ProductChildMapper
                 RelationType = t.RelationType,
                 Value = new _C4M.LoanApplicationProductRelationValue
                 {
-                    Value = t.RemainingExposure.ToString(),
+                    Value = t.RemainingExposure.HasValue ? Math.Ceiling(t.RemainingExposure.Value).ToString(System.Globalization.CultureInfo.InvariantCulture) : "",
                     Type = "REMAINING_EXPOSURE"
                 },
                 Counterparty = t.Customers?.Select(x => new _C4M.LoanApplicationProductRelationCounterparty
