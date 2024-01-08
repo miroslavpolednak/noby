@@ -1,4 +1,6 @@
 ﻿using CIS.Core;
+using CIS.Core.Configuration;
+using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using ExternalServices.Sulm.V1.Contracts;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Json;
@@ -10,8 +12,8 @@ internal sealed class RealSulmClient
 {
     public async Task StartUse(
         long kbCustomerId,
-        IList<SharedTypes.Types.UserIdentity> userIdentities,
         string purposeCode,
+        IList<SharedTypes.Types.UserIdentity>? userIdentities,
         CancellationToken cancellationToken = default)
     {
         var request = createRegisterRequest(kbCustomerId, userIdentities, purposeCode);
@@ -27,9 +29,9 @@ internal sealed class RealSulmClient
     }
 
     public async Task StopUse(
-        long kbCustomerId, 
-        IList<SharedTypes.Types.UserIdentity> userIdentities, 
-        string purposeCode, 
+        long kbCustomerId,
+        string purposeCode,
+        IList<SharedTypes.Types.UserIdentity>? userIdentities, 
         CancellationToken cancellationToken = default)
     {
         var request = terminateRegisterRequest(kbCustomerId, userIdentities, purposeCode);
@@ -44,12 +46,12 @@ internal sealed class RealSulmClient
         }
     }
 
-    private static RegisterClientPurposeRequest createRegisterRequest(
+    private RegisterClientPurposeRequest createRegisterRequest(
         long kbCustomerId,
-        IList<SharedTypes.Types.UserIdentity> userIdentities,
+        IList<SharedTypes.Types.UserIdentity>? userIdentities,
         string purposeCode)
     {
-        var identity = getKbIdentity(userIdentities);
+        var identity = getCallingIdentity(userIdentities);
 
         return new RegisterClientPurposeRequest
         {
@@ -61,12 +63,12 @@ internal sealed class RealSulmClient
         };
     }
 
-    private static TerminateClientPurposeRequest terminateRegisterRequest(
+    private TerminateClientPurposeRequest terminateRegisterRequest(
         long kbCustomerId,
-        IList<SharedTypes.Types.UserIdentity> userIdentities,
+        IList<SharedTypes.Types.UserIdentity>? userIdentities,
         string purposeCode)
     {
-        var identity = getKbIdentity(userIdentities);
+        var identity = getCallingIdentity(userIdentities);
 
         return new TerminateClientPurposeRequest
         {
@@ -91,11 +93,18 @@ internal sealed class RealSulmClient
         }
     }
 
-    private static SharedTypes.Types.UserIdentity getKbIdentity(IList<SharedTypes.Types.UserIdentity> identities)
+    private SharedTypes.Types.UserIdentity getCallingIdentity(IList<SharedTypes.Types.UserIdentity>? identities)
     {
-        return identities
-            .FirstOrDefault(t => _allowedIdentities.Contains(t.Scheme))
-            ?? throw new CisExtServiceValidationException(0, "SULM integration: User does not have supported identity");
+        var identity = identities?.FirstOrDefault(t => _allowedIdentities.Contains(t.Scheme));
+        if (identity is null)
+        {
+            return new SharedTypes.Types.UserIdentity
+            {
+                Scheme = SharedTypes.Enums.UserIdentitySchemes.KbUms,
+                Identity = _configuration.Username ?? ""
+            };
+        }
+        return identity;
     }
 
     private static SharedTypes.Enums.UserIdentitySchemes[] _allowedIdentities = new[]
@@ -107,6 +116,11 @@ internal sealed class RealSulmClient
     private const string _apiBasePath = "api/customers/sulm/v1/client/purpose/";
 
     private readonly HttpClient _httpClient;
-    public RealSulmClient(HttpClient httpClient)
-        => _httpClient = httpClient;
+    private readonly IExternalServiceConfiguration<ISulmClient> _configuration;
+
+    public RealSulmClient(HttpClient httpClient, IExternalServiceConfiguration<ISulmClient> configuration)
+    {
+        _configuration = configuration;
+        _httpClient = httpClient;
+    }
 }

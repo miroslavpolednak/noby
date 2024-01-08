@@ -38,6 +38,9 @@ public enum UserIdentitySchemes : byte
     [EnumMember]
     Kbad = 10,
 
+    [Display(Name = "KBUMS")]
+    KbUms = 11,
+
     [Display(Name = "V33ID")]
     [EnumMember]
     V33Id = 99
