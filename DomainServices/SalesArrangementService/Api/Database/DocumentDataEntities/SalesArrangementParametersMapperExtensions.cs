@@ -45,7 +45,7 @@ internal static class SalesArrangementParametersMapperExtensions
             }).ToList(),
             Agent = mortgage.Agent,
             Comment = mortgage.Comment,
-            FirstSignatureDate = mortgage.FirstSignatureDate,
+            FirstSignatureDate = mortgage.FirstSignatureDate
         };
     }
 
@@ -538,6 +538,11 @@ internal static class SalesArrangementParametersMapperExtensions
                 OwnerLastName = customerChange.RepaymentAccount.OwnerLastName,
                 OwnerDateOfBirth = customerChange.RepaymentAccount.OwnerDateOfBirth
             },
+            CommentToChangeRequest = customerChange.CommentToChangeRequest is null ? null : new CustomerChangeData.CustomerChangeCommentToChangeRequestData
+            {
+                IsActive = customerChange.CommentToChangeRequest.IsActive,
+                GeneralComment = customerChange.CommentToChangeRequest.GeneralComment
+            }
         };
     }
 
