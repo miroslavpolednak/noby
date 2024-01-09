@@ -75,7 +75,7 @@ INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl],
 
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'QUALITY', N'ES:EasSimulationHT:V1', N'https://sb2-test-server.vsskb.cz/QUALITY/HT_WS_SB_Services.svc', 3, 0)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'QUALITY', N'ES:ESignatures:V1', N'https://qualityepodpisy.mpss.cz//WS', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'QUALITY', N'ES:ESignatures:V1', N'https://qualityepodpisy.mpss.cz/WS', 3, 0)
 
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'QUALITY', N'ES:IdentifiedSubjectBr:V1', N'https://cm-identified-subject-br-v1.stage.custmng.kbcloud/api', 3, 0)
 
@@ -83,7 +83,7 @@ INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl],
 
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'QUALITY', N'ES:LuxpiService:V1', N'https://acvapi-uat3.dslab.kb.cz/kblux', 3, 0)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'QUALITY', N'ES:MpHome:V1', N'https://hfqualitympdigi.mpss.cz/api/1.1', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'QUALITY', N'ES:MpHome:V1', N'https://qualitympdigi.mpss.cz/api/1.1', 3, 0)
 
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'QUALITY', N'ES:Pcp:V1', N'https://iib-uat1.kb.cz/services/ProductInstanceBEService/v1', 3, 0)
 
