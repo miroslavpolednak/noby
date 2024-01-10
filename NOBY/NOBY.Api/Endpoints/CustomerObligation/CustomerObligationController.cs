@@ -12,7 +12,9 @@ public class CustomerObligationController : ControllerBase
     /// Smazání závazku customera
     /// </summary>
     /// <remarks>
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3325947-AFC4-444a-989E-1531C4AFFEDE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// Smaže závazek customera.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3325947-AFC4-444a-989E-1531C4AFFEDE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="obligationId">ID závazku ke smazani</param>

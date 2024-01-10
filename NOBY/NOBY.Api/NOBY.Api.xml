@@ -10,7 +10,7 @@
             </summary>
             <remarks>
             Provolá AddressWhispererBEService na IIB a vrátí stránkovaný seznam adres. Dotazujeme se zprostředkovaně do RUIAN pro CZ/SK adresy a přes službu Google pro ostatní.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=046F9631-86E1-4f17-9527-C518700030CE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=046F9631-86E1-4f17-9527-C518700030CE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Address.AddressController.GetAddressDetail(NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest)">
@@ -19,7 +19,7 @@
             </summary>
             <remarks>
             Provolánám získáme přes AddressWhispererBEService na IIB detail konkrétní adresy.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=312CA931-1DA0-4be2-AF0D-4D71962845F2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=312CA931-1DA0-4be2-AF0D-4D71962845F2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Address.AddressController.KatuzSearch(NOBY.Api.Endpoints.Address.KatuzSearch.KatuzSearchRequest,System.Threading.CancellationToken)">
@@ -207,12 +207,13 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetDashboardFilters(System.Threading.CancellationToken)">
             <summary>
-            Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.
+            Počty cases pro dashboard
             </summary>
             <remarks>
+            Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.
+            
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2FDB0893-BE64-4f37-A196-DDECBB910CB3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
-            <returns>Kolekce ID stavu s počtem Cases.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.SearchCases(NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest)">
             <summary>
@@ -223,7 +224,8 @@
             - vyhledat Case podle řetězce<br />
             - zobrazit pouze Cases v požadovaném stavu<br />
             - nastavit stránkovaní<br />
-            - nastavit řazení [povolené: stateUpdated, customerName]<br /><br />
+            - nastavit řazení [povolené: stateUpdated, customerName]
+            
             <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=62A33551-BC77-401d-80DB-E8DFA5081719" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width= "20" height= "20" /> Diagram v EA</a>
             </remarks>
             <param name="request">Nastavení možnosti filtrovaní, strankovaní a řazení.</param>
@@ -1002,23 +1004,25 @@
             Detail příjmu customera
             </summary>
             <remarks>
-            <strong>CustomerIncome.GetDetail</strong><br/>
-            Ověří, že příjem patří customerovi a příjem smaže.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <strong>CustomerIncome.GetDetail</strong>
+            
+            Použít pro zobrazení detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domacnosti.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B796BF15-1B08-4ac7-9CCE-D5E1BB5A35A3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <param name="incomeId">ID příjmu</param>
-            <returns>
-            <see cref="T:NOBY.Api.Endpoints.CustomerIncome.SharedDto.IncomeDataEmployement"/>
-            </returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.CustomerIncome.CustomerIncomeController.UpdateIncome(System.Int32,System.Int32,NOBY.Api.Endpoints.CustomerIncome.UpdateIncome.UpdateIncomeRequest)">
             <summary>
             Update detailu příjmu customera
             </summary>
             <remarks>
-            Ověří, že příjem patří customerovi a příjem smaže.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a> 
+            <strong>CustomerIncome.Update</strong>
+            
+            Použít pro update detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domácnosti.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FAA06BC2-E216-42fe-9EA7-630528373F92"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <param name="incomeId">ID příjmu</param>
@@ -1076,7 +1080,9 @@
             Smazání závazku customera
             </summary>
             <remarks>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3325947-AFC4-444a-989E-1531C4AFFEDE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            Smaže závazek customera.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3325947-AFC4-444a-989E-1531C4AFFEDE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="customerOnSAId">ID customera</param>
             <param name="obligationId">ID závazku ke smazani</param>
@@ -1348,7 +1354,7 @@
             </summary>
             <remarks>
             Validace kontatů (email či telefon) pomocí <i>DS:</i> CustomerService/validateContacts. Pro telefonní čísla vrací i informaci, zda se jedná o mobilní číslo.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.ProfileCheck(SharedTypes.Types.CustomerIdentity)">
@@ -1357,7 +1363,7 @@
             </summary>
             <remarks>
             Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=ECA520A5-5423-4ebb-B855-977AAB9C4BEF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F2992BC4-A1DB-4e57-B037-5F99244CC1D4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.GetCustomerDetailWithChanges(System.Int32,System.Threading.CancellationToken)">
@@ -1762,7 +1768,8 @@
             </summary>
             <remarks>
             Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u
-            <br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.DocumentArchive.GetDocument.DocumentMetadata.CaseId">
