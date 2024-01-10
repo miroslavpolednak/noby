@@ -74,7 +74,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         await setFlowSwitches(salesArrangementInstance.CaseId, request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
 
         // Aktualizace dat modelace v KonsDB pouze pro premodelaci
-        if (offerInstanceOld is not null)
+        if (caseInstance.Customer.Identity is not null && caseInstance.Customer.Identity.IdentityId > 0)
         {
             await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
         }
