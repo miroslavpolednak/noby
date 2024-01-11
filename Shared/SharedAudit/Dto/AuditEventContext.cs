@@ -17,4 +17,6 @@ public sealed class AuditEventContext
     public string? Correlation { get; init; }
     public string ClientIp { get; init; } = null!;
     public string? UserIdent { get; init; }
+    public DateTime Timestamp { get; init; }
+    public long? SequenceId { get; init; }
 }

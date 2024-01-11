@@ -58,9 +58,9 @@ internal sealed class AuditLoggerInternal
         }
 
         // next seq no
-        long? seqId = eventDescriptor.GenerateSequenceNumber ? _databaseWriter.GetSequenceId() : default(long?);
+        long? seqId = eventDescriptor.GenerateSequenceNumber ? context.SequenceId ?? _databaseWriter.GetSequenceId() : default(long?);
         string? hashId = null;
-        var time = DateTime.Now.ToString("o", _culture);
+        var time = context.Timestamp.ToString("o", _culture);
 
         // vytvorit json je proto, aby se spocital hash
         StringWriter jsonBeforeHash = new();

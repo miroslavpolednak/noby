@@ -41,7 +41,9 @@ public static class StartupExtensions
                        return new AuditLoggerInternalMock();
                    }
                });
+
             builder.Services.AddScoped<IAuditLogger, AuditLogger>();
+            builder.Services.AddScoped<IManualAuditLogger, ManualAuditLogger>();
         }
 
         return builder;
