@@ -31,6 +31,20 @@ internal sealed class AuditLoggerInternal
 
     public AuditLoggerInternal(
         string serverIp,
+        string environmentName,
+        string applicationKey,
+        string eamApplication,
+        string eamVersion,
+        string hashSecretKey,
+        string databaseConnectionString)
+    {
+        _databaseWriter = new Database.DatabaseWriter(databaseConnectionString);
+        _loggerDefaults = new AuditLoggerDefaults(serverIp, applicationKey!, eamApplication, eamVersion, environmentName!);
+        _hashSecretKey = Encoding.UTF8.GetBytes(hashSecretKey);
+    }
+
+    public AuditLoggerInternal(
+        string serverIp,
         ICisEnvironmentConfiguration environmentConfiguration,
         AuditLogConfiguration auditConfiguration)
     {

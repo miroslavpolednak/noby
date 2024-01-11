@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SharedAudit;
 
-public static class StartupExtensions
+public static class AuditLoggingStartupExtensions
 {
     public static WebApplicationBuilder AddCisAudit(this WebApplicationBuilder builder)
     {
@@ -43,10 +43,22 @@ public static class StartupExtensions
                });
 
             builder.Services.AddScoped<IAuditLogger, AuditLogger>();
-            builder.Services.AddScoped<IManualAuditLogger, ManualAuditLogger>();
         }
 
         return builder;
+    }
+
+    public static IManualAuditLogger CreateManualAuditLogger(
+        string serverIp,
+        string environmentName,
+        string applicationKey,
+        string eamApplication,
+        string eamVersion,
+        string hashSecretKey,
+        string databaseConnectionString)
+    {
+        var logger = new AuditLoggerInternal(serverIp, environmentName, applicationKey, eamApplication, eamVersion, hashSecretKey, databaseConnectionString);
+        return new ManualAuditLogger(logger);
     }
 
     internal const string _configurationKey = "CisTelemetry:Logging:Audit";
