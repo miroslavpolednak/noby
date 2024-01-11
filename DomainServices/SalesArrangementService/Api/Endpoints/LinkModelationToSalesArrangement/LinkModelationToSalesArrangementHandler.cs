@@ -46,7 +46,9 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // Kontrola, že nová Offer má GuaranteeDateFrom větší nebo stejné jako původně nalinkovaná offer
         if (offerInstanceOld is not null
             && (DateTime)offerInstance.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.SimulationInputs.GuaranteeDateFrom)
+        {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InvalidGuaranteeDateFrom);
+        }
 
         // update linku v DB
         salesArrangementInstance.OfferGuaranteeDateFrom = offerInstance.SimulationInputs.GuaranteeDateFrom;
@@ -74,9 +76,9 @@ internal sealed class LinkModelationToSalesArrangementHandler
         await setFlowSwitches(salesArrangementInstance.CaseId, request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
 
         // Aktualizace dat modelace v KonsDB pouze pro premodelaci
-        if (caseInstance.Customer.Identity is not null && caseInstance.Customer.Identity.IdentityId > 0)
+        if (offerInstanceOld is not null && caseInstance.Customer.Identity is not null && caseInstance.Customer.Identity.IdentityId > 0)
         {
-            //await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
+            await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
@@ -106,7 +108,6 @@ internal sealed class LinkModelationToSalesArrangementHandler
                 Value = true
             });
         }
-
 
         // HFICH-9611
         if (offerInstanceOld is not null
