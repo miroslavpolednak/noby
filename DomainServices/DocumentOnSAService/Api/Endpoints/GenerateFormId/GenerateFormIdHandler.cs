@@ -126,6 +126,7 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
         EnvironmentNames.Uat => "U0",
         EnvironmentNames.Preprod => "P0",
         EnvironmentNames.Edu => "E0",
+        EnvironmentNames.Quality => "Q0",
         EnvironmentNames.Prod => "00",
         EnvironmentNames.Test => "T0",
         EnvironmentNames.Unknown => HandleUnsupportedEnv(environmentNames),
