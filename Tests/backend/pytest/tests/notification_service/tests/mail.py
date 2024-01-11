@@ -5,9 +5,6 @@ import requests
 import urllib3
 
 from Tests.backend.pytest.tests.notification_service.conftest import URLS
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
 from ..json.request.mail_kb_json import json_req_mail_kb_max_attachments, json_req_mail_kb_basic_legal, \
     json_req_mail_kb_sender_kb, json_req_mail_kb_sender_kb_attachment, json_req_mail_kb_basic_format_application_html, \
     json_req_mail_kb_basic_content_format_application_mht, json_req_mail_kb_basic_format_application_text, \
@@ -24,6 +21,9 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
     json_req_mail_mpss_basic_format_text_plain, json_req_mail_mpss_basic_format_application_text, \
     json_req_mail_mpss_max_attachments, \
     json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_vsskb, json_req_mail_mpss_sender_mpss_info
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST", "XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_basic_legal,
@@ -260,6 +260,34 @@ def test_mail_sender(ns_url, auth_params, auth, json_data):
     """kladny test"""
     url_name = ns_url["url_name"]
     url = ns_url["url"]
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    notification = resp.json()
+    print(notification)
+    assert "notificationId" in notification
+    notification_id = notification["notificationId"]
+    assert notification_id != ""
+
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
+
+
+
+# základní test
+# @pytest.mark.skip(reason="pro ruční spouštění")
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("url_name, json_data", [
+    ("fat_url", json_req_mail_mpss_full_attachments)
+])
+def test_mail_for_resend(url_name, auth_params, auth, json_data):
+    """kladny test"""
     username = auth[0]
     password = auth[1]
     session = requests.session()

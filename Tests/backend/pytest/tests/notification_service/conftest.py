@@ -11,10 +11,10 @@ Base = declarative_base()
 # pylint: disable=unused-import
 
 URLS = {
-    "dev_url": "https://ds-notification-dev.vsskb.cz:30016",
-    "fat_url": "https://ds-notification-fat.vsskb.cz:31016",
-    "sit_url": "https://ds-notification-sit1.vsskb.cz:32016",
-    "uat_url": "https://ds-notification-uat.vsskb.cz:33016",
+    "dev_url": "https://adpra191:30016",
+    "fat_url": "https://adpra191:31016",
+    "sit_url": "https://adpra191:32016",
+    "uat_url": "https://adpra191:33016",
 
     "dev_url_discovery": "https://ds-discovery-dev.vsskb.cz:30011",
     "fat_url_discovery": "https://ds-discovery-fat.vsskb.cz:31011",

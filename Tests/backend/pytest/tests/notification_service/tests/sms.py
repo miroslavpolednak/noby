@@ -42,7 +42,6 @@ def test_sms_manualy(url_name, auth_params, auth, json_data):
     """
     uvodni test pro zakladni napln sms bez priloh, pro ruční spouštění
     """
-
     username = auth[0]
     password = auth[1]
     session = requests.session()
