@@ -1,6 +1,5 @@
 ﻿using CIS.Core.Security;
 using CIS.InternalServices.DataAggregatorService.Contracts;
-
 using DomainServices.OfferService.Clients;
 using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using DomainServices.SalesArrangementService.Clients;
