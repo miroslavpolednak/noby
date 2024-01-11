@@ -39,7 +39,12 @@ internal sealed class SetValuationTypeIdHandler
             throw new NobyValidationException(90032, "PossibleValuationTypeId for DTS check failed");
         }
 
-        await _realEstateValuationService.UpdateValuationTypeByRealEstateValuation(request.RealEstateValuationId, (int)request.ValuationTypeId, cancellationToken);
+        if (instance.ValuationStateId == (int)RealEstateValuationStates.DoplneniDokumentu)
+        {
+            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, RealEstateValuationStates.Rozpracovano, cancellationToken);
+        }
+
+        await _realEstateValuationService.UpdateValuationTypeByRealEstateValuation(request.RealEstateValuationId, request.ValuationTypeId, cancellationToken);
     }
 
     private static int[] _possibleValuationTypeId = [(int)RealEstateValuationTypes.Unknown, (int)RealEstateValuationTypes.Online];
