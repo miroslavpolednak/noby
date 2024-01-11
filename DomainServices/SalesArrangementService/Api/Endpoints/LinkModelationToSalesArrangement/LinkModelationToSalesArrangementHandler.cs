@@ -76,7 +76,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // Aktualizace dat modelace v KonsDB pouze pro premodelaci
         if (caseInstance.Customer.Identity is not null && caseInstance.Customer.Identity.IdentityId > 0)
         {
-            await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
+            //await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
