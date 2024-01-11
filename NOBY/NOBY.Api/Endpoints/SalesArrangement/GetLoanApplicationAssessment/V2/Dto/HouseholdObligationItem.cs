@@ -8,8 +8,6 @@ public sealed class HouseholdObligationItem
     [JsonIgnore]
     internal int ObligationTypeOrder;
 
-    public int Id { get; set; }
-
     /// <summary>
     /// Typ závazku
     /// </summary>
