@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NCrontab;
 using System.Data;
+using System.Diagnostics;
 
 namespace CIS.Infrastructure.BackgroundServices;
 
@@ -15,6 +16,15 @@ internal sealed class CisBackgroundService<TBackgroundService>
     private readonly ICisBackgroundServiceConfiguration<TBackgroundService> _options;
     private readonly CrontabSchedule _crontab;
     private readonly string _serviceName;
+
+    private static readonly ActivitySource _activitySource = new(typeof(BackgroundService).Name);
+
+    private static readonly ActivityListener _activityListener = new()
+    {
+        ShouldListenTo = _ => true,
+        SampleUsingParentId = (ref ActivityCreationOptions<string> _) => ActivitySamplingResult.AllData,
+        Sample = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllData,
+    };
 
     /// <summary>
     /// [s] // Time for getting job lock, if job in not capable get applock in this time, job gonna be terminated (SqlException with message Execution Timeout Expired)
@@ -41,12 +51,16 @@ internal sealed class CisBackgroundService<TBackgroundService>
         // log cron settings
         logServiceRegistered();
 
+        // subscribe to listener
+        ActivitySource.AddActivityListener(_activityListener);
     }
 
     public string? ConnectionString { get; set; }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        using var activity = _activitySource.StartActivity(typeof(TBackgroundService).Name);
+
         if (_options.Disabled)
         {
             _logger.BackgroundServiceIsDisabled(_serviceName);
@@ -66,7 +80,7 @@ internal sealed class CisBackgroundService<TBackgroundService>
             var service = serviceScope.ServiceProvider.GetRequiredService<TBackgroundService>();
             var configuration = serviceScope.ServiceProvider.GetRequiredService<IConfiguration>();
             ConnectionString = ConnectionString is null ? configuration.GetConnectionString("default") ?? throw new NotSupportedException("defaut connection string required") : ConnectionString;
-            
+
             // resource is essential for uniquely identifying the resource for which the lock is being requested.
             string resource = typeof(TBackgroundService)?.FullName!;
             var canJobRun = false;
@@ -81,6 +95,7 @@ internal sealed class CisBackgroundService<TBackgroundService>
                 {
                     await service.ExecuteJobAsync(stoppingToken);
                 }
+
             }
             catch (SqlException ex) when (ex.Message.Contains("Execution Timeout Expired"))
             {
