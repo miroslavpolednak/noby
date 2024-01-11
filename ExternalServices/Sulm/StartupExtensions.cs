@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CIS.Core;
+using CIS.Core.Attributes;
+using CIS.Core.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ExternalServices;
@@ -15,6 +18,7 @@ public static class StartupExtensions
         where TClient : class, IExternalServiceClient
     {
         var configuration = builder.AddExternalServiceConfiguration<TClient>(ServiceName, version);
+        builder.Services.AddSingleton<KbCustomerJourneyHttpHandler>();
 
         switch (version, configuration.ImplementationType)
         {
@@ -30,6 +34,7 @@ public static class StartupExtensions
                     .AddExternalServiceRestClient<Sulm.V1.ISulmClient, Sulm.V1.RealSulmClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesKbPartyHeaders()
+                    .AddHttpMessageHandler(services => new KbCustomerJourneyHttpHandler(services))
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
@@ -38,5 +43,25 @@ public static class StartupExtensions
         }
 
         return builder;
+    }
+}
+
+internal sealed class KbCustomerJourneyHttpHandler
+    : DelegatingHandler
+{
+    private readonly IServiceProvider _serviceProvider;
+
+    public KbCustomerJourneyHttpHandler(IServiceProvider serviceProvider)
+    {
+        _serviceProvider = serviceProvider;
+    }
+
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        var configuration = _serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
+
+        request.Headers.Replace("x-kb-customer-journey", $$"""{"processId":"{{Guid.NewGuid()}}","subProcess":"xxxxx","instanceId":"{{Guid.NewGuid()}}","environmentId":"{{configuration.EnvironmentName}}"}""");
+
+        return await base.SendAsync(request, cancellationToken);
     }
 }
