@@ -34,7 +34,7 @@ public static class StartupExtensions
                     .AddExternalServiceRestClient<Sulm.V1.ISulmClient, Sulm.V1.RealSulmClient>()
                     .AddExternalServicesKbHeaders()
                     .AddExternalServicesKbPartyHeaders()
-                    .AddHttpMessageHandler<KbCustomerJourneyHttpHandler>()
+                    .AddHttpMessageHandler(services => new KbCustomerJourneyHttpHandler(services))
                     .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
@@ -49,16 +49,18 @@ public static class StartupExtensions
 internal sealed class KbCustomerJourneyHttpHandler
     : DelegatingHandler
 {
-    private readonly ICisEnvironmentConfiguration _configuration;
+    private readonly IServiceProvider _serviceProvider;
 
-    public KbCustomerJourneyHttpHandler(ICisEnvironmentConfiguration configuration)
+    public KbCustomerJourneyHttpHandler(IServiceProvider serviceProvider)
     {
-        _configuration = configuration;
+        _serviceProvider = serviceProvider;
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        request.Headers.Replace("x-kb-customer-journey", $$"""{"processId":"{{Guid.NewGuid()}}","subProcess":"xxxxx","instanceId":"{{Guid.NewGuid()}}","environmentId":"{{_configuration.EnvironmentName}}"}""");
+        var configuration = _serviceProvider.GetRequiredService<ICisEnvironmentConfiguration>();
+
+        request.Headers.Replace("x-kb-customer-journey", $$"""{"processId":"{{Guid.NewGuid()}}","subProcess":"xxxxx","instanceId":"{{Guid.NewGuid()}}","environmentId":"{{configuration.EnvironmentName}}"}""");
 
         return await base.SendAsync(request, cancellationToken);
     }
