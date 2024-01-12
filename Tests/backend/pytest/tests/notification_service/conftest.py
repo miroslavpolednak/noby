@@ -194,7 +194,7 @@ def modified_json_data(request, ns_url):
     json_data = request.node.get_closest_marker("parametrize").args[1][0]
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
     # Přidáme aktuální datum a čas
-    now = datetime.datetime.now()
+    now = datetime.now()
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
     # seskladani smsky
     modified_data['text'] = " Prostredi: " + ns_url["url_name"] + ", " + " Cas provedeni: " + date_time + ", Zprava: " + modified_data['text']
@@ -206,7 +206,7 @@ def modified_template_json_data(request, ns_url):
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
 
     # Přidáme aktuální datum a čas
-    now = datetime.datetime.now()
+    now = datetime.now()
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
 
     # Seskladani smsky
@@ -226,7 +226,7 @@ def modified_json_data_health(request, url_name):
             json_data = m.args[1][0]
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
     # Přidáme aktuální datum a čas
-    now = datetime.datetime.now()
+    now = datetime.now()
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
     # seskladani smsky
     modified_data['text'] = " Prostredi: " + url_name + ", " + " Cas provedeni: " + date_time + ", Zprava: " + modified_data['text']
@@ -244,7 +244,7 @@ def modified_template_json_data_health(request, url_name):
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
 
     # Přidáme aktuální datum a čas
-    now = datetime.datetime.now()
+    now = datetime.now()
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
 
     # Seskladani smsky

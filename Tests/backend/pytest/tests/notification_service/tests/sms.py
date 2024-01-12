@@ -18,7 +18,6 @@ from ..conftest import URLS, greater_than_zero, ns_url, auth
 from ..json.request.seg_log import json_req_basic_log
 from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_full, json_req_sms_basic_epsy_kb, \
     json_req_sms_basic_insg, json_req_sms_bez_logovani_kb_sb, json_req_sms_logovani_kb_sb_E2E, json_req_sms_sb, \
-    json_req_sms_basic_alex, \
     json_req_sms_bad_basic_without_identifier, json_req_sms_bad_basic_without_identifier_scheme, \
     json_req_sms_bad_basic_without_identifier_identity, json_req_sms_basic_insg_uat, json_req_sms_mpss_archivator, \
     json_req_sms_kb_archivator, json_req_sms_basic_insg_fat, json_req_sms_basic_insg_sit, json_req_sms_basic_insg_e2e, \
@@ -384,27 +383,6 @@ def test_sms_bad_basic_security(ns_url, auth_params, auth, json_data):
         verify=False
     )
     assert resp.status_code == 403
-
-
-@pytest.mark.skip(reason="TEST pro ALEXE SEVRJUKOVA")
-@pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_sms_basic_alex])
-def test_sms_basic_alex(ns_url, auth_params, auth, json_data):
-    """TEST pro ALEXE SEVRJUKOVA"""
-    url_name = ns_url["url_name"]
-    username = auth[0]
-    password = auth[1]
-    session = requests.session()
-    resp = session.post(
-        URLS[url_name] + "/v1/notification/sms",
-        json=json_data,
-        auth=(username, password),
-        verify=False
-    )
-    resp = resp.json()
-    print(resp)
-    assert "notificationId" in resp
-    assert resp["notificationId"] != ""
 
 
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
