@@ -10,7 +10,7 @@ public static class GenerateDocumentRequestMapper
         DocumentTypeId = documentOnSa.DocumentTypeId!.Value,
         DocumentTemplateVersionId = documentOnSa.DocumentTemplateVersionId!.Value,
         DocumentTemplateVariantId = documentOnSa.DocumentTemplateVariantId,
-        ForPreview = true,
+        ForPreview = false,
         OutputType = OutputFileType.Pdfa,
         Parts = { CreateDocPart(documentOnSa) },
         DocumentFooter = CreateFooter(documentOnSa)
