@@ -33,7 +33,7 @@ public class Application : IApplication
         // Read the README.md file
         
         // step 1 - parse application logs from files
-        await _logParser.ParseLogFiles();
+        //await _logParser.ParseLogFiles();
 
         // step 2 - parse migration data from application logs
         await _migrationDataParser.ParseFromApplicationLogs();

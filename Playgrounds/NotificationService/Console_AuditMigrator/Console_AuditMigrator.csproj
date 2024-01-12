@@ -35,6 +35,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\InternalServices\NotificationService\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\Shared\SharedAudit\SharedAudit.csproj" />
     </ItemGroup>
     
 </Project>

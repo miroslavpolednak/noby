@@ -53,4 +53,6 @@ public class ApplicationLog
     public string? Message { get; set; }
     
     public string? Exception { get; set; }
+
+    public string? ParsedObject { get; set; }
 }
