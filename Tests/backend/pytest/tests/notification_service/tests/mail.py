@@ -433,7 +433,6 @@ def test_mail_for_resend(url_name, auth_params, auth, json_data, mssql_connectio
     resend_row = cursor.fetchone()
     print(f"result po konec resend{resend_row}")
 
-    # PROČ NRNÍ STATE=1???? A JE RESEND NA tRUE?
     assert resend_row[1] == 3, f"Resent: Očekávaný State je 3 SEND, ale získaný State je {row[1]}"
     assert resend_row[2] == False, f"Resent: Očekávaný resent je false, ale získaný resent je {row[2]}"
 
@@ -494,6 +493,7 @@ def test_mail_jobs(url_name, auth_params, auth, json_data, mssql_connection):
 
     assert row[1] == 1, f"Očekávaný State je 1 IN PROGRESS, ale získaný State je {row[1]}"
     assert row[2] == False, f"Očekávaný resent je false, ale získaný resent je {row[2]}"
+    assert row[3] == 2, f"Očekávaný Serner je MPSS, ale získaný resent je {row[2]}"
 
     time.sleep(61)
 
@@ -529,7 +529,6 @@ def test_mail_jobs(url_name, auth_params, auth, json_data, mssql_connection):
     resend_row = cursor.fetchone()
     print(f"result po konci jobu{resend_row}")
 
-    # PROČ NRNÍ STATE=1???? A JE RESEND NA tRUE?
     assert resend_row[1] == 3, f"Resent: Očekávaný State je 3 SEND, ale získaný State je {row[1]}"
     assert resend_row[2] == False, f"Resent: Očekávaný resent je false, ale získaný resent je {row[2]}"
 

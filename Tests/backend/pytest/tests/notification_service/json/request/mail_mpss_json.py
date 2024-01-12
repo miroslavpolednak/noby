@@ -151,7 +151,7 @@ json_req_mail_mpss_full_attachments = \
     },
     "to": [
       {
-        "value": "martin.heimlich@mpss.cz",
+        "value": "marek.mikel@mpss.cz",
         "party": {
         "legalPerson": {
           "name": "Notifikace"
