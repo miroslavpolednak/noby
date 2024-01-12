@@ -1,5 +1,6 @@
 using CIS.Infrastructure.StartupExtensions;
 using ExternalServices;
+using SharedComponents.DocumentDataStorage;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -15,6 +16,8 @@ SharedComponents.GrpcServiceBuilder
     {
         // EAS EasSimulationHT svc
         builder.AddExternalService<ExternalServices.EasSimulationHT.V1.IEasSimulationHTClient>();
+
+        builder.AddDocumentDataStorage();
 
         // dbcontext
         builder.AddEntityFramework<DomainServices.OfferService.Api.Database.OfferServiceDbContext>();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DomainServices.SalesArrangementService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.DeleteSalesArrangement;
 
@@ -31,32 +32,32 @@ internal sealed class DeleteSalesArrangementHandler
         _dbContext.Remove(saInstance);
 
         // smazat parametry
-        await _dbContext
-            .SalesArrangementsParameters
-            .Where(t => t.SalesArrangementId == request.SalesArrangementId)
-            .ExecuteDeleteAsync(cancellation);
+        await _documentDataStorage.DeleteByEntityId(request.SalesArrangementId, Database.DocumentDataEntities.SalesArrangementParametersConst.TableName);
 
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private static int[] _allowedStates = new[] 
-    { 
-        (int)SalesArrangementStates.NewArrangement, 
+    private static readonly int[] _allowedStates =
+    [
+        (int)SalesArrangementStates.NewArrangement,
         (int)SalesArrangementStates.InProgress,
         (int)SalesArrangementStates.ToSend,
         (int)SalesArrangementStates.InSigning
-    };
+    ];
 
     private readonly HouseholdService.Clients.IHouseholdServiceClient _householdService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
+    private readonly IDocumentDataStorage _documentDataStorage;
 
     public DeleteSalesArrangementHandler(
         HouseholdService.Clients.IHouseholdServiceClient householdService,
-        Database.SalesArrangementServiceDbContext dbContext)
+        Database.SalesArrangementServiceDbContext dbContext,
+        IDocumentDataStorage documentDataStorage)
     {
         _householdService = householdService;
         _dbContext = dbContext;
+        _documentDataStorage = documentDataStorage;
     }
 }

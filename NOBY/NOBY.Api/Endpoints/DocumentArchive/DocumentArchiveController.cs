@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.gRPC;
+﻿using Asp.Versioning;
+using CIS.Infrastructure.gRPC;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
@@ -11,6 +12,7 @@ namespace NOBY.Api.Endpoints.DocumentArchive;
 
 [ApiController]
 [Route("api")]
+[ApiVersion(1)]
 public class DocumentArchiveController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -39,7 +41,7 @@ public class DocumentArchiveController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocument(
         [FromQuery] FileContentDispositions contentDisposition,
-        [FromQuery] Source source,
+        [FromQuery] GetDocument.Source source,
         [FromQuery] string? documentId,
         [FromQuery] string? externalId,
         CancellationToken cancellationToken)
@@ -110,8 +112,11 @@ public class DocumentArchiveController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u
-    /// <br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
+    /// <param name="documentId">ID dokumentu</param>
+    /// <param name="statusId">status dokumentu ve frontě</param>
     [HttpPut("document/{documentId}/status/{statusId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]

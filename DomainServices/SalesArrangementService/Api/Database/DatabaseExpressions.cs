@@ -9,6 +9,7 @@ internal static class DatabaseExpressions
         return t => new Contracts.SalesArrangement
         {
             OfferDocumentId = t.OfferDocumentId,
+            PcpId = t.PcpId,
             SalesArrangementId = t.SalesArrangementId,
             CaseId = t.CaseId,
             State = t.State,
@@ -23,7 +24,9 @@ internal static class DatabaseExpressions
             Created = new SharedTypes.GrpcTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime),
             OfferGuaranteeDateFrom = t.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = t.OfferGuaranteeDateTo,
-            RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate
+            RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate,
+            FirstSignatureDate = t.FirstSignatureDate,
+            LoanApplicationDataVersion = t.LoanApplicationDataVersion
         };
     }
 }

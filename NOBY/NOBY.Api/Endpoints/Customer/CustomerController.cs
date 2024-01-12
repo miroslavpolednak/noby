@@ -1,9 +1,11 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using Asp.Versioning;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Customer;
 
 [ApiController]
 [Route("api")]
+[ApiVersion(1)]
 public class CustomerController : ControllerBase
 {
     /// <summary>
@@ -105,7 +107,7 @@ public class CustomerController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Validace kontatů (email či telefon) pomocí <i>DS:</i> CustomerService/validateContacts. Pro telefonní čísla vrací i informaci, zda se jedná o mobilní číslo.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("contact/validate")]
     [Produces("application/json")]
@@ -114,13 +116,13 @@ public class CustomerController : ControllerBase
     [ProducesResponseType(typeof(ValidateContact.ValidateContactResponse), StatusCodes.Status200OK)]
     public async Task<ValidateContact.ValidateContactResponse> ValidateContact([FromBody] ValidateContact.ValidateContactRequest request)
         => await _mediator.Send(request);
-    
+
     /// <summary>
     /// Profile check s profilem identifikovaný
     /// </summary>
     /// <remarks>
     /// Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=ECA520A5-5423-4ebb-B855-977AAB9C4BEF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F2992BC4-A1DB-4e57-B037-5F99244CC1D4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer/profile-check")]
     [Produces("application/json")]

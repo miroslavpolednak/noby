@@ -11,11 +11,14 @@ using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
 using NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase;
+using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAStatus;
+using Asp.Versioning;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 [ApiController]
 [Route("api")]
+[ApiVersion(1)]
 public class DocumentOnSAController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -256,4 +259,26 @@ public class DocumentOnSAController : ControllerBase
           [FromRoute] int documentOnSaId,
           CancellationToken cancellationToken)
       => await _mediator.Send(new RefreshElectronicDocumentRequest(salesArrangementId, documentOnSaId), cancellationToken);
+
+
+    /// <summary>
+    /// Stav podepisovaného dokumentu 
+    /// </summary>
+    /// <remarks>
+    /// Zjistí stav aktuálně podepisovaného dokumentu. <br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3D2BB37-E844-4117-B316-A649C39D82F6 "><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    /// <param name="salesArrangementId"></param>
+    /// <param name="documentOnSAId"></param>
+    [HttpGet("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/status")]
+    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [ProducesResponseType(typeof(GetDocumentOnSAStatusResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetDocumentOnSAStatusResponse> GetDocumentOnSAStatus(
+          [FromRoute] int salesArrangementId,
+          [FromRoute] int documentOnSAId,
+          CancellationToken cancellationToken
+        )
+        => await _mediator.Send(new GetDocumentOnSAStatusRequest(salesArrangementId, documentOnSAId), cancellationToken);
+
 }

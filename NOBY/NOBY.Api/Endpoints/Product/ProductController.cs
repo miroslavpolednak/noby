@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using Asp.Versioning;
 using NOBY.Api.Endpoints.Product.GetProductObligationList.Dto;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -6,6 +7,7 @@ namespace NOBY.Api.Endpoints.Product;
 
 [ApiController]
 [Route("api/product")]
+[ApiVersion(1)]
 public sealed class ProductController : ControllerBase
 {
     private readonly IMediator _mediator;

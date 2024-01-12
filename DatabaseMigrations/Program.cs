@@ -1,7 +1,10 @@
-﻿using CommandLine;
+﻿using System.Globalization;
+using CommandLine;
 using DatabaseMigrations;
+using DatabaseMigrations.ScriptProviders;
 using DbUp;
-using Spectre.Console;
+using System.Reflection;
+using Serilog;
 
 return (int)Parser.Default
                   .ParseArguments<MigrateOptions>(args)
@@ -11,8 +14,9 @@ return (int)Parser.Default
                       {
                           return RunDbUp(options);
                       }
-                      catch
+                      catch(Exception ex)
                       {
+                          Log.Error(ex, "Unhandled exception");
                           return ExitCode.UnknownError;
                       }
                   }, _ => ExitCode.UnknownError);
@@ -21,35 +25,85 @@ static ExitCode RunDbUp(MigrateOptions opts)
 {
     ArgumentException.ThrowIfNullOrEmpty(opts.ScriptFolder);
 
-    var folder = opts.ScriptFolder;
-    if (opts.ScriptFolder.EndsWith('\\') || opts.ScriptFolder.EndsWith('/'))
-        folder = opts.ScriptFolder[..^1];
+    if (!string.IsNullOrWhiteSpace(opts.LogFile))
+    {
+        Log.Logger = new LoggerConfiguration().WriteTo.File(opts.LogFile, rollingInterval: RollingInterval.Infinite, formatProvider: CultureInfo.InvariantCulture)
+                                              .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
+                                              .CreateLogger();
+    }
+    else
+    {
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
+            .CreateLogger();
+    }
+
+    Log.Information("Starting");
+
+    var folder = opts.ScriptFolder.TrimEnd('\\', '/');
 
     // check folder
     if (!Directory.Exists(folder))
     {
-        AnsiConsole.MarkupLine($"[bold red]ERROR:[/] Folder [dim]'{folder}'[/] does not exist.");
+        Log.Error($"Folder '{folder}' does not exist.");
+
         return ExitCode.DirectoryNotExist;
     }
 
-    var upgradeEngine = DeployChanges.To.SqlDatabase(opts.ConnectionString)
-                                     .JournalToSqlTable("dbo", "MigrationHistory")
-                                     .WithScriptsFromFileSystem(folder)
-                                     .WithTransaction()
-                                     .LogToConsole()
-                                     .Build();
+    DatabaseMigrationsSupport.Settings.SetOptions(opts);
 
-    if (opts.MigrationExistsCheckOnly ?? false)
-        return upgradeEngine.IsUpgradeRequired() ? ExitCode.Success : ExitCode.NoMigrationAvailable;
+    var upgradeEngineBuilder = DeployChanges.To.SqlDatabase(opts.ConnectionString)
+                                     .JournalToSqlTable("dbo", "MigrationHistory")
+                                     .LogToAutodetectedLog()
+                                     .LogScriptOutput()
+                                     .WithScriptsFromFileSystem(folder);
+
+    if (opts.NoTransaction.GetValueOrDefault())
+    {
+        Log.Information("Running without transaction");
+        upgradeEngineBuilder = upgradeEngineBuilder.WithoutTransaction();
+    }
+    else
+    {
+        Log.Information("Running in transaction");
+        upgradeEngineBuilder = upgradeEngineBuilder.WithTransaction();
+    }
+
+    // add C# scripts to migrations
+    if (!string.IsNullOrEmpty(opts.CodeScriptAssembly))
+    {
+        if (!File.Exists(opts.CodeScriptAssembly))
+        {
+            Log.Error($"Code scripts assembly '{opts.CodeScriptAssembly}' does not exist.");
+            return ExitCode.CodeAssemblyNotExist;
+        }
+
+        Log.Information("Using code migrations");
+
+        var codeAssembly = Assembly.LoadFrom(opts.CodeScriptAssembly);
+        upgradeEngineBuilder = upgradeEngineBuilder
+            .WithScripts(new ScriptFromScriptClassesScriptProvider(codeAssembly));
+    }
+    
+    var upgradeEngine = upgradeEngineBuilder.Build();
+
+    if (!upgradeEngine.IsUpgradeRequired())
+    {
+        Log.Information("No migration is available");
+
+        return ExitCode.NoMigrationAvailable;
+    }
 
     var result = upgradeEngine.PerformUpgrade();
 
     if (!result.Successful)
     {
-        AnsiConsole.MarkupLine("[bold red]ERROR:[/] " + result.Error.Message);
+        Log.Error($"Migration failed with message: {result.Error.Message}");
+
         return ExitCode.MigrationFailed;
     }
 
-    AnsiConsole.MarkupLine("[bold green]Success![/]");
+    Log.Information("Success");
+
     return ExitCode.Success;
 }

@@ -6,9 +6,9 @@ public sealed class GetCustomerDetailResponse
     
     public Dto.NaturalPersonModel? NaturalPerson { get; set; }
     
-    public Shared.JuridicalPerson? JuridicalPerson { get; set; }
+    public SharedDto.JuridicalPerson? JuridicalPerson { get; set; }
     
-    public Shared.LegalCapacityItem? LegalCapacity { get; set; }
+    public SharedDto.LegalCapacityItem? LegalCapacity { get; set; }
     
     public List<SharedTypes.Types.Address>? Addresses { get; set; }
     

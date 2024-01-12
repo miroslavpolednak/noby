@@ -10,4 +10,7 @@ public interface IOrderBaseData
     string CompanyCode { get; set; }
     string ProductCode { get; set; }
     long EFormId { get; set; }
+    long? ClientID { get; set; }
+    string? ClientName { get; set; }
+    string? ClientEmail { get; set; }
 }

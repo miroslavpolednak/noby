@@ -1,0 +1,1 @@
+update SalesArrangement set PcpId=B.[PcpInstId] from SalesArrangement A inner join SYN_KonsDb_RezervaceSmluv B on A.CaseId=B.UverId

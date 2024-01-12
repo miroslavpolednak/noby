@@ -28,12 +28,13 @@
 	</ItemGroup>
 	
   <ItemGroup>
-    <PackageReference Include="Asp.Versioning.Mvc" Version="7.1.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="7.0.0" />
-    <PackageReference Include="CompareNETObjects" Version="4.82.0" />
+    <PackageReference Include="Asp.Versioning.Mvc" Version="8.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.0" />
+    <PackageReference Include="CompareNETObjects" Version="4.83.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.57.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.58.1" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
@@ -77,6 +78,7 @@
     <Folder Include="Endpoints\Document\Offer\" />
     <Folder Include="Endpoints\Product\GetCaseIdByPcpId\" />
     <Folder Include="Endpoints\RealEstateValuation\GetRealEstateValuationDetail\" />
+    <Folder Include="Endpoints\SalesArrangement\GetLoanApplicationAssessment\V2\" />
     <Folder Include="Endpoints\SalesArrangement\SendToCmp\Dto\" />
   </ItemGroup>
 

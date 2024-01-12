@@ -1,7 +1,7 @@
 ﻿using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
-using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.UpdateRealEstateValuationDetail;
 
@@ -37,46 +37,30 @@ internal sealed class UpdateRealEstateValuationDetailHandler
         realEstate.RealEstateStateId = request.RealEstateStateId;
         realEstate.RealEstateSubtypeId = request.RealEstateSubtypeId;
 
-        if (request.LoanPurposeDetails is null)
-        {
-            realEstate.LoanPurposeDetails = null!;
-            realEstate.LoanPurposeDetailsBin = null!;
-        }
-        else
-        {
-            realEstate.LoanPurposeDetails = Newtonsoft.Json.JsonConvert.SerializeObject(request.LoanPurposeDetails);
-            realEstate.LoanPurposeDetailsBin = request.LoanPurposeDetails.ToByteArray();
-        }
-        
-        switch (request.SpecificDetailCase)
-        {
-            case UpdateRealEstateValuationDetailRequest.SpecificDetailOneofCase.HouseAndFlatDetails:
-                realEstate.SpecificDetail = Newtonsoft.Json.JsonConvert.SerializeObject(request.HouseAndFlatDetails);
-                realEstate.SpecificDetailBin = request.HouseAndFlatDetails.ToByteArray();
-                break;
-
-            case UpdateRealEstateValuationDetailRequest.SpecificDetailOneofCase.ParcelDetails:
-                realEstate.SpecificDetail = Newtonsoft.Json.JsonConvert.SerializeObject(request.ParcelDetails);
-                realEstate.SpecificDetailBin = request.ParcelDetails.ToByteArray();
-                break;
-
-            default:
-                realEstate.SpecificDetail = null!;
-                realEstate.SpecificDetailBin = null!;
-                break;
-        }
-
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        // ulozit json data
+        var revDetailData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(request.RealEstateValuationId, cancellationToken);
+        _mapper.MapToData(request, revDetailData!.Data);
+
+        await _documentDataStorage.Update(revDetailData.DocumentDataStorageId, revDetailData.Data!);
 
         return new Empty();
     }
 
     private static int[] _stateIdsForValidation = new[] { 4, 5 };
 
+    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly RealEstateValuationServiceDbContext _dbContext;
 
-    public UpdateRealEstateValuationDetailHandler(RealEstateValuationServiceDbContext dbContext)
+    public UpdateRealEstateValuationDetailHandler(
+        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper,
+        IDocumentDataStorage documentDataStorage,
+        RealEstateValuationServiceDbContext dbContext)
     {
+        _mapper = mapper;
+        _documentDataStorage = documentDataStorage;
         _dbContext = dbContext;
     }
 }

@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using Asp.Versioning;
+using DomainServices.SalesArrangementService.Contracts;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Household;
@@ -8,6 +9,7 @@ namespace NOBY.Api.Endpoints.Household;
 /// </summary>
 [ApiController]
 [Route("api")]
+[ApiVersion(1)]
 public class HouseholdController : ControllerBase
 {
     /// <summary>
@@ -18,14 +20,14 @@ public class HouseholdController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B6359602-67D9-4d06-BF61-8FC85F9E082C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
-    /// <returns><see cref="List{T}"/> where T : <see cref="Dto.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
     [HttpGet("household/list/{salesArrangementId:long}")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new [] { "Domácnost" })]
-    [ProducesResponseType(typeof(List<Dto.HouseholdInList>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<SharedDto.HouseholdInList>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<Dto.HouseholdInList>> GetHouseholds([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<List<SharedDto.HouseholdInList>> GetHouseholds([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetHouseholds.GetHouseholdsRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
@@ -75,8 +77,8 @@ public class HouseholdController : ControllerBase
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
-    [ProducesResponseType(typeof(Dto.HouseholdInList), StatusCodes.Status200OK)]
-    public async Task<Dto.HouseholdInList> CreateHousehold([FromRoute] int salesArrangementId, [FromBody] CreateHousehold.CreateHouseholdRequest? request)
+    [ProducesResponseType(typeof(SharedDto.HouseholdInList), StatusCodes.Status200OK)]
+    public async Task<SharedDto.HouseholdInList> CreateHousehold([FromRoute] int salesArrangementId, [FromBody] CreateHousehold.CreateHouseholdRequest? request)
         => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? throw new NobyValidationException("Payload is empty"));
 
     /// <summary>

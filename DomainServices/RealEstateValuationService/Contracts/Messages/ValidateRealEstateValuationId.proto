@@ -3,6 +3,7 @@ package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "google/protobuf/wrappers.proto";
+import "Messages/ValuationTypes.proto";
 
 message ValidateRealEstateValuationIdRequest {
 	int32 RealEstateValuationId =  1;
@@ -15,4 +16,6 @@ message ValidateRealEstateValuationIdResponse {
 	google.protobuf.Int32Value ValuationStateId = 3;
 	google.protobuf.Int64Value OrderId = 4;
 	google.protobuf.Int64Value PreorderId = 5;
+	repeated int32 PossibleValuationTypeId = 6;
+	ValuationTypes ValuationTypeId = 7;
 }

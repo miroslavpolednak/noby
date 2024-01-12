@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto;
 
-public class AssessmentReason
+public sealed class AssessmentReason
 {
     /// <summary>
     /// Kód důvodu

@@ -1,0 +1,10 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+message UpdatePcpIdRequest {
+	// ID updatovaneho SA
+	int32 SalesArrangementId = 1;
+
+	string PcpId = 2;
+}

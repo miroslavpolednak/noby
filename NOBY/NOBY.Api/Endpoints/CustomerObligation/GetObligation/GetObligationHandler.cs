@@ -4,9 +4,9 @@ using _HO = DomainServices.HouseholdService.Contracts;
 namespace NOBY.Api.Endpoints.CustomerObligation.GetObligation;
 
 internal sealed class GetObligationHandler
-    : IRequestHandler<GetObligationRequest, Dto.ObligationFullDto>
+    : IRequestHandler<GetObligationRequest, SharedDto.ObligationFullDto>
 {
-    public async Task<Dto.ObligationFullDto> Handle(GetObligationRequest request, CancellationToken cancellationToken)
+    public async Task<SharedDto.ObligationFullDto> Handle(GetObligationRequest request, CancellationToken cancellationToken)
     {
         var obligationInstance = await _customerService.GetObligation(request.ObligationId, cancellationToken);
 

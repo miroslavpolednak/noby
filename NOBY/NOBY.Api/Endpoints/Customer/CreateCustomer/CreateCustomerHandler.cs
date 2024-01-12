@@ -9,7 +9,7 @@ using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using Mandants = SharedTypes.GrpcTypes.Mandants;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using NOBY.Api.Endpoints.Customer.Shared;
+using NOBY.Api.Endpoints.Customer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -72,6 +72,11 @@ internal sealed class CreateCustomerHandler
         {
             _logger.LogInformation("CreateCustomer: registry failed", ex);
             throw new NobyValidationException(90008, 500);
+        }
+        catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11035")
+        {
+            _logger.LogInformation("CreateCustomer: Special handling of identification document type and issuing country combination", ex);
+            throw new NobyValidationException(90044);
         }
         catch
         {
@@ -138,14 +143,7 @@ internal sealed class CreateCustomerHandler
                 _ => throw new NobyValidationException("Unsupported HouseholdType")
             };
 
-            await _salesArrangementService.SetFlowSwitches(household.SalesArrangementId, new()
-            {
-                new()
-                {
-                    FlowSwitchId = (int)flowSwitchId,
-                    Value = true
-                }
-            }, cancellationToken);
+            await _salesArrangementService.SetFlowSwitch(household.SalesArrangementId, flowSwitchId, true, cancellationToken);
         }
 
         bool isIdentified()

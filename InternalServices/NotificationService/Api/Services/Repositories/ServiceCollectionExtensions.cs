@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
     public static WebApplicationBuilder AddRepository(this WebApplicationBuilder builder)
     {
         // entity framework
-        builder.AddEntityFramework<NotificationDbContext>(connectionStringKey: "nobyDb");
+        builder.AddEntityFramework<NotificationDbContext>(connectionStringKey: "default");
         
         builder.Services
             .AddScoped<INotificationRepository, NotificationRepository>();

@@ -1,6 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement;
@@ -22,7 +21,6 @@ internal static class GetSalesArrangementExtensions
             IncomeCurrencyCode = mortgage.IncomeCurrencyCode,
             ResidencyCurrencyCode = mortgage.ResidencyCurrencyCode,
             Agent = mortgage.Agent,
-            AgentConsentWithElCom = mortgage.AgentConsentWithElCom,
             LoanRealEstates = mortgage.LoanRealEstates is null ? null : mortgage.LoanRealEstates.Select(x => new LoanRealEstateDto
             {
                 IsCollateral = x.IsCollateral,
@@ -41,26 +39,26 @@ internal static class GetSalesArrangementExtensions
             {
                 ProductObligationId = x.ProductObligationId,   
                 Order = x.Order,
-                SpecificSymbol = x.SpecificSymbolUcetKeSplaceni,
+                SpecificSymbol = x.SpecificSymbol,
                 AccountNumber = x.AccountNumber,
                 ConstantSymbol = x.ConstantSymbol,
-                BankCode = x.BankCode,
+                AccountBankCode = x.BankCode,
                 DrawingAmount = x.DrawingAmount,
                 VariableSymbol = x.VariableSymbol,
                 PayoutTypeId = x.PayoutTypeId,
-                PrefixAccount = x.PrefixAccount
+                AccountPrefix = x.PrefixAccount
             }).ToList(),
             RepaymentAccount = model.RepaymentAccount is null ? null : new()
             {
-                BankCode = model.RepaymentAccount.BankCode,
+                AccountBankCode = model.RepaymentAccount.BankCode,
                 IsAccountNumberMissing = model.RepaymentAccount.IsAccountNumberMissing,
-                Number = model.RepaymentAccount.Number,
-                Prefix = model.RepaymentAccount.Prefix
+                AccountNumber = model.RepaymentAccount.Number,
+                AccountPrefix = model.RepaymentAccount.Prefix
             },
             Agent = model.Agent is null ? new ParametersDrawingAgent() : new()
             {
                 IsActive = model.Agent.IsActive,
-                DateOfBirth = (DateTime?)model.Agent.DateOfBirth,
+                DateOfBirth = model.Agent.DateOfBirth,
                 FirstName = model.Agent.FirstName,
                 LastName = model.Agent.LastName,
                 IdentificationDocument = model.Agent?.IdentificationDocument is null ? null : new()
@@ -94,15 +92,18 @@ internal static class GetSalesArrangementExtensions
                 CommentToDrawingDateTo = model.DrawingDateTo?.CommentToDrawingDateTo,
                 ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths
             },
-            RepaymentAccount = new()
+            RepaymentAccount = new Dto.PaymentAccount()
             {
                 IsActive = model.RepaymentAccount?.IsActive ?? false,
-                AgreedBankCode = model.RepaymentAccount?.AgreedBankCode,
-                AgreedNumber = model.RepaymentAccount?.AgreedNumber,
-                AgreedPrefix = model.RepaymentAccount?.AgreedPrefix,
-                BankCode = model.RepaymentAccount?.BankCode,
-                Number = model.RepaymentAccount?.Number,
-                Prefix = model.RepaymentAccount?.Prefix,
+                AgreedBankAccount = model.RepaymentAccount is null ? null : new NOBY.Dto.BankAccount
+                {
+                    AccountPrefix = model.RepaymentAccount.AgreedPrefix,
+                    AccountNumber = model.RepaymentAccount.AgreedNumber,
+                    AccountBankCode = model.RepaymentAccount.AgreedBankCode,
+                },
+                AccountBankCode = model.RepaymentAccount?.BankCode,
+                AccountNumber = model.RepaymentAccount?.Number,
+                AccountPrefix = model.RepaymentAccount?.Prefix,
                 OwnerDateOfBirth = model.RepaymentAccount?.OwnerDateOfBirth,
                 OwnerFirstName = model.RepaymentAccount?.OwnerFirstName,
                 OwnerLastName = model.RepaymentAccount?.OwnerLastName
@@ -245,15 +246,18 @@ internal static class GetSalesArrangementExtensions
             RepaymentAccount = new Dto.PaymentAccount
             {
                 IsActive = model.RepaymentAccount?.IsActive ?? false,
-                AgreedBankCode = model.RepaymentAccount?.AgreedBankCode,
-                AgreedNumber = model.RepaymentAccount?.AgreedNumber,
-                AgreedPrefix = model.RepaymentAccount?.AgreedPrefix,
-                BankCode = model.RepaymentAccount?.BankCode,
-                Number = model.RepaymentAccount?.Number,
+                AgreedBankAccount = model.RepaymentAccount is null ? null : new NOBY.Dto.BankAccount
+                {
+                    AccountPrefix = model.RepaymentAccount.Prefix,
+                    AccountNumber = model.RepaymentAccount.Number,
+                    AccountBankCode = model.RepaymentAccount.BankCode,
+                },
+                AccountBankCode = model.RepaymentAccount?.BankCode,
+                AccountNumber = model.RepaymentAccount?.Number,
                 OwnerDateOfBirth = model.RepaymentAccount?.OwnerDateOfBirth,
                 OwnerFirstName = model.RepaymentAccount?.OwnerFirstName,
                 OwnerLastName = model.RepaymentAccount?.OwnerLastName,
-                Prefix = model.RepaymentAccount?.Prefix,
+                AccountPrefix = model.RepaymentAccount?.Prefix,
             },
             CommentToChangeRequest = new CommentToChangeRequest
             {

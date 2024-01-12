@@ -1,16 +1,18 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using Asp.Versioning;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.CustomerObligation;
 
 [ApiController]
 [Route("api/customer-on-sa")]
+[ApiVersion(1)]
 public class CustomerObligationController : ControllerBase
 {
     /// <summary>
     /// Smazání závazku customera
     /// </summary>
     /// <remarks>
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3325947-AFC4-444a-989E-1531C4AFFEDE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// Smaže závazek customera.<br/><br/><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3325947-AFC4-444a-989E-1531C4AFFEDE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="obligationId">ID závazku ke smazani</param>
@@ -31,15 +33,15 @@ public class CustomerObligationController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="obligationId">ID závazku</param>
     /// <returns>
-    /// <see cref="Dto.ObligationFullDto"/>
+    /// <see cref="SharedDto.ObligationFullDto"/>
     /// </returns>
     [HttpGet("{customerOnSAId:int}/obligation/{obligationId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
-    [ProducesResponseType(typeof(Dto.ObligationFullDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SharedDto.ObligationFullDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<Dto.ObligationFullDto> GetObligation([FromRoute] int customerOnSAId, [FromRoute] int obligationId, CancellationToken cancellationToken)
+    public async Task<SharedDto.ObligationFullDto> GetObligation([FromRoute] int customerOnSAId, [FromRoute] int obligationId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetObligation.GetObligationRequest(customerOnSAId, obligationId), cancellationToken);
 
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿using DomainServices.RealEstateValuationService.Contracts;
+using SharedTypes.Enums;
 
 namespace DomainServices.RealEstateValuationService.Clients.Services;
 
@@ -111,12 +112,21 @@ internal sealed class RealEstateValuationServiceClient
         await _service.OrderStandardValuationAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateStateByRealEstateValuation(int realEstateValuationId, int valuationStateId, CancellationToken cancellationToken = default)
+    public async Task UpdateStateByRealEstateValuation(int realEstateValuationId, RealEstateValuationStates valuationStateId, CancellationToken cancellationToken = default)
     {
         await _service.UpdateStateByRealEstateValuationAsync(new()
         {
             RealEstateValuationId = realEstateValuationId,
-            ValuationStateId = valuationStateId
+            ValuationStateId = (int)valuationStateId
+        }, cancellationToken: cancellationToken);
+    }
+
+    public async Task UpdateValuationTypeByRealEstateValuation(int realEstateValuationId, RealEstateValuationValuationTypes valuationTypeId, CancellationToken cancellationToken = default)
+    {
+        await _service.UpdateValuationTypeByRealEstateValuationAsync(new()
+        {
+            RealEstateValuationId = realEstateValuationId,
+            ValuationTypeId = (int)valuationTypeId
         }, cancellationToken: cancellationToken);
     }
 

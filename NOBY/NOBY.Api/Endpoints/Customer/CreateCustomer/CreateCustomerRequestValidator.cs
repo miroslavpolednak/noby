@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using NOBY.Api.Endpoints.Customer.Shared;
+using NOBY.Api.Endpoints.Customer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -33,5 +33,13 @@ internal class CreateCustomerRequestValidator : AbstractValidator<CreateCustomer
             .Cascade(CascadeMode.Stop)
             .NotNull().WithErrorCode(CustomerValidationErrorCode)
             .SetValidator(new IdentificationDocumentValidator());
+
+        When(r => r.PrimaryAddress is not null && !string.IsNullOrWhiteSpace(r.PrimaryAddress.PragueDistrict),
+             () =>
+             {
+                 RuleFor(r => r.PrimaryAddress!.PragueDistrict!)
+                     .Must(dis => dis.StartsWith("Praha", StringComparison.OrdinalIgnoreCase))
+                     .WithErrorCode(CustomerValidationErrorCode);
+             });
     }
 }

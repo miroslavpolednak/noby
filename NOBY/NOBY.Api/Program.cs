@@ -30,7 +30,9 @@ try
         .AddCisLogging()
         .AddCisAudit()
         .AddCisTracing()
+        .AddCisApiVersioning()
         .AddCisHealthChecks();
+
     builder.Services.AddCisSecurityHeaders();
 
     // add .NET logging
@@ -108,7 +110,8 @@ try
     // swagger
     if (!envConfiguration.DisableContractDescriptionPropagation)
     {
-        app.UseNobySwagger();
+        var descriptions = app.DescribeApiVersions();
+        app.UseNobySwagger(descriptions);
     }
 
     log.ApplicationRun();

@@ -6,8 +6,6 @@ public class AppConfiguration
 
     public EmailSenders EmailSenders { get; set; } = null!;
 
-    public HashSet<string> EmailDomainWhitelist { get; set; } = new();
-
     public HashSet<string> EmailFormats { get; set; } = new();
     
     public HashSet<string> EmailLanguageCodes { get; set; } = new();
@@ -28,6 +26,10 @@ public class Consumer
     public bool CanSendSms { get; set; } = false;
     
     public bool CanReadResult { get; set; } = false;
+
+    public bool CanReceiveStatistics { get; set; }
+
+    public bool CanResendNotifications { get; set; }
 }
 
 public class EmailSenders
@@ -42,13 +44,9 @@ public class KafkaTopics
     public string McsResult { get; set; } = null!;
     
     public string McsSender { get; set; } = null!;
-
-    public string NobySendEmail { get; set; } = null!;
 }
 
 public class S3Buckets
 {
     public string Mcs { get; set; } = null!;
-
-    public string Mpss { get; set; } = null!;
 }

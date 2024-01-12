@@ -9,7 +9,7 @@ using DomainServices.CodebookService.Clients;
 using SharedTypes.Enums;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
-using NOBY.Api.Endpoints.Customer.Shared;
+using NOBY.Api.Endpoints.Customer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
@@ -140,14 +140,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             }
 
             // set flow switches
-            await _salesArrangementService.SetFlowSwitches(salesArrangementId, new()
-            {
-                new()
-                {
-                    FlowSwitchId = (int)(household.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning),
-                    Value = true
-                }
-            }, cancellationToken);
+            await _salesArrangementService.SetFlowSwitch(salesArrangementId, (household.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning), true, cancellationToken);
         }
         
         if (wasCRSChanged) // zmena CRS
@@ -261,7 +254,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         return additionalData;
     }
 
-    private async Task RemoveTinMissingReasonIfTinIsNotRequired(Shared.TaxResidenceItem? original, CancellationToken cancellationToken)
+    private async Task RemoveTinMissingReasonIfTinIsNotRequired(SharedDto.TaxResidenceItem? original, CancellationToken cancellationToken)
     {
         if (original?.ResidenceCountries is null)
             return;

@@ -8,7 +8,6 @@ using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Endpoints.v1;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
-using CIS.InternalServices.NotificationService.Api.Services.Smtp;
 using ProtoBuf.Grpc.Server;
 using DomainServices;
 using CIS.InternalServices;
@@ -20,6 +19,8 @@ using CIS.InternalServices.NotificationService.Api.Services.User;
 using CIS.InternalServices.NotificationService.Api.Swagger;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using SharedComponents.DocumentDataStorage;
+using CIS.InternalServices.NotificationService.Api.BackgroundServices;
 
 var winSvc = args.Any(t => t.Equals("winsvc"));
 var webAppOptions = winSvc
@@ -91,9 +92,12 @@ try
     // s3 client
     builder.AddS3Client();
 
-    // smtp
-    builder.AddSmtpClient();
-    
+    // registrace background jobu
+    builder.AddBackroundJobs();
+
+    // ukladani payloadu - document data storage
+    builder.AddDocumentDataStorage();
+
     // swagger
     builder.AddCustomSwagger();
 

@@ -3,6 +3,7 @@ using CIS.Infrastructure.StartupExtensions;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Api.Messaging;
 using DomainServices.RealEstateValuationService.ExternalServices;
+using SharedComponents.DocumentDataStorage;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -26,6 +27,8 @@ SharedComponents.GrpcServiceBuilder
     .Build((builder, appConfiguration) =>
     {
         appConfiguration.Validate();
+
+        builder.AddDocumentDataStorage();
 
         // dbcontext
         builder.AddEntityFramework<RealEstateValuationServiceDbContext>();

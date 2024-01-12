@@ -3,6 +3,7 @@ using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Tests.IntegrationTests.Helpers;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,8 @@ public class GetElectronicDocumentPreviewTests : IntegrationTestBase
     [Fact]
     async Task GetElectronicDocumentPreview_ShouldReturnDocument()
     {
+        ESignaturesClient.DownloadDocumentPreview(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns([1, 2, 3]);
+
         var docOnSaEntity = CreateDocOnSaEntity();
 
         using var scope = Fixture.Services.CreateScope();

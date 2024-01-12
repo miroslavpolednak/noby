@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using NOBY.Dto.RealEstateValuation;
@@ -26,7 +25,7 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         await CheckIfRequestIsValid(request, valuationDetail, cancellationToken);
 
         if (valuationDetail.ValuationStateId is not 7)
-            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, 7, cancellationToken);
+            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, RealEstateValuationStates.Rozpracovano, cancellationToken);
 
         var dsRequest = new __Contracts.UpdateRealEstateValuationDetailRequest
         {
@@ -95,6 +94,11 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         if (caseInstance.State == (int)CaseStates.InProgress && request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate)
         {
             throw new NobyValidationException(90032, "request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate");
+        }
+
+        if (valuationDetail.PossibleValuationTypeId is not null && valuationDetail.PossibleValuationTypeId.Count > 0)
+        {
+            throw new NobyValidationException(90032, "PossibleValuationTypeId is not empty");
         }
 
         var variant = RealEstateVariantHelper.GetRealEstateVariant(valuationDetail.RealEstateTypeId);

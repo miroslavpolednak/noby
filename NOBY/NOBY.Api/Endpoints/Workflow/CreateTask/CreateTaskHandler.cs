@@ -56,7 +56,7 @@ internal sealed class CreateTaskHandler
             OrderId = request.OrderId
         };
         // pokud existuji nahrane prilohy
-        if (documentIds.Any())
+        if (documentIds.Count != 0)
         {
             dsRequest.TaskDocumentsId.AddRange(documentIds);
         }
@@ -80,8 +80,8 @@ internal sealed class CreateTaskHandler
 
     private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        var saId = await _salesArrangementService.GetProductSalesArrangement(request.CaseId, cancellationToken);
-        var saInstance = await _salesArrangementService.GetSalesArrangement(saId.SalesArrangementId, cancellationToken);
+        var saId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First().SalesArrangementId;
+        var saInstance = await _salesArrangementService.GetSalesArrangement(saId, cancellationToken);
         if (!saInstance.OfferId.HasValue)
         {
             throw new NobyValidationException($"OfferId is null for SalesArrangementId={saId}");

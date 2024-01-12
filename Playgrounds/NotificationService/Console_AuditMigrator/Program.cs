@@ -1,10 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using CIS.Core.Types;
 using Console_AuditMigrator;
 using Console_AuditMigrator.Database;
 using Console_AuditMigrator.Services;
 using Console_AuditMigrator.Services.Abstraction;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,6 +26,7 @@ services
 var serviceProvider = services
     .AddServices(configuration)
     .BuildServiceProvider();
+
 
 // services
 var application = serviceProvider.GetRequiredService<IApplication>();

@@ -6,6 +6,7 @@ using DomainServices.DocumentOnSAService.Api.Extensions;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
 using Google.Protobuf.WellKnownTypes;
+using System.Collections.Generic;
 using System.Globalization;
 using static DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types;
 
@@ -36,29 +37,28 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
 
     public async Task<Empty> Handle(SetProcessingDateInSbQueuesRequest request, CancellationToken cancellationToken)
     {
-        var currentDate = _dateTime.Now;
+        var tasksList = (await _caseService.GetTaskList(request.CaseId, cancellationToken)).Where(t => t.TaskTypeId == 6)
+                             .ToList();
+
+        if (!tasksList.Any(t => t.TaskId == request.TaskId && t.SignatureTypeId == 1)) { return new Empty(); }
 
         var workflowTaskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
         var nonFinalStates = workflowTaskStates.Where(s => s.Flag == EWorkflowTaskStateFlag.None).Select(s => s.Id);
-        var tasksList = (await _caseService.GetTaskList(request.CaseId, cancellationToken)).Where(t => t.TaskTypeId == 6);
         var tasksInNonFinalState = tasksList.Where(t => nonFinalStates.Contains(t.StateIdSb));
 
-        List<(long documentId, int taskIdSb)> taskIdSbForSpecifiedDocumentId = new();
-        List<(AmendmentSigning signing, GetTaskDetailResponse taskDetail)> signingWithTaskDetail = new();
+        List<(long documentId, long taskId)> taskIdForSpecifiedDocumentId = await GetDocumentIds(tasksList, cancellationToken);
 
-        await GetDocumentIds(tasksList, taskIdSbForSpecifiedDocumentId, signingWithTaskDetail, cancellationToken);
-
-        var documentIdForRequestTaskId = taskIdSbForSpecifiedDocumentId.Where(t => t.taskIdSb == request.TaskIdSb).Select(s => s.documentId).FirstOrDefault();
+        var documentIdForRequestTaskId = taskIdForSpecifiedDocumentId.Where(t => t.taskId == request.TaskId).Select(s => s.documentId).FirstOrDefault();
         if (documentIdForRequestTaskId != 0)
         {
-            var groupForDucumentId = taskIdSbForSpecifiedDocumentId.Where(d => d.documentId == documentIdForRequestTaskId);
-            var nonFinalTaskForGroup = tasksInNonFinalState.Where(r => groupForDucumentId.Select(s => s.taskIdSb).Contains(r.TaskIdSb));
+            var groupForDucumentId = taskIdForSpecifiedDocumentId.Where(d => d.documentId == documentIdForRequestTaskId);
+            var nonFinalTaskForGroup = tasksInNonFinalState.Where(r => groupForDucumentId.Select(s => s.taskId).Contains(r.TaskId));
 
             if (!nonFinalTaskForGroup.Any()) // Indicate last completed task in group for documentId
             {
                 try
                 {
-                    await UpdateSbQueues(currentDate, documentIdForRequestTaskId, cancellationToken);
+                    await UpdateSbQueues(_dateTime.Now, documentIdForRequestTaskId, cancellationToken);
                 }
                 catch (Exception exp)
                 {
@@ -80,8 +80,9 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
              );
     }
 
-    private async Task GetDocumentIds(IEnumerable<WorkflowTask> tasksList, List<(long documentId, int taskIdSb)> taskIdSbForSpecifiedDocumentId, List<(AmendmentSigning signing, GetTaskDetailResponse taskDetail)> signingWithTaskDetail, CancellationToken cancellationToken)
+    private async Task<List<(long documentId, long taskId)>> GetDocumentIds(IEnumerable<WorkflowTask> tasksList, CancellationToken cancellationToken)
     {
+        List<(long documentId, long taskId)> taskIdForSpecifiedDocumentId = [];
         foreach (var task in tasksList)
         {
             var taskDetail = await _caseService.GetTaskDetail(task.TaskIdSb, cancellationToken);
@@ -92,29 +93,29 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
                 _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AmendmentHasToBeOfTypeSigning)
             };
 
-            signingWithTaskDetail.Add((signing, taskDetail));
-
             if (signing.ProposalForEntry?.Count > 0)
             {
                 foreach (var attachmentId in signing.ProposalForEntry)
                 {
                     var documentId = await _sbQueuesRepository.GetDocumentIdAccordingAtchId(attachmentId, cancellationToken);
-                    taskIdSbForSpecifiedDocumentId.Add((documentId, task.TaskIdSb));
+                    taskIdForSpecifiedDocumentId.Add((documentId, task.TaskId));
                 }
             }
             else if (signing.DocumentForSigningType.Equals("A", StringComparison.OrdinalIgnoreCase))
             {
                 var documentId = await _sbQueuesRepository.GetDocumentIdAccordingAtchId(signing.DocumentForSigning, cancellationToken);
-                taskIdSbForSpecifiedDocumentId.Add((documentId, task.TaskIdSb));
+                taskIdForSpecifiedDocumentId.Add((documentId, task.TaskId));
             }
             else if (signing.DocumentForSigningType.Equals("D", StringComparison.OrdinalIgnoreCase))
             {
-                taskIdSbForSpecifiedDocumentId.Add((long.Parse(signing.DocumentForSigning!, CultureInfo.InvariantCulture), task.TaskIdSb));
+                taskIdForSpecifiedDocumentId.Add((long.Parse(signing.DocumentForSigning!, CultureInfo.InvariantCulture), task.TaskId));
             }
             else
             {
                 throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedDocumentForSigningType, signing.DocumentForSigningType);
             }
         }
+
+        return taskIdForSpecifiedDocumentId;
     }
 }

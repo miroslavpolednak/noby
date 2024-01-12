@@ -7,4 +7,5 @@ MediatR custom behaviors
 | Namespaces | |
 | :--- | :--- |
 | [CIS.Infrastructure.CisMediatR](CIS.Infrastructure.CisMediatR.md 'CIS.Infrastructure.CisMediatR') | |
+| [CIS.Infrastructure.CisMediatR.PayloadLogger](CIS.Infrastructure.CisMediatR.PayloadLogger.md 'CIS.Infrastructure.CisMediatR.PayloadLogger') | |
 | [CIS.Infrastructure.CisMediatR.Rollback](CIS.Infrastructure.CisMediatR.Rollback.md 'CIS.Infrastructure.CisMediatR.Rollback') | |

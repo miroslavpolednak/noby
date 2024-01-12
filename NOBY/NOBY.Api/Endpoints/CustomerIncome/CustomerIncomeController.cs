@@ -1,9 +1,11 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using Asp.Versioning;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.CustomerIncome;
 
 [ApiController]
 [Route("api/customer-on-sa")]
+[ApiVersion(1)]
 public class CustomerIncomeController : ControllerBase
 {
     /// <summary>
@@ -27,15 +29,10 @@ public class CustomerIncomeController : ControllerBase
     /// Detail příjmu customera
     /// </summary>
     /// <remarks>
-    /// <strong>CustomerIncome.GetDetail</strong><br/>
-    /// Ověří, že příjem patří customerovi a příjem smaže.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <strong>CustomerIncome.GetDetail</strong><br/><br/>Použít pro zobrazení detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domacnosti.<br/><br/><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B796BF15-1B08-4ac7-9CCE-D5E1BB5A35A3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID příjmu</param>
-    /// <returns>
-    /// <see cref="Dto.IncomeDataEmployement"/>
-    /// </returns>
     [HttpGet("{customerOnSAId:int}/income/{incomeId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
@@ -49,8 +46,7 @@ public class CustomerIncomeController : ControllerBase
     /// Update detailu příjmu customera
     /// </summary>
     /// <remarks>
-    /// Ověří, že příjem patří customerovi a příjem smaže.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91635463-1E2E-4dc5-B427-72C528298C88"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a> 
+    /// <strong>CustomerIncome.Update</strong><br/><br/>Použít pro update detailu příjmu - tj. Level 2 obrazovka prokliknutá z detailu domácnosti.<br/><br/><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FAA06BC2-E216-42fe-9EA7-630528373F92"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">ID customera</param>
     /// <param name="incomeId">ID příjmu</param>

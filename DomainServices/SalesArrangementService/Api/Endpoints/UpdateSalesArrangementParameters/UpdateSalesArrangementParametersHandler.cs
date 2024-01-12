@@ -1,115 +1,76 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Google.Protobuf;
+﻿using DomainServices.SalesArrangementService.Api.Database.DocumentDataEntities;
+using Microsoft.EntityFrameworkCore;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementParameters;
 
-internal sealed class UpdateSalesArrangementParametersHandler
-    : IRequestHandler<Contracts.UpdateSalesArrangementParametersRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateSalesArrangementParametersHandler : IRequestHandler<Contracts.UpdateSalesArrangementParametersRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
-    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellation)
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken)
     {
         // existuje SA?
-        var saInfoInstance = (await _dbContext.SalesArrangements
-            .Where(t => t.SalesArrangementId == request.SalesArrangementId)
-            .Select(t => new { t.State, t.OfferGuaranteeDateTo })
-            .FirstOrDefaultAsync(cancellation))
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
+        var saInfoInstance = await _dbContext.SalesArrangements
+                                             .Where(t => t.SalesArrangementId == request.SalesArrangementId)
+                                             .Select(t => new { t.SalesArrangementTypeId, t.State, t.OfferGuaranteeDateTo })
+                                             .FirstOrDefaultAsync(cancellationToken)
+                             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         // kontrolovat pokud je zmocnenec, tak zda existuje?
         if (request.DataCase == Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage)
         {
             if (request.Mortgage.Agent.HasValue)
             {
-                var customersOnSA = await _customerOnSAService.GetCustomerList(request.SalesArrangementId, cancellation);
-                if (!customersOnSA.Any(t => t.CustomerOnSAId == request.Mortgage.Agent))
+                var customersOnSA = await _customerOnSAService.GetCustomerList(request.SalesArrangementId, cancellationToken);
+
+                if (customersOnSA.All(t => t.CustomerOnSAId != request.Mortgage.Agent))
                     throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AgentNotFound, request.Mortgage.Agent);
             }
         }
 
-        // instance parametru, pokud existuje
-        var entity = await _dbContext
-            .SalesArrangementsParameters
-            .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation);
+        if (saInfoInstance.SalesArrangementTypeId == (int)SalesArrangementTypes.Drawing)
+        {
+            var drawingParameters = await _documentDataStorage.FirstOrDefaultByEntityId<DrawingData>(request.SalesArrangementId, SalesArrangementParametersConst.TableName, cancellationToken);
 
-        if (entity is null)
-        {
-            entity = new Database.Entities.SalesArrangementParameters
-            {
-                SalesArrangementId = request.SalesArrangementId,
-                SalesArrangementParametersType = getParameterType(request.DataCase)
-            };
-            _dbContext.SalesArrangementsParameters.Add(entity);
-        }
-        else if (entity.SalesArrangementParametersType == SalesArrangementTypes.Drawing)
-        {
-            //Pokud se SA nezakládá (parameters v DB = null), tak validuj účet pro čerpání
-            ValidateDrawingRepaymentAccount(request.Drawing, entity);
+            if (drawingParameters is not null)
+                ValidateDrawingRepaymentAccount(request.Drawing, drawingParameters.Data);
         }
 
-        // naplnit parametry serializovanym objektem
-        var dataObject = getDataObject(request);
-        entity.Parameters = dataObject is null ? null : Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);
-        entity.ParametersBin = dataObject is null ? null : dataObject.ToByteArray();
-
-        await _dbContext.SaveChangesAsync(cancellation);
+        // SA parameters
+        await AddOrUpdateParameters((SalesArrangementTypes)saInfoInstance.SalesArrangementTypeId, request, cancellationToken);
 
         // set flow switches
-        await setFlowSwitches(request.SalesArrangementId, saInfoInstance.OfferGuaranteeDateTo, cancellation);
+        await SetFlowSwitches(request.SalesArrangementId, saInfoInstance.OfferGuaranteeDateTo, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    static SalesArrangementTypes getParameterType(Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase datacase)
-        => datacase switch
-        {
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => SalesArrangementTypes.Mortgage,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => SalesArrangementTypes.Drawing,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => SalesArrangementTypes.GeneralChange,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => SalesArrangementTypes.HUBN,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange => SalesArrangementTypes.CustomerChange,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602A => SalesArrangementTypes.CustomerChange3602A,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602B => SalesArrangementTypes.CustomerChange3602B,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602C => SalesArrangementTypes.CustomerChange3602C,
-            _ => throw new NotImplementedException($"UpdateSalesArrangementParametersRequest.DataOneofCase {datacase} is not implemented")
-        };
-
-    static IMessage? getDataObject(Contracts.UpdateSalesArrangementParametersRequest request)
-        => request.DataCase switch
-        {
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Mortgage => request.Mortgage,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.Drawing => request.Drawing,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.GeneralChange => request.GeneralChange,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.HUBN => request.HUBN,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange => request.CustomerChange,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602A => request.CustomerChange3602A,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602B => request.CustomerChange3602B,
-            Contracts.UpdateSalesArrangementParametersRequest.DataOneofCase.CustomerChange3602C => request.CustomerChange3602C,
-            _ => null
-        };
-
     /// <summary>
     /// Nastaveni flow switches v podle toho jak je nastavena simulace / sa
     /// </summary>
-    private async Task setFlowSwitches(int salesArrangementId, DateTime? offerGuaranteeDateTo, CancellationToken cancellation)
+    private async Task SetFlowSwitches(int salesArrangementId, DateTime? offerGuaranteeDateTo, CancellationToken cancellationToken)
     {
-        if ((offerGuaranteeDateTo ?? DateTime.MinValue) > DateTime.Now)
+        if ((offerGuaranteeDateTo ?? DateTime.MinValue) <= DateTime.Now)
+            return;
+
+        var flowSwitchesRequest = new Contracts.SetFlowSwitchesRequest
         {
-            var flowSwitchesRequest = new Contracts.SetFlowSwitchesRequest
+            SalesArrangementId = salesArrangementId,
+            FlowSwitches =
             {
-                SalesArrangementId = salesArrangementId
-            };
-            flowSwitchesRequest.FlowSwitches.Add(new Contracts.EditableFlowSwitch
-            {
-                FlowSwitchId = (int)FlowSwitches.IsOfferGuaranteed,
-                Value = true
-            });
-            await _mediator.Send(flowSwitchesRequest, cancellation);
-        }
+                new Contracts.EditableFlowSwitch
+                {
+                    FlowSwitchId = (int)FlowSwitches.IsOfferGuaranteed,
+                    Value = true
+                }
+            }
+        };
+
+        await _mediator.Send(flowSwitchesRequest, cancellationToken);
     }
 
-    private static void ValidateDrawingRepaymentAccount(Contracts.SalesArrangementParametersDrawing drawingRequest, Database.Entities.SalesArrangementParameters originalParameters)
+    private static void ValidateDrawingRepaymentAccount(Contracts.SalesArrangementParametersDrawing drawingRequest, DrawingData? originalParameters)
     {
-        var originalAccount = Contracts.SalesArrangementParametersDrawing.Parser.ParseFrom(originalParameters.ParametersBin).RepaymentAccount;
+        var originalAccount = originalParameters?.RepaymentAccount ?? new DrawingData.DrawingRepaymentAccount();
         var requestAccount = drawingRequest.RepaymentAccount;
 
         if (originalAccount.IsAccountNumberMissing)
@@ -129,17 +90,36 @@ internal sealed class UpdateSalesArrangementParametersHandler
         requestAccount.IsAccountNumberMissing = false;
     }
 
+    private Task AddOrUpdateParameters(SalesArrangementTypes salesArrangementType, Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken)
+    {
+        return salesArrangementType switch
+        {
+            SalesArrangementTypes.Mortgage => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.Mortgage.MapMortgage(), cancellationToken),
+            SalesArrangementTypes.Drawing => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.Drawing.MapDrawing(), cancellationToken),
+            SalesArrangementTypes.GeneralChange => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.GeneralChange.MapGeneralChange(), cancellationToken),
+            SalesArrangementTypes.HUBN => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.HUBN.MapHUBN(), cancellationToken),
+            SalesArrangementTypes.CustomerChange => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange.MapCustomerChange(), cancellationToken),
+            SalesArrangementTypes.CustomerChange3602A => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange3602A.MapCustomerChange3602(), cancellationToken),
+            SalesArrangementTypes.CustomerChange3602B => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange3602B.MapCustomerChange3602(), cancellationToken),
+            SalesArrangementTypes.CustomerChange3602C => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange3602C.MapCustomerChange3602(), cancellationToken),
+            _ => throw new ArgumentOutOfRangeException(nameof(salesArrangementType), salesArrangementType, null)
+        };
+    }
+
     private readonly HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly IMediator _mediator;
 
     public UpdateSalesArrangementParametersHandler(
         IMediator mediator,
         HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
-        Database.SalesArrangementServiceDbContext dbContext)
+        Database.SalesArrangementServiceDbContext dbContext,
+        IDocumentDataStorage documentDataStorage)
     {
         _mediator = mediator;
         _customerOnSAService = customerOnSAService;
         _dbContext = dbContext;
+        _documentDataStorage = documentDataStorage;
     }
 }

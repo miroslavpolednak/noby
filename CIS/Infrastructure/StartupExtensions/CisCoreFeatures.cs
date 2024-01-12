@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Microsoft.FeatureManagement;
 
 namespace CIS.Infrastructure.StartupExtensions;
 
@@ -27,6 +28,9 @@ public static class CisCoreFeatures
         });
 
         builder.Services.AddHttpContextAccessor();
+
+        // feature flags
+        builder.Services.AddFeatureManagement();
 
         return builder;
     }

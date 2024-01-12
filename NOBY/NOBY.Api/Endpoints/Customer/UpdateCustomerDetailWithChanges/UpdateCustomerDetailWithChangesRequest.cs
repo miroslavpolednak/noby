@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
 public sealed class UpdateCustomerDetailWithChangesRequest
-    : Shared.BaseCustomerDetail, Shared.ICustomerDetailContacts, IRequest
+    : SharedDto.BaseCustomerDetail, SharedDto.ICustomerDetailContacts, IRequest
 {
     [JsonIgnore]
     public int CustomerOnSAId { get; set; }

@@ -15,17 +15,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+    <PackageReference Include="dbup-core" Version="5.0.37" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
-	  <PackageReference Include="Grpc.AspNetCore" Version="2.59.0" />
-	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.59.0" />
+	  <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
+	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.ServiceModel.Http" Version="6.2.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj" />
+    <ProjectReference Include="..\..\..\Shared\DatabaseMigrationsSupport\DatabaseMigrationsSupport.csproj" />
     <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.OfferService.Contracts.csproj" />
   </ItemGroup>

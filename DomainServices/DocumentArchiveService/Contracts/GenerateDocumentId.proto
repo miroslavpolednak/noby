@@ -21,4 +21,5 @@ enum EnvironmentNames {
   Edu = 6;
   Prod = 7;
   Test = 8;
+  Quality = 9;
 }

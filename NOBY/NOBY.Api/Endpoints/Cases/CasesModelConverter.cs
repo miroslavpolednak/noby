@@ -5,23 +5,23 @@ namespace NOBY.Api.Endpoints.Cases;
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class CasesModelConverter
 {
-    public async Task<Dto.CaseModel> FromContract(DomainServices.CaseService.Contracts.Case model)
+    public async Task<SharedDto.CaseModel> FromContract(DomainServices.CaseService.Contracts.Case model)
     {
 		await initCodebooks();
 
 		return convert(model);
 	}
 
-	public async Task<List<Dto.CaseModel>> FromContracts(IEnumerable<DomainServices.CaseService.Contracts.Case> models)
+	public async Task<List<SharedDto.CaseModel>> FromContracts(IEnumerable<DomainServices.CaseService.Contracts.Case> models)
     {
 		await initCodebooks();
         
 		return models.Select(t => convert(t)).ToList();
 	}
 
-	private Dto.CaseModel convert(DomainServices.CaseService.Contracts.Case model)
+	private SharedDto.CaseModel convert(DomainServices.CaseService.Contracts.Case model)
 	{
-		var converted = new Dto.CaseModel
+		var converted = new SharedDto.CaseModel
 		{
 			OfferContacts = new(),
 			CaseId = model.CaseId,
@@ -54,7 +54,7 @@ internal sealed class CasesModelConverter
 			converted.ActiveTasks = model.Tasks.Where(t => t.TaskTypeId != 5 && t.TaskTypeId != 8)
 				.Join(_taskTypes, i => i.TaskTypeId, o => o.Id, (task, i) => i.Id)
 				.GroupBy(k => k)
-				.Select(t => new Dto.TaskModel
+				.Select(t => new SharedDto.TaskModel
 				{
 					CategoryId = t.Key,
 					TaskCount = t.Count()

@@ -20,7 +20,7 @@ internal sealed class GetCustomerDetailHandler
         {
             NaturalPerson = person,
             JuridicalPerson = null,
-            LegalCapacity = result.NaturalPerson?.LegalCapacity is null ? null : new Shared.LegalCapacityItem
+            LegalCapacity = result.NaturalPerson?.LegalCapacity is null ? null : new SharedDto.LegalCapacityItem
             {
                 RestrictionTypeId = result.NaturalPerson.LegalCapacity.RestrictionTypeId,
                 RestrictionUntil = result.NaturalPerson.LegalCapacity.RestrictionUntil

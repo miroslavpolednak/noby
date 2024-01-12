@@ -1,5 +1,6 @@
 ﻿using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.GetRealEstateValuationDetail;
 
@@ -35,34 +36,19 @@ internal sealed class GetRealEstateValuationDetailHandler
             ValuationResultFuturePrice = realEstate.ValuationResultFuturePrice,
             RealEstateSubtypeId = realEstate.RealEstateSubtypeId,
             ACVRealEstateTypeId = realEstate.ACVRealEstateTypeId,
-            BagmanRealEstateTypeId = realEstate.BagmanRealEstateTypeId,
-            LoanPurposeDetails = realEstate.LoanPurposeDetailsBin is null ? null : LoanPurposeDetailsObject.Parser.ParseFrom(realEstate.LoanPurposeDetailsBin)
+            BagmanRealEstateTypeId = realEstate.BagmanRealEstateTypeId
         };
+
+        if (realEstate.PossibleValuationTypeId is not null)
+        {
+            response.PossibleValuationTypeId.AddRange(realEstate.PossibleValuationTypeId);
+        }
 
         // attachments
         response.Attachments.AddRange(await getAttachments(request.RealEstateValuationId, cancellationToken));
 
-        // documents
-        if (!string.IsNullOrEmpty(realEstate.Documents))
-        {
-            response.Documents.Add(System.Text.Json.JsonSerializer.Deserialize<RealEstateValuationDocument>(realEstate.Documents));
-        }
-
-        // specific details
-        if (realEstate.SpecificDetailBin is not null)
-        {
-            switch (Helpers.GetRealEstateType(response))
-            {
-                case SharedTypes.Enums.RealEstateTypes.Hf:
-                case SharedTypes.Enums.RealEstateTypes.Hff:
-                    response.HouseAndFlatDetails = SpecificDetailHouseAndFlatObject.Parser.ParseFrom(realEstate.SpecificDetailBin);
-                    break;
-
-                case SharedTypes.Enums.RealEstateTypes.P:
-                    response.ParcelDetails = SpecificDetailParcelObject.Parser.ParseFrom(realEstate.SpecificDetailBin);
-                    break;
-            }
-        }
+        var revDetail = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(request.RealEstateValuationId, cancellationToken);
+        _mapper.MapFromDataToSingle(revDetail?.Data, response);
 
         return response;
     }
@@ -84,10 +70,17 @@ internal sealed class GetRealEstateValuationDetailHandler
             .ToListAsync(cancellationToken);
     }
 
+    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly RealEstateValuationServiceDbContext _dbContext;
 
-    public GetRealEstateValuationDetailHandler(RealEstateValuationServiceDbContext dbContext)
+    public GetRealEstateValuationDetailHandler(
+        RealEstateValuationServiceDbContext dbContext, 
+        IDocumentDataStorage documentDataStorage,
+        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper)
     {
+        _mapper = mapper;
+        _documentDataStorage = documentDataStorage;
         _dbContext = dbContext;
     }
 }

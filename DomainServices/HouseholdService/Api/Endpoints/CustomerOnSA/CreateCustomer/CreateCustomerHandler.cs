@@ -5,12 +5,8 @@ using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using Google.Protobuf;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using SharedComponents.DocumentDataStorage;
-using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
-using System.Threading;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
 

@@ -61,13 +61,13 @@ internal sealed class DeleteCustomerHandler
             .ExecuteDeleteAsync(cancellationToken);
 
         // smazat data customera
-        await _documentDataStorage.DeleteByEntityId<Database.DocumentDataEntities.CustomerOnSAData>(customerOnSAId);
+        await _documentDataStorage.DeleteByEntityId<int, Database.DocumentDataEntities.CustomerOnSAData>(customerOnSAId);
 
         // smazat prijmy
-        await _documentDataStorage.DeleteByEntityId<Database.DocumentDataEntities.Income>(customerOnSAId);
+        await _documentDataStorage.DeleteByEntityId<int, Database.DocumentDataEntities.Income>(customerOnSAId);
 
         // smazat zavazky
-        await _documentDataStorage.DeleteByEntityId<Database.DocumentDataEntities.Obligation>(customerOnSAId);
+        await _documentDataStorage.DeleteByEntityId<int, Database.DocumentDataEntities.Obligation>(customerOnSAId);
     }
 
     private async Task StopSigning(IEnumerable<DocumentOnSAToSign> documentOnSAToSigns, CancellationToken cancellationToken)

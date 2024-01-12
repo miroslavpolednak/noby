@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿using Asp.Versioning;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
@@ -6,6 +7,7 @@ namespace NOBY.Api.Endpoints.Workflow;
 
 [ApiController]
 [Route("api/case")]
+[ApiVersion(1)]
 public class WorkflowController : ControllerBase
 {
     private readonly IMediator _mediator;

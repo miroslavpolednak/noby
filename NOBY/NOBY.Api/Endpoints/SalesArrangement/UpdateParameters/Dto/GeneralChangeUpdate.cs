@@ -1,5 +1,5 @@
 ﻿using SharedTypes.Types;
-using NOBY.Api.Endpoints.SalesArrangement.Dto;
+using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters.Dto;
@@ -116,27 +116,13 @@ public sealed class DrawingDateToExtended
 /// Účet pro splácení
 /// </summary>
 public sealed class PaymentAccount
+    : NOBY.Dto.BankAccount
 {
     /// <summary>
     /// Sekce aktivní
     /// </summary>
     [Required]
     public bool IsActive { get; set; }
-
-    /// <summary>
-    /// Předčíslí účtu
-    /// </summary>
-    public string? Prefix { get; set; }
-
-    /// <summary>
-    /// Číslo účtu
-    /// </summary>
-    public string? Number { get; set; }
-
-    /// <summary>
-    /// Kód banky
-    /// </summary>
-    public string? BankCode { get; set; }
 
     /// <summary>
     /// Jméno majitele účtu

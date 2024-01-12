@@ -1,15 +1,15 @@
 ﻿namespace DomainServices.SalesArrangementService.Contracts;
 
 public partial class CreateSalesArrangementRequest
-    : MediatR.IRequest<CreateSalesArrangementResponse>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<CreateSalesArrangementResponse>, CIS.Core.Validation.IValidatableRequest, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
 { }
 
 public partial class GetSalesArrangementRequest
     : MediatR.IRequest<SalesArrangement>, CIS.Core.Validation.IValidatableRequest
 { }
 
-public partial class GetProductSalesArrangementRequest
-    : MediatR.IRequest<GetProductSalesArrangementResponse>
+public partial class GetProductSalesArrangementsRequest
+    : MediatR.IRequest<GetProductSalesArrangementsResponse>
 { }
 
 public partial class GetSalesArrangementByOfferIdRequest
@@ -53,6 +53,10 @@ public partial class DeleteSalesArrangementRequest
 { }
 
 public partial class UpdateOfferDocumentIdRequest
+    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
+{ }
+
+public partial class UpdatePcpIdRequest
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
 { }
 

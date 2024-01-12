@@ -31,8 +31,9 @@ internal sealed class UpdateSalesArrangementHandler
         // meni se rbcid
         bool riskBusinessCaseIdChanged = !string.IsNullOrEmpty(request.RiskBusinessCaseId) && !request.RiskBusinessCaseId.Equals(entity.RiskBusinessCaseId, StringComparison.OrdinalIgnoreCase);
 
-        entity.ContractNumber = request.ContractNumber;
-        entity.RiskBusinessCaseId = request.RiskBusinessCaseId;
+        entity.ContractNumber = !string.IsNullOrWhiteSpace(request.ContractNumber) ? request.ContractNumber : entity.ContractNumber;
+        entity.RiskBusinessCaseId = !string.IsNullOrWhiteSpace(request.RiskBusinessCaseId) ? request.RiskBusinessCaseId : entity.RiskBusinessCaseId;
+        entity.FirstSignatureDate = request.FirstSignatureDate is not null ? request.FirstSignatureDate.ToDateTime() : entity.FirstSignatureDate;
 
         await _dbContext.SaveChangesAsync(cancellation);
 

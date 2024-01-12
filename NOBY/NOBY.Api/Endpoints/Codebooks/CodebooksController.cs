@@ -1,9 +1,11 @@
-﻿using DomainServices.CodebookService.Clients;
+﻿using Asp.Versioning;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 
 namespace NOBY.Api.Endpoints.Codebooks;
 
 [ApiController]
+[ApiVersion(1)]
 [Route("api/codebooks")]
 public class CodebooksController : ControllerBase
 {
@@ -81,7 +83,6 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
-    /// - <a href="https://wiki.kb.cz/display/HT/SigningMethodsForNaturalPerson+%28CB_StandardMethodOfArrAcceptanceByNPType%29+-+MOCK">SigningMethodsForNaturalPerson</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchemas</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructures</a>

@@ -1,4 +1,5 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
+using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.UserService.Clients;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.CreateSalesArrangement;
@@ -21,7 +22,8 @@ internal sealed class CreateSalesArrangementHandler
             SalesArrangementTypeId = request.SalesArrangementTypeId,
             StateUpdateTime = _dbContext.CisDateTime.Now,
             ContractNumber = request.ContractNumber,
-            ChannelId = user.UserInfo.ChannelId
+            ChannelId = user.UserInfo.ChannelId,
+            PcpId = request.PcpId
         };
 
         // get default SA state
@@ -30,6 +32,7 @@ internal sealed class CreateSalesArrangementHandler
         // ulozit do DB
         _dbContext.SalesArrangements.Add(saEntity);
         await _dbContext.SaveChangesAsync(cancellation);
+        _bag.Add(CreateSalesArrangementRollback.BagKeySalesArrangementId, saEntity.SalesArrangementId);
 
         // params
         if (request.DataCase != CreateSalesArrangementRequest.DataOneofCase.None)
@@ -109,8 +112,10 @@ internal sealed class CreateSalesArrangementHandler
     private readonly ILogger<CreateSalesArrangementHandler> _logger;
     private readonly IMediator _mediator;
     private readonly IUserServiceClient _userService;
+    private readonly IRollbackBag _bag;
 
     public CreateSalesArrangementHandler(
+        IRollbackBag bag,
         IUserServiceClient userService,
         IMediator mediator,
         OfferService.Clients.IOfferServiceClient offerService,
@@ -119,6 +124,7 @@ internal sealed class CreateSalesArrangementHandler
         Database.SalesArrangementServiceDbContext dbContext,
         ILogger<CreateSalesArrangementHandler> logger)
     {
+        _bag = bag;
         _userService = userService;
         _mediator = mediator;
         _offerService = offerService;

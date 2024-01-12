@@ -18,4 +18,6 @@ message CompleteTaskRequest {
 	google.protobuf.Int32Value TaskResponseTypeId = 6;
 
 	google.protobuf.Int32Value CompletionTypeId = 7;
+
+	int64 TaskId = 8;
 }

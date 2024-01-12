@@ -25,7 +25,7 @@ internal static class MortgageExtensions
             RepaymentAccountNumber = mortgage.RepaymentAccount?.Number,
             RepaymentAccountPrefix = mortgage.RepaymentAccount?.Prefix,
             EstimatedDuePaymentDate = mortgage.LoanDueDate,
-            FirstAnnuityInstallmentDate = mortgage.FirstAnnuityInstallmentDate,
+            FirstAnnuityInstallmentDate = mortgage.FirstAnnuityPaymentDate,
             ServiceBranchId = mortgage.BranchConsultantId,
             ConsultantId = mortgage.CaseOwnerUserCurrentId,
             FirstRequestSignDate = mortgage.FirstSignatureDate,
@@ -56,12 +56,12 @@ internal static class MortgageExtensions
             FixedRatePeriod = loan.FixedRatePeriod,
             ProductTypeId = loan.ProductTypeId.GetValueOrDefault(),
             LoanPaymentAmount = loan.LoanPaymentAmount,
-            CurrentAmount = loan.CurrentAmount,
+            CurrentAmount = loan.CurrentAmount.HasValue ? Math.Abs(loan.CurrentAmount.Value) : default,
             DrawingDateTo = loan.DrawingDateTo,
             ContractSignedDate = loan.ContractSignedDate,
             FixedRateValidTo = loan.FixedRateValidTo,
             AvailableForDrawing = loan.AvailableForDrawing,
-            Principal = loan.Principal,
+            Principal = loan.Principal.HasValue ? Math.Abs(loan.Principal.Value) : default,
             LoanKindId = loan.LoanKindId,
             PaymentAccount = ParsePaymentAccount(loan),
             CurrentOverdueAmount = loan.CurrentOverdueAmount,
@@ -74,7 +74,7 @@ internal static class MortgageExtensions
             LoanInterestRateRefix = null, // ???
             LoanInterestRateValidFromRefix = null, // ???
             FixedRatePeriodRefix = null, // ???
-            FirstAnnuityInstallmentDate = loan.FirstAnnuityInstallmentDate,
+            FirstAnnuityPaymentDate = loan.FirstAnnuityPaymentDate,
             FirstSignatureDate = loan.FirstSignatureDate,
             RepaymentAccount = ParseRepaymentAccount(loan),
             Statement = ParseStatementObject(loan),

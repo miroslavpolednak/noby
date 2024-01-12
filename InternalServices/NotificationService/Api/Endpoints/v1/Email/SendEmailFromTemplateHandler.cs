@@ -15,7 +15,6 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email;
 public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplateRequest, SendEmailFromTemplateResponse>
 {
     private readonly IDateTime _dateTime;
-    private readonly IMpssEmailProducer _mpssEmailProducer;
     private readonly IMcsEmailProducer _mcsEmailProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
@@ -28,7 +27,6 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
 
     public SendEmailFromTemplateHandler(
         IDateTime dateTime,
-        IMpssEmailProducer mpssEmailProducer,
         IMcsEmailProducer mcsEmailProducer,
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
@@ -38,7 +36,6 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         ILogger<SendEmailFromTemplateHandler> logger)
     {
         _dateTime = dateTime;
-        _mpssEmailProducer = mpssEmailProducer;
         _mcsEmailProducer = mcsEmailProducer;
         _userAdapterService = userAdapterService;
         _repository = repository;
@@ -65,25 +62,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
         var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
-        var bucketName = _mcsSenders.Contains(domainName)
-            ? _buckets.Mcs
-            : (_mpssSenders.Contains(domainName) ? _buckets.Mpss : throw new ArgumentException(domainName));
-        
-        try
-        {
-            foreach (var attachment in request.Attachments)
-            {
-                var content = Convert.FromBase64String(attachment.Binary);
-                var objectKey = await _s3Service.UploadFile(content, bucketName);
-                attachmentKeyFilenames.Add(new (objectKey, attachment.Filename));
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, $"Could not upload attachments to S3 bucket {bucketName}.");
-            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
-        }
-     
+
         var result = _repository.NewEmailResult();
         result.Identity = request.Identifier?.Identity;
         result.IdentityScheme = request.Identifier?.IdentityScheme;
@@ -93,13 +72,16 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         result.DocumentHash = request.DocumentHash?.Hash;
         result.HashAlgorithm = request.DocumentHash?.HashAlgorithm;
         result.RequestTimestamp = _dateTime.Now;
-        
+        result.SenderType = _mcsSenders.Contains(domainName) ? Contracts.Statistics.Dto.SenderType.KB
+            : _mpssSenders.Contains(domainName) ? Contracts.Statistics.Dto.SenderType.MP
+            : throw new ArgumentException(domainName);
+
         result.CreatedBy = username;
         
         try
         {
-            await _repository.AddResult(result, cancellationToken);
-            await _repository.SaveChanges(cancellationToken);
+            //await _repository.AddResult(result, cancellationToken);
+            //await _repository.SaveChanges(cancellationToken);
         }
         catch (Exception e)
         {
