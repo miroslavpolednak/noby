@@ -775,3 +775,63 @@ json_req_mail_mpss_sender_vsskb = \
     },
     "attachments": []
   }
+
+
+json_req_mail_mpss_sender_modrapyramida = \
+  {
+    "from": {
+      "value": "notification-service@modrapyramida.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_sender_modrapyramida.cz",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "Marek Mikel"
+    },
+    "attachments": []
+  }
+
+
+json_req_mail_mpss_sender_mpssinfo = \
+  {
+    "from": {
+      "value": "notification-service@mpss-info.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_sender_mpss-info.cz",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "Marek Mikel"
+    },
+    "attachments": []
+  }

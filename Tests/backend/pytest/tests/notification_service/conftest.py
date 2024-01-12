@@ -39,7 +39,7 @@ DB_TEMPLATE = {
 
 
 def pytest_addoption(parser):
-    parser.addoption("--ns-url", action="store", default="dev_url",
+    parser.addoption("--ns-url", action="store", default="fat_url",
                      help="ns url"),
     parser.addoption("--db-url", action="store", default="dev_db",
                      help="db url")

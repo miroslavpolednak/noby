@@ -217,19 +217,22 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
 
     print("--------PRVNÍ LOG NOBY_013-----------")
     sleep(3)
+    print(f"Executing query with notification ID: {notification_id} and AuditEventTypeId: 'AU_NOBY_013'")
     try:
         cursor.execute("""
-                    SELECT * 
-                    FROM AuditEvent
-                    CROSS APPLY OPENJSON(JSON_VALUE(Detail, '$.body.objectsAfter'))
-                    WITH (
-                    notificationId VARCHAR(100) '$.notificationId'
-                    )
-                    WHERE notificationId = ? AND AuditEventTypeId = ?;
-                    """, (notification_id, 'AU_NOBY_013')
+            SELECT * 
+            FROM NobyAudit.dbo.AuditEvent
+            CROSS APPLY OPENJSON(JSON_VALUE(Detail, '$.body.objectsAfter'))
+            WITH (
+            notificationId VARCHAR(100) '$.notificationId'
+            )
+            WHERE notificationId = ? AND AuditEventTypeId = ?;
+            """, (notification_id, 'AU_NOBY_013')
                        )
         results_1 = cursor.fetchall()
+        print(f"Query results: {results_1}")
         found_records_1 = bool(results_1)
+        assert found_records_1 == expected_result
     except pyodbc.Error as e:
         pytest.fail(f"Failed to execute query 1: {e}")
 
@@ -252,6 +255,7 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
         results_2 = cursor.fetchall()
         found_records_2 = bool(results_2)
         print("Results:", results_2)
+        assert found_records_2 == expected_result
     except pyodbc.Error as e:
         pytest.fail(f"Failed to execute query 2: {e}")
 
@@ -269,12 +273,9 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
                        )
         results_3 = cursor.fetchall()
         found_records_3 = bool(results_3)
+        assert found_records_3 == expected_result
     except pyodbc.Error as e:
         pytest.fail(f"Failed to execute query 3: {e}")
-
-    assert found_records_1 == expected_result
-    assert found_records_2 == expected_result
-    assert found_records_3 == expected_result
 
 
 """

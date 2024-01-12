@@ -22,7 +22,8 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
     json_req_mail_mpss_documentHash_SHA_512, json_req_mail_mpss_documentHash_SHA_384, \
     json_req_mail_mpss_basic_format_text_plain, json_req_mail_mpss_basic_format_application_text, \
     json_req_mail_mpss_max_attachments, \
-    json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_vsskb, json_req_mail_mpss_sender_mpss_info
+    json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_vsskb, json_req_mail_mpss_sender_mpss_info, \
+    json_req_mail_mpss_sender_modrapyramida, json_req_mail_mpss_sender_mpssinfo
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -121,7 +122,7 @@ def test_mail_content_format(ns_url, auth_params, auth, json_data):
     assert len(resp['errors']) == 0
     assert 'createdBy' in resp
 
-    time.sleep(15)
+    time.sleep(61)
 
     # vola GET opet, abz si overil doruceni
     session = requests.session()
@@ -248,7 +249,9 @@ def test_mail_documentHash(ns_url, auth_params, auth, json_data):
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_mpss_info,
                                        json_req_mail_kb_sender_kb, json_req_mail_kb_sender_kb_sluzby,
                                        json_req_mail_kb_sender_kbinfo,
-                                       json_req_mail_kb_sender_kb_attachment
+                                       json_req_mail_kb_sender_kb_attachment,
+                                        json_req_mail_mpss_sender_modrapyramida,
+                                        json_req_mail_mpss_sender_mpssinfo
                                        ],
                          ids=[
                              "json_req_mail_mpss_sender_mpss",
@@ -256,7 +259,9 @@ def test_mail_documentHash(ns_url, auth_params, auth, json_data):
                              "json_req_mail_kb_sender_kb",
                              "json_req_mail_kb_sender_kb_sluzby",
                              "json_req_mail_kb_sender_kbinfo",
-                             "json_req_mail_kb_sender_kb_attachment"
+                             "json_req_mail_kb_sender_kb_attachment",
+                             "json_req_mail_mpss_sender_modrapyramida",
+                             "json_req_mail_mpss_sender_mpssinfo"
                          ]
                          )
 def test_mail_sender(ns_url, auth_params, auth, json_data):

@@ -1,4 +1,5 @@
 import itertools
+import time
 
 import pytest
 import requests
@@ -15,8 +16,7 @@ from ..json.request.mail_mpss_neg_json import json_bad_req_mail_mpss_empty_party
     json_req_mail_mpss_bad_content_format_text, json_req_mail_mpss_bad_natural_legal, \
     json_req_mail_mpss_documentHash_without_hashAlgorithm, json_req_mail_mpss_documentHash_without_hash, \
     json_req_mail_mpss_documentHash_with_bad_hash, json_req_mail_mpss_documentHash_bad_hashAlgorithm, \
-    json_req_mail_mpss_bad_from, json_req_mail_mpss_bad_from_mpss, json_req_mail_mpss_bad_whitelist_to, \
-    json_req_mail_mpss_bad_whitelist_cc, json_req_mail_mpss_bad_whitelist_bcc
+    json_req_mail_mpss_bad_from, json_req_mail_mpss_bad_from_mpss, json_req_mail_mpss_bad_whitelist
 
 
 # negativní testy
@@ -217,13 +217,11 @@ def test_mail_negative_from(ns_url, auth_params, auth, json_data):
     )
     assert resp.status_code == 400
     error_message = resp.json()['errors']['PredicateValidator'][0]
-    assert 'Allowed domain names for sender: kb.cz, kbsluzby.cz, kbinfo.cz, mpss.cz, mpss-info.cz.' in error_message
+    assert 'Allowed domain names for sender: kb.cz, kbsluzby.cz, kbinfo.cz, mpss.cz, mpss-info.cz, modrapyramida.cz.' in error_message
 
 
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
-@pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_whitelist_to,
-                                       json_req_mail_mpss_bad_whitelist_cc,
-                                       json_req_mail_mpss_bad_whitelist_bcc])
+@pytest.mark.parametrize("json_data", [json_req_mail_mpss_bad_whitelist])
 def test_mail_negative_to_cc_bcc(ns_url, auth_params, auth, json_data):
     """negativní test pro test jazyka a formatu"""
     url_name = ns_url["url_name"]
@@ -243,6 +241,8 @@ def test_mail_negative_to_cc_bcc(ns_url, auth_params, auth, json_data):
     notification_id = resp["notificationId"]
     assert notification_id != ""
 
+    time.sleep(61)
+
     # Pro druhý GET request potřebujete přihlašovací údaje NOBY uživatele
     noby_username = "XX_NOBY_RMT_USR_TEST"
     noby_password = auth_params[noby_username]
@@ -258,4 +258,4 @@ def test_mail_negative_to_cc_bcc(ns_url, auth_params, auth, json_data):
     error_code = resp.json()['errors'][0]['code']
     error_message = resp.json()['errors'][0]['message']
     assert error_code == "SMTP-WHITELIST-EXCEPTION"
-    assert 'Could not send MPSS email to recipient outside the whitelist: marek.mikel@gmail.com' in error_message
+    assert 'Could not send MPSS email to recipient outside the whitelist: marek.to@gmail.com, marek.cc@gmail.com, marek.bcc@gmail.com' in error_message
