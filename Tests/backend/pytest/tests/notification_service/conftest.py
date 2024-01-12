@@ -253,3 +253,11 @@ def modified_template_json_data_health(request, url_name):
             placeholder['value'] = " Prostredi: " + url_name + ", " + " Cas provedeni: " + date_time + ", Zprava: " + placeholder['value']
 
     return modified_data
+
+
+# Funkce pro získání dnešního data ve správném formátu
+def get_today_date_strings():
+    today = datetime.now()
+    time_from = today.strftime('%Y-%m-%d') + 'T00:00'
+    time_to = today.strftime('%Y-%m-%d') + 'T23:59'
+    return time_from, time_to
