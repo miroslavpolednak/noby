@@ -15,13 +15,22 @@ public interface ITempStorage
         IFormFile file,
         CancellationToken cancellationToken = default);
 
+    Task<TempStorageItem> Save(
+        byte[] fileData,
+        string mimeType,
+        string fileName,
+        long? objectId = null,
+        string? objectType = null,
+        Guid? sessionId = null,
+        CancellationToken cancellationToken = default);
+
     Task<List<TempStorageItem>> GetSession(Guid sessionId, CancellationToken cancellationToken = default);
 
-    Task<TempStorageItem> GetMetadata(Guid tempFileId, CancellationToken cancellationToken = default);
+    Task<TempStorageItem> GetMetadata(Guid tempStorageItemId, CancellationToken cancellationToken = default);
 
-    Task<byte[]> GetContent(Guid tempFileId, CancellationToken cancellationToken = default);
+    Task<byte[]> GetContent(Guid tempStorageItemId, CancellationToken cancellationToken = default);
 
-    Task Delete(Guid tempFileId, CancellationToken cancellationToken = default);
+    Task Delete(Guid tempStorageItemId, CancellationToken cancellationToken = default);
 
-    Task Delete(IEnumerable<Guid> tempFileId, CancellationToken cancellationToken = default);
+    Task Delete(IEnumerable<Guid> tempStorageItemId, CancellationToken cancellationToken = default);
 }

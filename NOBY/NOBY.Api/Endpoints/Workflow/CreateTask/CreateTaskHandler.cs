@@ -142,14 +142,14 @@ internal sealed class CreateTaskHandler
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
     private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
-    private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
+    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
 
     public CreateTaskHandler(
         ICurrentUserAccessor currentUserAccessor,
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
-        Services.TempFileManager.ITempFileManagerService tempFileManager,
+        SharedComponents.Storage.ITempStorage tempFileManager,
         Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive)
     {
         _currentUserAccessor = currentUserAccessor;

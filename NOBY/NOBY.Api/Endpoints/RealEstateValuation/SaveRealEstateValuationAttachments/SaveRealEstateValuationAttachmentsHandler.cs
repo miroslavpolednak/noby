@@ -1,5 +1,4 @@
 ﻿using DomainServices.RealEstateValuationService.Clients;
-using NOBY.Services.TempFileManager;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments;
 
@@ -39,10 +38,10 @@ internal sealed class SaveRealEstateValuationAttachmentsHandler
         return newIds;
     }
 
-    private readonly ITempFileManagerService _tempFileManager;
+    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
 
-    public SaveRealEstateValuationAttachmentsHandler(IRealEstateValuationServiceClient realEstateValuationService, ITempFileManagerService tempFileManager)
+    public SaveRealEstateValuationAttachmentsHandler(IRealEstateValuationServiceClient realEstateValuationService, SharedComponents.Storage.ITempStorage tempFileManager)
     {
         _tempFileManager = tempFileManager;
         _realEstateValuationService = realEstateValuationService;

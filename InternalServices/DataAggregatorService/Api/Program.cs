@@ -1,3 +1,4 @@
+using CIS.Core;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
@@ -19,7 +20,7 @@ SharedComponents.GrpcServiceBuilder
     })
     .Build((builder, appConfiguration) =>
     {
-        builder.Services.AddDapper(builder.Configuration.GetConnectionString("default")!);
+        builder.Services.AddDapper(builder.Configuration.GetConnectionString(CisGlobalConstants.DefaultConnectionStringKey)!);
 
         if (appConfiguration.UseCacheForConfiguration)
         {

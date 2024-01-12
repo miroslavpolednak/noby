@@ -874,6 +874,11 @@
             Globální konstanty aplikace.
             </summary>
         </member>
+        <member name="F:CIS.Core.CisGlobalConstants.DefaultConnectionStringKey">
+            <summary>
+            Klíč v appsettings.json pro výchozí DB connection string aplikace
+            </summary>
+        </member>
         <member name="F:CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl">
             <summary>
             URL health check endpointu pro vsechny sluzby/aplikace.

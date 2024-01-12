@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using CIS.Core;
+using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NCrontab;
@@ -65,7 +66,7 @@ internal sealed class CisBackgroundService<TBackgroundService>
             using var serviceScope = _serviceScopeFactory.CreateScope();
             var service = serviceScope.ServiceProvider.GetRequiredService<TBackgroundService>();
             var configuration = serviceScope.ServiceProvider.GetRequiredService<IConfiguration>();
-            ConnectionString = ConnectionString is null ? configuration.GetConnectionString("default") ?? throw new NotSupportedException("defaut connection string required") : ConnectionString;
+            ConnectionString = ConnectionString is null ? configuration.GetConnectionString(CisGlobalConstants.DefaultConnectionStringKey) ?? throw new NotSupportedException("defaut connection string required") : ConnectionString;
             
             // resource is essential for uniquely identifying the resource for which the lock is being requested.
             string resource = typeof(TBackgroundService)?.FullName!;

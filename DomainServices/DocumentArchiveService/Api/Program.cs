@@ -4,6 +4,7 @@ using DomainServices.DocumentArchiveService.ExternalServices.Sdf;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp;
 using DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
+using CIS.Core;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -37,10 +38,10 @@ SharedComponents.GrpcServiceBuilder
 
         // databases
         builder.Services
-            .AddDapper<DomainServices.DocumentArchiveService.Api.Database.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString("default")!);
+            .AddDapper<DomainServices.DocumentArchiveService.Api.Database.IXxvDapperConnectionProvider>(builder.Configuration.GetConnectionString(CisGlobalConstants.DefaultConnectionStringKey)!);
 
         // dbcontext
-        builder.AddEntityFramework<DomainServices.DocumentArchiveService.Api.Database.DocumentArchiveDbContext>(connectionStringKey: "default");
+        builder.AddEntityFramework<DomainServices.DocumentArchiveService.Api.Database.DocumentArchiveDbContext>(connectionStringKey: CisGlobalConstants.DefaultConnectionStringKey);
     })
     .MapGrpcServices(app =>
     {

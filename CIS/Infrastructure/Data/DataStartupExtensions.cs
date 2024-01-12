@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.Data;
+﻿using CIS.Core;
+using CIS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -33,7 +34,7 @@ public static class DataStartupExtensions
     /// <summary>
     /// Registrace DbContextu pro EntityFramework
     /// </summary>
-    public static WebApplicationBuilder AddEntityFramework<TDbContext>(this WebApplicationBuilder builder, bool enableSensitiveDataLogging = true, string connectionStringKey = "default", CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
+    public static WebApplicationBuilder AddEntityFramework<TDbContext>(this WebApplicationBuilder builder, bool enableSensitiveDataLogging = true, string connectionStringKey = CisGlobalConstants.DefaultConnectionStringKey, CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
         where TDbContext : DbContext
     {
         // add custom CIS options
@@ -55,7 +56,7 @@ public static class DataStartupExtensions
         return builder;
     }
 
-    public static WebApplicationBuilder AddBaseEntityFramework<TDbContext>(this WebApplicationBuilder builder, bool enableSensitiveDataLogging = true, string connectionStringKey = "default", CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
+    public static WebApplicationBuilder AddBaseEntityFramework<TDbContext>(this WebApplicationBuilder builder, bool enableSensitiveDataLogging = true, string connectionStringKey = CisGlobalConstants.DefaultConnectionStringKey, CisEntityFrameworkOptions<TDbContext>? cisOptions = null)
         where TDbContext : DbContext
     {
         // add custom CIS options

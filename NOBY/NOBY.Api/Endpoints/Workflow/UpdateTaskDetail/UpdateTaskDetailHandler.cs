@@ -91,7 +91,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
     private readonly ICodebookServiceClient _codebookService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly ICaseServiceClient _caseService;
-    private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
+    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
     private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
     private static int[] _allowedTaskTypeIds = { 1, 6 };
 
@@ -100,7 +100,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         ICurrentUserAccessor currentUserAccessor,
         Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive,
         ICaseServiceClient caseService,
-        Services.TempFileManager.ITempFileManagerService tempFileManager)
+        SharedComponents.Storage.ITempStorage tempFileManager)
     {
         _codebookService = codebookService;
         _currentUserAccessor = currentUserAccessor;

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using SharedComponents.Storage.Database;
 using System.Diagnostics;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SharedComponents.Storage;
 
@@ -23,42 +22,60 @@ internal class TempStorage
         Guid? sessionId = null,
         CancellationToken cancellationToken = default)
     {
-        // overit validni extension
-        string fileExtension = Path.GetExtension(file.FileName);
-        if ((_configuration.AllowedFileExtensions?.Length ?? -1) != 0
-            || (_configuration.AllowedFileExtensions ?? _defaultAllowedFileExtensions).Contains(fileExtension, StringComparer.OrdinalIgnoreCase))
-        {
-            throw new TempStorageException(90032, $"File extension {fileExtension} not allowed");
-        }
-
-        // overit delku filename
-        if (file.FileName.Length > _configuration.MaxFileNameSize)
-        {
-            throw new TempStorageException(90038, $"FileName length is greater than {_configuration.MaxFileNameSize}");
-        }
-
         var fileInstance = new TempStorageItem
         {
-            TempFileId = Guid.NewGuid(),
-            FileName = file.FileName,
-            MimeType = file.ContentType,
+            TempStorageItemId = Guid.NewGuid(),
+            FileName = file.FileName ?? Guid.NewGuid().ToString(),
+            MimeType = file.ContentType ?? "",
             SessionId = sessionId,
             ObjectId = objectId,
             ObjectType = objectType,
             TraceId = Activity.Current?.Id
         };
 
+        validateFile(fileInstance);
+
         // zapsat na disk
-        using (var stream = new FileStream(getPath(fileInstance.TempFileId), FileMode.Create))
+        using (var stream = new FileStream(getPath(fileInstance.TempStorageItemId), FileMode.Create))
         {
             await file.CopyToAsync(stream, cancellationToken);
             await stream.FlushAsync(cancellationToken);
         }
 
         // ulozit do DB
-        string insertSql = $"INSERT INTO {_tableName} (FileName, MimeType, ObjectId, ObjectType, SessionId, TraceId) VALUES (@FileName, @MimeType, @ObjectId, @ObjectType, @SessionId, @TraceId)";
-        await _connectionProvider.ExecuteDapperAsync(insertSql, fileInstance, cancellationToken);
+        await saveFileToDatabase(fileInstance, cancellationToken);
         
+        return fileInstance;
+    }
+
+    public async Task<TempStorageItem> Save(
+        byte[] fileData,
+        string mimeType,
+        string fileName,
+        long? objectId = null,
+        string? objectType = null,
+        Guid? sessionId = null,
+        CancellationToken cancellationToken = default)
+    {
+        var fileInstance = new TempStorageItem
+        {
+            TempStorageItemId = Guid.NewGuid(),
+            FileName = fileName,
+            MimeType = mimeType,
+            SessionId = sessionId,
+            ObjectId = objectId,
+            ObjectType = objectType,
+            TraceId = Activity.Current?.Id
+        };
+
+        validateFile(fileInstance);
+
+        // zapsat na disk
+        await File.WriteAllBytesAsync(getPath(fileInstance.TempStorageItemId), fileData, cancellationToken);
+
+        // ulozit do DB
+        await saveFileToDatabase(fileInstance, cancellationToken);
+
         return fileInstance;
     }
 
@@ -72,18 +89,18 @@ internal class TempStorage
             );
     }
 
-    public async Task<TempStorageItem> GetMetadata(Guid tempFileId, CancellationToken cancellationToken = default)
+    public async Task<TempStorageItem> GetMetadata(Guid tempStorageItemId, CancellationToken cancellationToken = default)
     {
         return await _connectionProvider
             .ExecuteDapperFirstOrDefaultAsync<TempStorageItem>(
-            $"SELECT * FROM {_tableName} WHERE TempStorageItemId=@tempFileId",
-            new { tempFileId },
+            $"SELECT * FROM {_tableName} WHERE TempStorageItemId=@tempStorageItemId",
+            new { tempStorageItemId },
             cancellationToken);
     }
 
-    public async Task<byte[]> GetContent(Guid tempFileId, CancellationToken cancellationToken = default)
+    public async Task<byte[]> GetContent(Guid tempStorageItemId, CancellationToken cancellationToken = default)
     {
-        string path = getPath(tempFileId);
+        string path = getPath(tempStorageItemId);
         if (!File.Exists(path))
         {
             throw new CisNotFoundException(0, $"TempFileManager: temp file '{path}' not found");
@@ -92,36 +109,36 @@ internal class TempStorage
         return await File.ReadAllBytesAsync(path, cancellationToken);
     }
 
-    public async Task Delete(Guid tempFileId, CancellationToken cancellationToken = default)
+    public async Task Delete(Guid tempStorageItemId, CancellationToken cancellationToken = default)
     {
         await _connectionProvider
             .ExecuteDapperAsync(
-                $"DELETE FROM {_tableName} WHERE TempStorageItemId=@tempFileId", 
-                new { tempFileId }, 
+                $"DELETE FROM {_tableName} WHERE TempStorageItemId=@tempStorageItemId", 
+                new { tempStorageItemId }, 
                 cancellationToken
             );
         
         // v celku nas nezajima, jestli je soubor smazany nebo ne
         try
         {
-            File.Delete(getPath(tempFileId));
+            File.Delete(getPath(tempStorageItemId));
         }
         catch { }
     }
 
-    public async Task Delete(IEnumerable<Guid> tempFileId, CancellationToken cancellationToken = default)
+    public async Task Delete(IEnumerable<Guid> tempStorageItemId, CancellationToken cancellationToken = default)
     {
         await _connectionProvider
             .ExecuteDapperAsync(
-                $"DELETE FROM {_tableName} WHERE TempStorageItemId IN @tempFileId",
-                new { tempFileId },
+                $"DELETE FROM {_tableName} WHERE TempStorageItemId IN @tempStorageItemId",
+                new { tempStorageItemId },
                 cancellationToken
             );
 
         // v celku nas nezajima, jestli je soubor smazany nebo ne
         try
         {
-            foreach (var id in tempFileId)
+            foreach (var id in tempStorageItemId)
             {
                 File.Delete(getPath(id));
             }
@@ -129,8 +146,35 @@ internal class TempStorage
         catch { }
     }
 
-    private string getPath(Guid fileTempId)
-        => Path.Combine(_configuration.StoragePath, fileTempId.ToString());
+    private void validateFile(TempStorageItem fileInstance)
+    {
+        // overit validni extension
+        if (_configuration.UseAllowedFileExtensions)
+        {
+            string fileExtension = Path.GetExtension(fileInstance.FileName);
+            if (((_configuration.AllowedFileExtensions?.Length ?? 0) == 0 && !_defaultAllowedFileExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase))
+                || ((_configuration.AllowedFileExtensions?.Length ?? 0) > 0 && !_configuration.AllowedFileExtensions!.Contains(fileExtension, StringComparer.OrdinalIgnoreCase)))
+            {
+                throw new TempStorageException(90032, $"File extension {fileExtension} not allowed");
+            }
+        }
+
+        // overit delku filename
+        if (fileInstance.FileName.Length > _configuration.MaxFileNameSize)
+        {
+            throw new TempStorageException(90038, $"FileName length is greater than {_configuration.MaxFileNameSize}");
+        }
+    }
+
+    private async Task saveFileToDatabase(TempStorageItem fileInstance, CancellationToken cancellationToken)
+    {
+        // ulozit do DB
+        string insertSql = $"INSERT INTO {_tableName} (TempStorageItemId, FileName, MimeType, ObjectId, ObjectType, SessionId, TraceId) VALUES (@TempStorageItemId, @FileName, @MimeType, @ObjectId, @ObjectType, @SessionId, @TraceId)";
+        await _connectionProvider.ExecuteDapperAsync(insertSql, fileInstance, cancellationToken);
+    }
+
+    private string getPath(Guid tempStorageItemId)
+        => Path.Combine(_configuration.StoragePath, tempStorageItemId.ToString());
 
     private readonly string[] _defaultAllowedFileExtensions = 
     [
@@ -158,6 +202,6 @@ internal class TempStorage
     public TempStorage(IConnectionProvider<ITempStorageConnection> connectionProvider, IOptions<Configuration.StorageConfiguration> configuration)
     {
         _connectionProvider = connectionProvider;
-        _configuration = configuration.Value.TempStorage ?? throw new CisConfigurationNotFound("CisStorage:TempStorage");
+        _configuration = configuration.Value.TempStorage!;
     }
 }
