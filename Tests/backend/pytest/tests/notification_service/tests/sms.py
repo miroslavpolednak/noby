@@ -178,7 +178,7 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
     notification_id = resp["notificationId"]
     assert notification_id != ""
 
-
+@pytest.mark.skip("Nefunguje dotaz do databáze")
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
     ("loguji", json_req_sms_logovani_kb_sb_E2E, True)
