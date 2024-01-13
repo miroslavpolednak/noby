@@ -250,8 +250,8 @@ def test_mail_documentHash(ns_url, auth_params, auth, json_data):
                                        json_req_mail_kb_sender_kb, json_req_mail_kb_sender_kb_sluzby,
                                        json_req_mail_kb_sender_kbinfo,
                                        json_req_mail_kb_sender_kb_attachment,
-                                        json_req_mail_mpss_sender_modrapyramida,
-                                        json_req_mail_mpss_sender_mpssinfo
+                                       json_req_mail_mpss_sender_modrapyramida,
+                                       json_req_mail_mpss_sender_mpssinfo
                                        ],
                          ids=[
                              "json_req_mail_mpss_sender_mpss",
@@ -561,3 +561,56 @@ def test_connection(mssql_connection):
     for col in columns:
         print(
             f"NSid: {col.DocumentDataEntityId}")
+
+
+# @pytest.mark.skip(reason="pro ruční spouštění")
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("mssql_connection", [{"server": "fat", "database": "ns"}], indirect=True)
+@pytest.mark.parametrize("url_name, json_data", [
+    ("fat_url", json_req_mail_mpss_full_attachments)
+])
+def test_mail_perf_for_job_SendEmailsJob(url_name, auth_params, auth, json_data, mssql_connection):
+    """kladny test"""
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    notification = resp.json()
+    print(notification)
+    assert "notificationId" in notification
+    notification_id = notification["notificationId"]
+    assert notification_id != ""
+
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
+
+    cursor = mssql_connection.cursor()
+
+    # Definice názvu tabulky a schématu
+    table_name = 'EmailResult'
+    schema_name = 'dbo'
+    # Parametrizovaný SQL příkaz pro aktualizaci
+    cursor.execute(f"""
+            UPDATE {schema_name}.{table_name}
+            SET State = 2
+            WHERE Id = ?;
+        """, (notification_id,))
+
+    # Potvrzení změn v databázi
+    mssql_connection.commit()
+
+    ##Ověření provedení změn pomocí SELECT dotazu
+    select_query = f"""
+            SELECT Id, State, Resend, SenderType, Channel, CustomId FROM {schema_name}.{table_name}
+            WHERE Id = ?;
+        """
+    cursor.execute(select_query, (notification_id,))
+    row = cursor.fetchone()
+    print(row)
+
+    assert row[1] == 2, f"Očekávaný State je 2 UNSENT, ale získaný State je {row[1]}"
