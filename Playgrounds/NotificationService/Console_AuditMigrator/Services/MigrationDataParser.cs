@@ -209,8 +209,10 @@ internal static class MigrationDataParserExtensions
         var state = stateMatch.Groups[1].Value;
 
         applicationLog.ParsedObject = JsonConvert.SerializeObject(new Dictionary<string, string> {
+            { "smsType", string.Empty },
             { "notificationId", notificationId },
-            { "state", state }
+            { "state", state },
+            { "errors", "null" }
         });
     }
 }

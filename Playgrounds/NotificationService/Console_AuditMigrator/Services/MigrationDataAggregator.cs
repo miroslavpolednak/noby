@@ -58,7 +58,7 @@ public class MigrationDataAggregator : IMigrationDataAggregator
                         CreateLog(applicationLog, AuditEventTypes.Noby013, _msgNoby013Success, getObjectAfter(applicationLog.TraceId!, LogType.ProducedToKafka));
                     } else
                     {
-                        CreateLog(applicationLog, AuditEventTypes.Noby013, _msgNoby013Failed, getObjectAfter(applicationLog.TraceId!, LogType.CouldNotProduceToKafka));
+                        CreateLog(applicationLog, AuditEventTypes.Noby013, _msgNoby013Failed, null);
                     }                    
                     break;
                 case LogType.ReceivedReport:

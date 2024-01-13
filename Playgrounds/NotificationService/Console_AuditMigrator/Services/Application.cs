@@ -39,7 +39,7 @@ public class Application : IApplication
         //await _migrationDataParser.ParseFromApplicationLogs();
         
         // step 3 - aggregate migration data and fill notificationId
-        await _migrationDataAggregator.Aggregate();
+        //await _migrationDataAggregator.Aggregate();
         
         // step 4 - migrate data
         //await _auditMigrator.Migrate();
