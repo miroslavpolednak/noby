@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import time
 
@@ -8,23 +9,8 @@ from sqlalchemy.dialects.mssql.information_schema import columns
 from sqlalchemy.orm import query
 
 from Tests.backend.pytest.tests.notification_service.conftest import URLS
-from ..json.request.mail_kb_json import json_req_mail_kb_max_attachments, json_req_mail_kb_basic_legal, \
-    json_req_mail_kb_sender_kb, json_req_mail_kb_sender_kb_attachment, json_req_mail_kb_basic_format_application_html, \
-    json_req_mail_kb_basic_content_format_application_mht, json_req_mail_kb_basic_format_application_text, \
-    json_req_mail_kb_basic_format_html, json_req_mail_kb_basic_format_text_html, \
-    json_req_mail_kb_basic_format_text_plain, json_req_mail_kb_sender_kbinfo, json_req_mail_kb_sender_kb_sluzby
-from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_req_mail_mpss_basic_natural, \
-    json_req_mail_mpss_full_attachments, json_req_mail_mpss_full_natural, \
-    json_req_mail_mpss_basic_format_html, \
-    json_req_mail_mpss_basic_format_text_html, json_req_mail_mpss_basic_format_application_html, \
-    json_req_mail_mpss_basic_content_format_application_mht, json_req_mail_mpss_null_party_from, \
-    json_req_mail_mpss_without_party_from, json_req_mail_mpss_case, \
-    json_req_mail_mpss_documentHash_SHA_256, json_req_mail_mpss_documentHash_SHA_3, \
-    json_req_mail_mpss_documentHash_SHA_512, json_req_mail_mpss_documentHash_SHA_384, \
-    json_req_mail_mpss_basic_format_text_plain, json_req_mail_mpss_basic_format_application_text, \
-    json_req_mail_mpss_max_attachments, \
-    json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_vsskb, json_req_mail_mpss_sender_mpss_info, \
-    json_req_mail_mpss_sender_modrapyramida, json_req_mail_mpss_sender_mpssinfo
+from ..json.request.mail_mpss_json import json_req_mail_mpss_full_attachments
+
 collected_notification_ids = []
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -32,13 +18,15 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def collect_notification_ids():
     global collected_notification_ids
     yield
+    # Kontrola existence souboru a jeho smazání, pokud existuje
+    if os.path.exists('test_results.db'):
+        os.remove('test_results.db')
     # Ukládání do SQLite databáze po dokončení všech testů
     try:
         conn = sqlite3.connect('test_results.db')
         c = conn.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS notification_ids (id TEXT)''')
-        for notification_id in collected_notification_ids:
-            c.execute("INSERT INTO notification_ids VALUES (?)", (notification_id,))
+        c.execute('''CREATE TABLE IF NOT EXISTS notification_ids (id TEXT, state INTEGER)''')
+        c.executemany("INSERT INTO notification_ids VALUES (?, ?)", (collected_notification_ids ))
         conn.commit()
     except Exception as e:
         print("Chyba při práci s databází:", e)
@@ -67,9 +55,7 @@ def test_mail_for_perf(run_number, url_name, auth_params, auth, json_data, mssql
     print(notification)
     assert "notificationId" in notification
     notification_id = notification["notificationId"]
-    # Uložení notificationId do globálního seznamu
-    global collected_notification_ids
-    collected_notification_ids.append(notification_id)
+
     assert notification_id != ""
 
     assert 'strict-transport-security' in resp.headers, \
@@ -120,3 +106,8 @@ def test_mail_for_perf(run_number, url_name, auth_params, auth, json_data, mssql
         print(row)
 
         assert row[1] == 2, f"Očekávaný State je 2 UNSENT, ale získaný State je {row[1]}"
+
+        # Uložení notificationId do globálního seznamu
+        current_timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+        global collected_notification_ids
+        collected_notification_ids.append((notification_id, row[1]))

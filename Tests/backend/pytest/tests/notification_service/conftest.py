@@ -78,7 +78,9 @@ def db_connection(db_url):
 # a tady končí db konfigurace pro test logů a potřeby refaktoru
 
 # konfigurace pro test resendu
-with open('db_credentials.json', 'r') as file:
+dir_path = os.path.dirname(os.path.realpath(__file__))
+credentials_path = os.path.join(dir_path, 'db_credentials.json')
+with open(credentials_path, 'r') as file:
     credentials = json.load(file)
 
 username = credentials['username']
