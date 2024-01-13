@@ -34,7 +34,8 @@ def collect_notification_ids():
         conn.close()
 
 
-@pytest.mark.parametrize("run_number", range(2))  # Spustí test 10x
+# postupně - je to tak 2 cally na 1 vteřinu, tak nžíe v range dám počet opakování
+@pytest.mark.parametrize("run_number", range(1))  # Spustí test 1x opakovaně
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("mssql_connection", [{"server": "fat", "database": "ns"}], indirect=True)
 @pytest.mark.parametrize("url_name, json_data", [
