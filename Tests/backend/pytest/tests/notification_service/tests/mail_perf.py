@@ -112,3 +112,23 @@ def test_mail_for_perf(run_number, url_name, auth_params, auth, json_data, mssql
         current_timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
         global collected_notification_ids
         collected_notification_ids.append((notification_id, row[1]))
+
+        # Kontrola, že PAyload zustal v db
+        table_name = 'SendEmail'
+        schema_name = 'DDS'  # Název schématu
+        cursor.execute(f"""
+                    SELECT DocumentDataEntityId, Data, CreatedTime
+                    FROM {schema_name}.{table_name}
+                    WHERE DocumentDataEntityId = ?;
+                    """, (notification_id,)
+                       )
+        columns = cursor.fetchall()
+        # Assert, že byl nalezen alespoň jeden záznam
+        assert len(columns) > 0, "Žádný záznam nebyl nalezen"
+        # Assert, že sloupec Data má hodnotu
+        # Předpokládá se, že 'Data' je druhý sloupec v dotazu
+        assert columns[0][1] is not None and columns[0][1] != "", "Sloupec Data je prázdný nebo None"
+        # Pro ilustraci vypíše informace o sloupcích
+        for col in columns:
+            print(
+                f"NSid: {col.DocumentDataEntityId}")
