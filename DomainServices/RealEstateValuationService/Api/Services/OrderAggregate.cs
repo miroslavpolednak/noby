@@ -72,7 +72,7 @@ internal sealed class OrderAggregate
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // ulozeni detailu objednavky
-        await _documentDataStorage.Add(orderId, _mapperOrder.MapToData(data), cancellationToken);
+        await _documentDataStorage.Add(entity.RealEstateValuationId, _mapperOrder.MapToData(data), cancellationToken);
     }
 
     public async Task<SpecificDetailHouseAndFlatObject?> GetHouseAndFlat(int realEstateValuationId, CancellationToken cancellationToken)

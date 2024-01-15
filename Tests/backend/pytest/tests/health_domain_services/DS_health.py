@@ -14,4 +14,3 @@ def test_ds_health_check():
         verify=False
     )
     resp = resp.json()
-    resp = resp.json()

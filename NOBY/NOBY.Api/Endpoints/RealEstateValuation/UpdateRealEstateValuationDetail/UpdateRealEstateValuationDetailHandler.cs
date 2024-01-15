@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using SharedTypes.Enums;
 using DomainServices.CaseService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using NOBY.Dto.RealEstateValuation;
@@ -26,7 +25,7 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         await CheckIfRequestIsValid(request, valuationDetail, cancellationToken);
 
         if (valuationDetail.ValuationStateId is not 7)
-            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, 7, cancellationToken);
+            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, RealEstateValuationStates.Rozpracovano, cancellationToken);
 
         var dsRequest = new __Contracts.UpdateRealEstateValuationDetailRequest
         {

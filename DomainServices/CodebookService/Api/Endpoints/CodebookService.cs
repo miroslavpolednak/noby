@@ -1,6 +1,9 @@
 ﻿using CIS.Infrastructure.Data;
+using DomainServices.CodebookService.Api.Database;
 using DomainServices.CodebookService.Contracts.v1;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.FeatureManagement;
+using SharedTypes;
 
 namespace DomainServices.CodebookService.Api.Endpoints;
 
@@ -428,8 +431,11 @@ internal partial class CodebookService
     public override Task<PostCodesResponse> PostCodes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<PostCodesResponse, PostCodesResponse.Types.PostCodeItem>();
 
-    public override Task<ProductTypesResponse> ProductTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() =>
+    public override async Task<ProductTypesResponse> ProductTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+    {
+        bool blueBang = await _featureManager.IsEnabledAsync(FeatureFlagsConstants.BlueBang);
+
+        return CodebookMemoryCache.GetOrCreate("ProductTypes", () =>
         {
             var items = _db.GetList<ProductTypesResponse.Types.ProductTypeItem>(nameof(ProductTypes), 1);
             var extensions = _db.GetDynamicList(nameof(ProductTypes), 2);
@@ -452,9 +458,25 @@ internal partial class CodebookService
                 item.MandantId = ext?.MandantId;
             });
 
+            // pridat natvrdo stavebni sporeni
+            if (blueBang)
+            {
+                items.Add(new ProductTypesResponse.Types.ProductTypeItem
+                {
+                    KonsDbLoanType = 1,
+                    Id = 20000,
+                    PcpProductId = "220614142026340857",
+                    Name = "Stavební spoření",
+                    IsValid = true,
+                    Order = 6,
+                    MandantId = 1
+                });
+            }
+
             return (new ProductTypesResponse()).AddItems(items);
         });
-
+    }
+    
     public override Task<GenericCodebookResponse> ProfessionTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 
@@ -607,12 +629,15 @@ internal partial class CodebookService
     private readonly Database.DatabaseAggregate _db;
     private readonly ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient _acvEnumService;
     private readonly ExternalServices.RDM.V1.IRDMClient _rdmClient;
+    private readonly IFeatureManager _featureManager;
 
     public CodebookService(
+        IFeatureManager featureManager,
         Database.DatabaseAggregate db,
         ExternalServices.RDM.V1.IRDMClient rdmClient,
         ExternalServices.AcvEnumService.V1.IAcvEnumServiceClient acvEnumService)
     {
+        _featureManager = featureManager;
         _db = db;
         _acvEnumService = acvEnumService;
         _rdmClient = rdmClient;

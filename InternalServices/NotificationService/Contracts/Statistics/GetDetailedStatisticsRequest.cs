@@ -2,6 +2,7 @@
 using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
 using ProtoBuf;
+using System.ComponentModel.DataAnnotations;
 
 namespace CIS.InternalServices.NotificationService.Contracts.Statistics;
 
@@ -16,5 +17,6 @@ public class GetDetailedStatisticsRequest
     public List<NotificationChannel>? Channels { get; set; }
 
     [ProtoMember(3)]
+    [Required]
     public DateTime StatisticsDate { get; set; }
 }

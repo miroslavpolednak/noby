@@ -1,5 +1,7 @@
 ﻿using DomainServices.SalesArrangementService.Api.Database;
+using DomainServices.SalesArrangementService.Api.Database.DocumentDataEntities;
 using Microsoft.EntityFrameworkCore;
+using SharedComponents.DocumentDataStorage;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.GetSalesArrangement;
@@ -18,53 +20,69 @@ internal sealed class GetSalesArrangementHandler
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         // parametry
-        var parameters = await _dbContext.SalesArrangementsParameters
-            .AsNoTracking()
-            .Where(t => t.SalesArrangementId == request.SalesArrangementId)
-            .Select(t => new { ParameterType = t.SalesArrangementParametersType, Bin = t.ParametersBin })
-            .FirstOrDefaultAsync(cancellation);
-
-        //TODO udelat rozdeleni podle typu produkt. Bude tady vubec rozdil mezi produkty?
-        if (parameters?.Bin is not null && parameters.Bin.Length > 0)
+        switch ((SalesArrangementTypes)model.SalesArrangementTypeId)
         {
-            switch (parameters.ParameterType)
-            {
-                case SalesArrangementTypes.Mortgage:
-                    model.Mortgage = __SA.SalesArrangementParametersMortgage.Parser.ParseFrom(parameters.Bin);
-                    break;
-                case SalesArrangementTypes.Drawing:
-                    model.Drawing = __SA.SalesArrangementParametersDrawing.Parser.ParseFrom(parameters.Bin);
-                    break;
-                case SalesArrangementTypes.GeneralChange:
-                    model.GeneralChange = __SA.SalesArrangementParametersGeneralChange.Parser.ParseFrom(parameters.Bin);
-                    break;
-                case SalesArrangementTypes.HUBN:
-                    model.HUBN = __SA.SalesArrangementParametersHUBN.Parser.ParseFrom(parameters.Bin);
-                    break;
-                case SalesArrangementTypes.CustomerChange:
-                    model.CustomerChange = __SA.SalesArrangementParametersCustomerChange.Parser.ParseFrom(parameters.Bin);
-                    break;
-                case SalesArrangementTypes.CustomerChange3602A:
-                    model.CustomerChange3602A = __SA.SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(parameters.Bin);
-                    break;
-                case SalesArrangementTypes.CustomerChange3602B:
-                    model.CustomerChange3602B = __SA.SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(parameters.Bin);
-                    break;
-                case SalesArrangementTypes.CustomerChange3602C:
-                    model.CustomerChange3602C = __SA.SalesArrangementParametersCustomerChange3602.Parser.ParseFrom(parameters.Bin);
-                    break;
-                default:
-                    throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, parameters.ParameterType);
-            }
+            case SalesArrangementTypes.Mortgage:
+                var mortgageData = await GetParametersData<MortgageData>(model.SalesArrangementId, cancellation);
+                model.Mortgage = mortgageData?.MapMortgage();
+                break;
+
+            case SalesArrangementTypes.Drawing:
+                var drawingData = await GetParametersData<DrawingData>(model.SalesArrangementId, cancellation);
+                model.Drawing = drawingData?.MapDrawing();
+                break;
+
+            case SalesArrangementTypes.GeneralChange:
+                var generalChangeData = await GetParametersData<GeneralChangeData>(model.SalesArrangementId, cancellation);
+                model.GeneralChange = generalChangeData?.MapGeneralChange();
+                break;
+
+            case SalesArrangementTypes.HUBN:
+                var hubnData = await GetParametersData<HUBNData>(model.SalesArrangementId, cancellation);
+                model.HUBN = hubnData?.MapHUBN();
+                break;
+
+            case SalesArrangementTypes.CustomerChange:
+                var customerChangeData = await GetParametersData<CustomerChangeData>(model.SalesArrangementId, cancellation);
+                model.CustomerChange = customerChangeData?.MapCustomerChange();
+                break;
+
+            case SalesArrangementTypes.CustomerChange3602A:
+                var customerChange3602AData = await GetParametersData<CustomerChange3602Data>(model.SalesArrangementId, cancellation);
+                model.CustomerChange3602A = customerChange3602AData?.MapCustomerChange3602();
+                break;
+
+            case SalesArrangementTypes.CustomerChange3602B:
+                var customerChange3602BData = await GetParametersData<CustomerChange3602Data>(model.SalesArrangementId, cancellation);
+                model.CustomerChange3602B = customerChange3602BData?.MapCustomerChange3602();
+                break;
+
+            case SalesArrangementTypes.CustomerChange3602C:
+                var customerChange3602CData = await GetParametersData<CustomerChange3602Data>(model.SalesArrangementId, cancellation);
+                model.CustomerChange3602C = customerChange3602CData?.MapCustomerChange3602();
+                break;
+
+            default:
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, model.SalesArrangementTypeId);
         }
 
         return model;
     }
 
-    private readonly SalesArrangementServiceDbContext _dbContext;
+    private async Task<TData?> GetParametersData<TData>(int salesArrangementId, CancellationToken cancellationToken) 
+        where TData : class, IDocumentData
+    {
+        var documentData = await _documentDataStorage.FirstOrDefaultByEntityId<TData>(salesArrangementId, SalesArrangementParametersConst.TableName, cancellationToken);
 
-    public GetSalesArrangementHandler(SalesArrangementServiceDbContext dbContext)
+        return documentData?.Data;
+    }
+
+    private readonly SalesArrangementServiceDbContext _dbContext;
+    private readonly IDocumentDataStorage _documentDataStorage;
+
+    public GetSalesArrangementHandler(SalesArrangementServiceDbContext dbContext, IDocumentDataStorage documentDataStorage)
     {
         _dbContext = dbContext;
+        _documentDataStorage = documentDataStorage;
     }
 }

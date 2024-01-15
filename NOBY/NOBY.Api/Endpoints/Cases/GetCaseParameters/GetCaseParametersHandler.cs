@@ -18,7 +18,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
 
         // seznam produktovych SA
         var saList = await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken);
-        var saInProgress = saList.FirstOrDefault(t => t.State is (int)SalesArrangementStates.NewArrangement or (int)SalesArrangementStates.InProgress);
+        var saInProgress = saList.FirstOrDefault(t => _allowedSAStates.Contains(t.State));
         if (saInProgress is not null)
         {
             response.SalesArrangementInProgress = new SalesArrangementInProgressDto
@@ -219,6 +219,14 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
             return null;
         }
     }
+
+    private static int[] _allowedSAStates =
+    [
+        (int)SalesArrangementStates.InSigning,
+        (int)SalesArrangementStates.ToSend,
+        (int)SalesArrangementStates.NewArrangement,
+        (int)SalesArrangementStates.InProgress 
+    ];
 
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;

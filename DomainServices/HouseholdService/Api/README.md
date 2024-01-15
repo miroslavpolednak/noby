@@ -5,7 +5,7 @@ grpcurl -insecure 172.30.35.51:5003 list
 
 grpcurl -insecure -d "{\"SalesArrangementId\":1,\"CustomerRoleId\":2,\"Customer\":{\"CustomerIdentifiers\":[{\"identityId\":950984840,\"identityScheme\":2}],\"FirstNameNaturalPerson\":\"John\",\"Name\":\"Doe\"}}" -H "noby-user-id: 65466" -H "noby-user-ident: KBUID=A09V61" -H "Authorization: Basic YTph" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/CreateCustomer
 grpcurl -insecure -d "{\"CustomerOnSAId\":3,\"Customer\":{\"CustomerIdentifiers\":[{\"identityId\":300519418,\"identityScheme\":2}],\"FirstNameNaturalPerson\":\"John\",\"Name\":\"Doe\"}}" -H "Authorization: Basic YTph" 172.30.35.51:30009 DomainServices.HouseholdService.v1.CustomerOnSAService/UpdateCustomer
-grpcurl -insecure -d "{\"CustomerOnSAId\":28}" -H "Authorization: Basic YTph" 172.30.35.51:31009 DomainServices.HouseholdService.v1.CustomerOnSAService/DeleteCustomer
+grpcurl -insecure -d "{\"CustomerOnSAId\":28}" -H "Authorization: Basic YTph" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" 127.0.0.1:31009 DomainServices.HouseholdService.v1.CustomerOnSAService/DeleteCustomer
 grpcurl -insecure -d "{\"CustomerOnSAId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/GetCustomer
 grpcurl -insecure -d "{\"SalesArrangementId\":1}" -H "Authorization: Basic YTph" 127.0.0.1:30018 DomainServices.HouseholdService.v1.CustomerOnSAService/GetCustomerList
 grpcurl -insecure -d "{\"CustomerOnSAId\":1,\"Obligations\":[{\"ObligationTypeId\":1,\"LoanPaymentAmount\":5000,\"CreditCardLimit\":6000}]}" -H "Authorization: Basic YTph" 127.0.0.1:5092 DomainServices.HouseholdService.v1.CustomerOnSAService/UpdateObligations

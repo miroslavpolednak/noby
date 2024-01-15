@@ -31,6 +31,7 @@ internal sealed class AuditLogger
             BodyBefore = bodyBefore,
             ClientIp = getIpAddress(),
             UserIdent = user.UserIdent,
+            Timestamp = DateTime.Now,
             Correlation = Activity.Current?.Id
         };
         _helper.Log(context);

@@ -26,6 +26,7 @@ internal sealed class CreateRiskBusinessCase
                 {
                     SalesArrangementId = saInstance.SalesArrangementId,
                     RiskSegment = riskCase.RiskSegment,
+                    RiskBusinessCaseId = riskCase.RiskBusinessCaseId,
                     LoanApplicationDataVersion = riskCase.LoanApplicationDataVersion
                 }, cancellationToken);
             }

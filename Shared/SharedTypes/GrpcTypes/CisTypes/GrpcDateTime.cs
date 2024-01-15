@@ -14,7 +14,7 @@ public partial class GrpcDateTime
         Nanos = nanos;
     }
 
-    public static implicit operator DateTime?(GrpcDateTime time)
+    public static implicit operator DateTime?(GrpcDateTime? time)
     {
         if (time == null)
             return null;

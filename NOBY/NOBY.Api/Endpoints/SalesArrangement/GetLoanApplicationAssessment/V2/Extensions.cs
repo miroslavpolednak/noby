@@ -11,69 +11,68 @@ internal static class Extensions
     const string _creditorNameKB = "KB";
     const string _creditorNameJPU = "JPÚ";
 
-    public static List<Dto.HouseholdObligationItem> CreateHouseholdObligations(
-        this List<CustomerExposureRequestedKBGroupItem> items,
-        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes)
+    public static bool BankAccountEquals(this cRS.BankAccountDetail account1, cRS.BankAccountDetail? account2)
     {
-        return items.Select(t =>
-        {
-            var item = CreateHouseholdItem(
+        return (account1.NumberPrefix?.Equals(account2?.NumberPrefix, StringComparison.OrdinalIgnoreCase) ?? false)
+            && (account1.Number?.Equals(account2?.Number, StringComparison.OrdinalIgnoreCase) ?? false);
+    }
+
+    public static Dto.HouseholdObligationItem CreateHouseholdObligations(
+        this CustomerExposureRequestedKBGroupItem item,
+        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes,
+        bool isEntrepreneur)
+    {
+        return CreateHouseholdItem(
+            2,
+            obligationTypes.FirstOrDefault(t => t.Id == item.LoanType.GetValueOrDefault()),
+            _creditorNameKB,
+            item.LoanTypeCategory,
+            item.InstallmentAmount,
+            isEntrepreneur);
+    }
+
+    public static Dto.HouseholdObligationItem CreateHouseholdObligations(
+        this CustomerExposureRequestedCBCBItem item,
+        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes,
+        bool isEntrepreneur)
+    {
+            var result = CreateHouseholdItem(
                 2,
-                obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
+                obligationTypes.FirstOrDefault(t => t.Id == item.LoanType.GetValueOrDefault()),
+                _creditorNameJPU,
+                item.LoanTypeCategory,
+                item.InstallmentAmount,
+                isEntrepreneur);
+            result.KbGroupInstanceCode = item.KbGroupInstanceCode;
+            result.CbcbDataLastUpdate = item.CbcbDataLastUpdate;
+            return result;
+    }
+
+    public static Dto.HouseholdObligationItem CreateHouseholdObligations(
+        this CustomerExposureExistingKBGroupItem item,
+        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes,
+        bool isEntrepreneur)
+    {
+            var result = CreateHouseholdItem(
+                2,
+                obligationTypes.FirstOrDefault(t => t.Id == item.LoanType.GetValueOrDefault()),
                 _creditorNameKB,
-                t.LoanTypeCategory,
-                t.InstallmentAmount);
-            return item;
-        })
-            .ToList();
-    }
-
-    public static List<Dto.HouseholdObligationItem> CreateHouseholdObligations(
-        this List<CustomerExposureRequestedCBCBItem> items,
-        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes)
-    {
-        return items.Select(t =>
-            {
-                var item = CreateHouseholdItem(
-                    2,
-                    obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
-                    _creditorNameJPU,
-                    t.LoanTypeCategory,
-                    t.InstallmentAmount);
-                item.KbGroupInstanceCode = t.KbGroupInstanceCode;
-                item.CbcbDataLastUpdate = t.CbcbDataLastUpdate;
-                return item;
-            })
-            .ToList();
-    }
-
-    public static List<Dto.HouseholdObligationItem> CreateHouseholdObligations(
-        this List<CustomerExposureExistingKBGroupItem> items,
-        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes)
-    {
-        return items.Select(t =>
-            {
-                var item = CreateHouseholdItem(
-                    2,
-                    obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
-                    _creditorNameKB,
-                    t.LoanTypeCategory, 
-                    t.InstallmentAmount,
-                    t.ExposureAmount,
-                    t.ContractDate,
-                    t.MaturityDate);
-                item.DrawingAmount = t.DrawingAmount;
-                if (t.BankAccount is not null) {
-                    item.BankAccount = new NOBY.Dto.BankAccount
-                    {
-                        AccountPrefix = t.BankAccount.NumberPrefix,
-                        AccountNumber = t.BankAccount.Number,
-                        AccountBankCode = t.BankAccount.BankCode
-                    };
-                }
-                return item;
-            })
-            .ToList();
+                item.LoanTypeCategory, 
+                item.InstallmentAmount,
+                isEntrepreneur,
+                item.ExposureAmount,
+                item.ContractDate,
+                item.MaturityDate);
+            result.DrawingAmount = item.DrawingAmount;
+            if (item.BankAccount is not null) {
+                result.BankAccount = new NOBY.Dto.BankAccount
+                {
+                    AccountPrefix = item.BankAccount.NumberPrefix,
+                    AccountNumber = item.BankAccount.Number,
+                    AccountBankCode = item.BankAccount.BankCode
+                };
+            }
+            return result;
     }
 
     public static List<Dto.HouseholdObligationItem> CreateHouseholdObligations(
@@ -89,7 +88,6 @@ internal static class Extensions
                 {
                     ObligationTypeOrder = obligationType?.Order ?? 0,
                     ObligationSourceId = 1,
-                    PersonKind = Dto.PersonKinds.NaturalPerson,
                     ObligationTypeId = obligationType?.Id ?? 0,
                     ObligationTypeName = obligationType?.Name ?? "Neznázmý",
                     LoanPrincipalAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(t.LoanPrincipalAmount, t.Correction?.LoanPrincipalAmountCorrection),
@@ -101,26 +99,24 @@ internal static class Extensions
             .ToList();
     }
 
-    public static List<Dto.HouseholdObligationItem> CreateHouseholdObligations(
-        this List<CustomerExposureExistingCBCBItem> items,
-        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes)
+    public static Dto.HouseholdObligationItem CreateHouseholdObligations(
+        this CustomerExposureExistingCBCBItem item,
+        List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes,
+        bool isEntrepreneur)
     {
-        return items.Select(t =>
-        {
-            var item = CreateHouseholdItem(
-                2,
-                obligationTypes.FirstOrDefault(tt => tt.Id == t.LoanType.GetValueOrDefault()),
-                _creditorNameJPU,
-                t.LoanTypeCategory,
-                t.InstallmentAmount,
-                t.ExposureAmount,
-                t.ContractDate,
-                t.MaturityDate);
-            item.KbGroupInstanceCode = t.KbGroupInstanceCode;
-            item.CbcbDataLastUpdate = t.CbcbDataLastUpdate;
-            return item;
-        })
-            .ToList();
+        var result = CreateHouseholdItem(
+            2,
+            obligationTypes.FirstOrDefault(t => t.Id == item.LoanType.GetValueOrDefault()),
+            _creditorNameJPU,
+            item.LoanTypeCategory,
+            item.InstallmentAmount,
+            isEntrepreneur,
+            item.ExposureAmount,
+            item.ContractDate,
+            item.MaturityDate);
+        result.KbGroupInstanceCode = item.KbGroupInstanceCode;
+        result.CbcbDataLastUpdate = item.CbcbDataLastUpdate;
+        return result;
     }
 
     private static Dto.HouseholdObligationItem CreateHouseholdItem(
@@ -129,6 +125,7 @@ internal static class Extensions
         in string creditorName,
         in int? loanTypeCategory,
         in decimal? installmentAmount,
+        in bool isEntrepreneur,
         in decimal? exposureAmount = null,
         in DateTime? contractDate = null,
         in DateTime? maturityDate = null)
@@ -139,7 +136,7 @@ internal static class Extensions
         {
             ObligationTypeOrder = obligationType?.Order ?? 0,
             ObligationSourceId = sourceId,
-            PersonKind = Dto.PersonKinds.NaturalPerson,
+            IsEntrepreneur = isEntrepreneur,
             ObligationTypeId = obligationType?.Id ?? 0,
             ObligationTypeName = obligationType?.Name ?? "Neznázmý",
             LoanPrincipalAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(exposureAmount),

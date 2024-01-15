@@ -38,7 +38,7 @@ def test_mail_negative_format_language(ns_url, auth_params, auth, json_data):
     #error_message = resp.json()['errors']['319'][0]
     #assert 'Allowed values for Language: cs,en.' in error_message
     error_message = resp.json()['errors']['329'][0]
-    assert 'Allowed values for Language: cs,en.' in error_message
+    assert 'Allowed values for Language: cs, en.' in error_message
 
 
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
@@ -217,7 +217,7 @@ def test_mail_negative_from(ns_url, auth_params, auth, json_data):
     )
     assert resp.status_code == 400
     error_message = resp.json()['errors']['PredicateValidator'][0]
-    assert 'Allowed domain names for sender: kb.cz, mpss.cz.' in error_message
+    assert 'Allowed domain names for sender: kb.cz, kbsluzby.cz, kbinfo.cz, mpss.cz, mpss-info.cz.' in error_message
 
 
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
@@ -236,17 +236,22 @@ def test_mail_negative_to_cc_bcc(ns_url, auth_params, auth, json_data):
         auth=(username, password),
         verify=False
     )
+    assert resp.status_code == 200
     resp = resp.json()
     print(resp)
     assert "notificationId" in resp
     notification_id = resp["notificationId"]
     assert notification_id != ""
 
+    # Pro druhý GET request potřebujete přihlašovací údaje NOBY uživatele
+    noby_username = "XX_NOBY_RMT_USR_TEST"
+    noby_password = auth_params[noby_username]
+
     session = requests.session()
     resp = session.get(
         URLS[url_name] + f"/v1/notification/result/{notification_id}",
         json=json_data,
-        auth=(username, password),
+        auth=(noby_username, noby_password),
         verify=False
     )
     assert resp.status_code == 200

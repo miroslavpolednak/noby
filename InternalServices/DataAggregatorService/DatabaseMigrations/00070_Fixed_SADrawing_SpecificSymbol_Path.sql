@@ -1,0 +1,1 @@
+UPDATE DataField SET FieldPath = 'SalesArrangement.Drawing.PayoutList[].SpecificSymbol' WHERE DataFieldId = 59

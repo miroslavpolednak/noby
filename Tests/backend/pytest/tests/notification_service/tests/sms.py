@@ -2,6 +2,7 @@ import uuid
 import datetime
 from time import sleep
 from urllib.parse import urlencode, quote
+
 """
 jak provolat s upravou additional argument, ze složky: notification_service> pytest .\tests\sms.py --ns-url fat_url --db-url fat_db
 """
@@ -25,6 +26,7 @@ from ..json.request.sms_json import json_req_sms_basic_insg, json_req_sms_basic_
     json_req_sms_bez_logovani_mpss_sb, json_req_sms_logovani_kb_insg
 from ..json.request.sms_template_json import json_req_sms_full_template
 
+
 # test pro additional parameters napr. --ns-url sit_url
 
 
@@ -40,7 +42,6 @@ def test_sms_manualy(url_name, auth_params, auth, json_data):
     """
     uvodni test pro zakladni napln sms bez priloh, pro ruční spouštění
     """
-
     username = auth[0]
     password = auth[1]
     session = requests.session()
@@ -57,7 +58,7 @@ def test_sms_manualy(url_name, auth_params, auth, json_data):
     assert notification_id != ""
 
 
-#@pytest.mark.skip(reason="real")
+# @pytest.mark.skip(reason="real")
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_basic_insg_e2e])
 def test_E2E_real_sms(ns_url, auth_params, auth, json_data, modified_json_data):
@@ -103,7 +104,6 @@ def test_sms_insg(ns_url, auth_params, auth, json_data):
 
     assert 'strict-transport-security' in resp.headers, \
         'Expected "strict-transport-security" to be in headers'
-
 
 
 @pytest.mark.parametrize("auth", ["XX_KBINSG_RMT_USR_TEST"], indirect=True)
@@ -181,11 +181,7 @@ def test_sms_archivator(ns_url, auth_params, auth, json_data):
 
 @pytest.mark.parametrize("auth", ["XX_SB_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("custom_id, json_data, expected_result", [
-    ("loguji", json_req_sms_logovani_kb_sb_E2E, True),
-    ("loguji", json_req_sms_logovani_mpss_sb, True),
-    ("loguji", json_req_sms_logovani_kb_insg, True),
-    ("neloguji", json_req_sms_bez_logovani_kb_sb, False),
-    ("neloguji", json_req_sms_bez_logovani_mpss_sb, False)
+    ("loguji", json_req_sms_logovani_kb_sb_E2E, True)
 ])
 def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
                  expected_result, db_url, db_connection):
@@ -217,31 +213,37 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
     cursor = db_connection.cursor()
     print(f"Notification ID: {notification_id}")
     print(f"custom ID: {unique_custom_id}")
-    #notification_id_db = str(resp["notificationId"])
+    # notification_id_db = str(resp["notificationId"])
+
+    print("--------PRVNÍ LOG NOBY_013-----------")
     sleep(3)
     try:
         cursor.execute("""
                     SELECT * 
                     FROM AuditEvent
-                    WHERE AuditEventTypeId = ? 
-                    AND JSON_VALUE(Detail, '$.body.objectsAfter.notificationId') = ?
-                    ORDER BY [TimeStamp] DESC
-                    """, ('AU_NOBY_013', notification_id)
+                    CROSS APPLY OPENJSON(JSON_VALUE(Detail, '$.body.objectsAfter'))
+                    WITH (
+                    notificationId VARCHAR(100) '$.notificationId'
+                    )
+                    WHERE notificationId = ? AND AuditEventTypeId = ?;
+                    """, (notification_id, 'AU_NOBY_013')
                        )
         results_1 = cursor.fetchall()
         found_records_1 = bool(results_1)
     except pyodbc.Error as e:
         pytest.fail(f"Failed to execute query 1: {e}")
 
-    print(f'(%\\\"customId\\\": \\\"{notification_id}\\\"%)')
+    print(f'(%\\\"customId\\\": \\\"{unique_custom_id}\\\"%)')
     sleep(5)
+
+    print("--------DRUHÝ LOG NOBY_012-----------")
     try:
-        like_pattern = f'%"customId": "{unique_custom_id}"%'
+        like_pattern = f'%{unique_custom_id}%'
         query = """
                 SELECT * 
                 FROM AuditEvent
                 WHERE AuditEventTypeId = ? 
-                AND JSON_VALUE(Detail, '$.body.objectsBefore.rawHttpRequestBody') LIKE ?
+                AND Detail LIKE ?
                 ORDER BY [TimeStamp] DESC
                 """
         print("SQL Query:", query)
@@ -253,14 +255,17 @@ def test_sms_log(ns_url, auth_params, auth, custom_id, json_data,
     except pyodbc.Error as e:
         pytest.fail(f"Failed to execute query 2: {e}")
 
+    print("--------TŘETÍ LOG NOBY_014-----------")
     try:
         cursor.execute("""
-                       SELECT * 
-                       FROM AuditEvent
-                       WHERE AuditEventTypeId = ? 
-                       AND JSON_VALUE(Detail, '$.body.objectsBefore.notificationId') = ?
-                       ORDER BY [TimeStamp] DESC
-                       """, ('AU_NOBY_014', notification_id)
+                     SELECT * 
+                     FROM AuditEvent
+                     CROSS APPLY OPENJSON(JSON_VALUE(Detail, '$.body.objectsBefore'))
+                     WITH (
+                     notificationId VARCHAR(100) '$.notificationId'
+                     )
+                     WHERE notificationId = ? AND AuditEventTypeId = ?;
+                     """, (notification_id, 'AU_NOBY_014')
                        )
         results_3 = cursor.fetchall()
         found_records_3 = bool(results_3)

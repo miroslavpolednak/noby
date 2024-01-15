@@ -31,6 +31,20 @@ internal sealed class AuditLoggerInternal
 
     public AuditLoggerInternal(
         string serverIp,
+        string environmentName,
+        string applicationKey,
+        string eamApplication,
+        string eamVersion,
+        string hashSecretKey,
+        string databaseConnectionString)
+    {
+        _databaseWriter = new Database.DatabaseWriter(databaseConnectionString);
+        _loggerDefaults = new AuditLoggerDefaults(serverIp, applicationKey!, eamApplication, eamVersion, environmentName!);
+        _hashSecretKey = Encoding.UTF8.GetBytes(hashSecretKey);
+    }
+
+    public AuditLoggerInternal(
+        string serverIp,
         ICisEnvironmentConfiguration environmentConfiguration,
         AuditLogConfiguration auditConfiguration)
     {
@@ -58,9 +72,9 @@ internal sealed class AuditLoggerInternal
         }
 
         // next seq no
-        long? seqId = eventDescriptor.GenerateSequenceNumber ? _databaseWriter.GetSequenceId() : default(long?);
+        long? seqId = eventDescriptor.GenerateSequenceNumber ? context.SequenceId ?? _databaseWriter.GetSequenceId() : default(long?);
         string? hashId = null;
-        var time = DateTime.Now.ToString("o", _culture);
+        var time = context.Timestamp.ToString("o", _culture);
 
         // vytvorit json je proto, aby se spocital hash
         StringWriter jsonBeforeHash = new();
