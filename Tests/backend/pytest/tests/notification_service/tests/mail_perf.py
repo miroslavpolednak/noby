@@ -139,7 +139,7 @@ def test_mail_for_perf(run_number, url_name, auth_params, auth, json_data, mssql
 # @pytest.mark.skip(reason="pro ruční spouštění")
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("mssql_connection", [{"server": "fat", "database": "ns"}], indirect=True)
-def test_update_state_for_perf(url_name, auth_params, auth, json_data, mssql_connection):
+def test_update_state_for_perf(auth_params, auth, mssql_connection):
     """Test, kdy máme prerektivitu vytvořenou db s x záznamy id v sqlite.
         proběhne nacteni dat z test_results sqlite databaze a všem se do mssql aktualizuje stav"""
     # Připojení k SQLite databázi
