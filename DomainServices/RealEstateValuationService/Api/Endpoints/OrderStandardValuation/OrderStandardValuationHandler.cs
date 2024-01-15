@@ -3,6 +3,7 @@ using DomainServices.RealEstateValuationService.Api.Extensions;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using DomainServices.UserService.Clients;
+using DomainServices.CustomerService.Clients;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.OrderStandardValuation;
 
@@ -19,6 +20,8 @@ internal sealed class OrderStandardValuationHandler
         var currentUser = await _userService.GetCurrentUser(cancellationToken);
         // info o produktu
         var productProps = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
+        // klient
+        var customer = await _customerService.GetCustomerDetail(caseInstance.Customer.Identity, cancellationToken);
 
         var orderRequest = new ExternalServices.PreorderService.V1.Contracts.StandardOrderRequestDTO
         {
@@ -26,9 +29,9 @@ internal sealed class OrderStandardValuationHandler
             LocalSurveyEmail = request.Data?.Email,
             LocalSurveyPhone = $"{request.Data?.PhoneIDC}{request.Data?.PhoneNumber}",
             LocalSurveyFunction = request.Data?.RealEstateValuationLocalSurveyFunctionCode,
-            LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO(),
+            LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO()
         };
-        orderRequest.FillBaseOrderData(caseInstance, currentUser, realEstateIds, attachments);
+        orderRequest.FillBaseOrderData(caseInstance, customer, currentUser, realEstateIds, attachments);
         orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);
         
         entity.ValuationTypeId = (int)RealEstateValuationTypes.Standard;
@@ -43,12 +46,15 @@ internal sealed class OrderStandardValuationHandler
     private readonly Services.OrderAggregate _aggregate;
     private readonly IPreorderServiceClient _preorderService;
     private readonly IUserServiceClient _userService;
-    
+    private readonly ICustomerServiceClient _customerService;
+
     public OrderStandardValuationHandler(
+        ICustomerServiceClient customerService,
         Services.OrderAggregate aggregate,
         IPreorderServiceClient preorderService,
         IUserServiceClient userService)
     {
+        _customerService = customerService;
         _aggregate = aggregate;
         _preorderService = preorderService;
         _userService = userService;

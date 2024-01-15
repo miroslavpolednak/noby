@@ -1,10 +1,9 @@
-﻿using SharedTypes.Enums;
-using DomainServices.RealEstateValuationService.Clients;
-using Google.Protobuf;
+﻿using DomainServices.RealEstateValuationService.Clients;
 using Microsoft.EntityFrameworkCore;
 using __Offer = DomainServices.OfferService.Contracts;
 using __SA = DomainServices.SalesArrangementService.Contracts;
-using DomainServices.OfferService.Contracts;
+using DomainServices.SalesArrangementService.Api.Database.DocumentDataEntities;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.LinkModelationToSalesArrangement;
 
@@ -47,7 +46,9 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // Kontrola, že nová Offer má GuaranteeDateFrom větší nebo stejné jako původně nalinkovaná offer
         if (offerInstanceOld is not null
             && (DateTime)offerInstance.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.SimulationInputs.GuaranteeDateFrom)
+        {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InvalidGuaranteeDateFrom);
+        }
 
         // update linku v DB
         salesArrangementInstance.OfferGuaranteeDateFrom = offerInstance.SimulationInputs.GuaranteeDateFrom;
@@ -75,7 +76,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         await setFlowSwitches(salesArrangementInstance.CaseId, request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
 
         // Aktualizace dat modelace v KonsDB pouze pro premodelaci
-        if (offerInstanceOld is not null)
+        if (offerInstanceOld is not null && caseInstance.Customer.Identity is not null && caseInstance.Customer.Identity.IdentityId > 0)
         {
             await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
         }
@@ -107,7 +108,6 @@ internal sealed class LinkModelationToSalesArrangementHandler
                 Value = true
             });
         }
-
 
         // HFICH-9611
         if (offerInstanceOld is not null
@@ -190,18 +190,11 @@ internal sealed class LinkModelationToSalesArrangementHandler
     private async Task updateParameters(Database.Entities.SalesArrangement salesArrangementInstance, __Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellation)
     {
         // parametry SA
-        bool hasChanged = false;
-        var saParameters = await _dbContext.SalesArrangementsParameters.FirstOrDefaultAsync(t => t.SalesArrangementId == salesArrangementInstance.SalesArrangementId, cancellation);
-        if (saParameters is null)
-        {
-            saParameters = new Database.Entities.SalesArrangementParameters
-            {
-                SalesArrangementId = salesArrangementInstance.SalesArrangementId,
-                SalesArrangementParametersType = SalesArrangementTypes.Mortgage
-            };
-            _dbContext.SalesArrangementsParameters.Add(saParameters);
-        }
-        var parametersModel = saParameters?.ParametersBin is not null ? __SA.SalesArrangementParametersMortgage.Parser.ParseFrom(saParameters.ParametersBin) : new __SA.SalesArrangementParametersMortgage();
+        var hasChanged = false;
+
+        var saParametersDocument = await _documentDataStorage.FirstOrDefaultByEntityId<MortgageData>(salesArrangementInstance.SalesArrangementTypeId, SalesArrangementParametersConst.TableName, cancellation);
+
+        var parametersModel = saParametersDocument?.Data ?? new MortgageData();
 
         if (offerInstance.SimulationInputs.LoanKindId == 2001 ||
             offerInstance.SimulationInputs.LoanPurposes is not null && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId == 201))
@@ -211,23 +204,20 @@ internal sealed class LinkModelationToSalesArrangementHandler
         }
 
         // HFICH-2181
-        if (parametersModel.ExpectedDateOfDrawing != null || (parametersModel.ExpectedDateOfDrawing == null && offerInstance.SimulationInputs.ExpectedDateOfDrawing > DateTime.Now.AddDays(1)))
+        if (parametersModel.ExpectedDateOfDrawing != null || parametersModel.ExpectedDateOfDrawing == null && offerInstance.SimulationInputs.ExpectedDateOfDrawing > DateTime.Now.AddDays(1))
         {
             parametersModel.ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing;
             hasChanged = true;
         }
 
-        if (hasChanged)
-        {
-            saParameters!.Parameters = Newtonsoft.Json.JsonConvert.SerializeObject(parametersModel);
-            saParameters.ParametersBin = parametersModel.ToByteArray();
-            await _dbContext.SaveChangesAsync(cancellation);
-        }
+        if (hasChanged) 
+            await _documentDataStorage.AddOrUpdateByEntityId(salesArrangementInstance.SalesArrangementId, SalesArrangementParametersConst.TableName, parametersModel, cancellation);
     }
 
     private readonly ProductService.Clients.IProductServiceClient _productService;
     private readonly CaseService.Clients.ICaseServiceClient _caseService;
     private readonly OfferService.Clients.IOfferServiceClient _offerService;
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly IMediator _mediator;
     private readonly IRealEstateValuationServiceClient _realEstateValuationService;
@@ -238,7 +228,8 @@ internal sealed class LinkModelationToSalesArrangementHandler
         IMediator mediator,
         CaseService.Clients.ICaseServiceClient caseService,
         Database.SalesArrangementServiceDbContext dbContext,
-        OfferService.Clients.IOfferServiceClient offerService)
+        OfferService.Clients.IOfferServiceClient offerService,
+        IDocumentDataStorage documentDataStorage)
     {
         _productService = productService;
         _realEstateValuationService = realEstateValuationService;
@@ -246,5 +237,6 @@ internal sealed class LinkModelationToSalesArrangementHandler
         _caseService = caseService;
         _dbContext = dbContext;
         _offerService = offerService;
+        _documentDataStorage = documentDataStorage;
     }
 }

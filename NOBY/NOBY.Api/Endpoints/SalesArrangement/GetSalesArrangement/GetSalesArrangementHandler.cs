@@ -20,6 +20,8 @@ internal sealed class GetSalesArrangementHandler
             throw new CisAuthorizationException("Case owner check failed");
         }
 
+        var parameters = getParameters(saInstance);
+
         return new GetSalesArrangementResponse()
         {
             ProductTypeId = caseInstance.Data.ProductTypeId,
@@ -30,7 +32,7 @@ internal sealed class GetSalesArrangementHandler
             CreatedTime = saInstance.Created.DateTime,
             OfferGuaranteeDateFrom = saInstance.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = saInstance.OfferGuaranteeDateTo,
-            Parameters = getParameters(saInstance),
+            Parameters = parameters,
             State = saInstance.State
         };
     }

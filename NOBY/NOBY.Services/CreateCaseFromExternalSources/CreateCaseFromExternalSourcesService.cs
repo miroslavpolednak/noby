@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Security;
 using DomainServices.ProductService.Contracts;
+using NOBY.Infrastructure.ErrorHandling;
 using NOBY.Infrastructure.Security;
 
 namespace NOBY.Services.CreateCaseFromExternalSources;
@@ -15,6 +16,11 @@ public sealed class CreateCaseFromExternalSourcesService
         if (!productTypes.Any(t => productTypes.Contains(mortgageInstance.ProductTypeId)))
         {
             throw new CisNotFoundException(0, "Product is not KB type");
+        }
+
+        if (!validateMortgageData(mortgageInstance))
+        {
+            throw new NobyValidationException(90045);
         }
 
         // stav Case
@@ -67,6 +73,16 @@ public sealed class CreateCaseFromExternalSourcesService
             State = (int)SalesArrangementStates.InApproval
         };
         await _salesArrangementService.CreateSalesArrangement(saRequest, cancellationToken);
+    }
+
+    private static bool validateMortgageData(MortgageData mortgageData)
+    {
+        return mortgageData.MortgageState.HasValue
+            && mortgageData.CaseOwnerUserCurrentId.HasValue
+            && mortgageData.PartnerId > 0
+            && !string.IsNullOrEmpty(mortgageData.ContractNumber)
+            && mortgageData.ProductTypeId > 0
+            && !string.IsNullOrEmpty(mortgageData.PcpId);
     }
 
     private static int getState(MortgageData mortgageInstance)

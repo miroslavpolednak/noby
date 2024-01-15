@@ -2,6 +2,7 @@
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.Statistics;
 using CIS.InternalServices.NotificationService.Contracts.Statistics.Dto;
+using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,31 +43,34 @@ internal sealed class GetStatisticsHandler
         {
             Email = new Status
             {
-                Delivered = GetEmailCount(Contracts.Result.Dto.NotificationState.Delivered),
-                Error = GetEmailCount(Contracts.Result.Dto.NotificationState.Error),
-                InProgress = GetEmailCount(Contracts.Result.Dto.NotificationState.InProgress),
-                Invalid = GetEmailCount(Contracts.Result.Dto.NotificationState.Invalid),
-                Sent = GetEmailCount(Contracts.Result.Dto.NotificationState.Sent),
-                Unsent = GetEmailCount(Contracts.Result.Dto.NotificationState.Unsent)
+                Delivered = getEmailCount(NotificationState.Delivered),
+                Error = getEmailCount(NotificationState.Error),
+                InProgress = getEmailCount(NotificationState.InProgress),
+                Invalid = getEmailCount(NotificationState.Invalid),
+                Sent = getEmailCount(NotificationState.Sent),
+                Unsent = getEmailCount(NotificationState.Unsent)
             },
             SMS = new Status 
             {
-                Delivered = GetSmsCount(Contracts.Result.Dto.NotificationState.Delivered),
-                Error = GetSmsCount(Contracts.Result.Dto.NotificationState.Error),
-                InProgress = GetSmsCount(Contracts.Result.Dto.NotificationState.InProgress),
-                Invalid = GetSmsCount(Contracts.Result.Dto.NotificationState.Invalid),
-                Sent = GetSmsCount(Contracts.Result.Dto.NotificationState.Sent),
-                Unsent = GetSmsCount(Contracts.Result.Dto.NotificationState.Unsent)
+                Delivered = getSmsCount(NotificationState.Delivered),
+                Error = getSmsCount(NotificationState.Error),
+                InProgress = getSmsCount(NotificationState.InProgress),
+                Invalid = getSmsCount(NotificationState.Invalid),
+                Sent = getSmsCount(NotificationState.Sent),
+                Unsent = getSmsCount(NotificationState.Unsent)
             }
         };
 
         return new GetStatisticsResponse() { Statistics = statistics };
 
-        int? GetEmailCount(Contracts.Result.Dto.NotificationState state)
-            => data.Where(t => t.Channel == Contracts.Result.Dto.NotificationChannel.Email && t.State == state).FirstOrDefault()?.Count;
+        int? getEmailCount(NotificationState state)
+            => data.Where(t => t.Channel == NotificationChannel.Email && t.State == state).FirstOrDefault()?.Count ?? getDefault(state);
 
-        int? GetSmsCount(Contracts.Result.Dto.NotificationState state)
-            => data.Where(t => t.Channel == Contracts.Result.Dto.NotificationChannel.Sms && t.State == state).FirstOrDefault()?.Count;
+        int? getSmsCount(NotificationState state)
+            => data.Where(t => t.Channel == NotificationChannel.Sms && t.State == state).FirstOrDefault()?.Count ?? getDefault(state);
+
+        int? getDefault(NotificationState state)
+            => request.States == null || request.States.Contains(state) ? 0 : null;
     }
 
     private readonly NotificationDbContext _dbContext;

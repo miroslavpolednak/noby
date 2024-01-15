@@ -1,4 +1,6 @@
-﻿using DomainServices.RealEstateValuationService.Contracts;
+﻿using DomainServices.CustomerService.Contracts;
+using DomainServices.RealEstateValuationService.Contracts;
+using SharedTypes.Enums;
 
 namespace DomainServices.RealEstateValuationService.Api.Extensions;
 
@@ -7,6 +9,7 @@ internal static class OrderRequestExtensions
     public static void FillBaseOrderData(
         this ExternalServices.PreorderService.Dto.IOrderBaseData model,
         CaseService.Contracts.Case caseInstance,
+        CustomerDetailResponse customer,
         UserService.Contracts.User currentUser,
         long[]? realEstateIds,
         long[]? attachments
@@ -18,6 +21,9 @@ internal static class OrderRequestExtensions
         model.ProductCode = "01";
         model.Cpm = Convert.ToInt64(currentUser.UserInfo.Cpm, CultureInfo.InvariantCulture);
         model.Icp = Convert.ToInt64(currentUser.UserInfo.Icp, CultureInfo.InvariantCulture);
+        model.ClientID = customer.Identities?.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId;
+        model.ClientName = $"{customer.NaturalPerson?.FirstName} {customer.NaturalPerson?.LastName}";
+        model.ClientEmail = customer.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email)?.Email?.EmailAddress;
 
         if (realEstateIds?.Any() ?? false)
         {
@@ -35,7 +41,7 @@ internal static class OrderRequestExtensions
         in Services.OrderAggregate.GetProductPropertiesResult productProps)
     {
         model.ProductOwner = "01";
-        model.ContactPersonName = $"{currentUser.UserInfo.FirstName};{currentUser.UserInfo.LastName}";
+        model.ContactPersonName = $"{currentUser.UserInfo.FirstName} {currentUser.UserInfo.LastName}";
         model.ContactPersonEmail = currentUser.UserInfo.Email;
         model.ContactPersonTel = currentUser.UserInfo.PhoneNumber;
         model.BagmanRealEstateTypeId = entity.BagmanRealEstateTypeId ?? "";

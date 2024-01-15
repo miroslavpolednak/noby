@@ -268,6 +268,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00014_HFICH-9109_BusinessCaseId_LoanApplicationAssessmentId_IncreasedVarcharTo200.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00014_HFICH-9109_BusinessCaseId_LoanApplicationAssessmentId_IncreasedVarcharTo200.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00015-indexes.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00015-indexes.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00016-HFICH-9835_FirstSignatureDate.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00016-HFICH-9835_FirstSignatureDate.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00020-HFICH-10018_DDS_Init.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00020-HFICH-10018_DDS_Init.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
@@ -463,6 +464,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00067_HFICH-9504_RemovedAgentConsent.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00067_HFICH-9504_RemovedAgentConsent.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00068_HFICH-9948_GeneralChange_SwitchedTwoFields.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00068_HFICH-9948_GeneralChange_SwitchedTwoFields.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00069_HFICH-9903_Offer_EmptyText.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00069_HFICH-9903_Offer_EmptyText.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00070_Fixed_SADrawing_SpecificSymbol_Path.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00070_Fixed_SADrawing_SpecificSymbol_Path.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"
@@ -562,7 +564,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_AuditMigrator", "Pl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.DocumentOnSAService.ExternalServices.SbQueues", "DomainServices\DocumentOnSAService\ExternalServices.SbQueues\DomainServices.DocumentOnSAService.ExternalServices.SbQueues.csproj", "{28886FD7-48D1-45FE-B45C-B4EACE52D954}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrationsSupport", "Shared\DatabaseMigrationsSupport\DatabaseMigrationsSupport.csproj", "{4CB599F5-6387-4664-B788-D7AB553D91D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseMigrationsSupport", "Shared\DatabaseMigrationsSupport\DatabaseMigrationsSupport.csproj", "{4CB599F5-6387-4664-B788-D7AB553D91D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

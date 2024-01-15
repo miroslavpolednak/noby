@@ -122,7 +122,10 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
             ValuationResultFuturePrice = valuationDetail.ValuationResultFuturePrice,
             IsRevaluationRequired = valuationDetail.IsRevaluationRequired,
             DeveloperAllowed = valuationDetail.DeveloperAllowed,
-            DeveloperApplied = valuationDetail.DeveloperApplied
+            DeveloperApplied = valuationDetail.DeveloperApplied,
+            PossibleValuationTypeId = valuationDetail.PossibleValuationTypeId
+                ?.Select(t => (RealEstateValuationValuationTypes)t)
+                ?.ToList()
         };
 
     private static string GetRealEstateVariant(int realEstateTypeId)

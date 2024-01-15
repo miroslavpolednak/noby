@@ -26,6 +26,9 @@ public sealed class RiskCaseProcessorService
         // offer
         var offerInstance = await _offerService.GetOffer(saInstance.OfferId!.Value, cancellationToken);
 
+        // ziskat segment
+        var laResult = await SaveLoanApplication(saInstance.SalesArrangementId, saInstance.CaseId, saInstance.OfferId.Value, cancellationToken);
+
         // get rbcId
         if (string.IsNullOrWhiteSpace(saInstance.RiskBusinessCaseId))
         {
@@ -33,8 +36,6 @@ public sealed class RiskCaseProcessorService
             saInstance.RiskBusinessCaseId = (await _riskBusinessCaseService.CreateCase(salesArrangementId, offerInstance.ResourceProcessId, cancellationToken)).RiskBusinessCaseId;
         }
 
-        // ziskat segment
-        var laResult = await SaveLoanApplication(saInstance.SalesArrangementId, saInstance.CaseId, saInstance.OfferId.Value, cancellationToken);
         // set risk segment
         saInstance.RiskSegment = laResult.RiskSegment;
 

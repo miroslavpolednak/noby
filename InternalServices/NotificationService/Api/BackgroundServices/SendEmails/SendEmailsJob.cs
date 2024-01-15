@@ -126,7 +126,8 @@ public sealed class SendEmailsJob
                 await _dbContext.SaveChangesAsync(default);
 
                 // odeslat
-                await client.SendAsync(message, cancellationToken = default);
+                var response = await client.SendAsync(message, cancellationToken = default);
+                _logger.LogInformation($"Email '{email.Id}' was sent: {response}");
             }
             catch (CisNotFoundException ex)
             {
@@ -189,7 +190,7 @@ public sealed class SendEmailsJob
             try
             {
                 if (email.State == NotificationState.Sent)
-                    await _documentDataStorage.DeleteByEntityId<SendEmail>(email.Id.ToString());
+                    await _documentDataStorage.DeleteByEntityId<string, SendEmail>(email.Id.ToString());
             }
             catch { }
         }

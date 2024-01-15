@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DomainServices.SalesArrangementService.Contracts;
+using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.DeleteSalesArrangement;
 
@@ -31,10 +32,7 @@ internal sealed class DeleteSalesArrangementHandler
         _dbContext.Remove(saInstance);
 
         // smazat parametry
-        await _dbContext
-            .SalesArrangementsParameters
-            .Where(t => t.SalesArrangementId == request.SalesArrangementId)
-            .ExecuteDeleteAsync(cancellation);
+        await _documentDataStorage.DeleteByEntityId(request.SalesArrangementId, Database.DocumentDataEntities.SalesArrangementParametersConst.TableName);
 
         await _dbContext.SaveChangesAsync(cancellation);
 
@@ -51,12 +49,15 @@ internal sealed class DeleteSalesArrangementHandler
 
     private readonly HouseholdService.Clients.IHouseholdServiceClient _householdService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
+    private readonly IDocumentDataStorage _documentDataStorage;
 
     public DeleteSalesArrangementHandler(
         HouseholdService.Clients.IHouseholdServiceClient householdService,
-        Database.SalesArrangementServiceDbContext dbContext)
+        Database.SalesArrangementServiceDbContext dbContext,
+        IDocumentDataStorage documentDataStorage)
     {
         _householdService = householdService;
         _dbContext = dbContext;
+        _documentDataStorage = documentDataStorage;
     }
 }

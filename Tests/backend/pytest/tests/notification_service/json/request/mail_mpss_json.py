@@ -151,7 +151,7 @@ json_req_mail_mpss_full_attachments = \
     },
     "to": [
       {
-        "value": "marek.mikel@mpss.cz",
+        "value": "martin.heimlich@mpss.cz",
         "party": {
         "legalPerson": {
           "name": "Notifikace"
@@ -171,7 +171,7 @@ json_req_mail_mpss_full_attachments = \
     ],
     "cc": [
      {
-        "value": "karel.nguyen-trong@mpss.cz",
+        "value": "jakub.vana@mpss.cz",
        "party": {
         "legalPerson": {
           "name": "Notifikace"
@@ -709,6 +709,35 @@ json_req_mail_mpss_sender_mpss = \
       }
     ],
     "subject": "NS_test_MIKEL_sender_mpss.cz",
+    "content": {
+      "format": "application/html",
+      "language": "cs",
+      "text": "Marek Mikel"
+    },
+    "attachments": []
+  }
+
+json_req_mail_mpss_sender_mpss_info = \
+  {
+    "from": {
+      "value": "notification-service@mpss-info.cz",
+      "party": {
+        "legalPerson": {
+          "name": "Notifikace"
+        }
+      }
+    },
+    "to": [
+      {
+        "value": "marek.mikel@mpss.cz",
+        "party": {
+          "legalPerson": {
+            "name": "Marek Mikel"
+          }
+        }
+      }
+    ],
+    "subject": "NS_test_MIKEL_sender_mpss-info.cz",
     "content": {
       "format": "application/html",
       "language": "cs",

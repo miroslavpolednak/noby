@@ -2,6 +2,7 @@
 using Console_AuditMigrator.Services.Abstraction;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedAudit;
 
 namespace Console_AuditMigrator.Services;
 

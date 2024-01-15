@@ -1,27 +1,29 @@
 import copy
 import datetime as datetime
+import json
+import os
 
 import pyodbc
 import pytest
 import requests
 from sqlalchemy.orm import declarative_base
-
+from datetime import datetime
 Base = declarative_base()
 
 # pylint: disable=unused-import
 
 URLS = {
-    "dev_url": "https://ds-notification-dev.vsskb.cz:30016",
-    "fat_url": "https://ds-notification-fat.vsskb.cz:31016",
-    "sit_url": "https://ds-notification-sit1.vsskb.cz:32016",
-    "uat_url": "https://ds-notification-uat.vsskb.cz:33016",
+    "dev_url": "https://adpra191:30016",
+    "fat_url": "https://adpra191:31016",
+    "sit_url": "https://adpra191:32016",
+    "uat_url": "https://adpra193:33016",
 
     "dev_url_discovery": "https://ds-discovery-dev.vsskb.cz:30011",
     "fat_url_discovery": "https://ds-discovery-fat.vsskb.cz:31011",
     "sit_url_discovery": "https://ds-discovery-sit1.vsskb.cz:32011",
     "uat_url_discovery": "https://ds-discovery-uat.vsskb.cz:33011"
 }
-
+# zatím pro test audit_logů, bude třeba refactor na řešení pro resend
 DB_SERVERS = {
     'dev_db': 'adpra173.vsskb.cz',
     'fat_db': r'adpra173.vsskb.cz\FAT',
@@ -73,8 +75,43 @@ def db_connection(db_url):
     connection = pyodbc.connect(connection_string)
     yield connection
     connection.close()
+# a tady končí db konfigurace pro test logů a potřeby refaktoru
+
+# konfigurace pro test resendu
+with open('db_credentials.json', 'r') as file:
+    credentials = json.load(file)
+
+username = credentials['username']
+password = credentials['password']
+
+SERVERS = {
+    "dev": "adpra173.vsskb.cz",
+    "fat": "adpra173.vsskb.cz\FAT"
+}
+
+DATABASES = {
+    "sa": "SalesArrangementService",
+    "offer": "OfferService",
+    "case": "CaseService",
+    "ns": "NotificationService"
+}
 
 
+@pytest.fixture(scope="session")
+def mssql_connection(request):
+    server = SERVERS[request.param['server']]
+    database = DATABASES[request.param['database']]
+
+    connection_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password};PORT=1433'
+
+    # Připojení k databázi
+    connection = pyodbc.connect(connection_string)
+    yield connection
+    # Uzavření připojení
+    connection.close()
+
+
+#konfigurace autorizací
 @pytest.fixture(scope="function")
 def auth(request, auth_params):
     """Fixture pro ověření uživatele.
