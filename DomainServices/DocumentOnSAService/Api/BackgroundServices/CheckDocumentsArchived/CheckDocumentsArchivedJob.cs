@@ -1,6 +1,5 @@
 ﻿using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
-using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Repositories;
 using DomainServices.DocumentOnSAService.Api.Extensions;
