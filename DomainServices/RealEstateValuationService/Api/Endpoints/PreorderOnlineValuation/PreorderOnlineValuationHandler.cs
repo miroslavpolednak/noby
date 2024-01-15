@@ -49,7 +49,9 @@ internal sealed class PreorderOnlineValuationHandler
         if (kbmodelReponse.NoPriceAvailable)
         {
             entity.IsOnlineDisqualified = true;
+            entity.ValuationTypeId = 0;
 
+            // adjust PossibleValuationTypeId
             var possibleTypes = entity.PossibleValuationTypeId?.ToArray() ?? Array.Empty<int>();
             if (possibleTypes.Contains(1) && possibleTypes.Length == 1)
             {
