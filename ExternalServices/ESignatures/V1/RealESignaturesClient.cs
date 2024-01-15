@@ -173,7 +173,7 @@ internal sealed class RealESignaturesClient
         {
             svcRequest.OtherClients = request.OtherClients.Select(t => new Contracts.SigneeInfo2
             {
-                UniversalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == SharedTypes.Enums.IdentitySchemes.Kb)?.Id.ToString(CultureInfo.InvariantCulture),
+                UniversalId = t.Identities!.FirstOrDefault(t => t.Scheme == SharedTypes.Enums.IdentitySchemes.Kb)?.Id.ToString(CultureInfo.InvariantCulture),
                 EmailAddress = t.Email,
                 PhoneNumber = t.Phone,
                 Signatures = new List<Contracts.SignatureData>
