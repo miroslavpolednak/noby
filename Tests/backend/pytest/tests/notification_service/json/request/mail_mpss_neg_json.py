@@ -574,7 +574,7 @@ json_req_mail_mpss_bad_from = \
         "attachments": []
     }
 
-json_req_mail_mpss_bad_whitelist_to = \
+json_req_mail_mpss_bad_whitelist = \
     {
         "from": {
             "value": "notification-service@mpss.cz",
@@ -586,36 +586,7 @@ json_req_mail_mpss_bad_whitelist_to = \
         },
         "to": [
             {
-                "value": "marek.mikel@gmail.com",
-                "party": {
-                    "legalPerson": {
-                        "name": "Marek Mikel"
-                    }
-                }
-            }
-        ],
-        "subject": "NS_test_MIKEL",
-        "content": {
-            "format": "application/html",
-            "language": "cs",
-            "text": "test bad whitelist"
-        },
-        "attachments": []
-    }
-
-json_req_mail_mpss_bad_whitelist_cc = \
-    {
-        "from": {
-            "value": "notification-service@mpss.cz",
-            "party": {
-                "legalPerson": {
-                    "name": "Notifikace"
-                }
-            }
-        },
-        "to": [
-            {
-                "value": "marek.mikel@mpss.cz",
+                "value": "marek.to@gmail.com",
                 "party": {
                     "legalPerson": {
                         "name": "Marek Mikel"
@@ -625,12 +596,24 @@ json_req_mail_mpss_bad_whitelist_cc = \
         ],
         "cc": [
             {
-                "value": "marek.mikel@gmail.com",
+                "value": "marek.cc@gmail.com",
                 "party": {
                     "naturalPerson": {
                         "firstName": "BaruCC",
                         "middleName": "MikelCC",
                         "surname": "KrsmaruCC"
+                    }
+                }
+            }
+        ],
+        "bcc": [
+            {
+                "value": "marek.bcc@gmail.com",
+                "party": {
+                    "naturalPerson": {
+                        "firstName": "BaruBCC",
+                        "middleName": "MikelBCC",
+                        "surname": "KrsmaruBCC"
                     }
                 }
             }
@@ -644,53 +627,3 @@ json_req_mail_mpss_bad_whitelist_cc = \
         "attachments": []
     }
 
-json_req_mail_mpss_bad_whitelist_bcc = \
-    {
-        "from": {
-            "value": "notification-service@mpss.cz",
-            "party": {
-                "naturalPerson": {
-                    "firstName": "Marek",
-                    "middleName": "Bozi",
-                    "surname": "Mikel"
-                }
-            }
-        },
-        "to": [
-            {
-                "value": "marek.mikel@mpss.cz",
-                "party": {
-                    "naturalPerson": {
-                        "firstName": "Baru",
-                        "middleName": "Mikel",
-                        "surname": "Krsmaru"
-                    }
-                }
-            }
-        ],
-        "bcc": [
-            {
-                "value": "marek.mikel@gmail.com",
-                "party": {
-                    "naturalPerson": {
-                        "firstName": "BaruBCC",
-                        "middleName": "MikelBCC",
-                        "surname": "KrsmaruBCC"
-                    }
-                }
-            }
-        ],
-        "subject": "NS_test_MIKEL_full_natural",
-        "content": {
-            "format": "application/html",
-            "language": "cs",
-            "text": "json_req_mail_mpss_full_natural"
-        },
-        "attachments": [],
-        "identifier": {
-            "identity": "992474q",
-            "identityScheme": "1"
-        },
-        "customId": "customId_123456",
-        "documentId": "documentId_123456"
-    }

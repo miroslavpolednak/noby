@@ -22,7 +22,8 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_basic_legal, json_r
     json_req_mail_mpss_documentHash_SHA_512, json_req_mail_mpss_documentHash_SHA_384, \
     json_req_mail_mpss_basic_format_text_plain, json_req_mail_mpss_basic_format_application_text, \
     json_req_mail_mpss_max_attachments, \
-    json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_vsskb, json_req_mail_mpss_sender_mpss_info
+    json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_vsskb, json_req_mail_mpss_sender_mpss_info, \
+    json_req_mail_mpss_sender_modrapyramida, json_req_mail_mpss_sender_mpssinfo
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -121,7 +122,7 @@ def test_mail_content_format(ns_url, auth_params, auth, json_data):
     assert len(resp['errors']) == 0
     assert 'createdBy' in resp
 
-    time.sleep(15)
+    time.sleep(61)
 
     # vola GET opet, abz si overil doruceni
     session = requests.session()
@@ -248,7 +249,9 @@ def test_mail_documentHash(ns_url, auth_params, auth, json_data):
 @pytest.mark.parametrize("json_data", [json_req_mail_mpss_sender_mpss, json_req_mail_mpss_sender_mpss_info,
                                        json_req_mail_kb_sender_kb, json_req_mail_kb_sender_kb_sluzby,
                                        json_req_mail_kb_sender_kbinfo,
-                                       json_req_mail_kb_sender_kb_attachment
+                                       json_req_mail_kb_sender_kb_attachment,
+                                       json_req_mail_mpss_sender_modrapyramida,
+                                       json_req_mail_mpss_sender_mpssinfo
                                        ],
                          ids=[
                              "json_req_mail_mpss_sender_mpss",
@@ -256,7 +259,9 @@ def test_mail_documentHash(ns_url, auth_params, auth, json_data):
                              "json_req_mail_kb_sender_kb",
                              "json_req_mail_kb_sender_kb_sluzby",
                              "json_req_mail_kb_sender_kbinfo",
-                             "json_req_mail_kb_sender_kb_attachment"
+                             "json_req_mail_kb_sender_kb_attachment",
+                             "json_req_mail_mpss_sender_modrapyramida",
+                             "json_req_mail_mpss_sender_mpssinfo"
                          ]
                          )
 def test_mail_sender(ns_url, auth_params, auth, json_data):
@@ -433,7 +438,6 @@ def test_mail_for_resend(url_name, auth_params, auth, json_data, mssql_connectio
     resend_row = cursor.fetchone()
     print(f"result po konec resend{resend_row}")
 
-    # PROČ NRNÍ STATE=1???? A JE RESEND NA tRUE?
     assert resend_row[1] == 3, f"Resent: Očekávaný State je 3 SEND, ale získaný State je {row[1]}"
     assert resend_row[2] == False, f"Resent: Očekávaný resent je false, ale získaný resent je {row[2]}"
 
@@ -494,6 +498,7 @@ def test_mail_jobs(url_name, auth_params, auth, json_data, mssql_connection):
 
     assert row[1] == 1, f"Očekávaný State je 1 IN PROGRESS, ale získaný State je {row[1]}"
     assert row[2] == False, f"Očekávaný resent je false, ale získaný resent je {row[2]}"
+    assert row[3] == 2, f"Očekávaný Serner je MPSS, ale získaný resent je {row[2]}"
 
     time.sleep(61)
 
@@ -529,7 +534,6 @@ def test_mail_jobs(url_name, auth_params, auth, json_data, mssql_connection):
     resend_row = cursor.fetchone()
     print(f"result po konci jobu{resend_row}")
 
-    # PROČ NRNÍ STATE=1???? A JE RESEND NA tRUE?
     assert resend_row[1] == 3, f"Resent: Očekávaný State je 3 SEND, ale získaný State je {row[1]}"
     assert resend_row[2] == False, f"Resent: Očekávaný resent je false, ale získaný resent je {row[2]}"
 
@@ -557,3 +561,56 @@ def test_connection(mssql_connection):
     for col in columns:
         print(
             f"NSid: {col.DocumentDataEntityId}")
+
+
+# @pytest.mark.skip(reason="pro ruční spouštění")
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("mssql_connection", [{"server": "fat", "database": "ns"}], indirect=True)
+@pytest.mark.parametrize("url_name, json_data", [
+    ("fat_url", json_req_mail_mpss_full_attachments)
+])
+def test_mail_perf_for_job_SendEmailsJob(url_name, auth_params, auth, json_data, mssql_connection):
+    """kladny test"""
+    username = auth[0]
+    password = auth[1]
+    session = requests.session()
+    resp = session.post(
+        URLS[url_name] + "/v1/notification/email",
+        json=json_data,
+        auth=(username, password),
+        verify=False
+    )
+    notification = resp.json()
+    print(notification)
+    assert "notificationId" in notification
+    notification_id = notification["notificationId"]
+    assert notification_id != ""
+
+    assert 'strict-transport-security' in resp.headers, \
+        'Expected "strict-transport-security" to be in headers'
+
+    cursor = mssql_connection.cursor()
+
+    # Definice názvu tabulky a schématu
+    table_name = 'EmailResult'
+    schema_name = 'dbo'
+    # Parametrizovaný SQL příkaz pro aktualizaci
+    cursor.execute(f"""
+            UPDATE {schema_name}.{table_name}
+            SET State = 2
+            WHERE Id = ?;
+        """, (notification_id,))
+
+    # Potvrzení změn v databázi
+    mssql_connection.commit()
+
+    ##Ověření provedení změn pomocí SELECT dotazu
+    select_query = f"""
+            SELECT Id, State, Resend, SenderType, Channel, CustomId FROM {schema_name}.{table_name}
+            WHERE Id = ?;
+        """
+    cursor.execute(select_query, (notification_id,))
+    row = cursor.fetchone()
+    print(row)
+
+    assert row[1] == 2, f"Očekávaný State je 2 UNSENT, ale získaný State je {row[1]}"

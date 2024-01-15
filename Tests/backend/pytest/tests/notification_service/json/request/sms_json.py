@@ -48,14 +48,6 @@ json_req_sms_basic_insg_sit = \
         "text": "SIT insg bez logování a chci háčky a čárky"
     }
 
-json_req_sms_basic_alex = \
-    {
-        "phoneNumber": "+420728310176",
-        "processingPriority": 1,
-        "type": "INSIGN_PROCESS",
-        "text": "TEST od Marka Mikela - Alexi, napis mi na teams ze ti sms prisla. melo by to fungovat"
-    }
-
 json_req_sms_sb = \
     {
         "phoneNumber": "+420123456789",
@@ -229,7 +221,7 @@ json_req_sms_basic_epsy_mpss = \
 # phone case
 json_req_sms_caseId = \
     {
-        "phoneNumber": "+420123456789",
+        "phoneNumber": "+420607115686",
         "processingPriority": 1,
         "type": "INSIGN_PROCESS",
         "text": "caseId",
@@ -239,7 +231,7 @@ json_req_sms_caseId = \
 # phone case
 json_req_sms_documentHash = \
     {
-        "phoneNumber": "+420123456789",
+        "phoneNumber": "+420607115686",
         "processingPriority": 1,
         "type": "INSIGN_PROCESS",
         "text": "documentHash",

@@ -39,7 +39,7 @@ DB_TEMPLATE = {
 
 
 def pytest_addoption(parser):
-    parser.addoption("--ns-url", action="store", default="dev_url",
+    parser.addoption("--ns-url", action="store", default="fat_url",
                      help="ns url"),
     parser.addoption("--db-url", action="store", default="dev_db",
                      help="db url")
@@ -78,7 +78,9 @@ def db_connection(db_url):
 # a tady končí db konfigurace pro test logů a potřeby refaktoru
 
 # konfigurace pro test resendu
-with open('db_credentials.json', 'r') as file:
+dir_path = os.path.dirname(os.path.realpath(__file__))
+credentials_path = os.path.join(dir_path, 'db_credentials.json')
+with open(credentials_path, 'r') as file:
     credentials = json.load(file)
 
 username = credentials['username']
@@ -194,7 +196,7 @@ def modified_json_data(request, ns_url):
     json_data = request.node.get_closest_marker("parametrize").args[1][0]
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
     # Přidáme aktuální datum a čas
-    now = datetime.datetime.now()
+    now = datetime.now()
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
     # seskladani smsky
     modified_data['text'] = " Prostredi: " + ns_url["url_name"] + ", " + " Cas provedeni: " + date_time + ", Zprava: " + modified_data['text']
@@ -206,7 +208,7 @@ def modified_template_json_data(request, ns_url):
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
 
     # Přidáme aktuální datum a čas
-    now = datetime.datetime.now()
+    now = datetime.now()
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
 
     # Seskladani smsky
@@ -226,7 +228,7 @@ def modified_json_data_health(request, url_name):
             json_data = m.args[1][0]
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
     # Přidáme aktuální datum a čas
-    now = datetime.datetime.now()
+    now = datetime.now()
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
     # seskladani smsky
     modified_data['text'] = " Prostredi: " + url_name + ", " + " Cas provedeni: " + date_time + ", Zprava: " + modified_data['text']
@@ -244,7 +246,7 @@ def modified_template_json_data_health(request, url_name):
     modified_data = copy.deepcopy(json_data)  # vytvoříme kopii, abychom nezměnili původní data
 
     # Přidáme aktuální datum a čas
-    now = datetime.datetime.now()
+    now = datetime.now()
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")  # formátuje datum a čas
 
     # Seskladani smsky
@@ -253,3 +255,11 @@ def modified_template_json_data_health(request, url_name):
             placeholder['value'] = " Prostredi: " + url_name + ", " + " Cas provedeni: " + date_time + ", Zprava: " + placeholder['value']
 
     return modified_data
+
+
+# Funkce pro získání dnešního data ve správném formátu
+def get_today_date_strings():
+    today = datetime.now()
+    time_from = today.strftime('%Y-%m-%d') + 'T00:00'
+    time_to = today.strftime('%Y-%m-%d') + 'T23:59'
+    return time_from, time_to

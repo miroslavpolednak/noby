@@ -9,7 +9,7 @@ from ..json.request.sms_template_json import json_req_sms_full_template, \
     json_req_sms_template_bad_basic_without_identifier_identity, json_req_sms_full_template_e2e, json_req_sms_case, \
     json_req_sms_documentHash
 
-
+@pytest.mark.skip("Zatim nemame povolenou template")
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_full_template_e2e])
 def test_e2e_real_sms_template(ns_url, auth_params, auth, json_data):
@@ -30,6 +30,7 @@ def test_e2e_real_sms_template(ns_url, auth_params, auth, json_data):
     assert resp["notificationId"] != ""
 
 
+@pytest.mark.skip("Zatim nemame povolenou template")
 @pytest.mark.parametrize("auth", ["XX_INSG_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("json_data", [json_req_sms_full_template])
 def test_sms_template(ns_url,  auth_params, auth, json_data):
