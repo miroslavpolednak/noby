@@ -37,6 +37,8 @@
 
 [Práce s dočasnými soubory](./topics/tempstorage.md)
 
+[Práce se standardním úložištěm souborů (filesystem, S3, Azure)](./topics/filestorage.md)
+
 [Auditní logování](./topics/audit.md)
 
 [Messaging - Kafka](./topics/messaging-kafka.md)

@@ -35,6 +35,7 @@ try
         .AddCisApiVersioning()
         .AddCisHealthChecks();
 
+    // add temp storage
     builder.AddCisStorageServices().AddStorageClient<IStorage1>();
 
     builder.Services.AddCisSecurityHeaders();

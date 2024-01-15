@@ -5,7 +5,7 @@ namespace SharedComponents.Storage;
 
 public interface ICisStorageServicesBuilder
 {
-    ICisStorageServicesBuilder AddStorageClient<TStorage>() where TStorage : IStorageClient;
+    ICisStorageServicesBuilder AddStorageClient<TStorage>();
 }
 
 internal sealed class CisStorageServicesBuilder
@@ -19,9 +19,8 @@ internal sealed class CisStorageServicesBuilder
     }
 
     public ICisStorageServicesBuilder AddStorageClient<TStorage>()
-        where TStorage : IStorageClient
     {
-        _services.AddSingleton(typeof(TStorage), services =>
+        _services.AddSingleton(typeof(IStorageClient<TStorage>), services =>
         {
             string storageName = typeof(TStorage).Name;
             var configuration = services.GetRequiredService<IOptions<Configuration.StorageConfiguration>>();
@@ -30,7 +29,9 @@ internal sealed class CisStorageServicesBuilder
             {
                 return clientConfiguration.StorageType switch
                 {
-                    Configuration.StorageClientTypes.FileSystem => new StorageClients.FileSystemStorageClient(clientConfiguration!),
+                    Configuration.StorageClientTypes.FileSystem => new StorageClients.FileSystemStorageClient<TStorage>(clientConfiguration!),
+                    Configuration.StorageClientTypes.AzureBlob => new StorageClients.AzureBlobStorageClient<TStorage>(clientConfiguration!),
+                    Configuration.StorageClientTypes.AmazonS3 => new StorageClients.AmazonS3StorageClient<TStorage>(clientConfiguration!),
                     _ => throw new CisConfigurationException(0, $"CisStorageServices: configuration type not found for client '{storageName}'")
                 };
             }

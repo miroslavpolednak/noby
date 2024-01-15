@@ -34,17 +34,16 @@ public class TestController : ControllerBase
     [HttpGet("t2")]
     public async Task T2()
     {
-        var storage = _context.HttpContext.RequestServices.GetRequiredService<IStorage1>();
-        await storage.SaveFile(System.IO.File.ReadAllBytes("d:\\newactuals.sql"), Guid.NewGuid().ToString());
+        var storage = _context.HttpContext.RequestServices.GetRequiredService<IStorageClient<IStorage1>>();
+        await storage.SaveFile(System.IO.File.ReadAllBytes("d:\\newactuals.sql"), "newactuals.sql");
     }
 
     [HttpGet("t3")]
-    public async Task<TempStorageItem> T3([FromQuery] string id)
+    public async Task<int> T3([FromQuery] string id)
     {
-        var storage = _context.HttpContext.RequestServices.GetRequiredService<ITempStorage>();
-        var result = await storage.GetMetadata(Guid.Parse(id));
-        System.IO.File.WriteAllBytes("d:\\test.txt", await storage.GetContent(Guid.Parse(id)));
-        return result;
+        var storage = _context.HttpContext.RequestServices.GetRequiredService<IStorageClient<IStorage1>>();
+        var result = await storage.GetFile("newactuals.sql");
+        return result.Length;
     }
 
     [HttpGet("t4")]
