@@ -11,27 +11,31 @@ namespace SharedComponents.Storage;
 
 public static class StorageStartupExtensions
 {
-    private const string _configurationStorageKey = "CisStorage";
-
-    public static WebApplicationBuilder AddCisStorageServices(this WebApplicationBuilder builder)
+    public static ICisStorageServicesBuilder AddCisStorageServices(this WebApplicationBuilder builder)
     {
+        // add configuration
         builder.Services
             .AddOptions<Configuration.StorageConfiguration>()
-            .Bind(builder.Configuration.GetSection(_configurationStorageKey));
+            .Bind(builder.Configuration.GetSection(Constants.StorageConfigurationKey));
 
         // temp storage
+        addTempStorage(builder);
+
+        return new CisStorageServicesBuilder(builder.Services);
+    }
+
+    private static void addTempStorage(WebApplicationBuilder builder)
+    {
         builder.Services.AddScoped<ITempStorage, TempStorage>();
 
         builder.Services.AddDapper(services =>
         {
             var configuration = services.GetRequiredService<IOptions<Configuration.StorageConfiguration>>();
-            
+
             string connectionString = (string.IsNullOrEmpty(configuration?.Value.TempStorage?.ConnectionString) ? builder.Configuration.GetConnectionString(CisGlobalConstants.DefaultConnectionStringKey) : configuration.Value.TempStorage?.ConnectionString)
-                ?? throw new CisConfigurationNotFound($"{_configurationStorageKey}:TempStorage:ConnectionString");
+                ?? throw new CisConfigurationNotFound($"{Constants.StorageConfigurationKey}:{Constants.TempStorageConfigurationKey}:ConnectionString");
 
             return new SqlConnectionProvider<ITempStorageConnection>(connectionString);
         });
-
-        return builder;
     }
 }
