@@ -23,5 +23,8 @@ public sealed class TempStorageConfiguration
     /// </summary>
     public string ConnectionString { get; set; } = null!;
 
+    /// <summary>
+    /// Cesta na filesystem, kde budou umístěny temp soubory
+    /// </summary>
     public string StoragePath { get; set; } = null!;
 }

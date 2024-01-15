@@ -89,6 +89,16 @@ internal class TempStorage
             );
     }
 
+    public async Task<List<TempStorageItem>> GetByObjectType(string objectType, long objectId, CancellationToken cancellationToken = default)
+    {
+        return await _connectionProvider
+            .ExecuteDapperRawSqlToListAsync<TempStorageItem>(
+                $"SELECT * FROM {_tableName} WHERE ObjectType=@objectType AND ObjectId=@objectId",
+                new { objectType, objectId },
+                cancellationToken
+            );
+    }
+
     public async Task<TempStorageItem> GetMetadata(Guid tempStorageItemId, CancellationToken cancellationToken = default)
     {
         return await _connectionProvider

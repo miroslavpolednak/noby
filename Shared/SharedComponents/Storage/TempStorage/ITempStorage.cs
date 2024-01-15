@@ -24,6 +24,8 @@ public interface ITempStorage
         Guid? sessionId = null,
         CancellationToken cancellationToken = default);
 
+    Task<List<TempStorageItem>> GetByObjectType(string objectType, long objectId, CancellationToken cancellationToken = default);
+
     Task<List<TempStorageItem>> GetSession(Guid sessionId, CancellationToken cancellationToken = default);
 
     Task<TempStorageItem> GetMetadata(Guid tempStorageItemId, CancellationToken cancellationToken = default);
