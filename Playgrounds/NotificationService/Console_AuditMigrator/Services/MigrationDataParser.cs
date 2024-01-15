@@ -2,38 +2,21 @@
 using Console_AuditMigrator.Database;
 using Console_AuditMigrator.Database.Entities;
 using Console_AuditMigrator.Models;
-using Console_AuditMigrator.Models.LogParameters;
 using Console_AuditMigrator.Services.Abstraction;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SharedAudit;
 
 namespace Console_AuditMigrator.Services;
 
 public class MigrationDataParser : IMigrationDataParser
 {
     private readonly LogDbContext _dbContext;
-    private IManualAuditLogger _logger;
 
 
     public MigrationDataParser(LogDbContext dbContext, IConfiguration configuration)
     {
         _dbContext = dbContext;
-
-        var auditConf = configuration.GetSection("CisTelemetry:Logging:Audit");
-
-        _logger = AuditLoggingStartupExtensions.CreateManualAuditLogger(
-            serverIp: "/[::]:3901",
-            environmentName: "PROD",
-            applicationKey: "CIS:NotificationService",
-            eamApplication: "NOBY",
-            eamVersion: "3",
-            hashSecretKey: auditConf["HashSecretKey"]!,
-            databaseConnectionString: auditConf["ConnectionString"]!
-            );
-
-        //_logger.Log(AuditEventTypes.Noby012, "test", DateTime.Now, "123", null, null, null);
     }
 
     public async Task ParseFromApplicationLogs()
@@ -56,11 +39,11 @@ public class MigrationDataParser : IMigrationDataParser
                 case LogType.ProducedToKafka:
                     applicationLog.ParseProduced();
                     break;
-                case LogType.SendingHttpResponse:
-                    applicationLog.ParseHttpResponse();
-                    break;
                 case LogType.CouldNotProduceToKafka:
                     applicationLog.ParseCouldNotProduce();
+                    break;
+                case LogType.SendingHttpResponse:
+                    applicationLog.ParseHttpResponse();
                     break;
                 case LogType.ReceivedReport:
                     applicationLog.ParseReceivedReport();
@@ -83,7 +66,7 @@ internal static class MigrationDataParserExtensions
         const string headersPattern = @"RequestHeaders: \[(.*?)\],";
         const string bodyPattern = @"RequestBody: ""(.*)"", RequestContentType";
 
-        var input = applicationLog.Message ?? string.Empty;
+        var input = Regex.Replace(applicationLog.Message ?? string.Empty, @"\r\n?|\n", "");
         var pathMatch = Regex.Match(input, pathPattern);
         var queryMatch = Regex.Match(input, queryPattern);
         var headersMatch = Regex.Match(input, headersPattern);
@@ -226,8 +209,10 @@ internal static class MigrationDataParserExtensions
         var state = stateMatch.Groups[1].Value;
 
         applicationLog.ParsedObject = JsonConvert.SerializeObject(new Dictionary<string, string> {
+            { "smsType", string.Empty },
             { "notificationId", notificationId },
-            { "state", state }
+            { "state", state },
+            { "errors", "null" }
         });
     }
 }

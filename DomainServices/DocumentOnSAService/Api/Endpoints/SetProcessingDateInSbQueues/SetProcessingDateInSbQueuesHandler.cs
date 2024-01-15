@@ -37,35 +37,43 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
 
     public async Task<Empty> Handle(SetProcessingDateInSbQueuesRequest request, CancellationToken cancellationToken)
     {
-        var tasksList = (await _caseService.GetTaskList(request.CaseId, cancellationToken)).Where(t => t.TaskTypeId == 6)
-                             .ToList();
-
-        if (!tasksList.Any(t => t.TaskId == request.TaskId && t.SignatureTypeId == 1)) { return new Empty(); }
-
-        var workflowTaskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
-        var nonFinalStates = workflowTaskStates.Where(s => s.Flag == EWorkflowTaskStateFlag.None).Select(s => s.Id);
-        var tasksInNonFinalState = tasksList.Where(t => nonFinalStates.Contains(t.StateIdSb));
-
-        List<(long documentId, long taskId)> taskIdForSpecifiedDocumentId = await GetDocumentIds(tasksList, cancellationToken);
-
-        var documentIdForRequestTaskId = taskIdForSpecifiedDocumentId.Where(t => t.taskId == request.TaskId).Select(s => s.documentId).FirstOrDefault();
-        if (documentIdForRequestTaskId != 0)
+        // If starbuild is offline, we don't want break task completion so we catch exception and logg   
+        try
         {
-            var groupForDucumentId = taskIdForSpecifiedDocumentId.Where(d => d.documentId == documentIdForRequestTaskId);
-            var nonFinalTaskForGroup = tasksInNonFinalState.Where(r => groupForDucumentId.Select(s => s.taskId).Contains(r.TaskId));
+            var tasksList = (await _caseService.GetTaskList(request.CaseId, cancellationToken)).Where(t => t.TaskTypeId == 6)
+                            .ToList();
 
-            if (!nonFinalTaskForGroup.Any()) // Indicate last completed task in group for documentId
+            if (!tasksList.Any(t => t.TaskId == request.TaskId && t.SignatureTypeId == 1)) { return new Empty(); }
+
+            var workflowTaskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
+            var nonFinalStates = workflowTaskStates.Where(s => s.Flag == EWorkflowTaskStateFlag.None).Select(s => s.Id);
+            var tasksInNonFinalState = tasksList.Where(t => nonFinalStates.Contains(t.StateIdSb));
+
+            List<(long documentId, long taskId)> taskIdForSpecifiedDocumentId = await GetDocumentIds(tasksList, cancellationToken);
+
+            var documentIdForRequestTaskId = taskIdForSpecifiedDocumentId.Where(t => t.taskId == request.TaskId).Select(s => s.documentId).FirstOrDefault();
+            if (documentIdForRequestTaskId != 0)
             {
-                try
+                var groupForDucumentId = taskIdForSpecifiedDocumentId.Where(d => d.documentId == documentIdForRequestTaskId);
+                var nonFinalTaskForGroup = tasksInNonFinalState.Where(r => groupForDucumentId.Select(s => s.taskId).Contains(r.TaskId));
+
+                if (!nonFinalTaskForGroup.Any()) // Indicate last completed task in group for documentId
                 {
-                    await UpdateSbQueues(_dateTime.Now, documentIdForRequestTaskId, cancellationToken);
-                }
-                catch (Exception exp)
-                {
-                    await UpdateSbQueues(null, documentIdForRequestTaskId, cancellationToken);
-                    _logger.UpdateOfSbQueuesFailed(documentIdForRequestTaskId, exp);
+                    try
+                    {
+                        await UpdateSbQueues(_dateTime.Now, documentIdForRequestTaskId, cancellationToken);
+                    }
+                    catch (Exception exp)
+                    {
+                        await UpdateSbQueues(null, documentIdForRequestTaskId, cancellationToken);
+                        _logger.UpdateOfSbQueuesFailed(documentIdForRequestTaskId, exp);
+                    }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            _logger.CustomExp(ex);
         }
 
         return new Empty();

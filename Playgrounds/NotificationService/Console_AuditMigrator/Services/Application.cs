@@ -36,12 +36,12 @@ public class Application : IApplication
         //await _logParser.ParseLogFiles();
 
         // step 2 - parse migration data from application logs
-        await _migrationDataParser.ParseFromApplicationLogs();
+        //await _migrationDataParser.ParseFromApplicationLogs();
         
         // step 3 - aggregate migration data and fill notificationId
-        await _migrationDataAggregator.Aggregate();
+        //await _migrationDataAggregator.Aggregate();
         
         // step 4 - migrate data
-        await _auditMigrator.Migrate();
+        //await _auditMigrator.Migrate();
     }
 }

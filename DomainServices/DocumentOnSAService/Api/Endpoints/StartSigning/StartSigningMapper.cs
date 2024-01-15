@@ -124,7 +124,7 @@ public class StartSigningMapper
         if (documentOnSa.SigningIdentities.Count > 1)
         {
             var counter = 1;
-            foreach (var item in documentOnSa.SigningIdentities.Skip(1))
+            foreach (var item in documentOnSa.SigningIdentities.Where(c => c.SigningIdentityJson.CustomerOnSAId != documentOnSa.CustomerOnSAId1))
             {
                 var otherClient = new OtherClient
                 {
