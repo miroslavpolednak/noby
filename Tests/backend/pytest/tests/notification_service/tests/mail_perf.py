@@ -14,6 +14,7 @@ from ..json.request.mail_mpss_json import json_req_mail_mpss_full_attachments
 collected_notification_ids = []
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+
 @pytest.fixture(scope="session", autouse=True)
 def collect_notification_ids():
     global collected_notification_ids
@@ -26,7 +27,7 @@ def collect_notification_ids():
         conn = sqlite3.connect('test_results.db')
         c = conn.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS notification_ids (id TEXT, state INTEGER)''')
-        c.executemany("INSERT INTO notification_ids VALUES (?, ?)", (collected_notification_ids ))
+        c.executemany("INSERT INTO notification_ids VALUES (?, ?)", (collected_notification_ids))
         conn.commit()
     except Exception as e:
         print("Chyba při práci s databází:", e)
@@ -35,7 +36,7 @@ def collect_notification_ids():
 
 
 # postupně - je to tak 2 cally na 1 vteřinu, tak nžíe v range dám počet opakování
-@pytest.mark.parametrize("run_number", range(1))  # Spustí test 1x opakovaně
+@pytest.mark.parametrize("run_number", range(10))  # Spustí test 1x opakovaně
 @pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
 @pytest.mark.parametrize("mssql_connection", [{"server": "fat", "database": "ns"}], indirect=True)
 @pytest.mark.parametrize("url_name, json_data", [
@@ -132,3 +133,39 @@ def test_mail_for_perf(run_number, url_name, auth_params, auth, json_data, mssql
         for col in columns:
             print(
                 f"NSid: {col.DocumentDataEntityId}")
+
+
+# základní test
+# @pytest.mark.skip(reason="pro ruční spouštění")
+@pytest.mark.parametrize("auth", ["XX_EPSY_RMT_USR_TEST"], indirect=True)
+@pytest.mark.parametrize("mssql_connection", [{"server": "fat", "database": "ns"}], indirect=True)
+def test_update_state_for_perf(url_name, auth_params, auth, json_data, mssql_connection):
+    """Test, kdy máme prerektivitu vytvořenou db s x záznamy id v sqlite.
+        proběhne nacteni dat z test_results sqlite databaze a všem se do mssql aktualizuje stav"""
+    # Připojení k SQLite databázi
+    conn = sqlite3.connect('test_results.db')
+    cursor = conn.cursor()
+
+    # Načtení všech notification_id
+    cursor.execute("SELECT id FROM notification_ids")
+    notification_ids = [row[0] for row in cursor.fetchall()]
+
+    # Zavření připojení
+    conn.close()
+
+    cursor = mssql_connection.cursor()
+    ######################## update do db na state 2 (Unsent
+    # Definice názvu tabulky a schématu
+    table_name = 'EmailResult'
+    schema_name = 'dbo'
+    # Parametrizovaný SQL příkaz pro aktualizaci
+    for notification_id in notification_ids:
+        cursor.execute(f"""
+            UPDATE {schema_name}.{table_name}
+            SET State = 1
+            WHERE Id = ?;
+        """, (notification_id,))
+
+    # Potvrzení změn a zavření databáze
+    mssql_connection.commit()
+    mssql_connection.close()
