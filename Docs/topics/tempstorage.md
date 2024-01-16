@@ -9,6 +9,11 @@ K metadatům ukládaného souboru se dají připojit další informace:
 
 > Podle `SessionId` se následně dají získat/smazat všechny soubory, které byly nahrány v dané session. To samé platí pro soubory uložené s informací o entitě.
 
+## Použité exceptions
+### TempStorageException
+**90032**: jedná se o vyjímku, která je vyvolána při kontrole povolené koncovky.  
+**90038**: jedná se o vyjímku, která je vyvolána při kontrole názvu souboru.
+
 ## Přidání temp storage do aplikace
 Registrace temp storage během startupu aplikace (v `program.cs`):
 ```csharp

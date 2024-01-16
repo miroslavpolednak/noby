@@ -1,5 +1,5 @@
 ﻿# Práce se standardním úložištěm souborů (filesystem, S3, Azure)
-Pro práci se soubory vždy používáme projekt `SharedComponents.Storage`, nikdy nepřistupujeme např. na filesystem přímo přes `System.IO`.
+Pro práci se soubory vždy používáme projekt `SharedComponents.Storage`, nikdy nepřistupujeme např. na filesystem přímo přes `System.IO`.  
 `SharedComponents.Storage` umožňuje definovat libovolné množství různých Storage klientů, které zajišťují přístup na dané úložiště.  
 Aktuálně podporujeme **FileSystem, Azure Blob, Amazon S3**.
 
@@ -30,11 +30,11 @@ Storage komponenta je konfigurována standardně v *appsettings.json* ve vlastn�
 
 ```json
 {
-  "CisStorage": {
-    "StorageClients": {
-        ...
+    "CisStorage": {
+        "StorageClients": {
+            ...
+        }
     }
-  }
 }
 ```
 
@@ -54,3 +54,9 @@ Klíč pod kterým je konfigurace uložena je názvem marker interface.
     ...
 }
 ```
+
+Každý typ Storage klienta má vlastní konfigurační podobjekt, který je poplatný pouze pro daný typ:
+- FileSystem
+- AzureBlob
+- AmazonS3
+
