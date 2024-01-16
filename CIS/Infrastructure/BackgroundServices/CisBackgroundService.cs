@@ -85,11 +85,12 @@ internal sealed class CisBackgroundService<TBackgroundService>
             string resource = typeof(TBackgroundService)?.FullName!;
             var canJobRun = false;
 
-            using var connection = new SqlConnection(ConnectionString);
-            await connection.OpenAsync(stoppingToken);
-
+            SqlConnection? connection = null;
             try
             {
+                connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync(stoppingToken);
+
                 canJobRun = await getAppLock(connection, resource, _lockMode, _lockOwner);
                 if (canJobRun)
                 {
@@ -107,14 +108,18 @@ internal sealed class CisBackgroundService<TBackgroundService>
             }
             finally
             {
-                if (canJobRun)
+                if (canJobRun && connection is not null)
                 {
                     // Technical timeout, when job will execute very fast and the exception (Execution Timeout Expired) does not have time to be thrown out
                     await Task.Delay(TimeSpan.FromSeconds(_technicalTimeout + 5), stoppingToken);
                     await releaseLock(connection, resource, _lockOwner);
                 }
 
-                await connection.CloseAsync();
+                if (connection?.State == ConnectionState.Open)
+                    await connection.CloseAsync();
+
+                if (connection is not null)
+                    await connection.DisposeAsync();
             }
         }
     }
