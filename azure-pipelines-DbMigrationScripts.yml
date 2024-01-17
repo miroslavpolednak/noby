@@ -2,7 +2,7 @@
 trigger: none
 
 pool:
-  name: default
+  name: MPSS Common
 
 steps:
 - task: ArchiveFiles@2
