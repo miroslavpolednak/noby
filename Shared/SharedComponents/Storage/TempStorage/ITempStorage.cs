@@ -12,13 +12,9 @@ public interface ITempStorage
         CancellationToken cancellationToken = default);
 
     Task<TempStorageItem> Save(
-        IFormFile file,
-        CancellationToken cancellationToken = default);
-
-    Task<TempStorageItem> Save(
         byte[] fileData,
         string mimeType,
-        string fileName,
+        string? fileName = null,
         long? objectId = null,
         string? objectType = null,
         Guid? sessionId = null,

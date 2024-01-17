@@ -24,7 +24,7 @@ public sealed class TempStorageConfiguration
     public string ConnectionString { get; set; } = null!;
 
     /// <summary>
-    /// Cesta na filesystem, kde budou umístěny temp soubory
+    /// Nastaveni fyzickeho uloziste souboru
     /// </summary>
-    public string StoragePath { get; set; } = null!;
+    public StorageClientConfiguration StorageClient { get; set; } = null!;
 }

@@ -26,7 +26,7 @@ public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest, Guid
             throw new NobyValidationException(90037);
         }
 
-        var result = await _tempFileManager.Save(request.File, cancellationToken);
+        var result = await _tempFileManager.Save(request.File, cancellationToken: cancellationToken);
         return result.TempStorageItemId;
     }
 }

@@ -2,19 +2,16 @@
 using CIS.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.Identity.Client.Extensions.Msal;
 using SharedComponents.Storage.Database;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SharedComponents.Storage;
 
 internal class TempStorage
     : ITempStorage
 {
-    public async Task<TempStorageItem> Save(
-        IFormFile file,
-        CancellationToken cancellationToken = default)
-        => await Save(file, null, null, null, cancellationToken);
-
     public async Task<TempStorageItem> Save(
         IFormFile file,
         long? objectId = null,
@@ -36,11 +33,7 @@ internal class TempStorage
         validateFile(fileInstance);
 
         // zapsat na disk
-        using (var stream = new FileStream(getPath(fileInstance.TempStorageItemId), FileMode.Create))
-        {
-            await file.CopyToAsync(stream, cancellationToken);
-            await stream.FlushAsync(cancellationToken);
-        }
+        await _storageClient.SaveFile(file.OpenReadStream(), fileInstance.TempStorageItemId.ToString(), cancellationToken: cancellationToken);
 
         // ulozit do DB
         await saveFileToDatabase(fileInstance, cancellationToken);
@@ -51,16 +44,17 @@ internal class TempStorage
     public async Task<TempStorageItem> Save(
         byte[] fileData,
         string mimeType,
-        string fileName,
+        string? fileName = null,
         long? objectId = null,
         string? objectType = null,
         Guid? sessionId = null,
         CancellationToken cancellationToken = default)
     {
+        var guid = Guid.NewGuid();
         var fileInstance = new TempStorageItem
         {
-            TempStorageItemId = Guid.NewGuid(),
-            FileName = fileName,
+            TempStorageItemId = guid,
+            FileName = fileName ?? guid.ToString(),
             MimeType = mimeType,
             SessionId = sessionId,
             ObjectId = objectId,
@@ -71,7 +65,7 @@ internal class TempStorage
         validateFile(fileInstance);
 
         // zapsat na disk
-        await File.WriteAllBytesAsync(getPath(fileInstance.TempStorageItemId), fileData, cancellationToken);
+        await _storageClient.SaveFile(fileData, fileInstance.TempStorageItemId.ToString(), cancellationToken:  cancellationToken);
 
         // ulozit do DB
         await saveFileToDatabase(fileInstance, cancellationToken);
@@ -110,13 +104,7 @@ internal class TempStorage
 
     public async Task<byte[]> GetContent(Guid tempStorageItemId, CancellationToken cancellationToken = default)
     {
-        string path = getPath(tempStorageItemId);
-        if (!File.Exists(path))
-        {
-            throw new CisNotFoundException(0, $"TempFileManager: temp file '{path}' not found");
-        }
-
-        return await File.ReadAllBytesAsync(path, cancellationToken);
+        return await _storageClient.GetFile(tempStorageItemId.ToString(), cancellationToken: cancellationToken);
     }
 
     public async Task Delete(Guid tempStorageItemId, CancellationToken cancellationToken = default)
@@ -131,7 +119,7 @@ internal class TempStorage
         // v celku nas nezajima, jestli je soubor smazany nebo ne
         try
         {
-            File.Delete(getPath(tempStorageItemId));
+            await _storageClient.DeleteFile(tempStorageItemId.ToString(), cancellationToken: cancellationToken);
         }
         catch { }
     }
@@ -150,12 +138,15 @@ internal class TempStorage
         {
             foreach (var id in tempStorageItemId)
             {
-                File.Delete(getPath(id));
+                await _storageClient.DeleteFile(id.ToString(), cancellationToken: cancellationToken);
             }
         }
         catch { }
     }
 
+    /// <summary>
+    /// Kontrola nazvu/koncovky souboru
+    /// </summary>
     private void validateFile(TempStorageItem fileInstance)
     {
         // overit validni extension
@@ -176,15 +167,13 @@ internal class TempStorage
         }
     }
 
+    /// <summary>
+    /// Ulozeni metadat do databaze
+    /// </summary>
     private async Task saveFileToDatabase(TempStorageItem fileInstance, CancellationToken cancellationToken)
     {
-        // ulozit do DB
-        string insertSql = $"INSERT INTO {_tableName} (TempStorageItemId, FileName, MimeType, ObjectId, ObjectType, SessionId, TraceId) VALUES (@TempStorageItemId, @FileName, @MimeType, @ObjectId, @ObjectType, @SessionId, @TraceId)";
-        await _connectionProvider.ExecuteDapperAsync(insertSql, fileInstance, cancellationToken);
+        await _connectionProvider.ExecuteDapperAsync(_insertSql, fileInstance, cancellationToken);
     }
-
-    private string getPath(Guid tempStorageItemId)
-        => Path.Combine(_configuration.StoragePath, tempStorageItemId.ToString());
 
     private readonly string[] _defaultAllowedFileExtensions = 
     [
@@ -205,13 +194,23 @@ internal class TempStorage
     ];
 
     private const string _tableName = "dbo.TempStorageItem";
+    private const string _insertSql = $"INSERT INTO {_tableName} (TempStorageItemId, FileName, MimeType, ObjectId, ObjectType, SessionId, TraceId) VALUES (@TempStorageItemId, @FileName, @MimeType, @ObjectId, @ObjectType, @SessionId, @TraceId)";
 
     private readonly Configuration.TempStorageConfiguration _configuration;
     private readonly IConnectionProvider<ITempStorageConnection> _connectionProvider;
+    private readonly IStorageClient<ITempStorage> _storageClient;
 
     public TempStorage(IConnectionProvider<ITempStorageConnection> connectionProvider, IOptions<Configuration.StorageConfiguration> configuration)
     {
         _connectionProvider = connectionProvider;
         _configuration = configuration.Value.TempStorage!;
+
+        _storageClient = _configuration.StorageClient.StorageType switch
+        {
+            Configuration.StorageClientTypes.FileSystem => new StorageClients.FileSystemStorageClient<ITempStorage>(_configuration.StorageClient),
+            Configuration.StorageClientTypes.AzureBlob => new StorageClients.AzureBlobStorageClient<ITempStorage>(_configuration.StorageClient!),
+            Configuration.StorageClientTypes.AmazonS3 => new StorageClients.AmazonS3StorageClient<ITempStorage>(_configuration.StorageClient!),
+            _ => throw new CisConfigurationException(0, $"CisStorageServices: configuration type not found for TempStorage client")
+        };
     }
 }

@@ -26,7 +26,7 @@ public static class StorageStartupExtensions
 
     private static void addTempStorage(WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<ITempStorage, TempStorage>();
+        builder.Services.AddSingleton<ITempStorage, TempStorage>();
 
         builder.Services.AddDapper(services =>
         {

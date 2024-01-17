@@ -8,13 +8,30 @@ internal sealed class AzureBlobStorageClient<TStorage>
 {
     public async Task<byte[]> GetFile(string fileName, string? folderOrContainer = null, CancellationToken cancellationToken = default)
     {
-        var result = await getBlobContainerClient(ref folderOrContainer).GetBlobClient(fileName).DownloadContentAsync(cancellationToken);
+        var result = await getBlobContainerClient(ref folderOrContainer)
+            .GetBlobClient(fileName)
+            .DownloadContentAsync(cancellationToken);
+
         return result.Value.Content.ToArray();
     }
 
     public async Task SaveFile(byte[] data, string fileName, string? folderOrContainer = null, CancellationToken cancellationToken = default)
     {
-        await getBlobContainerClient(ref folderOrContainer).UploadBlobAsync(fileName, new BinaryData(data), cancellationToken);
+        await getBlobContainerClient(ref folderOrContainer)
+            .UploadBlobAsync(fileName, new BinaryData(data), cancellationToken);
+    }
+
+    public async Task SaveFile(Stream data, string fileName, string? folderOrContainer = null, CancellationToken cancellationToken = default)
+    {
+        await getBlobContainerClient(ref folderOrContainer)
+            .UploadBlobAsync(fileName, data, cancellationToken);
+    }
+
+    public async Task DeleteFile(string fileName, string? folderOrContainer = null, CancellationToken cancellationToken = default)
+    {
+        await getBlobContainerClient(ref folderOrContainer)
+            .GetBlobClient(fileName)
+            .DeleteIfExistsAsync(cancellationToken: cancellationToken);
     }
 
     private BlobContainerClient getBlobContainerClient(ref string? container)

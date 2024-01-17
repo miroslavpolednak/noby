@@ -31,19 +31,23 @@ public class TestController : ControllerBase
         return await manager.IsEnabledAsync(FeatureFlagsConstants.BlueBang) ? "true" : "false";
     }
 
-    [HttpGet("t2")]
-    public async Task T2()
+    [HttpPost("t2")]
+    public async Task<string> T2(IFormFile file)
     {
-        var storage = _context.HttpContext.RequestServices.GetRequiredService<IStorageClient<IStorage1>>();
-        await storage.SaveFile(System.IO.File.ReadAllBytes("d:\\newactuals.sql"), "newactuals.sql");
+        var storage = _context.HttpContext.RequestServices.GetRequiredService<ITempStorage>();
+        //var result = await storage.Save(System.IO.File.ReadAllBytes("d:\\newactuals.sql"), "text/plain");
+        var result = await storage.Save(file);
+        return result.TempStorageItemId.ToString();
     }
 
     [HttpGet("t3")]
-    public async Task<int> T3([FromQuery] string id)
+    public async Task<TempStorageItem> T3([FromQuery] string id)
     {
-        var storage = _context.HttpContext.RequestServices.GetRequiredService<IStorageClient<IStorage1>>();
-        var result = await storage.GetFile("newactuals.sql");
-        return result.Length;
+        var storage = _context.HttpContext.RequestServices.GetRequiredService<ITempStorage>();
+        var result1 = await storage.GetContent(Guid.Parse(id));
+        var result2 = await storage.GetMetadata(Guid.Parse(id));
+        result2.FileName += $" ({result1.Length})";
+        return result2;
     }
 
     [HttpGet("t4")]

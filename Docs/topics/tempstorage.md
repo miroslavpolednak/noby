@@ -31,7 +31,7 @@ Popis jednotlivých vlastností konfigurace je v komentářích této třídy.
   "CisStorage": {
     "TempStorage": {
       "UseAllowedFileExtensions": false,
-      "StoragePath": "c:/tempfiles"
+      "StorageClient": { ... } // viz. nastavení [Storage klienta](./filestorage.md)
     }
   }
 }

@@ -31,7 +31,7 @@ Storage komponenta je konfigurována standardně v *appsettings.json* ve vlastn�
 ```json
 {
     "CisStorage": {
-        "StorageClients": {
+        "StorageClients": { // definice jednoho nebo více Storage klientů
             ...
         }
     }

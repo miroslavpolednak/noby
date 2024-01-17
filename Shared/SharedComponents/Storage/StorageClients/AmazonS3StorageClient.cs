@@ -13,8 +13,8 @@ internal sealed class AmazonS3StorageClient<TStorage>
     {
         var getRequest = new GetObjectRequest
         {
-            Key = fileName,
-            BucketName = folderOrContainer
+            Key = Path.Combine(folderOrContainer ?? "", fileName),
+            BucketName = _bucket
         };
 
         var response = await _client.GetObjectAsync(getRequest, cancellationToken);
@@ -27,12 +27,16 @@ internal sealed class AmazonS3StorageClient<TStorage>
     public async Task SaveFile(byte[] data, string fileName, string? folderOrContainer = null, CancellationToken cancellationToken = default)
     {
         using var memoryStream = new MemoryStream(data);
+        await SaveFile(memoryStream, fileName, folderOrContainer, cancellationToken);
+    }
 
+    public async Task SaveFile(Stream data, string fileName, string? folderOrContainer = null, CancellationToken cancellationToken = default)
+    {
         var putRequest = new PutObjectRequest
         {
-            BucketName = folderOrContainer,
-            Key = fileName,
-            InputStream = memoryStream
+            BucketName = _bucket,
+            Key = Path.Combine(folderOrContainer ?? "", fileName),
+            InputStream = data
         };
 
         putRequest.Headers["x-emc-retention-period"] = _retentionPeriod;
@@ -40,13 +44,25 @@ internal sealed class AmazonS3StorageClient<TStorage>
         await _client.PutObjectAsync(putRequest, cancellationToken);
     }
 
-    private string _retentionPeriod;
+    public async Task DeleteFile(string fileName, string? folderOrContainer = null, CancellationToken cancellationToken = default)
+    {
+        var request = new DeleteObjectRequest
+        {
+            BucketName = _bucket,
+            Key = Path.Combine(folderOrContainer ?? "", fileName)
+        };
+        await _client.DeleteObjectAsync(request, cancellationToken);
+    }
+
+    private readonly string _retentionPeriod;
     private readonly AmazonS3Client _client;
+    private readonly string _bucket;
 
     public AmazonS3StorageClient(StorageClientConfiguration configuration)
     {
         _retentionPeriod = configuration.AmazonS3!.RetentionPeriod.ToString(CultureInfo.InvariantCulture);
-
+        _bucket = configuration.AmazonS3!.Bucket;
+        
         var config = new AmazonS3Config
         {
             ServiceURL = configuration.AmazonS3!.ServiceUrl,
@@ -54,6 +70,7 @@ internal sealed class AmazonS3StorageClient<TStorage>
         };
 
         var credentials = new BasicAWSCredentials(configuration.AmazonS3.AccessKey, configuration.AmazonS3.SecretKey);
+
         _client = new AmazonS3Client(credentials, config);
     }
 
