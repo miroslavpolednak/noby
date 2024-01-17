@@ -108,7 +108,7 @@ internal sealed class CisBackgroundService<TBackgroundService>
             }
             finally
             {
-                if (canJobRun && connection is not null)
+                if (canJobRun && connection?.State == ConnectionState.Open)
                 {
                     // Technical timeout, when job will execute very fast and the exception (Execution Timeout Expired) does not have time to be thrown out
                     await Task.Delay(TimeSpan.FromSeconds(_technicalTimeout + 5), stoppingToken);
