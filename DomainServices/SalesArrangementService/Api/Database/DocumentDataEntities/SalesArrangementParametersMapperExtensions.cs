@@ -84,7 +84,8 @@ internal static class SalesArrangementParametersMapperExtensions
                     AccountNumber = x.AccountNumber,
                     BankCode = x.BankCode,
                     VariableSymbol = x.VariableSymbol,
-                    SpecificSymbol = x.SpecificSymbol
+                    SpecificSymbol = x.SpecificSymbol,
+                    ConstantSymbol = x.ConstantSymbol
                 })
             },
             DrawingDate = drawingData.DrawingDate,
