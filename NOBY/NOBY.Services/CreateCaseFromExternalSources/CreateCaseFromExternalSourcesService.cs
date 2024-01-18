@@ -12,15 +12,10 @@ public sealed class CreateCaseFromExternalSourcesService
     public async Task CreateCase(long caseId, CancellationToken cancellationToken)
     {
         var mortgageInstance = (await _productService.GetMortgage(caseId, cancellationToken)).Mortgage;
-
         var productType = (await _codebookService.ProductTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == mortgageInstance.ProductTypeId);
-        if (productType?.MandantId != (int)Mandants.Kb)
-        {
-            throw new CisNotFoundException(0, "Product is not KB type");
-        }
-
-        if (!validateMortgageData(mortgageInstance))
+        
+        if (productType?.MandantId != (int)Mandants.Kb || !validateMortgageData(mortgageInstance))
         {
             throw new NobyValidationException(90045);
         }
