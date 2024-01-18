@@ -5,15 +5,17 @@ using NOBY.Infrastructure.Security;
 
 namespace NOBY.Services.CreateCaseFromExternalSources;
 
+// CreateCaseInNobyFromKonsDB
 [TransientService, SelfService]
 public sealed class CreateCaseFromExternalSourcesService
 {
     public async Task CreateCase(long caseId, CancellationToken cancellationToken)
     {
-        var productTypes = (await _codebookService.ProductTypes(cancellationToken)).Select(t => t.Id);
-
         var mortgageInstance = (await _productService.GetMortgage(caseId, cancellationToken)).Mortgage;
-        if (!productTypes.Any(t => productTypes.Contains(mortgageInstance.ProductTypeId)))
+
+        var productType = (await _codebookService.ProductTypes(cancellationToken))
+            .FirstOrDefault(t => t.Id == mortgageInstance.ProductTypeId);
+        if (productType?.MandantId != (int)Mandants.Kb)
         {
             throw new CisNotFoundException(0, "Product is not KB type");
         }
@@ -30,12 +32,13 @@ public sealed class CreateCaseFromExternalSourcesService
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState);
 
         // instance uzivatele
+
         var customerIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
         var customer = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);
 
         // prioritne chceme pouzit customera z CM
         var kbIdentity = customer.Identities.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb);
-        if (kbIdentity is not null)
+        if (productType.MandantId == (int)Mandants.Kb && kbIdentity is not null)
         {
             customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
         }
