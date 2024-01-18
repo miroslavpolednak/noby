@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\DomainServices\RiskIntegrationService\Clients\DomainServices.RiskIntegrationService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
     <ProjectReference Include="..\..\InternalServices\DataAggregatorService\Clients\CIS.InternalServices.DataAggregatorService.Clients.csproj" />
+    <ProjectReference Include="..\..\Shared\SharedComponents\SharedComponents.csproj" />
     <ProjectReference Include="..\NOBY.Database\NOBY.Database.csproj" />
     <ProjectReference Include="..\NOBY.Dto\NOBY.Dto.csproj" />
     <ProjectReference Include="..\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />

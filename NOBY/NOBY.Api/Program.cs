@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpLogging;
 using CIS.Infrastructure.WebApi;
 using NOBY.Infrastructure.Configuration;
 using SharedAudit;
+using SharedComponents.Storage;
+using NOBY.Api.Endpoints.Test;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,9 @@ try
         .AddCisTracing()
         .AddCisApiVersioning()
         .AddCisHealthChecks();
+
+    // add temp storage
+    builder.AddCisStorageServices().AddStorageClient<IStorage1>();
 
     builder.Services.AddCisSecurityHeaders();
 

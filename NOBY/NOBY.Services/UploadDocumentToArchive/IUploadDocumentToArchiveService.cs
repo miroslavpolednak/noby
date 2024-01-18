@@ -1,6 +1,4 @@
-﻿using NOBY.Services.TempFileManager;
-
-namespace NOBY.Services.UploadDocumentToArchive;
+﻿namespace NOBY.Services.UploadDocumentToArchive;
 
 public interface IUploadDocumentToArchiveService
 {

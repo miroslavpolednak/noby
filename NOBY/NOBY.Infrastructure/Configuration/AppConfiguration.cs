@@ -13,11 +13,6 @@ public sealed class AppConfiguration
     public bool UseDeveloperExceptionPage { get; set; }
 
     /// <summary>
-    /// Folder where temp files gonna be stored  
-    /// </summary>
-    public string FileTempFolderLocation { get; set; } = Path.Combine(Path.GetTempPath(), "Noby");
-
-    /// <summary>
     /// Max allowed file size for upload [MB]
     /// </summary>
     public int MaxFileSize { get; set; } = 20;

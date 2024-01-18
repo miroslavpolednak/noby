@@ -1,15 +1,14 @@
 ﻿using NOBY.Services.FileAntivirus;
-using NOBY.Services.TempFileManager;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.UploadDocument;
 
 public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest, Guid>
 {
-    private readonly ITempFileManagerService _tempFileManager;
+    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
     private readonly IFileAntivirusService _fileAntivirus;
     private readonly ILogger<UploadDocumentHandler> _logger;
 
-    public UploadDocumentHandler(ITempFileManagerService tempFileManager, IFileAntivirusService fileAntivirus, ILogger<UploadDocumentHandler> logger)
+    public UploadDocumentHandler(SharedComponents.Storage.ITempStorage tempFileManager, IFileAntivirusService fileAntivirus, ILogger<UploadDocumentHandler> logger)
     {
         _fileAntivirus = fileAntivirus;
         _tempFileManager = tempFileManager;
@@ -27,7 +26,7 @@ public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest, Guid
             throw new NobyValidationException(90037);
         }
 
-        var result = await _tempFileManager.Save(request.File, cancellationToken);
-        return result.TempFileId;
+        var result = await _tempFileManager.Save(request.File, cancellationToken: cancellationToken);
+        return result.TempStorageItemId;
     }
 }

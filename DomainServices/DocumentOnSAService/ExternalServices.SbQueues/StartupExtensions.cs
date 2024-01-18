@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
+using CIS.Core;
 
 namespace ExternalServices.SbQueues;
 
@@ -25,7 +26,7 @@ public static class StartupExtensions
         var configuration = builder.Configuration.GetSection(GetSectionName(version))
             .Get<SbQueuesConfiguration>();
 
-        var connectionString = builder.Configuration.GetConnectionString("default");
+        var connectionString = builder.Configuration.GetConnectionString(CisGlobalConstants.DefaultConnectionStringKey);
 
         ValidateConfiguration(configuration, connectionString, version);
 

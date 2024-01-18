@@ -2,7 +2,6 @@
 using CIS.Core;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.UserService.Clients;
-using NOBY.Services.TempFileManager;
 using Google.Protobuf;
 using NOBY.Services.DocumentHelper;
 
@@ -51,7 +50,7 @@ internal sealed class UploadDocumentToArchiveService
         return documentIds;
     }
 
-    private readonly ITempFileManagerService _tempFileManager;
+    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
     private readonly IDateTime _dateTime;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly IUserServiceClient _userServiceClient;
@@ -59,7 +58,7 @@ internal sealed class UploadDocumentToArchiveService
     private readonly IDocumentHelperService _documentHelper;
 
     public UploadDocumentToArchiveService(
-        ITempFileManagerService tempFileManager,
+        SharedComponents.Storage.ITempStorage tempFileManager,
         IDateTime dateTime,
         IDocumentArchiveServiceClient documentArchiveService,
         IUserServiceClient userServiceClient,

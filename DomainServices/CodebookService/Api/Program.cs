@@ -21,7 +21,7 @@ SharedComponents.GrpcServiceBuilder
 
         // add general Dapper repository
         builder.Services
-            .AddDapper(builder.Configuration.GetConnectionString("default")!)
+            .AddDapper(builder.Configuration.GetConnectionString(CisGlobalConstants.DefaultConnectionStringKey)!)
             .AddDapper<IXxdHfDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxdhf")!)
             .AddDapper<IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb")!);
 
