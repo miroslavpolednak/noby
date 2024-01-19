@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.NotificationService.v2;
+option csharp_namespace = "CIS.InternalServices.NotificationService.v2";
+
+message DocumentHash
+{
+    string Hash = 1;
+    string HashAlgorithm = 2;
+}
+
+message Identifier
+{
+    string Identity = 1;
+    string IdentityScheme = 2;
+}
+
+message NotificationIdResponse {
+    string NotificationId = 1;
+}
