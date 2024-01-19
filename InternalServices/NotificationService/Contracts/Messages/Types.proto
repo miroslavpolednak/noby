@@ -2,6 +2,8 @@
 package CIS.InternalServices.NotificationService.v2;
 option csharp_namespace = "CIS.InternalServices.NotificationService.v2";
 
+import "google/protobuf/wrappers.proto";
+
 message DocumentHash
 {
     string Hash = 1;
@@ -14,6 +16,106 @@ message Identifier
     string IdentityScheme = 2;
 }
 
-message NotificationIdResponse {
+message SmsData {
+	string PhoneNumber = 1;
+    google.protobuf.Int32Value ProcessingPriority = 2;
+    string Type = 3;
+    Identifier Identifier = 4;
+    google.protobuf.Int64Value CaseId = 5;
+    google.protobuf.StringValue CustomId = 6;
+    google.protobuf.StringValue DocumentId = 7;
+    DocumentHash DocumentHash = 8;
+}
+
+message StringKeyValuePair
+{
+    string Key = 1;
+    string Value = 2;
+}
+
+message EmailAddress
+{
+    string Value = 1;
+    Party Party = 2;
+
+    message Party
+    {
+        LegalPerson LegalPerson = 1;
+        NaturalPerson NaturalPerson = 2;   
+    }
+
+    message LegalPerson
+    {
+        string Name = 1;
+    }
+
+    message NaturalPerson
+    {
+        string FirstName = 1;
+        google.protobuf.StringValue MiddleName = 2;
+        string Surname = 3;
+    }
+}
+
+message EmailAttachment
+{
+    string Binary = 1;
+    string Filename = 2;
+}
+
+enum NotificationState
+{
+    Unknown = 0;
+    InProgress = 1;
+    Unsent = 2;
+    Sent = 3;
+    Delivered = 4;
+    Invalid = 5;
+    Error = 6;
+}
+
+enum NotificationChannel
+{
+    Unknown = 0;
+    Sms = 1;
+    Email = 2;
+}
+
+message StatisticsData
+{
+    Status Email = 1;
+    Status SMS = 2;
+
+    message Status
+    {
+        google.protobuf.Int32Value Delivered = 1;
+        google.protobuf.Int32Value Error = 2;
+        google.protobuf.Int32Value InProgress = 3;
+        google.protobuf.Int32Value Sent = 4;
+        google.protobuf.Int32Value Unsent = 5;
+        google.protobuf.Int32Value Invalid = 6;
+    }
+}
+
+message ResultData
+{
     string NotificationId = 1;
+    NotificationState State = 2;
+    NotificationChannel Channel = 3;
+    repeated ResultError Errors = 4;
+    Identifier Identifier = 5;
+    google.protobuf.Int64Value CaseId = 6;
+    google.protobuf.StringValue CustomId = 7;
+    google.protobuf.StringValue DocumentId = 8;
+    DocumentHash DocumentHash = 9;
+    google.protobuf.Timestamp RequestTimestamp = 10;
+    RequestData RequestData = 11;
+    google.protobuf.Timestamp ResultTimestamp = 12;
+    string CreatedBy = 13;
+
+    message ResultError
+    {
+        string Code = 1;
+        string Message = 2;
+    }
 }

@@ -2,9 +2,6 @@
 package CIS.InternalServices.NotificationService.v2;
 option csharp_namespace = "CIS.InternalServices.NotificationService.v2";
 
-import "Messages/Types.proto";
-
-message SendSmsFromTemplateRequest {
-	SmsData Sms = 1;
-    repeated StringKeyValuePair Placeholders = 2;
+message GetResultRequest {
+	string NotificationId = 1;
 }

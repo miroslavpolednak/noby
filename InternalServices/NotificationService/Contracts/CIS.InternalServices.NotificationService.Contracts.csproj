@@ -17,10 +17,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Messages\SendSms.proto" />
-	  <None Remove="Messages\SendSmsFromTemplate.proto" />
-	  <None Remove="Messages\Types.proto" />
-	  <None Remove="NotificationService.v2.proto" />
+	  <None Remove="Messages\GetDetailedStatistics.proto" />
+	  <None Remove="Messages\GetResult.proto" />
+	  <None Remove="Messages\GetStatistics.proto" />
+	  <None Remove="Messages\NotificationIdResponse.proto" />
+	  <None Remove="Messages\SearchResults.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,10 +39,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Protobuf Include="Messages\SendSmsFromTemplate.proto" GrpcServices="None">
-	    <ProtoRoot>./</ProtoRoot>
-	    <AdditionalImportDirs>../../../Shared/SharedTypes/GrpcTypes/Protos</AdditionalImportDirs>
-	  </Protobuf>
+	  <Protobuf Include="Messages\GetDetailedStatistics.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+	  <Protobuf Include="Messages\NotificationIdResponse.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+	  <Protobuf Include="Messages\GetStatistics.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+	  <Protobuf Include="Messages\SearchResults.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+	  <Protobuf Include="Messages\SendEmailFromTemplate.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+	  <Protobuf Include="Messages\SendEmail.proto" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+	  <Protobuf Include="Messages\GetResult.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+	  <Protobuf Include="Messages\SendSmsFromTemplate.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	  <Protobuf Include="Messages\Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	  <Protobuf Include="Messages\SendSms.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	  <Protobuf Include="NotificationService.v2.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />

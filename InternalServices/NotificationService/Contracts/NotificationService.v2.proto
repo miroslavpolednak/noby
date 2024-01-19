@@ -4,6 +4,12 @@ option csharp_namespace = "CIS.InternalServices.NotificationService.v2";
 
 import "google/api/annotations.proto";
 import "Messages/SendSms.proto";
+import "Messages/SendSmsFromTemplate.proto";
+import "Messages/SendEmail.proto";
+import "Messages/SendEmailFromTemplate.proto";
+import "Messages/GetResult.proto";
+import "Messages/GetStatistics.proto";
+import "Messages/GetDetailedStatistics.proto";
 import "Messages/Types.proto";
 
 service NotificationService {
@@ -13,27 +19,27 @@ service NotificationService {
 	   };
    }
 
-   rpc SendSmsFromTemplate(SendSmsFromTemplate) returns (NotificationIdResponse) {
+   rpc SendSmsFromTemplate(SendSmsFromTemplateRequest) returns (NotificationIdResponse) {
 	   option (google.api.http) = {
-			post: "/v2/sms"
+			post: "/v2/templated-sms"
 	   };
    }
 
-   rpc SendEmail(SendEmailRequest) returns (SendEmailResponse) {
+   rpc SendEmail(SendEmailRequest) returns (NotificationIdResponse) {
 	   option (google.api.http) = {
 			post: "/v2/email"
 	   };
    }
 
-   rpc SendEmailFromTemplate(SendEmailFromTemplateRequest) returns (SendEmailFromTemplateResponse) {
+   rpc SendEmailFromTemplate(SendEmailFromTemplateRequest) returns (NotificationIdResponse) {
 	   option (google.api.http) = {
-			post: "/v2/sms"
+			post: "/v2/templated-email"
 	   };
    }
 
-   rpc GetResult(GetResultRequest) returns (GetResultResponse) {
+   rpc GetResult(GetResultRequest) returns (ResultData) {
 	   option (google.api.http) = {
-			post: "/v2/sms"
+			post: "/v2/result"
 	   };
    }
 
