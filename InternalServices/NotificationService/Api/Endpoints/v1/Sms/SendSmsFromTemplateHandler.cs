@@ -6,7 +6,7 @@ using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstracti
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
-using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
 using DomainServices.CodebookService.Clients;
 using MediatR;
 

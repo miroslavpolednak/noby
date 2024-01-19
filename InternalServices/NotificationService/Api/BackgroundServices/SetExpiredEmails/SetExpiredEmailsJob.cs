@@ -1,7 +1,7 @@
 ﻿
 using CIS.Core;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
@@ -30,7 +30,7 @@ public sealed class SetExpiredEmailsJob
     {
         // nastavit unsent emailum ktere uz nejsou k odeslani
         var emails = await _dbContext.EmailResults
-            .Where(t => t.State == NotificationState.InProgress && t.SenderType == Contracts.Statistics.Dto.SenderType.MP)
+            .Where(t => t.State == NotificationState.InProgress && t.SenderType == LegacyContracts.Statistics.Dto.SenderType.MP)
             .Where(t => t.RequestTimestamp < _dateTime.Now.AddMinutes(_configuration.EmailSlaInMinutes * -1) && !t.Resend)
             .ToListAsync(cancellationToken);
 

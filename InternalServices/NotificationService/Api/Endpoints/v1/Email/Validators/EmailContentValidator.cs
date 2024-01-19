@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
 using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Email.Dto;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 

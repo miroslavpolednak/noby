@@ -132,7 +132,7 @@ try
         .UseCisServiceUserContext();
 
     app.MapCodeFirstGrpcHealthChecks();
-    app.MapGrpcService<NotificationService>();
+    //app.MapGrpcService<NotificationService>();
     app.MapCodeFirstGrpcReflectionService();
     app.MapControllers();
     app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, new HealthCheckOptions

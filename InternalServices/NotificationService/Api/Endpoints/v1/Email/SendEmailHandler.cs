@@ -7,7 +7,7 @@ using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstrac
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
-using CIS.InternalServices.NotificationService.Contracts.Email;
+using CIS.InternalServices.NotificationService.LegacyContracts.Email;
 using DomainServices.CodebookService.Clients;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -78,8 +78,8 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         result.DocumentHash = request.DocumentHash?.Hash;
         result.HashAlgorithm = request.DocumentHash?.HashAlgorithm;
         result.RequestTimestamp = _dateTime.Now;
-        result.SenderType = _mcsSenders.Contains(domainName) ? Contracts.Statistics.Dto.SenderType.KB
-            : _mpssSenders.Contains(domainName) ? Contracts.Statistics.Dto.SenderType.MP
+        result.SenderType = _mcsSenders.Contains(domainName) ? LegacyContracts.Statistics.Dto.SenderType.KB
+            : _mpssSenders.Contains(domainName) ? LegacyContracts.Statistics.Dto.SenderType.MP
             : throw new ArgumentException(domainName);
 
         result.CreatedBy = username;
@@ -99,7 +99,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         {
             var consumerId = _userAdapterService.GetConsumerId();
             
-            if (result.SenderType == Contracts.Statistics.Dto.SenderType.KB)
+            if (result.SenderType == LegacyContracts.Statistics.Dto.SenderType.KB)
             {
                 try
                 {
@@ -134,7 +134,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
                 
                 await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
             }
-            else if (result.SenderType == Contracts.Statistics.Dto.SenderType.MP)
+            else if (result.SenderType == LegacyContracts.Statistics.Dto.SenderType.MP)
             {
                 SendEmail email = new()
                 {

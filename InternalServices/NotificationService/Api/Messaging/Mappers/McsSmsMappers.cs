@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Common;
+﻿using CIS.InternalServices.NotificationService.LegacyContracts.Common;
 
 namespace CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
 

@@ -1,6 +1,6 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
 using Result = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction.Result;
 

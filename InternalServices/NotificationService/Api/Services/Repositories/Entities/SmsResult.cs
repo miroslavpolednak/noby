@@ -11,5 +11,5 @@ public class SmsResult : Result
     
     public string PhoneNumber { get; set; } = null!;
     
-    public override Contracts.Result.Dto.Result ToDto() => this.Map();
+    public override LegacyContracts.Result.Dto.Result ToDto() => this.Map();
 }

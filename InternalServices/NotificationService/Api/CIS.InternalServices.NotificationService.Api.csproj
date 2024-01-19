@@ -52,6 +52,7 @@
     <ProjectReference Include="..\..\..\NOBY\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
     <ProjectReference Include="..\..\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
+    <ProjectReference Include="..\CIS.InternalServices.NotificationService.LegacyContracts\CIS.InternalServices.NotificationService.LegacyContracts.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.NotificationService.Contracts.csproj" />
   </ItemGroup>
   

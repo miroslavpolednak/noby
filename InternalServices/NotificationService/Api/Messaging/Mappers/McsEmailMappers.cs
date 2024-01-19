@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
+﻿using CIS.InternalServices.NotificationService.LegacyContracts.Email.Dto;
 
 namespace CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
 

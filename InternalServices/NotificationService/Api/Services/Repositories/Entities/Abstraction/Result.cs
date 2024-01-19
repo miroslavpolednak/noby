@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
@@ -43,5 +43,5 @@ public abstract class Result
     
     public string CreatedBy { get; set; } = null!;
 
-    public abstract Contracts.Result.Dto.Result ToDto();
+    public abstract LegacyContracts.Result.Dto.Result ToDto();
 }

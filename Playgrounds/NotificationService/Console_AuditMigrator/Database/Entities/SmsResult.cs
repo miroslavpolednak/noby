@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 
 namespace Console_AuditMigrator.Database.Entities;
 

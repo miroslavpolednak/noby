@@ -5,7 +5,7 @@ using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstracti
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
-using CIS.InternalServices.NotificationService.Contracts.Email;
+using CIS.InternalServices.NotificationService.LegacyContracts.Email;
 using DomainServices.CodebookService.Clients;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -72,8 +72,8 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         result.DocumentHash = request.DocumentHash?.Hash;
         result.HashAlgorithm = request.DocumentHash?.HashAlgorithm;
         result.RequestTimestamp = _dateTime.Now;
-        result.SenderType = _mcsSenders.Contains(domainName) ? Contracts.Statistics.Dto.SenderType.KB
-            : _mpssSenders.Contains(domainName) ? Contracts.Statistics.Dto.SenderType.MP
+        result.SenderType = _mcsSenders.Contains(domainName) ? LegacyContracts.Statistics.Dto.SenderType.KB
+            : _mpssSenders.Contains(domainName) ? LegacyContracts.Statistics.Dto.SenderType.MP
             : throw new ArgumentException(domainName);
 
         result.CreatedBy = username;

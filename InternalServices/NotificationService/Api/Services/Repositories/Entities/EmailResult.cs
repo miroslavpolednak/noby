@@ -1,5 +1,5 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Services.Repositories.Mappers;
-using CIS.InternalServices.NotificationService.Contracts.Statistics.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Statistics.Dto;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 
@@ -9,5 +9,5 @@ public class EmailResult : Abstraction.Result
 
     public bool Resend { get; set; }
 
-    public override Contracts.Result.Dto.Result ToDto() => this.Map();
+    public override LegacyContracts.Result.Dto.Result ToDto() => this.Map();
 }

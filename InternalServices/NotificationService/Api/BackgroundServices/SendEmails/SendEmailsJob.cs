@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+﻿using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using MailKit.Net.Smtp;
@@ -37,7 +37,7 @@ public sealed class SendEmailsJob
     {
         // vytahnout emaily k odeslani
         var emails = await _dbContext.EmailResults
-            .Where(t => t.State == NotificationState.InProgress && t.SenderType == Contracts.Statistics.Dto.SenderType.MP)
+            .Where(t => t.State == NotificationState.InProgress && t.SenderType == LegacyContracts.Statistics.Dto.SenderType.MP)
             .OrderBy(t => Guid.NewGuid())
             .Take(_configuration.NumberOfEmailsAtOnce)
             .ToListAsync(cancellationToken);

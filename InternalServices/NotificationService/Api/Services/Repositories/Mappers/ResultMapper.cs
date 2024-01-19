@@ -1,6 +1,6 @@
-﻿using CIS.InternalServices.NotificationService.Contracts.Common;
+﻿using CIS.InternalServices.NotificationService.LegacyContracts.Common;
 using Entity = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
-using Dto = CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using Dto = CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 
 namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mappers;
 

@@ -1,10 +1,10 @@
 ﻿using CIS.Core.ErrorCodes;
-using CIS.InternalServices.NotificationService.Contracts.Common;
-using CIS.InternalServices.NotificationService.Contracts.Email;
-using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
-using CIS.InternalServices.NotificationService.Contracts.Result;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
-using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.InternalServices.NotificationService.LegacyContracts.Common;
+using CIS.InternalServices.NotificationService.LegacyContracts.Email;
+using CIS.InternalServices.NotificationService.LegacyContracts.Email.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
 
 namespace CIS.InternalServices.NotificationService.Api.ErrorHandling;
 

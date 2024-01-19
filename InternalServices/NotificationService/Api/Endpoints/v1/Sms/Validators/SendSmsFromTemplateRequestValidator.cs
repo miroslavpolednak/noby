@@ -1,6 +1,6 @@
 using CIS.Infrastructure.CisMediatR.GrpcValidation;
 using CIS.InternalServices.NotificationService.Api.Endpoints.Common;
-using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms.Validators;

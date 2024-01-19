@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using CIS.Infrastructure.CisMediatR.GrpcValidation;
-using CIS.InternalServices.NotificationService.Contracts.Common;
+using CIS.InternalServices.NotificationService.LegacyContracts.Common;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms.Validators;

@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CIS.InternalServices.NotificationService.Api.Endpoints.Infrastructure.AuditLog;
-using CIS.InternalServices.NotificationService.Contracts.Email;
-using CIS.InternalServices.NotificationService.Contracts.Result;
-using CIS.InternalServices.NotificationService.Contracts.Sms;
-using CIS.InternalServices.NotificationService.Contracts.Statistics;
-using CIS.InternalServices.NotificationService.Contracts.Resend;
+using CIS.InternalServices.NotificationService.LegacyContracts.Email;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result;
+using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
+using CIS.InternalServices.NotificationService.LegacyContracts.Statistics;
+using CIS.InternalServices.NotificationService.LegacyContracts.Resend;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -96,7 +96,7 @@ public class NotificationController : ControllerBase
     [ProducesResponseType(typeof(GetResultResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<Contracts.Result.Dto.Result> GetResult([Required] Guid id, CancellationToken token)
+    public async Task<LegacyContracts.Result.Dto.Result> GetResult([Required] Guid id, CancellationToken token)
     {
         var response = await _mediator.Send(new GetResultRequest
         {
@@ -113,10 +113,10 @@ public class NotificationController : ControllerBase
     /// </remarks>
     [HttpGet("result/search")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    [ProducesResponseType(typeof(List<Contracts.Result.Dto.Result>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<LegacyContracts.Result.Dto.Result>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<List<Contracts.Result.Dto.Result>> SearchResults([FromQuery] string? identity, [FromQuery] string? identityScheme,
+    public async Task<List<LegacyContracts.Result.Dto.Result>> SearchResults([FromQuery] string? identity, [FromQuery] string? identityScheme,
         [FromQuery] long? caseId, [FromQuery] string? customId, [FromQuery] string? documentId, CancellationToken token)
     {
         var response = await _mediator.Send(new SearchResultsRequest

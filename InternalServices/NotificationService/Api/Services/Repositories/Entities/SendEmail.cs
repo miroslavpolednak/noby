@@ -5,5 +5,5 @@ public class SendEmail
 {
     public int Version => 1;
 
-    public Contracts.Email.SendEmailRequest? Data { get; set; }
+    public LegacyContracts.Email.SendEmailRequest? Data { get; set; }
 }

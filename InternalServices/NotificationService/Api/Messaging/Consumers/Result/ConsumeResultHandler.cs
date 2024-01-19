@@ -3,7 +3,7 @@ using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using DomainServices.CodebookService.Clients;
 using MediatR;
 
