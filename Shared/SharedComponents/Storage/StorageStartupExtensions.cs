@@ -17,11 +17,11 @@ public static class StorageStartupExtensions
             {
                 var type = config?.TempStorage?.StorageClient?.StorageType ?? StorageClientTypes.None;
                 return type == StorageClientTypes.None ? true : validateStorageClient(config!.TempStorage!.StorageClient);
-            })
+            }, "SharedComponents.Storage: TempStorage client provider specific configuration is not valid or is missing")
             .Validate(config =>
             {   
                 return config?.StorageClients?.All(t => validateStorageClient(t.Value)) ?? true;
-            })
+            }, "SharedComponents.Storage: some of StorageClients provider specific configuration is not valid or is missing")
             .ValidateOnStart();
 
         return new CisStorageServicesBuilder(builder);
