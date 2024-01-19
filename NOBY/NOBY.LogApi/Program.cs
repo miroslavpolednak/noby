@@ -13,9 +13,9 @@ var log = builder.CreateStartupLogger();
 try
 {
     // konfigurace aplikace
+    var envConfiguration = builder.AddCisEnvironmentConfiguration();
     var appConfiguration = builder.AddNobyConfig();
 
-    var envConfiguration = builder.AddCisEnvironmentConfiguration();
     builder
         .AddCisCoreFeatures()
         .AddCisWebApiCors()

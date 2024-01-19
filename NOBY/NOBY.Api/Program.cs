@@ -19,13 +19,12 @@ try
 {
     #region register services
     // konfigurace aplikace
+    var envConfiguration = builder.AddCisEnvironmentConfiguration();
     var appConfiguration = builder.AddNobyConfig();
 
     // vlozit do DI vsechny custom services
     builder.Services.AddAttributedServices(typeof(NOBY.Services.IServicesAssembly), typeof(NOBY.Api.IApiAssembly));
 
-    // add CIS pipeline
-    var envConfiguration = builder.AddCisEnvironmentConfiguration();
     builder
         .AddCisCoreFeatures()
         .AddCisWebApiCors()
