@@ -3,13 +3,17 @@ package CIS.InternalServices.NotificationService.v2;
 option csharp_namespace = "CIS.InternalServices.NotificationService.v2";
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 import "Messages/SendSms.proto";
 import "Messages/SendSmsFromTemplate.proto";
 import "Messages/SendEmail.proto";
 import "Messages/SendEmailFromTemplate.proto";
+import "Messages/SearchResults.proto";
 import "Messages/GetResult.proto";
 import "Messages/GetStatistics.proto";
 import "Messages/GetDetailedStatistics.proto";
+import "Messages/Resend.proto";
+import "Messages/NotificationIdResponse.proto";
 import "Messages/Types.proto";
 
 service NotificationService {
@@ -45,25 +49,25 @@ service NotificationService {
 
    rpc SearchResults(SearchResultsRequest) returns (SearchResultsResponse) {
 	   option (google.api.http) = {
-			post: "/v2/sms"
+			post: "/v2/results"
 	   };
    }
 
    rpc GetStatistics(GetStatisticsRequest) returns (GetStatisticsResponse) {
 	   option (google.api.http) = {
-			post: "/v2/sms"
+			post: "/v2/statistics"
 	   };
    }
 
    rpc GetDetailedStatistics(GetDetailedStatisticsRequest) returns (GetDetailedStatisticsResponse) {
 	   option (google.api.http) = {
-			post: "/v2/sms"
+			post: "/v2/statistics-detailed"
 	   };
    }
 
    rpc Resend(ResendRequest) returns (google.protobuf.Empty) {
 	   option (google.api.http) = {
-			post: "/v2/sms"
+			post: "/v2/resend"
 	   };
    }
 }

@@ -2,16 +2,16 @@
 package CIS.InternalServices.NotificationService.v2;
 option csharp_namespace = "CIS.InternalServices.NotificationService.v2";
 
-import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
 import "Messages/Types.proto";
 
-message GetStatisticsRequest {
-    repeated NotificationState States = 1;
-    repeated NotificationChannel Channels = 2;
+message GetDetailedStatisticsRequest {
+    repeated NotificationStates States = 1;
+    repeated NotificationChannels Channels = 2;
     google.protobuf.Timestamp StatisticsDate = 3;
 }
 
-message GetStatisticsResponse {
+message GetDetailedStatisticsResponse {
     StatisticsData Statistics = 1;
     ResultData Results = 2;
 }

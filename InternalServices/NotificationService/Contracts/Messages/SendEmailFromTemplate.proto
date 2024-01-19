@@ -3,6 +3,7 @@ package CIS.InternalServices.NotificationService.v2;
 option csharp_namespace = "CIS.InternalServices.NotificationService.v2";
 
 import "Messages/Types.proto";
+import "google/protobuf/wrappers.proto";
 
 message SendEmailFromTemplateRequest {
 	EmailAddress From = 1;

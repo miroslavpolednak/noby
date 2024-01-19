@@ -3,8 +3,9 @@ package CIS.InternalServices.NotificationService.v2;
 option csharp_namespace = "CIS.InternalServices.NotificationService.v2";
 
 import "Messages/Types.proto";
+import "google/protobuf/wrappers.proto";
 
-message SendSmsRequest {
+message SendEmailRequest {
 	EmailAddress From = 1;
 	repeated EmailAddress To = 2;
 	repeated EmailAddress Bcc = 3;
@@ -14,8 +15,15 @@ message SendSmsRequest {
 	EmailContent Content = 7;
 	repeated EmailAttachment Attachments = 8;
 	Identifier Identifier = 9;
-	google.protobuf.Int64Value CaseId = 9;
-	google.protobuf.StringValue CustomId = 10;
-	google.protobuf.StringValue DocumentId = 11;
-	DocumentHash DocumentHash = 12;
+	google.protobuf.Int64Value CaseId = 10;
+	google.protobuf.StringValue CustomId = 11;
+	google.protobuf.StringValue DocumentId = 12;
+	DocumentHash DocumentHash = 13;
+
+	message EmailContent
+	{
+		string Format = 1;
+		string Language = 2;
+		string Text = 3;
+	}
 }
