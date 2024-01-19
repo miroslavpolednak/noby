@@ -1,11 +1,7 @@
-﻿using CIS.Core;
-using CIS.Infrastructure.Data;
-using CIS.Infrastructure.StartupExtensions;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using SharedComponents.Storage.Database;
+using SharedComponents.Storage.Configuration;
 
 namespace SharedComponents.Storage;
 
@@ -16,26 +12,32 @@ public static class StorageStartupExtensions
         // add configuration
         builder.Services
             .AddOptions<Configuration.StorageConfiguration>()
-            .Bind(builder.Configuration.GetSection(Constants.StorageConfigurationKey));
+            .Bind(builder.Configuration.GetSection(Constants.StorageConfigurationKey))
+            .Validate(config =>
+            {
+                var type = config?.TempStorage?.StorageClient?.StorageType ?? StorageClientTypes.None;
+                return type == StorageClientTypes.None ? true : validateStorageClient(config!.TempStorage!.StorageClient);
+            })
+            .Validate(config =>
+            {   
+                return config?.StorageClients?.All(t => validateStorageClient(t.Value)) ?? true;
+            })
+            .ValidateOnStart();
 
-        // temp storage
-        addTempStorage(builder);
-
-        return new CisStorageServicesBuilder(builder.Services);
+        return new CisStorageServicesBuilder(builder);
     }
 
-    private static void addTempStorage(WebApplicationBuilder builder)
+    private static bool validateStorageClient(StorageClientConfiguration config)
     {
-        builder.Services.AddSingleton<ITempStorage, TempStorage>();
-
-        builder.Services.AddDapper(services =>
+        return config.StorageType switch
         {
-            var configuration = services.GetRequiredService<IOptions<Configuration.StorageConfiguration>>();
-
-            string connectionString = (string.IsNullOrEmpty(configuration?.Value.TempStorage?.ConnectionString) ? builder.Configuration.GetConnectionString(CisGlobalConstants.DefaultConnectionStringKey) : configuration.Value.TempStorage?.ConnectionString)
-                ?? throw new CisConfigurationNotFound($"{Constants.StorageConfigurationKey}:{Constants.TempStorageConfigurationKey}:ConnectionString");
-
-            return new SqlConnectionProvider<ITempStorageConnection>(connectionString);
-        });
+            StorageClientTypes.FileSystem => !string.IsNullOrEmpty(config.FileSystem?.BasePath),
+            StorageClientTypes.AzureBlob => !string.IsNullOrEmpty(config.AzureBlob?.ConnectionString),
+            StorageClientTypes.AmazonS3 => !string.IsNullOrEmpty(config.AmazonS3?.ServiceUrl)
+                && !string.IsNullOrEmpty(config.AmazonS3?.AccessKey)
+                && !string.IsNullOrEmpty(config.AmazonS3?.SecretKey)
+                && !string.IsNullOrEmpty(config.AmazonS3?.Bucket),
+            _ => true
+        };
     }
 }

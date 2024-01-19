@@ -30,6 +30,7 @@ public sealed class StorageClientConfiguration
 
 public enum StorageClientTypes
 {
+    None = 0,
     FileSystem = 1,
     AzureBlob = 2,
     AmazonS3 = 3

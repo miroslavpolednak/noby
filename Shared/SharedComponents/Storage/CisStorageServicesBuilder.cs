@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CIS.Infrastructure.Data;
+using CIS.Infrastructure.StartupExtensions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace SharedComponents.Storage;
@@ -6,21 +10,23 @@ namespace SharedComponents.Storage;
 public interface ICisStorageServicesBuilder
 {
     ICisStorageServicesBuilder AddStorageClient<TStorage>();
+
+    ICisStorageServicesBuilder AddTempStorage();
 }
 
 internal sealed class CisStorageServicesBuilder
     : ICisStorageServicesBuilder
 {
-    private readonly IServiceCollection _services;
+    private readonly WebApplicationBuilder _builder;
 
-    public CisStorageServicesBuilder(IServiceCollection services)
+    public CisStorageServicesBuilder(WebApplicationBuilder builder)
     {
-        _services = services;
+        _builder = builder;
     }
 
     public ICisStorageServicesBuilder AddStorageClient<TStorage>()
     {
-        _services.AddSingleton(typeof(IStorageClient<TStorage>), services =>
+        _builder.Services.AddSingleton(typeof(IStorageClient<TStorage>), services =>
         {
             string storageName = typeof(TStorage).Name;
             var configuration = services.GetRequiredService<IOptions<Configuration.StorageConfiguration>>();
@@ -39,6 +45,25 @@ internal sealed class CisStorageServicesBuilder
             {
                 throw new CisConfigurationNotFound($"{Constants.StorageConfigurationKey}:{Constants.StorageClientsConfigurationKey}:{storageName}");
             }
+        });
+
+        return this;
+    }
+
+    public ICisStorageServicesBuilder AddTempStorage()
+    {
+        _builder.Services.AddSingleton<ITempStorage, TempStorage>();
+
+        _builder.Services.AddDapper(services =>
+        {
+            var configuration = services.GetRequiredService<IOptions<Configuration.StorageConfiguration>>();
+
+            string connectionString = (string.IsNullOrEmpty(configuration?.Value.TempStorage?.ConnectionString) 
+                ? _builder.Configuration.GetConnectionString(CIS.Core.CisGlobalConstants.DefaultConnectionStringKey) 
+                : configuration.Value.TempStorage?.ConnectionString)
+                ?? throw new CisConfigurationNotFound($"{Constants.StorageConfigurationKey}:{Constants.TempStorageConfigurationKey}:ConnectionString");
+
+            return new SqlConnectionProvider<Database.ITempStorageConnection>(connectionString);
         });
 
         return this;
