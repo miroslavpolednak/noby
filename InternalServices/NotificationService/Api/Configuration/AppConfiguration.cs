@@ -21,11 +21,11 @@ public class Consumer
 
     public string ConsumerId { get; set; } = null!;
 
-    public bool CanSendEmail { get; set; } = false;
+    public bool CanSendEmail { get; set; }
     
-    public bool CanSendSms { get; set; } = false;
+    public bool CanSendSms { get; set; }
     
-    public bool CanReadResult { get; set; } = false;
+    public bool CanReadResult { get; set; }
 
     public bool CanReceiveStatistics { get; set; }
 

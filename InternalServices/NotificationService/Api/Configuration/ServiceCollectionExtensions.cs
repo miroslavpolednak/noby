@@ -1,7 +1,6 @@
 ﻿using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
-using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Configuration;
 
@@ -50,16 +49,6 @@ public static class ServiceCollectionExtensions
                 $"{nameof(AppConfiguration)}.{nameof(AppConfiguration.S3Buckets)}.{nameof(S3Buckets.Mcs)} required.")
             .ValidateOnStart();
         
-        builder.Services
-            .AddOptions<S3Configuration>()
-            .Bind(builder.Configuration.GetSection(nameof(S3Configuration)))
-            .Validate(config => !string.IsNullOrEmpty(config?.ServiceUrl),
-                $"{nameof(S3Configuration)}.{nameof(S3Configuration.ServiceUrl)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config?.AccessKey),
-                $"{nameof(S3Configuration)}.{nameof(S3Configuration.AccessKey)} required.")
-            .Validate(config => !string.IsNullOrEmpty(config?.SecretKey),
-                $"{nameof(S3Configuration)}.{nameof(S3Configuration.SecretKey)} required.");
-
         string sendEmailsJobConfiguration = $"{CisBackgroundServiceExtensions.ConfigurationSectionKey}:{nameof(SendEmailsJob)}:{CisBackgroundServiceExtensions.CustomConfigurationSectionKey}";
         builder.Services
             .AddOptions<SendEmailsJobConfiguration>()
@@ -90,23 +79,5 @@ public static class ServiceCollectionExtensions
             .ValidateOnStart();
 
         return builder;
-    }
-
-    public static AppConfiguration GetAppConfiguration(this WebApplicationBuilder builder)
-    {
-        return builder.GetConfiguration<AppConfiguration>();
-    }
-    
-    public static S3Configuration GetS3Configuration(this WebApplicationBuilder builder)
-    {
-        return builder.GetConfiguration<S3Configuration>();
-    }
-
-    private static TConfiguration GetConfiguration<TConfiguration>(this WebApplicationBuilder builder)
-        where TConfiguration : class
-    {
-        var provider = builder.Services.BuildServiceProvider();
-        var options = provider.GetRequiredService<IOptions<TConfiguration>>();
-        return options.Value;
     }
 }
