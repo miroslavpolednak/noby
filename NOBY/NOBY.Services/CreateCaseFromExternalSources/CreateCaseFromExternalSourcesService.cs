@@ -85,23 +85,16 @@ public sealed class CreateCaseFromExternalSourcesService
 
     private static int getState(MortgageData mortgageInstance)
     {
-        if (mortgageInstance.IsCancelled)
+        return mortgageInstance.MortgageState switch
         {
-            return 7;
-        }
-        else
-        {
-            return mortgageInstance.MortgageState switch
-            {
-                0 or 1 or 3 or 4 => 8,
-                2 => 7,
-                5 or 6 or 7 or 8 => 6,
-                9 => 4,
-                10 => 3,
-                11 => ((DateTime?)mortgageInstance.DrawingFinishedDate).HasValue ? 5 : 4,
-                _ => 8
-            };
-        }
+            0 or 1 or 3 or 4 => 8,
+            2 => 7,
+            5 or 6 or 7 or 8 => 6,
+            9 => 4,
+            10 => 3,
+            11 => ((DateTime?)mortgageInstance.DrawingFinishedDate).HasValue ? 5 : 4,
+            _ => 8
+        };
     }
 
     private readonly ICurrentUserAccessor _currentUser;
