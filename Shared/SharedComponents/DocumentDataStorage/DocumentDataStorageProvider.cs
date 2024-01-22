@@ -251,6 +251,7 @@ internal sealed class DocumentDataStorageProvider
 
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
 
