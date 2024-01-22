@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Attributes;
+using Microsoft.AspNetCore.Components;
 
 namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities.Mappers;
 
@@ -14,6 +15,31 @@ internal sealed class RealEstateValuationDataMapper
         data.HouseAndFlat = null;
         data.Parcel = null;
 
+        if (request.LocalSurveyDetails is not null)
+        {
+            data.LocalSurveyDetails = new()
+            {
+                RealEstateValuationLocalSurveyFunctionCode = request.LocalSurveyDetails.RealEstateValuationLocalSurveyFunctionCode,
+                Email = request.LocalSurveyDetails.Email,
+                FirstName = request.LocalSurveyDetails.FirstName,
+                LastName = request.LocalSurveyDetails.LastName,
+                PhoneNumber = request.LocalSurveyDetails.PhoneNumber,
+                PhoneIDC = request.LocalSurveyDetails.PhoneIDC
+            };
+        }
+
+        if (request.OnlinePreorderDetails is not null)
+        {
+            data.OnlinePreorderDetails = new()
+            {
+                BuildingAgeCode = request.OnlinePreorderDetails.BuildingAgeCode,
+                BuildingMaterialStructureCode = request.OnlinePreorderDetails.BuildingMaterialStructureCode,
+                BuildingTechnicalStateCode = request.OnlinePreorderDetails.BuildingTechnicalStateCode,
+                FlatArea = request.OnlinePreorderDetails.FlatArea,
+                FlatSchemaCode = request.OnlinePreorderDetails.FlatSchemaCode
+            };
+        }
+        
         switch (request.SpecificDetailCase)
         {
             case Contracts.UpdateRealEstateValuationDetailRequest.SpecificDetailOneofCase.HouseAndFlatDetails:
@@ -64,6 +90,31 @@ internal sealed class RealEstateValuationDataMapper
     
     public void MapFromDataToSingle(RealEstateValudationData? data, Contracts.RealEstateValuationDetail realEstateValuation)
     {
+        if (data?.LocalSurveyDetails is not null)
+        {
+            realEstateValuation.LocalSurveyDetails = new()
+            {
+                RealEstateValuationLocalSurveyFunctionCode = data.LocalSurveyDetails.RealEstateValuationLocalSurveyFunctionCode,
+                Email = data.LocalSurveyDetails.Email,
+                FirstName = data.LocalSurveyDetails.FirstName,
+                LastName = data.LocalSurveyDetails.LastName,
+                PhoneNumber = data.LocalSurveyDetails.PhoneNumber,
+                PhoneIDC = data.LocalSurveyDetails.PhoneIDC
+            };
+        }
+
+        if (data?.OnlinePreorderDetails is not null)
+        {
+            realEstateValuation.OnlinePreorderDetails = new()
+            {
+                BuildingAgeCode = data.OnlinePreorderDetails.BuildingAgeCode,
+                BuildingMaterialStructureCode = data.OnlinePreorderDetails.BuildingMaterialStructureCode,
+                BuildingTechnicalStateCode = data.OnlinePreorderDetails.BuildingTechnicalStateCode,
+                FlatArea = data.OnlinePreorderDetails.FlatArea,
+                FlatSchemaCode = data.OnlinePreorderDetails.FlatSchemaCode
+            };
+        }
+
         if (data?.LoanPurposes is not null)
         {
             realEstateValuation.LoanPurposeDetails ??= new Contracts.LoanPurposeDetailsObject();
