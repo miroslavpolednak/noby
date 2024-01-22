@@ -190,7 +190,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // parametry SA
         var hasChanged = false;
 
-        var saParametersDocument = await _documentDataStorage.FirstOrDefaultByEntityId<MortgageData>(salesArrangementInstance.SalesArrangementTypeId, SalesArrangementParametersConst.TableName, cancellation);
+        var saParametersDocument = await _documentDataStorage.FirstOrDefaultByEntityId<MortgageData>(salesArrangementInstance.SalesArrangementId, SalesArrangementParametersConst.TableName, cancellation);
 
         var parametersModel = saParametersDocument?.Data ?? new MortgageData();
 
