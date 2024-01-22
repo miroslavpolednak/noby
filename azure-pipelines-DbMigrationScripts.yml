@@ -1,0 +1,23 @@
+# Overriden in DevOps settings
+trigger: none
+
+pool:
+  name: MPSS Common
+
+steps:
+- task: ArchiveFiles@2
+  displayName: 'Archive DB Migrations'
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)/$(dbMigrationsDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_DB.zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish DB Migrations to Artifacts'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_DB.zip'
+    ArtifactName: 'drop'
+    publishLocation: 'FilePath'
+    TargetPath: '\\sapckb079\NETDEV\BuildsMPSS\NOBY\$(Build.DefinitionName)\$(Build.BuildNumber)'

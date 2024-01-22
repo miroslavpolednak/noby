@@ -5,20 +5,17 @@ using NOBY.Infrastructure.Security;
 
 namespace NOBY.Services.CreateCaseFromExternalSources;
 
+// CreateCaseInNobyFromKonsDB
 [TransientService, SelfService]
 public sealed class CreateCaseFromExternalSourcesService
 {
     public async Task CreateCase(long caseId, CancellationToken cancellationToken)
     {
-        var productTypes = (await _codebookService.ProductTypes(cancellationToken)).Select(t => t.Id);
-
         var mortgageInstance = (await _productService.GetMortgage(caseId, cancellationToken)).Mortgage;
-        if (!productTypes.Any(t => productTypes.Contains(mortgageInstance.ProductTypeId)))
-        {
-            throw new CisNotFoundException(0, "Product is not KB type");
-        }
-
-        if (!validateMortgageData(mortgageInstance))
+        var productType = (await _codebookService.ProductTypes(cancellationToken))
+            .FirstOrDefault(t => t.Id == mortgageInstance.ProductTypeId);
+        
+        if (productType?.MandantId != (int)Mandants.Kb || !validateMortgageData(mortgageInstance))
         {
             throw new NobyValidationException(90045);
         }
@@ -30,12 +27,13 @@ public sealed class CreateCaseFromExternalSourcesService
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState);
 
         // instance uzivatele
+
         var customerIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
         var customer = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);
 
         // prioritne chceme pouzit customera z CM
         var kbIdentity = customer.Identities.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb);
-        if (kbIdentity is not null)
+        if (productType.MandantId == (int)Mandants.Kb && kbIdentity is not null)
         {
             customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
         }
@@ -87,23 +85,16 @@ public sealed class CreateCaseFromExternalSourcesService
 
     private static int getState(MortgageData mortgageInstance)
     {
-        if (mortgageInstance.IsCancelled)
+        return mortgageInstance.MortgageState switch
         {
-            return 7;
-        }
-        else
-        {
-            return mortgageInstance.MortgageState switch
-            {
-                0 or 1 or 3 or 4 => 8,
-                2 => 7,
-                5 or 6 or 7 or 8 => 6,
-                9 => 4,
-                10 => 3,
-                11 => ((DateTime?)mortgageInstance.DrawingFinishedDate).HasValue ? 5 : 4,
-                _ => 8
-            };
-        }
+            0 or 1 or 3 or 4 => 8,
+            2 => 7,
+            5 or 6 or 7 or 8 => 6,
+            9 => 4,
+            10 => 3,
+            11 => ((DateTime?)mortgageInstance.DrawingFinishedDate).HasValue ? 5 : 4,
+            _ => 8
+        };
     }
 
     private readonly ICurrentUserAccessor _currentUser;

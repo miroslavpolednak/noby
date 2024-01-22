@@ -1,3 +1,4 @@
+using CIS.Core;
 using CIS.Infrastructure.StartupExtensions;
 
 SharedComponents.GrpcServiceBuilder
@@ -18,7 +19,7 @@ SharedComponents.GrpcServiceBuilder
     .Build(builder =>
     {
         builder.Services
-            .AddDapper(builder.Configuration.GetConnectionString("default")!);
+            .AddDapper(builder.Configuration.GetConnectionString(CisGlobalConstants.DefaultConnectionStringKey)!);
     })
     .MapGrpcServices(app =>
     {

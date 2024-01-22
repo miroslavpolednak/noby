@@ -19,7 +19,11 @@ internal sealed class CreateTaskRequestValidator
         RuleFor(t => t.OrderId)
             .LessThanOrEqualTo(999999999)
             .WithErrorCode(90032);
+
+        RuleFor(t => t.ProcessId)
+            .NotEmpty()
+            .WithErrorCode(90046);
     }
 
-    private static int[] _allowedTaskTypes = new[] { 2, 3, 7 };
+    private static int[] _allowedTaskTypes = [2, 3, 7];
 }

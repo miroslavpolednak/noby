@@ -8,7 +8,6 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
-using SharedTypes.Enums;
 using NOBY.Services.DocumentHelper;
 using NOBY.Services.EaCodeMain;
 
@@ -22,7 +21,7 @@ public class SaveDocumentToArchiveHandler
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDateTime _dateTime;
-    private readonly Services.TempFileManager.ITempFileManagerService _tempFileManager;
+    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ICaseServiceClient _caseService;
@@ -35,7 +34,7 @@ public class SaveDocumentToArchiveHandler
         IDocumentArchiveServiceClient client,
         ICurrentUserAccessor currentUserAccessor,
         IDateTime dateTime,
-        Services.TempFileManager.ITempFileManagerService tempFileManager,
+        SharedComponents.Storage.ITempStorage tempFileManager,
         ISalesArrangementServiceClient salesArrangementService,
         IDocumentOnSAServiceClient documentOnSAService,
         ICaseServiceClient caseService,

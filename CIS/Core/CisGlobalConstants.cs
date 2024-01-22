@@ -6,6 +6,11 @@
 public static class CisGlobalConstants
 {
     /// <summary>
+    /// Klíč v appsettings.json pro výchozí DB connection string aplikace
+    /// </summary>
+    public const string DefaultConnectionStringKey = "default";
+
+    /// <summary>
     /// URL health check endpointu pro vsechny sluzby/aplikace.
     /// </summary>
     public const string CisHealthCheckEndpointUrl = "/health";

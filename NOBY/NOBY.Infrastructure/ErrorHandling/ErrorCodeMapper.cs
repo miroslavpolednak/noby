@@ -52,7 +52,8 @@ public sealed class ErrorCodeMapper
             { 90042, new("Nelze pokračovat, protože došlo ke změně daňové rezidence a klient má zadáno více jak 8 států daňové rezidence. Tuto změnu je možné provést pouze na pobočce.") },
             { 90043, new("Nenalezeno") },
             { 90044, new("Nepovolená hodnota pro Typ dokladu v rámci vybraného Státu vydání dokladu") },
-            { 90045, new("Chyba migrace dat", "Nepodařilo se dozaložit obchodní případ z důvodu chyby v datech zdrojového systému") }
+            { 90045, new("Chyba migrace dat", "Nepodařilo se dozaložit obchodní případ z důvodu chyby v datech zdrojového systému") },
+            { 90046, new("Nelze založit úkol", "Z důvodu aktuální nedostupnosti systému StarBuild nelze založit nový úkol. Opakujte prosím akci později.") }
         };
 
         Messages = messages.AsReadOnly();

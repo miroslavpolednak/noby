@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpLogging;
 using CIS.Infrastructure.WebApi;
 using NOBY.Infrastructure.Configuration;
 using SharedAudit;
+using SharedComponents.Storage;
+using NOBY.Api.Endpoints.Test;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,13 +19,12 @@ try
 {
     #region register services
     // konfigurace aplikace
+    var envConfiguration = builder.AddCisEnvironmentConfiguration();
     var appConfiguration = builder.AddNobyConfig();
 
     // vlozit do DI vsechny custom services
     builder.Services.AddAttributedServices(typeof(NOBY.Services.IServicesAssembly), typeof(NOBY.Api.IApiAssembly));
 
-    // add CIS pipeline
-    var envConfiguration = builder.AddCisEnvironmentConfiguration();
     builder
         .AddCisCoreFeatures()
         .AddCisWebApiCors()
@@ -32,6 +33,12 @@ try
         .AddCisTracing()
         .AddCisApiVersioning()
         .AddCisHealthChecks();
+
+    // add temp storage
+    builder
+        .AddCisStorageServices()
+        .AddTempStorage()
+        .AddStorageClient<IStorage1>();
 
     builder.Services.AddCisSecurityHeaders();
 

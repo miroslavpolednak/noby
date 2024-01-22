@@ -9,6 +9,7 @@ using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositori
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using ExternalServices.ESignatures.V1;
+using CIS.Core;
 
 namespace DomainServices.DocumentOnSAService.Api.Extensions;
 
@@ -23,7 +24,7 @@ internal static class StartupExtensions
         builder.Services.AddAttributedServices(typeof(Program));
 
         // dbcontext
-        builder.AddEntityFramework<Database.DocumentOnSAServiceDbContext>(connectionStringKey: "default");
+        builder.AddEntityFramework<Database.DocumentOnSAServiceDbContext>(connectionStringKey: CisGlobalConstants.DefaultConnectionStringKey);
 
         builder.Services.AddHouseholdService()
                     .AddSalesArrangementService()

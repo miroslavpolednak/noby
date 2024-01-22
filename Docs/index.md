@@ -35,7 +35,9 @@
 
 [Unit a integrační testy](./topics/test.md)
 
-[Práce s dočasnými soubory na FE API](./topics/tempfilemanager.md)
+[Práce s dočasnými soubory](./topics/tempstorage.md)
+
+[Práce se standardním úložištěm souborů (filesystem, S3, Azure)](./topics/filestorage.md)
 
 [Auditní logování](./topics/audit.md)
 

@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using CIS.Core;
+using Dapper;
 using Medallion.Threading.SqlServer;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
