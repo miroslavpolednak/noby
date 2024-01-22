@@ -51,9 +51,6 @@ internal sealed class SalesArrangementService : Contracts.v1.SalesArrangementSer
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> DeleteSalesArrangement(DeleteSalesArrangementRequest request, ServerCallContext context)
        => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<Google.Protobuf.WellKnownTypes.Empty> UpdateOfferDocumentId(UpdateOfferDocumentIdRequest request, ServerCallContext context)
-       => await _mediator.Send(request, context.CancellationToken);
-
     public override async Task<GetFlowSwitchesResponse> GetFlowSwitches(GetFlowSwitchesRequest request, ServerCallContext context)
        => await _mediator.Send(request, context.CancellationToken);
 

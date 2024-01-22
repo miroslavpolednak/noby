@@ -23,3 +23,8 @@ public partial class GetMortgageOfferFPScheduleRequest
 public partial class GetOfferDeveloperRequest
     : MediatR.IRequest<GetOfferDeveloperResponse>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class UpdateOfferDocumentIdRequest
+    : MediatR.IRequest, CIS.Core.Validation.IValidatableRequest
+{
+}

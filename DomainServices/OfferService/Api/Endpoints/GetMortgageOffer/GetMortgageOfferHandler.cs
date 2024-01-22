@@ -18,6 +18,7 @@ internal sealed class GetMortgageOfferHandler
                t.ResourceProcessId,
                t.CreatedUserId,
                t.CreatedUserName,
+               t.DocumentId,
                t.CreatedTime
            })
            .FirstOrDefaultAsync(cancellationToken) 
@@ -31,6 +32,7 @@ internal sealed class GetMortgageOfferHandler
         {
             OfferId = request.OfferId,
             ResourceProcessId = entity.ResourceProcessId.ToString(),
+            DocumentId = entity.DocumentId,
             Created = new SharedTypes.GrpcTypes.ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime),
             BasicParameters = mappedOfferData.BasicParameters,
             SimulationInputs = mappedOfferData.SimulationInputs,

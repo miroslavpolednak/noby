@@ -37,9 +37,9 @@ internal sealed class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUs
 
     public DateTime? OfferGuaranteeDateTo { get; set; }
 
-    public DateTime? RiskBusinessCaseExpirationDate { get; set; }
+    public DateTime? RiskBusinessCaseCreatedDate { get; set; }
 
-    public string? OfferDocumentId { get; set; }
+    public DateTime? RiskBusinessCaseExpirationDate { get; set; }
 
     public DateTime? FirstSignatureDate { get; set; }
 

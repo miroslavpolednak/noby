@@ -13,4 +13,8 @@ internal sealed class Offer
     public Guid ResourceProcessId { get; set; }
 
     public bool IsCreditWorthinessSimpleRequested { get; set; }
+
+    public string? DocumentId { get; set; }
+
+    public DateTime? FirstGeneratedDocumentDate { get; set; }
 }
