@@ -81,7 +81,6 @@ internal sealed class CisBackgroundService<TBackgroundService>
             var service = serviceScope.ServiceProvider.GetRequiredService<TBackgroundService>();
             var configuration = serviceScope.ServiceProvider.GetRequiredService<IConfiguration>();
             ConnectionString = ConnectionString is null ? configuration.GetConnectionString("default") ?? throw new NotSupportedException("defaut connection string required") : ConnectionString;
-
             // lockName is essential for uniquely identifying the resource for which the lock is being requested.
             string lockName = typeof(TBackgroundService)?.FullName!;
             try
