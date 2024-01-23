@@ -1,4 +1,6 @@
-﻿namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities;
+﻿using System.Text.Json.Serialization;
+
+namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities;
 
 /// <summary>
 /// DocumentDataEntityId = RealEstateValuationId

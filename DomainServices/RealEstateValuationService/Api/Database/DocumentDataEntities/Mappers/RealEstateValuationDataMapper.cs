@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Attributes;
-using Microsoft.AspNetCore.Components;
 
 namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities.Mappers;
 
@@ -14,33 +13,10 @@ internal sealed class RealEstateValuationDataMapper
         data.LoanPurposes = request.LoanPurposeDetails?.LoanPurposes is null ? null : request.LoanPurposeDetails.LoanPurposes.ToList();
         data.HouseAndFlat = null;
         data.Parcel = null;
-        data.LocalSurveyDetails = null;
-        data.OnlinePreorderDetails = null;
+        
+        data.LocalSurveyDetails = MapLocalSurveyDetails(request.LocalSurveyDetails);
 
-        if (request.LocalSurveyDetails is not null)
-        {
-            data.LocalSurveyDetails = new()
-            {
-                RealEstateValuationLocalSurveyFunctionCode = request.LocalSurveyDetails.RealEstateValuationLocalSurveyFunctionCode,
-                Email = request.LocalSurveyDetails.Email,
-                FirstName = request.LocalSurveyDetails.FirstName,
-                LastName = request.LocalSurveyDetails.LastName,
-                PhoneNumber = request.LocalSurveyDetails.PhoneNumber,
-                PhoneIDC = request.LocalSurveyDetails.PhoneIDC
-            };
-        }
-
-        if (request.OnlinePreorderDetails is not null)
-        {
-            data.OnlinePreorderDetails = new()
-            {
-                BuildingAgeCode = request.OnlinePreorderDetails.BuildingAgeCode,
-                BuildingMaterialStructureCode = request.OnlinePreorderDetails.BuildingMaterialStructureCode,
-                BuildingTechnicalStateCode = request.OnlinePreorderDetails.BuildingTechnicalStateCode,
-                FlatArea = request.OnlinePreorderDetails.FlatArea,
-                FlatSchemaCode = request.OnlinePreorderDetails.FlatSchemaCode
-            };
-        }
+        data.OnlinePreorderDetails = MapPreorderDetails(request.OnlinePreorderDetails);
         
         switch (request.SpecificDetailCase)
         {
@@ -150,5 +126,30 @@ internal sealed class RealEstateValuationDataMapper
                 }
             };
         }
+    }
+
+    public RealEstateValudationData.OnlinePreorderData? MapPreorderDetails(Contracts.OnlinePreorderData? onlinePreorderDetails)
+    {
+        return onlinePreorderDetails is null ? null : new()
+        {
+            BuildingAgeCode = onlinePreorderDetails.BuildingAgeCode,
+            BuildingMaterialStructureCode = onlinePreorderDetails.BuildingMaterialStructureCode,
+            BuildingTechnicalStateCode = onlinePreorderDetails.BuildingTechnicalStateCode,
+            FlatArea = onlinePreorderDetails.FlatArea,
+            FlatSchemaCode = onlinePreorderDetails.FlatSchemaCode
+        };
+    }
+
+    public RealEstateValudationData.LocalSurveyData? MapLocalSurveyDetails(Contracts.LocalSurveyData? localSurveyDetails)
+    {
+        return localSurveyDetails is null ? null : new()
+        {
+            RealEstateValuationLocalSurveyFunctionCode = localSurveyDetails.RealEstateValuationLocalSurveyFunctionCode,
+            Email = localSurveyDetails.Email,
+            FirstName = localSurveyDetails.FirstName,
+            LastName = localSurveyDetails.LastName,
+            PhoneNumber = localSurveyDetails.PhoneNumber,
+            PhoneIDC = localSurveyDetails.PhoneIDC
+        };
     }
 }

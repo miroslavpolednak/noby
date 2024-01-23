@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.RealEstateValuationService.Clients;
+﻿using DomainServices.RealEstateValuationService.Clients;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation;
 
@@ -38,7 +37,7 @@ internal sealed class OrderRealEstateValuationHandler
                 await _realEstateValuationService.OrderOnlineValuation(new DomainServices.RealEstateValuationService.Contracts.OrderOnlineValuationRequest
                 {
                     RealEstateValuationId = request.RealEstateValuationId,
-                    Data = createData(request),
+                    LocalSurveyDetails = createData(request),
                 }, cancellationToken);
                 break;
 
@@ -52,7 +51,7 @@ internal sealed class OrderRealEstateValuationHandler
                 await _realEstateValuationService.OrderStandardValuation(new DomainServices.RealEstateValuationService.Contracts.OrderStandardValuationRequest
                 {
                     RealEstateValuationId = request.RealEstateValuationId,
-                    Data = createData(request),
+                    LocalSurveyDetails = createData(request),
                 }, cancellationToken);
                 break;
 
@@ -68,8 +67,8 @@ internal sealed class OrderRealEstateValuationHandler
         }
     }
 
-    private static DomainServices.RealEstateValuationService.Contracts.OrdersStandard createData(OrderRealEstateValuationRequest request)
-        => new DomainServices.RealEstateValuationService.Contracts.OrdersStandard
+    private static DomainServices.RealEstateValuationService.Contracts.LocalSurveyData createData(OrderRealEstateValuationRequest request)
+        => new DomainServices.RealEstateValuationService.Contracts.LocalSurveyData
         {
             RealEstateValuationLocalSurveyFunctionCode = request.LocalSurveyPerson?.FunctionCode ?? "",
             FirstName = request.LocalSurveyPerson?.FirstName ?? "",
