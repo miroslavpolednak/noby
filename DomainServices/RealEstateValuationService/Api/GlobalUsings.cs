@@ -1,4 +1,5 @@
-﻿global using MediatR;
+﻿global using SharedTypes.Enums;
+global using MediatR;
 global using Microsoft.EntityFrameworkCore;
 global using System.Globalization;
 global using CIS.Core.Exceptions;

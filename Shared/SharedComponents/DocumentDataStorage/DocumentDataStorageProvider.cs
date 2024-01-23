@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Threading;
 
 namespace SharedComponents.DocumentDataStorage;
 
@@ -180,14 +181,14 @@ internal sealed class DocumentDataStorageProvider
         await connection.ExecuteAsync(updateSql, varsToUpdate);
     }
 
-    public Task AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, TData data, CancellationToken cancellationToken)
+    public Task<int> AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, TData data, CancellationToken cancellationToken)
         where TEntityId : IConvertible
         where TData : class, IDocumentData
     {
         return AddOrUpdateByEntityId<TEntityId, TData>(entityId, getEntityType<TData>(), data, cancellationToken);
     }
 
-    public async Task AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, string tableName, TData data, CancellationToken cancellationToken) 
+    public async Task<int> AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, string tableName, TData data, CancellationToken cancellationToken) 
         where TEntityId : IConvertible
         where TData : class, IDocumentData
     {
@@ -201,11 +202,12 @@ internal sealed class DocumentDataStorageProvider
         if (existingId.HasValue)
         {
             await Update(existingId.Value, tableName, data);
-
-            return;
+            return existingId.Value;
         }
-
-        await Add<TEntityId, TData>(entityId, tableName, data, cancellationToken);
+        else
+        {
+            return await Add(entityId, tableName, data, cancellationToken);
+        }
     }
 
     public async Task<int> Delete<TData>(int documentDataStorageId)

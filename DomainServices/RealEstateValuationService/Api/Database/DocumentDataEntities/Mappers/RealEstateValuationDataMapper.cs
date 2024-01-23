@@ -14,6 +14,8 @@ internal sealed class RealEstateValuationDataMapper
         data.LoanPurposes = request.LoanPurposeDetails?.LoanPurposes is null ? null : request.LoanPurposeDetails.LoanPurposes.ToList();
         data.HouseAndFlat = null;
         data.Parcel = null;
+        data.LocalSurveyDetails = null;
+        data.OnlinePreorderDetails = null;
 
         if (request.LocalSurveyDetails is not null)
         {

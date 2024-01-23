@@ -1,11 +1,9 @@
-﻿using SharedTypes.Enums;
-using DomainServices.RealEstateValuationService.Api.Database;
+﻿using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.V1;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using Google.Protobuf.WellKnownTypes;
 using SharedComponents.DocumentDataStorage;
-using System.Diagnostics.Eventing.Reader;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.PreorderOnlineValuation;
 
@@ -23,15 +21,15 @@ internal sealed class PreorderOnlineValuationHandler
         var houseAndFlat = await _aggregate.GetHouseAndFlat(request.RealEstateValuationId, cancellationToken);
         // info o produktu
         var (collateralAmount, loanAmount, _, _) = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
-        _ = int.TryParse(request.Data.BuildingAgeCode, out int ageCode);
+        _ = int.TryParse(request.OnlinePreorderDetails.BuildingAgeCode, out int ageCode);
         
         // KBModel
         var kbmodelRequest = new ExternalServices.LuxpiService.V1.Contracts.KBModelRequest
         {
-            TechnicalState = request.Data.BuildingTechnicalStateCode,
-            MaterialStructure = request.Data.BuildingMaterialStructureCode,
-            FlatSchema = request.Data.FlatSchemaCode,
-            FlatArea = Convert.ToDouble((decimal)request.Data.FlatArea),
+            TechnicalState = request.OnlinePreorderDetails.BuildingTechnicalStateCode,
+            MaterialStructure = request.OnlinePreorderDetails.BuildingMaterialStructureCode,
+            FlatSchema = request.OnlinePreorderDetails.FlatSchemaCode,
+            FlatArea = Convert.ToDouble((decimal)request.OnlinePreorderDetails.FlatArea),
             AgeOfBuilding = ageCode,
             DealNumber = caseInstance.Data.ContractNumber,
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
@@ -77,7 +75,7 @@ internal sealed class PreorderOnlineValuationHandler
             ValuationType = "OCENENI",
             LeasibilityRequired = houseAndFlat?.FinishedHouseAndFlatDetails?.LeaseApplicable,
             RealEstateType = entity.ACVRealEstateTypeId,
-            TotalArea = Convert.ToDouble((decimal)request.Data.FlatArea),
+            TotalArea = Convert.ToDouble((decimal)request.OnlinePreorderDetails.FlatArea),
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
             RealEstateIds = realEstateIds
         };
@@ -94,13 +92,14 @@ internal sealed class PreorderOnlineValuationHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // ulozit data objednavky
-        var orderData = _mapper.MapToData(request.Data);
-        await _documentDataStorage.Add(entity.RealEstateValuationId, orderData, cancellationToken);
+        var revDetailData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(request.RealEstateValuationId, cancellationToken);
+        var orderData = _mapper.MapToData(request.OnlinePreorderDetails);
+        await _documentDataStorage.AddOrUpdateByEntityId(entity.RealEstateValuationId, orderData, cancellationToken);
 
         return new Empty();
     }
 
-    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationOrderDataMapper _mapper;
+    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly Services.OrderAggregate _aggregate;
     private readonly RealEstateValuationServiceDbContext _dbContext;
@@ -109,7 +108,7 @@ internal sealed class PreorderOnlineValuationHandler
     private readonly ILogger<PreorderOnlineValuationHandler> _logger;
 
     public PreorderOnlineValuationHandler(
-        Database.DocumentDataEntities.Mappers.RealEstateValuationOrderDataMapper mapper,
+        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper,
         IDocumentDataStorage documentDataStorage,
         ILogger<PreorderOnlineValuationHandler> logger,
         Services.OrderAggregate aggregate,
