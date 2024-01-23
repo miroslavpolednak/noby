@@ -1,12 +1,7 @@
-﻿using CIS.Core;
-using Dapper;
-using Medallion.Threading.SqlServer;
-using Microsoft.Data.SqlClient;
+﻿using Medallion.Threading.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using NCrontab;
-using System.Data;
 using System.Diagnostics;
-using System.Reflection.Metadata;
 
 namespace CIS.Infrastructure.BackgroundServices;
 
@@ -92,6 +87,8 @@ internal sealed class CisBackgroundService<TBackgroundService>
                     if (handle != null)
                     {
                         await service.ExecuteJobAsync(stoppingToken);
+                        // Technical timeout, when job will execute very fast and the exception (Execution Timeout Expired) does not have time to be thrown out
+                        await Task.Delay(TimeSpan.FromSeconds(_technicalTimeout + 5), stoppingToken);
                     }
                     else // someone else has it
                     {
