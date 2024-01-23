@@ -19,20 +19,20 @@ public static class Helpers
         {
             if (customErrorCodes?.ContainsKey(response!.StatusCode) ?? false)
             {
-                throw new CisExtServiceValidationException(customErrorCodes[response.StatusCode], await response.SafeReadAsStringAsync(cancellationToken) ?? "Empty error message");
+                throw new CisExternalServiceValidationException(customErrorCodes[response.StatusCode], await response.SafeReadAsStringAsync(cancellationToken) ?? "Empty error message");
             }
             else
             {
                 switch (response!.StatusCode)
                 {
                     case System.Net.HttpStatusCode.NotFound:
-                        throw new CisExtServiceValidationException($"{serviceName} Not found: {await response.SafeReadAsStringAsync(cancellationToken)}");
+                        throw new CisExternalServiceValidationException($"{serviceName} Not found: {await response.SafeReadAsStringAsync(cancellationToken)}");
                         
                     case System.Net.HttpStatusCode.BadRequest:
-                        throw new CisExtServiceValidationException($"{serviceName} Bad request: {await response.SafeReadAsStringAsync(cancellationToken)}");
+                        throw new CisExternalServiceValidationException($"{serviceName} Bad request: {await response.SafeReadAsStringAsync(cancellationToken)}");
 
                     default:
-                        throw new CisExtServiceValidationException($"{serviceName} unknown error {response!.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+                        throw new CisExternalServiceValidationException($"{serviceName} unknown error {response!.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
                 }
             }
         }
@@ -54,7 +54,7 @@ public static class Helpers
         await response.EnsureSuccessStatusCode(serviceName, cancellationToken: cancellationToken);
 
         return await response!.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken)
-            ?? throw new CisExtServiceResponseDeserializationException(0, serviceName, callerName, typeof(TResponse).ToString());
+            ?? throw new CisExternalServiceResponseDeserializationException(0, serviceName, callerName, typeof(TResponse).ToString());
     }
 
     public static async Task<TResponse> EnsureSuccessStatusAndReadJson<TResponse>(
@@ -68,6 +68,6 @@ public static class Helpers
         await response.EnsureSuccessStatusCodeWithCustomErrorCodes(serviceName, customErrorCodes, cancellationToken);
 
         return await response!.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken)
-            ?? throw new CisExtServiceResponseDeserializationException(0, serviceName, callerName, typeof(TResponse).ToString());
+            ?? throw new CisExternalServiceResponseDeserializationException(0, serviceName, callerName, typeof(TResponse).ToString());
     }
 }

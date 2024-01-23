@@ -36,7 +36,7 @@ internal sealed class RealIdentifiedSubjectBrClient : IIdentifiedSubjectBrClient
             return new IdentifiedSubjectResult<CreateIdentifiedSubjectResponse>
             {
                 Result = await response.Content.ReadFromJsonAsync<CreateIdentifiedSubjectResponse>(cancellationToken: cancellationToken)
-                         ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(CreateIdentifiedSubject), nameof(CreateIdentifiedSubjectResponse))
+                         ?? throw new CisExternalServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(CreateIdentifiedSubject), nameof(CreateIdentifiedSubjectResponse))
             };
 
         if (response.StatusCode == HttpStatusCode.BadRequest)
@@ -69,11 +69,11 @@ internal sealed class RealIdentifiedSubjectBrClient : IIdentifiedSubjectBrClient
 
                 var validationErrorDetail = string.Join("; ", validationError?.Detail.ViolatedConstraints?.Select(v => $"Attribute {v.Attribute} (Invalid Value: {v.InvalidValue}) with the error: {v.Message}") ?? Array.Empty<string>());
 
-                throw new CisExtServiceValidationException($"{validationError?.Message}: {validationErrorDetail}");
+                throw new CisExternalServiceValidationException($"{validationError?.Message}: {validationErrorDetail}");
             }
         }
 
-        throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+        throw new CisExternalServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
     }
 
     public async Task UpdateIdentifiedSubject(long customerId, IdentifiedSubject request, CancellationToken cancellationToken = default)
@@ -87,9 +87,9 @@ internal sealed class RealIdentifiedSubjectBrClient : IIdentifiedSubjectBrClient
             var error = await response.Content.ReadFromJsonAsync<Error>(cancellationToken: cancellationToken);
             throw response.StatusCode switch
             {
-                HttpStatusCode.BadRequest => new CisExtServiceValidationException($"{error?.Message}: {error?.Detail}"),
+                HttpStatusCode.BadRequest => new CisExternalServiceValidationException($"{error?.Message}: {error?.Detail}"),
                 HttpStatusCode.NotFound => new CisNotFoundException(11000, "Customer", customerId),
-                _ => new CisExtServiceValidationException(
+                _ => new CisExternalServiceValidationException(
                     $"{StartupExtensions.ServiceName} unknown error {response?.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}")
             };
         }

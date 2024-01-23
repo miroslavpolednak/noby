@@ -33,7 +33,7 @@ public sealed class GenericServerExceptionInterceptor
         // DS neni dostupna
         catch (CisServiceUnavailableException ex)
         {
-            _logger.ExtServiceUnavailable(ex.ServiceName, ex);
+            _logger.ExternalServiceUnavailable(ex.ServiceName, ex);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Service '{ex.ServiceName}' unavailable");
         }
         // 403
@@ -47,7 +47,7 @@ public sealed class GenericServerExceptionInterceptor
         catch (CisServiceServerErrorException ex)
         {
             setHttpStatus(StatusCodes.Status500InternalServerError);
-            _logger.ExtServiceUnavailable(ex.ServiceName, ex);
+            _logger.ExternalServiceUnavailable(ex.ServiceName, ex);
             throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, $"Service '{ex.ServiceName}' failed with HTTP 500");
         }
         catch (CisNotFoundException e) // entity neexistuje
@@ -68,17 +68,17 @@ public sealed class GenericServerExceptionInterceptor
             _logger.LogValidationResults(e);
             throw GrpcExceptionHelpers.CreateRpcException(e);
         }
-        catch (CisExtServiceUnavailableException ex)
+        catch (CisExternalServiceUnavailableException e)
         {
             setHttpStatus(StatusCodes.Status500InternalServerError);
-            _logger.ExtServiceUnavailable(ex.ServiceName, ex);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, ex);
+            _logger.ExternalServiceUnavailable(e.ServiceName, e);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "500001", e.ServiceName);
         }
-        catch (CisExtServiceServerErrorException ex)
+        catch (CisExternalServiceServerErrorException e)
         {
             setHttpStatus(StatusCodes.Status500InternalServerError);
-            _logger.ExtServiceServerError(ex.ServiceName, ex);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.Internal, ex);
+            _logger.ExternalServiceServerError(e.ServiceName, e);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "500002", e.ServiceName);
         }
         catch (BaseCisException e)
         {

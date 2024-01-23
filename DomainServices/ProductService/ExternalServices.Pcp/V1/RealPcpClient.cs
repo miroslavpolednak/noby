@@ -71,7 +71,7 @@ internal sealed class RealPcpClient
                 }
                 else 
                 {
-                    throw new CisExtServiceValidationException("Response ID not found");
+                    throw new CisExternalServiceValidationException("Response ID not found");
                 }
             }
         }

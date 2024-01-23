@@ -1,6 +1,6 @@
 ﻿namespace CIS.Core.Exceptions.ExternalServices;
 
-public sealed class CisExtServiceServerErrorException
+public sealed class CisExternalServiceServerErrorException
     : BaseCisException
 {
     /// <summary>
@@ -11,15 +11,21 @@ public sealed class CisExtServiceServerErrorException
     /// <summary>
     /// URI jehož volání selhalo
     /// </summary>
-    public string RequestUri { get; init; }
+    public string? RequestUri { get; init; }
 
     /// <param name="serviceName">Název služby, která selhala</param>
     /// <param name="requestUri">URI jehož volání selhalo</param>
     /// <param name="message">Textový popis chyby</param>
-    public CisExtServiceServerErrorException(string serviceName, string requestUri, string message)
+    public CisExternalServiceServerErrorException(string serviceName, string requestUri, string message)
         : base(15, message)
     {
         RequestUri = requestUri;
+        ServiceName = serviceName;
+    }
+
+    public CisExternalServiceServerErrorException(int exceptionCode, string serviceName)
+        : base(exceptionCode, $"External service {serviceName} failed with internal error exception")
+    {
         ServiceName = serviceName;
     }
 }

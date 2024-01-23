@@ -6,10 +6,10 @@
 /// <remarks>
 /// Vznikne, pokud API třetí strany vrátí jiný JSON, než jaký očekáváme my.
 /// </remarks>
-public sealed class CisExtServiceResponseDeserializationException
+public sealed class CisExternalServiceResponseDeserializationException
     : BaseCisException
 {
-    public CisExtServiceResponseDeserializationException(int exceptionCode, string serviceName, string url, string responseModelType)
+    public CisExternalServiceResponseDeserializationException(int exceptionCode, string serviceName, string url, string responseModelType)
         : base(exceptionCode, $"{serviceName} response from {url} can not be deserialized to {responseModelType}")
     { }
 }

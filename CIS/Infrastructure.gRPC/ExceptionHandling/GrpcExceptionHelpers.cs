@@ -12,7 +12,7 @@ public static class GrpcExceptionHelpers
 {
     private const string _errorMessageFromRpcExceptionRegex = "Detail=\"(?<error>.*)\"\\)";
 
-    public static RpcException CreateRpcException(StatusCode statusCode, string message)
+    public static RpcException CreateRpcException(StatusCode statusCode, in string message)
     {
         return new RpcException(new Status(statusCode, message), message);
     }
@@ -24,9 +24,21 @@ public static class GrpcExceptionHelpers
         trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, string.Join(',', exception.Errors.Select(t => t.ExceptionCode)));
 
         foreach (var item in exception.Errors)
+        {
             trailersCollection.Add(new($"ciserr-{item.ExceptionCode}-bin", TryConvertStringToTrailerValue(item.Message)));
+        }
 
         return new RpcException(new Status(StatusCode.InvalidArgument, exception.Errors[0].Message), trailersCollection);
+    }
+
+    public static RpcException CreateRpcException(StatusCode statusCode, in string exceptionCode, in string message)
+    {
+        Metadata trailersCollection = new();
+
+        trailersCollection.Add(ExceptionHandlingConstants.GrpcTrailerCisCodeKey, exceptionCode);
+        trailersCollection.Add(new($"ciserr-{exceptionCode}-bin", TryConvertStringToTrailerValue(exceptionCode)));
+
+        return new RpcException(new Status(statusCode, message), trailersCollection);
     }
 
     public static RpcException CreateRpcException(StatusCode statusCode, BaseCisException exception)
@@ -85,8 +97,9 @@ public static class GrpcExceptionHelpers
     }
 
     // do Trailers je treba davat byte[] protoze jinak se rozhodi non-ascii kodovani
-    public static byte[] TryConvertStringToTrailerValue(string? value)
+    public static byte[] TryConvertStringToTrailerValue(in string? value)
         => Encoding.UTF8.GetBytes(value ?? "");
-    public static string? TryConvertTrailerValueToString(byte[]? value)
+
+    public static string? TryConvertTrailerValueToString(in byte[]? value)
         => value != null ? Encoding.UTF8.GetString(value) : null;
 }

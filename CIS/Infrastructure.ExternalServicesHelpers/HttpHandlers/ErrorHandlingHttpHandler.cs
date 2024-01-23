@@ -18,27 +18,31 @@ public sealed class ErrorHandlingHttpHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        HttpResponseMessage? response;
+
         try
         {
-            var response = await base.SendAsync(request, cancellationToken);
+            response = await base.SendAsync(request, cancellationToken);
 
             if (response!.IsSuccessStatusCode || response!.StatusCode == HttpStatusCode.BadRequest || response!.StatusCode == HttpStatusCode.NotFound)
-                return response!;
-
-            // mame ambici rozlisovat jednotlive status kody na ruzne vyjimky?
-            switch (response.StatusCode)
             {
-                case HttpStatusCode.Unauthorized:
-                    throw new System.Security.Authentication.AuthenticationException($"Authentication to {_serviceName} failed");
-                case HttpStatusCode.ServiceUnavailable:
-                    throw new CisExtServiceUnavailableException(_serviceName, request.RequestUri!.ToString(), await response.SafeReadAsStringAsync(cancellationToken) ?? "");
-                default:
-                    throw new CisExtServiceServerErrorException(_serviceName, request.RequestUri!.ToString(), $"{(int)response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
-            }    
+                return response!;
+            }
         }
         catch (HttpRequestException ex)
         {
-            throw new CisExtServiceUnavailableException(_serviceName, request.RequestUri!.ToString(), ex.Message);
+            throw new CisExternalServiceUnavailableException(_serviceName, request.RequestUri!.ToString(), ex.Message);
+        }
+
+        // mame ambici rozlisovat jednotlive status kody na ruzne vyjimky?
+        switch (response?.StatusCode ?? HttpStatusCode.InternalServerError)
+        {
+            case HttpStatusCode.Unauthorized:
+                throw new System.Security.Authentication.AuthenticationException($"Authentication to {_serviceName} failed");
+            case HttpStatusCode.ServiceUnavailable:
+                throw new CisExternalServiceUnavailableException(_serviceName, request.RequestUri!.ToString(), await response.SafeReadAsStringAsync(cancellationToken) ?? "");
+            default:
+                throw new CisExternalServiceServerErrorException(_serviceName, request.RequestUri!.ToString(), $"{(int)response!.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
         }
     }
 }

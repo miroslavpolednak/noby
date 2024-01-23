@@ -23,9 +23,9 @@ internal sealed class RealKycClient
         if (!response.IsSuccessStatusCode)
         {
             var error = await response.Content.ReadFromJsonAsync<Contracts.Error>(cancellationToken: cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(TRequest), nameof(Contracts.Error));
+                ?? throw new CisExternalServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(TRequest), nameof(Contracts.Error));
 
-            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {error.Message}, {error.Detail}");
+            throw new CisExternalServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {error.Message}, {error.Detail}");
         }
     }
 

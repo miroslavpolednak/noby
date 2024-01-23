@@ -12,7 +12,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.RiskBusinessCase>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CreateCase), nameof(Contracts.RiskBusinessCase));
+                ?? throw new CisExternalServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CreateCase), nameof(Contracts.RiskBusinessCase));
 
         return result;
     }
@@ -24,7 +24,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<LoanApplicationAssessment>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(LoanApplicationAssessment));
+                ?? throw new CisExternalServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CreateCaseAssessment), nameof(LoanApplicationAssessment));
 
         return result;
     }
@@ -36,7 +36,7 @@ internal sealed class RealRiskBusinessCaseClient
             .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<RiskBusinessCaseCommit>(C4mJsonOptions.CustomJsonOptions, cancellationToken)
-                ?? throw new CisExtServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CommitCase), nameof(RiskBusinessCaseCommit));
+                ?? throw new CisExternalServiceResponseDeserializationException(ErrorCodeMapper.ServiceResponseDeserializationException, StartupExtensions.ServiceName, nameof(CommitCase), nameof(RiskBusinessCaseCommit));
 
         return result;
     }

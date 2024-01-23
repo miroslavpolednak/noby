@@ -13,12 +13,12 @@ internal static class RequestHelper
                                                                    [CallerMemberName] string callerName = "")
     {
         if (!response.IsSuccessStatusCode)
-            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+            throw new CisExternalServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
 
         var responseObject = await response.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
 
         if (responseObject is null)
-            throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, callerName, typeof(TResponse).Name);
+            throw new CisExternalServiceResponseDeserializationException(0, StartupExtensions.ServiceName, callerName, typeof(TResponse).Name);
 
         var commonResult = commonResultGetter(responseObject);
 
@@ -31,7 +31,7 @@ internal static class RequestHelper
             }
             else
             {
-                throw new CisExtServiceValidationException(returnVal, $"{StartupExtensions.ServiceName}.{callerName}: {returnVal}: {commonResult?.Return_text}");
+                throw new CisExternalServiceValidationException(returnVal, $"{StartupExtensions.ServiceName}.{callerName}: {returnVal}: {commonResult?.Return_text}");
             }
         }
         

@@ -67,7 +67,7 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
             if (differentProps.Length > 0)
             {
                 var message = $"Detected differences between input and output data during call EAS NewKlient [{String.Join(",", differentProps)}]";
-                _logger.ExtServiceResponseError(message);
+                _logger.ExternalServiceResponseError(message);
             }
 
             return new CreateNewOrGetExisingClientResponse { Id = r.klient_id, BirthNumber = r.rodne_cislo_ico };

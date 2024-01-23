@@ -52,7 +52,7 @@ internal sealed class RealPreorderServiceClient
                 "MODEL" => SharedTypes.Enums.RealEstateValuationTypes.Online,
                 "DTS" => SharedTypes.Enums.RealEstateValuationTypes.Dts,
                 "STANDARD" => SharedTypes.Enums.RealEstateValuationTypes.Standard,
-                _ => throw new CisExtServiceValidationException(0, $"Unknown result '{s}'")
+                _ => throw new CisExternalServiceValidationException(0, $"Unknown result '{s}'")
             };
     }
 

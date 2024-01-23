@@ -35,7 +35,7 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
                     documentId = requestResult.CremDeedOfOwnershipDocumentId;
                     deedOfOwnershipNumber = requestResult.DeedOfOwnershipNumber;
                 }
-                catch (CisExtServiceValidationException ex) when (ex.FirstExceptionCode == "1")
+                catch (CisExternalServiceValidationException ex) when (ex.FirstExceptionCode == "1")
                 {
                     throw new NobyValidationException(90035, ex.Message);
                 }

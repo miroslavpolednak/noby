@@ -85,11 +85,11 @@ internal sealed class RealSulmClient
         var result = await response.Content.ReadFromJsonAsync<Error>(cancellationToken: cancellationToken);
         if (result is null)
         {
-            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+            throw new CisExternalServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
         }
         else
         {
-            throw new CisExtServiceValidationException($"{StartupExtensions.ServiceName} error {response.StatusCode}: {result.Code}");
+            throw new CisExternalServiceValidationException($"{StartupExtensions.ServiceName} error {response.StatusCode}: {result.Code}");
         }
     }
 

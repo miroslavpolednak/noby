@@ -28,29 +28,29 @@ public static class ServiceLoggerExtensions
 
         _extServiceUnavailable = LoggerMessage.Define<string>(
             LogLevel.Error,
-            new EventId(EventIdCodes.ExtServiceUnavailable, nameof(ExtServiceUnavailable)),
+            new EventId(EventIdCodes.ExtServiceUnavailable, nameof(ExternalServiceUnavailable)),
             "Some of underlying services for '{ParentServiceName}' are not available or failed to call");
 
         _extServiceAuthenticationFailed = LoggerMessage.Define(
             LogLevel.Error,
-            new EventId(EventIdCodes.ExtServiceAuthenticationFailed, nameof(ExtServiceAuthenticationFailed)),
+            new EventId(EventIdCodes.ExtServiceAuthenticationFailed, nameof(ExternalServiceAuthenticationFailed)),
             "Authentication failed");
 
         _extServiceResponseError = LoggerMessage.Define<string>(
             LogLevel.Error,
-            new EventId(EventIdCodes.ExtServiceResponseError, nameof(ExtServiceResponseError)),
+            new EventId(EventIdCodes.ExtServiceResponseError, nameof(ExternalServiceResponseError)),
             "Error returned from external service: {Message}");
 
         _extServiceServerError = LoggerMessage.Define<string>(
             LogLevel.Error,
-            new EventId(EventIdCodes.ExtServiceServerError, nameof(ExtServiceServerError)),
+            new EventId(EventIdCodes.ExtServiceServerError, nameof(ExternalServiceServerError)),
             "External service internal error: {Message}");
     }
 
     /// <summary>
     /// Nepodařilo se autentizovat do služby.
     /// </summary>
-    public static void ExtServiceAuthenticationFailed(this ILogger logger, Exception ex)
+    public static void ExternalServiceAuthenticationFailed(this ILogger logger, Exception ex)
         => _extServiceAuthenticationFailed(logger, ex);
 
     public static void ServiceAuthorizationFailed(this ILogger logger, Exception ex)
@@ -60,17 +60,17 @@ public static class ServiceLoggerExtensions
     /// Doménová služba není dostupná.
     /// </summary>
     /// <param name="serviceName">Název služby</param>
-    public static void ServiceUnavailable(this ILogger logger, string serviceName, Exception ex)
+    public static void ServiceUnavailable(this ILogger logger, in string serviceName, Exception ex)
         => _serviceUnavailable(logger, serviceName, ex);
 
     /// <summary>
     /// Služba třetí strany není dostupná.
     /// </summary>
     /// <param name="parentServiceName">Název doménové služby, ze které je služba třetí strany volaná.</param>
-    public static void ExtServiceUnavailable(this ILogger logger, string parentServiceName, Exception ex)
+    public static void ExternalServiceUnavailable(this ILogger logger, in string parentServiceName, Exception ex)
         => _extServiceUnavailable(logger, parentServiceName, ex);
 
-    public static void ExtServiceServerError(this ILogger logger, string parentServiceName, Exception ex)
+    public static void ExternalServiceServerError(this ILogger logger, in string parentServiceName, Exception ex)
         => _extServiceServerError(logger, parentServiceName, ex);
 
     /// <summary>
@@ -79,6 +79,6 @@ public static class ServiceLoggerExtensions
     /// <remarks>
     /// Jedná se třeba o služby EAS, které nemají žádný error handling.
     /// </remarks>
-    public static void ExtServiceResponseError(this ILogger logger, string message)
+    public static void ExternalServiceResponseError(this ILogger logger, in string message)
         => _extServiceResponseError(logger, message, null!);
 }

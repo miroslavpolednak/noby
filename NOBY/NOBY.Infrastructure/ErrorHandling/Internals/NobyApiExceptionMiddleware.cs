@@ -67,7 +67,17 @@ public sealed class NobyApiExceptionMiddleware
             logger.NobyValidationException(ex.Message, ex);
             await Results.Json(ex.Errors, statusCode: ex.HttpStatusCode).ExecuteAsync(context);
         }
-        catch (CisExtServiceValidationException ex)
+
+        catch (CisExternalServiceUnavailableException ex)
+        {
+            if (ex.ExceptionCode != "500001")
+            {
+                logger.ExternalServiceUnavailable("FEAPI", ex);
+            }
+            await Results.Json(ex.Errors, statusCode: 400).ExecuteAsync(context);
+        }
+        
+        catch (CisExternalServiceValidationException ex)
         {
             logger.NobyValidationException(ex.Message, ex);
             await Results.Json(ex.Errors, statusCode: 400).ExecuteAsync(context);

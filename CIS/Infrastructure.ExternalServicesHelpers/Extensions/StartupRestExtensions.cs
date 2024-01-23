@@ -97,8 +97,8 @@ public static class StartupRestExtensions
                         ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
                             .HandleResult(response => (int)response.StatusCode >= 500 || response.StatusCode == HttpStatusCode.RequestTimeout)
                             .Handle<TimeoutRejectedException>()
-                            .Handle<CisExtServiceUnavailableException>()
-                            .Handle<CisExtServiceServerErrorException>()
+                            .Handle<CisExternalServiceUnavailableException>()
+                            .Handle<CisExternalServiceServerErrorException>()
                     });
                 }
 
