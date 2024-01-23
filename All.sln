@@ -271,6 +271,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00015-indexes.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00015-indexes.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00016-HFICH-9835_FirstSignatureDate.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00016-HFICH-9835_FirstSignatureDate.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00020-HFICH-10018_DDS_Init.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00020-HFICH-10018_DDS_Init.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00021-HFICH-10206_RiskBusinessCaseCreatedDate.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00021-HFICH-10206_RiskBusinessCaseCreatedDate.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"

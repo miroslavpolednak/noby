@@ -1,0 +1,1 @@
+ALTER TABLE SalesArrangement ADD RiskBusinessCaseCreatedDate DATE NULL
