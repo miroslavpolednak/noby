@@ -32,17 +32,17 @@ public static class ServiceLoggerExtensions
             "Some of underlying services for '{ParentServiceName}' are not available or failed to call");
 
         _extServiceAuthenticationFailed = LoggerMessage.Define(
-            LogLevel.Warning,
+            LogLevel.Error,
             new EventId(EventIdCodes.ExtServiceAuthenticationFailed, nameof(ExtServiceAuthenticationFailed)),
             "Authentication failed");
 
         _extServiceResponseError = LoggerMessage.Define<string>(
-            LogLevel.Warning,
+            LogLevel.Error,
             new EventId(EventIdCodes.ExtServiceResponseError, nameof(ExtServiceResponseError)),
             "Error returned from external service: {Message}");
 
         _extServiceServerError = LoggerMessage.Define<string>(
-            LogLevel.Warning,
+            LogLevel.Error,
             new EventId(EventIdCodes.ExtServiceServerError, nameof(ExtServiceServerError)),
             "External service internal error: {Message}");
     }
