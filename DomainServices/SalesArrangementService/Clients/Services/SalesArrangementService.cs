@@ -140,16 +140,6 @@ internal sealed class SalesArrangementService
         await _service.UpdateLoanAssessmentParametersAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateOfferDocumentId(int salesArrangementId, string offerDocumentId, CancellationToken cancellationToken = default)
-    {
-        await _service.UpdateOfferDocumentIdAsync(
-            new()
-            {
-                SalesArrangementId = salesArrangementId,
-                OfferDocumentId = offerDocumentId
-            }, cancellationToken: cancellationToken);
-    }
-
     public async Task<List<FlowSwitch>> GetFlowSwitches(int salesArrangementId, CancellationToken cancellationToken = default)
     {
         if (_cacheGetFlowSwitches is null || _cacheGetFlowSwitchesId != salesArrangementId)

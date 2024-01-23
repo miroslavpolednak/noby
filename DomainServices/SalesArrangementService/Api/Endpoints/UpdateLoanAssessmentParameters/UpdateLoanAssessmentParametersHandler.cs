@@ -36,6 +36,7 @@ internal sealed class UpdateLoanAssessmentParametersHandler
            
         if (request.RiskBusinessCaseExpirationDate is not null)
         {
+            entity.RiskBusinessCaseCreatedDate ??= DateTime.Now;
             entity.RiskBusinessCaseExpirationDate = request.RiskBusinessCaseExpirationDate;
         }
         

@@ -49,8 +49,6 @@ message SalesArrangement {
 
 	cis.types.NullableGrpcDate RiskBusinessCaseExpirationDate = 15;
 
-	google.protobuf.StringValue OfferDocumentId = 18;
-
 	cis.types.NullableGrpcDate FirstSignatureDate = 19;
 
 	google.protobuf.StringValue PcpId = 20;

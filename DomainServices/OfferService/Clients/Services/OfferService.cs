@@ -51,6 +51,15 @@ internal sealed class OfferService
         }, cancellationToken: cancellationToken);
     }
 
+    public async Task UpdateOfferDocumentId(int offerId, string documentId, CancellationToken cancellationToken = default)
+    {
+        await _service.UpdateOfferDocumentIdAsync(new UpdateOfferDocumentIdRequest
+        {
+            OfferId = offerId,
+            DocumentId = documentId
+        }, cancellationToken: cancellationToken);
+    }
+
     private int? _cacheGetMortgageOfferResponseId;
     private GetMortgageOfferResponse? _cacheGetMortgageOfferResponse;
 

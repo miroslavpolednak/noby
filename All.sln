@@ -249,6 +249,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00002-HFICH-5706_CreditWorthiness.sql = DomainServices\OfferService\DatabaseMigrations\00002-HFICH-5706_CreditWorthiness.sql
 		DomainServices\OfferService\DatabaseMigrations\00003-DDS.sql = DomainServices\OfferService\DatabaseMigrations\00003-DDS.sql
 		DomainServices\OfferService\DatabaseMigrations\00005-DDS2.sql = DomainServices\OfferService\DatabaseMigrations\00005-DDS2.sql
+		DomainServices\OfferService\DatabaseMigrations\00006-HFICH-10206_DocumentId.sql = DomainServices\OfferService\DatabaseMigrations\00006-HFICH-10206_DocumentId.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"

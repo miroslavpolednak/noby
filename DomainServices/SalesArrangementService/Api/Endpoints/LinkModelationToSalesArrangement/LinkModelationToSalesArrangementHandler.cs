@@ -55,8 +55,6 @@ internal sealed class LinkModelationToSalesArrangementHandler
         salesArrangementInstance.OfferGuaranteeDateTo = offerInstance.BasicParameters.GuaranteeDateTo;
         salesArrangementInstance.OfferId = request.OfferId;
         salesArrangementInstance.ResourceProcessId = Guid.Parse(offerInstance.ResourceProcessId);
-        // HFICH-3391
-        salesArrangementInstance.OfferDocumentId = null;
 
         await _dbContext.SaveChangesAsync(cancellation);
 
@@ -192,7 +190,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // parametry SA
         var hasChanged = false;
 
-        var saParametersDocument = await _documentDataStorage.FirstOrDefaultByEntityId<MortgageData>(salesArrangementInstance.SalesArrangementTypeId, SalesArrangementParametersConst.TableName, cancellation);
+        var saParametersDocument = await _documentDataStorage.FirstOrDefaultByEntityId<MortgageData>(salesArrangementInstance.SalesArrangementId, SalesArrangementParametersConst.TableName, cancellation);
 
         var parametersModel = saParametersDocument?.Data ?? new MortgageData();
 

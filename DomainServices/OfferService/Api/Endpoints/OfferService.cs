@@ -1,4 +1,5 @@
 ﻿using DomainServices.OfferService.Contracts;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 
@@ -25,6 +26,12 @@ public class OfferService
 
     public override async Task<GetOfferDeveloperResponse> GetOfferDeveloper(GetOfferDeveloperRequest request, ServerCallContext context)
       => await _mediator.Send(request);
+
+    public override async Task<Empty> UpdateOfferDocumentId(UpdateOfferDocumentIdRequest request, ServerCallContext context)
+    {
+        await _mediator.Send(request);
+        return new Empty();
+    }
 
     private readonly IMediator _mediator;
     public OfferService(IMediator mediator)
