@@ -34,7 +34,8 @@ internal sealed class CollateralValuationProcessChangedConsumer
             return;
         }
         
-        var realEstateValuation = await _dbContext.RealEstateValuations
+        var realEstateValuation = await _dbContext
+            .RealEstateValuations
             .FirstOrDefaultAsync(t => t.OrderId == orderId, token);
 
         if (realEstateValuation is null)
@@ -66,9 +67,16 @@ internal sealed class CollateralValuationProcessChangedConsumer
         if (!taskDetail.RealEstateValuation.OnlineValuation)
         {
             var orderResultResponse = await _preorderServiceClient.GetOrderResult(realEstateValuation.OrderId!.Value, token);
-            realEstateValuation.ValuationResultCurrentPrice = ConvertToNullableInt32(orderResultResponse.ValuationResultCurrentPrice);
-            realEstateValuation.ValuationResultFuturePrice = ConvertToNullableInt32(orderResultResponse.ValuationResultFuturePrice);
 
+            // ulozeni novych cen
+            realEstateValuation.Prices = orderResultResponse
+                ?.Select(t => new Database.Entities.PriceDetail
+                {
+                    Price = t.Price,
+                    PriceSourceType = t.PriceSourceType
+                })
+                .ToList();
+            
             var loadedDetail = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(realEstateValuation.RealEstateValuationId, token);
             loadedDetail!.Data!.Documents = new(1)
             {

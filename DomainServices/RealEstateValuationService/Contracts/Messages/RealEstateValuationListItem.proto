@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "Messages/ValuationTypes.proto";
+import "Messages/Types.proto";
 import "NullableGrpcDate.proto";
 
 message RealEstateValuationListItem {
@@ -17,8 +18,7 @@ message RealEstateValuationListItem {
     ValuationTypes ValuationTypeId = 8;
     google.protobuf.StringValue Address = 9;
     cis.types.NullableGrpcDate ValuationSentDate = 10;
-    google.protobuf.Int32Value ValuationResultCurrentPrice = 11;
-    google.protobuf.Int32Value ValuationResultFuturePrice = 12;
+    repeated PriceDetail Prices = 11;
     bool IsRevaluationRequired = 13;
     bool DeveloperAllowed = 14;
     bool DeveloperApplied = 15;

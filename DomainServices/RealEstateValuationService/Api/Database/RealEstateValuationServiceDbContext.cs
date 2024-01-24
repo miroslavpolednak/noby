@@ -18,5 +18,7 @@ internal sealed class RealEstateValuationServiceDbContext
         modelBuilder.RegisterCisTemporalTable<RealEstateValuation>();
         modelBuilder.RegisterCisTemporalTable<DeedOfOwnershipDocument>();
         modelBuilder.RegisterCisTemporalTable<RealEstateValuationAttachment>();
+
+        modelBuilder.Entity<RealEstateValuation>().OwnsMany(p => p.Prices, b => b.ToJson());
     }
 }

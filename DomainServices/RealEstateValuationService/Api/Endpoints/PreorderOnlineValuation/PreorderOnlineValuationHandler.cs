@@ -101,9 +101,12 @@ internal sealed class PreorderOnlineValuationHandler
     {
         entity.ValuationStateId = (int)RealEstateValuationStates.DoplneniDokumentu;
         entity.ValuationTypeId = (int)RealEstateValuationTypes.Online;
-        entity.ValuationResultCurrentPrice = kbmodelReponse.ResultPrice;
         entity.PreorderId = kbmodelReponse.ValuationId;
         entity.IsRevaluationRequired = revaluationRequired;
+        entity.Prices = new(1)
+        {
+            new() { Price = kbmodelReponse.ResultPrice, PriceSourceType = "Online" }
+        };
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }

@@ -20,8 +20,6 @@ internal sealed class RealEstateValuation
     public bool IsRevaluationRequired { get; set; }
     public bool DeveloperAllowed { get; set; }
     public bool DeveloperApplied { get; set; }
-    public int? ValuationResultFuturePrice { get; set; }
-    public int? ValuationResultCurrentPrice { get; set; }
     public long? OrderId { get; set; }
     public int? RealEstateStateId { get; set; }
     public string? Address { get; set; }
@@ -32,4 +30,11 @@ internal sealed class RealEstateValuation
     public string? BagmanRealEstateTypeId { get; set; }
     public bool IsOnlineDisqualified { get; set; }
     public List<int>? PossibleValuationTypeId { get; set; }
+    public List<PriceDetail>? Prices { get; set; }
+}
+
+internal sealed class PriceDetail
+{
+    public int Price { get; set; }
+    public string PriceSourceType { get; set; }
 }
