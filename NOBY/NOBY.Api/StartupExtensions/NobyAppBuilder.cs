@@ -48,21 +48,21 @@ internal static class NobyAppBuilder
             {
                 appBuilder.UseMiddleware<Infrastructure.ErrorHandling.Internals.NobyApiExceptionMiddleware>();
             }
-            
+
             // namapovani API modulu - !poradi je dulezite
             appBuilder
                 // autentizace
                 .UseAuthentication()
                 // routing
-                .UseRouting()
-                .UseWhen(context =>
-                         {
-                             var featureManager = context.RequestServices.GetRequiredService<IFeatureManager>();
+                .UseRouting();
 
-                             return featureManager.IsEnabledAsync(FeatureFlagsConstants.LogRequestContractDifferences).Result;
-                         },
-                         builder => builder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.RequestBufferingMiddleware>())
-                // autorizace
+            if (appConfiguration.LogRequestContractDifferences)
+            {
+                appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.RequestBufferingMiddleware>();
+            }
+            
+            // autorizace
+            appBuilder
                 .UseMiddleware<NobySecurityMiddleware>()
                 .UseAuthorization()
                 .UseMiddleware<CaseOwnerValidationMiddleware>()

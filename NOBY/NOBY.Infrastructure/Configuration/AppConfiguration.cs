@@ -3,6 +3,11 @@
 public sealed class AppConfiguration
 {
     /// <summary>
+    /// Zapnuti logovani rozdilu mezi rozdilem a modelem
+    /// </summary>
+    public bool LogRequestContractDifferences { get; set; }
+
+    /// <summary>
     /// Nastaveni autentizace uzivatele.
     /// </summary>
     public AppConfigurationSecurity? Security { get; set; }

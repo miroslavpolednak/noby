@@ -70,7 +70,7 @@ try
         .AddDocumentGeneratorService();
 
     // NOBY services
-    builder.AddNobyServices();
+    builder.AddNobyServices(appConfiguration);
 
     // init validacnich zprav
     ErrorCodeMapper.Init();
