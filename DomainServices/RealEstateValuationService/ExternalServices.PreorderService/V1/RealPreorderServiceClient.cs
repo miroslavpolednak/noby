@@ -105,7 +105,7 @@ internal sealed class RealPreorderServiceClient
 
         if (result.Count == 0)
         {
-            throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.PreorderSvcUploadAttachmentNoFile);
+            throw ErrorCodeMapper.CreateExternalServiceValidationException(ErrorCodeMapper.PreorderSvcUploadAttachmentNoFile);
         }
 
         return result[0].Id;

@@ -75,7 +75,7 @@ public abstract class ErrorCodeMapperBase
         return new CisValidationException(exceptionCode, GetMessage(exceptionCode, parameter));
     }
 
-    public static CisExternalServiceValidationException CreateExtServiceValidationException(int exceptionCode, object? parameter = null)
+    public static CisExternalServiceValidationException CreateExternalServiceValidationException(int exceptionCode, object? parameter = null)
     {
         return new CisExternalServiceValidationException(exceptionCode, GetMessage(exceptionCode, parameter));
     }

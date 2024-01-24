@@ -13,7 +13,9 @@ internal static class RequestHelper
                                                                    [CallerMemberName] string callerName = "")
     {
         if (!response.IsSuccessStatusCode)
+        {
             throw new CisExternalServiceValidationException($"{StartupExtensions.ServiceName} unknown error {response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+        }
 
         var responseObject = await response.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken);
 
@@ -27,7 +29,7 @@ internal static class RequestHelper
         {
             if (returnVal2ErrorCodesMapping?.Any(t => t.ReturnVal == returnVal) ?? false)
             {
-                throw ErrorCodeMapper.CreateExtServiceValidationException(returnVal2ErrorCodesMapping.First(t => t.ReturnVal == returnVal).ErrorCode);
+                throw ErrorCodeMapper.CreateExternalServiceValidationException(returnVal2ErrorCodesMapping.First(t => t.ReturnVal == returnVal).ErrorCode);
             }
             else
             {

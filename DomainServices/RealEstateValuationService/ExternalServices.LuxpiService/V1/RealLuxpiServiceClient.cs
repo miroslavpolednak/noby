@@ -20,7 +20,7 @@ internal sealed class RealLuxpiServiceClient
             {
                 NoPriceAvailable = true
             },
-            _ => throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelUnknownStatus, model.Status)
+            _ => throw ErrorCodeMapper.CreateExternalServiceValidationException(ErrorCodeMapper.LuxpiKbModelUnknownStatus, model.Status)
         };
 
         string getUrl()
@@ -32,7 +32,7 @@ internal sealed class RealLuxpiServiceClient
         {
             if (!model!.ResultPrice.HasValue || model.Id == 0)
             {
-                throw ErrorCodeMapper.CreateExtServiceValidationException(ErrorCodeMapper.LuxpiKbModelIncorrectResult);
+                throw ErrorCodeMapper.CreateExternalServiceValidationException(ErrorCodeMapper.LuxpiKbModelIncorrectResult);
             }
         
             return new Dto.CreateKbmodelFlatResponse
