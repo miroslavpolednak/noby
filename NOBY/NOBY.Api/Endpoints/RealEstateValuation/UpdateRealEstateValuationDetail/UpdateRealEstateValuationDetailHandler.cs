@@ -22,10 +22,12 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
     {
         var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
-        await CheckIfRequestIsValid(request, valuationDetail, cancellationToken);
+        await checkIfRequestIsValid(request, valuationDetail, cancellationToken);
 
         if (valuationDetail.ValuationStateId is not 7)
+        {
             await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, RealEstateValuationStates.Rozpracovano, cancellationToken);
+        }
 
         var dsRequest = new __Contracts.UpdateRealEstateValuationDetailRequest
         {
@@ -37,7 +39,9 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
             LoanPurposeDetails = request.LoanPurposeDetails is null ? null : new __Contracts.LoanPurposeDetailsObject
             {
                 LoanPurposes = { request.LoanPurposeDetails.LoanPurposes }
-            }
+            },
+            LocalSurveyDetails = valuationDetail.LocalSurveyDetails, // pouze zkopírovat
+            OnlinePreorderDetails = valuationDetail.OnlinePreorderDetails // pouze zkopírovat
         };
 
         switch (request.SpecificDetails)
@@ -76,7 +80,7 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         await _realEstateValuationService.UpdateRealEstateValuationDetail(dsRequest, cancellationToken);
     }
 
-    private async Task CheckIfRequestIsValid(UpdateRealEstateValuationDetailRequest request, __Contracts.RealEstateValuationDetail valuationDetail, CancellationToken cancellationToken)
+    private async Task checkIfRequestIsValid(UpdateRealEstateValuationDetailRequest request, __Contracts.RealEstateValuationDetail valuationDetail, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
@@ -103,27 +107,27 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
 
         var variant = RealEstateVariantHelper.GetRealEstateVariant(valuationDetail.RealEstateTypeId);
 
-        ParseAndSetSpecificDetails(request, variant);
+        parseAndSetSpecificDetails(request, variant);
 
         switch (variant)
         {
-            case RealEstateVariants.HouseAndFlat: CheckHouseAndFlatDetails(request);
+            case RealEstateVariants.HouseAndFlat: checkHouseAndFlatDetails(request);
                 break;
 
-            case RealEstateVariants.OnlyFlat: CheckOnlyFlatDetails(request);
+            case RealEstateVariants.OnlyFlat: checkOnlyFlatDetails(request);
                 break;
 
-            case RealEstateVariants.Parcel: CheckParcelDetails(request);
+            case RealEstateVariants.Parcel: checkParcelDetails(request);
                 break;
 
-            case RealEstateVariants.Other: CheckOtherDetails(request);
+            case RealEstateVariants.Other: checkOtherDetails(request);
                 break;
 
             default: throw new NotImplementedException();
         }
     }
 
-    private static void ParseAndSetSpecificDetails(UpdateRealEstateValuationDetailRequest request, RealEstateVariants variant)
+    private static void parseAndSetSpecificDetails(UpdateRealEstateValuationDetailRequest request, RealEstateVariants variant)
     {
         if (request.SpecificDetails is not JsonElement jsonElement)
             return;
@@ -141,7 +145,7 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         };
     }
 
-    private static void CheckHouseAndFlatDetails(UpdateRealEstateValuationDetailRequest request)
+    private static void checkHouseAndFlatDetails(UpdateRealEstateValuationDetailRequest request)
     {
         if (request.SpecificDetails is not HouseAndFlatDetails houseAndFlatDetails)
             throw new NobyValidationException("SpecificDetails does not contain the HouseAndFlatDetails object");
@@ -157,15 +161,15 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
         }
     }
 
-    private static void CheckOnlyFlatDetails(UpdateRealEstateValuationDetailRequest request)
+    private static void checkOnlyFlatDetails(UpdateRealEstateValuationDetailRequest request)
     {
-        CheckHouseAndFlatDetails(request);
+        checkHouseAndFlatDetails(request);
 
         if ((request.SpecificDetails as HouseAndFlatDetails)?.FlatOnlyDetails is null)
             throw new NobyValidationException("The FlatOnlyDetails is required");
     }
 
-    private static void CheckParcelDetails(UpdateRealEstateValuationDetailRequest request)
+    private static void checkParcelDetails(UpdateRealEstateValuationDetailRequest request)
     {
         if (request.SpecificDetails is not ParcelDetails)
             throw new NobyValidationException("SpecificDetails does not contain the parcel object");
@@ -174,7 +178,7 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
             throw new NobyValidationException("RealEstateStateId has to be null for the parcel variant");
     }
 
-    private static void CheckOtherDetails(UpdateRealEstateValuationDetailRequest request)
+    private static void checkOtherDetails(UpdateRealEstateValuationDetailRequest request)
     {
         if (request.RealEstateStateId.HasValue)
             return;

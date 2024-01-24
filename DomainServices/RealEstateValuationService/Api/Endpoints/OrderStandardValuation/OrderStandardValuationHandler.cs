@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.RealEstateValuationService.Api.Extensions;
+﻿using DomainServices.RealEstateValuationService.Api.Extensions;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using DomainServices.UserService.Clients;
@@ -12,10 +11,10 @@ internal sealed class OrderStandardValuationHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(OrderStandardValuationRequest request, CancellationToken cancellationToken)
     {
-        var (entity, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
+        var (entity, revDetailData, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
 
         // detail oceneni
-        var houseAndFlat = await _aggregate.GetHouseAndFlat(request.RealEstateValuationId, cancellationToken);
+        var houseAndFlat = _mapper.MapFromDataToSingle(revDetailData).HouseAndFlatDetails;
         // instance uzivatele
         var currentUser = await _userService.GetCurrentUser(cancellationToken);
         // info o produktu
@@ -25,10 +24,10 @@ internal sealed class OrderStandardValuationHandler
 
         var orderRequest = new ExternalServices.PreorderService.V1.Contracts.StandardOrderRequestDTO
         {
-            LocalSurveyPerson = $"{request.Data?.FirstName} {request.Data?.LastName}",
-            LocalSurveyEmail = request.Data?.Email,
-            LocalSurveyPhone = $"{request.Data?.PhoneIDC}{request.Data?.PhoneNumber}",
-            LocalSurveyFunction = request.Data?.RealEstateValuationLocalSurveyFunctionCode,
+            LocalSurveyPerson = $"{request.LocalSurveyDetails?.FirstName} {request.LocalSurveyDetails?.LastName}",
+            LocalSurveyEmail = request.LocalSurveyDetails?.Email,
+            LocalSurveyPhone = $"{request.LocalSurveyDetails?.PhoneIDC}{request.LocalSurveyDetails?.PhoneNumber}",
+            LocalSurveyFunction = request.LocalSurveyDetails?.RealEstateValuationLocalSurveyFunctionCode,
             LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO()
         };
         orderRequest.FillBaseOrderData(caseInstance, customer, currentUser, realEstateIds, attachments);
@@ -38,22 +37,28 @@ internal sealed class OrderStandardValuationHandler
         var orderResponse = await _preorderService.CreateOrder(orderRequest, cancellationToken);
 
         // ulozeni vysledku
-        await _aggregate.SaveResults(entity, orderResponse.OrderId, RealEstateValuationStates.Probiha, request.Data, cancellationToken);
+        await _aggregate.SaveResultsAndUpdateEntity(entity, orderResponse.OrderId, RealEstateValuationStates.Probiha, cancellationToken);
+
+        // ulozeni order detail
+        await _aggregate.UpdateLocalSurveyDetailsOnly(request.RealEstateValuationId, request.LocalSurveyDetails, revDetailData, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
     private readonly Services.OrderAggregate _aggregate;
     private readonly IPreorderServiceClient _preorderService;
     private readonly IUserServiceClient _userService;
     private readonly ICustomerServiceClient _customerService;
 
     public OrderStandardValuationHandler(
+        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper,
         ICustomerServiceClient customerService,
         Services.OrderAggregate aggregate,
         IPreorderServiceClient preorderService,
         IUserServiceClient userService)
     {
+        _mapper = mapper;
         _customerService = customerService;
         _aggregate = aggregate;
         _preorderService = preorderService;

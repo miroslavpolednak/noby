@@ -1,5 +1,4 @@
 ﻿using Asp.Versioning;
-using SharedTypes.Enums;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
@@ -11,6 +10,30 @@ namespace NOBY.Api.Endpoints.RealEstateValuation;
 [ApiVersion(1)]
 public sealed class RealEstateValuationController : ControllerBase
 {
+    /// <summary>
+    /// Uložení dat pro místní šetření
+    /// </summary>
+    /// <remarks>
+    /// Průběžné uložení konktaktů pro místní šetření pro pozdější použití.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C6362E7C-7CC7-4b1c-86BA-D08BD84FFCA7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/local-survey-data")]
+    [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
+    [RealEstateValuationStateValidation]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SaveLocalSurveyDetails(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] SaveLocalSurveyDetails.SaveLocalSurveyDetailsRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
+
     /// <summary>
     /// Nastavení typu Ocenění nemovitosti
     /// </summary>

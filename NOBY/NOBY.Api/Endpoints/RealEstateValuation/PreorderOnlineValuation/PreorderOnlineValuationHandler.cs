@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.RealEstateValuationService.Clients;
+﻿using DomainServices.RealEstateValuationService.Clients;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation;
 
@@ -18,7 +17,7 @@ internal sealed class PreorderOnlineValuationHandler
         await _realEstateValuationService.PreorderOnlineValuation(new DomainServices.RealEstateValuationService.Contracts.PreorderOnlineValuationRequest
         {
             RealEstateValuationId = request.RealEstateValuationId,
-            Data = new DomainServices.RealEstateValuationService.Contracts.OrdersOnlinePreorder
+            OnlinePreorderDetails = new()
             {
                 BuildingTechnicalStateCode = request.BuildingTechnicalStateCode,
                 FlatSchemaCode = request.FlatSchemaCode,

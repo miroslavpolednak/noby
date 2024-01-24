@@ -135,11 +135,30 @@ public interface IDocumentDataStorage
         where TEntityId : IConvertible
         where TData : class, IDocumentData;
 
-    Task AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, TData data, CancellationToken cancellationToken)
+    /// <summary>
+    /// Updatuje instanci dat v databázi dle ID entity pro která byla data uložena. Pokud daný záznam neexistuje, vloží ho.
+    /// </summary>
+    /// <remarks>
+    /// Pokud je pro dané ID entity uloženo více instancí dat, updatuje všechny instance!
+    /// </remarks>
+    /// <typeparam name="TEntityId">Generické ID entity</typeparam>
+    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    /// <param name="data">Instance dat</param>
+    Task<int> AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, TData data, CancellationToken cancellationToken)
         where TEntityId : IConvertible
         where TData : class, IDocumentData;
 
-    Task AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, string tableName, TData data, CancellationToken cancellationToken)
+    /// <summary>
+    /// Updatuje instanci dat v databázi dle ID entity pro která byla data uložena. Pokud daný záznam neexistuje, vloží ho.
+    /// </summary>
+    /// <remarks>
+    /// Pokud je pro dané ID entity uloženo více instancí dat, updatuje všechny instance!
+    /// </remarks>
+    /// <typeparam name="TEntityId">Generické ID entity</typeparam>
+    /// <param name="entityId">ID entity pro která byla data uložena (např. CustomerOnSAId, IncomeId atd.)</param>
+    /// <param name="tableName">Název DDS tabulky</param>
+    /// <param name="data">Instance dat</param>
+    Task<int> AddOrUpdateByEntityId<TEntityId, TData>(TEntityId entityId, string tableName, TData data, CancellationToken cancellationToken)
         where TEntityId : IConvertible
         where TData : class, IDocumentData;
 

@@ -1,4 +1,6 @@
-﻿namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities;
+﻿using System.Text.Json.Serialization;
+
+namespace DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities;
 
 /// <summary>
 /// DocumentDataEntityId = RealEstateValuationId
@@ -12,6 +14,8 @@ internal sealed class RealEstateValudationData
     public SpecificDetailParcelObject? Parcel { get; set; }
     public List<RealEstateValuationDocument>? Documents { get; set; }
     public List<int>? LoanPurposes { get; set; }
+    public LocalSurveyData? LocalSurveyDetails { get; set; }
+    public OnlinePreorderData? OnlinePreorderDetails { get; set; }
 
     public sealed class SpecificDetailHouseAndFlatObject
     {
@@ -48,5 +52,24 @@ internal sealed class RealEstateValudationData
     {
         public string? DocumentInfoPrice { get; set; }
         public string? DocumentRecommendationForClient { get; set; }
+    }
+
+    public sealed class OnlinePreorderData
+    {
+        public string? BuildingTechnicalStateCode { get; set; }
+        public string? BuildingMaterialStructureCode { get; set; }
+        public string? FlatSchemaCode { get; set; }
+        public decimal? FlatArea { get; set; }
+        public string? BuildingAgeCode { get; set; }
+    }
+
+    public sealed class LocalSurveyData
+    {
+        public string? RealEstateValuationLocalSurveyFunctionCode { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? PhoneIDC { get; set; }
+        public string? Email { get; set; }
     }
 }

@@ -526,6 +526,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\RealEstateValuationService\DatabaseMigrations\00004-detail_to_dds.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00004-detail_to_dds.sql
 		DomainServices\RealEstateValuationService\DatabaseMigrations\00005-order_to_dds.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00005-order_to_dds.sql
 		DomainServices\RealEstateValuationService\DatabaseMigrations\00006-HFICH-9587.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00006-HFICH-9587.sql
+		DomainServices\RealEstateValuationService\DatabaseMigrations\00007-cleanup.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00007-cleanup.sql
+		DomainServices\RealEstateValuationService\DatabaseMigrations\00008-HFICH-10110.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00008-HFICH-10110.sql
+		DomainServices\RealEstateValuationService\DatabaseMigrations\00009-HFICH-10286.sql = DomainServices\RealEstateValuationService\DatabaseMigrations\00009-HFICH-10286.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RealEstateValuationService.Api", "DomainServices\RealEstateValuationService\Api\DomainServices.RealEstateValuationService.Api.csproj", "{8291DE0E-0447-471D-A402-B44B3FF30ED5}"
