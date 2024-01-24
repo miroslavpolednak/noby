@@ -26,7 +26,7 @@ internal sealed class ExceptionInterceptor
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition) // nedostupna sluzba EAS atd.
         {
-            _logger.ExtServiceUnavailable("OfferService", ex);
+            _logger.ExternalServiceUnavailable("OfferService", ex);
             throw new CisServiceUnavailableException("OfferService/dependant_service", methodFullName, ex.Message);
         }
     }

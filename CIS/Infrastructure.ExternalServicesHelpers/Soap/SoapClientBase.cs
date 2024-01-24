@@ -85,7 +85,7 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
         }
         catch (Exception ex) when (ex is InvalidOperationException || ex is EndpointNotFoundException)
         {
-            Logger.ExtServiceUnavailable(ServiceName, ex);
+            Logger.ExternalServiceUnavailable(ServiceName, ex);
             throw new CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
         }
         catch (Exception e)

@@ -25,7 +25,7 @@ public abstract class IntegrationTestBase
             .Returns(Task.CompletedTask);
         MockSbWebApi
             .Setup(t => t.CancelTask(It.Is<int>(i => i == 2), It.IsAny<CancellationToken>()))
-            .Throws(new CisExtServiceValidationException(2, "exception"));
+            .Throws(new CisExternalServiceValidationException(2, "exception"));
         MockSbWebApi
             .Setup(t => t.FindTasksByTaskId(It.IsAny<ExternalServices.SbWebApi.Dto.FindTasks.FindByTaskIdRequest>(), It.IsAny<CancellationToken>()))
             .Returns(Task.FromResult<IList<IReadOnlyDictionary<string, string>>>(new List<IReadOnlyDictionary<string, string>>()));

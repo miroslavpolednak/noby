@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using CIS.Infrastructure.ExternalServicesHelpers;
+﻿using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,8 +31,8 @@ public static class StartupExtensions
                 builder
                     .AddExternalServiceRestClient<DomainServices.ProductService.ExternalServices.Pcp.V1.IPcpClient, DomainServices.ProductService.ExternalServices.Pcp.V1.RealPcpClient>()
                     .AddExternalServicesKbHeaders(kbHeaderAppComponent, kbHeaderAppComponentOriginator)
-                    .AddExternalServicesKbPartyHeaders();
-                    //.AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
+                    .AddExternalServicesKbPartyHeaders()
+                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
             default:

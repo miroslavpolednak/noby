@@ -1,4 +1,6 @@
-﻿namespace NOBY.Infrastructure.ErrorHandling;
+﻿using Google.Api;
+
+namespace NOBY.Infrastructure.ErrorHandling;
 
 public struct ApiErrorItem
 {
@@ -46,4 +48,26 @@ public struct ApiErrorItem
     /// Zavaznost chyby
     /// </summary>
     public ApiErrorItemServerity Severity { get; set; }
+
+    /// <summary>
+    /// Upresneni duvodu chyby - napr. nefunkcni intergrace na treti strany
+    /// </summary>
+    public ErrorReason? Reason { get; set; }
+
+    public class ErrorReason
+    {
+        /// <summary>
+        /// Typ problemu.
+        /// </summary>
+        /// <remarks>
+        /// ExternalService unavailable
+        /// ExternalService server error
+        /// </remarks>
+        public string ReasonType { get; set; } = null!;
+
+        /// <summary>
+        /// Popis problemu, napr. nazev nefunkcni integrace na treti strany
+        /// </summary>
+        public string? ReasonDescription { get; set; }
+    }
 }

@@ -43,6 +43,14 @@ public sealed class GenericClientExceptionInterceptor
             _logger.ServiceUnavailable("GRPC service unavailable", ex);
             throw new CisServiceUnavailableException(serviceName, methodFullName, ex.Message);
         }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition && ex.GetExceptionCodeFromTrailers() == CisExternalServiceUnavailableException.DefaultExceptionCode)
+        {
+            throw new CisExternalServiceUnavailableException(ex.GetErrorMessageFromRpcException());
+        }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition && ex.GetExceptionCodeFromTrailers() == CisExternalServiceServerErrorException.DefaultExceptionCode)
+        {
+            throw new CisExternalServiceServerErrorException(ex.GetErrorMessageFromRpcException());
+        }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.PermissionDenied)
         {
             throw new CisAuthorizationException(ex.GetErrorMessageFromRpcException());
