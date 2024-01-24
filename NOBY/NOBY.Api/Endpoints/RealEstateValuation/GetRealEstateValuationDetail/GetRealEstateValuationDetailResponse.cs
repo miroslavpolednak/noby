@@ -13,5 +13,7 @@ public sealed class GetRealEstateValuationDetailResponse
     public List<DeedOfOwnershipDocumentWithId>? DeedOfOwnershipDocuments { get; set; }
 
     public List<Dto.Documents.DocumentsMetadata>? Documents { get; set; }
+
+    public LocalSurveyData? LocalSurveyDetails { get; set; }
 }
 

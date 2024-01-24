@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.RealEstateValuationService.Clients;
@@ -51,6 +50,21 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
                 RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
                 LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = valuationDetail.LoanPurposeDetails.LoanPurposes.ToList() },
                 SpecificDetails = GetSpecificDetailsObject(valuationDetail)
+            },
+            LocalSurveyDetails = valuationDetail.LocalSurveyDetails is null ? null : new LocalSurveyData
+            {
+                FirstName = valuationDetail.LocalSurveyDetails?.FirstName ?? "",
+                LastName = valuationDetail.LocalSurveyDetails?.LastName ?? "",
+                FunctionCode  = valuationDetail.LocalSurveyDetails?.RealEstateValuationLocalSurveyFunctionCode ?? "",
+                EmailAddress = new Dto.EmailAddressDto
+                {
+                    EmailAddress = valuationDetail.LocalSurveyDetails?.Email ?? ""
+                },
+                MobilePhone = new Dto.PhoneNumberDto
+                {
+                    PhoneIDC = valuationDetail.LocalSurveyDetails?.PhoneIDC ?? "",
+                    PhoneNumber = valuationDetail.LocalSurveyDetails?.PhoneNumber ?? ""
+                }
             },
             Attachments = getAttachments(valuationDetail.Attachments, categories),
             DeedOfOwnershipDocuments = getDeedOfOwnerships(deeds),

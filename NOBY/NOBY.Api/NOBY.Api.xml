@@ -2834,29 +2834,6 @@
             Název typu Ocenění nemovitosti. 1 - Online, 2 - DTS, 3 - Standard
             </summary>
         </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationLocalSurveyPerson">
-            <summary>
-            Kontakt pro místní šetření
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationLocalSurveyPerson.FunctionCode">
-            <summary>
-            Hodnota z číselníku RealEstateValuationLocalSurveyFunction
-            </summary>
-            <example>PRODAV</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationLocalSurveyPerson.FirstName">
-            <summary>
-            Jméno
-            </summary>
-            <example>Jidáš</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationLocalSurveyPerson.LastName">
-            <summary>
-            Příjmení
-            </summary>
-            <example>Skočdopole</example>
-        </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest">
             <summary>
             Editovatelný toggle developera na Ocenění nemovitosti
@@ -2901,6 +2878,16 @@
             Kód stáří budovy
             </summary>
             <example>0</example>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveLocalSurveyDetails(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SaveLocalSurveyDetails.SaveLocalSurveyDetailsRequest,System.Threading.CancellationToken)">
+            <summary>
+            Uložení dat pro místní šetření
+            </summary>
+            <remarks>
+            Průběžné uložení konktaktů pro místní šetření pro pozdější použití.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C6362E7C-7CC7-4b1c-86BA-D08BD84FFCA7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SetValuationTypeId(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SetValuationTypeId.SetValuationTypeIdRequest,System.Threading.CancellationToken)">
             <summary>
