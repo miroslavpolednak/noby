@@ -2,6 +2,9 @@
 using CIS.Infrastructure.StartupExtensions;
 using MPSS.Security.Noby;
 using ExternalServices;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.FeatureManagement;
+using SharedTypes;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -24,8 +27,15 @@ internal static class NobyServices
         });
 
         builder.Services
-            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(NobyValidationBehavior<,>));
+               .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
+               .AddTransient(typeof(IPipelineBehavior<,>), typeof(NobyValidationBehavior<,>));
+
+        var isLogRequestContractDifferencesEnabled = builder.Configuration
+                                                            .GetSection(FeatureFlagsConstants.FeatureFlagsSection)
+                                                            .GetValue<bool>(FeatureFlagsConstants.LogRequestContractDifferences);
+
+        if (isLogRequestContractDifferencesEnabled)
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(NobyAdditionalRequestPropertiesLoggerBehavior<,>));
 
         // add validators
         builder.Services.Scan(selector => selector

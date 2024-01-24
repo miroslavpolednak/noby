@@ -120,7 +120,7 @@ try
         var descriptions = app.DescribeApiVersions();
         app.UseNobySwagger(descriptions);
     }
-
+    
     log.ApplicationRun();
     app.Run();
 }

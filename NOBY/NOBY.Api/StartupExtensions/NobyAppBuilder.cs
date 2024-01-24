@@ -4,6 +4,8 @@ using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Http.Extensions;
 using NOBY.Infrastructure.Security.Middleware;
 using Asp.Versioning.ApiExplorer;
+using Microsoft.FeatureManagement;
+using SharedTypes;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -46,13 +48,20 @@ internal static class NobyAppBuilder
             {
                 appBuilder.UseMiddleware<Infrastructure.ErrorHandling.Internals.NobyApiExceptionMiddleware>();
             }
-
+            
             // namapovani API modulu - !poradi je dulezite
             appBuilder
                 // autentizace
                 .UseAuthentication()
                 // routing
                 .UseRouting()
+                .UseWhen(context =>
+                         {
+                             var featureManager = context.RequestServices.GetRequiredService<IFeatureManager>();
+
+                             return featureManager.IsEnabledAsync(FeatureFlagsConstants.LogRequestContractDifferences).Result;
+                         },
+                         builder => builder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.RequestBufferingMiddleware>())
                 // autorizace
                 .UseMiddleware<NobySecurityMiddleware>()
                 .UseAuthorization()
