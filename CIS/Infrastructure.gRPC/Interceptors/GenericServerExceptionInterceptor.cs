@@ -72,13 +72,13 @@ public sealed class GenericServerExceptionInterceptor
         {
             setHttpStatus(StatusCodes.Status500InternalServerError);
             _logger.ExternalServiceUnavailable(e.ServiceName, e);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "500001", e.ServiceName);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, CisExternalServiceUnavailableException.DefaultExceptionCode, e.ServiceName);
         }
         catch (CisExternalServiceServerErrorException e)
         {
             setHttpStatus(StatusCodes.Status500InternalServerError);
             _logger.ExternalServiceServerError(e.ServiceName, e);
-            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, "500002", e.ServiceName);
+            throw GrpcExceptionHelpers.CreateRpcException(StatusCode.FailedPrecondition, CisExternalServiceServerErrorException.DefaultExceptionCode, e.ServiceName);
         }
         catch (BaseCisException e)
         {

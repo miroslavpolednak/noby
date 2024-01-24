@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Exceptions;
 using Grpc.Core;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -30,6 +31,9 @@ public static class GrpcExceptionHelpers
 
         return new RpcException(new Status(StatusCode.InvalidArgument, exception.Errors[0].Message), trailersCollection);
     }
+
+    public static RpcException CreateRpcException(StatusCode statusCode, in int exceptionCode, in string message)
+        => CreateRpcException(statusCode, exceptionCode.ToString(CultureInfo.InvariantCulture), message);
 
     public static RpcException CreateRpcException(StatusCode statusCode, in string exceptionCode, in string message)
     {

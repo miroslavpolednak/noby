@@ -1,4 +1,6 @@
-﻿namespace CIS.Core.Exceptions.ExternalServices;
+﻿using System.Globalization;
+
+namespace CIS.Core.Exceptions.ExternalServices;
 
 /// <summary>
 /// Služba třetí strany (ExternalServices) není dostupná - např. špatné URL volané služby, nebo volaná služba vůbec neběží.
@@ -6,6 +8,8 @@
 public sealed class CisExternalServiceUnavailableException
     : BaseCisException
 {
+    public const int DefaultExceptionCode = 500001;
+
     /// <summary>
     /// Název služby, která selhala
     /// </summary>
@@ -26,9 +30,15 @@ public sealed class CisExternalServiceUnavailableException
         ServiceName = serviceName;
     }
 
+    public CisExternalServiceUnavailableException(string serviceName)
+        : this(DefaultExceptionCode, serviceName)
+    { }
+
     public CisExternalServiceUnavailableException(int exceptionCode, string serviceName)
         : base(exceptionCode, $"External service {serviceName} is unavailable")
     {
         ServiceName = serviceName;
     }
+
+    public bool IsDefaultExceptionCode => ExceptionCode == DefaultExceptionCode.ToString(CultureInfo.InvariantCulture);
 }

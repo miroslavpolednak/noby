@@ -1,8 +1,12 @@
-﻿namespace CIS.Core.Exceptions.ExternalServices;
+﻿using System.Globalization;
+
+namespace CIS.Core.Exceptions.ExternalServices;
 
 public sealed class CisExternalServiceServerErrorException
     : BaseCisException
 {
+    public const int DefaultExceptionCode = 500002;
+
     /// <summary>
     /// Název služby, která selhala
     /// </summary>
@@ -23,9 +27,15 @@ public sealed class CisExternalServiceServerErrorException
         ServiceName = serviceName;
     }
 
+    public CisExternalServiceServerErrorException(string serviceName)
+        : this(DefaultExceptionCode, serviceName)
+    { }
+
     public CisExternalServiceServerErrorException(int exceptionCode, string serviceName)
         : base(exceptionCode, $"External service {serviceName} failed with internal error exception")
     {
         ServiceName = serviceName;
     }
+
+    public bool IsDefaultExceptionCode => ExceptionCode == DefaultExceptionCode.ToString(CultureInfo.InvariantCulture);
 }
