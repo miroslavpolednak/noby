@@ -6,6 +6,11 @@ import "google/protobuf/wrappers.proto";
 import "GrpcDateTime.proto";
 import "GrpcDecimal.proto";
 
+message PriceDetail {
+    int32 Price = 1;
+    string PriceSourceType = 2;
+}
+
 message LoanPurposeDetailsObject {
     repeated int32 LoanPurposes = 1;
 }

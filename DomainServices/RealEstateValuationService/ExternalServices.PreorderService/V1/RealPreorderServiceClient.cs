@@ -7,7 +7,7 @@ namespace DomainServices.RealEstateValuationService.ExternalServices.PreorderSer
 internal sealed class RealPreorderServiceClient
     : IPreorderServiceClient
 {
-    public async Task<OrderResultResponse> GetOrderResult(long orderId, CancellationToken cancellationToken = default)
+    public async Task<List<(int Price, string PriceSourceType)>?> GetOrderResult(long orderId, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
             .GetAsync(getUrl(_httpClient.BaseAddress!, $"order/{orderId}/result"), cancellationToken)
@@ -20,11 +20,19 @@ internal sealed class RealPreorderServiceClient
             futurePrice = (decimal?)model.ResultPrices?.FirstOrDefault(t => t.PriceSourceType == "LAND_PRICE_FUTURE")?.Price;
         }
 
-        return new OrderResultResponse
+        List<(int Price, string PriceSourceType)> finalList = new();
+        if (model.ResultPrices is not null)
         {
-            ValuationResultCurrentPrice = (decimal?)model.ResultPrices?.FirstOrDefault(t => t.PriceSourceType == "STANDARD_PRICE_EXIST")?.Price,
-            ValuationResultFuturePrice = futurePrice
-        };
+            foreach (var item in model.ResultPrices)
+            {
+                if (item.Price.HasValue)
+                {
+                    finalList.Add((Convert.ToInt32(item.Price.Value), item.PriceSourceType ?? ""));
+                }
+            }
+        }
+
+        return finalList;
     }
 
     public async Task<bool> RevaluationCheck(Contracts.OnlineRevaluationCheckRequestDTO request, CancellationToken cancellationToken = default)

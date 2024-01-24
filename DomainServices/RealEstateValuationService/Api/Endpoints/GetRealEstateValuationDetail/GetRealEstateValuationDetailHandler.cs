@@ -32,12 +32,19 @@ internal sealed class GetRealEstateValuationDetailHandler
             OrderId = realEstate.OrderId,
             PreorderId = realEstate.PreorderId,
             IsOnlineDisqualified = realEstate.IsOnlineDisqualified,
-            ValuationResultCurrentPrice = realEstate.ValuationResultCurrentPrice,
-            ValuationResultFuturePrice = realEstate.ValuationResultFuturePrice,
             RealEstateSubtypeId = realEstate.RealEstateSubtypeId,
             ACVRealEstateTypeId = realEstate.ACVRealEstateTypeId,
             BagmanRealEstateTypeId = realEstate.BagmanRealEstateTypeId
         };
+
+        if (realEstate.Prices is not null)
+        {
+            response.Prices.AddRange(realEstate.Prices.Select(t => new PriceDetail
+            {
+                Price = t.Price,
+                PriceSourceType = t.PriceSourceType
+            }));
+        }
 
         if (realEstate.PossibleValuationTypeId is not null)
         {

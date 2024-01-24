@@ -269,6 +269,16 @@
             </summary>
             <example>Skočdopole</example>
         </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstatePriceDetail.Price">
+            <summary>
+            Výsledná cena nemovitosti v Kč
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstatePriceDetail.PriceTypeName">
+            <summary>
+            Název ceny pro Noby
+            </summary>
+        </member>
         <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment">
             <summary>
             Příloha k ocenění nemovitosti

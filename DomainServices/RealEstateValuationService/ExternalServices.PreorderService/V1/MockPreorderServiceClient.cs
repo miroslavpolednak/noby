@@ -17,7 +17,7 @@ internal sealed class MockPreorderServiceClient
         return Task.CompletedTask;
     }
 
-    public Task<OrderResultResponse> GetOrderResult(long orderId, CancellationToken cancellationToken = default)
+    public Task<List<(int Price, string PriceSourceType)>?> GetOrderResult(long orderId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
