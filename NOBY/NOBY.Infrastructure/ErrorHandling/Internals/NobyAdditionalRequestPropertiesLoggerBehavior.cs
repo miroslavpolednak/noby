@@ -1,7 +1,11 @@
-﻿using MediatR;
+﻿using System.Reflection;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+using NOBY.Dto.Attributes;
 
 namespace NOBY.Infrastructure.ErrorHandling.Internals;
 
@@ -22,16 +26,33 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
         if (_httpContextAccessor.HttpContext is null)
             return await next();
 
-        _httpContextAccessor.HttpContext.Request.Body.Position = 0;
+        var requestJson = await ReadRequestJson(cancellationToken);
+        var oneOfProperties = new List<string>();
 
-        using var stream = new StreamReader(_httpContextAccessor.HttpContext.Request.Body);
 
-        var requestJson = await stream.ReadToEndAsync(cancellationToken);
+        var jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings
+        {
+            ContractResolver = new ExcludeOneOfContractResolver(oneOfProperties)
+        });
 
-        var requestProperties = GetPropertyNames(JObject.FromObject(request));
-        var contractProperties = string.IsNullOrEmpty(requestJson) ? new List<string>(0) : GetPropertyNames(JObject.Parse(requestJson));
+        var contractProperties = GetPropertyNames(JObject.FromObject(request, jsonSerializer));
+        var requestProperties = string.IsNullOrEmpty(requestJson) ? new List<string>(0) : GetPropertyNames(JObject.Parse(requestJson));
 
-        var extraProperties = contractProperties.Except(requestProperties, StringComparer.OrdinalIgnoreCase).ToList();
+        var extraProperties = requestProperties.Where(prop =>
+        {
+            if (contractProperties.Contains(prop, StringComparer.OrdinalIgnoreCase))
+                return false;
+
+            if (oneOfProperties.Any(oneOf => prop.Equals(oneOf, StringComparison.OrdinalIgnoreCase) ||
+                                             prop.StartsWith($"{oneOf}.", StringComparison.OrdinalIgnoreCase) ||
+                                             prop.Contains($".{oneOf}.", StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+            return true;
+        }).ToList();
+
 
         if (extraProperties.Count != 0)
         {
@@ -57,5 +78,36 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
         }
 
         return propertyNames;
+    }
+
+    private async Task<string> ReadRequestJson(CancellationToken cancellationToken)
+    {
+        _httpContextAccessor.HttpContext!.Request.Body.Position = 0;
+
+        using var stream = new StreamReader(_httpContextAccessor.HttpContext.Request.Body);
+        
+        return await stream.ReadToEndAsync(cancellationToken);
+    }
+
+    private class ExcludeOneOfContractResolver : DefaultContractResolver
+    {
+        private readonly ICollection<string> _oneOfProperties;
+
+        public ExcludeOneOfContractResolver(ICollection<string> oneOfProperties)
+        {
+            _oneOfProperties = oneOfProperties;
+        }
+
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            if (member.GetCustomAttribute<SwaggerOneOfAttribute>() != null)
+            {
+                _oneOfProperties.Add(member.Name);
+
+                return null!;
+            }
+
+            return base.CreateProperty(member, memberSerialization);
+        }
     }
 }
