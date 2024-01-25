@@ -254,7 +254,7 @@ internal sealed class LoanRepository
     
     public Task<bool> RelationshipExists(long caseId, long partnerId, CancellationToken cancellationToken)
     { 
-	    const string Query = "SELECT COUNT(1) from [dbo].[VztahUver] where [UverId] = @caseId and [PartnerId] = @partnerId";
+	    const string Query = "SELECT COUNT(1) from [dbo].[VztahUver] where [UverId] = @caseId and [PartnerId] = @partnerId and [Neaktivni] = 0";
 
         return _connectionProvider.ExecuteDapperScalarAsync<bool>(Query, param: new { caseId, partnerId }, cancellationToken);
     }
