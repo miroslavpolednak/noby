@@ -76,7 +76,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="GetLoanApplicationAssessment.V1.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
     [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
     [ApiVersion("1", Deprecated = true)]
-    [Obsolete]
+    [Obsolete("Replaced with v2 (with Exposure changes)")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
@@ -133,7 +133,7 @@ public class SalesArrangementController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=3A82DF69-AF0D-4ec4-8263-D42354C4891E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
-    /// <returns><see cref="List{T}"/> where T : <see cref="Dto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
     [HttpGet("list/{caseId:long}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
@@ -151,7 +151,7 @@ public class SalesArrangementController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=439685F4-2313-4dfe-A374-8EE45F1C8E86"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
-    /// <returns><see cref="List{T}"/> where T : <see cref="Dto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
     [HttpGet("{salesArrangementId:int}/customers")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]

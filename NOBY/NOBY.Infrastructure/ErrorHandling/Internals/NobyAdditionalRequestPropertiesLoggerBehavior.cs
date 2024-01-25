@@ -29,11 +29,11 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
         var requestJson = await stream.ReadToEndAsync(cancellationToken);
 
         var requestProperties = GetPropertyNames(JObject.FromObject(request));
-        var contractProperties = GetPropertyNames(JObject.Parse(requestJson));
+        var contractProperties = string.IsNullOrEmpty(requestJson) ? new List<string>(0) : GetPropertyNames(JObject.Parse(requestJson));
 
         var extraProperties = contractProperties.Except(requestProperties, StringComparer.OrdinalIgnoreCase).ToList();
 
-        if (extraProperties.Any())
+        if (extraProperties.Count != 0)
         {
             _logger.LogWarning("Request {RequestName} has additional properties than contract. Differences: {ExtraProperties}", 
                                typeof(TRequest).FullName, 

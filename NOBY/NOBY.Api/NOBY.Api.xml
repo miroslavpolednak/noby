@@ -4059,7 +4059,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=3A82DF69-AF0D-4ec4-8263-D42354C4891E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="caseId">ID Case-u</param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="!:Dto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.SalesArrangement.SharedDto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetCustomersOnSa(System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -4070,7 +4070,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=439685F4-2313-4dfe-A374-8EE45F1C8E86"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="!:Dto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.SalesArrangement.SharedDto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetSalesArrangement(System.Int32,System.Threading.CancellationToken)">
             <summary>

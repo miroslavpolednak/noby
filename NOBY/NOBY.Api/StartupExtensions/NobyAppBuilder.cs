@@ -4,8 +4,6 @@ using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Http.Extensions;
 using NOBY.Infrastructure.Security.Middleware;
 using Asp.Versioning.ApiExplorer;
-using Microsoft.FeatureManagement;
-using SharedTypes;
 
 namespace NOBY.Api.StartupExtensions;
 
