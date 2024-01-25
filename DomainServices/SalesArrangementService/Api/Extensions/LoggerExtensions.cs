@@ -6,6 +6,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, int, int, Exception> _linkToModelationStarted;
     private static readonly Action<ILogger, int, int, Exception> _updateStateStarted;
     private static readonly Action<ILogger, int, Exception> _deleteServiceSalesArrangements;
+    private static readonly Action<ILogger, long, string, Exception> _cancelCaseJobFailed;
 
     static LoggerExtensions()
     {
@@ -28,6 +29,11 @@ internal static class LoggerExtensions
             LogLevel.Information,
             new EventId(LoggerEventIdCodes.DeleteServiceSalesArrangement, nameof(DeleteServiceSalesArrangement)),
             "{SaForDeleteCount} SalesArrangements gonna be deleted");
+
+        _cancelCaseJobFailed = LoggerMessage.Define<long, string>(
+            LogLevel.Warning,
+            new EventId(LoggerEventIdCodes.CancelCaseJobFailed, nameof(CancelCaseJobFailed)),
+            "CancelCase job failed for CaseId '{CaseId}': {Message}");
     }
 
     public static void CreateSalesArrangementStarted(this ILogger logger, int salesArrangementTypeId, long caseId, int? offerId)
@@ -41,4 +47,7 @@ internal static class LoggerExtensions
 
     public static void DeleteServiceSalesArrangement(this ILogger logger, int SaForDeleteCount)
         => _deleteServiceSalesArrangements(logger, SaForDeleteCount, null!);
+
+    public static void CancelCaseJobFailed(this ILogger logger, long caseId, string message, Exception ex)
+        => _cancelCaseJobFailed(logger, caseId, message, ex);
 }

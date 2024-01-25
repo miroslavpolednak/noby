@@ -38,6 +38,10 @@ WHERE
 	        {
 		        _logger.EntityNotFound(e);
 	        }
+			catch (Exception e)
+			{
+                _logger.CancelCaseJobFailed(caseId, e.Message, e);
+            }
         }
     }
     
