@@ -68,7 +68,7 @@ message AmendmentPriceException {
 message PriceExceptionLoanInterestRateItem {
 	cis.types.GrpcDecimal LoanInterestRate = 1;
 	cis.types.GrpcDecimal LoanInterestRateProvided = 2;
-	int32 LoanInterestRateAnnouncedType = 3;
+	google.protobuf.Int32Value LoanInterestRateAnnouncedType = 3;
 	cis.types.NullableGrpcDecimal LoanInterestRateDiscount = 4;
 }
 
