@@ -10,9 +10,11 @@ public sealed class ErrorHandlingHttpHandler
     : DelegatingHandler
 {
     private readonly string _serviceName;
+    private readonly bool _registerBadRequestAsError;
 
-    public ErrorHandlingHttpHandler(string serviceName)
+    public ErrorHandlingHttpHandler(string serviceName, bool registerBadRequestAsError)
     {
+        _registerBadRequestAsError = registerBadRequestAsError;
         _serviceName = serviceName;
     }
 
@@ -24,9 +26,15 @@ public sealed class ErrorHandlingHttpHandler
         {
             response = await base.SendAsync(request, cancellationToken);
 
-            if (response!.IsSuccessStatusCode || response!.StatusCode == HttpStatusCode.BadRequest || response!.StatusCode == HttpStatusCode.NotFound)
+            // vyjimka kvuli SB
+            if (response!.StatusCode == HttpStatusCode.BadRequest && _registerBadRequestAsError)
             {
-                return response!;
+                throw new CisExternalServiceServerErrorException(_serviceName, request.RequestUri!.ToString(), $"{(int)response.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+            }
+
+            if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return response;
             }
         }
         catch (HttpRequestException ex)
