@@ -8,7 +8,7 @@ using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 
-internal sealed class GetCaseMenuFlagsHandler 
+internal sealed class GetCaseMenuFlagsHandler
     : IRequestHandler<GetCaseMenuFlagsRequest, GetCaseMenuFlagsResponse>
 {
     public async Task<GetCaseMenuFlagsResponse> Handle(GetCaseMenuFlagsRequest request, CancellationToken cancellationToken)
@@ -17,8 +17,8 @@ internal sealed class GetCaseMenuFlagsHandler
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
 
         // seznam dokumentu
-        var getDocumentsInQueueRequest = new GetDocumentsInQueueRequest 
-        { 
+        var getDocumentsInQueueRequest = new GetDocumentsInQueueRequest
+        {
             CaseId = request.CaseId
         };
         getDocumentsInQueueRequest.StatusesInQueue.AddRange(new[] { 100, 110, 200, 300 });
@@ -39,7 +39,11 @@ internal sealed class GetCaseMenuFlagsHandler
                 IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.InProgress && caseInstance.State != (int)CaseStates.ToBeCancelled
             },
             DocumentsMenuItem = await getDocuments(documentsInQueue, cancellationToken),
-            CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken)
+            CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken),
+            RefinancingMenuItem = new()
+            {
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RetentionManage) && (caseInstance.State is (int)CaseStates.InDisbursement or (int)CaseStates.InAdministration)
+            }
         };
     }
 

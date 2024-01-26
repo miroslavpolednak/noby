@@ -339,6 +339,11 @@
             Položka menu Úkoly
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.RefinancingMenuItem">
+            <summary>
+            Změna úrokové sazby 
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsItem.Flag">
             <summary>
             Příznak
