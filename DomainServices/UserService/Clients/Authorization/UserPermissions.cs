@@ -49,5 +49,6 @@ public enum UserPermissions : int
     WFL_TASK_DETAIL_RefinancingSigningView = 245,
     DOCUMENT_SIGNING_RefinancingManage = 246,
     CHANGE_REQUESTS_RefinancingAccess = 247,
-    SALES_ARRANGEMENT_RefinancingAccess = 248
+    SALES_ARRANGEMENT_RefinancingAccess = 248,
+    WFL_TASK_DETAIL_RetentionManage = 249 
 }

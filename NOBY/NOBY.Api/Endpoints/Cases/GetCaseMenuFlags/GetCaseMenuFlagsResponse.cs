@@ -36,6 +36,11 @@ public sealed class GetCaseMenuFlagsResponse
     /// Položka menu Úkoly
     /// </summary>
     public GetCaseMenuFlagsItem TasksMenuItem { get; set; } = null!;
+
+    /// <summary>
+    /// Změna úrokové sazby 
+    /// </summary>
+    public GetCaseMenuFlagsItem RefinancingMenuItem { get; set; } = null!;
 }
 
 public sealed class GetCaseMenuFlagsItem
