@@ -22,11 +22,6 @@ public sealed class AppConfiguration
     /// </summary>
     public int MaxFileSize { get; set; } = 20;
 
-    /// <summary>
-    /// ID prostredi pro ktere se ma nahrat config pro MPSS.Security.dll
-    /// </summary>
-    public int? MpssSecurityDllEnvironment { get; set; }
-
     public IcapAntivirusConfiguration? IcapAntivirus { get; set; }
 
     public sealed class IcapAntivirusConfiguration

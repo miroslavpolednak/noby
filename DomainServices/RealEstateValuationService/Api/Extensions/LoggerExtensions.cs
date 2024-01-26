@@ -27,7 +27,7 @@ internal static class LoggerExtensions
             "Message CurrentTaskId {CurrentTaskId} is not in valid format");
         
         _kafkaRealEstateValuationByOrderIdNotFound = LoggerMessage.Define<long?>(
-            LogLevel.Error,
+            LogLevel.Warning,
             new EventId(LoggerEventIdCodes.RealEstateValuationNotFound, nameof(RealEstateValuationByOrderIdNotFound)),
             "RealEstateValuation OrderId {OrderId} not found");
 

@@ -4,7 +4,6 @@ using SharedTypes.Enums;
 using DomainServices.CodebookService.Clients;
 using CM = DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
 using DomainServices.CodebookService.Contracts.v1;
-using DomainServices.CustomerService.Api.Endpoints.FormatAddress;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -25,17 +24,14 @@ internal sealed class CustomerManagementDetailProvider
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _incomeMainTypesAML = null!;
     private List<EducationLevelsResponse.Types.EducationLevelItem> _educations = null!;
     private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
-    private readonly ILogger<CustomerManagementDetailProvider> _logger;
 
     public CustomerManagementDetailProvider(CM.ICustomerManagementClient customerManagement,
                                             ICodebookServiceClient codebook,
-                                            IRequestHandler<FormatAddressRequest, FormatAddressResponse> formatAddressHandler,
-                                            ILogger<CustomerManagementDetailProvider> logger)
+                                            IRequestHandler<FormatAddressRequest, FormatAddressResponse> formatAddressHandler)
     {
         _customerManagement = customerManagement;
         _codebook = codebook;
         _formatAddressHandler = formatAddressHandler;
-        _logger = logger;
     }
 
     public async Task<CustomerDetailResponse> GetDetail(long customerId, CancellationToken cancellationToken)

@@ -12,12 +12,12 @@ public static class LoggerExtensions
     static LoggerExtensions()
     {
         _webApiAuthenticationException = LoggerMessage.Define<string>(
-              LogLevel.Error,
+              LogLevel.Warning,
               new EventId(702, nameof(WebApiAuthenticationException)),
               "Authentication failed: {Message}");
 
         _webApiAuthorizationException = LoggerMessage.Define<string>(
-            LogLevel.Error,
+            LogLevel.Warning,
             new EventId(705, nameof(WebApiAuthorizationException)),
             "Authorization exception: {Message}");
 
@@ -32,12 +32,12 @@ public static class LoggerExtensions
             "Uncought exception");
 
         _notFoundException = LoggerMessage.Define<string>(
-            LogLevel.Error,
+            LogLevel.Warning,
             new EventId(706, nameof(WebApiAuthorizationException)),
             "NotFound exception: {Message}");
 
         _nobyValidationException = LoggerMessage.Define<string>(
-           LogLevel.Error,
+           LogLevel.Warning,
            new EventId(707, nameof(NobyValidationException)),
            "Noby validation exception: {Message}");
     }

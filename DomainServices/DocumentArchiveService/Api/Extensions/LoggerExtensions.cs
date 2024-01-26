@@ -8,7 +8,7 @@ internal static class LoggerExtensions
     static LoggerExtensions()
     {
         _localDocCopyIfNotExistInEArchive = LoggerMessage.Define(
-            LogLevel.Error,
+            LogLevel.Warning,
             new EventId(LoggerEventIdCodes.LocalDocCopyIfNotExistInEArchive, nameof(LocalDocCopyIfNotExistInEArchive)),
             "Exception when get data from EArchive, local data were returned");
     }
