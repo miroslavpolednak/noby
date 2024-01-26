@@ -32,11 +32,12 @@ WHERE
         {
 	        try
 	        {
-		        await _caseServiceClient.CancelCase(caseId, false, cancellationToken);
-	        }
-	        catch (CisNotFoundException e)
-	        {
-		        _logger.EntityNotFound(e);
+				var caseInstance = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
+
+				if (caseInstance.Exists && caseInstance.State == (int)CaseStates.InProgress)
+				{
+					await _caseServiceClient.CancelCase(caseId, false, cancellationToken);
+				}
 	        }
 			catch (Exception e)
 			{
