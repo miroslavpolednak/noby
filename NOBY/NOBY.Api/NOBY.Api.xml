@@ -4962,6 +4962,18 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F8C65CF5-6A02-4d2a-B068-C3EDE901DAE5"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.GetCurrentHandoverTask(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Získání aktuálního úkolu Předání na specialistu
+            </summary>
+            <remarks>
+            Operace vrátí detail úkolu Předání na specialistu<br /> <br />
+            Pokud ještě ve Starbuild neexistuje workflow úkol Předání na specialistu, bude zobrazen formulář pro založení úkolu a uživatel dostane možnost založit workflow úkol Předání na specialistu. <br /> <br />
+            Pokud již workflow úkol ve Starbuildu existuje, ale je stornovaný nebo dokončený, bude zobrazen formulář pro založení úkolu a uživatel dostane možnost založení nového workflow úkolu Předání na specialistu. <br /> <br />
+            Pokud již workflow úkol ve Starbuildu existuje a je ve stavu Odesláno, bude zobrazen read-only detail tohoto odeslaného úkolu. <br /><br />
+            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=50158427-351C-4cd2-B508-9705AADB9821" ><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <!-- Badly formed XML comment ignored for member "T:NOBY.Api.Endpoints.Workflow.WorkflowHelpers" -->
         <member name="M:NOBY.Api.StartupExtensions.NobyAppBuilder.UseNobyAuthStrategy(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
