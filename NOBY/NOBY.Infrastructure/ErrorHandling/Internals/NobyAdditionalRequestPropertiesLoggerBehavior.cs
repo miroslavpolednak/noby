@@ -26,9 +26,12 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
         if (_httpContextAccessor.HttpContext is null)
             return await next();
 
-        var requestJson = await ReadRequestJson(cancellationToken);
-        var oneOfProperties = new List<string>();
+        _httpContextAccessor.HttpContext!.Request.Body.Position = 0;
 
+        using var stream = new StreamReader(_httpContextAccessor.HttpContext.Request.Body);
+
+        var requestJson = await stream.ReadToEndAsync(cancellationToken);
+        var oneOfProperties = new List<string>();
 
         var jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings
         {
@@ -78,15 +81,6 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
         }
 
         return propertyNames;
-    }
-
-    private async Task<string> ReadRequestJson(CancellationToken cancellationToken)
-    {
-        _httpContextAccessor.HttpContext!.Request.Body.Position = 0;
-
-        using var stream = new StreamReader(_httpContextAccessor.HttpContext.Request.Body);
-        
-        return await stream.ReadToEndAsync(cancellationToken);
     }
 
     private class ExcludeOneOfContractResolver : DefaultContractResolver
