@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using __Household = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
-using SharedTypes.Enums;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using NOBY.Api.Endpoints.Customer.SharedDto;
@@ -78,6 +77,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             };
         }
 
+        RemoveContactAddressIfNotConfirmedAndContactsAreConfirmed(originalModel, request);
         await RemoveTinMissingReasonIfTinIsNotRequired(originalModel?.NaturalPerson?.TaxResidences, cancellationToken);
 
         // ----- update naseho detailu instance customera
@@ -254,7 +254,18 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         return additionalData;
     }
 
-    private async Task RemoveTinMissingReasonIfTinIsNotRequired(SharedDto.TaxResidenceItem? original, CancellationToken cancellationToken)
+    private static void RemoveContactAddressIfNotConfirmedAndContactsAreConfirmed(UpdateCustomerDetailWithChangesRequest original, UpdateCustomerDetailWithChangesRequest request)
+    {
+        if (original.Addresses is null || !original.Addresses.Any(address => address.AddressTypeId == (int)AddressTypes.Mailing && address.IsAddressConfirmed != true))
+            return;
+
+        if (original.EmailAddress?.IsConfirmed != true || original.MobilePhone?.IsConfirmed != true)
+            return;
+
+        request.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Mailing);
+    }
+
+    private async Task RemoveTinMissingReasonIfTinIsNotRequired(TaxResidenceItem? original, CancellationToken cancellationToken)
     {
         if (original?.ResidenceCountries is null)
             return;
