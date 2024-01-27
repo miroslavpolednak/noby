@@ -30,24 +30,26 @@ internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty
 
     public async Task<Empty> Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
-        var salesArrangement = await LoadAndValidateSalesArrangement(request.SalesArrangementId, cancellationToken);
+        var salesArrangement = await LoadAndValidateSalesArrangement(request.SalesArrangementId, request.IsCancelled, cancellationToken);
 
         await ProcessEasFormIfNeeded(salesArrangement, request.IsCancelled, cancellationToken);
 
-        await _formsService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, SalesArrangementStates.InApproval, cancellationToken);
+        if (!request.IsCancelled)
+            await _formsService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, SalesArrangementStates.InApproval, cancellationToken);
 
         AuditLog(salesArrangement);
 
         return new Empty();
     }
 
-    private async Task<SalesArrangement> LoadAndValidateSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
+    private async Task<SalesArrangement> LoadAndValidateSalesArrangement(int salesArrangementId, bool isCancelled, CancellationToken cancellationToken)
     {
-        await _documentOnSAService.RefreshSalesArrangementState(salesArrangementId, cancellationToken);
+        if (!isCancelled)
+            await _documentOnSAService.RefreshSalesArrangementState(salesArrangementId, cancellationToken);
 
         var salesArrangement = await _formsService.LoadSalesArrangement(salesArrangementId, cancellationToken);
 
-        if (salesArrangement.State != (int)SalesArrangementStates.ToSend)
+        if (!isCancelled && salesArrangement.State != (int)SalesArrangementStates.ToSend)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CannotBeSent, salesArrangement.State);
 
         return salesArrangement;
