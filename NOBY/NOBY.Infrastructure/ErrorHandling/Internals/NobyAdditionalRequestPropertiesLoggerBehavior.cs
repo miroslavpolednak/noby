@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Net.Mime;
+using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -23,14 +24,18 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        if (_httpContextAccessor.HttpContext is null)
+        if (_httpContextAccessor.HttpContext is null || _httpContextAccessor.HttpContext.Request.ContentType != MediaTypeNames.Application.Json)
             return await next();
 
-        _httpContextAccessor.HttpContext!.Request.Body.Position = 0;
+        _httpContextAccessor.HttpContext.Request.Body.Position = 0;
 
         using var stream = new StreamReader(_httpContextAccessor.HttpContext.Request.Body);
 
         var requestJson = await stream.ReadToEndAsync(cancellationToken);
+
+        if (string.IsNullOrWhiteSpace(requestJson))
+            return await next();
+
         var oneOfProperties = new List<string>();
 
         var jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings
@@ -39,7 +44,7 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
         });
 
         var contractProperties = GetPropertyNames(JObject.FromObject(request, jsonSerializer));
-        var requestProperties = string.IsNullOrEmpty(requestJson) ? new List<string>(0) : GetPropertyNames(JObject.Parse(requestJson));
+        var requestProperties = GetPropertyNames(JObject.Parse(requestJson));
 
         var extraProperties = requestProperties.Where(prop =>
         {
@@ -55,7 +60,6 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
 
             return true;
         }).ToList();
-
 
         if (extraProperties.Count != 0)
         {
