@@ -15,7 +15,7 @@ internal sealed class OfferGuaranteeDateToCheckJob
         var flowSwitches = await _dbContext.FlowSwitches
             .Include(f => f.SalesArrangement)
             .Where(f =>
-                f.FlowSwitchId == 1 
+                f.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed
                 && f.Value 
                 && _saStates.Contains(f.SalesArrangement.State) 
                 && f.SalesArrangement.OfferGuaranteeDateTo < _dateTime.Now)
@@ -29,10 +29,13 @@ internal sealed class OfferGuaranteeDateToCheckJob
             if (task is not null)
             {
                 await _caseService.CancelTask(flowSwitch.SalesArrangement.CaseId, task.TaskIdSb, cancellationToken);
+                _logger.OfferGuaranteeDateToCheckJobCancelTask(flowSwitch.SalesArrangement.CaseId, task.TaskIdSb);
             }
 
             flowSwitch.Value = false;
             await _dbContext.SaveChangesAsync(cancellationToken);
+
+            _logger.OfferGuaranteeDateToCheckJobFinished(flowSwitch.SalesArrangementId);
         }
     }
 
@@ -40,12 +43,15 @@ internal sealed class OfferGuaranteeDateToCheckJob
     private readonly IDateTime _dateTime;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseService;
+    private readonly ILogger<OfferGuaranteeDateToCheckJob> _logger;
     
     public OfferGuaranteeDateToCheckJob(
+        ILogger<OfferGuaranteeDateToCheckJob> logger,
         IDateTime dateTime,
         Database.SalesArrangementServiceDbContext dbContext,
         ICaseServiceClient caseService)
     {
+        _logger = logger;
         _dateTime = dateTime;
         _dbContext = dbContext;
         _caseService = caseService;
