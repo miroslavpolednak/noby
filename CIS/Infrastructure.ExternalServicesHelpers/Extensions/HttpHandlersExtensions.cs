@@ -6,8 +6,8 @@ public static class HttpHandlersExtensions
     /// Přidá do HttpClient try-catch tak, aby se nevraceli výchozí vyjímky, ale jejich CIS ekvivalenty.
     /// </summary>
     /// <param name="serviceName">Název ExternalServices proxy</param>
-    public static IHttpClientBuilder AddExternalServicesErrorHandling(this IHttpClientBuilder builder, string serviceName)
-        => builder.AddHttpMessageHandler(b => new HttpHandlers.ErrorHandlingHttpHandler(serviceName));
+    public static IHttpClientBuilder AddExternalServicesErrorHandling(this IHttpClientBuilder builder, string serviceName, bool registerBadRequestAsError = false)
+        => builder.AddHttpMessageHandler(b => new HttpHandlers.ErrorHandlingHttpHandler(serviceName, registerBadRequestAsError));
 
     /// <summary>
     /// Prida do kazdeho requestu HttpClienta hlavicky vyzadovane v KB.

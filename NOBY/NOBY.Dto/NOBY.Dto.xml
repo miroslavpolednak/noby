@@ -246,6 +246,39 @@
             </summary>
             <example>[204]</example>
         </member>
+        <member name="T:NOBY.Dto.RealEstateValuation.LocalSurveyData">
+            <summary>
+            Kontakt pro místní šetření
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.LocalSurveyData.FunctionCode">
+            <summary>
+            Hodnota z číselníku RealEstateValuationLocalSurveyFunction
+            </summary>
+            <example>PRODAV</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.LocalSurveyData.FirstName">
+            <summary>
+            Jméno
+            </summary>
+            <example>Jidáš</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.LocalSurveyData.LastName">
+            <summary>
+            Příjmení
+            </summary>
+            <example>Skočdopole</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstatePriceDetail.Price">
+            <summary>
+            Výsledná cena nemovitosti v Kč
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.RealEstatePriceDetail.PriceTypeName">
+            <summary>
+            Název ceny pro Noby
+            </summary>
+        </member>
         <member name="T:NOBY.Dto.RealEstateValuation.RealEstateValuationAttachment">
             <summary>
             Příloha k ocenění nemovitosti

@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using SharedTypes.Enums;
 using CIS.Infrastructure.Security;
 using SharedAudit;
 using DomainServices.CaseService.Api.Database;
@@ -150,9 +149,11 @@ internal sealed class CancelCaseHandler
     private async Task<bool> firstSignatureDateIsSet(int salesArrangementId, List<DocumentOnSAToSign> documents, CancellationToken cancellationToken)
     {
         var households = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
-        int householdId = households.First(t => t.HouseholdTypeId == (int)HouseholdTypes.Main).HouseholdId;
+        int? householdId = households
+            .FirstOrDefault(t => t.HouseholdTypeId == (int)HouseholdTypes.Main)
+            ?.HouseholdId;
         
-        return documents.Any(t => t.IsSigned && t.HouseholdId == householdId);
+        return householdId.HasValue ? documents.Any(t => t.IsSigned && t.HouseholdId == householdId) : false;
     }
 
     private readonly IAuditLogger _auditLogger;

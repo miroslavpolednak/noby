@@ -18,8 +18,7 @@ message RealEstateValuationDetail {
     ValuationTypes ValuationTypeId = 8;
     google.protobuf.StringValue Address = 9;
     cis.types.NullableGrpcDate ValuationSentDate = 10;
-    google.protobuf.Int32Value ValuationResultCurrentPrice = 11;
-    google.protobuf.Int32Value ValuationResultFuturePrice = 12;
+    repeated PriceDetail Prices = 11;
     bool IsRevaluationRequired = 13;
     bool DeveloperAllowed = 14;
     bool DeveloperApplied = 15;
@@ -32,7 +31,9 @@ message RealEstateValuationDetail {
     repeated RealEstateValuationDocument Documents = 22;
     bool IsOnlineDisqualified = 23;
     repeated int32 PossibleValuationTypeId = 24;
-
+    OnlinePreorderData OnlinePreorderDetails = 25;
+    LocalSurveyData LocalSurveyDetails = 26;
+    
     oneof SpecificDetail {
         SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 50;
         SpecificDetailParcelObject ParcelDetails = 51;

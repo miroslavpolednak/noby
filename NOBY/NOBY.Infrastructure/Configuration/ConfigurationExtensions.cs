@@ -6,7 +6,7 @@ namespace NOBY.Infrastructure.Configuration;
 
 public static class ConfigurationExtensions
 {
-    private const string _configurationSectionName = "NOBY";
+    private const string _configurationSectionName = "AppConfiguration";
 
     public static AppConfiguration AddNobyConfig(this WebApplicationBuilder builder)
     {

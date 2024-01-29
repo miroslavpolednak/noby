@@ -1,0 +1,2 @@
+ALTER TABLE Offer ADD DocumentId VARCHAR(100) NULL
+ALTER TABLE Offer ADD FirstGeneratedDocumentDate DATE NULL

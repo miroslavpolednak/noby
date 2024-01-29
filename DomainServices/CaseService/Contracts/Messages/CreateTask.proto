@@ -4,12 +4,13 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "Messages/GetTaskDetail.proto";
 import "GrpcDate.proto";
+import "NullableGrpcDate.proto";
 import "google/protobuf/wrappers.proto";
 
 message CreateTaskRequest {
 	int32 TaskTypeId = 1;
 	google.protobuf.Int32Value TaskSubtypeId = 2;
-	int64 ProcessId = 3;
+	google.protobuf.Int64Value ProcessId = 3;
 	google.protobuf.StringValue TaskRequest = 4;
 	repeated string TaskDocumentsId = 5;
 	int64 CaseId = 6;
@@ -24,13 +25,13 @@ message CreateTaskResponse {
 }
 
 message TaskPriceException {
-	cis.types.GrpcDate Expiration = 1;
+	cis.types.NullableGrpcDate Expiration = 1;
 	PriceExceptionLoanInterestRateItem LoanInterestRate = 2;
 	repeated PriceExceptionFeesItem Fees = 3;
-	int32 ProductTypeId = 4;
-	int32 LoanAmount = 5;
-	int32 LoanDuration = 6;
-	int32 LoanToValue = 7;
-	int32 FixedRatePeriod = 8;
+	google.protobuf.Int32Value ProductTypeId = 4;
+	google.protobuf.Int32Value LoanAmount = 5;
+	google.protobuf.Int32Value LoanDuration = 6;
+	google.protobuf.Int32Value LoanToValue = 7;
+	google.protobuf.Int32Value FixedRatePeriod = 8;
 	repeated string AppliedMarketingActionsCodes = 9;
 }

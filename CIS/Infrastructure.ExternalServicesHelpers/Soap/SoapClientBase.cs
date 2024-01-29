@@ -1,4 +1,5 @@
-﻿using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
+﻿using CIS.Core.Exceptions.ExternalServices;
+using CIS.Infrastructure.ExternalServicesHelpers.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -85,17 +86,11 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
         }
         catch (Exception ex) when (ex is InvalidOperationException || ex is EndpointNotFoundException)
         {
-            Logger.ExtServiceUnavailable(ServiceName, ex);
-            throw new CisServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
+            throw new CisExternalServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
         }
-        catch (Exception e)
+        catch (FaultException ex)
         {
-#pragma warning disable CA1848 // Use the LoggerMessage delegates
-#pragma warning disable CA2254 // Template should be a static expression
-            Logger.LogError(e, e.Message);
-#pragma warning restore CA2254 // Template should be a static expression
-#pragma warning restore CA1848 // Use the LoggerMessage delegates
-            throw;
+            throw new CisExternalServiceServerErrorException(ServiceName, nameof(callMethod), ex.Message);
         }
     }
 }

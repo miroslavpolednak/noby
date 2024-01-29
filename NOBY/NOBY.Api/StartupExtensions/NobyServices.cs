@@ -7,7 +7,7 @@ namespace NOBY.Api.StartupExtensions;
 
 internal static class NobyServices
 {
-    public static WebApplicationBuilder AddNobyServices(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddNobyServices(this WebApplicationBuilder builder, Infrastructure.Configuration.AppConfiguration appConfiguration)
     {
         var assemblyType = typeof(IApiAssembly);
 
@@ -24,8 +24,13 @@ internal static class NobyServices
         });
 
         builder.Services
-            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(NobyValidationBehavior<,>));
+               .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
+               .AddTransient(typeof(IPipelineBehavior<,>), typeof(NobyValidationBehavior<,>));
+
+        if (appConfiguration.LogRequestContractDifferences)
+        {
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(NobyAdditionalRequestPropertiesLoggerBehavior<,>));
+        }
 
         // add validators
         builder.Services.Scan(selector => selector

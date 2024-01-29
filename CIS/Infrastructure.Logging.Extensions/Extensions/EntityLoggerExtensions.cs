@@ -16,22 +16,22 @@ public static class EntityLoggerExtensions
     static EntityLoggerExtensions()
     {
         _entityAlreadyExist = LoggerMessage.Define<string, object>(
-            LogLevel.Error,
+            LogLevel.Warning,
             new EventId(EventIdCodes.EntityAlreadyExist, nameof(EntityAlreadyExist)),
             "{EntityName} #{Id} already exist");
 
         _entityAlreadyExistMessage = LoggerMessage.Define<string>(
-            LogLevel.Error,
+            LogLevel.Warning,
             new EventId(EventIdCodes.EntityAlreadyExist, nameof(EntityAlreadyExist)),
             "{Message}");
 
         _entityNotFound = LoggerMessage.Define<string, object>(
-           LogLevel.Error,
+           LogLevel.Warning,
            new EventId(EventIdCodes.EntityNotFound, nameof(EntityNotFound)),
            "{EntityName} #{Id} not found");
 
         _entityNotFoundMessage = LoggerMessage.Define<string>(
-           LogLevel.Error,
+           LogLevel.Warning,
            new EventId(EventIdCodes.EntityNotFound, nameof(EntityNotFound)),
            "{Message}");
 

@@ -20,7 +20,7 @@ internal sealed class RealESignaturesClient
 
         if ((result.Code ?? 0) != 0)
         {
-            throw new CisExtServiceValidationException((result.Code ?? 0), result.Message ?? "Unknown error");
+            throw new CisExternalServiceValidationException((result.Code ?? 0), result.Message ?? "Unknown error");
         }
     }
 
@@ -34,7 +34,7 @@ internal sealed class RealESignaturesClient
 
         if ((result.Result?.Code ?? 0) != 0)
         {
-            throw new CisExtServiceValidationException((result.Result?.Code ?? 0), result.Result?.Message ?? "Unknown error");
+            throw new CisExternalServiceValidationException((result.Result?.Code ?? 0), result.Result?.Message ?? "Unknown error");
         }
         else if (FastEnum.TryParse<EDocumentStatuses>(result.Status!, true, out EDocumentStatuses status))
         {
@@ -42,7 +42,7 @@ internal sealed class RealESignaturesClient
         }
         else
         {
-            throw new CisExtServiceValidationException(50001, $"Returned status '{result.Status}' is unknown");
+            throw new CisExternalServiceValidationException(50001, $"Returned status '{result.Status}' is unknown");
         }
     }
 
@@ -56,7 +56,7 @@ internal sealed class RealESignaturesClient
 
         if (response.Content == null)
         {
-            throw new CisExtServiceValidationException(50005, "Response does not contain binary data");
+            throw new CisExternalServiceValidationException(50005, "Response does not contain binary data");
         }
 
         using (MemoryStream ms = new MemoryStream())
@@ -88,7 +88,7 @@ internal sealed class RealESignaturesClient
 
         if ((result.Code ?? 0) != 0)
         {
-            throw new CisExtServiceValidationException((result.Code ?? 0), result.Message ?? "Unknown error");
+            throw new CisExternalServiceValidationException((result.Code ?? 0), result.Message ?? "Unknown error");
         }
     }
 
@@ -102,7 +102,7 @@ internal sealed class RealESignaturesClient
 
         if ((result.Code ?? 0) != 0)
         {
-            throw new CisExtServiceValidationException((result.Code ?? 0), result.Message ?? "Unknown error");
+            throw new CisExternalServiceValidationException((result.Code ?? 0), result.Message ?? "Unknown error");
         }
 
         return (result.Code, result.Message);
@@ -120,11 +120,11 @@ internal sealed class RealESignaturesClient
 
         var docVersion = (await _codebookService.DocumentTemplateVersions(cancellationToken))
             .FirstOrDefault(t => t.Id == request.DocumentData.DocumentTemplateVersionId)
-            ?? throw new CisExtServiceValidationException(50002, $"DocumentTemplateVersionId {request.DocumentData.DocumentTemplateVersionId} does not exist in DocumentTemplateVersions codebook");
+            ?? throw new CisExternalServiceValidationException(50002, $"DocumentTemplateVersionId {request.DocumentData.DocumentTemplateVersionId} does not exist in DocumentTemplateVersions codebook");
 
         var docType = (await _codebookService.DocumentTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == request.DocumentData.DocumentTypeId)
-            ?? throw new CisExtServiceValidationException(50003, "DocumentTypeId does not exist in DocumentTypes codebook");
+            ?? throw new CisExternalServiceValidationException(50003, "DocumentTypeId does not exist in DocumentTypes codebook");
 
         var svcRequest = new Contracts.PrepareDocumentRequest2
         {
@@ -194,15 +194,15 @@ internal sealed class RealESignaturesClient
             .ConfigureAwait(false);
 
         var result = await response.Content.ReadFromJsonAsync<Contracts.UploadReference>(cancellationToken: cancellationToken)
-            ?? throw new CisExtServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(PrepareDocument), nameof(Contracts.UploadReference));
+            ?? throw new CisExternalServiceResponseDeserializationException(0, StartupExtensions.ServiceName, nameof(PrepareDocument), nameof(Contracts.UploadReference));
 
         if ((result.Result?.Code ?? 0) != 0)
         {
-            throw new CisExtServiceValidationException((result.Result?.Code ?? 0), result.Result?.Message ?? "Unknown error");
+            throw new CisExternalServiceValidationException((result.Result?.Code ?? 0), result.Result?.Message ?? "Unknown error");
         }
         else if (!result.ReferenceId.HasValue)
         {
-            throw new CisExtServiceValidationException(50004, "ReferenceId not found in response");
+            throw new CisExternalServiceValidationException(50004, "ReferenceId not found in response");
         }
 
         return result.ReferenceId!.Value;
@@ -226,7 +226,7 @@ internal sealed class RealESignaturesClient
 
         if ((result.Result?.Code ?? 0) != 0)
         {
-            throw new CisExtServiceValidationException((result.Result?.Code ?? 0), result.Result?.Message ?? "Unknown error");
+            throw new CisExternalServiceValidationException((result.Result?.Code ?? 0), result.Result?.Message ?? "Unknown error");
         }
 
         return (result.ExternalId!, result.TargetUrl);

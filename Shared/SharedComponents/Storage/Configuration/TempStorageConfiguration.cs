@@ -21,7 +21,7 @@ public sealed class TempStorageConfiguration
     /// <summary>
     /// Connection string na databázi, kam se budou ukládat metadata temp souborů. Pokud je null, bere se default connection string aplikace.
     /// </summary>
-    public string ConnectionString { get; set; } = null!;
+    public string? ConnectionString { get; set; } = null!;
 
     /// <summary>
     /// Nastaveni fyzickeho uloziste souboru

@@ -14,7 +14,6 @@ import "Messages/ValidateSalesArrangement.proto";
 import "Messages/UpdateLoanAssessmentParameters.proto";
 import "Messages/UpdateSalesArrangementParameters.proto";
 import "Messages/DeleteSalesArrangement.proto";
-import "Messages/UpdateOfferDocumentId.proto";
 import "Messages/GetSalesArrangement.proto";
 import "Messages/GetProductSalesArrangements.proto";
 import "Messages/SendToCmp.proto";
@@ -59,8 +58,6 @@ service SalesArrangementService {
 	rpc UpdateLoanAssessmentParameters (UpdateLoanAssessmentParametersRequest) returns (google.protobuf.Empty);
 
 	rpc DeleteSalesArrangement (DeleteSalesArrangementRequest) returns (google.protobuf.Empty);
-
-	rpc UpdateOfferDocumentId (UpdateOfferDocumentIdRequest) returns (google.protobuf.Empty);
 
 	rpc GetFlowSwitches (GetFlowSwitchesRequest) returns (GetFlowSwitchesResponse);
 

@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.RealEstateValuationService.Api.Extensions;
+﻿using DomainServices.RealEstateValuationService.Api.Extensions;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using DomainServices.UserService.Clients;
@@ -12,10 +11,10 @@ internal sealed class OrderDTSValuationHandler
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(OrderDTSValuationRequest request, CancellationToken cancellationToken)
     {
-        var (entity, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
+        var (entity, revDetailData, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
 
         // detail oceneni
-        var houseAndFlat = await _aggregate.GetHouseAndFlat(request.RealEstateValuationId, cancellationToken);
+        var houseAndFlat = _mapper.MapFromDataToSingle(revDetailData).HouseAndFlatDetails;
         // instance uzivatele
         var currentUser = await _userService.GetCurrentUser(cancellationToken);
         // info o produktu
@@ -32,7 +31,7 @@ internal sealed class OrderDTSValuationHandler
 
         // ulozeni vysledku
         entity.ValuationTypeId = 2;
-        await _aggregate.SaveResults(entity, orderId, RealEstateValuationStates.Probiha, null, cancellationToken);
+        await _aggregate.SaveResultsAndUpdateEntity(entity, orderId, RealEstateValuationStates.Probiha, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
 
@@ -63,17 +62,20 @@ internal sealed class OrderDTSValuationHandler
         }
     }
 
+    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
     private readonly Services.OrderAggregate _aggregate;
     private readonly IPreorderServiceClient _preorderService;
     private readonly IUserServiceClient _userService;
     private readonly ICustomerServiceClient _customerService;
 
     public OrderDTSValuationHandler(
+        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper,
         ICustomerServiceClient customerService,
         Services.OrderAggregate aggregate,
         IPreorderServiceClient preorderService,
         IUserServiceClient userService)
     {
+        _mapper = mapper;
         _customerService = customerService;
         _aggregate = aggregate;
         _preorderService = preorderService;

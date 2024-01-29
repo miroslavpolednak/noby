@@ -80,6 +80,7 @@ internal sealed class GetRealEstateValuationListHandler
     {
         var revList = await _realEstateValuationService.GetRealEstateValuationList(caseId, cancellationToken);
         var states = await _codebookService.WorkflowTaskStatesNoby(cancellationToken);
+        var priceTypes = await _codebookService.RealEstatePriceTypes(cancellationToken);
 
         return revList.Select(t => {
             var state = states.First(x => x.Id == t.ValuationStateId);
@@ -99,13 +100,26 @@ internal sealed class GetRealEstateValuationListHandler
                 ValuationTypeId = t.ValuationTypeId,
                 Address = t.Address,
                 ValuationSentDate = t.ValuationSentDate,
-                ValuationResultCurrentPrice = t.ValuationResultCurrentPrice,
-                ValuationResultFuturePrice = t.ValuationResultFuturePrice,
                 IsRevaluationRequired = t.IsRevaluationRequired,
                 DeveloperAllowed = t.DeveloperAllowed,
                 DeveloperApplied = t.DeveloperApplied,
-                PossibleValuationTypeId = t.PossibleValuationTypeId?.Select(t => (RealEstateValuationValuationTypes)t).ToList()
+                PossibleValuationTypeId = t.PossibleValuationTypeId?.Select(t => (RealEstateValuationValuationTypes)t).ToList(),
+                Prices = t.Prices?.Select(x => new RealEstatePriceDetail
+                {
+                    Price = x.Price,
+                    PriceTypeName = priceTypes.FirstOrDefault(xx => xx.Code == x.PriceSourceType)?.Name ?? x.PriceSourceType
+                }).ToList()
             };
+
+            // to be removed
+            if (t.Prices?.Any(x => x.PriceSourceType == "STANDARD_PRICE_EXIST") ?? false)
+            {
+                model.ValuationResultCurrentPrice = t.Prices.First(x => x.PriceSourceType == "STANDARD_PRICE_EXIST").Price;
+            }
+            if (t.Prices?.Any(x => x.PriceSourceType == "STANDARD_PRICE_FUTURE") ?? false)
+            {
+                model.ValuationResultFuturePrice = t.Prices.First(x => x.PriceSourceType == "STANDARD_PRICE_FUTURE").Price;
+            }
 
             return model;
         }).ToList();

@@ -3,6 +3,11 @@
 public sealed class AppConfiguration
 {
     /// <summary>
+    /// Zapnuti logovani rozdilu mezi rozdilem a modelem
+    /// </summary>
+    public bool LogRequestContractDifferences { get; set; }
+
+    /// <summary>
     /// Nastaveni autentizace uzivatele.
     /// </summary>
     public AppConfigurationSecurity? Security { get; set; }
@@ -16,11 +21,6 @@ public sealed class AppConfiguration
     /// Max allowed file size for upload [MB]
     /// </summary>
     public int MaxFileSize { get; set; } = 20;
-
-    /// <summary>
-    /// ID prostredi pro ktere se ma nahrat config pro MPSS.Security.dll
-    /// </summary>
-    public int? MpssSecurityDllEnvironment { get; set; }
 
     public IcapAntivirusConfiguration? IcapAntivirus { get; set; }
 

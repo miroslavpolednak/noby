@@ -1,5 +1,6 @@
 ﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
+using SharedTypes.Enums;
 
 namespace DomainServices.CaseService.Api.Endpoints.UpdateCaseState;
 
@@ -19,15 +20,19 @@ internal sealed class UpdateCaseStateHandler
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseStateNotFound, request.State);
         }
         
+        // tento stav jiz Case ma
         if (currentCaseState == request.State)
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseStateAlreadySet);
         }
 
         // Zakázané přechody mezi stavy
-        if ((currentCaseState == 6 || currentCaseState == 7)
-            || (currentCaseState == 2 && request.State == 1))
+        if (currentCaseState == (int)CaseStates.Finished 
+            || currentCaseState == (int)CaseStates.Cancelled
+            || request.State == (int)CaseStates.InProgress)
+        {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseStateNotAllowed);
+        }
 
         // pokud je true, meli bychom poslat info SB se zmenou stavu
         bool shouldNotifySbAboutStateChange = request.StateUpdatedInStarbuild == UpdatedInStarbuildStates.Unknown && _starbuildStateUpdateStates.Contains(currentCaseState);

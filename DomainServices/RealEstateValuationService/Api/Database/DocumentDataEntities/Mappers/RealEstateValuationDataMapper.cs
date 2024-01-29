@@ -13,7 +13,11 @@ internal sealed class RealEstateValuationDataMapper
         data.LoanPurposes = request.LoanPurposeDetails?.LoanPurposes is null ? null : request.LoanPurposeDetails.LoanPurposes.ToList();
         data.HouseAndFlat = null;
         data.Parcel = null;
+        
+        data.LocalSurveyDetails = MapLocalSurveyDetails(request.LocalSurveyDetails);
 
+        data.OnlinePreorderDetails = MapPreorderDetails(request.OnlinePreorderDetails);
+        
         switch (request.SpecificDetailCase)
         {
             case Contracts.UpdateRealEstateValuationDetailRequest.SpecificDetailOneofCase.HouseAndFlatDetails:
@@ -64,6 +68,31 @@ internal sealed class RealEstateValuationDataMapper
     
     public void MapFromDataToSingle(RealEstateValudationData? data, Contracts.RealEstateValuationDetail realEstateValuation)
     {
+        if (data?.LocalSurveyDetails is not null)
+        {
+            realEstateValuation.LocalSurveyDetails = new()
+            {
+                RealEstateValuationLocalSurveyFunctionCode = data.LocalSurveyDetails.RealEstateValuationLocalSurveyFunctionCode,
+                Email = data.LocalSurveyDetails.Email,
+                FirstName = data.LocalSurveyDetails.FirstName,
+                LastName = data.LocalSurveyDetails.LastName,
+                PhoneNumber = data.LocalSurveyDetails.PhoneNumber,
+                PhoneIDC = data.LocalSurveyDetails.PhoneIDC
+            };
+        }
+
+        if (data?.OnlinePreorderDetails is not null)
+        {
+            realEstateValuation.OnlinePreorderDetails = new()
+            {
+                BuildingAgeCode = data.OnlinePreorderDetails.BuildingAgeCode,
+                BuildingMaterialStructureCode = data.OnlinePreorderDetails.BuildingMaterialStructureCode,
+                BuildingTechnicalStateCode = data.OnlinePreorderDetails.BuildingTechnicalStateCode,
+                FlatArea = data.OnlinePreorderDetails.FlatArea,
+                FlatSchemaCode = data.OnlinePreorderDetails.FlatSchemaCode
+            };
+        }
+
         if (data?.LoanPurposes is not null)
         {
             realEstateValuation.LoanPurposeDetails ??= new Contracts.LoanPurposeDetailsObject();
@@ -97,5 +126,30 @@ internal sealed class RealEstateValuationDataMapper
                 }
             };
         }
+    }
+
+    public RealEstateValudationData.OnlinePreorderData? MapPreorderDetails(Contracts.OnlinePreorderData? onlinePreorderDetails)
+    {
+        return onlinePreorderDetails is null ? null : new()
+        {
+            BuildingAgeCode = onlinePreorderDetails.BuildingAgeCode,
+            BuildingMaterialStructureCode = onlinePreorderDetails.BuildingMaterialStructureCode,
+            BuildingTechnicalStateCode = onlinePreorderDetails.BuildingTechnicalStateCode,
+            FlatArea = onlinePreorderDetails.FlatArea,
+            FlatSchemaCode = onlinePreorderDetails.FlatSchemaCode
+        };
+    }
+
+    public RealEstateValudationData.LocalSurveyData? MapLocalSurveyDetails(Contracts.LocalSurveyData? localSurveyDetails)
+    {
+        return localSurveyDetails is null ? null : new()
+        {
+            RealEstateValuationLocalSurveyFunctionCode = localSurveyDetails.RealEstateValuationLocalSurveyFunctionCode,
+            Email = localSurveyDetails.Email,
+            FirstName = localSurveyDetails.FirstName,
+            LastName = localSurveyDetails.LastName,
+            PhoneNumber = localSurveyDetails.PhoneNumber,
+            PhoneIDC = localSurveyDetails.PhoneIDC
+        };
     }
 }

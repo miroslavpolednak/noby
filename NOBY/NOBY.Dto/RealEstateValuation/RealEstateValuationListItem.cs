@@ -98,12 +98,14 @@ public sealed class RealEstateValuationListItem
     /// Současná cena nemovitosti v Kč
     /// </summary>
     /// <example>3000000</example>
+    [Obsolete("Replaced with Prices collection")]
     public int? ValuationResultCurrentPrice { get; set; }
 
     /// <summary>
     /// Budoucí cena nemovitosti v Kč
     /// </summary>
     /// <example>3250000</example>
+    [Obsolete("Replaced with Prices collection")]
     public int? ValuationResultFuturePrice { get; set; }
 
     /// <summary>
@@ -130,6 +132,8 @@ public sealed class RealEstateValuationListItem
     /// Možné typy ocenění (výsledek ACV trychtýře), 1 - online, 2 - dts, 3 - standard
     /// </summary>
     public List<RealEstateValuationValuationTypes>? PossibleValuationTypeId { get; set; }
+
+    public List<RealEstatePriceDetail>? Prices { get; set; }
 }
 
 //ITA chce enumy - me to neprijde dobre, fakticky se i na DS pouzivaji jen id, ale...

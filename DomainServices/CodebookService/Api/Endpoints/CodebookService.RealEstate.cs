@@ -27,6 +27,9 @@ internal partial class CodebookService
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AcvRealEstateTypeNotFound);
     }
 
+    public override Task<GenericCodebookResponse> RealEstatePriceTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetGenericItems();
+
     public override Task<GenericCodebookResponse> RealEstatePurchaseTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 

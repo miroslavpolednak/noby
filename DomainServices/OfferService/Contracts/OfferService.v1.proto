@@ -2,12 +2,14 @@ syntax = "proto3";
 package DomainServices.OfferService.v1;
 option csharp_namespace = "DomainServices.OfferService.Contracts.v1";
 
+import "google/protobuf/empty.proto";
 import "Messages/GetOffer.proto";
 import "Messages/GetMortgageOffer.proto";
 import "Messages/GetMortgageOfferDetail.proto";
 import "Messages/SimulateMortgage.proto";
 import "Messages/GetMortgageOfferFPSchedule.proto";
 import "Messages/GetOfferDeveloper.proto";
+import "Messages/UpdateOfferDocumentId.proto";
 
 service OfferService {
 	rpc GetOffer (DomainServices.OfferService.GetOfferRequest) returns (DomainServices.OfferService.GetOfferResponse);
@@ -21,4 +23,6 @@ service OfferService {
 	rpc GetMortgageOfferFPSchedule (DomainServices.OfferService.GetMortgageOfferFPScheduleRequest) returns (DomainServices.OfferService.GetMortgageOfferFPScheduleResponse);
 
 	rpc GetOfferDeveloper (GetOfferDeveloperRequest) returns (GetOfferDeveloperResponse);
+
+	rpc UpdateOfferDocumentId (UpdateOfferDocumentIdRequest) returns (google.protobuf.Empty);
 }

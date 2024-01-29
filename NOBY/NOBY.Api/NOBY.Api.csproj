@@ -34,10 +34,10 @@
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.1" />
     <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.58.1" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.59.0" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
-    <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
   </ItemGroup>

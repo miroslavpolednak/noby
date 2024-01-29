@@ -18,7 +18,7 @@ K metadatům ukládaného souboru se dají připojit další informace:
 Registrace temp storage během startupu aplikace (v `program.cs`):
 ```csharp
 ...
-builder.AddCisStorageServices()
+builder.AddCisStorageServices().AddTempStorage();
 ...
 ```
 

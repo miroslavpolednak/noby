@@ -52,8 +52,15 @@ internal static class NobyAppBuilder
                 // autentizace
                 .UseAuthentication()
                 // routing
-                .UseRouting()
-                // autorizace
+                .UseRouting();
+
+            if (appConfiguration.LogRequestContractDifferences)
+            {
+                appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.RequestBufferingMiddleware>();
+            }
+            
+            // autorizace
+            appBuilder
                 .UseMiddleware<NobySecurityMiddleware>()
                 .UseAuthorization()
                 .UseMiddleware<CaseOwnerValidationMiddleware>()

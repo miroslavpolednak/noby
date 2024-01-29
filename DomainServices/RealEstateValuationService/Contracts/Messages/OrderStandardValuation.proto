@@ -7,5 +7,5 @@ import "Messages/Types.proto";
 message OrderStandardValuationRequest {
     int32 RealEstateValuationId = 1;
     
-    OrdersStandard Data = 2;
+    LocalSurveyData LocalSurveyDetails = 2;
 }

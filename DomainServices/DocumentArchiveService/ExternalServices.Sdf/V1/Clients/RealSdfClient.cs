@@ -37,10 +37,13 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
         // There is a bug on external service site (EArchiv), even if username and password are correct,
         // external service return exception (invalid username or password) sometimes.
         // Retry logic policy eliminate this problem
-        var result = await _retryPolicy.ExecuteAsync(async (cancellation) =>
+        var result = await callMethod(async () =>
+        {
+            return await _retryPolicy.ExecuteAsync(async (cancellation) =>
                                    await Client.GetDocumentByExternalIdAsync(user, query.DocumentId, options)
                                   .WithCancellation(cancellation), cancellation);
-
+        });
+        
         return result;
     }
 
@@ -59,9 +62,12 @@ internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedS
 
         SearchQueryOptions searchQuery = CreateQueryParameters(query);
 
-        var result = await _retryPolicy.ExecuteAsync(async (cancellationToken) =>
+        var result = await callMethod(async () =>
+        {
+            return await _retryPolicy.ExecuteAsync(async (cancellationToken) =>
                                  await Client.FindDocumentsAsync(user, searchQuery, options)
                                 .WithCancellation(cancellationToken), cancellationToken);
+        });
 
         return result;
     }

@@ -76,7 +76,7 @@ internal static class LoggerExtensions
             "Kafka message processing in {Consumer}: CurrentTaskId {CurrentTaskId} is not in valid format");
         
         _kafkaCaseIdNotFound = LoggerMessage.Define<string, long>(
-            LogLevel.Error,
+            LogLevel.Warning,
             new EventId(LoggerEventIdCodes.KafkaCaseIdNotFound, nameof(KafkaCaseIdNotFound)),
             "Kafka message processing in {Consumer}: Case {CaseId} not found");
 

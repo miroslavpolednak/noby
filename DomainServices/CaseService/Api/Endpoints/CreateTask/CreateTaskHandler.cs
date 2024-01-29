@@ -10,10 +10,12 @@ internal sealed class CreateTaskHandler
 {
     public async Task<CreateTaskResponse> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        Dictionary<string, string> metadata = new();
-        metadata.Add(getTaskTypeKey(), request.TaskRequest);
-        metadata.Add("ukol_uver_id", request.CaseId.ToString(CultureInfo.InvariantCulture));
-        metadata.Add("ukol_mandant", "2");
+        Dictionary<string, string> metadata = new()
+        {
+            { getTaskTypeKey(), request.TaskRequest },
+            { "ukol_uver_id", request.CaseId.ToString(CultureInfo.InvariantCulture) },
+            { "ukol_mandant", "2" }
+        };
 
         MapPriceException(metadata, request.PriceException);
 
@@ -36,7 +38,7 @@ internal sealed class CreateTaskHandler
 
         var result = await _sbWebApi.CreateTask(new ExternalServices.SbWebApi.Dto.CreateTask.CreateTaskRequest
         {
-            ProcessId = Convert.ToInt32(request.ProcessId),//IT anal neni schopna rict co s tim
+            ProcessId = request.ProcessId is not null ? Convert.ToInt32(request.ProcessId, CultureInfo.InvariantCulture) : default, //IT anal neni schopna rict co s tim
             TaskTypeId = request.TaskTypeId,
             Metadata = metadata
         }, cancellationToken);
@@ -75,16 +77,29 @@ internal sealed class CreateTaskHandler
         if (priceException is null)
             return;
 
-        metadata.Add("ukol_overeni_ic_sazba_dat_do", ((DateOnly)priceException.Expiration).ToSbFormat());
+        metadata.Add("ukol_overeni_ic_sazba_dat_do", priceException.Expiration is not null ?
+            ((DateOnly)priceException.Expiration!).ToSbFormat() 
+            : string.Empty);
         metadata.Add("ukol_overeni_ic_sazba_nabid", priceException.LoanInterestRate.LoanInterestRate.ToSbFormat());
         metadata.Add("ukol_overeni_ic_sazba_vysled", priceException.LoanInterestRate.LoanInterestRateProvided.ToSbFormat());
-        metadata.Add("ukol_overeni_ic_sazba_typ", priceException.LoanInterestRate.LoanInterestRateAnnouncedType.ToString(CultureInfo.InvariantCulture));
+        metadata.Add("ukol_overeni_ic_sazba_typ", priceException.LoanInterestRate.LoanInterestRateAnnouncedType.HasValue ?
+            priceException.LoanInterestRate.LoanInterestRateAnnouncedType.Value.ToString(CultureInfo.InvariantCulture)
+            : string.Empty);
         metadata.Add("ukol_overeni_ic_sazba_sleva", priceException.LoanInterestRate.LoanInterestRateDiscount.ToSbFormat());
-        metadata.Add("ukol_overeni_ic_kod_produktu", priceException.ProductTypeId.ToString(CultureInfo.InvariantCulture));
-        metadata.Add("ukol_overeni_ic_vyse_uveru", priceException.LoanAmount.ToString(CultureInfo.InvariantCulture));
-        metadata.Add("ukol_overeni_ic_splatnost_uveru_poc_mes", priceException.LoanDuration.ToString(CultureInfo.InvariantCulture));
-        metadata.Add("ukol_overeni_ic_uver_ltv", priceException.LoanToValue.ToString(CultureInfo.InvariantCulture));
-        metadata.Add("ukol_overeni_ic_fixace_uveru_poc_mes", priceException.FixedRatePeriod.ToString(CultureInfo.InvariantCulture));
+        metadata.Add("ukol_overeni_ic_kod_produktu", priceException.ProductTypeId.HasValue ?
+            priceException.ProductTypeId.Value.ToString(CultureInfo.InvariantCulture)
+            : string.Empty);
+        metadata.Add("ukol_overeni_ic_vyse_uveru", priceException.LoanAmount.HasValue ?
+            priceException.LoanAmount.Value.ToString(CultureInfo.InvariantCulture) : string.Empty);
+        metadata.Add("ukol_overeni_ic_splatnost_uveru_poc_mes", priceException.LoanDuration.HasValue ?
+            priceException.LoanDuration.Value.ToString(CultureInfo.InvariantCulture)
+            : string.Empty);
+        metadata.Add("ukol_overeni_ic_uver_ltv", priceException.LoanToValue.HasValue ?
+            priceException.LoanToValue.Value.ToString(CultureInfo.InvariantCulture)
+            : string.Empty);
+        metadata.Add("ukol_overeni_ic_fixace_uveru_poc_mes", priceException.FixedRatePeriod.HasValue ?
+            priceException.FixedRatePeriod.Value.ToString(CultureInfo.InvariantCulture)
+            : string.Empty);
 
         for (var i = 0; i < priceException.Fees.Count; i++)
         {

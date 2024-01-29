@@ -339,6 +339,11 @@
             Položka menu Úkoly
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.RefinancingMenuItem">
+            <summary>
+            Změna úrokové sazby 
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsItem.Flag">
             <summary>
             Příznak
@@ -2834,29 +2839,6 @@
             Název typu Ocenění nemovitosti. 1 - Online, 2 - DTS, 3 - Standard
             </summary>
         </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationLocalSurveyPerson">
-            <summary>
-            Kontakt pro místní šetření
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationLocalSurveyPerson.FunctionCode">
-            <summary>
-            Hodnota z číselníku RealEstateValuationLocalSurveyFunction
-            </summary>
-            <example>PRODAV</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationLocalSurveyPerson.FirstName">
-            <summary>
-            Jméno
-            </summary>
-            <example>Jidáš</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationLocalSurveyPerson.LastName">
-            <summary>
-            Příjmení
-            </summary>
-            <example>Skočdopole</example>
-        </member>
         <member name="T:NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest">
             <summary>
             Editovatelný toggle developera na Ocenění nemovitosti
@@ -2901,6 +2883,16 @@
             Kód stáří budovy
             </summary>
             <example>0</example>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveLocalSurveyDetails(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SaveLocalSurveyDetails.SaveLocalSurveyDetailsRequest,System.Threading.CancellationToken)">
+            <summary>
+            Uložení dat pro místní šetření
+            </summary>
+            <remarks>
+            Průběžné uložení konktaktů pro místní šetření pro pozdější použití.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C6362E7C-7CC7-4b1c-86BA-D08BD84FFCA7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SetValuationTypeId(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SetValuationTypeId.SetValuationTypeIdRequest,System.Threading.CancellationToken)">
             <summary>
@@ -4072,7 +4064,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=3A82DF69-AF0D-4ec4-8263-D42354C4891E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="caseId">ID Case-u</param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="!:Dto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.SalesArrangement.SharedDto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetCustomersOnSa(System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -4083,7 +4075,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=439685F4-2313-4dfe-A374-8EE45F1C8E86"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="!:Dto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.SalesArrangement.SharedDto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetSalesArrangement(System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -4659,12 +4651,6 @@
             Severita chyby
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Test.TestController.T1">
-            <summary>
-            Summary endpointu
-            </summary>
-            <remarks>Toto jsou remarks</remarks>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
             <summary>
             ID uzivatele - xxvvss.v33id
@@ -4979,6 +4965,18 @@
             Pokud již workflow úkol existuje, ale je stornovaný, budou výsledkem data z Noby a uživatel dostane možnost založení nového workflow úkolu. <br /> 
             Pokud již workflow úkol existuje a není stornovaný, budou výsledkem data ze Starbuild. U dokončeného úkolu Ocenění nehraje roli, zda bylo Ocenění schváleno či zamítnuto. Uživatel uvidí detail tohoto ukončeného úkolu. <br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F8C65CF5-6A02-4d2a-B068-C3EDE901DAE5"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.GetCurrentHandoverTask(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Získání aktuálního úkolu Předání na specialistu
+            </summary>
+            <remarks>
+            Operace vrátí detail úkolu Předání na specialistu<br /> <br />
+            Pokud ještě ve Starbuild neexistuje workflow úkol Předání na specialistu, bude zobrazen formulář pro založení úkolu a uživatel dostane možnost založit workflow úkol Předání na specialistu. <br /> <br />
+            Pokud již workflow úkol ve Starbuildu existuje, ale je stornovaný nebo dokončený, bude zobrazen formulář pro založení úkolu a uživatel dostane možnost založení nového workflow úkolu Předání na specialistu. <br /> <br />
+            Pokud již workflow úkol ve Starbuildu existuje a je ve stavu Odesláno, bude zobrazen read-only detail tohoto odeslaného úkolu. <br /><br />
+            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=50158427-351C-4cd2-B508-9705AADB9821" ><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <!-- Badly formed XML comment ignored for member "T:NOBY.Api.Endpoints.Workflow.WorkflowHelpers" -->

@@ -1,9 +1,6 @@
-﻿using CIS.Core;
-using Dapper;
-using Microsoft.Data.SqlClient;
+﻿using Medallion.Threading.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using NCrontab;
-using System.Data;
 using System.Diagnostics;
 
 namespace CIS.Infrastructure.BackgroundServices;
@@ -31,8 +28,6 @@ internal sealed class CisBackgroundService<TBackgroundService>
     /// [s] // Time for getting job lock, if job in not capable get applock in this time, job gonna be terminated (SqlException with message Execution Timeout Expired)
     /// </summary>
     const int _technicalTimeout = 2;
-    const string _lockMode = "Exclusive";
-    const string _lockOwner = "Session";
 
     public CisBackgroundService(
         ILogger<TBackgroundService> logger,
@@ -80,77 +75,33 @@ internal sealed class CisBackgroundService<TBackgroundService>
             using var serviceScope = _serviceScopeFactory.CreateScope();
             var service = serviceScope.ServiceProvider.GetRequiredService<TBackgroundService>();
             var configuration = serviceScope.ServiceProvider.GetRequiredService<IConfiguration>();
-            ConnectionString = ConnectionString is null ? configuration.GetConnectionString(CisGlobalConstants.DefaultConnectionStringKey) ?? throw new NotSupportedException("defaut connection string required") : ConnectionString;
-            
-            // resource is essential for uniquely identifying the resource for which the lock is being requested.
-            string resource = typeof(TBackgroundService)?.FullName!;
-            var canJobRun = false;
-
-            SqlConnection? connection = null;
+            ConnectionString = ConnectionString is null ? configuration.GetConnectionString("default") ?? throw new NotSupportedException("defaut connection string required") : ConnectionString;
+            // lockName is essential for uniquely identifying the resource for which the lock is being requested.
+            string lockName = typeof(TBackgroundService)?.FullName!;
             try
             {
-                connection = new SqlConnection(ConnectionString);
-                await connection.OpenAsync(stoppingToken);
-
-                canJobRun = await getAppLock(connection, resource, _lockMode, _lockOwner);
-                if (canJobRun)
+                var distributedLock = new SqlDistributedLock(lockName, ConnectionString);
+                using (var handle = await distributedLock.TryAcquireAsync(timeout: TimeSpan.FromSeconds(_technicalTimeout), cancellationToken: stoppingToken))
                 {
-                    await service.ExecuteJobAsync(stoppingToken);
+                    // we acquired the lock
+                    if (handle != null)
+                    {
+                        await service.ExecuteJobAsync(stoppingToken);
+                        // Technical timeout, when job will execute very fast and the exception (Execution Timeout Expired) does not have time to be thrown out
+                        await Task.Delay(TimeSpan.FromSeconds(_technicalTimeout + 5), stoppingToken);
+                    }
+                    else // someone else has it
+                    {
+                        _logger.ParallelJobTerminated(lockName);
+                    }
                 }
-
-            }
-            catch (SqlException ex) when (ex.Message.Contains("Execution Timeout Expired"))
-            {
-                _logger.ParallelJobTerminated(resource);
             }
             catch (Exception ex)
             {
                 _logger.BackgroundServiceExecutionError(_serviceName, ex);
             }
-            finally
-            {
-                if (canJobRun && connection?.State == ConnectionState.Open)
-                {
-                    // Technical timeout, when job will execute very fast and the exception (Execution Timeout Expired) does not have time to be thrown out
-                    await Task.Delay(TimeSpan.FromSeconds(_technicalTimeout + 5), stoppingToken);
-                    await releaseLock(connection, resource, _lockOwner);
-                }
-
-                if (connection?.State == ConnectionState.Open)
-                    await connection.CloseAsync();
-
-                if (connection is not null)
-                    await connection.DisposeAsync();
-            }
         }
     }
-
-    public async Task<bool> getAppLock(SqlConnection connection, string resource, string lockMode, string lockOwner)
-    {
-        // Acquire the lock
-        var result = await connection.QueryFirstOrDefaultAsync<int>(
-            "sp_getapplock",
-            new { Resource = resource, LockMode = lockMode, LockOwner = lockOwner },
-            commandType: CommandType.StoredProcedure,
-            commandTimeout: _technicalTimeout);
-
-        if (result < 0)
-        {
-            //-1   The lock request timed out.
-            //-2   The lock request was canceled.
-            //-3   The lock request was chosen as a deadlock victim.
-            //-999 Indicates a parameter validation or other call error.
-            _logger.DbCannotSetAppLock(result);
-        }
-
-        return result >= 0;
-    }
-
-    public static async Task releaseLock(SqlConnection connection, string resource, string lockOwner) =>
-        await connection.ExecuteAsync(
-                     "sp_releaseapplock",
-                     new { Resource = resource, LockOwner = lockOwner },
-                     commandType: CommandType.StoredProcedure);
 
     private async Task waitUntilNext(CancellationToken stoppingToken)
     {

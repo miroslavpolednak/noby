@@ -71,6 +71,8 @@ internal sealed class IdentifiedSubjectService
 
         var identifiedSubject = BuildUpdateRequest(request);
 
+        identifiedSubject.TemporaryStay = CreateTemporaryStayAddress(customer.TemporaryStay);
+
         await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId.IdentityId, identifiedSubject, cancellationToken);
         
         // https://jira.kb.cz/browse/HFICH-3555
@@ -177,7 +179,6 @@ internal sealed class IdentifiedSubjectService
             },
             PrimaryAddress = CreateAddress(request.Addresses, AddressTypes.Permanent, CreatePrimaryAddress),
             ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
-            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Other, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
             CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
@@ -196,7 +197,6 @@ internal sealed class IdentifiedSubjectService
             },
             PrimaryAddress = CreateAddress(request.Addresses, AddressTypes.Permanent, CreatePrimaryAddress),
             ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
-            TemporaryStay = CreateAddress(request.Addresses, AddressTypes.Other, CreateTemporaryStayAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
             CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
             PrimaryPhone = CreatePrimaryPhone(request.Contacts),
@@ -269,8 +269,34 @@ internal sealed class IdentifiedSubjectService
         };
     }
 
-    private static __Contracts.TemporaryStayAddress CreateTemporaryStayAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
-        new() { Address = address };
+    private static __Contracts.TemporaryStayAddress? CreateTemporaryStayAddress(ExternalServices.CustomerManagement.V2.Contracts.TemporaryStayAddress? originalAddress)
+    {
+        if (originalAddress is null)
+            return default;
+
+        var componentAddress = originalAddress.ComponentAddressPoint;
+
+        return new __Contracts.TemporaryStayAddress
+        {
+            Address = new __Contracts.Address
+            {
+                City = componentAddress.City.ToCMString(),
+                PostCode = componentAddress.PostCode.ToCMString(),
+                CountryCode = componentAddress.CountryCode.ToCMString(),
+                Street = componentAddress.Street.ToCMString(),
+                HouseNumber = componentAddress.HouseNumber.ToCMString(),
+                StreetNumber = componentAddress.StreetNumber.ToCMString(),
+                EvidenceNumber = componentAddress.EvidenceNumber.ToCMString(),
+                DeliveryDetails = componentAddress.DeliveryDetails.ToCMString(),
+                CityDistrict = componentAddress.CityDistrict.ToCMString(),
+                PragueDistrict = componentAddress.PragueDistrict.ToCMString(),
+                CountrySubdivision = componentAddress.CountrySubdivision.ToCMString(),
+                AddressPointId = componentAddress.AddressPointId.ToCMString(),
+                PostBox = componentAddress.PostBox.ToCMString(),
+                AdditionalProperties = componentAddress.AdditionalProperties
+            }
+        };
+    }
 
     private __Contracts.IdentificationDocument? CreateIdentificationDocument(IdentificationDocument? document)
     {

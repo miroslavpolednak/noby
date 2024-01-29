@@ -8,7 +8,7 @@ public interface IPreorderServiceClient
 {
     const string Version = "V1";
 
-    Task<OrderResultResponse> GetOrderResult(long orderId, CancellationToken cancellationToken = default);
+    Task<List<(int Price, string PriceSourceType)>?> GetOrderResult(long orderId, CancellationToken cancellationToken = default);
 
     Task<bool> RevaluationCheck(Contracts.OnlineRevaluationCheckRequestDTO request, CancellationToken cancellationToken = default);
 

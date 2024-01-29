@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.RealEstateValuationService.Clients;
@@ -40,10 +39,11 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
 
         var state = (await _codebookService.WorkflowTaskStatesNoby(cancellationToken)).First(x => x.Id == valuationDetail.ValuationStateId);
         var categories = await _codebookService.AcvAttachmentCategories(cancellationToken);
+        var priceTypes = await _codebookService.RealEstatePriceTypes(cancellationToken);
 
         return new GetRealEstateValuationDetailResponse
         {
-            RealEstateValuationListItem = getListItem(valuationDetail, state),
+            RealEstateValuationListItem = getListItem(valuationDetail, state, priceTypes),
             RealEstateValuationDetail = new RealEstateValuationDetail
             {
                 CaseInProgress = caseInstance.State == (int)CaseStates.InProgress,
@@ -51,6 +51,21 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
                 RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
                 LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = valuationDetail.LoanPurposeDetails.LoanPurposes.ToList() },
                 SpecificDetails = GetSpecificDetailsObject(valuationDetail)
+            },
+            LocalSurveyDetails = valuationDetail.LocalSurveyDetails is null ? null : new LocalSurveyData
+            {
+                FirstName = valuationDetail.LocalSurveyDetails?.FirstName ?? "",
+                LastName = valuationDetail.LocalSurveyDetails?.LastName ?? "",
+                FunctionCode  = valuationDetail.LocalSurveyDetails?.RealEstateValuationLocalSurveyFunctionCode ?? "",
+                EmailAddress = new Dto.EmailAddressDto
+                {
+                    EmailAddress = valuationDetail.LocalSurveyDetails?.Email ?? ""
+                },
+                MobilePhone = new Dto.PhoneNumberDto
+                {
+                    PhoneIDC = valuationDetail.LocalSurveyDetails?.PhoneIDC ?? "",
+                    PhoneNumber = valuationDetail.LocalSurveyDetails?.PhoneNumber ?? ""
+                }
             },
             Attachments = getAttachments(valuationDetail.Attachments, categories),
             DeedOfOwnershipDocuments = getDeedOfOwnerships(deeds),
@@ -62,7 +77,7 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
     {
         var documentIds = realEstateValuationDocuments.SelectMany(rd => new[] { rd.DocumentInfoPrice, rd.DocumentRecommendationForClient }.Where(str => !string.IsNullOrWhiteSpace(str))).ToArray();
 
-        if (!documentIds.Any())
+        if (documentIds.Length == 0)
             return default;
 
         var documentList = await _mediator.Send(new GetDocumentListRequest(caseId, default), cancellationToken);
@@ -102,8 +117,12 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
         })
         .ToList();
 
-    private static RealEstateValuationListItem getListItem(__Contracts.RealEstateValuationDetail valuationDetail, WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem state)
-        => new RealEstateValuationListItem
+    private static RealEstateValuationListItem getListItem(
+        __Contracts.RealEstateValuationDetail valuationDetail, 
+        WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem state,
+        List<GenericCodebookResponse.Types.GenericCodebookItem> priceTypes)
+    {
+        var model = new RealEstateValuationListItem
         {
             RealEstateValuationId = valuationDetail.RealEstateValuationId,
             OrderId = valuationDetail.OrderId,
@@ -118,15 +137,31 @@ internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEsta
             ValuationTypeId = valuationDetail.ValuationTypeId,
             Address = valuationDetail.Address,
             ValuationSentDate = valuationDetail.ValuationSentDate,
-            ValuationResultCurrentPrice = valuationDetail.ValuationResultCurrentPrice,
-            ValuationResultFuturePrice = valuationDetail.ValuationResultFuturePrice,
             IsRevaluationRequired = valuationDetail.IsRevaluationRequired,
             DeveloperAllowed = valuationDetail.DeveloperAllowed,
             DeveloperApplied = valuationDetail.DeveloperApplied,
             PossibleValuationTypeId = valuationDetail.PossibleValuationTypeId
                 ?.Select(t => (RealEstateValuationValuationTypes)t)
-                ?.ToList()
+                ?.ToList(),
+            Prices = valuationDetail.Prices?.Select(x => new RealEstatePriceDetail
+            {
+                Price = x.Price,
+                PriceTypeName = priceTypes.FirstOrDefault(xx => xx.Code == x.PriceSourceType)?.Name ?? x.PriceSourceType
+            }).ToList()
         };
+
+        // to be removed
+        if (valuationDetail.Prices?.Any(x => x.PriceSourceType == "STANDARD_PRICE_EXIST") ?? false)
+        {
+            model.ValuationResultCurrentPrice = valuationDetail.Prices.First(x => x.PriceSourceType == "STANDARD_PRICE_EXIST").Price;
+        }
+        if (valuationDetail.Prices?.Any(x => x.PriceSourceType == "STANDARD_PRICE_FUTURE") ?? false)
+        {
+            model.ValuationResultFuturePrice = valuationDetail.Prices.First(x => x.PriceSourceType == "STANDARD_PRICE_FUTURE").Price;
+        }
+
+        return model;
+    }
 
     private static string GetRealEstateVariant(int realEstateTypeId)
     {

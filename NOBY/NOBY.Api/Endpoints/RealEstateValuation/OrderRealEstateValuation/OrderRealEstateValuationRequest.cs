@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation;
@@ -22,7 +21,7 @@ public sealed class OrderRealEstateValuationRequest
     [Required]
     public RealEstateValuationTypes ValuationTypeId { get; set; }
 
-    public OrderRealEstateValuationLocalSurveyPerson? LocalSurveyPerson { get; set; }
+    public Dto.RealEstateValuation.LocalSurveyData? LocalSurveyPerson { get; set; }
 
     internal OrderRealEstateValuationRequest InfuseId(long caseId, int realEstateValuationId)
     {
@@ -31,40 +30,4 @@ public sealed class OrderRealEstateValuationRequest
 
         return this;
     }
-}
-
-/// <summary>
-/// Kontakt pro místní šetření
-/// </summary>
-public sealed class OrderRealEstateValuationLocalSurveyPerson
-{
-    /// <summary>
-    /// Hodnota z číselníku RealEstateValuationLocalSurveyFunction
-    /// </summary>
-    /// <example>PRODAV</example>
-    [Required]
-    [MinLength(1)]
-    public string FunctionCode { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Jméno
-    /// </summary>
-    /// <example>Jidáš</example>
-    [Required]
-    [MinLength(1)]
-    public string FirstName { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Příjmení
-    /// </summary>
-    /// <example>Skočdopole</example>
-    [Required]
-    [MinLength(1)]
-    public string LastName { get; set; } = string.Empty;
-
-    [Required]
-    public NOBY.Dto.EmailAddressDto EmailAddress { get; set; }
-
-    [Required]
-    public NOBY.Dto.PhoneNumberDto MobilePhone { get; set; }
 }

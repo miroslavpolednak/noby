@@ -52,10 +52,6 @@ public partial class DeleteSalesArrangementRequest
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
 { }
 
-public partial class UpdateOfferDocumentIdRequest
-    : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
-{ }
-
 public partial class UpdatePcpIdRequest
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>
 { }

@@ -38,10 +38,17 @@ public enum UserPermissions : int
     CHANGE_REQUESTS_Access = 233,
     WFL_TASK_DETAIL_OtherView = 234,
     WFL_TASK_DETAIL_SigningView = 235,
-    WFL_TASK_CreateAndCancel = 236,
     DOCUMENT_SIGNING_Manage = 237,
     DOCUMENT_SIGNING_DownloadWorkflowDocument = 238,
     CLIENT_EXPOSURE_Perform = 239,
     CLIENT_EXPOSURE_DisplayRequestedExposure = 240,
-    WFL_TASK_DETAIL_RetentionManage = 241
+    WFL_TASK_DETAIL_RefinancingOtherManage = 241,
+    REFINANCING_Manage = 242,
+    WFL_TASK_DETAIL_RefinancingSigningManage = 243,
+    WFL_TASK_DETAIL_RefinancingOtherView = 244,
+    WFL_TASK_DETAIL_RefinancingSigningView = 245,
+    DOCUMENT_SIGNING_RefinancingManage = 246,
+    CHANGE_REQUESTS_RefinancingAccess = 247,
+    SALES_ARRANGEMENT_RefinancingAccess = 248,
+    WFL_TASK_DETAIL_RetentionManage = 249 
 }

@@ -10,7 +10,7 @@ internal sealed class GetCustomerDetailHandler
     public async Task<GetCustomerDetailResponse> Handle(GetCustomerDetailRequest request, CancellationToken cancellationToken)
     {
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
-        var result = await _customerService.GetCustomerDetail(new Identity(request.Id, request.Schema), cancellationToken);
+        var result = await _customerService.GetCustomerDetail(new Identity(request.Id, request.Scheme), cancellationToken);
 
         Dto.NaturalPersonModel person = new();
         result.NaturalPerson?.FillResponseDto(person);

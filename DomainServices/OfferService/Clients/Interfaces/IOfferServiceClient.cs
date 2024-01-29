@@ -49,4 +49,6 @@ public interface IOfferServiceClient
     Task<GetMortgageOfferFPScheduleResponse> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default);
 
     Task<GetOfferDeveloperResponse> GetOfferDeveloper(int offerId, CancellationToken cancellationToken  = default);
+
+    Task UpdateOfferDocumentId(int offerId, string documentId, CancellationToken cancellationToken = default);
 }

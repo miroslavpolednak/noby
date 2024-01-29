@@ -1,4 +1,5 @@
-﻿using Asp.Versioning;
+﻿using System.Text;
+using Asp.Versioning;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Customer;
@@ -62,7 +63,7 @@ public class CustomerController : ControllerBase
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new [] { "Klient" })]
     [ProducesResponseType(typeof(GetCustomerDetail.GetCustomerDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetCustomerDetail.GetCustomerDetailResponse> GetCustomerDetail([FromBody] SharedTypes.Types.CustomerIdentity request)
+    public async Task<GetCustomerDetail.GetCustomerDetailResponse> GetCustomerDetail([FromBody] SharedTypes.Types.CustomerIdentity request) 
         => await _mediator.Send(new GetCustomerDetail.GetCustomerDetailRequest(request.Id, request.Scheme));
 
     /// <summary>

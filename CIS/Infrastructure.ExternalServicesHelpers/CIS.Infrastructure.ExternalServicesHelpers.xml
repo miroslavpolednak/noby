@@ -264,7 +264,7 @@
             Validace konfigurace
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesErrorHandling(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String)">
+        <member name="M:CIS.Infrastructure.ExternalServicesHelpers.HttpHandlersExtensions.AddExternalServicesErrorHandling(Microsoft.Extensions.DependencyInjection.IHttpClientBuilder,System.String,System.Boolean)">
             <summary>
             Přidá do HttpClient try-catch tak, aby se nevraceli výchozí vyjímky, ale jejich CIS ekvivalenty.
             </summary>

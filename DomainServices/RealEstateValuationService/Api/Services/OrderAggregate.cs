@@ -1,9 +1,9 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
+using DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using SharedComponents.DocumentDataStorage;
@@ -13,12 +13,26 @@ namespace DomainServices.RealEstateValuationService.Api.Services;
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class OrderAggregate
 {
-    public async Task<(Database.Entities.RealEstateValuation REVEntity, long[]? RealEstateIds, long[]? Attachments, CaseService.Contracts.Case Case, long? AddressPointId)> GetAggregatedData(int realEstateValuationId, CancellationToken cancellationToken)
+    public async Task<
+        (
+        Database.Entities.RealEstateValuation REVEntity, 
+        Database.DocumentDataEntities.RealEstateValudationData? REVData,
+        long[]? RealEstateIds, 
+        long[]? Attachments, 
+        CaseService.Contracts.Case Case, 
+        long? AddressPointId
+        )> GetAggregatedData(int realEstateValuationId, CancellationToken cancellationToken)
     {
         var entity = await _dbContext
             .RealEstateValuations
             .FirstOrDefaultAsync(t => t.RealEstateValuationId == realEstateValuationId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.RealEstateValuationNotFound, realEstateValuationId);
+
+        // validace
+        if (string.IsNullOrEmpty(entity.ACVRealEstateTypeId))
+        {
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.OrderDataValidation, nameof(entity.ACVRealEstateTypeId));
+        }
 
         var deedOfOwnerships = await _dbContext
             .DeedOfOwnershipDocuments
@@ -48,20 +62,62 @@ internal sealed class OrderAggregate
         // case detail
         var caseInstance = await _caseService.GetCaseDetail(entity.CaseId, cancellationToken);
 
-        // validace
-        if (string.IsNullOrEmpty(entity.ACVRealEstateTypeId))
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.OrderDataValidation, nameof(entity.ACVRealEstateTypeId));
-        }
+        // REV data
+        var revDetailData = (await _documentDataStorage
+            .FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(realEstateValuationId, cancellationToken))
+            ?.Data;
 
-        return (entity, realEstateIds, attachments, caseInstance, addressPointId);
+        return (entity, revDetailData, realEstateIds, attachments, caseInstance, addressPointId);
     }
 
-    public async Task SaveResults(
+    public async Task UpdateOnlinePreorderDetailsOnly(
+        int realEstateValuationId,
+        OnlinePreorderData? onlinePreorderDetails,
+        RealEstateValudationData? revDetailData,
+        CancellationToken cancellationToken)
+    {
+        bool dataExists = revDetailData != null;
+        revDetailData ??= new RealEstateValudationData();
+
+        // vlozit data z requestu
+        revDetailData.OnlinePreorderDetails = _mapper.MapPreorderDetails(onlinePreorderDetails);
+
+        if (dataExists)
+        {
+            await _documentDataStorage.UpdateByEntityId(realEstateValuationId, revDetailData);
+        }
+        else
+        {
+            await _documentDataStorage.Add(realEstateValuationId, revDetailData, cancellationToken);
+        }
+    }
+
+    public async Task UpdateLocalSurveyDetailsOnly(
+        int realEstateValuationId,
+        LocalSurveyData? localSurveyDetails,
+        RealEstateValudationData? revDetailData,
+        CancellationToken cancellationToken)
+    {
+        bool dataExists = revDetailData != null;
+        revDetailData ??= new RealEstateValudationData();
+
+        // vlozit data z requestu
+        revDetailData.LocalSurveyDetails = _mapper.MapLocalSurveyDetails(localSurveyDetails);
+
+        if (dataExists)
+        {
+            await _documentDataStorage.UpdateByEntityId(realEstateValuationId, revDetailData);
+        }
+        else
+        {
+            await _documentDataStorage.Add(realEstateValuationId, revDetailData, cancellationToken);
+        }
+    }
+
+    public async Task SaveResultsAndUpdateEntity(
         Database.Entities.RealEstateValuation entity, 
         long orderId,
         RealEstateValuationStates newValuationState,
-        OrdersStandard? data, 
         CancellationToken cancellationToken)
     {
         // ulozeni vysledku
@@ -70,15 +126,6 @@ internal sealed class OrderAggregate
         entity.ValuationStateId = (int)newValuationState;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-
-        // ulozeni detailu objednavky
-        await _documentDataStorage.Add(entity.RealEstateValuationId, _mapperOrder.MapToData(data), cancellationToken);
-    }
-
-    public async Task<SpecificDetailHouseAndFlatObject?> GetHouseAndFlat(int realEstateValuationId, CancellationToken cancellationToken)
-    {
-        var revDetailData = (await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(realEstateValuationId, cancellationToken))?.Data;
-        return _mapperValuation.MapFromDataToSingle(revDetailData).HouseAndFlatDetails;
     }
 
     public async Task<GetProductPropertiesResult> GetProductProperties(int caseState, long caseId, CancellationToken cancellationToken)
@@ -116,8 +163,7 @@ internal sealed class OrderAggregate
     {
     }
 
-    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationOrderDataMapper _mapperOrder;
-    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapperValuation;
+    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly IProductServiceClient _productService;
     private readonly ICodebookServiceClient _codebookService;
@@ -127,8 +173,7 @@ internal sealed class OrderAggregate
     private readonly ICaseServiceClient _caseService;
     
     public OrderAggregate(
-        Database.DocumentDataEntities.Mappers.RealEstateValuationOrderDataMapper mapperOrder,
-        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapperValuation,
+        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper,
         IDocumentDataStorage documentDataStorage,
         IProductServiceClient productService,
         ICodebookServiceClient codebookService,
@@ -137,8 +182,7 @@ internal sealed class OrderAggregate
         RealEstateValuationServiceDbContext dbContext,
         ICaseServiceClient caseService)
     {
-        _mapperOrder = mapperOrder;
-        _mapperValuation = mapperValuation;
+        _mapper = mapper;
         _documentDataStorage = documentDataStorage;
         _productService = productService;
         _codebookService = codebookService;

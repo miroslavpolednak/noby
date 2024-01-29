@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using NOBY.Api.Endpoints.Workflow.GetCurrentHandoverTask;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
@@ -37,7 +38,7 @@ public class WorkflowController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C77A111D-090F-410c-A1B2-B0E4E3EA59CF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/{taskId:int}/cancel")]
-    [NobyAuthorize(UserPermissions.WFL_TASK_CreateAndCancel, UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -63,7 +64,7 @@ public class WorkflowController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<StartTaskSigning.StartTaskSigningResponse> StartTaskSigning([FromRoute] long caseId, [FromRoute] long taskId)
         => await _mediator.Send(new StartTaskSigning.StartTaskSigningRequest(caseId, taskId));
-    
+
     /// <summary>
     /// Vytvoření nového workflow tasku do SB.
     /// </summary>
@@ -76,7 +77,6 @@ public class WorkflowController : ControllerBase
     [HttpPost("{caseId:long}/tasks")]
     [Consumes("application/json")]
     [Produces("text/plain")]
-    [NobyAuthorize(UserPermissions.WFL_TASK_CreateAndCancel)]
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -150,4 +150,23 @@ public class WorkflowController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetCurrentPriceException.GetCurrentPriceExceptionResponse> GetCurrentPriceException([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCurrentPriceException.GetCurrentPriceExceptionRequest(caseId), cancellationToken);
+
+    /// <summary>
+    /// Získání aktuálního úkolu Předání na specialistu
+    /// </summary>
+    /// <remarks>
+    /// Operace vrátí detail úkolu Předání na specialistu<br /> <br />
+    /// Pokud ještě ve Starbuild neexistuje workflow úkol Předání na specialistu, bude zobrazen formulář pro založení úkolu a uživatel dostane možnost založit workflow úkol Předání na specialistu. <br /> <br />
+    /// Pokud již workflow úkol ve Starbuildu existuje, ale je stornovaný nebo dokončený, bude zobrazen formulář pro založení úkolu a uživatel dostane možnost založení nového workflow úkolu Předání na specialistu. <br /> <br />
+    /// Pokud již workflow úkol ve Starbuildu existuje a je ve stavu Odesláno, bude zobrazen read-only detail tohoto odeslaného úkolu. <br /><br />
+    /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=50158427-351C-4cd2-B508-9705AADB9821" ><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("{caseId:long}/tasks/current-handover-task")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerOperation(Tags = new[] { "Workflow Task" })]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.WFL_TASK_DETAIL_OtherView)]
+    public async Task<GetCurrentHandoverTaskResponse> GetCurrentHandoverTask([FromRoute] long caseId, CancellationToken cancellationToken)
+      => await _mediator.Send(new GetCurrentHandoverTaskRequest(caseId), cancellationToken);
 }

@@ -67,7 +67,32 @@ public sealed class NobyApiExceptionMiddleware
             logger.NobyValidationException(ex.Message, ex);
             await Results.Json(ex.Errors, statusCode: ex.HttpStatusCode).ExecuteAsync(context);
         }
-        catch (CisExtServiceValidationException ex)
+        // external service unavailable
+        catch (CisExternalServiceUnavailableException ex)
+        {
+            // pokud se nejedna o vychozi ex code, neni to chyba z DS
+            // tj. chyba neni zalogovana a je potreba ji do logu poslat
+            if (!ex.IsDefaultExceptionCode)
+            {
+                logger.ExternalServiceUnavailable("FEAPI", ex);
+            }
+
+            await Results.Json(createExternalServiceError(ex.ServiceName, "External service unavailable"), statusCode: 500).ExecuteAsync(context);
+        }
+        // external service failed
+        catch (CisExternalServiceServerErrorException ex)
+        {
+            // pokud se nejedna o vychozi ex code, neni to chyba z DS
+            // tj. chyba neni zalogovana a je potreba ji do logu poslat
+            if (!ex.IsDefaultExceptionCode)
+            {
+                logger.ExternalServiceServerError("FEAPI", ex);
+            }
+
+            await Results.Json(createExternalServiceError(ex.ServiceName, "External service failed"), statusCode: 500).ExecuteAsync(context);
+        }
+        // external service 400 http status
+        catch (CisExternalServiceValidationException ex)
         {
             logger.NobyValidationException(ex.Message, ex);
             await Results.Json(ex.Errors, statusCode: 400).ExecuteAsync(context);
@@ -84,6 +109,24 @@ public sealed class NobyApiExceptionMiddleware
             logger.WebApiUncoughtException(ex);
             await Results.Json(singleErrorResult(NobyValidationException.DefaultExceptionCode, ErrorCodeMapper.Messages[NobyValidationException.DefaultExceptionCode].Message), statusCode: 500).ExecuteAsync(context);
         }
+    }
+
+    private static List<ApiErrorItem> createExternalServiceError(in string serviceName, in string reasonType)
+    {
+        return new List<ApiErrorItem>
+        {
+            new()
+            {
+                Severity = ApiErrorItemServerity.Error,
+                ErrorCode = NobyValidationException.DefaultExceptionCode,
+                Message = ErrorCodeMapper.Messages[NobyValidationException.DefaultExceptionCode].Message,
+                Reason = new ApiErrorItem.ErrorReason
+                {
+                    ReasonType = reasonType,
+                    ReasonDescription = serviceName
+                }
+            }
+        };
     }
 
     private static List<ApiErrorItem> singleErrorResult(BaseCisException exception, in int? customDefaultExceptionCode = null)

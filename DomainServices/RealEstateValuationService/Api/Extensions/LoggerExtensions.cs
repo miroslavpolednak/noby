@@ -27,7 +27,7 @@ internal static class LoggerExtensions
             "Message CurrentTaskId {CurrentTaskId} is not in valid format");
         
         _kafkaRealEstateValuationByOrderIdNotFound = LoggerMessage.Define<long?>(
-            LogLevel.Error,
+            LogLevel.Warning,
             new EventId(LoggerEventIdCodes.RealEstateValuationNotFound, nameof(RealEstateValuationByOrderIdNotFound)),
             "RealEstateValuation OrderId {OrderId} not found");
 
@@ -42,21 +42,21 @@ internal static class LoggerExtensions
             "CreateKbmodelFlat: noPriceAvailable {NoPriceAvailable}; valuation {ValuationId} finished with result price {ResultPrice}");
     }
 
-    public static void AttachmentDeleteFailed(this ILogger logger, long externalId, int realEstateValuationAttachmentId, Exception ex)
+    public static void AttachmentDeleteFailed(this ILogger logger, in long externalId, in int realEstateValuationAttachmentId, Exception ex)
         => _attachmentDeleteFailed(logger, externalId, realEstateValuationAttachmentId, ex);
     
-    public static void KafkaMessageCaseIdIncorrectFormat(this ILogger logger, string caseId)
+    public static void KafkaMessageCaseIdIncorrectFormat(this ILogger logger, in string caseId)
         => _kafkaMessageCaseIdIncorrectFormat(logger, caseId, null!);
 
-    public static void KafkaMessageCurrentTaskIdIncorrectFormat(this ILogger logger, string currentTaskId)
+    public static void KafkaMessageCurrentTaskIdIncorrectFormat(this ILogger logger, in string currentTaskId)
         => _kafkaMessageCurrentTaskIdIncorrectFormat(logger, currentTaskId, null!);
 
-    public static void RealEstateValuationByOrderIdNotFound(this ILogger logger, long? orderId)
+    public static void RealEstateValuationByOrderIdNotFound(this ILogger logger, in long? orderId)
         => _kafkaRealEstateValuationByOrderIdNotFound(logger, orderId, null!);
 
-    public static void RevaluationFinished(this ILogger logger, bool revaluationRequired)
+    public static void RevaluationFinished(this ILogger logger, in bool revaluationRequired)
         => _revaluationFinished(logger, revaluationRequired, null!);
 
-    public static void CreateKbmodelFlat(this ILogger logger, bool noPriceAvailable, long valuationId, int resultPrice)
+    public static void CreateKbmodelFlat(this ILogger logger, in bool noPriceAvailable, in long valuationId, in int resultPrice)
         => _createKbmodelFlat(logger, noPriceAvailable, valuationId, resultPrice, null!);
 }

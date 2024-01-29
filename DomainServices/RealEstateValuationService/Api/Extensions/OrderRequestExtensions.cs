@@ -1,9 +1,9 @@
 ﻿using DomainServices.CustomerService.Contracts;
 using DomainServices.RealEstateValuationService.Contracts;
-using SharedTypes.Enums;
 
 namespace DomainServices.RealEstateValuationService.Api.Extensions;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 internal static class OrderRequestExtensions
 {
     public static void FillBaseOrderData(
@@ -29,7 +29,7 @@ internal static class OrderRequestExtensions
         {
             model.CremRealEstateIds = realEstateIds;
         }
-        
+
         model.AttachmentIds = attachments ?? Array.Empty<long>();
     }
 

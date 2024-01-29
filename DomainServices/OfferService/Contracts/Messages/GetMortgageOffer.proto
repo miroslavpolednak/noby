@@ -2,6 +2,7 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "ModificationStamp.proto";
 import "Messages/BasicParameters.proto";
 import "Messages/MortgageSimulationInputs.proto";
@@ -18,4 +19,5 @@ message GetMortgageOfferResponse {
 	BasicParameters BasicParameters = 4;
 	MortgageSimulationInputs SimulationInputs = 5;
 	MortgageSimulationResults SimulationResults = 6;
+	google.protobuf.StringValue DocumentId = 7;
 }

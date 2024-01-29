@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using CIS.Infrastructure.ExternalServicesHelpers;
+﻿using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

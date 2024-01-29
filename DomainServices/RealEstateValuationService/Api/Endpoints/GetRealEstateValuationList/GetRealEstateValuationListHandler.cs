@@ -34,10 +34,17 @@ internal sealed class GetRealEstateValuationListHandler
                 Address = t.Address,
                 OrderId = t.OrderId,
                 PreorderId = t.PreorderId,
-                IsOnlineDisqualified = t.IsOnlineDisqualified,
-                ValuationResultCurrentPrice = t.ValuationResultCurrentPrice,
-                ValuationResultFuturePrice = t.ValuationResultFuturePrice
+                IsOnlineDisqualified = t.IsOnlineDisqualified
             };
+
+            if (t.Prices is not null)
+            {
+                item.Prices.AddRange(t.Prices.Select(tt => new PriceDetail
+                {
+                    Price = tt.Price,
+                    PriceSourceType = tt.PriceSourceType
+                }));
+            }
 
             if (t.PossibleValuationTypeId is not null) 
             {

@@ -19,13 +19,12 @@ try
 {
     #region register services
     // konfigurace aplikace
+    var envConfiguration = builder.AddCisEnvironmentConfiguration();
     var appConfiguration = builder.AddNobyConfig();
 
     // vlozit do DI vsechny custom services
     builder.Services.AddAttributedServices(typeof(NOBY.Services.IServicesAssembly), typeof(NOBY.Api.IApiAssembly));
 
-    // add CIS pipeline
-    var envConfiguration = builder.AddCisEnvironmentConfiguration();
     builder
         .AddCisCoreFeatures()
         .AddCisWebApiCors()
@@ -36,7 +35,10 @@ try
         .AddCisHealthChecks();
 
     // add temp storage
-    builder.AddCisStorageServices().AddStorageClient<IStorage1>();
+    builder
+        .AddCisStorageServices()
+        .AddTempStorage()
+        .AddStorageClient<IStorage1>();
 
     builder.Services.AddCisSecurityHeaders();
 
@@ -68,7 +70,7 @@ try
         .AddDocumentGeneratorService();
 
     // NOBY services
-    builder.AddNobyServices();
+    builder.AddNobyServices(appConfiguration);
 
     // init validacnich zprav
     ErrorCodeMapper.Init();
@@ -118,7 +120,7 @@ try
         var descriptions = app.DescribeApiVersions();
         app.UseNobySwagger(descriptions);
     }
-
+    
     log.ApplicationRun();
     app.Run();
 }
