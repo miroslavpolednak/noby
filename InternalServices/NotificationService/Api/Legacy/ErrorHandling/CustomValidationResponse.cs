@@ -3,7 +3,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace CIS.InternalServices.NotificationService.Api.ErrorHandling;
+namespace CIS.InternalServices.NotificationService.Api.Legacy.ErrorHandling;
 
 public class CustomValidationResponse : ValidationProblemDetails
 {

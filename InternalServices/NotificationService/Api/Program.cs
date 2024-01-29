@@ -1,24 +1,21 @@
-using CIS.Infrastructure.Security;
-using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices;
 using CIS.InternalServices.NotificationService.Api;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging;
 using CIS.InternalServices.NotificationService.Api.Services.User;
-using CIS.InternalServices.NotificationService.Api.Swagger;
 using SharedComponents.DocumentDataStorage;
-using CIS.InternalServices.NotificationService.Api.BackgroundServices;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Configuration;
 using SharedComponents.Storage;
 using CIS.InternalServices.NotificationService.Api.Legacy.ErrorHandling;
+using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
+using CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddApplicationConfiguration<CIS.InternalServices.NotificationService.Api.Configuration.AppConfiguration>(new CIS.InternalServices.NotificationService.Api.Configuration.AppConfigurationValidator())
     .AddErrorCodeMapper(ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
@@ -33,9 +30,6 @@ SharedComponents.GrpcServiceBuilder
     })
     .Build(builder =>
     {
-        // Configuration
-        builder.Configure();
-
         // storage
         builder
             .AddCisStorageServices()
@@ -70,15 +64,20 @@ SharedComponents.GrpcServiceBuilder
         // user
         builder.Services.AddScoped<IUserAdapterService, UserAdapterService>();
 
-        // registrace background jobu
-        builder.AddBackroundJobs();
+        #region registrace background jobu
+        // odeslani MPSS emailu
+        builder.AddCisBackgroundService<SendEmailsJob, SendEmailsJobConfiguration>(new SendEmailsJobConfigurationValidator());
+
+        // zruseni odesilani MPSS emailu po expiraci platnosti
+        builder.AddCisBackgroundService<SetExpiredEmailsJob, SetExpiredEmailsJobConfiguration>(new SetExpiredEmailsJobConfigurationValidator());
+        #endregion registrace background jobu
 
         // ukladani payloadu - document data storage
         builder.AddDocumentDataStorage();
     })
     .MapGrpcServices(app =>
     {
-        app.MapGrpcService<CIS.InternalServices.NotificationService.Api.Endpoints.UserService>();
+        app.MapGrpcService<CIS.InternalServices.NotificationService.Api.Endpoints.v2.NotificationServiceV2>();
     })
     .Run();
 
