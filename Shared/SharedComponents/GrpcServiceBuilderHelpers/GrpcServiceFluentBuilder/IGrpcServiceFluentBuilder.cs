@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Configuration;
 using CIS.Core.ErrorCodes;
+using FluentValidation;
 using Grpc.AspNetCore.Server;
 using Microsoft.AspNetCore.Builder;
 
@@ -24,7 +25,7 @@ public interface IGrpcServiceFluentBuilder
     /// <remarks>
     /// Konfigurace musí být v appsettings.json v objektu "AppConfiguration"
     /// </remarks>
-    IGrpcServiceFluentBuilder<TConfiguration> AddApplicationConfiguration<TConfiguration>()
+    IGrpcServiceFluentBuilder<TConfiguration> AddApplicationConfiguration<TConfiguration>(AbstractValidator<TConfiguration>? validator = null)
         where TConfiguration : class;
 
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.BackgroundServices;
+using FluentValidation;
 
 namespace CIS.Infrastructure.StartupExtensions;
 
@@ -9,15 +10,15 @@ public static class CisBackgroundServiceExtensions
     /// </summary>
     /// <typeparam name="TBackgroundService">Typ background service jobu, ktery konfiguraci vyzaduje</typeparam>
     /// <typeparam name="TConfiguration">Typ konfigurace</typeparam>
-    /// <param name="validateConfiguration">Validacni funkce, ktera se zavola po nacteni konfigurace. V pripade chybne konfigurace by se uvnitr akce mela vyhazovat vyjimka CisConfigurationException.</param>
+    /// <param name="validateConfiguration">Validator pro kontrolu custom konfigurace (FluentValidation).</param>
     /// <exception cref="Core.Exceptions.CisConfigurationException">Vyjimku vraci funkce validateConfiguration pokud neni spravne nastavena konfigurace jobu.</exception>
     /// <exception cref="Core.Exceptions.CisConfigurationNotFound"></exception>
-    public static WebApplicationBuilder AddCisBackgroundService<TBackgroundService, TConfiguration>(this WebApplicationBuilder builder, Action<TConfiguration>? validateConfiguration = null)
+    public static WebApplicationBuilder AddCisBackgroundService<TBackgroundService, TConfiguration>(this WebApplicationBuilder builder, AbstractValidator<TConfiguration>? validator = null)
         where TBackgroundService : class, ICisBackgroundServiceJob
         where TConfiguration : class, new()
     {
         addServiceAndWorker<TBackgroundService>(builder);
-        addCustomConfiguration<TBackgroundService, TConfiguration>(builder, validateConfiguration);
+        addCustomConfiguration<TBackgroundService, TConfiguration>(builder, validator);
 
         return builder;
     }
@@ -34,25 +35,33 @@ public static class CisBackgroundServiceExtensions
         return builder;
     }
 
-    private static void addCustomConfiguration<TBackgroundService, TConfiguration>(WebApplicationBuilder builder, Action<TConfiguration>? validateConfiguration = null)
+    private static void addCustomConfiguration<TBackgroundService, TConfiguration>(WebApplicationBuilder builder, AbstractValidator<TConfiguration>? validator = null)
         where TBackgroundService : class, ICisBackgroundServiceJob
         where TConfiguration : class, new()
     {
-        // nacist konfiguraci sluzby
-        string sectionName = $"{ConfigurationSectionKey}:{typeof(TBackgroundService).Name}:{CustomConfigurationSectionKey}";
-
-        var configuration = builder.Configuration
-            .GetSection(sectionName)
-            .Get<TConfiguration>()
-            ?? throw new Core.Exceptions.CisConfigurationNotFound(sectionName);
-
-        builder.Services.AddSingleton(configuration);
-
-        // validate configuration if requested
-        if (validateConfiguration != null)
+        builder.Services.AddSingleton(services =>
         {
-            validateConfiguration(configuration);
-        }
+            // nacist konfiguraci sluzby
+            string sectionName = $"{ConfigurationSectionKey}:{typeof(TBackgroundService).Name}:{CustomConfigurationSectionKey}";
+
+            var configBuilder = services.GetRequiredService<IConfiguration>();
+            var configuration = configBuilder
+                .GetSection(sectionName)
+                .Get<TConfiguration>()
+                ?? throw new Core.Exceptions.CisConfigurationNotFound(sectionName);
+
+            // validate configuration if requested
+            if (validator != null)
+            {
+                var validationResult = validator.Validate(configuration);
+                if (!validationResult.IsValid)
+                {
+                    throw new CIS.Core.Exceptions.CisConfigurationException(0, string.Join("; ", validationResult.Errors.Select(t => t.ErrorMessage)));
+                }
+            }
+
+            return configuration;
+        });
     }
 
     private static void addServiceAndWorker<TBackgroundService>(WebApplicationBuilder builder)
