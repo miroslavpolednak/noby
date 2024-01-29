@@ -1,5 +1,5 @@
 ﻿namespace CIS.InternalServices.NotificationService.Api;
 
-internal interface IEmailAttachmentStorage
+internal interface IMcsStorage
 {
 }

@@ -10,7 +10,7 @@ using CIS.InternalServices.NotificationService.Api.Database.DocumentDataEntities
 
 namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 
-public sealed class SendEmailsJob
+internal sealed class SendEmailsJob
     : Infrastructure.BackgroundServices.ICisBackgroundServiceJob
 {
     private readonly SendEmailsJobConfiguration _configuration;

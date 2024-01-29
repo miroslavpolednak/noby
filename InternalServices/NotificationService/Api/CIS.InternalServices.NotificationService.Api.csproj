@@ -58,8 +58,4 @@
     <None Include="Messaging\AvroSchemas\Mpss\SendEmail.json" />
   </ItemGroup>
   
-  <ItemGroup>
-    <Folder Include="Validators\" />
-  </ItemGroup>
-  
 </Project>

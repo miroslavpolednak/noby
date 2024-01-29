@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
 
-public sealed class SetExpiredEmailsJob
+internal sealed class SetExpiredEmailsJob
     : Infrastructure.BackgroundServices.ICisBackgroundServiceJob
 {
     private readonly NotificationDbContext _dbContext;

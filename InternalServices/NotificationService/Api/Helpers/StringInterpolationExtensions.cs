@@ -4,7 +4,7 @@ using CIS.Core.Exceptions;
 
 namespace CIS.InternalServices.NotificationService.Api.Helpers;
 
-public static class StringInterpolationExtensions
+internal static class StringInterpolationExtensions
 {
     private static readonly string _pattern = @"[\{]{2}[a-z0-9_-]{3,15}[\}]{2}";
     

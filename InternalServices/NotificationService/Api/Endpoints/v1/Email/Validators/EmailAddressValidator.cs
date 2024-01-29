@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Validators;
 
-public class EmailAddressValidator : AbstractValidator<EmailAddress>
+internal sealed class EmailAddressValidator : AbstractValidator<EmailAddress>
 {
     public EmailAddressValidator()
     {

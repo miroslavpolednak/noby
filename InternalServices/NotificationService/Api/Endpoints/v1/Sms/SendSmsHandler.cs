@@ -3,9 +3,9 @@ using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Database;
 using CIS.InternalServices.NotificationService.Api.Helpers;
 using CIS.InternalServices.NotificationService.Api.Legacy;
+using CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
 using DomainServices.CodebookService.Clients;
@@ -52,12 +52,10 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {smsTypeCodes}");
 
-        var hashAlgorithms = await _codebookService.HashAlgorithms(cancellationToken);
-        var hashAlgorithmCodes = string.Join(", ", hashAlgorithms.Select(s => s.Code));
-        var hashAlgorithm = string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm)
-            ? null
-            : hashAlgorithms.FirstOrDefault(s => s.Code == request.DocumentHash.HashAlgorithm) ?? 
-        throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash.HashAlgorithm}'. Allowed HashAlgorithms: {hashAlgorithmCodes}");
+        if (!HashAlgorithms.Algorithms.Contains(request.DocumentHash?.HashAlgorithm ?? ""))
+        {
+            throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash?.HashAlgorithm}'.");
+        }
 
         var result = _repository.NewSmsResult();
         var phone = request.PhoneNumber.ParsePhone()!;

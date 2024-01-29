@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Validators;
 
-public class PartyValidator : AbstractValidator<Party>
+internal sealed class PartyValidator : AbstractValidator<Party>
 {
     public PartyValidator()
     {

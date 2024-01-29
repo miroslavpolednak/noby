@@ -1,4 +1,4 @@
-﻿using CIS.InternalServices.NotificationService.Api.Database;
+﻿using CIS.InternalServices.NotificationService.Api.Endpoints.v1;
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Result;

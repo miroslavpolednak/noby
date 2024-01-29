@@ -1,4 +1,6 @@
-﻿namespace CIS.InternalServices.NotificationService.Api.Database.Entities;
+﻿using CIS.InternalServices.NotificationService.Api.Endpoints.v1;
+
+namespace CIS.InternalServices.NotificationService.Api.Database.Entities;
 
 public class SmsResult : Result
 {

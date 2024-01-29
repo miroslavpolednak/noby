@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Validators;
 
-public class EmailContentValidator : AbstractValidator<EmailContent>
+internal sealed class EmailContentValidator : AbstractValidator<EmailContent>
 {
     // todo: options move to error code mapper => WithErrorCode(int param)
     public EmailContentValidator(IOptions<AppConfiguration> options)

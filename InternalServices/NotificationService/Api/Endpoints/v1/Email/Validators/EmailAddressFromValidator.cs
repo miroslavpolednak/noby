@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Validators;
 
-public class EmailAddressFromValidator : AbstractValidator<EmailAddress>
+internal sealed class EmailAddressFromValidator : AbstractValidator<EmailAddress>
 {
     // todo: error code for emailAddress.Value
     private static readonly Func<string, string> _normalForm = e => e.ToLowerInvariant();

@@ -1,13 +1,12 @@
-using CIS.Infrastructure.CisMediatR.GrpcValidation;
 using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Api.Endpoints.Common;
+using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Common;
 using CIS.InternalServices.NotificationService.LegacyContracts.Email;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Validators;
 
-public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
+internal sealed class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
 {
     public SendEmailRequestValidator(IOptions<AppConfiguration> options)
     {

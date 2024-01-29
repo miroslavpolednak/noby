@@ -1,12 +1,12 @@
 ﻿using System.Globalization;
 using System.Text;
 using SharedAudit;
-using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
 using cz.kb.osbs.mcs.notificationreport.eventapi.v3.report;
 using DomainServices.CodebookService.Contracts.v1;
 using Newtonsoft.Json;
+using CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.AuditLog;
+namespace CIS.InternalServices.NotificationService.Api.Legacy.AuditLog;
 
 public class SmsAuditLogger : ISmsAuditLogger
 {
@@ -53,12 +53,12 @@ public class SmsAuditLogger : ISmsAuditLogger
 
         var httpHeaders = httpContext.Request.Headers
             .ToDictionary(v => v.Key, v => v.Value);
-        
+
         var rawHttpRequestHeaders = JsonConvert.SerializeObject(httpHeaders);
         var rawHttpRequestBody = await GetBodyFromRequest(httpContext.Request);
-        
+
         var rawHttpResponseBody = await GetBodyFromResponse(httpContext.Response);
-        
+
         _auditLogger.Log(
             AuditEventTypes.Noby012,
             "NotificationService /sms or /smsFromTemplate HTTP request processed",
@@ -72,7 +72,7 @@ public class SmsAuditLogger : ISmsAuditLogger
             bodyAfter: new Dictionary<string, string>
             {
                 { "traceId", httpContext.TraceIdentifier },
-                { "responseStatus", httpContext.Response.StatusCode.ToString(CultureInfo.InvariantCulture) }, 
+                { "responseStatus", httpContext.Response.StatusCode.ToString(CultureInfo.InvariantCulture) },
                 { "rawHttpResponseBody", ToLiteral(rawHttpResponseBody) }
             }
         );
@@ -145,11 +145,14 @@ public class SmsAuditLogger : ISmsAuditLogger
                 });
         }
     }
-    
-    private static string ToLiteral(string input) {
-        var literal = new StringBuilder(input.Length );
-        foreach (var c in input) {
-            switch (c) {
+
+    private static string ToLiteral(string input)
+    {
+        var literal = new StringBuilder(input.Length);
+        foreach (var c in input)
+        {
+            switch (c)
+            {
                 case '\"': literal.Append("\\\""); break;
                 case '\\': literal.Append(@"\\"); break;
                 case '\0': literal.Append(@"\0"); break;
@@ -162,10 +165,13 @@ public class SmsAuditLogger : ISmsAuditLogger
                 case '\v': literal.Append(@"\v"); break;
                 default:
                     // ASCII printable character
-                    if (c >= 0x20 && c <= 0x7e) {
+                    if (c >= 0x20 && c <= 0x7e)
+                    {
                         literal.Append(c);
                         // As UTF16 escaped character
-                    } else {
+                    }
+                    else
+                    {
                         literal.Append(@"\u");
                         literal.Append(((int)c).ToString("x4"));
                     }

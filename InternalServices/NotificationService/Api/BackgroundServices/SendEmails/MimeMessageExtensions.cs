@@ -3,7 +3,7 @@ using MimeKit;
 
 namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 
-public static class MimeMessageExtensions
+internal static class MimeMessageExtensions
 {
     public static MimeMessage Create() => new();
 

@@ -1,10 +1,9 @@
 ﻿using CIS.InternalServices.NotificationService.LegacyContracts.Email.Dto;
 using FluentValidation;
-using NOBY.Infrastructure.ErrorHandling;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Validators;
 
-public class EmailAttachmentValidator : AbstractValidator<EmailAttachment>
+internal sealed class EmailAttachmentValidator : AbstractValidator<EmailAttachment>
 {
     public EmailAttachmentValidator()
     {

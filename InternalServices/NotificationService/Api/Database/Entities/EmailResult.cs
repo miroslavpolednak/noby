@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.LegacyContracts.Statistics.Dto;
+﻿using CIS.InternalServices.NotificationService.Api.Endpoints.v1;
+using CIS.InternalServices.NotificationService.LegacyContracts.Statistics.Dto;
 
 namespace CIS.InternalServices.NotificationService.Api.Database.Entities;
 

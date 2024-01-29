@@ -3,7 +3,7 @@ using CIS.InternalServices.NotificationService.LegacyContracts.Common;
 
 namespace CIS.InternalServices.NotificationService.Api.Helpers;
 
-public static class PhoneNumberExtensions
+internal static class PhoneNumberExtensions
 {
     public static Phone? ParsePhone(this string value)
     {

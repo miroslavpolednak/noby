@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Validators;
 
-public class NaturalPersonValidator : AbstractValidator<NaturalPerson>
+internal sealed class NaturalPersonValidator : AbstractValidator<NaturalPerson>
 {
     public NaturalPersonValidator()
     {

@@ -1,7 +1,7 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Endpoints.v1;
-using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction;
 
-namespace CIS.InternalServices.NotificationService.Api;
+namespace CIS.InternalServices.NotificationService.Api.Legacy;
 
 public class AuditRequestResponseMiddleware
 {
@@ -11,7 +11,7 @@ public class AuditRequestResponseMiddleware
     {
         _next = next;
     }
-    
+
     public async Task Invoke(HttpContext context)
     {
         context.Request.EnableBuffering();
@@ -25,5 +25,5 @@ public class AuditRequestResponseMiddleware
             await logger.LogHttpRequestResponse();
         }
     }
-    
+
 }

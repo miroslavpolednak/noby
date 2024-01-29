@@ -5,25 +5,23 @@ using CIS.InternalServices.NotificationService.Api.Database.DocumentDataEntities
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Email;
 using DomainServices.CodebookService.Clients;
-using MediatR;
 using Microsoft.Extensions.Options;
 using SharedComponents.DocumentDataStorage;
+using SharedComponents.Storage;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email;
 
-public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailResponse>
+internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailResponse>
 {
     private readonly IDateTime _dateTime;
     private readonly IMcsEmailProducer _mcsEmailProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly IS3AdapterService _s3Service;
-    private readonly S3Buckets _buckets;
+    private readonly IStorageClient<IMcsStorage> _mcsStorageClient;
     private readonly HashSet<string> _mcsSenders;
     private readonly HashSet<string> _mpssSenders;
     private readonly ILogger<SendEmailHandler> _logger; 
@@ -35,36 +33,33 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
         ICodebookServiceClient codebookService,
-        IS3AdapterService s3Service,
         IOptions<AppConfiguration> options,
         ILogger<SendEmailHandler> logger,
-        IDocumentDataStorage documentDataStorage)
+        IDocumentDataStorage documentDataStorage,
+        IStorageClient<IMcsStorage> mcsStorageClient)
     {
         _dateTime = dateTime;
         _mcsEmailProducer = mcsEmailProducer;
         _userAdapterService = userAdapterService;
         _repository = repository;
         _codebookService = codebookService;
-        _s3Service = s3Service;
-        _buckets = options.Value.S3Buckets;
         _mcsSenders = options.Value.EmailSenders.Mcs.Select(e => e.ToLowerInvariant()).ToHashSet();
         _mpssSenders = options.Value.EmailSenders.Mpss.Select(e => e.ToLowerInvariant()).ToHashSet();
         _logger = logger;
         _documentDataStorage = documentDataStorage;
+        _mcsStorageClient = mcsStorageClient;
     }
-    
+
     public async Task<SendEmailResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
     {
         var username = _userAdapterService
             .CheckSendEmailAccess()
             .GetUsername();
         
-        var hashAlgorithms = await _codebookService.HashAlgorithms(cancellationToken);
-        var hashAlgorithmCodes = string.Join(", ", hashAlgorithms.Select(s => s.Code));
-        var hashAlgorithm = string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm)
-            ? null
-            : hashAlgorithms.FirstOrDefault(s => s.Code == request.DocumentHash.HashAlgorithm) ?? 
-              throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash.HashAlgorithm}'. Allowed HashAlgorithms: {hashAlgorithmCodes}");
+        if (!HashAlgorithms.Algorithms.Contains(request.DocumentHash?.HashAlgorithm ?? ""))
+        {
+            throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash?.HashAlgorithm}'.");
+        }
         
         var attachmentKeyFilenames = new List<KeyValuePair<string, string>>();
         var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
@@ -112,7 +107,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, $"Could not upload attachments to S3 bucket {_buckets.Mcs}.");
+                    _logger.LogError(e, $"Could not upload attachments to S3 bucket.");
                     throw new CisServiceServerErrorException(ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
                 }
 

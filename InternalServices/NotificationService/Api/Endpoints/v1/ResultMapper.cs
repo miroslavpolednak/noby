@@ -1,13 +1,13 @@
 ﻿using CIS.InternalServices.NotificationService.LegacyContracts.Common;
-using Entity = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
+using Entity = CIS.InternalServices.NotificationService.Api.Database.Entities;
 using Dto = CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using CIS.InternalServices.NotificationService.Api.Database.Entities;
 
-namespace CIS.InternalServices.NotificationService.Api.Database;
+namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1;
 
 public static class ResultMapper
 {
-    public static IEnumerable<Dto.Result> Map(this IEnumerable<Result> results)
+    public static IEnumerable<Dto.Result> Map(this IEnumerable<Entity.Result> results)
     {
         return results.Select(r => r.ToDto());
     }

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CIS.InternalServices.NotificationService.Api.Endpoints.Infrastructure.AuditLog;
 using CIS.InternalServices.NotificationService.LegacyContracts.Email;
 using CIS.InternalServices.NotificationService.LegacyContracts.Result;
 using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
@@ -41,22 +40,6 @@ public class NotificationController : ControllerBase
         => await _mediator.Send(request, token);
 
     /// <summary>
-    /// Odeslat sms notifikaci ze šablony
-    /// </summary>
-    /// <remarks>
-    /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
-    /// </remarks>
-    [AuditLog]
-    [HttpPost("smsFromTemplate")]
-    [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    [ProducesResponseType(typeof(SendSmsFromTemplateResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<SendSmsFromTemplateResponse> SendSmsFromTemplate([FromBody] SendSmsFromTemplateRequest request, CancellationToken token)
-        => await _mediator.Send(request, token);
-
-    /// <summary>
     /// Odeslat email notifikaci
     /// </summary>
     /// <remarks>
@@ -71,19 +54,6 @@ public class NotificationController : ControllerBase
     public async Task<SendEmailResponse> SendEmail([FromBody] SendEmailRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
     
-    // /// <summary>
-    // /// Odeslat email notifikaci ze šablony
-    // /// </summary>
-    // /// <remarks>
-    // /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
-    // /// </remarks>
-    // [HttpPost("emailFromTemplate")]
-    // [Produces("application/json")]
-    // [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
-    // [ProducesResponseType(typeof(SendEmailFromTemplateResponse), StatusCodes.Status200OK)]
-    // public async Task<SendEmailFromTemplateResponse> SendEmailFromTemplate([FromBody] SendEmailFromTemplateRequest request, CancellationToken token)
-    //     => await _mediator.Send(request, token);
-
     /// <summary>
     /// Získat výsledek o notifikaci
     /// </summary>
