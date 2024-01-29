@@ -11,58 +11,51 @@ internal sealed class CisBackgroundService<TBackgroundService>
 {
     private readonly ILogger<TBackgroundService> _logger;
     private readonly IServiceScopeFactory _serviceScopeFactory;
-    private readonly ICisBackgroundServiceConfiguration<TBackgroundService> _options;
+    private readonly IConfiguration _configuration;
     private readonly CrontabSchedule _crontab;
-    private readonly string _serviceName;
-
-    private static readonly ActivitySource _activitySource = new(typeof(BackgroundService).Name);
-
-    private static readonly ActivityListener _activityListener = new()
-    {
-        ShouldListenTo = _ => true,
-        SampleUsingParentId = (ref ActivityCreationOptions<string> _) => ActivitySamplingResult.AllData,
-        Sample = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllData,
-    };
+    private int _iteration;
 
     /// <summary>
     /// [s] // Time for getting job lock, if job in not capable get applock in this time, job gonna be terminated (SqlException with message Execution Timeout Expired)
     /// </summary>
-    const int _technicalTimeout = 2;
+    private const int _technicalTimeout = 2;
+
+    private static readonly string _serviceName = typeof(TBackgroundService).Name;
+
+    private static readonly ActivitySource _activitySource = new(typeof(BackgroundService).Name);
 
     public CisBackgroundService(
         ILogger<TBackgroundService> logger,
+        IConfiguration configuration,
         IServiceScopeFactory serviceScopeFactory,
         ICisBackgroundServiceConfiguration<TBackgroundService> options
         )
     {
+        _configuration = configuration;
         _logger = logger;
         _serviceScopeFactory = serviceScopeFactory;
-        _options = options;
-
-        _serviceName = typeof(TBackgroundService).Name;
 
         // parse cron expr.
-        _crontab = getCrontabSchedule();
+        _crontab = getCrontabSchedule(options);
 
         // log cron settings
-        logServiceRegistered();
+        _logger.BackgroundServiceRegistered(_serviceName, getCronDescription(options) ?? "Unable to get CRON description");
 
         // subscribe to listener
-        ActivitySource.AddActivityListener(_activityListener);
+        ActivitySource.AddActivityListener(new()
+        {
+            ShouldListenTo = _ => true,
+            SampleUsingParentId = (ref ActivityCreationOptions<string> _) => ActivitySamplingResult.AllData,
+            Sample = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllData,
+        });
     }
-
-    public string? ConnectionString { get; set; }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        using var activity = _activitySource.StartActivity(typeof(TBackgroundService).Name);
-
-        if (_options.Disabled)
-        {
-            _logger.BackgroundServiceIsDisabled(_serviceName);
-            return;
-        }
-
+        // connection for db lock
+        string connectionString = _configuration.GetConnectionString(CIS.Core.CisGlobalConstants.DefaultConnectionStringKey) 
+            ?? throw new NotSupportedException("defaut connection string for background service distributed lock required");
+    
         while (!stoppingToken.IsCancellationRequested)
         {
             // No further services are started until ExecuteAsync becomes asynchronous, such as by calling await.
@@ -71,34 +64,42 @@ internal sealed class CisBackgroundService<TBackgroundService>
             await Task.Yield();
 
             await waitUntilNext(stoppingToken);
+            _iteration++;
 
-            using var serviceScope = _serviceScopeFactory.CreateScope();
-            var service = serviceScope.ServiceProvider.GetRequiredService<TBackgroundService>();
-            var configuration = serviceScope.ServiceProvider.GetRequiredService<IConfiguration>();
-            ConnectionString = ConnectionString is null ? configuration.GetConnectionString("default") ?? throw new NotSupportedException("defaut connection string required") : ConnectionString;
-            // lockName is essential for uniquely identifying the resource for which the lock is being requested.
-            string lockName = typeof(TBackgroundService)?.FullName!;
             try
             {
-                var distributedLock = new SqlDistributedLock(lockName, ConnectionString);
+                var distributedLock = new SqlDistributedLock(_serviceName, connectionString);
                 using (var handle = await distributedLock.TryAcquireAsync(timeout: TimeSpan.FromSeconds(_technicalTimeout), cancellationToken: stoppingToken))
                 {
                     // we acquired the lock
                     if (handle != null)
                     {
-                        await service.ExecuteJobAsync(stoppingToken);
+                        using (var serviceScope = _serviceScopeFactory.CreateScope())
+                        {
+                            var service = serviceScope.ServiceProvider.GetRequiredService<TBackgroundService>();
+
+                            using (var activity = _activitySource.StartActivity(_serviceName))
+                            {
+                                _logger.BackgroundServiceTaskStarted(_serviceName, _iteration);
+
+                                await service.ExecuteJobAsync(stoppingToken);
+
+                                _logger.BackgroundServiceTaskFinished(_serviceName, _iteration);
+                            }
+                        }
+
                         // Technical timeout, when job will execute very fast and the exception (Execution Timeout Expired) does not have time to be thrown out
                         await Task.Delay(TimeSpan.FromSeconds(_technicalTimeout + 5), stoppingToken);
                     }
                     else // someone else has it
                     {
-                        _logger.ParallelJobTerminated(lockName);
+                        _logger.ParallelJobTerminated(_serviceName, _iteration);
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logger.BackgroundServiceExecutionError(_serviceName, ex);
+                _logger.BackgroundServiceExecutionError(_serviceName, _iteration, ex);
             }
         }
     }
@@ -120,20 +121,19 @@ internal sealed class CisBackgroundService<TBackgroundService>
         }
     }
 
-    private CrontabSchedule getCrontabSchedule()
+    private static CrontabSchedule getCrontabSchedule(ICisBackgroundServiceConfiguration<TBackgroundService> options)
     {
-        var cron = CrontabSchedule.TryParse(_options.CronSchedule);
+        var cron = CrontabSchedule.TryParse(options.CronSchedule);
 
-        return cron ?? throw new CIS.Core.Exceptions.CisConfigurationException(0, $"Cron expression '{_options.CronSchedule}' can not be parsed");
+        return cron ?? throw new CIS.Core.Exceptions.CisConfigurationException(0, $"Cron expression '{options.CronSchedule}' can not be parsed");
     }
 
-    private void logServiceRegistered()
+    private static string? getCronDescription(ICisBackgroundServiceConfiguration<TBackgroundService> options)
     {
-        var cronDescription = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(_options.CronSchedule, new CronExpressionDescriptor.Options
+        return CronExpressionDescriptor.ExpressionDescriptor.GetDescription(options.CronSchedule, new CronExpressionDescriptor.Options
         {
             DayOfWeekStartIndexZero = true,
             Use24HourTimeFormat = true
         });
-        _logger.BackgroundServiceRegistered(_serviceName, cronDescription);
     }
 }

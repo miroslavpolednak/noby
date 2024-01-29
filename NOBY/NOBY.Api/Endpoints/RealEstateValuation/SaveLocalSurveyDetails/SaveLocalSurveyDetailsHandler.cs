@@ -14,14 +14,14 @@ internal sealed class SaveLocalSurveyDetailsHandler
             throw new NobyValidationException(90032, "ValuationTypeId is not Online or Standard");
         }
 
-        if (revDetail.ValuationTypeId != DomainServices.RealEstateValuationService.Contracts.ValuationTypes.Online && revDetail.ValuationStateId != (int)RealEstateValuationStates.DoplneniDokumentu)
+        if (revDetail.ValuationTypeId == DomainServices.RealEstateValuationService.Contracts.ValuationTypes.Online && revDetail.ValuationStateId != (int)RealEstateValuationStates.DoplneniDokumentu)
         {
             throw new NobyValidationException(90032, "Online is not in state 10");
         }
 
-        if (revDetail.ValuationTypeId != DomainServices.RealEstateValuationService.Contracts.ValuationTypes.Standard && revDetail.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
+        if (revDetail.ValuationTypeId == DomainServices.RealEstateValuationService.Contracts.ValuationTypes.Standard && revDetail.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
         {
-            throw new NobyValidationException(90032, "Online is not in state 7");
+            throw new NobyValidationException(90032, "Standard is not in state 7");
         }
 
         var dsRequest = new DomainServices.RealEstateValuationService.Contracts.UpdateRealEstateValuationDetailRequest

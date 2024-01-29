@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Configuration;
+using FluentValidation;
 using Grpc.AspNetCore.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,7 @@ internal sealed class GrpcServiceFluentBuilder
         return this;
     }
 
-    public IGrpcServiceFluentBuilder<TConfiguration> AddApplicationConfiguration<TConfiguration>()
+    public IGrpcServiceFluentBuilder<TConfiguration> AddApplicationConfiguration<TConfiguration>(AbstractValidator<TConfiguration>? validator = null)
         where TConfiguration : class
     {
         var appConfiguration = _settings.Builder
@@ -33,6 +34,16 @@ internal sealed class GrpcServiceFluentBuilder
         _settings.Builder.Services.AddSingleton(appConfiguration);
         var newSettings = _settings.CreateGenericCopy<TConfiguration>();
         newSettings.Configuration = appConfiguration;
+
+        // validate configuration if requested
+        if (validator != null)
+        {
+            var validationResult = validator.Validate(appConfiguration);
+            if (!validationResult.IsValid)
+            {
+                throw new CisConfigurationException(0, string.Join("; ", validationResult.Errors.Select(t => t.ErrorMessage)));
+            }
+        }
 
         return new GrpcServiceFluentBuilder<TConfiguration>(newSettings);
     }

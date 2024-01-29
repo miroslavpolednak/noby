@@ -7,4 +7,6 @@ internal static class LoggerEventIdCodes
     public const int UpdateStateStarted = 16503;
     public const int DeleteServiceSalesArrangement = 16504;
     public const int CancelCaseJobFailed = 16505;
+    public const int CancelCaseJobFinished = 16506;
+    public const int OfferGuaranteeDateToCheckJobCancelTask = 16507;
 }
