@@ -5,14 +5,36 @@ namespace CIS.Infrastructure.StartupExtensions;
 public static class CisBackgroundServiceExtensions
 {
     /// <summary>
-    /// Zaregistruje do DI instanci custom konfigurace jobu nahranou z prislusneho objektu v appsettings.json
+    /// Registruje background service job pro periodicke spousteni pomoci crontabu. Zaroven registruje do DI instanci custom konfigurace jobu nahranou z prislusneho objektu v appsettings.json.
     /// </summary>
     /// <typeparam name="TBackgroundService">Typ background service jobu, ktery konfiguraci vyzaduje</typeparam>
     /// <typeparam name="TConfiguration">Typ konfigurace</typeparam>
     /// <param name="validateConfiguration">Validacni funkce, ktera se zavola po nacteni konfigurace. V pripade chybne konfigurace by se uvnitr akce mela vyhazovat vyjimka CisConfigurationException.</param>
     /// <exception cref="Core.Exceptions.CisConfigurationException">Vyjimku vraci funkce validateConfiguration pokud neni spravne nastavena konfigurace jobu.</exception>
     /// <exception cref="Core.Exceptions.CisConfigurationNotFound"></exception>
-    public static WebApplicationBuilder AddCisBackgroundServiceCustomConfiguration<TBackgroundService, TConfiguration>(this WebApplicationBuilder builder, Action<TConfiguration>? validateConfiguration = null)
+    public static WebApplicationBuilder AddCisBackgroundService<TBackgroundService, TConfiguration>(this WebApplicationBuilder builder, Action<TConfiguration>? validateConfiguration = null)
+        where TBackgroundService : class, ICisBackgroundServiceJob
+        where TConfiguration : class, new()
+    {
+        addServiceAndWorker<TBackgroundService>(builder);
+        addCustomConfiguration<TBackgroundService, TConfiguration>(builder, validateConfiguration);
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Registruje background service job pro periodicke spousteni pomoci crontabu.
+    /// </summary>
+    /// <exception cref="Core.Exceptions.CisConfigurationNotFound"></exception>
+    public static WebApplicationBuilder AddCisBackgroundService<TBackgroundService>(this WebApplicationBuilder builder)
+       where TBackgroundService : class, ICisBackgroundServiceJob
+    {
+        addServiceAndWorker<TBackgroundService>(builder);
+
+        return builder;
+    }
+
+    private static void addCustomConfiguration<TBackgroundService, TConfiguration>(WebApplicationBuilder builder, Action<TConfiguration>? validateConfiguration = null)
         where TBackgroundService : class, ICisBackgroundServiceJob
         where TConfiguration : class, new()
     {
@@ -31,15 +53,9 @@ public static class CisBackgroundServiceExtensions
         {
             validateConfiguration(configuration);
         }
-
-        return builder;
     }
 
-    /// <summary>
-    /// Registruje background service job pro periodicke spousteni pomoci crontabu.
-    /// </summary>
-    /// <exception cref="Core.Exceptions.CisConfigurationNotFound"></exception>
-    public static WebApplicationBuilder AddCisBackgroundService<TBackgroundService>(this WebApplicationBuilder builder)
+    private static void addServiceAndWorker<TBackgroundService>(WebApplicationBuilder builder)
        where TBackgroundService : class, ICisBackgroundServiceJob
     {
         // nacist konfiguraci sluzby
@@ -57,8 +73,6 @@ public static class CisBackgroundServiceExtensions
         builder.Services.AddScoped<TBackgroundService>();
         // pridat ihostedservice
         builder.Services.AddHostedService<CisBackgroundService<TBackgroundService>>();
-
-        return builder;
     }
 
     /// <summary>

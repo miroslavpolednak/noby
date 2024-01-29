@@ -51,8 +51,7 @@ internal static class StartupExtensions
         
         // registrace background jobu
         builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
-        builder.AddCisBackgroundServiceCustomConfiguration<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
-
+        builder.AddCisBackgroundService<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
         builder.AddCisBackgroundService<UpdateDocumentStatusJob>();
 
         return builder;
