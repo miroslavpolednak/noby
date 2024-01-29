@@ -43,23 +43,7 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
             ContractResolver = new ExcludeOneOfContractResolver(oneOfProperties)
         });
 
-        var contractProperties = GetPropertyNames(JObject.FromObject(request, jsonSerializer));
-        var requestProperties = GetPropertyNames(JObject.Parse(requestJson));
-
-        var extraProperties = requestProperties.Where(prop =>
-        {
-            if (contractProperties.Contains(prop, StringComparer.OrdinalIgnoreCase))
-                return false;
-
-            if (oneOfProperties.Any(oneOf => prop.Equals(oneOf, StringComparison.OrdinalIgnoreCase) ||
-                                             prop.StartsWith($"{oneOf}.", StringComparison.OrdinalIgnoreCase) ||
-                                             prop.Contains($".{oneOf}.", StringComparison.OrdinalIgnoreCase)))
-            {
-                return false;
-            }
-
-            return true;
-        }).ToList();
+        var extraProperties = GetMissingProperties(JToken.Parse(requestJson), JToken.FromObject(request, jsonSerializer), oneOfProperties);
 
         if (extraProperties.Count != 0)
         {
@@ -71,20 +55,47 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
         return await next();
     }
 
-    private static List<string> GetPropertyNames(JObject obj, string parentName = "")
+    private static List<string> GetMissingProperties(JToken requestToken, JToken contractToken, List<string> oneOfProperties)
     {
-        List<string> propertyNames = [];
+        List<string> missingProperties = [];
 
-        foreach (var property in obj.Properties())
+        if (requestToken.Type == JTokenType.Array && contractToken.Type == JTokenType.Array && ((JArray)requestToken).Count != 0 && ((JArray)contractToken).Count != 0)
         {
-            var propertyName = string.IsNullOrEmpty(parentName) ? property.Name : $"{parentName}.{property.Name}";
-            propertyNames.Add(propertyName);
-
-            if (property.Value.Type == JTokenType.Object) 
-                propertyNames.AddRange(GetPropertyNames((JObject)property.Value, propertyName));
+            requestToken = ((JArray)requestToken).First();
+            contractToken = ((JArray)contractToken).First();
         }
 
-        return propertyNames;
+        if (requestToken.Type != JTokenType.Object || contractToken.Type != JTokenType.Object)
+            return missingProperties;
+
+        foreach (JProperty requestProperty in ((JObject)requestToken).Properties())
+        {
+            var propertyName = requestProperty.Name;
+            var childToken1 = requestProperty.Value;
+
+            if (oneOfProperties.Any(oneOf => propertyName.Equals(oneOf, StringComparison.OrdinalIgnoreCase) ||
+                                             propertyName.StartsWith($"{oneOf}.", StringComparison.OrdinalIgnoreCase) ||
+                                             propertyName.Contains($".{oneOf}.", StringComparison.OrdinalIgnoreCase)))
+            {
+                continue;
+            }
+
+            var property2 = ((JObject)contractToken).Property(propertyName, StringComparison.OrdinalIgnoreCase);
+            if (property2 == null)
+            {
+                missingProperties.Add(propertyName);
+            }
+            else
+            {
+                var childToken2 = property2.Value;
+                if (childToken1.Type == JTokenType.Object && childToken2.Type == JTokenType.Object)
+                {
+                    missingProperties.AddRange(GetMissingProperties(childToken1, childToken2, oneOfProperties).Select(childProperty => propertyName + "." + childProperty));
+                }
+            }
+        }
+
+        return missingProperties;
     }
 
     private class ExcludeOneOfContractResolver : DefaultContractResolver
