@@ -52,21 +52,19 @@ internal sealed class SaveRequestValidator
                         .NotEmpty()
                         .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
-                    x.RuleFor(x => x.Customers)
-                        .NotEmpty()
-                        .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
+                    x.When(x => x.Customers != null, () => {
+                        x.RuleForEach(x => x.Customers)
+                            .ChildRules(x2 =>
+                            {
+                                x2.RuleFor(x2 => x2.CustomerRoleId)
+                                    .NotEmpty()
+                                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
 
-                    x.RuleForEach(x => x.Customers)
-                        .ChildRules(x2 =>
-                        {
-                            x2.RuleFor(x2 => x2.CustomerRoleId)
-                                .NotEmpty()
-                                .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
-
-                            x2.RuleFor(x2 => x2.CustomerId)
-                                .NotEmpty()
-                                .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
-                        });
+                                x2.RuleFor(x2 => x2.CustomerId)
+                                    .NotEmpty()
+                                    .WithErrorCode(ErrorCodeMapper.GeneralValidationError);
+                            });
+                    });                    
 
                     x.When(x => x.BankAccount != null, () =>
                     {
