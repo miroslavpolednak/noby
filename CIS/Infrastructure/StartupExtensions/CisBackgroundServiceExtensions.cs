@@ -9,8 +9,10 @@ public static class CisBackgroundServiceExtensions
     /// </summary>
     /// <typeparam name="TBackgroundService">Typ background service jobu, ktery konfiguraci vyzaduje</typeparam>
     /// <typeparam name="TConfiguration">Typ konfigurace</typeparam>
+    /// <param name="validateConfiguration">Validacni funkce, ktera se zavola po nacteni konfigurace. V pripade chybne konfigurace by se uvnitr akce mela vyhazovat vyjimka CisConfigurationException.</param>
+    /// <exception cref="Core.Exceptions.CisConfigurationException">Vyjimku vraci funkce validateConfiguration pokud neni spravne nastavena konfigurace jobu.</exception>
     /// <exception cref="Core.Exceptions.CisConfigurationNotFound"></exception>
-    public static WebApplicationBuilder AddCisBackgroundServiceCustomConfiguration<TBackgroundService, TConfiguration>(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddCisBackgroundServiceCustomConfiguration<TBackgroundService, TConfiguration>(this WebApplicationBuilder builder, Action<TConfiguration>? validateConfiguration = null)
         where TBackgroundService : class, ICisBackgroundServiceJob
         where TConfiguration : class, new()
     {
@@ -23,6 +25,12 @@ public static class CisBackgroundServiceExtensions
             ?? throw new Core.Exceptions.CisConfigurationNotFound(sectionName);
 
         builder.Services.AddSingleton(configuration);
+
+        // validate configuration if requested
+        if (validateConfiguration != null)
+        {
+            validateConfiguration(configuration);
+        }
 
         return builder;
     }

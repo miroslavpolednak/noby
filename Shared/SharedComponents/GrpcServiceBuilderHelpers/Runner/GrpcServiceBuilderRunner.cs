@@ -189,7 +189,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
                 Type = SecuritySchemeType.Http,
                 Scheme = "basic",
                 In = ParameterLocation.Header,
-                Description = "Basic Authorization header"
+                Description = "Service user login"
             });
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -206,6 +206,15 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
                         Array.Empty<string>()
                 }
             });
+
+            c.SupportNonNullableReferenceTypes();
+            c.UseAllOfToExtendReferenceSchemas();
+            c.DescribeAllParametersInCamelCase();
+            c.UseInlineDefinitionsForEnums();
+            c.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
+            //c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
+
+            c.MapType<decimal>(() => new OpenApiSchema { Type = "number", Format = "decimal" });
         });
     }
 
@@ -217,6 +226,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint($"/swagger/{_settings.TranscodingOptions!.OpenApiVersion}/swagger.json", _settings.TranscodingOptions!.OpenApiEndpointVersion);
+                c.DisplayOperationId();
             });
         }
     }
