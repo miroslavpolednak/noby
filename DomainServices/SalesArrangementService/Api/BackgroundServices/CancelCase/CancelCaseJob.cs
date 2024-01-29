@@ -38,14 +38,16 @@ WHERE
 				{
 					await _caseServiceClient.CancelCase(caseId, false, cancellationToken);
 				}
-	        }
+
+				_logger.CancelCaseJobFinished(caseId);
+            }
 			catch (Exception e)
 			{
                 _logger.CancelCaseJobFailed(caseId, e.Message, e);
             }
         }
     }
-    
+
     private readonly SalesArrangementServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly ILogger<CancelCaseJob> _logger;

@@ -17,9 +17,11 @@ public static class CisBackgroundServiceExtensions
         where TBackgroundService : class, ICisBackgroundServiceJob
         where TConfiguration : class, new()
     {
-        addServiceAndWorker<TBackgroundService>(builder);
-        addCustomConfiguration<TBackgroundService, TConfiguration>(builder, validator);
-
+        if (addServiceAndWorker<TBackgroundService>(builder))
+        {
+            addCustomConfiguration<TBackgroundService, TConfiguration>(builder, validator);
+        }
+        
         return builder;
     }
 
@@ -64,7 +66,7 @@ public static class CisBackgroundServiceExtensions
         });
     }
 
-    private static void addServiceAndWorker<TBackgroundService>(WebApplicationBuilder builder)
+    private static bool addServiceAndWorker<TBackgroundService>(WebApplicationBuilder builder)
        where TBackgroundService : class, ICisBackgroundServiceJob
     {
         // nacist konfiguraci sluzby
@@ -75,13 +77,22 @@ public static class CisBackgroundServiceExtensions
                 .Get<CisBackgroundServiceConfiguration<TBackgroundService>>()
             ?? throw new Core.Exceptions.CisConfigurationNotFound(sectionName);
 
-        // ulozit konfiguraci sluzby do DI
-        builder.Services.AddSingleton<ICisBackgroundServiceConfiguration<TBackgroundService>>(configuration);
+        if (!configuration.Disabled)
+        {
+            // ulozit konfiguraci sluzby do DI
+            builder.Services.AddSingleton<ICisBackgroundServiceConfiguration<TBackgroundService>>(configuration);
 
-        // pridat worker
-        builder.Services.AddScoped<TBackgroundService>();
-        // pridat ihostedservice
-        builder.Services.AddHostedService<CisBackgroundService<TBackgroundService>>();
+            // pridat worker
+            builder.Services.AddScoped<TBackgroundService>();
+            // pridat ihostedservice
+            builder.Services.AddHostedService<CisBackgroundService<TBackgroundService>>();
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /// <summary>

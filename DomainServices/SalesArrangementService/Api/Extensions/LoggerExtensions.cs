@@ -7,6 +7,9 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, int, int, Exception> _updateStateStarted;
     private static readonly Action<ILogger, int, Exception> _deleteServiceSalesArrangements;
     private static readonly Action<ILogger, long, string, Exception> _cancelCaseJobFailed;
+    private static readonly Action<ILogger, long, Exception> _cancelCaseJobFinished;
+    private static readonly Action<ILogger, long, int, Exception> _offerGuaranteeDateToCheckJobCancelTask;
+    private static readonly Action<ILogger, int, Exception> _offerGuaranteeDateToCheckJobFinished;
 
     static LoggerExtensions()
     {
@@ -34,6 +37,21 @@ internal static class LoggerExtensions
             LogLevel.Warning,
             new EventId(LoggerEventIdCodes.CancelCaseJobFailed, nameof(CancelCaseJobFailed)),
             "CancelCase job failed for CaseId '{CaseId}': {Message}");
+
+        _cancelCaseJobFinished = LoggerMessage.Define<long>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.CancelCaseJobFinished, nameof(CancelCaseJobFinished)),
+            "CancelCase job finished for CaseId '{CaseId}'");
+
+        _offerGuaranteeDateToCheckJobCancelTask = LoggerMessage.Define<long, int>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.OfferGuaranteeDateToCheckJobCancelTask, nameof(OfferGuaranteeDateToCheckJobCancelTask)),
+            "OfferGuaranteeDateToCheckJob is cancelled task for case {CaseId} with SB ID {TaskSbId}");
+
+        _offerGuaranteeDateToCheckJobFinished = LoggerMessage.Define<int>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.OfferGuaranteeDateToCheckJobCancelTask, nameof(OfferGuaranteeDateToCheckJobFinished)),
+            "OfferGuaranteeDateToCheckJob set switch 1 to false on SalesArrangement {SalesArrangementId}");
     }
 
     public static void CreateSalesArrangementStarted(this ILogger logger, int salesArrangementTypeId, long caseId, int? offerId)
@@ -50,4 +68,13 @@ internal static class LoggerExtensions
 
     public static void CancelCaseJobFailed(this ILogger logger, long caseId, string message, Exception ex)
         => _cancelCaseJobFailed(logger, caseId, message, ex);
+
+    public static void CancelCaseJobFinished(this ILogger logger, long caseId)
+        => _cancelCaseJobFinished(logger, caseId, null!);
+
+    public static void OfferGuaranteeDateToCheckJobCancelTask(this ILogger logger, long caseId, int taskSbId)
+        => _offerGuaranteeDateToCheckJobCancelTask(logger, caseId, taskSbId, null!);
+
+    public static void OfferGuaranteeDateToCheckJobFinished(this ILogger logger, int salesArrangementId)
+        => _offerGuaranteeDateToCheckJobFinished(logger, salesArrangementId, null!);
 }
