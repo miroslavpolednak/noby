@@ -59,7 +59,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Endpoints\v2\SendSms\" />
+    <Folder Include="Validators\" />
   </ItemGroup>
   
 </Project>

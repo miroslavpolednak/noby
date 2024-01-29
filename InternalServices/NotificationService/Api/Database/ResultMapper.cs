@@ -1,12 +1,13 @@
 ﻿using CIS.InternalServices.NotificationService.LegacyContracts.Common;
 using Entity = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using Dto = CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
+using CIS.InternalServices.NotificationService.Api.Database.Entities;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Mappers;
+namespace CIS.InternalServices.NotificationService.Api.Database;
 
 public static class ResultMapper
 {
-    public static IEnumerable<Dto.Result> Map(this IEnumerable<Entity.Abstraction.Result> results)
+    public static IEnumerable<Dto.Result> Map(this IEnumerable<Result> results)
     {
         return results.Select(r => r.ToDto());
     }
@@ -22,8 +23,8 @@ public static class ResultMapper
         return string.IsNullOrEmpty(hash) && string.IsNullOrEmpty(hashAlgorithm)
             ? null : new DocumentHash { Hash = hash ?? string.Empty, HashAlgorithm = hashAlgorithm ?? string.Empty };
     }
-    
-    public static Dto.Result Map(this Entity.SmsResult smsResult)
+
+    public static Dto.Result Map(this SmsResult smsResult)
     {
         return new Dto.Result
         {
@@ -54,7 +55,7 @@ public static class ResultMapper
         };
     }
 
-    public static Dto.Result Map(this Entity.EmailResult emailResult)
+    public static Dto.Result Map(this EmailResult emailResult)
     {
         return new Dto.Result
         {

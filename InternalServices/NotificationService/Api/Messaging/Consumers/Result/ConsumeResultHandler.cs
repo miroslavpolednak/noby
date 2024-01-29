@@ -1,8 +1,8 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Database.Entities;
+using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using DomainServices.CodebookService.Clients;
 using MediatR;

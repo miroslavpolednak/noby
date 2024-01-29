@@ -1,12 +1,12 @@
-﻿using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
+﻿using CIS.InternalServices.NotificationService.Api.Database.Entities;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+namespace CIS.InternalServices.NotificationService.Api.Legacy;
 
 public interface INotificationRepository
 {
-    Entities.EmailResult NewEmailResult();
+    EmailResult NewEmailResult();
 
-    Entities.SmsResult NewSmsResult();
+    SmsResult NewSmsResult();
 
     Task AddResult(Result result, CancellationToken token = default);
 

@@ -2,6 +2,7 @@
 package CIS.InternalServices.NotificationService.v2;
 option csharp_namespace = "CIS.InternalServices.NotificationService.Contracts.v2";
 
+import "UserIdentity.proto";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -26,30 +27,26 @@ enum NotificationChannels
 message DocumentHash
 {
     string Hash = 1;
-    string HashAlgorithm = 2;
-}
+    HashAlgorithms HashAlgorithm = 2;
 
-message Identifier
-{
-    string Identity = 1;
-    string IdentityScheme = 2;
+    enum HashAlgorithms {
+        Unknown = 0;
+        SHA256 = 1;
+        SHA384 = 2;
+        SHA512 = 3;
+        SHA3 = 4;
+    }
 }
 
 message SmsData {
 	string PhoneNumber = 1;
     google.protobuf.Int32Value ProcessingPriority = 2;
     string Type = 3;
-    Identifier Identifier = 4;
+    cis.types.UserIdentity Identifier = 4;
     google.protobuf.Int64Value CaseId = 5;
     google.protobuf.StringValue CustomId = 6;
     google.protobuf.StringValue DocumentId = 7;
     DocumentHash DocumentHash = 8;
-}
-
-message StringKeyValuePair
-{
-    string Key = 1;
-    string Value = 2;
 }
 
 message EmailAddress
@@ -104,7 +101,7 @@ message ResultData
     NotificationStates State = 2;
     NotificationChannels Channel = 3;
     repeated ResultError Errors = 4;
-    Identifier Identifier = 5;
+    cis.types.UserIdentity Identifier = 5;
     google.protobuf.Int64Value CaseId = 6;
     google.protobuf.StringValue CustomId = 7;
     google.protobuf.StringValue DocumentId = 8;

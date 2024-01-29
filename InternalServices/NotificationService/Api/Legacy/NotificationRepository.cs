@@ -1,10 +1,11 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Database;
+using CIS.InternalServices.NotificationService.Api.Database.Entities;
 using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
-using Result = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction.Result;
+using Result = CIS.InternalServices.NotificationService.Api.Database.Entities.Result;
 
-namespace CIS.InternalServices.NotificationService.Api.Services.Repositories;
+namespace CIS.InternalServices.NotificationService.Api.Legacy;
 
 public class NotificationRepository : INotificationRepository
 {
@@ -14,17 +15,17 @@ public class NotificationRepository : INotificationRepository
     {
         _dbContext = dbContext;
     }
-    
-    public Entities.EmailResult NewEmailResult() => new ()
+
+    public EmailResult NewEmailResult() => new()
     {
         Id = Guid.NewGuid(),
-        Channel = NotificationChannel.Email, 
+        Channel = NotificationChannel.Email,
         State = NotificationState.InProgress,
         ResultTimestamp = null,
         ErrorSet = new HashSet<ResultError>(),
     };
 
-    public Entities.SmsResult NewSmsResult() => new()
+    public SmsResult NewSmsResult() => new()
     {
         Id = Guid.NewGuid(),
         Channel = NotificationChannel.Sms,
@@ -37,7 +38,7 @@ public class NotificationRepository : INotificationRepository
     {
         await _dbContext.AddAsync(result, token);
     }
-    
+
     public async Task<Result> GetResult(Guid id, CancellationToken token = default)
     {
         return await _dbContext.Results.FindAsync(new object?[] { id }, token)
@@ -59,7 +60,7 @@ public class NotificationRepository : INotificationRepository
     {
         _dbContext.Remove(result);
     }
-    
+
     public async Task<int> SaveChanges(CancellationToken token = default)
     {
         return await _dbContext.SaveChangesAsync(token);

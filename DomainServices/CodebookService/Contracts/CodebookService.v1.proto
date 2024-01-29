@@ -225,12 +225,6 @@ service CodebookService {
 		};
    }
 
-   rpc HashAlgorithms (google.protobuf.Empty) returns (HashAlgorithmsResponse) {
-	   option (google.api.http) = {
-			get: "/v1/hash-algorithms"
-		};
-   }
-
    rpc HouseholdTypes (google.protobuf.Empty) returns (HouseholdTypesResponse) {
 	   option (google.api.http) = {
 			get: "/v1/household-types"

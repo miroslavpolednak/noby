@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
+﻿namespace CIS.InternalServices.NotificationService.Api.Database.DocumentDataEntities;
 
 public class SendEmail
     : SharedComponents.DocumentDataStorage.IDocumentData

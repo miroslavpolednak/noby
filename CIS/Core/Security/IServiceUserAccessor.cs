@@ -14,4 +14,9 @@ public interface IServiceUserAccessor
     /// Instance technickeho uzivatele
     /// </summary>
     IServiceUser? User { get; }
+
+    /// <summary>
+    /// True pokud ma user nastavenou danou roli
+    /// </summary>
+    bool IsInRole(in string roleName);
 }

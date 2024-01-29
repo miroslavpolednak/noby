@@ -1,10 +1,11 @@
 ﻿using AutoFixture;
 using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Database;
+using CIS.InternalServices.NotificationService.Api.Database.Entities;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using Moq;
-using Result = CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction.Result;
+using Result = CIS.InternalServices.NotificationService.Api.Database.Entities.Result;
 
 namespace CIS.InternalServices.NotificationService.Api.Tests.Mocks;
 

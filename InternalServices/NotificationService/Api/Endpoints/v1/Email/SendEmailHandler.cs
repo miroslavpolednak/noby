@@ -1,10 +1,10 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Configuration;
+using CIS.InternalServices.NotificationService.Api.Database.DocumentDataEntities;
+using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Email;

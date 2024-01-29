@@ -1,12 +1,12 @@
 ﻿using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
 using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.DocumentDataStorage;
 using System.Net.Security;
 using CIS.Core;
 using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Database;
+using CIS.InternalServices.NotificationService.Api.Database.DocumentDataEntities;
 
 namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 

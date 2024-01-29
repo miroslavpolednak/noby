@@ -31,7 +31,6 @@ public partial class FixedRatePeriodsResponse : IItemsResponse<FixedRatePeriodsR
 public partial class FormTypesResponse : IItemsResponse<FormTypesResponse.Types.FormTypeItem> { }
 public partial class GendersResponse : IItemsResponse<GendersResponse.Types.GenderItem> { }
 public partial class GetGeneralDocumentListResponse : IItemsResponse<GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem> { }
-public partial class HashAlgorithmsResponse : IItemsResponse<HashAlgorithmsResponse.Types.HashAlgorithmItem> { }
 public partial class HouseholdTypesResponse : IItemsResponse<HouseholdTypesResponse.Types.HouseholdTypeItem> { }
 public partial class HousingConditionsResponse : IItemsResponse<HousingConditionsResponse.Types.HousingConditionItem> { }
 public partial class ChannelsResponse : IItemsResponse<ChannelsResponse.Types.ChannelItem> { }

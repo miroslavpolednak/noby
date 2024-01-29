@@ -1,17 +1,17 @@
 using CIS.Infrastructure.StartupExtensions;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices.NotificationService.Api;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging;
 using CIS.InternalServices.NotificationService.Api.Services.User;
 using SharedComponents.DocumentDataStorage;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using SharedComponents.Storage;
 using CIS.InternalServices.NotificationService.Api.Legacy.ErrorHandling;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
+using CIS.InternalServices.NotificationService.Api.Database;
+using CIS.InternalServices.NotificationService.Api.Legacy;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -36,6 +36,7 @@ SharedComponents.GrpcServiceBuilder
             .AddStorageClient<IEmailAttachmentStorage>();
 
         // Mvc
+        #region legacy code
         builder.Services
             .AddHsts(options =>
             {
@@ -48,6 +49,7 @@ SharedComponents.GrpcServiceBuilder
                 options.SuppressMapClientErrors = true;
                 options.AddCustomInvalidModelStateResponseFactory();
             });
+        #endregion legacy code
 
         // audit logger
         builder.Services

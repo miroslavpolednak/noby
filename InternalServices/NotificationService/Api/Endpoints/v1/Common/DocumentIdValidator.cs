@@ -1,7 +1,7 @@
 ﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
 using FluentValidation;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Common;
+namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Common;
 
 public class DocumentIdValidator : AbstractValidator<string>
 {

@@ -1,6 +1,6 @@
 ﻿
 using CIS.Core;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
+using CIS.InternalServices.NotificationService.Api.Database;
 using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
 

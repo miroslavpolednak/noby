@@ -1,5 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
+﻿using CIS.InternalServices.NotificationService.Api.Database;
+using CIS.InternalServices.NotificationService.Api.Database.Entities;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Statistics;
 using MediatR;

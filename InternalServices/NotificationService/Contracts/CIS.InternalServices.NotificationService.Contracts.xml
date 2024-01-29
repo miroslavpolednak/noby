@@ -172,11 +172,8 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.DocumentHash.HashAlgorithmFieldNumber">
             <summary>Field number for the "HashAlgorithm" field.</summary>
         </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.Identifier.IdentityFieldNumber">
-            <summary>Field number for the "Identity" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.Identifier.IdentitySchemeFieldNumber">
-            <summary>Field number for the "IdentityScheme" field.</summary>
+        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.DocumentHash.Types">
+            <summary>Container for nested types declared in the DocumentHash message type.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SmsData.PhoneNumberFieldNumber">
             <summary>Field number for the "PhoneNumber" field.</summary>
@@ -201,12 +198,6 @@
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SmsData.DocumentHashFieldNumber">
             <summary>Field number for the "DocumentHash" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.StringKeyValuePair.KeyFieldNumber">
-            <summary>Field number for the "Key" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.StringKeyValuePair.ValueFieldNumber">
-            <summary>Field number for the "Value" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.ValueFieldNumber">
             <summary>Field number for the "Value" field.</summary>

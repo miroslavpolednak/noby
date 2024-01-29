@@ -1,10 +1,11 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Database;
 using CIS.InternalServices.NotificationService.Api.Helpers;
+using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
 using DomainServices.CodebookService.Clients;

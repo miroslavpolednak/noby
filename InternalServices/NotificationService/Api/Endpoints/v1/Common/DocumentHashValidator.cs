@@ -2,7 +2,7 @@
 using CIS.InternalServices.NotificationService.LegacyContracts.Common;
 using FluentValidation;
 
-namespace CIS.InternalServices.NotificationService.Api.Endpoints.Common;
+namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Common;
 
 public class DocumentHashValidator : AbstractValidator<DocumentHash>
 {

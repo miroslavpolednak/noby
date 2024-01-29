@@ -8,6 +8,7 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2;
 internal sealed class NotificationServiceV2
     : Contracts.v2.NotificationService.NotificationServiceBase
 {
+    [Authorize(Roles = UserRoles.SendSms)]
     public override async Task<NotificationIdResponse> SendSms(SendSmsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 

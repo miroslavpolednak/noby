@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
+using CIS.InternalServices.NotificationService.Api.Database;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Resend;
 using MediatR;
