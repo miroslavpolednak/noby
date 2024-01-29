@@ -14,7 +14,7 @@ internal static class BackgroundServiceLogExtensions
         _backgroundServiceExecutionError = LoggerMessage.Define<string, int>(
             LogLevel.Error,
             new EventId(701, nameof(BackgroundServiceExecutionError)),
-            "An error occurred in background service '{BackgroundServiceName}' iteration {Iteration}.");
+            "Background service '{BackgroundServiceName}' iteration {Iteration}: An error occurred in background service.");
 
         _backgroundServiceRegistered = LoggerMessage.Define<string, string>(
             LogLevel.Information,
@@ -29,17 +29,17 @@ internal static class BackgroundServiceLogExtensions
         _parallelJobTerminated = LoggerMessage.Define<string, int>(
             LogLevel.Information,
             new EventId(704, nameof(ParallelJobTerminated)),
-            "Job '{BackgroundServiceName}' iteration {Iteration} lock have been already acquired, parallel job gonna be terminated, or database for locking is unreachable");
+            "Background service '{BackgroundServiceName}' iteration {Iteration} lock have been already acquired, parallel job gonna be terminated, or database for locking is unreachable");
 
         _backgroundServiceTaskStarted = LoggerMessage.Define<string, int>(
             LogLevel.Information,
             new EventId(705, nameof(BackgroundServiceTaskStarted)),
-            "Job '{BackgroundServiceName}' iteration {Iteration} started");
+            "Background service '{BackgroundServiceName}' iteration {Iteration} started");
 
         _backgroundServiceTaskFinished = LoggerMessage.Define<string, int>(
             LogLevel.Information,
             new EventId(706, nameof(BackgroundServiceTaskFinished)),
-            "Job '{BackgroundServiceName}' iteration {Iteration} finished");
+            "Background service '{BackgroundServiceName}' iteration {Iteration} finished");
     }
 
     public static void BackgroundServiceNextRun(this ILogger logger, in string backgroundServiceName, DateTime nextRun)
