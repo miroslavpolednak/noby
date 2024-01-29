@@ -59,4 +59,8 @@
     <None Include="Messaging\AvroSchemas\Mpss\SendEmail.json" />
   </ItemGroup>
   
+  <ItemGroup>
+    <Folder Include="Endpoints\v2\SendSms\" />
+  </ItemGroup>
+  
 </Project>

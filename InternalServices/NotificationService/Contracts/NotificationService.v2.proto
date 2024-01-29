@@ -1,13 +1,11 @@
 ﻿syntax = "proto3";
 package CIS.InternalServices.NotificationService.v2;
-option csharp_namespace = "CIS.InternalServices.NotificationService.v2";
+option csharp_namespace = "CIS.InternalServices.NotificationService.Contracts.v2";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "Messages/SendSms.proto";
-import "Messages/SendSmsFromTemplate.proto";
 import "Messages/SendEmail.proto";
-import "Messages/SendEmailFromTemplate.proto";
 import "Messages/SearchResults.proto";
 import "Messages/GetResult.proto";
 import "Messages/GetStatistics.proto";
@@ -23,21 +21,9 @@ service NotificationService {
 	   };
    }
 
-   rpc SendSmsFromTemplate(SendSmsFromTemplateRequest) returns (NotificationIdResponse) {
-	   option (google.api.http) = {
-			post: "/v2/templated-sms"
-	   };
-   }
-
    rpc SendEmail(SendEmailRequest) returns (NotificationIdResponse) {
 	   option (google.api.http) = {
 			post: "/v2/email"
-	   };
-   }
-
-   rpc SendEmailFromTemplate(SendEmailFromTemplateRequest) returns (NotificationIdResponse) {
-	   option (google.api.http) = {
-			post: "/v2/templated-email"
 	   };
    }
 

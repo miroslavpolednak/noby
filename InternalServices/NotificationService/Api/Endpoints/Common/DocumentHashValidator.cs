@@ -10,12 +10,12 @@ public class DocumentHashValidator : AbstractValidator<DocumentHash>
     {
         RuleFor(request => request.Hash)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.HashRequired)
+                .WithErrorCode(ErrorCodeMapper.HashRequired)
             .Matches("^([A-Fa-f0-9]{0,1024})$")
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.HashInvalid);
+                .WithErrorCode(ErrorCodeMapper.HashInvalid);
 
         RuleFor(request => request.HashAlgorithm)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.HashAlgorithmRequired);
+                .WithErrorCode(ErrorCodeMapper.HashAlgorithmRequired);
     }
 }

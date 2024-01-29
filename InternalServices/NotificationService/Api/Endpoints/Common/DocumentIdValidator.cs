@@ -9,6 +9,6 @@ public class DocumentIdValidator : AbstractValidator<string>
     {
         RuleFor(documentId => documentId)
             .Matches("^([A-Za-z0-9-_]{0,450})$")
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+                .WithErrorCode(ErrorCodeMapper.DocumentIdInvalid);
     }
 }

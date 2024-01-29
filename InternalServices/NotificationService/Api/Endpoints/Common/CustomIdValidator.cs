@@ -9,6 +9,6 @@ public class CustomIdValidator : AbstractValidator<string>
     {
         RuleFor(customId => customId)
             .Matches("^([A-Za-z0-9-_]{0,450})$")
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
+                .WithErrorCode(ErrorCodeMapper.CustomIdInvalid);
     }
 }

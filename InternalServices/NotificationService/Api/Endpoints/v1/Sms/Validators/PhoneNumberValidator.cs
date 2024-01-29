@@ -10,8 +10,8 @@ public class PhoneNumberValidator : AbstractValidator<string>
     {
         RuleFor(phoneNumber => phoneNumber.ParsePhone())
             .NotNull()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.PhoneInvalid)
+                .WithErrorCode(ErrorCodeMapper.PhoneInvalid)
             .SetValidator(new PhoneValidator())
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.PhoneInvalid);
+                .WithErrorCode(ErrorCodeMapper.PhoneInvalid);
     }
 }

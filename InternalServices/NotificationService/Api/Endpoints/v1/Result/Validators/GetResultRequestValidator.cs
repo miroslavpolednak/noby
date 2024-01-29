@@ -10,6 +10,6 @@ public class GetResultRequestValidator : AbstractValidator<GetResultRequest>
     {
         RuleFor(request => request.NotificationId)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.NotificationIdRequired);
+                .WithErrorCode(ErrorCodeMapper.NotificationIdRequired);
     }
 }

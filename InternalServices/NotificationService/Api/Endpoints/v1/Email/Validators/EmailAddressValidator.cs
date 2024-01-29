@@ -10,15 +10,15 @@ public class EmailAddressValidator : AbstractValidator<EmailAddress>
     {
         RuleFor(emailAddress => emailAddress.Value)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.ValueRequired)
+                .WithErrorCode(ErrorCodeMapper.ValueRequired)
             .EmailAddress()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.ValueInvalid);
+                .WithErrorCode(ErrorCodeMapper.ValueInvalid);
 
         When(emailAddress => emailAddress.Party is not null, () =>
         {
             RuleFor(emailAddress => emailAddress.Party!)
                 .SetValidator(new PartyValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.PartyInvalid);
+                    .WithErrorCode(ErrorCodeMapper.PartyInvalid);
         });
     }
 }

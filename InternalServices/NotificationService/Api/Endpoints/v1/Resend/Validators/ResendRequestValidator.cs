@@ -11,6 +11,6 @@ public class ResendRequestValidator
     {
         RuleFor(request => request.NotificationId)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.NotificationIdRequired);
+                .WithErrorCode(ErrorCodeMapper.NotificationIdRequired);
     }
 }

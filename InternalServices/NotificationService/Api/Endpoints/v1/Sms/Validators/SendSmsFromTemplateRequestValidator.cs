@@ -11,26 +11,26 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
     {
         RuleFor(request => request.PhoneNumber)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplatePhoneNumberRequired)
+                .WithErrorCode(ErrorCodeMapper.SmsTemplatePhoneNumberRequired)
             .SetValidator(new PhoneNumberValidator())
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplatePhoneNumberInvalid);
+                .WithErrorCode(ErrorCodeMapper.SmsTemplatePhoneNumberInvalid);
         
         RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplateProcessPriorityInvalid);
+                .WithErrorCode(ErrorCodeMapper.SmsTemplateProcessPriorityInvalid);
         
         RuleFor(request => request.Type)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplateTypeInvalid);
+                .WithErrorCode(ErrorCodeMapper.SmsTemplateTypeInvalid);
 
         RuleFor(request => request.Placeholders)
             .NotNull()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplatePlaceholdersRequired)
+                .WithErrorCode(ErrorCodeMapper.SmsTemplatePlaceholdersRequired)
             .Must(placeholders =>
             {
                 return placeholders.Select(p => p.Value).All(p => p.Length > 0);
             })
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplatePlaceholdersInvalid)
+                .WithErrorCode(ErrorCodeMapper.SmsTemplatePlaceholdersInvalid)
             .Must(placeholders =>
             {
                 var totalCount = placeholders.Count;
@@ -38,41 +38,41 @@ public class SendSmsFromTemplateRequestValidator : AbstractValidator<SendSmsFrom
 
                 return totalCount == uniqueCount;
             })
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTemplatePlaceholdersInvalid);
+                .WithErrorCode(ErrorCodeMapper.SmsTemplatePlaceholdersInvalid);
 
         When(request => request.Identifier is not null, () =>
         {
             RuleFor(request => request.Identifier!)
                 .SetValidator(new IdentifierValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentifierInvalid);
+                    .WithErrorCode(ErrorCodeMapper.IdentifierInvalid);
         });
         
         When(request => request.CaseId.HasValue, () =>
         {
             RuleFor(request => request.CaseId!.Value)
                 .GreaterThan(0)
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CaseIdInvalid);
+                    .WithErrorCode(ErrorCodeMapper.CaseIdInvalid);
         });
         
         When(request => request.CustomId is not null, () =>
         {
             RuleFor(request => request.CustomId!)
                 .SetValidator(new CustomIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
+                    .WithErrorCode(ErrorCodeMapper.CustomIdInvalid);
         });
         
         When(request => request.DocumentId is not null, () =>
         {
             RuleFor(request => request.DocumentId!)
                 .SetValidator(new DocumentIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+                    .WithErrorCode(ErrorCodeMapper.DocumentIdInvalid);
         });
         
         When(request => request.DocumentHash is not null, () =>
         {
             RuleFor(request => request.DocumentHash!)
                 .SetValidator(new DocumentHashValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentHashInvalid);
+                    .WithErrorCode(ErrorCodeMapper.DocumentHashInvalid);
         });
     }
 }

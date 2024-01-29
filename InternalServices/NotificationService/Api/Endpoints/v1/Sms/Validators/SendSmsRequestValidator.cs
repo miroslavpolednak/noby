@@ -11,57 +11,57 @@ public class SendSmsRequestValidator : AbstractValidator<SendSmsRequest>
     {
         RuleFor(request => request.PhoneNumber)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsPhoneNumberRequired)
+                .WithErrorCode(ErrorCodeMapper.SmsPhoneNumberRequired)
             .SetValidator(new PhoneNumberValidator())
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsPhoneNumberInvalid);
+                .WithErrorCode(ErrorCodeMapper.SmsPhoneNumberInvalid);
 
         RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsProcessPriorityInvalid);
+                .WithErrorCode(ErrorCodeMapper.SmsProcessPriorityInvalid);
 
         RuleFor(request => request.Type)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTypeInvalid);
+                .WithErrorCode(ErrorCodeMapper.SmsTypeInvalid);
 
         RuleFor(request => request.Text)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTextRequired)
+                .WithErrorCode(ErrorCodeMapper.SmsTextRequired)
             .MaximumLength(480)
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SmsTextLengthLimitExceeded);
+                .WithErrorCode(ErrorCodeMapper.SmsTextLengthLimitExceeded);
 
         When(request => request.Identifier is not null, () =>
         {
             RuleFor(request => request.Identifier!)
                 .SetValidator(new IdentifierValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentifierInvalid);
+                    .WithErrorCode(ErrorCodeMapper.IdentifierInvalid);
         });
         
         When(request => request.CaseId.HasValue, () =>
         {
             RuleFor(request => request.CaseId!.Value)
                 .GreaterThan(0)
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CaseIdInvalid);
+                    .WithErrorCode(ErrorCodeMapper.CaseIdInvalid);
         });
         
         When(request => request.CustomId is not null, () =>
         {
             RuleFor(request => request.CustomId!)
                 .SetValidator(new CustomIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
+                    .WithErrorCode(ErrorCodeMapper.CustomIdInvalid);
         });
         
         When(request => request.DocumentId is not null, () =>
         {
             RuleFor(request => request.DocumentId!)
                 .SetValidator(new DocumentIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+                    .WithErrorCode(ErrorCodeMapper.DocumentIdInvalid);
         });
         
         When(request => request.DocumentHash is not null, () =>
         {
             RuleFor(request => request.DocumentHash!)
                 .SetValidator(new DocumentHashValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentHashInvalid);
+                    .WithErrorCode(ErrorCodeMapper.DocumentHashInvalid);
         });
     }    
 }

@@ -10,8 +10,8 @@ public class LegalPersonValidator : AbstractValidator<LegalPerson>
     {
         RuleFor(person => person.Name)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.NameRequired)
+                .WithErrorCode(ErrorCodeMapper.NameRequired)
             .MaximumLength(255)
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.NameLengthLimitExceeded);
+                .WithErrorCode(ErrorCodeMapper.NameLengthLimitExceeded);
     }
 }

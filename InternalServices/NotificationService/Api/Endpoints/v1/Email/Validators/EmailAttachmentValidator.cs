@@ -10,14 +10,14 @@ public class EmailAttachmentValidator : AbstractValidator<EmailAttachment>
     {
         RuleFor(attachment => attachment.Binary)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.BinaryRequired)
+                .WithErrorCode(ErrorCodeMapper.BinaryRequired)
             .Matches("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$")
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.BinaryInvalid);
+                .WithErrorCode(ErrorCodeMapper.BinaryInvalid);
                 
         RuleFor(attachment => attachment.Filename)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FilenameRequired)
+                .WithErrorCode(ErrorCodeMapper.FilenameRequired)
             .MaximumLength(255)
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FilenameLengthLimitExceeded);
+                .WithErrorCode(ErrorCodeMapper.FilenameLengthLimitExceeded);
     }
 }

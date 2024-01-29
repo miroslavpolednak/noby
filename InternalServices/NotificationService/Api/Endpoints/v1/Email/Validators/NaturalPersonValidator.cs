@@ -10,18 +10,18 @@ public class NaturalPersonValidator : AbstractValidator<NaturalPerson>
     {
         RuleFor(person => person.FirstName)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FirstNameRequired)
+                .WithErrorCode(ErrorCodeMapper.FirstNameRequired)
             .MaximumLength(40)
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FirstNameLengthLimitExceeded);
+                .WithErrorCode(ErrorCodeMapper.FirstNameLengthLimitExceeded);
 
         RuleFor(person => person.MiddleName)
             .MaximumLength(40)
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.MiddleNameLengthLimitExceeded);
+                .WithErrorCode(ErrorCodeMapper.MiddleNameLengthLimitExceeded);
 
         RuleFor(person => person.Surname)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SurnameRequired)
+                .WithErrorCode(ErrorCodeMapper.SurnameRequired)
             .MaximumLength(80)
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.SurnameLengthLimitExceeded);
+                .WithErrorCode(ErrorCodeMapper.SurnameLengthLimitExceeded);
     }
 }

@@ -92,7 +92,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not create EmailResult.");
-            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.CreateEmailResultFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorCodeMapper.CreateEmailResultFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
 
         try
@@ -113,7 +113,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
                 catch (Exception e)
                 {
                     _logger.LogError(e, $"Could not upload attachments to S3 bucket {_buckets.Mcs}.");
-                    throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
+                    throw new CisServiceServerErrorException(ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
                 }
 
                 var sendEmail = new McsSendApi.v4.email.SendEmail
@@ -154,7 +154,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
             _logger.LogError(e, "Could not produce message SendEmail to KAFKA or internal documentDataStorage.");
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
-            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendEmailError, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorCodeMapper.ProduceSendEmailError, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
 
         return new SendEmailResponse { NotificationId = result.Id };

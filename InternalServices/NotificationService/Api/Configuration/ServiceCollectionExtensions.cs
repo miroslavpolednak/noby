@@ -4,7 +4,7 @@ using CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpired
 
 namespace CIS.InternalServices.NotificationService.Api.Configuration;
 
-public static class ServiceCollectionExtensions
+internal static class ServiceCollectionExtensions
 {
     public static WebApplicationBuilder Configure(this WebApplicationBuilder builder)
     {

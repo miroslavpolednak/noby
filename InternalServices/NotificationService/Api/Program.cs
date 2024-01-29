@@ -2,7 +2,6 @@ using CIS.Infrastructure.Security;
 using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.InternalServices;
 using CIS.InternalServices.NotificationService.Api;
 using CIS.InternalServices.NotificationService.Api.ErrorHandling;
@@ -20,8 +19,7 @@ using SharedComponents.Storage;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
-    .AddApplicationConfiguration<CIS.InternalServices.NotificationService.Api.Configuration.AppConfiguration>()
-    .AddErrorCodeMapper(CIS.InternalServices.NotificationService.Api.ErrorCodeMapper.Init())
+    .AddErrorCodeMapper(ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
         services
@@ -31,16 +29,16 @@ SharedComponents.GrpcServiceBuilder
     .EnableJsonTranscoding(options =>
     {
         options.OpenApiTitle = "Notification Service API";
-        options
-            .AddOpenApiXmlCommentFromBaseDirectory("CIS.InternalServices.NotificationService.Contracts.xml");
+        options.AddOpenApiXmlCommentFromBaseDirectory("CIS.InternalServices.NotificationService.Contracts.xml");
     })
-    .Build((builder, configuration) =>
+    .Build(builder =>
     {
         // Configuration
         builder.Configure();
 
         // storage
-        builder.AddCisStorageServices()
+        builder
+            .AddCisStorageServices()
             .AddStorageClient<IEmailAttachmentStorage>();
 
         // Mvc
@@ -80,7 +78,7 @@ SharedComponents.GrpcServiceBuilder
     })
     .MapGrpcServices(app =>
     {
-        app.MapGrpcService<DomainServices.UserService.Api.Endpoints.UserService>();
+        app.MapGrpcService<CIS.InternalServices.NotificationService.Api.Endpoints.UserService>();
     })
     .Run();
 
@@ -88,7 +86,7 @@ SharedComponents.GrpcServiceBuilder
    
 
 // swagger
-builder.AddCustomSwagger();
+/*builder.AddCustomSwagger();
 
 
 var app = builder.Build();
@@ -111,7 +109,7 @@ app
     .UseCisServiceUserContext();
 
 //app.MapGrpcService<NotificationService>();
-app.MapControllers();
+app.MapControllers();*/
 
 
 #pragma warning disable CA1050 // Declare types in namespaces

@@ -12,20 +12,20 @@ public class PartyValidator : AbstractValidator<Party>
             .Must(party =>
                 (party.LegalPerson is not null && party.NaturalPerson is null) ||
                 (party.LegalPerson is null && party.NaturalPerson is not null))
-            .WithErrorCode(ErrorHandling.ErrorCodeMapper.EitherLegalOrNaturalPersonRequired);
+            .WithErrorCode(ErrorCodeMapper.EitherLegalOrNaturalPersonRequired);
 
         When(party => party.LegalPerson is not null, () =>
         {
             RuleFor(party => party.LegalPerson!)
                 .SetValidator(new LegalPersonValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.LegalPersonInvalid);
+                    .WithErrorCode(ErrorCodeMapper.LegalPersonInvalid);
         });
 
         When(party => party.NaturalPerson is not null, () =>
         {
             RuleFor(party => party.NaturalPerson!)
                 .SetValidator(new NaturalPersonValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.NaturalPersonInvalid);
+                    .WithErrorCode(ErrorCodeMapper.NaturalPersonInvalid);
         });
     }
 }

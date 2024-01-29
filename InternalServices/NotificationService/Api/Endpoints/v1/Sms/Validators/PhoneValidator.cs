@@ -13,15 +13,15 @@ public class PhoneValidator : AbstractValidator<Phone?>
         {
             RuleFor(phone => phone!.CountryCode)
                 .NotEmpty()
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CountryCodeRequired)
+                    .WithErrorCode(ErrorCodeMapper.CountryCodeRequired)
                 .Matches(new Regex(@"^((\+?[0-9]{1,3})|([0-9]{1,5}))$"))
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CountryCodeInvalid);
+                    .WithErrorCode(ErrorCodeMapper.CountryCodeInvalid);
         
             RuleFor(phone => phone!.NationalNumber)
                 .NotEmpty()
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.NationalNumberRequired)
+                    .WithErrorCode(ErrorCodeMapper.NationalNumberRequired)
                 .Matches(new Regex(@"^[0-9]{1,14}$"))
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.NationalNumberInvalid);
+                    .WithErrorCode(ErrorCodeMapper.NationalNumberInvalid);
         });
     }
 }

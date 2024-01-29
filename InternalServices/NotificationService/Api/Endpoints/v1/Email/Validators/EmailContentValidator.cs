@@ -14,21 +14,21 @@ public class EmailContentValidator : AbstractValidator<EmailContent>
         var formats = options.Value.EmailFormats;
         RuleFor(content => content.Format)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.FormatRequired)
+                .WithErrorCode(ErrorCodeMapper.FormatRequired)
             .Must(format => formats.Contains(format))
-                .WithErrorCode($"{ErrorHandling.ErrorCodeMapper.FormatInvalid}")
+                .WithErrorCode($"{ErrorCodeMapper.FormatInvalid}")
                 .WithMessage($"Allowed values for {nameof(EmailContent.Format)}: {string.Join(", ", formats)}.");
 
         var languageCodes = options.Value.EmailLanguageCodes;
         RuleFor(content => content.Language)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.LanguageRequired)
+                .WithErrorCode(ErrorCodeMapper.LanguageRequired)
             .Must(language => languageCodes.Contains(language))
-                .WithErrorCode($"{ErrorHandling.ErrorCodeMapper.LanguageInvalid}")
+                .WithErrorCode($"{ErrorCodeMapper.LanguageInvalid}")
                 .WithMessage($"Allowed values for {nameof(EmailContent.Language)}: {string.Join(", ", languageCodes)}.");
                 
         RuleFor(content => content.Text)
             .NotEmpty()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.EmailTextRequired);
+                .WithErrorCode(ErrorCodeMapper.EmailTextRequired);
     }
 }

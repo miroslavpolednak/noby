@@ -41,7 +41,7 @@ public class NotificationRepository : INotificationRepository
     public async Task<Result> GetResult(Guid id, CancellationToken token = default)
     {
         return await _dbContext.Results.FindAsync(new object?[] { id }, token)
-               ?? throw new CisNotFoundException(ErrorHandling.ErrorCodeMapper.ResultNotFound, $"Result with id = '{id}' not found.");
+               ?? throw new CisNotFoundException(ErrorCodeMapper.ResultNotFound, $"Result with id = '{id}' not found.");
     }
 
     public async Task<IEnumerable<Result>> SearchResultsBy(string? identity, string? identityScheme, long? caseId, string? customId, string? documentId)

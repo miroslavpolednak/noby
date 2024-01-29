@@ -83,7 +83,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not create SmsResult.");
-            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.CreateSmsResultFailed, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorCodeMapper.CreateSmsResultFailed, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
         }
         
         var consumerId = _userAdapterService.GetConsumerId();
@@ -123,7 +123,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
                 request.DocumentHash?.HashAlgorithm);
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
-            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
         }
 
         return new SendSmsResponse { NotificationId = result.Id };

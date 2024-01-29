@@ -17,11 +17,11 @@ public class SearchResultsRequestValidator : AbstractValidator<SearchResultsRequ
                 !string.IsNullOrEmpty(request.DocumentId) ||
                 !string.IsNullOrEmpty(request.Identity) ||
                 !string.IsNullOrEmpty(request.IdentityScheme))
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.AtLeastOneParameterRequired)
+                .WithErrorCode(ErrorCodeMapper.AtLeastOneParameterRequired)
             .Must(request =>
                 (string.IsNullOrEmpty(request.Identity) && string.IsNullOrEmpty(request.IdentityScheme)) ||
                 (!string.IsNullOrEmpty(request.Identity) && !string.IsNullOrEmpty(request.IdentityScheme)))
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.BothIdentityAndIdentitySchemeRequired);
+                .WithErrorCode(ErrorCodeMapper.BothIdentityAndIdentitySchemeRequired);
         
         When(request => request.Identity is not null && request.IdentityScheme is not null , () =>
         {
@@ -31,28 +31,28 @@ public class SearchResultsRequestValidator : AbstractValidator<SearchResultsRequ
                     IdentityScheme = request.IdentityScheme!
                 })
                 .SetValidator(new IdentifierValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.IdentifierInvalid);
+                    .WithErrorCode(ErrorCodeMapper.IdentifierInvalid);
         });
         
         When(request => request.CaseId.HasValue, () =>
         {
             RuleFor(request => request.CaseId!.Value)
                 .GreaterThan(0)
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CaseIdInvalid);
+                    .WithErrorCode(ErrorCodeMapper.CaseIdInvalid);
         });
         
         When(request => request.CustomId is not null, () =>
         {
             RuleFor(request => request.CustomId!)
                 .SetValidator(new CustomIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.CustomIdInvalid);
+                    .WithErrorCode(ErrorCodeMapper.CustomIdInvalid);
         });
         
         When(request => request.DocumentId is not null, () =>
         {
             RuleFor(request => request.DocumentId!)
                 .SetValidator(new DocumentIdValidator())
-                    .WithErrorCode(ErrorHandling.ErrorCodeMapper.DocumentIdInvalid);
+                    .WithErrorCode(ErrorCodeMapper.DocumentIdInvalid);
         });
     }
 }

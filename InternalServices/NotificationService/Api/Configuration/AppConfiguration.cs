@@ -1,6 +1,6 @@
 ﻿namespace CIS.InternalServices.NotificationService.Api.Configuration;
 
-public class AppConfiguration
+internal sealed class AppConfiguration
 {
     public List<Consumer> Consumers { get; set; } = new();
 
@@ -15,7 +15,7 @@ public class AppConfiguration
     public S3Buckets S3Buckets { get; set; } = null!;
 }
 
-public class Consumer
+internal sealed class Consumer
 {
     public string Username { get; set; } = null!;
 
@@ -32,21 +32,21 @@ public class Consumer
     public bool CanResendNotifications { get; set; }
 }
 
-public class EmailSenders
+internal sealed class EmailSenders
 {
     public HashSet<string> Mcs { get; set; } = new();
 
     public HashSet<string> Mpss { get; set; } = new();
 }
 
-public class KafkaTopics
+internal sealed class KafkaTopics
 {
     public string McsResult { get; set; } = null!;
     
     public string McsSender { get; set; } = null!;
 }
 
-public class S3Buckets
+internal sealed class S3Buckets
 {
     public string Mcs { get; set; } = null!;
 }
