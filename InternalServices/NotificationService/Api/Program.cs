@@ -4,7 +4,6 @@ using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.NotificationService.Api.Services.Repositories;
 using CIS.InternalServices;
 using CIS.InternalServices.NotificationService.Api;
-using CIS.InternalServices.NotificationService.Api.ErrorHandling;
 using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
 using CIS.InternalServices.NotificationService.Api.Services.Messaging;
 using CIS.InternalServices.NotificationService.Api.Services.User;
@@ -16,6 +15,7 @@ using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstrac
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using SharedComponents.Storage;
+using CIS.InternalServices.NotificationService.Api.Legacy.ErrorHandling;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))

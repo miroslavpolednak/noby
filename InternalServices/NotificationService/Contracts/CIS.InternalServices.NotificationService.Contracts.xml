@@ -4,95 +4,11 @@
         <name>CIS.InternalServices.NotificationService.Contracts</name>
     </assembly>
     <members>
-        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsReflection">
-            <summary>Holder for reflection information generated from Messages/GetDetailedStatistics.proto</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.SmsFieldNumber">
+            <summary>Field number for the "Sms" field.</summary>
         </member>
-        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsReflection.Descriptor">
-            <summary>File descriptor for Messages/GetDetailedStatistics.proto</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsRequest.StatesFieldNumber">
-            <summary>Field number for the "States" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsRequest.ChannelsFieldNumber">
-            <summary>Field number for the "Channels" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsRequest.StatisticsDateFieldNumber">
-            <summary>Field number for the "StatisticsDate" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsResponse.StatisticsFieldNumber">
-            <summary>Field number for the "Statistics" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsResponse.ResultsFieldNumber">
-            <summary>Field number for the "Results" field.</summary>
-        </member>
-        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.ResendReflection">
-            <summary>Holder for reflection information generated from Messages/Resend.proto</summary>
-        </member>
-        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.ResendReflection.Descriptor">
-            <summary>File descriptor for Messages/Resend.proto</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResendRequest.NotificationIdFieldNumber">
-            <summary>Field number for the "NotificationId" field.</summary>
-        </member>
-        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.NotificationIdResponseReflection">
-            <summary>Holder for reflection information generated from Messages/NotificationIdResponse.proto</summary>
-        </member>
-        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.NotificationIdResponseReflection.Descriptor">
-            <summary>File descriptor for Messages/NotificationIdResponse.proto</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.NotificationIdResponse.NotificationIdFieldNumber">
-            <summary>Field number for the "NotificationId" field.</summary>
-        </member>
-        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsReflection">
-            <summary>Holder for reflection information generated from Messages/GetStatistics.proto</summary>
-        </member>
-        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsReflection.Descriptor">
-            <summary>File descriptor for Messages/GetStatistics.proto</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsRequest.StatesFieldNumber">
-            <summary>Field number for the "States" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsRequest.ChannelsFieldNumber">
-            <summary>Field number for the "Channels" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsRequest.TimeFromFieldNumber">
-            <summary>Field number for the "TimeFrom" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsRequest.TimeToFieldNumber">
-            <summary>Field number for the "TimeTo" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsResponse.StatisticsFieldNumber">
-            <summary>Field number for the "Statistics" field.</summary>
-        </member>
-        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsReflection">
-            <summary>Holder for reflection information generated from Messages/SearchResults.proto</summary>
-        </member>
-        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsReflection.Descriptor">
-            <summary>File descriptor for Messages/SearchResults.proto</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.IdentityFieldNumber">
-            <summary>Field number for the "Identity" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.IdentitySchemeFieldNumber">
-            <summary>Field number for the "IdentityScheme" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.CaseIdFieldNumber">
-            <summary>Field number for the "CaseId" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.CustomIdFieldNumber">
-            <summary>Field number for the "CustomId" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.DocumentIdFieldNumber">
-            <summary>Field number for the "DocumentId" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsResponse.ResultsFieldNumber">
-            <summary>Field number for the "Results" field.</summary>
-        </member>
-        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailReflection">
-            <summary>Holder for reflection information generated from Messages/SendEmail.proto</summary>
-        </member>
-        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailReflection.Descriptor">
-            <summary>File descriptor for Messages/SendEmail.proto</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.TextFieldNumber">
+            <summary>Field number for the "Text" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.FromFieldNumber">
             <summary>Field number for the "From" field.</summary>
@@ -145,14 +61,104 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailContent.TextFieldNumber">
             <summary>Field number for the "Text" field.</summary>
         </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetResultRequest.NotificationIdFieldNumber">
+            <summary>Field number for the "NotificationId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.IdentityFieldNumber">
+            <summary>Field number for the "Identity" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.IdentitySchemeFieldNumber">
+            <summary>Field number for the "IdentityScheme" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.CaseIdFieldNumber">
+            <summary>Field number for the "CaseId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.CustomIdFieldNumber">
+            <summary>Field number for the "CustomId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.DocumentIdFieldNumber">
+            <summary>Field number for the "DocumentId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsRequest.StatesFieldNumber">
+            <summary>Field number for the "States" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsRequest.ChannelsFieldNumber">
+            <summary>Field number for the "Channels" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsRequest.TimeFromFieldNumber">
+            <summary>Field number for the "TimeFrom" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsRequest.TimeToFieldNumber">
+            <summary>Field number for the "TimeTo" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsRequest.StatesFieldNumber">
+            <summary>Field number for the "States" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsRequest.ChannelsFieldNumber">
+            <summary>Field number for the "Channels" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsRequest.StatisticsDateFieldNumber">
+            <summary>Field number for the "StatisticsDate" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResendRequest.NotificationIdFieldNumber">
+            <summary>Field number for the "NotificationId" field.</summary>
+        </member>
+        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsReflection">
+            <summary>Holder for reflection information generated from Messages/GetDetailedStatistics.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsReflection.Descriptor">
+            <summary>File descriptor for Messages/GetDetailedStatistics.proto</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsResponse.StatisticsFieldNumber">
+            <summary>Field number for the "Statistics" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetDetailedStatisticsResponse.ResultsFieldNumber">
+            <summary>Field number for the "Results" field.</summary>
+        </member>
+        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.ResendReflection">
+            <summary>Holder for reflection information generated from Messages/Resend.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.ResendReflection.Descriptor">
+            <summary>File descriptor for Messages/Resend.proto</summary>
+        </member>
+        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.NotificationIdResponseReflection">
+            <summary>Holder for reflection information generated from Messages/NotificationIdResponse.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.NotificationIdResponseReflection.Descriptor">
+            <summary>File descriptor for Messages/NotificationIdResponse.proto</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.NotificationIdResponse.NotificationIdFieldNumber">
+            <summary>Field number for the "NotificationId" field.</summary>
+        </member>
+        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsReflection">
+            <summary>Holder for reflection information generated from Messages/GetStatistics.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsReflection.Descriptor">
+            <summary>File descriptor for Messages/GetStatistics.proto</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetStatisticsResponse.StatisticsFieldNumber">
+            <summary>Field number for the "Statistics" field.</summary>
+        </member>
+        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsReflection">
+            <summary>Holder for reflection information generated from Messages/SearchResults.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsReflection.Descriptor">
+            <summary>File descriptor for Messages/SearchResults.proto</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsResponse.ResultsFieldNumber">
+            <summary>Field number for the "Results" field.</summary>
+        </member>
+        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailReflection">
+            <summary>Holder for reflection information generated from Messages/SendEmail.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailReflection.Descriptor">
+            <summary>File descriptor for Messages/SendEmail.proto</summary>
+        </member>
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.GetResultReflection">
             <summary>Holder for reflection information generated from Messages/GetResult.proto</summary>
         </member>
         <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.GetResultReflection.Descriptor">
             <summary>File descriptor for Messages/GetResult.proto</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetResultRequest.NotificationIdFieldNumber">
-            <summary>Field number for the "NotificationId" field.</summary>
         </member>
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.TypesReflection">
             <summary>Holder for reflection information generated from Messages/Types.proto</summary>
@@ -327,12 +333,6 @@
         </member>
         <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsReflection.Descriptor">
             <summary>File descriptor for Messages/SendSms.proto</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.SmsFieldNumber">
-            <summary>Field number for the "Sms" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.TextFieldNumber">
-            <summary>Field number for the "Text" field.</summary>
         </member>
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.NotificationServiceV2Reflection">
             <summary>Holder for reflection information generated from NotificationService.v2.proto</summary>
