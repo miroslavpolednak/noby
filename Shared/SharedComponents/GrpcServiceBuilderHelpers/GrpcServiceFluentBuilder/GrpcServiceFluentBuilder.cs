@@ -27,9 +27,9 @@ internal sealed class GrpcServiceFluentBuilder
     {
         var appConfiguration = _settings.Builder
             .Configuration
-            .GetSection("AppConfiguration")
+            .GetSection(CIS.Core.CisGlobalConstants.DefaultAppConfigurationSectionName)
             .Get<TConfiguration>()
-            ?? throw new CisConfigurationNotFound("AppConfiguration");
+            ?? throw new CisConfigurationNotFound(CIS.Core.CisGlobalConstants.DefaultAppConfigurationSectionName);
 
         _settings.Builder.Services.AddSingleton(appConfiguration);
         var newSettings = _settings.CreateGenericCopy<TConfiguration>();

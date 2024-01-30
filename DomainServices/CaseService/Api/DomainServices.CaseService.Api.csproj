@@ -2,8 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFramework>net8.0</TargetFramework>
-	  <Authors>Filip Tuma</Authors>
-	  <Product>MPSS DomainServices</Product>
+	  <Product>Common Infrastructure Solution</Product>
 	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <ImplicitUsings>enable</ImplicitUsings>
@@ -37,9 +36,5 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="DomainServices.CaseService.Tests" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Messaging\MortgageInstanceChanged\Dto\" />
 	</ItemGroup>
 </Project>

@@ -7,6 +7,7 @@ using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 [ScopedService, SelfService]
 internal sealed class CustomerManagementDetailProvider
 {
@@ -116,7 +117,7 @@ internal sealed class CustomerManagementDetailProvider
             KbRelationshipCode = customer.Kyc?.NaturalPersonKyc?.CustomerKbRelationship?.Code ?? string.Empty,
             Segment = customer.CustomerSegment?.SegmentKeyCode ?? string.Empty,
             ProfessionCategoryId = customer.Kyc?.NaturalPersonKyc?.Employment?.CategoryCode,
-            ProfessionId = _professionTypes.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.Employment?.ProfessionCode.ToString() == t.RdmCode)?.Id,
+            ProfessionId = _professionTypes.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.Employment?.ProfessionCode?.ToString(CultureInfo.InvariantCulture) == t.RdmCode)?.Id,
             NetMonthEarningAmountId = _netMonthEarnings.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.NetMonthEarningCode == t.RdmCode)?.Id,
             NetMonthEarningTypeId = _incomeMainTypesAML.FirstOrDefault(t => customer.Kyc?.NaturalPersonKyc?.FinancialProfile?.MainSourceOfEarnings?.Code.ToString(System.Globalization.CultureInfo.InvariantCulture) == t.RdmCode)?.Id,
             TaxResidence = new NaturalPersonTaxResidence
@@ -150,7 +151,7 @@ internal sealed class CustomerManagementDetailProvider
                                     }).OrderByDescending(t => t.CountryId == 16));
         }
 
-        if (np.CitizenshipCodes != null && np.CitizenshipCodes.Any())
+        if (np.CitizenshipCodes != null && np.CitizenshipCodes.Count != 0)
             person.CitizenshipCountriesId.AddRange(_countries.Where(t => np.CitizenshipCodes.Contains(t.ShortName)).Select(t => t.Id));
 
         return person;

@@ -11,6 +11,8 @@ internal sealed class GrpcServiceBuilderSettings<TConfiguration>
 {
     public TConfiguration? Configuration;
     public Action<WebApplicationBuilder, TConfiguration>? AddCustomServicesWithConfiguration;
+    public Action<IEndpointRouteBuilder, TConfiguration>? MapGrpcServicesT;
+    public Action<WebApplication, TConfiguration>? UseMiddlewaresT;
 }
 
 internal class GrpcServiceBuilderSettings
@@ -31,6 +33,7 @@ internal class GrpcServiceBuilderSettings
     public Action<GrpcServiceOptions>? AddGrpcServiceOptions;
 
     public Action<IEndpointRouteBuilder>? MapGrpcServices;
+    public Action<WebApplication>? UseMiddlewares;
 
     public GrpcServiceBuilderSettings<TConfiguration> CreateGenericCopy<TConfiguration>()
         where TConfiguration : class
@@ -51,7 +54,8 @@ internal class GrpcServiceBuilderSettings
             MainAssembly = this.MainAssembly,
             TranscodingOptions = this.TranscodingOptions,
             ErrorCodeMapperMessages = this.ErrorCodeMapperMessages,
-            MapGrpcServices = this.MapGrpcServices
+            MapGrpcServices = this.MapGrpcServices,
+            UseMiddlewares = this.UseMiddlewares
         };
 
         return newSettings;

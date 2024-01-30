@@ -44,7 +44,7 @@ SharedComponents.GrpcServiceBuilder
             .AddConsumerTopicAvro<ISbWorkflowProcessEvent>(appConfiguration.SbWorkflowProcessTopic!)
             .Build();
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<DomainServices.RealEstateValuationService.Api.Endpoints.RealEstateValuationService>();
     })

@@ -3,6 +3,7 @@ using Grpc.Core;
 
 namespace DomainServices.CaseService.Tests.IntegrationTests;
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 public class CancelTaskTests
     : IntegrationTestBase
 {

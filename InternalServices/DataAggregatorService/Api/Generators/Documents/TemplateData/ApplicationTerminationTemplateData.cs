@@ -11,8 +11,10 @@ internal class ApplicationTerminationTemplateData : AggregatedData
         get
         {
             var address = GetPermanentAddress();
+            
+            var streetName = new[] { address.Street, address.CityDistrict, address.City }.First(str => !string.IsNullOrWhiteSpace(str));
 
-            return $"{address.Street} {string.Join("/", new[] { address.HouseNumber, address.StreetNumber }.Where(str => !string.IsNullOrWhiteSpace(str)))}";
+            return $"{streetName} {string.Join("/", new[] { address.HouseNumber, address.StreetNumber }.Where(str => !string.IsNullOrWhiteSpace(str)))}";
         }
     }
 

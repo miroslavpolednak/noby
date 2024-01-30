@@ -90,7 +90,7 @@ internal sealed class UpdateSalesArrangementParametersHandler : IRequestHandler<
         requestAccount.IsAccountNumberMissing = false;
     }
 
-    private Task AddOrUpdateParameters(SalesArrangementTypes salesArrangementType, Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken)
+    private Task<int> AddOrUpdateParameters(SalesArrangementTypes salesArrangementType, Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken)
     {
         return salesArrangementType switch
         {

@@ -14,7 +14,6 @@ using Microsoft.OpenApi.Models;
 namespace SharedComponents.GrpcServiceBuilderHelpers;
 
 internal sealed class GrpcServiceBuilderRunner<TConfiguration>
-    : IGrpcServiceBuilderRunner, IGrpcServiceBuilderRunner<TConfiguration>
     where TConfiguration : class
 {
     public void Run()
@@ -134,7 +133,25 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
                 .UseCisServiceUserContext();
 
             app.MapCisGrpcHealthChecks();
-            _settings.MapGrpcServices!(app);
+
+            if (_isGenericRunner)
+            {
+                if (_settings.UseMiddlewares is not null)
+                {
+                    _settings.UseMiddlewares!(app);
+                }
+                
+                _settings.MapGrpcServices!(app);
+            }
+            else
+            {
+                if (_settings.UseMiddlewaresT is not null)
+                {
+                    _settings.UseMiddlewaresT!(app, _settings.Configuration!);
+                }
+
+                _settings.MapGrpcServicesT!(app, _settings.Configuration!);
+            }
 
             // grpc transcoding swagger / grpc reflection
             if (!_settings.EnvironmentConfiguration.DisableContractDescriptionPropagation)
@@ -302,10 +319,12 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
         }
     }
 
+    private readonly bool _isGenericRunner;
     private readonly GrpcServiceBuilderSettings<TConfiguration> _settings;
 
-    internal GrpcServiceBuilderRunner(GrpcServiceBuilderSettings<TConfiguration> settings)
+    internal GrpcServiceBuilderRunner(GrpcServiceBuilderSettings<TConfiguration> settings, bool isGenericRunner)
     {
         _settings = settings;
+        _isGenericRunner = isGenericRunner;
     }
 }

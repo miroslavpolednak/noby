@@ -12,7 +12,7 @@ SharedComponents.GrpcServiceBuilder
     {
         CIS.InternalServices.DocumentGeneratorService.Api.GeneratorVariables.Init(appConfiguration);
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<CIS.InternalServices.DocumentGeneratorService.Api.Services.DocumentGeneratorService>();
     })
