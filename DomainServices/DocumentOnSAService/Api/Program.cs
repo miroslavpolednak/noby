@@ -1,81 +1,57 @@
-using SharedAudit;
-using CIS.Infrastructure.gRPC;
-using CIS.Infrastructure.Security;
 using CIS.Infrastructure.StartupExtensions;
-using CIS.Infrastructure.Telemetry;
-using CIS.InternalServices;
-using DomainServices.DocumentOnSAService.Api.Endpoints;
-using DomainServices.DocumentOnSAService.Api.Extensions;
+using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
+using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
+using ExternalServices;
+using ExternalServices.SbQueues;
+using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
+using ExternalServices.Eas.V1;
+using ExternalServices.Sulm.V1;
+using ExternalServices.ESignatures.V1;
 
-bool runAsWinSvc = args != null && args.Any(t => t.Equals("winsvc", StringComparison.OrdinalIgnoreCase));
+SharedComponents.GrpcServiceBuilder
+    .CreateGrpcService(args, typeof(Program))
+    .AddErrorCodeMapper(DomainServices.DocumentOnSAService.Api.ErrorCodeMapper.Init())
+    .AddRequiredServices(services =>
+    {
+        services
+            .AddHouseholdService()
+            .AddSalesArrangementService()
+            .AddCodebookService()
+            .AddDataAggregatorService()
+            .AddDocumentArchiveService()
+            .AddProductService()
+            .AddCaseService()
+            .AddCustomerService()
+            .AddUserService()
+            .AddDocumentGeneratorService();
+    })
+    .Build(builder =>
+    {
+        // EAS svc
+        builder.AddExternalService<IEasClient>();
 
-//TODO workaround until .NET6 UseWindowsService() will work with WebApplication
-var webAppOptions = runAsWinSvc
-    ?
-    new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
-    :
-    new WebApplicationOptions { Args = args };
-var builder = WebApplication.CreateBuilder(webAppOptions);
+        // sulm
+        builder.AddExternalService<ISulmClient>();
 
-var log = builder.CreateStartupLogger();
+        // ePodpisy
+        builder.AddExternalService<IESignaturesClient>();
 
-try
-{
-    #region register builder
-    // globalni nastaveni prostredi
-    builder
-        .AddCisCoreFeatures()
-        .AddCisEnvironmentConfiguration();
+        // ePodpisy fronta
+        builder.AddExternalService<ISbQueuesRepository>();
 
-    // logging 
-    builder
-        .AddCisLogging()
-        .AddCisLoggingPayloadBehavior()
-        .AddCisTracing()
-        .AddCisAudit();
+        // registrace background jobu
+        builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
+        builder.AddCisBackgroundService<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
+        builder.AddCisBackgroundService<UpdateDocumentStatusJob>();
 
-    // authentication
-    builder.AddCisServiceAuthentication().AddCisServiceUserContext();
-
-    // add this service
-    builder.AddDocumentOnSAServiceService();
-
-    builder.AddDocumentOnSAServiceGrpc();
-    builder.AddCisGrpcHealthChecks();
-    #endregion
-
-    // kestrel configuration
-    builder.UseKestrelWithCustomConfiguration();
-
-    // BUILD APP
-    if (runAsWinSvc) builder.Host.UseWindowsService(); // run as win svc
-    var app = builder.Build();
-    log.ApplicationBuilt();
-
-    app.UseRouting();
-
-    app.UseAuthentication();
-    app.UseAuthorization();
-    app.UseCisServiceUserContext();
-
-    //Dont know correct connection
-    app.UseServiceDiscovery();
-
-    app.MapCisGrpcHealthChecks();
-    app.MapGrpcService<DocumentOnSAServiceGrpc>();
-    app.MapGrpcReflectionService();
-
-    log.ApplicationRun();
-    app.Run();
-}
-catch (Exception ex)
-{
-    log.CatchedException(ex);
-}
-finally
-{
-    LoggingExtensions.CloseAndFlush();
-}
+        // dbcontext
+        builder.AddEntityFramework<DomainServices.DocumentOnSAService.Api.Database.DocumentOnSAServiceDbContext>();
+    })
+    .MapGrpcServices(app =>
+    {
+        app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.DocumentOnSAServiceGrpc>();
+    })
+    .Run();
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program
