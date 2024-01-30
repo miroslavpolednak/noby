@@ -54,7 +54,7 @@ SharedComponents.GrpcServiceBuilder
             .AddConsumerTopicAvro<IMortgageServicingMortgageChangesTopic>(appConfiguration.MortgageServicingMortgageChangesTopic!)
             .Build();
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<DomainServices.CaseService.Api.Endpoints.CaseService>();
     })

@@ -28,7 +28,7 @@ SharedComponents.GrpcServiceBuilder
             builder.Services.Decorate<IServiceConfigurationManager, CachedConfigurationManager>();
         }
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<CIS.InternalServices.DataAggregatorService.Api.Endpoints.DataAggregatorServiceGrpc>();
     })

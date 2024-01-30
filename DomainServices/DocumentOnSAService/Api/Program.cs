@@ -4,7 +4,6 @@ using CIS.Infrastructure.Security;
 using CIS.Infrastructure.StartupExtensions;
 using CIS.Infrastructure.Telemetry;
 using CIS.InternalServices;
-using DomainServices.DocumentOnSAService.Api.Configuration;
 using DomainServices.DocumentOnSAService.Api.Endpoints;
 using DomainServices.DocumentOnSAService.Api.Extensions;
 
@@ -22,16 +21,7 @@ var log = builder.CreateStartupLogger();
 
 try
 {
-    #region strongly typed configuration
-    AppConfiguration appConfiguration = new();
-builder.Configuration.GetSection(AppConfiguration.SectionName).Bind(appConfiguration);
-appConfiguration.CheckAppConfiguration();
-#endregion strongly typed configuration
-
     #region register builder
-    // strongly-typed app configuration
-    builder.Services.AddSingleton(appConfiguration);
-
     // globalni nastaveni prostredi
     builder
         .AddCisCoreFeatures()

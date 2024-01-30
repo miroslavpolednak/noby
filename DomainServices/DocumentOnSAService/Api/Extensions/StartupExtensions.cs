@@ -2,7 +2,6 @@
 using CIS.InternalServices;
 using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
 using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
-using DomainServices.DocumentOnSAService.Api.Configuration;
 using ExternalServices;
 using ExternalServices.SbQueues;
 using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
@@ -15,10 +14,6 @@ namespace DomainServices.DocumentOnSAService.Api.Extensions;
 
 internal static class StartupExtensions
 {
-    public static void CheckAppConfiguration(this AppConfiguration configuration)
-    {
-    }
-
     public static WebApplicationBuilder AddDocumentOnSAServiceService(this WebApplicationBuilder builder)
     {
         builder.Services.AddAttributedServices(typeof(Program));

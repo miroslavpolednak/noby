@@ -36,4 +36,6 @@ public static class CisGlobalConstants
     public const string EnvironmentConfigurationSectionName = "CisEnvironmentConfiguration";
 
     public const string ServiceAuthenticationSectionName = "CisSecurity:ServiceAuthentication";
+
+    public const string DefaultAppConfigurationSectionName = "AppConfiguration";
 }
