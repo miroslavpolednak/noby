@@ -14,7 +14,7 @@ public interface IGrpcServiceFluentBuilderStage2<TConfiguration>
     /// <summary>
     /// Umožňuje zaregistrovat middleware, které se spustí před gRPC službami.
     /// </summary>
-    IGrpcServiceFluentBuilderStage2<TConfiguration> UseMiddlewares(Action<WebApplication, TConfiguration> endpointRouter);
+    IGrpcServiceFluentBuilderStage2<TConfiguration> UseMiddlewares(Action<WebApplication, TConfiguration> middlewareBuilder);
 
     /// <summary>
     /// Spustí aplikaci. Provádí registraci služeb, následně vytváří WebApplication a registruje middlewares.
@@ -35,7 +35,7 @@ public interface IGrpcServiceFluentBuilderStage2
     /// <summary>
     /// Umožňuje zaregistrovat middleware, které se spustí před gRPC službami.
     /// </summary>
-    IGrpcServiceFluentBuilderStage2 UseMiddlewares(Action<WebApplication> endpointRouter);
+    IGrpcServiceFluentBuilderStage2 UseMiddlewares(Action<WebApplication> middlewareBuilder);
 
     /// <summary>
     /// Spustí aplikaci. Provádí registraci služeb, následně vytváří WebApplication a registruje middlewares.
