@@ -21,31 +21,18 @@ public sealed class CreateOrUpdateCustomerKonsDbService
         }
         catch (CisNotFoundException) // klient nenalezen v konsDb
         {
+            _logger.LogDebug("Client {IdentityId}:{IdentityScheme} not found in KonsDb", mpIdentity?.IdentityId, mpIdentity?.IdentityScheme);
         }
 
         // klient nenalezen v konsDb, zaloz ho tam
         if (konsDbCustomer is null)
         {
-            try
-            {
-                await createClientInKonsDb(kbIdentity, mpIdentity!, cancellationToken);
-            }
-            catch
-            {
-                _logger.LogError("MpDigi createClient failed");
-            }
+            await createClientInKonsDb(kbIdentity, mpIdentity!, cancellationToken);
         }
         // ma klient v konsDb KB identitu? pokud ne, tak ho updatuj
         else if (konsDbCustomer.Identities.All(t => t.IdentityScheme != Identity.Types.IdentitySchemes.Kb))
         {
-            try
-            {
-                await updateClientInKonsDb(mpIdentity!, kbIdentity, cancellationToken);
-            }
-            catch
-            {
-                _logger.LogError("MpDigi updateClient failed");
-            }
+            await updateClientInKonsDb(mpIdentity!, kbIdentity, cancellationToken);
         }
     }
 
