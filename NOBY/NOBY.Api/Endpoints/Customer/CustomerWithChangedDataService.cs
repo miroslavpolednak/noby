@@ -27,7 +27,7 @@ internal sealed class CustomerWithChangedDataService
         dtoCustomer.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Other);
 
         // convert DS contract to FE model
-        return (dtoCustomer, customer.CustomerIdentification?.IdentificationMethodId;
+        return (dtoCustomer, customer.CustomerIdentification?.IdentificationMethodId);
     }
 
     public async Task<TResponse> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
