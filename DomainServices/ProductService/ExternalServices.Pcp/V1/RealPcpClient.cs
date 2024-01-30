@@ -50,8 +50,6 @@ internal sealed class RealPcpClient
 </v12:createRequest>
    </soapenv:Body>" + _soapEnvelopeEnd;
 
-        _logger.LogDebug(soap);
-
         using (HttpContent content = new StringContent(soap, Encoding.UTF8, "text/xml"))
         using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _httpClient.BaseAddress))
         {

@@ -4,7 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<Product>Common Infrastructure Solution</Product>
   </PropertyGroup>
+
+<PropertyGroup>
+	<AnalysisMode>Recommended</AnalysisMode>
+</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />

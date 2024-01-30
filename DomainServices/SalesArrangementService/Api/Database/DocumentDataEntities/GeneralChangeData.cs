@@ -19,21 +19,21 @@ internal sealed class GeneralChangeData : IDocumentData
     public GeneralChangeDrawingAndOtherConditionsData? DrawingAndOtherConditions { get; set; }
     public GeneralChangeCommentToChangeRequestData? CommentToChangeRequest { get; set; }
 
-    public class GeneralChangeCollateralData
+    public sealed class GeneralChangeCollateralData
     {
         public bool IsActive { get; set; }
         public string? AddLoanRealEstateCollateral { get; set; }
         public string? ReleaseLoanRealEstateCollateral { get; set; }
     }
 
-    public class GeneralChangePaymentDayData
+    public sealed class GeneralChangePaymentDayData
     {
         public bool IsActive { get; set; }
         public int AgreedPaymentDay { get; set; }
         public int? NewPaymentDay { get; set; }
     }
 
-    public class GeneralChangeDrawingDateToData
+    public sealed class GeneralChangeDrawingDateToData
     {
         public bool IsActive { get; set; }
         public DateTime AgreedDrawingDateTo { get; set; }
@@ -41,7 +41,7 @@ internal sealed class GeneralChangeData : IDocumentData
         public string? CommentToDrawingDateTo { get; set; }
     }
 
-    public class GeneralChangePaymentAccountData
+    public sealed class GeneralChangePaymentAccountData
     {
         public bool IsActive { get; set; }
         public string AgreedPrefix { get; set; } = null!;
@@ -55,7 +55,7 @@ internal sealed class GeneralChangeData : IDocumentData
         public DateTime? OwnerDateOfBirth { get; set; }
     }
 
-    public class GeneralChangeLoanPaymentAmountData
+    public sealed class GeneralChangeLoanPaymentAmountData
     {
         public bool IsActive { get; set; }
         public decimal? NewLoanPaymentAmount { get; set; }
@@ -63,7 +63,7 @@ internal sealed class GeneralChangeData : IDocumentData
         public bool ConnectionExtraordinaryPayment { get; set; }
     }
 
-    public class GeneralChangeDueDateData
+    public sealed class GeneralChangeDueDateData
     {
         public bool IsActive { get; set; }
         public DateTime? NewLoanDueDate { get; set; }
@@ -71,31 +71,31 @@ internal sealed class GeneralChangeData : IDocumentData
         public bool ConnectionExtraordinaryPayment { get; set; }
     }
 
-    public class GeneralChangeLoanRealEstateData
+    public sealed class GeneralChangeLoanRealEstateData
     {
         public bool IsActive { get; set; }
         public IEnumerable<GeneralChangeLoanRealEstatesItemData> LoanRealEstates { get; set; } = Enumerable.Empty<GeneralChangeLoanRealEstatesItemData>();
     }
 
-    public class GeneralChangeLoanRealEstatesItemData
+    public sealed class GeneralChangeLoanRealEstatesItemData
     {
         public int RealEstateTypeId { get; set; }
         public int RealEstatePurchaseTypeId { get; set; }
     }
 
-    public class GeneralChangeLoanPurposeData
+    public sealed class GeneralChangeLoanPurposeData
     {
         public bool IsActive { get; set; }
         public string? LoanPurposesComment { get; set; }
     }
 
-    public class GeneralChangeDrawingAndOtherConditionsData
+    public sealed class GeneralChangeDrawingAndOtherConditionsData
     {
         public bool IsActive { get; set; }
         public string? CommentToChangeContractConditions { get; set; }
     }
 
-    public class GeneralChangeCommentToChangeRequestData
+    public sealed class GeneralChangeCommentToChangeRequestData
     {
         public bool IsActive { get; set; }
         public string? GeneralComment { get; set; }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-	  <Product>MPSS DomainServices</Product>
+	  <Product>Common Infrastructure Solution</Product>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <Platforms>AnyCPU;x64</Platforms>

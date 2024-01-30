@@ -58,7 +58,7 @@ internal sealed class GetCustomerListHandler : IRequestHandler<CustomerListReque
                                                                 y => new { y.IdentityId, y.IdentityScheme },
                                                                 (_, x) => x)).ToList();
 
-        if (!missingCustomers.Any())
+        if (missingCustomers.Count == 0)
             return;
 
         var messageIds = string.Join(", ", missingCustomers.Select(c => $"{c.IdentityScheme} - {c.IdentityId}"));

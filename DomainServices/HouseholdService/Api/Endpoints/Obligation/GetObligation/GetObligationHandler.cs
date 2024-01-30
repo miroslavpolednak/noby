@@ -12,7 +12,7 @@ internal sealed class GetObligationHandler
         var documentEntity = await _documentDataStorage.FirstOrDefault<Database.DocumentDataEntities.Obligation>(request.ObligationId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ObligationNotFound, request.ObligationId);
 
-        var model = _mapper.MapFromDataToSingle(documentEntity.Data!);
+        var model = _mapper.MapFromDataToSingle(documentEntity.Data!)!;
 
         model.ObligationId = documentEntity.DocumentDataStorageId;
         model.CustomerOnSAId = documentEntity.EntityIdInt;

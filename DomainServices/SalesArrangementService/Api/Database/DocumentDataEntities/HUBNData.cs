@@ -16,7 +16,7 @@ internal sealed class HUBNData : IDocumentData
     public HUBNDrawingDateToData? DrawingDateTo { get; set; }
     public HUBNCommentToChangeRequestData? CommentToChangeRequest { get; set; }
 
-    public class HUBNLoanAmountData
+    public sealed class HUBNLoanAmountData
     {
         public bool ChangeAgreedLoanAmount { get; set; }
         public decimal AgreedLoanAmount { get; set; }
@@ -27,13 +27,13 @@ internal sealed class HUBNData : IDocumentData
         public decimal AgreedLoanPaymentAmount { get; set; }
     }
 
-    public class HUBNLoanPurposeItemData
+    public sealed class HUBNLoanPurposeItemData
     {
         public int LoanPurposeId { get; set; }
         public decimal Sum { get; set; }
     }
 
-    public class HUBNLoanRealEstateItemData
+    public sealed class HUBNLoanRealEstateItemData
     {
         public int RealEstateTypeId { get; set; }
         public int RealEstatePurchaseTypeId { get; set; }
@@ -45,21 +45,21 @@ internal sealed class HUBNData : IDocumentData
         public string? RealEstateIdentification { get; set; } = null!;
     }
 
-    public class HUBNExpectedDateOfDrawingData
+    public sealed class HUBNExpectedDateOfDrawingData
     {
         public bool IsActive { get; set; }
         public DateTime? NewExpectedDateOfDrawing { get; set; }
         public DateTime AgreedExpectedDateOfDrawing { get; set; }
     }
 
-    public class HUBNDrawingDateToData
+    public sealed class HUBNDrawingDateToData
     {
         public bool IsActive { get; set; }
         public DateTime AgreedDrawingDateTo { get; set; }
         public int? ExtensionDrawingDateToByMonths { get; set; }
     }
 
-    public class HUBNCommentToChangeRequestData
+    public sealed class HUBNCommentToChangeRequestData
     {
         public bool IsActive { get; set; }
         public string? GeneralComment { get; set; }

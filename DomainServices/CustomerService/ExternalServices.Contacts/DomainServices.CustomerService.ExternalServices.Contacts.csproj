@@ -4,8 +4,13 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+		<Product>Common Infrastructure Solution</Product>
     </PropertyGroup>
     
+	<PropertyGroup>
+	<AnalysisMode>Recommended</AnalysisMode>
+</PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\ExternalServices.Common\DomainServices.CustomerService.ExternalServices.Common.csproj" />
     </ItemGroup>

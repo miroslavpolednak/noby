@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SharedAudit;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 public static class AuditLoggingStartupExtensions
 {
     public static WebApplicationBuilder AddCisAudit(this WebApplicationBuilder builder)

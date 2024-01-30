@@ -19,7 +19,7 @@ internal sealed class DrawingData : IDocumentData
 
     public bool IsImmediateDrawing { get; set; }
 
-    public class DrawingAgentData
+    public sealed class DrawingAgentData
     {
         public string? FirstName { get; set; }
 

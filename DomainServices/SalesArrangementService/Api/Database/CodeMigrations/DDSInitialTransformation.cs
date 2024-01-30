@@ -58,7 +58,7 @@ public sealed class DDSInitialTransformation : IScript
             }
 
 
-            if (!convertedRecords.Any())
+            if (convertedRecords.Count == 0)
                 break;
 
             var insertSqlCommands = convertedRecords
