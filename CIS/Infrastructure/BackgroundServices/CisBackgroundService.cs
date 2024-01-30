@@ -63,43 +63,42 @@ internal sealed class CisBackgroundService<TBackgroundService>
             // Another benefit is, that Tasks with high priority gonna be processed preferably.
             await Task.Yield();
 
-            await waitUntilNext(stoppingToken);
-            _iteration++;
-
-            try
+            using (var activity = _activitySource.StartActivity(_serviceName))
             {
-                var distributedLock = new SqlDistributedLock(_serviceName, connectionString);
-                using (var handle = await distributedLock.TryAcquireAsync(timeout: TimeSpan.FromSeconds(_technicalTimeout), cancellationToken: stoppingToken))
+                _iteration++;
+                await waitUntilNext(stoppingToken);
+                
+                try
                 {
-                    // we acquired the lock
-                    if (handle != null)
+                    var distributedLock = new SqlDistributedLock(_serviceName, connectionString);
+                    using (var handle = await distributedLock.TryAcquireAsync(timeout: TimeSpan.FromSeconds(_technicalTimeout), cancellationToken: stoppingToken))
                     {
-                        using (var serviceScope = _serviceScopeFactory.CreateScope())
+                        // we acquired the lock
+                        if (handle != null)
                         {
-                            var service = serviceScope.ServiceProvider.GetRequiredService<TBackgroundService>();
-
-                            using (var activity = _activitySource.StartActivity(_serviceName))
+                            using (var serviceScope = _serviceScopeFactory.CreateScope())
                             {
                                 _logger.BackgroundServiceTaskStarted(_serviceName, _iteration);
 
+                                var service = serviceScope.ServiceProvider.GetRequiredService<TBackgroundService>();
                                 await service.ExecuteJobAsync(stoppingToken);
 
                                 _logger.BackgroundServiceTaskFinished(_serviceName, _iteration);
                             }
-                        }
 
-                        // Technical timeout, when job will execute very fast and the exception (Execution Timeout Expired) does not have time to be thrown out
-                        await Task.Delay(TimeSpan.FromSeconds(_technicalTimeout + 5), stoppingToken);
-                    }
-                    else // someone else has it
-                    {
-                        _logger.ParallelJobTerminated(_serviceName, _iteration);
+                            // Technical timeout, when job will execute very fast and the exception (Execution Timeout Expired) does not have time to be thrown out
+                            await Task.Delay(TimeSpan.FromSeconds(_technicalTimeout + 5), stoppingToken);
+                        }
+                        else // someone else has it
+                        {
+                            _logger.ParallelJobTerminated(_serviceName, _iteration);
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.BackgroundServiceExecutionError(_serviceName, _iteration, ex);
+                catch (Exception ex)
+                {
+                    _logger.BackgroundServiceExecutionError(_serviceName, _iteration, ex);
+                }
             }
         }
     }

@@ -23,8 +23,11 @@ internal sealed class CustomerWithChangedDataService
         // instance customer z KB CM
         var customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
 
+        var dtoCustomer = fillResponseDto<TResponse>(customer, customerOnSA);
+        dtoCustomer.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Other);
+
         // convert DS contract to FE model
-        return (fillResponseDto<TResponse>(customer, customerOnSA), customer.CustomerIdentification?.IdentificationMethodId);
+        return (dtoCustomer, customer.CustomerIdentification?.IdentificationMethodId);
     }
 
     public async Task<TResponse> GetCustomerWithChangedData<TResponse>(__Household.CustomerOnSA customerOnSA, CancellationToken cancellationToken)
@@ -50,6 +53,7 @@ internal sealed class CustomerWithChangedDataService
         var updatedModel = original.ToObject<TResponse>()!;
 
         UseConfirmedContactAddressIfExists(model.Addresses, updatedModel);
+        updatedModel.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Other);
 
         return updatedModel;
     }

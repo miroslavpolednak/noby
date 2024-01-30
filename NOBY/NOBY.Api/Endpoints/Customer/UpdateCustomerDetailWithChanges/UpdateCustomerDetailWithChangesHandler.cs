@@ -77,6 +77,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             };
         }
 
+        request.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Other);
         RemoveContactAddressIfNotConfirmedAndContactsAreConfirmed(originalModel, request);
         await RemoveTinMissingReasonIfTinIsNotRequired(originalModel?.NaturalPerson?.TaxResidences, cancellationToken);
 

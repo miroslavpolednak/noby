@@ -27,7 +27,8 @@ internal sealed class GetCustomerDetailHandler
             },
             IdentificationDocument = result.IdentificationDocument?.ToResponseDto(),
             Contacts = result.Contacts?.ToResponseDto(),
-            Addresses = result.Addresses?.Select(t => (SharedTypes.Types.Address)t!).ToList()
+            Addresses = result.Addresses?.Where(t => t.AddressTypeId != (int)AddressTypes.Other)
+                              .Select(t => (SharedTypes.Types.Address)t!).ToList()
         };
     }
 
