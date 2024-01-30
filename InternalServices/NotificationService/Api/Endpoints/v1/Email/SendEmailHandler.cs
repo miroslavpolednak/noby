@@ -5,6 +5,7 @@ using CIS.InternalServices.NotificationService.Api.Database.DocumentDataEntities
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Email;
 using DomainServices.CodebookService.Clients;
@@ -21,7 +22,8 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly IStorageClient<IMcsStorage> _mcsStorageClient;
+    private readonly IS3AdapterService _s3Service;
+    private readonly IOptions<SharedComponents.Storage.Configuration.StorageConfiguration> _storageConfiguration;
     private readonly HashSet<string> _mcsSenders;
     private readonly HashSet<string> _mpssSenders;
     private readonly ILogger<SendEmailHandler> _logger; 
@@ -33,21 +35,23 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
         ICodebookServiceClient codebookService,
+        IS3AdapterService s3Service,
         IOptions<AppConfiguration> options,
         ILogger<SendEmailHandler> logger,
         IDocumentDataStorage documentDataStorage,
-        IStorageClient<IMcsStorage> mcsStorageClient)
+        IOptions<SharedComponents.Storage.Configuration.StorageConfiguration> storageConfiguration)
     {
         _dateTime = dateTime;
         _mcsEmailProducer = mcsEmailProducer;
         _userAdapterService = userAdapterService;
         _repository = repository;
         _codebookService = codebookService;
+        _s3Service = s3Service;
         _mcsSenders = options.Value.EmailSenders.Mcs.Select(e => e.ToLowerInvariant()).ToHashSet();
         _mpssSenders = options.Value.EmailSenders.Mpss.Select(e => e.ToLowerInvariant()).ToHashSet();
         _logger = logger;
         _documentDataStorage = documentDataStorage;
-        _mcsStorageClient = mcsStorageClient;
+        _storageConfiguration = storageConfiguration;
     }
 
     public async Task<SendEmailResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
@@ -100,8 +104,9 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
                 {
                     foreach (var attachment in request.Attachments)
                     {
+                        string bucket = _storageConfiguration.Value.StorageClients[nameof(IMcsStorage)].AmazonS3.Bucket;
                         var content = Convert.FromBase64String(attachment.Binary);
-                        var objectKey = await _s3Service.UploadFile(content, _buckets.Mcs, cancellationToken);
+                        var objectKey = await _s3Service.UploadFile(content, bucket, cancellationToken);
                         attachmentKeyFilenames.Add(new(objectKey, attachment.Filename));
                     }
                 }

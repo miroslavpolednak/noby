@@ -12,14 +12,6 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
             </remarks>
         </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v1.NotificationController.SendSmsFromTemplate(CIS.InternalServices.NotificationService.LegacyContracts.Sms.SendSmsFromTemplateRequest,System.Threading.CancellationToken)">
-            <summary>
-            Odeslat sms notifikaci ze šablony
-            </summary>
-            <remarks>
-            Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
-            </remarks>
-        </member>
         <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v1.NotificationController.SendEmail(CIS.InternalServices.NotificationService.LegacyContracts.Email.SendEmailRequest,System.Threading.CancellationToken)">
             <summary>
             Odeslat email notifikaci
@@ -67,42 +59,6 @@
             <remarks>
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
             </remarks>
-        </member>
-        <member name="T:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.Initial">
-            <inheritdoc />
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH5458DropText">
-            <inheritdoc />
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH5458DropText.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH5458DropText.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH5458DropText.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH8192CaseIdDocumentHash">
-            <inheritdoc />
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH8192CaseIdDocumentHash.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH8192CaseIdDocumentHash.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Services.Repositories.Migrations.HFICH8192CaseIdDocumentHash.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
         </member>
         <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Channel">
             <summary>

@@ -1,17 +1,15 @@
 using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.NotificationService.Api;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging;
-using CIS.InternalServices.NotificationService.Api.Services.User;
 using SharedComponents.DocumentDataStorage;
-using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using SharedComponents.Storage;
 using CIS.InternalServices.NotificationService.Api.Legacy.ErrorHandling;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
 using CIS.InternalServices.NotificationService.Api.Database;
 using CIS.InternalServices.NotificationService.Api.Legacy;
-using CIS.InternalServices.NotificationService.Api.Legacy.AuditLog;
-using CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services.S3;
+using CIS.Infrastructure.Messaging;
+using CIS.InternalServices.NotificationService.Api.Configuration;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -28,15 +26,32 @@ SharedComponents.GrpcServiceBuilder
         options.OpenApiTitle = "Notification Service API";
         options.AddOpenApiXmlCommentFromBaseDirectory("CIS.InternalServices.NotificationService.Contracts.xml");
     })
-    .Build(builder =>
+    .Build((builder, configuration) =>
     {
-        // storage
+        // file storage
         builder
             .AddCisStorageServices()
             .AddStorageClient<IMcsStorage>();
 
-        // Mvc
+        // entity framework
+        builder.AddEntityFramework<NotificationDbContext>();
+
+        // ukladani payloadu - document data storage
+        builder.AddDocumentDataStorage();
+
+        // messaging - kafka consumers and producers
+        addMessaging(builder, configuration);
+
+        #region registrace background jobu
+        // odeslani MPSS emailu
+        builder.AddCisBackgroundService<SendEmailsJob, SendEmailsJobConfiguration>(new SendEmailsJobConfigurationValidator());
+
+        // zruseni odesilani MPSS emailu po expiraci platnosti
+        builder.AddCisBackgroundService<SetExpiredEmailsJob, SetExpiredEmailsJobConfiguration>(new SetExpiredEmailsJobConfigurationValidator());
+        #endregion registrace background jobu
+
         #region legacy code
+        // Mvc
         builder.Services
             .AddHsts(options =>
             {
@@ -49,33 +64,13 @@ SharedComponents.GrpcServiceBuilder
                 options.SuppressMapClientErrors = true;
                 options.AddCustomInvalidModelStateResponseFactory();
             });
+
+        builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+        builder.Services.AddScoped<CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction.ISmsAuditLogger, CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.SmsAuditLogger>();
+        builder.Services.AddScoped<CIS.InternalServices.NotificationService.Api.Services.User.Abstraction.IUserAdapterService, CIS.InternalServices.NotificationService.Api.Services.User.UserAdapterService>();
+        builder.AddS3Client();
         #endregion legacy code
 
-        // audit logger
-        builder.Services
-            .AddScoped<ISmsAuditLogger, SmsAuditLogger>();
-
-        // repository
-        // entity framework
-        builder.AddEntityFramework<NotificationDbContext>();
-        builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-
-        // messaging - kafka consumers and producers
-        builder.AddMessaging();
-
-        // user
-        builder.Services.AddScoped<IUserAdapterService, UserAdapterService>();
-
-        #region registrace background jobu
-        // odeslani MPSS emailu
-        builder.AddCisBackgroundService<SendEmailsJob, SendEmailsJobConfiguration>(new SendEmailsJobConfigurationValidator());
-
-        // zruseni odesilani MPSS emailu po expiraci platnosti
-        builder.AddCisBackgroundService<SetExpiredEmailsJob, SetExpiredEmailsJobConfiguration>(new SetExpiredEmailsJobConfigurationValidator());
-        #endregion registrace background jobu
-
-        // ukladani payloadu - document data storage
-        builder.AddDocumentDataStorage();
     })
     .MapGrpcServices(app =>
     {
@@ -83,8 +78,22 @@ SharedComponents.GrpcServiceBuilder
     })
     .Run();
 
+static void addMessaging(WebApplicationBuilder builder, AppConfiguration configuration)
+{
+    builder
+        .AddCisMessaging()
+        .AddKafka()
+            // Mcs
+            .AddConsumer<CIS.InternalServices.NotificationService.Api.Messaging.Consumers.Result.McsResultConsumer>()
+            .AddConsumerTopicAvro<CIS.InternalServices.NotificationService.Api.Messaging.Messages.Partials.IMcsResultTopic>(configuration.KafkaTopics.McsResult)
+            .AddProducerAvro<CIS.InternalServices.NotificationService.Api.Messaging.Messages.Partials.IMcsSenderTopic>(configuration.KafkaTopics.McsSender)
+        .Build();
 
-   
+    builder.Services
+        .AddScoped<CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsEmailProducer, CIS.InternalServices.NotificationService.Api.Messaging.Producers.McsEmailProducer>()
+        .AddScoped<CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsSmsProducer, CIS.InternalServices.NotificationService.Api.Messaging.Producers.McsSmsProducer>();
+}
+
 
 // swagger
 /*builder.AddCustomSwagger();

@@ -10,7 +10,7 @@ using Headers = CIS.InternalServices.NotificationService.Api.Messaging.Producers
 
 namespace CIS.InternalServices.NotificationService.Api.Messaging.Producers;
 
-public class McsEmailProducer : IMcsEmailProducer
+internal class McsEmailProducer : IMcsEmailProducer
 {
     private readonly ITopicProducer<IMcsSenderTopic> _producer;
     private readonly IDateTime _dateTime;

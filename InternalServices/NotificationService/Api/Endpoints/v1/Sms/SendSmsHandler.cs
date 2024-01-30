@@ -13,7 +13,7 @@ using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms;
 
-public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
+internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 {
     private readonly IDateTime _dateTime;
     private readonly IMcsSmsProducer _mcsSmsProducer;

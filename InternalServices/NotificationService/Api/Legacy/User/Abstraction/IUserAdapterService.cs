@@ -1,6 +1,6 @@
 ﻿namespace CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 
-public interface IUserAdapterService
+internal interface IUserAdapterService
 {
     string GetUsername();
 

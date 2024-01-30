@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Result;
 
-public class GetResultHandler : IRequestHandler<GetResultRequest, GetResultResponse>
+internal class GetResultHandler : IRequestHandler<GetResultRequest, GetResultResponse>
 {
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
