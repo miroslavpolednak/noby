@@ -72,7 +72,16 @@ SharedComponents.GrpcServiceBuilder
         #endregion legacy code
 
     })
-    .MapGrpcServices(app =>
+    .UseMiddlewares((app, _) =>
+    {
+        app.MapWhen(x => x.Request.Path.StartsWithSegments("v1"), app2 =>
+        {
+            app2.UseMiddleware<AuditRequestResponseMiddleware>();
+            app2.UseRouting();
+            app2.UseEndpoints(t => t.MapControllers());
+        });
+    })
+    .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<CIS.InternalServices.NotificationService.Api.Endpoints.v2.NotificationServiceV2>();
     })
@@ -93,34 +102,6 @@ static void addMessaging(WebApplicationBuilder builder, AppConfiguration configu
         .AddScoped<CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsEmailProducer, CIS.InternalServices.NotificationService.Api.Messaging.Producers.McsEmailProducer>()
         .AddScoped<CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsSmsProducer, CIS.InternalServices.NotificationService.Api.Messaging.Producers.McsSmsProducer>();
 }
-
-
-// swagger
-/*builder.AddCustomSwagger();
-
-
-var app = builder.Build();
-log.ApplicationBuilt();
-
-app.UseMiddleware<AuditRequestResponseMiddleware>();
-
-app.UseHsts();
-
-app.UseHttpsRedirection();
-
-app.UseServiceDiscovery();
-
-app
-    .UseCustomSwagger()
-    .UseGrpc2WebApiException()
-    .UseRouting()
-    .UseAuthentication()
-    .UseAuthorization()
-    .UseCisServiceUserContext();
-
-//app.MapGrpcService<NotificationService>();
-app.MapControllers();*/
-
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program
