@@ -313,7 +313,11 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
 
     private void validation()
     {
-        if (_settings.MapGrpcServices is null)
+        if (_isGenericRunner && _settings.MapGrpcServices is null)
+        {
+            throw new CisConfigurationException(0, "GrpcServiceBuilder: MapGrpcServices action has not been set");
+        }
+        else if (!_isGenericRunner && _settings.MapGrpcServicesT is null)
         {
             throw new CisConfigurationException(0, "GrpcServiceBuilder: MapGrpcServices action has not been set");
         }
