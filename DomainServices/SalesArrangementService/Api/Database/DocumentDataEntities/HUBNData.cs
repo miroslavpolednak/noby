@@ -40,7 +40,7 @@ internal sealed class HUBNData : IDocumentData
         public bool IsCollateral { get; set; }
     }
 
-    public class HUBNCollateralIdentificationData
+    public sealed class HUBNCollateralIdentificationData
     {
         public string? RealEstateIdentification { get; set; } = null!;
     }

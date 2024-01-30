@@ -4,6 +4,7 @@ using Grpc.Core;
 
 namespace CIS.InternalServices.ServiceDiscovery.Tests.IntegrationTests;
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 public class GetServiceTest
     : IntegrationTestBase
 {

@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace CIS.Infrastructure.Configuration.Providers;
 
-internal class ConjurEnvironmentVariablesProvider : ConfigurationProvider
+internal sealed class ConjurEnvironmentVariablesProvider : ConfigurationProvider
 {
     private readonly Func<IDictionary<string, string?>> _configDataFactory;
 

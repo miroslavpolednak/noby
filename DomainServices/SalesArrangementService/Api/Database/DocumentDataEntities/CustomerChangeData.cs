@@ -14,58 +14,58 @@ internal sealed class CustomerChangeData : IDocumentData
     public CustomerChangePaymentAccountData? RepaymentAccount { get; set; }
     public CustomerChangeCommentToChangeRequestData? CommentToChangeRequest { get; set; }
 
-    public class CustomerChangeApplicantData
+    public sealed class CustomerChangeApplicantData
     {
         public IEnumerable<CustomerIdentity> Identity { get; set; } = Enumerable.Empty<CustomerIdentity>();
         public CustomerChangeNaturalPersonData? NaturalPerson { get; set; }
         public CustomerChangeIdentificationDocumentData? IdentificationDocument { get; set; }
     }
 
-    public class CustomerChangeNaturalPersonData
+    public sealed class CustomerChangeNaturalPersonData
     {
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public DateTime DateOfBirth { get; set; }
     }
 
-    public class CustomerChangeIdentificationDocumentData
+    public sealed class CustomerChangeIdentificationDocumentData
     {
         public int IdentificationDocumentTypeId { get; set; }
         public string Number { get; set; } = null!;
     }
 
-    public class CustomerChangeReleaseData
+    public sealed class CustomerChangeReleaseData
     {
         public bool IsActive { get; set; }
         public IEnumerable<CustomerChangeReleaseCustomerData> Customers { get; set; } = Enumerable.Empty<CustomerChangeReleaseCustomerData>();
     }
 
-    public class CustomerChangeReleaseCustomerData
+    public sealed class CustomerChangeReleaseCustomerData
     {
         public CustomerIdentity Identity { get; set; } = null!;
         public CustomerChangeNaturalPersonData? NaturalPerson { get; set; }
     }
 
-    public class CustomerChangeAddData
+    public sealed class CustomerChangeAddData
     {
         public bool IsActive { get; set; }
         public IEnumerable<CustomerChangeAddCustomerData> Customers { get; set; } = Enumerable.Empty<CustomerChangeAddCustomerData>();
     }
 
-    public class CustomerChangeAddCustomerData
+    public sealed class CustomerChangeAddCustomerData
     {
         public string Name { get; set; } = null!;
         public DateTime DateOfBirth { get; set; }
     }
 
-    public class CustomerChangeAgentData
+    public sealed class CustomerChangeAgentData
     {
         public bool IsActive { get; set; }
         public string ActualAgent { get; set; } = null!;
         public string? NewAgent { get; set; }
     }
 
-    public class CustomerChangePaymentAccountData
+    public sealed class CustomerChangePaymentAccountData
     {
         public bool IsActive { get; set; }
         public string? AgreedPrefix { get; set; } = null!;
@@ -79,7 +79,7 @@ internal sealed class CustomerChangeData : IDocumentData
         public DateTime? OwnerDateOfBirth { get; set; }
     }
 
-    public class CustomerChangeCommentToChangeRequestData
+    public sealed class CustomerChangeCommentToChangeRequestData
     {
         public bool IsActive { get; set; }
         public string? GeneralComment { get; set; }

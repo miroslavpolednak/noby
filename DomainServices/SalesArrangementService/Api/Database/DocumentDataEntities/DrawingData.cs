@@ -31,7 +31,7 @@ internal sealed class DrawingData : IDocumentData
 
         public DrawingAgentIdentificationDocumentData? IdentificationDocument { get; set; }
 
-        public class DrawingAgentIdentificationDocumentData
+        public sealed class DrawingAgentIdentificationDocumentData
         {
             public int IdentificationDocumentTypeId { get; set; }
 

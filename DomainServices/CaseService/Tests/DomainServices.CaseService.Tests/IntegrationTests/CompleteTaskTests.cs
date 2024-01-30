@@ -1,9 +1,9 @@
 ﻿using CIS.Testing;
 using Grpc.Core;
-using Moq;
 
 namespace DomainServices.CaseService.Tests.IntegrationTests;
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
 public class CompleteTaskTests
     : IntegrationTestBase
 {
