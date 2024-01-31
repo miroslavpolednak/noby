@@ -15,7 +15,7 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms;
 public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateRequest, SendSmsFromTemplateResponse>
 {
     private const int _maxSmsTextLength = 480;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly IMcsSmsProducer _mcsSmsProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
@@ -24,7 +24,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
     private readonly ILogger<SendSmsFromTemplateHandler> _logger;
     
     public SendSmsFromTemplateHandler(
-        IDateTime dateTime,
+        TimeProvider dateTime,
         IMcsSmsProducer mcsSmsProducer,
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
@@ -83,7 +83,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         result.DocumentId = request.DocumentId;
         result.DocumentHash = request.DocumentHash?.Hash;
         result.HashAlgorithm = request.DocumentHash?.HashAlgorithm;
-        result.RequestTimestamp = _dateTime.Now;
+        result.RequestTimestamp = _dateTime.GetLocalNow().DateTime;
 
         result.Type = request.Type;
         result.CountryCode = phone.CountryCode;

@@ -1,5 +1,4 @@
-﻿using CIS.Core;
-using CIS.Core.Exceptions;
+﻿using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
@@ -17,7 +16,7 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email;
 
 public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailResponse>
 {
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly IMcsEmailProducer _mcsEmailProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
@@ -30,7 +29,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
     private readonly IDocumentDataStorage _documentDataStorage;
 
     public SendEmailHandler(
-        IDateTime dateTime,
+        TimeProvider dateTime,
         IMcsEmailProducer mcsEmailProducer,
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
@@ -77,7 +76,7 @@ public class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailRespo
         result.DocumentId = request.DocumentId;
         result.DocumentHash = request.DocumentHash?.Hash;
         result.HashAlgorithm = request.DocumentHash?.HashAlgorithm;
-        result.RequestTimestamp = _dateTime.Now;
+        result.RequestTimestamp = _dateTime.GetLocalNow().DateTime;
         result.SenderType = _mcsSenders.Contains(domainName) ? Contracts.Statistics.Dto.SenderType.KB
             : _mpssSenders.Contains(domainName) ? Contracts.Statistics.Dto.SenderType.MP
             : throw new ArgumentException(domainName);

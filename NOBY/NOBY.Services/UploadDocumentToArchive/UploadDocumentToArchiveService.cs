@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using CIS.Core;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
@@ -34,7 +33,7 @@ internal sealed class UploadDocumentToArchiveService
                     CaseId = caseId,
                     DocumentId = documentId,
                     ContractNumber = string.IsNullOrWhiteSpace(contractNumber) ? _defaultContractNumber : contractNumber,
-                    CreatedOn = _dateTime.Now.Date,
+                    CreatedOn = _dateTime.GetLocalNow().Date,
                     AuthorUserLogin = _documentHelper.GetAuthorUserLoginForDocumentUpload(user),
                     Description = attachment.Description ?? string.Empty,
                     EaCodeMainId = attachment.EaCodeMainId,
@@ -51,7 +50,7 @@ internal sealed class UploadDocumentToArchiveService
     }
 
     private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly IUserServiceClient _userServiceClient;
     private readonly ICurrentUserAccessor _currentUserAccessor;
@@ -59,7 +58,7 @@ internal sealed class UploadDocumentToArchiveService
 
     public UploadDocumentToArchiveService(
         SharedComponents.Storage.ITempStorage tempFileManager,
-        IDateTime dateTime,
+        TimeProvider dateTime,
         IDocumentArchiveServiceClient documentArchiveService,
         IUserServiceClient userServiceClient,
         ICurrentUserAccessor currentUserAccessor,

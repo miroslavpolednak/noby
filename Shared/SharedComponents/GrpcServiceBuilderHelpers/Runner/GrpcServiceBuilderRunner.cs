@@ -25,7 +25,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
 
         try
         {
-            _settings.Builder.AddCisCoreFeatures();
+            _settings.Builder.AddCisCoreFeatures(true, true);
             _settings.Builder.Services.AddAttributedServices(_settings.MainAssembly);
 
             _settings.Builder

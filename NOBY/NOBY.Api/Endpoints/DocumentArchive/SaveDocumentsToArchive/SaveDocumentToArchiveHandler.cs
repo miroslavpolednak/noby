@@ -1,5 +1,4 @@
-﻿using CIS.Core;
-using CIS.Core.Security;
+﻿using CIS.Core.Security;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
@@ -20,7 +19,7 @@ public class SaveDocumentToArchiveHandler
 
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
@@ -33,7 +32,7 @@ public class SaveDocumentToArchiveHandler
     public SaveDocumentToArchiveHandler(
         IDocumentArchiveServiceClient client,
         ICurrentUserAccessor currentUserAccessor,
-        IDateTime dateTime,
+        TimeProvider dateTime,
         SharedComponents.Storage.ITempStorage tempFileManager,
         ISalesArrangementServiceClient salesArrangementService,
         IDocumentOnSAServiceClient documentOnSAService,
@@ -196,7 +195,7 @@ public class SaveDocumentToArchiveHandler
                 EaCodeMainId = documentInformation.DocumentInformation.EaCodeMainId,
                 Filename = fileName,
                 AuthorUserLogin = authorUserLogin,
-                CreatedOn = _dateTime.Now.Date,
+                CreatedOn = _dateTime.GetLocalNow().Date,
                 Description = documentInformation.DocumentInformation.Description ?? string.Empty,
                 FormId = documentInformation.FormId ?? string.Empty,
                 ContractNumber = await GetContractNumber(caseId, cancellationToken)

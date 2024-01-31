@@ -15,17 +15,19 @@ internal sealed class UpdateSalesArrangementStateHandler
 
         // update stavu SA
         entity.State = request.State;
-        entity.StateUpdateTime = _dbContext.CisDateTime.Now;
+        entity.StateUpdateTime = _timeProvider.GetLocalNow().DateTime;
 
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly TimeProvider _timeProvider;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
 
-    public UpdateSalesArrangementStateHandler(Database.SalesArrangementServiceDbContext dbContext)
+    public UpdateSalesArrangementStateHandler(Database.SalesArrangementServiceDbContext dbContext, TimeProvider timeProvider)
     {
         _dbContext = dbContext;
+        _timeProvider = timeProvider;
     }
 }

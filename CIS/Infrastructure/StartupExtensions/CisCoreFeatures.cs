@@ -1,5 +1,4 @@
-﻿using CIS.Core;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Microsoft.FeatureManagement;
@@ -8,12 +7,12 @@ namespace CIS.Infrastructure.StartupExtensions;
 
 public static class CisCoreFeatures
 {
-    public static WebApplicationBuilder AddCisCoreFeatures(this WebApplicationBuilder builder, bool useDefaultDateTimeService = true)
+    public static WebApplicationBuilder AddCisCoreFeatures(this WebApplicationBuilder builder, bool addDefaultTimeProvider = false, bool addFeatureManagement = false)
     {
         // datetime unification
-        if (useDefaultDateTimeService)
+        if (addDefaultTimeProvider)
         {
-            builder.Services.AddSingleton<IDateTime, LocalDateTime>();
+            builder.Services.AddSingleton(TimeProvider.System);
         }
 
         builder.Services.AddOptions();
@@ -30,7 +29,10 @@ public static class CisCoreFeatures
         builder.Services.AddHttpContextAccessor();
 
         // feature flags
-        builder.Services.AddFeatureManagement();
+        if (addFeatureManagement)
+        {
+            builder.Services.AddFeatureManagement();
+        }
 
         return builder;
     }

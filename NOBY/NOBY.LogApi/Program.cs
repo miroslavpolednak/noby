@@ -17,7 +17,7 @@ try
     var appConfiguration = builder.AddNobyConfig();
 
     builder
-        .AddCisCoreFeatures()
+        .AddCisCoreFeatures(true, true)
         .AddCisWebApiCors()
         .AddCisLogging()
         .AddCisAudit();

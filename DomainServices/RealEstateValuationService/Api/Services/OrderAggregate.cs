@@ -122,7 +122,7 @@ internal sealed class OrderAggregate
     {
         // ulozeni vysledku
         entity.OrderId = orderId;
-        entity.ValuationSentDate = _dbContext.CisDateTime.Now;
+        entity.ValuationSentDate = _timeProvider.GetLocalNow().DateTime;
         entity.ValuationStateId = (int)newValuationState;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -171,7 +171,8 @@ internal sealed class OrderAggregate
     private readonly IOfferServiceClient _offerService;
     private readonly RealEstateValuationServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseService;
-    
+    private readonly TimeProvider _timeProvider;
+
     public OrderAggregate(
         Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper,
         IDocumentDataStorage documentDataStorage,
@@ -180,7 +181,8 @@ internal sealed class OrderAggregate
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
         RealEstateValuationServiceDbContext dbContext,
-        ICaseServiceClient caseService)
+        ICaseServiceClient caseService,
+        TimeProvider timeProvider)
     {
         _mapper = mapper;
         _documentDataStorage = documentDataStorage;
@@ -190,5 +192,6 @@ internal sealed class OrderAggregate
         _salesArrangementService = salesArrangementService;
         _caseService = caseService;
         _dbContext = dbContext;
+        _timeProvider = timeProvider;
     }
 }

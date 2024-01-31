@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Net.Mime;
-using CIS.Core;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -10,18 +9,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetElectronicDocumentPreview;
 
-public class GetElectronicDocumentPreviewHandler : IRequestHandler<GetElectronicDocumentPreviewRequest, GetElectronicDocumentPreviewResponse>
+public sealed class GetElectronicDocumentPreviewHandler : IRequestHandler<GetElectronicDocumentPreviewRequest, GetElectronicDocumentPreviewResponse>
 {
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IESignaturesClient _eSignaturesClient;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
 
     public GetElectronicDocumentPreviewHandler(
         DocumentOnSAServiceDbContext dbContext,
         IESignaturesClient eSignaturesClient,
         ICodebookServiceClient codebookService,
-        IDateTime dateTime)
+        TimeProvider dateTime)
     {
         _dbContext = dbContext;
         _eSignaturesClient = eSignaturesClient;
@@ -43,7 +42,7 @@ public class GetElectronicDocumentPreviewHandler : IRequestHandler<GetElectronic
         
         return new GetElectronicDocumentPreviewResponse
         {
-            Filename = $"{fileName}_{documentOnSA.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
+            Filename = $"{fileName}_{documentOnSA.DocumentOnSAId}_{_dateTime.GetLocalNow().ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
             MimeType = MediaTypeNames.Application.Pdf,
             BinaryData = ByteString.CopyFrom(documentPreviewData)
         };

@@ -14,7 +14,7 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email;
 
 public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplateRequest, SendEmailFromTemplateResponse>
 {
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly IMcsEmailProducer _mcsEmailProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
@@ -26,7 +26,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
     private readonly ILogger<SendEmailFromTemplateHandler> _logger;
 
     public SendEmailFromTemplateHandler(
-        IDateTime dateTime,
+        TimeProvider dateTime,
         IMcsEmailProducer mcsEmailProducer,
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
@@ -71,7 +71,7 @@ public class SendEmailFromTemplateHandler : IRequestHandler<SendEmailFromTemplat
         result.DocumentId = request.DocumentId;
         result.DocumentHash = request.DocumentHash?.Hash;
         result.HashAlgorithm = request.DocumentHash?.HashAlgorithm;
-        result.RequestTimestamp = _dateTime.Now;
+        result.RequestTimestamp = _dateTime.GetLocalNow().DateTime;
         result.SenderType = _mcsSenders.Contains(domainName) ? Contracts.Statistics.Dto.SenderType.KB
             : _mpssSenders.Contains(domainName) ? Contracts.Statistics.Dto.SenderType.MP
             : throw new ArgumentException(domainName);

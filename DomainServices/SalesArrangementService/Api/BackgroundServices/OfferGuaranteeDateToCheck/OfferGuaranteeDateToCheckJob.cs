@@ -1,5 +1,4 @@
-﻿using CIS.Core;
-using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck;
@@ -18,7 +17,7 @@ internal sealed class OfferGuaranteeDateToCheckJob
                 f.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed
                 && f.Value 
                 && _saStates.Contains(f.SalesArrangement.State) 
-                && f.SalesArrangement.OfferGuaranteeDateTo < _dateTime.Now)
+                && f.SalesArrangement.OfferGuaranteeDateTo < _dateTime.GetLocalNow().DateTime)
             .ToListAsync(cancellationToken);
         
         foreach (var flowSwitch in flowSwitches)
@@ -40,14 +39,14 @@ internal sealed class OfferGuaranteeDateToCheckJob
     }
 
     private static int[] _saStates = new[] { (int)SalesArrangementStates.InProgress, (int)SalesArrangementStates.NewArrangement, (int)SalesArrangementStates.InSigning, (int)SalesArrangementStates.ToSend };
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseService;
     private readonly ILogger<OfferGuaranteeDateToCheckJob> _logger;
     
     public OfferGuaranteeDateToCheckJob(
         ILogger<OfferGuaranteeDateToCheckJob> logger,
-        IDateTime dateTime,
+        TimeProvider dateTime,
         Database.SalesArrangementServiceDbContext dbContext,
         ICaseServiceClient caseService)
     {

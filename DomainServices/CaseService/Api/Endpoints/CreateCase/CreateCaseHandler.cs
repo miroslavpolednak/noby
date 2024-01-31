@@ -63,7 +63,7 @@ internal sealed class CreateCaseHandler
             CaseId = caseId,
 
             StateUpdatedInStarbuild = (int)UpdatedInStarbuildStates.Unknown,
-            StateUpdateTime = _dbContext.CisDateTime.Now,
+            StateUpdateTime = _timeProvider.GetLocalNow().DateTime,
             ProductTypeId = request.Data.ProductTypeId,
 
             Name = request.Customer.Name,
@@ -99,6 +99,7 @@ internal sealed class CreateCaseHandler
     private readonly IEasClient _easClient;
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly UserService.Clients.IUserServiceClient _userService;
+    private readonly TimeProvider _timeProvider;
 
     public CreateCaseHandler(
         IRollbackBag bag,
@@ -107,14 +108,16 @@ internal sealed class CreateCaseHandler
         CodebookService.Clients.ICodebookServiceClient codebookService,
         IEasClient easClient,
         CaseServiceDbContext dbContext,
-        ILogger<CreateCaseHandler> logger)
+        ILogger<CreateCaseHandler> logger,
+        TimeProvider timeProvider)
     {
         _bag = bag;
         _mediator = mediator;
-         _userService = userService;
+        _userService = userService;
         _easClient = easClient;
         _dbContext = dbContext;
         _logger = logger;
         _codebookService = codebookService;
+        _timeProvider = timeProvider;
     }
 }

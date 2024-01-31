@@ -9,13 +9,16 @@ public abstract class BaseDbContext<TDbContext>
     where TDbContext : DbContext
 {
     public Core.Security.ICurrentUserAccessor? CurrentUser { get; init; }
-    public Core.IDateTime CisDateTime { get; init; }
+    
+    private readonly TimeProvider _timeProvider;
+    private readonly bool _useUtcForTimestamping;
 
-    public BaseDbContext(BaseDbContextAggregate<TDbContext> aggregate)
+    public BaseDbContext(BaseDbContextAggregate<TDbContext> aggregate, bool useUtcForTimestamping = false)
         : base(aggregate.Options)
     {
         CurrentUser = aggregate.CurrentUser;
-        CisDateTime = aggregate.DateTime;
+        _useUtcForTimestamping = useUtcForTimestamping;
+        _timeProvider = aggregate.ContextTimeProvider;
     }
 
     /// <summary>
@@ -81,7 +84,8 @@ public abstract class BaseDbContext<TDbContext>
                             obj1.CreatedUserId = CurrentUser!.User!.Id;
                             obj1.CreatedUserName = CurrentUser!.UserDetails!.DisplayName;
                         }
-                        obj1.CreatedTime = CisDateTime.Now;
+                        obj1.CreatedTime = _useUtcForTimestamping ? _timeProvider.GetUtcNow().DateTime : _timeProvider.GetLocalNow().DateTime;
+                        
                     }
 
                     await processModified();

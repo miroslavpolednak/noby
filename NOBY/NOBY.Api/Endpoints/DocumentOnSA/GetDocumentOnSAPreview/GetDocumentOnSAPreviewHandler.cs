@@ -1,7 +1,5 @@
 ﻿using System.Globalization;
 using System.Net.Mime;
-using CIS.Core;
-using SharedTypes.Enums;
 using SharedAudit;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
@@ -83,7 +81,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
         return new GetDocumentOnSAPreviewResponse
         {
             FileData = document.Data.ToByteArray(),
-            Filename = $"{fileName}_{documentOnSA.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
+            Filename = $"{fileName}_{documentOnSA.DocumentOnSAId}_{_dateTime.GetLocalNow().ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
             ContentType = MediaTypeNames.Application.Pdf
         };
     }
@@ -113,7 +111,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
     }
 
     private readonly ICodebookServiceClient _codebookService;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -122,7 +120,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
 
     public GetDocumentOnSAPreviewHandler(
         ICodebookServiceClient codebookService,
-        IDateTime dateTime,
+        TimeProvider dateTime,
         IDocumentOnSAServiceClient documentOnSaService,
         IDocumentGeneratorServiceClient documentGeneratorService,
         ISalesArrangementServiceClient salesArrangementService,
