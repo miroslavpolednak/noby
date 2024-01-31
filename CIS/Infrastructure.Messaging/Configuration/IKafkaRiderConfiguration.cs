@@ -7,6 +7,8 @@ namespace CIS.Infrastructure.Messaging.Configuration;
 /// </summary>
 public interface IKafkaRiderConfiguration
 {
+    bool Disabled { get; }
+
     /// <summary>
     /// https://docs.confluent.io/platform/current/clients/confluent-kafka-dotnet/_site/api/Confluent.Kafka.ClientConfig.html#Confluent_Kafka_ClientConfig_BootstrapServers
     /// </summary>

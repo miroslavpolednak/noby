@@ -5,6 +5,7 @@ namespace CIS.Infrastructure.Messaging.Configuration;
 internal sealed class KafkaRiderConfiguration
     : IKafkaRiderConfiguration
 {
+    public bool Disabled { get; set; }
     public string BootstrapServers { get; set; } = null!;
     public string? SslKeyLocation { get; set; } = null!;
     public string? SslKeyPassword { get; set; } = null!;
