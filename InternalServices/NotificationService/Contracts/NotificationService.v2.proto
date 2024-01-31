@@ -15,11 +15,13 @@ import "Messages/NotificationIdResponse.proto";
 import "Messages/Types.proto";
 
 service NotificationService {
-   rpc SendSms(SendSmsRequest) returns (NotificationIdResponse) {
-	   option (google.api.http) = {
-			post: "/v2/sms"
-	   };
-   }
+	// Odeslat sms notifikaci.
+	rpc SendSms(SendSmsRequest) returns (NotificationIdResponse) {
+		option (google.api.http) = {
+			post: "/v2/sms",
+			body: "*"
+		};
+	}
 
    rpc SendEmail(SendEmailRequest) returns (NotificationIdResponse) {
 	   option (google.api.http) = {

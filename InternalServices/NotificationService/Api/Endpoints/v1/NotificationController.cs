@@ -4,10 +4,10 @@ using CIS.InternalServices.NotificationService.LegacyContracts.Result;
 using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
 using CIS.InternalServices.NotificationService.LegacyContracts.Statistics;
 using CIS.InternalServices.NotificationService.LegacyContracts.Resend;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using Asp.Versioning;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1;
 
@@ -29,6 +29,8 @@ public class NotificationController : ControllerBase
     /// <remarks>
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
     /// </remarks>
+    [ApiVersion("1", Deprecated = true)]
+    [Obsolete("Replaced with v2")]
     [AuditLog]
     [HttpPost("sms")]
     [Produces("application/json")]
@@ -45,6 +47,8 @@ public class NotificationController : ControllerBase
     /// <remarks>
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
     /// </remarks>
+    [ApiVersion("1", Deprecated = true)]
+    [Obsolete("Replaced with v2")]
     [HttpPost("email")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
@@ -53,13 +57,15 @@ public class NotificationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<SendEmailResponse> SendEmail([FromBody] SendEmailRequest request, CancellationToken token)
         => await _mediator.Send(request, token);
-    
+
     /// <summary>
     /// Získat výsledek o notifikaci
     /// </summary>
     /// <remarks>
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
     /// </remarks>
+    [ApiVersion("1", Deprecated = true)]
+    [Obsolete("Replaced with v2")]
     [HttpGet("result/{id}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
@@ -81,6 +87,8 @@ public class NotificationController : ControllerBase
     /// <remarks>
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
     /// </remarks>
+    [ApiVersion("1", Deprecated = true)]
+    [Obsolete("Replaced with v2")]
     [HttpGet("result/search")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(List<LegacyContracts.Result.Dto.Result>), StatusCodes.Status200OK)]
@@ -107,6 +115,8 @@ public class NotificationController : ControllerBase
     /// <remarks>
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
     /// </remarks>
+    [ApiVersion("1", Deprecated = true)]
+    [Obsolete("Replaced with v2")]
     [HttpGet("result/statistics")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(GetStatisticsResponse), StatusCodes.Status200OK)]
@@ -135,6 +145,8 @@ public class NotificationController : ControllerBase
     /// <remarks>
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
     /// </remarks>
+    [ApiVersion("1", Deprecated = true)]
+    [Obsolete("Replaced with v2")]
     [HttpGet("resend/{id}")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(StatusCodes.Status200OK)]

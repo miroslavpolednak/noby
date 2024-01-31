@@ -10,6 +10,7 @@ using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.Infrastructure.Messaging;
 using CIS.InternalServices.NotificationService.Api.Configuration;
+using Microsoft.FeatureManagement;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -24,6 +25,8 @@ SharedComponents.GrpcServiceBuilder
     .EnableJsonTranscoding(options =>
     {
         options.OpenApiTitle = "Notification Service API";
+        options.OpenApiVersion = "v2";
+        options.OpenApiEndpointVersion = "2.0";
         options.AddOpenApiXmlCommentFromBaseDirectory("CIS.InternalServices.NotificationService.Contracts.xml");
     })
     .Build((builder, configuration) =>
@@ -51,19 +54,17 @@ SharedComponents.GrpcServiceBuilder
         #endregion registrace background jobu
 
         #region legacy code
-        // Mvc
-        builder.Services
-            .AddHsts(options =>
-            {
-                options.Preload = true;
-                options.MaxAge = TimeSpan.FromDays(360);
-            })
-            .AddControllers()
-            .ConfigureApiBehaviorOptions(options =>
-            {
-                options.SuppressMapClientErrors = true;
-                options.AddCustomInvalidModelStateResponseFactory();
-            });
+        bool enableLegacyEndpoints = builder.Configuration.GetValue<bool>("FeatureManagement:LegacyEndpoints", false);
+        if (enableLegacyEndpoints)
+        {
+            builder.Services
+                .AddControllers()
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.SuppressMapClientErrors = true;
+                    options.AddCustomInvalidModelStateResponseFactory();
+                });
+        }
 
         builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
         builder.Services.AddScoped<CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction.ISmsAuditLogger, CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.SmsAuditLogger>();
@@ -72,15 +73,23 @@ SharedComponents.GrpcServiceBuilder
         #endregion legacy code
 
     })
+    #region legacy code
     .UseMiddlewares((app, _) =>
     {
-        app.MapWhen(x => x.Request.Path.StartsWithSegments("v1"), app2 =>
+        var manager = app.Services.GetRequiredService<IFeatureManager>();
+        if (manager.IsEnabledAsync("LegacyEndpoints").GetAwaiter().GetResult())
         {
-            app2.UseMiddleware<AuditRequestResponseMiddleware>();
-            app2.UseRouting();
-            app2.UseEndpoints(t => t.MapControllers());
-        });
+            app.UseWhen(x => x.Request.Path.StartsWithSegments("/v1"), app2 =>
+            {
+                app2.UseMiddleware<AuditRequestResponseMiddleware>();
+            });
+            app.MapWhen(x => x.Request.Path.StartsWithSegments("/v1"), app2 =>
+            {
+                app2.UseEndpoints(t => t.MapControllers());
+            });
+        }
     })
+    #endregion legacy code
     .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<CIS.InternalServices.NotificationService.Api.Endpoints.v2.NotificationServiceV2>();

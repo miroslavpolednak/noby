@@ -126,13 +126,12 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             {
                 app.UseHsts();
             }
+
             app.UseRouting();
 
             app.UseAuthentication()
                 .UseAuthorization()
                 .UseCisServiceUserContext();
-
-            app.MapCisGrpcHealthChecks();
 
             if (_isGenericRunner)
             {
@@ -152,6 +151,8 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
 
                 _settings.MapGrpcServicesT!(app, _settings.Configuration!);
             }
+
+            app.MapCisGrpcHealthChecks();
 
             // grpc transcoding swagger / grpc reflection
             if (!_settings.EnvironmentConfiguration.DisableContractDescriptionPropagation)
@@ -208,19 +209,18 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
                 In = ParameterLocation.Header,
                 Description = "Service user login"
             });
-
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
-                        new OpenApiSecurityScheme
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "basic"
-                            }
-                        },
-                        Array.Empty<string>()
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "basic"
+                        }
+                    },
+                    Array.Empty<string>()
                 }
             });
 
@@ -229,7 +229,15 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             c.DescribeAllParametersInCamelCase();
             c.UseInlineDefinitionsForEnums();
             c.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
-            //c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
+            c.CustomOperationIds(e =>
+            {
+                var descriptor = e.ActionDescriptor.EndpointMetadata.FirstOrDefault(t => t is Grpc.AspNetCore.Server.GrpcMethodMetadata);
+                if (descriptor is not null)
+                {
+                    return ((Grpc.AspNetCore.Server.GrpcMethodMetadata)descriptor).Method.Name;
+                }
+                return "";
+            });
 
             c.MapType<decimal>(() => new OpenApiSchema { Type = "number", Format = "decimal" });
         });

@@ -337,6 +337,14 @@
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.NotificationService.NotificationServiceBase">
             <summary>Base class for server-side implementations of NotificationService</summary>
         </member>
+        <member name="M:CIS.InternalServices.NotificationService.Contracts.v2.NotificationService.NotificationServiceBase.SendSms(CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Odeslat sms notifikaci.
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.NotificationService.NotificationServiceClient">
             <summary>Client for NotificationService</summary>
         </member>
@@ -354,6 +362,42 @@
         <member name="M:CIS.InternalServices.NotificationService.Contracts.v2.NotificationService.NotificationServiceClient.#ctor(Grpc.Core.ClientBase.ClientBaseConfiguration)">
             <summary>Protected constructor to allow creation of configured clients.</summary>
             <param name="configuration">The client configuration.</param>
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Contracts.v2.NotificationService.NotificationServiceClient.SendSms(CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Odeslat sms notifikaci.
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Contracts.v2.NotificationService.NotificationServiceClient.SendSms(CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Odeslat sms notifikaci.
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Contracts.v2.NotificationService.NotificationServiceClient.SendSmsAsync(CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Odeslat sms notifikaci.
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.NotificationService.Contracts.v2.NotificationService.NotificationServiceClient.SendSmsAsync(CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Odeslat sms notifikaci.
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
         </member>
         <member name="M:CIS.InternalServices.NotificationService.Contracts.v2.NotificationService.NotificationServiceClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
             <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
