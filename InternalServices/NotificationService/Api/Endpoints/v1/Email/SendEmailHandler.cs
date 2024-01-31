@@ -17,7 +17,7 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email;
 
 internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailResponse>
 {
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly IMcsEmailProducer _mcsEmailProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
@@ -30,7 +30,7 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
     private readonly IDocumentDataStorage _documentDataStorage;
 
     public SendEmailHandler(
-        IDateTime dateTime,
+        TimeProvider dateTime,
         IMcsEmailProducer mcsEmailProducer,
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
@@ -76,7 +76,7 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
         result.DocumentId = request.DocumentId;
         result.DocumentHash = request.DocumentHash?.Hash;
         result.HashAlgorithm = request.DocumentHash?.HashAlgorithm;
-        result.RequestTimestamp = _dateTime.Now;
+        result.RequestTimestamp = _dateTime.GetLocalNow().DateTime;
         result.SenderType = _mcsSenders.Contains(domainName) ? LegacyContracts.Statistics.Dto.SenderType.KB
             : _mpssSenders.Contains(domainName) ? LegacyContracts.Statistics.Dto.SenderType.MP
             : throw new ArgumentException(domainName);

@@ -32,7 +32,7 @@ internal sealed class SendSmsHandler
             DocumentId = request.Sms.DocumentId,
             DocumentHash = request.Sms.DocumentHash?.Hash,
             HashAlgorithm = request.Sms.DocumentHash?.HashAlgorithm.ToString(),
-            RequestTimestamp = _dateTime.Now,
+            RequestTimestamp = _dateTime.GetLocalNow().DateTime,
             Type = request.Sms.Type,
             CountryCode = phone.CountryCode,
             PhoneNumber = phone.NationalNumber,
@@ -120,7 +120,7 @@ internal sealed class SendSmsHandler
     }
 
     private readonly IAuditLogger _auditLogger;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ILogger<SendSmsHandler> _logger;
     private readonly Core.Security.IServiceUserAccessor _serviceUser;
@@ -129,7 +129,7 @@ internal sealed class SendSmsHandler
     private readonly IMcsSmsProducer _mcsSmsProducer;
 
     public SendSmsHandler(
-        IDateTime dateTime,
+        TimeProvider dateTime,
         ICodebookServiceClient codebookService,
         ILogger<SendSmsHandler> logger,
         Core.Security.IServiceUserAccessor serviceUser,
