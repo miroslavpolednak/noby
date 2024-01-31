@@ -12,7 +12,7 @@ public static class CisCoreFeatures
         // datetime unification
         if (addDefaultTimeProvider)
         {
-            builder.Services.AddSingleton(TimeProvider.System);
+            builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
         }
 
         builder.Services.AddOptions();
