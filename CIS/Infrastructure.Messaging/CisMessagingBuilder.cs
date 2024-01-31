@@ -12,11 +12,14 @@ internal sealed class CisMessagingBuilder
     {
         var configuration = AppBuilder.GetKafkaRiderConfiguration();
 
-        AppBuilder.Services.AddAvroSerializerConfiguration();
-        AppBuilder.Services.AddAvroDeserializerConfiguration();
-        AppBuilder.Services.AddJsonSerializerConfiguration();
-        AppBuilder.Services.AddJsonDeserializerConfiguration();
-        AppBuilder.Services.AddApicurioSchemaRegistry();
+        if (!configuration.Disabled)
+        {
+            AppBuilder.Services.AddAvroSerializerConfiguration();
+            AppBuilder.Services.AddAvroDeserializerConfiguration();
+            AppBuilder.Services.AddJsonSerializerConfiguration();
+            AppBuilder.Services.AddJsonDeserializerConfiguration();
+            AppBuilder.Services.AddApicurioSchemaRegistry();
+        }
 
         if (assembly is null)
         {

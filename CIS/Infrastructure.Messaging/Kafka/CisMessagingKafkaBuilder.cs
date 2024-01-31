@@ -1,4 +1,5 @@
 ﻿using Avro.Specific;
+using CIS.Infrastructure.Messaging.Configuration;
 using MassTransit;
 using System.Reflection;
 
@@ -68,12 +69,12 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
         return this;
     }
 
-    public ICisMessagingBuilder Build()
+    public IKafkaRiderConfiguration Build()
     {
         // skip integration testing
-        if (_builder.AppBuilder.Environment.EnvironmentName == "Testing")
+        if (_configuration.Disabled || _builder.AppBuilder.Environment.EnvironmentName == "Testing")
         {
-            return _builder;
+            return _configuration;
         }
 
         if (_riderConfigurationActions.Count == 0)
@@ -113,7 +114,7 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
             });
         });
 
-        return _builder;
+        return _configuration;
     }
 
     private readonly Configuration.IKafkaRiderConfiguration _configuration;
