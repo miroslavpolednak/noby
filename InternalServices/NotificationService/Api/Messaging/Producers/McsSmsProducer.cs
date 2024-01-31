@@ -13,12 +13,12 @@ namespace CIS.InternalServices.NotificationService.Api.Messaging.Producers;
 internal class McsSmsProducer : IMcsSmsProducer
 {
     private readonly ITopicProducer<IMcsSenderTopic> _producer;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly KafkaTopics _kafkaTopics;
 
     public McsSmsProducer(
         ITopicProducer<IMcsSenderTopic> producer,
-        IDateTime dateTime,
+        TimeProvider dateTime,
         IOptions<AppConfiguration> appOptions)
     {
         _producer = producer;
@@ -32,7 +32,7 @@ internal class McsSmsProducer : IMcsSmsProducer
         {
             Id = Guid.NewGuid().ToString("N"),
             B3 = Activity.Current?.RootId,
-            Timestamp = _dateTime.Now,
+            Timestamp = _dateTime.GetLocalNow().DateTime,
             ReplyTopic = _kafkaTopics.McsResult,
             Caller = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
             // Origin = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",

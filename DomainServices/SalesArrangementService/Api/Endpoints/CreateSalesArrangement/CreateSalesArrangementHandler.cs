@@ -20,7 +20,7 @@ internal sealed class CreateSalesArrangementHandler
         {
             CaseId = request.CaseId,
             SalesArrangementTypeId = request.SalesArrangementTypeId,
-            StateUpdateTime = _dbContext.CisDateTime.Now,
+            StateUpdateTime = _timeProvider.GetLocalNow().DateTime,
             ContractNumber = request.ContractNumber,
             ChannelId = user.UserInfo.ChannelId,
             PcpId = request.PcpId
@@ -105,6 +105,7 @@ internal sealed class CreateSalesArrangementHandler
             _ => throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.DataObjectIsNotValid, salesArrangementTypeId)
         };
 
+    private readonly TimeProvider _timeProvider;
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly OfferService.Clients.IOfferServiceClient _offerService;
     private readonly CaseService.Clients.ICaseServiceClient _caseService;
@@ -122,7 +123,8 @@ internal sealed class CreateSalesArrangementHandler
         CaseService.Clients.ICaseServiceClient caseService,
         CodebookService.Clients.ICodebookServiceClient codebookService,
         Database.SalesArrangementServiceDbContext dbContext,
-        ILogger<CreateSalesArrangementHandler> logger)
+        ILogger<CreateSalesArrangementHandler> logger,
+        TimeProvider timeProvider)
     {
         _bag = bag;
         _userService = userService;
@@ -132,5 +134,6 @@ internal sealed class CreateSalesArrangementHandler
         _codebookService = codebookService;
         _dbContext = dbContext;
         _logger = logger;
+        _timeProvider = timeProvider;
     }
 }

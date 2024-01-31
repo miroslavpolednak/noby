@@ -3,7 +3,6 @@ using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.DocumentDataStorage;
 using System.Net.Security;
-using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Database;
 using CIS.InternalServices.NotificationService.Api.Database.DocumentDataEntities;
@@ -17,14 +16,14 @@ internal sealed class SendEmailsJob
     private readonly NotificationDbContext _dbContext;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly ILogger<SendEmailsJob> _logger;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
 
     public SendEmailsJob(
         SendEmailsJobConfiguration configuration, 
         NotificationDbContext dbContext, 
         IDocumentDataStorage documentDataStorage,
         ILogger<SendEmailsJob> logger,
-        IDateTime dateTime)
+        TimeProvider dateTime)
     {
         _configuration = configuration;
         _dbContext = dbContext;
@@ -119,7 +118,7 @@ internal sealed class SendEmailsJob
 
                 // nastavit result
                 email.State = NotificationState.Sent;
-                email.ResultTimestamp = _dateTime.Now;
+                email.ResultTimestamp = _dateTime.GetLocalNow().DateTime;
                 email.ErrorSet = new HashSet<ResultError>();
                 email.Resend = false;
 

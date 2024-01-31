@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading;
 
 namespace SharedComponents.DocumentDataStorage;
 
@@ -115,7 +114,7 @@ internal sealed class DocumentDataStorageProvider
             DocumentDataVersion = data.Version,
             Data = Serialize(data),
             CreatedUserId = _currentUserAccessor.IsAuthenticated ? _currentUserAccessor.User!.Id : 0,
-            CreatedTime = _dateTime.Now
+            CreatedTime = _dateTime.GetLocalNow().DateTime
         };
 
         return _connectionProvider.ExecuteDapperFirstOrDefaultAsync<int>(insertSql, varsToInsert, cancellationToken);
@@ -248,7 +247,7 @@ internal sealed class DocumentDataStorageProvider
     }
 
     private readonly CIS.Core.Security.ICurrentUserAccessor _currentUserAccessor;
-    private readonly CIS.Core.IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly IConnectionProvider<Database.IDocumentDataStorageConnection> _connectionProvider;
 
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
@@ -261,7 +260,7 @@ internal sealed class DocumentDataStorageProvider
 
     public DocumentDataStorageProvider(
         CIS.Core.Security.ICurrentUserAccessor currentUserAccessor, 
-        CIS.Core.IDateTime dateTime, 
+        TimeProvider dateTime, 
         IConnectionProvider<Database.IDocumentDataStorageConnection> connectionProvider)
     {
         _currentUserAccessor = currentUserAccessor;

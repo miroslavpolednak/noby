@@ -32,7 +32,7 @@ try
 
     // globalni nastaveni prostredi
     builder
-        .AddCisCoreFeatures()
+        .AddCisCoreFeatures(true, true)
         .AddCisEnvironmentConfiguration();
 
     // logging 

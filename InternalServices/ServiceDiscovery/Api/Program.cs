@@ -22,7 +22,7 @@ try
     #region register builder.Services
     // globalni nastaveni prostredi
     var envConfiguration = builder
-        .AddCisCoreFeatures()
+        .AddCisCoreFeatures(true, true)
         .AddCisEnvironmentConfiguration();
     builder.Services.AddAttributedServices(typeof(Program));
 

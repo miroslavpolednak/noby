@@ -1,6 +1,4 @@
-﻿using CIS.Core;
-using CIS.Core.Security;
-using SharedTypes.Enums;
+﻿using CIS.Core.Security;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.CodebookService.Clients;
@@ -18,7 +16,7 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClient _codebookServiceClients;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly ICurrentUserAccessor _currentUserAccessor;
 
     public GetDocumentOnSAHandler(
@@ -27,7 +25,7 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
         ISalesArrangementServiceClient salesArrangementService,
         ICodebookServiceClient codebookServiceClients,
-        IDateTime dateTime)
+        TimeProvider dateTime)
     {
         _currentUserAccessor = currentUserAccessor;
         _documentOnSaClient = documentOnSaClient;
@@ -86,6 +84,6 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
     {
         var templates = await _codebookServiceClients.DocumentTypes(cancellationToken);
         var fileName = templates.First(t => t.Id == (int)documentOnSa.DocumentTypeId!).FileName;
-        return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
+        return $"{fileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.GetLocalNow().ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf";
     }
 }

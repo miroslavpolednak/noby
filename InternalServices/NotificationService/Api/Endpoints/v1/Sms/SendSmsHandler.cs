@@ -15,7 +15,7 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms;
 
 internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 {
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly IMcsSmsProducer _mcsSmsProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
@@ -24,7 +24,7 @@ internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
     private readonly ILogger<SendSmsHandler> _logger;
 
     public SendSmsHandler(
-        IDateTime dateTime,
+        TimeProvider dateTime,
         IMcsSmsProducer mcsSmsProducer,
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
@@ -66,7 +66,7 @@ internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         result.DocumentId = request.DocumentId;
         result.DocumentHash = request.DocumentHash?.Hash;
         result.HashAlgorithm = request.DocumentHash?.HashAlgorithm;
-        result.RequestTimestamp = _dateTime.Now;
+        result.RequestTimestamp = _dateTime.GetLocalNow().DateTime;
 
         result.Type = request.Type;
         result.CountryCode = phone.CountryCode;

@@ -50,7 +50,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
     private const string _defaultContractNumber = "HF00111111125";
 
     private readonly DocumentOnSAServiceDbContext _dbContext;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly ICurrentUserAccessor _currentUser;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IEasClient _easClient;
@@ -71,7 +71,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     public SignDocumentHandler(
         DocumentOnSAServiceDbContext dbContext,
-        IDateTime dateTime,
+        TimeProvider dateTime,
         ICurrentUserAccessor currentUser,
         ISalesArrangementServiceClient salesArrangementService,
         IEasClient easClient,
@@ -127,7 +127,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         if (documentOnSa.Source != Source.Workflow && salesArrangement.State != SalesArrangementStates.InSigning.ToByte())
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
 
-        var signatureDate = _dateTime.Now;
+        var signatureDate = _dateTime.GetLocalNow().DateTime;
 
         UpdateDocumentOnSa(documentOnSa, signatureDate);
 
@@ -293,7 +293,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                 EaCodeMainId = _unwrittenDataEaCodeMainId,
                 Filename = $"{eaCodeMain.Name}.txt",
                 AuthorUserLogin = authorUserLogin,
-                CreatedOn = _dateTime.Now.Date,
+                CreatedOn = _dateTime.GetLocalNow().DateTime,
                 Description = string.Empty,
                 FormId = string.Empty,
                 ContractNumber = contractNumber

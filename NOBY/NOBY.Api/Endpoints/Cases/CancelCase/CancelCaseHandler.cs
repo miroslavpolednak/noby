@@ -1,7 +1,5 @@
 ﻿using System.Globalization;
-using CIS.Core;
 using CIS.Core.Security;
-using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
@@ -67,11 +65,11 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
                     AuthorUserLogin = authorUserLogin,
                     CaseId = request.CaseId,
                     ContractNumber = caseDetail.Data.ContractNumber,
-                    CreatedOn = _dateTime.Now.Date,
+                    CreatedOn = _dateTime.GetLocalNow().Date,
                     DocumentId = documentId,
                     Description = documentTypeItem.Name,
                     EaCodeMainId = documentTypeItem.EACodeMainId,
-                    Filename = $"{documentTypeItem.FileName}_{caseDetail.CaseId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
+                    Filename = $"{documentTypeItem.FileName}_{caseDetail.CaseId}_{_dateTime.GetLocalNow().ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
                 }
             };
 
@@ -99,7 +97,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
         return documentTypes.First(t => t.Id == documentType.ToByte());
     }
 
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICaseServiceClient _caseService;
@@ -111,7 +109,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
     private readonly IUserServiceClient _userService;
 
     public CancelCaseHandler(
-        IDateTime dateTime,
+        TimeProvider dateTime,
         ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
         ICaseServiceClient caseService,

@@ -42,7 +42,7 @@ internal sealed class CreateExistingCaseHandler
 
             State = request.State,
             StateUpdatedInStarbuild = (int)UpdatedInStarbuildStates.Ok,
-            StateUpdateTime = _dbContext.CisDateTime.Now,
+            StateUpdateTime = _timeProvider.GetLocalNow().DateTime,
             ProductTypeId = request.Data.ProductTypeId,
 
             Name = request.Customer.Name,
@@ -61,6 +61,7 @@ internal sealed class CreateExistingCaseHandler
         };
     }
 
+    private readonly TimeProvider _timeProvider;
     private readonly CaseServiceDbContext _dbContext;
     private readonly ILogger<CreateCaseHandler> _logger;
     private readonly UserService.Clients.IUserServiceClient _userService;
@@ -68,10 +69,12 @@ internal sealed class CreateExistingCaseHandler
     public CreateExistingCaseHandler(
         UserService.Clients.IUserServiceClient userService,
         CaseServiceDbContext dbContext,
-        ILogger<CreateCaseHandler> logger)
+        ILogger<CreateCaseHandler> logger,
+        TimeProvider timeProvider)
     {
         _userService = userService;
         _dbContext = dbContext;
         _logger = logger;
+        _timeProvider = timeProvider;
     }
 }

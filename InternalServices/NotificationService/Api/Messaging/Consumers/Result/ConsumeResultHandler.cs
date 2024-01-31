@@ -12,7 +12,7 @@ namespace CIS.InternalServices.NotificationService.Api.Messaging.Consumers.Resul
 public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, ConsumeResultResponse>
 {
     private readonly IServiceProvider _provider;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISmsAuditLogger _smsAuditLogger;
     private readonly ILogger<ConsumeResultHandler> _logger;
@@ -27,7 +27,7 @@ public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, Consum
 
     public ConsumeResultHandler(
         IServiceProvider provider,
-        IDateTime dateTime,
+        TimeProvider dateTime,
         ICodebookServiceClient codebookService,
         ISmsAuditLogger smsAuditLogger,
         ILogger<ConsumeResultHandler> logger)
@@ -53,7 +53,7 @@ public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, Consum
             await using var scope = _provider.CreateAsyncScope();
             var repository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
             var result = await repository.GetResult(id, cancellationToken);
-            result.ResultTimestamp = _dateTime.Now;
+            result.ResultTimestamp = _dateTime.GetLocalNow().DateTime;
             result.State = _map[report.state];
 
             if (result is SmsResult smsResult)

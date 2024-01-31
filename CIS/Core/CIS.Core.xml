@@ -990,19 +990,6 @@
             Zjisteni, zda je dany typ jiz registrovan v DI
             </summary>
         </member>
-        <member name="T:CIS.Core.IDateTime">
-            <summary>
-            Interface pro získání instance aktuálního času z DI.
-            </summary>
-            <remarks>
-            Bylo by užitečné, kdyby servery běželi v UTC, nicméně v aktuálním stavu asi není potřeba.
-            </remarks>
-        </member>
-        <member name="P:CIS.Core.IDateTime.Now">
-            <summary>
-            Current time
-            </summary>
-        </member>
         <member name="T:CIS.Core.IIsServiceDiscoverable">
             <summary>
             Rozhraní reprezentující konfigurační objekt, který má možnost pomocí ServiceDiscovery zjistit adresu vlastní služby.
