@@ -98,6 +98,7 @@ static void addMessaging(WebApplicationBuilder builder, AppConfiguration configu
             .AddProducerAvro<CIS.InternalServices.NotificationService.Api.Messaging.Messages.Partials.IMcsSenderTopic>(configuration.KafkaTopics.McsSender)
         .Build();
 
+    //TODO proc tohle???
     builder.Services
         .AddScoped<CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsEmailProducer, CIS.InternalServices.NotificationService.Api.Messaging.Producers.McsEmailProducer>()
         .AddScoped<CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsSmsProducer, CIS.InternalServices.NotificationService.Api.Messaging.Producers.McsSmsProducer>();

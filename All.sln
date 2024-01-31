@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InternalServices", "InternalServices", "{0DC96AF3-B121-4ACA-92C2-1064CADBC228}"
-	ProjectSection(SolutionItems) = preProject
-		InternalServices\README.md = InternalServices\README.md
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceDiscovery", "ServiceDiscovery", "{376AF902-B4C3-4C31-9CA1-63F154C18A4C}"
 EndProject
