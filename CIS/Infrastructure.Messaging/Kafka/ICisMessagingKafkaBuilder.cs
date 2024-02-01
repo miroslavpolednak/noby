@@ -1,4 +1,5 @@
 ﻿using Avro.Specific;
+using CIS.Infrastructure.Messaging.Configuration;
 using MassTransit;
 
 namespace CIS.Infrastructure.Messaging.Kafka;
@@ -74,5 +75,5 @@ public interface ICisMessagingKafkaBuilder
     /// <summary>
     /// Napojení Kafky do aplikace. Bez zavolání této metody na konci Messaging builderu nebude Kafka v aplikaci nastavena!!!
     /// </summary>
-    ICisMessagingBuilder Build();
+    IKafkaRiderConfiguration Build();
 }

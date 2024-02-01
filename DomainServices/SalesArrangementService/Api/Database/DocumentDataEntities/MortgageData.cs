@@ -22,7 +22,7 @@ internal sealed class MortgageData : IDocumentData
 
     public DateTime? FirstSignatureDate { get; set; }
 
-    public class LoanRealEstateData
+    public sealed class LoanRealEstateData
     {
         public int RealEstateTypeId { get; set; }
 

@@ -26,7 +26,7 @@ try
     builder.Services.AddAttributedServices(typeof(NOBY.Services.IServicesAssembly), typeof(NOBY.Api.IApiAssembly));
 
     builder
-        .AddCisCoreFeatures()
+        .AddCisCoreFeatures(true, true)
         .AddCisWebApiCors()
         .AddCisLogging()
         .AddCisAudit()

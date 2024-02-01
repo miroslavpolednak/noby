@@ -3,7 +3,6 @@ package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "Messages/GetTaskDetail.proto";
-import "GrpcDate.proto";
 import "NullableGrpcDate.proto";
 import "google/protobuf/wrappers.proto";
 

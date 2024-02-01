@@ -53,7 +53,7 @@ try
     // Cis
     builder.AddCisEnvironmentConfiguration();
     builder
-        .AddCisCoreFeatures()
+        .AddCisCoreFeatures(true, true)
         .AddCisLogging()
         .AddCisLoggingPayloadBehavior()
         .AddCisTracing()

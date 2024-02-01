@@ -24,7 +24,7 @@ var log = builder.CreateStartupLogger();
 try
 {
     AppConfiguration appConfiguration = new();
-    builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
+    builder.Configuration.GetSection(CIS.Core.CisGlobalConstants.DefaultAppConfigurationSectionName).Bind(appConfiguration);
 
     #region register builder
     // strongly-typed konfigurace aplikace
@@ -32,7 +32,7 @@ try
 
     // globalni nastaveni prostredi
     builder
-        .AddCisCoreFeatures()
+        .AddCisCoreFeatures(true, true)
         .AddCisEnvironmentConfiguration();
 
     // logging 

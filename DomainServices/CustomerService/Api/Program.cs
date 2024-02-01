@@ -34,7 +34,7 @@ SharedComponents.GrpcServiceBuilder
             .AddConsumerTopicJson<DomainServices.CustomerService.Api.Messaging.Abstraction.ICustomerManagementEvent>(appConfiguration.CustomerManagementEventTopic)
             .Build();
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<DomainServices.CustomerService.Api.Endpoints.CustomerService>();
     })

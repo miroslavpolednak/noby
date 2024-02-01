@@ -28,7 +28,7 @@ SharedComponents.GrpcServiceBuilder
     .Build((builder, appConfiguration) =>
     {
         if (appConfiguration?.ServiceUser2LoginBinding is null)
-            throw new CisConfigurationNotFound("AppConfiguration");
+            throw new CisConfigurationNotFound(CIS.Core.CisGlobalConstants.DefaultAppConfigurationSectionName);
 
         builder.AddExternalService<ISdfClient>();
 
@@ -43,7 +43,7 @@ SharedComponents.GrpcServiceBuilder
         // dbcontext
         builder.AddEntityFramework<DomainServices.DocumentArchiveService.Api.Database.DocumentArchiveDbContext>(connectionStringKey: CisGlobalConstants.DefaultConnectionStringKey);
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<DomainServices.DocumentArchiveService.Api.Endpoints.DocumentArchiveServiceGrpc>();
     })

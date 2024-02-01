@@ -1,9 +1,0 @@
-﻿{
-  "Blob": {
-    "Provider": "LocalFilesystem",
-    "LocalFilesystem": {
-      "BasePath": ""
-    }
-  }
-
-}

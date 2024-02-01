@@ -2,9 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+	<Product>Common Infrastructure Solution</Product>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+<PropertyGroup>
+	<AnalysisMode>Recommended</AnalysisMode>
+</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="dbup-sqlserver" Version="5.0.39" />

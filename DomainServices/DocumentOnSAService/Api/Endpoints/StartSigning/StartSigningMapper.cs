@@ -14,7 +14,6 @@ using DomainServices.CustomerService.Clients;
 using ExternalServices.ESignatures.Dto;
 using CIS.Core.Security;
 using DomainServices.UserService.Clients;
-using CIS.Core;
 using DomainServices.CodebookService.Clients;
 using System.Globalization;
 using DomainServices.CaseService.Clients;
@@ -30,7 +29,7 @@ namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 public class StartSigningMapper
 {
     private const string _signatureAnchorTemplate = "X_SIG_";
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly ICustomerServiceClient _customerServiceClient;
     private readonly ICurrentUserAccessor _currentUser;
@@ -41,7 +40,7 @@ public class StartSigningMapper
     private readonly IMediator _mediator;
 
     public StartSigningMapper(
-        IDateTime dateTime,
+        TimeProvider dateTime,
         IDocumentArchiveServiceClient documentArchiveServiceClient,
         ICustomerServiceClient customerServiceClient,
         ICurrentUserAccessor currentUser,
@@ -71,7 +70,7 @@ public class StartSigningMapper
         {
             ReferenceId = referenceId,
             Filename = filename,
-            CreationDate = _dateTime.Now,
+            CreationDate = _dateTime.GetLocalNow().DateTime,
             FileData = docGenResponse.Data.ToArrayUnsafe()
         };
     }
@@ -101,7 +100,7 @@ public class StartSigningMapper
             {
                 DocumentTypeId = documentOnSa.DocumentTypeId!.Value,
                 DocumentTemplateVersionId = documentOnSa.DocumentTemplateVersionId!.Value,
-                FileName = $"{documentType.FileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.Now.ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
+                FileName = $"{documentType.FileName}_{documentOnSa.DocumentOnSAId}_{_dateTime.GetLocalNow().ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
                 FormId = documentOnSa.FormId,
                 ContractNumber = caseObj.Data.ContractNumber
             },

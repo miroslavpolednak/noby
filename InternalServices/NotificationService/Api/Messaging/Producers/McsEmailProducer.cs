@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using CIS.Core;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Messaging.Messages.Partials;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
@@ -13,12 +12,12 @@ namespace CIS.InternalServices.NotificationService.Api.Messaging.Producers;
 public class McsEmailProducer : IMcsEmailProducer
 {
     private readonly ITopicProducer<IMcsSenderTopic> _producer;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
     private readonly KafkaTopics _kafkaTopics;
 
     public McsEmailProducer(
         ITopicProducer<IMcsSenderTopic> producer,
-        IDateTime dateTime,
+        TimeProvider dateTime,
         IOptions<AppConfiguration> appOptions)
     {
         _producer = producer;
@@ -32,7 +31,7 @@ public class McsEmailProducer : IMcsEmailProducer
         {
             Id = Guid.NewGuid().ToString("N"),
             B3 = Activity.Current?.RootId,
-            Timestamp = _dateTime.Now,
+            Timestamp = _dateTime.GetLocalNow().DateTime,
             ReplyTopic = _kafkaTopics.McsResult,
             Caller = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",
             // Origin = "{\"app\":\"NOBY\",\"appComp\":\"NOBY.DS.NotificationService\"}",

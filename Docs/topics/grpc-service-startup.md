@@ -4,7 +4,7 @@
 Načtení custom aplikační konfigurace a vložení do DI - pokud daná aplikace má vlastní konfiguraci.
 ```csharp
 AppConfiguration appConfiguration = new();
-builder.Configuration.GetSection("AppConfiguration").Bind(appConfiguration);
+builder.Configuration.GetSection(CIS.Core.CisGlobalConstants.DefaultAppConfigurationSectionName).Bind(appConfiguration);
 builder.Services.AddSingleton(appConfiguration);
 ```
 

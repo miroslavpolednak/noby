@@ -1,6 +1,4 @@
-﻿
-using CIS.Core;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Api.Database;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -12,14 +10,14 @@ internal sealed class CancelServiceSalesArrangementJob
 {
     private readonly ICodebookServiceClient _codebookService;
     private readonly SalesArrangementServiceDbContext _dbContext;
-    private readonly IDateTime _dateTimeService;
+    private readonly TimeProvider _dateTimeService;
     private readonly IMediator _mediator;
     private readonly ILogger<CancelServiceSalesArrangementJob> _logger;
 
     public CancelServiceSalesArrangementJob(
         ICodebookServiceClient codebookService,
         SalesArrangementServiceDbContext dbContext,
-        IDateTime dateTimeService,
+        TimeProvider dateTimeService,
         IMediator mediator,
         ILogger<CancelServiceSalesArrangementJob> logger)
     {
@@ -38,9 +36,9 @@ internal sealed class CancelServiceSalesArrangementJob
         salesArrangementTypes.Select(r => r.Id).Contains(s.SalesArrangementTypeId)
         &&
           (
-            (s.FirstSignatureDate == null && s.CreatedTime < _dateTimeService.Now.AddDays(-90))
+            (s.FirstSignatureDate == null && s.CreatedTime < _dateTimeService.GetLocalNow().AddDays(-90))
             ||
-            (s.FirstSignatureDate != null && s.FirstSignatureDate < _dateTimeService.Now.AddDays(-40) && s.State != 2) // State = 2 (Předáno ke zpracování)
+            (s.FirstSignatureDate != null && s.FirstSignatureDate < _dateTimeService.GetLocalNow().AddDays(-40) && s.State != 2) // State = 2 (Předáno ke zpracování)
           )
         )
         .Select(sa => sa.SalesArrangementId)

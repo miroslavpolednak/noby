@@ -13,7 +13,9 @@ public static class AuditLoggerHelpers
     public static string GenerateSHA3(byte[] data)
     {
         return GenerateSHA2(data);
+#pragma warning disable CS0162 // Unreachable code detected
         var hashed = SHA3_512.HashData(data);
+#pragma warning restore CS0162 // Unreachable code detected
         return Convert.ToBase64String(hashed);
     }
 }

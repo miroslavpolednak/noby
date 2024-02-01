@@ -42,7 +42,7 @@ SharedComponents.GrpcServiceBuilder
         builder.AddExternalService<IAcvEnumServiceClient>();
         builder.AddExternalService<IRDMClient>();
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.CodebookService>();
     })

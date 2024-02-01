@@ -2,14 +2,12 @@
 using CIS.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Microsoft.Identity.Client.Extensions.Msal;
 using SharedComponents.Storage.Database;
 using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 
 namespace SharedComponents.Storage;
 
-internal class TempStorage
+internal sealed class TempStorage
     : ITempStorage
 {
     public async Task<TempStorageItem> Save(

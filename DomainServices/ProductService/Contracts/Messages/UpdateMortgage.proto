@@ -2,8 +2,6 @@
 package DomainServices.ProductService;
 option csharp_namespace = "DomainServices.ProductService.Contracts";
 
-import "Messages/MortgageData.proto";
-
 message UpdateMortgageRequest {
     int64 ProductId = 1;
 }

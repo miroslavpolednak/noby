@@ -2,8 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<Company></Company>
-		<Product>Common Infrastructure Solution</Product>
+ 		<Product>Common Infrastructure Solution</Product>
 		<Nullable>enable</Nullable>
 		<Platforms>AnyCPU;x64</Platforms>
 		<ImplicitUsings>enable</ImplicitUsings>

@@ -119,7 +119,7 @@ internal sealed class IdentifiedSubjectService
             model.IsPoliticallyExposed = false;
         }
 
-        if (request.NaturalPerson?.TaxResidence is not null && request.NaturalPerson.TaxResidence.ResidenceCountries.Any())
+        if (request.NaturalPerson?.TaxResidence is not null && request.NaturalPerson.TaxResidence.ResidenceCountries.Count != 0)
         {
             model.TaxResidence = new TaxResidence
             {
@@ -216,7 +216,7 @@ internal sealed class IdentifiedSubjectService
             BirthDate = naturalPerson.DateOfBirth,
             Title = _titles.FirstOrDefault(t => t.Id != 0 && t.Id == naturalPerson.DegreeBeforeId)?.Name?.ToUpperInvariant(),
             CzechBirthNumber = naturalPerson.BirthNumber.ToCMString(),
-            CitizenshipCodes = citizenshipCodes.Any() ? citizenshipCodes : null,
+            CitizenshipCodes = citizenshipCodes.Count != 0 ? citizenshipCodes : null,
             BirthCountryCode = _countries.FirstOrDefault(c => c.Id == naturalPerson.BirthCountryId)?.ShortName,
             MaritalStatusCode = _maritals.First(m => m.Id == naturalPerson.MaritalStatusStateId).RdmCode,
             BirthPlace = naturalPerson.PlaceOfBirth.ToCMString(),

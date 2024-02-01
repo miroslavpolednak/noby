@@ -6,7 +6,7 @@ public record SearchRequest
 
     public List<long> PartnerIds { get; init; } = new();
 
-    public bool SearchByIds => PartnerIds.Any();
+    public bool SearchByIds => PartnerIds.Count != 0;
 
     public string? FirstName { get; init; }
 

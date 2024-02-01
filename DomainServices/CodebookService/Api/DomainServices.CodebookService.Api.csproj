@@ -3,7 +3,7 @@
   <PropertyGroup>
 	  <TargetFramework>net8.0</TargetFramework>
 	  <Company>Wookiee.Apps s.r.o.</Company>
-	  <Product>MPSS DomainServices</Product>
+	  <Product>Common Infrastructure Solution</Product>
 	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <ImplicitUsings>enable</ImplicitUsings>

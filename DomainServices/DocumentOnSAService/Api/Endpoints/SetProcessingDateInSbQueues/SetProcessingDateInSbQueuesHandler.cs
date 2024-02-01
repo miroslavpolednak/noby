@@ -1,12 +1,10 @@
-﻿using CIS.Core;
-using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Api.Extensions;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
 using Google.Protobuf.WellKnownTypes;
-using System.Collections.Generic;
 using System.Globalization;
 using static DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types;
 
@@ -18,14 +16,14 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
     private readonly ICaseServiceClient _caseService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ILogger<SetProcessingDateInSbQueuesHandler> _logger;
-    private readonly IDateTime _dateTime;
+    private readonly TimeProvider _dateTime;
 
     public SetProcessingDateInSbQueuesHandler(
       ISbQueuesRepository sbQueuesRepository,
         ICaseServiceClient caseService,
         ICodebookServiceClient codebookService,
         ILogger<SetProcessingDateInSbQueuesHandler> logger,
-        IDateTime dateTime)
+        TimeProvider dateTime)
     {
 
         _sbQueuesRepository = sbQueuesRepository;
@@ -61,7 +59,7 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
                 {
                     try
                     {
-                        await UpdateSbQueues(_dateTime.Now, documentIdForRequestTaskId, cancellationToken);
+                        await UpdateSbQueues(_dateTime.GetLocalNow().DateTime, documentIdForRequestTaskId, cancellationToken);
                     }
                     catch (Exception exp)
                     {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.OfferService.Api.Endpoints.UpdateOfferDocumentId;
 
-internal class UpdateOfferDocumentIdHandler : IRequestHandler<UpdateOfferDocumentIdRequest>
+internal sealed class UpdateOfferDocumentIdHandler : IRequestHandler<UpdateOfferDocumentIdRequest>
 {
     private readonly OfferServiceDbContext _dbContext;
 
