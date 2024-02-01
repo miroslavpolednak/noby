@@ -137,9 +137,9 @@ internal sealed class CancelCaseHandler
     private async Task<bool> isDebtorIdentified(int salesArrangementId, CancellationToken cancellationToken)
     {
         var debtor = (await _customerOnSAService.GetCustomerList(salesArrangementId, cancellationToken))
-                .First(t => t.CustomerRoleId == (int)CustomerRoles.Debtor);
+                .FirstOrDefault(t => t.CustomerRoleId == (int)CustomerRoles.Debtor);
 
-        return debtor.CustomerIdentifiers?.Any() ?? false;
+        return debtor?.CustomerIdentifiers?.Any() ?? false;
     }
 
     /// <summary>
