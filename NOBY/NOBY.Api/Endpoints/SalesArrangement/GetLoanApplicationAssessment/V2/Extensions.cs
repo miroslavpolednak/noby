@@ -106,9 +106,9 @@ internal static class Extensions
     {
         var result = CreateHouseholdItem(
             2,
-            obligationTypes.FirstOrDefault(t => t.Id == item.LoanType.GetValueOrDefault()),
+            obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
             _creditorNameJPU,
-            item.LoanTypeCategory,
+            item.LoanType,
             item.InstallmentAmount,
             isEntrepreneur,
             item.ExposureAmount,
@@ -123,7 +123,7 @@ internal static class Extensions
         in int sourceId,
         ObligationTypesResponse.Types.ObligationTypeItem? obligationType,
         in string creditorName,
-        in int? loanTypeCategory,
+        in int? loanType,
         in decimal? installmentAmount,
         in bool isEntrepreneur,
         in decimal? exposureAmount = null,
@@ -142,7 +142,7 @@ internal static class Extensions
             LoanPrincipalAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(exposureAmount),
             InstallmentAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(installmentAmount),
             CreditCardLimit = !isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(exposureAmount),
-            ObligationLaExposureId = loanTypeCategory.GetValueOrDefault(),
+            ObligationLaExposureId = loanType.GetValueOrDefault(),
             CreditorName = creditorName,
             ContractDate = contractDate,
             MaturityDate = maturityDate
