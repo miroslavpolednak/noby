@@ -9,6 +9,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using NOBY.Api.Endpoints.Customer.SharedDto;
+using NOBY.Services.SigningHelper;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
@@ -136,20 +137,31 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
 
             foreach (var doc in documentsToSign.Where(t => t.HouseholdId == household.HouseholdId))
             {
-                await _documentOnSAService.StopSigning(new() { DocumentOnSAId = doc.DocumentOnSAId!.Value }, cancellationToken);
+                await _signingHelperService.StopSinningAccordingState(new()
+                {
+                    DocumentOnSAId = doc.DocumentOnSAId!.Value,
+                    SignatureTypeId = doc.SignatureTypeId,
+                    SalesArrangementId = doc.SalesArrangementId
+                }, cancellationToken);
+
                 usedDocumentIds.Add(doc.DocumentOnSAId.Value);
             }
 
             // set flow switches
             await _salesArrangementService.SetFlowSwitch(salesArrangementId, (household.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning), true, cancellationToken);
         }
-        
+
         if (wasCRSChanged) // zmena CRS
         {
             var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13 && t.CustomerOnSA.CustomerOnSAId == customerOnSAId && !usedDocumentIds.Contains(t.DocumentOnSAId!.Value));//HH rikal, ze 14 neni spravne, ze to ma byt 13
             if (crsDoc != null)
             {
-                await _documentOnSAService.StopSigning(new() { DocumentOnSAId = crsDoc.DocumentOnSAId!.Value }, cancellationToken);
+                await _signingHelperService.StopSinningAccordingState(new()
+                {
+                    DocumentOnSAId = crsDoc.DocumentOnSAId!.Value,
+                    SignatureTypeId = crsDoc.SignatureTypeId,
+                    SalesArrangementId = crsDoc.SalesArrangementId
+                }, cancellationToken);
             }
         }
     }
@@ -173,10 +185,10 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     {
         var metadata = new __Household.CustomerChangeMetadata
         {
-            WasCRSChanged = (request.IsUSPerson ?? false) || 
+            WasCRSChanged = (request.IsUSPerson ?? false) ||
                             !ModelComparers.AreObjectsEqual(request.NaturalPerson?.TaxResidences, originalModel?.NaturalPerson?.TaxResidences)
         };
-        
+
         if (metadata.WasCRSChanged && request.NaturalPerson?.TaxResidences?.ResidenceCountries?.Count > 8)
             throw new NobyValidationException(90042);
 
@@ -287,6 +299,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerServiceClient _customerService;
     private readonly ICodebookServiceClient _codebookService;
+    private readonly ISigningHelperService _signingHelperService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -304,7 +317,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         ICurrentUserAccessor userAccessor,
         IHouseholdServiceClient householdService,
         ICustomerServiceClient customerService,
-        ICodebookServiceClient codebookService)
+        ICodebookServiceClient codebookService,
+        ISigningHelperService signingHelperService)
     {
         _documentOnSAService = documentOnSAService;
         _caseService = caseService;
@@ -316,5 +330,6 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         _householdService = householdService;
         _customerService = customerService;
         _codebookService = codebookService;
+        _signingHelperService = signingHelperService;
     }
 }
