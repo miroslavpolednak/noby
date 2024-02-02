@@ -11,8 +11,13 @@ internal sealed class UpdateMortgageHandler
     public async Task Handle(UpdateMortgageRequest request, CancellationToken cancellationToken)
     {
         // get data from other DS
-        var productSA = (await _salesArrangementService.GetProductSalesArrangements(request.ProductId, cancellationToken)).First();
-        var salesArrangement = await _salesArrangementService.GetSalesArrangement(productSA.SalesArrangementId, cancellationToken);
+        var productSA = (await _salesArrangementService.GetProductSalesArrangements(request.ProductId, cancellationToken)).FirstOrDefault();
+        if (productSA is null)
+        {
+            ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001);
+        }
+
+        var salesArrangement = await _salesArrangementService.GetSalesArrangement(productSA!.SalesArrangementId, cancellationToken);
         var offer = await _offerService.GetMortgageOfferDetail(salesArrangement.OfferId!.Value, cancellationToken);
         var customers = await _customerOnSAService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
 

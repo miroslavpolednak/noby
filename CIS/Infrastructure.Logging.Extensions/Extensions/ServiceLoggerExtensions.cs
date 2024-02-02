@@ -42,7 +42,7 @@ public static class ServiceLoggerExtensions
             "Error returned from external service: {Message}");
 
         _extServiceServerError = LoggerMessage.Define<string>(
-            LogLevel.Warning,
+            LogLevel.Error,
             new EventId(EventIdCodes.ExtServiceServerError, nameof(ExternalServiceServerError)),
             "External service internal error: {Message}");
     }
