@@ -24,7 +24,7 @@ internal static class Extensions
     {
         return CreateHouseholdItem(
             2,
-            obligationTypes.FirstOrDefault(t => t.Id == item.LoanType.GetValueOrDefault()),
+            obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
             _creditorNameKB,
             item.LoanTypeCategory,
             item.InstallmentAmount,
@@ -38,9 +38,9 @@ internal static class Extensions
     {
             var result = CreateHouseholdItem(
                 2,
-                obligationTypes.FirstOrDefault(t => t.Id == item.LoanType.GetValueOrDefault()),
+                obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
                 _creditorNameJPU,
-                item.LoanTypeCategory,
+                item.LoanType,
                 item.InstallmentAmount,
                 isEntrepreneur);
             result.KbGroupInstanceCode = item.KbGroupInstanceCode;
@@ -55,9 +55,9 @@ internal static class Extensions
     {
             var result = CreateHouseholdItem(
                 2,
-                obligationTypes.FirstOrDefault(t => t.Id == item.LoanType.GetValueOrDefault()),
+                obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
                 _creditorNameKB,
-                item.LoanTypeCategory, 
+                item.LoanType, 
                 item.InstallmentAmount,
                 isEntrepreneur,
                 item.ExposureAmount,
