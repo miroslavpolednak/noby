@@ -11,7 +11,7 @@ internal sealed class UpdateLoanAssessmentParametersHandler
     {
         var entity = await _dbContext
             .SalesArrangements
-            .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation) 
+            .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         if (!string.IsNullOrEmpty(request.RiskSegment))
@@ -33,13 +33,18 @@ internal sealed class UpdateLoanAssessmentParametersHandler
         {
             entity.RiskBusinessCaseId = request.RiskBusinessCaseId;
         }
-           
+
         if (request.RiskBusinessCaseExpirationDate is not null)
         {
             entity.FirstLoanAssessmentDate ??= DateTime.Now;
             entity.RiskBusinessCaseExpirationDate = request.RiskBusinessCaseExpirationDate;
         }
-        
+
+        if (!string.IsNullOrEmpty(request.LoanApplicationDataVersion))
+        {
+            entity.LoanApplicationDataVersion = request.LoanApplicationDataVersion;
+        }
+
         // pokud je zadost NEW, zmenit na InProgress
         if (entity.State == (int)SalesArrangementStates.NewArrangement)
         {
