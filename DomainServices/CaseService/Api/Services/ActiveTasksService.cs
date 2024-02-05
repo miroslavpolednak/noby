@@ -15,16 +15,23 @@ internal sealed class ActiveTasksService
         var inactiveTasks = taskLookup[false].ToList();
 
         var entities = await _dbContext.ActiveTasks.Where(t => t.CaseId == caseId).ToListAsync(cancellation);
-        var dictionary = entities.ToDictionary(e => e.TaskId);
+        var dictionary = entities.GroupBy(t => t.TaskId).ToDictionary(k => k.Key, v => v.ToList());
         
+        // kontrola zdvojenych tasku
+        foreach (var entry in dictionary.Where(t => t.Value.Count > 2))
+        {
+            _dbContext.ActiveTasks.RemoveRange(entry.Value.Where((task, index) => index > 0));
+            entry.Value.RemoveRange(1, entry.Value.Count - 1);
+        }
+
         // update and insert
         foreach (var activeTask in activeTasks)
         {
             if (dictionary.TryGetValue(activeTask.TaskId, out var entity))
             {
                 // update
-                entity.TaskTypeId = activeTask.TaskTypeId;
-                entity.TaskIdSb = activeTask.TaskIdSb;
+                entity[0].TaskTypeId = activeTask.TaskTypeId;
+                entity[0].TaskIdSb = activeTask.TaskIdSb;
             }
             else
             {
@@ -44,7 +51,7 @@ internal sealed class ActiveTasksService
         {
             if (dictionary.TryGetValue(inactiveTask.TaskId, out var entity))
             {
-                _dbContext.ActiveTasks.Remove(entity);
+                _dbContext.ActiveTasks.Remove(entity[0]);
             }
         }
 
