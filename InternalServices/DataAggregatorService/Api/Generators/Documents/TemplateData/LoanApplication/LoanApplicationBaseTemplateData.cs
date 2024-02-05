@@ -40,7 +40,7 @@ internal abstract class LoanApplicationBaseTemplateData : AggregatedData
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
         var identity1 = CurrentHousehold.CustomerOnSa1?.CustomerIdentifiers?.FirstOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb) ??
-                             throw new CisValidationException($"CustomerOnSa 1 {CurrentHousehold.Debtor.CustomerOnSAId} does not have KB identifier.");
+                             throw new CisValidationException($"CustomerOnSa 1 {CurrentHousehold.CustomerOnSa1?.CustomerOnSAId} does not have KB identifier.");
 
         var identity2 = CurrentHousehold.CustomerOnSa2?.CustomerIdentifiers?.FirstOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
 
