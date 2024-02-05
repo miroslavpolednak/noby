@@ -26,7 +26,7 @@ internal static class Extensions
             2,
             obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
             _creditorNameKB,
-            item.LoanTypeCategory,
+            item.LoanType,
             item.InstallmentAmount,
             isEntrepreneur);
     }
