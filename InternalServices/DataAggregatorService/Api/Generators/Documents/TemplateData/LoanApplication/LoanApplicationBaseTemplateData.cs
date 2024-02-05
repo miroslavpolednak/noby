@@ -118,4 +118,6 @@ internal abstract class LoanApplicationBaseTemplateData : AggregatedData
 
         return DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(maritalStatusId1, maritalStatusId2);
     }
+
+    protected ArgumentNullException CreateNullHouseholdException(string paramName) => new(nameof(paramName), $"{nameof(paramName)} returned null.");
 }

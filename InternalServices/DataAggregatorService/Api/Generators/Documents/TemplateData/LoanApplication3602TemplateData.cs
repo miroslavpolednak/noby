@@ -9,7 +9,7 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.Te
 internal class LoanApplication3602TemplateData : LoanApplicationBaseTemplateData
 {
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    protected override HouseholdInfo CurrentHousehold => HouseholdCodebtor!;
+    protected override HouseholdInfo CurrentHousehold => HouseholdCodebtor ?? throw CreateNullHouseholdException(nameof(HouseholdCodebtor));
 
     public LoanApplication3602TemplateData(CustomerWithChangesService customerWithChangesService, ICustomerOnSAServiceClient customerOnSAService) : base(customerWithChangesService)
     {
