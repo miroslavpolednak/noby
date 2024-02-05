@@ -28,6 +28,8 @@ public sealed class HouseholdObligationItem
     /// </summary>
     public string CreditorName { get; set; } = string.Empty;
 
+    public decimal? AmountConsolidated { get; set; }
+
     /// <summary>
     /// Nesplacená jistina
     /// </summary>

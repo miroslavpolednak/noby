@@ -95,6 +95,7 @@ internal static class Extensions
                     ObligationTypeId = obligationType?.Id ?? 0,
                     ObligationTypeName = obligationType?.Name ?? "Neznázmý",
                     CorrectionTypeId = t.Correction?.CorrectionTypeId,
+                    AmountConsolidated = t.AmountConsolidated,
                     LoanPrincipalAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(t.LoanPrincipalAmount, t.Correction?.LoanPrincipalAmountCorrection),
                     InstallmentAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(t.InstallmentAmount, t.Correction?.InstallmentAmountCorrection),
                     CreditCardLimit = !isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(t.CreditCardLimit, t.Correction?.CreditCardLimitCorrection),

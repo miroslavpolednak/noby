@@ -3374,6 +3374,11 @@
             Věřitel
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.AmountConsolidated">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.LoanPrincipalAmount">
             <summary>
             Nesplacená jistina
