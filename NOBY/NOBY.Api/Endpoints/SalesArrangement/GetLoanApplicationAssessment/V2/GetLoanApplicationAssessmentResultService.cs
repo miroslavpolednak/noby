@@ -26,6 +26,7 @@ internal sealed class GetLoanApplicationAssessmentResultService
         var households = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
         // codebooks
         _obligationTypes = await _codebookService.ObligationTypes(cancellationToken);
+        _laExposureItems = await _codebookService.ObligationLaExposures(cancellationToken);
 
         // get obligations for each customer
         //TODO new DS endpoint for all obligations on SA?
@@ -124,25 +125,25 @@ internal sealed class GetLoanApplicationAssessmentResultService
 
         foreach (var exp in (customerExposure.RequestedCBCBNaturalPersonExposureItem ?? _emptyRequestedCBCBGroupItems))
         {
-            var itemToAdd = addRequestedCbCbCodebtors(exp.CreateHouseholdObligations(_obligationTypes, false), otherCustomers!, exp.CbcbContractId);
+            var itemToAdd = addRequestedCbCbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false), otherCustomers!, exp.CbcbContractId);
             obligations.Add(itemToAdd);
         }
 
         foreach (var exp in (customerExposure.RequestedCBCBJuridicalPersonExposureItem ?? _emptyRequestedCBCBGroupItems))
         {
-            var itemToAdd = addRequestedCbCbCodebtors(exp.CreateHouseholdObligations(_obligationTypes, true), otherCustomers!, exp.CbcbContractId);
+            var itemToAdd = addRequestedCbCbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true), otherCustomers!, exp.CbcbContractId);
             obligations.Add(itemToAdd);
         }
 
         foreach (var exp in (customerExposure.RequestedKBGroupNaturalPersonExposures ?? _emptyRequestedKBGroupItems))
         {
-            var itemToAdd = addRequestedKbCodebtors(exp.CreateHouseholdObligations(_obligationTypes, false), otherCustomers!, exp.RiskBusinessCaseId);
+            var itemToAdd = addRequestedKbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false), otherCustomers!, exp.RiskBusinessCaseId);
             obligations.Add(itemToAdd);
         }
 
         foreach (var exp in (customerExposure.RequestedKBGroupJuridicalPersonExposures ?? _emptyRequestedKBGroupItems))
         {
-            var itemToAdd = addRequestedKbCodebtors(exp.CreateHouseholdObligations(_obligationTypes, true), otherCustomers!, exp.RiskBusinessCaseId);
+            var itemToAdd = addRequestedKbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true), otherCustomers!, exp.RiskBusinessCaseId);
             obligations.Add(itemToAdd);
         }
 
@@ -160,25 +161,25 @@ internal sealed class GetLoanApplicationAssessmentResultService
         
         foreach (var exp in (customerExposure.ExistingCBCBNaturalPersonExposureItem ?? _emptyExistingCBCBGroupItems))
         {
-            var itemToAdd = addExistingCbCbCodebtors(exp.CreateHouseholdObligations(_obligationTypes, false), otherCustomers!, exp.CbcbContractId);
+            var itemToAdd = addExistingCbCbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false), otherCustomers!, exp.CbcbContractId);
             obligations.Add(itemToAdd);
         }
 
         foreach (var exp in (customerExposure.ExistingCBCBJuridicalPersonExposureItem ?? _emptyExistingCBCBGroupItems))
         {
-            var itemToAdd = addExistingCbCbCodebtors(exp.CreateHouseholdObligations(_obligationTypes, true), otherCustomers!, exp.CbcbContractId);
+            var itemToAdd = addExistingCbCbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true), otherCustomers!, exp.CbcbContractId);
             obligations.Add(itemToAdd);
         }
     
         foreach (var exp in (customerExposure.ExistingKBGroupNaturalPersonExposures ?? _emptyExistingKBGroupItems))
         {
-            var itemToAdd = addExistingKbCodebtors(exp.CreateHouseholdObligations(_obligationTypes, false), otherCustomers!, exp.BankAccount);
+            var itemToAdd = addExistingKbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false), otherCustomers!, exp.BankAccount);
             obligations.Add(itemToAdd);
         }
 
         foreach (var exp in (customerExposure.ExistingKBGroupJuridicalPersonExposures ?? _emptyExistingKBGroupItems))
         {
-            var itemToAdd = addExistingKbCodebtors(exp.CreateHouseholdObligations(_obligationTypes, true), otherCustomers!, exp.BankAccount);
+            var itemToAdd = addExistingKbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true), otherCustomers!, exp.BankAccount);
             obligations.Add(itemToAdd);
         }
 
@@ -310,6 +311,7 @@ internal sealed class GetLoanApplicationAssessmentResultService
     private List<CustomerOnSA> _customers = null!;
     private Dictionary<int, List<Obligation>> _obligations = null!;
     private List<ObligationTypesResponse.Types.ObligationTypeItem> _obligationTypes = null!;
+    private List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> _laExposureItems = null!;
 
     private readonly ICurrentUserAccessor _currentUser;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;

@@ -51,12 +51,12 @@ public sealed class HouseholdObligationItem
     /// <summary>
     /// Kategorie závazku
     /// </summary>
-    public int ObligationLaExposureId { get; set; }
+    public int? ObligationLaExposureId { get; set; }
 
     /// <summary>
     /// Kategorie závazku - název
     /// </summary>
-    public string ObligationLaExposureName { get; set; }
+    public string? ObligationLaExposureName { get; set; }
 
     /// <summary>
     /// Závazek FOP
