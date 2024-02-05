@@ -14,7 +14,7 @@ internal sealed class UpdateMortgageHandler
         var productSA = (await _salesArrangementService.GetProductSalesArrangements(request.ProductId, cancellationToken)).FirstOrDefault();
         if (productSA is null)
         {
-            ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001);
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001);
         }
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(productSA!.SalesArrangementId, cancellationToken);

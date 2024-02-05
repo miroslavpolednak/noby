@@ -19,28 +19,31 @@ internal static class Extensions
 
     public static Dto.HouseholdObligationItem CreateHouseholdObligations(
         this CustomerExposureRequestedKBGroupItem item,
+        List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> laExposureItems,
         List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes,
         bool isEntrepreneur)
     {
         return CreateHouseholdItem(
             2,
             obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
+            laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
             _creditorNameKB,
-            item.LoanType,
             item.InstallmentAmount,
             isEntrepreneur);
     }
 
     public static Dto.HouseholdObligationItem CreateHouseholdObligations(
         this CustomerExposureRequestedCBCBItem item,
+        List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> laExposureItems,
         List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes,
         bool isEntrepreneur)
     {
             var result = CreateHouseholdItem(
                 2,
                 obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
+                laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
                 _creditorNameJPU,
-                item.LoanType,
+                //item.LoanType,
                 item.InstallmentAmount,
                 isEntrepreneur);
             result.KbGroupInstanceCode = item.KbGroupInstanceCode;
@@ -50,14 +53,15 @@ internal static class Extensions
 
     public static Dto.HouseholdObligationItem CreateHouseholdObligations(
         this CustomerExposureExistingKBGroupItem item,
+        List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> laExposureItems,
         List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes,
         bool isEntrepreneur)
     {
             var result = CreateHouseholdItem(
                 2,
                 obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
+                laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
                 _creditorNameKB,
-                item.LoanType, 
                 item.InstallmentAmount,
                 isEntrepreneur,
                 item.ExposureAmount,
@@ -101,14 +105,15 @@ internal static class Extensions
 
     public static Dto.HouseholdObligationItem CreateHouseholdObligations(
         this CustomerExposureExistingCBCBItem item,
+        List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> laExposureItems,
         List<ObligationTypesResponse.Types.ObligationTypeItem> obligationTypes,
         bool isEntrepreneur)
     {
         var result = CreateHouseholdItem(
             2,
             obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
+            laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
             _creditorNameJPU,
-            item.LoanType,
             item.InstallmentAmount,
             isEntrepreneur,
             item.ExposureAmount,
@@ -122,8 +127,8 @@ internal static class Extensions
     private static Dto.HouseholdObligationItem CreateHouseholdItem(
         in int sourceId,
         ObligationTypesResponse.Types.ObligationTypeItem? obligationType,
+        ObligationLaExposuresResponse.Types.ObligationLaExposureItem? loanType,
         in string creditorName,
-        in int? loanType,
         in decimal? installmentAmount,
         in bool isEntrepreneur,
         in decimal? exposureAmount = null,
@@ -142,7 +147,8 @@ internal static class Extensions
             LoanPrincipalAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(exposureAmount),
             InstallmentAmount = isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(installmentAmount),
             CreditCardLimit = !isLimit ? null : Dto.HouseholdObligationItem.Amount.Create(exposureAmount),
-            ObligationLaExposureId = loanType.GetValueOrDefault(),
+            ObligationLaExposureId = loanType?.Id,
+            ObligationLaExposureName = loanType?.Name,
             CreditorName = creditorName,
             ContractDate = contractDate,
             MaturityDate = maturityDate
