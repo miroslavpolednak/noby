@@ -16,7 +16,7 @@ internal static class Extensions
             AmountConsolidated = obligationInstance.AmountConsolidated
         };
         if (obligationInstance.Correction is not null)
-            model.Correction = new SharedDto.ObligationCorrectionDto
+            model.Correction = new()
             {
                 CorrectionTypeId = obligationInstance.Correction.CorrectionTypeId,
                 CreditCardLimitCorrection = obligationInstance.Correction.CreditCardLimitCorrection,

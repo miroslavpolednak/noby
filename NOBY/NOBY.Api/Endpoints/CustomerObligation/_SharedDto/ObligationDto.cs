@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.CustomerObligation.SharedDto;
+﻿using NOBY.Dto.Household;
+
+namespace NOBY.Api.Endpoints.CustomerObligation.SharedDto;
 
 public abstract class ObligationDto
 {
@@ -31,5 +33,5 @@ public abstract class ObligationDto
 
     public ObligationCreditorDto? Creditor { get; set; }
 
-    public ObligationCorrectionDto? Correction { get; set; }
+    public CustomerObligationCorrectionDto? Correction { get; set; }
 }
