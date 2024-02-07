@@ -12,7 +12,7 @@ internal sealed class CancelCaseJob
 SELECT
 	CaseId
 FROM
-	[SalesArrangementService].[dbo].[SalesArrangement]
+	[dbo].[SalesArrangement]
 WHERE
 	SalesArrangementTypeId = 1
 	and (
