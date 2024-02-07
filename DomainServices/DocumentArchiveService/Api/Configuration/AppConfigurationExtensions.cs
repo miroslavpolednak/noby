@@ -7,13 +7,13 @@ internal static class AppConfigurationExtensions
     /// </summary>
     public static string GetLoginFromServiceUser(this AppConfiguration configuration, string serviceUser)
     {
-        if (configuration.ServiceUser2LoginBinding is null || !configuration.ServiceUser2LoginBinding.Any())
+        if (configuration.ServiceUser2LoginBinding is null || configuration.ServiceUser2LoginBinding.Count == 0)
             throw new CisConfigurationException(0, "ServiceUser2LoginBinding configuration is not set");
 
-        if (configuration.ServiceUser2LoginBinding.ContainsKey(serviceUser))
-            return configuration.ServiceUser2LoginBinding[serviceUser];
-        else if (configuration.ServiceUser2LoginBinding.ContainsKey("_default"))
-            return configuration.ServiceUser2LoginBinding["_default"];
+        if (configuration.ServiceUser2LoginBinding.TryGetValue(serviceUser, out string? value))
+            return value;
+        else if (configuration.ServiceUser2LoginBinding.TryGetValue("_default", out string? valueDefault))
+            return valueDefault;
         else
             throw new CisConfigurationException(0, $"ServiceUser '{serviceUser}' not found in ServiceUser2LoginBinding configuration and no _default has been set");
     }

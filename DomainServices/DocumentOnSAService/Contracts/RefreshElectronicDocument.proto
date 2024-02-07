@@ -2,8 +2,6 @@ syntax = "proto3";
 package DomainServices.DocumentOnSAService.RefreshElectronicDocument;
 option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
 
-import "google/protobuf/wrappers.proto";
-
 message RefreshElectronicDocumentRequest {
 	
 	int32 DocumentOnSAId = 1;

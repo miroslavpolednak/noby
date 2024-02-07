@@ -2,27 +2,26 @@
 
 #nullable disable
 
-namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
+namespace DomainServices.DocumentOnSAService.Api.Database.Migrations;
+
+/// <inheritdoc />
+public partial class DocumentTemplateVariantId : Migration
 {
     /// <inheritdoc />
-    public partial class DocumentTemplateVariantId : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<int>(
-                name: "DocumentTemplateVariantId",
-                table: "DocumentOnSa",
-                type: "int",
-                nullable: true);
-        }
+        migrationBuilder.AddColumn<int>(
+            name: "DocumentTemplateVariantId",
+            table: "DocumentOnSa",
+            type: "int",
+            nullable: true);
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "DocumentTemplateVariantId",
-                table: "DocumentOnSa");
-        }
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: "DocumentTemplateVariantId",
+            table: "DocumentOnSa");
     }
 }
