@@ -5,6 +5,7 @@ using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
 using FastEnumUtility;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GenerateFormId;
 
@@ -147,7 +148,7 @@ public class GenerateFormIdHandler : IRequestHandler<GenerateFormIdRequest, Gene
         }
         else
         {
-            return char.ToUpper(enumStr[0]) + enumStr[1..];
+            return char.ToUpper(enumStr[0], CultureInfo.InvariantCulture) + enumStr[1..];
         }
     }
 }

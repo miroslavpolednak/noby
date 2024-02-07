@@ -53,7 +53,7 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
         return MapToResponse(documentOnSaEntity);
     }
 
-    private CreateDocumentOnSAResponse MapToResponse(DocumentOnSa documentOnSaEntity)
+    private static CreateDocumentOnSAResponse MapToResponse(DocumentOnSa documentOnSaEntity)
     {
         return new CreateDocumentOnSAResponse
         {
@@ -77,7 +77,7 @@ public class CreateDocumentOnSAHandler : IRequestHandler<CreateDocumentOnSAReque
         };
     }
 
-    private DocumentOnSa MapToEntity(CreateDocumentOnSARequest request, GetDocumentDataResponse dataResponse)
+    private static DocumentOnSa MapToEntity(CreateDocumentOnSARequest request, GetDocumentDataResponse dataResponse)
     {
         return new DocumentOnSa
         {

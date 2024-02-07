@@ -3,6 +3,7 @@ using CIS.Core.ErrorCodes;
 using DomainServices.DocumentArchiveService.Api.Database.Repositories;
 using DomainServices.DocumentArchiveService.Contracts;
 using FastEnumUtility;
+using System.Globalization;
 
 namespace DomainServices.DocumentArchiveService.Api.Endpoints.GenerateDocumentId;
 
@@ -48,7 +49,7 @@ internal sealed class GenerateDocumentIdHandler
         }
         else
         {
-            return char.ToUpper(enumStr[0]) + enumStr[1..];
+            return char.ToUpper(enumStr[0], CultureInfo.InvariantCulture) + enumStr[1..];
         }
     }
 
@@ -76,7 +77,7 @@ internal sealed class GenerateDocumentIdHandler
     {
         string? serviceUser = _serviceUserAccessor.User?.Name;
 
-        if (_configuration.ServiceUser2LoginBinding is null || !_configuration.ServiceUser2LoginBinding.Any())
+        if (_configuration.ServiceUser2LoginBinding is null || _configuration.ServiceUser2LoginBinding.Count == 0)
             throw ErrorCodeMapperBase.CreateConfigurationException(ErrorCodeMapper.ServiceUser2LoginBindingConfigurationNotSet);
 
         if (_configuration.ServiceUser2LoginBinding.ContainsKey(serviceUser ?? "_default"))

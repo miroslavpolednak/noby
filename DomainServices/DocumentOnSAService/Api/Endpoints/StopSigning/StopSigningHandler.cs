@@ -36,7 +36,7 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
 
     public async Task<Empty> Handle(StopSigningRequest request, CancellationToken cancellationToken)
     {
-        var documentOnSa = await _dbContext.DocumentOnSa.FindAsync(request.DocumentOnSAId, cancellationToken)
+        var documentOnSa = await _dbContext.DocumentOnSa.FindAsync([request.DocumentOnSAId, cancellationToken], cancellationToken: cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
 
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
