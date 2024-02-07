@@ -8,6 +8,7 @@
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <Version>1.0.0.0</Version>
+	  <IncludeHttpRuleProtos>true</IncludeHttpRuleProtos>
   </PropertyGroup>
 
 	<PropertyGroup>
@@ -24,6 +25,15 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="8.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Shared\SharedTypes\SharedTypes.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Protobuf Include="Messages\GetAvailableTasks.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+	  <Protobuf Include="TaskSchedulingService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	</ItemGroup>
 
 

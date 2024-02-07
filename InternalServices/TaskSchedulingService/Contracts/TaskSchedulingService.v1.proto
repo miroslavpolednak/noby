@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.TaskSchedulingService.v1;
+option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts.v1";
+
+import "google/api/annotations.proto";
+import "Messages/GetAvailableTasks.proto";
+
+service TaskSchedulingService {
+	// Vrací instanci konkrétní služby pro dané prostředí a typ
+	rpc GetAvailableTasks (GetAvailableTasksRequest) returns (GetAvailableTasksResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/available-tasks"
+		};
+	}
+}

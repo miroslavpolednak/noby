@@ -1,69 +1,36 @@
-using CIS.Infrastructure.WebApi;
+using CIS.Core;
 using CIS.Infrastructure.StartupExtensions;
-using CIS.Infrastructure.Telemetry;
-using DomainServices;
-using CIS.InternalServices;
-using CIS.InternalServices.TaskSchedulingService.Api;
-using CIS.InternalServices.TaskSchedulingService.Api.StartupExtensions;
 
-var builder = WebApplication.CreateBuilder(args);
+SharedComponents.GrpcServiceBuilder
+    .CreateGrpcService(args, typeof(Program))
+    .AddApplicationConfiguration<CIS.InternalServices.TaskSchedulingService.Api.Configuration.AppConfiguration>()
+    .AddRequiredServices(services =>
+    {
+        services
+            .AddCodebookService()
+            .AddSalesArrangementService()
+            .AddCaseService()
+            .AddOfferService()
+            .AddUserService()
+            .AddCustomerService()
+            .AddProductService()
+            .AddHouseholdService()
+            .AddDocumentOnSAService();
+    })
+    .Build((builder, appConfiguration) =>
+    {
+        
+    })
+    .MapGrpcServices((app, _) =>
+    {
+        app.MapGrpcService<CIS.InternalServices.TaskSchedulingService.Api.Endpoints.TaskSchedulingService>();
+    })
+    .Run();
 
-var log = builder.CreateStartupLogger();
-try
+namespace CIS.InternalServices.TaskSchedulingService.Api
 {
-    #region register services
-    // konfigurace aplikace
-    var envConfiguration = builder.AddCisEnvironmentConfiguration();
-
-    // vlozit do DI vsechny custom services
-    builder.Services.AddAttributedServices(typeof(IApiAssembly));
-
-    builder
-        .AddCisCoreFeatures(true, true)
-        .AddCisLogging()
-        .AddCisHealthChecks();
-
-    // add domain services
-    builder.Services
-        .AddUserService()
-        .AddHouseholdService()
-        .AddOfferService()
-        .AddRiskIntegrationService()
-        .AddCodebookService()
-        .AddRealEstateValuationService()
-        .AddCustomerService()
-        .AddProductService()
-        .AddCaseService()
-        .AddDocumentOnSAService()
-        .AddSalesArrangementService()
-        .AddRiskIntegrationService()
-        .AddDocumentArchiveService()
-        // add internal services
-        .AddDataAggregatorService()
-        .AddDocumentGeneratorService();
-
-    #endregion register services
-
-    // BUILD APP
-    var app = builder.Build();
-    log.ApplicationBuilt();
-
-    app.UseServiceDiscovery();
-
-    app
-        // dashboard pro scheduler
-        .AddSchedulerUI()
-        // health check call - neni treba poustet celou pipeline
-        .UseServiceHealthChecks();
-
-    log.ApplicationRun();
-    app.Run();
-}
-catch (Exception ex)
-{
-    log.CatchedException(ex);
-}
-finally
-{
-    LoggingExtensions.CloseAndFlush();
+    public partial class Program
+    {
+        // Expose the Program class for use with WebApplicationFactory<T>
+    }
 }
