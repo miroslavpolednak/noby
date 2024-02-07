@@ -1,4 +1,5 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.CaseService.Clients;
+using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using SharedTypes.Enums;
@@ -11,10 +12,16 @@ internal sealed class UpdateMortgageHandler
     public async Task Handle(UpdateMortgageRequest request, CancellationToken cancellationToken)
     {
         // get data from other DS
-        var productSA = (await _salesArrangementService.GetProductSalesArrangements(request.ProductId, cancellationToken)).First();
-        var salesArrangement = await _salesArrangementService.GetSalesArrangement(productSA.SalesArrangementId, cancellationToken);
+        var productSA = (await _salesArrangementService.GetProductSalesArrangements(request.ProductId, cancellationToken)).FirstOrDefault();
+        if (productSA is null)
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001);
+        }
+
+        var salesArrangement = await _salesArrangementService.GetSalesArrangement(productSA!.SalesArrangementId, cancellationToken);
         var offer = await _offerService.GetMortgageOfferDetail(salesArrangement.OfferId!.Value, cancellationToken);
         var customers = await _customerOnSAService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
+        var caseInstance = await _caseService.ValidateCaseId(salesArrangement.CaseId, false, cancellationToken);
 
         var mortgageRequest = new MortgageRequest
         {
@@ -24,6 +31,7 @@ internal sealed class UpdateMortgageHandler
                 .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)
                 ?.IdentityId ?? 0,
             LoanType = LoanType.KBMortgage,
+            ConsultantId = caseInstance.OwnerUserId,
             LoanContractNumber = salesArrangement.ContractNumber,
             MonthlyInstallment = offer.SimulationResults.LoanPaymentAmount,
             LoanAmount = (double?)offer.SimulationInputs.LoanAmount,
@@ -55,21 +63,23 @@ internal sealed class UpdateMortgageHandler
         await _mpHomeClient.UpdateLoan(request.ProductId, mortgageRequest, cancellationToken);
     }
 
+    private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly IMpHomeClient _mpHomeClient;
 
     public UpdateMortgageHandler(
-        IMpHomeClient mpHomeClient, 
+        IMpHomeClient mpHomeClient,
         ICustomerOnSAServiceClient customerOnSAService,
-        ISalesArrangementServiceClient salesArrangementService, 
-        IOfferServiceClient offerService)
+        ISalesArrangementServiceClient salesArrangementService,
+        IOfferServiceClient offerService,
+        ICaseServiceClient caseService)
     {
-
         _customerOnSAService = customerOnSAService;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
         _mpHomeClient = mpHomeClient;
+        _caseService = caseService;
     }
 }

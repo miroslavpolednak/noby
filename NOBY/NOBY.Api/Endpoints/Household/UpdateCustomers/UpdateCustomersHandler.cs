@@ -6,6 +6,7 @@ using DomainServices.SalesArrangementService.Clients;
 using __HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Services.FlowSwitchAtLeastOneIncomeMainHousehold;
+using NOBY.Services.SigningHelper;
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
@@ -52,7 +53,12 @@ internal sealed class UpdateCustomersHandler
 
             foreach (var document in documentsToSign.DocumentsOnSAToSign.Where(t => t.DocumentOnSAId.HasValue && t.HouseholdId == request.HouseholdId && (!t.IsSigned || !onlyNotSigned)))
             {
-                await _documentOnSAService.StopSigning(new() { DocumentOnSAId = document.DocumentOnSAId!.Value }, cancellationToken);
+                await _signingHelperService.StopSinningAccordingState(new()
+                {
+                    DocumentOnSAId = document.DocumentOnSAId!.Value,
+                    SignatureTypeId = document.SignatureTypeId,
+                    SalesArrangementId = document.SalesArrangementId
+                }, cancellationToken);
             }
 
             // HFICH-4165
@@ -217,6 +223,7 @@ internal sealed class UpdateCustomersHandler
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ISigningHelperService _signingHelperService;
     private readonly IProductServiceClient _productService;
     private readonly ILogger<UpdateCustomersHandler> _logger;
 
@@ -228,7 +235,8 @@ internal sealed class UpdateCustomersHandler
         ICustomerOnSAServiceClient customerOnSAService,
         IProductServiceClient productService,
         IDocumentOnSAServiceClient documentOnSAService,
-        ISalesArrangementServiceClient salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService,
+        ISigningHelperService signingHelperService)
     {
         _flowSwitchMainHouseholdService = flowSwitchMainHouseholdService;
         _logger = logger;
@@ -238,5 +246,6 @@ internal sealed class UpdateCustomersHandler
         _householdService = householdService;
         _documentOnSAService = documentOnSAService;
         _salesArrangementService = salesArrangementService;
+        _signingHelperService = signingHelperService;
     }
 }

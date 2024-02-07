@@ -12,7 +12,7 @@ internal sealed class CancelCaseJob
 SELECT
 	CaseId
 FROM
-	[SalesArrangementService].[dbo].[SalesArrangement]
+	[dbo].[SalesArrangement]
 WHERE
 	SalesArrangementTypeId = 1
 	and (
@@ -37,9 +37,13 @@ WHERE
 				if (caseInstance.Exists && caseInstance.State == (int)CaseStates.InProgress)
 				{
 					await _caseServiceClient.CancelCase(caseId, false, cancellationToken);
-				}
 
-				_logger.CancelCaseJobFinished(caseId);
+                    _logger.CancelCaseJobFinished(caseId);
+                }
+				else
+				{
+                    _logger.CancelCaseJobSkipped(caseId);
+                }
             }
 			catch (Exception e)
 			{

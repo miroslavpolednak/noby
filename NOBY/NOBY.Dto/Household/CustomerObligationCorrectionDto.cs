@@ -1,6 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.CustomerObligation.SharedDto;
+﻿namespace NOBY.Dto.Household;
 
-public class ObligationCorrectionDto
+public sealed class CustomerObligationCorrectionDto
 {
     /// <summary>
     /// Z číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionType (CIS_KOREKCE_ZAVAZKU)</a>

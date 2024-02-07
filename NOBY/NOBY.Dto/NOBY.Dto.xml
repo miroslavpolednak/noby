@@ -115,6 +115,26 @@
             Příznak potvrzeného kontaktu
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Household.CustomerObligationCorrectionDto.CorrectionTypeId">
+            <summary>
+            Z číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionType (CIS_KOREKCE_ZAVAZKU)</a>
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Household.CustomerObligationCorrectionDto.InstallmentAmountCorrection">
+            <summary>
+            Výše konsolidace/zrušení splátky daného závazku
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Household.CustomerObligationCorrectionDto.LoanPrincipalAmountCorrection">
+            <summary>
+            Výše konsolidace/zrušení/snížení výše úvěru
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Household.CustomerObligationCorrectionDto.CreditCardLimitCorrection">
+            <summary>
+            Výše konsolidace/zrušení/snížení limitu KK/PD
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.IdentificationDocumentBase.IdentificationDocumentTypeId">
             <summary>
             Typ osobního dokladu - číselník IdentificationDocumentType - (CIS_TYPY_DOKLADOV)

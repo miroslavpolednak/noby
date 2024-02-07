@@ -51,4 +51,33 @@ public static class DistributedCacheExtensions
                 break;
         }
     }
+
+    public static async Task<TModel> GetOrAddObjectAsync<TModel>(this IDistributedCache cache, string key, Func<CancellationToken, Task<TModel>> onGet, DistributedCacheEntryOptions options, CancellationToken cancellationToken)
+       => await cache.GetOrAddObjectAsync(key, onGet, options, ICisDistributedCacheConfiguration.SerializationTypes.Default, cancellationToken);
+
+    public static async Task<TModel> GetOrAddObjectAsync<TModel>(this IDistributedCache cache, string key, Func<CancellationToken, Task<TModel>> onGet, DistributedCacheEntryOptions options, ICisDistributedCacheConfiguration.SerializationTypes serializationType, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(onGet);
+
+        var cachedItem = await cache.GetAsync(key, cancellationToken);
+        if (cachedItem is not null)
+        {
+            switch (serializationType)
+            {
+                case ICisDistributedCacheConfiguration.SerializationTypes.Protobuf:
+                    using (var ms = new MemoryStream(cachedItem))
+                    {
+                        return Serializer.Deserialize<TModel>(ms);
+                    }
+                default:
+                    return JsonSerializer.Deserialize<TModel>(cachedItem!);
+            }
+        }
+
+        var newItem = await onGet(cancellationToken);
+        await cache.SetObjectAsync(key, newItem, options, cancellationToken);
+
+        return newItem;
+    }
+
 }

@@ -12,7 +12,7 @@ internal class CustomerChange3602TemplateData : LoanApplicationBaseTemplateData
 {
     private readonly IProductServiceClient _productService;
     private readonly ICustomerServiceClient _customerService;
-    protected override HouseholdInfo CurrentHousehold => HouseholdCodebtor!;
+    protected override HouseholdInfo CurrentHousehold => HouseholdCodebtor ?? throw CreateNullHouseholdException(nameof(HouseholdCodebtor));
 
     public CustomerChange3602TemplateData(CustomerWithChangesService customerWithChangesService, IProductServiceClient productService, ICustomerServiceClient customerService) : base(customerWithChangesService)
     {

@@ -21,13 +21,13 @@ public class TcpClient : ITcpClient
 
         if (response.IsSuccessStatusCode)
         {
-            return await response.Content.ReadAsByteArrayAsync();
+            return await response.Content.ReadAsByteArrayAsync(cancellationToken);
         }
         else
         {
-            var result = await response.Content.ReadAsStringAsync();
-            _logger.LogError("Error when downloading file, {@result}", result);
-
+            var result = await response.Content.ReadAsStringAsync(cancellationToken);
+            _logger.ErrorWhenDownloadingFile(result);
+            
             if (result.Contains("item not found"))
             {
                 throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.TcpDocumentNotExistOnUrl);

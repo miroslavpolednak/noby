@@ -1,4 +1,5 @@
 ﻿using NOBY.Dto;
+using NOBY.Dto.Household;
 using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto;
@@ -28,35 +29,37 @@ public sealed class HouseholdObligationItem
     /// </summary>
     public string CreditorName { get; set; } = string.Empty;
 
+    public decimal? AmountConsolidated { get; set; }
+
     /// <summary>
     /// Nesplacená jistina
     /// </summary>
-    public Amount? LoanPrincipalAmount { get; set; }
+    public decimal? LoanPrincipalAmount { get; set; }
 
     /// <summary>
     /// Splátka
     /// </summary>
-    public Amount? InstallmentAmount { get; set; }
+    public decimal? InstallmentAmount { get; set; }
 
     /// <summary>
     /// Limit
     /// </summary>
-    public Amount? CreditCardLimit { get; set; }
+    public decimal? CreditCardLimit { get; set; }
 
     /// <summary>
     /// Korekce
     /// </summary>
-    public int? CorrectionTypeId { get; set; }
+    public CustomerObligationCorrectionDto? Correction { get; set; }
 
     /// <summary>
     /// Kategorie závazku
     /// </summary>
-    public int ObligationLaExposureId { get; set; }
+    public int? ObligationLaExposureId { get; set; }
 
     /// <summary>
     /// Kategorie závazku - název
     /// </summary>
-    public string ObligationLaExposureName { get; set; }
+    public string? ObligationLaExposureName { get; set; }
 
     /// <summary>
     /// Závazek FOP
@@ -94,51 +97,4 @@ public sealed class HouseholdObligationItem
     /// Datum aktualizace dat v CBCB
     /// </summary>
     public DateTime? CbcbDataLastUpdate { get; set; }
-
-    public sealed class Amount
-    {
-        public static Amount? Create(decimal? value, string? currencyCode = null)
-        {
-            if (!value.HasValue)
-            {
-                return null;
-            }
-
-            return new Amount
-            {
-                Value = value.Value,
-                CurrencyCode = currencyCode ?? "CZK"
-            };
-        }
-
-        public static Amount? Create(decimal? value, decimal? correction)
-        {
-            if (!value.HasValue)
-            {
-                return null;
-            }
-
-            return new Amount
-            {
-                Value = value.Value,
-                Correction = correction.HasValue ? value.Value - correction.Value : null,
-                CurrencyCode = "CZK"
-            };
-        }
-
-        /// <summary>
-        /// Částka před korekcí
-        /// </summary>
-        public decimal Value { get; set; }
-
-        /// <summary>
-        /// Částka po korekci
-        /// </summary>
-        public decimal? Correction { get; set; }
-
-        /// <summary>
-        /// Kód měny
-        /// </summary>
-        public string CurrencyCode { get; set; } = string.Empty;
-    }
 }
