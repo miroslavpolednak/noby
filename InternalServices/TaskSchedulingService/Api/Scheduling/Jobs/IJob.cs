@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
+﻿namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
 internal interface IJob
 {

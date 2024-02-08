@@ -1,9 +1,8 @@
 ﻿using CIS.Core.Data;
 using System.Diagnostics;
 using CIS.Infrastructure.Data;
-using ExternalServices.Eas.V1.EasWrapper;
 
-namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
+namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
 internal sealed class JobExecutor
 {
@@ -12,40 +11,16 @@ internal sealed class JobExecutor
     private readonly Dictionary<Guid, Type> _jobs;
     private readonly TimeProvider _timeProvider;
     private readonly JobExecutorRepository _repository;
+    private readonly InstanceLocking.ScheduleInstanceLockStatusService _lockingService;
 
     private static ActivitySource _activitySource = new(typeof(JobExecutor).Name);
     private Dictionary<Guid, JobStatus> _jobStatuses = new();
-
-    private const int _defaultStaleSeconds = 300;
-
-    private class JobStatus
-    {
-        public DateTime? WillBeStaleAt { get; private set; }
-        public bool IsRunning { get; private set; }
-        public Guid StateId { get; private set; }
-
-        public void Reset()
-        {
-            StateId = Guid.Empty;
-            IsRunning = false;
-            WillBeStaleAt = null;
-        }
-
-        public void Start(DateTime currentTime, Guid stateId)
-        {
-            StateId = stateId;
-            IsRunning = true;
-            WillBeStaleAt = getStaleTime(currentTime);
-        }
-
-        private static DateTime getStaleTime(DateTime currentTime)
-            => currentTime.AddSeconds(_defaultStaleSeconds);
-    }
 
     private JobExecutor(IServiceProvider serviceProvider, Dictionary<Guid, Type> jobs)
     {
         _serviceProvider = serviceProvider;
 
+        _lockingService = _serviceProvider.GetRequiredService<InstanceLocking.ScheduleInstanceLockStatusService>();
         _timeProvider = _serviceProvider.GetRequiredService<TimeProvider>();
         _repository = _serviceProvider.GetRequiredService<JobExecutorRepository>();
         _logger = _serviceProvider.GetRequiredService<ILogger<JobExecutor>>();
@@ -62,6 +37,12 @@ internal sealed class JobExecutor
 
     public async Task EnqueueJob(Guid jobId, Guid triggerId, CancellationToken cancellationToken)
     {
+        if (!_lockingService.CurrentState.IsLockAcquired)
+        {
+            _logger.LogInformation("Current instance does not hold lock. Skipping job {JobId} for trigger {TriggerId}.", jobId, triggerId);
+            return;
+        }
+
         if (!_jobs.TryGetValue(jobId, out var jobType))
         {
             throw new Exception($"Job {jobId} not found");
@@ -85,7 +66,7 @@ internal sealed class JobExecutor
         // nastavit novy status jobu a zapsat ho do databaze
         status.Start(_timeProvider.GetLocalNow().DateTime, currentStateId);
         _repository.JobStarted(currentStateId, jobId, triggerId, Activity.Current?.TraceId.ToString());
-        
+
         _logger.LogInformation("Enqueueing job {JobId} for trigger {TriggerId}", jobId, triggerId);
 
         try
@@ -147,5 +128,29 @@ internal sealed class JobExecutor
             });
 
         return new JobExecutor(serviceProvider, jobs);
+    }
+
+    private class JobStatus
+    {
+        public DateTime? WillBeStaleAt { get; private set; }
+        public bool IsRunning { get; private set; }
+        public Guid StateId { get; private set; }
+
+        public void Reset()
+        {
+            StateId = Guid.Empty;
+            IsRunning = false;
+            WillBeStaleAt = null;
+        }
+
+        public void Start(DateTime currentTime, Guid stateId)
+        {
+            StateId = stateId;
+            IsRunning = true;
+            WillBeStaleAt = getStaleTime(currentTime);
+        }
+
+        private static DateTime getStaleTime(DateTime currentTime)
+            => currentTime.AddSeconds(SchedulingConstants.DefaultStaleJobTimeout);
     }
 }

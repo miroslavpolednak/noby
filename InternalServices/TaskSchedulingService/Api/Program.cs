@@ -22,9 +22,7 @@ SharedComponents.GrpcServiceBuilder
     .Build((builder, appConfiguration) =>
     {
         // pridat databazi
-        builder
-            .AddDapper()
-            .AddEntityFramework<CIS.InternalServices.TaskSchedulingService.Api.Database.TaskSchedulingServiceDbContext>();
+        builder.AddDapper();
 
         // pridat scheduling
         builder.Services.AddSchedulingServices();

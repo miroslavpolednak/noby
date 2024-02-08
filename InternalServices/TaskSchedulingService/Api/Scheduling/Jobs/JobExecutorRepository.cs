@@ -1,11 +1,11 @@
 ﻿using CIS.Infrastructure.Data;
 
-namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
+namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
 internal sealed class JobExecutorRepository
 {
     private readonly TimeProvider _timeProvider;
-    private readonly CIS.Core.Data.IConnectionProvider _connectionProvider;
+    private readonly Core.Data.IConnectionProvider _connectionProvider;
 
     public JobExecutorRepository(TimeProvider timeProvider, Core.Data.IConnectionProvider connectionProvider)
     {
@@ -15,7 +15,7 @@ internal sealed class JobExecutorRepository
 
     public void JobStarted(Guid scheduleJobStatusId, Guid jobId, Guid triggerId, string? traceId = null, string? executorType = null)
     {
-        var entity = new Database.Entities.ScheduleJobStatus
+        var entity = new ScheduleJobStatus
         {
             ScheduleJobStatusId = scheduleJobStatusId,
             ScheduleJobId = jobId,
@@ -30,12 +30,25 @@ internal sealed class JobExecutorRepository
 
     public void UpdateJobState(Guid stateId, Statuses status)
     {
-        _connectionProvider.ExecuteDapper("UPDATE dbo.ScheduleJobStatus [Status]=@State, StatusChangedAt=@StatusChangedAt WHERE ScheduleJobStatusId=@ScheduleJobStatusId", 
-            new { 
-                ScheduleJobStatusId = stateId, 
-                Status = status.ToString(), 
-                StatusChangedAt = _timeProvider.GetLocalNow().DateTime 
+        _connectionProvider.ExecuteDapper("UPDATE dbo.ScheduleJobStatus [Status]=@State, StatusChangedAt=@StatusChangedAt WHERE ScheduleJobStatusId=@ScheduleJobStatusId",
+            new
+            {
+                ScheduleJobStatusId = stateId,
+                Status = status.ToString(),
+                StatusChangedAt = _timeProvider.GetLocalNow().DateTime
             });
+    }
+
+    private class ScheduleJobStatus
+    {
+        public Guid ScheduleJobStatusId { get; set; }
+        public Guid ScheduleJobId { get; set; }
+        public Guid ScheduleTriggerId { get; set; }
+        public string Status { get; set; } = string.Empty;
+        public DateTime StartedAt { get; set; }
+        public DateTime? StatusChangedAt { get; set; }
+        public string? TraceId { get; set; }
+        public string ExecutorType { get; set; } = null!;
     }
 
     private const string _defaultExecutorType = "Scheduler";

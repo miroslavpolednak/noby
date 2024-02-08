@@ -2,6 +2,10 @@
 
 namespace CIS.InternalServices.TaskSchedulingService.Contracts;
 
-public partial class GetAvailableTasksRequest
-    : MediatR.IRequest<GetAvailableTasksResponse>
+public partial class GetJobsRequest
+    : MediatR.IRequest<GetJobsResponse>
+{ }
+
+public partial class GetTriggersRequest
+    : MediatR.IRequest<GetTriggersResponse>
 { }

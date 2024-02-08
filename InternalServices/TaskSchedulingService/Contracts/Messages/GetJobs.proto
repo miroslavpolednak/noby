@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.TaskSchedulingService;
+option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts";
+
+message GetJobsRequest {
+}
+
+message GetJobsResponse {
+	// Seznam všech jobů
+	repeated Job Jobs = 1;
+
+	message Job {
+		// ID jobu
+		string JobId = 1;
+
+		// Název jobu
+		string JobName = 2;
+		
+		// Interní typ jobu
+		string JobType = 3;
+		
+		// True pokud je job vypnutý
+		bool IsDisabled = 4;
+	}
+}

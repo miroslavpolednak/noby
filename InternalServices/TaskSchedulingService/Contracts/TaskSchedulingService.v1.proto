@@ -3,13 +3,21 @@ package CIS.InternalServices.TaskSchedulingService.v1;
 option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts.v1";
 
 import "google/api/annotations.proto";
-import "Messages/GetAvailableTasks.proto";
+import "Messages/GetJobs.proto";
+import "Messages/GetTriggers.proto";
 
 service TaskSchedulingService {
-	// Vrací instanci konkrétní služby pro dané prostředí a typ
-	rpc GetAvailableTasks (GetAvailableTasksRequest) returns (GetAvailableTasksResponse) {
+	// Vrací seznam všech dostupných Jobů
+	rpc GetJobs (GetJobsRequest) returns (GetJobsResponse) {
 		option (google.api.http) = {
-			get: "/api/v1/available-tasks"
+			get: "/api/v1/jobs"
+		};
+	}
+
+	// Vrací seznam všech nastavených Triggerů
+	rpc GetTriggers (GetTriggersRequest) returns (GetTriggersResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/triggers"
 		};
 	}
 }

@@ -1,10 +1,11 @@
 ﻿using CIS.Core.Attributes;
+using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.Job2;
 
 [ScopedService, SelfService]
 internal sealed class Job2Handler
-    : Scheduling.IJob
+    : IJob
 {
     public Task Execute(CancellationToken cancellationToken)
     {

@@ -1,11 +1,12 @@
 ﻿using CIS.Core.Attributes;
+using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 using System.Diagnostics;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.Job1;
 
 [ScopedService, SelfService]
 internal sealed class Job1Handler
-    : Scheduling.IJob
+    : IJob
 {
     private readonly ILogger<Job1Handler> _logger;
 

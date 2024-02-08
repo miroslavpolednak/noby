@@ -32,7 +32,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Protobuf Include="Messages\GetAvailableTasks.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+	  <Protobuf Include="Messages\GetTriggers.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+	  <Protobuf Include="Messages\GetJobs.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	  <Protobuf Include="TaskSchedulingService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	</ItemGroup>
 

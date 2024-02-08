@@ -3,10 +3,10 @@ using CIS.Core.Data;
 using NCrontab;
 using NCrontab.Scheduler;
 using CIS.Infrastructure.Data;
+using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
 
-[TransientService, SelfService]
 internal sealed class TriggerService
 {
     private readonly IConnectionProvider _dbConnection;

@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.TaskSchedulingService;
+option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts";
+
+message GetTriggersRequest {
+}
+
+message GetTriggersResponse {
+	repeated Trigger Triggers = 1;
+
+	message Trigger {
+		string TriggerId = 1;
+		string JobId = 2;
+		string JobType = 3;
+		string JobName = 4;
+		string TriggerName = 5;
+		string CronExpression = 6;
+		string CronExpressionText = 7;
+		bool IsDisabled = 8;
+	}
+}
