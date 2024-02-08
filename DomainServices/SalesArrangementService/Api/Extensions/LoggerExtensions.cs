@@ -8,7 +8,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, int, Exception> _deleteServiceSalesArrangements;
     private static readonly Action<ILogger, long, string, Exception> _cancelCaseJobFailed;
     private static readonly Action<ILogger, long, Exception> _cancelCaseJobFinished;
-    private static readonly Action<ILogger, long, Exception> _cancelCaseJobSkipped;
+    private static readonly Action<ILogger, long, string, Exception> _cancelCaseJobSkipped;
     private static readonly Action<ILogger, long, int, Exception> _offerGuaranteeDateToCheckJobCancelTask;
     private static readonly Action<ILogger, int, Exception> _offerGuaranteeDateToCheckJobFinished;
 
@@ -44,10 +44,10 @@ internal static class LoggerExtensions
             new EventId(LoggerEventIdCodes.CancelCaseJobFinished, nameof(CancelCaseJobFinished)),
             "CancelCase job finished for CaseId '{CaseId}'");
 
-        _cancelCaseJobSkipped = LoggerMessage.Define<long>(
+        _cancelCaseJobSkipped = LoggerMessage.Define<long, string>(
             LogLevel.Information,
             new EventId(LoggerEventIdCodes.CancelCaseJobSkipped, nameof(CancelCaseJobSkipped)),
-            "CancelCase job skipped due to CaseState for CaseId '{CaseId}'");
+            "CancelCase job skipped for CaseId '{CaseId}' due to {Reason}");
 
         _offerGuaranteeDateToCheckJobCancelTask = LoggerMessage.Define<long, int>(
             LogLevel.Information,
@@ -78,8 +78,8 @@ internal static class LoggerExtensions
     public static void CancelCaseJobFinished(this ILogger logger, long caseId)
         => _cancelCaseJobFinished(logger, caseId, null!);
 
-    public static void CancelCaseJobSkipped(this ILogger logger, long caseId)
-        => _cancelCaseJobSkipped(logger, caseId, null!);
+    public static void CancelCaseJobSkipped(this ILogger logger, long caseId, string reason)
+        => _cancelCaseJobSkipped(logger, caseId, reason, null!);
 
     public static void OfferGuaranteeDateToCheckJobCancelTask(this ILogger logger, long caseId, int taskSbId)
         => _offerGuaranteeDateToCheckJobCancelTask(logger, caseId, taskSbId, null!);
