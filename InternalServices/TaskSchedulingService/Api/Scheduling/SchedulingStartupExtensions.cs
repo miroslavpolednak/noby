@@ -6,18 +6,22 @@ internal static class SchedulingStartupExtensions
 {
     public static IServiceCollection AddSchedulingServices(this IServiceCollection services)
     {
-        services.AddSingleton<IScheduler>(x =>
+        services.AddSingleton<IScheduler>(services =>
         {
             return new Scheduler(
-                x.GetRequiredService<ILogger<Scheduler>>(),
+                services.GetRequiredService<ILogger<Scheduler>>(),
                 new SchedulerOptions
                 {
                     DateTimeKind = DateTimeKind.Local
                 });
         });
 
-        services
-            .AddHostedService<SchedulerHostedService>();
+        services.AddSingleton(services =>
+        {
+            return JobExecutor.CreateInstance(services);
+        });
+
+        services.AddHostedService<SchedulerHostedService>();
 
         return services;
     }

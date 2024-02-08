@@ -13,4 +13,6 @@ internal sealed class TaskSchedulingServiceDbContext
     public DbSet<ScheduleTrigger> ScheduleTriggers { get; set; }
 
     public DbSet<ScheduleJob> ScheduleJobs { get; set; }
+
+    public DbSet<ScheduleJobStatus> ScheduleJobsStatuses { get; set; }
 }

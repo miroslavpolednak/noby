@@ -52,6 +52,16 @@ public static class DapperExtensions
         return await connection.ExecuteAsync(command);
     }
 
+    public static int ExecuteDapper(this IConnectionProvider connectionProvider, string sqlQuery, object param)
+    {
+        using var connection = connectionProvider.Create();
+        connection.Open();
+
+        var command = new CommandDefinition(sqlQuery, parameters: param);
+
+        return connection.Execute(command);
+    }
+
     public static async Task<T> ExecuteDapperQueryAsync<T>(this IConnectionProvider connectionProvider, Func<IDbConnection, Task<T>> getData, CancellationToken cancellationToken = default)
     {
         await using var connection = connectionProvider.Create();
