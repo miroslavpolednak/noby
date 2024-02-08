@@ -18,6 +18,7 @@
 		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0" />
 		<PackageReference Include="MediatR" Version="12.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
+		<PackageReference Include="NCrontab.Scheduler" Version="1.2.10" />
 	</ItemGroup>
 	
   <ItemGroup>
@@ -39,10 +40,6 @@
     <ProjectReference Include="..\..\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj" />
     <ProjectReference Include="..\..\NotificationService\Clients\CIS.InternalServices.NotificationService.Clients.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.TaskSchedulingService.Contracts.csproj" />
-  </ItemGroup>
-	
-  <ItemGroup>
-    <Folder Include="Database\Entities\" />
   </ItemGroup>
 	
   <ItemGroup>

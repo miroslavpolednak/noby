@@ -1,5 +1,7 @@
-using CIS.Core;
 using CIS.Infrastructure.StartupExtensions;
+using CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
+
+#pragma warning disable CS0436 // Type conflicts with imported type
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -19,7 +21,13 @@ SharedComponents.GrpcServiceBuilder
     })
     .Build((builder, appConfiguration) =>
     {
-        
+        // pridat databazi
+        builder
+            .AddDapper()
+            .AddEntityFramework<CIS.InternalServices.TaskSchedulingService.Api.Database.TaskSchedulingServiceDbContext>();
+
+        // pridat scheduling
+        builder.Services.AddSchedulingServices();
     })
     .MapGrpcServices((app, _) =>
     {
