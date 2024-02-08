@@ -11,7 +11,7 @@ using CIS.Infrastructure.ExternalServicesHelpers.Soap;
 using System.Globalization;
 
 namespace DomainServices.DocumentArchiveService.ExternalServices.Sdf.V1.Clients;
-internal class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedServices>, ISdfClient
+internal sealed class RealSdfClient : SoapClientBase<ExtendedServicesClient, IExtendedServices>, ISdfClient
 {
     private const int _maxRetries = 3;
 

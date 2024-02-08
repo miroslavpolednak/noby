@@ -52,7 +52,7 @@ internal class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, 
     private async Task LoadFromSdf(GetDocumentListRequest request, GetDocumentListResponse response, CancellationToken cancellationToken)
     {
         var sdfResult = await _sdfClient.FindDocuments(_documentMapper.MapSdfFindDocumentQuery(request), cancellationToken);
-        if (sdfResult.DocInfos.Any())
+        if (sdfResult.DocInfos.Length != 0)
         {
             response.Metadata
             .AddRange(sdfResult.DocInfos

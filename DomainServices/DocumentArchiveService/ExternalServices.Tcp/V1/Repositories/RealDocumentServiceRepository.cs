@@ -5,6 +5,7 @@ using DomainServices.DocumentArchiveService.ExternalServices.Tcp.Data;
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Model;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
+using System.Globalization;
 using System.Text;
 
 namespace DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Repositories;
@@ -156,7 +157,7 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
 
         if (query.CreatedOn is not null)
         {
-            parameters.Add("CreatedOn", OracleDbType.Varchar2, ParameterDirection.Input, query.CreatedOn.Value.ToString("yyyy-MM-dd"));
+            parameters.Add("CreatedOn", OracleDbType.Varchar2, ParameterDirection.Input, query.CreatedOn.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
             sb.Append(CreatedOnCondition);
         }
 

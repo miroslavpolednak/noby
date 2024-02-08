@@ -54,13 +54,13 @@ public class GetDocumentsInQueueHandler : IRequestHandler<GetDocumentsInQueueReq
     {
         var query = _context.DocumentInterface.Select(d => d);
 
-        if (request.EArchivIds.Any())
+        if (request.EArchivIds.Count != 0)
             query = query.Where(d => request.EArchivIds.Contains(d.DocumentId));
 
         if (request.CaseId is not null)
             query = query.Where(d => d.CaseId == request.CaseId);
 
-        if (request.StatusesInQueue.Any())
+        if (request.StatusesInQueue.Count != 0)
             query = query.Where(d => request.StatusesInQueue.Contains(d.Status));
 
         return query;

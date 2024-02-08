@@ -32,4 +32,6 @@ public sealed class StartTaskSigningResponse
     public SignatureState SignatureState { get; set; } = null!;
 
     public EACodeMainItem EACodeMainItem { get; set; } = null!;
+
+    public int? SalesArrangementId { get; set; }
 }

@@ -3,7 +3,6 @@ package DomainServices.DocumentOnSAService;
 option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
 
 import "google/protobuf/wrappers.proto";
-import "google/protobuf/timestamp.proto";
 import "Enums.proto";
 
 message DocumentOnSA {

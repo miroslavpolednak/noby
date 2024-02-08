@@ -1,5 +1,4 @@
-﻿using CIS.Core;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using OpenTelemetry;
 using OpenTelemetry.Context.Propagation;
 using StackExchange.Redis;
@@ -19,18 +18,15 @@ public class Publisher<T> : IPublisher<T> where T : RedisMessage
     private static readonly TextMapPropagator _propagator = new TraceContextPropagator();
 
     private readonly IConnectionMultiplexer _connection;
-    private readonly TimeProvider _dateTime;
     private readonly ILogger<Publisher<T>> _logger;
     private readonly RedisMessagingOptions _configuration;
 
     public Publisher(
         IConnectionMultiplexer connection,
-        TimeProvider dateTime,
         ILogger<Publisher<T>> logger,
         IOptions<RedisMessagingOptions> configuration)
     {
         _connection = connection;
-        _dateTime = dateTime;
         _logger = logger;
         _configuration = configuration.Value;
     }
@@ -45,7 +41,7 @@ public class Publisher<T> : IPublisher<T> where T : RedisMessage
 
         var type = message.GetType();
         message.MessageType = type.AssemblyQualifiedName!;
-        message.CreatedAt = _dateTime.GetLocalNow().DateTime;
+        message.CreatedAt = DateTime.Now;
         message.TelemetryInfo = telemetryInfo;
         await _connection.EnqueueItem(queueId, message);
         _logger.MessageAddedToQueue(queueId, message.GetType().FullName!);
@@ -61,7 +57,7 @@ public class Publisher<T> : IPublisher<T> where T : RedisMessage
 
         var type = message.GetType();
         message.MessageType = type.AssemblyQualifiedName!;
-        message.CreatedAt = _dateTime.GetLocalNow().DateTime;
+        message.CreatedAt = DateTime.Now;
         message.TelemetryInfo = telemetryInfo;
         await _connection.Publish(channel, message);
         _logger.MessageAddedToChanel(channel, message.GetType().FullName!);
