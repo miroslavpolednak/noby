@@ -20,7 +20,8 @@ internal static class CaseExtensions
             ProcessNameShort = taskData.GetValueOrDefault("ukol_top_proces_nazev_noby") ?? "",
             StateIdSb = taskData.GetInteger("ukol_stav_poz"),
             Cancelled = taskData.GetBoolean("ukol_stornovano"),
-            PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel") ?? ""
+            PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel") ?? "",
+            ProcessTypeId = taskData.GetInteger("ukol_top_proces_typ_noby")
         };
 
         task.PhaseTypeId = task.TaskTypeId switch
@@ -29,6 +30,7 @@ internal static class CaseExtensions
             2 => taskData.GetInteger("ukol_overeni_ic_stav"),
             6 => taskData.GetInteger("ukol_podpis_stav"),
             3 or 4 or 7 or 8 => 1,
+            9 => taskData.GetInteger("ukol_faze_rt_procesu"),
             _ => throw new ArgumentOutOfRangeException(nameof(task.PhaseTypeId),"PhaseTypeId can not be set")
         };
 
