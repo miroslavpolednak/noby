@@ -11,4 +11,6 @@ internal sealed class TaskSchedulingServiceDbContext
         : base(aggregate) { }
 
     public DbSet<ScheduleTrigger> ScheduleTriggers { get; set; }
+
+    public DbSet<ScheduleJob> ScheduleJobs { get; set; }
 }

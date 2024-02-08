@@ -3,17 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Database.Entities;
 
-[Table("ScheduleTrigger", Schema = "dbo")]
-internal sealed class ScheduleTrigger
+[Table("ScheduleJob", Schema = "dbo")]
+internal sealed class ScheduleJob
 {
     [Key]
-    public Guid ScheduleTriggerId { get; set; }
-
     public Guid ScheduleJobId { get; set; }
 
-    public string TriggerName { get; set; } = null!;
+    public string JobName { get; set; } = null!;
 
-    public string Cron { get; set; } = null!;
+    public string JobType { get; set; } = null!;
 
     public bool IsDisabled { get; set; }
 }
