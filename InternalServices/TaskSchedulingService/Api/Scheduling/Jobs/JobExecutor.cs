@@ -35,29 +35,31 @@ internal sealed class JobExecutor
         _jobs = jobs;
     }
 
-    public async Task EnqueueJob(Guid jobId, Guid triggerId, CancellationToken cancellationToken)
+    public EnqueueJobResult EnqueueJob(Guid jobId, Guid? triggerId, CancellationToken cancellationToken)
     {
+        if (!_jobs.TryGetValue(jobId, out var jobType))
+        {
+            _logger.LogError("Job {jobId} not found", jobId);
+            return new EnqueueJobResult($"Job {jobId} not found");
+        }
+
         if (!_lockingService.CurrentState.IsLockAcquired)
         {
             _logger.LogInformation("Current instance does not hold lock. Skipping job {JobId} for trigger {TriggerId}.", jobId, triggerId);
-            return;
-        }
-
-        if (!_jobs.TryGetValue(jobId, out var jobType))
-        {
-            throw new Exception($"Job {jobId} not found");
+            return new EnqueueJobResult("Current instance does not hold lock.");
         }
 
         if (!validateJobStatus(jobId))
         {
             _logger.LogInformation("Job {JobId} is already running", jobId);
-            return;
+            return new EnqueueJobResult("Job is already running");
         }
 
         // DI scope + Activity scope
         using var scope = _serviceProvider.CreateScope();
         using var activity = _activitySource.StartActivity(nameof(JobExecutor));
 
+        string? traceId = Activity.Current?.TraceId.ToString();
         // instance statusu jobu
         var status = _jobStatuses[jobId];
         // ID noveho status jobu
@@ -65,26 +67,36 @@ internal sealed class JobExecutor
 
         // nastavit novy status jobu a zapsat ho do databaze
         status.Start(_timeProvider.GetLocalNow().DateTime, currentStateId);
-        _repository.JobStarted(currentStateId, jobId, triggerId, Activity.Current?.TraceId.ToString());
+        _repository.JobStarted(currentStateId, jobId, triggerId, traceId);
 
-        _logger.LogInformation("Enqueueing job {JobId} for trigger {TriggerId}", jobId, triggerId);
+        _logger.LogInformation("Enqueing job {JobId} for trigger {TriggerId}", jobId, triggerId);
 
+        var job = (IJob)scope.ServiceProvider.GetService(jobType)!;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        executeJob(job, jobId, currentStateId, cancellationToken);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+        return new EnqueueJobResult(traceId, currentStateId);
+    }
+
+    private async Task executeJob(IJob job, Guid jobId, Guid currentStateId, CancellationToken cancellationToken)
+    {
         try
         {
-            var job = (IJob)scope.ServiceProvider.GetService(jobType)!;
             await job.Execute(cancellationToken);
             _repository.UpdateJobState(currentStateId, JobExecutorRepository.Statuses.Finished);
 
-            _logger.LogInformation("Job {JobId} for trigger {TriggerId} finished", jobId, triggerId);
+            _logger.LogInformation("Job {JobId} finished", jobId);
         }
         catch (Exception ex)
         {
             _repository.UpdateJobState(currentStateId, JobExecutorRepository.Statuses.Failed);
-            _logger.LogInformation("Job {JobId} for trigger {TriggerId} failed: {Message}", jobId, triggerId, ex.Message);
+
+            _logger.LogInformation("Job {JobId} failed: {Message}", jobId, ex.Message);
         }
         finally
         {
-            status.Reset();
+            _jobStatuses[jobId].Reset();
         }
     }
 
@@ -130,7 +142,7 @@ internal sealed class JobExecutor
         return new JobExecutor(serviceProvider, jobs);
     }
 
-    private class JobStatus
+    private sealed class JobStatus
     {
         public DateTime? WillBeStaleAt { get; private set; }
         public bool IsRunning { get; private set; }

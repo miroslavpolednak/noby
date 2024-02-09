@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.TaskSchedulingService;
+option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts";
+
+message GetInstanceStatusRequest {
+}
+
+message GetInstanceStatusResponse {
+	bool IsActiveInstance = 1;
+	string ActiveInstanceName = 2;
+}

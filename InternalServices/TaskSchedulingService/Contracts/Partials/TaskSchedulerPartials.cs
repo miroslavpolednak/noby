@@ -9,3 +9,11 @@ public partial class GetJobsRequest
 public partial class GetTriggersRequest
     : MediatR.IRequest<GetTriggersResponse>
 { }
+
+public partial class GetInstanceStatusRequest
+    : MediatR.IRequest<GetInstanceStatusResponse>
+{ }
+
+public partial class ExecuteJobRequest
+    : MediatR.IRequest<ExecuteJobResponse>
+{ }

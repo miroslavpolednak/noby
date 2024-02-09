@@ -13,7 +13,7 @@ internal sealed class JobExecutorRepository
         _connectionProvider = connectionProvider;
     }
 
-    public void JobStarted(Guid scheduleJobStatusId, Guid jobId, Guid triggerId, string? traceId = null, string? executorType = null)
+    public void JobStarted(Guid scheduleJobStatusId, Guid jobId, Guid? triggerId = null, string? traceId = null)
     {
         var entity = new ScheduleJobStatus
         {
@@ -23,14 +23,14 @@ internal sealed class JobExecutorRepository
             ScheduleTriggerId = triggerId,
             StartedAt = _timeProvider.GetLocalNow().DateTime,
             TraceId = traceId,
-            ExecutorType = executorType ?? _defaultExecutorType
+            ExecutorType = triggerId.HasValue ? ExecutionTypes.Triggered.ToString() : ExecutionTypes.Manual.ToString()
         };
         _connectionProvider.ExecuteDapper("INSERT INTO dbo.ScheduleJobStatus (ScheduleJobStatusId, ScheduleJobId, [Status], ScheduleTriggerId, StartedAt, TraceId, ExecutorType) VALUES (@ScheduleJobStatusId, @ScheduleJobId, @Status, @ScheduleTriggerId, @StartedAt, @TraceId, @ExecutorType)", entity);
     }
 
     public void UpdateJobState(Guid stateId, Statuses status)
     {
-        _connectionProvider.ExecuteDapper("UPDATE dbo.ScheduleJobStatus [Status]=@State, StatusChangedAt=@StatusChangedAt WHERE ScheduleJobStatusId=@ScheduleJobStatusId",
+        _connectionProvider.ExecuteDapper("UPDATE dbo.ScheduleJobStatus SET [Status]=@Status, StatusChangedAt=@StatusChangedAt WHERE ScheduleJobStatusId=@ScheduleJobStatusId",
             new
             {
                 ScheduleJobStatusId = stateId,
@@ -43,7 +43,7 @@ internal sealed class JobExecutorRepository
     {
         public Guid ScheduleJobStatusId { get; set; }
         public Guid ScheduleJobId { get; set; }
-        public Guid ScheduleTriggerId { get; set; }
+        public Guid? ScheduleTriggerId { get; set; }
         public string Status { get; set; } = string.Empty;
         public DateTime StartedAt { get; set; }
         public DateTime? StatusChangedAt { get; set; }
@@ -51,7 +51,11 @@ internal sealed class JobExecutorRepository
         public string ExecutorType { get; set; } = null!;
     }
 
-    private const string _defaultExecutorType = "Scheduler";
+    public enum ExecutionTypes
+    {
+        Triggered,
+        Manual
+    }
 
     public enum Statuses
     {

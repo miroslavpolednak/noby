@@ -6,6 +6,7 @@ using CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .AddApplicationConfiguration<CIS.InternalServices.TaskSchedulingService.Api.Configuration.AppConfiguration>()
+    .AddErrorCodeMapper(CIS.InternalServices.TaskSchedulingService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
         services

@@ -5,6 +5,8 @@ option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts.
 import "google/api/annotations.proto";
 import "Messages/GetJobs.proto";
 import "Messages/GetTriggers.proto";
+import "Messages/GetInstanceStatus.proto";
+import "Messages/ExecuteJob.proto";
 
 service TaskSchedulingService {
 	// Vrací seznam všech dostupných Jobů
@@ -18,6 +20,20 @@ service TaskSchedulingService {
 	rpc GetTriggers (GetTriggersRequest) returns (GetTriggersResponse) {
 		option (google.api.http) = {
 			get: "/api/v1/triggers"
+		};
+	}
+
+	// Vrací status této instance scheduleru
+	rpc GetInstanceStatus (GetInstanceStatusRequest) returns (GetInstanceStatusResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/instance-status"
+		};
+	}
+
+	// Manuální spuštění jobu
+	rpc ExecuteJob (ExecuteJobRequest) returns (ExecuteJobResponse) {
+		option (google.api.http) = {
+			post: "/api/v1/job"
 		};
 	}
 }

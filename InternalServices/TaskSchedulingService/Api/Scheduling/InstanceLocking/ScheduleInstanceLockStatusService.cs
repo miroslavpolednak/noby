@@ -20,10 +20,11 @@ internal sealed class ScheduleInstanceLockStatusService
     public CurrentStateInfo TryAcquireLock()
     {
         var result = _connectionProvider.ExecuteDapperStoredProcedureFirstOrDefault<StatusInfo>(
-            "EXEC dbo.fn_AcquireScheduleLock @instanceName=@p1, @lockTimeout=@p2",
-            new { 
-                p1 = _instanceName, 
-                p2 = SchedulingConstants.ScheduleInstanceLockTimeout 
+            "dbo.fn_AcquireScheduleLock",
+            new 
+            { 
+                instanceName = _instanceName, 
+                lockTimeout = SchedulingConstants.ScheduleInstanceLockTimeout
             })!;
 
         CurrentState = new(result.IsLockAcquired, result.LockOwnerInstanceName)
