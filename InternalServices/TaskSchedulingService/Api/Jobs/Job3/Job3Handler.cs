@@ -3,7 +3,6 @@ using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.Job3;
 
-[ScopedService, SelfService]
 internal sealed class Job3Handler
     : IJob
 {
@@ -14,7 +13,7 @@ internal sealed class Job3Handler
         _logger = logger;
     }
 
-    public async Task Execute(CancellationToken cancellationToken)
+    public async Task Execute(string? jobData, CancellationToken cancellationToken)
     {
         _logger.LogInformation("3 LOGGER START");
         await Task.Delay(9000);

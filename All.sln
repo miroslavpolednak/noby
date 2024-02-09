@@ -577,7 +577,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TaskSchedulingService", "Ta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.TaskSchedulingService.Api", "InternalServices\TaskSchedulingService\Api\CIS.InternalServices.TaskSchedulingService.Api.csproj", "{8BE68029-F917-4543-9DDF-45AD4E0161EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.InternalServices.TaskSchedulingService.Contracts", "InternalServices\TaskSchedulingService\Contracts\CIS.InternalServices.TaskSchedulingService.Contracts.csproj", "{AA68B4F0-5E0F-42F3-86C2-E162CA0A1AA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.TaskSchedulingService.Contracts", "InternalServices\TaskSchedulingService\Contracts\CIS.InternalServices.TaskSchedulingService.Contracts.csproj", "{AA68B4F0-5E0F-42F3-86C2-E162CA0A1AA3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{C5B31D86-8F45-4620-848E-E009F1B3326D}"
+	ProjectSection(SolutionItems) = preProject
+		InternalServices\TaskSchedulingService\DatabaseMigrations\00001-initial_creation.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00001-initial_creation.sql
+		InternalServices\TaskSchedulingService\DatabaseMigrations\00002-initial_seed.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00002-initial_seed.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1684,6 +1690,7 @@ Global
 		{C23D086B-4121-4705-959E-BC2A3C2C1C9E} = {0DC96AF3-B121-4ACA-92C2-1064CADBC228}
 		{8BE68029-F917-4543-9DDF-45AD4E0161EF} = {C23D086B-4121-4705-959E-BC2A3C2C1C9E}
 		{AA68B4F0-5E0F-42F3-86C2-E162CA0A1AA3} = {C23D086B-4121-4705-959E-BC2A3C2C1C9E}
+		{C5B31D86-8F45-4620-848E-E009F1B3326D} = {C23D086B-4121-4705-959E-BC2A3C2C1C9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443E3D5D-9B9D-4C45-A27D-7F3CC1AD8389}

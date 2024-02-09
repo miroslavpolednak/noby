@@ -16,6 +16,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="MaintananceService.proto" />
 	  <None Remove="Messages\UpdatePcpId.proto" />
 	</ItemGroup>
 
@@ -34,6 +35,7 @@
 
 	<ItemGroup>
 		<Protobuf Include="Messages\UpdatePcpId.proto" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="MaintananceService.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 
 		<Protobuf Include="Messages\GetProductSalesArrangements.proto" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />

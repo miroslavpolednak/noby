@@ -37,7 +37,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Endpoints\SetContractNumber\" />
+	  <Folder Include="Endpoints\v1\SetContractNumber\" />
 	  <Folder Include="Services\Forms\" />
 	</ItemGroup>
 

@@ -2,11 +2,20 @@
 package CIS.InternalServices.TaskSchedulingService;
 option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+
 message ExecuteJobRequest {
+	// ID jobu
 	string JobId = 1;
+
+	// Metadata / nastavení jobu
+	google.protobuf.StringValue JobData = 2;
 }
 
 message ExecuteJobResponse {
+	// Trace běhu ve výsledcích
 	string TraceId = 1;
+
+	// ID běhu jobu ve výsledcích
 	string ScheduleJobStatusId = 2;
 }

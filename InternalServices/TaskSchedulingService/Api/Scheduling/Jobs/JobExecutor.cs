@@ -43,7 +43,7 @@ internal sealed class JobExecutor
         _jobs = jobs;
     }
 
-    public EnqueueJobResult EnqueueJob(Guid jobId, Guid? triggerId, CancellationToken cancellationToken)
+    public EnqueueJobResult EnqueueJob(Guid jobId, Guid? triggerId, string? jobData, CancellationToken cancellationToken)
     {
         if (!_jobs.TryGetValue(jobId, out var jobType))
         {
@@ -82,17 +82,17 @@ internal sealed class JobExecutor
         var job = (IJob)scope.ServiceProvider.GetService(jobType)!;
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        executeJob(job, jobId, currentStateId, cancellationToken);
+        executeJob(job, jobId, currentStateId, jobData, cancellationToken);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
         return new EnqueueJobResult(traceId, currentStateId);
     }
 
-    private async Task executeJob(IJob job, Guid jobId, Guid currentStateId, CancellationToken cancellationToken)
+    private async Task executeJob(IJob job, Guid jobId, Guid currentStateId, string? jobData, CancellationToken cancellationToken)
     {
         try
         {
-            await job.Execute(cancellationToken);
+            await job.Execute(jobData, cancellationToken);
             _repository.UpdateJobState(currentStateId, ScheduleJobStatuses.Finished);
 
             _logger.JobFinished(jobId);

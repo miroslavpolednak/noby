@@ -32,6 +32,7 @@ CREATE TABLE [dbo].[ScheduleJob](
 	[ScheduleJobId] [uniqueidentifier] NOT NULL,
 	[JobName] [nvarchar](250) NOT NULL,
 	[JobType] [varchar](500) NOT NULL,
+	[Description] [nvarchar](max) NULL,
 	[IsDisabled] [bit] NOT NULL,
  CONSTRAINT [PK_ScheduleJob] PRIMARY KEY CLUSTERED 
 (
@@ -41,6 +42,24 @@ CREATE TABLE [dbo].[ScheduleJob](
 GO
 
 ALTER TABLE [dbo].[ScheduleJob] ADD  CONSTRAINT [DF_ScheduleJob_IsDisabled]  DEFAULT ((0)) FOR [IsDisabled]
+GO
+
+DROP IF EXISTS [dbo].[ScheduleJobStatus]
+GO
+
+CREATE TABLE [dbo].[ScheduleJobStatus](
+	[ScheduleJobStatusId] [uniqueidentifier] NOT NULL,
+	[ScheduleJobId] [uniqueidentifier] NOT NULL,
+	[ScheduleTriggerId] [uniqueidentifier] NULL,
+	[Status] [varchar](50) NOT NULL,
+	[StartedAt] [datetime] NOT NULL,
+	[StatusChangedAt] [datetime] NULL,
+	[TraceId] [varchar](50) NULL,
+ CONSTRAINT [PK_ScheduleJobStatus] PRIMARY KEY CLUSTERED 
+(
+	[ScheduleJobStatusId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 
 DROP IF EXISTS PROCEDURE dbo.fn_AcquireScheduleLock

@@ -1,5 +1,6 @@
 using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
+using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
 #pragma warning disable CS0436 // Type conflicts with imported type
 
@@ -32,6 +33,13 @@ SharedComponents.GrpcServiceBuilder
 
         // pridat scheduling
         builder.Services.AddSchedulingServices();
+
+        // zaregistrovat joby
+        builder.Services.Scan(selector => selector
+            .FromAssembliesOf(typeof(Program))
+            .AddClasses(x => x.AssignableTo(typeof(IJob)))
+            .AsSelf()
+            .WithScopedLifetime());
     })
     .MapGrpcServices(app =>
     {

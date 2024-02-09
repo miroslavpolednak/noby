@@ -14,7 +14,7 @@ internal sealed class ExecuteJobHandler
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InstanceIsNotActive, _lockService.CurrentState.LockOwnerInstanceName);
         }
 
-        var result = _jobExecutor.EnqueueJob(Guid.Parse(request.JobId), null, cancellation);
+        var result = _jobExecutor.EnqueueJob(Guid.Parse(request.JobId), null, request.JobData, cancellation);
 
         if (result.IsSucessful)
         {

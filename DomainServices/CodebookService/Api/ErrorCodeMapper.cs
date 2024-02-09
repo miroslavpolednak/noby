@@ -9,6 +9,7 @@ internal sealed class ErrorCodeMapper
     public const int DeveloperProjectNotFound = 20001;
     public const int OperatorNotFound = 20002;
     public const int AcvRealEstateTypeNotFound = 20003;
+    public const int DownloadRdmCodebookNotFound = 20004;
 
     public static IErrorCodesDictionary Init()
     {
@@ -17,7 +18,8 @@ internal sealed class ErrorCodeMapper
             { DeveloperNotFound, "DeveloperId {PropertyValue} not found" },
             { DeveloperProjectNotFound, "DeveloperProjectId {PropertyValue} not found" },
             { OperatorNotFound, "Operator {PropertyValue} not found" },
-            { AcvRealEstateTypeNotFound, "AcvRealEstateType or BagmanRealEstateTypeId not found" }
+            { AcvRealEstateTypeNotFound, "AcvRealEstateType or BagmanRealEstateTypeId not found" },
+            { DownloadRdmCodebookNotFound, "RDM Codebook {PropertyValue} not found in app's configuration" }
         });
 
         return Messages;

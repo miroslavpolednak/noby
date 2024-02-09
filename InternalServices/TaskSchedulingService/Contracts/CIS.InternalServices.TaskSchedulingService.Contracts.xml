@@ -7,6 +7,19 @@
         <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest.JobIdFieldNumber">
             <summary>Field number for the "JobId" field.</summary>
         </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest.JobId">
+            <summary>
+            ID jobu
+            </summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest.JobDataFieldNumber">
+            <summary>Field number for the "JobData" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest.JobData">
+            <summary>
+            Metadata / nastavení jobu
+            </summary>
+        </member>
         <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.UpdateSchedulerReflection">
             <summary>Holder for reflection information generated from Messages/UpdateScheduler.proto</summary>
         </member>
@@ -22,8 +35,18 @@
         <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.TraceIdFieldNumber">
             <summary>Field number for the "TraceId" field.</summary>
         </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.TraceId">
+            <summary>
+            Trace běhu ve výsledcích
+            </summary>
+        </member>
         <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.ScheduleJobStatusIdFieldNumber">
             <summary>Field number for the "ScheduleJobStatusId" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.ScheduleJobStatusId">
+            <summary>
+            ID běhu jobu ve výsledcích
+            </summary>
         </member>
         <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.GetInstanceStatusReflection">
             <summary>Holder for reflection information generated from Messages/GetInstanceStatus.proto</summary>
@@ -112,6 +135,14 @@
         <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.JobType">
             <summary>
             Interní typ jobu
+            </summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.Description">
+            <summary>
+            Popis jobu
             </summary>
         </member>
         <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.IsDisabledFieldNumber">

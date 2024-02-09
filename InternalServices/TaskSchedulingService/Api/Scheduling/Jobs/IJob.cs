@@ -2,5 +2,5 @@
 
 internal interface IJob
 {
-    Task Execute(CancellationToken cancellationToken);
+    Task Execute(string? jobData, CancellationToken cancellationToken);
 }

@@ -12,7 +12,7 @@ internal sealed class TriggerService
     private readonly ILogger<TriggerService> _logger;
     private readonly JobExecutor _jobExecutor;
 
-    private const string _sql = "SELECT ScheduleTriggerId, ScheduleJobId, Cron, IsDisabled FROM dbo.ScheduleTrigger";
+    private const string _sql = "SELECT ScheduleTriggerId, ScheduleJobId, Cron, JobData, IsDisabled FROM dbo.ScheduleTrigger";
 
     public TriggerService(IConnectionProvider dbConnection, ILogger<TriggerService> logger, JobExecutor jobExecutor)
     {
@@ -24,7 +24,7 @@ internal sealed class TriggerService
     public void UpdateTriggersInScheduler(IScheduler scheduler, CancellationToken cancellationToken)
     {
         var allTriggers = _dbConnection
-            .ExecuteDapperRawSqlToList<(Guid ScheduleTriggerId, Guid ScheduleJobId, string Cron, bool IsDisabled)>(_sql);
+            .ExecuteDapperRawSqlToList<(Guid ScheduleTriggerId, Guid ScheduleJobId, string Cron, string? JobData, bool IsDisabled)>(_sql);
 
         foreach (var trigger in allTriggers)
         {
@@ -38,7 +38,7 @@ internal sealed class TriggerService
             {
                 scheduler.AddTask(trigger.ScheduleTriggerId, trigger.Cron, ct =>
                 {
-                    _jobExecutor.EnqueueJob(trigger.ScheduleJobId, trigger.ScheduleTriggerId, cancellationToken);
+                    _jobExecutor.EnqueueJob(trigger.ScheduleJobId, trigger.ScheduleTriggerId, trigger.JobData, cancellationToken);
                 });
             }
             catch (CrontabException e)

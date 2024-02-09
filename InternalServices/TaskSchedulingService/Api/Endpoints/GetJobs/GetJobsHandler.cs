@@ -17,6 +17,7 @@ internal sealed class GetJobsHandler
             JobId = t.ScheduleJobId.ToString(),
             JobName = t.JobName,
             JobType = t.JobType,
+            Description = t.Description,
             IsDisabled = t.IsDisabled
         }));
         return response;
@@ -27,6 +28,7 @@ internal sealed class GetJobsHandler
         public Guid ScheduleJobId { get; set; }
         public string JobName { get; set; } = null!;
         public string JobType { get; set; } = null!;
+        public string? Description { get; set; }
         public bool IsDisabled { get; set; }
     }
 
