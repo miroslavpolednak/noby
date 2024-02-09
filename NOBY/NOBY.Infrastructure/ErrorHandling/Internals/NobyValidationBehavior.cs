@@ -42,7 +42,7 @@ public sealed class NobyValidationBehavior<TRequest, TResponse>
                 }
 
                 ApiErrorItemServerity severity = t.Severity == Severity.Warning ? ApiErrorItemServerity.Warning : ApiErrorItemServerity.Error;
-                return new ApiErrorItem(NobyValidationException.DefaultExceptionCode, ErrorCodeMapper.Messages[NobyValidationException.DefaultExceptionCode].Message, t.ErrorMessage, severity);
+                return new ApiErrorItem(ErrorCodeMapper.DefaultExceptionCode, ErrorCodeMapper.Messages[ErrorCodeMapper.DefaultExceptionCode].Message, t.ErrorMessage, severity);
             });
 
             throw new NobyValidationException(errors);

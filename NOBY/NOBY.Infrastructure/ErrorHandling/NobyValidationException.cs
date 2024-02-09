@@ -1,12 +1,8 @@
-﻿using CIS.Core.Exceptions;
-
-namespace NOBY.Infrastructure.ErrorHandling;
+﻿namespace NOBY.Infrastructure.ErrorHandling;
 
 public sealed class NobyValidationException
     : Exception
 {
-    public const int DefaultExceptionCode = 90001;
-
     public int HttpStatusCode { get; init; } = 400;
 
     /// <summary>
@@ -48,7 +44,7 @@ public sealed class NobyValidationException
 
     /// <param name="message">Chybová zpráva</param>
     public NobyValidationException(string message)
-        : this(DefaultExceptionCode, ErrorCodeMapper.Messages[DefaultExceptionCode].Message, message)
+        : this(ErrorCodeMapper.DefaultExceptionCode, ErrorCodeMapper.Messages[ErrorCodeMapper.DefaultExceptionCode].Message, message)
     { }
 
     /// <param name="exceptionCode">CIS error kód</param>
