@@ -9,7 +9,7 @@ internal sealed class ExecuteJobHandler
 {
     public Task<ExecuteJobResponse> Handle(ExecuteJobRequest request, CancellationToken cancellation)
     {
-        if (_lockService.CurrentState.IsLockAcquired)
+        if (!_lockService.CurrentState.IsLockAcquired)
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InstanceIsNotActive, _lockService.CurrentState.LockOwnerInstanceName);
         }

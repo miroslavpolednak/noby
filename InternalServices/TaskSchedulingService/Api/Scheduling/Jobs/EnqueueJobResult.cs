@@ -2,10 +2,25 @@
 
 internal sealed class EnqueueJobResult
 {
-    public bool IsSucessful { get; set; }
-    public string? TraceId { get; set; }
-    public Guid? ScheduleJobStatusId { get; set; }
-    public string? ErrorMessage { get; set; }
+    /// <summary>
+    /// Job byl uspesne spusten (TRUE)
+    /// </summary>
+    public bool IsSucessful { get; init; }
+
+    /// <summary>
+    /// TraceId spusteneho jobu
+    /// </summary>
+    public string? TraceId { get; init; }
+
+    /// <summary>
+    /// ID spusteneho jobu ve status tabulce
+    /// </summary>
+    public Guid? ScheduleJobStatusId { get; init; }
+
+    /// <summary>
+    /// Chybove hlaseni v pripade, ze se job nepodarilo pustit
+    /// </summary>
+    public string? ErrorMessage { get; init; }
 
     public EnqueueJobResult(in string? traceId, in Guid scheduleJobStatusId)
     {

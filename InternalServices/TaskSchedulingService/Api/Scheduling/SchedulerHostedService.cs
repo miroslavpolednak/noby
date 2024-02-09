@@ -16,8 +16,10 @@ internal sealed class SchedulerHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
+        // nastaveni jobu do scheduleru (z DB)
         _triggerService.UpdateTriggersInScheduler(_scheduler, cancellationToken);
 
+        // spusteni scheduleru
         _scheduler.Start(cancellationToken);
 
         return Task.CompletedTask;

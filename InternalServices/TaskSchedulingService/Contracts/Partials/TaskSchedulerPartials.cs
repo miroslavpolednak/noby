@@ -17,3 +17,7 @@ public partial class GetInstanceStatusRequest
 public partial class ExecuteJobRequest
     : MediatR.IRequest<ExecuteJobResponse>
 { }
+
+public partial class UpdateSchedulerRequest
+    : MediatR.IRequest<Empty>
+{ }

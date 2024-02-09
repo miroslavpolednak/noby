@@ -2,11 +2,13 @@
 package CIS.InternalServices.TaskSchedulingService.v1;
 option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts.v1";
 
+import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 import "Messages/GetJobs.proto";
 import "Messages/GetTriggers.proto";
 import "Messages/GetInstanceStatus.proto";
 import "Messages/ExecuteJob.proto";
+import "Messages/UpdateScheduler.proto";
 
 service TaskSchedulingService {
 	// Vrací seznam všech dostupných Jobů
@@ -34,6 +36,12 @@ service TaskSchedulingService {
 	rpc ExecuteJob (ExecuteJobRequest) returns (ExecuteJobResponse) {
 		option (google.api.http) = {
 			post: "/api/v1/job"
+		};
+	}
+
+	rpc UpdateScheduler (UpdateSchedulerRequest) returns (google.protobuf.Empty) {
+		option (google.api.http) = {
+			put: "/api/v1/scheduler"
 		};
 	}
 }

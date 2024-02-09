@@ -1,6 +1,4 @@
-﻿using CIS.Core.Data;
-using System.Diagnostics;
-using CIS.Infrastructure.Data;
+﻿using System.Diagnostics;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
@@ -14,17 +12,12 @@ internal sealed class JobExecutor
     private readonly InstanceLocking.ScheduleInstanceLockStatusService _lockingService;
 
     private static ActivitySource _activitySource = new(typeof(JobExecutor).Name);
+    
+    // aktualni stav provadeni jobu [TriggerId,]
     private Dictionary<Guid, JobStatus> _jobStatuses = new();
 
-    private JobExecutor(IServiceProvider serviceProvider, Dictionary<Guid, Type> jobs)
+    static JobExecutor()
     {
-        _serviceProvider = serviceProvider;
-
-        _lockingService = _serviceProvider.GetRequiredService<InstanceLocking.ScheduleInstanceLockStatusService>();
-        _timeProvider = _serviceProvider.GetRequiredService<TimeProvider>();
-        _repository = _serviceProvider.GetRequiredService<JobExecutorRepository>();
-        _logger = _serviceProvider.GetRequiredService<ILogger<JobExecutor>>();
-
         // subscribe to listener
         ActivitySource.AddActivityListener(new()
         {
@@ -32,6 +25,21 @@ internal sealed class JobExecutor
             SampleUsingParentId = (ref ActivityCreationOptions<string> _) => ActivitySamplingResult.AllData,
             Sample = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllData,
         });
+    }
+
+    private JobExecutor(
+        IServiceProvider serviceProvider,
+        InstanceLocking.ScheduleInstanceLockStatusService lockingService,
+        TimeProvider timeProvider,
+        JobExecutorRepository repository,
+        ILogger<JobExecutor> logger,
+        Dictionary<Guid, Type> jobs)
+    {
+        _serviceProvider = serviceProvider;
+        _lockingService = lockingService;
+        _timeProvider = timeProvider;
+        _repository = repository;
+        _logger = logger;
         _jobs = jobs;
     }
 
@@ -39,19 +47,19 @@ internal sealed class JobExecutor
     {
         if (!_jobs.TryGetValue(jobId, out var jobType))
         {
-            _logger.LogError("Job {jobId} not found", jobId);
+            _logger.JobNotFound(jobId);
             return new EnqueueJobResult($"Job {jobId} not found");
         }
 
         if (!_lockingService.CurrentState.IsLockAcquired)
         {
-            _logger.LogInformation("Current instance does not hold lock. Skipping job {JobId} for trigger {TriggerId}.", jobId, triggerId);
+            _logger.SkippingTrigger(jobId, triggerId);
             return new EnqueueJobResult("Current instance does not hold lock.");
         }
 
         if (!validateJobStatus(jobId))
         {
-            _logger.LogInformation("Job {JobId} is already running", jobId);
+            _logger.JobAlreadyRunning(jobId);
             return new EnqueueJobResult("Job is already running");
         }
 
@@ -69,9 +77,10 @@ internal sealed class JobExecutor
         status.Start(_timeProvider.GetLocalNow().DateTime, currentStateId);
         _repository.JobStarted(currentStateId, jobId, triggerId, traceId);
 
-        _logger.LogInformation("Enqueing job {JobId} for trigger {TriggerId}", jobId, triggerId);
+        _logger.EnqueingJob(jobId, triggerId);
 
         var job = (IJob)scope.ServiceProvider.GetService(jobType)!;
+
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         executeJob(job, jobId, currentStateId, cancellationToken);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -84,15 +93,15 @@ internal sealed class JobExecutor
         try
         {
             await job.Execute(cancellationToken);
-            _repository.UpdateJobState(currentStateId, JobExecutorRepository.Statuses.Finished);
+            _repository.UpdateJobState(currentStateId, ScheduleJobStatuses.Finished);
 
-            _logger.LogInformation("Job {JobId} finished", jobId);
+            _logger.JobFinished(jobId);
         }
         catch (Exception ex)
         {
-            _repository.UpdateJobState(currentStateId, JobExecutorRepository.Statuses.Failed);
+            _repository.UpdateJobState(currentStateId, ScheduleJobStatuses.Failed);
 
-            _logger.LogInformation("Job {JobId} failed: {Message}", jobId, ex.Message);
+            _logger.JobFailed(jobId, ex.Message, ex);
         }
         finally
         {
@@ -115,31 +124,26 @@ internal sealed class JobExecutor
         // stale run
         else if (status.IsRunning && status.WillBeStaleAt < _timeProvider.GetLocalNow().DateTime)
         {
-            _repository.UpdateJobState(status.StateId, JobExecutorRepository.Statuses.Stale);
+            _repository.UpdateJobState(status.StateId, ScheduleJobStatuses.Stale);
             status.Reset();
         }
 
         return true;
     }
 
+    /// <summary>
+    /// Vytvoreni nove instance executoru
+    /// </summary>
     public static JobExecutor CreateInstance(IServiceProvider serviceProvider)
     {
-        var dbConnection = serviceProvider.GetRequiredService<IConnectionProvider>();
-        var jobs = dbConnection
-            .ExecuteDapperRawSqlToList<(Guid ScheduleJobId, string JobType)>("SELECT ScheduleJobId, JobType FROM dbo.ScheduleJob WHERE IsDisabled=0")
-            .ToDictionary(k => k.ScheduleJobId, v =>
-            {
-                var jobType = Type.GetType(v.JobType);
+        var repository = serviceProvider.GetRequiredService<JobExecutorRepository>();
+        var lockingService = serviceProvider.GetRequiredService<InstanceLocking.ScheduleInstanceLockStatusService>();
+        var timeProvider = serviceProvider.GetRequiredService<TimeProvider>();
+        var logger = serviceProvider.GetRequiredService<ILogger<JobExecutor>>();
 
-                if (jobType is null || !jobType.IsAssignableTo(typeof(IJob)))
-                {
-                    throw new NullReferenceException($"Type '{v}' can not be created or is not IJob");
-                }
+        var jobs = repository.GetActiveJobs();
 
-                return jobType;
-            });
-
-        return new JobExecutor(serviceProvider, jobs);
+        return new JobExecutor(serviceProvider, lockingService, timeProvider, repository, logger, jobs);
     }
 
     private sealed class JobStatus

@@ -20,6 +20,7 @@
 	<ItemGroup>
 	  <None Remove="Messages\ExecuteJob.proto" />
 	  <None Remove="Messages\GetInstanceStatus.proto" />
+	  <None Remove="Messages\UpdateScheduler.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,6 +38,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Protobuf Include="Messages\UpdateScheduler.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	  <Protobuf Include="Messages\ExecuteJob.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	  <Protobuf Include="Messages\GetInstanceStatus.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	  <Protobuf Include="Messages\GetTriggers.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />

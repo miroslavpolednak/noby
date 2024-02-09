@@ -1,0 +1,6 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.TaskSchedulingService;
+option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts";
+
+message UpdateSchedulerRequest {
+}

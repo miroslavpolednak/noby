@@ -5,7 +5,6 @@ using CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
-    .AddApplicationConfiguration<CIS.InternalServices.TaskSchedulingService.Api.Configuration.AppConfiguration>()
     .AddErrorCodeMapper(CIS.InternalServices.TaskSchedulingService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
@@ -20,7 +19,13 @@ SharedComponents.GrpcServiceBuilder
             .AddHouseholdService()
             .AddDocumentOnSAService();
     })
-    .Build((builder, appConfiguration) =>
+    .EnableJsonTranscoding(options =>
+    {
+        options.OpenApiTitle = "TaskSchedulingService API";
+        options
+            .AddOpenApiXmlCommentFromBaseDirectory("CIS.InternalServices.TaskSchedulingService.Contracts.xml");
+    })
+    .Build(builder =>
     {
         // pridat databazi
         builder.AddDapper();
@@ -28,7 +33,7 @@ SharedComponents.GrpcServiceBuilder
         // pridat scheduling
         builder.Services.AddSchedulingServices();
     })
-    .MapGrpcServices((app, _) =>
+    .MapGrpcServices(app =>
     {
         app.MapGrpcService<CIS.InternalServices.TaskSchedulingService.Api.Endpoints.TaskSchedulingService>();
     })

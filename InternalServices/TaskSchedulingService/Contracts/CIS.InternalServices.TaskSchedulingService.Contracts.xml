@@ -7,6 +7,12 @@
         <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest.JobIdFieldNumber">
             <summary>Field number for the "JobId" field.</summary>
         </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.UpdateSchedulerReflection">
+            <summary>Holder for reflection information generated from Messages/UpdateScheduler.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.UpdateSchedulerReflection.Descriptor">
+            <summary>File descriptor for Messages/UpdateScheduler.proto</summary>
+        </member>
         <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobReflection">
             <summary>Holder for reflection information generated from Messages/ExecuteJob.proto</summary>
         </member>

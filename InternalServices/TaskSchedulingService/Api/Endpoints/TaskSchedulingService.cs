@@ -1,4 +1,5 @@
 ﻿using CIS.InternalServices.TaskSchedulingService.Contracts;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Endpoints;
@@ -16,6 +17,9 @@ internal sealed class TaskSchedulingService
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<ExecuteJobResponse> ExecuteJob(ExecuteJobRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Empty> UpdateScheduler(UpdateSchedulerRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     private readonly IMediator _mediator;

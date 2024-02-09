@@ -8,6 +8,9 @@ internal sealed class ScheduleInstanceLockStatusService
     private readonly string _instanceName;
     private readonly TimeProvider _timeProvider;
 
+    /// <summary>
+    /// Status aktualni instance - zda ma aktivni lock nebo ne
+    /// </summary>
     public CurrentStateInfo CurrentState { get; private set; } = new(false, null);
 
     public ScheduleInstanceLockStatusService(Core.Data.IConnectionProvider connectionProvider, TimeProvider timeProvider)
@@ -36,12 +39,22 @@ internal sealed class ScheduleInstanceLockStatusService
 
     public sealed record CurrentStateInfo(bool IsLockAcquired, string? LockOwnerInstanceName)
     {
-        internal DateTime? LastCheck { get; set; }
+        /// <summary>
+        /// Cas posledniho porizeni zamku aktualni instance
+        /// </summary>
+        internal DateTime? LastCheck { get; init; }
     }
 
     private sealed class StatusInfo
     {
+        /// <summary>
+        /// Aktualni instance je ta aktivni
+        /// </summary>
         public bool IsLockAcquired { get; set; }
+
+        /// <summary>
+        /// Nazev aktivni instance pokud se nejedna o tu aktualni
+        /// </summary>
         public string LockOwnerInstanceName { get; set; } = null!;
     }
 }

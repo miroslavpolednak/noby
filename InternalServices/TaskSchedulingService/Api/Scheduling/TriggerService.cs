@@ -1,5 +1,4 @@
-﻿using CIS.Core.Attributes;
-using CIS.Core.Data;
+﻿using CIS.Core.Data;
 using NCrontab;
 using NCrontab.Scheduler;
 using CIS.Infrastructure.Data;
@@ -13,6 +12,8 @@ internal sealed class TriggerService
     private readonly ILogger<TriggerService> _logger;
     private readonly JobExecutor _jobExecutor;
 
+    private const string _sql = "SELECT ScheduleTriggerId, ScheduleJobId, Cron, IsDisabled FROM dbo.ScheduleTrigger";
+
     public TriggerService(IConnectionProvider dbConnection, ILogger<TriggerService> logger, JobExecutor jobExecutor)
     {
         _dbConnection = dbConnection;
@@ -23,13 +24,13 @@ internal sealed class TriggerService
     public void UpdateTriggersInScheduler(IScheduler scheduler, CancellationToken cancellationToken)
     {
         var allTriggers = _dbConnection
-            .ExecuteDapperRawSqlToList<(Guid ScheduleTriggerId, Guid ScheduleJobId, string Cron, bool IsDisabled)>("SELECT ScheduleTriggerId, ScheduleJobId, Cron, IsDisabled FROM dbo.ScheduleTrigger");
+            .ExecuteDapperRawSqlToList<(Guid ScheduleTriggerId, Guid ScheduleJobId, string Cron, bool IsDisabled)>(_sql);
 
         foreach (var trigger in allTriggers)
         {
             if (trigger.IsDisabled)
             {
-                _logger.LogInformation("Trigger {TriggerId} is disabled", trigger.ScheduleTriggerId);
+                _logger.TriggerIsDisabled(trigger.ScheduleTriggerId);
                 break;
             }
 
@@ -39,11 +40,10 @@ internal sealed class TriggerService
                 {
                     _jobExecutor.EnqueueJob(trigger.ScheduleJobId, trigger.ScheduleTriggerId, cancellationToken);
                 });
-                Console.WriteLine("AD 1");
             }
             catch (CrontabException e)
             {
-                _logger.LogError("Can not add trigger {TriggerId} to scheduler due to invalid Cron Expression '{Cron}': {Message}", trigger.ScheduleTriggerId, trigger.Cron, e.Message);
+                _logger.InvalidCronExpression(trigger.ScheduleTriggerId, trigger.Cron, e.Message);
             }
         }
     }

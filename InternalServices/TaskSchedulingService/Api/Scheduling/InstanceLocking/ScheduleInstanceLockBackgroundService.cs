@@ -18,7 +18,7 @@ internal sealed class ScheduleInstanceLockBackgroundService
         {
             var result = _lockService.TryAcquireLock();
 
-            _logger.LogInformation("Acquiring instance lock with result: {IsLockAcquired}, Instance: {InstanceName}", result.IsLockAcquired, result.LockOwnerInstanceName);
+            _logger.TryToAcquireScheduleLock(result.IsLockAcquired, result.LockOwnerInstanceName);
 
             await Task.Delay((SchedulingConstants.ScheduleInstanceLockTimeout - 15) * 1000, stoppingToken);
         }
