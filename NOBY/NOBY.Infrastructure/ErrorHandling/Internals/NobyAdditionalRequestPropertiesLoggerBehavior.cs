@@ -98,7 +98,7 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
         return missingProperties;
     }
 
-    private class ExcludeOneOfContractResolver : DefaultContractResolver
+    private sealed class ExcludeOneOfContractResolver : DefaultContractResolver
     {
         private readonly ICollection<string> _oneOfProperties;
 

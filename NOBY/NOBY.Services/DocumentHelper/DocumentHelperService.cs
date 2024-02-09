@@ -115,7 +115,7 @@ internal sealed class DocumentHelperService
         else if (_currentUserAccessor?.User?.Id is not null)
             return _currentUserAccessor.User!.Id.ToString(CultureInfo.InvariantCulture);
         else
-            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "Cannot get NOBY user identifier");
+            throw new CisNotFoundException(ErrorCodeMapper.DefaultExceptionCode, "Cannot get NOBY user identifier");
     }
 
     private static UploadStatuses getUploadStatus(int stateInQueue) => stateInQueue switch

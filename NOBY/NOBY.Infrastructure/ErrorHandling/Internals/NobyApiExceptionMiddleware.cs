@@ -107,7 +107,7 @@ public sealed class NobyApiExceptionMiddleware
         catch (Exception ex)
         {
             logger.WebApiUncoughtException(ex);
-            await Results.Json(singleErrorResult(NobyValidationException.DefaultExceptionCode, ErrorCodeMapper.Messages[NobyValidationException.DefaultExceptionCode].Message), statusCode: 500).ExecuteAsync(context);
+            await Results.Json(singleErrorResult(ErrorCodeMapper.DefaultExceptionCode, ErrorCodeMapper.Messages[ErrorCodeMapper.DefaultExceptionCode].Message), statusCode: 500).ExecuteAsync(context);
         }
     }
 
@@ -118,8 +118,8 @@ public sealed class NobyApiExceptionMiddleware
             new()
             {
                 Severity = ApiErrorItemServerity.Error,
-                ErrorCode = NobyValidationException.DefaultExceptionCode,
-                Message = ErrorCodeMapper.Messages[NobyValidationException.DefaultExceptionCode].Message,
+                ErrorCode = ErrorCodeMapper.DefaultExceptionCode,
+                Message = ErrorCodeMapper.Messages[ErrorCodeMapper.DefaultExceptionCode].Message,
                 Reason = new ApiErrorItem.ErrorReason
                 {
                     ReasonType = reasonType,
@@ -133,7 +133,7 @@ public sealed class NobyApiExceptionMiddleware
         => singleErrorResult(parseExceptionCode(exception.ExceptionCode), exception.Message, customDefaultExceptionCode);
 
     private static List<ApiErrorItem> singleErrorResult(in string message, in int? customDefaultExceptionCode = null)
-        => singleErrorResult(NobyValidationException.DefaultExceptionCode, message, customDefaultExceptionCode);
+        => singleErrorResult(ErrorCodeMapper.DefaultExceptionCode, message, customDefaultExceptionCode);
 
     private static List<ApiErrorItem> singleErrorResult(in int errorCode, in string message, in int? customDefaultExceptionCode = null)
         => new List<ApiErrorItem>
@@ -167,7 +167,7 @@ public sealed class NobyApiExceptionMiddleware
         }
 
         //Unknown exception
-        return createItem(customDefaultExceptionCode.HasValue ? customDefaultExceptionCode.Value : NobyValidationException.DefaultExceptionCode);
+        return createItem(customDefaultExceptionCode.HasValue ? customDefaultExceptionCode.Value : ErrorCodeMapper.DefaultExceptionCode);
 
         static ApiErrorItem createItem(int errorCode)
         {
@@ -182,5 +182,5 @@ public sealed class NobyApiExceptionMiddleware
     }
 
     private static int parseExceptionCode(in string exceptionCode)
-        => int.TryParse(exceptionCode, out var code) ? code : NobyValidationException.DefaultExceptionCode;
+        => int.TryParse(exceptionCode, out var code) ? code : ErrorCodeMapper.DefaultExceptionCode;
 }

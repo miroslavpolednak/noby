@@ -26,6 +26,10 @@ internal sealed class CompleteTaskHandler
             sbRequest.Metadata.Add("ukol_podpis_odpoved_typ", (request.TaskResponseTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
             sbRequest.Metadata.Add("ukol_podpis_zpusob_ukonceni", (request.CompletionTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
         }
+        else if (request.TaskTypeId == 9) // Retence
+        {
+            sbRequest.Metadata.Add("ukol_retence_priprava_zpusob_uk", (request.CompletionTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
+        }
 
         await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
 
@@ -43,6 +47,7 @@ internal sealed class CompleteTaskHandler
         {
             1 => "ukol_dozadani_odpoved_oz",
             6 => "ukol_podpis_odpoved_text",
+            9 => "ukol_retence_pozadavek",
             _ => throw new NotImplementedException()
         };
 

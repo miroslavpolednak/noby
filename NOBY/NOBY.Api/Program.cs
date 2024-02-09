@@ -9,7 +9,6 @@ using CIS.Infrastructure.WebApi;
 using NOBY.Infrastructure.Configuration;
 using SharedAudit;
 using SharedComponents.Storage;
-using NOBY.Api.Endpoints.Test;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,8 +36,7 @@ try
     // add temp storage
     builder
         .AddCisStorageServices()
-        .AddTempStorage()
-        .AddStorageClient<IStorage1>();
+        .AddTempStorage();
 
     builder.Services.AddCisSecurityHeaders();
 

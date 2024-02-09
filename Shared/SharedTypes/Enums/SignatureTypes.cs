@@ -20,7 +20,6 @@ public enum SignatureTypes : byte
     Biometric = 2,*/
         
     [EnumMember]
-    [CisDefaultValue]
     [Display(Name = "elektronicky")]
     Electronic = 3
 }

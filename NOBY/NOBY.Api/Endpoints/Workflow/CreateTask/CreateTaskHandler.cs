@@ -5,6 +5,7 @@ using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.CreateTask;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 internal sealed class CreateTaskHandler
     : IRequestHandler<CreateTaskRequest, long>
 {

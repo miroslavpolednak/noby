@@ -17,6 +17,7 @@ using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.Cases.CancelCase;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, CancelCaseResponse>
 {
     const DocumentTypes _documentType = DocumentTypes.ODSTOUP;
@@ -85,7 +86,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
                 DocumentId = documentId
             });
         }
-        
+
         await _caseService.CancelCase(request.CaseId, true, cancellationToken);
         
         return responseModel;

@@ -1,9 +1,5 @@
-﻿using SharedAudit;
-using Microsoft.AspNetCore.Authorization;
-using NOBY.Api.Endpoints.Test.Rollback;
-using SharedTypes;
+﻿using Microsoft.AspNetCore.Authorization;
 using Asp.Versioning;
-using SharedComponents.Storage;
 
 namespace NOBY.Api.Endpoints.Test;
 

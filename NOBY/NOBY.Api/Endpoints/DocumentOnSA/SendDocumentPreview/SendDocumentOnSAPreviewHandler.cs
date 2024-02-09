@@ -22,7 +22,7 @@ public class SendDocumentOnSAPreviewHandler : IRequestHandler<SendDocumentOnSAPr
     {
         var documentsResponse = await _documentOnSaService.GetDocumentsOnSAList(request.SalesArrangementId, cancellationToken);
         var documentOnSA = documentsResponse.DocumentsOnSA.FirstOrDefault(d => d.DocumentOnSAId == request.DocumentOnSAId)
-            ?? throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "DocumentOnSA does not exist on provided sales arrangement.");
+            ?? throw new CisNotFoundException(ErrorCodeMapper.DefaultExceptionCode, "DocumentOnSA does not exist on provided sales arrangement.");
 
         if (documentOnSA.Source != _Domain.Source.Workflow)
         {

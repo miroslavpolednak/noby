@@ -20,7 +20,7 @@ public class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentOnSAPrev
 
         if (documentOnSA is null)
         {
-            throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "DocumentOnSA does not exist on provided sales arrangement.");
+            throw new CisNotFoundException(ErrorCodeMapper.DefaultExceptionCode, "DocumentOnSA does not exist on provided sales arrangement.");
         }
 
         var response = documentOnSA.Source switch
