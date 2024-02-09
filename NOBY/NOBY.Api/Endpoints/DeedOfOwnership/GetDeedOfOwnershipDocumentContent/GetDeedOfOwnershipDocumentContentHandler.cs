@@ -41,7 +41,7 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
                 }
                 catch (CisException ex) when (ex.ExceptionCode == "404")
                 {
-                    throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, "CREM:GetDocuments nothing found");
+                    throw new NobyValidationException(90047, 404);
                 }
             }
             else

@@ -31,7 +31,7 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
         var documentOnSas = await _documentOnSAServiceClient.GetDocumentsOnSAList(request.SalesArrangementId, cancellationToken);
 
         var documentOnSa = documentOnSas.DocumentsOnSA.SingleOrDefault(d => d.DocumentOnSAId == request.DocumentOnSAId)
-            ?? throw new CisNotFoundException(NobyValidationException.DefaultExceptionCode, $"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
+            ?? throw new CisNotFoundException(ErrorCodeMapper.DefaultExceptionCode, $"DocumetnOnSa {request.DocumentOnSAId} not exist for SalesArrangement {request.SalesArrangementId}");
 
         if (documentOnSa.Source != DomainServices.DocumentOnSAService.Contracts.Source.Workflow)
             await _nonWFLProductSalesArrangementAccess.CheckNonWFLProductSalesArrangementAccess(documentOnSa.SalesArrangementId, cancellationToken);
