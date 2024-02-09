@@ -12,7 +12,7 @@
 </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="dbup-sqlserver" Version="5.0.39" />
+    <PackageReference Include="dbup-sqlserver" Version="5.0.40" />
   </ItemGroup>
 
 </Project>
