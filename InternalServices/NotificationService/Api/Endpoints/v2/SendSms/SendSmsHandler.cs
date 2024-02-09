@@ -1,5 +1,4 @@
-﻿using CIS.Core;
-using CIS.Core.Exceptions;
+﻿using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
@@ -7,7 +6,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using SharedAudit;
 using System.Globalization;
-using CIS.InternalServices.NotificationService.Api.Helpers;
+using CIS.InternalServices.NotificationService.Api.Extensions;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendSms;
 
@@ -16,10 +15,11 @@ internal sealed class SendSmsHandler
 {
     public async Task<NotificationIdResponse> Handle(SendSmsRequest request, CancellationToken cancellationToken)
     {
+        var consumerId = _appConfiguration.Consumers.First(t => t.Username == _serviceUser.User!.Name).ConsumerId;
         var smsType = await getSmsType(request.Sms.Type, cancellationToken);
-        string userName = _serviceUser.User!.Name!;
-        var phone = request.Sms.PhoneNumber.ParsePhone()!;
+        var (countryCode, nationalNumber) = request.Sms.PhoneNumber.ParsePhone();
 
+        // pripravit zpravu do databaze
         Database.Entities.SmsResult result = new()
         {
             Id = Guid.NewGuid(),
@@ -34,24 +34,20 @@ internal sealed class SendSmsHandler
             HashAlgorithm = request.Sms.DocumentHash?.HashAlgorithm.ToString(),
             RequestTimestamp = _dateTime.GetLocalNow().DateTime,
             Type = request.Sms.Type,
-            CountryCode = phone.CountryCode,
-            PhoneNumber = phone.NationalNumber,
-            CreatedBy = userName
+            CountryCode = countryCode,
+            PhoneNumber = nationalNumber,
+            CreatedBy = _serviceUser.User!.Name!
         };
-
         _dbContext.SmsResults.Add(result);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        var consumerId = _appConfiguration.Consumers.First(t => t.Username == _serviceUser.User.Name).ConsumerId;
-
+        
+        // pripravit zpravu do MCS
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
             id = result.Id.ToString(),
             phone = new()
             {
-                countryCode = phone.CountryCode,
-                nationalPhoneNumber = phone.NationalNumber
+                countryCode = countryCode,
+                nationalPhoneNumber = nationalNumber
             },
             type = smsType.McsCode,
             text = request.Text,
@@ -64,17 +60,17 @@ internal sealed class SendSmsHandler
 
         try
         {
+            // odeslat do MCS
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
+            
+            // ulozit do databaze
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             createAuditLog(request, smsType, consumerId, result.Id);
         }
         catch
         {
-            createAuditLog(request, smsType, consumerId, result.Id);
-
-            _dbContext.SmsResults.Remove(result);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-
+            createAuditLog(request, smsType, consumerId);
             throw;
         }
 
