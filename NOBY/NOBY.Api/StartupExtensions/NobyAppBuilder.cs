@@ -105,11 +105,12 @@ internal static class NobyAppBuilder
         => app
         .UseWhen(_isRedirectCall, (appBuilder) =>
         {
-            appBuilder.Run(async context =>
+            appBuilder.Run(context =>
             {
                 var url = context.Request.GetEncodedUrl();
                 var idx = url.IndexOf('/', 10);
                 context.Response.Redirect(string.Concat(url[..idx], "/#", url[idx..]));
+                return Task.CompletedTask;
             });
         });
 

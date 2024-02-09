@@ -16,7 +16,7 @@ internal sealed class GetAllRequest : IRequest<List<GetAllResponseItem>>
               .Where(g => g.Count() > 1)
               .Select(y => y.Key)
               .ToList();
-        if (duplicates.Any())
+        if (duplicates.Count != 0)
             throw new NobyValidationException($"Codebooks {string.Join(",", duplicates)} duplicated in request");
     }
 }
