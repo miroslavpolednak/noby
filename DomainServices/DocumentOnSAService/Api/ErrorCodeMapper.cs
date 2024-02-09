@@ -1,5 +1,5 @@
-﻿using CIS.Core.ErrorCodes;
-using System.Security.Policy;
+﻿using Amazon.Runtime.Internal.Transform;
+using CIS.Core.ErrorCodes;
 
 namespace DomainServices.DocumentOnSAService.Api;
 
@@ -28,7 +28,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int NoDocumentsToSignForSa = 19024;
     public const int UnableGetExternalIdForDocumentOnSaId = 19025;
     public const int DocumentOnSaDoesntExistForFormId = 19026;
-
+    
     // Gap 
     public const int SalesArrangementIdIsRequired = 19030;
     public const int DocumentTypeIdIsRequired = 19031;
@@ -45,6 +45,9 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int UnsuccessfulCustomerDataUpdateToCM = 19043;
     public const int UnsupportedDocumentForSigningType = 19044;
     public const int DocumentOnSaDoesntExistForSalesArrangement = 19045;
+
+    public const int ElectronicSigningFeatureIsDisabled = 19046;
+
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
@@ -86,7 +89,9 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { CannotGetNobyUserIdentifier, "Cannot get NOBY user identifier"},
             { UnsuccessfulCustomerDataUpdateToCM, "Unsuccessful customer data update to CM"},
             { UnsupportedDocumentForSigningType, "Unsupported DocumentForSigningType {PropertyValue}" },
-            { DocumentOnSaDoesntExistForSalesArrangement, "DocumentOnSa doesn't exist for specified SalesArrangementId {PropertyValue}" }
+            { DocumentOnSaDoesntExistForSalesArrangement, "DocumentOnSa doesn't exist for specified SalesArrangementId {PropertyValue}" },
+
+            { ElectronicSigningFeatureIsDisabled, "Electronic signing is disabled" }
         });
 
         return Messages;
