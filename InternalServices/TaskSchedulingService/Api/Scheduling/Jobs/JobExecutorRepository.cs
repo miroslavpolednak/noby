@@ -22,8 +22,7 @@ internal sealed class JobExecutorRepository
             Status = Statuses.InProgress.ToString(),
             ScheduleTriggerId = triggerId,
             StartedAt = _timeProvider.GetLocalNow().DateTime,
-            TraceId = traceId,
-            ExecutorType = triggerId.HasValue ? ExecutionTypes.Triggered.ToString() : ExecutionTypes.Manual.ToString()
+            TraceId = traceId
         };
         _connectionProvider.ExecuteDapper("INSERT INTO dbo.ScheduleJobStatus (ScheduleJobStatusId, ScheduleJobId, [Status], ScheduleTriggerId, StartedAt, TraceId, ExecutorType) VALUES (@ScheduleJobStatusId, @ScheduleJobId, @Status, @ScheduleTriggerId, @StartedAt, @TraceId, @ExecutorType)", entity);
     }
@@ -48,13 +47,6 @@ internal sealed class JobExecutorRepository
         public DateTime StartedAt { get; set; }
         public DateTime? StatusChangedAt { get; set; }
         public string? TraceId { get; set; }
-        public string ExecutorType { get; set; } = null!;
-    }
-
-    public enum ExecutionTypes
-    {
-        Triggered,
-        Manual
     }
 
     public enum Statuses
