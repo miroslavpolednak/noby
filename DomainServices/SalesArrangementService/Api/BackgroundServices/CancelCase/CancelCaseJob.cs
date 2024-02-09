@@ -34,15 +34,19 @@ WHERE
 	        {
 				var caseInstance = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
 
-				if (caseInstance.Exists && caseInstance.State == (int)CaseStates.InProgress)
+				if (!caseInstance.Exists)
 				{
-					await _caseServiceClient.CancelCase(caseId, false, cancellationToken);
-
-                    _logger.CancelCaseJobFinished(caseId);
+                    _logger.CancelCaseJobSkipped(caseId, "Case does not exist");
+                }
+				else if (caseInstance.State != (int)CaseStates.InProgress)
+				{
+                    _logger.CancelCaseJobSkipped(caseId, $"CaseState is {caseInstance.State}");
                 }
 				else
 				{
-                    _logger.CancelCaseJobSkipped(caseId);
+                    await _caseServiceClient.CancelCase(caseId, false, cancellationToken);
+
+                    _logger.CancelCaseJobFinished(caseId);
                 }
             }
 			catch (Exception e)

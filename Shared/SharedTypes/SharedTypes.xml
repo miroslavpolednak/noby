@@ -104,6 +104,11 @@
             Flag oznacujici zda jsou zapnute modre produkty nebo ne (TRUE jsou zapnute)
             </summary>
         </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.ElectronicSigning">
+            <summary>
+            zapíná/vypíná elektronické podepisování
+            </summary>
+        </member>
         <member name="F:SharedTypes.GrpcTypes.GrpcAddress.StreetFieldNumber">
             <summary>Field number for the "Street" field.</summary>
         </member>

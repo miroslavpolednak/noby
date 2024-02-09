@@ -2,18 +2,23 @@
 using DomainServices.DocumentOnSAService.Contracts;
 using FastEnumUtility;
 using FluentValidation;
+using Microsoft.FeatureManagement;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
 public class StartSigningValidator : AbstractValidator<StartSigningRequest>
 {
-    public StartSigningValidator()
+    public StartSigningValidator(IFeatureManager featureManager)
     {
         RuleFor(e => e.SalesArrangementId).NotNull().WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsRequired);
 
         RuleFor(d => d)
             .Must(ValidateDocumentType)
             .WithErrorCode(ErrorCodeMapper.DocumentTypeIdDoesNotExist);
+
+        RuleFor(t => t.SignatureTypeId)
+            .MustAsync(async (t, ct) => t != (int)SignatureTypes.Electronic || await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ElectronicSigning))
+            .WithErrorCode(ErrorCodeMapper.ElectronicSigningFeatureIsDisabled);
     }
 
     private readonly Func<StartSigningRequest, bool> ValidateDocumentType = (request) =>

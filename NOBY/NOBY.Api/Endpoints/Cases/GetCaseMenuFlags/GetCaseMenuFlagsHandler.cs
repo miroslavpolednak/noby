@@ -21,7 +21,7 @@ internal sealed class GetCaseMenuFlagsHandler
         {
             CaseId = request.CaseId
         };
-        getDocumentsInQueueRequest.StatusesInQueue.AddRange(new[] { 100, 110, 200, 300 });
+        getDocumentsInQueueRequest.StatusesInQueue.AddRange(_values);
         var documentsInQueue = await _documentArchiveServiceClient.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
 
         return new GetCaseMenuFlagsResponse
@@ -98,6 +98,8 @@ internal sealed class GetCaseMenuFlagsHandler
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly IDocumentHelperService _documentHelper;
     private readonly ICaseServiceClient _caseService;
+
+    internal static readonly int[] _values = [ 100, 110, 200, 300 ];
 
     public GetCaseMenuFlagsHandler(
         ICurrentUserAccessor currentUserAccessor,

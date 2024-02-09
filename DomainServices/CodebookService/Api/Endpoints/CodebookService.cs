@@ -596,9 +596,20 @@ internal partial class CodebookService
             }
         ));
 
-    public override Task<GenericCodebookResponse> SignatureTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<SharedTypes.Enums.SignatureTypes>(true);
+    public override async Task<GenericCodebookResponse> SignatureTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+    {
+        var result = await Helpers.GetGenericItems<SharedTypes.Enums.SignatureTypes>(true);
 
+        // zmena pro flag
+        int defaultType = await _featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ElectronicSigning)
+            ? (int)SharedTypes.Enums.SignatureTypes.Electronic
+            : (int)SharedTypes.Enums.SignatureTypes.Paper;
+
+        result.Items.First(t => t.Id == defaultType).IsDefault = true;
+
+        return result;
+    }
+    
     public override Task<SmsNotificationTypesResponse> SmsNotificationTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<SmsNotificationTypesResponse, SmsNotificationTypesResponse.Types.SmsNotificationTypeItem>();
 

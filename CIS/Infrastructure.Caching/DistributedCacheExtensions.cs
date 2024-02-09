@@ -70,7 +70,7 @@ public static class DistributedCacheExtensions
                         return Serializer.Deserialize<TModel>(ms);
                     }
                 default:
-                    return JsonSerializer.Deserialize<TModel>(cachedItem!);
+                    return JsonSerializer.Deserialize<TModel>(cachedItem!)!;
             }
         }
 

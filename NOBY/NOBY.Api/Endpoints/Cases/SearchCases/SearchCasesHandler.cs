@@ -1,10 +1,10 @@
 ﻿using CIS.Core.Security;
 using CIS.Core.Types;
 using CIS.Infrastructure.WebApi.Types;
-using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Cases.SearchCases;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 internal sealed class SearchCasesHandler
     : IRequestHandler<SearchCasesRequest, SearchCasesResponse>
 {
@@ -27,7 +27,7 @@ internal sealed class SearchCasesHandler
         else
             result = new DomainServices.CaseService.Contracts.SearchCasesResponse { Pagination = new() };
 
-        // transform
+            // transform
         return new SearchCasesResponse
         {
             Rows = await _converter.FromContracts(result.Cases),

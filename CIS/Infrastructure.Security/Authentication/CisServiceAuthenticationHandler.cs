@@ -24,10 +24,9 @@ internal sealed class CisServiceAuthenticationHandler
         IOptionsMonitor<CisServiceAuthenticationOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        ISystemClock clock,
         IAuthHeaderParser headerParser,
         ILoginValidator adValidator)
-    : base(options, logger, encoder, clock)
+    : base(options, logger, encoder)
     {
         _configuration = configuration.Value;
         _adValidator = adValidator;

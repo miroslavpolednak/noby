@@ -9,13 +9,14 @@ internal sealed class CaseServiceClient
 {
     public async Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
     {
-        if (_cacheValidateCaseIdResponse is null)
+        if (_cacheValidateCaseIdResponse is null || _cacheValidateCaseIdResponseId != caseId)
         {
             _cacheValidateCaseIdResponse = await _service.ValidateCaseIdAsync(new ValidateCaseIdRequest
             {
                 CaseId = caseId,
                 ThrowExceptionIfNotFound = throwExceptionIfNotFound
             }, cancellationToken: cancellationToken);
+            _cacheValidateCaseIdResponseId = caseId;
         }
         return _cacheValidateCaseIdResponse;
     }
@@ -189,6 +190,7 @@ internal sealed class CaseServiceClient
     }
 
     // kesovani vysledku validateCase
+    private long? _cacheValidateCaseIdResponseId;
     private ValidateCaseIdResponse? _cacheValidateCaseIdResponse;
     private Case? _cacheGetCaseDetail;
 
