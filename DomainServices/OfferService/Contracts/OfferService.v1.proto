@@ -3,24 +3,24 @@ package DomainServices.OfferService.v1;
 option csharp_namespace = "DomainServices.OfferService.Contracts.v1";
 
 import "google/protobuf/empty.proto";
+import "Messages/ValidateOfferId.proto";
 import "Messages/GetOffer.proto";
-import "Messages/GetMortgageOffer.proto";
-import "Messages/GetMortgageOfferDetail.proto";
+import "Messages/GetOfferDetail.proto";
 import "Messages/SimulateMortgage.proto";
 import "Messages/GetMortgageOfferFPSchedule.proto";
 import "Messages/GetOfferDeveloper.proto";
 import "Messages/UpdateOfferDocumentId.proto";
 
 service OfferService {
-	rpc GetOffer (DomainServices.OfferService.GetOfferRequest) returns (DomainServices.OfferService.GetOfferResponse);
+	rpc ValidateOfferId (ValidateOfferIdRequest) returns (ValidateOfferIdResponse);
 
-	rpc GetMortgageOffer (DomainServices.OfferService.GetMortgageOfferRequest) returns (DomainServices.OfferService.GetMortgageOfferResponse);
-	
-	rpc GetMortgageOfferDetail (DomainServices.OfferService.GetMortgageOfferDetailRequest) returns (DomainServices.OfferService.GetMortgageOfferDetailResponse);
-	
-	rpc SimulateMortgage (DomainServices.OfferService.SimulateMortgageRequest) returns (DomainServices.OfferService.SimulateMortgageResponse);
+	rpc GetOffer (GetOfferRequest) returns (GetOfferResponse);
 
-	rpc GetMortgageOfferFPSchedule (DomainServices.OfferService.GetMortgageOfferFPScheduleRequest) returns (DomainServices.OfferService.GetMortgageOfferFPScheduleResponse);
+	rpc GetOfferDetail (GetOfferDetailRequest) returns (GetOfferDetailResponse);
+
+	rpc SimulateMortgage (SimulateMortgageRequest) returns (SimulateMortgageResponse);
+
+	rpc GetMortgageOfferFPSchedule (GetMortgageOfferFPScheduleRequest) returns (GetMortgageOfferFPScheduleResponse);
 
 	rpc GetOfferDeveloper (GetOfferDeveloperRequest) returns (GetOfferDeveloperResponse);
 

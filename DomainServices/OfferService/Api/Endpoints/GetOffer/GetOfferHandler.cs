@@ -1,5 +1,7 @@
 ﻿using DomainServices.OfferService.Contracts;
-using Microsoft.EntityFrameworkCore;
+using SharedComponents.DocumentDataStorage;
+using System.Runtime.InteropServices.Marshalling;
+using System.Threading;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetOffer;
 
@@ -8,30 +10,51 @@ internal sealed class GetOfferHandler
 {
     public async Task<GetOfferResponse> Handle(GetOfferRequest request, CancellationToken cancellationToken)
     {
-        var entity = await _dbContext
-            .Offers
-            .AsNoTracking()
-            .Where(t => t.OfferId == request.OfferId)
-            .Select(t => new
-            {
-                t.ResourceProcessId,
-                t.CreatedUserId,
-                t.CreatedUserName,
-                t.CreatedTime
-            })
-            .FirstOrDefaultAsync(cancellationToken)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, request.OfferId);
+        var offerInstance = await _mediator.Send(new ValidateOfferIdRequest 
+            { 
+                OfferId = request.OfferId,
+                ThrowExceptionIfNotFound = true
+            }, cancellationToken);
 
-        return new GetOfferResponse
+        var model = new GetOfferResponse
         {
-            OfferId = request.OfferId,
-            ResourceProcessId = entity.ResourceProcessId.ToString(),
-            Created = new SharedTypes.GrpcTypes.ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime)
+            Data = offerInstance.Data
+        };
+
+        switch (offerInstance.Data.OfferType)
+        {
+            case OfferTypes.Mortgage:
+                model.MortgageOffer = await getMortgageData(model.Data.OfferId, cancellationToken);
+                break;
+        }
+
+        return model;
+    }
+
+    private async Task<MortgageOfferBaseData> getMortgageData(int offerId, CancellationToken cancellationToken)
+    {
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageOfferData>(offerId, cancellationToken);
+        var data = _offerMapper.MapFromDataToSingle(offerData!.Data!.BasicParameters, offerData.Data.SimulationInputs, offerData.Data.SimulationOutputs);
+
+        return new MortgageOfferBaseData
+        {
+            SimulationInputs = data.SimulationInputs,
+            SimulationResults = data.SimulationResults,
+            BasicParameters = data.BasicParameters
         };
     }
 
-    private readonly Database.OfferServiceDbContext _dbContext;
+    private readonly IMediator _mediator;
+    private readonly IDocumentDataStorage _documentDataStorage;
+    private readonly Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper;
 
-    public GetOfferHandler(Database.OfferServiceDbContext dbContext)
-        => _dbContext = dbContext;
+    public GetOfferHandler(
+        IDocumentDataStorage documentDataStorage,
+        Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper offerMapper,
+        IMediator mediator)
+    {
+        _documentDataStorage = documentDataStorage;
+        _offerMapper = offerMapper;
+        _mediator = mediator;
+    }
 }

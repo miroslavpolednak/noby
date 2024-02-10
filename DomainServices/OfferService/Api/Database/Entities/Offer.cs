@@ -10,11 +10,19 @@ internal sealed class Offer
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int OfferId { get; set; }
 
+    public long? CaseId { get; set; }
+
+    public int? SalesArrangementId { get; set; }
+
+    public DateTime? ValidTo { get; set; }
+
     public Guid ResourceProcessId { get; set; }
 
     public bool IsCreditWorthinessSimpleRequested { get; set; }
 
     public string? DocumentId { get; set; }
+
+    public int OfferType { get; set; }
 
     public DateTime? FirstGeneratedDocumentDate { get; set; }
 }

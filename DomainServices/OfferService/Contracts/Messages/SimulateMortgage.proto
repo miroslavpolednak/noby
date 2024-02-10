@@ -4,29 +4,26 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 
 import "Identity.proto";
 import "ModificationStamp.proto";
-import "Messages/BasicParameters.proto";
-import "Messages/MortgageSimulationInputs.proto";
-import "Messages/MortgageSimulationResults.proto";
-import "Messages/AdditionalMortgageSimulationResults.proto";
-import "Messages/MortgageCreditWorthinessSimpleInputs.proto";
-import "Messages/MortgageCreditWorthinessSimpleResults.proto";
+import "NullableGrpcDate.proto";
+import "Parameters/MortgageOffer.proto";
 
 message SimulateMortgageRequest {
 	string ResourceProcessId = 1;
-	BasicParameters BasicParameters = 2;
-	MortgageSimulationInputs SimulationInputs = 3;
+	MortgageOfferBasicParameters BasicParameters = 2;
+	MortgageOfferSimulationInputs SimulationInputs = 3;
 	bool IsCreditWorthinessSimpleRequested = 4;
-	MortgageCreditWorthinessSimpleInputs CreditWorthinessSimpleInputs = 5;
+	MortgageOfferCreditWorthinessSimpleInputs CreditWorthinessSimpleInputs = 5;
 	repeated cis.types.Identity Identities = 6;
+	cis.types.NullableGrpcDate ValidTo = 7;
 }
 
 message SimulateMortgageResponse {
 	int32 OfferId = 1;
 	string ResourceProcessId = 2;
 	cis.types.ModificationStamp Created = 3;
-	BasicParameters BasicParameters = 4;
-	MortgageSimulationInputs SimulationInputs = 5;
-	MortgageSimulationResults SimulationResults = 6;
-	AdditionalMortgageSimulationResults AdditionalSimulationResults = 7;
-	MortgageCreditWorthinessSimpleResults CreditWorthinessSimpleResults = 8;
+	MortgageOfferBasicParameters BasicParameters = 4;
+	MortgageOfferSimulationInputs SimulationInputs = 5;
+	MortgageOfferSimulationResults SimulationResults = 6;
+	MortgageOfferAdditionalSimulationResults AdditionalSimulationResults = 7;
+	MortgageOfferCreditWorthinessSimpleResults CreditWorthinessSimpleResults = 8;
 }

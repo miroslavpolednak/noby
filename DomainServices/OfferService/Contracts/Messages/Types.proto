@@ -6,6 +6,26 @@ import "google/protobuf/wrappers.proto";
 import "GrpcDecimal.proto";
 import "NullableGrpcDecimal.proto";
 import "NullableGrpcDate.proto";
+import "ModificationStamp.proto";
+
+enum OfferTypes {
+	None = 0;
+	Mortgage = 1;
+	MortgageRefixation = 2;
+	MortgageRetention = 3;
+}
+
+message CommonOfferData {
+	int32 OfferId = 1;
+	string ResourceProcessId = 2;
+	google.protobuf.Int64Value CaseId = 3;
+	google.protobuf.Int32Value SalesArrangementId = 4;
+	cis.types.NullableGrpcDate ValidTo = 5;
+	google.protobuf.StringValue DocumentId = 6;
+	cis.types.ModificationStamp Created = 7;
+	OfferTypes OfferType = 8;
+	bool IsCreditWorthinessSimpleRequested = 9;
+}
 
 message SimulationResultWarning {
 	google.protobuf.Int32Value WarningCode = 1;

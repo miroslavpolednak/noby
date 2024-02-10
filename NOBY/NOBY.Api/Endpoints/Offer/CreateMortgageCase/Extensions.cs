@@ -28,7 +28,7 @@ internal static class Extensions
     /// <summary>
     /// Vytvoreni requestu pro zalozeni CASE
     /// </summary>
-    public static _Case.CreateCaseRequest ToDomainServiceRequest(this CreateMortgageCaseRequest request, int userId, _Offer.MortgageSimulationInputs offerInstance)
+    public static _Case.CreateCaseRequest ToDomainServiceRequest(this CreateMortgageCaseRequest request, int userId, _Offer.MortgageOfferSimulationInputs offerInstance)
         => new _Case.CreateCaseRequest
         {
             CaseOwnerUserId = userId,

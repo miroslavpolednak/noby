@@ -31,12 +31,12 @@ internal sealed class RealEstateValuationTypeService
             if (caseInstance.State!.Value == (int)CaseStates.InProgress)
             {
                 var productSA = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First();
-                var offerInstance = await _offerService.GetMortgageOfferDetail(productSA.OfferId!.Value, cancellationToken);
+                var offerInstance = await _offerService.GetOfferDetail(productSA.OfferId!.Value, cancellationToken);
 
-                dsRequest.LoanAmount = offerInstance.SimulationResults.LoanAmount;
-                if (offerInstance.SimulationInputs.LoanPurposes?.Any() ?? false)
+                dsRequest.LoanAmount = offerInstance.MortgageOffer.SimulationResults.LoanAmount;
+                if (offerInstance.MortgageOffer.SimulationInputs.LoanPurposes?.Any() ?? false)
                 {
-                    dsRequest.LoanPurposes.AddRange(offerInstance.SimulationInputs.LoanPurposes.Select(t => t.LoanPurposeId));
+                    dsRequest.LoanPurposes.AddRange(offerInstance.MortgageOffer.SimulationInputs.LoanPurposes.Select(t => t.LoanPurposeId));
                 }
             }
             else

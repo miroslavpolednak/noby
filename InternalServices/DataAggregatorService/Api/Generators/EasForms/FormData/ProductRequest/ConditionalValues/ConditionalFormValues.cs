@@ -13,25 +13,25 @@ internal class ConditionalFormValues
         _data = data;
     }
 
-    public int? DeveloperId => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperId, NullIfZero(_data.Offer.SimulationInputs.Developer?.DeveloperId));
+    public int? DeveloperId => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperId, NullIfZero(_data.Offer.MortgageOffer.SimulationInputs.Developer?.DeveloperId));
 
-    public int? DeveloperProjectId => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperProjektId, NullIfZero(_data.Offer.SimulationInputs.Developer?.ProjectId));
+    public int? DeveloperProjectId => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperProjektId, NullIfZero(_data.Offer.MortgageOffer.SimulationInputs.Developer?.ProjectId));
 
-    public string? DeveloperDescription => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperPopis, _data.Offer.SimulationInputs.Developer?.Description);
+    public string? DeveloperDescription => _specificJsonKeys.GetValueOrDefault(JsonKey.DeveloperPopis, _data.Offer.MortgageOffer.SimulationInputs.Developer?.Description);
 
     public IEnumerable<LoanPurpose> LoanPurposes =>
-        _specificJsonKeys.GetValueOrDefault(JsonKey.SeznamUcelu, _data.Offer.SimulationInputs.LoanPurposes) ?? Enumerable.Empty<LoanPurpose>();
+        _specificJsonKeys.GetValueOrDefault(JsonKey.SeznamUcelu, _data.Offer.MortgageOffer.SimulationInputs.LoanPurposes) ?? Enumerable.Empty<LoanPurpose>();
 
-    public decimal? FinancialResourcesOwn => _specificJsonKeys.GetValueOrDefault(JsonKey.FinKrytiVlastniZdroje, _data.Offer.BasicParameters.FinancialResourcesOwn);
+    public decimal? FinancialResourcesOwn => _specificJsonKeys.GetValueOrDefault(JsonKey.FinKrytiVlastniZdroje, _data.Offer.MortgageOffer.BasicParameters.FinancialResourcesOwn);
 
-    public decimal? FinancialResourcesOther => _specificJsonKeys.GetValueOrDefault(JsonKey.FinKrytiCiziZdroje, _data.Offer.BasicParameters.FinancialResourcesOther);
+    public decimal? FinancialResourcesOther => _specificJsonKeys.GetValueOrDefault(JsonKey.FinKrytiCiziZdroje, _data.Offer.MortgageOffer.BasicParameters.FinancialResourcesOther);
 
     public decimal? FinancialResourcesTotal =>
-        _specificJsonKeys.GetValueOrDefault(JsonKey.FinKrytiCelkem, _data.Offer.SimulationResults.LoanAmount + (FinancialResourcesOwn ?? 0) + (FinancialResourcesOther ?? 0));
+        _specificJsonKeys.GetValueOrDefault(JsonKey.FinKrytiCelkem, _data.Offer.MortgageOffer.SimulationResults.LoanAmount + (FinancialResourcesOwn ?? 0) + (FinancialResourcesOther ?? 0));
 
     public decimal? InsuranceSumRealEstate =>
         _specificJsonKeys.GetValueOrDefault(JsonKey.PojisteniNemSuma,
-                                           _data.Offer.SimulationInputs.RealEstateInsurance == null ? null : (decimal?)_data.Offer.SimulationInputs.RealEstateInsurance.Sum);
+                                           _data.Offer.MortgageOffer.SimulationInputs.RealEstateInsurance == null ? null : (decimal?)_data.Offer.MortgageOffer.SimulationInputs.RealEstateInsurance.Sum);
 
     public IEnumerable<LoanRealEstate> LoanRealEstates =>
         _specificJsonKeys.GetValueOrDefault(JsonKey.SeznamObjektu, _data.SalesArrangement.Mortgage?.LoanRealEstates)

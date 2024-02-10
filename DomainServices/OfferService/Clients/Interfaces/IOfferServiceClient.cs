@@ -11,19 +11,14 @@ public interface IOfferServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
     Task<GetOfferResponse> GetOffer(int offerId, CancellationToken cancellationToken = default);
 
-    /// <summary>
-    /// Získání základních informací o simulaci KB Hypotéky
-    /// </summary>
-    /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
-    /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
-    Task<GetMortgageOfferResponse> GetMortgageOffer(int offerId, CancellationToken cancellationToken = default);
+    Task<ValidateOfferIdResponse> ValidateOfferId(int offerId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Získání detailních informací o simulaci KB Hypotéky
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10000; Offer #{offerId} not found</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
-    Task<GetMortgageOfferDetailResponse> GetMortgageOfferDetail(int offerId, CancellationToken cancellationToken = default);
+    Task<GetOfferDetailResponse> GetOfferDetail(int offerId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Simulace KB Hypotéky

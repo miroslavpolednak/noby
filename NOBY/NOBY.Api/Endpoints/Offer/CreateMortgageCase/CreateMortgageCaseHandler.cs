@@ -19,10 +19,10 @@ internal sealed class CreateMortgageCaseHandler
     public async Task<CreateMortgageCaseResponse> Handle(CreateMortgageCaseRequest request, CancellationToken cancellationToken)
     {
         // detail simulace
-        var offerInstance = await _offerService.GetMortgageOffer(request.OfferId, cancellationToken);
+        var offerInstance = await _offerService.GetOffer(request.OfferId, cancellationToken);
 
         // chyba pokud simulace je uz nalinkovana na jiny SA
-        if (await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.OfferId, cancellationToken) is not null)
+        if (await _salesArrangementService.GetSalesArrangementByOfferId(offerInstance.Data.OfferId, cancellationToken) is not null)
             throw new NobyValidationException($"OfferId {request.OfferId} has been already linked to another contract");
 
         // get default saTypeId from productTypeId
@@ -31,8 +31,8 @@ internal sealed class CreateMortgageCaseHandler
             .Id;
 
         // vytvorit case
-        _logger.SharedCreateCaseStarted(offerInstance.OfferId);
-        long caseId = await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User!.Id, offerInstance.SimulationInputs), cancellationToken);
+        _logger.SharedCreateCaseStarted(offerInstance.Data.OfferId);
+        long caseId = await _caseService.CreateCase(request.ToDomainServiceRequest(_userAccessor.User!.Id, offerInstance.MortgageOffer.SimulationInputs), cancellationToken);
         _bag.Add(CreateMortgageCaseRollback.BagKeyCaseId, caseId);
         _logger.EntityCreated(nameof(_Case.Case), caseId);
 
@@ -93,7 +93,7 @@ internal sealed class CreateMortgageCaseHandler
         {
             SalesArrangementId = salesArrangementId,
             CaseId = caseId,
-            OfferId = offerInstance.OfferId,
+            OfferId = offerInstance.Data.OfferId,
             HouseholdId = householdId,
             CustomerOnSAId = createCustomerResult.CustomerOnSAId
         };

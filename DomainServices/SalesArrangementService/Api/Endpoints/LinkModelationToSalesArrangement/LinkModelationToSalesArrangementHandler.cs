@@ -28,13 +28,13 @@ internal sealed class LinkModelationToSalesArrangementHandler
         var caseInstance = await _caseService.GetCaseDetail(salesArrangementInstance.CaseId, cancellation);
 
         // validace na existenci offer
-        var offerInstance = await _offerService.GetMortgageOffer(request.OfferId, cancellation);
+        var offerInstance = await _offerService.GetOffer(request.OfferId, cancellation);
 
         // instance puvodni Offer
-        __Offer.GetMortgageOfferResponse? offerInstanceOld = null;
+        __Offer.GetOfferResponse? offerInstanceOld = null;
         if (salesArrangementInstance.OfferId.HasValue)
         {
-            offerInstanceOld = await _offerService.GetMortgageOffer(salesArrangementInstance.OfferId.Value, cancellation);
+            offerInstanceOld = await _offerService.GetOffer(salesArrangementInstance.OfferId.Value, cancellation);
         }
 
         // kontrola, zda simulace neni nalinkovana na jiny SA
@@ -45,16 +45,16 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         // Kontrola, že nová Offer má GuaranteeDateFrom větší nebo stejné jako původně nalinkovaná offer
         if (offerInstanceOld is not null
-            && (DateTime)offerInstance.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.SimulationInputs.GuaranteeDateFrom)
+            && (DateTime)offerInstance.MortgageOffer.SimulationInputs.GuaranteeDateFrom < (DateTime)offerInstanceOld.MortgageOffer.SimulationInputs.GuaranteeDateFrom)
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InvalidGuaranteeDateFrom);
         }
 
         // update linku v DB
-        salesArrangementInstance.OfferGuaranteeDateFrom = offerInstance.SimulationInputs.GuaranteeDateFrom;
-        salesArrangementInstance.OfferGuaranteeDateTo = offerInstance.BasicParameters.GuaranteeDateTo;
+        salesArrangementInstance.OfferGuaranteeDateFrom = offerInstance.MortgageOffer.SimulationInputs.GuaranteeDateFrom;
+        salesArrangementInstance.OfferGuaranteeDateTo = offerInstance.MortgageOffer.BasicParameters.GuaranteeDateTo;
         salesArrangementInstance.OfferId = request.OfferId;
-        salesArrangementInstance.ResourceProcessId = Guid.Parse(offerInstance.ResourceProcessId);
+        salesArrangementInstance.ResourceProcessId = Guid.Parse(offerInstance.Data.ResourceProcessId);
 
         await _dbContext.SaveChangesAsync(cancellation);
 
@@ -66,8 +66,8 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             ContractNumber = caseInstance.Data.ContractNumber,
             ProductTypeId = caseInstance.Data.ProductTypeId,
-            TargetAmount = offerInstance.SimulationInputs.LoanAmount,
-            IsEmployeeBonusRequested = offerInstance.SimulationInputs.IsEmployeeBonusRequested
+            TargetAmount = offerInstance.MortgageOffer.SimulationInputs.LoanAmount,
+            IsEmployeeBonusRequested = offerInstance.MortgageOffer.SimulationInputs.IsEmployeeBonusRequested
         }, cancellation);
 
         // nastavit flowSwitches
@@ -85,12 +85,12 @@ internal sealed class LinkModelationToSalesArrangementHandler
     /// <summary>
     /// Nastaveni flow switches v podle toho jak je nastavena simulace / sa
     /// </summary>
-    private async Task setFlowSwitches(long caseId, int salesArrangementId, __Offer.GetMortgageOfferResponse offerInstance, __Offer.GetMortgageOfferResponse? offerInstanceOld, CancellationToken cancellation)
+    private async Task setFlowSwitches(long caseId, int salesArrangementId, __Offer.GetOfferResponse offerInstance, __Offer.GetOfferResponse? offerInstanceOld, CancellationToken cancellation)
     {
         List<__SA.EditableFlowSwitch> flowSwitchesToSet = new();
 
         // Pokud existuje sleva na poplatku nebo sazbě (libovolný poplatek DiscountPercentage z kolekce SimulationInputs.Fees > 0 nebo SimulationInputs.InterestRateDiscount > 0),
-        bool isOfferWithDiscount = (offerInstance.SimulationInputs.Fees?.Any(t => t.DiscountPercentage > 0) ?? false) || (offerInstance.SimulationInputs.InterestRateDiscount ?? 0) > 0M;
+        bool isOfferWithDiscount = (offerInstance.MortgageOffer.SimulationInputs.Fees?.Any(t => t.DiscountPercentage > 0) ?? false) || (offerInstance.MortgageOffer.SimulationInputs.InterestRateDiscount ?? 0) > 0M;
         flowSwitchesToSet.Add(new()
         {
             FlowSwitchId = (int)FlowSwitches.IsOfferWithDiscount,
@@ -98,7 +98,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         });
 
         // Pokud Offer.BasicParameters.GuranteeDateTo > sysdate (tedy platnost garance ještě neskončila)
-        if (((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.MinValue) > DateTime.Now)
+        if (((DateTime?)offerInstance.MortgageOffer.BasicParameters.GuaranteeDateTo ?? DateTime.MinValue) > DateTime.Now)
         {
             flowSwitchesToSet.Add(new()
             {
@@ -110,8 +110,8 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // HFICH-9611
         if (offerInstanceOld is not null
             && (
-                (offerInstanceOld.SimulationInputs.LoanKindId == 2001 && offerInstance.SimulationInputs.LoanKindId == 2000)
-                || (offerInstanceOld.SimulationInputs.LoanPurposes.All(t => t.LoanPurposeId == 201) && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId != 201)))
+                (offerInstanceOld.MortgageOffer.SimulationInputs.LoanKindId == 2001 && offerInstance.MortgageOffer.SimulationInputs.LoanKindId == 2000)
+                || (offerInstanceOld.MortgageOffer.SimulationInputs.LoanPurposes.All(t => t.LoanPurposeId == 201) && offerInstance.MortgageOffer.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId != 201)))
             )
         {
             flowSwitchesToSet.Add(new()
@@ -127,12 +127,12 @@ internal sealed class LinkModelationToSalesArrangementHandler
             bool isSwitch8On = await _dbContext
                 .FlowSwitches
                 .AnyAsync(t => t.SalesArrangementId == salesArrangementId && t.FlowSwitchId == (int)FlowSwitches.DoesWflTaskForIPExist && t.Value, cancellation);
-            var fee1 = offerInstance.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
-            var fee2 = offerInstanceOld.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
+            var fee1 = offerInstance.MortgageOffer.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
+            var fee2 = offerInstanceOld.MortgageOffer.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
 
             if (isSwitch8On
-                && (!Equals(offerInstance.BasicParameters.GuaranteeDateTo, offerInstanceOld.BasicParameters.GuaranteeDateTo)
-                || !Equals(offerInstance.SimulationInputs.InterestRateDiscount, offerInstanceOld.SimulationInputs.InterestRateDiscount)
+                && (!Equals(offerInstance.MortgageOffer.BasicParameters.GuaranteeDateTo, offerInstanceOld.MortgageOffer.BasicParameters.GuaranteeDateTo)
+                || !Equals(offerInstance.MortgageOffer.SimulationInputs.InterestRateDiscount, offerInstanceOld.MortgageOffer.SimulationInputs.InterestRateDiscount)
                 || fee1.Except(fee2).Union(fee2.Except(fee1)).Any()))
             {
                 // Pokud již existuje WFL úkol na IC (getTaskList zafiltrovat na TaskTypeId = 2 a Cancelled = false), pak dojde k jeho zrušení pomocí cancelTask (na vstup jde TaskIdSB)
@@ -146,7 +146,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         }
 
         // Nastavení klapky k ocenění nemovitosti
-        bool flowSwitch15 = offerInstance.SimulationInputs.LoanKindId == 2000;
+        bool flowSwitch15 = offerInstance.MortgageOffer.SimulationInputs.LoanKindId == 2000;
         if (!flowSwitch15)
         {
             // smazat oceneni nemovitosti
@@ -185,7 +185,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         }
     }
 
-    private async Task updateParameters(Database.Entities.SalesArrangement salesArrangementInstance, __Offer.GetMortgageOfferResponse offerInstance, CancellationToken cancellation)
+    private async Task updateParameters(Database.Entities.SalesArrangement salesArrangementInstance, __Offer.GetOfferResponse offerInstance, CancellationToken cancellation)
     {
         // parametry SA
         var hasChanged = false;
@@ -194,17 +194,17 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         var parametersModel = saParametersDocument?.Data ?? new MortgageData();
 
-        if (offerInstance.SimulationInputs.LoanKindId == 2001 ||
-            offerInstance.SimulationInputs.LoanPurposes is not null && offerInstance.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId == 201))
+        if (offerInstance.MortgageOffer.SimulationInputs.LoanKindId == 2001 ||
+            offerInstance.MortgageOffer.SimulationInputs.LoanPurposes is not null && offerInstance.MortgageOffer.SimulationInputs.LoanPurposes.Any(t => t.LoanPurposeId == 201))
         {
             parametersModel.LoanRealEstates.Clear();
             hasChanged = true;
         }
 
         // HFICH-2181
-        if (parametersModel.ExpectedDateOfDrawing != null || parametersModel.ExpectedDateOfDrawing == null && offerInstance.SimulationInputs.ExpectedDateOfDrawing > DateTime.Now.AddDays(1))
+        if (parametersModel.ExpectedDateOfDrawing != null || parametersModel.ExpectedDateOfDrawing == null && offerInstance.MortgageOffer.SimulationInputs.ExpectedDateOfDrawing > DateTime.Now.AddDays(1))
         {
-            parametersModel.ExpectedDateOfDrawing = offerInstance.SimulationInputs.ExpectedDateOfDrawing;
+            parametersModel.ExpectedDateOfDrawing = offerInstance.MortgageOffer.SimulationInputs.ExpectedDateOfDrawing;
             hasChanged = true;
         }
 

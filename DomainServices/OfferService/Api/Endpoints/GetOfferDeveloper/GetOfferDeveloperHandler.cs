@@ -10,7 +10,7 @@ internal sealed class GetOfferDeveloperHandler
 {
     public async Task<GetOfferDeveloperResponse> Handle(GetOfferDeveloperRequest request, CancellationToken cancellationToken)
     {
-        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.OfferData>(request.OfferId, cancellationToken)
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageOfferData>(request.OfferId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, request.OfferId);
         var inputs = offerData.Data!.SimulationInputs;
 

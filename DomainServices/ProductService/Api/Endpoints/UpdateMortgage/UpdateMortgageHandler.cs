@@ -19,7 +19,7 @@ internal sealed class UpdateMortgageHandler
         }
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(productSA!.SalesArrangementId, cancellationToken);
-        var offer = await _offerService.GetMortgageOfferDetail(salesArrangement.OfferId!.Value, cancellationToken);
+        var offer = await _offerService.GetOfferDetail(salesArrangement.OfferId!.Value, cancellationToken);
         var customers = await _customerOnSAService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
         var caseInstance = await _caseService.ValidateCaseId(salesArrangement.CaseId, false, cancellationToken);
 
@@ -33,23 +33,23 @@ internal sealed class UpdateMortgageHandler
             LoanType = LoanType.KBMortgage,
             ConsultantId = caseInstance.OwnerUserId,
             LoanContractNumber = salesArrangement.ContractNumber,
-            MonthlyInstallment = offer.SimulationResults.LoanPaymentAmount,
-            LoanAmount = (double?)offer.SimulationInputs.LoanAmount,
-            InterestRate = (double?)offer.SimulationResults.LoanInterestRate,
-            FixationPeriod = offer.SimulationInputs.FixedRatePeriod,
-            LoanKind = offer.SimulationInputs.LoanKindId,
-            Expected1stDrawDate = offer.SimulationInputs.ExpectedDateOfDrawing,
+            MonthlyInstallment = offer.MortgageOffer.SimulationResults.LoanPaymentAmount,
+            LoanAmount = (double?)offer.MortgageOffer.SimulationInputs.LoanAmount,
+            InterestRate = (double?)offer.MortgageOffer.SimulationResults.LoanInterestRate,
+            FixationPeriod = offer.MortgageOffer.SimulationInputs.FixedRatePeriod,
+            LoanKind = offer.MortgageOffer.SimulationInputs.LoanKindId,
+            Expected1stDrawDate = offer.MortgageOffer.SimulationInputs.ExpectedDateOfDrawing,
             FirstRequestSignDate = salesArrangement.FirstSignatureDate,
-            InstallmentDay = offer.SimulationInputs.PaymentDay,
-            LoanPurposes = offer.SimulationInputs.LoanPurposes?.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
+            InstallmentDay = offer.MortgageOffer.SimulationInputs.PaymentDay,
+            LoanPurposes = offer.MortgageOffer.SimulationInputs.LoanPurposes?.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
             {
                 Amount = (double)t.Sum,
                 LoanPurposeId = t.LoanPurposeId
             }).ToList(),
-            ProductCodeUv = offer.SimulationInputs.ProductTypeId,
-            EstimatedDuePaymentDate = offer.SimulationResults.LoanDueDate,
+            ProductCodeUv = offer.MortgageOffer.SimulationInputs.ProductTypeId,
+            EstimatedDuePaymentDate = offer.MortgageOffer.SimulationResults.LoanDueDate,
             PcpInstId = salesArrangement.PcpId,
-            FirstAnnuityInstallmentDate = offer.SimulationResults.AnnuityPaymentsDateFrom,
+            FirstAnnuityInstallmentDate = offer.MortgageOffer.SimulationResults.AnnuityPaymentsDateFrom,
             Relationships = customers
                 .Where(t => t.CustomerIdentifiers.Any(tt => tt.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp))
                 .Select(t => new LoanContractRelationship

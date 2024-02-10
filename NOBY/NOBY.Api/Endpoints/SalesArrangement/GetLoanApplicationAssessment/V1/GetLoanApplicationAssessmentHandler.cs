@@ -65,7 +65,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         if (!request.NewAssessmentRequired && string.IsNullOrWhiteSpace(saInstance.LoanApplicationAssessmentId))
             throw new NobyValidationException($"LoanApplicationAssessmentId is missing for SA #{saInstance.SalesArrangementId}");
 
-        var offer = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
+        var offer = await _offerService.GetOffer(saInstance.OfferId!.Value, cancellationToken);
 
         // create new assesment, if required
         if (request.NewAssessmentRequired)
@@ -118,7 +118,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         return response;
     }
 
-    private async Task CreateNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetMortgageOfferResponse offer, CancellationToken cancellationToken)
+    private async Task CreateNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
         var dataRequest = new GetRiskLoanApplicationDataRequest
         {
@@ -150,7 +150,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
             // Timestamp, který jsme si uložili pro danou verzi žádosti (dat žádosti), kterou jsme předali v RIP(v2) - POST LoanApplication a tímto danou verzi požadujeme vyhodnotit
             LoanApplicationDataVersion = loanApplicationSaveRequest.LoanApplicationDataVersion,
             AssessmentMode = RiskBusinessCaseAssessmentModes.SC,
-            GrantingProcedureCode = offer.SimulationInputs.IsEmployeeBonusRequested == true ? RiskBusinessCaseGrantingProcedureCodes.EMP : RiskBusinessCaseGrantingProcedureCodes.STD,
+            GrantingProcedureCode = offer.MortgageOffer.SimulationInputs.IsEmployeeBonusRequested == true ? RiskBusinessCaseGrantingProcedureCodes.EMP : RiskBusinessCaseGrantingProcedureCodes.STD,
         };
 
         var createAssessmentResponse = await _riskBusinessCaseService.CreateAssessment(createAssessmentRequest, cancellationToken);

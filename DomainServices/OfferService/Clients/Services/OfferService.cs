@@ -5,27 +5,28 @@ namespace DomainServices.OfferService.Clients.Services;
 internal sealed class OfferService 
     : IOfferServiceClient
 {
-    public async Task<GetOfferResponse> GetOffer(int offerId, CancellationToken cancellationToken = default)
-        => await _service.GetOfferAsync(new GetOfferRequest() 
+    public async Task<ValidateOfferIdResponse> ValidateOfferId(int offerId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
+        => await _service.ValidateOfferIdAsync(new ValidateOfferIdRequest() 
         { 
-            OfferId = offerId 
+            OfferId = offerId,
+            ThrowExceptionIfNotFound = throwExceptionIfNotFound
         }, cancellationToken: cancellationToken);
 
-    public async Task<GetMortgageOfferResponse> GetMortgageOffer(int offerId, CancellationToken cancellationToken = default)
+    public async Task<GetOfferResponse> GetOffer(int offerId, CancellationToken cancellationToken = default)
     {
-        if (_cacheGetMortgageOfferResponse is null || offerId != _cacheGetMortgageOfferResponseId)
+        if (_cacheGetMortgageOfferResponse is null || offerId != _cacheGetOfferResponseId)
         {
-            _cacheGetMortgageOfferResponse = await _service.GetMortgageOfferAsync(new GetMortgageOfferRequest()
+            _cacheGetMortgageOfferResponse = await _service.GetOfferAsync(new GetOfferRequest()
             {
                 OfferId = offerId
             }, cancellationToken: cancellationToken);
-            _cacheGetMortgageOfferResponseId = offerId;
+            _cacheGetOfferResponseId = offerId;
         }
         return _cacheGetMortgageOfferResponse;
     }
 
-    public async Task<GetMortgageOfferDetailResponse> GetMortgageOfferDetail(int offerId, CancellationToken cancellationToken = default)
-        => await _service.GetMortgageOfferDetailAsync(new GetMortgageOfferDetailRequest() 
+    public async Task<GetOfferDetailResponse> GetOfferDetail(int offerId, CancellationToken cancellationToken = default)
+        => await _service.GetOfferDetailAsync(new GetOfferDetailRequest() 
         { 
             OfferId = offerId 
         }, cancellationToken: cancellationToken);
@@ -60,8 +61,8 @@ internal sealed class OfferService
         }, cancellationToken: cancellationToken);
     }
 
-    private int? _cacheGetMortgageOfferResponseId;
-    private GetMortgageOfferResponse? _cacheGetMortgageOfferResponse;
+    private int? _cacheGetOfferResponseId;
+    private GetOfferResponse? _cacheGetMortgageOfferResponse;
 
     private readonly Contracts.v1.OfferService.OfferServiceClient _service;
 

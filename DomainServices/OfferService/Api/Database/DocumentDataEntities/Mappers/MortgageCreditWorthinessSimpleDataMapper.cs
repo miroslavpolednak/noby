@@ -7,11 +7,11 @@ namespace DomainServices.OfferService.Api.Database.DocumentDataEntities.Mappers;
 #pragma warning disable CA1822 // Mark members as static
 
 [TransientService, SelfService]
-internal sealed class CreditWorthinessSimpleDataMapper
+internal sealed class MortgageCreditWorthinessSimpleDataMapper
 {
-    public CreditWorthinessSimpleData MapToData(__Contracts.MortgageCreditWorthinessSimpleInputs inputs, CreditWorthinessSimpleCalculateResponse? serviceResponse)
+    public MortgageCreditWorthinessSimpleData MapToData(__Contracts.MortgageOfferCreditWorthinessSimpleInputs inputs, CreditWorthinessSimpleCalculateResponse? serviceResponse)
     {
-        return new CreditWorthinessSimpleData
+        return new MortgageCreditWorthinessSimpleData
         {
             Inputs = new()
             {
@@ -35,19 +35,19 @@ internal sealed class CreditWorthinessSimpleDataMapper
                 MaxAmount = (int?)serviceResponse?.MaxAmount,
                 RemainsLivingAnnuity = (int?)serviceResponse?.RemainsLivingAnnuity,
                 RemainsLivingInst = (int?)serviceResponse?.RemainsLivingInst,
-                WorthinessResult = (CreditWorthinessSimpleData.WorthinessResults)(int)(serviceResponse?.WorthinessResult ?? CreditWorthinessResults.Unknown)
+                WorthinessResult = (MortgageCreditWorthinessSimpleData.WorthinessResults)(int)(serviceResponse?.WorthinessResult ?? CreditWorthinessResults.Unknown)
             }
         };
     }
 
-    public (__Contracts.MortgageCreditWorthinessSimpleInputs? Inputs, __Contracts.MortgageCreditWorthinessSimpleResults? Outputs) MapFromDataToSingle(CreditWorthinessSimpleData? data)
+    public (__Contracts.MortgageOfferCreditWorthinessSimpleInputs? Inputs, __Contracts.MortgageOfferCreditWorthinessSimpleResults? Outputs) MapFromDataToSingle(MortgageCreditWorthinessSimpleData? data)
     {
         if (data is null)
         {
             return (null, null);
         }
 
-        var inputs = new __Contracts.MortgageCreditWorthinessSimpleInputs
+        var inputs = new __Contracts.MortgageOfferCreditWorthinessSimpleInputs
         {
             ChildrenCount = data.Inputs.ChildrenCount,
             TotalMonthlyIncome = data.Inputs.TotalMonthlyIncome,
@@ -64,13 +64,13 @@ internal sealed class CreditWorthinessSimpleDataMapper
             }
         };
 
-        var results = new __Contracts.MortgageCreditWorthinessSimpleResults
+        var results = new __Contracts.MortgageOfferCreditWorthinessSimpleResults
         {
             InstallmentLimit = data.Outputs.InstallmentLimit,
             MaxAmount = data.Outputs.MaxAmount,
             RemainsLivingAnnuity = data.Outputs.RemainsLivingAnnuity,
             RemainsLivingInst = data.Outputs.RemainsLivingInst,
-            WorthinessResult = (__Contracts.WorthinessResult)(int)data.Outputs.WorthinessResult
+            WorthinessResult = (__Contracts.MortgageOfferCreditWorthinessSimpleResults.Types.WorthinessResults)(int)data.Outputs.WorthinessResult
         };
 
         return (inputs, results);

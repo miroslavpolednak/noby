@@ -133,12 +133,12 @@ internal sealed class OrderAggregate
         if (caseState == (int)CaseStates.InProgress)
         {
             var offerId = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First().OfferId;
-            var offer = await _offerService.GetMortgageOfferDetail(offerId!.Value, cancellationToken);
+            var offer = await _offerService.GetOfferDetail(offerId!.Value, cancellationToken);
 
-            var collateralAmount = offer.SimulationInputs.CollateralAmount;
-            var loanDuration = offer.SimulationInputs.LoanDuration;
-            var purpose = await getLoanPurpose(offer.SimulationInputs.LoanPurposes?.FirstOrDefault()?.LoanPurposeId);
-            var loanAmount = offer.SimulationInputs.LoanAmount;
+            var collateralAmount = offer.MortgageOffer.SimulationInputs.CollateralAmount;
+            var loanDuration = offer.MortgageOffer.SimulationInputs.LoanDuration;
+            var purpose = await getLoanPurpose(offer.MortgageOffer.SimulationInputs.LoanPurposes?.FirstOrDefault()?.LoanPurposeId);
+            var loanAmount = offer.MortgageOffer.SimulationInputs.LoanAmount;
             return new GetProductPropertiesResult(collateralAmount, loanAmount, loanDuration, purpose);
         }
         else

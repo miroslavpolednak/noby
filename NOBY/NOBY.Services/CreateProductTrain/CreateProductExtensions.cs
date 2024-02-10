@@ -5,27 +5,27 @@ namespace NOBY.Services.CreateProductTrain;
 
 internal static class CreateProductExtensions
 {
-    public static MortgageData ToDomainServiceRequest(this GetMortgageOfferResponse offerData, long partnerId, string contractNumber)
+    public static MortgageData ToDomainServiceRequest(this GetOfferResponse offerData, long partnerId, string contractNumber)
     {
         var model = new MortgageData
         {
             ContractNumber = contractNumber,
-            PaymentDay = offerData.SimulationInputs.PaymentDay,
-            ExpectedDateOfDrawing = offerData.SimulationInputs.ExpectedDateOfDrawing,
-            FixedRatePeriod = offerData.SimulationInputs.FixedRatePeriod,
-            LoanAmount = offerData.SimulationInputs.LoanAmount,
-            LoanInterestRate = offerData.SimulationResults.LoanInterestRate,
-            ProductTypeId = offerData.SimulationInputs.ProductTypeId,
-            LoanPaymentAmount = offerData.SimulationResults.LoanPaymentAmount,
-            LoanKindId= offerData.SimulationInputs.LoanKindId,
+            PaymentDay = offerData.MortgageOffer.SimulationInputs.PaymentDay,
+            ExpectedDateOfDrawing = offerData.MortgageOffer.SimulationInputs.ExpectedDateOfDrawing,
+            FixedRatePeriod = offerData.MortgageOffer.SimulationInputs.FixedRatePeriod,
+            LoanAmount = offerData.MortgageOffer.SimulationInputs.LoanAmount,
+            LoanInterestRate = offerData.MortgageOffer.SimulationResults.LoanInterestRate,
+            ProductTypeId = offerData.MortgageOffer.SimulationInputs.ProductTypeId,
+            LoanPaymentAmount = offerData.MortgageOffer.SimulationResults.LoanPaymentAmount,
+            LoanKindId= offerData.MortgageOffer.SimulationInputs.LoanKindId,
             PartnerId = partnerId,
-            LoanDueDate = offerData.SimulationResults.LoanDueDate,
-            FirstAnnuityPaymentDate = offerData.SimulationResults.AnnuityPaymentsDateFrom
+            LoanDueDate = offerData.MortgageOffer.SimulationResults.LoanDueDate,
+            FirstAnnuityPaymentDate = offerData.MortgageOffer.SimulationResults.AnnuityPaymentsDateFrom
         };
 
-        if (offerData.SimulationInputs.LoanPurposes is not null)
+        if (offerData.MortgageOffer.SimulationInputs.LoanPurposes is not null)
         {
-            model.LoanPurposes.AddRange(offerData.SimulationInputs.LoanPurposes.Select(t => new DomainServices.ProductService.Contracts.LoanPurpose
+            model.LoanPurposes.AddRange(offerData.MortgageOffer.SimulationInputs.LoanPurposes.Select(t => new DomainServices.ProductService.Contracts.LoanPurpose
             {
                 LoanPurposeId = t.LoanPurposeId,
                 Sum = t.Sum

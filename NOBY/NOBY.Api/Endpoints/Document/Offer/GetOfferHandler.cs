@@ -28,16 +28,16 @@ internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnl
     public async Task<ReadOnlyMemory<byte>> Handle(GetOfferRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.InputParameters.SalesArrangementId!.Value, cancellationToken);
-        var offer = await _offerService.GetMortgageOffer(salesArrangement.OfferId!.Value, cancellationToken);
+        var offer = await _offerService.GetOffer(salesArrangement.OfferId!.Value, cancellationToken);
 
-        if (string.IsNullOrWhiteSpace(offer.DocumentId))
+        if (string.IsNullOrWhiteSpace(offer.Data.DocumentId))
         {
             request.InputParameters.CaseId = salesArrangement.CaseId;
 
             return await GenerateAndSaveOffer(request, salesArrangement.OfferId!.Value, salesArrangement.ContractNumber, cancellationToken);
         }
 
-        return await _documentArchiveManager.GetDocument(offer.DocumentId, request, cancellationToken);
+        return await _documentArchiveManager.GetDocument(offer.Data.DocumentId, request, cancellationToken);
     }
 
     private async Task<ReadOnlyMemory<byte>> GenerateAndSaveOffer(GetDocumentBaseRequest request, int offerId, string? contractNumber, CancellationToken cancellationToken)

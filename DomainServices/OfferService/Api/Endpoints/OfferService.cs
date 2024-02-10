@@ -9,13 +9,13 @@ namespace DomainServices.OfferService.Api.Endpoints;
 public class OfferService 
     : Contracts.v1.OfferService.OfferServiceBase
 {
+    public override async Task<ValidateOfferIdResponse> ValidateOfferId(ValidateOfferIdRequest request, ServerCallContext context)
+        => await _mediator.Send(request);
+
     public override async Task<GetOfferResponse> GetOffer(GetOfferRequest request, ServerCallContext context)
     => await _mediator.Send(request);
 
-    public override async Task<GetMortgageOfferResponse> GetMortgageOffer(GetMortgageOfferRequest request, ServerCallContext context)
-       => await _mediator.Send(request);
-
-    public override async Task<GetMortgageOfferDetailResponse> GetMortgageOfferDetail(GetMortgageOfferDetailRequest request, ServerCallContext context)
+    public override async Task<GetOfferDetailResponse> GetOfferDetail(GetOfferDetailRequest request, ServerCallContext context)
        => await _mediator.Send(request);
 
     public override async Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, ServerCallContext context)

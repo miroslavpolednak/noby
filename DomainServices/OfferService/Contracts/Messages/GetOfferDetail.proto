@@ -5,14 +5,14 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 import "Messages/Types.proto";
 import "Parameters/MortgageOffer.proto";
 
-message GetOfferRequest {
+message GetOfferDetailRequest {
 	int32 OfferId = 1;
 }
 
-message GetOfferResponse {
+message GetOfferDetailResponse {
 	CommonOfferData Data = 1;
 	
 	oneof Parameters {
-		MortgageOfferBaseData MortgageOffer = 20;
+		MortgageOfferFullData MortgageOffer = 20;
 	}
 }
