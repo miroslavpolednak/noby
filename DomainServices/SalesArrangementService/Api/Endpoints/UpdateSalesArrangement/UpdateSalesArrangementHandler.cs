@@ -34,6 +34,7 @@ internal sealed class UpdateSalesArrangementHandler
         entity.ContractNumber = !string.IsNullOrWhiteSpace(request.ContractNumber) ? request.ContractNumber : entity.ContractNumber;
         entity.RiskBusinessCaseId = !string.IsNullOrWhiteSpace(request.RiskBusinessCaseId) ? request.RiskBusinessCaseId : entity.RiskBusinessCaseId;
         entity.FirstSignatureDate = request.FirstSignatureDate is not null ? request.FirstSignatureDate.ToDateTime() : entity.FirstSignatureDate;
+        entity.TaskProcessId = request.TaskProcessId.HasValue ? request.TaskProcessId.Value : null;
 
         await _dbContext.SaveChangesAsync(cancellation);
 
