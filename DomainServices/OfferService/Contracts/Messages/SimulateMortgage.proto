@@ -2,6 +2,7 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "Identity.proto";
 import "ModificationStamp.proto";
 import "NullableGrpcDate.proto";
@@ -15,6 +16,8 @@ message SimulateMortgageRequest {
 	MortgageOfferCreditWorthinessSimpleInputs CreditWorthinessSimpleInputs = 5;
 	repeated cis.types.Identity Identities = 6;
 	cis.types.NullableGrpcDate ValidTo = 7;
+	google.protobuf.Int64Value CaseId = 8;
+	google.protobuf.Int32Value SalesArrangementId = 9;
 }
 
 message SimulateMortgageResponse {

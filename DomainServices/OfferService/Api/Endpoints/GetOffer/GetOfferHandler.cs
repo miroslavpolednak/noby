@@ -1,7 +1,5 @@
 ﻿using DomainServices.OfferService.Contracts;
 using SharedComponents.DocumentDataStorage;
-using System.Runtime.InteropServices.Marshalling;
-using System.Threading;
 
 namespace DomainServices.OfferService.Api.Endpoints.GetOffer;
 
