@@ -62,6 +62,11 @@ internal sealed class GetSalesArrangementHandler
                 model.CustomerChange3602C = customerChange3602CData?.MapCustomerChange3602();
                 break;
 
+            case SalesArrangementTypes.Retention:
+                var retentionData = await GetParametersData<RetentionData>(model.SalesArrangementId, cancellation);
+                model.Retention = retentionData?.MapRetention();
+                break;
+
             default:
                 throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, model.SalesArrangementTypeId);
         }
