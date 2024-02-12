@@ -2,15 +2,15 @@
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
-internal sealed class HUBNValidator
-    : BaseValidator<HUBNBuilder>, ICreateSalesArrangementParametersValidator
+internal sealed class RetentionValidator
+    : BaseValidator<RetentionBuilder>, ICreateSalesArrangementParametersValidator
 {
-    public HUBNValidator(BuilderValidatorAggregate aggregate)
+    public RetentionValidator(BuilderValidatorAggregate aggregate)
         : base(aggregate) { }
 
-    public override async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default)
+    public override async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default(CancellationToken))
     {
-        ValidateUserPermissions(UserPermissions.CHANGE_REQUESTS_Access);
+        ValidateUserPermissions(UserPermissions.CHANGE_REQUESTS_RefinancingAccess);
 
         var productService = GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         // instance hypo

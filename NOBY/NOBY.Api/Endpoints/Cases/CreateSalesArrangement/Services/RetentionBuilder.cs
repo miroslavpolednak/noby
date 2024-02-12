@@ -3,7 +3,7 @@ using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
-internal sealed class HUBNBuilder
+internal sealed class RetentionBuilder
     : BaseBuilder
 {
     public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default)
@@ -30,12 +30,12 @@ internal sealed class HUBNBuilder
         }
         catch
         {
-            GetLogger<HUBNBuilder>().LogInformation("HUBNBuilder: Account not found in ProductService");
+            GetLogger<RetentionBuilder>().LogInformation("HUBNBuilder: Account not found in ProductService");
         }
 
         return Request;
     }
 
-    public HUBNBuilder(BuilderValidatorAggregate aggregate)
+    public RetentionBuilder(BuilderValidatorAggregate aggregate)
         : base(aggregate) { }
 }

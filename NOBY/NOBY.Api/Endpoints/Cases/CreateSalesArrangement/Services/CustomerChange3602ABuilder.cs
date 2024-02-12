@@ -1,7 +1,5 @@
-﻿using SharedTypes.Enums;
-using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
 using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
-using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
@@ -10,9 +8,9 @@ internal sealed class CustomerChange3602ABuilder
 {
     public override async Task PostCreateProcessing(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        var salesArrangementService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient>();
-        var customerOnSAService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient>();
-        var householdService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.HouseholdService.Clients.IHouseholdServiceClient>();
+        var salesArrangementService = GetRequiredService<DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient>();
+        var customerOnSAService = GetRequiredService<DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient>();
+        var householdService = GetRequiredService<DomainServices.HouseholdService.Clients.IHouseholdServiceClient>();
 
         // vytvorit domacnost
         var requestModel = new CreateHouseholdRequest
@@ -43,11 +41,6 @@ internal sealed class CustomerChange3602ABuilder
         }, cancellationToken);
     }
 
-    public CustomerChange3602ABuilder(
-        ILogger<CreateSalesArrangementParametersFactory> logger, 
-        __SA.CreateSalesArrangementRequest request, 
-        IHttpContextAccessor httpContextAccessor)
-        : base(logger, request, httpContextAccessor)
-    {
-    }
+    public CustomerChange3602ABuilder(BuilderValidatorAggregate aggregate)
+        : base(aggregate) { }
 }

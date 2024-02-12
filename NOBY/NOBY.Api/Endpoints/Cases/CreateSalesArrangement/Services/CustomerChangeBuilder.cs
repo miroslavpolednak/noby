@@ -10,18 +10,18 @@ internal sealed class CustomerChangeBuilder
     public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
-        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
-        var customerService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.CustomerService.Clients.ICustomerServiceClient>();
+        var productService = GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
+        var customerService = GetRequiredService<DomainServices.CustomerService.Clients.ICustomerServiceClient>();
 
-        _request.CustomerChange = new();
+        Request.CustomerChange = new();
         
         try
         {
-            var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
+            var mortgageInstance = await productService.GetMortgage(Request.CaseId, cancellationToken);
 
             if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.BankCode))
             {
-                _request.CustomerChange.RepaymentAccount = new()
+                Request.CustomerChange.RepaymentAccount = new()
                 {
                     AgreedPrefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix,
                     AgreedNumber = mortgageInstance.Mortgage.RepaymentAccount.Number,
@@ -29,10 +29,10 @@ internal sealed class CustomerChangeBuilder
                 };
             }
             else
-                _logger.LogInformation("DrawingBuilder: Account is empty");
+                GetLogger<CustomerChangeBuilder>().LogInformation("DrawingBuilder: Account is empty");
 
             // applicants
-            var customers = (await productService.GetCustomersOnProduct(_request.CaseId, cancellationToken)).Customers;
+            var customers = (await productService.GetCustomersOnProduct(Request.CaseId, cancellationToken)).Customers;
             var applicants = customers.Where(t => _allowedCustomerRoles.Contains(t.RelationshipCustomerProductTypeId));
             var loadedCustomers = new List<DomainServices.CustomerService.Contracts.CustomerDetailResponse>();
 
@@ -58,7 +58,7 @@ internal sealed class CustomerChangeBuilder
                 };
                 applicant.Identity.Add(identity);
 
-                _request.CustomerChange.Applicants.Add(applicant);
+                Request.CustomerChange.Applicants.Add(applicant);
             }
 
             // agent
@@ -72,7 +72,7 @@ internal sealed class CustomerChangeBuilder
                     agentCustomer = await customerService.GetCustomerDetail(agent, cancellationToken);
                 }
 
-                _request.CustomerChange.Agent = new()
+                Request.CustomerChange.Agent = new()
                 {
                     ActualAgent = $"{agentCustomer.NaturalPerson.LastName} {agentCustomer.NaturalPerson.FirstName}"
                 };
@@ -80,16 +80,14 @@ internal sealed class CustomerChangeBuilder
         }
         catch
         {
-            _logger.LogInformation("DrawingBuilder: Account not found in ProductService");
+            GetLogger<CustomerChangeBuilder>().LogInformation("DrawingBuilder: Account not found in ProductService");
         }
 
-        return _request;
+        return Request;
     }
 
     private static int[] _allowedCustomerRoles = new[] { 1, 2 };
 
-    public CustomerChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request, httpContextAccessor)
-    {
-    }
+    public CustomerChangeBuilder(BuilderValidatorAggregate aggregate)
+        : base(aggregate) { }
 }
