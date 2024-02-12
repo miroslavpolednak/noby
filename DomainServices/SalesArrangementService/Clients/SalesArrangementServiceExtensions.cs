@@ -24,7 +24,7 @@ public static class SalesArrangementServiceExtensions
         services.TryAddTransient<ISalesArrangementServiceClient, __Services.SalesArrangementService>();
         services.TryAddTransient<IMaintananceService, __Services.MaintananceService>();
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(ServiceName);
-        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(ServiceName, customServiceKey: "SAMaintananceServiceClient");
         return services;
     }
 
@@ -35,7 +35,7 @@ public static class SalesArrangementServiceExtensions
         services.TryAddTransient<ISalesArrangementServiceClient, __Services.SalesArrangementService>();
         services.TryAddTransient<IMaintananceService, __Services.MaintananceService>();
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(serviceUrl);
-        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(ServiceName, customServiceKey: "SAMaintananceServiceClient");
         return services;
     }
 }
