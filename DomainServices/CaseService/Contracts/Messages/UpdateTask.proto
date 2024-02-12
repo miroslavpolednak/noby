@@ -1,0 +1,25 @@
+syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "NullableGrpcDate.proto";
+import "NullableGrpcDecimal.proto";
+
+message UpdateTaskRequest {
+	int64 CaseId =  1;
+	int32 TaskIdSB = 2;
+	oneof Amendments {
+		Retention Retention = 3;
+	}
+}
+
+message Retention {
+	cis.types.NullableGrpcDate InterestRateValidFrom = 1;
+	cis.types.NullableGrpcDecimal LoanInterestRate = 2;
+	cis.types.NullableGrpcDecimal LoanInterestRateProvided = 3;
+	google.protobuf.Int32Value LoanPaymentAmount = 4;
+	google.protobuf.Int32Value LoanPaymentAmountFinal = 5;
+	google.protobuf.Int32Value FeeSum = 6;
+	google.protobuf.Int32Value FeeFinalSum = 7;
+}
