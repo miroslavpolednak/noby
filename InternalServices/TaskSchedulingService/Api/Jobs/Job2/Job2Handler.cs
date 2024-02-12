@@ -1,5 +1,4 @@
-﻿using CIS.Core.Attributes;
-using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
+﻿using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.Job2;
 
