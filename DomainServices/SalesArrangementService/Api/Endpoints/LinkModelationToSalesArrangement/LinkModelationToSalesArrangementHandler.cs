@@ -70,6 +70,14 @@ internal sealed class LinkModelationToSalesArrangementHandler
             IsEmployeeBonusRequested = offerInstance.MortgageOffer.SimulationInputs.IsEmployeeBonusRequested
         }, cancellation);
 
+        // update IDs na Offer
+        await _offerService.UpdateOffer(new __Offer.UpdateOfferRequest
+        {
+            OfferId = request.OfferId,
+            CaseId = salesArrangementInstance.CaseId,
+            SalesArrangementId = salesArrangementInstance.SalesArrangementId
+        }, cancellation);
+
         // nastavit flowSwitches
         await setFlowSwitches(salesArrangementInstance.CaseId, request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
 

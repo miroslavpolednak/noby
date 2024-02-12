@@ -45,5 +45,5 @@ public interface IOfferServiceClient
 
     Task<GetOfferDeveloperResponse> GetOfferDeveloper(int offerId, CancellationToken cancellationToken  = default);
 
-    Task UpdateOfferDocumentId(int offerId, string documentId, CancellationToken cancellationToken = default);
+    Task UpdateOffer(UpdateOfferRequest request, CancellationToken cancellationToken = default);
 }

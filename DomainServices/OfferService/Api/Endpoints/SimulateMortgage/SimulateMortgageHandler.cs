@@ -38,7 +38,9 @@ internal sealed class SimulateMortgageHandler
         {
             ResourceProcessId = Guid.Parse(request.ResourceProcessId),
             IsCreditWorthinessSimpleRequested = request.IsCreditWorthinessSimpleRequested,
-            ValidTo = request.ValidTo
+            ValidTo = request.ValidTo,
+            SalesArrangementId = request.SalesArrangementId,
+            CaseId = request.CaseId
         };
         _dbContext.Offers.Add(entity);
 
