@@ -4,6 +4,8 @@ option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "GrpcDateTime.proto";
+import "NullableGrpcDate.proto";
+import "NullableGrpcDecimal.proto";
 
 message GetProcessListRequest {
 	int64 CaseId = 1;
@@ -29,4 +31,26 @@ message ProcessTask {
 	google.protobuf.Int32Value StateIndicator = 7;
 
 	int32 ProcessPhaseId = 8;
+
+	int32 StateIdSB = 9;
+
+	bool Cancelled = 10;
+
+	oneof Amendments {
+		RetentionProcess RetentionProcess = 11;
+	}
+}
+
+message RetentionProcess{
+	int32 RefinancingType = 1;
+	cis.types.NullableGrpcDate InterestRateValidFrom = 2;
+	cis.types.NullableGrpcDecimal LoanInterestRate = 3;
+	cis.types.NullableGrpcDecimal LoanInterestRateProvided = 4;
+	google.protobuf.Int32Value LoanPaymentAmount = 5;
+	google.protobuf.Int32Value LoanPaymentAmountFinal = 6;
+	google.protobuf.Int32Value FeeSum = 7;
+	google.protobuf.Int32Value FeeFinalSum = 8;
+	google.protobuf.StringValue RefinancingDocumentId = 9;
+	google.protobuf.Int32Value RefinancingDocumentEACode = 10;
+	cis.types.NullableGrpcDate EffectiveDate = 11;
 }
