@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package DomainServices.SalesArrangementService;
+option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
+
+service MaintananceService {
+	rpc GetCancelCaseJobIds (GetCancelCaseJobIdsRequest) returns (GetCancelCaseJobIdsResponse);
+}
+
+message GetCancelCaseJobIdsRequest { }
+
+message GetCancelCaseJobIdsResponse {
+	repeated int64 CaseId = 1;
+}

@@ -27,6 +27,9 @@ public static class DapperExtensions
     public static async Task<T?> ExecuteDapperStoredProcedureFirstOrDefaultAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default)
         => await connectionProvider.ExecuteDapperQueryAsync<T?>(async c => await c.QueryFirstOrDefaultAsync<T>(sqlQuery, param, commandType: CommandType.StoredProcedure), cancellationToken);
 
+    public static T? ExecuteDapperStoredProcedureFirstOrDefault<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param)
+        => connectionProvider.ExecuteDapperQuery<T?>(c => c.QueryFirstOrDefault<T>(sqlQuery, param, commandType: CommandType.StoredProcedure));
+
     public static async Task<List<T>> ExecuteDapperStoredProcedureSqlToListAsync<T>(this IConnectionProvider connectionProvider, string sqlQuery, object param, CancellationToken cancellationToken = default)
         => await connectionProvider.ExecuteDapperQueryAsync<List<T>>(async c => (await c.QueryAsync<T>(sqlQuery, param, commandType: CommandType.StoredProcedure)).AsList(), cancellationToken);
 
@@ -50,6 +53,16 @@ public static class DapperExtensions
         var command = new CommandDefinition(sqlQuery, parameters: param, cancellationToken: cancellationToken);
 
         return await connection.ExecuteAsync(command);
+    }
+
+    public static int ExecuteDapper(this IConnectionProvider connectionProvider, string sqlQuery, object param)
+    {
+        using var connection = connectionProvider.Create();
+        connection.Open();
+
+        var command = new CommandDefinition(sqlQuery, parameters: param);
+
+        return connection.Execute(command);
     }
 
     public static async Task<T> ExecuteDapperQueryAsync<T>(this IConnectionProvider connectionProvider, Func<IDbConnection, Task<T>> getData, CancellationToken cancellationToken = default)

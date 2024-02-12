@@ -1,0 +1,376 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CIS.InternalServices.TaskSchedulingService.Contracts</name>
+    </assembly>
+    <members>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest.JobIdFieldNumber">
+            <summary>Field number for the "JobId" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest.JobId">
+            <summary>
+            ID jobu
+            </summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest.JobDataFieldNumber">
+            <summary>Field number for the "JobData" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest.JobData">
+            <summary>
+            Metadata / nastavení jobu
+            </summary>
+        </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.UpdateSchedulerReflection">
+            <summary>Holder for reflection information generated from Messages/UpdateScheduler.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.UpdateSchedulerReflection.Descriptor">
+            <summary>File descriptor for Messages/UpdateScheduler.proto</summary>
+        </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobReflection">
+            <summary>Holder for reflection information generated from Messages/ExecuteJob.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobReflection.Descriptor">
+            <summary>File descriptor for Messages/ExecuteJob.proto</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.TraceIdFieldNumber">
+            <summary>Field number for the "TraceId" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.TraceId">
+            <summary>
+            Trace běhu ve výsledcích
+            </summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.ScheduleJobStatusIdFieldNumber">
+            <summary>Field number for the "ScheduleJobStatusId" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.ScheduleJobStatusId">
+            <summary>
+            ID běhu jobu ve výsledcích
+            </summary>
+        </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.GetInstanceStatusReflection">
+            <summary>Holder for reflection information generated from Messages/GetInstanceStatus.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetInstanceStatusReflection.Descriptor">
+            <summary>File descriptor for Messages/GetInstanceStatus.proto</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetInstanceStatusResponse.IsActiveInstanceFieldNumber">
+            <summary>Field number for the "IsActiveInstance" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetInstanceStatusResponse.ActiveInstanceNameFieldNumber">
+            <summary>Field number for the "ActiveInstanceName" field.</summary>
+        </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersReflection">
+            <summary>Holder for reflection information generated from Messages/GetTriggers.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersReflection.Descriptor">
+            <summary>File descriptor for Messages/GetTriggers.proto</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersResponse.TriggersFieldNumber">
+            <summary>Field number for the "Triggers" field.</summary>
+        </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersResponse.Types">
+            <summary>Container for nested types declared in the GetTriggersResponse message type.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersResponse.Types.Trigger.TriggerIdFieldNumber">
+            <summary>Field number for the "TriggerId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersResponse.Types.Trigger.JobIdFieldNumber">
+            <summary>Field number for the "JobId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersResponse.Types.Trigger.JobTypeFieldNumber">
+            <summary>Field number for the "JobType" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersResponse.Types.Trigger.JobNameFieldNumber">
+            <summary>Field number for the "JobName" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersResponse.Types.Trigger.TriggerNameFieldNumber">
+            <summary>Field number for the "TriggerName" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersResponse.Types.Trigger.CronExpressionFieldNumber">
+            <summary>Field number for the "CronExpression" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersResponse.Types.Trigger.CronExpressionTextFieldNumber">
+            <summary>Field number for the "CronExpressionText" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersResponse.Types.Trigger.IsDisabledFieldNumber">
+            <summary>Field number for the "IsDisabled" field.</summary>
+        </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsReflection">
+            <summary>Holder for reflection information generated from Messages/GetJobs.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsReflection.Descriptor">
+            <summary>File descriptor for Messages/GetJobs.proto</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.JobsFieldNumber">
+            <summary>Field number for the "Jobs" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Jobs">
+            <summary>
+            Seznam všech jobů
+            </summary>
+        </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types">
+            <summary>Container for nested types declared in the GetJobsResponse message type.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.JobIdFieldNumber">
+            <summary>Field number for the "JobId" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.JobId">
+            <summary>
+            ID jobu
+            </summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.JobNameFieldNumber">
+            <summary>Field number for the "JobName" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.JobName">
+            <summary>
+            Název jobu
+            </summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.JobTypeFieldNumber">
+            <summary>Field number for the "JobType" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.JobType">
+            <summary>
+            Interní typ jobu
+            </summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.DescriptionFieldNumber">
+            <summary>Field number for the "Description" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.Description">
+            <summary>
+            Popis jobu
+            </summary>
+        </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.IsDisabledFieldNumber">
+            <summary>Field number for the "IsDisabled" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsResponse.Types.Job.IsDisabled">
+            <summary>
+            True pokud je job vypnutý
+            </summary>
+        </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingServiceV1Reflection">
+            <summary>Holder for reflection information generated from TaskSchedulingService.v1.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingServiceV1Reflection.Descriptor">
+            <summary>File descriptor for TaskSchedulingService.v1.proto</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.Descriptor">
+            <summary>Service descriptor</summary>
+        </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase">
+            <summary>Base class for server-side implementations of TaskSchedulingService</summary>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase.GetJobs(CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Vrací seznam všech dostupných Jobů
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase.GetTriggers(CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Vrací seznam všech nastavených Triggerů
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase.GetInstanceStatus(CIS.InternalServices.TaskSchedulingService.Contracts.GetInstanceStatusRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Vrací status této instance scheduleru
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase.ExecuteJob(CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Manuální spuštění jobu
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient">
+            <summary>Client for TaskSchedulingService</summary>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.#ctor(Grpc.Core.ChannelBase)">
+            <summary>Creates a new client for TaskSchedulingService</summary>
+            <param name="channel">The channel to use to make remote calls.</param>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.#ctor(Grpc.Core.CallInvoker)">
+            <summary>Creates a new client for TaskSchedulingService that uses a custom <c>CallInvoker</c>.</summary>
+            <param name="callInvoker">The callInvoker to use to make remote calls.</param>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.#ctor">
+            <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.#ctor(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Protected constructor to allow creation of configured clients.</summary>
+            <param name="configuration">The client configuration.</param>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetJobs(CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Vrací seznam všech dostupných Jobů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetJobs(CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Vrací seznam všech dostupných Jobů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetJobsAsync(CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Vrací seznam všech dostupných Jobů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetJobsAsync(CIS.InternalServices.TaskSchedulingService.Contracts.GetJobsRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Vrací seznam všech dostupných Jobů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetTriggers(CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Vrací seznam všech nastavených Triggerů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetTriggers(CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Vrací seznam všech nastavených Triggerů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetTriggersAsync(CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Vrací seznam všech nastavených Triggerů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetTriggersAsync(CIS.InternalServices.TaskSchedulingService.Contracts.GetTriggersRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Vrací seznam všech nastavených Triggerů
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetInstanceStatus(CIS.InternalServices.TaskSchedulingService.Contracts.GetInstanceStatusRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Vrací status této instance scheduleru
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetInstanceStatus(CIS.InternalServices.TaskSchedulingService.Contracts.GetInstanceStatusRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Vrací status této instance scheduleru
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetInstanceStatusAsync(CIS.InternalServices.TaskSchedulingService.Contracts.GetInstanceStatusRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Vrací status této instance scheduleru
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetInstanceStatusAsync(CIS.InternalServices.TaskSchedulingService.Contracts.GetInstanceStatusRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Vrací status této instance scheduleru
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.ExecuteJob(CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Manuální spuštění jobu
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.ExecuteJob(CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Manuální spuštění jobu
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.ExecuteJobAsync(CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Manuální spuštění jobu
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.ExecuteJobAsync(CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Manuální spuštění jobu
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.BindService(CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase)">
+            <summary>Creates service definition that can be registered with a server</summary>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.BindService(Grpc.Core.ServiceBinderBase,CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase)">
+            <summary>Register service method with a service binder with or without implementation. Useful when customizing the service binding logic.
+            Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
+            <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+    </members>
+</doc>

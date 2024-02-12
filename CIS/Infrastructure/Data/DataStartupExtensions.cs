@@ -40,6 +40,12 @@ public static class DataStartupExtensions
         return services;
     }
 
+    public static WebApplicationBuilder AddDapper(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddDapper(builder.Configuration.GetConnectionString(CIS.Core.CisGlobalConstants.DefaultConnectionStringKey)!);
+        return builder;
+    }
+
     public static IServiceCollection AddDapper(this IServiceCollection services, string connectionString)
     {
         services.AddSingleton<CIS.Core.Data.IConnectionProvider>(new SqlConnectionProvider(connectionString));

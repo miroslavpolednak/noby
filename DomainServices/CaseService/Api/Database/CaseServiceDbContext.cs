@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CIS.Infrastructure.Data;
+﻿using CIS.Infrastructure.Data;
 using DomainServices.CaseService.Api.Database.Entities;
 
 namespace DomainServices.CaseService.Api.Database;

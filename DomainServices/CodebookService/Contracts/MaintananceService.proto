@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+package DomainServices.CodebookService;
+option csharp_namespace = "DomainServices.CodebookService.Contracts";
+
+import "google/protobuf/empty.proto";
+
+service MaintananceService {
+   rpc DownloadRdmCodebooks (DownloadRdmCodebooksRequest) returns (google.protobuf.Empty);
+}
+
+message DownloadRdmCodebooksRequest {
+	repeated string CodebookNames = 1;
+}
