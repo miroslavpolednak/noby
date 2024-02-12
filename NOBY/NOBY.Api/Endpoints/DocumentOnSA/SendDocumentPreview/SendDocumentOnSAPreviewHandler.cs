@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.DocumentOnSAService.Clients;
+﻿using DomainServices.DocumentOnSAService.Clients;
 using _Domain = DomainServices.DocumentOnSAService.Contracts;
 using NOBY.Services.PermissionAccess;
 
@@ -29,8 +28,8 @@ public class SendDocumentOnSAPreviewHandler : IRequestHandler<SendDocumentOnSAPr
             await _nonWFLProductSalesArrangementAccess.CheckNonWFLProductSalesArrangementAccess(documentOnSA.SalesArrangementId, cancellationToken);
         }
 
-        var isElectronicAndWorkflow = documentOnSA is { SignatureTypeId: (int)SignatureTypes.Electronic, Source: _Domain.Source.Workflow };
-        var isValidOrFinal = documentOnSA.IsValid || documentOnSA.IsFinal;
+        var isElectronicAndWorkflow = documentOnSA is { SignatureTypeId: (int)SignatureTypes.Electronic };
+        var isValidOrFinal = documentOnSA.IsValid && !documentOnSA.IsFinal && !documentOnSA.IsSigned;
 
         if (isElectronicAndWorkflow && isValidOrFinal)
         {
