@@ -8,7 +8,7 @@ internal sealed class GeneralChangeBuilder
 {
     public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
     {
-        _request.GeneralChange = new __SA.SalesArrangementParametersGeneralChange
+        Request.GeneralChange = new __SA.SalesArrangementParametersGeneralChange
         {
             Collateral = new(),
             PaymentDay = new(),
@@ -23,27 +23,27 @@ internal sealed class GeneralChangeBuilder
         };
 
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
-        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
+        var productService = GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         try
         {
-            var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
+            var mortgageInstance = await productService.GetMortgage(Request.CaseId, cancellationToken);
 
-            _request.GeneralChange.PaymentDay.AgreedPaymentDay = mortgageInstance.Mortgage?.PaymentDay ?? 0;
-            _request.GeneralChange.DrawingDateTo.AgreedDrawingDateTo = (DateTime?)mortgageInstance.Mortgage?.DrawingDateTo ?? DateTime.Now;
+            Request.GeneralChange.PaymentDay.AgreedPaymentDay = mortgageInstance.Mortgage?.PaymentDay ?? 0;
+            Request.GeneralChange.DrawingDateTo.AgreedDrawingDateTo = (DateTime?)mortgageInstance.Mortgage?.DrawingDateTo ?? DateTime.Now;
             if (mortgageInstance.Mortgage?.RepaymentAccount != null)
             {
-                _request.GeneralChange.RepaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
-                _request.GeneralChange.RepaymentAccount.AgreedNumber = mortgageInstance.Mortgage.RepaymentAccount.Number;
-                _request.GeneralChange.RepaymentAccount.AgreedBankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode;
+                Request.GeneralChange.RepaymentAccount.AgreedPrefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
+                Request.GeneralChange.RepaymentAccount.AgreedNumber = mortgageInstance.Mortgage.RepaymentAccount.Number;
+                Request.GeneralChange.RepaymentAccount.AgreedBankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode;
             }
-            _request.GeneralChange.LoanPaymentAmount.ActualLoanPaymentAmount = (decimal?)mortgageInstance.Mortgage?.LoanPaymentAmount ?? 0M;
-            _request.GeneralChange.DueDate.ActualLoanDueDate = (DateTime?)mortgageInstance.Mortgage?.LoanDueDate ?? DateTime.Now;
+            Request.GeneralChange.LoanPaymentAmount.ActualLoanPaymentAmount = (decimal?)mortgageInstance.Mortgage?.LoanPaymentAmount ?? 0M;
+            Request.GeneralChange.DueDate.ActualLoanDueDate = (DateTime?)mortgageInstance.Mortgage?.LoanDueDate ?? DateTime.Now;
 
             // real estates
             if (mortgageInstance.Mortgage!.LoanRealEstates is not null && mortgageInstance.Mortgage.LoanRealEstates.Count != 0)
             {
-                _request.GeneralChange.LoanRealEstate = new __SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstateObject();
-                _request.GeneralChange.LoanRealEstate.LoanRealEstates.AddRange(mortgageInstance.Mortgage.LoanRealEstates.Select(t => new __SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstatesItem
+                Request.GeneralChange.LoanRealEstate = new __SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstateObject();
+                Request.GeneralChange.LoanRealEstate.LoanRealEstates.AddRange(mortgageInstance.Mortgage.LoanRealEstates.Select(t => new __SA.SalesArrangementParametersGeneralChange.Types.LoanRealEstatesItem
                 {
                     RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
                     RealEstateTypeId = t.RealEstateTypeId
@@ -52,14 +52,12 @@ internal sealed class GeneralChangeBuilder
         }
         catch
         {
-            _logger.LogInformation("GeneralChangeBuilder: Account not found in ProductService");
+            GetLogger<GeneralChangeBuilder>().LogInformation("GeneralChangeBuilder: Account not found in ProductService");
         }
 
-        return _request;
+        return Request;
     }
 
-    public GeneralChangeBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-    : base(logger, request, httpContextAccessor)
-    {
-    }
+    public GeneralChangeBuilder(BuilderValidatorAggregate aggregate)
+    : base(aggregate) { }
 }
