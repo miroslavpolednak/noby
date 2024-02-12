@@ -52,13 +52,9 @@ internal sealed class OfferService
         }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateOfferDocumentId(int offerId, string documentId, CancellationToken cancellationToken = default)
+    public async Task UpdateOffer(UpdateOfferRequest request, CancellationToken cancellationToken = default)
     {
-        await _service.UpdateOfferDocumentIdAsync(new UpdateOfferDocumentIdRequest
-        {
-            OfferId = offerId,
-            DocumentId = documentId
-        }, cancellationToken: cancellationToken);
+        await _service.UpdateOfferAsync(request, cancellationToken: cancellationToken);
     }
 
     private int? _cacheGetOfferResponseId;

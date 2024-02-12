@@ -64,7 +64,11 @@ internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnl
             };
 
             await _documentArchiveManager.SaveDocumentToArchive(archiveData, cancellationToken);
-            await _offerService.UpdateOfferDocumentId(offerId, documentId, cancellationToken);
+            await _offerService.UpdateOffer(new DomainServices.OfferService.Contracts.UpdateOfferRequest
+            {
+                OfferId = offerId,
+                DocumentId = documentId
+            }, cancellationToken);
         }
     }
 

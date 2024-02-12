@@ -27,11 +27,8 @@ public class OfferService
     public override async Task<GetOfferDeveloperResponse> GetOfferDeveloper(GetOfferDeveloperRequest request, ServerCallContext context)
       => await _mediator.Send(request);
 
-    public override async Task<Empty> UpdateOfferDocumentId(UpdateOfferDocumentIdRequest request, ServerCallContext context)
-    {
-        await _mediator.Send(request);
-        return new Empty();
-    }
+    public override async Task<Empty> UpdateOffer(UpdateOfferRequest request, ServerCallContext context)
+        => await _mediator.Send(request);
 
     private readonly IMediator _mediator;
     public OfferService(IMediator mediator)
