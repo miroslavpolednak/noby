@@ -16,14 +16,14 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, long, int, Exception> _updateActiveTaskStart;
     private static readonly Action<ILogger, bool, bool, Exception> _beforeUpdateActiveTasks;
     private static readonly Action<ILogger, string, Exception> _kafkaConsumerStarted;
-    private static readonly Action<ILogger, decimal, Exception> _kafkaMortgageChangedFinished;
+    private static readonly Action<ILogger, string, long, decimal, Exception> _kafkaMortgageChangedFinished;
 
     static LoggerExtensions()
     {
-        _kafkaMortgageChangedFinished = LoggerMessage.Define<decimal>(
+        _kafkaMortgageChangedFinished = LoggerMessage.Define<string, long, decimal>(
             LogLevel.Debug,
             new EventId(LoggerEventIdCodes.KafkaConsumerStarted, nameof(KafkaMortgageChangedFinished)),
-            "Kafka message processing in MortgageInstanceChangedConsumer: TargetAmount set to {Amount}");
+            "Kafka message processing in {Consumer} for CaseId {CaseId}: TargetAmount set to {Amount}");
 
         _kafkaConsumerStarted = LoggerMessage.Define<string>(
             LogLevel.Debug,
@@ -96,8 +96,8 @@ internal static class LoggerExtensions
             "UpdateActiveTask for isActive = {IsActive} and activeTaskFound = {ActiveTaskFound}");
     }
 
-    public static void KafkaMortgageChangedFinished(this ILogger logger, decimal amount)
-        => _kafkaMortgageChangedFinished(logger, amount, null!);
+    public static void KafkaMortgageChangedFinished(this ILogger logger, string consumerTypeName, long caseId, decimal amount)
+        => _kafkaMortgageChangedFinished(logger, consumerTypeName, caseId, amount, null!);
 
     public static void KafkaConsumerStarted(this ILogger logger, string consumerTypeName)
         => _kafkaConsumerStarted(logger, consumerTypeName, null!);

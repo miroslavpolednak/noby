@@ -18,7 +18,7 @@ internal sealed class MortgageInstanceChangedConsumer
 
                 await _dbContext.SaveChangesAsync(context.CancellationToken);
 
-                _logger.KafkaMortgageChangedFinished(instance.TargetAmount);
+                _logger.KafkaMortgageChangedFinished(nameof(MortgageInstanceChangedConsumer), caseId, instance.TargetAmount);
             }
             else
             {
