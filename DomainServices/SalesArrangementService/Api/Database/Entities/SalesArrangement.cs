@@ -47,5 +47,5 @@ internal sealed class SalesArrangement : CIS.Core.Data.BaseCreatedWithModifiedUs
 
     public string? LoanApplicationDataVersion { get; set; }
 
-    public int? TaskProcessId { get; set; }
+    public long? TaskProcessId { get; set; }
 }
