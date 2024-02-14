@@ -128,12 +128,14 @@ public interface ICaseServiceClient
     Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken = default);
 
     Task<GetTaskDetailResponse> GetTaskDetail(int taskIdSb, CancellationToken cancellationToken = default);
-    
+
     Task CancelTask(long caseId, int taskIdSB, CancellationToken cancellationToken = default);
-    
+
     Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default);
 
     Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
 
     Task<CaseStates> CancelCase(long caseId, bool isUserInvoked = false, CancellationToken cancellationToken = default);
+
+    Task UpdateTask(UpdateTaskRequest request, CancellationToken cancellationToken = default);
 }

@@ -1,11 +1,12 @@
 ﻿using System.Globalization;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CompleteTask;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.UpdateTask;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts;
 using DomainServices.UserService.Clients;
 
 namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
-internal sealed class RealSbWebApiClient 
+internal sealed class RealSbWebApiClient
     : ISbWebApiClient
 {
     public async Task<IList<IReadOnlyDictionary<string, string>>> FindTasksByContractNumber(Dto.FindTasks.FindByContractNumberRequest request, CancellationToken cancellationToken = default)
@@ -24,7 +25,7 @@ internal sealed class RealSbWebApiClient
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/findtasks/bycontractno", easRequest, cancellationToken);
 
         var responseObject = await RequestHelper.ProcessResponse<WFS_Find_Response>(httpResponse, x => x.Result, new List<(int ReturnVal, int ErrorCode)> { (2, ErrorCodeMapper.ContractNumberSbNotFound) }, cancellationToken);
-        
+
         return RequestHelper.MapTasksToDictionary(responseObject.Tasks);
     }
 
@@ -41,12 +42,12 @@ internal sealed class RealSbWebApiClient
         };
 
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/canceltask", easRequest, cancellationToken);
-        await RequestHelper.ProcessResponse<WFS_CommonResponse>(httpResponse, x => x.Result, new List<(int ReturnVal, int ErrorCode)> 
-        { 
-            (2, ErrorCodeMapper.TaskIdNotFound) 
+        await RequestHelper.ProcessResponse<WFS_CommonResponse>(httpResponse, x => x.Result, new List<(int ReturnVal, int ErrorCode)>
+        {
+            (2, ErrorCodeMapper.TaskIdNotFound)
         }, cancellationToken);
     }
-    
+
     public async Task<Dto.CreateTask.CreateTaskResponse> CreateTask(Dto.CreateTask.CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         var easRequest = new WFS_Request_CreateTask
@@ -194,6 +195,27 @@ internal sealed class RealSbWebApiClient
         {
             return "anonymous";
         }
+    }
+
+    public async Task UpdateTask(UpdateTaskRequest request, CancellationToken cancellationToken = default)
+    {
+        var sbRequest = new WFS_Request_UpdateTask
+        {
+            Header = RequestHelper.MapEasHeader(await getLogin(cancellationToken)),
+            Message = new WFS_Manage_UpdateTask
+            {
+                Task_id = request.TaskIdSb,
+                Metadata = request.Metadata.Select(t => new WFS_MetadataItem
+                {
+                    Mtdt_def = t.Key,
+                    Mtdt_val = t.Value
+                }).ToList()
+            }
+        };
+
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/updatetask", sbRequest, cancellationToken);
+
+        await RequestHelper.ProcessResponse<WFS_CommonResponse>(httpResponse, x => x.Result, new List<(int ReturnVal, int ErrorCode)> { (2, ErrorCodeMapper.TaskIdNotFound) }, cancellationToken);
     }
 
     private readonly HttpClient _httpClient;
