@@ -7,8 +7,11 @@ namespace CIS.InternalServices.NotificationService.Api.Database;
 // dotnet tool install --global --add-source C:\path\dotnet-ef --version 7.0.2
 // dotnet-ef migrations add [migration-name] --output-dir Services/Repositories/Migrations
 // dotnet-ef migrations script
-public class NotificationDbContext : BaseDbContext<NotificationDbContext>
+internal sealed class NotificationDbContext : BaseDbContext<NotificationDbContext>
 {
+    public DbSet<Sms> Sms { get; set; } = null!;
+    public DbSet<Email> Emails { get; set; } = null!;
+
     public DbSet<Result> Results { get; set; } = null!;
     public DbSet<EmailResult> EmailResults { get; set; } = null!;
     public DbSet<SmsResult> SmsResults { get; set; } = null!;

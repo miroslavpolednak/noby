@@ -15,14 +15,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Messages\CancelCase.proto" />
-	  <None Remove="Messages\CreateExistingCase.proto" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.25.2" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.60.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.60.0">
+		<PackageReference Include="Grpc.Tools" Version="2.61.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -61,5 +56,6 @@
 		<Protobuf Include="Messages\CreateExistingCase.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\ValidateCaseId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\WorkflowTask.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Messages/UpdateTask.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	</ItemGroup>
 </Project>

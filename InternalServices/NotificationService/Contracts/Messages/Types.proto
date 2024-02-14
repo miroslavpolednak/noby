@@ -19,7 +19,7 @@ enum NotificationStates
 
 enum NotificationChannels
 {
-    _Unknown = 0;
+    UnknownChannel = 0;
     Sms = 1;
     Email = 2;
 }
@@ -36,17 +36,6 @@ message DocumentHash
         SHA512 = 3;
         SHA3 = 4;
     }
-}
-
-message SmsData {
-	string PhoneNumber = 1;
-    google.protobuf.Int32Value ProcessingPriority = 2;
-    string Type = 3;
-    cis.types.UserIdentity Identifier = 4;
-    google.protobuf.Int64Value CaseId = 5;
-    google.protobuf.StringValue CustomId = 6;
-    google.protobuf.StringValue DocumentId = 7;
-    DocumentHash DocumentHash = 8;
 }
 
 message EmailAddress

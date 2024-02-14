@@ -19,12 +19,12 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
 	<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0" />
     <PackageReference Include="MailKit" Version="4.3.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-	<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.8.1" />
-	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
+	<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.8.2" />
+	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
     <PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
   </ItemGroup>
 

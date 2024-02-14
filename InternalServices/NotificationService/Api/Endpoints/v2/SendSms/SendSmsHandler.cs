@@ -1,7 +1,6 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.v2;
-using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using SharedAudit;
@@ -16,30 +15,32 @@ internal sealed class SendSmsHandler
     public async Task<NotificationIdResponse> Handle(SendSmsRequest request, CancellationToken cancellationToken)
     {
         var consumerId = _appConfiguration.Consumers.First(t => t.Username == _serviceUser.User!.Name).ConsumerId;
-        var smsType = await getSmsType(request.Sms.Type, cancellationToken);
-        var (countryCode, nationalNumber) = request.Sms.PhoneNumber.ParsePhone();
+        var smsType = await getSmsType(request.Type, cancellationToken);
+        var (countryCode, nationalNumber) = request.PhoneNumber.ParsePhone();
 
         // pripravit zpravu do databaze
-        Database.Entities.SmsResult result = new()
+        Database.Entities.Sms result = new()
         {
             Id = Guid.NewGuid(),
-            Channel = NotificationChannel.Sms,
-            State = NotificationState.InProgress,
-            Identity = request.Sms.Identifier?.Identity,
-            IdentityScheme = request.Sms.Identifier?.IdentityScheme.ToString(),
-            CaseId = request.Sms.CaseId,
-            CustomId = request.Sms.CustomId,
-            DocumentId = request.Sms.DocumentId,
-            DocumentHash = request.Sms.DocumentHash?.Hash,
-            HashAlgorithm = request.Sms.DocumentHash?.HashAlgorithm.ToString(),
-            RequestTimestamp = _dateTime.GetLocalNow().DateTime,
-            Type = request.Sms.Type,
+            State = NotificationStates.InProgress,
+            Text = request.Text,
+            Identity = request.Identifier?.Identity,
+            IdentityScheme = request.Identifier?.IdentityScheme.ToString(),
+            CaseId = request.CaseId,
+            CustomId = request.CustomId,
+            DocumentId = request.DocumentId,
+            DocumentHash = request.DocumentHash?.Hash,
+            HashAlgorithm = request.DocumentHash?.HashAlgorithm.ToString(),
+            Type = request.Type,
             CountryCode = countryCode,
             PhoneNumber = nationalNumber,
-            CreatedBy = _serviceUser.User!.Name!
+            CreatedTime = _dateTime.GetLocalNow().DateTime,
+            CreatedUserName = _serviceUser.User!.Name!
         };
-        _dbContext.SmsResults.Add(result);
-        
+        _dbContext.Sms.Add(result);
+        // ulozit do databaze
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
         // pripravit zpravu do MCS
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
@@ -51,7 +52,7 @@ internal sealed class SendSmsHandler
             },
             type = smsType.McsCode,
             text = request.Text,
-            processingPriority = request.Sms.ProcessingPriority,
+            processingPriority = request.ProcessingPriority,
             notificationConsumer = new()
             {
                  consumerId = consumerId
@@ -62,14 +63,21 @@ internal sealed class SendSmsHandler
         {
             // odeslat do MCS
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
-            
-            // ulozit do databaze
+
+            // nastavit stav v databazi
+            result.State = NotificationStates.Sent;
             await _dbContext.SaveChangesAsync(cancellationToken);
 
+            _logger.NotificationSent(result.Id, NotificationChannels.Sms);
             createAuditLog(request, smsType, consumerId, result.Id);
         }
-        catch
+        catch (Exception ex)
         {
+            // nastavit stav v databazi
+            result.State = NotificationStates.Error;
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            _logger.NotificationFailedToSend(result.Id, NotificationChannels.Sms, ex);
             createAuditLog(request, smsType, consumerId);
             throw;
         }
@@ -91,13 +99,13 @@ internal sealed class SendSmsHandler
                 {
                     { "smsType", smsType.Code },
                     { "consumer", consumerId },
-                    { "identity", request.Sms.Identifier?.Identity ?? string.Empty },
-                    { "identityScheme", request.Sms.Identifier?.IdentityScheme.ToString() ?? string.Empty },
-                    { "caseId", request.Sms.CaseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
-                    { "customId", request.Sms.CustomId ?? string.Empty },
-                    { "documentId", request.Sms.DocumentId ?? string.Empty },
-                    { "documentHash", request.Sms.DocumentHash?.Hash ?? string.Empty },
-                    { "hashAlgorithm", request.Sms.DocumentHash?.HashAlgorithm.ToString() ?? string.Empty }
+                    { "identity", request.Identifier?.Identity ?? string.Empty },
+                    { "identityScheme", request.Identifier?.IdentityScheme.ToString() ?? string.Empty },
+                    { "caseId", request.CaseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
+                    { "customId", request.CustomId ?? string.Empty },
+                    { "documentId", request.DocumentId ?? string.Empty },
+                    { "documentHash", request.DocumentHash?.Hash ?? string.Empty },
+                    { "hashAlgorithm", request.DocumentHash?.HashAlgorithm.ToString() ?? string.Empty }
                 },
                 bodyAfter: result.HasValue ? new Dictionary<string, string>
                 {

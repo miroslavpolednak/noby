@@ -18,6 +18,22 @@ internal static class TaskDataExtensions
         }
     }
 
+    public static decimal? GetNDecimal(this IReadOnlyDictionary<string, string> taskData, string key)
+    {
+        if (decimal.TryParse(taskData[key], CultureInfo.InvariantCulture, out decimal d))
+        {
+            return d;
+        }
+        else if (decimal.TryParse(taskData[key], _czCulture, out decimal dcz))
+        {
+            return dcz;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public static int GetInteger(this IReadOnlyDictionary<string, string> taskData, string key)
     {
         return int.Parse(taskData[key], CultureInfo.InvariantCulture);

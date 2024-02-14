@@ -24,6 +24,7 @@ import "Messages/CancelTask.proto";
 import "Messages/CreateTask.proto";
 import "Messages/ValidateCaseId.proto";
 import "Messages/CancelCase.proto";
+import "Messages/UpdateTask.proto";
 
 service CaseService {
    rpc CompleteTask (CompleteTaskRequest) returns (google.protobuf.Empty);
@@ -65,4 +66,6 @@ service CaseService {
    rpc ValidateCaseId (ValidateCaseIdRequest) returns (ValidateCaseIdResponse);
 
    rpc CancelCase (CancelCaseRequest) returns (CancelCaseResponse);
+
+   rpc UpdateTask (UpdateTaskRequest) returns (google.protobuf.Empty);
 }

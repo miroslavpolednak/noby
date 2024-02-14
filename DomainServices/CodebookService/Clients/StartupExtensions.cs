@@ -24,7 +24,10 @@ public static class StartupExtensions
 
         services.AddCisServiceDiscovery();
         services.TryAddTransient<ICodebookServiceClient, __Services.CodebookService>();
+        services.TryAddTransient<IMaintananceService, __Services.MaintananceService>();
+
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.CodebookService.CodebookServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.CodebookService.CodebookServiceClient>(ServiceName, customServiceKey: "CodebookMaintananceServiceClient");
         return services;
     }
 
@@ -34,7 +37,10 @@ public static class StartupExtensions
         services.AddSingleton(new ClientsMemoryCache());
 
         services.TryAddTransient<ICodebookServiceClient, __Services.CodebookService>();
+        services.TryAddTransient<IMaintananceService, __Services.MaintananceService>();
+
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.CodebookService.CodebookServiceClient>(serviceUrl);
+        services.TryAddCisGrpcClientUsingUrl<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.CodebookService.CodebookServiceClient>(ServiceName, customServiceKey: "CodebookMaintananceServiceClient");
         return services;
     }
 }

@@ -92,7 +92,7 @@
             Extension metody do startupu aplikace pro registraci gRPC služeb.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcClientInner``2(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Boolean)">
+        <member name="M:CIS.Infrastructure.gRPC.StartupExtensions.AddCisGrpcClientInner``2(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Boolean,System.String)">
             <summary>
             Nepouzivat primo, je public pouze pro ServiceDiscovery nebo jine specialni pripady.
             </summary>

@@ -7,7 +7,7 @@ using Result = CIS.InternalServices.NotificationService.Api.Database.Entities.Re
 
 namespace CIS.InternalServices.NotificationService.Api.Legacy;
 
-public class NotificationRepository : INotificationRepository
+internal class NotificationRepository : INotificationRepository
 {
     private readonly NotificationDbContext _dbContext;
 

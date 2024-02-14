@@ -189,6 +189,11 @@ internal sealed class CaseServiceClient
         .CaseState;
     }
 
+    public async Task UpdateTask(UpdateTaskRequest request, CancellationToken cancellationToken = default)
+    {
+        await _service.UpdateTaskAsync(request, cancellationToken: cancellationToken);
+    }
+
     // kesovani vysledku validateCase
     private long? _cacheValidateCaseIdResponseId;
     private ValidateCaseIdResponse? _cacheValidateCaseIdResponse;

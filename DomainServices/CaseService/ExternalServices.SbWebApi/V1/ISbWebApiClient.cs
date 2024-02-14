@@ -3,7 +3,7 @@ using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CompleteTask;
 
 namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
-public interface ISbWebApiClient 
+public interface ISbWebApiClient
     : IExternalServiceClient
 {
     const string Version = "V1";
@@ -37,4 +37,6 @@ public interface ISbWebApiClient
     Task<Dto.CreateTask.CreateTaskResponse> CreateTask(Dto.CreateTask.CreateTaskRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken));
+
+    Task UpdateTask(Dto.UpdateTask.UpdateTaskRequest request, CancellationToken cancellationToken = default);
 }

@@ -39,7 +39,7 @@ internal sealed class WithdrawalProcessChangedConsumer
         
         var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId, token);
         
-        foreach (var salesArrangement in salesArrangementResponse.SalesArrangements)
+        foreach (var salesArrangement in salesArrangementResponse.SalesArrangements.Where(t => t.SalesArrangementTypeId == (int)SalesArrangementTypes.Drawing))
         {
             var salesArrangementId = salesArrangement.SalesArrangementId;
             var state = code switch
@@ -51,7 +51,7 @@ internal sealed class WithdrawalProcessChangedConsumer
             
             var documentResponse = await _documentOnSAService.GetDocumentsOnSAList(salesArrangementId, token);
             var documentsOnSa = documentResponse.DocumentsOnSA
-                .Where(d => d.IsFinal && taskDocumentIds.Contains(d.EArchivId))
+                .Where(d => taskDocumentIds.Contains(d.EArchivId))
                 .ToList();
             
             foreach (var documentOnSa in documentsOnSa)

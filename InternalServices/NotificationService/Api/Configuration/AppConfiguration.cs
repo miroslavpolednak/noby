@@ -6,9 +6,9 @@ internal sealed class AppConfiguration
 
     public EmailSenders EmailSenders { get; set; } = null!;
 
-    public HashSet<string> EmailFormats { get; set; } = new();
+    public List<string> EmailFormats { get; set; } = new();
     
-    public HashSet<string> EmailLanguageCodes { get; set; } = new();
+    public List<string> EmailLanguageCodes { get; set; } = new();
     
     public KafkaTopics KafkaTopics { get; set; } = null!;
 }
@@ -22,9 +22,9 @@ internal sealed class Consumer
 
 internal sealed class EmailSenders
 {
-    public HashSet<string> Mcs { get; set; } = new();
+    public List<string> Mcs { get; set; } = new();
 
-    public HashSet<string> Mpss { get; set; } = new();
+    public List<string> Mpss { get; set; } = new();
 }
 
 internal sealed class KafkaTopics

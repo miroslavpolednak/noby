@@ -1,0 +1,47 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.TaskSchedulingService.v1;
+option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts.v1";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "Messages/GetJobs.proto";
+import "Messages/GetTriggers.proto";
+import "Messages/GetInstanceStatus.proto";
+import "Messages/ExecuteJob.proto";
+import "Messages/UpdateScheduler.proto";
+
+service TaskSchedulingService {
+	// Vrací seznam všech dostupných Jobů
+	rpc GetJobs (GetJobsRequest) returns (GetJobsResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/jobs"
+		};
+	}
+
+	// Vrací seznam všech nastavených Triggerů
+	rpc GetTriggers (GetTriggersRequest) returns (GetTriggersResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/triggers"
+		};
+	}
+
+	// Vrací status této instance scheduleru
+	rpc GetInstanceStatus (GetInstanceStatusRequest) returns (GetInstanceStatusResponse) {
+		option (google.api.http) = {
+			get: "/api/v1/instance-status"
+		};
+	}
+
+	// Manuální spuštění jobu
+	rpc ExecuteJob (ExecuteJobRequest) returns (ExecuteJobResponse) {
+		option (google.api.http) = {
+			post: "/api/v1/job"
+		};
+	}
+
+	rpc UpdateScheduler (UpdateSchedulerRequest) returns (google.protobuf.Empty) {
+		option (google.api.http) = {
+			put: "/api/v1/scheduler"
+		};
+	}
+}

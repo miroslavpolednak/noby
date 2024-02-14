@@ -8,24 +8,24 @@ internal sealed class SendSmsRequestValidator
 {
     public SendSmsRequestValidator()
     {
-        When(t => !string.IsNullOrEmpty(t.Sms.DocumentHash?.Hash), () =>
+        When(t => !string.IsNullOrEmpty(t.DocumentHash?.Hash), () =>
         {
-            RuleFor(t => t.Sms.DocumentHash.HashAlgorithm)
+            RuleFor(t => t.DocumentHash.HashAlgorithm)
                 .Must(x => x != DocumentHash.Types.HashAlgorithms.Unknown)
                 .WithErrorCode(ErrorCodeMapper.DocumentHashInvalid);
         });
 
-        RuleFor(request => request.Sms.PhoneNumber)
+        RuleFor(request => request.PhoneNumber)
             .NotEmpty()
             .WithErrorCode(ErrorCodeMapper.SmsPhoneNumberRequired)
             .ChildRules(t => { })
             .WithErrorCode(ErrorCodeMapper.SmsPhoneNumberInvalid);
 
-        RuleFor(request => request.Sms.ProcessingPriority)
+        RuleFor(request => request.ProcessingPriority)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.SmsProcessPriorityInvalid);
 
-        RuleFor(request => request.Sms.Type)
+        RuleFor(request => request.Type)
             .NotEmpty()
             .WithErrorCode(ErrorCodeMapper.SmsTypeInvalid);
 
@@ -35,23 +35,23 @@ internal sealed class SendSmsRequestValidator
             .MaximumLength(480)
             .WithErrorCode(ErrorCodeMapper.SmsTextLengthLimitExceeded);
 
-        When(request => request.Sms.Identifier is not null, () =>
+        When(request => request.Identifier is not null, () =>
         {
-            RuleFor(request => request.Sms.Identifier.IdentityScheme)
+            RuleFor(request => request.Identifier.IdentityScheme)
                 .Must(t => t != SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.Unknown)
                 .WithErrorCode(ErrorCodeMapper.IdentifierInvalid);
         });
 
-        When(request => request.Sms.CaseId.HasValue, () =>
+        When(request => request.CaseId.HasValue, () =>
         {
-            RuleFor(request => request.Sms.CaseId!.Value)
+            RuleFor(request => request.CaseId!.Value)
                 .GreaterThan(0)
                 .WithErrorCode(ErrorCodeMapper.CaseIdInvalid);
         });
 
-        When(request => request.Sms.CustomId is not null, () =>
+        When(request => request.CustomId is not null, () =>
         {
-            RuleFor(request => request.Sms.CustomId!)
+            RuleFor(request => request.CustomId!)
                 .Matches("^([A-Za-z0-9-_]{0,450})$")
                 .WithErrorCode(ErrorCodeMapper.CustomIdInvalid);
         });

@@ -1,6 +1,8 @@
 ﻿using SharedTypes.Enums;
 using DomainServices.CaseService.Contracts;
 using FastEnumUtility;
+using Google.Protobuf.WellKnownTypes;
+using cz.kb.api.mortgageservicingevents.v2.mortgageinstance;
 
 namespace DomainServices.CaseService.Api;
 
@@ -31,7 +33,7 @@ internal static class CaseExtensions
             6 => taskData.GetInteger("ukol_podpis_stav"),
             3 or 4 or 7 or 8 => 1,
             9 => taskData.GetInteger("ukol_faze_rt_procesu"),
-            _ => throw new ArgumentOutOfRangeException(nameof(task.PhaseTypeId),"PhaseTypeId can not be set")
+            _ => throw new ArgumentOutOfRangeException(nameof(task.PhaseTypeId), "PhaseTypeId can not be set")
         };
 
         task.SignatureTypeId = (task.TaskTypeId, taskData.GetNInteger("ukol_podpis_dokument_metoda")) switch
@@ -66,7 +68,32 @@ internal static class CaseExtensions
             {
                 1 or 2 or 3 => getStateIndicator(taskData),
                 _ => null
+            },
+            StateIdSB = taskData.GetInteger("ukol_stav_poz"),
+            Cancelled = taskData.GetBoolean("ukol_stornovano"),
+            RetentionProcess = taskData.GetInteger("ukol_proces_typ_noby") switch
+            {
+                3 => GetRetentionProcess(taskData),
+                _ => null
             }
+        };
+    }
+
+    private static RetentionProcess GetRetentionProcess(IReadOnlyDictionary<string, string> taskData)
+    {
+        return new RetentionProcess()
+        {
+            RefinancingType = taskData.GetInteger("ukol_retence_druh"),
+            InterestRateValidFrom = taskData.GetDate("ukol_retence_sazba_dat_od"),
+            LoanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk"),
+            LoanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl"),
+            LoanPaymentAmount = taskData.GetNInteger("ukol_retence_splatka_kalk"),
+            LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
+            FeeSum = taskData.GetNInteger("ukol_retence_popl_kalk"),
+            FeeFinalSum = taskData.GetNInteger("ukol_retence_popl_vysl"),
+            RefinancingDocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+            RefinancingDocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
+            EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
         };
     }
 
@@ -77,7 +104,7 @@ internal static class CaseExtensions
             ProcessNameLong = taskData.GetValueOrDefault("ukol_typ_proces_noby_oznaceni") ?? "",
             TaskDocumentIds = { (taskData.GetValueOrDefault("wfl_refobj_dokumenty") ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries) }
         };
-        
+
         if (int.TryParse(taskData.GetValueOrDefault("ukol_typ_noby"), out int taskType))
         {
             switch (taskType)

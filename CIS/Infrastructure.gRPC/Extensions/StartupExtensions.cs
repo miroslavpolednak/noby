@@ -12,43 +12,48 @@ namespace CIS.Infrastructure.gRPC;
 /// </summary>
 public static class StartupExtensions
 {
-    public static void TryAddCisGrpcClientUsingServiceDiscovery<TService>(this IServiceCollection services, in string serviceName, bool validateServiceCertificate = false)
+    public static void TryAddCisGrpcClientUsingServiceDiscovery<TService>(this IServiceCollection services, in string serviceName, bool validateServiceCertificate = false, string? customServiceKey = null)
         where TService : class
     {
         services.TryAddSingleton<Configuration.IGrpcServiceUriSettings<TService>>(new Configuration.GrpcServiceUriSettingsServiceDiscovery<TService>(serviceName));
-        services.AddCisGrpcClientInner<TService, TService>(validateServiceCertificate, true);
+        services.AddCisGrpcClientInner<TService, TService>(validateServiceCertificate, true, customServiceKey);
     }
     
-    public static void TryAddCisGrpcClientUsingUrl<TService>(this IServiceCollection services, in string serviceUrl, bool validateServiceCertificate = false)
+    public static void TryAddCisGrpcClientUsingUrl<TService>(this IServiceCollection services, in string serviceUrl, bool validateServiceCertificate = false, string? customServiceKey = null)
         where TService : class
     {
         services.TryAddSingleton<Configuration.IGrpcServiceUriSettings<TService>>(new Configuration.GrpcServiceUriSettingsDirect<TService>(serviceUrl));
-        services.AddCisGrpcClientInner<TService, TService>(validateServiceCertificate, true);
+        services.AddCisGrpcClientInner<TService, TService>(validateServiceCertificate, true, customServiceKey);
     }
 
-    public static void TryAddCisGrpcClientUsingServiceDiscovery<TService, TServiceUriSettings>(this IServiceCollection services, in string serviceName, bool validateServiceCertificate = false)
+    public static void TryAddCisGrpcClientUsingServiceDiscovery<TService, TServiceUriSettings>(this IServiceCollection services, in string serviceName, bool validateServiceCertificate = false, string? customServiceKey = null)
         where TService : class
         where TServiceUriSettings : class
     {
         services.TryAddSingleton<Configuration.IGrpcServiceUriSettings<TServiceUriSettings>>(new Configuration.GrpcServiceUriSettingsServiceDiscovery<TServiceUriSettings>(serviceName));
-        services.AddCisGrpcClientInner<TService, TServiceUriSettings>(validateServiceCertificate, true);
+        services.AddCisGrpcClientInner<TService, TServiceUriSettings>(validateServiceCertificate, true, customServiceKey);
     }
 
-    public static void TryAddCisGrpcClientUsingUrl<TService, TServiceUriSettings>(this IServiceCollection services, in string serviceUrl, bool validateServiceCertificate = false)
+    public static void TryAddCisGrpcClientUsingUrl<TService, TServiceUriSettings>(this IServiceCollection services, in string serviceUrl, bool validateServiceCertificate = false, string? customServiceKey = null)
         where TService : class
         where TServiceUriSettings : class
     {
         services.TryAddSingleton<Configuration.IGrpcServiceUriSettings<TServiceUriSettings>>(new Configuration.GrpcServiceUriSettingsDirect<TServiceUriSettings>(serviceUrl));
-        services.AddCisGrpcClientInner<TService, TServiceUriSettings>(validateServiceCertificate, true);
+        services.AddCisGrpcClientInner<TService, TServiceUriSettings>(validateServiceCertificate, true, customServiceKey);
     }
 
     /// <summary>
     /// Nepouzivat primo, je public pouze pro ServiceDiscovery nebo jine specialni pripady.
     /// </summary>
-    public static IHttpClientBuilder? AddCisGrpcClientInner<TService, TServiceUriSettings>(this IServiceCollection services, bool validateServiceCertificate, bool forwardClientHeaders)
+    public static IHttpClientBuilder? AddCisGrpcClientInner<TService, TServiceUriSettings>(this IServiceCollection services, bool validateServiceCertificate, bool forwardClientHeaders, string? customServiceKey = null)
         where TService : class
         where TServiceUriSettings : class
     {
+        if (string.IsNullOrEmpty(customServiceKey))
+        {
+            customServiceKey = typeof(TService).Name;
+        }
+
         if (services.AlreadyRegistered<TService>())
             return null;
 
@@ -57,7 +62,7 @@ public static class StartupExtensions
 
         // register service
         var builder = services
-            .AddGrpcClient<TService>((provider, options) =>
+            .AddGrpcClient<TService>(customServiceKey, (provider, options) =>
             {
                 options.Address = provider.GetRequiredService<Configuration.IGrpcServiceUriSettings<TServiceUriSettings>>().ServiceUrl;
             })

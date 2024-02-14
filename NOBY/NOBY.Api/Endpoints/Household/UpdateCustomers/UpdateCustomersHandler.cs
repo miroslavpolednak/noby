@@ -68,8 +68,9 @@ internal sealed class UpdateCustomersHandler
             }
 
             // HFICH-4165 - nastaveni flowSwitches
+            bool isFirstCustomerIdentified = !c1.OnHouseholdCustomerOnSAId.HasValue || (c1.Identities?.Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
             bool isSecondCustomerIdentified = !c2.OnHouseholdCustomerOnSAId.HasValue || (c2.Identities?.Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb) ?? false);
-            _flowSwitchManager.AddFlowSwitch(householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.CustomerIdentifiedOnMainHousehold : FlowSwitches.CustomerIdentifiedOnCodebtorHousehold, isSecondCustomerIdentified);
+            _flowSwitchManager.AddFlowSwitch(householdInstance.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.CustomerIdentifiedOnMainHousehold : FlowSwitches.CustomerIdentifiedOnCodebtorHousehold, isFirstCustomerIdentified && isSecondCustomerIdentified);
         }
 
         _flowSwitchManager.AddFlowSwitch(FlowSwitches.ScoringPerformedAtleastOnce, false);

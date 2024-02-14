@@ -4,8 +4,29 @@
         <name>CIS.InternalServices.NotificationService.Contracts</name>
     </assembly>
     <members>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.SmsFieldNumber">
-            <summary>Field number for the "Sms" field.</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.PhoneNumberFieldNumber">
+            <summary>Field number for the "PhoneNumber" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.ProcessingPriorityFieldNumber">
+            <summary>Field number for the "ProcessingPriority" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.TypeFieldNumber">
+            <summary>Field number for the "Type" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.IdentifierFieldNumber">
+            <summary>Field number for the "Identifier" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.CaseIdFieldNumber">
+            <summary>Field number for the "CaseId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.CustomIdFieldNumber">
+            <summary>Field number for the "CustomId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.DocumentIdFieldNumber">
+            <summary>Field number for the "DocumentId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.DocumentHashFieldNumber">
+            <summary>Field number for the "DocumentHash" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.TextFieldNumber">
             <summary>Field number for the "Text" field.</summary>
@@ -174,30 +195,6 @@
         </member>
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.DocumentHash.Types">
             <summary>Container for nested types declared in the DocumentHash message type.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SmsData.PhoneNumberFieldNumber">
-            <summary>Field number for the "PhoneNumber" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SmsData.ProcessingPriorityFieldNumber">
-            <summary>Field number for the "ProcessingPriority" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SmsData.TypeFieldNumber">
-            <summary>Field number for the "Type" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SmsData.IdentifierFieldNumber">
-            <summary>Field number for the "Identifier" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SmsData.CaseIdFieldNumber">
-            <summary>Field number for the "CaseId" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SmsData.CustomIdFieldNumber">
-            <summary>Field number for the "CustomId" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SmsData.DocumentIdFieldNumber">
-            <summary>Field number for the "DocumentId" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SmsData.DocumentHashFieldNumber">
-            <summary>Field number for the "DocumentHash" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.ValueFieldNumber">
             <summary>Field number for the "Value" field.</summary>
