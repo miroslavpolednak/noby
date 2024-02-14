@@ -2,6 +2,7 @@
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CompleteTask;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CreateTask;
 using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
+using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.UpdateTask;
 
 namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
 
@@ -43,6 +44,11 @@ internal sealed class MockSbWebApiClient
     }
 
     public Task CompleteTask(CompleteTaskRequest request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateTask(UpdateTaskRequest request, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

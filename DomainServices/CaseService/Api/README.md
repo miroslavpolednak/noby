@@ -31,6 +31,7 @@ grpcurl -insecure -d "{\"CaseId\":303062979	}" -H "noby-user-id: 3048" -H "noby-
 grpcurl -insecure -d "{\"TaskIdSb\":6681570}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30001 DomainServices.CaseService.v1.CaseService/GetTaskDetail
 grpcurl -insecure -d "{\"CaseId\":3050603}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30001 DomainServices.CaseService.v1.CaseService/GetCaseDetail
 grpcurl -insecure -d "{\"CaseId\":303065859,\"IsUserInvoked\":true}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/CancelCase
+grpcurl -insecure -d "{\"CaseId\":1,\"TaskIdSb\":1}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:31001 DomainServices.CaseService.v1.CaseService/UpdateTask
 
 ## run batch
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"

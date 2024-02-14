@@ -8,7 +8,7 @@ import "NullableGrpcDecimal.proto";
 
 message UpdateTaskRequest {
 	int64 CaseId =  1;
-	int32 TaskIdSB = 2;
+	int32 TaskIdSb = 2;
 	oneof Amendments {
 		Retention Retention = 3;
 	}
