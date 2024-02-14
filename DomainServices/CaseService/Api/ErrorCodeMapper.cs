@@ -1,4 +1,5 @@
-﻿using CIS.Core.ErrorCodes;
+﻿using Amazon.Runtime.Internal.Transform;
+using CIS.Core.ErrorCodes;
 
 namespace DomainServices.CaseService.Api;
 
@@ -30,7 +31,14 @@ internal sealed class ErrorCodeMapper
     public const int TaskPriceExceptionIsEmpty = 13034;
     public const int CaseCancelled = 13035;
     public const int UnableToCancelCase = 13036;
-
+    public const int InterestRateValidFromEmpty = 13037;
+    public const int LoanInterestRateEmpty = 13038;
+    public const int LoanInterestRateProvidedEmpty = 13039;
+    public const int LoanPaymentAmountEmpty = 13040;
+    public const int LoanPaymentAmountFinalEmpty = 13041;
+    public const int FeeSumEmpty = 13042;
+    public const int FeeFinalSumEmpty = 13043;
+    public const int RetentionNull = 13044;
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
@@ -59,7 +67,15 @@ internal sealed class ErrorCodeMapper
             { ContractNumberNotFound, "Contract number not found" },
             { TaskPriceExceptionIsEmpty, "Task PriceException must not be null for task type ID 2" },
             { CaseCancelled, "Case state is one of cancelled" },
-            { UnableToCancelCase, "Unable to cancel Case {PropertyValue}" }
+            { UnableToCancelCase, "Unable to cancel Case {PropertyValue}" },
+            { InterestRateValidFromEmpty, "InterestRateValidFrom cannot be empty" },
+            { LoanInterestRateEmpty, "LoanInterestRateEmpty cannot be empty"},
+            { LoanInterestRateProvidedEmpty, "LoanInterestRateProvided cannot be empty" },
+            { LoanPaymentAmountEmpty, "LoanPaymentAmount cannot be empty" },
+            { LoanPaymentAmountFinalEmpty, "LoanPaymentAmountFinal cannot be empty" },
+            { FeeSumEmpty ,"FeeSumEmpty cannot be empty" },
+            { FeeFinalSumEmpty, "FeeFinalSumEmpty cannot be empty" },
+            { RetentionNull, "Retention cannot be null"}
         });
 
         return Messages;
