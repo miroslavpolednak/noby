@@ -167,7 +167,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
             CreatedUserId = 1,
             CreatedTime = DateTime.Now,
             DocumentTemplateVariantId = 1,
-            ExternalId = "SomeExternalId",
+            ExternalIdESignatures = "SomeExternalId",
             Source = Api.Database.Enums.Source.Noby,
             SignatureTypeId = signatureTypeId,
             CustomerOnSAId1 = customerOnSAId1,

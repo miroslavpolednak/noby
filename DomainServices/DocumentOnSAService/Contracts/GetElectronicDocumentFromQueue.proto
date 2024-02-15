@@ -2,6 +2,8 @@ syntax = "proto3";
 package DomainServices.DocumentOnSAService.GetElectronicDocumentFromQueue;
 option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+
 message GetElectronicDocumentFromQueueRequest{
 
 	oneof EDocument {
@@ -18,6 +20,7 @@ message GetElectronicDocumentFromQueueResponse{
     string MimeType = 2;
     string Filename = 3;
 	bool IsCustomerPreviewSendingAllowed = 4;
+	google.protobuf.StringValue ExternalIdESignatures = 5;
 }
 
 message MainDocument{

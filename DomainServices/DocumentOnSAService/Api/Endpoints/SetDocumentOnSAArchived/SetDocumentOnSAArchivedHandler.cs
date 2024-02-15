@@ -28,10 +28,9 @@ public class SetDocumentOnSAArchivedHandler : IRequestHandler<SetDocumentOnSAArc
 
         if (documentOnSa.SignatureTypeId is not null && documentOnSa.SignatureTypeId == (int)SignatureTypes.Electronic)
         {
-
             await _eSignaturesClient.SubmitDispatchForm(true, new() { new()
             {
-                ExternalId = documentOnSa.ExternalId!,
+                ExternalId = documentOnSa.ExternalIdESignatures!,
                 IsCancelled = false,
                 AttachmentsComplete = true,
             }}, cancellationToken);

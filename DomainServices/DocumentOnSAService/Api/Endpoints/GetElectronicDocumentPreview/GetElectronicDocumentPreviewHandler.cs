@@ -32,14 +32,20 @@ public sealed class GetElectronicDocumentPreviewHandler : IRequestHandler<GetEle
     {
         var documentOnSA = await _dbContext.DocumentOnSa
             .Where(r => r.DocumentOnSAId == request.DocumentOnSAId)
+            .Select(s => new
+            {
+                s.ExternalIdESignatures,
+                s.DocumentTypeId,
+                s.DocumentOnSAId
+            })
             .FirstOrDefaultAsync(cancellationToken)
         ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist);
 
-        var documentPreviewData = await _eSignaturesClient.DownloadDocumentPreview(documentOnSA.ExternalId ?? string.Empty, cancellationToken);
-        
+        var documentPreviewData = await _eSignaturesClient.DownloadDocumentPreview(documentOnSA.ExternalIdESignatures ?? string.Empty, cancellationToken);
+
         var templates = await _codebookService.DocumentTypes(cancellationToken);
         var fileName = templates.First(t => t.Id == documentOnSA.DocumentTypeId).FileName;
-        
+
         return new GetElectronicDocumentPreviewResponse
         {
             Filename = $"{fileName}_{documentOnSA.DocumentOnSAId}_{_dateTime.GetLocalNow().ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",

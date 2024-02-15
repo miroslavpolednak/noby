@@ -49,7 +49,7 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
         }
 
         if (documentOnSa.SignatureTypeId == SignatureTypes.Electronic.ToByte() && request.NotifyESignatures) // 3
-            await _eSignaturesClient.DeleteDocument(documentOnSa.ExternalId!, cancellationToken);
+            await _eSignaturesClient.DeleteDocument(documentOnSa.ExternalIdESignatures!, cancellationToken);
 
         documentOnSa.IsValid = false;
 
