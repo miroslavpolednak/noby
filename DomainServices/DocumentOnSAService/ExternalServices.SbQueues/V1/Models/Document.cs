@@ -11,4 +11,6 @@ public class Document
     public byte[]? Content { get; set; }
 
     public bool IsCustomerPreviewSendingAllowed { get; set; }
+
+    public string ExternalIdESignatures { get; set; } = null!;
 }

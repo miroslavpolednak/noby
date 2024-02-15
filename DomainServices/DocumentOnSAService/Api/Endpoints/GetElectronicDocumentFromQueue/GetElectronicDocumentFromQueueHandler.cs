@@ -28,23 +28,24 @@ public class GetElectronicDocumentFromQueueHandler : IRequestHandler<GetElectron
 
     private async Task<GetElectronicDocumentFromQueueResponse> HandleMainDocument(string documentId, bool getMetadataOnly, CancellationToken cancellationToken)
     {
-        var documentFile = await _signatureQueues.GetDocumentByExternalId(documentId, getMetadataOnly, cancellationToken) 
+        var documentFile = await _signatureQueues.GetDocumentByExternalId(documentId, getMetadataOnly, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentFileNotExist, documentId);
-        
+
         return new()
         {
             Filename = documentFile.FileName,
             MimeType = documentFile.ContentType,
             BinaryData = documentFile.Content is not null ? ByteString.CopyFrom(documentFile.Content) : ByteString.Empty,
-            IsCustomerPreviewSendingAllowed = documentFile.IsCustomerPreviewSendingAllowed
+            IsCustomerPreviewSendingAllowed = documentFile.IsCustomerPreviewSendingAllowed,
+            ExternalIdESignatures = documentFile.ExternalIdESignatures,
         };
     }
 
     private async Task<GetElectronicDocumentFromQueueResponse> HandleDocumentAttachment(string attachmentId, bool getMetadataOnly, CancellationToken cancellationToken)
     {
-        var attachmentFile = await _signatureQueues.GetAttachmentById(attachmentId, getMetadataOnly, cancellationToken) 
+        var attachmentFile = await _signatureQueues.GetAttachmentById(attachmentId, getMetadataOnly, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AttachmentFileNotExist, attachmentId);
-        
+
         return new()
         {
             Filename = attachmentFile.FileName,

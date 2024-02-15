@@ -20,7 +20,7 @@ message GetDocumentOnSADataResponse{
 	
 	google.protobuf.Int32Value SignatureTypeId = 4;
 
-	google.protobuf.StringValue ExternalId = 5;
+	google.protobuf.StringValue ExternalIdESignatures = 5;
 
 	DomainServices.DocumentOnSAService.Enums.Source Source = 6;
 
@@ -29,4 +29,6 @@ message GetDocumentOnSADataResponse{
 	bool IsSigned = 8;
 
 	google.protobuf.StringValue Data = 9;
+
+	google.protobuf.StringValue ExternalIdSB = 10;
 }

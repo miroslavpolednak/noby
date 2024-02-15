@@ -29,16 +29,16 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                                     .Select(s => new
                                     {
                                         s.DocumentOnSAId,
-                                        s.ExternalId,
+                                        s.ExternalIdESignatures,
                                         s.SignatureTypeId
                                     })
                                     .FirstOrDefaultAsync(d => d.DocumentOnSAId == request.DocumentOnSAId, cancellationToken)
                                     ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
 
-        if (documentOnSa.ExternalId is null)
+        if (documentOnSa.ExternalIdESignatures is null)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableGetExternalIdForDocumentOnSaId, request.DocumentOnSAId);
 
-        var elDocumentStatus = await _eSignaturesClient.GetDocumentStatus(documentOnSa.ExternalId, cancellationToken);
+        var elDocumentStatus = await _eSignaturesClient.GetDocumentStatus(documentOnSa.ExternalIdESignatures, cancellationToken);
 
         switch (elDocumentStatus)
         {

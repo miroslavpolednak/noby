@@ -26,7 +26,7 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnableToSendDocumentPreviewForPaperSignedDocuments);
         }
         
-        var (code, message) = await _signaturesClient.SendDocumentPreview(documentOnSa.ExternalId ?? string.Empty, cancellationToken);
+        var (code, message) = await _signaturesClient.SendDocumentPreview(documentOnSa.ExternalIdESignatures ?? string.Empty, cancellationToken);
         
         _auditLogger.Log(
             AuditEventTypes.Noby011,

@@ -19,7 +19,7 @@ public class RealSbQueuesRepository : ISbQueuesRepository
         atch.ATTACHMENT_FILE AS Content,
         atch.FLAG_SEND_TO_PREVIEW AS IsCustomerPreviewSendingAllowed
         FROM SB_ATTACHMENT_INFO_S atch 
-        WHERE atch.ATTACHMENT_ID = @AttachmentId AND atch.CONSUMER = 'NOBY'
+        WHERE atch.ATTACHMENT_ID = @AttachmentId
         """;
 
     private const string _attachmentSqlQueryWithoutContent =
@@ -31,19 +31,20 @@ public class RealSbQueuesRepository : ISbQueuesRepository
         NULL AS Content,
         atch.FLAG_SEND_TO_PREVIEW AS IsCustomerPreviewSendingAllowed
         FROM SB_ATTACHMENT_INFO_S atch 
-        WHERE atch.ATTACHMENT_ID = @AttachmentId AND atch.CONSUMER = 'NOBY'
+        WHERE atch.ATTACHMENT_ID = @AttachmentId'
         """;
 
     private const string _documentSqlQuery =
       """
-        SELECT  
-        di.DOCUMENT_ID AS DocumentId,
-        di.DOCUMENT_NAME + '.pdf' AS [FileName],
-        'application/pdf' AS ContentType,
-        di.DOCUMENT_FILE AS Content,
-        di.FLAG_SEND_TO_PREVIEW AS IsCustomerPreviewSendingAllowed
-        FROM SB_DOCUMENT_INFO_S di
-        WHERE di.DOCUMENT_ID = @DocumentId AND di.CONSUMER = 'NOBY'
+         SELECT  
+         di.DOCUMENT_ID AS DocumentId,
+         di.DOCUMENT_NAME + '.pdf' AS [FileName],
+         'application/pdf' AS ContentType,
+         di.DOCUMENT_FILE AS Content,
+         di.FLAG_SEND_TO_PREVIEW AS IsCustomerPreviewSendingAllowed,
+         di.EXTERNAL_ID AS ExternalIdESignatures
+         FROM SB_DOCUMENT_INFO_S di
+         WHERE di.DOCUMENT_ID = @DocumentId
         """;
 
     private const string _documentSqlQueryWithoutContent =
@@ -53,9 +54,10 @@ public class RealSbQueuesRepository : ISbQueuesRepository
         di.DOCUMENT_NAME + '.pdf' AS [FileName],
         'application/pdf' AS ContentType,
         NULL AS Content,
-        di.FLAG_SEND_TO_PREVIEW AS IsCustomerPreviewSendingAllowed
+        di.FLAG_SEND_TO_PREVIEW AS IsCustomerPreviewSendingAllowed,
+        di.EXTERNAL_ID AS ExternalIdESignatures
         FROM SB_DOCUMENT_INFO_S di
-        WHERE di.DOCUMENT_ID = @DocumentId AND di.CONSUMER = 'NOBY'
+        WHERE di.DOCUMENT_ID = @DocumentId
         """;
 
     private const string _updateAttachmentProcessingDateSql =

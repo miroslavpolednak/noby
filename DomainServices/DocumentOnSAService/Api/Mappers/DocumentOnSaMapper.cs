@@ -79,7 +79,7 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
                 IsPreviewSentToCustomer = documentOnSa.IsPreviewSentToCustomer,
                 TaskId = documentOnSa.TaskId,
                 CaseId = documentOnSa.CaseId,
-                ExternalId = documentOnSa.ExternalId,
+                ExternalId = documentOnSa.ExternalIdESignatures,
                 EArchivIdsLinked = { documentOnSa.EArchivIdsLinkeds.Select(s => s.EArchivId) },
                 EACodeMainId = documentOnSa.EACodeMainId,
                 IsCustomerPreviewSendingAllowed = documentOnSa.IsCustomerPreviewSendingAllowed
