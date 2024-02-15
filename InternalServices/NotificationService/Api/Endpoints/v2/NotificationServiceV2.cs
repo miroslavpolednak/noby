@@ -12,6 +12,10 @@ internal sealed class NotificationServiceV2
     public override async Task<NotificationIdResponse> SendSms(SendSmsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    [Authorize(Roles = UserRoles.SendEmail)]
+    public override async Task<NotificationIdResponse> SendEmail(SendEmailRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     private readonly IMediator _mediator;
     public NotificationServiceV2(IMediator mediator)
         => _mediator = mediator;

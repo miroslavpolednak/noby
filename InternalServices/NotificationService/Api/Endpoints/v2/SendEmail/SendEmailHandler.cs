@@ -1,11 +1,10 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 using DomainServices.CodebookService.Clients;
 using SharedAudit;
+using SharedComponents.DocumentDataStorage;
 using SharedComponents.Storage;
-using SharedTypes.Enums;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendEmail;
 
@@ -15,7 +14,6 @@ internal sealed class SendEmailHandler
     public async Task<NotificationIdResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
     {
         var consumerId = _appConfiguration.Consumers.First(t => t.Username == _serviceUser.User!.Name).ConsumerId;
-        var attachmentKeyFilenames = new List<(string Id, string Filename)>();
         var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
 
         var senderType = _appConfiguration.EmailSenders.Mcs.Contains(domainName, StringComparer.OrdinalIgnoreCase) ? Mandants.Kb
@@ -34,13 +32,23 @@ internal sealed class SendEmailHandler
             DocumentHash = request.DocumentHash?.Hash,
             HashAlgorithm = request.DocumentHash?.HashAlgorithm.ToString(),  
             CreatedTime = _dateTime.GetLocalNow().DateTime,
-            CreatedUserName = _serviceUser.User!.Name!
+            CreatedUserName = _serviceUser.User!.Name!,
+            Subject = request.Subject,
+            ContentFormat = request.Content.Format,
+            ContentLanguage = request.Content.Language,
+            ContentText = request.Content.Text,
+            Bcc = request.Bcc.Select(t => t.Value).ToArray(),
+            Cc = request.Cc.Select(t => t.Value).ToArray(),
+            From = request.From.Value,
+            ReplyTo = request.ReplyTo.Value,
+            To = request.To.Select(t => t.Value).ToArray()
         };
         _dbContext.Emails.Add(result);
         // ulozit do databaze
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // ulozit soubory na S3
+        var attachmentKeyFilenames = new List<(string Id, string Filename)>();
         try
         {
             foreach (var attachment in request.Attachments)
@@ -55,9 +63,13 @@ internal sealed class SendEmailHandler
         catch (Exception ex)
         {
             _logger.SaveAttachmentFailed(result.Id, ex);
+
+            // nastavit stav v databazi
+            result.State = NotificationStates.Error;
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
             throw new CisServiceServerErrorException(ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
-
 
         if (senderType == Mandants.Kb)
         {
@@ -69,9 +81,9 @@ internal sealed class SendEmailHandler
                     consumerId = consumerId
                 },
                 sender = request.From.MapToMcs(),
-                to = request.To.MapToMcs().ToList(),
-                bcc = request.Bcc.MapToMcs().ToList(),
-                cc = request.Cc.MapToMcs().ToList(),
+                to = request.To?.Select(t => t.MapToMcs()).ToList(),
+                bcc = request.Bcc?.Select(t => t.MapToMcs()).ToList(),
+                cc = request.Cc?.Select(t => t.MapToMcs()).ToList(),
                 replyTo = request.ReplyTo?.MapToMcs(),
                 subject = request.Subject,
                 content = new()
@@ -93,13 +105,31 @@ internal sealed class SendEmailHandler
                     .ToList()
             };
 
-            await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
+            try
+            {
+                await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
+
+                // nastavit stav v databazi
+                result.State = NotificationStates.Sent;
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                _logger.NotificationSent(result.Id, NotificationChannels.Email);
+            }
+            catch (Exception ex)
+            {
+                // nastavit stav v databazi
+                result.State = NotificationStates.Error;
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                _logger.NotificationFailedToSend(result.Id, NotificationChannels.Email, ex);
+                throw;
+            }
         }
         else
         {
-            SendEmail email = new()
+            Database.DocumentDataEntities.SendEmail email = new()
             {
-                Data = request
+                //Data = request
             };
 
             await _documentDataStorage.Add(result.Id.ToString(), email, cancellationToken);
@@ -122,6 +152,7 @@ internal sealed class SendEmailHandler
     private readonly Database.NotificationDbContext _dbContext;
     private readonly Configuration.AppConfiguration _appConfiguration;
     private readonly IMcsSmsProducer _mcsSmsProducer;
+    private readonly IDocumentDataStorage _documentDataStorage;
 
     public SendEmailHandler(
         TimeProvider dateTime,
@@ -133,7 +164,8 @@ internal sealed class SendEmailHandler
         IMcsSmsProducer mcsSmsProducer,
         IAuditLogger auditLogger,
         IMcsEmailProducer mcsEmailProducer,
-        IStorageClient<IMcsStorage> storageClient)
+        IStorageClient<IMcsStorage> storageClient,
+        IDocumentDataStorage documentDataStorage)
     {
         _dateTime = dateTime;
         _codebookService = codebookService;
@@ -145,5 +177,6 @@ internal sealed class SendEmailHandler
         _auditLogger = auditLogger;
         _mcsEmailProducer = mcsEmailProducer;
         _storageClient = storageClient;
+        _documentDataStorage = documentDataStorage;
     }
 }

@@ -1,9 +1,30 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace CIS.InternalServices.NotificationService.Api.Extensions;
+namespace CIS.InternalServices.NotificationService.Api;
 
-internal static class StringExtensions
+internal static class Extensions
 {
+    public static McsSendApi.v4.EmailAddress MapToMcs(this Contracts.v2.EmailAddress emailAddress)
+    {
+        return new()
+        {
+            party = new()
+            {
+                legalPerson = emailAddress.Party?.LegalPerson is null ? null : new()
+                {
+                    name = emailAddress.Party.LegalPerson.Name
+                },
+                naturalPerson = emailAddress.Party?.NaturalPerson is null ? null : new()
+                {
+                    surname = emailAddress.Party.NaturalPerson.Surname,
+                    firstName = emailAddress.Party.NaturalPerson.FirstName,
+                    middleName = emailAddress.Party.NaturalPerson.MiddleName
+                }
+            },
+            value = emailAddress.Value
+        };
+    }
+
     public static (string CountryCode, string NationalNumber) ParsePhone(this string value)
     {
         var match = _phoneRegEx.Match(value.NormalizePhoneNumber());

@@ -5,7 +5,6 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using SharedAudit;
 using System.Globalization;
-using CIS.InternalServices.NotificationService.Api.Extensions;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendSms;
 
@@ -34,6 +33,7 @@ internal sealed class SendSmsHandler
             Type = request.Type,
             CountryCode = countryCode,
             PhoneNumber = nationalNumber,
+            ProcessingPriority = request.ProcessingPriority,
             CreatedTime = _dateTime.GetLocalNow().DateTime,
             CreatedUserName = _serviceUser.User!.Name!
         };

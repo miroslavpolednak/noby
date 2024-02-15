@@ -1,6 +1,6 @@
 ﻿using CIS.InternalServices.NotificationService.LegacyContracts.Email.Dto;
 
-namespace CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
+namespace CIS.InternalServices.NotificationService.Api.Legacy.Mappers;
 
 public static class MpssEmailMappers
 {
@@ -11,7 +11,7 @@ public static class MpssEmailMappers
 
     public static MpssSendApi.v1.EmailAddress MapToMpss(this EmailAddress emailAddress)
     {
-        return new ()
+        return new()
         {
             party = emailAddress.Party?.MapToMpss(),
             value = emailAddress.Value
@@ -20,7 +20,7 @@ public static class MpssEmailMappers
 
     public static MpssSendApi.v1.Party MapToMpss(this Party party)
     {
-        return new ()
+        return new()
         {
             legalPerson = party.LegalPerson?.MapToMpss(),
             naturalPerson = party.NaturalPerson?.MapToMpss()
@@ -29,15 +29,15 @@ public static class MpssEmailMappers
 
     public static MpssSendApi.v1.LegalPerson MapToMpss(this LegalPerson legalPerson)
     {
-        return new ()
+        return new()
         {
-            name = legalPerson.Name 
+            name = legalPerson.Name
         };
     }
 
     public static MpssSendApi.v1.NaturalPerson MapToMpss(this NaturalPerson naturalPerson)
     {
-        return new ()
+        return new()
         {
             surname = naturalPerson.Surname,
             firstName = naturalPerson.FirstName,
@@ -47,7 +47,7 @@ public static class MpssEmailMappers
 
     public static MpssSendApi.v1.Content MapToMpss(this EmailContent emailContent)
     {
-        return new ()
+        return new()
         {
             charset = "UTF-8",
             format = emailContent.Format,
@@ -63,12 +63,12 @@ public static class MpssEmailMappers
             consumerId = consumerId
         };
     }
-    
+
     public static MpssSendApi.v1.Attachment MapToMpss(string objectKey, string filename)
     {
-        return new ()
+        return new()
         {
-            s3Content = new ()
+            s3Content = new()
             {
                 filename = filename,
                 objectKey = objectKey

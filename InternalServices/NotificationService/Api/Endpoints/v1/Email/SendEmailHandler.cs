@@ -3,7 +3,7 @@ using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Database.DocumentDataEntities;
 using CIS.InternalServices.NotificationService.Api.Legacy;
-using CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
+using CIS.InternalServices.NotificationService.Api.Legacy.Mappers;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;

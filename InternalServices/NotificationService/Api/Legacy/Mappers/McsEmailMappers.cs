@@ -1,6 +1,6 @@
 ﻿using CIS.InternalServices.NotificationService.LegacyContracts.Email.Dto;
 
-namespace CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
+namespace CIS.InternalServices.NotificationService.Api.Legacy.Mappers;
 
 public static class McsEmailMappers
 {
@@ -11,7 +11,7 @@ public static class McsEmailMappers
 
     public static McsSendApi.v4.EmailAddress MapToMcs(this EmailAddress emailAddress)
     {
-        return new ()
+        return new()
         {
             party = emailAddress.Party?.MapToMcs(),
             value = emailAddress.Value
@@ -20,7 +20,7 @@ public static class McsEmailMappers
 
     public static McsSendApi.v4.Party MapToMcs(this Party party)
     {
-        return new ()
+        return new()
         {
             legalPerson = party.LegalPerson?.MapToMcs(),
             naturalPerson = party.NaturalPerson?.MapToMcs()
@@ -29,15 +29,15 @@ public static class McsEmailMappers
 
     public static McsSendApi.v4.LegalPerson MapToMcs(this LegalPerson legalPerson)
     {
-        return new ()
+        return new()
         {
-            name = legalPerson.Name 
+            name = legalPerson.Name
         };
     }
 
     public static McsSendApi.v4.NaturalPerson MapToMcs(this NaturalPerson naturalPerson)
     {
-        return new ()
+        return new()
         {
             surname = naturalPerson.Surname,
             firstName = naturalPerson.FirstName,
@@ -47,7 +47,7 @@ public static class McsEmailMappers
 
     public static McsSendApi.v4.Content MapToMcs(this EmailContent emailContent)
     {
-        return new ()
+        return new()
         {
             charset = "UTF-8",
             format = emailContent.Format,
@@ -63,12 +63,12 @@ public static class McsEmailMappers
             consumerId = consumerId
         };
     }
-    
+
     public static McsSendApi.v4.Attachment MapToMcs(string objectKey, string filename)
     {
-        return new ()
+        return new()
         {
-            s3Content = new ()
+            s3Content = new()
             {
                 filename = filename,
                 objectKey = objectKey
