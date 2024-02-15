@@ -59,7 +59,7 @@ internal sealed class ProductChildMapper
         return relations
             .Select(t => new _C4M.LoanApplicationProductRelation
             {
-                ProductId = getProductId(t)?.ToC4M(),
+                ProductId = getProductId(t),
                 ProductType = getProductType(t),
                 RelationType = t.RelationType,
                 Value = new _C4M.LoanApplicationProductRelationValue
@@ -81,17 +81,11 @@ internal sealed class ProductChildMapper
             })
             .ToList();
 
-        _C4M.ResourceIdentifier? getProductId(_V2.LoanApplicationProductRelation relation)
+        string? getProductId(_V2.LoanApplicationProductRelation relation)
         {
             if (!string.IsNullOrEmpty(relation.CbcbContractId))
             {
-                return new _C4M.ResourceIdentifier
-                {
-                    Id = relation.CbcbContractId,
-                    Instance = "CBCB",
-                    Domain = "EIS",
-                    Resource = "CBCBContract"
-                };
+                return relation.CbcbContractId;
             } else if (!string.IsNullOrEmpty(relation.BankAccount?.Number)) {
                 return new _C4M.ResourceIdentifier
                 {
@@ -103,7 +97,7 @@ internal sealed class ProductChildMapper
                     },
                     Domain = "PCP",
                     Resource = "LoanSoldProduct"
-                };
+                }.ToC4M();
             } else
             {
                 return null;
