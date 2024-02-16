@@ -8,18 +8,17 @@ namespace NOBY.Api.Endpoints.Workflow;
 internal static class WorkflowHelpers
 {
     public static void ValidateTaskManagePermission(
-        int? taskTypeId,
-        int? signatureTypeId,
-        int? phaseTypeId,
+        in int? taskTypeId,
+        in int? signatureTypeId,
+        in int? phaseTypeId,
+        in int? processTypeId,
         ICurrentUserAccessor currentUserAccessor)
     {
         if (taskTypeId == 6)
         {
-            if (!currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningManage))
-            {
-                throw new CisAuthorizationException("Task manage permission missing #1");
-            }
-            else if (signatureTypeId == 1
+            validateRefinancing(processTypeId, currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_SigningManage, UserPermissions.WFL_TASK_DETAIL_RefinancingSigningManage);
+
+            if (signatureTypeId == 1
                 && phaseTypeId == 2
                 && !currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningAttachments))
             {
@@ -36,11 +35,27 @@ internal static class WorkflowHelpers
                 throw new NobyValidationException(90032);
             }
         }
-        else if (taskTypeId != 6 && !currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_OtherManage))
+        else
         {
-            throw new CisAuthorizationException("Task manage permission missing #5");
+            validateRefinancing(processTypeId, currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_OtherManage, UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage);
         }
     }
 
-    private static int[] _allowedPhaseTypes = new int[] { 1, 2 };
+    private static void validateRefinancing(in int? processTypeId, ICurrentUserAccessor currentUserAccessor, in UserPermissions inPermission, in UserPermissions notInPermission)
+    {
+        if (processTypeId.HasValue)
+        {
+            if (processTypeId is 1 or 2 && !currentUserAccessor.HasPermission(inPermission))
+            {
+                throw new CisAuthorizationException($"Task manage authorization failed. ProcessTypeId is {processTypeId} but missing permission {inPermission}");
+            }
+
+            if (processTypeId is not 1 or 2 && !currentUserAccessor.HasPermission(notInPermission))
+            {
+                throw new CisAuthorizationException($"Task manage authorization failed. ProcessTypeId is {processTypeId} but missing permission {notInPermission}");
+            }
+        }
+    }
+
+    private static int[] _allowedPhaseTypes = [ 1, 2 ];
 }

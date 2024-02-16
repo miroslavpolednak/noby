@@ -31,8 +31,9 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
         WorkflowHelpers.ValidateTaskManagePermission(
             taskDetail.TaskObject!.TaskTypeId,
-            taskDetail.TaskObject!.SignatureTypeId,
-            taskDetail.TaskObject!.PhaseTypeId,
+            taskDetail.TaskObject.SignatureTypeId,
+            taskDetail.TaskObject.PhaseTypeId,
+            taskDetail.TaskObject.ProcessTypeId,
             _currentUserAccessor);
 
         List<string>? documentIds = new();

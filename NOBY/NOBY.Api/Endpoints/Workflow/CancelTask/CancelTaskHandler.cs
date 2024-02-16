@@ -20,12 +20,13 @@ internal sealed class CancelTaskHandler
             task.TaskObject?.TaskTypeId,
             task.TaskObject?.SignatureTypeId,
             task.TaskObject?.PhaseTypeId,
+            task.TaskObject?.ProcessTypeId,
             _currentUserAccessor);
 
         await _caseService.CancelTask(request.CaseId, request.TaskIdSB, cancellationToken);
     }
 
-    private static int[] _allowedTypeIds = new[] { 2, 3 };
+    private static int[] _allowedTypeIds = [ 2, 3 ];
 
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly ICaseServiceClient _caseService;

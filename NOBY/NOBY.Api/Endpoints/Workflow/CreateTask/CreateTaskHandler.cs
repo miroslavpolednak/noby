@@ -11,8 +11,8 @@ internal sealed class CreateTaskHandler
 {
     public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        WorkflowHelpers.ValidateTaskManagePermission(request.TaskTypeId, null, null, _currentUserAccessor);
-
+        WorkflowHelpers.ValidateTaskManagePermission(request.TaskTypeId, null, null, null, _currentUserAccessor);
+        
         // kontrola existence Case
         DomainServices.CaseService.Contracts.Case caseInstance;
         try
