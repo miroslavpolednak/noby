@@ -1,11 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CIS.InternalServices.NotificationService.Api.Database.Entities;
 
-internal abstract class BaseNotification
+[Table("NotificationResult", Schema = "dbo")]
+internal sealed class NotificationResult
 {
     [Key]
     public Guid Id { get; set; }
+
+    public Contracts.v2.NotificationChannels Channel { get; set; }
 
     public Contracts.v2.NotificationStates State { get; set; }
 

@@ -9,8 +9,7 @@ namespace CIS.InternalServices.NotificationService.Api.Database;
 // dotnet-ef migrations script
 internal sealed class NotificationDbContext : BaseDbContext<NotificationDbContext>
 {
-    public DbSet<Sms> Sms { get; set; } = null!;
-    public DbSet<Email> Emails { get; set; } = null!;
+    public DbSet<NotificationResult> NotificationResults { get; set; } = null!;
 
     public DbSet<Result> Results { get; set; } = null!;
     public DbSet<EmailResult> EmailResults { get; set; } = null!;

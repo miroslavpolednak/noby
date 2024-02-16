@@ -18,9 +18,10 @@ internal sealed class SendEmailHandler
         // kontrola na domenu uz je ve validatoru
         var senderType = _appConfiguration.EmailSenders.Mcs.Contains(domainName, StringComparer.OrdinalIgnoreCase) ? Mandants.Kb : Mandants.Mp;
 
-        Database.Entities.Email result = new()
+        Database.Entities.NotificationResult result = new()
         {
             Id = Guid.NewGuid(),
+            Channel = NotificationChannels.Email,
             State = NotificationStates.InProgress,
             Identity = request.Identifier?.Identity,
             IdentityScheme = request.Identifier?.IdentityScheme.ToString(),
@@ -31,17 +32,8 @@ internal sealed class SendEmailHandler
             HashAlgorithm = request.DocumentHash?.HashAlgorithm.ToString(),  
             CreatedTime = _dateTime.GetLocalNow().DateTime,
             CreatedUserName = _serviceUser.UserName,
-            Subject = request.Subject,
-            ContentFormat = request.Content.Format,
-            ContentLanguage = request.Content.Language,
-            ContentText = request.Content.Text,
-            Bcc = request.Bcc.Select(t => t.Value).ToArray(),
-            Cc = request.Cc.Select(t => t.Value).ToArray(),
-            From = request.From.Value,
-            ReplyTo = request.ReplyTo.Value,
-            To = request.To.Select(t => t.Value).ToArray()
         };
-        _dbContext.Emails.Add(result);
+        _dbContext.Add(result);
         // ulozit do databaze
         await _dbContext.SaveChangesAsync(cancellationToken);
 

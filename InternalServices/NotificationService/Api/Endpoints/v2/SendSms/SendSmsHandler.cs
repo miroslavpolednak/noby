@@ -18,11 +18,11 @@ internal sealed class SendSmsHandler
         _ = request.PhoneNumber.TryParsePhone(out string? countryCode, out string? nationalNumber);
 
         // pripravit zpravu do databaze
-        Database.Entities.Sms result = new()
+        Database.Entities.NotificationResult result = new()
         {
             Id = Guid.NewGuid(),
             State = NotificationStates.InProgress,
-            Text = request.Text,
+            Channel = NotificationChannels.Sms,
             Identity = request.Identifier?.Identity,
             IdentityScheme = request.Identifier?.IdentityScheme.ToString(),
             CaseId = request.CaseId,
@@ -30,14 +30,10 @@ internal sealed class SendSmsHandler
             DocumentId = request.DocumentId,
             DocumentHash = request.DocumentHash?.Hash,
             HashAlgorithm = request.DocumentHash?.HashAlgorithm.ToString(),
-            Type = request.Type,
-            CountryCode = countryCode!,
-            PhoneNumber = nationalNumber!,
-            ProcessingPriority = request.ProcessingPriority,
             CreatedTime = _dateTime.GetLocalNow().DateTime,
             CreatedUserName = _serviceUser.UserName
         };
-        _dbContext.Sms.Add(result);
+        _dbContext.Add(result);
         // ulozit do databaze
         await _dbContext.SaveChangesAsync(cancellationToken);
 
