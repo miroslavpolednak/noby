@@ -1,29 +1,29 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.LegacyContracts.Email.Dto;
+using CIS.InternalServices.NotificationService.Api.Validators;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendEmail.Validators;
 
-internal sealed class EmailAddressFromValidator : AbstractValidator<EmailAddress>
+internal sealed class EmailAddressFromValidator 
+    : AbstractValidator<Contracts.v2.SendEmailRequest.Types.EmailAddress>
 {
-    // todo: error code for emailAddress.Value
-    private static readonly Func<string, string> _normalForm = e => e.ToLowerInvariant();
+    private static HashSet<string>? _allowedDomainNames;
+
     public EmailAddressFromValidator(AppConfiguration appConfiguration)
     {
-        var allowedDomainNames = appConfiguration.EmailSenders.Mcs
-            .Union(appConfiguration.EmailSenders.Mpss)
-            .Select(_normalForm)
-            .ToHashSet();
+        // neni thread safe, to je jedno
+        if (_allowedDomainNames is null)
+        {
+            _allowedDomainNames = appConfiguration.EmailSenders.Mcs
+                .Union(appConfiguration.EmailSenders.Mpss)
+                .ToHashSet();
+        }
 
         RuleFor(emailAddress => emailAddress)
             .SetValidator(new EmailAddressValidator());
-        
+
         RuleFor(emailAddress => emailAddress.Value)
-            .Must(email =>
-            {
-                var domainName = _normalForm(email).Split('@').Last();
-                return allowedDomainNames.Contains(domainName);
-            })
-            .WithMessage($"Allowed domain names for sender: {string.Join(", ", allowedDomainNames)}.");
+            .Must(email => _allowedDomainNames.Contains(email.GetDomainFromEmail(), StringComparer.OrdinalIgnoreCase))
+            .WithMessage($"Allowed domain names for sender: {string.Join(", ", _allowedDomainNames)}.");
     }
 }

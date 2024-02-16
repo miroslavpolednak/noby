@@ -1,5 +1,5 @@
 ﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
-using CIS.InternalServices.NotificationService.Api.Helpers;
+using CIS.InternalServices.NotificationService.Api.Legacy.Helpers;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms.Validators;

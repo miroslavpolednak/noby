@@ -2,12 +2,12 @@
 using System.Text.RegularExpressions;
 using CIS.Core.Exceptions;
 
-namespace CIS.InternalServices.NotificationService.Api.Helpers;
+namespace CIS.InternalServices.NotificationService.Api.Legacy.Helpers;
 
 internal static class StringInterpolationExtensions
 {
     private static readonly string _pattern = @"[\{]{2}[a-z0-9_-]{3,15}[\}]{2}";
-    
+
     public static void Validate(this string template, IEnumerable<string> keyNames)
     {
         var keys = keyNames.ToHashSet();
@@ -35,12 +35,12 @@ internal static class StringInterpolationExtensions
     public static string Interpolate(this string template, Dictionary<string, string> keyValues)
     {
         var builder = new StringBuilder(template);
-        
+
         foreach (var pair in keyValues)
         {
             builder.Replace($"{{{{{pair.Key}}}}}", pair.Value);
         }
-        
+
         return builder.ToString();
     }
 }

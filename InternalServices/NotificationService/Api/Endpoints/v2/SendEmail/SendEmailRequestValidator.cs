@@ -1,13 +1,12 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Common;
-using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Validators;
-using CIS.InternalServices.NotificationService.LegacyContracts.Email;
+using CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendEmail.Validators;
+using CIS.InternalServices.NotificationService.Api.Validators;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendEmail;
 
 internal sealed class SendEmailRequestValidator
-    : AbstractValidator<SendEmailRequest>
+    : AbstractValidator<Contracts.v2.SendEmailRequest>
 {
     public SendEmailRequestValidator(AppConfiguration appConfiguration)
     {
@@ -47,7 +46,7 @@ internal sealed class SendEmailRequestValidator
         RuleFor(request => request.Content)
             .NotEmpty()
                 .WithErrorCode(ErrorCodeMapper.ContentRequired)
-            .SetValidator(new EmailContentValidator(options))
+            .SetValidator(new EmailContentValidator(appConfiguration))
                 .WithErrorCode(ErrorCodeMapper.ContentInvalid);
 
         RuleFor(request => request.Attachments.Count)
@@ -58,39 +57,29 @@ internal sealed class SendEmailRequestValidator
             .SetValidator(new EmailAttachmentValidator())
                 .WithErrorCode(ErrorCodeMapper.AttachmentsInvalid);
 
-        When(request => request.Identifier is not null, () =>
-        {
-            RuleFor(request => request.Identifier!)
-                .SetValidator(new IdentifierValidator())
-                    .WithErrorCode(ErrorCodeMapper.IdentifierInvalid);
-        });
+        RuleFor(request => request.Identifier)
+            .SetValidator(new IdentifierValidator())
+            .When(t => t.Identifier is not null)
+            .WithErrorCode(ErrorCodeMapper.IdentifierInvalid);
 
-        When(request => request.CaseId.HasValue, () =>
-        {
-            RuleFor(request => request.CaseId!.Value)
-                .GreaterThan(0)
-                    .WithErrorCode(ErrorCodeMapper.CaseIdInvalid);
-        });
+        RuleFor(request => request.CaseId)
+            .GreaterThan(0)
+            .When(t => t.CaseId.HasValue)
+            .WithErrorCode(ErrorCodeMapper.CaseIdInvalid);
 
-        When(request => request.CustomId is not null, () =>
-        {
-            RuleFor(request => request.CustomId!)
-                .SetValidator(new CustomIdValidator())
-                    .WithErrorCode(ErrorCodeMapper.CustomIdInvalid);
-        });
+        RuleFor(request => request.CustomId)
+            .SetValidator(new CustomIdValidator())
+            .When(t => !string.IsNullOrEmpty(t.CustomId))
+            .WithErrorCode(ErrorCodeMapper.CustomIdInvalid);
 
-        When(request => request.DocumentId is not null, () =>
-        {
-            RuleFor(request => request.DocumentId!)
-                .SetValidator(new DocumentIdValidator())
-                    .WithErrorCode(ErrorCodeMapper.DocumentIdInvalid);
-        });
+        RuleFor(request => request.DocumentId)
+            .SetValidator(new DocumentIdValidator())
+            .When(t => !string.IsNullOrEmpty(t.DocumentId))
+            .WithErrorCode(ErrorCodeMapper.DocumentIdInvalid);
 
-        When(request => request.DocumentHash is not null, () =>
-        {
-            RuleFor(request => request.DocumentHash!)
-                .SetValidator(new DocumentHashValidator())
-                    .WithErrorCode(ErrorCodeMapper.DocumentHashInvalid);
-        });
+        RuleFor(request => request.DocumentHash)
+            .SetValidator(new DocumentHashValidator())
+            .When(t => t.DocumentHash is not null)
+            .WithErrorCode(ErrorCodeMapper.DocumentHashInvalid);
     }
 }

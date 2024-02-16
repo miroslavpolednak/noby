@@ -4,41 +4,26 @@ namespace CIS.InternalServices.NotificationService.Api;
 
 internal static class Extensions
 {
-    public static McsSendApi.v4.EmailAddress MapToMcs(this Contracts.v2.EmailAddress emailAddress)
+    public static string GetDomainFromEmail(this string email)
     {
-        return new()
-        {
-            party = new()
-            {
-                legalPerson = emailAddress.Party?.LegalPerson is null ? null : new()
-                {
-                    name = emailAddress.Party.LegalPerson.Name
-                },
-                naturalPerson = emailAddress.Party?.NaturalPerson is null ? null : new()
-                {
-                    surname = emailAddress.Party.NaturalPerson.Surname,
-                    firstName = emailAddress.Party.NaturalPerson.FirstName,
-                    middleName = emailAddress.Party.NaturalPerson.MiddleName
-                }
-            },
-            value = emailAddress.Value
-        };
+        return email[(email.IndexOf('@') + 1)..];
     }
 
-    public static (string CountryCode, string NationalNumber) ParsePhone(this string value)
+    public static bool TryParsePhone(this string value, out string? countryCode, out string? nationalNumber)
     {
         var match = _phoneRegEx.Match(value.NormalizePhoneNumber());
 
         if (!match.Success)
         {
-            throw new CIS.Core.Exceptions.CisValidationException("Phone number is in wrong format");
+            countryCode = null;
+            nationalNumber = null;
+            return false;
         }
 
-        var countryCode = "+" + match.Groups["CountryCode"].Value;
-        var nationalDestinationCode = match.Groups["NationalDestinationCode"].Value;
-        var subscriberNumber = match.Groups["SubscriberNumber"].Value;
+        countryCode = "+" + match.Groups["CountryCode"].Value;
+        nationalNumber = match.Groups["NationalDestinationCode"].Value + match.Groups["SubscriberNumber"].Value;
 
-        return (countryCode, nationalDestinationCode + subscriberNumber);
+        return true;
     }
 
     private static Regex _phoneRegEx = new Regex(@"^\+(?<CountryCode>\d{1,3})(?<NationalDestinationCode>\d{2,3})(?<SubscriberNumber>\d{4,9})$", RegexOptions.Singleline | RegexOptions.Compiled);

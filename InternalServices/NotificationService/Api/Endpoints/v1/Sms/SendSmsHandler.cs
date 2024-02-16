@@ -1,9 +1,9 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Database;
-using CIS.InternalServices.NotificationService.Api.Helpers;
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Legacy.Helpers;
 using CIS.InternalServices.NotificationService.Api.Legacy.Mappers;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;

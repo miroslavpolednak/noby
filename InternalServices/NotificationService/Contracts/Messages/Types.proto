@@ -38,36 +38,6 @@ message DocumentHash
     }
 }
 
-message EmailAddress
-{
-    string Value = 1;
-    PartyData Party = 2;
-
-    message PartyData
-    {
-        LegalPerson LegalPerson = 1;
-        NaturalPerson NaturalPerson = 2;   
-    }
-
-    message LegalPerson
-    {
-        string Name = 1;
-    }
-
-    message NaturalPerson
-    {
-        string FirstName = 1;
-        google.protobuf.StringValue MiddleName = 2;
-        string Surname = 3;
-    }
-}
-
-message EmailAttachment
-{
-    string Binary = 1;
-    string Filename = 2;
-}
-
 message StatisticsData
 {
     Status Email = 1;

@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using CIS.InternalServices.NotificationService.LegacyContracts.Common;
 
-namespace CIS.InternalServices.NotificationService.Api.Helpers;
+namespace CIS.InternalServices.NotificationService.Api.Legacy.Helpers;
 
 internal static class PhoneNumberExtensions
 {
@@ -15,32 +15,32 @@ internal static class PhoneNumberExtensions
         {
             return null;
         }
-        
+
         var countryCode = "+" + match.Groups["CountryCode"].Value;
         var nationalDestinationCode = match.Groups["NationalDestinationCode"].Value;
         var subscriberNumber = match.Groups["SubscriberNumber"].Value;
-        
+
         return new Phone
         {
             CountryCode = countryCode,
             NationalNumber = nationalDestinationCode + subscriberNumber
         };
     }
-    
+
     private static string NormalizePhoneNumber(this string value)
     {
         // odstranění mezer
-        var phoneNumber =  value.Replace(" ","");
-        
+        var phoneNumber = value.Replace(" ", "");
+
         // mezinárodní předvolba může začít buď + nebo 00, tak to převedeme na 00
-        if(phoneNumber.StartsWith("00"))
-        {  
+        if (phoneNumber.StartsWith("00"))
+        {
             phoneNumber = "+" + phoneNumber.Substring(2);
         }
 
         return phoneNumber;
     }
-    
+
     // private static readonly HashSet<string> _countryCallingCodes = new()
     // {
     //     "+30", "+31", "+32", "+33", "+34", "+36", "+39",

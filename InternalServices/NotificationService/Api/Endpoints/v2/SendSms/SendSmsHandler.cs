@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
@@ -13,9 +14,8 @@ internal sealed class SendSmsHandler
 {
     public async Task<NotificationIdResponse> Handle(SendSmsRequest request, CancellationToken cancellationToken)
     {
-        var consumerId = _appConfiguration.Consumers.First(t => t.Username == _serviceUser.User!.Name).ConsumerId;
         var smsType = await getSmsType(request.Type, cancellationToken);
-        var (countryCode, nationalNumber) = request.PhoneNumber.ParsePhone();
+        _ = request.PhoneNumber.TryParsePhone(out string? countryCode, out string? nationalNumber);
 
         // pripravit zpravu do databaze
         Database.Entities.Sms result = new()
@@ -31,11 +31,11 @@ internal sealed class SendSmsHandler
             DocumentHash = request.DocumentHash?.Hash,
             HashAlgorithm = request.DocumentHash?.HashAlgorithm.ToString(),
             Type = request.Type,
-            CountryCode = countryCode,
-            PhoneNumber = nationalNumber,
+            CountryCode = countryCode!,
+            PhoneNumber = nationalNumber!,
             ProcessingPriority = request.ProcessingPriority,
             CreatedTime = _dateTime.GetLocalNow().DateTime,
-            CreatedUserName = _serviceUser.User!.Name!
+            CreatedUserName = _serviceUser.UserName
         };
         _dbContext.Sms.Add(result);
         // ulozit do databaze
@@ -55,7 +55,7 @@ internal sealed class SendSmsHandler
             processingPriority = request.ProcessingPriority,
             notificationConsumer = new()
             {
-                 consumerId = consumerId
+                 consumerId = _serviceUser.ConsumerId
             }
         };
 
@@ -69,7 +69,7 @@ internal sealed class SendSmsHandler
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             _logger.NotificationSent(result.Id, NotificationChannels.Sms);
-            createAuditLog(request, smsType, consumerId, result.Id);
+            createAuditLog(request, smsType, _serviceUser.ConsumerId, result.Id);
         }
         catch (Exception ex)
         {
@@ -78,7 +78,7 @@ internal sealed class SendSmsHandler
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             _logger.NotificationFailedToSend(result.Id, NotificationChannels.Sms, ex);
-            createAuditLog(request, smsType, consumerId);
+            createAuditLog(request, smsType, _serviceUser.ConsumerId);
             throw;
         }
 
@@ -127,18 +127,16 @@ internal sealed class SendSmsHandler
     private readonly TimeProvider _dateTime;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ILogger<SendSmsHandler> _logger;
-    private readonly Core.Security.IServiceUserAccessor _serviceUser;
+    private readonly ServiceUserHelper _serviceUser;
     private readonly Database.NotificationDbContext _dbContext;
-    private readonly Configuration.AppConfiguration _appConfiguration;
     private readonly IMcsSmsProducer _mcsSmsProducer;
 
     public SendSmsHandler(
         TimeProvider dateTime,
         ICodebookServiceClient codebookService,
         ILogger<SendSmsHandler> logger,
-        Core.Security.IServiceUserAccessor serviceUser,
+        ServiceUserHelper serviceUser,
         Database.NotificationDbContext dbContext,
-        Configuration.AppConfiguration appConfiguration,
         IMcsSmsProducer mcsSmsProducer,
         IAuditLogger auditLogger)
     {
@@ -147,7 +145,6 @@ internal sealed class SendSmsHandler
         _logger = logger;
         _serviceUser = serviceUser;
         _dbContext = dbContext;
-        _appConfiguration = appConfiguration;
         _mcsSmsProducer = mcsSmsProducer;
         _auditLogger = auditLogger;
     }

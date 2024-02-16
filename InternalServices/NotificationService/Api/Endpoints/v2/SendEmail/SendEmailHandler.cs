@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 using DomainServices.CodebookService.Clients;
 using SharedAudit;
@@ -13,12 +14,9 @@ internal sealed class SendEmailHandler
 {
     public async Task<NotificationIdResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
     {
-        var consumerId = _appConfiguration.Consumers.First(t => t.Username == _serviceUser.User!.Name).ConsumerId;
         var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
-
-        var senderType = _appConfiguration.EmailSenders.Mcs.Contains(domainName, StringComparer.OrdinalIgnoreCase) ? Mandants.Kb
-            : _appConfiguration.EmailSenders.Mpss.Contains(domainName, StringComparer.OrdinalIgnoreCase) ? Mandants.Mp
-            : throw new ArgumentException(domainName);
+        // kontrola na domenu uz je ve validatoru
+        var senderType = _appConfiguration.EmailSenders.Mcs.Contains(domainName, StringComparer.OrdinalIgnoreCase) ? Mandants.Kb : Mandants.Mp;
 
         Database.Entities.Email result = new()
         {
@@ -32,7 +30,7 @@ internal sealed class SendEmailHandler
             DocumentHash = request.DocumentHash?.Hash,
             HashAlgorithm = request.DocumentHash?.HashAlgorithm.ToString(),  
             CreatedTime = _dateTime.GetLocalNow().DateTime,
-            CreatedUserName = _serviceUser.User!.Name!,
+            CreatedUserName = _serviceUser.UserName,
             Subject = request.Subject,
             ContentFormat = request.Content.Format,
             ContentLanguage = request.Content.Language,
@@ -78,7 +76,7 @@ internal sealed class SendEmailHandler
                 id = result.Id.ToString(),
                 notificationConsumer = new()
                 {
-                    consumerId = consumerId
+                    consumerId = _serviceUser.ConsumerId
                 },
                 sender = request.From.MapToMcs(),
                 to = request.To?.Select(t => t.MapToMcs()).ToList(),
@@ -148,7 +146,7 @@ internal sealed class SendEmailHandler
     private readonly TimeProvider _dateTime;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ILogger<SendEmailHandler> _logger;
-    private readonly Core.Security.IServiceUserAccessor _serviceUser;
+    private readonly ServiceUserHelper _serviceUser;
     private readonly Database.NotificationDbContext _dbContext;
     private readonly Configuration.AppConfiguration _appConfiguration;
     private readonly IMcsSmsProducer _mcsSmsProducer;
@@ -158,7 +156,7 @@ internal sealed class SendEmailHandler
         TimeProvider dateTime,
         ICodebookServiceClient codebookService,
         ILogger<SendEmailHandler> logger,
-        Core.Security.IServiceUserAccessor serviceUser,
+        ServiceUserHelper serviceUser,
         Database.NotificationDbContext dbContext,
         Configuration.AppConfiguration appConfiguration,
         IMcsSmsProducer mcsSmsProducer,

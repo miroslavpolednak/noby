@@ -82,6 +82,39 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailContent.TextFieldNumber">
             <summary>Field number for the "Text" field.</summary>
         </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAddress.ValueFieldNumber">
+            <summary>Field number for the "Value" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAddress.PartyFieldNumber">
+            <summary>Field number for the "Party" field.</summary>
+        </member>
+        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAddress.Types">
+            <summary>Container for nested types declared in the EmailAddress message type.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAddress.Types.PartyData.LegalPersonFieldNumber">
+            <summary>Field number for the "LegalPerson" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAddress.Types.PartyData.NaturalPersonFieldNumber">
+            <summary>Field number for the "NaturalPerson" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAddress.Types.LegalPerson.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAddress.Types.NaturalPerson.FirstNameFieldNumber">
+            <summary>Field number for the "FirstName" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAddress.Types.NaturalPerson.MiddleNameFieldNumber">
+            <summary>Field number for the "MiddleName" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAddress.Types.NaturalPerson.SurnameFieldNumber">
+            <summary>Field number for the "Surname" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAttachment.BinaryFieldNumber">
+            <summary>Field number for the "Binary" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types.EmailAttachment.FilenameFieldNumber">
+            <summary>Field number for the "Filename" field.</summary>
+        </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetResultRequest.NotificationIdFieldNumber">
             <summary>Field number for the "NotificationId" field.</summary>
         </member>
@@ -195,39 +228,6 @@
         </member>
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.DocumentHash.Types">
             <summary>Container for nested types declared in the DocumentHash message type.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.ValueFieldNumber">
-            <summary>Field number for the "Value" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.PartyFieldNumber">
-            <summary>Field number for the "Party" field.</summary>
-        </member>
-        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.Types">
-            <summary>Container for nested types declared in the EmailAddress message type.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.Types.PartyData.LegalPersonFieldNumber">
-            <summary>Field number for the "LegalPerson" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.Types.PartyData.NaturalPersonFieldNumber">
-            <summary>Field number for the "NaturalPerson" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.Types.LegalPerson.NameFieldNumber">
-            <summary>Field number for the "Name" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.Types.NaturalPerson.FirstNameFieldNumber">
-            <summary>Field number for the "FirstName" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.Types.NaturalPerson.MiddleNameFieldNumber">
-            <summary>Field number for the "MiddleName" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAddress.Types.NaturalPerson.SurnameFieldNumber">
-            <summary>Field number for the "Surname" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAttachment.BinaryFieldNumber">
-            <summary>Field number for the "Binary" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.EmailAttachment.FilenameFieldNumber">
-            <summary>Field number for the "Filename" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.StatisticsData.EmailFieldNumber">
             <summary>Field number for the "Email" field.</summary>

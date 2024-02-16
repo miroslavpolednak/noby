@@ -13,7 +13,7 @@ internal sealed class SendEmailRequestValidator : AbstractValidator<SendEmailReq
         RuleFor(request => request.From)
             .NotNull()
                 .WithErrorCode(ErrorCodeMapper.FromRequired)
-            .SetValidator(new EmailAddressFromValidator(options))
+            .SetValidator(new EmailAddressFromValidator(options.Value))
                 .WithErrorCode(ErrorCodeMapper.FromInvalid);
         
         RuleFor(request => request.To)
