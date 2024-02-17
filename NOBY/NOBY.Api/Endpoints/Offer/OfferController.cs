@@ -6,7 +6,7 @@ namespace NOBY.Api.Endpoints.Offer;
 [ApiController]
 [Route("api/offer")]
 [ApiVersion(1)]
-public class OfferController : ControllerBase
+public sealed class OfferController : ControllerBase
 {
     private readonly IMediator _mediator;
     public OfferController(IMediator mediator) =>  _mediator = mediator;

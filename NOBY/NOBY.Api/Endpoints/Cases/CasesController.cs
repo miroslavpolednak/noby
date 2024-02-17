@@ -23,7 +23,7 @@ public class CasesController : ControllerBase
     [NobyAuthorize(UserPermissions.CASE_Cancel, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes("application/json")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = [ "Case" ])]
     [ProducesResponseType(typeof(CancelCase.CancelCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -44,7 +44,7 @@ public class CasesController : ControllerBase
     [HttpGet("{caseId:long}/customers")]
     [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = [ "Case" ])]
     [ProducesResponseType(typeof(List<GetCustomers.GetCustomersResponseCustomer>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<GetCustomers.GetCustomersResponseCustomer>> GetCustomersOnCase([FromRoute] long caseId, CancellationToken cancellationToken)
@@ -81,7 +81,7 @@ public class CasesController : ControllerBase
     [HttpGet("{caseId:long}")]
     [NobySkipCaseOwnerValidation]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = [ "Case" ])]
     [ProducesResponseType(typeof(SharedDto.CaseModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<SharedDto.CaseModel> GetCaseById([FromRoute] long caseId, CancellationToken cancellationToken)
@@ -98,7 +98,7 @@ public class CasesController : ControllerBase
     [HttpGet("dashboard-filters")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = [ "Case" ])]
     [ProducesResponseType(typeof(List<GetTotalsByStates.GetDashboardFiltersResponse>), StatusCodes.Status200OK)]
     public async Task<List<GetTotalsByStates.GetDashboardFiltersResponse>> GetDashboardFilters(CancellationToken cancellationToken)
         => await _mediator.Send(new GetTotalsByStates.GetDashboardFiltersRequest(), cancellationToken);
@@ -121,7 +121,7 @@ public class CasesController : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.DASHBOARD_SearchCases)]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = [ "Case" ])]
     [ProducesResponseType(typeof(SearchCases.SearchCasesResponse), StatusCodes.Status200OK)]
     public async Task<SearchCases.SearchCasesResponse> SearchCases([FromBody] SearchCases.SearchCasesRequest request)
         => await _mediator.Send(request);
@@ -145,7 +145,7 @@ public class CasesController : ControllerBase
     [Consumes("application/json")]
     [NobySkipCaseOwnerValidation]
     [NobyAuthorize(UserPermissions.DASHBOARD_IdentifyCase)]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = [ "Case" ])]
     [ProducesResponseType(typeof(IdentifyCase.IdentifyCaseResponse), StatusCodes.Status200OK)]
     public async Task<IdentifyCase.IdentifyCaseResponse> IdentifyCase([FromBody] IdentifyCase.IdentifyCaseRequest request)
         => await _mediator.Send(request);
@@ -161,7 +161,7 @@ public class CasesController : ControllerBase
     [HttpGet("{caseId:long}/parameters")]
     [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = [ "Case" ])]
     [ProducesResponseType(typeof(GetCaseParameters.GetCaseParametersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetCaseParameters.GetCaseParametersResponse> GetCaseParameters([FromRoute] long caseId, CancellationToken cancellationToken)
@@ -179,7 +179,7 @@ public class CasesController : ControllerBase
     /// <param name="caseId">ID Case-u</param>
     [HttpGet("{caseId:long}/menu/flags")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = [ "Case" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetCaseMenuFlagsResponse> GetCaseMenuFlags([FromRoute] long caseId, CancellationToken cancellationToken)
@@ -196,7 +196,7 @@ public class CasesController : ControllerBase
     [HttpGet("{caseId:long}/covenants")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = [ "Case" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetCovenants.GetCovenantsResponse> GetCovenants([FromRoute] long caseId, CancellationToken cancellationToken)
@@ -214,7 +214,7 @@ public class CasesController : ControllerBase
     [HttpGet("{caseId:long}/covenant/{covenantOrder:int}")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Case" })]
+    [SwaggerOperation(Tags = [ "Case" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetCovenant.GetCovenantResponse> GetCovenant([FromRoute] long caseId, [FromRoute] int covenantOrder, CancellationToken cancellationToken)
