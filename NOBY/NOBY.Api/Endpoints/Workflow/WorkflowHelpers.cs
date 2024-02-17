@@ -16,7 +16,7 @@ internal static class WorkflowHelpers
     {
         if (taskTypeId == 6)
         {
-            validateRefinancing(processTypeId, currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_SigningManage, UserPermissions.WFL_TASK_DETAIL_RefinancingSigningManage);
+            ValidateRefinancing(processTypeId, currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_SigningManage, UserPermissions.WFL_TASK_DETAIL_RefinancingSigningManage);
 
             if (signatureTypeId == 1
                 && phaseTypeId == 2
@@ -37,11 +37,11 @@ internal static class WorkflowHelpers
         }
         else
         {
-            validateRefinancing(processTypeId, currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_OtherManage, UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage);
+            ValidateRefinancing(processTypeId, currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_OtherManage, UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage);
         }
     }
 
-    private static void validateRefinancing(in int? processTypeId, ICurrentUserAccessor currentUserAccessor, in UserPermissions inPermission, in UserPermissions notInPermission)
+    public static void ValidateRefinancing(in int? processTypeId, ICurrentUserAccessor currentUserAccessor, in UserPermissions inPermission, in UserPermissions notInPermission)
     {
         if (processTypeId.HasValue)
         {

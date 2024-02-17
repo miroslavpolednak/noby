@@ -11,8 +11,6 @@ internal sealed class CreateTaskHandler
 {
     public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        WorkflowHelpers.ValidateTaskManagePermission(request.TaskTypeId, null, null, null, _currentUserAccessor);
-        
         // kontrola existence Case
         DomainServices.CaseService.Contracts.Case caseInstance;
         try
@@ -23,6 +21,9 @@ internal sealed class CreateTaskHandler
         {
             throw new NobyValidationException(90032, "DS error 13029");
         }
+
+        // validace procesu
+        await validateProcess(Convert.ToInt32(request.ProcessId), cancellationToken);
 
         // validace price exception
         if (request.TaskTypeId == 2)
@@ -77,6 +78,18 @@ internal sealed class CreateTaskHandler
         }
 
         return result.TaskId;
+    }
+
+    private async Task validateProcess(int processId, CancellationToken cancellationToken)
+    {
+        var processInstance = await _caseService.GetTaskDetail(processId, cancellationToken);
+
+        if (processInstance.TaskObject?.ProcessTypeId is not 1 or 2 && processInstance.TaskObject?.TaskTypeId != 3)
+        {
+            throw new NobyValidationException(90032, "validateProcess");
+        }
+
+        WorkflowHelpers.ValidateRefinancing(processInstance.TaskObject?.ProcessTypeId, _currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_OtherManage, UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage);
     }
 
     private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, CancellationToken cancellationToken)

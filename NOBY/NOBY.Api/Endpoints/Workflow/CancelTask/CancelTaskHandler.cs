@@ -36,6 +36,7 @@ internal sealed class CancelTaskHandler
         // cancel SA in NOBY
         if (task.TaskObject?.TaskTypeId == 9)
         {
+            //TODO jak dostat SA ID?
             await _salesArrangementService.UpdateSalesArrangementState(1, (int)SalesArrangementStates.Cancelled, cancellationToken);
         }
     }
