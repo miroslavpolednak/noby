@@ -34,7 +34,7 @@ public enum SalesArrangementTypes : byte
     Retention = 13,
 
     [EnumMember]
-    Refixace = 14,
+    Refixation = 14,
 
     [EnumMember]
     MimoradnaSplatka = 15

@@ -63,6 +63,20 @@ internal static class SalesArrangementParametersMapperExtensions
         };
     }
 
+    public static SalesArrangementParametersRefixation MapRefixation(this RefixationData retentionData)
+    {
+        return new SalesArrangementParametersRefixation
+        {
+        };
+    }
+
+    public static RefixationData MapRefixation(this SalesArrangementParametersRefixation refixationData)
+    {
+        return new RefixationData
+        {
+        };
+    }
+
     public static SalesArrangementParametersDrawing MapDrawing(this DrawingData drawingData)
     {
         return new SalesArrangementParametersDrawing

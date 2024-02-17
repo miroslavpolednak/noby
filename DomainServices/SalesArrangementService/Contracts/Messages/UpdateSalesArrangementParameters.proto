@@ -9,6 +9,7 @@ import "Parameters/SalesArrangementParametersHUBN.proto";
 import "Parameters/SalesArrangementParametersCustomerChange.proto";
 import "Parameters/SalesArrangementParametersCustomerChange3602.proto";
 import "Parameters/SalesArrangementParametersRetention.proto";
+import "Parameters/SalesArrangementParametersRefixation.proto";
 
 message UpdateSalesArrangementParametersRequest {
 	int32 SalesArrangementId = 1;
@@ -23,5 +24,6 @@ message UpdateSalesArrangementParametersRequest {
 		SalesArrangementParametersCustomerChange3602 CustomerChange3602B = 26;
 		SalesArrangementParametersCustomerChange3602 CustomerChange3602C = 27;
 		SalesArrangementParametersRetention Retention = 28;
+		SalesArrangementParametersRefixation Refixation = 29;
     }
 }

@@ -4,8 +4,7 @@ option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 
-message SalesArrangementParametersRetention {
+message SalesArrangementParametersRefixation {
 	google.protobuf.BoolValue ManagedByRC2 = 1;
 	google.protobuf.StringValue Comment = 2;
-	google.protobuf.StringValue IndividualPriceCommentLastVersion = 3;
 }
