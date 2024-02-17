@@ -22,7 +22,7 @@ internal sealed class UpdateCustomerDataHandler
         entity.Name = request.Customer.Name;
         entity.FirstNameNaturalPerson = request.Customer.FirstNameNaturalPerson;
         entity.CustomerIdentityId = request.Customer.Identity?.IdentityId;
-        entity.CustomerIdentityScheme = (SharedTypes.Enums.IdentitySchemes)Convert.ToInt32(request.Customer.Identity?.IdentityScheme, CultureInfo.InvariantCulture);
+        entity.CustomerIdentityScheme = (IdentitySchemes)Convert.ToInt32(request.Customer.Identity?.IdentityScheme, CultureInfo.InvariantCulture);
         entity.Cin = request.Customer.Cin;
 
         await _dbContext.SaveChangesAsync(cancellation);

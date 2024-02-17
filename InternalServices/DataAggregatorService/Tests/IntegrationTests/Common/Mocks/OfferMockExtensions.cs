@@ -12,10 +12,10 @@ public static class OfferMockExtensions
 
         fixture.Behaviors.Add(new RepeatedFieldBehavior());
 
-        var offer = fixture.Create<GetMortgageOfferDetailResponse>();
+        var offer = fixture.Create<GetOfferDetailResponse>();
         var fullPaymentSchedule = fixture.Create<GetMortgageOfferFPScheduleResponse>();
 
-        offerServiceClient.GetMortgageOfferDetail(Arg.Any<int>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(offer);
+        offerServiceClient.GetOfferDetail(Arg.Any<int>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(offer);
         offerServiceClient.GetMortgageOfferFPSchedule(Arg.Any<int>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(fullPaymentSchedule);
     }
 }

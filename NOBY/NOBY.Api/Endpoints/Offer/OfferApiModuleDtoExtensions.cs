@@ -7,7 +7,7 @@ namespace NOBY.Api.Endpoints.Offer;
 
 internal static class OfferApiModuleDtoExtensions
 {
-    public static SharedDto.MortgageInputsExtended ToApiResponse(this MortgageSimulationInputs input, BasicParameters basicParams)
+    public static SharedDto.MortgageInputsExtended ToApiResponse(this MortgageOfferSimulationInputs input, MortgageOfferBasicParameters basicParams)
         => new()
         {
             ProductTypeId = input.ProductTypeId,
@@ -56,7 +56,7 @@ internal static class OfferApiModuleDtoExtensions
             }
         };
     
-    public static SharedDto.MortgageOutputs ToApiResponse(this MortgageSimulationResults result, MortgageSimulationInputs inputs, AdditionalMortgageSimulationResults additionalResults)
+    public static SharedDto.MortgageOutputs ToApiResponse(this MortgageOfferSimulationResults result, MortgageOfferSimulationInputs inputs, MortgageOfferAdditionalSimulationResults additionalResults)
         => new()
         {
             Aprc = result.Aprc,
@@ -133,7 +133,7 @@ internal static class OfferApiModuleDtoExtensions
             UsageText = t.UsageText
         }).ToList();
 
-    public static CreditWorthinessSimpleResults? ToApiResponse(this MortgageCreditWorthinessSimpleResults? result)
+    public static CreditWorthinessSimpleResults? ToApiResponse(this MortgageOfferCreditWorthinessSimpleResults? result)
     {
         if (result is null)
             return null;
@@ -148,7 +148,7 @@ internal static class OfferApiModuleDtoExtensions
         };
     }
 
-    public static CreditWorthinessSimpleInputs? ToApiResponse(this MortgageCreditWorthinessSimpleInputs? inputs, bool isActive)
+    public static CreditWorthinessSimpleInputs? ToApiResponse(this MortgageOfferCreditWorthinessSimpleInputs? inputs, bool isActive)
     {
         if (inputs is null)
             return null;

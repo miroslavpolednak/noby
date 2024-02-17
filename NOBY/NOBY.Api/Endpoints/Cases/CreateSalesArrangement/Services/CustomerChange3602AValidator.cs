@@ -1,26 +1,22 @@
-﻿using SharedTypes.Enums;
-using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class CustomerChange3602AValidator
-    : BaseValidator, ICreateSalesArrangementParametersValidator
+    : BaseValidator<CustomerChange3602ABuilder>, ICreateSalesArrangementParametersValidator
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    public CustomerChange3602AValidator(BuilderValidatorAggregate aggregate)
+        : base(aggregate) { }
 
-    public CustomerChange3602AValidator(ILogger<CreateSalesArrangementParametersFactory> logger, DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request)
+    public override async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default)
     {
-        _httpContextAccessor = httpContextAccessor;
-    }
+        ValidateUserPermissions(UserPermissions.CHANGE_REQUESTS_Access);
 
-    public async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default(CancellationToken))
-    {
-        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
-        var salesArrangementService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient>();
+        var productService = GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
+        var salesArrangementService = GetRequiredService<DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient>();
 
         // instance hypo
-        var productInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
+        var productInstance = await productService.GetMortgage(Request.CaseId, cancellationToken);
         
         if (productInstance.Mortgage?.ContractSignedDate is null)
         {
@@ -28,12 +24,12 @@ internal sealed class CustomerChange3602AValidator
         }
 
         // neexistuje SAType=9 v Case
-        var salesArrangementsForCase = await salesArrangementService.GetSalesArrangementList(_request.CaseId, cancellationToken);
+        var salesArrangementsForCase = await salesArrangementService.GetSalesArrangementList(Request.CaseId, cancellationToken);
         if (!salesArrangementsForCase.SalesArrangements.Any(t => t.SalesArrangementTypeId == (int)SalesArrangementTypes.CustomerChange))
         {
             throw new NobyValidationException(90015);
         }
 
-        return new CustomerChange3602ABuilder(_logger, _request, _httpContextAccessor);
+        return await base.Validate(cancellationToken);
     }
 }

@@ -18,7 +18,7 @@ internal sealed class CreateCaseHandler
         int defaultCaseState = (await _codebookService.CaseStates(cancellation)).First(t => t.IsDefault.GetValueOrDefault()).Id;
 
         // ziskat caseId
-        long newCaseId = await _easClient.GetCaseId(SharedTypes.Enums.IdentitySchemes.Kb, request.Data.ProductTypeId, cancellation);
+        long newCaseId = await _easClient.GetCaseId(IdentitySchemes.Kb, request.Data.ProductTypeId, cancellation);
         _logger.NewCaseIdCreated(newCaseId);
 
         // vytvorit entitu
@@ -70,6 +70,8 @@ internal sealed class CreateCaseHandler
             FirstNameNaturalPerson = request.Customer.FirstNameNaturalPerson,
             DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson,
             Cin = request.Customer.Cin,
+            CustomerPriceSensitivity = request.Customer.CustomerPriceSensitivity,
+            CustomerChurnRisk = request.Customer.CustomerChurnRisk,
 
             TargetAmount = request.Data.TargetAmount,
             IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested,

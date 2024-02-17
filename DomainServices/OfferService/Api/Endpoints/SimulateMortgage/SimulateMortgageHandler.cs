@@ -37,14 +37,17 @@ internal sealed class SimulateMortgageHandler
         var entity = new Database.Entities.Offer
         {
             ResourceProcessId = Guid.Parse(request.ResourceProcessId),
-            IsCreditWorthinessSimpleRequested = request.IsCreditWorthinessSimpleRequested
+            IsCreditWorthinessSimpleRequested = request.IsCreditWorthinessSimpleRequested,
+            ValidTo = request.ValidTo,
+            SalesArrangementId = request.SalesArrangementId,
+            CaseId = request.CaseId
         };
         _dbContext.Offers.Add(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // ulozit json data simulace
-        var documentEntity = new Database.DocumentDataEntities.OfferData
+        var documentEntity = new Database.DocumentDataEntities.MortgageOfferData
         {
             SimulationInputs = mappedInputs,
             BasicParameters = mappedBasicParams,
@@ -124,7 +127,7 @@ internal sealed class SimulateMortgageHandler
         }
     }
 
-    private async Task<CreditWorthinessSimpleData> calculateCreditWorthinessSimple(int offerId, SimulateMortgageRequest request, SimulationHTResponse simulationResults, CancellationToken cancellationToken)
+    private async Task<MortgageCreditWorthinessSimpleData> calculateCreditWorthinessSimple(int offerId, SimulateMortgageRequest request, SimulationHTResponse simulationResults, CancellationToken cancellationToken)
     {
         var kbCustomerIdentity = request.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
 
@@ -173,9 +176,9 @@ internal sealed class SimulateMortgageHandler
         return documentEntity;
     }
 
-    private readonly Database.DocumentDataEntities.Mappers.CreditWorthinessSimpleDataMapper _worthinessMapper;
-    private readonly Database.DocumentDataEntities.Mappers.OfferDataMapper _offerMapper;
-    private readonly Database.DocumentDataEntities.Mappers.AdditionalSimulationResultsDataMapper _additionalDataMapper;
+    private readonly Database.DocumentDataEntities.Mappers.MortgageCreditWorthinessSimpleDataMapper _worthinessMapper;
+    private readonly Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper;
+    private readonly Database.DocumentDataEntities.Mappers.MortgageAdditionalSimulationResultsDataMapper _additionalDataMapper;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly ILogger<SimulateMortgageHandler> _logger;
     private readonly ICodebookServiceClient _codebookService;
@@ -184,9 +187,9 @@ internal sealed class SimulateMortgageHandler
     private readonly OfferServiceDbContext _dbContext;
 
     public SimulateMortgageHandler(
-        Database.DocumentDataEntities.Mappers.CreditWorthinessSimpleDataMapper worthinessMapper,
-        Database.DocumentDataEntities.Mappers.AdditionalSimulationResultsDataMapper additionalDataMapper,
-        Database.DocumentDataEntities.Mappers.OfferDataMapper offerMapper,
+        Database.DocumentDataEntities.Mappers.MortgageCreditWorthinessSimpleDataMapper worthinessMapper,
+        Database.DocumentDataEntities.Mappers.MortgageAdditionalSimulationResultsDataMapper additionalDataMapper,
+        Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper offerMapper,
         IDocumentDataStorage documentDataStorage,
         OfferServiceDbContext dbContext,
         ILogger<SimulateMortgageHandler> logger,

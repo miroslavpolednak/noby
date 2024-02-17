@@ -48,15 +48,15 @@ internal static class Extensions
                 FinancialResourcesOther = request.FinancialResourcesOther
             },
             IsCreditWorthinessSimpleRequested = request.CreditWorthinessSimpleInputs?.IsActive ?? false,
-            CreditWorthinessSimpleInputs = request.CreditWorthinessSimpleInputs is null ? null : new MortgageCreditWorthinessSimpleInputs
+            CreditWorthinessSimpleInputs = request.CreditWorthinessSimpleInputs is null ? null : new MortgageOfferCreditWorthinessSimpleInputs
             {
                 TotalMonthlyIncome = request.CreditWorthinessSimpleInputs.TotalMonthlyIncome,
-                ExpensesSummary = new ExpensesSummary
+                ExpensesSummary = new MortgageOfferCreditWorthinessSimpleInputs.Types.ExpensesSummaryObject
                 {
                     Rent = request.CreditWorthinessSimpleInputs.ExpensesRent,
                     Other = request.CreditWorthinessSimpleInputs.ExpensesOther
                 },
-                ObligationsSummary = new ObligationsSummary
+                ObligationsSummary = new MortgageOfferCreditWorthinessSimpleInputs.Types.ObligationsSummaryObject
                 {
                     LoansInstallmentsAmount = request.CreditWorthinessSimpleInputs.LoansInstallmentsAmount,
                     CreditCardsAmount = request.CreditWorthinessSimpleInputs.CreditCardsAmount,

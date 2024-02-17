@@ -49,6 +49,20 @@ internal static class SalesArrangementParametersMapperExtensions
         };
     }
 
+    public static SalesArrangementParametersRetention MapRetention(this RetentionData retentionData)
+    {
+        return new SalesArrangementParametersRetention
+        {
+        };
+    }
+
+    public static RetentionData MapRetention(this SalesArrangementParametersRetention retentionData)
+    {
+        return new RetentionData
+        {
+        };
+    }
+
     public static SalesArrangementParametersDrawing MapDrawing(this DrawingData drawingData)
     {
         return new SalesArrangementParametersDrawing

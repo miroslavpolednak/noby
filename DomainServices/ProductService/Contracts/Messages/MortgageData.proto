@@ -47,4 +47,9 @@ message MortgageData {
 	bool IsCancelled = 37;
 	cis.types.NullableGrpcDate DrawingFinishedDate = 38;
 	google.protobuf.Int32Value MortgageState = 39;
+	cis.types.NullableGrpcDecimal LoanInterestRateRefinancing = 40;
+	cis.types.NullableGrpcDate LoanInterestRateValidFromRefinancing = 41;
+	cis.types.NullableGrpcDate LoanInterestRateValidToRefinancing = 42;
+	cis.types.NullableGrpcDecimal LoanPaymentAmountRefinancing = 43;
+	google.protobuf.Int32Value FixedRatePeriodRefinancing = 44;
 }

@@ -3,27 +3,24 @@
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class GeneralChangeValidator
-    : BaseValidator, ICreateSalesArrangementParametersValidator
+    : BaseValidator<GeneralChangeBuilder>, ICreateSalesArrangementParametersValidator
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    public GeneralChangeValidator(BuilderValidatorAggregate aggregate)
+        : base(aggregate) { }
 
-    public GeneralChangeValidator(ILogger<CreateSalesArrangementParametersFactory> logger, DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request)
+    public override async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default)
     {
-        _httpContextAccessor = httpContextAccessor;
-    }
+        ValidateUserPermissions(UserPermissions.CHANGE_REQUESTS_Access);
 
-    public async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default(CancellationToken))
-    {
-        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
+        var productService = GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         // instance hypo
-        var productInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
+        var productInstance = await productService.GetMortgage(Request.CaseId, cancellationToken);
 
         if (productInstance.Mortgage?.ContractSignedDate is null)
         {
             throw new NobyValidationException(90014);
         }
 
-        return new GeneralChangeBuilder(_logger, _request, _httpContextAccessor);
+        return await base.Validate(cancellationToken);
     }
 }

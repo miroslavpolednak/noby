@@ -11,49 +11,34 @@ import "Parameters/SalesArrangementParametersDrawing.proto";
 import "Parameters/SalesArrangementParametersGeneralChange.proto";
 import "Parameters/SalesArrangementParametersCustomerChange.proto";
 import "Parameters/SalesArrangementParametersCustomerChange3602.proto";
+import "Parameters/SalesArrangementParametersRetention.proto";
 
 message SalesArrangement {
 	int32 SalesArrangementId = 1;
-
 	// ID Case ke kteremu SA patri
 	int64 CaseId = 2;
-
 	// Druh SA
 	int32 SalesArrangementTypeId = 3;
-
 	// Stav SA
 	int32 State = 4;
-
 	// ID modelace, ktera je spojena s timto SA - neni povinne
 	google.protobuf.Int32Value OfferId = 5;
-
 	// Uzivatel, ktery SA vytvoril
 	cis.types.ModificationStamp Created = 6;
-	
 	string ContractNumber = 7;
-	
 	// ID kanalu uzivatele, ktery SA vytvoril
 	int32 ChannelId = 8;
-
 	string RiskBusinessCaseId = 9;
-
 	string LoanApplicationAssessmentId = 10;
-
 	string RiskSegment = 11;
-
 	cis.types.NullableGrpcDate OfferGuaranteeDateFrom = 12;
-
 	cis.types.NullableGrpcDate OfferGuaranteeDateTo = 13;
-
 	string CommandId = 14;
-
 	cis.types.NullableGrpcDate RiskBusinessCaseExpirationDate = 15;
-
 	cis.types.NullableGrpcDate FirstSignatureDate = 19;
-
 	google.protobuf.StringValue PcpId = 20;
-
 	google.protobuf.StringValue LoanApplicationDataVersion = 21;
+	google.protobuf.Int64Value TaskProcessId = 22;
 
 	oneof Parameters {
         DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 30;
@@ -64,5 +49,6 @@ message SalesArrangement {
 		SalesArrangementParametersCustomerChange3602 CustomerChange3602A = 35;
 		SalesArrangementParametersCustomerChange3602 CustomerChange3602B = 36;
 		SalesArrangementParametersCustomerChange3602 CustomerChange3602C = 37;
+		SalesArrangementParametersRetention Retention = 38;
     }
 }

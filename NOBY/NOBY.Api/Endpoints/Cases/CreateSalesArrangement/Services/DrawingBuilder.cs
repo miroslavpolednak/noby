@@ -6,9 +6,9 @@ namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 internal sealed class DrawingBuilder
     : BaseBuilder
 {
-    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default)
     {
-        _request.Drawing = new()
+        Request.Drawing = new()
         {
             RepaymentAccount = new()
             {
@@ -17,31 +17,29 @@ internal sealed class DrawingBuilder
         };
 
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
-        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
+        var productService = GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         try
         {
-            var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
+            var mortgageInstance = await productService.GetMortgage(Request.CaseId, cancellationToken);
 
             if (!string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.Number) && !string.IsNullOrEmpty(mortgageInstance.Mortgage.RepaymentAccount?.BankCode))
             {
-                _request.Drawing.RepaymentAccount.IsAccountNumberMissing = false;
-                _request.Drawing.RepaymentAccount.Prefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
-                _request.Drawing.RepaymentAccount.Number = mortgageInstance.Mortgage.RepaymentAccount.Number;
-                _request.Drawing.RepaymentAccount.BankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode;
+                Request.Drawing.RepaymentAccount.IsAccountNumberMissing = false;
+                Request.Drawing.RepaymentAccount.Prefix = mortgageInstance.Mortgage.RepaymentAccount.Prefix;
+                Request.Drawing.RepaymentAccount.Number = mortgageInstance.Mortgage.RepaymentAccount.Number;
+                Request.Drawing.RepaymentAccount.BankCode = mortgageInstance.Mortgage.RepaymentAccount.BankCode;
             }
             else
-                _logger.LogInformation("DrawingBuilder: Account is empty");
+                GetLogger<DrawingBuilder>().LogInformation("DrawingBuilder: Account is empty");
         }
         catch
         {
-            _logger.LogInformation("DrawingBuilder: Account not found in ProductService");
+            GetLogger<DrawingBuilder>().LogInformation("DrawingBuilder: Account not found in ProductService");
         }
 
-        return _request;
+        return Request;
     }
 
-    public DrawingBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request, httpContextAccessor)
-    {
-    }
+    public DrawingBuilder(BuilderValidatorAggregate aggregate)
+        : base(aggregate) { }
 }

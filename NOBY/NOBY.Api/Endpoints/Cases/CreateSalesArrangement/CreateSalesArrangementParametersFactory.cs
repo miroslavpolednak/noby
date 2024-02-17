@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement;
@@ -18,22 +17,24 @@ internal sealed class CreateSalesArrangementParametersFactory
 
     public ICreateSalesArrangementParametersValidator CreateBuilder(long caseId, int salesArrangementTypeId)
     {
-        var request = new DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest
+        var aggregate = new BuilderValidatorAggregate(new()
         {
             CaseId = caseId,
             SalesArrangementTypeId = salesArrangementTypeId
-        };
-
+        },
+        _httpContextAccessor);
+        
         return (SalesArrangementTypes)salesArrangementTypeId switch
         {
             //>= 1 and <= 5 => new MortgageBuilder(salesArrangementId, _logger),
-            SalesArrangementTypes.Drawing => new DrawingValidator(_logger, request, _httpContextAccessor),
-            SalesArrangementTypes.GeneralChange => new GeneralChangeValidator(_logger, request, _httpContextAccessor),
-            SalesArrangementTypes.HUBN => new HUBNValidator(_logger, request, _httpContextAccessor),
-            SalesArrangementTypes.CustomerChange => new CustomerChangeValidator(_logger, request, _httpContextAccessor),
-            SalesArrangementTypes.CustomerChange3602A => new CustomerChange3602AValidator(_logger, request, _httpContextAccessor),
-            SalesArrangementTypes.CustomerChange3602B => new CustomerChange3602BValidator(_logger, request, _httpContextAccessor),
-            SalesArrangementTypes.CustomerChange3602C => new CustomerChange3602CValidator(_logger, request, _httpContextAccessor),
+            SalesArrangementTypes.Drawing => new DrawingValidator(aggregate),
+            SalesArrangementTypes.GeneralChange => new GeneralChangeValidator(aggregate),
+            SalesArrangementTypes.HUBN => new HUBNValidator(aggregate),
+            SalesArrangementTypes.CustomerChange => new CustomerChangeValidator(aggregate),
+            SalesArrangementTypes.CustomerChange3602A => new CustomerChange3602AValidator(aggregate),
+            SalesArrangementTypes.CustomerChange3602B => new CustomerChange3602BValidator(aggregate),
+            SalesArrangementTypes.CustomerChange3602C => new CustomerChange3602CValidator(aggregate),
+            SalesArrangementTypes.Retention => new RetentionValidator(aggregate),
             _ => throw new NotImplementedException($"Create Builder not implemented for SalesArrangementTypeId={salesArrangementTypeId}")
         };
     }

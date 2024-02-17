@@ -1,7 +1,7 @@
 ﻿using _OS = DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
 using EasWrapper = ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
-using static DomainServices.OfferService.Api.Database.DocumentDataEntities.OfferData;
+using static DomainServices.OfferService.Api.Database.DocumentDataEntities.MortgageOfferData;
 using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
 
 namespace DomainServices.OfferService.Api;

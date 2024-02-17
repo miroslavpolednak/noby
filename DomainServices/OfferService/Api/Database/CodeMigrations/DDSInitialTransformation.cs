@@ -12,7 +12,7 @@ public sealed class DDSInitialTransformation
 {
     public string ProvideScript(Func<IDbCommand> dbCommandFactory)
     {
-        var worthinessMapper = new Database.DocumentDataEntities.Mappers.CreditWorthinessSimpleDataMapper();
+        var worthinessMapper = new Database.DocumentDataEntities.Mappers.MortgageCreditWorthinessSimpleDataMapper();
         
         var cmd = dbCommandFactory();
         int rows = 0;
@@ -38,7 +38,7 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
                     var worthinessBin = getBinary(reader, "CreditWorthinessSimpleInputsBin");
                     if (worthinessBin is not null)
                     {
-                        var worthinessInput = Contracts.MortgageCreditWorthinessSimpleInputs.Parser.ParseFrom(worthinessBin);
+                        var worthinessInput = Contracts.MortgageOfferCreditWorthinessSimpleInputs.Parser.ParseFrom(worthinessBin);
                         var mappedWorthinessData = worthinessMapper.MapToData(worthinessInput, null);
                         insertDDS(connection, "[CreditWorthinessSimpleData]", offerId, createdUserId, createdTime, mappedWorthinessData);
                     }
@@ -47,7 +47,7 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
                     var addBin = getBinary(reader, "AdditionalSimulationResultsBin");
                     if (addBin is not null)
                     {
-                        var addResults = Contracts.AdditionalMortgageSimulationResults.Parser.ParseFrom(addBin);
+                        var addResults = Contracts.MortgageOfferAdditionalSimulationResults.Parser.ParseFrom(addBin);
                         insertDDS(connection, "[AdditionalSimulationResultsData]", offerId, createdUserId, createdTime, mapAdditionalData(addResults));
                     }
 
@@ -56,9 +56,9 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
                     var paramsBin = getBinary(reader, "BasicParametersBin");
                     if (paramsBin is not null)
                     {
-                        var inputsModel = Contracts.MortgageSimulationInputs.Parser.ParseFrom(inputsBin);
-                        var resultsModel = Contracts.MortgageSimulationResults.Parser.ParseFrom(resultsBin);
-                        var paramsModel = Contracts.BasicParameters.Parser.ParseFrom(paramsBin);
+                        var inputsModel = Contracts.MortgageOfferSimulationInputs.Parser.ParseFrom(inputsBin);
+                        var resultsModel = Contracts.MortgageOfferSimulationResults.Parser.ParseFrom(resultsBin);
+                        var paramsModel = Contracts.MortgageOfferBasicParameters.Parser.ParseFrom(paramsBin);
                         
                         var mappedAddData = mapOfferData(inputsModel, resultsModel, paramsModel);
                         insertDDS(connection, "[OfferData]", offerId, createdUserId, createdTime, mappedAddData);
@@ -74,15 +74,15 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
         return string.Empty;
     }
 
-    private static Database.DocumentDataEntities.OfferData mapOfferData(Contracts.MortgageSimulationInputs inputs, Contracts.MortgageSimulationResults simulationOutputs, Contracts.BasicParameters basic)
+    private static Database.DocumentDataEntities.MortgageOfferData mapOfferData(Contracts.MortgageOfferSimulationInputs inputs, Contracts.MortgageOfferSimulationResults simulationOutputs, Contracts.MortgageOfferBasicParameters basic)
     {
-        var mapper = new Database.DocumentDataEntities.Mappers.OfferDataMapper();
+        var mapper = new Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper();
 
-        return new Database.DocumentDataEntities.OfferData
+        return new Database.DocumentDataEntities.MortgageOfferData
         {
             SimulationInputs = mapper.MapToDataInputs(inputs),
             BasicParameters = mapper.MapToDataBasicParameters(basic),
-            SimulationOutputs = new DocumentDataEntities.OfferData.SimulationOutputsData
+            SimulationOutputs = new DocumentDataEntities.MortgageOfferData.SimulationOutputsData
             {
                 ContractSignedDate = simulationOutputs.ContractSignedDate,
                 AnnuityPaymentsCount = simulationOutputs.AnnuityPaymentsCount,
@@ -104,7 +104,7 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
                 LoanDuration = simulationOutputs.LoanDuration,
                 Warnings = simulationOutputs
                     .Warnings?
-                    .Select(t => new DocumentDataEntities.OfferData.SimulationResultWarningData
+                    .Select(t => new DocumentDataEntities.MortgageOfferData.SimulationResultWarningData
                     {
                         WarningCode = t.WarningCode,
                         WarningInternalMessage = t.WarningInternalMessage,
@@ -115,13 +115,13 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
         };
     }
 
-    private static Database.DocumentDataEntities.AdditionalSimulationResultsData mapAdditionalData(Contracts.AdditionalMortgageSimulationResults data)
+    private static Database.DocumentDataEntities.MortgageAdditionalSimulationResultsData mapAdditionalData(Contracts.MortgageOfferAdditionalSimulationResults data)
     {
-        return new Database.DocumentDataEntities.AdditionalSimulationResultsData
+        return new Database.DocumentDataEntities.MortgageAdditionalSimulationResultsData
         {
             Fees = data
                 .Fees?
-                .Select(t => new Database.DocumentDataEntities.AdditionalSimulationResultsData.FeeData
+                .Select(t => new Database.DocumentDataEntities.MortgageAdditionalSimulationResultsData.FeeData
                 {
                     FeeId = t.FeeId,
                     DiscountPercentage = t.DiscountPercentage,
@@ -143,7 +143,7 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
                 .ToList(),
             MarketingActions = data
                 .MarketingActions?
-                .Select(t => new Database.DocumentDataEntities.AdditionalSimulationResultsData.MarketingActionData
+                .Select(t => new Database.DocumentDataEntities.MortgageAdditionalSimulationResultsData.MarketingActionData
                 {
                     Code = t.Code,
                     Requested = t.Requested,
@@ -155,7 +155,7 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
                 .ToList(),
             PaymentScheduleSimple = data
                 .PaymentScheduleSimple?
-                .Select(t => new Database.DocumentDataEntities.AdditionalSimulationResultsData.PaymentScheduleData
+                .Select(t => new Database.DocumentDataEntities.MortgageAdditionalSimulationResultsData.PaymentScheduleData
                 {
                     PaymentIndex = t.PaymentIndex,
                     PaymentNumber = t.PaymentNumber,
