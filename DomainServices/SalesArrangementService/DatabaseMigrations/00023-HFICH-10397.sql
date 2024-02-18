@@ -1,1 +1,1 @@
-alter table dbo.SalesArrangement add TaskProcessId int null;
+alter table dbo.SalesArrangement add TaskProcessId bigint null;
