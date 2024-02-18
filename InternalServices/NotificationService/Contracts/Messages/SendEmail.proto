@@ -23,8 +23,8 @@ message SendEmailRequest {
 
 	message EmailContent
 	{
-		string Format = 1;
-		string Language = 2;
+		EmailFormats Format = 1;
+		EmailLanguages Language = 2;
 		string Text = 3;
 	}
 
@@ -56,5 +56,15 @@ message SendEmailRequest {
 	{
 		string Binary = 1;
 		string Filename = 2;
+	}
+
+	enum EmailLanguages {
+		Cs = 0;
+		En = 1;
+	}
+
+	enum EmailFormats {
+		Html = 0;
+		PlainText = 1;
 	}
 }

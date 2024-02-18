@@ -6,8 +6,10 @@ internal sealed class AppConfiguration
 
     public EmailSenders EmailSenders { get; set; } = null!;
 
+    [Obsolete]
     public List<string> EmailFormats { get; set; } = new();
-    
+
+    [Obsolete]
     public List<string> EmailLanguageCodes { get; set; } = new();
     
     public KafkaTopics KafkaTopics { get; set; } = null!;

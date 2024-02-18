@@ -55,9 +55,13 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int PartyInvalid = 325;
 
     // Email content
+    [Obsolete]
     public const int FormatRequired = 326;
+    [Obsolete]
     public const int FormatInvalid = 327;
+    [Obsolete]
     public const int LanguageRequired = 328;
+    [Obsolete]
     public const int LanguageInvalid = 329;
     public const int EmailTextRequired = 330;
 

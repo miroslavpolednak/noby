@@ -79,8 +79,8 @@ internal sealed class SendEmailHandler
                 content = new()
                 {
                     charset = "UTF-8",
-                    format = request.Content.Format,
-                    language = request.Content.Language,
+                    format = getFormat(request.Content.Format),
+                    language = getLanguage(request.Content.Language),
                     text = request.Content.Text
                 },
                 attachments = attachmentKeyFilenames
@@ -131,6 +131,12 @@ internal sealed class SendEmailHandler
             NotificationId = result.Id.ToString()
         };
     }
+
+    private static string getLanguage(Contracts.v2.SendEmailRequest.Types.EmailLanguages language)
+        => language == SendEmailRequest.Types.EmailLanguages.En ? "en" : "cs";
+
+    private static string getFormat(Contracts.v2.SendEmailRequest.Types.EmailFormats format)
+        => format == SendEmailRequest.Types.EmailFormats.PlainText ? "text/plain" : "text/html";
 
     private readonly IStorageClient<IMcsStorage> _storageClient;
     private readonly IMcsEmailProducer _mcsEmailProducer;

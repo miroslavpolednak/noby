@@ -46,7 +46,7 @@ internal sealed class SendEmailRequestValidator
         RuleFor(request => request.Content)
             .NotEmpty()
                 .WithErrorCode(ErrorCodeMapper.ContentRequired)
-            .SetValidator(new EmailContentValidator(appConfiguration))
+            .SetValidator(new EmailContentValidator())
                 .WithErrorCode(ErrorCodeMapper.ContentInvalid);
 
         RuleFor(request => request.Attachments.Count)
