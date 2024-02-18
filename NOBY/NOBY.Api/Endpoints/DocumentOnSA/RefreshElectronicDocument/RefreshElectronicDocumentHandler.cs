@@ -2,7 +2,7 @@
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Extensions;
-using NOBY.Services.PermissionAccess;
+using NOBY.Services.CheckNonWFLProductSalesArrangementAccess;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
 
@@ -11,13 +11,13 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly INonWFLProductSalesArrangementAccess _nonWFLProductSalesArrangementAccess;
+    private readonly INonWFLProductSalesArrangementAccessService _nonWFLProductSalesArrangementAccess;
 
     public RefreshElectronicDocumentHandler(
         IDocumentOnSAServiceClient documentOnSAService,
         ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
-        INonWFLProductSalesArrangementAccess nonWFLProductSalesArrangementAccess)
+        INonWFLProductSalesArrangementAccessService nonWFLProductSalesArrangementAccess)
     {
         _documentOnSAService = documentOnSAService;
         _codebookService = codebookService;
@@ -32,19 +32,19 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
         var docOnSa = await GetDocumentOnSa(request, cancellationToken);
 
         if (docOnSa.Source != DomainServices.DocumentOnSAService.Contracts.Source.Workflow)
-            await _nonWFLProductSalesArrangementAccess.CheckNonWFLProductSalesArrangementAccess(docOnSa.SalesArrangementId, cancellationToken);
+            await _nonWFLProductSalesArrangementAccess.CheckNonWFLProductSalesArrangementAccess(request.SalesArrangementId, cancellationToken);
 
-        return await MapToResponse(request, docOnSa, cancellationToken);
+        return await MapToResponse(docOnSa, request.SalesArrangementId, cancellationToken);
     }
 
-    private async Task<RefreshElectronicDocumentResponse> MapToResponse(RefreshElectronicDocumentRequest request, DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign docOnSa, CancellationToken cancellationToken)
+    private async Task<RefreshElectronicDocumentResponse> MapToResponse(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign docOnSa, int salesArrangementId, CancellationToken cancellationToken)
     {
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
         var eACodeMains = await _codebookService.EaCodesMain(cancellationToken);
         var signatureStates = await _codebookService.SignatureStatesNoby(cancellationToken);
-
+        
         // All docsOnSa have same salesArrangementId
-        var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+        var salesArrangement = await _salesArrangementService.ValidateSalesArrangementId(salesArrangementId, true, cancellationToken);
 
         return new RefreshElectronicDocumentResponse
         {
@@ -61,7 +61,7 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                     DocumentOnSAId = docOnSa.DocumentOnSAId,
                     IsSigned = docOnSa.IsSigned,
                     Source = docOnSa.Source.MapToCisEnum(),
-                    SalesArrangementTypeId = salesArrangement?.SalesArrangementTypeId,
+                    SalesArrangementTypeId = salesArrangement.SalesArrangementTypeId,
                     EArchivIdsLinked = docOnSa.EArchivIdsLinked
                 },
               signatureStates),

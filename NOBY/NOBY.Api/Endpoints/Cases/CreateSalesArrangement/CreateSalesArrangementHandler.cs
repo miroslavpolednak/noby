@@ -1,6 +1,4 @@
-﻿using CIS.Core.Security;
-
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement;
+﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement;
 
 internal sealed class CreateSalesArrangementHandler
     : IRequestHandler<CreateSalesArrangementRequest, CreateSalesArrangementResponse>
@@ -39,37 +37,10 @@ internal sealed class CreateSalesArrangementHandler
             throw new CisValidationException($"SalesArrangement type not supported");
         }
 
-        // retence
-        if (_retentionSATypes.Contains(request.SalesArrangementTypeId) && !_currentUser.HasPermission(UserPermissions.CHANGE_REQUESTS_RefinancingAccess))
-        {
-            throw new CisAuthorizationException("Missing permission for Refinancing SA type");
-        }
-        // ostatni typy SA
-        else if (_otherSATypes.Contains(request.SalesArrangementTypeId) && !_currentUser.HasPermission(UserPermissions.CHANGE_REQUESTS_Access))
-        {
-            throw new CisAuthorizationException("Missing permission for non-refinancing SA type");
-        }
+        _salesArrangementAuthorization.ValidateRefinancingPermissions(request.SalesArrangementTypeId, UserPermissions.CHANGE_REQUESTS_RefinancingAccess, UserPermissions.CHANGE_REQUESTS_Access);
     }
 
-    private static int[] _retentionSATypes = 
-        [
-            (int)SalesArrangementTypes.Refixation,
-            (int)SalesArrangementTypes.Retention,
-            (int)SalesArrangementTypes.MimoradnaSplatka
-        ];
-
-    private static int[] _otherSATypes =
-        [
-            (int)SalesArrangementTypes.Drawing,
-            (int)SalesArrangementTypes.GeneralChange,
-            (int)SalesArrangementTypes.HUBN,
-            (int)SalesArrangementTypes.CustomerChange,
-            (int)SalesArrangementTypes.CustomerChange3602A,
-            (int)SalesArrangementTypes.CustomerChange3602B,
-            (int)SalesArrangementTypes.CustomerChange3602C
-        ];
-
-    private readonly ICurrentUserAccessor _currentUser;
+    private readonly NOBY.Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly CreateSalesArrangementParametersFactory _createService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
@@ -78,11 +49,11 @@ internal sealed class CreateSalesArrangementHandler
         CreateSalesArrangementParametersFactory createService,
         DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        ICurrentUserAccessor currentUser)
+        NOBY.Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
     {
         _createService = createService;
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
-        _currentUser = currentUser;
+        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 }

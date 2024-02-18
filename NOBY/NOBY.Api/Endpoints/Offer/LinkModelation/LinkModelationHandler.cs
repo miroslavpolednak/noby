@@ -1,5 +1,4 @@
-﻿using CIS.Core.Security;
-using DomainServices.SalesArrangementService.Clients;
+﻿using DomainServices.SalesArrangementService.Clients;
 using _Ca = DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.LinkModelation;
@@ -12,27 +11,22 @@ internal sealed class LinkModelationHandler
         // get SA data
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         
+        // validace prav
+        _salesArrangementAuthorization.ValidateSaAccessBySaType213And248(saInstance.SalesArrangementTypeId);
+        
+        switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)
+        {
+            case SalesArrangementTypes.Mortgage:
+                await updateMortgage(request, saInstance, cancellationToken);
+                break;
 
-        if (saInstance.SalesArrangementTypeId == (int)SalesArrangementTypes.Mortgage)
-        {
-            if (!_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
-            {
-                throw new CisAuthorizationException();
-            }
-            await updateMortgage(request, saInstance, cancellationToken);
-        }
-        else if (saInstance.SalesArrangementTypeId is (int)SalesArrangementTypes.Refixation or (int)SalesArrangementTypes.Retention)
-        {
-            if (!_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess))
-            {
-                throw new CisAuthorizationException();
-            }
+            case SalesArrangementTypes.Refixation:
+            case SalesArrangementTypes.Retention:
+                //... implementace
+                break;
 
-            //... implementace
-        }
-        else
-        {
-            throw new NobyValidationException(90032);
+            default:
+                throw new NobyValidationException(90032);
         }
 
         // nalinkovat novou simulaci
@@ -68,17 +62,17 @@ internal sealed class LinkModelationHandler
         }
     }
 
-    private readonly ICurrentUserAccessor _currentUserAccessor;
+    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public LinkModelationHandler(
         DomainServices.CaseService.Clients.ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
-        ICurrentUserAccessor currentUserAccessor)
+        Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
     {
         _caseService = caseService;
         _salesArrangementService = salesArrangementService;
-        _currentUserAccessor = currentUserAccessor;
+        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 }

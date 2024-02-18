@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
+﻿namespace NOBY.Api.Endpoints.DocumentOnSA.SendDocumentOnSAPreview;
 
 public class SendDocumentOnSAPreviewRequest : IRequest
 {

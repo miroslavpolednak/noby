@@ -8,11 +8,11 @@ using System.Net.Mime;
 using NOBY.Api.Endpoints.DocumentOnSA.Search;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
-using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentPreview;
 using NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
 using NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAStatus;
 using Asp.Versioning;
+using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentOnSAPreview;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
@@ -40,7 +40,7 @@ public class DocumentOnSAController : ControllerBase
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/document-list")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(typeof(GetDocumentsSignListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetDocumentsSignListResponse> GetDocumentsSignList(
@@ -59,7 +59,7 @@ public class DocumentOnSAController : ControllerBase
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/start")]
     [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(typeof(StartSigningResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<StartSigningResponse> StartSigning(
@@ -75,9 +75,8 @@ public class DocumentOnSAController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview")]
-    [NobySkipCaseOwnerStateAndProductSAValidation]
-    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage)]
-    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [NobySkipCaseStateAndProductSAValidation]
+    [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task SendDocumentOnSAPreview([FromRoute] int salesArrangementId, [FromRoute] int documentOnSAId)
@@ -93,9 +92,9 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/stop")]
-    [NobySkipCaseOwnerStateAndProductSAValidation]
+    [NobySkipCaseStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task StopSigning(
@@ -111,9 +110,8 @@ public class DocumentOnSAController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A1B54B66-9AF8-4e5c-A240-93FEF635449F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/preview")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces(MediaTypeNames.Application.Pdf)]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+        [Produces(MediaTypeNames.Application.Pdf)]
+    [SwaggerOperation(Tags = [ "Dokument" ])]
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocumentOnSAPreview(
@@ -133,9 +131,8 @@ public class DocumentOnSAController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
-    [NobySkipCaseOwnerStateAndProductSAValidation]
-    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [NobySkipCaseStateAndProductSAValidation]
+        [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -156,7 +153,7 @@ public class DocumentOnSAController : ControllerBase
     [HttpGet("document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Pdf)]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = [ "Dokument" ])]
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocumentOnSA(
@@ -178,9 +175,8 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}")]
-    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
-    [NobySkipCaseOwnerStateAndProductSAValidation]
-    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [NobySkipCaseStateAndProductSAValidation]
+    [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetDocumentOnSADetailResponse> GetDocumentOnSaDetail(
@@ -199,7 +195,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="request"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/search")]
-    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(typeof(SearchDocumentsOnSaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -225,7 +221,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="caseId"></param>
     /// <param name="request"></param>
     [HttpPost("case/{caseId:long}/document-on-sa/search")]
-    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(typeof(SearchDocumentsOnSaOnCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> SearchDocumentsOnSaOnCase(
@@ -250,8 +246,8 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSaId"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSaId}/refresh")]
-    [NobySkipCaseOwnerStateAndProductSAValidation]
-    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [NobySkipCaseStateAndProductSAValidation]
+    [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(typeof(RefreshElectronicDocumentResponse), StatusCodes.Status200OK)]
     [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage)]
     public async Task<RefreshElectronicDocumentResponse> RefreshElectronicDocument(
@@ -271,7 +267,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"></param>
     /// <param name="documentOnSAId"></param>
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/status")]
-    [SwaggerOperation(Tags = new[] { "Podepisování" })]
+    [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(typeof(GetDocumentOnSAStatusResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetDocumentOnSAStatusResponse> GetDocumentOnSAStatus(

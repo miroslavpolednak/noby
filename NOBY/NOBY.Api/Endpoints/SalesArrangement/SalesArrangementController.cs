@@ -18,7 +18,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("{salesArrangementId:int}/flow")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(GetFlowSwitches.GetFlowSwitchesResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetFlowSwitches.GetFlowSwitchesResponse> GetFlowSwitches([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
@@ -33,9 +33,8 @@ public class SalesArrangementController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91FE5011-5C25-486e-B425-002C76448D66"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/validate")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+        [Produces("application/json")]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(ValidateSalesArrangement.ValidateSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -52,9 +51,9 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID</param>
     [HttpDelete("{salesArrangementId:int}")]
-    [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access, UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access)]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -79,7 +78,7 @@ public class SalesArrangementController : ControllerBase
     [Obsolete("Replaced with v2 (with Exposure changes)")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(GetLoanApplicationAssessment.V1.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetLoanApplicationAssessment.V1.GetLoanApplicationAssessmentResponse> GetLoanApplicationAssessmentV1([FromRoute] int salesArrangementId, [FromQuery] bool newAssessmentRequired, CancellationToken cancellationToken)
@@ -102,7 +101,7 @@ public class SalesArrangementController : ControllerBase
     [ApiVersion("2")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse> GetLoanApplicationAssessmentV2([FromRoute] int salesArrangementId, [FromQuery] bool newAssessmentRequired, CancellationToken cancellationToken)
@@ -119,7 +118,7 @@ public class SalesArrangementController : ControllerBase
     [HttpGet("{salesArrangementId:int}/credit-worthiness")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(GetCreditWorthiness.GetCreditWorthinessResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetCreditWorthiness.GetCreditWorthinessResponse> GetCreditWorthiness([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
@@ -136,8 +135,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
     [HttpGet("list/{caseId:long}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(List<SharedDto.SalesArrangementListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<SharedDto.SalesArrangementListItem>> GetSalesArrangements([FromRoute] long caseId, CancellationToken cancellationToken)
@@ -154,7 +152,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
     [HttpGet("{salesArrangementId:int}/customers")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(List<SharedDto.CustomerListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<SharedDto.CustomerListItem>> GetCustomersOnSa([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
@@ -170,8 +168,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("{salesArrangementId:int}")]
     [Produces("application/json")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new [] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(GetSalesArrangement.GetSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetSalesArrangement.GetSalesArrangementResponse> GetSalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
@@ -187,7 +184,7 @@ public class SalesArrangementController : ControllerBase
     [HttpPut("{salesArrangementId:int}/parameters")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] UpdateParameters.UpdateParametersRequest request)
@@ -205,7 +202,7 @@ public class SalesArrangementController : ControllerBase
     [HttpPost("{salesArrangementId:int}/send")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Send, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -223,7 +220,7 @@ public class SalesArrangementController : ControllerBase
     [HttpGet("{salesArrangementId:int}/comment")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<SharedDto.Comment> GetComment([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
@@ -240,7 +237,7 @@ public class SalesArrangementController : ControllerBase
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
+    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task UpdateComment([FromRoute] int salesArrangementId, [FromBody] SharedDto.Comment? comment)

@@ -1,8 +1,6 @@
 ﻿using CIS.Core.Security;
 using DomainServices.CaseService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using System.ComponentModel;
-using System.Threading;
 
 namespace NOBY.Api.Endpoints.Workflow.CancelTask;
 

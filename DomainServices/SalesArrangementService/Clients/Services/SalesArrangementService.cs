@@ -193,13 +193,14 @@ internal sealed class SalesArrangementService
 
     public async Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(int salesArrangementId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default)
     {
-        if (_cacheValidateSalesArrangementId is null)
+        if (_cacheValidateSalesArrangementId is null || _cacheValidateSalesArrangementIdId != salesArrangementId)
         {
             _cacheValidateSalesArrangementId = await _service.ValidateSalesArrangementIdAsync(new ValidateSalesArrangementIdRequest
             {
                 SalesArrangementId = salesArrangementId,
                 ThrowExceptionIfNotFound = throwExceptionIfNotFound,
             }, cancellationToken: cancellationToken);
+            _cacheValidateSalesArrangementIdId = salesArrangementId;
         }
         return _cacheValidateSalesArrangementId;
     }
@@ -213,6 +214,7 @@ internal sealed class SalesArrangementService
     private int? _cacheGetFlowSwitchesId;
     private SalesArrangement? _cacheGetSalesArrangement;
     private ValidateSalesArrangementIdResponse? _cacheValidateSalesArrangementId;
+    private int? _cacheValidateSalesArrangementIdId;
 
     private readonly Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service;
 
