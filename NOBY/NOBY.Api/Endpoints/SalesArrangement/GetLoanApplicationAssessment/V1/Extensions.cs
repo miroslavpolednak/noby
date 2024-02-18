@@ -6,7 +6,7 @@ namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V1;
 
 internal static class Extensions
 {
-    public static GetLoanApplicationAssessmentResponse ToApiResponse(this cRS.V1.LoanApplicationAssessmentResponse response, cOffer.GetMortgageOfferResponse? offer)
+    public static GetLoanApplicationAssessmentResponse ToApiResponse(this cRS.V1.LoanApplicationAssessmentResponse response, cOffer.GetOfferResponse? offer)
     {
         //https://wiki.kb.cz/pages/viewpage.action?pageId=464683017
 
@@ -30,8 +30,8 @@ internal static class Extensions
                 LTCP = response.CollateralRiskCharacteristics?.Ltp,
                 LFTV = response.CollateralRiskCharacteristics?.Lftv,
                 LTV = response.CollateralRiskCharacteristics?.Ltv,
-                LoanAmount = offer?.SimulationResults?.LoanAmount!,
-                LoanPaymentAmount = offer?.SimulationResults?.LoanPaymentAmount,
+                LoanAmount = offer?.MortgageOffer.SimulationResults?.LoanAmount!,
+                LoanPaymentAmount = offer?.MortgageOffer.SimulationResults?.LoanPaymentAmount,
             },
             Households = response.HouseholdsDetails?.Select(h => new Dto.Household
             {

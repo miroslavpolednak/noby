@@ -28,5 +28,14 @@ public enum SalesArrangementTypes : byte
     CustomerChange3602B = 11,
 
     [EnumMember]
-    CustomerChange3602C = 12
+    CustomerChange3602C = 12,
+
+    [EnumMember]
+    Retention = 13,
+
+    [EnumMember]
+    Refixace = 14,
+
+    [EnumMember]
+    MimoradnaSplatka = 15
 }

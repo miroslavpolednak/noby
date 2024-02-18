@@ -5,34 +5,31 @@ using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 
 internal sealed class CustomerChange3602BValidator
-    : BaseValidator, ICreateSalesArrangementParametersValidator
+    : BaseValidator<CustomerChange3602BBuilder>, ICreateSalesArrangementParametersValidator
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    public CustomerChange3602BValidator(BuilderValidatorAggregate aggregate)
+        : base(aggregate) { }
 
-    public CustomerChange3602BValidator(ILogger<CreateSalesArrangementParametersFactory> logger, DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request)
+    public override async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default(CancellationToken))
     {
-        _httpContextAccessor = httpContextAccessor;
-    }
+        ValidateUserPermissions(UserPermissions.CHANGE_REQUESTS_Access);
 
-    public async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default(CancellationToken))
-    {
-        var caseService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<ICaseServiceClient>();
-        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<IProductServiceClient>();
+        var caseService = GetRequiredService<ICaseServiceClient>();
+        var productService = GetRequiredService<IProductServiceClient>();
 
-        var caseInstance = await caseService.GetCaseDetail(_request.CaseId, cancellationToken);
-        if (caseInstance.State == 1)
+        var caseInstance = await caseService.GetCaseDetail(Request.CaseId, cancellationToken);
+        if (caseInstance.State == (int)CaseStates.InProgress)
         {
             throw new NobyValidationException(90040);
         }
 
         // instance hypo
-        var productInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
+        var productInstance = await productService.GetMortgage(Request.CaseId, cancellationToken);
         if (productInstance.Mortgage?.ContractSignedDate is not null)
         {
             throw new NobyValidationException(90041);
         }
 
-        return new CustomerChange3602BBuilder(_logger, _request, _httpContextAccessor);
+        return await base.Validate(cancellationToken);
     }
 }

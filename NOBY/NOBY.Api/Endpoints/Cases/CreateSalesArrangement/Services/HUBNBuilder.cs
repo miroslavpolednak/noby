@@ -6,9 +6,9 @@ namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
 internal sealed class HUBNBuilder
     : BaseBuilder
 {
-    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default)
     {
-        _request.HUBN = new __SA.SalesArrangementParametersHUBN
+        Request.HUBN = new __SA.SalesArrangementParametersHUBN
         {
             LoanAmount = new(),
             DrawingDateTo = new(),
@@ -17,27 +17,25 @@ internal sealed class HUBNBuilder
         };
 
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
-        var productService = _httpContextAccessor.HttpContext!.RequestServices.GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
+        var productService = GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         try
         {
-            var mortgageInstance = await productService.GetMortgage(_request.CaseId, cancellationToken);
+            var mortgageInstance = await productService.GetMortgage(Request.CaseId, cancellationToken);
 
-            _request.HUBN.LoanAmount.AgreedLoanAmount = (decimal?)mortgageInstance.Mortgage?.LoanAmount ?? 0M;
-            _request.HUBN.LoanAmount.AgreedLoanDueDate = (DateTime?)mortgageInstance.Mortgage?.LoanDueDate ?? DateTime.Now;
-            _request.HUBN.LoanAmount.AgreedLoanPaymentAmount = (decimal?)mortgageInstance.Mortgage?.LoanPaymentAmount ?? 0M;
-            _request.HUBN.ExpectedDateOfDrawing.AgreedExpectedDateOfDrawing = (DateTime?)mortgageInstance.Mortgage?.ExpectedDateOfDrawing ?? DateTime.Now;
-            _request.HUBN.DrawingDateTo.AgreedDrawingDateTo = (DateTime?)mortgageInstance.Mortgage?.DrawingDateTo ?? DateTime.Now;
+            Request.HUBN.LoanAmount.AgreedLoanAmount = (decimal?)mortgageInstance.Mortgage?.LoanAmount ?? 0M;
+            Request.HUBN.LoanAmount.AgreedLoanDueDate = (DateTime?)mortgageInstance.Mortgage?.LoanDueDate ?? DateTime.Now;
+            Request.HUBN.LoanAmount.AgreedLoanPaymentAmount = (decimal?)mortgageInstance.Mortgage?.LoanPaymentAmount ?? 0M;
+            Request.HUBN.ExpectedDateOfDrawing.AgreedExpectedDateOfDrawing = (DateTime?)mortgageInstance.Mortgage?.ExpectedDateOfDrawing ?? DateTime.Now;
+            Request.HUBN.DrawingDateTo.AgreedDrawingDateTo = (DateTime?)mortgageInstance.Mortgage?.DrawingDateTo ?? DateTime.Now;
         }
         catch
         {
-            _logger.LogInformation("HUBNBuilder: Account not found in ProductService");
+            GetLogger<HUBNBuilder>().LogInformation("HUBNBuilder: Account not found in ProductService");
         }
 
-        return _request;
+        return Request;
     }
 
-    public HUBNBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
-        : base(logger, request, httpContextAccessor)
-    {
-    }
+    public HUBNBuilder(BuilderValidatorAggregate aggregate)
+        : base(aggregate) { }
 }

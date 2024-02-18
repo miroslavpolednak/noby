@@ -53,26 +53,26 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
             var salesArrangementInstance = await _salesArrangementService.GetSalesArrangement(sa.SalesArrangementId, cancellationToken);
 
             // get Offer
-            var offerInstance = await _offerService.GetMortgageOfferDetail(salesArrangementInstance.OfferId!.Value, cancellationToken);
+            var offerInstance = await _offerService.GetOfferDetail(salesArrangementInstance.OfferId!.Value, cancellationToken);
 
             // load User
             var caseOwnerOrig = await getUserInstance(caseInstance.CaseOwner?.UserId, cancellationToken);
             
             response.Add(new Dto.CaseParameters
             {
-                ProductType = productTypes.FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.ProductTypeId),
+                ProductType = productTypes.FirstOrDefault(t => t.Id == offerInstance.MortgageOffer.SimulationInputs.ProductTypeId),
                 ContractNumber = salesArrangementInstance.ContractNumber,
-                LoanAmount = offerInstance.SimulationResults.LoanAmount,
-                LoanInterestRate = offerInstance.SimulationResults.LoanInterestRateProvided,
-                DrawingDateTo = offerInstance.SimulationResults.DrawingDateTo,
-                LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount,
-                LoanKind = loanKindTypes.FirstOrDefault(t => t.Id == offerInstance.SimulationInputs.LoanKindId),
-                FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod,
-                LoanPurposes = mapLoanPurposes(offerInstance.SimulationInputs.LoanPurposes, loanPurposeTypes).ToList(),
+                LoanAmount = offerInstance.MortgageOffer.SimulationResults.LoanAmount,
+                LoanInterestRate = offerInstance.MortgageOffer.SimulationResults.LoanInterestRateProvided,
+                DrawingDateTo = offerInstance.MortgageOffer.SimulationResults.DrawingDateTo,
+                LoanPaymentAmount = offerInstance.MortgageOffer.SimulationResults.LoanPaymentAmount,
+                LoanKind = loanKindTypes.FirstOrDefault(t => t.Id == offerInstance.MortgageOffer.SimulationInputs.LoanKindId),
+                FixedRatePeriod = offerInstance.MortgageOffer.SimulationInputs.FixedRatePeriod,
+                LoanPurposes = mapLoanPurposes(offerInstance.MortgageOffer.SimulationInputs.LoanPurposes, loanPurposeTypes).ToList(),
                 ExpectedDateOfDrawing = salesArrangementInstance.Mortgage?.ExpectedDateOfDrawing,
-                LoanDueDate = offerInstance.SimulationResults.LoanDueDate,
-                PaymentDay = offerInstance.SimulationInputs.PaymentDay,
-                FirstAnnuityPaymentDate = offerInstance.SimulationResults.AnnuityPaymentsDateFrom,
+                LoanDueDate = offerInstance.MortgageOffer.SimulationResults.LoanDueDate,
+                PaymentDay = offerInstance.MortgageOffer.SimulationInputs.PaymentDay,
+                FirstAnnuityPaymentDate = offerInstance.MortgageOffer.SimulationResults.AnnuityPaymentsDateFrom,
                 CaseOwnerOrigUser = getCaseOwnerOrigUser(caseOwnerOrig, null)
             });
         }

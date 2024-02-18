@@ -1,0 +1,18 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "Messages/Types.proto";
+import "Parameters/MortgageOffer.proto";
+
+message GetOfferDetailRequest {
+	int32 OfferId = 1;
+}
+
+message GetOfferDetailResponse {
+	CommonOfferData Data = 1;
+	
+	oneof Parameters {
+		MortgageOfferFullData MortgageOffer = 20;
+	}
+}

@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "Messages/Types.proto";
+
+message ValidateOfferIdRequest {
+	int32 OfferId = 1;
+	bool ThrowExceptionIfNotFound = 2;
+}
+
+message ValidateOfferIdResponse {
+	bool Exists = 1;
+	CommonOfferData Data = 2;
+}

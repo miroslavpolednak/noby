@@ -1,13 +1,34 @@
-﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+﻿using CIS.Core.Security;
 
-internal abstract class BaseValidator
+namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+
+internal abstract class BaseValidator<TBuilder>
+    : ICreateSalesArrangementParametersValidator
+    where TBuilder : class, ICreateSalesArrangementParametersBuilder
 {
-    protected readonly DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest _request;
-    protected readonly ILogger<CreateSalesArrangementParametersFactory> _logger;
+    protected DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest Request => _aggregate.Request;
+    
+    private readonly BuilderValidatorAggregate _aggregate;
 
-    public BaseValidator(ILogger<CreateSalesArrangementParametersFactory> logger, DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest request)
+    public BaseValidator(BuilderValidatorAggregate aggregate)
     {
-        _logger = logger;
-        _request = request;
+        _aggregate = aggregate;
+    }
+
+    protected void ValidateUserPermissions(UserPermissions requiredPermission)
+    {
+        if (!_aggregate.HttpContextAccessor.HttpContext!.RequestServices.GetRequiredService<ICurrentUserAccessor>().HasPermission(UserPermissions.APPLICATION_BasicAccess))
+        {
+            throw new CisAuthorizationException($"User does not have {requiredPermission} permission");
+        }
+    }
+
+    protected TService GetRequiredService<TService>()
+        where TService : class
+        => _aggregate.HttpContextAccessor.HttpContext!.RequestServices.GetRequiredService<TService>();
+
+    public virtual Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult((ICreateSalesArrangementParametersBuilder)Activator.CreateInstance(typeof(TBuilder), _aggregate)!);
     }
 }

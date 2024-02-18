@@ -2404,7 +2404,7 @@
             ID noveho klienta
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.CreateMortgageCase.Extensions.ToDomainServiceRequest(NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,System.Int32,DomainServices.OfferService.Contracts.MortgageSimulationInputs)">
+        <member name="M:NOBY.Api.Endpoints.Offer.CreateMortgageCase.Extensions.ToDomainServiceRequest(NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,System.Int32,DomainServices.OfferService.Contracts.MortgageOfferSimulationInputs)">
             <summary>
             Vytvoreni requestu pro zalozeni CASE
             </summary>

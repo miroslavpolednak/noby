@@ -196,7 +196,7 @@ internal static class Extensions
             })
             .ToList();
 
-    public static LoanApplication ToLoanApplicationApiResponse(this cRS.V1.LoanApplicationAssessmentResponse response, cOffer.GetMortgageOfferResponse? offer)
+    public static LoanApplication ToLoanApplicationApiResponse(this cRS.V1.LoanApplicationAssessmentResponse response, cOffer.GetOfferResponse? offer)
         => new LoanApplication
         {
             Limit = response.Detail?.Limit?.Limit?.Amount,
@@ -215,8 +215,8 @@ internal static class Extensions
             LTCP = response.CollateralRiskCharacteristics?.Ltp,
             LFTV = response.CollateralRiskCharacteristics?.Lftv,
             LTV = response.CollateralRiskCharacteristics?.Ltv,
-            LoanAmount = offer?.SimulationResults?.LoanAmount!,
-            LoanPaymentAmount = offer?.SimulationResults?.LoanPaymentAmount,
+            LoanAmount = offer?.MortgageOffer.SimulationResults?.LoanAmount!,
+            LoanPaymentAmount = offer?.MortgageOffer.SimulationResults?.LoanPaymentAmount,
         };
 
     public static Dto.HouseholdRisk ToHouseholdRiskApiResponse(this cRS.V1.LoanApplicationAssessmentHouseholdDetail household)

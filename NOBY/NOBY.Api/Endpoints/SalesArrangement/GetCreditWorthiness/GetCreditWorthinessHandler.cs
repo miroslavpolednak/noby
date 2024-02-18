@@ -1,6 +1,4 @@
-﻿using _SA = DomainServices.SalesArrangementService.Contracts;
-using _Case = DomainServices.CaseService.Contracts;
-using _Rip = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
+﻿using _Rip = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using CIS.Core;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,14 +16,14 @@ internal sealed class GetCreditWorthinessHandler
         // case instance
         var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
         // offer instance
-        var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
+        var offerInstance = await _offerService.GetOffer(saInstance.OfferId!.Value, cancellationToken);
         // user instance
         var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
 #pragma warning disable CA1305 // Specify IFormatProvider
         var ripRequest = new _Rip.CreditWorthinessCalculateRequest
         {
-            ResourceProcessId = offerInstance.ResourceProcessId,
+            ResourceProcessId = offerInstance.Data.ResourceProcessId,
             RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
             UserIdentity = new()
             {
@@ -35,11 +33,11 @@ internal sealed class GetCreditWorthinessHandler
             Product = new()
             {
                 ProductTypeId = caseInstance.Data.ProductTypeId,
-                LoanDuration = offerInstance.SimulationResults.LoanDuration,
-                LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
-                LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount),
-                LoanPaymentAmount = Convert.ToInt32((decimal?)offerInstance.SimulationResults.LoanPaymentAmount ?? 0M),
-                FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod!.Value
+                LoanDuration = offerInstance.MortgageOffer.SimulationResults.LoanDuration,
+                LoanInterestRate = offerInstance.MortgageOffer.SimulationResults.LoanInterestRate,
+                LoanAmount = Convert.ToInt32(offerInstance.MortgageOffer.SimulationResults.LoanAmount),
+                LoanPaymentAmount = Convert.ToInt32((decimal?)offerInstance.MortgageOffer.SimulationResults.LoanPaymentAmount ?? 0M),
+                FixedRatePeriod = offerInstance.MortgageOffer.SimulationInputs.FixedRatePeriod!.Value
             },
             Households = await _creditWorthinessHouseholdService.CreateHouseholds(request.SalesArrangementId, cancellationToken)
         };
@@ -58,8 +56,8 @@ internal sealed class GetCreditWorthinessHandler
             ResultReasonDescription = ripResult.ResultReason?.Description,
             Dti = ripResult.Dti,
             Dsti = ripResult.Dsti,
-            LoanAmount = offerInstance.SimulationInputs.LoanAmount,
-            LoanPaymentAmount = offerInstance.SimulationResults.LoanPaymentAmount
+            LoanAmount = offerInstance.MortgageOffer.SimulationInputs.LoanAmount,
+            LoanPaymentAmount = offerInstance.MortgageOffer.SimulationResults.LoanPaymentAmount
         };
     }
 

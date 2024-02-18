@@ -5,20 +5,26 @@ namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 internal abstract class BaseBuilder
     : ICreateSalesArrangementParametersBuilder
 {
-    protected readonly IHttpContextAccessor _httpContextAccessor;
-    protected readonly __SA.CreateSalesArrangementRequest _request;
-    protected readonly ILogger<CreateSalesArrangementParametersFactory> _logger;
+    protected DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest Request => _aggregate.Request;
+    
+    private readonly BuilderValidatorAggregate _aggregate;
 
-    public BaseBuilder(ILogger<CreateSalesArrangementParametersFactory> logger, __SA.CreateSalesArrangementRequest request, IHttpContextAccessor httpContextAccessor)
+    public BaseBuilder(BuilderValidatorAggregate aggregate)
     {
-        _httpContextAccessor = httpContextAccessor;
-        _logger = logger;
-        _request = request;
+        _aggregate = aggregate;
     }
+
+    public ILogger<T> GetLogger<T>()
+        where T : class
+        => _aggregate.HttpContextAccessor.HttpContext!.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger<T>();
+
+    protected TService GetRequiredService<TService>()
+        where TService : class
+        => _aggregate.HttpContextAccessor.HttpContext!.RequestServices.GetRequiredService<TService>();
 
     public virtual Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(_request);
+        return Task.FromResult(Request);
     }
 
     public virtual Task PostCreateProcessing(int salesArrangementId, CancellationToken cancellationToken = default)

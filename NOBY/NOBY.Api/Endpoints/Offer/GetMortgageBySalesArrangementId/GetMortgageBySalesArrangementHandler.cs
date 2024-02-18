@@ -16,17 +16,17 @@ internal sealed class GetMortgageBySalesArrangementHandler
         if (!salesArrangementInstance.OfferId.HasValue)
             throw new NobyValidationException("SalesArrangement is not linked to any Offer");
 
-        var result = await _offerService.GetMortgageOfferDetail(salesArrangementInstance.OfferId.Value, cancellationToken);
+        var result = await _offerService.GetOfferDetail(salesArrangementInstance.OfferId.Value, cancellationToken);
 
         // predelat z DS na FE Dto
         return new GetMortgageResponse
         {
-            OfferId = result.OfferId,
-            OfferGuaranteeDateTo = result.BasicParameters.GuaranteeDateTo,
-            ResourceProcessId = result.ResourceProcessId,
-            SimulationInputs = result.SimulationInputs.ToApiResponse(result.BasicParameters),
-            SimulationResults = result.SimulationResults.ToApiResponse(result.SimulationInputs, result.AdditionalSimulationResults),
-            CreditWorthinessSimpleInputs = result.CreditWorthinessSimpleInputs.ToApiResponse(result.IsCreditWorthinessSimpleRequested),
+            OfferId = result.Data.OfferId,
+            OfferGuaranteeDateTo = result.MortgageOffer.BasicParameters.GuaranteeDateTo,
+            ResourceProcessId = result.Data.ResourceProcessId,
+            SimulationInputs = result.MortgageOffer.SimulationInputs.ToApiResponse(result.MortgageOffer.BasicParameters),
+            SimulationResults = result.MortgageOffer.SimulationResults.ToApiResponse(result.MortgageOffer.SimulationInputs, result.MortgageOffer.AdditionalSimulationResults),
+            CreditWorthinessSimpleInputs = result.MortgageOffer.CreditWorthinessSimpleInputs.ToApiResponse(result.MortgageOffer.IsCreditWorthinessSimpleRequested),
         };
     }
 

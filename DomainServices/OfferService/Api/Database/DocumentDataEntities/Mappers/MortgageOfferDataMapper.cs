@@ -1,6 +1,6 @@
 ﻿using CIS.Core.Attributes;
 using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
-using static DomainServices.OfferService.Api.Database.DocumentDataEntities.OfferData;
+using static DomainServices.OfferService.Api.Database.DocumentDataEntities.MortgageOfferData;
 using __Contracts = DomainServices.OfferService.Contracts;
 
 namespace DomainServices.OfferService.Api.Database.DocumentDataEntities.Mappers;
@@ -9,9 +9,9 @@ namespace DomainServices.OfferService.Api.Database.DocumentDataEntities.Mappers;
 #pragma warning disable CA1822 // Mark members as static
 
 [TransientService, SelfService]
-internal sealed class OfferDataMapper
+internal sealed class MortgageOfferDataMapper
 {
-    public BasicParametersData MapToDataBasicParameters(__Contracts.BasicParameters basicParameters)
+    public BasicParametersData MapToDataBasicParameters(__Contracts.MortgageOfferBasicParameters basicParameters)
     {
         return new()
         {
@@ -22,7 +22,7 @@ internal sealed class OfferDataMapper
         };
     }
 
-    public SimulationInputsData MapToDataInputs(__Contracts.MortgageSimulationInputs inputs)
+    public SimulationInputsData MapToDataInputs(__Contracts.MortgageOfferSimulationInputs inputs)
     {
         return new()
         {
@@ -83,7 +83,7 @@ internal sealed class OfferDataMapper
 
     public SimulationOutputsData MapToDataOutputs(SimulationHTResponse results)
     {
-        var model = new OfferData.SimulationOutputsData
+        var model = new MortgageOfferData.SimulationOutputsData
         {
             LoanAmount = results.uverVysledky.vyseUveru,
             LoanDuration = results.uverVysledky.splatnostUveru,
@@ -107,7 +107,7 @@ internal sealed class OfferDataMapper
 
         if (results.errorInfo?.warningy?.Any() ?? false)
         {
-            model.Warnings = results.errorInfo.warningy.Select(t => new OfferData.SimulationResultWarningData
+            model.Warnings = results.errorInfo.warningy.Select(t => new MortgageOfferData.SimulationResultWarningData
             {
                 WarningCode = t.kodWarningu,
                 WarningInternalMessage = t.internalMsg ?? "",
@@ -118,12 +118,12 @@ internal sealed class OfferDataMapper
         return model;
     }
 
-    public (__Contracts.BasicParameters? BasicParameters, __Contracts.MortgageSimulationInputs? SimulationInputs, __Contracts.MortgageSimulationResults? SimulationResults) MapFromDataToSingle(
-        OfferData.BasicParametersData? basicParameters,
-        OfferData.SimulationInputsData? simulationInputs,
-        OfferData.SimulationOutputsData? simulationOutputs)
+    public (__Contracts.MortgageOfferBasicParameters? BasicParameters, __Contracts.MortgageOfferSimulationInputs? SimulationInputs, __Contracts.MortgageOfferSimulationResults? SimulationResults) MapFromDataToSingle(
+        MortgageOfferData.BasicParametersData? basicParameters,
+        MortgageOfferData.SimulationInputsData? simulationInputs,
+        MortgageOfferData.SimulationOutputsData? simulationOutputs)
     {
-        __Contracts.BasicParameters? basicParametersModel = basicParameters is null ? null : new __Contracts.BasicParameters
+        __Contracts.MortgageOfferBasicParameters? basicParametersModel = basicParameters is null ? null : new __Contracts.MortgageOfferBasicParameters
         {
             StatementTypeId = basicParameters.StatementTypeId,
             FinancialResourcesOther = basicParameters.FinancialResourcesOther,
@@ -131,10 +131,10 @@ internal sealed class OfferDataMapper
             GuaranteeDateTo = basicParameters.GuaranteeDateTo
         };
 
-        __Contracts.MortgageSimulationInputs? simulationInputsModel = null;
+        __Contracts.MortgageOfferSimulationInputs? simulationInputsModel = null;
         if (simulationInputs is not null)
         {
-            simulationInputsModel = new __Contracts.MortgageSimulationInputs
+            simulationInputsModel = new __Contracts.MortgageOfferSimulationInputs
             {
                 CollateralAmount = simulationInputs.CollateralAmount,
                 DrawingDurationId = simulationInputs.DrawingDurationId,
@@ -199,10 +199,10 @@ internal sealed class OfferDataMapper
             }
         }
 
-        __Contracts.MortgageSimulationResults? simulationResultsModel = null;
+        __Contracts.MortgageOfferSimulationResults? simulationResultsModel = null;
         if (simulationOutputs is not null)
         {
-            simulationResultsModel = new __Contracts.MortgageSimulationResults
+            simulationResultsModel = new __Contracts.MortgageOfferSimulationResults
             {
                 ContractSignedDate = simulationOutputs.ContractSignedDate,
                 AnnuityPaymentsCount = simulationOutputs.AnnuityPaymentsCount,

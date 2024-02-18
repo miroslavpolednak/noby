@@ -21,7 +21,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         // instance of Offer
-        var offer = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
+        var offer = await _offerService.GetOffer(saInstance.OfferId!.Value, cancellationToken);
 
         // neexistuje RBC -> vytvorit novy a ulozit
         if (string.IsNullOrEmpty(saInstance.RiskBusinessCaseId))
@@ -89,7 +89,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         }
     }
 
-    private async Task createNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, GetMortgageOfferResponse offer, CancellationToken cancellationToken)
+    private async Task createNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, GetOfferResponse offer, CancellationToken cancellationToken)
     {
         // create assesment
         var createAssessmentRequest = new RiskBusinessCaseCreateAssessmentRequest
@@ -98,7 +98,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
             RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
             LoanApplicationDataVersion = saInstance.LoanApplicationDataVersion,
             AssessmentMode = RiskBusinessCaseAssessmentModes.SC,
-            GrantingProcedureCode = offer.SimulationInputs.IsEmployeeBonusRequested == true ? RiskBusinessCaseGrantingProcedureCodes.EMP : RiskBusinessCaseGrantingProcedureCodes.STD,
+            GrantingProcedureCode = offer.MortgageOffer.SimulationInputs.IsEmployeeBonusRequested == true ? RiskBusinessCaseGrantingProcedureCodes.EMP : RiskBusinessCaseGrantingProcedureCodes.STD,
         };
         var createAssessmentResponse = await _riskBusinessCaseService.CreateAssessment(createAssessmentRequest, cancellationToken);
 

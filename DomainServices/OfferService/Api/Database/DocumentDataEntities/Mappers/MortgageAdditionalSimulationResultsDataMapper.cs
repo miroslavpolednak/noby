@@ -7,13 +7,13 @@ namespace DomainServices.OfferService.Api.Database.DocumentDataEntities.Mappers;
 #pragma warning disable CA1822 // Mark members as static
 
 [TransientService, SelfService]
-internal sealed class AdditionalSimulationResultsDataMapper
+internal sealed class MortgageAdditionalSimulationResultsDataMapper
 {
-    public AdditionalSimulationResultsData MapToData(SimulationHTResponse results)
+    public MortgageAdditionalSimulationResultsData MapToData(SimulationHTResponse results)
     {
-        return new AdditionalSimulationResultsData
+        return new MortgageAdditionalSimulationResultsData
         {
-            Fees = results.poplatky.Select(t => new AdditionalSimulationResultsData.FeeData
+            Fees = results.poplatky.Select(t => new MortgageAdditionalSimulationResultsData.FeeData
             {
                 FeeId = t.kodSB,
                 DiscountPercentage = t.slevaIC,
@@ -32,7 +32,7 @@ internal sealed class AdditionalSimulationResultsDataMapper
                 Periodicity = t.periodicita ?? String.Empty,
                 AccountDateFrom = t.uctovatOd,
             }).ToList(),
-            MarketingActions = results.marketingoveAkce is null ? null : results.marketingoveAkce.Select(t => new AdditionalSimulationResultsData.MarketingActionData
+            MarketingActions = results.marketingoveAkce is null ? null : results.marketingoveAkce.Select(t => new MortgageAdditionalSimulationResultsData.MarketingActionData
             {
                 Code = t.typMaAkce,
                 Requested = t.zaskrtnuto,
@@ -41,7 +41,7 @@ internal sealed class AdditionalSimulationResultsDataMapper
                 Deviation = t.odchylkaSazby,
                 Name = t.nazev,
             }).ToList(),
-            PaymentScheduleSimple = results.splatkovyKalendarJednoduchy is null ? null : results.splatkovyKalendarJednoduchy.Select(t => new AdditionalSimulationResultsData.PaymentScheduleData
+            PaymentScheduleSimple = results.splatkovyKalendarJednoduchy is null ? null : results.splatkovyKalendarJednoduchy.Select(t => new MortgageAdditionalSimulationResultsData.PaymentScheduleData
             {
                 PaymentIndex = t.n,
                 PaymentNumber = t.cisloSplatky,
@@ -52,9 +52,9 @@ internal sealed class AdditionalSimulationResultsDataMapper
         };
     }
 
-    public __Contracts.AdditionalMortgageSimulationResults MapFromDataToSingle(AdditionalSimulationResultsData? data)
+    public __Contracts.MortgageOfferAdditionalSimulationResults MapFromDataToSingle(MortgageAdditionalSimulationResultsData? data)
     {
-        var model = new __Contracts.AdditionalMortgageSimulationResults();
+        var model = new __Contracts.MortgageOfferAdditionalSimulationResults();
 
         if (data?.Fees is not null)
         {
