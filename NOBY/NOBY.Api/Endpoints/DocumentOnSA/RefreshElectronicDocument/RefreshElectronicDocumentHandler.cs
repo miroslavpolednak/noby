@@ -8,6 +8,7 @@ namespace NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
 
 public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectronicDocumentRequest, RefreshElectronicDocumentResponse>
 {
+    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -17,16 +18,23 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
         IDocumentOnSAServiceClient documentOnSAService,
         ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
-        INonWFLProductSalesArrangementAccessService nonWFLProductSalesArrangementAccess)
+        INonWFLProductSalesArrangementAccessService nonWFLProductSalesArrangementAccess,
+        Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
     {
         _documentOnSAService = documentOnSAService;
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
         _nonWFLProductSalesArrangementAccess = nonWFLProductSalesArrangementAccess;
+        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 
     public async Task<RefreshElectronicDocumentResponse> Handle(RefreshElectronicDocumentRequest request, CancellationToken cancellationToken)
     {
+        // All docsOnSa have same salesArrangementId
+        var salesArrangement = await _salesArrangementService.ValidateSalesArrangementId(request.SalesArrangementId, true, cancellationToken);
+        // validace prav
+        _salesArrangementAuthorization.ValidateDocumentSigningMngBySaType237And246(salesArrangement.SalesArrangementTypeId!.Value);
+
         await _documentOnSAService.RefreshElectronicDocument(request.DocumentOnSAId, cancellationToken);
         // after refresh
         var docOnSa = await GetDocumentOnSa(request, cancellationToken);
@@ -34,17 +42,16 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
         if (docOnSa.Source != DomainServices.DocumentOnSAService.Contracts.Source.Workflow)
             await _nonWFLProductSalesArrangementAccess.CheckNonWFLProductSalesArrangementAccess(request.SalesArrangementId, cancellationToken);
 
-        return await MapToResponse(docOnSa, request.SalesArrangementId, cancellationToken);
+        return await MapToResponse(docOnSa, salesArrangement.SalesArrangementTypeId.Value, cancellationToken);
     }
 
-    private async Task<RefreshElectronicDocumentResponse> MapToResponse(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign docOnSa, int salesArrangementId, CancellationToken cancellationToken)
+    private async Task<RefreshElectronicDocumentResponse> MapToResponse(DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign docOnSa, int salesArrangementTypeId, CancellationToken cancellationToken)
     {
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
         var eACodeMains = await _codebookService.EaCodesMain(cancellationToken);
         var signatureStates = await _codebookService.SignatureStatesNoby(cancellationToken);
         
-        // All docsOnSa have same salesArrangementId
-        var salesArrangement = await _salesArrangementService.ValidateSalesArrangementId(salesArrangementId, true, cancellationToken);
+        
 
         return new RefreshElectronicDocumentResponse
         {
@@ -61,7 +68,7 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                     DocumentOnSAId = docOnSa.DocumentOnSAId,
                     IsSigned = docOnSa.IsSigned,
                     Source = docOnSa.Source.MapToCisEnum(),
-                    SalesArrangementTypeId = salesArrangement.SalesArrangementTypeId,
+                    SalesArrangementTypeId = salesArrangementTypeId,
                     EArchivIdsLinked = docOnSa.EArchivIdsLinked
                 },
               signatureStates),

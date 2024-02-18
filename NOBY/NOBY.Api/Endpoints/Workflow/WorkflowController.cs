@@ -59,7 +59,6 @@ public class WorkflowController : ControllerBase
     [HttpPost("{caseId:long}/tasks/{taskId:long}/signing/start")]
     [Consumes("application/json")]
     [SwaggerOperation(Tags = new[] { "Podepisování" })]
-    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage)]
     [ProducesResponseType(typeof(StartTaskSigning.StartTaskSigningResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<StartTaskSigning.StartTaskSigningResponse> StartTaskSigning([FromRoute] long caseId, [FromRoute] long taskId)

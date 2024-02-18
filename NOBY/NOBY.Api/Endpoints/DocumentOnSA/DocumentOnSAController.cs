@@ -222,6 +222,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="request"></param>
     [HttpPost("case/{caseId:long}/document-on-sa/search")]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
+    [NobyAuthorize(true, UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
     [ProducesResponseType(typeof(SearchDocumentsOnSaOnCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> SearchDocumentsOnSaOnCase(
@@ -249,7 +250,6 @@ public class DocumentOnSAController : ControllerBase
     [NobySkipCaseStateAndProductSAValidation]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(typeof(RefreshElectronicDocumentResponse), StatusCodes.Status200OK)]
-    [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage)]
     public async Task<RefreshElectronicDocumentResponse> RefreshElectronicDocument(
           [FromRoute] int salesArrangementId,
           [FromRoute] int documentOnSaId,
