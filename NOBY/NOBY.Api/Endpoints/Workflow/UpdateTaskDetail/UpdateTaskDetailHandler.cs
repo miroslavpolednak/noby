@@ -37,8 +37,11 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
         await _caseService.CompleteTask(completeTaskRequest, cancellationToken);
 
-        // update SA
-        await updateSalesArrangementParameters(request, cancellationToken);
+        // retence
+        if (request.TaskTypeId == 9)
+        {
+            await updateRetentionSalesArrangementParameters(request, taskDetail.TaskObject.ProcessId, cancellationToken);
+        }
 
         if (attachments?.Any() ?? false)
         {
@@ -46,13 +49,16 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
     }
 
-    private async Task updateSalesArrangementParameters(UpdateTaskDetailRequest request, CancellationToken cancellationToken)
+    private async Task updateRetentionSalesArrangementParameters(UpdateTaskDetailRequest request, long processId, CancellationToken cancellationToken)
     {
-        // retence
-        if (request.TaskTypeId == 9)
+        // najit retencni SA
+        var saList = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
+        var saId = saList.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == processId)?.SalesArrangementId;
+
+        if (saId.HasValue)
         {
             var saInstance = await _salesArrangementService.GetSalesArrangement(1, cancellationToken);
-            
+
             saInstance.Retention.ManagedByRC2 = true;
             var saRequest = new DomainServices.SalesArrangementService.Contracts.UpdateSalesArrangementParametersRequest
             {

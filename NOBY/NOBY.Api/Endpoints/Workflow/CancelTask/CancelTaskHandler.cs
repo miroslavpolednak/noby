@@ -1,6 +1,8 @@
 ﻿using CIS.Core.Security;
 using DomainServices.CaseService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using System.ComponentModel;
+using System.Threading;
 
 namespace NOBY.Api.Endpoints.Workflow.CancelTask;
 
@@ -21,7 +23,7 @@ internal sealed class CancelTaskHandler
             task.TaskObject?.PhaseTypeId,
             task.TaskObject?.ProcessTypeId,
             _currentUserAccessor);
-
+        
         // overeni prav mimo spolecnou logiku
         if (!_allowedTypeIds.Contains(task.TaskObject?.TaskTypeId ?? 0) 
             || task.TaskObject?.TaskIdSb == 30
@@ -36,7 +38,18 @@ internal sealed class CancelTaskHandler
         // cancel SA in NOBY
         if (task.TaskObject?.TaskTypeId == 9)
         {
-            //TODO jak dostat SA ID?
+            await cancelSalesArrangement(request.CaseId, task.TaskObject.ProcessId, cancellationToken);
+        }
+    }
+
+    private async Task cancelSalesArrangement(long caseId, long processId, CancellationToken cancellationToken)
+    {
+        // najit retencni SA
+        var saList = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
+        var saId = saList.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == processId)?.SalesArrangementId;
+
+        if (saId.HasValue)
+        {
             await _salesArrangementService.UpdateSalesArrangementState(1, (int)SalesArrangementStates.Cancelled, cancellationToken);
         }
     }

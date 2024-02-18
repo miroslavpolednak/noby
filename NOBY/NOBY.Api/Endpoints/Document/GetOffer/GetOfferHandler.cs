@@ -2,7 +2,7 @@
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Document.SharedDto;
 
-namespace NOBY.Api.Endpoints.Document.Offer;
+namespace NOBY.Api.Endpoints.Document.GetOffer;
 
 internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory<byte>>
 {
@@ -28,6 +28,12 @@ internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnl
     public async Task<ReadOnlyMemory<byte>> Handle(GetOfferRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.InputParameters.SalesArrangementId!.Value, cancellationToken);
+
+        if (salesArrangement.SalesArrangementTypeId != (int)SalesArrangementTypes.Mortgage)
+        {
+            throw new NobyValidationException(90032, "SalesArrangementTypeId != 1");
+        }
+
         var offer = await _offerService.GetOffer(salesArrangement.OfferId!.Value, cancellationToken);
 
         if (string.IsNullOrWhiteSpace(offer.Data.DocumentId))
