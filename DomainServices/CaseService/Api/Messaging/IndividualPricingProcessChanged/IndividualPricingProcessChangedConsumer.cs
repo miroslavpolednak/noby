@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
+﻿using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
 using DomainServices.CaseService.Api.Services;
 using DomainServices.CaseService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
@@ -26,13 +25,23 @@ internal sealed class IndividualPricingProcessChangedConsumer
             _logger.KafkaMessageCaseIdIncorrectFormat(nameof(IndividualPricingProcessChangedConsumer), message.@case.caseId.id);
         }
         
-        var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId }, token);
-        var decisionId = taskDetail.TaskDetail.PriceException.DecisionId;
+        // detail tasku
+        var taskDetail = await _mediator.Send(new GetTaskDetailRequest 
+        { 
+            TaskIdSb = currentTaskId 
+        }, token);
+
+        if (taskDetail.TaskObject.ProcessTypeId != 1)
+        {
+            _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, currentTaskId, taskDetail.TaskObject.ProcessTypeId);
+            return;
+        }
+
         await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, currentTaskId, token);
 
         var flowSwitches = (message.state switch
         {
-            ProcessStateEnum.COMPLETED => GetFlowSwitchesForCompleted(decisionId),
+            ProcessStateEnum.COMPLETED => GetFlowSwitchesForCompleted(taskDetail.TaskDetail.PriceException.DecisionId),
             ProcessStateEnum.ACTIVE => GetFlowSwitchesForActive(),
             ProcessStateEnum.TERMINATED => GetFlowSwitchesForTerminated(),
             _ => Enumerable.Empty<EditableFlowSwitch>(),

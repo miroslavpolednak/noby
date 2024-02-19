@@ -67,6 +67,10 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             };
             await _salesArrangementService.UpdateSalesArrangementParameters(saRequest, cancellationToken);
         }
+        else
+        {
+            _logger.LogInformation($"SalesArrangement for Case {request.CaseId} with TaskProcessId {processId} not found");
+        }
     }
 
     private int? setCompletitionType(UpdateTaskDetailRequest request)
@@ -153,6 +157,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             _currentUserAccessor);
     }
 
+    private readonly ILogger<UpdateTaskDetailHandler> _logger;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
@@ -168,7 +173,8 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive,
         ICaseServiceClient caseService,
         SharedComponents.Storage.ITempStorage tempFileManager,
-        ISalesArrangementServiceClient salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService,
+        ILogger<UpdateTaskDetailHandler> logger)
     {
         _codebookService = codebookService;
         _currentUserAccessor = currentUserAccessor;
@@ -176,5 +182,6 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         _caseService = caseService;
         _tempFileManager = tempFileManager;
         _salesArrangementService = salesArrangementService;
+        _logger = logger;
     }
 }

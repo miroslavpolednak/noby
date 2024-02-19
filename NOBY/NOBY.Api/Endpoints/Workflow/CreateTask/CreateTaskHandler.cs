@@ -23,7 +23,7 @@ internal sealed class CreateTaskHandler
         }
 
         // validace procesu
-        await validateProcess(Convert.ToInt32(request.ProcessId), cancellationToken);
+        await validateProcess(caseInstance.CaseId, request.ProcessId, request.TaskTypeId, cancellationToken);
 
         // validace price exception
         if (request.TaskTypeId == 2)
@@ -80,16 +80,18 @@ internal sealed class CreateTaskHandler
         return result.TaskId;
     }
 
-    private async Task validateProcess(int processId, CancellationToken cancellationToken)
+    private async Task validateProcess(long caseId, long processId, int taskTypeId, CancellationToken cancellationToken)
     {
-        var processInstance = await _caseService.GetTaskDetail(processId, cancellationToken);
-
-        if (processInstance.TaskObject?.ProcessTypeId is not 1 or 2 && processInstance.TaskObject?.TaskTypeId != 3)
+        var allProcesses = await _caseService.GetProcessList(caseId, cancellationToken);
+        var processInstance = allProcesses.FirstOrDefault(t => t.ProcessId == processId)
+            ?? throw new NobyValidationException($"Workflow process {processId} for Case {caseId} not found");
+        
+        if (processInstance.ProcessTypeId is not 1 or 2 && taskTypeId != 3)
         {
             throw new NobyValidationException(90032, "validateProcess");
         }
 
-        WorkflowHelpers.ValidateRefinancing(processInstance.TaskObject?.ProcessTypeId, _currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_OtherManage, UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage);
+        WorkflowHelpers.ValidateRefinancing(processInstance.ProcessTypeId, _currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_OtherManage, UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage);
     }
 
     private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, CancellationToken cancellationToken)

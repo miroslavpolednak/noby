@@ -15,4 +15,6 @@ internal sealed class LoggerEventIdCodes
     public const int UpdateActiveTaskStart = 13513;
     public const int BeforeUpdateActiveTasks = 13514;
     public const int KafkaConsumerStarted = 13515;
+    public const int KafkaIndividualPricingProcessChangedSkipped = 13516;
+    public const int KafkaLoanRetentionProcessChangedSkipped = 13517;
 }
