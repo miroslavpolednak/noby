@@ -35,9 +35,9 @@ public static class DocumentOnSaMetadataManager
         // InTheProcess (v procesu) 2
         DocumentOnSAInfo doc when doc.IsValid && doc.DocumentOnSAId is not null && doc.IsSigned == false => GetSignatureState(2, signatureStates),
         // WaitingForScan (čeká na sken) 3
-        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && !doc.EArchivIdsLinked.Any() && doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() && doc.Source != Source.Workflow => GetSignatureState(3, signatureStates),
+        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && doc.SignatureTypeId == SignatureTypes.Paper.ToByte() && doc.EArchivIdsLinked.Count == 0 && doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() && doc.Source != Source.Workflow => GetSignatureState(3, signatureStates),
         // Signed (podepsáno) 4
-        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && (doc.EArchivIdsLinked.Any() || doc.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() || doc.Source == Source.Workflow) => GetSignatureState(4, signatureStates),
+        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && doc.SignatureTypeId == SignatureTypes.Paper.ToByte() && (doc.EArchivIdsLinked.Count != 0 || doc.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() || doc.Source == Source.Workflow) => GetSignatureState(4, signatureStates),
         // Canceled (zrušeno) 5 
         _ => GetSignatureState(5, signatureStates)
     };
@@ -67,6 +67,8 @@ public class DocumentOnSAInfo
     public Source Source { get; set; }
 
     public int? SalesArrangementTypeId { get; set; }
+
+    public int SignatureTypeId { get; set; }
 
     public IReadOnlyCollection<string> EArchivIdsLinked { get; set; } = null!;
 }
