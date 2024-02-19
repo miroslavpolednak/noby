@@ -86,6 +86,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
                 Source = documentOnSa.Source.MapToCisEnum(),
                 SalesArrangementTypeId = salesArrangementTypeId,
                 EArchivIdsLinked = documentOnSa.EArchivIdsLinked,
+                SignatureTypeId =documentOnSa.SignatureTypeId ?? 0
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
@@ -115,6 +116,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
                 Source = signingResponse.DocumentOnSa.Source.MapToCisEnum(),
                 SalesArrangementTypeId = salesArrangementTypeId,
                 EArchivIdsLinked = Array.Empty<string>(),
+                SignatureTypeId = signingResponse.DocumentOnSa.SignatureTypeId ?? 0
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(

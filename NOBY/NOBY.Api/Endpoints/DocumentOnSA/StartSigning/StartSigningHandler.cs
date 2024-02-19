@@ -194,7 +194,8 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
                 IsSigned = result.DocumentOnSa.IsSigned,
                 Source = result.DocumentOnSa.Source.MapToCisEnum(),
                 SalesArrangementTypeId = salesArrangementTypeId,
-                EArchivIdsLinked = Array.Empty<string>()
+                EArchivIdsLinked = Array.Empty<string>(),
+                SignatureTypeId = result.DocumentOnSa.SignatureTypeId ?? 0
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(

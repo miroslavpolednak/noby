@@ -24,7 +24,8 @@ public class GetDocumentOnSAStatusHandler : IRequestHandler<GetDocumentOnSAStatu
                 s.IsSigned,
                 s.IsValid,
                 s.Source,
-                EArchivIdsLinked = s.EArchivIdsLinkeds.Select(s => s.EArchivId)
+                EArchivIdsLinked = s.EArchivIdsLinkeds.Select(s => s.EArchivId),
+                s.SignatureTypeId
             })
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSaDoesntExistForSalesArrangement, request.SalesArrangementId);
@@ -35,7 +36,8 @@ public class GetDocumentOnSAStatusHandler : IRequestHandler<GetDocumentOnSAStatu
             IsSigned = docOnsa.IsSigned,
             IsValid = docOnsa.IsValid,
             Source = (Source)docOnsa.Source,
-            EArchivIdsLinked = { docOnsa.EArchivIdsLinked }
+            EArchivIdsLinked = { docOnsa.EArchivIdsLinked },
+            SignatureTypeId = docOnsa.SignatureTypeId ?? 0,
         };
     }
 }
