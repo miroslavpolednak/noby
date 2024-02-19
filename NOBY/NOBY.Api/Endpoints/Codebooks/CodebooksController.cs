@@ -170,7 +170,8 @@ public class CodebooksController : ControllerBase
     public async Task<List<FixedRatePeriodsResponse.Types.FixedRatePeriodItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
             .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct)
-            .DistinctBy(t => new { t.FixedRatePeriod, t.MandantId })
+            .GroupBy(t => new { t.FixedRatePeriod, t.MandantId })
+            .Select(t => t.OrderBy(x => x.IsValid ? 0 : 1).First())
             .ToList();
 
     /// <summary>
