@@ -40,7 +40,8 @@ internal sealed class SimulateMortgageHandler
             IsCreditWorthinessSimpleRequested = request.IsCreditWorthinessSimpleRequested,
             ValidTo = request.ValidTo,
             SalesArrangementId = request.SalesArrangementId,
-            CaseId = request.CaseId
+            CaseId = request.CaseId,
+            OfferType = (int)OfferTypes.Mortgage
         };
         _dbContext.Offers.Add(entity);
 
