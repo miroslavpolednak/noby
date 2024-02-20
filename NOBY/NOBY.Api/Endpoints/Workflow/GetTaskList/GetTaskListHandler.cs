@@ -28,8 +28,22 @@ internal sealed class GetTaskListHandler
 
     private readonly ICaseServiceClient _caseService;
     private readonly IWorkflowMapperService _mapper;
-    private static int[] _allowedTaskTypes = new[] { 1, 2, 3, 6, 7 };
-    private static int[] _allowedProcessTypes = new[] { 1, 2, 3 };
+
+    private static int[] _allowedProcessTypes =
+        [
+            (int)WorkflowProcesses.Main,
+            (int)WorkflowProcesses.Change,
+            (int)WorkflowProcesses.Refinancing
+        ];
+    
+    private static int[] _allowedTaskTypes =
+        [
+            (int)WorkflowTaskTypes.Dozadani,
+            (int)WorkflowTaskTypes.PriceException,
+            (int)WorkflowTaskTypes.Consultation,
+            (int)WorkflowTaskTypes.Signing,
+            (int)WorkflowTaskTypes.PredaniNaSpecialitu
+        ];
 
     public GetTaskListHandler(ICaseServiceClient caseService, IWorkflowMapperService mapper)
     {

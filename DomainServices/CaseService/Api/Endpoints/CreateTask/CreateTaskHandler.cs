@@ -24,7 +24,7 @@ internal sealed class CreateTaskHandler
         MapPriceException(metadata, request.PriceException);
 
         // subtype
-        if (request.TaskTypeId == 3)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.Consultation)
         {
             metadata.Add("ukol_konzultace_oblast", $"{request.TaskSubtypeId}");
 
@@ -42,7 +42,7 @@ internal sealed class CreateTaskHandler
 
         var result = await _sbWebApi.CreateTask(new ExternalServices.SbWebApi.Dto.CreateTask.CreateTaskRequest
         {
-            ProcessId = request.ProcessId is not null && request.TaskTypeId != 9 ? Convert.ToInt32(request.ProcessId, CultureInfo.InvariantCulture) : null,
+            ProcessId = request.ProcessId is not null && request.TaskTypeId != (int)WorkflowTaskTypes.Retention ? Convert.ToInt32(request.ProcessId, CultureInfo.InvariantCulture) : null,
             TaskTypeId = request.TaskTypeId,
             Metadata = metadata
         }, cancellationToken);
@@ -56,11 +56,11 @@ internal sealed class CreateTaskHandler
             TaskId = result.TaskId
         };
 
-        string getTaskTypeKey() => request.TaskTypeId switch
+        string getTaskTypeKey() => (WorkflowTaskTypes)request.TaskTypeId switch
         {
-            7 => "ukol_predanihs_pozadavek",
-            3 => "ukol_konzultace_pozadavek",
-            2 => "ukol_overeni_pozadavek",
+            WorkflowTaskTypes.PredaniNaSpecialitu => "ukol_predanihs_pozadavek",
+            WorkflowTaskTypes.Consultation => "ukol_konzultace_pozadavek",
+            WorkflowTaskTypes.PriceException => "ukol_overeni_pozadavek",
             _ => throw new NotImplementedException($"TaskTypeId {request.TaskTypeId} is not supported")
         };
     }
@@ -69,7 +69,7 @@ internal sealed class CreateTaskHandler
     {
         var mandant = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == entity.ProductTypeId).MandantId;
 
-        if (request.TaskTypeId == 2 && entity.State == (int)CaseStates.InProgress && mandant == (int)Mandants.Kb)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException && entity.State == (int)CaseStates.InProgress && mandant == (int)Mandants.Kb)
         {
             var salesArrangementId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken))
                 .First()

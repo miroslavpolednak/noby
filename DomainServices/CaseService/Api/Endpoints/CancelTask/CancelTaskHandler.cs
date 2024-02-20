@@ -14,12 +14,15 @@ internal sealed class CancelTaskHandler
         Database.Entities.Case entity = await _dbContext.Cases.FirstOrDefaultAsync(t => t.CaseId == request.CaseId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
-        var taskDetail = await _mediator.Send(new GetTaskDetailRequest{ TaskIdSb = request.TaskIdSB }, cancellationToken);
+        var taskDetail = await _mediator.Send(new GetTaskDetailRequest
+            { 
+                TaskIdSb = request.TaskIdSB 
+            }, cancellationToken);
         await _sbWebApi.CancelTask(request.TaskIdSB, cancellationToken);
 
         // set flow switches
         var mandant = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == entity.ProductTypeId).MandantId;
-        if (taskDetail.TaskObject?.TaskTypeId == 2 && entity.State == (int)CaseStates.InProgress && mandant == (int)Mandants.Kb)
+        if (taskDetail.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.PriceException && entity.State == (int)CaseStates.InProgress && mandant == (int)Mandants.Kb)
         {
             var saId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First().SalesArrangementId;
             await _salesArrangementService.SetFlowSwitches(saId, new()

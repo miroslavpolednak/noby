@@ -1,5 +1,4 @@
-﻿using DomainServices.CaseService.Contracts;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.CaseService.Api.Database.Entities;
@@ -21,7 +20,7 @@ internal sealed class Case
     public string? OwnerUserName { get; set; }
 
     // informace o klientovi
-    public SharedTypes.Enums.IdentitySchemes? CustomerIdentityScheme { get; set; }
+    public IdentitySchemes? CustomerIdentityScheme { get; set; }
     public long? CustomerIdentityId { get; set; }
     public string? FirstNameNaturalPerson { get; set; }
     public string Name { get; set; } = "";
@@ -30,7 +29,13 @@ internal sealed class Case
     public string? EmailForOffer { get; set; }
     public string? PhoneNumberForOffer { get; set; }
     public string? PhoneIDCForOffer { get; set; }
+
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
     public decimal? CustomerPriceSensitivity { get; set; }
+
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
     public decimal? CustomerChurnRisk { get; set; }
 
     // byznys data

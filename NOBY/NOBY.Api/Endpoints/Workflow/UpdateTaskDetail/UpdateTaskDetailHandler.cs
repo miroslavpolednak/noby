@@ -38,7 +38,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         await _caseService.CompleteTask(completeTaskRequest, cancellationToken);
 
         // retence
-        if (request.TaskTypeId == 9)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.Retention)
         {
             await updateRetentionSalesArrangementParameters(request, taskDetail.TaskObject.ProcessId, cancellationToken);
         }
@@ -49,6 +49,9 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
     }
 
+    /// <summary>
+    /// update RC2 atributu na retenci
+    /// </summary>
     private async Task updateRetentionSalesArrangementParameters(UpdateTaskDetailRequest request, long processId, CancellationToken cancellationToken)
     {
         // najit retencni SA
@@ -57,6 +60,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
         if (saId.HasValue)
         {
+            // musim vytahnout cely parametrs objekt a zase ho preulozit s upravenym atributem
             var saInstance = await _salesArrangementService.GetSalesArrangement(1, cancellationToken);
 
             saInstance.Retention.ManagedByRC2 = true;
@@ -78,7 +82,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         int? completionTypeId = null;
 
         // podepisovani
-        if (request.TaskTypeId == 6)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.Signing)
         {
             completionTypeId = _currentUserAccessor!.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningAttachments) ? 2 : 1;
 
@@ -89,7 +93,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
 
         // retence
-        if (request.TaskTypeId == 9)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.Retention)
         {
             if (!_currentUserAccessor!.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage))
             {
@@ -121,7 +125,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         {
             return await _uploadDocumentToArchive.Upload(caseDetail.CaseId, caseDetail.Data?.ContractNumber, attachments, cancellationToken);
         }
-        else if (taskDetail.TaskObject.TaskTypeId == 6
+        else if (taskDetail.TaskObject.TaskTypeId == (int)WorkflowTaskTypes.Signing
             && taskDetail.TaskObject.SignatureTypeId == (int)SignatureTypes.Paper
             && request.TaskResponseTypeId == 0
             && _currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningAttachments))
@@ -131,6 +135,9 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         return null;
     }
 
+    /// <summary>
+    /// Validace requestu na zacatku flow
+    /// </summary>
     private async Task validateTaskUpdate(GetTaskDetailResponse taskDetail, CancellationToken cancellationToken)
     {
         var inactiveStates = (await _codebookService.WorkflowTaskStates(cancellationToken))
@@ -157,6 +164,14 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             _currentUserAccessor);
     }
 
+    // povolene typy tasku
+    private static int[] _allowedTaskTypeIds =
+        [
+            (int)WorkflowTaskTypes.Dozadani,
+            (int)WorkflowTaskTypes.Signing,
+            (int)WorkflowTaskTypes.Retention
+        ];
+
     private readonly ILogger<UpdateTaskDetailHandler> _logger;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICodebookServiceClient _codebookService;
@@ -165,8 +180,6 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
     private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
     private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
     
-    private static int[] _allowedTaskTypeIds = [ 1, 6, 9 ];
-
     public UpdateTaskDetailHandler(
         ICodebookServiceClient codebookService,
         ICurrentUserAccessor currentUserAccessor,

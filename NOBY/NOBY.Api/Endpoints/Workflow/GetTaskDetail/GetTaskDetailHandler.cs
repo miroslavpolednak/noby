@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
@@ -18,28 +17,28 @@ internal sealed class GetTaskDetailHandler
             throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
 
-        if (task.TaskTypeId is 6)
+        if (task.TaskTypeId is (int)WorkflowTaskTypes.Signing)
         {
             // ProcessTypeId: Hlavní úvěrový proces ==1, Změnový proces == 2
-            if (task.ProcessTypeId is 1 or 2 && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningView))
+            if (task.ProcessTypeId is ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningView))
             {
                 throw new CisAuthorizationException("Task detail view permission missing");
             }
             // zde by měl být jen Retenční proces == 3
-            else if (task.ProcessTypeId is not 1 or 2 && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingSigningView))
+            else if (task.ProcessTypeId is not ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingSigningView))
             {
                 throw new CisAuthorizationException("Task detail view permission missing");
             }
         }
-        else if (task.TaskTypeId is not 6)
+        else if (task.TaskTypeId is not (int)WorkflowTaskTypes.Signing)
         {
             // ProcessTypeId: Hlavní úvěrový proces ==1, Změnový proces == 2
-            if (task.ProcessTypeId is 1 or 2 && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_OtherView))
+            if (task.ProcessTypeId is ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_OtherView))
             {
                 throw new CisAuthorizationException("Task detail view permission missing");
             }
             // zde by měl být jen Retenční proces == 3
-            else if (task.ProcessTypeId is not 1 or 2 && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingOtherView))
+            else if (task.ProcessTypeId is not ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingOtherView))
             {
                 throw new CisAuthorizationException("Task detail view permission missing");
             }
@@ -58,7 +57,14 @@ internal sealed class GetTaskDetailHandler
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
     private readonly ICaseServiceClient _caseService;
-    private static int[] _allowedTaskTypeIds = { 1, 2, 3, 6, 7 };
+    private static int[] _allowedTaskTypeIds =
+        [
+            (int)WorkflowTaskTypes.Dozadani,
+            (int)WorkflowTaskTypes.PriceException,
+            (int)WorkflowTaskTypes.Consultation,
+            (int)WorkflowTaskTypes.Signing,
+            (int)WorkflowTaskTypes.PredaniNaSpecialitu
+        ];
 
     public GetTaskDetailHandler(
         ICurrentUserAccessor currentUserAccessor,

@@ -45,12 +45,12 @@ internal static class WorkflowHelpers
     {
         if (processTypeId.HasValue)
         {
-            if (processTypeId is 1 or 2 && !currentUserAccessor.HasPermission(inPermission))
+            if (processTypeId is ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && !currentUserAccessor.HasPermission(inPermission))
             {
                 throw new CisAuthorizationException($"Task manage authorization failed. ProcessTypeId is {processTypeId} but missing permission {inPermission}");
             }
 
-            if (processTypeId is not 1 or 2 && !currentUserAccessor.HasPermission(notInPermission))
+            if (processTypeId is not ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && !currentUserAccessor.HasPermission(notInPermission))
             {
                 throw new CisAuthorizationException($"Task manage authorization failed. ProcessTypeId is {processTypeId} but missing permission {notInPermission}");
             }

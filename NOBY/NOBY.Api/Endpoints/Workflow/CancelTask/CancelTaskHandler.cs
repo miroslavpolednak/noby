@@ -25,7 +25,7 @@ internal sealed class CancelTaskHandler
         // overeni prav mimo spolecnou logiku
         if (!_allowedTypeIds.Contains(task.TaskObject?.TaskTypeId ?? 0) 
             || task.TaskObject?.TaskIdSb == 30
-            || (task.TaskObject?.TaskTypeId == 9 && task.TaskObject?.PhaseTypeId != 1))
+            || (task.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.Retention && task.TaskObject?.PhaseTypeId != 1))
         {
             throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
@@ -34,13 +34,16 @@ internal sealed class CancelTaskHandler
         await _caseService.CancelTask(request.CaseId, request.TaskIdSB, cancellationToken);
 
         // cancel SA in NOBY
-        if (task.TaskObject?.TaskTypeId == 9)
+        if (task.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.Retention)
         {
-            await cancelSalesArrangement(request.CaseId, task.TaskObject.ProcessId, cancellationToken);
+            await cancelRetentionSalesArrangement(request.CaseId, task.TaskObject.ProcessId, cancellationToken);
         }
     }
 
-    private async Task cancelSalesArrangement(long caseId, long processId, CancellationToken cancellationToken)
+    /// <summary>
+    /// Stornovani SA v pripade retence
+    /// </summary>
+    private async Task cancelRetentionSalesArrangement(long caseId, long processId, CancellationToken cancellationToken)
     {
         // najit retencni SA
         var saList = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
@@ -52,7 +55,13 @@ internal sealed class CancelTaskHandler
         }
     }
 
-    private static int[] _allowedTypeIds = [ 2, 3, 9 ];
+    // povolene typy tasku
+    private static int[] _allowedTypeIds = 
+        [
+            (int)WorkflowTaskTypes.PriceException,
+            (int)WorkflowTaskTypes.Consultation,
+            (int)WorkflowTaskTypes.Retention
+        ];
 
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly ICaseServiceClient _caseService;

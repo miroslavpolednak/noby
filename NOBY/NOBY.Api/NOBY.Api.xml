@@ -893,8 +893,8 @@
              - <a href="https://wiki.kb.cz/display/HT/RealEstateSubtype">RealEstateSubtypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632253">RealEstateTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632953">RealEstatePurchaseTypes</a>
-             - <a href="https://wiki.kb.cz/display/HT/RefixationOfferType">RefixationOfferType</a>
-             - <a href="https://wiki.kb.cz/display/HT/RefinancingType">RefinancingType</a>
+             - <a href="https://wiki.kb.cz/display/HT/RefixationOfferType">RefixationOfferTypes</a>
+             - <a href="https://wiki.kb.cz/display/HT/RefinancingType">RefinancingTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
@@ -4767,6 +4767,11 @@
             </remarks>
             <returns>BASE64 obsah cookie, který se musí předat ePodpis widgetu</returns>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.CancelTask.CancelTaskHandler.cancelRetentionSalesArrangement(System.Int64,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Stornovani SA v pripade retence
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskHandler.validatePriceException(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Validace zda jiz neexistuje aktivni price exception
@@ -4837,6 +4842,16 @@
         <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.SignatureTypeId">
             <summary>
             Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailHandler.updateRetentionSalesArrangementParameters(NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            update RC2 atributu na retenci
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailHandler.validateTaskUpdate(DomainServices.CaseService.Contracts.GetTaskDetailResponse,System.Threading.CancellationToken)">
+            <summary>
+            Validace requestu na zacatku flow
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest.TaskIdSB">

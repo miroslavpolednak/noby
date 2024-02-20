@@ -26,7 +26,7 @@ internal sealed class CreateTaskHandler
         await validateProcess(caseInstance.CaseId, request.ProcessId, request.TaskTypeId, cancellationToken);
 
         // validace price exception
-        if (request.TaskTypeId == 2)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
         {
             await validatePriceException(caseInstance.CaseId, cancellationToken);
         }
@@ -64,7 +64,7 @@ internal sealed class CreateTaskHandler
         }
 
         // price exception
-        if (request.TaskTypeId == 2)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
         {
             await updatePriceExceptionTask(dsRequest, cancellationToken);
         }
@@ -86,7 +86,7 @@ internal sealed class CreateTaskHandler
         var processInstance = allProcesses.FirstOrDefault(t => t.ProcessId == processId)
             ?? throw new NobyValidationException($"Workflow process {processId} for Case {caseId} not found");
         
-        if (processInstance.ProcessTypeId is not 1 or 2 && taskTypeId != 3)
+        if (processInstance.ProcessTypeId is not ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && taskTypeId != (int)WorkflowTaskTypes.Consultation)
         {
             throw new NobyValidationException(90032, "validateProcess");
         }
@@ -147,7 +147,7 @@ internal sealed class CreateTaskHandler
     /// </summary>
     private async Task validatePriceException(long caseId, CancellationToken cancellationToken)
     {
-        if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == 2 && !t.Cancelled))
+        if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled))
         {
             throw new NobyValidationException(90032, "ValidatePriceException failed");
         }
