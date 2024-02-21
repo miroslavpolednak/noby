@@ -76,7 +76,8 @@ internal sealed class RealESignaturesClient
                 AttachmentsComplete = t.AttachmentsComplete,
                 ExternalId = t.ExternalId,
                 IsCancelled = t.IsCancelled,
-                NotCompletedReason = t.NotCompletedReason
+                NotCompletedReason = t.NotCompletedReason,
+                EaCode = t.EaCodeMainId?.ToString(CultureInfo.InvariantCulture),
             }).ToList()
         };
 
