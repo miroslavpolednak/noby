@@ -5,7 +5,7 @@ using CIS.Core.Attributes;
 namespace SharedTypes.Enums;
 
 [DataContract]
-public enum WorkflowTaskCategory : byte
+public enum WorkflowTaskCategories : byte
 {
     [Display(Name = "unknown")]
     [EnumMember]

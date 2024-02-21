@@ -1,5 +1,4 @@
 ﻿using Asp.Versioning;
-using CIS.Infrastructure.gRPC;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
@@ -36,7 +35,7 @@ public class DocumentArchiveController : ControllerBase
     /// <param name="documentId">Id dokumentu eArchivu</param>
     /// <param name="externalId">Externí ID ePodpisů</param>
     [HttpGet("document")]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = [ "Dokument" ])]
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocument(
@@ -69,7 +68,7 @@ public class DocumentArchiveController : ControllerBase
     /// <param name="formId">Businessové ID dokumentu, na které chceme zafiltrovat.</param>
     [HttpGet("case/{caseId:long}/documents")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = [ "Dokument" ])]
     [ProducesResponseType(typeof(GetDocumentListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetDocumentListResponse> GetDocumentList([FromRoute] long caseId, [FromQuery] string? formId, CancellationToken cancellationToken)
@@ -84,7 +83,7 @@ public class DocumentArchiveController : ControllerBase
     /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=618F9E36-618D-4dc5-A3C6-38626871504C"><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width= "20" height= "20" /> Diagram v EA</a>
     /// </remarks> 
     [HttpPost("document")]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = [ "Dokument" ])]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     public async Task<Guid> UploadDocument(IFormFile file)
           => await _mediator.Send(new UploadDocumentRequest(file));
@@ -97,7 +96,7 @@ public class DocumentArchiveController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks> 
     [HttpPost("case/{caseId:long}/documents")]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = [ "Dokument" ])]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> SaveDocumentsToArchive(
      [FromRoute] long caseId,
@@ -119,7 +118,7 @@ public class DocumentArchiveController : ControllerBase
     /// <param name="statusId">status dokumentu ve frontě</param>
     [HttpPut("document/{documentId}/status/{statusId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = [ "Dokument" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task SetDocumentStatusInQueue(

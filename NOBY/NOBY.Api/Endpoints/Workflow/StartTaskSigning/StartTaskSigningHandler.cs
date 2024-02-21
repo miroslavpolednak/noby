@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentOnSAService.Clients;
@@ -18,6 +17,9 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
         var caseId = request.CaseId;
         var taskId = request.TaskId;
         var salesArrangement = await GetSalesArrangementId(caseId, cancellationToken);
+
+        // validace prav
+        _salesArrangementAuthorization.ValidateDocumentSigningMngBySaType237And246(salesArrangement.SalesArrangementTypeId);
 
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
         var eACodeMains = await _codebookService.EaCodesMain(cancellationToken);
@@ -123,6 +125,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
             eACodeMains)
         };
 
+    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly ICodebookServiceClient _codebookService;
     private readonly IDocumentOnSAServiceClient _documentOnSaService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -132,11 +135,13 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
         ICodebookServiceClient codebookService,
         IDocumentOnSAServiceClient documentOnSaService,
         ISalesArrangementServiceClient salesArrangementService,
-        ICaseServiceClient caseService)
+        ICaseServiceClient caseService,
+        Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
     {
         _codebookService = codebookService;
         _documentOnSaService = documentOnSaService;
         _salesArrangementService = salesArrangementService;
         _caseService = caseService;
+        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 }

@@ -893,8 +893,8 @@
              - <a href="https://wiki.kb.cz/display/HT/RealEstateSubtype">RealEstateSubtypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632253">RealEstateTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632953">RealEstatePurchaseTypes</a>
-             - <a href="https://wiki.kb.cz/display/HT/RefixationOfferType">RefixationOfferType</a>
-             - <a href="https://wiki.kb.cz/display/HT/RefinancingType">RefinancingType</a>
+             - <a href="https://wiki.kb.cz/display/HT/RefixationOfferType">RefixationOfferTypes</a>
+             - <a href="https://wiki.kb.cz/display/HT/RefinancingType">RefinancingTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
@@ -3106,6 +3106,16 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRefinancingParameters(System.Int64)">
+            <summary>
+            Žádosti o změnu sazby
+            </summary>
+            <remarks>
+            Operace slouží k získání informací a žádostí ke změnám sazeb.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EBF744FA-9F0F-421e-89F8-CFFFAEC76BB1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">
             <summary>
             Je sekce aktivní/neaktivní (lze prokliknout)?
@@ -4757,6 +4767,11 @@
             </remarks>
             <returns>BASE64 obsah cookie, který se musí předat ePodpis widgetu</returns>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.CancelTask.CancelTaskHandler.cancelRetentionSalesArrangement(System.Int64,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Stornovani SA v pripade retence
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Workflow.CreateTask.CreateTaskHandler.validatePriceException(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Validace zda jiz neexistuje aktivni price exception
@@ -4827,6 +4842,16 @@
         <member name="P:NOBY.Api.Endpoints.Workflow.StartTaskSigning.StartTaskSigningResponse.SignatureTypeId">
             <summary>
             Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailHandler.updateRetentionSalesArrangementParameters(NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            update RC2 atributu na retenci
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailHandler.validateTaskUpdate(DomainServices.CaseService.Contracts.GetTaskDetailResponse,System.Threading.CancellationToken)">
+            <summary>
+            Validace requestu na zacatku flow
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest.TaskIdSB">

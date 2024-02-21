@@ -275,6 +275,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00020-HFICH-10018_DDS_Init.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00020-HFICH-10018_DDS_Init.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00021-HFICH-10206_RiskBusinessCaseCreatedDate.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00021-HFICH-10206_RiskBusinessCaseCreatedDate.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00022-HFICH-9549_ClientAddress.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00022-HFICH-9549_ClientAddress.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00023-HFICH-10397.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00023-HFICH-10397.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00024-OfferDocumentId.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00024-OfferDocumentId.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
@@ -301,6 +303,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql
 		DomainServices\CaseService\DatabaseMigrations\00002-HFICH-5454.sql = DomainServices\CaseService\DatabaseMigrations\00002-HFICH-5454.sql
 		DomainServices\CaseService\DatabaseMigrations\00003-HFICH-6578.sql = DomainServices\CaseService\DatabaseMigrations\00003-HFICH-6578.sql
+		DomainServices\CaseService\DatabaseMigrations\00004-indexes.sql = DomainServices\CaseService\DatabaseMigrations\00004-indexes.sql
+		DomainServices\CaseService\DatabaseMigrations\00005-HFICH-10063.sql = DomainServices\CaseService\DatabaseMigrations\00005-HFICH-10063.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"

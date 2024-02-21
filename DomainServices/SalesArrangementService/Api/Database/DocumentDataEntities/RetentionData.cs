@@ -5,4 +5,8 @@ namespace DomainServices.SalesArrangementService.Api.Database.DocumentDataEntiti
 internal sealed class RetentionData : IDocumentData
 {
     int IDocumentData.Version => 1;
+
+    public bool? ManagedByRC2 { get; set; }
+    public string? Comment { get; set; }
+    public string? IndividualPriceCommentLastVersion { get; set; }
 }

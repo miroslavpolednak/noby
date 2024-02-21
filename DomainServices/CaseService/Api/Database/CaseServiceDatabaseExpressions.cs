@@ -27,7 +27,9 @@ internal static class CaseServiceDatabaseExpressions
                 DateOfBirthNaturalPerson = t.DateOfBirthNaturalPerson,
                 FirstNameNaturalPerson = t.FirstNameNaturalPerson ?? "",
                 Name = t.Name ?? "",
-                Cin = t.Cin ?? ""
+                Cin = t.Cin ?? "",
+                CustomerPriceSensitivity = t.CustomerPriceSensitivity,
+                CustomerChurnRisk = t.CustomerChurnRisk
             },
             OfferContacts = new()
             {

@@ -1,15 +1,15 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
-namespace NOBY.Services.PermissionAccess;
+namespace NOBY.Services.CheckNonWFLProductSalesArrangementAccess;
 
-public interface INonWFLProductSalesArrangementAccess
+public interface INonWFLProductSalesArrangementAccessService
 {
     Task CheckNonWFLProductSalesArrangementAccess(int salesArrangementId, CancellationToken cancellationToken);
 }
 
 [ScopedService, AsImplementedInterfacesService]
-public class NonWFLProductSalesArrangementAccess : INonWFLProductSalesArrangementAccess
+public class NonWFLProductSalesArrangementAccess : INonWFLProductSalesArrangementAccessService
 {
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICaseServiceClient _caseService;
@@ -24,14 +24,13 @@ public class NonWFLProductSalesArrangementAccess : INonWFLProductSalesArrangemen
 
     public async Task CheckNonWFLProductSalesArrangementAccess(int salesArrangementId, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
-        var caseValidationResult = await _caseService.ValidateCaseId(salesArrangement.CaseId, true, cancellationToken);
+        var sa = await _salesArrangementService.ValidateSalesArrangementId(salesArrangementId, true, cancellationToken);
+        var caseValidationResult = await _caseService.ValidateCaseId(sa.CaseId!.Value, true, cancellationToken);
 
         // State > 1 (není ve stavu tvorby žádosti)
-        if (caseValidationResult.State > 1 && salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.Mortgage)
+        if (caseValidationResult.State > (int)CaseStates.InProgress && sa.SalesArrangementTypeId!.Value == (int)SalesArrangementTypes.Mortgage)
         {
             throw new CisAuthorizationException("Cannot access endpoint, if Case.State > 1 and Sales Arrangement Type is for Mortgage");
         }
-
     }
 }

@@ -15,6 +15,7 @@ internal sealed class GetSalesArrangementHandler
         var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
 
         // perm check
+        _salesArrangementAuthorization.ValidateSaAccessBySaType213And248(saInstance.SalesArrangementTypeId);
         if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
         {
             throw new CisAuthorizationException("Case owner check failed");
@@ -52,17 +53,20 @@ internal sealed class GetSalesArrangementHandler
             _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };
 
+    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    
+
     public GetSalesArrangementHandler(
         ICurrentUserAccessor currentUser,
         ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService,
+        Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
     {
         _currentUser = currentUser;
         _caseService = caseService;
         _salesArrangementService = salesArrangementService;
+        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 }

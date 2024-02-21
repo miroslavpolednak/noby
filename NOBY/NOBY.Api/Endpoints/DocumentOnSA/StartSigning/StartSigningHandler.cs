@@ -13,6 +13,7 @@ using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using _DocOnSA = DomainServices.DocumentOnSAService.Contracts;
 using ValidateSalesArrangementRequest = NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement.ValidateSalesArrangementRequest;
 using NOBY.Api.Extensions;
+using NOBY.Services.SalesArrangementAuthorization;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 
@@ -50,6 +51,12 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
     public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+
+        // nesmi se jedna o refinancovani
+        if (ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(salesArrangement.SalesArrangementTypeId))
+        {
+            throw new NobyValidationException(90032);
+        }
 
         if (salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Mortgage.ToByte() // 1
             || salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() // 6

@@ -67,6 +67,11 @@ internal sealed class GetSalesArrangementHandler
                 model.Retention = retentionData?.MapRetention();
                 break;
 
+            case SalesArrangementTypes.Refixation:
+                var refixationData = await GetParametersData<RefixationData>(model.SalesArrangementId, cancellation);
+                model.Refixation = refixationData?.MapRefixation();
+                break;
+
             default:
                 throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, model.SalesArrangementTypeId);
         }

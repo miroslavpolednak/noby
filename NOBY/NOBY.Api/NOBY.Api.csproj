@@ -74,13 +74,4 @@
     <ProjectReference Include="..\NOBY.Services\NOBY.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Endpoints\Document\GeneralDocument\" />
-    <Folder Include="Endpoints\Document\Offer\" />
-    <Folder Include="Endpoints\Product\GetCaseIdByPcpId\" />
-    <Folder Include="Endpoints\RealEstateValuation\GetRealEstateValuationDetail\" />
-    <Folder Include="Endpoints\SalesArrangement\GetLoanApplicationAssessment\V2\" />
-    <Folder Include="Endpoints\SalesArrangement\SendToCmp\Dto\" />
-  </ItemGroup>
-
 </Project>

@@ -17,9 +17,16 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, bool, bool, Exception> _beforeUpdateActiveTasks;
     private static readonly Action<ILogger, string, Exception> _kafkaConsumerStarted;
     private static readonly Action<ILogger, string, long, decimal, Exception> _kafkaMortgageChangedFinished;
+    private static readonly Action<ILogger, long, int, int, Exception> _kafkaIndividualPricingProcessChangedSkipped;
+    private static readonly Action<ILogger, long, long, Exception> _kafkaLoanRetentionProcessChangedSkipped;
 
     static LoggerExtensions()
     {
+        _kafkaLoanRetentionProcessChangedSkipped = LoggerMessage.Define<long, long>(
+            LogLevel.Debug,
+            new EventId(LoggerEventIdCodes.KafkaLoanRetentionProcessChangedSkipped, nameof(KafkaLoanRetentionProcessChangedSkipped)),
+            "KafkaLoanRetentionProcessChanged consumer skipped for Case {CaseId} and ProcessId {ProcessId} because SA not found");
+
         _kafkaMortgageChangedFinished = LoggerMessage.Define<string, long, decimal>(
             LogLevel.Debug,
             new EventId(LoggerEventIdCodes.KafkaConsumerStarted, nameof(KafkaMortgageChangedFinished)),
@@ -94,7 +101,15 @@ internal static class LoggerExtensions
             LogLevel.Debug,
             new EventId(LoggerEventIdCodes.BeforeUpdateActiveTasks, nameof(BeforeUpdateActiveTasks)),
             "UpdateActiveTask for isActive = {IsActive} and activeTaskFound = {ActiveTaskFound}");
+
+        _kafkaIndividualPricingProcessChangedSkipped = LoggerMessage.Define<long, int, int>(
+            LogLevel.Debug,
+            new EventId(LoggerEventIdCodes.KafkaIndividualPricingProcessChangedSkipped, nameof(KafkaIndividualPricingProcessChangedSkipped)),
+            "IndividualPricingProcessChanged skipped for Case {CaseId} and Task {TaskId} because of ProcessTypeId={ProcessTypeId}");
     }
+
+    public static void KafkaLoanRetentionProcessChangedSkipped(this ILogger logger, long caseId, long processId)
+        => _kafkaLoanRetentionProcessChangedSkipped(logger, caseId, processId, null!);
 
     public static void KafkaMortgageChangedFinished(this ILogger logger, string consumerTypeName, long caseId, decimal amount)
         => _kafkaMortgageChangedFinished(logger, consumerTypeName, caseId, amount, null!);
@@ -141,4 +156,6 @@ internal static class LoggerExtensions
     public static void BeforeUpdateActiveTasks(this ILogger logger, bool isActive, bool activeTaskFound)
         => _beforeUpdateActiveTasks(logger, isActive, activeTaskFound, null!);
 
+    public static void KafkaIndividualPricingProcessChangedSkipped(this ILogger logger, long caseId, int taskId, int processTypeId)
+        => _kafkaIndividualPricingProcessChangedSkipped(logger, caseId, taskId, processTypeId, null!);
 }

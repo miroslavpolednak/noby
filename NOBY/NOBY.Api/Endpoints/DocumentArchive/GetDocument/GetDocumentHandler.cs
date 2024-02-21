@@ -78,6 +78,11 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
 
     private async Task<GetDocumentResponse> HandleBySb(string externalId, Source source, CancellationToken cancellationToken)
     {
+        if (!_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_Manage) && !_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_RefinancingManage))
+        {
+            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage or DOCUMENT_SIGNING_RefinancingManage permission missing");
+        }
+
         if (!_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_Manage))
         {
             throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");

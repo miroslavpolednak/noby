@@ -11,7 +11,7 @@ internal sealed class GetCurrentPriceExceptionHandler
     public async Task<GetCurrentPriceExceptionResponse> Handle(GetCurrentPriceExceptionRequest request, CancellationToken cancellationToken)
     {
         var taskList = await _caseService.GetTaskList(request.CaseId, cancellationToken);
-        var priceException = taskList.FirstOrDefault(t => t.TaskTypeId == 2 && !t.Cancelled);
+        var priceException = taskList.FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled);
 
         if (priceException is not null)
         {
@@ -28,8 +28,8 @@ internal sealed class GetCurrentPriceExceptionHandler
         {
             var productSA = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First();
             var offer = await _offerService.GetOfferDetail(productSA.OfferId.GetValueOrDefault(), cancellationToken);
-            var process = (await _caseService.GetProcessList(request.CaseId, cancellationToken)).FirstOrDefault(t => t.ProcessTypeId == 1);
-            string? taskTypeName = (await _codebookService.WorkflowTaskTypes(cancellationToken)).FirstOrDefault(t => t.Id == 2)?.Name;
+            var process = (await _caseService.GetProcessList(request.CaseId, cancellationToken)).FirstOrDefault(t => t.ProcessTypeId == (int)WorkflowProcesses.Main);
+            string? taskTypeName = (await _codebookService.WorkflowTaskTypes(cancellationToken)).FirstOrDefault(t => t.Id == (int)WorkflowTaskTypes.PriceException)?.Name;
             var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
             
             var response = new GetCurrentPriceExceptionResponse
@@ -62,7 +62,7 @@ internal sealed class GetCurrentPriceExceptionHandler
                 {
                     TaskTypeName = taskTypeName ?? "",
                     ProcessId = process?.ProcessId ?? 0,
-                    TaskTypeId = 2
+                    TaskTypeId = (int)WorkflowTaskTypes.PriceException
                 }
             };
 

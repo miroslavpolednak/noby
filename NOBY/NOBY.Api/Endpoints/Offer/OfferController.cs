@@ -6,7 +6,7 @@ namespace NOBY.Api.Endpoints.Offer;
 [ApiController]
 [Route("api/offer")]
 [ApiVersion(1)]
-public class OfferController : ControllerBase
+public sealed class OfferController : ControllerBase
 {
     private readonly IMediator _mediator;
     public OfferController(IMediator mediator) =>  _mediator = mediator;
@@ -24,7 +24,7 @@ public class OfferController : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new [] { "Modelace" })]
+    [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request)
@@ -40,7 +40,7 @@ public class OfferController : ControllerBase
     /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("mortgage/sales-arrangement/{salesArrangementId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new [] { "Modelace" })]
+    [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(SharedDto.GetMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<SharedDto.GetMortgageResponse> GetMortgageBySalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
@@ -63,7 +63,7 @@ public class OfferController : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.DASHBOARD_CreateNewCase)]
-    [SwaggerOperation(Tags = new [] { "Modelace" })]
+    [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<CreateMortgageCase.CreateMortgageCaseResponse> CreateMortgageCase([FromBody] CreateMortgageCase.CreateMortgageCaseRequest request)
@@ -78,11 +78,10 @@ public class OfferController : ControllerBase
     /// </remarks>
     [HttpPut("mortgage/sales-arrangement/{salesArrangementId:int}/link")]
     [Produces("application/json")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Modelace" })]
+    [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task LinkModelation([FromRoute] int salesArrangementId, [FromBody] LinkModelation.LinkModelationRequest request)
-        => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? new Offer.LinkModelation.LinkModelationRequest());
+        => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? new LinkModelation.LinkModelationRequest());
 
     /// <summary>
     /// Plný splátkový kalendář dle ID simulace.
@@ -94,7 +93,7 @@ public class OfferController : ControllerBase
     /// <returns>Plný splátkový kalendář simulace.</returns>
     [HttpGet("mortgage/{offerId:int}/full-payment-schedule")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Modelace" })]
+    [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(SharedDto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -113,7 +112,7 @@ public class OfferController : ControllerBase
     /// </remarks>
     [HttpPost("mortgage/developer-project/search")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Modelace" })]
+    [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(DeveloperSearch.DeveloperSearchResponse), StatusCodes.Status200OK)]
     public async Task<DeveloperSearch.DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearch.DeveloperSearchRequest request)
         => await _mediator.Send(request ?? new DeveloperSearch.DeveloperSearchRequest());

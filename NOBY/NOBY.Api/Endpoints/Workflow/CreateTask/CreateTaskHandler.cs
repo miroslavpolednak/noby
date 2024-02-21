@@ -11,8 +11,6 @@ internal sealed class CreateTaskHandler
 {
     public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        WorkflowHelpers.ValidateTaskManagePermission(request.TaskTypeId, null, null, _currentUserAccessor);
-
         // kontrola existence Case
         DomainServices.CaseService.Contracts.Case caseInstance;
         try
@@ -24,8 +22,11 @@ internal sealed class CreateTaskHandler
             throw new NobyValidationException(90032, "DS error 13029");
         }
 
+        // validace procesu
+        await validateProcess(caseInstance.CaseId, request.ProcessId, request.TaskTypeId, cancellationToken);
+
         // validace price exception
-        if (request.TaskTypeId == 2)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
         {
             await validatePriceException(caseInstance.CaseId, cancellationToken);
         }
@@ -63,7 +64,7 @@ internal sealed class CreateTaskHandler
         }
 
         // price exception
-        if (request.TaskTypeId == 2)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
         {
             await updatePriceExceptionTask(dsRequest, cancellationToken);
         }
@@ -77,6 +78,20 @@ internal sealed class CreateTaskHandler
         }
 
         return result.TaskId;
+    }
+
+    private async Task validateProcess(long caseId, long processId, int taskTypeId, CancellationToken cancellationToken)
+    {
+        var allProcesses = await _caseService.GetProcessList(caseId, cancellationToken);
+        var processInstance = allProcesses.FirstOrDefault(t => t.ProcessId == processId)
+            ?? throw new NobyValidationException($"Workflow process {processId} for Case {caseId} not found");
+        
+        if (processInstance.ProcessTypeId is not ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && taskTypeId != (int)WorkflowTaskTypes.Consultation)
+        {
+            throw new NobyValidationException(90032, "validateProcess");
+        }
+
+        WorkflowHelpers.ValidateRefinancing(processInstance.ProcessTypeId, _currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_OtherManage, UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage);
     }
 
     private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, CancellationToken cancellationToken)
@@ -132,7 +147,7 @@ internal sealed class CreateTaskHandler
     /// </summary>
     private async Task validatePriceException(long caseId, CancellationToken cancellationToken)
     {
-        if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == 2 && !t.Cancelled))
+        if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled))
         {
             throw new NobyValidationException(90032, "ValidatePriceException failed");
         }
