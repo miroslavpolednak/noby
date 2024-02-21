@@ -33,11 +33,10 @@ internal sealed class CompleteTaskHandler
 
         await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
 
-        //// This is not working correctly so is temporarily turn off.
-        //if (request.TaskTypeId == 6)
-        //{
-        //    await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskId, request.CaseId, cancellationToken);
-        //}
+        if (request.TaskTypeId == 6 && request.CompletionTypeId == 2)
+        {
+            await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskId, request.CaseId, cancellationToken);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

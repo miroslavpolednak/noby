@@ -1,12 +1,9 @@
 ﻿using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
-using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Api.Extensions;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
 using Google.Protobuf.WellKnownTypes;
-using System.Globalization;
-using static DomainServices.CodebookService.Contracts.v1.WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SetProcessingDateInSbQueues;
 
@@ -14,59 +11,61 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
 {
     private readonly ISbQueuesRepository _sbQueuesRepository;
     private readonly ICaseServiceClient _caseService;
-    private readonly ICodebookServiceClient _codebookService;
     private readonly ILogger<SetProcessingDateInSbQueuesHandler> _logger;
     private readonly TimeProvider _dateTime;
 
     public SetProcessingDateInSbQueuesHandler(
       ISbQueuesRepository sbQueuesRepository,
         ICaseServiceClient caseService,
-        ICodebookServiceClient codebookService,
         ILogger<SetProcessingDateInSbQueuesHandler> logger,
         TimeProvider dateTime)
     {
 
         _sbQueuesRepository = sbQueuesRepository;
         _caseService = caseService;
-        _codebookService = codebookService;
         _logger = logger;
         _dateTime = dateTime;
     }
 
     public async Task<Empty> Handle(SetProcessingDateInSbQueuesRequest request, CancellationToken cancellationToken)
     {
-        // If starbuild is offline, we don't want break task completion so we catch exception and logg   
+        // If starbuild is offline, we don't want break task completion so we catch exception and log 
         try
         {
-            var tasksList = (await _caseService.GetTaskList(request.CaseId, cancellationToken)).Where(t => t.TaskTypeId == 6)
-                            .ToList();
+            var task = (await _caseService.GetTaskList(request.CaseId, cancellationToken))
+                            .Find(t => t.TaskTypeId == 6 && t.TaskId == request.TaskId && t.SignatureTypeId == 1);
 
-            if (!tasksList.Any(t => t.TaskId == request.TaskId && t.SignatureTypeId == 1)) { return new Empty(); }
+            if (task == null)
+                return new();
 
-            var workflowTaskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
-            var nonFinalStates = workflowTaskStates.Where(s => s.Flag == EWorkflowTaskStateFlag.None).Select(s => s.Id);
-            var tasksInNonFinalState = tasksList.Where(t => nonFinalStates.Contains(t.StateIdSb));
 
-            List<(long documentId, long taskId)> taskIdForSpecifiedDocumentId = await GetDocumentIds(tasksList, cancellationToken);
-
-            var documentIdForRequestTaskId = taskIdForSpecifiedDocumentId.Where(t => t.taskId == request.TaskId).Select(s => s.documentId).FirstOrDefault();
-            if (documentIdForRequestTaskId != 0)
+            var taskDetail = await _caseService.GetTaskDetail(task.TaskIdSb, cancellationToken);
+            
+            var signing = taskDetail.TaskDetail.AmendmentsCase switch
             {
-                var groupForDucumentId = taskIdForSpecifiedDocumentId.Where(d => d.documentId == documentIdForRequestTaskId);
-                var nonFinalTaskForGroup = tasksInNonFinalState.Where(r => groupForDucumentId.Select(s => s.taskId).Contains(r.TaskId));
+                TaskDetailItem.AmendmentsOneofCase.Signing => taskDetail.TaskDetail.Signing,
+                _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AmendmentHasToBeOfTypeSigning)
+            };
 
-                if (!nonFinalTaskForGroup.Any()) // Indicate last completed task in group for documentId
+            var currentDate = _dateTime.GetLocalNow().DateTime;
+
+            if (signing.ProposalForEntry?.Count > 0)
+            {
+                foreach (var attachmentId in signing.ProposalForEntry)
                 {
-                    try
+                    if (long.TryParse(attachmentId, out var attachmentIdNum))
                     {
-                        await UpdateSbQueues(_dateTime.GetLocalNow().DateTime, documentIdForRequestTaskId, cancellationToken);
-                    }
-                    catch (Exception exp)
-                    {
-                        await UpdateSbQueues(null, documentIdForRequestTaskId, cancellationToken);
-                        _logger.UpdateOfSbQueuesFailed(documentIdForRequestTaskId, exp);
+                        await _sbQueuesRepository.UpdateAttachmentProcessingDate(attachmentIdNum, currentDate, cancellationToken);
                     }
                 }
+            }
+            else if (signing.DocumentForSigningType.Equals("A", StringComparison.OrdinalIgnoreCase) && long.TryParse(signing.DocumentForSigning, out var attachmentIdNum))
+            {
+                await _sbQueuesRepository.UpdateAttachmentProcessingDate(attachmentIdNum, currentDate, cancellationToken);
+            }
+            else if (signing.DocumentForSigningType.Equals("D", StringComparison.OrdinalIgnoreCase) && long.TryParse(signing.DocumentForSigning, out var documentIdNum))
+            {
+                await _sbQueuesRepository.UpdateDocumentProcessingDate(documentIdNum, currentDate, cancellationToken);
             }
         }
         catch (Exception ex)
@@ -75,53 +74,5 @@ public class SetProcessingDateInSbQueuesHandler : IRequestHandler<SetProcessingD
         }
 
         return new Empty();
-    }
-
-    private async Task UpdateSbQueues(DateTime? currentDate, long documentIdForRequestTaskId, CancellationToken cancellationToken)
-    {
-        await Task.WhenAll(
-             _sbQueuesRepository.UpdateAttachmentProcessingDate(documentIdForRequestTaskId, currentDate, cancellationToken),
-             _sbQueuesRepository.UpdateClientProcessingDate(documentIdForRequestTaskId, currentDate, cancellationToken),
-             _sbQueuesRepository.UpdateDocumentProcessingDate(documentIdForRequestTaskId, currentDate, cancellationToken)
-             );
-    }
-
-    private async Task<List<(long documentId, long taskId)>> GetDocumentIds(IEnumerable<WorkflowTask> tasksList, CancellationToken cancellationToken)
-    {
-        List<(long documentId, long taskId)> taskIdForSpecifiedDocumentId = [];
-        foreach (var task in tasksList)
-        {
-            var taskDetail = await _caseService.GetTaskDetail(task.TaskIdSb, cancellationToken);
-
-            var signing = taskDetail.TaskDetail.AmendmentsCase switch
-            {
-                TaskDetailItem.AmendmentsOneofCase.Signing => taskDetail.TaskDetail.Signing,
-                _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AmendmentHasToBeOfTypeSigning)
-            };
-
-            if (signing.ProposalForEntry?.Count > 0)
-            {
-                foreach (var attachmentId in signing.ProposalForEntry)
-                {
-                    var documentId = await _sbQueuesRepository.GetDocumentIdAccordingAtchId(attachmentId, cancellationToken);
-                    taskIdForSpecifiedDocumentId.Add((documentId, task.TaskId));
-                }
-            }
-            else if (signing.DocumentForSigningType.Equals("A", StringComparison.OrdinalIgnoreCase))
-            {
-                var documentId = await _sbQueuesRepository.GetDocumentIdAccordingAtchId(signing.DocumentForSigning, cancellationToken);
-                taskIdForSpecifiedDocumentId.Add((documentId, task.TaskId));
-            }
-            else if (signing.DocumentForSigningType.Equals("D", StringComparison.OrdinalIgnoreCase))
-            {
-                taskIdForSpecifiedDocumentId.Add((long.Parse(signing.DocumentForSigning!, CultureInfo.InvariantCulture), task.TaskId));
-            }
-            else
-            {
-                throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedDocumentForSigningType, signing.DocumentForSigningType);
-            }
-        }
-
-        return taskIdForSpecifiedDocumentId;
     }
 }
