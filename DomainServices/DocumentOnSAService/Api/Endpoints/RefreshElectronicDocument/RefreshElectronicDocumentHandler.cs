@@ -30,7 +30,9 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                                     {
                                         s.DocumentOnSAId,
                                         s.ExternalIdESignatures,
-                                        s.SignatureTypeId
+                                        s.SignatureTypeId,
+                                        s.IsValid,
+                                        s.IsSigned
                                     })
                                     .FirstOrDefaultAsync(d => d.DocumentOnSAId == request.DocumentOnSAId, cancellationToken)
                                     ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
@@ -43,7 +45,8 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
         switch (elDocumentStatus)
         {
             case EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT:
-                await _mediator.Send(new SignDocumentRequest { DocumentOnSAId = documentOnSa.DocumentOnSAId, SignatureTypeId = documentOnSa.SignatureTypeId }, cancellationToken);
+                if (documentOnSa is { IsValid: true, IsSigned: false })
+                    await _mediator.Send(new SignDocumentRequest { DocumentOnSAId = documentOnSa.DocumentOnSAId, SignatureTypeId = documentOnSa.SignatureTypeId }, cancellationToken);
                 break;
             case EDocumentStatuses.DELETED:
                 await _mediator.Send(new StopSigningRequest { DocumentOnSAId = documentOnSa.DocumentOnSAId, NotifyESignatures = false }, cancellationToken);
