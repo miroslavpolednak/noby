@@ -37,7 +37,7 @@ public static class DocumentOnSaMetadataManager
         // WaitingForScan (čeká na sken) 3
         DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && doc.SignatureTypeId == SignatureTypes.Paper.ToByte() && doc.EArchivIdsLinked.Count == 0 && doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() && doc.Source != Source.Workflow => GetSignatureState(3, signatureStates),
         // Signed (podepsáno) 4
-        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && (doc.EArchivIdsLinked.Count != 0 || doc.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() || doc.Source == Source.Workflow || doc.SignatureTypeId == SignatureTypes.Paper.ToByte()) => GetSignatureState(4, signatureStates),
+        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && (doc.EArchivIdsLinked.Count != 0 || doc.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() || doc.Source == Source.Workflow || doc.SignatureTypeId == SignatureTypes.Electronic.ToByte()) => GetSignatureState(4, signatureStates),
         // Canceled (zrušeno) 5 
         _ => GetSignatureState(5, signatureStates)
     };
