@@ -18,6 +18,11 @@ internal sealed class JobExecutorRepository
         _connectionProvider = connectionProvider;
     }
 
+    public string GetConnectionString()
+    {
+        return _connectionProvider.ConnectionString;
+    }
+
     public Dictionary<Guid, Type> GetActiveJobs()
     {
         return _connectionProvider

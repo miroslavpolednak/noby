@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Medallion.Threading.SqlServer;
+using System.Diagnostics;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
@@ -92,10 +93,24 @@ internal sealed class JobExecutor
     {
         try
         {
-            await job.Execute(jobData, cancellationToken);
-            _repository.UpdateJobState(currentStateId, ScheduleJobStatuses.Finished);
+            var distributedLock = new SqlDistributedLock(jobId.ToString(), _repository.GetConnectionString());
+            await using (var handle = await distributedLock.TryAcquireAsync(timeout: TimeSpan.FromSeconds(1), cancellationToken: cancellationToken))
+            {
+                if (handle != null)
+                {
+                    await job.Execute(jobData, cancellationToken);
 
-            _logger.JobFinished(jobId);
+                    _repository.UpdateJobState(currentStateId, ScheduleJobStatuses.Finished);
+
+                    _logger.JobFinished(jobId);
+                }
+                else
+                {
+                    _repository.UpdateJobState(currentStateId, ScheduleJobStatuses.FailedBecauseOfLock);
+
+                    _logger.JobLocked(jobId, currentStateId);
+                }
+            }
         }
         catch (Exception ex)
         {

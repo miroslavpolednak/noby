@@ -11,9 +11,22 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, Guid, Guid?, Exception> _enqueingJob;
     private static readonly Action<ILogger, Guid, Exception> _jobFinished;
     private static readonly Action<ILogger, Guid, string, Exception> _jobFailed;
+    private static readonly Action<ILogger, Guid, Guid, Exception> _jobLocked;
+    private static readonly Action<ILogger, string, Exception> _instanceLockAcquireFailed;
+    private static readonly Action<ILogger, Exception> _instanceUnableToAcquireLock;
 
     static LoggerExtensions()
     {
+        _instanceLockAcquireFailed = LoggerMessage.Define<string>(
+            LogLevel.Warning,
+            new EventId(LoggerEventIdCodes.InstanceLockAcquireFailed, nameof(InstanceLockAcquireFailed)),
+            "Acquiring instance lock failed: {Message}");
+
+        _instanceUnableToAcquireLock = LoggerMessage.Define(
+            LogLevel.Warning,
+            new EventId(LoggerEventIdCodes.InstanceUnableToAcquireLock, nameof(InstanceUnableToAcquireLock)),
+            "Acquiring instance lock failed: can't obtain lock");
+
         _tryToAcquireScheduleLock = LoggerMessage.Define<bool, string?>(
             LogLevel.Debug,
             new EventId(LoggerEventIdCodes.TryToAcquireScheduleLock, nameof(TryToAcquireScheduleLock)),
@@ -58,7 +71,18 @@ internal static class LoggerExtensions
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.JobFailed, nameof(JobFailed)),
             "Job {JobId} failed: {Message}");
+
+        _jobLocked = LoggerMessage.Define<Guid, Guid>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.JobLocked, nameof(JobLocked)),
+            "Job {JobId} with state {StateId} has not been executed since distributed lock already exist");
     }
+
+    public static void InstanceUnableToAcquireLock(this ILogger logger)
+        => _instanceUnableToAcquireLock(logger, null!);
+
+    public static void InstanceLockAcquireFailed(this ILogger logger, Exception ex)
+        => _instanceLockAcquireFailed(logger, ex.Message, ex);
 
     public static void TryToAcquireScheduleLock(this ILogger logger, bool IsLockAcquired, string? lockOwnerInstanceName)
         => _tryToAcquireScheduleLock(logger, IsLockAcquired, lockOwnerInstanceName, null!);
@@ -86,4 +110,7 @@ internal static class LoggerExtensions
 
     public static void JobFailed(this ILogger logger, Guid jobId, string message, Exception ex)
         => _jobFailed(logger, jobId, message, ex);
+
+    public static void JobLocked(this ILogger logger, Guid jobId, Guid stateId)
+        => _jobLocked(logger, jobId, stateId, null!);
 }

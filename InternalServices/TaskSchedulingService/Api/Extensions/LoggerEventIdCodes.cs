@@ -11,4 +11,7 @@ internal sealed class LoggerEventIdCodes
     public const int EnqueingJob = 606;
     public const int JobFinished = 607;
     public const int JobFailed = 608;
+    public const int JobLocked = 609;
+    public const int InstanceLockAcquireFailed = 610;
+    public const int InstanceUnableToAcquireLock = 611;
 }

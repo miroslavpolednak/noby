@@ -5,5 +5,6 @@ internal enum ScheduleJobStatuses
     InProgress,
     Finished,
     Failed,
+    FailedBecauseOfLock,
     Stale
 }
