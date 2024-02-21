@@ -69,7 +69,8 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                     IsSigned = docOnSa.IsSigned,
                     Source = docOnSa.Source.MapToCisEnum(),
                     SalesArrangementTypeId = salesArrangementTypeId,
-                    EArchivIdsLinked = docOnSa.EArchivIdsLinked
+                    EArchivIdsLinked = docOnSa.EArchivIdsLinked,
+                    SignatureTypeId = docOnSa.SignatureTypeId ?? 0
                 },
               signatureStates),
                 EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
