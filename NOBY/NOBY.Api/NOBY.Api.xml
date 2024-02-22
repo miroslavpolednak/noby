@@ -3361,7 +3361,7 @@
             Stav závazku. 1=NOBY, 2=C4M
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.CreditorName">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.Creditor">
             <summary>
             Věřitel
             </summary>

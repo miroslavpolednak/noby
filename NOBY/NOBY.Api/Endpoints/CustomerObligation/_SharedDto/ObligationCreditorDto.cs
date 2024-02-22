@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.CustomerObligation.SharedDto;
 
-public class ObligationCreditorDto
+public sealed class ObligationCreditorDto
 {
     /// <summary>
     /// Id věřitele z číselníku bank <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953">BankCode (CIS_KODY_BANK)</a>
