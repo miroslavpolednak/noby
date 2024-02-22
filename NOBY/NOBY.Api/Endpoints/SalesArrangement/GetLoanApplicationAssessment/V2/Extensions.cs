@@ -8,9 +8,6 @@ namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2;
 
 internal static class Extensions
 {
-    const string _creditorNameKB = "KB";
-    const string _creditorNameJPU = "JPÚ";
-
     public static bool BankAccountEquals(this cRS.BankAccountDetail account1, cRS.BankAccountDetail? account2)
     {
         return (account1.NumberPrefix?.Equals(account2?.NumberPrefix, StringComparison.OrdinalIgnoreCase) ?? false)
@@ -27,7 +24,7 @@ internal static class Extensions
             2,
             obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
             laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
-            _creditorNameKB,
+            false,
             item.InstallmentAmount,
             isEntrepreneur);
     }
@@ -42,7 +39,7 @@ internal static class Extensions
                 2,
                 obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
                 laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
-                _creditorNameJPU,
+                true,
                 //item.LoanType,
                 item.InstallmentAmount,
                 isEntrepreneur);
@@ -61,7 +58,7 @@ internal static class Extensions
                 2,
                 obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
                 laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
-                _creditorNameKB,
+                false,
                 item.InstallmentAmount,
                 isEntrepreneur,
                 item.ExposureAmount,
@@ -98,7 +95,12 @@ internal static class Extensions
                     LoanPrincipalAmount = isLimit ? null : t.LoanPrincipalAmount,
                     InstallmentAmount = isLimit ? null : t.InstallmentAmount,
                     CreditCardLimit = !isLimit ? null : t.CreditCardLimit,
-                    CreditorName = t.Creditor?.IsExternal ?? false ? _creditorNameJPU : _creditorNameKB,
+                    Creditor = t.Creditor is null ? null : new()
+                    {
+                        CreditorId = t.Creditor.CreditorId,
+                        IsExternal = t.Creditor.IsExternal,
+                        Name = t.Creditor.Name
+                    },
                     Correction = t.Correction is null ? null : new NOBY.Dto.Household.CustomerObligationCorrectionDto
                     {
                         CorrectionTypeId = t.Correction.CorrectionTypeId,
@@ -121,7 +123,7 @@ internal static class Extensions
             2,
             obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
             laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
-            _creditorNameJPU,
+            true,
             item.InstallmentAmount,
             isEntrepreneur,
             item.ExposureAmount,
@@ -136,7 +138,7 @@ internal static class Extensions
         in int sourceId,
         ObligationTypesResponse.Types.ObligationTypeItem? obligationType,
         ObligationLaExposuresResponse.Types.ObligationLaExposureItem? loanType,
-        in string creditorName,
+        in bool isExternal,
         in decimal? installmentAmount,
         in bool isEntrepreneur,
         in decimal? exposureAmount = null,
@@ -157,7 +159,10 @@ internal static class Extensions
             CreditCardLimit = !isLimit ? null : exposureAmount,
             ObligationLaExposureId = loanType?.Id,
             ObligationLaExposureName = loanType?.Name,
-            CreditorName = creditorName,
+            Creditor = new CustomerObligation.SharedDto.ObligationCreditorDto
+            {
+                IsExternal = isExternal
+            },
             ContractDate = contractDate,
             MaturityDate = maturityDate
         };

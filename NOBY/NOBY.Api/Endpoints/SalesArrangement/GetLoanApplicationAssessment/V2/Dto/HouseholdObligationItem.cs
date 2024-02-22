@@ -1,4 +1,5 @@
-﻿using NOBY.Dto;
+﻿using NOBY.Api.Endpoints.CustomerObligation.SharedDto;
+using NOBY.Dto;
 using NOBY.Dto.Household;
 using System.Text.Json.Serialization;
 
@@ -27,7 +28,7 @@ public sealed class HouseholdObligationItem
     /// <summary>
     /// Věřitel
     /// </summary>
-    public string CreditorName { get; set; } = string.Empty;
+    public ObligationCreditorDto? Creditor { get; set; }
 
     public decimal? AmountConsolidated { get; set; }
 
