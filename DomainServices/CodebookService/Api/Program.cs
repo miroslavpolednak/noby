@@ -36,9 +36,6 @@ SharedComponents.GrpcServiceBuilder
             return new SqlQueryCollection(data);
         });
 
-        // background svc
-        builder.AddCisBackgroundService<DomainServices.CodebookService.Api.BackgroundServices.DownloadRdmCodebooksJob.DownloadRdmCodebooksJob>();
-
         builder.AddExternalService<IAcvEnumServiceClient>();
         builder.AddExternalService<IRDMClient>();
     })

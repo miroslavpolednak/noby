@@ -21,3 +21,15 @@ VALUES ('6290CA85-DEAE-4299-AB63-BF3973D3859B', 'Job2', 'CIS.InternalServices.Ta
 
 INSERT INTO dbo.ScheduleTrigger (ScheduleTriggerId,ScheduleJobId,TriggerName,Cron,IsDisabled)
 VALUES ('98D0A582-6314-4BB2-95AB-86D511732483', '6290CA85-DEAE-4299-AB63-BF3973D3859B', 'Job2', '15 * * * *', 0);
+
+INSERT INTO dbo.ScheduleJob (ScheduleJobId,JobName,JobType,Description,IsDisabled) 
+VALUES ('6A83A9A5-101F-47B9-BBFE-3FEF6F9D9FA9', 'CancelServiceSalesArrangements', 'CIS.InternalServices.TaskSchedulingService.Api.Jobs.CancelServiceSalesArrangements.CancelServiceSalesArrangementsHandler', N'CancelServiceSalesArrangements', 0);
+
+INSERT INTO dbo.ScheduleTrigger (ScheduleTriggerId,ScheduleJobId,TriggerName,Cron,IsDisabled)
+VALUES ('63EDCE21-A116-4BE5-B553-B0DD90A55587', '6A83A9A5-101F-47B9-BBFE-3FEF6F9D9FA9', 'CancelServiceSalesArrangements', '0 1 * * *', 0);
+
+INSERT INTO dbo.ScheduleJob (ScheduleJobId,JobName,JobType,Description,IsDisabled) 
+VALUES ('5A40D597-9E45-4979-8108-B2BED0F0B86F', 'OfferGuaranteeDateToCheck', 'CIS.InternalServices.TaskSchedulingService.Api.Jobs.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckHandler', N'OfferGuaranteeDateToCheck', 0);
+
+INSERT INTO dbo.ScheduleTrigger (ScheduleTriggerId,ScheduleJobId,TriggerName,Cron,IsDisabled)
+VALUES ('AC88A6B7-B8E0-482A-98F0-468EB31A97D0', '5A40D597-9E45-4979-8108-B2BED0F0B86F', 'OfferGuaranteeDateToCheck', '0 5 * * *', 0);
