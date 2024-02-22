@@ -33,3 +33,9 @@ VALUES ('5A40D597-9E45-4979-8108-B2BED0F0B86F', 'OfferGuaranteeDateToCheck', 'CI
 
 INSERT INTO dbo.ScheduleTrigger (ScheduleTriggerId,ScheduleJobId,TriggerName,Cron,IsDisabled)
 VALUES ('AC88A6B7-B8E0-482A-98F0-468EB31A97D0', '5A40D597-9E45-4979-8108-B2BED0F0B86F', 'OfferGuaranteeDateToCheck', '0 5 * * *', 0);
+
+INSERT INTO dbo.ScheduleJob (ScheduleJobId,JobName,JobType,Description,IsDisabled) 
+VALUES ('5D05112E-59B8-42A4-9230-CAB34D476A06', 'UpdateDocumentStatus', 'CIS.InternalServices.TaskSchedulingService.Api.Jobs.UpdateDocumentStatus.UpdateDocumentStatusHandler', N'UpdateDocumentStatus', 0);
+
+INSERT INTO dbo.ScheduleTrigger (ScheduleTriggerId,ScheduleJobId,TriggerName,Cron,IsDisabled)
+VALUES ('E8952335-3557-48A2-97F2-4F0AC4197C98', '5D05112E-59B8-42A4-9230-CAB34D476A06', 'UpdateDocumentStatus', '0 5 * * *', 0);

@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+package DomainServices.DocumentOnSAService;
+option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+service MaintananceService{
+	rpc GetUpdateDocumentStatusIds (GetUpdateDocumentStatusIdsRequest) returns (GetUpdateDocumentStatusIdsResponse);
+}
+
+message GetUpdateDocumentStatusIdsRequest {}
+
+message GetUpdateDocumentStatusIdsResponse {
+	repeated GetUpdateDocumentStatusIdsResponseItem Items = 1;
+
+	message GetUpdateDocumentStatusIdsResponseItem {
+		int32 DocumentOnSAId = 1;
+		google.protobuf.StringValue ExternalIdESignatures = 2;
+	}
+}

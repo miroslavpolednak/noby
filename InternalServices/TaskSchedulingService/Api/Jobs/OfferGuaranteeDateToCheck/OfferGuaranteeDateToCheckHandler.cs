@@ -4,6 +4,9 @@ using DomainServices.SalesArrangementService.Clients;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.OfferGuaranteeDateToCheck;
 
+/// <summary>
+/// Original SalesArrangement.OfferGuaranteeDateToCheckHandler
+/// </summary>
 internal sealed class OfferGuaranteeDateToCheckHandler
     : IJob
 {

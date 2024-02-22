@@ -3,6 +3,9 @@ using DomainServices.SalesArrangementService.Clients;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.CancelServiceSalesArrangements;
 
+/// <summary>
+/// Original SalesArrangement.CancelServiceSalesArrangementsHandler
+/// </summary>
 internal sealed class CancelServiceSalesArrangementsHandler
     : IJob
 {
