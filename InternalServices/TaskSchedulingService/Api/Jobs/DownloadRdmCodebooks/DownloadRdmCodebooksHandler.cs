@@ -4,7 +4,7 @@ using DomainServices.CodebookService.Clients;
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.DownloadRdmCodebooks;
 
 /// <summary>
-/// JobData: [string] where value is codebook name
+/// JobData: [string] where values are codebook names
 /// </summary>
 internal sealed class DownloadRdmCodebooksHandler
     : IJob
