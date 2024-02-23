@@ -18,9 +18,9 @@ internal static class LoggerExtensions
             "OfferGuaranteeDateToCheckJob set switch 1 to false on SalesArrangement {SalesArrangementId}");
     }
 
-    public static void OfferGuaranteeDateToCheckJobCancelTask(this ILogger logger, long caseId, int taskSbId)
+    public static void OfferGuaranteeDateToCheckJobCancelTask(this ILogger logger, in long caseId, in int taskSbId)
         => _offerGuaranteeDateToCheckJobCancelTask(logger, caseId, taskSbId, null!);
 
-    public static void OfferGuaranteeDateToCheckJobFinished(this ILogger logger, int salesArrangementId)
+    public static void OfferGuaranteeDateToCheckJobFinished(this ILogger logger, in int salesArrangementId)
         => _offerGuaranteeDateToCheckJobFinished(logger, salesArrangementId, null!);
 }

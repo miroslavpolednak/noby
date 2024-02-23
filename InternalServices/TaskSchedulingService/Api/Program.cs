@@ -20,6 +20,7 @@ SharedComponents.GrpcServiceBuilder
             .AddCustomerService()
             .AddProductService()
             .AddHouseholdService()
+            .AddDocumentArchiveService()
             .AddDocumentOnSAService();
     })
     .EnableJsonTranscoding(options =>

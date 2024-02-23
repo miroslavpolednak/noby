@@ -2,11 +2,13 @@
 package DomainServices.DocumentOnSAService;
 option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
 
+import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
 service MaintananceService{
 	rpc GetUpdateDocumentStatusIds (GetUpdateDocumentStatusIdsRequest) returns (GetUpdateDocumentStatusIdsResponse);
 	rpc GetCheckDocumentsArchivedIds (GetCheckDocumentsArchivedIdsRequest) returns (GetCheckDocumentsArchivedIdsResponse);
+	rpc UpdateDocumentsIsArchived (UpdateDocumentsIsArchivedRequest) returns (google.protobuf.Empty);
 }
 
 message GetUpdateDocumentStatusIdsRequest {}
@@ -31,4 +33,8 @@ message GetCheckDocumentsArchivedIdsResponse {
 		string EArchivId = 1;
 		int32 DocumentOnSAId = 2;
 	}
+}
+
+message UpdateDocumentsIsArchivedRequest {
+	repeated int32 DocumentOnSaIds = 1;
 }

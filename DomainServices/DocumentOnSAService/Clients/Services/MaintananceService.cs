@@ -15,6 +15,13 @@ internal sealed class MaintananceService
         return await _client.GetCheckDocumentsArchivedIdsAsync(new() { MaxBatchSize = maxBatchSize }, cancellationToken: cancellationToken);
     }
 
+    public async Task UpdateDocumentsIsArchived(int[] documentOnSaIds, CancellationToken cancellationToken)
+    {
+        var request = new UpdateDocumentsIsArchivedRequest();
+        request.DocumentOnSaIds.AddRange(documentOnSaIds);
+        await _client.UpdateDocumentsIsArchivedAsync(request, cancellationToken: cancellationToken);
+    }
+
     private readonly Contracts.MaintananceService.MaintananceServiceClient _client;
 
     public MaintananceService(Contracts.MaintananceService.MaintananceServiceClient client)

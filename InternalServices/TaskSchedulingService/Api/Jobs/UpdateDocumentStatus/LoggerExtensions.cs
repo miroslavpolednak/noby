@@ -12,6 +12,6 @@ internal static class LoggerExtensions
            "Update documentOnSa {DocumentId} failed");
     }
 
-    public static void UpdateDocumentStatusFailed(this ILogger logger, int documentId, Exception exception)
+    public static void UpdateDocumentStatusFailed(this ILogger logger, in int documentId, Exception exception)
      => _updateDocumentStatusFailed(logger, documentId, exception);
 }

@@ -39,3 +39,9 @@ VALUES ('5D05112E-59B8-42A4-9230-CAB34D476A06', 'UpdateDocumentStatus', 'CIS.Int
 
 INSERT INTO dbo.ScheduleTrigger (ScheduleTriggerId,ScheduleJobId,TriggerName,Cron,IsDisabled)
 VALUES ('E8952335-3557-48A2-97F2-4F0AC4197C98', '5D05112E-59B8-42A4-9230-CAB34D476A06', 'UpdateDocumentStatus', '0 5 * * *', 0);
+
+INSERT INTO dbo.ScheduleJob (ScheduleJobId,JobName,JobType,Description,IsDisabled) 
+VALUES ('6023C62B-D33D-499D-8FB6-366F192A8A56', 'CheckDocumentsArchived', 'CIS.InternalServices.TaskSchedulingService.Api.Jobs.CheckDocumentsArchived.CheckDocumentsArchivedHandler', N'CheckDocumentsArchived', 0);
+
+INSERT INTO dbo.ScheduleTrigger (ScheduleTriggerId,ScheduleJobId,TriggerName,Cron,JobData,IsDisabled)
+VALUES ('54CBFE36-7016-45C4-99AE-2945CABA4BE8', '6023C62B-D33D-499D-8FB6-366F192A8A56', 'CheckDocumentsArchived', '* * * * *', '{\"MaxBatchSize\":1000}' 0);
