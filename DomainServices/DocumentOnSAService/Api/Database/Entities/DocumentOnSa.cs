@@ -43,7 +43,9 @@ public class DocumentOnSa : ICreated
 
     public bool IsFinal { get; set; }
 
-    public string? ExternalId { get; set; }
+    public string? ExternalIdESignatures { get; set; }
+
+    public string? ExternalIdSb { get; set; }
 
     public Source Source { get; set; }
 

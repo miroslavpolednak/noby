@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using SharedTypes.GrpcTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
@@ -54,6 +53,11 @@ internal sealed class SendToCmpHandler
     {
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+
+        if (saInstance.SalesArrangementTypeId is not ((int)SalesArrangementTypes.Mortgage or (int)SalesArrangementTypes.Drawing))
+        {
+            throw new NobyValidationException(90032);
+        }
 
         // pokud je to produktovy SA, tak dal, jinak rovnou odeslat
         var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);

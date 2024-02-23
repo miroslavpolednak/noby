@@ -55,9 +55,9 @@ public class GetDocumentOnSAHandler : IRequestHandler<GetDocumentOnSARequest, Ge
         if (!documentOnSaData.IsValid)
             throw new NobyValidationException("Unable to generate document for invalid document");
 
-        if (!_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_Manage))
+        if (!_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_Manage) && !_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_RefinancingManage))
         {
-            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");
+            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage or DOCUMENT_SIGNING_RefinancingManage permission missing");
         }
 
         return await GetDocumentFromDocumentGenerator(documentOnSa, documentOnSaData, cancellationToken);

@@ -7,8 +7,8 @@ namespace NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase;
 
 public class SearchDocumentsOnSaOnCaseHandler : IRequestHandler<SearchDocumentsOnSaOnCaseRequest, SearchDocumentsOnSaOnCaseResponse>
 {
+    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
-
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IEaCodeMainHelper _eaCodeMainHelper;
 
@@ -16,12 +16,14 @@ public class SearchDocumentsOnSaOnCaseHandler : IRequestHandler<SearchDocumentsO
         IDocumentOnSAServiceClient documentOnSAService,
         ISalesArrangementServiceClient salesArrangementService,
         IEaCodeMainHelper eaCodeMainHelper
-        )
+,
+        Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
     {
         _documentOnSAService = documentOnSAService;
 
         _salesArrangementService = salesArrangementService;
         _eaCodeMainHelper = eaCodeMainHelper;
+        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 
     public async Task<SearchDocumentsOnSaOnCaseResponse> Handle(SearchDocumentsOnSaOnCaseRequest request, CancellationToken cancellationToken)
@@ -29,9 +31,10 @@ public class SearchDocumentsOnSaOnCaseHandler : IRequestHandler<SearchDocumentsO
         await _eaCodeMainHelper.ValidateEaCodeMain(request.EACodeMainId!.Value, cancellationToken);
 
         var saResponse = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
+        var salesArrangements = _salesArrangementAuthorization.FiltrSalesArrangements(saResponse.SalesArrangements);
 
         var formIds = new List<string>();
-        foreach (var salesArragment in saResponse.SalesArrangements)
+        foreach (var salesArragment in salesArrangements)
         {
             var documentsOnSaResponse = await _documentOnSAService.GetDocumentsOnSAList(salesArragment.SalesArrangementId, cancellationToken);
             var documentTypesForEaCodeMain = await _eaCodeMainHelper.GetDocumentTypeIdsAccordingEaCodeMain(request.EACodeMainId!.Value, cancellationToken);

@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentOnSAService.Clients;
@@ -8,16 +7,34 @@ using DomainServices.SalesArrangementService.Clients;
 using _SaDomain = DomainServices.SalesArrangementService.Contracts;
 using NOBY.Api.Endpoints.DocumentOnSA;
 using NOBY.Api.Extensions;
+using DomainServices.SalesArrangementService.Contracts;
+using FastEnumUtility;
+using DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Workflow.StartTaskSigning;
 
-internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigningRequest, StartTaskSigningResponse>
+internal sealed class StartTaskSigningHandler(
+    ICodebookServiceClient codebookService,
+    IDocumentOnSAServiceClient documentOnSaService,
+    ISalesArrangementServiceClient salesArrangementService,
+    ICaseServiceClient caseService,
+    Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization) : IRequestHandler<StartTaskSigningRequest, StartTaskSigningResponse>
 {
+    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization = salesArrangementAuthorization;
+    private readonly ICodebookServiceClient _codebookService = codebookService;
+    private readonly IDocumentOnSAServiceClient _documentOnSaService = documentOnSaService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService = salesArrangementService;
+    private readonly ICaseServiceClient _caseService = caseService;
+
     public async Task<StartTaskSigningResponse> Handle(StartTaskSigningRequest request, CancellationToken cancellationToken)
     {
         var caseId = request.CaseId;
         var taskId = request.TaskId;
-        var salesArrangement = await GetSalesArrangementId(caseId, cancellationToken);
+        var workflowTasks = await _caseService.GetTaskList(caseId, cancellationToken);
+        var salesArrangement = await GetSalesArrangementId(caseId, workflowTasks, taskId, cancellationToken);
+
+        // validace prav
+        _salesArrangementAuthorization.ValidateDocumentSigningMngBySaType237And246(salesArrangement.SalesArrangementTypeId);
 
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
         var eACodeMains = await _codebookService.EaCodesMain(cancellationToken);
@@ -31,8 +48,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
             return Map(documentOnSa, documentTypes, eACodeMains, signatureStates, salesArrangement.SalesArrangementTypeId);
         }
 
-        var workflowTasks = await _caseService.GetTaskList(caseId, cancellationToken);
-        var workflowTask = workflowTasks.FirstOrDefault(t => t.TaskId == taskId)
+        var workflowTask = workflowTasks.Find(t => t.TaskId == taskId)
             ?? throw new NobyValidationException($"TaskId '{taskId}' is not present in workflow task list.");
 
         var signingRequest = new StartSigningRequest
@@ -49,18 +65,28 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
         return Map(signingResponse, documentTypes, eACodeMains, signatureStates, salesArrangement.SalesArrangementTypeId);
     }
 
-    private async Task<_SaDomain.SalesArrangement> GetSalesArrangementId(long caseId, CancellationToken cancellationToken)
+    private async Task<_SaDomain.SalesArrangement> GetSalesArrangementId(long caseId, List<WorkflowTask> workflowTasks, long taskId, CancellationToken cancellationToken)
     {
+        var processTypeId = workflowTasks.Find(t => t.TaskId == taskId)?.ProcessTypeId;
+
         var salesArrangementsResponse = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
 
+        // 1 hlavní úvěrový proces, 3 retenční proces
+        return processTypeId switch
+        {
+            1 => await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken),
+            3 => salesArrangementsResponse.SalesArrangements.Single(s => s.SalesArrangementTypeId == SalesArrangementTypes.Retention.ToByte()),
+            _ => throw new ArgumentException($"Unsupported processTypeId {processTypeId}, cannot get SA")
+        };
+    }
+
+    private async Task<_SaDomain.SalesArrangement> GetSaAccordingToSaCategory(GetSalesArrangementListResponse saList, CancellationToken cancellationToken)
+    {
         var salesArrangementTypes = await _codebookService.SalesArrangementTypes(cancellationToken);
         var salesArrangementType = salesArrangementTypes
             .Single(s => s.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest);
 
-        var salesArrangement = salesArrangementsResponse.SalesArrangements
-            .Single(s => s.SalesArrangementTypeId == salesArrangementType.Id);
-
-        return salesArrangement;
+        return saList.SalesArrangements.Single(s => s.SalesArrangementTypeId == salesArrangementType.Id);
     }
 
     private static StartTaskSigningResponse Map(
@@ -84,6 +110,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
                 Source = documentOnSa.Source.MapToCisEnum(),
                 SalesArrangementTypeId = salesArrangementTypeId,
                 EArchivIdsLinked = documentOnSa.EArchivIdsLinked,
+                SignatureTypeId = documentOnSa.SignatureTypeId ?? 0
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
@@ -113,6 +140,7 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
                 Source = signingResponse.DocumentOnSa.Source.MapToCisEnum(),
                 SalesArrangementTypeId = salesArrangementTypeId,
                 EArchivIdsLinked = Array.Empty<string>(),
+                SignatureTypeId = signingResponse.DocumentOnSa.SignatureTypeId ?? 0
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
@@ -120,21 +148,4 @@ internal sealed class StartTaskSigningHandler : IRequestHandler<StartTaskSigning
             documentTypes,
             eACodeMains)
         };
-
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly IDocumentOnSAServiceClient _documentOnSaService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICaseServiceClient _caseService;
-
-    public StartTaskSigningHandler(
-        ICodebookServiceClient codebookService,
-        IDocumentOnSAServiceClient documentOnSaService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICaseServiceClient caseService)
-    {
-        _codebookService = codebookService;
-        _documentOnSaService = documentOnSaService;
-        _salesArrangementService = salesArrangementService;
-        _caseService = caseService;
-    }
 }

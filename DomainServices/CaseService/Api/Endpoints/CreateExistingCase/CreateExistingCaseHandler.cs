@@ -49,6 +49,8 @@ internal sealed class CreateExistingCaseHandler
             FirstNameNaturalPerson = request.Customer.FirstNameNaturalPerson,
             DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson,
             Cin = request.Customer.Cin,
+            CustomerPriceSensitivity = request.Customer.CustomerPriceSensitivity,
+            CustomerChurnRisk = request.Customer.CustomerChurnRisk,
 
             TargetAmount = request.Data.TargetAmount,
             IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested,

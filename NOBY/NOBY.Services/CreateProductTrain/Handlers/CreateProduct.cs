@@ -42,7 +42,7 @@ internal sealed class CreateProduct
             throw new CisValidationException($"SalesArrangement #{salesArrangementId} is not bound to Offer");
 
         // detail offer
-        var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId.Value, cancellationToken);
+        var offerInstance = await _offerService.GetOffer(saInstance.OfferId.Value, cancellationToken);
 
         // zjistit, zda existuje customer v konsDb
         await _createOrUpdateCustomerKonsDb.CreateOrUpdate(customerIdentifiers!, cancellationToken);

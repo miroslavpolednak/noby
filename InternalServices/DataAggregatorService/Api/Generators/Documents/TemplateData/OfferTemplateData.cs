@@ -38,11 +38,11 @@ internal class OfferTemplateData : AggregatedData
     {
         get
         {
-            if (Offer.SimulationInputs.LoanKindId == 2001)
+            if (Offer.MortgageOffer.SimulationInputs.LoanKindId == 2001)
                 return "koupě/výstavba/rekonstrukce";
 
             return string.Join("; ",
-                               Offer.SimulationInputs
+                               Offer.MortgageOffer.SimulationInputs
                                     .LoanPurposes
                                     .Select(x => _codebookManager.LoanPurposes
                                                                  .Where(p => p.MandantId == 2 && p.Id == x.LoanPurposeId)
@@ -51,14 +51,14 @@ internal class OfferTemplateData : AggregatedData
         }
     }
 
-    public string FeeNames => string.Join(Environment.NewLine, Offer.AdditionalSimulationResults.Fees.Where(f => f.IncludeInRPSN).Select(f => f.ShortNameForExample));
+    public string FeeNames => string.Join(Environment.NewLine, Offer.MortgageOffer.AdditionalSimulationResults.Fees.Where(f => f.IncludeInRPSN).Select(f => f.ShortNameForExample));
 
     public string FeeFinalSums
     {
         get
         {
             return string.Join(Environment.NewLine,
-                               Offer.AdditionalSimulationResults
+                               Offer.MortgageOffer.AdditionalSimulationResults
                                     .Fees
                                     .Where(f => f.IncludeInRPSN)
                                     .Select(f => (decimal?)f.FinalSum ?? 0m)
@@ -86,11 +86,11 @@ internal class OfferTemplateData : AggregatedData
 
     private string GetLoanKindOfferHeader()
     {
-        if (Offer.SimulationInputs.LoanKindId == 2001)
+        if (Offer.MortgageOffer.SimulationInputs.LoanKindId == 2001)
             return string.Empty;
 
         return _codebookManager.ProductTypes
-                               .Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.ProductTypeId)
+                               .Where(x => x.MandantId == 2 && x.Id == Offer.MortgageOffer.SimulationInputs.ProductTypeId)
                                .Select(x => x.Name.ToUpperInvariant())
                                .DefaultIfEmpty(string.Empty)
                                .First();
@@ -98,10 +98,10 @@ internal class OfferTemplateData : AggregatedData
 
     private string GetProductTypeOfferHeader()
     {
-        if (Offer.SimulationInputs.LoanKindId != 2001)
+        if (Offer.MortgageOffer.SimulationInputs.LoanKindId != 2001)
             return string.Empty;
 
-        return _codebookManager.LoanKinds.Where(x => x.MandantId == 2 && x.Id == Offer.SimulationInputs.LoanKindId)
+        return _codebookManager.LoanKinds.Where(x => x.MandantId == 2 && x.Id == Offer.MortgageOffer.SimulationInputs.LoanKindId)
                                .Select(x => x.Name.ToUpperInvariant())
                                .DefaultIfEmpty(string.Empty)
                                .First();

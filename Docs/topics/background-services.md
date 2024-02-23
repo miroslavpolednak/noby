@@ -1,4 +1,7 @@
 ﻿# Background services / periodické joby
+> Primárně pro background joby používáme vlastní službu **TaskSchedulingService**!!!
+Pouze ve specifických případech je možné použít tuto abstrakci.
+
 ## Popis funkčnosti
 Periodické joby jsou postaveny nad base třídou .NET frameworku `BackgroundService`, která se používá pro 
 dlouhotrvající úlohy běžící na pozadí.

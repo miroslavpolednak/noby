@@ -6,4 +6,5 @@ public sealed class DispatchFormClientDocument
     public bool IsCancelled { get; set; }
     public bool AttachmentsComplete { get; set; }
     public string? NotCompletedReason { get; set; }
+    public int? EaCodeMainId { get; set; }
 }

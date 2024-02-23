@@ -17,7 +17,7 @@ internal sealed class GetLoanApplicationAssessmentResultService
         int salesArrangementId,
         LoanApplicationAssessmentResponse assessment,
         CustomerExposureCalculateResponse? exposure,
-        GetMortgageOfferResponse offer,
+        GetOfferResponse offer,
         CancellationToken cancellationToken)
     {
         // customers

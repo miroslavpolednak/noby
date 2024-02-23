@@ -9,6 +9,18 @@ import "Messages/GenericCodebook.proto";
 import "Messages/GetACVAndBagmanRealEstateType.proto";
 
 service CodebookService {
+   rpc RefinancingTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/refinancing-types"
+		};
+   }
+
+   rpc RefixationOfferTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/refixation-offer-types"
+		};
+   }
+
    rpc AcademicDegreesAfter (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/academic-degrees-after"

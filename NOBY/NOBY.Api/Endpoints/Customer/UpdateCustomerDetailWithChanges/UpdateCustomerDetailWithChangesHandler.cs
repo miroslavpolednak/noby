@@ -107,11 +107,20 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         // jestlize se na klientovi neco menilo
         if (updateRequest.CustomerChangeMetadata.WasCRSChanged || updateRequest.CustomerChangeMetadata.WereClientDataChanged)
         {
+            var wasCRSChanged = updateRequest.CustomerChangeMetadata.WasCRSChanged;
+
+            if (wasCRSChanged)
+            {
+                var savedCustomerData = await _changedDataService.GetCustomerWithChangedData<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
+
+                //Do not cancel CRS document if exists and tax residences ware not changed again in this request (They were changed in previous one).
+                wasCRSChanged = request.IsUSPerson != savedCustomerData.IsUSPerson || !ModelComparers.AreObjectsEqual(request.NaturalPerson?.TaxResidences, savedCustomerData?.NaturalPerson?.TaxResidences);
+            }
+
             await cancelSigning(
-                customerOnSA.CustomerOnSAId,
-                customerOnSA.SalesArrangementId,
+                customerOnSA,
                 updateRequest.CustomerChangeMetadata.WereClientDataChanged,
-                updateRequest.CustomerChangeMetadata.WasCRSChanged,
+                wasCRSChanged,
                 cancellationToken);
         }
 
@@ -119,21 +128,20 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     }
 
     private async Task cancelSigning(
-        int customerOnSAId,
-        int salesArrangementId,
+        __Household.CustomerOnSA customerOnSA,
         bool wereClientDataChanged,
         bool wasCRSChanged,
         CancellationToken cancellationToken)
     {
-        var documentsToSign = (await _documentOnSAService.GetDocumentsToSignList(salesArrangementId, cancellationToken))
+        var documentsToSign = (await _documentOnSAService.GetDocumentsToSignList(customerOnSA.SalesArrangementId, cancellationToken))
             .DocumentsOnSAToSign
             .Where(t => t.DocumentOnSAId.HasValue);
         var usedDocumentIds = new List<int>();
 
         if (wereClientDataChanged) // zmena klientskych udaju
         {
-            var household = (await _householdService.GetHouseholdList(salesArrangementId, cancellationToken))
-                .First(t => t.CustomerOnSAId1 == customerOnSAId || t.CustomerOnSAId2 == customerOnSAId);
+            var household = (await _householdService.GetHouseholdList(customerOnSA.SalesArrangementId, cancellationToken))
+                .First(t => t.CustomerOnSAId1 == customerOnSA.CustomerOnSAId || t.CustomerOnSAId2 == customerOnSA.CustomerOnSAId);
 
             foreach (var doc in documentsToSign.Where(t => t.HouseholdId == household.HouseholdId))
             {
@@ -148,12 +156,12 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             }
 
             // set flow switches
-            await _salesArrangementService.SetFlowSwitch(salesArrangementId, (household.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning), true, cancellationToken);
+            await _salesArrangementService.SetFlowSwitch(customerOnSA.SalesArrangementId, (household.HouseholdTypeId == (int)HouseholdTypes.Main ? FlowSwitches.Was3601MainChangedAfterSigning : FlowSwitches.Was3602CodebtorChangedAfterSigning), true, cancellationToken);
         }
 
         if (wasCRSChanged) // zmena CRS
         {
-            var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13 && t.CustomerOnSA.CustomerOnSAId == customerOnSAId && !usedDocumentIds.Contains(t.DocumentOnSAId!.Value));//HH rikal, ze 14 neni spravne, ze to ma byt 13
+            var crsDoc = documentsToSign.FirstOrDefault(t => t.DocumentTypeId == 13 && t.CustomerOnSA.CustomerOnSAId == customerOnSA.CustomerOnSAId && !usedDocumentIds.Contains(t.DocumentOnSAId!.Value));//HH rikal, ze 14 neni spravne, ze to ma byt 13
             if (crsDoc != null)
             {
                 await _signingHelperService.StopSinningAccordingState(new()
@@ -181,7 +189,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     /// <summary>
     /// Vytvori metadata CustomerOnSA
     /// </summary>
-    private static __Household.CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request, dynamic? delta)
+    private __Household.CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request, dynamic? delta)
     {
         var metadata = new __Household.CustomerChangeMetadata
         {

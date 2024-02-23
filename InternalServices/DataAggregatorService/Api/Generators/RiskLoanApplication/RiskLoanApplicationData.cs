@@ -29,11 +29,11 @@ internal class RiskLoanApplicationData : AggregatedData
 
     public List<LoanApplicationHousehold> Households { get; private set; } = new();
 
-    public decimal? InvestmentAmount => (decimal)Offer.SimulationResults.LoanAmount + ((decimal?)Offer.BasicParameters.FinancialResourcesOwn ?? 0M) + ((decimal?)Offer.BasicParameters.FinancialResourcesOther ?? 0M);
+    public decimal? InvestmentAmount => (decimal)Offer.MortgageOffer.SimulationResults.LoanAmount + ((decimal?)Offer.MortgageOffer.BasicParameters.FinancialResourcesOwn ?? 0M) + ((decimal?)Offer.MortgageOffer.BasicParameters.FinancialResourcesOther ?? 0M);
 
-    public List<int> MarketingActions => Offer.AdditionalSimulationResults.MarketingActions.Where(i => i.MarketingActionId.HasValue && i.Applied == 1).Select(i => i.MarketingActionId!.Value).ToList();
+    public List<int> MarketingActions => Offer.MortgageOffer.AdditionalSimulationResults.MarketingActions.Where(i => i.MarketingActionId.HasValue && i.Applied == 1).Select(i => i.MarketingActionId!.Value).ToList();
 
-    public IEnumerable<object> Collaterals => new[] { new { Amount = Offer.SimulationInputs.CollateralAmount } };
+    public IEnumerable<object> Collaterals => new[] { new { Amount = Offer.MortgageOffer.SimulationInputs.CollateralAmount } };
 
     public override async Task LoadAdditionalData(CancellationToken cancellationToken)
     {

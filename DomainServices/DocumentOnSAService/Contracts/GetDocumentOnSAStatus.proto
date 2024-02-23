@@ -17,4 +17,5 @@ message GetDocumentOnSAStatusResponse {
 	bool IsSigned = 3;
 	DomainServices.DocumentOnSAService.Enums.Source Source = 4;
 	repeated string EArchivIdsLinked = 5;
+	int32 SignatureTypeId = 6;
 }

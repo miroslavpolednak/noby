@@ -7,7 +7,7 @@ internal sealed class Job2Handler
 {
     public Task Execute(string? jobData, CancellationToken cancellationToken)
     {
-        Console.WriteLine("EXCEPTION chyba");
-        throw new Exception("tohle je strasna chyba");
+        Console.WriteLine("Test job 2 chyba");
+        throw new Exception("Tohle je strasna chyba jobu 2");
     }
 }

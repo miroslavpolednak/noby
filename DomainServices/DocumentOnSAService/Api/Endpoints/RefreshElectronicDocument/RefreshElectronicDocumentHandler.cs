@@ -29,21 +29,24 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                                     .Select(s => new
                                     {
                                         s.DocumentOnSAId,
-                                        s.ExternalId,
-                                        s.SignatureTypeId
+                                        s.ExternalIdESignatures,
+                                        s.SignatureTypeId,
+                                        s.IsValid,
+                                        s.IsSigned
                                     })
                                     .FirstOrDefaultAsync(d => d.DocumentOnSAId == request.DocumentOnSAId, cancellationToken)
                                     ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
 
-        if (documentOnSa.ExternalId is null)
+        if (documentOnSa.ExternalIdESignatures is null)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.UnableGetExternalIdForDocumentOnSaId, request.DocumentOnSAId);
 
-        var elDocumentStatus = await _eSignaturesClient.GetDocumentStatus(documentOnSa.ExternalId, cancellationToken);
+        var elDocumentStatus = await _eSignaturesClient.GetDocumentStatus(documentOnSa.ExternalIdESignatures, cancellationToken);
 
         switch (elDocumentStatus)
         {
             case EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT:
-                await _mediator.Send(new SignDocumentRequest { DocumentOnSAId = documentOnSa.DocumentOnSAId, SignatureTypeId = documentOnSa.SignatureTypeId }, cancellationToken);
+                if (documentOnSa is { IsValid: true, IsSigned: false })
+                    await _mediator.Send(new SignDocumentRequest { DocumentOnSAId = documentOnSa.DocumentOnSAId, SignatureTypeId = documentOnSa.SignatureTypeId }, cancellationToken);
                 break;
             case EDocumentStatuses.DELETED:
                 await _mediator.Send(new StopSigningRequest { DocumentOnSAId = documentOnSa.DocumentOnSAId, NotifyESignatures = false }, cancellationToken);

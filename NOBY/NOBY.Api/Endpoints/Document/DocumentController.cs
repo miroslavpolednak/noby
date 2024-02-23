@@ -37,7 +37,7 @@ public class DocumentController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetOffer(int salesArrangementId, CancellationToken cancellationToken)
     {
-        var request = new Offer.GetOfferRequest
+        var request = new GetOffer.GetOfferRequest
         {
             DocumentType = DocumentTypes.NABIDKA,
             InputParameters = _documentManager.GetSalesArrangementInput(salesArrangementId),

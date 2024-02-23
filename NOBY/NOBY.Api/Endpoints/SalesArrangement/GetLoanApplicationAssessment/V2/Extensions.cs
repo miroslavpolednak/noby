@@ -8,9 +8,6 @@ namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2;
 
 internal static class Extensions
 {
-    const string _creditorNameKB = "KB";
-    const string _creditorNameJPU = "JPÚ";
-
     public static bool BankAccountEquals(this cRS.BankAccountDetail account1, cRS.BankAccountDetail? account2)
     {
         return (account1.NumberPrefix?.Equals(account2?.NumberPrefix, StringComparison.OrdinalIgnoreCase) ?? false)
@@ -27,9 +24,12 @@ internal static class Extensions
             2,
             obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
             laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
-            _creditorNameKB,
+            item.CustomerRoleId,
+            false,
             item.InstallmentAmount,
-            isEntrepreneur);
+            isEntrepreneur,
+            null,
+            item.LoanAmount);
     }
 
     public static Dto.HouseholdObligationItem CreateHouseholdObligations(
@@ -42,10 +42,13 @@ internal static class Extensions
                 2,
                 obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
                 laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
-                _creditorNameJPU,
+                item.CustomerRoleId,
+                true,
                 //item.LoanType,
                 item.InstallmentAmount,
-                isEntrepreneur);
+                isEntrepreneur,
+                null,
+                item.LoanAmount);
             result.KbGroupInstanceCode = item.KbGroupInstanceCode;
             result.CbcbDataLastUpdate = item.CbcbDataLastUpdate;
             return result;
@@ -61,10 +64,12 @@ internal static class Extensions
                 2,
                 obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
                 laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
-                _creditorNameKB,
+                item.CustomerRoleId,
+                false,
                 item.InstallmentAmount,
                 isEntrepreneur,
                 item.ExposureAmount,
+                item.LoanAmount,
                 item.ContractDate,
                 item.MaturityDate);
             result.DrawingAmount = item.DrawingAmount;
@@ -95,10 +100,15 @@ internal static class Extensions
                     ObligationTypeId = obligationType?.Id ?? 0,
                     ObligationTypeName = obligationType?.Name ?? "Neznázmý",
                     AmountConsolidated = t.AmountConsolidated,
-                    LoanPrincipalAmount = isLimit ? null : t.LoanPrincipalAmount,
-                    InstallmentAmount = isLimit ? null : t.InstallmentAmount,
+                    LoanAmountCurrent = isLimit ? null : t.LoanPrincipalAmount,
                     CreditCardLimit = !isLimit ? null : t.CreditCardLimit,
-                    CreditorName = t.Creditor?.IsExternal ?? false ? _creditorNameJPU : _creditorNameKB,
+                    InstallmentAmount = isLimit ? null : t.InstallmentAmount,
+                    Creditor = t.Creditor is null ? null : new()
+                    {
+                        CreditorId = t.Creditor.CreditorId,
+                        IsExternal = t.Creditor.IsExternal,
+                        Name = t.Creditor.Name
+                    },
                     Correction = t.Correction is null ? null : new NOBY.Dto.Household.CustomerObligationCorrectionDto
                     {
                         CorrectionTypeId = t.Correction.CorrectionTypeId,
@@ -121,10 +131,12 @@ internal static class Extensions
             2,
             obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
             laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
-            _creditorNameJPU,
+            item.CustomerRoleId,
+            true,
             item.InstallmentAmount,
             isEntrepreneur,
             item.ExposureAmount,
+            item.LoanAmount,
             item.ContractDate,
             item.MaturityDate);
         result.KbGroupInstanceCode = item.KbGroupInstanceCode;
@@ -136,10 +148,12 @@ internal static class Extensions
         in int sourceId,
         ObligationTypesResponse.Types.ObligationTypeItem? obligationType,
         ObligationLaExposuresResponse.Types.ObligationLaExposureItem? loanType,
-        in string creditorName,
+        in int? roleId,
+        in bool isExternal,
         in decimal? installmentAmount,
         in bool isEntrepreneur,
         in decimal? exposureAmount = null,
+        in decimal? loanAmount = null,
         in DateTime? contractDate = null,
         in DateTime? maturityDate = null)
     {
@@ -152,12 +166,18 @@ internal static class Extensions
             IsEntrepreneur = isEntrepreneur,
             ObligationTypeId = obligationType?.Id ?? 0,
             ObligationTypeName = obligationType?.Name ?? "Neznázmý",
-            LoanPrincipalAmount = isLimit ? null : exposureAmount,
+            LoanAmountCurrent = exposureAmount,
+            CreditCardLimit = loanAmount,
+            LoanAmountTotal = isLimit ? null : loanAmount,
+            CreditCardLimitTotal = !isLimit ? null : loanAmount,
             InstallmentAmount = isLimit ? null : installmentAmount,
-            CreditCardLimit = !isLimit ? null : exposureAmount,
             ObligationLaExposureId = loanType?.Id,
             ObligationLaExposureName = loanType?.Name,
-            CreditorName = creditorName,
+            RoleId = roleId,
+            Creditor = new CustomerObligation.SharedDto.ObligationCreditorDto
+            {
+                IsExternal = isExternal
+            },
             ContractDate = contractDate,
             MaturityDate = maturityDate
         };
@@ -196,7 +216,7 @@ internal static class Extensions
             })
             .ToList();
 
-    public static LoanApplication ToLoanApplicationApiResponse(this cRS.V1.LoanApplicationAssessmentResponse response, cOffer.GetMortgageOfferResponse? offer)
+    public static LoanApplication ToLoanApplicationApiResponse(this cRS.V1.LoanApplicationAssessmentResponse response, cOffer.GetOfferResponse? offer)
         => new LoanApplication
         {
             Limit = response.Detail?.Limit?.Limit?.Amount,
@@ -215,8 +235,8 @@ internal static class Extensions
             LTCP = response.CollateralRiskCharacteristics?.Ltp,
             LFTV = response.CollateralRiskCharacteristics?.Lftv,
             LTV = response.CollateralRiskCharacteristics?.Ltv,
-            LoanAmount = offer?.SimulationResults?.LoanAmount!,
-            LoanPaymentAmount = offer?.SimulationResults?.LoanPaymentAmount,
+            LoanAmount = offer?.MortgageOffer.SimulationResults?.LoanAmount!,
+            LoanPaymentAmount = offer?.MortgageOffer.SimulationResults?.LoanPaymentAmount,
         };
 
     public static Dto.HouseholdRisk ToHouseholdRiskApiResponse(this cRS.V1.LoanApplicationAssessmentHouseholdDetail household)

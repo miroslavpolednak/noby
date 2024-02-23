@@ -22,6 +22,8 @@ using SharedTypes.Types;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using CIS.Infrastructure.gRPC;
 using DomainServices.DocumentOnSAService.Api.Extensions;
+using SharedTypes.Enums;
+using FastEnumUtility;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
@@ -157,11 +159,13 @@ public class StartSigningMapper
             _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AmendmentHasToBeOfTypeSigning)
         };
 
-        var isCustomerPreviewSendingAllowed = await GetIsCustomerPreviewSendingAllowed(signing, cancellationToken);
-
         var entity = new DocumentOnSa();
         entity.FormId = signing.FormId;
-        entity.ExternalId = signing.DocumentForSigning;
+        entity.ExternalIdSb = signing.DocumentForSigning;
+        if (request.SignatureTypeId == SignatureTypes.Electronic.ToByte())
+        {
+            entity.ExternalIdESignatures = await GetExternalIdESignaturesFromSbQueue(signing, cancellationToken);
+        }
         entity.Source = __DbEnum.Source.Workflow;
         entity.EArchivId = await _documentArchiveServiceClient.GenerateDocumentId(new(), cancellationToken);
         entity.SalesArrangementId = request.SalesArrangementId!.Value;
@@ -172,7 +176,7 @@ public class StartSigningMapper
         entity.IsValid = true;
         entity.IsSigned = false;
         entity.IsArchived = false;
-        entity.IsCustomerPreviewSendingAllowed = isCustomerPreviewSendingAllowed;
+        entity.IsCustomerPreviewSendingAllowed = true;
         entity.EACodeMainId = signing.EACodeMain;
         return entity;
     }
@@ -372,37 +376,9 @@ public class StartSigningMapper
         return entity;
     }
 
-    private async Task<bool> GetIsCustomerPreviewSendingAllowed(AmendmentSigning signing, CancellationToken cancellationToken)
+    private async Task<string?> GetExternalIdESignaturesFromSbQueue(AmendmentSigning signing, CancellationToken cancellationToken)
     {
-        if (signing.ProposalForEntry?.Count > 0)
-        {
-            var atchRequestProposalForE = new GetElectronicDocumentFromQueueRequest
-            {
-                DocumentAttachment = new()
-                {
-                    AttachmentId = signing.ProposalForEntry[0]
-                },
-                GetMetadataOnly = true
-            };
-
-            var atchResponse = await _mediator.Send(atchRequestProposalForE, cancellationToken);
-            return atchResponse.IsCustomerPreviewSendingAllowed;
-        }
-        else if (signing.DocumentForSigningType.Equals("A", StringComparison.OrdinalIgnoreCase))
-        {
-            var atchRequest = new GetElectronicDocumentFromQueueRequest
-            {
-                DocumentAttachment = new()
-                {
-                    AttachmentId = signing.DocumentForSigning
-                },
-                GetMetadataOnly = true
-            };
-
-            var atchResponse = await _mediator.Send(atchRequest, cancellationToken);
-            return atchResponse.IsCustomerPreviewSendingAllowed;
-        }
-        else if (signing.DocumentForSigningType.Equals("D", StringComparison.OrdinalIgnoreCase))
+        if (signing.DocumentForSigningType.Equals("D", StringComparison.OrdinalIgnoreCase))
         {
             var docRequest = new GetElectronicDocumentFromQueueRequest
             {
@@ -414,7 +390,7 @@ public class StartSigningMapper
             };
 
             var docResponse = await _mediator.Send(docRequest, cancellationToken);
-            return docResponse.IsCustomerPreviewSendingAllowed;
+            return docResponse.ExternalIdESignatures;
         }
         else
         {

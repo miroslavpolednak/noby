@@ -24,7 +24,8 @@ public class GetDocumentOnSADataHandler : IRequestHandler<GetDocumentOnSADataReq
                 DocumentTemplateVariantId = d.DocumentTemplateVariantId,
                 Data = d.Data,
                 SignatureTypeId = d.SignatureTypeId,
-                ExternalId = d.ExternalId,
+                ExternalIdESignatures = d.ExternalIdESignatures,
+                ExternalIdSB = d.ExternalIdSb,
                 Source = (Source)d.Source,
                 IsValid = d.IsValid,
                 IsSigned = d.IsSigned

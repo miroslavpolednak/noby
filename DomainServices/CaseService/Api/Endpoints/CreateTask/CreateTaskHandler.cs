@@ -1,6 +1,6 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CaseService.Contracts;
+﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
+using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace DomainServices.CaseService.Api.Endpoints.CreateTask;
@@ -10,6 +10,10 @@ internal sealed class CreateTaskHandler
 {
     public async Task<CreateTaskResponse> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
+        // case entity
+        Database.Entities.Case entity = await _dbContext.Cases.FirstOrDefaultAsync(t => t.CaseId == request.CaseId, cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
+
         Dictionary<string, string> metadata = new()
         {
             { getTaskTypeKey(), request.TaskRequest },
@@ -20,7 +24,7 @@ internal sealed class CreateTaskHandler
         MapPriceException(metadata, request.PriceException);
 
         // subtype
-        if (request.TaskTypeId == 3)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.Consultation)
         {
             metadata.Add("ukol_konzultace_oblast", $"{request.TaskSubtypeId}");
 
@@ -38,13 +42,13 @@ internal sealed class CreateTaskHandler
 
         var result = await _sbWebApi.CreateTask(new ExternalServices.SbWebApi.Dto.CreateTask.CreateTaskRequest
         {
-            ProcessId = request.ProcessId is not null ? Convert.ToInt32(request.ProcessId, CultureInfo.InvariantCulture) : default, //IT anal neni schopna rict co s tim
+            ProcessId = request.ProcessId is not null && request.TaskTypeId != (int)WorkflowTaskTypes.Retention ? Convert.ToInt32(request.ProcessId, CultureInfo.InvariantCulture) : null,
             TaskTypeId = request.TaskTypeId,
             Metadata = metadata
         }, cancellationToken);
 
         // nastavit flow switche
-        await setFlowSwitches(request, cancellationToken);
+        await setFlowSwitches(request, entity, cancellationToken);
 
         return new CreateTaskResponse
         {
@@ -52,22 +56,25 @@ internal sealed class CreateTaskHandler
             TaskId = result.TaskId
         };
 
-        string getTaskTypeKey() => request.TaskTypeId switch
+        string getTaskTypeKey() => (WorkflowTaskTypes)request.TaskTypeId switch
         {
-            7 => "ukol_predanihs_pozadavek",
-            3 => "ukol_konzultace_pozadavek",
-            2 => "ukol_overeni_pozadavek",
+            WorkflowTaskTypes.PredaniNaSpecialitu => "ukol_predanihs_pozadavek",
+            WorkflowTaskTypes.Consultation => "ukol_konzultace_pozadavek",
+            WorkflowTaskTypes.PriceException => "ukol_overeni_pozadavek",
             _ => throw new NotImplementedException($"TaskTypeId {request.TaskTypeId} is not supported")
         };
     }
 
-    private async Task setFlowSwitches(CreateTaskRequest request, CancellationToken cancellationToken)
+    private async Task setFlowSwitches(CreateTaskRequest request, Database.Entities.Case entity, CancellationToken cancellationToken)
     {
-        if (request.TaskTypeId == 2)
+        var mandant = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == entity.ProductTypeId).MandantId;
+
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException && entity.State == (int)CaseStates.InProgress && mandant == (int)Mandants.Kb)
         {
             var salesArrangementId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken))
                 .First()
                 .SalesArrangementId;
+
             await _salesArrangementService.SetFlowSwitch(salesArrangementId, FlowSwitches.DoesWflTaskForIPExist, true, cancellationToken);
         }
     }
@@ -129,10 +136,18 @@ internal sealed class CreateTaskHandler
 
     private readonly ISbWebApiClient _sbWebApi;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly Database.CaseServiceDbContext _dbContext;
 
-    public CreateTaskHandler(ISbWebApiClient sbWebApi, ISalesArrangementServiceClient salesArrangementService)
+    public CreateTaskHandler(
+        ISbWebApiClient sbWebApi,
+        ISalesArrangementServiceClient salesArrangementService,
+        Database.CaseServiceDbContext dbContext,
+        ICodebookServiceClient codebookService)
     {
         _salesArrangementService = salesArrangementService;
         _sbWebApi = sbWebApi;
+        _dbContext = dbContext;
+        _codebookService = codebookService;
     }
 }

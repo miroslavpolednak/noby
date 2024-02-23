@@ -36,8 +36,11 @@ public class DocumentOnSaConfiguration : IEntityTypeConfiguration<DocumentOnSa>
         builder.Property(e => e.IsArchived)
            .HasDefaultValue(false);
 
-        builder.Property(e => e.ExternalId)
+        builder.Property(e => e.ExternalIdESignatures)
           .HasColumnType("nvarchar(50)");
+
+        builder.Property(e => e.ExternalIdSb)
+           .HasColumnType("nvarchar(50)");
 
         builder.Property(e => e.Source)
             .HasDefaultValue(Source.Noby);

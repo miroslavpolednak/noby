@@ -5,9 +5,8 @@ internal sealed class CreateSalesArrangementHandler
 {
     public async Task<CreateSalesArrangementResponse> Handle(CreateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
-        // kontrola na kategorii
-        if ((await _codebookService.SalesArrangementTypes(cancellationToken)).FirstOrDefault(t => t.Id == request.SalesArrangementTypeId)?.SalesArrangementCategory != (int)SalesArrangementCategories.ServiceRequest)
-            throw new CisValidationException($"SalesArrangement type not supported");
+        // validace prav
+        await validatePermissions(request, cancellationToken);
 
         // pokud neprojde validace, primo ve Validate() se vyhodi exception
         var builder = await _createService
@@ -27,17 +26,34 @@ internal sealed class CreateSalesArrangementHandler
         };
     }
 
+    private async Task validatePermissions(CreateSalesArrangementRequest request, CancellationToken cancellationToken)
+    {
+        // kontrola na kategorii
+        var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken))
+            .FirstOrDefault(t => t.Id == request.SalesArrangementTypeId)
+            ?.SalesArrangementCategory;
+        if (saCategory != (int)SalesArrangementCategories.ServiceRequest)
+        {
+            throw new CisValidationException($"SalesArrangement type not supported");
+        }
+
+        _salesArrangementAuthorization.ValidateRefinancingPermissions(request.SalesArrangementTypeId, UserPermissions.CHANGE_REQUESTS_RefinancingAccess, UserPermissions.CHANGE_REQUESTS_Access);
+    }
+
+    private readonly NOBY.Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly CreateSalesArrangementParametersFactory _createService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-    
+
     public CreateSalesArrangementHandler(
         CreateSalesArrangementParametersFactory createService,
-        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService, 
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
+        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
+        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
+        NOBY.Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
     {
         _createService = createService;
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
+        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 }

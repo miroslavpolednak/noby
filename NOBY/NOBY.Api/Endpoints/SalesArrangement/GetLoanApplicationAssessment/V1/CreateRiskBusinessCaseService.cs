@@ -31,7 +31,7 @@ public sealed class CreateRiskBusinessCaseService
         var caseInstance = await _caseService.GetCaseDetail(caseId, cancellationToken);
 
         // offer
-        var offerInstance = await _offerService.GetMortgageOffer(saInstance.OfferId!.Value, cancellationToken);
+        var offerInstance = await _offerService.GetOffer(saInstance.OfferId!.Value, cancellationToken);
 
         // household
         var households = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
@@ -46,7 +46,7 @@ public sealed class CreateRiskBusinessCaseService
         string riskSegment = await getRiskSegment(loanApplicationDataVersion);
 
         // get rbcId
-        var createRBCResponse = await _riskBusinessCaseService.CreateCase(salesArrangementId, offerInstance.ResourceProcessId, cancellationToken);
+        var createRBCResponse = await _riskBusinessCaseService.CreateCase(salesArrangementId, offerInstance.Data.ResourceProcessId, cancellationToken);
 
         var request = new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
         {
@@ -86,7 +86,7 @@ public sealed class CreateRiskBusinessCaseService
                 Product = new()
                 {
                     ProductTypeId = caseInstance.Data.ProductTypeId,
-                    LoanKindId = offerInstance.SimulationInputs.LoanKindId
+                    LoanKindId = offerInstance.MortgageOffer.SimulationInputs.LoanKindId
                 }
             };
 

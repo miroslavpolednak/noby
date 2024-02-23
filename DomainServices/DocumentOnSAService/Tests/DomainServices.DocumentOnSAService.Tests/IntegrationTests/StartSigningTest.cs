@@ -569,7 +569,7 @@ public class StartSigningProductsRequestsTestsPart3 : IntegrationTestBase
         docOnSaEntity!.IsValid.Should().BeTrue();
         docOnSaEntity!.CaseId.Should().Be(caseId);
         docOnSaEntity!.TaskId.Should().Be(taskId);
-        docOnSaEntity!.ExternalId.Should().Be(eArchiveId);
+        docOnSaEntity!.ExternalIdSb.Should().Be(eArchiveId);
         docOnSaEntity.IsCustomerPreviewSendingAllowed.Should().BeTrue();
     }
 }

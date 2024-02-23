@@ -1,16 +1,8 @@
 ﻿# NOBY svět
 
 ## Témata
-[Psaní technické dokumentace](./topics/documentation.md)
 
-[Databáze - čtení, zápis dat](./topics/database.md)
-
-[Databáze - migrace](./topics/database-migrations.md)
-
-[Konfigurace služeb / aplikací](./topics/configuration.md)
-
-[Validace HTTP requestu a error handling](./topics/validation.md)
-
+### Autentizace a Autorizace
 [Autentizace doménových služeb](./topics/authentication-ds.md)
 
 [Autorizace doménových služeb](./topics/authorization-ds.md)
@@ -19,33 +11,51 @@
 
 [Autorizace FE API](./topics/feapi-authorization.md)
 
-[gRPC služby - technický popis](./topics/grpc-services.md)
+### Databáze, práce s datovými strukturami v rámci NOBY světa
+[DataAggregator](./topics/dataAggregator.md)
 
-[Implementace služeb třetích stran](./topics/external-services.md)
+[Databáze - čtení, zápis dat](./topics/database.md)
 
-[Jak funguje ServiceDiscovery](./topics/service-discovery.md)
+[Databáze - migrace](./topics/database-migrations.md)
 
 [Nastavení a použití Distributed cache](./topics/distributed-cache.md)
 
-[Background services / periodické joby](./topics/background-services.md)
+[Ukládání datových struktur v JSON formátu (ala dokumentová databáze)](./topics/document-data-storage.md)
 
-[DataAggregator](./topics/dataAggregator.md)
-
-[Health checks](./topics/healthcheck.md)
-
-[Unit a integrační testy](./topics/test.md)
-
+### Soubory, IO operace
 [Práce s dočasnými soubory](./topics/tempstorage.md)
 
 [Práce se standardním úložištěm souborů (filesystem, S3, Azure)](./topics/filestorage.md)
 
+### Jak psát aplikace a služby v našem frameworku
+[Konfigurace služeb / aplikací](./topics/configuration.md)
+
+[gRPC služby - technický popis](./topics/grpc-services.md)
+
+[Jak funguje ServiceDiscovery](./topics/service-discovery.md)
+
+[Health checks](./topics/healthcheck.md)
+
+[Validace HTTP requestu a error handling](./topics/validation.md)
+
 [Auditní logování](./topics/audit.md)
 
+### Background tasks
+[In-app background services](./topics/background-services.md)
+
+[Task scheduling service - správce periodických jobů](./topics/task-scheduling.md)
+
+### Integrace
 [Messaging - Kafka](./topics/messaging-kafka.md)
+
+[Implementace služeb třetích stran](./topics/external-services.md)
+
+### Ostatní
+[Psaní technické dokumentace](./topics/documentation.md)
 
 [Versioning & GIT branching](./topics/versioning.md)
 
-[Ukládání datových struktur v JSON formátu](./topics/document-data-storage.md)
+[Unit a integrační testy](./topics/test.md)
 
 ## Struktura solution - projekty a adresáře
 

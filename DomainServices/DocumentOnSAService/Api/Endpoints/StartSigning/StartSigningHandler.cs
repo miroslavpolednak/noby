@@ -96,7 +96,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             var referenceId = await _eSignaturesClient.PrepareDocument(prepareDocumentRequest, cancellationToken);
             var uploadDocumentRequest = await _startSigningMapper.MapUploadDocumentRequest(referenceId, prepareDocumentRequest.DocumentData.FileName, documentOnSaEntity, cancellationToken);
             var (externalId, _) = await _eSignaturesClient.UploadDocument(uploadDocumentRequest.ReferenceId, uploadDocumentRequest.Filename, uploadDocumentRequest.CreationDate, uploadDocumentRequest.FileData, cancellationToken);
-            documentOnSaEntity.ExternalId = externalId;
+            documentOnSaEntity.ExternalIdESignatures = externalId;
         }
 
         if (request.TaskId is null)

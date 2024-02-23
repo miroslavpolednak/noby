@@ -1,6 +1,7 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Services.SalesArrangementAuthorization;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.DeleteSalesArrangement;
 
@@ -18,7 +19,9 @@ internal sealed class DeleteSalesArrangementHandler
         }
 
         // validace na stav SA
-        if (!_allowedSAStates.Contains(saInstance.State))
+        if (!_allowedSAStates.Contains(saInstance.State)
+        // validace na typ SA
+            || ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(saInstance.SalesArrangementTypeId))
         {
             throw new NobyValidationException(90032);
         }

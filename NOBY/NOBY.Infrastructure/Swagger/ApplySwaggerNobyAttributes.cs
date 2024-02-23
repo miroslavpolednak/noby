@@ -9,7 +9,7 @@ public sealed class ApplySwaggerNobyAttributes
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        bool skipCaseOwnerStateAndProduct = context.MethodInfo.GetCustomAttributes(typeof(NobySkipCaseOwnerStateAndProductSAValidationAttribute), false)?.Any() ?? false;
+        bool skipCaseOwnerStateAndProduct = context.MethodInfo.GetCustomAttributes(typeof(NobySkipCaseStateAndProductSAValidationAttribute), false)?.Any() ?? false;
         bool skipCaseOwner = context.MethodInfo.GetCustomAttributes(typeof(NobySkipCaseOwnerValidationAttribute), false)?.Any() ?? false;
 
         // prava

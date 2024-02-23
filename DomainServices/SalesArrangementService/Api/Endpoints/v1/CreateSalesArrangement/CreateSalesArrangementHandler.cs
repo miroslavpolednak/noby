@@ -23,7 +23,8 @@ internal sealed class CreateSalesArrangementHandler
             StateUpdateTime = _timeProvider.GetLocalNow().DateTime,
             ContractNumber = request.ContractNumber,
             ChannelId = user.UserInfo.ChannelId,
-            PcpId = request.PcpId
+            PcpId = request.PcpId,
+            TaskProcessId = request.TaskProcessId
         };
 
         // get default SA state
@@ -70,6 +71,12 @@ internal sealed class CreateSalesArrangementHandler
                 case CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602C:
                     data.CustomerChange3602C = request.CustomerChange3602C;
                     break;
+                case CreateSalesArrangementRequest.DataOneofCase.Retention:
+                    data.Retention = request.Retention;
+                    break;
+                case CreateSalesArrangementRequest.DataOneofCase.Refixation:
+                    data.Refixation = request.Refixation;
+                    break;
             }
             var updateMediatrRequest = new UpdateSalesArrangementParametersRequest(data);
 
@@ -102,6 +109,8 @@ internal sealed class CreateSalesArrangementHandler
             SalesArrangementTypes.CustomerChange3602A when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602A => true,
             SalesArrangementTypes.CustomerChange3602B when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602B => true,
             SalesArrangementTypes.CustomerChange3602C when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602C => true,
+            SalesArrangementTypes.Retention when dataCase == CreateSalesArrangementRequest.DataOneofCase.Retention => true,
+            SalesArrangementTypes.Refixation when dataCase == CreateSalesArrangementRequest.DataOneofCase.Refixation => true,
             _ => throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.DataObjectIsNotValid, salesArrangementTypeId)
         };
 

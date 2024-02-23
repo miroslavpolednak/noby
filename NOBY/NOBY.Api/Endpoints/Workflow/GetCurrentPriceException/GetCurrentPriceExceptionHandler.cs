@@ -11,7 +11,7 @@ internal sealed class GetCurrentPriceExceptionHandler
     public async Task<GetCurrentPriceExceptionResponse> Handle(GetCurrentPriceExceptionRequest request, CancellationToken cancellationToken)
     {
         var taskList = await _caseService.GetTaskList(request.CaseId, cancellationToken);
-        var priceException = taskList.FirstOrDefault(t => t.TaskTypeId == 2 && !t.Cancelled);
+        var priceException = taskList.FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled);
 
         if (priceException is not null)
         {
@@ -27,9 +27,9 @@ internal sealed class GetCurrentPriceExceptionHandler
         else
         {
             var productSA = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First();
-            var offer = await _offerService.GetMortgageOfferDetail(productSA.OfferId.GetValueOrDefault(), cancellationToken);
-            var process = (await _caseService.GetProcessList(request.CaseId, cancellationToken)).FirstOrDefault(t => t.ProcessTypeId == 1);
-            string? taskTypeName = (await _codebookService.WorkflowTaskTypes(cancellationToken)).FirstOrDefault(t => t.Id == 2)?.Name;
+            var offer = await _offerService.GetOfferDetail(productSA.OfferId.GetValueOrDefault(), cancellationToken);
+            var process = (await _caseService.GetProcessList(request.CaseId, cancellationToken)).FirstOrDefault(t => t.ProcessTypeId == (int)WorkflowProcesses.Main);
+            string? taskTypeName = (await _codebookService.WorkflowTaskTypes(cancellationToken)).FirstOrDefault(t => t.Id == (int)WorkflowTaskTypes.PriceException)?.Name;
             var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
             
             var response = new GetCurrentPriceExceptionResponse
@@ -39,17 +39,17 @@ internal sealed class GetCurrentPriceExceptionHandler
                     ProcessNameLong = process?.ProcessNameLong ?? "",
                     Amendments = new NOBY.Dto.Workflow.AmendmentsPriceException
                     {
-                        Expiration = DateOnly.FromDateTime(offer.BasicParameters.GuaranteeDateTo),
+                        Expiration = DateOnly.FromDateTime(offer.MortgageOffer.BasicParameters.GuaranteeDateTo),
                         LoanInterestRate = new()
                         {
-                            LoanInterestRate = offer.SimulationResults.LoanInterestRate,
-                            LoanInterestRateProvided = offer.SimulationResults.LoanInterestRateProvided,
+                            LoanInterestRate = offer.MortgageOffer.SimulationResults.LoanInterestRate,
+                            LoanInterestRateProvided = offer.MortgageOffer.SimulationResults.LoanInterestRateProvided,
                             LoanInterestRateAnnouncedTypeName = loanInterestRateAnnouncedTypes
-                                .FirstOrDefault(t => t.Id == offer.SimulationResults.LoanInterestRateAnnouncedType)?
+                                .FirstOrDefault(t => t.Id == offer.MortgageOffer.SimulationResults.LoanInterestRateAnnouncedType)?
                                 .Name ?? string.Empty,
-                            LoanInterestRateDiscount = offer.SimulationInputs.InterestRateDiscount
+                            LoanInterestRateDiscount = offer.MortgageOffer.SimulationInputs.InterestRateDiscount
                         },
-                        Fees = offer.AdditionalSimulationResults.Fees?.Select(t => new Dto.Workflow.Fee
+                        Fees = offer.MortgageOffer.AdditionalSimulationResults.Fees?.Select(t => new Dto.Workflow.Fee
                         {
                             FeeName = t.Name.ToString(System.Globalization.CultureInfo.InvariantCulture),
                             TariffSum = (decimal?)t.TariffSum ?? 0,
@@ -62,7 +62,7 @@ internal sealed class GetCurrentPriceExceptionHandler
                 {
                     TaskTypeName = taskTypeName ?? "",
                     ProcessId = process?.ProcessId ?? 0,
-                    TaskTypeId = 2
+                    TaskTypeId = (int)WorkflowTaskTypes.PriceException
                 }
             };
 

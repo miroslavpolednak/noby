@@ -35,7 +35,7 @@ public sealed class UpdateDocumentStatusJob
             .Select(s => new
             {
                 s.DocumentOnSAId,
-                s.ExternalId
+                s.ExternalIdESignatures
             })
             .ToListAsync(cancellationToken);
 
@@ -43,7 +43,7 @@ public sealed class UpdateDocumentStatusJob
         {
             try
             {
-                var status = await _eSignaturesClient.GetDocumentStatus(documentOnSa.ExternalId!, cancellationToken);
+                var status = await _eSignaturesClient.GetDocumentStatus(documentOnSa.ExternalIdESignatures!, cancellationToken);
 
                 if (status is EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT)
                 {

@@ -33,7 +33,7 @@ public sealed class CaseOwnerValidationMiddleware
         var routeValues = context.GetRouteData().Values;
         var endpoint = context.GetEndpoint();
         var skipCheck = endpoint?.Metadata.OfType<NobySkipCaseOwnerValidationAttribute>().Any() ?? true;
-        var skipValidateCaseStateAndProductSA = endpoint?.Metadata.OfType<NobySkipCaseOwnerStateAndProductSAValidationAttribute>().Any() ?? true;
+        var skipValidateCaseStateAndProductSA = endpoint?.Metadata.OfType<NobySkipCaseStateAndProductSAValidationAttribute>().Any() ?? true;
 
         if (!skipCheck && (routeValues?.Any() ?? false))
         {

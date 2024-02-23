@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.InstanceLocking;
-using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
+﻿using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 using CIS.InternalServices.TaskSchedulingService.Contracts;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Endpoints.ExecuteJob;
@@ -9,11 +8,6 @@ internal sealed class ExecuteJobHandler
 {
     public Task<ExecuteJobResponse> Handle(ExecuteJobRequest request, CancellationToken cancellation)
     {
-        if (!_lockService.CurrentState.IsLockAcquired)
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.InstanceIsNotActive, _lockService.CurrentState.LockOwnerInstanceName);
-        }
-
         var result = _jobExecutor.EnqueueJob(Guid.Parse(request.JobId), null, request.JobData, cancellation);
 
         if (result.IsSucessful)
@@ -31,11 +25,9 @@ internal sealed class ExecuteJobHandler
     }
 
     private readonly JobExecutor _jobExecutor;
-    private readonly Scheduling.InstanceLocking.ScheduleInstanceLockStatusService _lockService;
-
-    public ExecuteJobHandler(ScheduleInstanceLockStatusService lockService, JobExecutor jobExecutor)
+    
+    public ExecuteJobHandler(JobExecutor jobExecutor)
     {
-        _lockService = lockService;
         _jobExecutor = jobExecutor;
     }
 }

@@ -17,7 +17,7 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -69,7 +69,10 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                     b.Property<string>("EArchivId")
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("ExternalId")
+                    b.Property<string>("ExternalIdESignatures")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ExternalIdSb")
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FormId")
@@ -268,9 +271,8 @@ namespace DomainServices.DocumentOnSAService.Api.Database.Migrations
                                     b2.Property<long>("IdentityId")
                                         .HasColumnType("bigint");
 
-                                    b2.Property<string>("IdentityScheme")
-                                        .IsRequired()
-                                        .HasColumnType("nvarchar(max)");
+                                    b2.Property<byte>("IdentityScheme")
+                                        .HasColumnType("tinyint");
 
                                     b2.HasKey("SigningIdentityJsonSigningIdentityId", "Id");
 

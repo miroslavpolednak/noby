@@ -201,6 +201,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\NOBY-GIT-FLOW.png = Docs\topics\NOBY-GIT-FLOW.png
 		Docs\topics\service-discovery.md = Docs\topics\service-discovery.md
 		Docs\topics\soap-client.md = Docs\topics\soap-client.md
+		Docs\topics\task-scheduling.md = Docs\topics\task-scheduling.md
 		Docs\topics\tempstorage.md = Docs\topics\tempstorage.md
 		Docs\topics\test.md = Docs\topics\test.md
 		Docs\topics\validation-feapi.md = Docs\topics\validation-feapi.md
@@ -243,6 +244,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00003-DDS.sql = DomainServices\OfferService\DatabaseMigrations\00003-DDS.sql
 		DomainServices\OfferService\DatabaseMigrations\00005-DDS2.sql = DomainServices\OfferService\DatabaseMigrations\00005-DDS2.sql
 		DomainServices\OfferService\DatabaseMigrations\00006-HFICH-10206_DocumentId.sql = DomainServices\OfferService\DatabaseMigrations\00006-HFICH-10206_DocumentId.sql
+		DomainServices\OfferService\DatabaseMigrations\00007-HFICH-10398.sql = DomainServices\OfferService\DatabaseMigrations\00007-HFICH-10398.sql
+		DomainServices\OfferService\DatabaseMigrations\00008-HFICH-10398_2.sql = DomainServices\OfferService\DatabaseMigrations\00008-HFICH-10398_2.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
@@ -266,6 +269,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\SalesArrangementService\DatabaseMigrations\00020-HFICH-10018_DDS_Init.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00020-HFICH-10018_DDS_Init.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00021-HFICH-10206_RiskBusinessCaseCreatedDate.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00021-HFICH-10206_RiskBusinessCaseCreatedDate.sql
 		DomainServices\SalesArrangementService\DatabaseMigrations\00022-HFICH-9549_ClientAddress.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00022-HFICH-9549_ClientAddress.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00023-HFICH-10397.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00023-HFICH-10397.sql
+		DomainServices\SalesArrangementService\DatabaseMigrations\00024-OfferDocumentId.sql = DomainServices\SalesArrangementService\DatabaseMigrations\00024-OfferDocumentId.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D07D1FE1-DFC2-404C-9D4B-9A8732945D84}"
@@ -292,6 +297,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql = DomainServices\CaseService\DatabaseMigrations\00001-initial_creation.sql
 		DomainServices\CaseService\DatabaseMigrations\00002-HFICH-5454.sql = DomainServices\CaseService\DatabaseMigrations\00002-HFICH-5454.sql
 		DomainServices\CaseService\DatabaseMigrations\00003-HFICH-6578.sql = DomainServices\CaseService\DatabaseMigrations\00003-HFICH-6578.sql
+		DomainServices\CaseService\DatabaseMigrations\00004-indexes.sql = DomainServices\CaseService\DatabaseMigrations\00004-indexes.sql
+		DomainServices\CaseService\DatabaseMigrations\00005-HFICH-10063.sql = DomainServices\CaseService\DatabaseMigrations\00005-HFICH-10063.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
@@ -399,6 +406,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00010-MissingIndexes.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00010-MissingIndexes.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00011-HFICH-8142_AddEaCodeMainId.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00011-HFICH-8142_AddEaCodeMainId.sql
 		DomainServices\DocumentOnSAService\DatabaseMigrations\00012-HFICH-8649_AddedIsCustomerPreviewSendingAllowed.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00012-HFICH-8649_AddedIsCustomerPreviewSendingAllowed.sql
+		DomainServices\DocumentOnSAService\DatabaseMigrations\00013-HFICH-10521-ExternalId_SB_ESignature.sql = DomainServices\DocumentOnSAService\DatabaseMigrations\00013-HFICH-10521-ExternalId_SB_ESignature.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness", "DomainServices\RiskIntegrationService\ExternalServices.CreditWorthiness\DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.csproj", "{FF60B12F-B083-46BE-B8DA-FD91ABE2D831}"
@@ -462,6 +470,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00068_HFICH-9948_GeneralChange_SwitchedTwoFields.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00068_HFICH-9948_GeneralChange_SwitchedTwoFields.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00069_HFICH-9903_Offer_EmptyText.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00069_HFICH-9903_Offer_EmptyText.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00070_Fixed_SADrawing_SpecificSymbol_Path.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00070_Fixed_SADrawing_SpecificSymbol_Path.sql
+		InternalServices\DataAggregatorService\DatabaseMigrations\00071_HFICH-10398_Offer.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00071_HFICH-10398_Offer.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CaseService.ExternalServices.SbWebApi", "DomainServices\CaseService\ExternalServices.SbWebApi\DomainServices.CaseService.ExternalServices.SbWebApi.csproj", "{FA440E3E-69ED-4197-B1FA-B705DA129FD7}"

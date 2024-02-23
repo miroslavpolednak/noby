@@ -11,8 +11,6 @@ internal sealed class CreateTaskHandler
 {
     public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
-        WorkflowHelpers.ValidateTaskManagePermission(request.TaskTypeId, null, null, _currentUserAccessor);
-
         // kontrola existence Case
         DomainServices.CaseService.Contracts.Case caseInstance;
         try
@@ -24,8 +22,11 @@ internal sealed class CreateTaskHandler
             throw new NobyValidationException(90032, "DS error 13029");
         }
 
+        // validace procesu
+        await validateProcess(caseInstance.CaseId, request.ProcessId, request.TaskTypeId, cancellationToken);
+
         // validace price exception
-        if (request.TaskTypeId == 2)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
         {
             await validatePriceException(caseInstance.CaseId, cancellationToken);
         }
@@ -63,7 +64,7 @@ internal sealed class CreateTaskHandler
         }
 
         // price exception
-        if (request.TaskTypeId == 2)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
         {
             await updatePriceExceptionTask(dsRequest, cancellationToken);
         }
@@ -79,6 +80,20 @@ internal sealed class CreateTaskHandler
         return result.TaskId;
     }
 
+    private async Task validateProcess(long caseId, long processId, int taskTypeId, CancellationToken cancellationToken)
+    {
+        var allProcesses = await _caseService.GetProcessList(caseId, cancellationToken);
+        var processInstance = allProcesses.FirstOrDefault(t => t.ProcessId == processId)
+            ?? throw new NobyValidationException($"Workflow process {processId} for Case {caseId} not found");
+        
+        if (processInstance.ProcessTypeId is not ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && taskTypeId != (int)WorkflowTaskTypes.Consultation)
+        {
+            throw new NobyValidationException(90032, "validateProcess");
+        }
+
+        WorkflowHelpers.ValidateRefinancing(processInstance.ProcessTypeId, _currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_OtherManage, UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage);
+    }
+
     private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, CancellationToken cancellationToken)
     {
         var saId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First().SalesArrangementId;
@@ -87,28 +102,28 @@ internal sealed class CreateTaskHandler
         {
             throw new NobyValidationException($"OfferId is null for SalesArrangementId={saId}");
         }
-        var offerInstance = await _offerService.GetMortgageOfferDetail(saInstance.OfferId.Value, cancellationToken);
+        var offerInstance = await _offerService.GetOfferDetail(saInstance.OfferId.Value, cancellationToken);
 
         request.PriceException = new()
         {
-            ProductTypeId = offerInstance.SimulationInputs.ProductTypeId,
-            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod.GetValueOrDefault(),
-            LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount),
-            LoanDuration = offerInstance.SimulationResults.LoanDuration,
-            LoanToValue = Convert.ToInt32(offerInstance.SimulationResults.LoanToValue),
-            Expiration = ((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.Now), // nikdo nerekl co delat, pokud datum bude null...
+            ProductTypeId = offerInstance.MortgageOffer.SimulationInputs.ProductTypeId,
+            FixedRatePeriod = offerInstance.MortgageOffer.SimulationInputs.FixedRatePeriod.GetValueOrDefault(),
+            LoanAmount = Convert.ToInt32(offerInstance.MortgageOffer.SimulationResults.LoanAmount),
+            LoanDuration = offerInstance.MortgageOffer.SimulationResults.LoanDuration,
+            LoanToValue = Convert.ToInt32(offerInstance.MortgageOffer.SimulationResults.LoanToValue),
+            Expiration = ((DateTime?)offerInstance.MortgageOffer.BasicParameters.GuaranteeDateTo ?? DateTime.Now), // nikdo nerekl co delat, pokud datum bude null...
             LoanInterestRate = new()
             {
-                LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
-                LoanInterestRateProvided = offerInstance.SimulationResults.LoanInterestRateProvided,
-                LoanInterestRateAnnouncedType = offerInstance.SimulationResults.LoanInterestRateAnnouncedType,
-                LoanInterestRateDiscount = offerInstance.SimulationInputs.InterestRateDiscount
+                LoanInterestRate = offerInstance.MortgageOffer.SimulationResults.LoanInterestRate,
+                LoanInterestRateProvided = offerInstance.MortgageOffer.SimulationResults.LoanInterestRateProvided,
+                LoanInterestRateAnnouncedType = offerInstance.MortgageOffer.SimulationResults.LoanInterestRateAnnouncedType,
+                LoanInterestRateDiscount = offerInstance.MortgageOffer.SimulationInputs.InterestRateDiscount
             }
         };
 
-        if (offerInstance.AdditionalSimulationResults.Fees is not null)
+        if (offerInstance.MortgageOffer.AdditionalSimulationResults.Fees is not null)
         {
-            request.PriceException.Fees.AddRange(offerInstance.AdditionalSimulationResults.Fees.Select(t => new DomainServices.CaseService.Contracts.PriceExceptionFeesItem
+            request.PriceException.Fees.AddRange(offerInstance.MortgageOffer.AdditionalSimulationResults.Fees.Select(t => new DomainServices.CaseService.Contracts.PriceExceptionFeesItem
             {
                 FinalSum = (decimal?)t.FinalSum ?? 0,
                 TariffSum = (decimal?)t.TariffSum ?? 0,
@@ -117,10 +132,10 @@ internal sealed class CreateTaskHandler
             }));
         }
 
-        if (offerInstance.AdditionalSimulationResults.MarketingActions is not null)
+        if (offerInstance.MortgageOffer.AdditionalSimulationResults.MarketingActions is not null)
         {
             request.PriceException.AppliedMarketingActionsCodes.AddRange(
-                offerInstance.AdditionalSimulationResults.MarketingActions
+                offerInstance.MortgageOffer.AdditionalSimulationResults.MarketingActions
                     .Where(t => t.Applied.GetValueOrDefault() == 1)
                     .Select(t => t.Code)
             );
@@ -132,7 +147,7 @@ internal sealed class CreateTaskHandler
     /// </summary>
     private async Task validatePriceException(long caseId, CancellationToken cancellationToken)
     {
-        if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == 2 && !t.Cancelled))
+        if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled))
         {
             throw new NobyValidationException(90032, "ValidatePriceException failed");
         }

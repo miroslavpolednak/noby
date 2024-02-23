@@ -33,11 +33,11 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
 
     public string? CodebtorMaritalStatus => Customer2MaritalStatus;
 
-    public string LoanType => Offer.SimulationInputs.LoanKindId == 2001 ? GetLoanKindName(Offer.SimulationInputs.LoanKindId) : GetProductTypeName(Offer.SimulationInputs.ProductTypeId);
+    public string LoanType => Offer.MortgageOffer.SimulationInputs.LoanKindId == 2001 ? GetLoanKindName(Offer.MortgageOffer.SimulationInputs.LoanKindId) : GetProductTypeName(Offer.MortgageOffer.SimulationInputs.ProductTypeId);
 
-    public string LoanPurposes => GetLoanPurposes(Offer.SimulationInputs.LoanKindId, Offer.SimulationInputs.LoanPurposes.Select(l => l.LoanPurposeId));
+    public string LoanPurposes => GetLoanPurposes(Offer.MortgageOffer.SimulationInputs.LoanKindId, Offer.MortgageOffer.SimulationInputs.LoanPurposes.Select(l => l.LoanPurposeId));
 
-    public decimal? LoanPurposes210 => Offer.SimulationInputs.LoanPurposes.Where(x => x.LoanPurposeId == 210).Select(x => (decimal?)x.Sum).FirstOrDefault();
+    public decimal? LoanPurposes210 => Offer.MortgageOffer.SimulationInputs.LoanPurposes.Where(x => x.LoanPurposeId == 210).Select(x => (decimal?)x.Sum).FirstOrDefault();
 
     public string DrawingTypeName => GetDrawingType();
 
@@ -76,13 +76,13 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
     }
 
     private string GetDrawingType() =>
-        _codebookManager.DrawingTypes.Where(d => d.Id == Offer.SimulationInputs.DrawingTypeId)
+        _codebookManager.DrawingTypes.Where(d => d.Id == Offer.MortgageOffer.SimulationInputs.DrawingTypeId)
                         .Select(d => d.Name)
                         .DefaultIfEmpty(string.Empty)
                         .First();
 
     private int? GetDrawingDuration() =>
-        _codebookManager.DrawingDurations.Where(d => d.Id == Offer.SimulationInputs.DrawingDurationId)
+        _codebookManager.DrawingDurations.Where(d => d.Id == Offer.MortgageOffer.SimulationInputs.DrawingDurationId)
                         .Select(d => (int?)d.DrawingDuration)
                         .FirstOrDefault();
 

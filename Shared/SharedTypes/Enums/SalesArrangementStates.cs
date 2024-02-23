@@ -45,5 +45,14 @@ public enum SalesArrangementStates : byte
     [EnumMember]
     [Display(Name = "K odeslání")]
     [CisStarbuildId(1)]
-    ToSend = 8
+    ToSend = 8,
+
+    [EnumMember]
+    [Display(Name = "Dokončeno")]
+    [CisStarbuildId(1)]
+    Finished = 9,
+
+    [EnumMember]
+    [Display(Name = "Předáno RC2")]
+    RC2 = 10
 }

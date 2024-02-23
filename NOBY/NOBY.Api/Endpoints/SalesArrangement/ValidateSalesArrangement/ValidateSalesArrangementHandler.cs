@@ -8,6 +8,9 @@ internal sealed class ValidateSalesArrangementHandler
 {
     public async Task<ValidateSalesArrangementResponse> Handle(ValidateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
+        // validace opravneni
+        await _salesArrangementAuthorization.ValidateSaAccessBySaType213And248BySAId(request.SalesArrangementId, cancellationToken);
+
         var response = await _salesArrangementService.ValidateSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         return new ValidateSalesArrangementResponse
@@ -30,10 +33,12 @@ internal sealed class ValidateSalesArrangementHandler
         };   
     }
 
+    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
 
-    public ValidateSalesArrangementHandler(DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
+    public ValidateSalesArrangementHandler(DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService, Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
     {
         _salesArrangementService = salesArrangementService;
+        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 }

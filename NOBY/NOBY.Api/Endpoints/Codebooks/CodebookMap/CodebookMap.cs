@@ -31,6 +31,8 @@ public class CodebookMap : ICodebookMap
 
     private void ConfigureMap()
     {
+        AddCodebook((s, ct) => s.RefixationOfferTypes(ct));
+        AddCodebook((s, ct) => s.RefinancingTypes(ct));
         AddCodebook((s, ct) => s.AcademicDegreesAfter(ct));
         AddCodebook((s, ct) => s.AcademicDegreesBefore(ct));
         AddCodebook((s, ct) => s.AddressTypes(ct), c => c.Cast<DomainServices.CodebookService.Contracts.v1.AddressTypesResponse.Types.AddressTypeItem>());

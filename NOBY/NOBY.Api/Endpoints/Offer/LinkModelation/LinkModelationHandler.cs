@@ -10,11 +10,33 @@ internal sealed class LinkModelationHandler
     {
         // get SA data
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-        // get case instance
-        var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
+        
+        // validace prav
+        _salesArrangementAuthorization.ValidateSaAccessBySaType213And248(saInstance.SalesArrangementTypeId);
+        
+        switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)
+        {
+            case SalesArrangementTypes.Mortgage:
+                await updateMortgage(request, saInstance, cancellationToken);
+                break;
+
+            case SalesArrangementTypes.Refixation:
+            case SalesArrangementTypes.Retention:
+                //... implementace
+                break;
+
+            default:
+                throw new NobyValidationException(90032);
+        }
 
         // nalinkovat novou simulaci
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
+    }
+
+    private async Task updateMortgage(LinkModelationRequest request, DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, CancellationToken cancellationToken)
+    {
+        // get case instance
+        var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
 
         // update kontaktu
         var offerContacts = new _Ca.OfferContacts
@@ -40,14 +62,17 @@ internal sealed class LinkModelationHandler
         }
     }
 
+    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
 
     public LinkModelationHandler(
         DomainServices.CaseService.Clients.ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService,
+        Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
     {
         _caseService = caseService;
         _salesArrangementService = salesArrangementService;
+        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 }
