@@ -10,6 +10,11 @@ internal sealed class MaintananceService
         return await _client.GetUpdateDocumentStatusIdsAsync(new(), cancellationToken: cancellationToken);
     }
 
+    public async Task<GetCheckDocumentsArchivedIdsResponse> GetCheckDocumentsArchivedIds(int maxBatchSize, CancellationToken cancellationToken)
+    {
+        return await _client.GetCheckDocumentsArchivedIdsAsync(new() { MaxBatchSize = maxBatchSize }, cancellationToken: cancellationToken);
+    }
+
     private readonly Contracts.MaintananceService.MaintananceServiceClient _client;
 
     public MaintananceService(Contracts.MaintananceService.MaintananceServiceClient client)

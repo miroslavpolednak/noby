@@ -6,6 +6,7 @@ import "google/protobuf/wrappers.proto";
 
 service MaintananceService{
 	rpc GetUpdateDocumentStatusIds (GetUpdateDocumentStatusIdsRequest) returns (GetUpdateDocumentStatusIdsResponse);
+	rpc GetCheckDocumentsArchivedIds (GetCheckDocumentsArchivedIdsRequest) returns (GetCheckDocumentsArchivedIdsResponse);
 }
 
 message GetUpdateDocumentStatusIdsRequest {}
@@ -16,5 +17,18 @@ message GetUpdateDocumentStatusIdsResponse {
 	message GetUpdateDocumentStatusIdsResponseItem {
 		int32 DocumentOnSAId = 1;
 		google.protobuf.StringValue ExternalIdESignatures = 2;
+	}
+}
+
+message GetCheckDocumentsArchivedIdsRequest {
+	int32 MaxBatchSize = 1;
+}
+
+message GetCheckDocumentsArchivedIdsResponse {
+	repeated GetCheckDocumentsArchivedIdsItem Items = 1;
+
+	message GetCheckDocumentsArchivedIdsItem {
+		string EArchivId = 1;
+		int32 DocumentOnSAId = 2;
 	}
 }

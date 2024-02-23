@@ -1,4 +1,5 @@
 ﻿using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
+using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 using ExternalServices.ESignatures.V1;
 
@@ -19,13 +20,7 @@ internal sealed class UpdateDocumentStatusHandler
 
                 if (status is EDocumentStatuses.SIGNED or EDocumentStatuses.VERIFIED or EDocumentStatuses.SENT)
                 {
-                    var signRequest = new SignDocumentRequest
-                    {
-                        DocumentOnSAId = documentOnSa.DocumentOnSAId,
-                        SignatureTypeId = (int)SignatureTypes.Electronic
-                    };
-
-                    await _mediator.Send(signRequest, cancellationToken);
+                    await _documentOnSAService.SignDocument(documentOnSa.DocumentOnSAId, (int)SignatureTypes.Electronic, cancellationToken);
                 }
 
                 if (status == EDocumentStatuses.DELETED)
@@ -35,7 +30,7 @@ internal sealed class UpdateDocumentStatusHandler
                         DocumentOnSAId = documentOnSa.DocumentOnSAId
                     };
 
-                    await _mediator.Send(stopSignRequest, cancellationToken);
+                    await _documentOnSAService.StopSigning(stopSignRequest, cancellationToken);
                 }
             }
             catch (Exception ex)
@@ -45,20 +40,20 @@ internal sealed class UpdateDocumentStatusHandler
         }
     }
 
-    private readonly DomainServices.DocumentOnSAService.Clients.IMaintananceService _maintananceService;
-    private readonly IMediator _mediator;
+    private readonly IMaintananceService _maintananceService;
     private readonly IESignaturesClient _eSignaturesClient;
+    private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ILogger<UpdateDocumentStatusHandler> _logger;
 
     public UpdateDocumentStatusHandler(
-        IMediator mediator,
         IESignaturesClient eSignaturesClient,
         ILogger<UpdateDocumentStatusHandler> logger,
-        DomainServices.DocumentOnSAService.Clients.IMaintananceService maintananceService)
+        IMaintananceService maintananceService,
+        IDocumentOnSAServiceClient documentOnSAService)
     {
-        _mediator = mediator;
         _eSignaturesClient = eSignaturesClient;
         _logger = logger;
         _maintananceService = maintananceService;
+        _documentOnSAService = documentOnSAService;
     }
 }
