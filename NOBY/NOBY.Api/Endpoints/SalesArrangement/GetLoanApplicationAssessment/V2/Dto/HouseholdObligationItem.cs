@@ -1,4 +1,5 @@
-﻿using NOBY.Api.Endpoints.CustomerObligation.SharedDto;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using NOBY.Api.Endpoints.CustomerObligation.SharedDto;
 using NOBY.Dto;
 using NOBY.Dto.Household;
 using System.Text.Json.Serialization;
@@ -32,10 +33,12 @@ public sealed class HouseholdObligationItem
 
     public decimal? AmountConsolidated { get; set; }
 
+    public decimal? LoanAmountTotal { get; set; }
+
     /// <summary>
     /// Nesplacená jistina
     /// </summary>
-    public decimal? LoanPrincipalAmount { get; set; }
+    public decimal? LoanAmountCurrent { get; set; }
 
     /// <summary>
     /// Splátka
@@ -46,6 +49,16 @@ public sealed class HouseholdObligationItem
     /// Limit
     /// </summary>
     public decimal? CreditCardLimit { get; set; }
+
+    /// <summary>
+    /// Výše limitu
+    /// </summary>
+    public decimal? CreditCardLimitTotal { get; set; }
+
+    /// <summary>
+    /// Role klienta
+    /// </summary>
+    public int? RoleId { get; set; }
 
     /// <summary>
     /// Korekce

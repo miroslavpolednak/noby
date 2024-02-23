@@ -24,9 +24,12 @@ internal static class Extensions
             2,
             obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
             laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
+            item.CustomerRoleId,
             false,
             item.InstallmentAmount,
-            isEntrepreneur);
+            isEntrepreneur,
+            null,
+            item.LoanAmount);
     }
 
     public static Dto.HouseholdObligationItem CreateHouseholdObligations(
@@ -39,10 +42,13 @@ internal static class Extensions
                 2,
                 obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
                 laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
+                item.CustomerRoleId,
                 true,
                 //item.LoanType,
                 item.InstallmentAmount,
-                isEntrepreneur);
+                isEntrepreneur,
+                null,
+                item.LoanAmount);
             result.KbGroupInstanceCode = item.KbGroupInstanceCode;
             result.CbcbDataLastUpdate = item.CbcbDataLastUpdate;
             return result;
@@ -58,10 +64,12 @@ internal static class Extensions
                 2,
                 obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
                 laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
+                item.CustomerRoleId,
                 false,
                 item.InstallmentAmount,
                 isEntrepreneur,
                 item.ExposureAmount,
+                item.LoanAmount,
                 item.ContractDate,
                 item.MaturityDate);
             result.DrawingAmount = item.DrawingAmount;
@@ -92,9 +100,9 @@ internal static class Extensions
                     ObligationTypeId = obligationType?.Id ?? 0,
                     ObligationTypeName = obligationType?.Name ?? "Neznázmý",
                     AmountConsolidated = t.AmountConsolidated,
-                    LoanPrincipalAmount = isLimit ? null : t.LoanPrincipalAmount,
-                    InstallmentAmount = isLimit ? null : t.InstallmentAmount,
+                    LoanAmountCurrent = isLimit ? null : t.LoanPrincipalAmount,
                     CreditCardLimit = !isLimit ? null : t.CreditCardLimit,
+                    InstallmentAmount = isLimit ? null : t.InstallmentAmount,
                     Creditor = t.Creditor is null ? null : new()
                     {
                         CreditorId = t.Creditor.CreditorId,
@@ -123,10 +131,12 @@ internal static class Extensions
             2,
             obligationTypes.FirstOrDefault(t => t.Id == item.LoanTypeCategory.GetValueOrDefault()),
             laExposureItems.FirstOrDefault(t => t.Id == item.LoanType),
+            item.CustomerRoleId,
             true,
             item.InstallmentAmount,
             isEntrepreneur,
             item.ExposureAmount,
+            item.LoanAmount,
             item.ContractDate,
             item.MaturityDate);
         result.KbGroupInstanceCode = item.KbGroupInstanceCode;
@@ -138,10 +148,12 @@ internal static class Extensions
         in int sourceId,
         ObligationTypesResponse.Types.ObligationTypeItem? obligationType,
         ObligationLaExposuresResponse.Types.ObligationLaExposureItem? loanType,
+        in int? roleId,
         in bool isExternal,
         in decimal? installmentAmount,
         in bool isEntrepreneur,
         in decimal? exposureAmount = null,
+        in decimal? loanAmount = null,
         in DateTime? contractDate = null,
         in DateTime? maturityDate = null)
     {
@@ -154,11 +166,14 @@ internal static class Extensions
             IsEntrepreneur = isEntrepreneur,
             ObligationTypeId = obligationType?.Id ?? 0,
             ObligationTypeName = obligationType?.Name ?? "Neznázmý",
-            LoanPrincipalAmount = isLimit ? null : exposureAmount,
+            LoanAmountCurrent = exposureAmount,
+            CreditCardLimit = loanAmount,
+            LoanAmountTotal = isLimit ? null : loanAmount,
+            CreditCardLimitTotal = !isLimit ? null : loanAmount,
             InstallmentAmount = isLimit ? null : installmentAmount,
-            CreditCardLimit = !isLimit ? null : exposureAmount,
             ObligationLaExposureId = loanType?.Id,
             ObligationLaExposureName = loanType?.Name,
+            RoleId = roleId,
             Creditor = new CustomerObligation.SharedDto.ObligationCreditorDto
             {
                 IsExternal = isExternal
