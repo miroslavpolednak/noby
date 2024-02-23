@@ -101,7 +101,7 @@ internal static class CaseExtensions
     {
         var taskDetail = new TaskDetailItem
         {
-            ProcessNameLong = taskData.GetValueOrDefault("ukol_typ_proces_noby_oznaceni") ?? "",
+            ProcessNameLong = taskData.GetValueOrDefault("ukol_top_proces_nazev_noby") ?? "",
             TaskDocumentIds = { (taskData.GetValueOrDefault("wfl_refobj_dokumenty") ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries) }
         };
 
