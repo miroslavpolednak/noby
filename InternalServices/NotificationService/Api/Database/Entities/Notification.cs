@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CIS.InternalServices.NotificationService.Api.Database.Entities;
 
-[Table("NotificationResult", Schema = "dbo")]
+[Table("Notification", Schema = "dbo")]
 internal sealed class Notification
 {
     [Key]
