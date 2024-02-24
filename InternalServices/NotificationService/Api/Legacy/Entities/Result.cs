@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿#region legacy code
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using Microsoft.EntityFrameworkCore;
@@ -45,3 +46,4 @@ public abstract class Result
 
     public abstract LegacyContracts.Result.Dto.Result ToDto();
 }
+#endregion legacy code

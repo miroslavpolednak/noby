@@ -5,6 +5,7 @@ using CIS.InternalServices.NotificationService.Contracts.v2;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using SharedAudit;
+using SharedComponents.DocumentDataStorage;
 using System.Globalization;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendSms;
@@ -18,7 +19,7 @@ internal sealed class SendSmsHandler
         _ = request.PhoneNumber.TryParsePhone(out string? countryCode, out string? nationalNumber);
 
         // pripravit zpravu do databaze
-        Database.Entities.NotificationResult result = new()
+        Database.Entities.Notification result = new()
         {
             Id = Guid.NewGuid(),
             State = NotificationStates.InProgress,
@@ -36,6 +37,16 @@ internal sealed class SendSmsHandler
         _dbContext.Add(result);
         // ulozit do databaze
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        // ulozit obsah SMS
+        await _documentDataStorage.Add(result.Id.ToString(), new Database.DocumentDataEntities.SmsData
+        {
+            CountryCode = countryCode!,
+            NationalNumber = nationalNumber!,
+            Text = request.Text,
+            Type = smsType.Code,
+            ProcessingPriority = request.ProcessingPriority
+        }, cancellationToken);
 
         // pripravit zpravu do MCS
         var sendSms = new McsSendApi.v4.sms.SendSMS
@@ -111,6 +122,9 @@ internal sealed class SendSmsHandler
         }
     }
 
+    /// <summary>
+    /// Ziskat typ notifikace z ciselniku
+    /// </summary>
     private async Task<SmsNotificationTypesResponse.Types.SmsNotificationTypeItem> getSmsType(string smsType, CancellationToken cancellationToken)
     {
         var smsTypes = await _codebookService.SmsNotificationTypes(cancellationToken);
@@ -119,6 +133,7 @@ internal sealed class SendSmsHandler
             throw new CisValidationException($"Invalid Type = '{smsType}'. Allowed Types: {string.Join("; ", smsTypes.Select(s => s.Code))}");
     }
 
+    private readonly IDocumentDataStorage _documentDataStorage;
     private readonly IAuditLogger _auditLogger;
     private readonly TimeProvider _dateTime;
     private readonly ICodebookServiceClient _codebookService;
@@ -134,7 +149,8 @@ internal sealed class SendSmsHandler
         ServiceUserHelper serviceUser,
         Database.NotificationDbContext dbContext,
         IMcsSmsProducer mcsSmsProducer,
-        IAuditLogger auditLogger)
+        IAuditLogger auditLogger,
+        IDocumentDataStorage documentDataStorage)
     {
         _dateTime = dateTime;
         _codebookService = codebookService;
@@ -143,5 +159,6 @@ internal sealed class SendSmsHandler
         _dbContext = dbContext;
         _mcsSmsProducer = mcsSmsProducer;
         _auditLogger = auditLogger;
+        _documentDataStorage = documentDataStorage;
     }
 }

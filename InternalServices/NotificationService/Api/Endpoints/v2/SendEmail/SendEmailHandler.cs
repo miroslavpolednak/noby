@@ -18,7 +18,7 @@ internal sealed class SendEmailHandler
         // kontrola na domenu uz je ve validatoru
         var senderType = _appConfiguration.EmailSenders.Mcs.Contains(domainName, StringComparer.OrdinalIgnoreCase) ? Mandants.Kb : Mandants.Mp;
 
-        Database.Entities.NotificationResult result = new()
+        Database.Entities.Notification result = new()
         {
             Id = Guid.NewGuid(),
             Channel = NotificationChannels.Email,
@@ -44,7 +44,7 @@ internal sealed class SendEmailHandler
             foreach (var attachment in request.Attachments)
             {
                 var fileId = Guid.NewGuid().ToString();
-                var content = Convert.FromBase64String(attachment.Binary);
+                var content = attachment.Binary.ToArray();
                 await _storageClient.SaveFile(content, fileId, cancellationToken: cancellationToken);
 
                 attachmentKeyFilenames.Add(new(fileId, attachment.Filename));
@@ -60,6 +60,26 @@ internal sealed class SendEmailHandler
 
             throw new CisServiceServerErrorException(ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
         }
+
+        // ulozit obsah SMS
+        await _documentDataStorage.Add(result.Id.ToString(), new Database.DocumentDataEntities.EmailData
+        {
+            Subject = request.Subject,
+            Text = request.Content.Text,
+            Sender = request.From,
+            To = request.To.ToList(),
+            Cc = request.Cc?.ToList(),
+            Bcc = request.Bcc?.ToList(),
+            ReplyTo = request.ReplyTo,
+            Format = request.Content.Format,
+            Language = request.Content.Language,
+            Attachments = request.Attachments?.Select(t => new Database.DocumentDataEntities.EmailData.EmailAttachment
+            {
+                Filename = t.Filename,
+                Data = t.Binary.ToBase64()
+            })
+            .ToList()
+        }, cancellationToken);
 
         if (senderType == Mandants.Kb)
         {

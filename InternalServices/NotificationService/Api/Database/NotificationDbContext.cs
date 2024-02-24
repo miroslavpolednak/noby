@@ -9,15 +9,12 @@ namespace CIS.InternalServices.NotificationService.Api.Database;
 // dotnet-ef migrations script
 internal sealed class NotificationDbContext : BaseDbContext<NotificationDbContext>
 {
-    public DbSet<NotificationResult> NotificationResults { get; set; } = null!;
+    public DbSet<Notification> Notifications { get; set; } = null!;
 
+    #region legacy code
     public DbSet<Result> Results { get; set; } = null!;
     public DbSet<EmailResult> EmailResults { get; set; } = null!;
     public DbSet<SmsResult> SmsResults { get; set; } = null!;
-
-    public NotificationDbContext(BaseDbContextAggregate<NotificationDbContext> aggregate) : base(aggregate)
-    {
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,5 +26,10 @@ internal sealed class NotificationDbContext : BaseDbContext<NotificationDbContex
 
         modelBuilder.Entity<EmailResult>()
             .ToTable(nameof(EmailResult));
+    }
+    #endregion legacy code
+
+    public NotificationDbContext(BaseDbContextAggregate<NotificationDbContext> aggregate) : base(aggregate)
+    {
     }
 }

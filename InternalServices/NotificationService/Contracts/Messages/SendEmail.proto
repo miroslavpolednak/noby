@@ -54,7 +54,7 @@ message SendEmailRequest {
 
 	message EmailAttachment
 	{
-		string Binary = 1;
+		bytes Binary = 1;
 		string Filename = 2;
 	}
 

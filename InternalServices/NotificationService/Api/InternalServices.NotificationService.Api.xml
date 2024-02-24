@@ -60,6 +60,11 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
             </remarks>
         </member>
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendSms.SendSmsHandler.getSmsType(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Ziskat typ notifikace z ciselniku
+            </summary>
+        </member>
         <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Channel">
             <summary>
             Represents communication channel of bank with party. . ## Multicodebook property that uniquely identifies channel. It is multicodebook as here can be any of subsets of Channel codebook, which are defined as standalone codebooks. But here should not be any principally different codebook. (e.g. ObtainType should not be here). CDM entity name(s): Channel,ChannelIdentification.
