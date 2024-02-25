@@ -86,7 +86,7 @@ internal sealed class SendSmsHandler
 
             _logger.NotificationFailedToSend(result.Id, NotificationChannels.Sms, ex);
             createAuditLog(request, smsType, _serviceUser.ConsumerId);
-            throw;
+            throw new CIS.Core.Exceptions.ExternalServices.CisExternalServiceUnavailableException(1, "MCS");
         }
 
         return new NotificationIdResponse 
