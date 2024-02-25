@@ -16,8 +16,8 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.300" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.305.25" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.305.28" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.61.0" />
     <PackageReference Include="MailKit" Version="4.3.0" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
