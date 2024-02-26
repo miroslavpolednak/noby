@@ -25,7 +25,8 @@ service NotificationService {
 
    rpc SendEmail(SendEmailRequest) returns (NotificationIdResponse) {
 	   option (google.api.http) = {
-			post: "/v2/email"
+			post: "/v2/email",
+			body: "*"
 	   };
    }
 
