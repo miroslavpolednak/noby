@@ -7,6 +7,7 @@ using CIS.Core.Exceptions;
 using CIS.Core.Exceptions.ExternalServices;
 using Google.Rpc;
 using Google.Protobuf.WellKnownTypes;
+using System.Globalization;
 
 namespace CIS.Infrastructure.gRPC;
 
@@ -45,20 +46,15 @@ public sealed class GenericServerExceptionInterceptor
             _logger.ServiceAuthorizationFailed(ex);
             throw createRpcExceptionWithPreconditionFailure(Code.PermissionDenied, "Service authorization failed: " + ex.Message, cViolation("PermissionDenied", ex.Username ?? "", ex.Message));
         }
-        // 500 z volane externi sluzby
-        catch (CisServiceServerErrorException ex)
-        {
-            setHttpStatus(StatusCodes.Status500InternalServerError);
-            _logger.ExternalServiceUnavailable(ex.ServiceName, ex);
-            throw createRpcExceptionWithPreconditionFailure(Code.Internal, $"Service '{ex.ServiceName}' failed with HTTP 500", cViolation("ServiceUnavailable", ex.ServiceName, ex.Message));
-        }
-        catch (CisNotFoundException e) // entity neexistuje
+        // entity neexistuje
+        catch (CisNotFoundException e) 
         {
             setHttpStatus(StatusCodes.Status404NotFound);
             _logger.EntityNotFound(e);
             throw createRpcExceptionWithResourceInfo(Code.NotFound, e.Message, e.EntityName, e.EntityId, e.ExceptionCode);
         }
-        catch (CisAlreadyExistsException e) // entita jiz existuje
+        // entita jiz existuje
+        catch (CisAlreadyExistsException e)
         {
             setHttpStatus(StatusCodes.Status400BadRequest);
             _logger.EntityAlreadyExist(e);
@@ -88,14 +84,14 @@ public sealed class GenericServerExceptionInterceptor
         {
             setHttpStatus(StatusCodes.Status500InternalServerError);
             _logger.ExternalServiceUnavailable(e.ServiceName, e);
-            throw createRpcExceptionForExternalService(e.Message, e.ServiceName, e.ExceptionCode);
+            throw createRpcExceptionForExternalService(e.Message, e.ServiceName, e.ExceptionCode, CisExternalServiceUnavailableException.DefaultExceptionCode);
         }
         // externi sluzba vratila http 500
         catch (CisExternalServiceServerErrorException e)
         {
             setHttpStatus(StatusCodes.Status500InternalServerError);
             _logger.ExternalServiceServerError(e.ServiceName, e);
-            throw createRpcExceptionForExternalService(e.Message, e.ServiceName, e.ExceptionCode);
+            throw createRpcExceptionForExternalService(e.Message, e.ServiceName, e.ExceptionCode, CisExternalServiceServerErrorException.DefaultExceptionCode);
         }
         catch (BaseCisException e)
         {
@@ -138,7 +134,7 @@ public sealed class GenericServerExceptionInterceptor
     }
 
     private static ErrorInfo cCisErrorCode(in string exceptionCode)
-        => cErrorInfo("cis_error_code", exceptionCode);
+        => cErrorInfo(GlobalConstants.ErrorInfoDomainForCisExceptionCode, exceptionCode);
 
     private static ErrorInfo cErrorInfo(in string domain, in string reason)
         => new() { Domain = domain, Reason = reason };
@@ -171,14 +167,14 @@ public sealed class GenericServerExceptionInterceptor
             }
         }).ToRpcException();
 
-    private static RpcException createRpcExceptionForExternalService(in string message, in string serviceName, in string exceptionCode)
+    private static RpcException createRpcExceptionForExternalService(in string message, in string serviceName, in string exceptionCode, in int internalCode)
         => (new Google.Rpc.Status
             {
                 Code = (int)Code.Aborted,
                 Message = message,
                 Details =
                 {
-                    Any.Pack(cResourceInfo("external_service", serviceName)),
+                    Any.Pack(cResourceInfo(GlobalConstants.ResourceTypeForExternalService, serviceName, internalCode.ToString(CultureInfo.InvariantCulture))),
                     Any.Pack(cCisErrorCode(exceptionCode))
                 }
             }).ToRpcException();

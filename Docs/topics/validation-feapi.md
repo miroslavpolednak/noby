@@ -33,7 +33,6 @@ Tento middleware zachytí vyhozenou vyjímku a vytvoří z ní HTTP response se 
 Překlad typů vyjímek na HTTP status kódy.
 - `NotImplementedException`: HTTP 500
 - `CisServiceUnavailableException`: HTTP 500
-- `CisServiceServerErrorException`: HTTP 500
 - `CisNotFoundException`: HTTP 404
 - `CisConflictException`: HTTP 409
 - `CisValidationException`: HTTP 400

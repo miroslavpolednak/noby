@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Exceptions;
+using CIS.Core.Exceptions.ExternalServices;
 using Microsoft.Extensions.Logging;
 
 namespace DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Clients;
@@ -34,7 +35,7 @@ public class TcpClient : ITcpClient
             }
             else
             {
-                throw new CisServiceServerErrorException("eArchive(TCP)", nameof(DownloadFile), result);
+                throw new CisExternalServiceServerErrorException("eArchive(TCP)", nameof(DownloadFile), result);
             }
         }
     }
