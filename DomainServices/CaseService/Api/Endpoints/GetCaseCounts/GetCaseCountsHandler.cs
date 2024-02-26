@@ -24,6 +24,7 @@ internal sealed class GetCaseCountsHandler
             .ToList()
         );
 
+
         return result;
     }
 

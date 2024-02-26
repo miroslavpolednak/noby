@@ -1,9 +1,12 @@
 ﻿using CIS.Core.Exceptions;
+using Google.Rpc;
 using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 using System.Net;
 using System.Security.Authentication;
+
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 
 namespace CIS.Infrastructure.gRPC.Middleware;
 
@@ -11,6 +14,7 @@ namespace CIS.Infrastructure.gRPC.Middleware;
 /// middleware pro zachytávání vyjímek v grpc code first službách.
 /// po přechodu na grpc transcoding ostraníme
 /// </summary>
+[Obsolete("Use native gRPC instead")]
 public sealed class Grpc2WebApiExceptionMiddleware
 {
     private readonly RequestDelegate _next;
@@ -63,16 +67,15 @@ public sealed class Grpc2WebApiExceptionMiddleware
         }
         catch (RpcException ex) when (ex.StatusCode == StatusCode.InvalidArgument)
         {
-            // try list of errors first
-            var messages = ex.GetErrorMessagesFromRpcException();
-            if (messages.Any()) // most likely its validation exception
+            var detail = ex.GetRpcStatus()?.GetDetail<BadRequest>();
+            if (detail?.FieldViolations.Any() ?? false)
             {
-                var errors = messages.GroupBy(k => k.ExceptionCode)?.ToDictionary(k => k.Key, v => v.Select(x => x.Message).ToArray());
+                var errors = detail.FieldViolations.GroupBy(k => k.Field)?.ToDictionary(k => k.Key, v => v.Select(x => x.Description).ToArray());
                 await getValidationProblemObject(context, errors!);
             }
-            else // its single argument exception
+            else
             {
-                await getValidationProblemObject(context, ex.GetErrorMessageFromRpcException(), ex.GetArgumentFromTrailers());
+                await getValidationProblemObject(context, ex.Message);
             }
         }
         // jakakoliv jina chyba

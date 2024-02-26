@@ -67,7 +67,7 @@ Přidává do HTTP hlavičky correlation Id.
 
 **ErrorHandlingHttpHandler**  
 Middleware, který zachycuje standardní vyjímky a mění je na CIS exceptions.
-Zároveň vyhodnocuje HTTP status kódy a pokud je StatusCode>=500, tak vyvolává `CisServiceServerErrorException`.  
+Zároveň vyhodnocuje HTTP status kódy a pokud je StatusCode>=500, tak vyvolává `CisExternalServiceServerErrorException`.  
 Extension metoda `IHttpClientBuilder.AddExternalServicesErrorHandling()`.
 
 **KbHeadersHttpHandler**  
