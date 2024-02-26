@@ -50,13 +50,11 @@ internal sealed class CheckDocumentsArchivedHandler
 
     private readonly ILogger<CheckDocumentsArchivedHandler> _logger;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly IMaintananceService _maintananceService;
 
-    public CheckDocumentsArchivedHandler(IMaintananceService maintananceService, IDocumentOnSAServiceClient documentOnSAService, IDocumentArchiveServiceClient documentArchiveService, ILogger<CheckDocumentsArchivedHandler> logger)
+    public CheckDocumentsArchivedHandler(IMaintananceService maintananceService, IDocumentArchiveServiceClient documentArchiveService, ILogger<CheckDocumentsArchivedHandler> logger)
     {
         _maintananceService = maintananceService;
-        _documentOnSAService = documentOnSAService;
         _documentArchiveService = documentArchiveService;
         _logger = logger;
     }
