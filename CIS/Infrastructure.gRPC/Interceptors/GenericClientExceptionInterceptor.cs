@@ -58,7 +58,14 @@ public sealed class GenericClientExceptionInterceptor
         {
             var detail = ex.GetRpcStatus()?.GetDetail<ResourceInfo>();
             _ = int.TryParse(detail?.Description, out int exceptionCode);
-            throw new CisNotFoundException(exceptionCode, detail?.ResourceType ?? "", detail?.ResourceName ?? "");
+            if (string.IsNullOrEmpty(detail?.ResourceType))
+            {
+                throw new CisNotFoundException(exceptionCode, ex.Status.Detail);
+            }
+            else
+            {
+                throw new CisNotFoundException(exceptionCode, detail.ResourceType, detail.ResourceName ?? "");
+            }
         }
         // entita jiz existuje
         catch (RpcException ex) when (ex.StatusCode == StatusCode.AlreadyExists)
@@ -77,7 +84,7 @@ public sealed class GenericClientExceptionInterceptor
             }
             else
             {
-                throw new CisValidationException(ex.Message);
+                throw new CisValidationException(ex.Status.Detail);
             }
         }
         // externi sluzba neni dostupna nebo vratila 500
