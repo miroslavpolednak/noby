@@ -42,7 +42,7 @@ internal sealed class GetCaseMenuFlagsHandler
             CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken),
             RefinancingMenuItem = new()
             {
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RetentionManage) && (caseInstance.State is (int)CaseStates.InDisbursement or (int)CaseStates.InAdministration)
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)CaseStates.InDisbursement or (int)CaseStates.InAdministration)
             }
         };
     }
