@@ -299,7 +299,7 @@
         </member>
         <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase.GetJobStatuses(CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesRequest,Grpc.Core.ServerCallContext)">
             <summary>
-            Vrací historii spuštěných jobů s informací o statusu ukončení
+            Vrací historii spuštěných Jobů s informací o statusu ukončení
             </summary>
             <param name="request">The request received from the client.</param>
             <param name="context">The context of the server-side call handler being invoked.</param>
@@ -357,7 +357,7 @@
         </member>
         <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetJobStatuses(CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
-            Vrací historii spuštěných jobů s informací o statusu ukončení
+            Vrací historii spuštěných Jobů s informací o statusu ukončení
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
@@ -367,7 +367,7 @@
         </member>
         <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetJobStatuses(CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesRequest,Grpc.Core.CallOptions)">
             <summary>
-            Vrací historii spuštěných jobů s informací o statusu ukončení
+            Vrací historii spuštěných Jobů s informací o statusu ukončení
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>
@@ -375,7 +375,7 @@
         </member>
         <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetJobStatusesAsync(CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
             <summary>
-            Vrací historii spuštěných jobů s informací o statusu ukončení
+            Vrací historii spuštěných Jobů s informací o statusu ukončení
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
@@ -385,7 +385,7 @@
         </member>
         <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.GetJobStatusesAsync(CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesRequest,Grpc.Core.CallOptions)">
             <summary>
-            Vrací historii spuštěných jobů s informací o statusu ukončení
+            Vrací historii spuštěných Jobů s informací o statusu ukončení
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>
