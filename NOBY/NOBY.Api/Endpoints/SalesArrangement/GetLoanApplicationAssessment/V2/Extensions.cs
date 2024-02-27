@@ -167,7 +167,7 @@ internal static class Extensions
             ObligationTypeId = obligationType?.Id ?? 0,
             ObligationTypeName = obligationType?.Name ?? "Neznázmý",
             LoanAmountCurrent = exposureAmount,
-            CreditCardLimit = loanAmount,
+            CreditCardLimit = !isLimit ? null : loanAmount,
             LoanAmountTotal = isLimit ? null : loanAmount,
             CreditCardLimitTotal = !isLimit ? null : loanAmount,
             InstallmentAmount = isLimit ? null : installmentAmount,

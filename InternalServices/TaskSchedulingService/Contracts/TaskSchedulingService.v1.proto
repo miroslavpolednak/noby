@@ -12,7 +12,7 @@ import "Messages/UpdateScheduler.proto";
 import "Messages/GetJobStatuses.proto";
 
 service TaskSchedulingService {
-	// Vrací historii spuštěných jobů s informací o statusu ukončení
+	// Vrací historii spuštěných Jobů s informací o statusu ukončení
 	rpc GetJobStatuses (GetJobStatusesRequest) returns (GetJobStatusesResponse) {
 		option (google.api.http) = {
 			post: "/api/v1/job-statuses",
