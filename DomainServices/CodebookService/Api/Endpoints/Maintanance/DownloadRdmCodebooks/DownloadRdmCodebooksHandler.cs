@@ -1,6 +1,5 @@
 ﻿using CIS.Core.Data;
 using Dapper;
-using DomainServices.CodebookService.Api.BackgroundServices.DownloadRdmCodebooksJob;
 using DomainServices.CodebookService.Contracts;
 using Google.Protobuf.WellKnownTypes;
 using MediatR;
@@ -96,13 +95,13 @@ internal sealed class DownloadRdmCodebooksHandler
     private readonly ExternalServices.RDM.V1.IRDMClient _rdmClient;
     private readonly Configuration.AppConfiguration _appConfiguration;
     private readonly IConnectionProvider _dbContext;
-    private readonly ILogger<DownloadRdmCodebooksJob> _logger;
+    private readonly ILogger<DownloadRdmCodebooksHandler> _logger;
 
     public DownloadRdmCodebooksHandler(
         ExternalServices.RDM.V1.IRDMClient rdmClient,
         Configuration.AppConfiguration appConfiguration,
         IConnectionProvider dbContext,
-        ILogger<DownloadRdmCodebooksJob> logger)
+        ILogger<DownloadRdmCodebooksHandler> logger)
     {
         _rdmClient = rdmClient;
         _appConfiguration = appConfiguration;

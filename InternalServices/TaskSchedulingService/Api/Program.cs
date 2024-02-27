@@ -1,6 +1,8 @@
 using CIS.Infrastructure.StartupExtensions;
 using CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
 using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
+using ExternalServices.ESignatures.V1;
+using ExternalServices;
 
 #pragma warning disable CS0436 // Type conflicts with imported type
 
@@ -18,6 +20,7 @@ SharedComponents.GrpcServiceBuilder
             .AddCustomerService()
             .AddProductService()
             .AddHouseholdService()
+            .AddDocumentArchiveService()
             .AddDocumentOnSAService();
     })
     .EnableJsonTranscoding(options =>
@@ -33,6 +36,9 @@ SharedComponents.GrpcServiceBuilder
 
         // pridat scheduling
         builder.Services.AddSchedulingServices();
+
+        // ePodpisy
+        builder.AddExternalService<IESignaturesClient>();
 
         // zaregistrovat joby
         builder.Services.Scan(selector => selector

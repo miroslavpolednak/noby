@@ -34,11 +34,6 @@ SharedComponents.GrpcServiceBuilder
         builder.AddEntityFramework<DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.DocumentArchiveServiceDbContext>(connectionStringKey: "documentArchiveDb");
 
         builder.AddDocumentDataStorage();
-
-        // background svc
-        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckJob>();
-        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelCase.CancelCaseJob>();
-        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelServiceSalesArrangement.CancelServiceSalesArrangementJob>();
     })
     .MapGrpcServices(app =>
     {

@@ -1,6 +1,4 @@
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
-using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using ExternalServices;
 using ExternalServices.SbQueues;
 using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
@@ -39,17 +37,13 @@ SharedComponents.GrpcServiceBuilder
         // ePodpisy fronta
         builder.AddExternalService<ISbQueuesRepository>();
 
-        // registrace background jobu
-        builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
-        builder.AddCisBackgroundService<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
-        builder.AddCisBackgroundService<UpdateDocumentStatusJob>();
-
         // dbcontext
         builder.AddEntityFramework<DomainServices.DocumentOnSAService.Api.Database.DocumentOnSAServiceDbContext>();
     })
     .MapGrpcServices(app =>
     {
         app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.DocumentOnSAServiceGrpc>();
+        app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.MaintananceService>();
     })
     .Run();
 
