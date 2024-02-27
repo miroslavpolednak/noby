@@ -9,13 +9,28 @@ message GetTriggersResponse {
 	repeated Trigger Triggers = 1;
 
 	message Trigger {
+		// ID triggeru
 		string TriggerId = 1;
+
+		// ID Jobu
 		string JobId = 2;
+
+		// Interní typ jobu
 		string JobType = 3;
+
+		// Název jobu
 		string JobName = 4;
+
+		// Název triggeru
 		string TriggerName = 5;
+
+		// Nastavení spouštění jobu pomocí CRON expression
 		string CronExpression = 6;
+
+		// Textově popsaná CRON expression
 		string CronExpressionText = 7;
+		
+		// Možnost vypnout spouštění triggeru
 		bool IsDisabled = 8;
 	}
 }

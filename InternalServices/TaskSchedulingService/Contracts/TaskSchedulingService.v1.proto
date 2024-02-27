@@ -9,8 +9,17 @@ import "Messages/GetTriggers.proto";
 import "Messages/GetInstanceStatus.proto";
 import "Messages/ExecuteJob.proto";
 import "Messages/UpdateScheduler.proto";
+import "Messages/GetJobStatuses.proto";
 
 service TaskSchedulingService {
+	// Vrací historii spuštěných jobů s informací o statusu ukončení
+	rpc GetJobStatuses (GetJobStatusesRequest) returns (GetJobStatusesResponse) {
+		option (google.api.http) = {
+			post: "/api/v1/job-statuses",
+			body: "*"
+		};
+	}
+
 	// Vrací seznam všech dostupných Jobů
 	rpc GetJobs (GetJobsRequest) returns (GetJobsResponse) {
 		option (google.api.http) = {
