@@ -44,4 +44,4 @@ INSERT INTO dbo.ScheduleJob (ScheduleJobId,JobName,JobType,Description,IsDisable
 VALUES ('6023C62B-D33D-499D-8FB6-366F192A8A56', 'CheckDocumentsArchived', 'CIS.InternalServices.TaskSchedulingService.Api.Jobs.CheckDocumentsArchived.CheckDocumentsArchivedHandler', N'CheckDocumentsArchived', 0);
 
 INSERT INTO dbo.ScheduleTrigger (ScheduleTriggerId,ScheduleJobId,TriggerName,Cron,JobData,IsDisabled)
-VALUES ('54CBFE36-7016-45C4-99AE-2945CABA4BE8', '6023C62B-D33D-499D-8FB6-366F192A8A56', 'CheckDocumentsArchived', '* * * * *', '{\"MaxBatchSize\":1000}' 0);
+VALUES ('54CBFE36-7016-45C4-99AE-2945CABA4BE8', '6023C62B-D33D-499D-8FB6-366F192A8A56', 'CheckDocumentsArchived', '* * * * *', '{\"MaxBatchSize\":1000}', 0);
