@@ -18,7 +18,7 @@ variables:
   - template: azure-pipelines-vars.yml
 
 # custom BuildNumber
-name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
+name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(versionMajor).$(versionMinor).$(versionPatch).$(Build.BuildId)
 
 steps:
 - task: InlinePowershell@1
