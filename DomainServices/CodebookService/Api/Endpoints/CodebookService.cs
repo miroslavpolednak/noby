@@ -11,6 +11,9 @@ namespace DomainServices.CodebookService.Api.Endpoints;
 internal partial class CodebookService
     : Contracts.v1.CodebookService.CodebookServiceBase
 {
+    public override Task<GenericCodebookResponse> RefinancingStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetGenericItems<SharedTypes.Enums.RefinancingStates>(true);
+
     public override Task<GenericCodebookResponse> RefixationOfferTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<SharedTypes.Enums.RefixationOfferTypes>(true);
 
