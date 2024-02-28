@@ -18,7 +18,7 @@ internal static class NobySwagger
 {
     static string xmlFileName(Type type) => type.GetTypeInfo().Module.Name.Replace(".dll", ".xml").Replace(".exe", ".xml");
 
-    public static WebApplicationBuilder AddFomsSwagger(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddNobySwagger(this WebApplicationBuilder builder)
     {
         builder.Services.AddEndpointsApiExplorer();
 
