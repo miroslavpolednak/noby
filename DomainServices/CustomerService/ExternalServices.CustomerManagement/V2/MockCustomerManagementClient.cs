@@ -3,7 +3,7 @@ using DomainServices.CustomerService.ExternalServices.CustomerManagement.V2.Cont
 
 namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
 
-internal class MockCustomerManagementClient : ICustomerManagementClient
+internal sealed class MockCustomerManagementClient : ICustomerManagementClient
 {
     public Task<CustomerInfo> GetDetail(long customerId, CancellationToken cancellationToken = default)
     {

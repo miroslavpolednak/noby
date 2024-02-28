@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
 
-internal class RealCustomerManagementClient : ICustomerManagementClient
+internal sealed class RealCustomerManagementClient : ICustomerManagementClient
 {
     private readonly HttpClient _httpClient;
     private readonly QueryBuilder _detailQuery;
@@ -44,8 +44,8 @@ internal class RealCustomerManagementClient : ICustomerManagementClient
     {
         var query = new Dictionary<string, string?>
         {
-            { "numberOfEntries", searchRequest.NumberOfEntries.ToString() },
-            { "customerId", searchRequest.CustomerId.ToString() },
+            { "numberOfEntries", searchRequest.NumberOfEntries?.ToString(CultureInfo.InvariantCulture) },
+            { "customerId", searchRequest.CustomerId?.ToString(CultureInfo.InvariantCulture) },
             { "name", searchRequest.Name },
             { "firstName", searchRequest.FirstName },
             { "birthEstablishedDate", searchRequest.BirthEstablishedDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) },

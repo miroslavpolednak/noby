@@ -23,7 +23,7 @@ internal sealed class GetJobsHandler
         return response;
     }
 
-    class Job
+    sealed class Job
     {
         public Guid ScheduleJobId { get; set; }
         public string JobName { get; set; } = null!;

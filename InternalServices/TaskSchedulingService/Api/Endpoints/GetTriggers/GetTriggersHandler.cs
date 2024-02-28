@@ -35,7 +35,7 @@ internal sealed class GetTriggersHandler
         return response;
     }
 
-    class Trigger
+    sealed class Trigger
     {
         public Guid ScheduleTriggerId { get; set; }
         public Guid ScheduleJobId { get; set; }

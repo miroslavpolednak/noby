@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Workflow;
 
 /// <summary>
-/// https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8FF62FA9-3872-408e-A6ED-DAFD0100901D
+/// https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8FF62FA9-3872-408e-A6ED-DAFD0100901D
 /// </summary>
 internal static class WorkflowHelpers
 {

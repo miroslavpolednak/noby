@@ -2,6 +2,8 @@
 using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
 internal static class UpdateParametersExtensions

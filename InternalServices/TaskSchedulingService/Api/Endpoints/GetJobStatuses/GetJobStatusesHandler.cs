@@ -34,7 +34,7 @@ OFFSET {((request.Page - 1) * request.PageSize)} ROWS FETCH NEXT {request.PageSi
         return response;
     }
 
-    class StatusItem
+    sealed class StatusItem
     {
         public Guid ScheduleJobId { get; set; }
         public string JobName { get; set; } = null!;

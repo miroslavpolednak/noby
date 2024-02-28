@@ -15,7 +15,7 @@ internal sealed class ConjurEnvironmentVariablesProvider : ConfigurationProvider
     public override void Load() => Data = _configDataFactory();
 }
 
-internal partial class ConjurEnvironmentVariablesSource : IConfigurationSource
+internal sealed partial class ConjurEnvironmentVariablesSource : IConfigurationSource
 {
     private readonly IConfiguration _configuration;
 

@@ -28,7 +28,7 @@ internal sealed class GetCustomersHandler
             };
             
             // pokud nema identitu, ani nevolej customerSvc
-            if (t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any())
+            if (t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Count != 0)
             {
                 c.Identities = t.CustomerIdentifiers.Select(x => new SharedTypes.Types.CustomerIdentity(x.IdentityId, (int)x.IdentityScheme)).ToList();
 

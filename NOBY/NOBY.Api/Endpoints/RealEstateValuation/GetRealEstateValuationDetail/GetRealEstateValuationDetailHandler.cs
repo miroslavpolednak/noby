@@ -11,7 +11,7 @@ using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail;
 
-internal class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEstateValuationDetailRequest, GetRealEstateValuationDetailResponse>
+internal sealed class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEstateValuationDetailRequest, GetRealEstateValuationDetailResponse>
 {
     private readonly IMediator _mediator;
     private readonly ICaseServiceClient _caseService;

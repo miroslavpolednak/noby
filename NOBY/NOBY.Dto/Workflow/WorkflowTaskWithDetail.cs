@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Dto.Workflow;
 
-internal class WorkflowTaskWithDetail
+internal sealed class WorkflowTaskWithDetail
 {
     public WorkflowTask? Task { get; set; }
 

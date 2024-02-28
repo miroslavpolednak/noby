@@ -2,7 +2,8 @@
 using DomainServices.CustomerService.Clients;
 using _Rip = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using _HO = DomainServices.HouseholdService.Contracts;
-using DomainServices.HouseholdService.Contracts;
+
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
@@ -13,7 +14,7 @@ internal sealed class CreditWorthinessHouseholdService
     {
         // seznam domacnosti na SA
         var households = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
-        if (!households.Any())
+        if (households.Count == 0)
             throw new CisValidationException("There is no household bound for this SA");
 
         return (await households.Where(t => t.HouseholdTypeId == 1 || t.HouseholdTypeId == 2).SelectAsync(async household =>

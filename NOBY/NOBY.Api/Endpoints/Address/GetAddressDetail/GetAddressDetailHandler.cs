@@ -45,7 +45,7 @@ internal sealed class GetAddressDetailHandler
         {
             Street = detail.StreetName,
             StreetNumber = $"{detail.OrientationNumber}{detail.OrientationNumberEndChar}",
-            HouseNumber = detail.HouseNumber.ToString(),
+            HouseNumber = detail.HouseNumber?.ToString(CultureInfo.InvariantCulture),
             Postcode = detail.ZipCode.ToString(CultureInfo.InvariantCulture),
             City = detail.TownName,
             CityDistrict = detail.TownPartName,

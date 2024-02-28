@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Security;
-using SharedTypes.Enums;
+
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 
@@ -90,13 +91,13 @@ internal sealed class GetFlowSwitchesHandler
         var saInstance = await _salesArrangementService.ValidateSalesArrangementId(salesArrangementId, false, cancellationToken);
         var valuations = await _realEstateValuationService.GetRealEstateValuationList(saInstance.CaseId!.Value, cancellationToken);
 
-        if (valuations.Any()
+        if (valuations.Count != 0
             || flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.IsRealEstateValuationAllowed && t.Value))
         {
             response.EvaluationSection.IsVisible = true;
 
             var documentsToSignListResponse = await getDocumentsToSign(salesArrangementId, cancellationToken);
-            if (valuations.Any() || (response.ScoringSection.IsCompleted && documentsToSignListResponse.All(t => t.IsSigned)))
+            if (valuations.Count != 0 || (response.ScoringSection.IsCompleted && documentsToSignListResponse.All(t => t.IsSigned)))
             {
                 response.EvaluationSection.IsActive = true;
 

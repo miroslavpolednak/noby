@@ -49,7 +49,7 @@ internal sealed class CasesModelConverter
                 PhoneIDC = model.OfferContacts.PhoneNumberForOffer.PhoneIDC
             };
 
-        if (model.Tasks is not null && model.Tasks.Any())
+        if (model.Tasks is not null && model.Tasks.Count != 0)
 		{
 			converted.ActiveTasks = model.Tasks.Where(t => t.TaskTypeId != 5 && t.TaskTypeId != 8)
 				.Join(_taskTypes, i => i.TaskTypeId, o => o.Id, (task, i) => i.Id)
