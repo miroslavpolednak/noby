@@ -36,6 +36,14 @@
             Číslo stránky, která se má vracet
             </summary>
         </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesRequest.TraceIdFieldNumber">
+            <summary>Field number for the "TraceId" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesRequest.TraceId">
+            <summary>
+            Možnost vyhledávat podle TraceId konkrétního běhu
+            </summary>
+        </member>
         <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesReflection">
             <summary>Holder for reflection information generated from Messages/GetJobStatuses.proto</summary>
         </member>
@@ -337,6 +345,14 @@
             <param name="context">The context of the server-side call handler being invoked.</param>
             <returns>The response to send back to the client (wrapped by a task).</returns>
         </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase.UpdateScheduler(CIS.InternalServices.TaskSchedulingService.Contracts.UpdateSchedulerRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Přenačte nastavení triggerů z databáze pro danou instanci. Pozor, updatuje pouze instanci, na které je daný endpoint volaný!
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
         <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient">
             <summary>Client for TaskSchedulingService</summary>
         </member>
@@ -530,6 +546,42 @@
         <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.ExecuteJobAsync(CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobRequest,Grpc.Core.CallOptions)">
             <summary>
             Manuální spuštění jobu
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.UpdateScheduler(CIS.InternalServices.TaskSchedulingService.Contracts.UpdateSchedulerRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Přenačte nastavení triggerů z databáze pro danou instanci. Pozor, updatuje pouze instanci, na které je daný endpoint volaný!
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.UpdateScheduler(CIS.InternalServices.TaskSchedulingService.Contracts.UpdateSchedulerRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Přenačte nastavení triggerů z databáze pro danou instanci. Pozor, updatuje pouze instanci, na které je daný endpoint volaný!
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.UpdateSchedulerAsync(CIS.InternalServices.TaskSchedulingService.Contracts.UpdateSchedulerRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Přenačte nastavení triggerů z databáze pro danou instanci. Pozor, updatuje pouze instanci, na které je daný endpoint volaný!
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:CIS.InternalServices.TaskSchedulingService.Contracts.v1.TaskSchedulingService.TaskSchedulingServiceClient.UpdateSchedulerAsync(CIS.InternalServices.TaskSchedulingService.Contracts.UpdateSchedulerRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Přenačte nastavení triggerů z databáze pro danou instanci. Pozor, updatuje pouze instanci, na které je daný endpoint volaný!
             </summary>
             <param name="request">The request to send to the server.</param>
             <param name="options">The options for the call.</param>

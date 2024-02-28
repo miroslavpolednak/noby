@@ -48,6 +48,7 @@ service TaskSchedulingService {
 		};
 	}
 
+	// Přenačte nastavení triggerů z databáze pro danou instanci. Pozor, updatuje pouze instanci, na které je daný endpoint volaný!
 	rpc UpdateScheduler (UpdateSchedulerRequest) returns (google.protobuf.Empty) {
 		option (google.api.http) = {
 			put: "/api/v1/scheduler"

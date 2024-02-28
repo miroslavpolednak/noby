@@ -12,6 +12,9 @@ message GetJobStatusesRequest {
 
 	// Číslo stránky, která se má vracet
 	int32 Page = 2;
+
+	// Možnost vyhledávat podle TraceId konkrétního běhu
+	google.protobuf.StringValue TraceId = 3;
 }
 
 message GetJobStatusesResponse {

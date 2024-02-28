@@ -13,10 +13,11 @@ internal sealed class GetJobStatusesHandler
 FROM dbo.ScheduleJobStatus A
 INNER JOIN dbo.ScheduleJob B ON A.ScheduleJobId=B.ScheduleJobId
 INNER JOIN dbo.ScheduleTrigger C ON A.ScheduleTriggerId=C.ScheduleTriggerId
+WHERE ISNULL(@TraceId, '') = '' OR @TraceId = A.TraceId
 ORDER BY StartedAt DESC
 OFFSET {((request.Page - 1) * request.PageSize)} ROWS FETCH NEXT {request.PageSize} ROWS ONLY";
 
-        var result = await _connectionProvider.ExecuteDapperRawSqlToListAsync<StatusItem>(sql, cancellation);
+        var result = await _connectionProvider.ExecuteDapperRawSqlToListAsync<StatusItem>(sql, new { request.TraceId }, cancellation);
 
         var response = new GetJobStatusesResponse();
         response.Items.AddRange(result.Select(t => new GetJobStatusesResponse.Types.GetJobStatuseItem
