@@ -34,7 +34,7 @@ internal sealed class GetCreditWorthinessHandler
             {
                 ProductTypeId = caseInstance.Data.ProductTypeId,
                 LoanDuration = offerInstance.MortgageOffer.SimulationResults.LoanDuration,
-                LoanInterestRate = offerInstance.MortgageOffer.SimulationResults.LoanInterestRate,
+                LoanInterestRate = offerInstance.MortgageOffer.SimulationResults.LoanInterestRateProvided,
                 LoanAmount = Convert.ToInt32(offerInstance.MortgageOffer.SimulationResults.LoanAmount),
                 LoanPaymentAmount = Convert.ToInt32((decimal?)offerInstance.MortgageOffer.SimulationResults.LoanPaymentAmount ?? 0M),
                 FixedRatePeriod = offerInstance.MortgageOffer.SimulationInputs.FixedRatePeriod!.Value
