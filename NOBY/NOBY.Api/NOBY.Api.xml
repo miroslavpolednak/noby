@@ -894,6 +894,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632253">RealEstateTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632953">RealEstatePurchaseTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/RefixationOfferType">RefixationOfferTypes</a>
+             - <a href="https://wiki.kb.cz/display/HT/RefinancingState">RefinancingStates</a>
              - <a href="https://wiki.kb.cz/display/HT/RefinancingType">RefinancingTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
@@ -3366,7 +3367,7 @@
             Věřitel
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.LoanPrincipalAmount">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.LoanAmountCurrent">
             <summary>
             Nesplacená jistina
             </summary>
@@ -3379,6 +3380,16 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.CreditCardLimit">
             <summary>
             Limit
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.CreditCardLimitTotal">
+            <summary>
+            Výše limitu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.RoleId">
+            <summary>
+            Role klienta
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.Correction">
@@ -4971,7 +4982,11 @@
             <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=50158427-351C-4cd2-B508-9705AADB9821" ><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:NOBY.Api.Endpoints.Workflow.WorkflowHelpers" -->
+        <member name="T:NOBY.Api.Endpoints.Workflow.WorkflowHelpers">
+            <summary>
+            https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8FF62FA9-3872-408e-A6ED-DAFD0100901D
+            </summary>
+        </member>
         <member name="M:NOBY.Api.StartupExtensions.NobyAppBuilder.UseNobyAuthStrategy(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
             routy pro autentizaci a signout uzivatele

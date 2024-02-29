@@ -9,6 +9,12 @@ import "Messages/GenericCodebook.proto";
 import "Messages/GetACVAndBagmanRealEstateType.proto";
 
 service CodebookService {
+   rpc RefinancingStates (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/refinancing-states"
+		};
+   }
+
    rpc RefinancingTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/refinancing-types"

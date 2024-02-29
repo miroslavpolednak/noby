@@ -229,7 +229,6 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             c.DescribeAllParametersInCamelCase();
             c.UseInlineDefinitionsForEnums();
             c.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
-            //c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
 
             c.MapType<decimal>(() => new OpenApiSchema { Type = "number", Format = "decimal" });
         });

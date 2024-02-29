@@ -39,7 +39,7 @@ internal sealed class DrawingData : IDocumentData
         }
     }
 
-    public class DrawingRepaymentAccount
+    public sealed class DrawingRepaymentAccount
     {
         public bool IsAccountNumberMissing { get; set; }
 

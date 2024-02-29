@@ -11,6 +11,12 @@ internal sealed class MaintananceService
     public override async Task<GetCancelCaseJobIdsResponse> GetCancelCaseJobIds(GetCancelCaseJobIdsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<GetCancelServiceSalesArrangementsIdsResponse> GetCancelServiceSalesArrangementsIds(GetCancelServiceSalesArrangementsIdsRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    public override async Task<GetOfferGuaranteeDateToCheckResponse> GetOfferGuaranteeDateToCheck(GetOfferGuaranteeDateToCheckRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     private readonly IMediator _mediator;
 
     public MaintananceService(IMediator mediator)

@@ -23,7 +23,7 @@ public sealed class UpdateCustomerDetailWithChangesRequest
         return this;
     }
 
-    internal class CustomerIdentificationObj
+    internal sealed class CustomerIdentificationObj
     {
         public int? IdentificationMethodId { get; set; }
 

@@ -10,6 +10,12 @@ public partial class GrpcDecimal
         Nanos = nanos;
     }
 
+    public static implicit operator decimal?(GrpcDecimal? grpcDecimal)
+    {
+        if (grpcDecimal == null) return null;
+        return grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor;
+    }
+
     public static implicit operator decimal(GrpcDecimal grpcDecimal)
     {
         if (grpcDecimal == null) return 0;

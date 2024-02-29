@@ -58,7 +58,7 @@ public sealed class CreateRiskBusinessCaseService
         };
         await _salesArrangementService.UpdateLoanAssessmentParameters(request, cancellationToken);
 
-        return createRBCResponse.RiskBusinessCaseId;
+        return createRBCResponse?.RiskBusinessCaseId ?? "";
 
         #region local fce
         async Task<string> getRiskSegment(string loanApplicationDataVersion)

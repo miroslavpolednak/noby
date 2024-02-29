@@ -39,6 +39,7 @@ internal sealed class ErrorCodeMapper
     public const int FeeSumEmpty = 13042;
     public const int FeeFinalSumEmpty = 13043;
     public const int RetentionNull = 13044;
+    public const int PriceExceptionLoanInterestRateOrFeesFillIn = 13045;
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
@@ -75,7 +76,8 @@ internal sealed class ErrorCodeMapper
             { LoanPaymentAmountFinalEmpty, "LoanPaymentAmountFinal cannot be empty" },
             { FeeSumEmpty ,"FeeSumEmpty cannot be empty" },
             { FeeFinalSumEmpty, "FeeFinalSumEmpty cannot be empty" },
-            { RetentionNull, "Retention cannot be null"}
+            { RetentionNull, "Retention cannot be null"},
+            { PriceExceptionLoanInterestRateOrFeesFillIn, "One of parameter (PriceException.LoanInterestRate or PriceException.Fees) have to be fill in"}
         });
 
         return Messages;

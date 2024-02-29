@@ -3,7 +3,7 @@ using DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Product.GetCaseIdByPcpId;
 
-internal class GetCaseIdByPcpIdHandler : IRequestHandler<GetCaseIdByPcpIdRequest, GetCaseIdByPcpIdResponse>
+internal sealed class GetCaseIdByPcpIdHandler : IRequestHandler<GetCaseIdByPcpIdRequest, GetCaseIdByPcpIdResponse>
 {
     private readonly IProductServiceClient _productService;
 

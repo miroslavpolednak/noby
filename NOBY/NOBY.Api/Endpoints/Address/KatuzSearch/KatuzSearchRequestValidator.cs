@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Address.KatuzSearch;
 
-internal class KatuzSearchRequestValidator : AbstractValidator<KatuzSearchRequest>
+internal sealed class KatuzSearchRequestValidator : AbstractValidator<KatuzSearchRequest>
 {
     public KatuzSearchRequestValidator()
     {

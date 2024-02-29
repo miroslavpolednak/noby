@@ -19,15 +19,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Messages\ExecuteJob.proto" />
-	  <None Remove="Messages\GetInstanceStatus.proto" />
-	  <None Remove="Messages\UpdateScheduler.proto" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.25.2" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.60.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.61.0">
+		<PackageReference Include="Google.Protobuf" Version="3.25.3" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.61.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.62.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -39,6 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Protobuf Include="Messages\GetJobStatuses.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	  <Protobuf Include="Messages\UpdateScheduler.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	  <Protobuf Include="Messages\ExecuteJob.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	  <Protobuf Include="Messages\GetInstanceStatus.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
