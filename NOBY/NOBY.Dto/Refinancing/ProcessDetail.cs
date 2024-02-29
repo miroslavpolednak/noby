@@ -15,9 +15,9 @@ public class ProcessDetail
 
     public decimal? LoanInterestRateProvided { get; set; }
 
-    public string? LoanInterestRateValidFrom { get; set; }
+    public DateTime? LoanInterestRateValidFrom { get; set; }
 
-    public string? LoanInterestRateValidTo { get; set; }
+    public DateTime? LoanInterestRateValidTo { get; set; }
 
     public DateTime? EffectiveDate { get; set; }
 

@@ -59,27 +59,27 @@ public static class RefinancingHelper
     {
         if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == false && process.ProcessPhaseId == 1 && process.ProcessId == sa.TaskProcessId)
         {
-            return 1; // Rozpracováno v NOBY
+            return (int)RefinancingStates.RozpracovanoVNoby; // 1
         }
         else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == false && process.ProcessPhaseId == 1 && process.ProcessId != sa.TaskProcessId)
         {
-            return 2; // Rozpracováno v SB
+            return (int)RefinancingStates.RozpracovanoVSB;  // 2
         }
         else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == false && process.ProcessPhaseId == 3)
         {
-            return 3; // Podepisování
+            return (int)RefinancingStates.Podepisovani; // 3
         }
         else if (!process.Cancelled && process.StateIdSB == 30)
         {
-            return 4; // Dokončeno 
+            return (int)RefinancingStates.Dokonceno; // 4 
         }
         else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == true)
         {
-            return 5; // Předáno RC2
+            return (int)RefinancingStates.PredanoRC2; // 5
         }
         else if (process.Cancelled)
         {
-            return 6; // Zrušeno
+            return (int)RefinancingStates.Zruseno; // 6
         }
         else
         {

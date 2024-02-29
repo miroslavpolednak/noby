@@ -3,7 +3,6 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
-
 namespace NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
 
 internal sealed class GetRefinancingParametersHandler
@@ -33,7 +32,6 @@ internal sealed class GetRefinancingParametersHandler
         if (caseInstance.State is not (int)CaseStates.InDisbursement and (int)CaseStates.InAdministration)
             throw new NobyValidationException(90032);
 
-
         var mortgage = (await _productService.GetMortgage(request.CaseId, cancellationToken)).Mortgage;
 
         var saList = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
@@ -52,14 +50,14 @@ internal sealed class GetRefinancingParametersHandler
         var mergeOfSaAndProcess = refinancingProcessList.Select(pr => new
         {
             Process = pr,
-            Sa = Array.Find(saFilteredWithDetail, p => p.TaskProcessId == pr.ProcessId)
+            Sa = Array.Find(saFilteredWithDetail, sa => sa.TaskProcessId == pr.ProcessId)
         });
 
 
         var eaCodesMain = await _codebookService.EaCodesMain(cancellationToken);
         var refinancingTypes = await _codebookService.RefinancingTypes(cancellationToken);
 
-        return new GetRefinancingParametersResponse
+        return new()
         {
             IsAnotherSalesArrangementInProgress = RefinancingHelper.IsAnotherSalesArrangementInProgress(saList),
             CustomerPriceSensitivity = caseDetail.Customer.CustomerPriceSensitivity,
@@ -92,13 +90,13 @@ internal sealed class GetRefinancingParametersHandler
                     RefinancingTypeId = RefinancingHelper.GetRefinancingType(s.Process),
                     RefinancingTypeText = RefinancingHelper.GetRefinancingTypeText(eaCodesMain, s.Process, refinancingTypes),
                     RefinancingStateId = RefinancingHelper.GetRefinancingState(s.Sa, s.Process),
-                    CreatedTime = null,
-                    CreatedBy = null,
-                    LoanInterestRateProvided = s.Process.RetentionProcess.LoanInterestRateProvided, // ToDo ask
-                    LoanInterestRateValidFrom = null,
-                    LoanInterestRateValidTo = null,
-                    EffectiveDate = null,
-                    DocumentId = null
+                    CreatedTime = s.Process.CreatedOn,
+                    CreatedBy = null, // in this case is always null
+                    LoanInterestRateProvided = s.Process.RetentionProcess?.LoanInterestRateProvided ?? s.Process.RetentionProcess?.LoanInterestRate,
+                    LoanInterestRateValidFrom = s.Process.RetentionProcess?.InterestRateValidFrom,
+                    LoanInterestRateValidTo = mortgage.FixedRateValidTo,
+                    EffectiveDate = s.Process.RetentionProcess?.EffectiveDate,
+                    DocumentId = s.Process.RetentionProcess?.RefinancingDocumentId
                 }
             }).ToList()
         };
