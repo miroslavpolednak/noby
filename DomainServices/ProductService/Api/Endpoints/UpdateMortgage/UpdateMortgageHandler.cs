@@ -35,7 +35,7 @@ internal sealed class UpdateMortgageHandler
             LoanContractNumber = salesArrangement.ContractNumber,
             MonthlyInstallment = offer.MortgageOffer.SimulationResults.LoanPaymentAmount,
             LoanAmount = (double?)offer.MortgageOffer.SimulationInputs.LoanAmount,
-            InterestRate = (double?)offer.MortgageOffer.SimulationResults.LoanInterestRate,
+            InterestRate = (double?)offer.MortgageOffer.SimulationResults.LoanInterestRateProvided,
             FixationPeriod = offer.MortgageOffer.SimulationInputs.FixedRatePeriod,
             LoanKind = offer.MortgageOffer.SimulationInputs.LoanKindId,
             Expected1stDrawDate = offer.MortgageOffer.SimulationInputs.ExpectedDateOfDrawing,
