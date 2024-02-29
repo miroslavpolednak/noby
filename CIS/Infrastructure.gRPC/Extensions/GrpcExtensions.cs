@@ -7,6 +7,7 @@ namespace CIS.Infrastructure.gRPC;
 
 public static class GrpcExtensions
 {
+    [Obsolete("Use native gRPC instead")]
     public static IApplicationBuilder UseGrpc2WebApiException(this IApplicationBuilder app)
         => app.UseWhen(context => context.Request.ContentType == "application/json", builder => app.UseMiddleware<Middleware.Grpc2WebApiExceptionMiddleware>());
 

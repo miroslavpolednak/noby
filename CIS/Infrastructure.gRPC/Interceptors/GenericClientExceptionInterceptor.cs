@@ -4,6 +4,9 @@ using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
 using CIS.Infrastructure.Logging;
 using CIS.Core.Exceptions.ExternalServices;
+using Google.Rpc;
+
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 
 namespace CIS.Infrastructure.gRPC;
 
@@ -38,38 +41,74 @@ public sealed class GenericClientExceptionInterceptor
         {
             return await responseAsync;
         }
+        // DS neni dostupna
         catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable) // nedostupna sluzba
         {
             _logger.ServiceUnavailable("GRPC service unavailable", ex);
             throw new CisServiceUnavailableException(serviceName, methodFullName, ex.Message);
         }
-        catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition && ex.GetExceptionCodeFromTrailers() == CisExternalServiceUnavailableException.DefaultExceptionCode)
-        {
-            throw new CisExternalServiceUnavailableException(ex.GetErrorMessageFromRpcException());
-        }
-        catch (RpcException ex) when (ex.StatusCode == StatusCode.FailedPrecondition && ex.GetExceptionCodeFromTrailers() == CisExternalServiceServerErrorException.DefaultExceptionCode)
-        {
-            throw new CisExternalServiceServerErrorException(ex.GetErrorMessageFromRpcException());
-        }
+        // 403
         catch (RpcException ex) when (ex.StatusCode == StatusCode.PermissionDenied)
         {
-            throw new CisAuthorizationException(ex.GetErrorMessageFromRpcException());
+            var detail = ex.GetRpcStatus()?.GetDetail<PreconditionFailure>();
+            throw new CisAuthorizationException(ex.Message, detail?.Violations?.FirstOrDefault()?.Subject);
         }
+        // entity neexistuje
         catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
         {
-            throw new CisNotFoundException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException());
+            var detail = ex.GetRpcStatus()?.GetDetail<ResourceInfo>();
+            _ = int.TryParse(detail?.Description, out int exceptionCode);
+            if (string.IsNullOrEmpty(detail?.ResourceType))
+            {
+                throw new CisNotFoundException(exceptionCode, ex.Status.Detail);
+            }
+            else
+            {
+                throw new CisNotFoundException(exceptionCode, detail.ResourceType, detail.ResourceName ?? "");
+            }
         }
+        // entita jiz existuje
         catch (RpcException ex) when (ex.StatusCode == StatusCode.AlreadyExists)
         {
-            throw new CisAlreadyExistsException(ex.GetExceptionCodeFromTrailers(), ex.GetErrorMessageFromRpcException());
+            var detail = ex.GetRpcStatus()?.GetDetail<ResourceInfo>();
+            _ = int.TryParse(detail?.Description, out int exceptionCode);
+            throw new CisAlreadyExistsException(exceptionCode, detail?.ResourceType ?? "", detail?.ResourceName ?? "");
         }
+        // validacni chyby vyvolane validatorem nebo rucne
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.InvalidArgument)
         {
-            throw new CisValidationException(ex.GetErrorMessagesFromRpcException());
+            var detail = ex.GetRpcStatus()?.GetDetail<BadRequest>();
+            if (detail?.FieldViolations.Any() ?? false)
+            {
+                throw new CisValidationException(detail.FieldViolations.Select(t => new CisExceptionItem(t.Field, t.Description)));
+            }
+            else
+            {
+                throw new CisValidationException(ex.Status.Detail);
+            }
+        }
+        // externi sluzba neni dostupna nebo vratila 500
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.Aborted)
+        {
+            var detailResource = ex.GetRpcStatus()?.GetDetail<ResourceInfo>();
+            var detailInfo = ex.GetRpcStatus()?.GetDetail<ErrorInfo>();
+            _ = int.TryParse(detailInfo?.Reason, out int exceptionCode);
+            _ = int.TryParse(detailResource?.Description, out int internalCode);
+
+            // externi sluzba vratila http 500
+            if (internalCode == CisExternalServiceServerErrorException.DefaultExceptionCode)
+            {
+                throw new CisExternalServiceUnavailableException(exceptionCode, detailResource?.ResourceName ?? "");
+            }
+            else
+            {
+                throw new CisExternalServiceUnavailableException(exceptionCode, detailResource?.ResourceName ?? "");
+            }
         }
         catch (RpcException ex) when (ex.Trailers != null && ex.StatusCode == StatusCode.Unknown)
         {
-            throw new CisValidationException(ex.GetErrorMessagesFromRpcException());
+            var detail = ex.GetRpcStatus()?.GetDetail<ErrorInfo>();
+            throw new CisValidationException(detail?.Domain ?? "", detail?.Reason ?? "");
         }
         catch (RpcException ex)
         {

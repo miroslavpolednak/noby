@@ -3,8 +3,11 @@
 public sealed class CisAuthorizationException
     : System.Security.Authentication.AuthenticationException
 {
-    public CisAuthorizationException(string? message = null)
+    public string? Username { get; init; }
+
+    public CisAuthorizationException(string? message = null, string? username = null)
         : base(message)
     {
+        Username = username;
     }
 }
