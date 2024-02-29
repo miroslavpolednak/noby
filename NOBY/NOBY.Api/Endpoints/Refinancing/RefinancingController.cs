@@ -22,7 +22,7 @@ public sealed class RefinancingController : ControllerBase
     [HttpGet("case/{caseId:long}/refinancing-parameters")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
-    [SwaggerOperation(Tags = [ "Refinancing" ])]
+    [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(typeof(GetRefinancingParameters.GetRefinancingParametersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetRefinancingParameters.GetRefinancingParametersResponse> GetRefinancingParameters([FromRoute] long caseId)
