@@ -15,6 +15,9 @@ message GetJobStatusesRequest {
 
 	// Možnost vyhledávat podle TraceId konkrétního běhu
 	google.protobuf.StringValue TraceId = 3;
+
+	// Možnost vyhledávat podle ID statusu
+	google.protobuf.StringValue ScheduleJobStatusId = 4;
 }
 
 message GetJobStatusesResponse {

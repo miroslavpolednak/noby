@@ -13,7 +13,7 @@ internal sealed class UpdateSchedulerHandler
         _scheduler.Stop();
         _scheduler.RemoveAllTasks();
 
-        _triggerService.UpdateTriggersInScheduler(_scheduler, cancellationToken);
+        _triggerService.UpdateTriggersInScheduler(_scheduler);
 
         _scheduler.Start(cancellationToken);
 

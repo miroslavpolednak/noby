@@ -1,5 +1,4 @@
-﻿using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
-using NCrontab.Scheduler;
+﻿using NCrontab.Scheduler;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
 
@@ -23,11 +22,6 @@ internal static class SchedulingStartupExtensions
         services.AddHostedService<InstanceLocking.ScheduleInstanceLockBackgroundService>();
 
         // job execution
-        services.AddSingleton(services =>
-        {
-            return JobExecutor.CreateInstance(services);
-        });
-        services.AddSingleton<JobExecutorRepository>();
         services.AddHostedService<SchedulerHostedService>();
         services.AddTransient<TriggerService>();
 

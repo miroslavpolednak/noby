@@ -10,18 +10,18 @@ internal sealed class TriggerService
 {
     private readonly IConnectionProvider _dbConnection;
     private readonly ILogger<TriggerService> _logger;
-    private readonly JobExecutor _jobExecutor;
+    private readonly IMediator _mediator;
 
     private const string _sql = "SELECT ScheduleTriggerId, ScheduleJobId, Cron, JobData, IsDisabled FROM dbo.ScheduleTrigger";
 
-    public TriggerService(IConnectionProvider dbConnection, ILogger<TriggerService> logger, JobExecutor jobExecutor)
+    public TriggerService(IConnectionProvider dbConnection, ILogger<TriggerService> logger, IMediator mediator)
     {
         _dbConnection = dbConnection;
         _logger = logger;
-        _jobExecutor = jobExecutor;
+        _mediator = mediator;
     }
 
-    public void UpdateTriggersInScheduler(IScheduler scheduler, CancellationToken cancellationToken)
+    public void UpdateTriggersInScheduler(IScheduler scheduler)
     {
         var allTriggers = _dbConnection
             .ExecuteDapperRawSqlToList<(Guid ScheduleTriggerId, Guid ScheduleJobId, string Cron, string? JobData, bool IsDisabled)>(_sql);
@@ -38,7 +38,8 @@ internal sealed class TriggerService
             {
                 scheduler.AddTask(trigger.ScheduleTriggerId, trigger.Cron, ct =>
                 {
-                    _jobExecutor.EnqueueJob(trigger.ScheduleJobId, trigger.ScheduleTriggerId, trigger.JobData, cancellationToken);
+                    var notification = new JobRunnerNotification(Guid.NewGuid(), trigger.ScheduleJobId, trigger.ScheduleTriggerId, trigger.JobData, true);
+                    _mediator.Publish(notification, CancellationToken.None);
                 });
             }
             catch (CrontabException e)

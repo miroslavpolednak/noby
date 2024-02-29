@@ -2,9 +2,23 @@
 
 internal enum ScheduleJobStatuses
 {
+    /// <summary>
+    /// Job právě běží
+    /// </summary>
     InProgress,
+
+    /// <summary>
+    /// Job byl úspěšně dokončen
+    /// </summary>
     Finished,
+
+    /// <summary>
+    /// Job spadnul na chybu
+    /// </summary>
     Failed,
-    FailedBecauseOfLock,
-    Stale
+
+    /// <summary>
+    /// Job nebylo možné spustit, protože už běží
+    /// </summary>
+    FailedBecauseOfLock
 }

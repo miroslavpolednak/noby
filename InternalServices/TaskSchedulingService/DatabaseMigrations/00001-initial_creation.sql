@@ -56,6 +56,7 @@ CREATE TABLE [dbo].[ScheduleJobStatus](
 	[StartedAt] [datetime] NOT NULL,
 	[StatusChangedAt] [datetime] NULL,
 	[TraceId] [varchar](50) NULL,
+	[FailedMessage] varchar(max) NULL,
  CONSTRAINT [PK_ScheduleJobStatus] PRIMARY KEY CLUSTERED 
 (
 	[ScheduleJobStatusId] ASC

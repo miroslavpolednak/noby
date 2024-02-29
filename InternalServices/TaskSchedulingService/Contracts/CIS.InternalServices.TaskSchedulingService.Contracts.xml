@@ -44,6 +44,14 @@
             Možnost vyhledávat podle TraceId konkrétního běhu
             </summary>
         </member>
+        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesRequest.ScheduleJobStatusIdFieldNumber">
+            <summary>Field number for the "ScheduleJobStatusId" field.</summary>
+        </member>
+        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesRequest.ScheduleJobStatusId">
+            <summary>
+            Možnost vyhledávat podle ID statusu
+            </summary>
+        </member>
         <member name="T:CIS.InternalServices.TaskSchedulingService.Contracts.GetJobStatusesReflection">
             <summary>Holder for reflection information generated from Messages/GetJobStatuses.proto</summary>
         </member>
@@ -131,14 +139,6 @@
         </member>
         <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobReflection.Descriptor">
             <summary>File descriptor for Messages/ExecuteJob.proto</summary>
-        </member>
-        <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.TraceIdFieldNumber">
-            <summary>Field number for the "TraceId" field.</summary>
-        </member>
-        <member name="P:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.TraceId">
-            <summary>
-            Trace běhu ve výsledcích
-            </summary>
         </member>
         <member name="F:CIS.InternalServices.TaskSchedulingService.Contracts.ExecuteJobResponse.ScheduleJobStatusIdFieldNumber">
             <summary>Field number for the "ScheduleJobStatusId" field.</summary>

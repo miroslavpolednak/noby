@@ -44,7 +44,8 @@ service TaskSchedulingService {
 	// Manuální spuštění jobu
 	rpc ExecuteJob (ExecuteJobRequest) returns (ExecuteJobResponse) {
 		option (google.api.http) = {
-			post: "/api/v1/job"
+			post: "/api/v1/job",
+			body: "*"
 		};
 	}
 
