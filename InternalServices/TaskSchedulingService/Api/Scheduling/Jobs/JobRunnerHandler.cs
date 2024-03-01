@@ -56,8 +56,6 @@ internal sealed class JobRunnerHandler
                 // nastavit novy status jobu a zapsat ho do databaze
                 var statusEntity = await createStatus(notification, cancellationToken);
 
-                _logger.EnqueingJob(notification.JobStatusId, notification.JobId, notification.TriggerId);
-
                 // instance jobu z DI
                 var job = (IJob)serviceScope.ServiceProvider.GetRequiredService(jobType);
 
