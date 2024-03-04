@@ -61,7 +61,6 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
             producer.DefaultTopic(defaultTopic).WithAcks(Acks.All)
                     .AddMiddlewares(m =>
                     {
-                        m.AddAtBeginning<LoggingMiddleware>();
                         m.Add<DefaultKBAvroHeaderMiddleware>();
 
                         var avroSerializerConfig = new AvroSerializerConfig

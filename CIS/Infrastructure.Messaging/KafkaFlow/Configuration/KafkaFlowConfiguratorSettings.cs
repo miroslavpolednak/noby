@@ -26,7 +26,7 @@ internal class KafkaFlowConfiguratorSettings
                                        .GetSection(Core.CisGlobalConstants.EnvironmentConfigurationSectionName)
                                        .Get<CisEnvironmentConfiguration>()!;
 
-        return $"NOBY.{environmentConfiguration.DefaultApplicationKey}-{environmentConfiguration.EnvironmentName}2";
+        return $"NOBY.{environmentConfiguration.DefaultApplicationKey}-{environmentConfiguration.EnvironmentName}";
     }
 
     private static string GetKafkaConfigurationPath() =>
