@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CompleteTask;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.UpdateTask;
-using DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts;
+using ExternalServices.SbWebApi.Dto.CompleteTask;
+using ExternalServices.SbWebApi.Dto.UpdateTask;
+using ExternalServices.SbWebApi.V1.Contracts;
 using DomainServices.UserService.Clients;
 
-namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
+namespace ExternalServices.SbWebApi.V1;
 
 internal sealed class RealSbWebApiClient
     : ISbWebApiClient

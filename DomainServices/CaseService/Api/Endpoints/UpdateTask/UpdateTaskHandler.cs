@@ -1,5 +1,5 @@
 ﻿using DomainServices.CaseService.Contracts;
-using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
+using ExternalServices.SbWebApi.V1;
 using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.CaseService.Api.Endpoints.UpdateTask;

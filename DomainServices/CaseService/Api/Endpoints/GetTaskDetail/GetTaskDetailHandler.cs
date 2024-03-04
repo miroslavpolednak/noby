@@ -1,7 +1,7 @@
 ﻿using DomainServices.CaseService.Api.Services;
 using DomainServices.CaseService.Contracts;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
-using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
+using ExternalServices.SbWebApi.Dto.FindTasks;
+using ExternalServices.SbWebApi.V1;
 using DomainServices.CodebookService.Clients;
 using System.Text.RegularExpressions;
 

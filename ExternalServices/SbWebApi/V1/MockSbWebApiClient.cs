@@ -1,10 +1,10 @@
-﻿using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CaseStateChanged;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CompleteTask;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CreateTask;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
-using DomainServices.CaseService.ExternalServices.SbWebApi.Dto.UpdateTask;
+﻿using ExternalServices.SbWebApi.Dto.CaseStateChanged;
+using ExternalServices.SbWebApi.Dto.CompleteTask;
+using ExternalServices.SbWebApi.Dto.CreateTask;
+using ExternalServices.SbWebApi.Dto.FindTasks;
+using ExternalServices.SbWebApi.Dto.UpdateTask;
 
-namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
+namespace ExternalServices.SbWebApi.V1;
 
 internal sealed class MockSbWebApiClient
     : ISbWebApiClient

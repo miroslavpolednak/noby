@@ -2,7 +2,7 @@
 using CIS.Infrastructure.ExternalServicesHelpers;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainServices.CaseService.ExternalServices;
+namespace ExternalServices;
 
 public static class StartupExtensions
 {

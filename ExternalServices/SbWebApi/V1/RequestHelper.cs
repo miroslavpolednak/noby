@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using CIS.Infrastructure.ExternalServicesHelpers;
-using DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts;
+using ExternalServices.SbWebApi.V1.Contracts;
 
-namespace DomainServices.CaseService.ExternalServices.SbWebApi.V1;
+namespace ExternalServices.SbWebApi.V1;
 
 internal static class RequestHelper
 {

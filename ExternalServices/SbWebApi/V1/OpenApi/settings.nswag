@@ -33,7 +33,7 @@
       "clientClassAccessModifier": "internal",
       "typeAccessModifier": "internal",
       "generateContractsOutput": true,
-      "contractsNamespace": "DomainServices.CaseService.ExternalServices.SbWebApi.V1.Contracts",
+      "contractsNamespace": "ExternalServices.SbWebApi.V1.Contracts",
       "contractsOutputFilePath": "../Contracts.cs",
       "parameterDateTimeFormat": "s",
       "parameterDateFormat": "yyyy-MM-dd",

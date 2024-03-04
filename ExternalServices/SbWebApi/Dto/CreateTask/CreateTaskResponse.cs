@@ -1,4 +1,4 @@
-﻿namespace DomainServices.CaseService.ExternalServices.SbWebApi.Dto.CreateTask;
+﻿namespace ExternalServices.SbWebApi.Dto.CreateTask;
 
 public sealed class CreateTaskResponse
 {

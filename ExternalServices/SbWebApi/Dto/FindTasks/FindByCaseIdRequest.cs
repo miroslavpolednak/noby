@@ -1,4 +1,4 @@
-﻿namespace DomainServices.CaseService.ExternalServices.SbWebApi.Dto.FindTasks;
+﻿namespace ExternalServices.SbWebApi.Dto.FindTasks;
 
 public sealed class FindByCaseIdRequest 
 {

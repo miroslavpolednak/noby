@@ -1,6 +1,6 @@
 ﻿using CIS.Core.ErrorCodes;
 
-namespace DomainServices.CaseService.ExternalServices.SbWebApi;
+namespace ExternalServices.SbWebApi;
 
 internal sealed class ErrorCodeMapper
     : ErrorCodeMapperBase
