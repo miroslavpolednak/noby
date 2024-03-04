@@ -19,6 +19,7 @@ public interface IGrpcServiceFluentBuilderStage2<TConfiguration>
     /// <summary>
     /// Spustí aplikaci. Provádí registraci služeb, následně vytváří WebApplication a registruje middlewares.
     /// </summary>
+    /// <param name="webApp"></param>
     /// <remarks>
     /// Celý startup aplikace běží v try-catch bloku, který je v případě pádu aplikace logován.
     /// </remarks>

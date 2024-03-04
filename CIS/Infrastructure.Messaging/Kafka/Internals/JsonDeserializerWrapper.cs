@@ -1,5 +1,4 @@
 ﻿using Confluent.Kafka;
-using Confluent.SchemaRegistry.Serdes;
 using CIS.Infrastructure.Messaging.Kafka.Internals.Abstraction;
 using KB.Speed.Messaging.Kafka.SerDes.Json;
 

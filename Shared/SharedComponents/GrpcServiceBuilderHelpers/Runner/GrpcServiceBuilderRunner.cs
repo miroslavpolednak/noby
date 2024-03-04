@@ -126,6 +126,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             {
                 app.UseHsts();
             }
+
             app.UseRouting();
 
             app.UseAuthentication()
