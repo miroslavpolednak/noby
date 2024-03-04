@@ -26,7 +26,7 @@ internal sealed partial class ConjurEnvironmentVariablesSource : IConfigurationS
 
     public IConfigurationProvider Build(IConfigurationBuilder builder) => new ConjurEnvironmentVariablesProvider(BuildConfigData);
 
-    private IDictionary<string, string?> BuildConfigData()
+    private ImmutableDictionary<string, string?> BuildConfigData()
     {
         var configData = ReplaceConjurPlaceholdersWithEnvironmentVariables();
 
@@ -62,7 +62,7 @@ internal sealed partial class ConjurEnvironmentVariablesSource : IConfigurationS
         }
     }
 
-    private static IDictionary<string, string?> GetEnvironmentVariables()
+    private static Dictionary<string, string?> GetEnvironmentVariables()
     {
         const string NobyEnvPrefix = "NOBY_";
 

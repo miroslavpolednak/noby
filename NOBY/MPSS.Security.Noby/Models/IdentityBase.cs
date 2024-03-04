@@ -2,6 +2,8 @@
 using System.Security.Principal;
 using System.Text;
 
+#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable IDE0044 // Add readonly modifier
 #pragma warning disable CA1305 // Specify IFormatProvider
 #pragma warning disable CA2201 // Do not raise reserved exception types
 

@@ -1,4 +1,6 @@
-﻿namespace CIS.Infrastructure.CisMediatR.Rollback;
+﻿#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
+
+namespace CIS.Infrastructure.CisMediatR.Rollback;
 
 /// <summary>
 /// Deklarace kontraktu pro tridu s kodem pro provedeni rollbacku Mediatr handleru.
@@ -12,7 +14,7 @@ public interface IRollbackAction<TRequest>
     /// </summary>
     /// <param name="exception">Vyjimka, ktera rollback spustila</param>
     /// <param name="request">Puvodni Mediatr request</param>
-    Task ExecuteRollback(Exception exception, TRequest request, CancellationToken cancellationToken = default(CancellationToken));
+    Task ExecuteRollback(Exception exception, TRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Pokud bude nastaveno na True, tak se misto exception, ktera rollback zpusobila, vrati exception z OverrideException()

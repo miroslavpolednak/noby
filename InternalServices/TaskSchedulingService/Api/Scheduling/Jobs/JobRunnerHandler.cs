@@ -76,7 +76,7 @@ internal sealed class JobRunnerHandler
             StartedAt = _timeProvider.GetLocalNow().DateTime,
             TraceId = Activity.Current?.TraceId.ToString()
         };
-        _dbContext.Add(statusEntity);
+        _dbContext!.Add(statusEntity);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return statusEntity;

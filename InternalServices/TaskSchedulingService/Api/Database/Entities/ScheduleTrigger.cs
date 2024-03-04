@@ -15,5 +15,5 @@ internal sealed class ScheduleTrigger
     public string? JobData { get; set; }
     public bool IsDisabled { get; set; }
 
-    public ScheduleJob Job { get; set; }
+    public ScheduleJob Job { get; set; } = null!;
 }

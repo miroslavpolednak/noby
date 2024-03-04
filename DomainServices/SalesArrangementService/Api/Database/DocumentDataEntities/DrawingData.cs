@@ -50,7 +50,7 @@ internal sealed class DrawingData : IDocumentData
         public string BankCode { get; set; } = null!;
     }
 
-    public class DrawingPayoutListItem
+    public sealed class DrawingPayoutListItem
     {
         public int? ProductObligationId { get; set; }
 
