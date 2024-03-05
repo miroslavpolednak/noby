@@ -67,9 +67,7 @@ public static class EntityLoggerExtensions
     /// </summary>
     /// <param name="entityName">Název typu entity</param>
     /// <param name="entityId">ID entity</param>
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
     public static void EntityNotFound(this ILogger logger, string entityName, long entityId, Exception ex)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
         => _entityNotFound(logger, entityName, entityId, ex);
 
     /// <summary>
