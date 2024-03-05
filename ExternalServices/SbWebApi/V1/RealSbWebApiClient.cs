@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using ExternalServices.SbWebApi.Dto.CompleteTask;
 using ExternalServices.SbWebApi.Dto.UpdateTask;
 using ExternalServices.SbWebApi.V1.Contracts;
@@ -65,7 +67,7 @@ internal sealed class RealSbWebApiClient
             }
         };
 
-        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/createtask", easRequest, cancellationToken);
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/createtask", easRequest, _jsonSerializerOptions, cancellationToken);
 
         var responseObject = await RequestHelper.ProcessResponse<WFS_Manage_CreateTask_Response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
 
@@ -125,7 +127,7 @@ internal sealed class RealSbWebApiClient
             }
         };
 
-        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/completetask", sbRequest, cancellationToken);
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/completetask", sbRequest, _jsonSerializerOptions, cancellationToken);
 
         await RequestHelper.ProcessResponse<WFS_CommonResponse>(httpResponse, x => x.Result, new List<(int ReturnVal, int ErrorCode)> { (2, ErrorCodeMapper.TaskIdNotFound) }, cancellationToken);
     }
@@ -221,6 +223,11 @@ internal sealed class RealSbWebApiClient
     private readonly HttpClient _httpClient;
     private readonly IUserServiceClient _userService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
+
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
 
     public RealSbWebApiClient(HttpClient httpClient, IUserServiceClient userService, CIS.Core.Security.ICurrentUserAccessor userAccessor)
     {
