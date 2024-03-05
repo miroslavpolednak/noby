@@ -40,12 +40,14 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
                     .WithGroupId(_settings.GroupId).WithBufferSize(100).WithWorkersCount(10)
                     .AddMiddlewares(m =>
                     {
-                        m.AddAtBeginning<LoggingMiddleware>();
+                        m.AddAtBeginning<ConsumerLoggingMiddleware>(MiddlewareLifetime.Message);
+
+                        _settings.RetryStrategy.Configure(m);
+
+                        m.Add<ConsumerCompletionMiddleware>(MiddlewareLifetime.Singleton);
 
                         m.AddSchemaRegistryAvroDeserializer();
                         m.AddTypedHandlers(handlers += h => h.WithHandlerLifetime(InstanceLifetime.Scoped));
-
-                        _settings.RetryStrategy.Configure(m);
                     });
         });
 
