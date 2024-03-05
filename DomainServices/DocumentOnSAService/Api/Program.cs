@@ -5,6 +5,8 @@ using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositori
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using ExternalServices.ESignatures.V1;
+using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
+using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -39,6 +41,8 @@ SharedComponents.GrpcServiceBuilder
 
         // dbcontext
         builder.AddEntityFramework<DomainServices.DocumentOnSAService.Api.Database.DocumentOnSAServiceDbContext>();
+
+        bgServices(builder);
     })
     .MapGrpcServices(app =>
     {
@@ -46,6 +50,14 @@ SharedComponents.GrpcServiceBuilder
         app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.MaintananceService>();
     })
     .Run();
+
+[Obsolete("Odstranit po nasazeni scheduling service")]
+void bgServices(WebApplicationBuilder builder)
+{
+    builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
+    builder.AddCisBackgroundService<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
+    builder.AddCisBackgroundService<UpdateDocumentStatusJob>();
+}
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program
