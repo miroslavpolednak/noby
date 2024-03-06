@@ -56,7 +56,12 @@ public sealed class ErrorCodeMapper
             { 90044, new("Nepovolená hodnota pro Typ dokladu v rámci vybraného Státu vydání dokladu") },
             { 90045, new("Chyba migrace dat", "Nepodařilo se dozaložit obchodní případ z důvodu chyby v datech zdrojového systému") },
             { 90046, new("Nelze založit úkol", "Z důvodu aktuální nedostupnosti systému StarBuild nelze založit nový úkol. Opakujte prosím akci později.") },
-            { 90047, new("LV nenalezeno", "Dle zadaných kritérií nebylo nalezeno žádné LV.") }
+            { 90047, new("LV nenalezeno", "Dle zadaných kritérií nebylo nalezeno žádné LV.") },
+            { 90048, new("Sleva neodpovídá", "Výše slevy požadovaná v nabídce je odlišná od slevy zadané v úkolu Cenová výjimka. Zkontrolujte prosím kalkulaci nabídky a upravte výši slevy.") },
+            { 90049, new("Sleva není schválena", "V nabídce je požadována sleva, pro kterou není schválený úkol Cenová výjimka.") },
+            { 90050, new("Sleva zřejmě expirovala", "Úkol Cenové výjimky pro slevu požadovanou v nabídce je zrušený zřejmě z důvodu expirace platnosti.") },
+            { 90051, new("Platnost budoucí úrokové sazby v minulosti", "Požadované datum platnosti budoucí úrokové sazby je v minulosti.") },
+            { 90052, new("Není povolen souběh požadavků Retence / Refixace.", "Není možné vytvořit nový požadavek, jelikož již existuje rozpracovaný požadavek z dřívějška.") }
         };
 
         Messages = messages.AsReadOnly();
