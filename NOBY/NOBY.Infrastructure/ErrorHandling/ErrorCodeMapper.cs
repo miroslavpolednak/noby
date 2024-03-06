@@ -36,7 +36,7 @@ public sealed class ErrorCodeMapper
             { 90024, new("Chyba - pro klienta již existuje rozpracovaný obchodní případ", "Klient je účastníkem jiného obchodního případu čekajícího na schválení nebo zamítnutí. Pro více informací prosím kontaktujte tým zpracovatelů") },
             { 90025, new("Obchodní případ byl stornován.", "") },
             { 90026, new("Vámi hledaný obchodní případ byl vytvořen v jiném systému a není možné zde zobrazit jeho detail") },
-            { 90027, new("Diskvalifikace z online ocenění", "Pro danou nemovitost není možné dokončit Online ocenění. Je potřeba zvolit jiný typ ocenění.") },
+            { 90027, new("Nemovitost není vhodná pro online ocenění", "Pro danou nemovitost není možné dokončit Online ocenění. Je potřeba zvolit jiný typ ocenění.") },
             { 90028, new("Žádost v aktuální stavu nelze měnit.") },
             { 90029, new("Překročen počet objektů úvěru", "Maximální počet objektů úvěru je 3. Upravte počet objednávek ocenění s označením objekt úvěru.") },
             { 90030, new("Chyba - soubor s tímto typem dokumentu není povoleno vložit do eArchivu") },
