@@ -2,10 +2,12 @@
 
 public interface ICreateProductTrainService
 {
-    Task Run(
+    Task RunAll(
         long caseId,
         int salesArrangementId,
         int customerOnSAId,
         IEnumerable<SharedTypes.GrpcTypes.Identity>? customerIdentifiers,
         CancellationToken cancellationToken = default);
+
+    Task RunCreateRiskBusinessCaseOnly(int salesArrangementId, CancellationToken cancellationToken);
 }

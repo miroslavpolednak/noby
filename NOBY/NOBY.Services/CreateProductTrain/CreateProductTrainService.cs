@@ -7,7 +7,7 @@ namespace NOBY.Services.CreateProductTrain;
 internal sealed class CreateProductTrainService
     : ICreateProductTrainService
 {
-    public async Task Run(
+    public async Task RunAll(
         long caseId,
         int salesArrangementId,
         int customerOnSAId,
@@ -32,6 +32,11 @@ internal sealed class CreateProductTrainService
         }
         
         _logger.LogDebug("CreateProductTrainService finished");
+    }
+
+    public async Task RunCreateRiskBusinessCaseOnly(int salesArrangementId, CancellationToken cancellationToken)
+    {
+        await _createRiskBusinessCase.Run(salesArrangementId, cancellationToken);
     }
 
     private readonly ILogger<CreateProductTrainService> _logger;

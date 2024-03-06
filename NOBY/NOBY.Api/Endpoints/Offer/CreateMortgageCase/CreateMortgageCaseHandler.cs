@@ -79,7 +79,7 @@ internal sealed class CreateMortgageCaseHandler
         _logger.EntityCreated(nameof(Household), householdId);
 
         // mam identifikovaneho customera
-        await _createProductTrain.Run(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers, cancellationToken);
+        await _createProductTrain.RunAll(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers, cancellationToken);
 
         var identifiedFlowSwitch = new EditableFlowSwitch
         {
