@@ -11,6 +11,9 @@ namespace DomainServices.CodebookService.Api.Endpoints;
 internal partial class CodebookService
     : Contracts.v1.CodebookService.CodebookServiceBase
 {
+    public override Task<SignatureTypeDetailResponse> SignatureTypeDetails(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => _db.GetItems<SignatureTypeDetailResponse, SignatureTypeDetailResponse.Types.SignatureTypeDetailItem>();
+
     public override Task<GenericCodebookResponse> RefinancingStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<SharedTypes.Enums.RefinancingStates>(true);
 

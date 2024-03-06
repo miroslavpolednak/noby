@@ -30,6 +30,7 @@ public class CodebookMap : ICodebookMap
 
     private void ConfigureMap()
     {
+        AddCodebook((s, ct) => s.SignatureTypeDetails(ct));
         AddCodebook((s, ct) => s.RefinancingStates(ct));
         AddCodebook((s, ct) => s.RefixationOfferTypes(ct));
         AddCodebook((s, ct) => s.RefinancingTypes(ct));

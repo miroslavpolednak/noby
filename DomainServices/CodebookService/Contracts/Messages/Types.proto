@@ -4,6 +4,21 @@ option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 
 import "google/protobuf/wrappers.proto";
 
+message SignatureTypeDetailResponse {
+	repeated SignatureTypeDetailItem Items = 1;
+
+	message SignatureTypeDetailItem {
+		int32 Id = 1;
+		string Name = 2;
+		bool IsRetentionDefault = 3;
+		bool IsRetentionAvailable = 4;
+		bool IsHedgeDefault = 5;
+		bool IsHedgeAvailable = 6;
+		bool IsIndividualDefault = 7;
+		bool IsIndividualAvailable = 8;
+	}
+}
+
 message AddressTypesResponse {
 	repeated AddressTypeItem Items = 1;
 
