@@ -24,10 +24,12 @@ internal sealed class GetLoanApplicationAssessmentHandler
         var offer = await _offerService.GetOffer(saInstance.OfferId!.Value, cancellationToken);
 
         // neexistuje RBC -> vytvorit novy a ulozit
-        await _createProductTrain.RunCreateRiskBusinessCaseOnly(saInstance.SalesArrangementId, cancellationToken);
-
+        if (string.IsNullOrEmpty(saInstance.RiskBusinessCaseId))
+        {
+            await _createProductTrain.CreateRiskBusinessCaseAndUpdateSalesArrangement(saInstance, cancellationToken);
+        }
         // nemame ulozenou DataVersion na SA nebo chceme vytvorit novy assessment
-        if (!string.IsNullOrEmpty(saInstance.RiskBusinessCaseId) && (string.IsNullOrEmpty(saInstance.LoanApplicationDataVersion) || request.NewAssessmentRequired))
+        else if (string.IsNullOrEmpty(saInstance.LoanApplicationDataVersion) || request.NewAssessmentRequired)
         {
             await updateLoanAssesment(saInstance, !request.NewAssessmentRequired, cancellationToken);
         }

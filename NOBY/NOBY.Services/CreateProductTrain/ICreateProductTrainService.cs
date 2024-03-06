@@ -9,5 +9,5 @@ public interface ICreateProductTrainService
         IEnumerable<SharedTypes.GrpcTypes.Identity>? customerIdentifiers,
         CancellationToken cancellationToken = default);
 
-    Task RunCreateRiskBusinessCaseOnly(int salesArrangementId, CancellationToken cancellationToken);
+    Task CreateRiskBusinessCaseAndUpdateSalesArrangement(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, CancellationToken cancellationToken);
 }

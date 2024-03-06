@@ -34,9 +34,15 @@ internal sealed class CreateProductTrainService
         _logger.LogDebug("CreateProductTrainService finished");
     }
 
-    public async Task RunCreateRiskBusinessCaseOnly(int salesArrangementId, CancellationToken cancellationToken)
+    public async Task CreateRiskBusinessCaseAndUpdateSalesArrangement(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, CancellationToken cancellationToken)
     {
-        await _createRiskBusinessCase.Run(salesArrangementId, cancellationToken);
+        var result = await _createRiskBusinessCase.Run(saInstance.SalesArrangementId, cancellationToken);
+        if (result is not null)
+        {
+            saInstance.RiskBusinessCaseId = result.Value.RiskBusinessCaseId;
+            saInstance.RiskSegment = result.Value.RiskSegment;
+            saInstance.LoanApplicationDataVersion = result.Value.LoanApplicationDataVersion;
+        }
     }
 
     private readonly ILogger<CreateProductTrainService> _logger;
