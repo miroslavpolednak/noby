@@ -5,7 +5,7 @@ using Confluent.SchemaRegistry;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Configuration.SchemaRegistry;
 
-internal class ApicurioSchemaRegistryClient : ISchemaRegistryClient
+internal sealed class ApicurioSchemaRegistryClient : ISchemaRegistryClient
 {
     private const string DefaultGroupName = "default";
 

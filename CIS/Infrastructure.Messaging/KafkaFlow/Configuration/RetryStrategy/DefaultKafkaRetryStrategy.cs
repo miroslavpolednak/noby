@@ -4,7 +4,7 @@ using KafkaFlow.Retry;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Configuration.RetryStrategy;
 
-internal class DefaultKafkaRetryStrategy : IKafkaRetryStrategy
+internal sealed class DefaultKafkaRetryStrategy : IKafkaRetryStrategy
 {
     private readonly KafkaFlowConfiguration _kafkaConfiguration;
 

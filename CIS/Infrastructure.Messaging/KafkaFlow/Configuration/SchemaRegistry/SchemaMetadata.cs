@@ -3,7 +3,7 @@ using Confluent.SchemaRegistry;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Configuration.SchemaRegistry;
 
-internal class SchemaMetadata
+internal sealed class SchemaMetadata
 {
     [JsonPropertyName("groupId")]
     public string? GroupId { get; set; }

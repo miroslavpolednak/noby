@@ -6,7 +6,7 @@ using Microsoft.Data.SqlClient;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Configuration.RetryStrategy;
 
-internal class DurableKafkaRetryStrategy : IKafkaRetryStrategy
+internal sealed class DurableKafkaRetryStrategy : IKafkaRetryStrategy
 {
     private readonly KafkaFlowConfiguration _kafkaConfiguration;
     private readonly string _connectionString;

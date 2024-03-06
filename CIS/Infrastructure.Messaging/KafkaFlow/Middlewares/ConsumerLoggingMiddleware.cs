@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Middlewares;
 
-internal class ConsumerLoggingMiddleware : IMessageMiddleware
+internal sealed class ConsumerLoggingMiddleware : IMessageMiddleware
 {
     private readonly ILogger<ConsumerLoggingMiddleware> _logger;
     private static readonly ActivitySource _activitySource = new(nameof(IMessageMiddleware));

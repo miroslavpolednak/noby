@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Configuration;
 
-internal class KafkaFlowConfiguratorSettings
+internal sealed class KafkaFlowConfiguratorSettings
 {
     public KafkaFlowConfiguratorSettings(IConfiguration configuration)
     {

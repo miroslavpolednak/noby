@@ -4,11 +4,11 @@ using Confluent.SchemaRegistry;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Configuration.SchemaRegistry;
 
-internal class SchemaTypeConverter : JsonConverter<SchemaType>
+internal sealed class SchemaTypeConverter : JsonConverter<SchemaType>
 {
     public override SchemaType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        string @string = reader.GetString();
+        string? @string = reader.GetString();
         if (Enum.TryParse<SchemaType>(@string, ignoreCase: true, out var result))
         {
             return result;

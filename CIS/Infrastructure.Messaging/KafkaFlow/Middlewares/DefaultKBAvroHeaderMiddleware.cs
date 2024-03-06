@@ -5,7 +5,7 @@ using KafkaFlow;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Middlewares;
 
-internal class DefaultKBAvroHeaderMiddleware : IMessageMiddleware
+internal sealed class DefaultKBAvroHeaderMiddleware : IMessageMiddleware
 {
     private const string DefaultAppValue = "NOBY";
     private const string DefaultAppCompOriginatorValue = "NOBY.FEAPI";
