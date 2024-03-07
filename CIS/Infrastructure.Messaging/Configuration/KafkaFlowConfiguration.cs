@@ -30,7 +30,9 @@ public class KafkaFlowConfiguration
 
     public string? AdminTopic { get; set; }
 
-    public SecurityProtocol SecurityProtocol { get; set; }
+    public bool LogConsumingMessagePayload { get; set; } = true;
+
+    public SecurityProtocol SecurityProtocol { get; set; } = SecurityProtocol.Ssl;
 
     public string? SslKeyLocation { get; set; }
 
