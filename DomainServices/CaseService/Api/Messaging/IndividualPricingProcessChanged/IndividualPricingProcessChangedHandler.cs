@@ -7,7 +7,7 @@ using KafkaFlow;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
-internal class IndividualPricingProcessChangedHandler : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.IndividualPricingProcessChanged>
+internal class IndividualPricingProcessChangedHandler : IMessageHandler<IndividualPricingProcessChanged>
 {
     private readonly IMediator _mediator;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -27,20 +27,33 @@ internal class IndividualPricingProcessChangedHandler : IMessageHandler<cz.mpss.
         
     }
 
-    public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.IndividualPricingProcessChanged message)
+    public async Task Handle(IMessageContext context, IndividualPricingProcessChanged message)
     {
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
             _logger.KafkaMessageCurrentTaskIdIncorrectFormat(nameof(IndividualPricingProcessChangedHandler), message.currentTask.id);
+            return;
         }
         
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
             _logger.KafkaMessageCaseIdIncorrectFormat(nameof(IndividualPricingProcessChangedHandler), message.@case.caseId.id);
+            return;
         }
-        
+
+        if (message.state is not (ProcessStateEnum.ACTIVE or ProcessStateEnum.TERMINATED or ProcessStateEnum.COMPLETED))
+        {
+            _logger.KafkaMessageCurrentTaskIdIncorrectFormat(nameof(IndividualPricingProcessChangedHandler), message.currentTask.id);
+            return;
+        }
+
         // detail tasku
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId });
+
+        if (message.state is ProcessStateEnum.COMPLETED && taskDetail.TaskObject.DecisionId == 1)
+        {
+
+        }
 
         if (taskDetail.TaskObject.ProcessTypeId != 1)
         {
@@ -60,11 +73,7 @@ internal class IndividualPricingProcessChangedHandler : IMessageHandler<cz.mpss.
         
         if (flowSwitches.Count != 0)
         {
-            var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId);
-            var productSaleArrangements = salesArrangementResponse.SalesArrangements
-                .Where(t => t.IsProductSalesArrangement())
-                .ToList();
-            
+            var productSaleArrangements = await _salesArrangementService.GetProductSalesArrangements(caseId);
             foreach (var salesArrangement in productSaleArrangements)
             {
                 await _salesArrangementService.SetFlowSwitches(salesArrangement.SalesArrangementId, flowSwitches);
