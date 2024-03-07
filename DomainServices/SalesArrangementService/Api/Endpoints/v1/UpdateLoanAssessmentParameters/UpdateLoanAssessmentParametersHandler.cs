@@ -17,6 +17,9 @@ internal sealed class UpdateLoanAssessmentParametersHandler
             .SalesArrangements
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
+        
+        // puvodni rbcid
+        string? rbcid = entity.RiskBusinessCaseId;
 
         if (!string.IsNullOrEmpty(request.RiskSegment))
         {
@@ -59,7 +62,7 @@ internal sealed class UpdateLoanAssessmentParametersHandler
         await _dbContext.SaveChangesAsync(cancellation);
 
         // meni se rbcid, notifikovat SB
-        if (!string.IsNullOrEmpty(request.RiskBusinessCaseId) && !request.RiskBusinessCaseId.Equals(entity.RiskBusinessCaseId, StringComparison.OrdinalIgnoreCase))
+        if (!string.IsNullOrEmpty(request.RiskBusinessCaseId) && !request.RiskBusinessCaseId.Equals(rbcid, StringComparison.OrdinalIgnoreCase))
         {
             // case
             var caseInstance = await _caseService.GetCaseDetail(entity.CaseId, cancellation);
