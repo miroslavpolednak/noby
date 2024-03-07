@@ -40,5 +40,16 @@ internal sealed class IdentifyCaseRequestValidator : AbstractValidator<IdentifyC
                         .MaximumLength(10);
                 });
         });
+
+        When(request => request.Criterion == Criterion.CustomerIdentity, () =>
+        {
+            RuleFor(r => r.CustomerIdentity)
+                .NotNull()
+                .ChildRules(identity =>
+                {
+                    identity.RuleFor(t => t.IdentityId)
+                        .NotEmpty();
+                });
+        });
     }
 }

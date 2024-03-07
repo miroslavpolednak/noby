@@ -5,7 +5,6 @@ using System.Reflection;
 using KafkaFlow;
 using CIS.Infrastructure.Messaging.KafkaFlow;
 using CIS.Infrastructure.Messaging.KafkaFlow.Configuration;
-using KafkaFlow.Configuration;
 
 namespace CIS.Infrastructure.Messaging;
 
@@ -57,9 +56,6 @@ internal sealed class CisMessagingBuilder : ICisMessagingBuilder
                               );
 
                               KafkaFlowMessagingConfigurator.Configure(settings, messaging, cluster);
-
-                              if (!string.IsNullOrWhiteSpace(settings.Configuration.AdminTopic))
-                                  cluster.EnableTelemetry(settings.Configuration.AdminTopic).EnableAdminMessages(settings.Configuration.AdminTopic);
                           })
                           .UseMicrosoftLog());
 

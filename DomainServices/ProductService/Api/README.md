@@ -16,6 +16,7 @@ grpcurl -insecure -d "{\"PaymentAccount\":{\"Prefix\":\"35\",\"AccountNumber\":\
 
 grpcurl -insecure -d "{\"CaseId\":3045664}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30007 DomainServices.ProductService.v1.ProductService/GetCovenantList
 grpcurl -insecure -d "{\"ProductId\":303074018}" -H "Authorization: Basic YTph" 127.0.0.1:30007 DomainServices.ProductService.v1.ProductService/UpdateMortgage
+grpcurl -insecure -d "{\"Identity\":{\"identityScheme\":2,\"identityId\":951082267}}" -H "Authorization: Basic YTph" 127.0.0.1:30007 DomainServices.ProductService.v1.ProductService/SearchProducts
 
 ## run batch
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\CIS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"

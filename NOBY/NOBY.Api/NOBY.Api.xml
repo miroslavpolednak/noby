@@ -702,9 +702,21 @@
             </summary>
             <example>9105464622</example>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseHandler.handlerByFormIdRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>^[0-9]+$</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at the beginning of the string.<br/>
+            ○ Match a character in the set [0-9] atomically at least once.<br/>
+            ○ Match if at the end of the string or if before an ending newline.<br/>
+            </code>
+            </remarks>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.Criterion">
             <summary>
-            Kritérium vyhledávání: 0 - Čárový kód dokumentu (formId); 1 - Číslo úvěrového účtu; 2 - ID obchodního případu; 3 - Číslo smlouvy
+            Kritérium vyhledávání: 0 - Čárový kód dokumentu (formId); 1 - Číslo úvěrového účtu; 2 - ID obchodního případu; 3 - Číslo smlouvy; 4 - Identita klienta
             </summary>
             <example>0</example>
         </member>
@@ -728,11 +740,26 @@
             Tato hodnota je relevantní pro kritérium 3 (číslo smlouvy)
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponse.CaseId">
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseRequest.CustomerIdentity">
+            <summary>
+            Tato hodnota je relevantní pro kritérium 4
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponse.Cases">
             <summary>
             ID obchodního případu
             </summary>
             <example>24777</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponseItem.CaseId">
+            <summary>
+            ID obchodního případu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponseItem.ContractRelationshipTypeId">
+            <summary>
+            Typ vztahu
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest.FilterId">
             <summary>
@@ -3064,6 +3091,11 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=68C49245-60DD-48a4-9681-B328C52D86F4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
+        <member name="F:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsHandler._maxAllowedFileSize">
+            <summary>
+            [MB]
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest.Attachments">
             <summary>
             Seznam uploadnutých příloh, které se mají založit k ocenění
@@ -5105,6 +5137,47 @@
         </member>
         <member name="M:NOBY.Api.StartupExtensions.NobySwagger.SwaggerDefaultValues.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
             <inheritdoc />
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.handlerByFormIdRegex_0">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the handlerByFormIdRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.handlerByFormIdRegex_0.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.handlerByFormIdRegex_0.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.handlerByFormIdRegex_0.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.handlerByFormIdRegex_0.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.handlerByFormIdRegex_0.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.handlerByFormIdRegex_0.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.handlerByFormIdRegex_0.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.handlerByFormIdRegex_0.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Utilities">
+            <summary>Helper methods used by generated <see cref="T:System.Text.RegularExpressions.Regex"/>-derived implementations.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout">
+            <summary>Default timeout value set in <see cref="T:System.AppContext"/>, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout"/> if none was set.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_hasTimeout">
+            <summary>Whether <see cref="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout"/> is non-infinite.</summary>
         </member>
     </members>
 </doc>

@@ -1,4 +1,5 @@
 ﻿using DomainServices.ProductService.Contracts;
+using SharedTypes.GrpcTypes;
 
 namespace DomainServices.ProductService.Clients;
 
@@ -50,5 +51,8 @@ public interface IProductServiceClient
     Task<GetCovenantDetailResponse> GetCovenantDetail(long caseId, int order, CancellationToken cancellationToken = default);
     
     Task<GetCovenantListResponse> GetCovenantList(long caseId, CancellationToken cancellationToken = default);
+    
     Task CancelMortgage(long caseId, CancellationToken cancellationToken = default);
+
+    Task<List<SearchProductsResponse.Types.SearchProductsItem>> SearchProducts(Identity? identity, CancellationToken cancellationToken = default);
 }

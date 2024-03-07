@@ -29,43 +29,43 @@ internal sealed class ApicurioSchemaRegistryClient : ISchemaRegistryClient
 
     public async Task<int> GetSchemaIdAsync(string subject, Schema schema, bool normalize = false)
     {
+        var request = new Uri($"apis/registry/v2/groups/{DefaultGroupName}/artifacts/{WebUtility.UrlEncode(subject)}/meta", UriKind.Relative);
+
         try
         {
-            var request = new Uri($"apis/registry/v2/groups/{DefaultGroupName}/artifacts/{WebUtility.UrlEncode(subject)}/meta", UriKind.Relative);
-
             var response = await _httpClient.GetAsync(request).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
-                throw new SchemaRegistryException($"Retrieving metadata for schema with subject '{subject}' failed", response.StatusCode, (int)response.StatusCode);
+                throw new SchemaRegistryException($"Retrieving metadata for schema with subject '{subject}' and uri '{request}' failed.", response.StatusCode, (int)response.StatusCode);
 
             var metadata = await response.Content.ReadFromJsonAsync<SchemaMetadata>();
 
             return _schemaRegistryConfiguration.SchemaIdentificationType == SchemaIdentificationType.GlobalId ? metadata!.GlobalId : metadata!.ContentId;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not SchemaRegistryException)
         {
-            throw new SchemaRegistryException($"Retrieving schema threw exception with message: {ex.Message}", HttpStatusCode.InternalServerError, (int)HttpStatusCode.InternalServerError); 
+            throw new SchemaRegistryException($"Retrieving schema with uri '{request}' threw exception with message: {ex.Message}", HttpStatusCode.InternalServerError, (int)HttpStatusCode.InternalServerError);
         }
     }
 
     public async Task<Schema> GetSchemaAsync(int id, string? format = null)
     {
+        var request = new Uri($"apis/registry/v2/ids/contentIds/{id}", UriKind.Relative);
+
         try
         {
-            var request = new Uri($"apis/registry/v2/ids/contentIds/{id}", UriKind.Relative);
-
             var response = await _httpClient.GetAsync(request).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
-                throw new SchemaRegistryException($"Retrieving schema with id '{id}' failed", response.StatusCode, (int)response.StatusCode);
+                throw new SchemaRegistryException($"Retrieving schema with id '{id}' and uri '{request}' failed.", response.StatusCode, (int)response.StatusCode);
 
             var schemaString = await response.Content.ReadAsStringAsync();
 
             return new Schema(schemaString, SchemaType.Avro);
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not SchemaRegistryException)
         {
-            throw new SchemaRegistryException($"Retrieving schema threw exception with message: {ex.Message}", HttpStatusCode.InternalServerError, (int)HttpStatusCode.InternalServerError);
+            throw new SchemaRegistryException($"Retrieving schema with uri '{request}' threw exception with message: {ex.Message}", HttpStatusCode.InternalServerError, (int)HttpStatusCode.InternalServerError);
         }
     }
 

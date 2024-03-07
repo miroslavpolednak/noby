@@ -4,6 +4,7 @@ using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
 using KafkaFlow;
 using KafkaFlow.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow;
 
@@ -16,6 +17,8 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
     private KafkaFlowMessagingConfigurator(KafkaFlowConfiguratorSettings settings)
     {
         _settings = settings;
+
+        SetAdminMessages();
     }
 
     public static void Configure(KafkaFlowConfiguratorSettings settings, Action<IKafkaFlowMessagingConfigurator> messaging, IClusterConfigurationBuilder cluster)
@@ -37,16 +40,22 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
         _clusterBuilder += kafka => kafka.AddConsumer(consumer =>
         {
             consumer.Topic(topic).WithAutoOffsetReset(AutoOffsetReset.Earliest)
-                    .WithGroupId(_settings.GroupId).WithBufferSize(100).WithWorkersCount(10)
+                    .WithGroupId(_settings.GroupId).WithManualMessageCompletion()
+                    .WithBufferSize(2).WithWorkersCount(10)
                     .AddMiddlewares(m =>
                     {
-                        m.AddAtBeginning<ConsumerLoggingMiddleware>(MiddlewareLifetime.Message);
+                        m.AddAtBeginning<ActivitySourceMiddleware>(MiddlewareLifetime.Message);
+                        m.Add<ConsumerErrorHandlingMiddleware>(MiddlewareLifetime.Singleton);
 
-                        _settings.RetryStrategy.Configure(m);
-
-                        m.Add<ConsumerCompletionMiddleware>(MiddlewareLifetime.Singleton);
+                        _settings.RetryStrategy.Configure(m); //Retry Middleware
 
                         m.AddSchemaRegistryAvroDeserializer();
+
+                        m.Add(resolver => new LoggingKnownMessagesMiddleware(
+                                  _settings.Configuration,
+                                  resolver.Resolve<ILogger<LoggingKnownMessagesMiddleware>>()
+                              ), MiddlewareLifetime.Singleton);
+
                         m.AddTypedHandlers(handlers += h => h.WithHandlerLifetime(InstanceLifetime.Scoped));
                     });
         });
@@ -76,5 +85,13 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
         });
 
         return this;
+    }
+
+    private void SetAdminMessages()
+    {
+        if (string.IsNullOrWhiteSpace(_settings.Configuration.AdminTopic))
+            return;
+
+        _clusterBuilder += kafka => kafka.EnableTelemetry(_settings.Configuration.AdminTopic).EnableAdminMessages(_settings.Configuration.AdminTopic);
     }
 }

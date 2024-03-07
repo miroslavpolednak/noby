@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using NOBY.Api.Endpoints.Cases.IdentifyCase.Dto;
+using SharedTypes.GrpcTypes;
 
 namespace NOBY.Api.Endpoints.Cases.IdentifyCase;
 
 public sealed class IdentifyCaseRequest : IRequest<IdentifyCaseResponse>
 {
     /// <summary>
-    /// Kritérium vyhledávání: 0 - Čárový kód dokumentu (formId); 1 - Číslo úvěrového účtu; 2 - ID obchodního případu; 3 - Číslo smlouvy
+    /// Kritérium vyhledávání: 0 - Čárový kód dokumentu (formId); 1 - Číslo úvěrového účtu; 2 - ID obchodního případu; 3 - Číslo smlouvy; 4 - Identita klienta
     /// </summary>
     /// <example>0</example>
     [Required]
@@ -31,6 +32,11 @@ public sealed class IdentifyCaseRequest : IRequest<IdentifyCaseResponse>
     /// Tato hodnota je relevantní pro kritérium 3 (číslo smlouvy)
     /// </summary>
     public string? ContractNumber { get; set; }
+
+    /// <summary>
+    /// Tato hodnota je relevantní pro kritérium 4
+    /// </summary>
+    public Identity? CustomerIdentity { get; set; }
 }
 
 public enum Criterion
@@ -38,5 +44,6 @@ public enum Criterion
     FormId = 0,
     PaymentAccount = 1,
     CaseId = 2,
-    ContractNumber = 3
+    ContractNumber = 3,
+    CustomerIdentity = 4
 }

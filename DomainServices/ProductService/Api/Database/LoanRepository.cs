@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Data;
 using CIS.Infrastructure.Data;
 using DomainServices.ProductService.Api.Database.Models;
+using SharedTypes.GrpcTypes;
 
 namespace DomainServices.ProductService.Api.Database;
 
@@ -14,6 +15,25 @@ internal sealed class LoanRepository
         _connectionProvider = connectionProvider;
     }
     
+    public Task<List<SearchProductsResponse.Types.SearchProductsItem>> SearchProducts(Identity? identity, CancellationToken cancellationToken)
+    {
+        string query = """
+        SELECT C.Id 'CaseId', A.VztahId 'ContractRelationshipTypeId'
+            FROM [dbo].[VztahUver] A
+            INNER JOIN [dbo].[Partner] B ON A.PartnerId=B.Id
+            INNER JOIN [dbo].[Uver] C ON A.UverId=C.Id
+            WHERE A.Neaktivni=0
+        """;
+
+        if (identity is not null)
+        {
+            query += identity.IdentityScheme == Identity.Types.IdentitySchemes.Kb ? " AND B.KBId=@identity" : " AND B.Id=@identity";
+            return _connectionProvider.ExecuteDapperRawSqlToListAsync<SearchProductsResponse.Types.SearchProductsItem>(query, new { identity = identity.IdentityId }, cancellationToken);
+        }
+
+        throw new NotImplementedException();
+    }
+
     public Task<Loan?> GetLoan(long caseId, CancellationToken cancellationToken)
     { 
         const string Query =

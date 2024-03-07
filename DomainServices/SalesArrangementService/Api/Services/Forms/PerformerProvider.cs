@@ -56,6 +56,6 @@ internal sealed class PerformerProvider
     {
         var tasks = await _caseService.GetTaskList(caseId, cancellationToken);
 
-        return tasks.Where(t => t is { TaskTypeId: 7, Cancelled: false }).MaxBy(x => x.CreatedOn);
+        return tasks.Where(t => t is { TaskTypeId: 7, Cancelled: false }).MaxBy(x => (DateTime?)x.CreatedOn);
     }
 }
