@@ -25,13 +25,11 @@ internal class LoggingKnownMessagesMiddleware : IMessageMiddleware
 
         var loggerData = new Dictionary<string, object>
         {
-            { "MessageId", messagingId },
-            { "Topic", context.ConsumerContext.Topic },
             { "ConsumerName", context.ConsumerContext.ConsumerName },
         };
 
         if (_configuration.LogConsumingMessagePayload)
-            loggerData.Add("Message", context.Message.Value);
+            loggerData.Add("@Message", context.Message.Value);
 
         using (_logger.BeginScope(loggerData))
         {
