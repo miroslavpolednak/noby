@@ -39,4 +39,6 @@ public interface ISbWebApiClient
     Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken));
 
     Task UpdateTask(Dto.UpdateTask.UpdateTaskRequest request, CancellationToken cancellationToken = default);
+
+    Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime date, CancellationToken cancellationToken);
 }

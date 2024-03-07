@@ -14,4 +14,9 @@ internal sealed class MockEasSimulationHTClient
     {
         return Task.FromResult(Array.Empty<WFS_FindItem>());
     }
+
+    public Task<SimHu_RetenceHedge_Response> RunSimulationRetention(SimHu_RetenceHedge_Request message, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

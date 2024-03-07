@@ -36,6 +36,11 @@ internal sealed class OfferService
         return await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken);
     }
 
+    public async Task<SimulateMortgageRetentionResponse> SimulateMortgageRetention(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken = default)
+    {
+        return await _service.SimulateMortgageRetentionAsync(request, cancellationToken: cancellationToken);
+    }
+
     public async Task<GetMortgageOfferFPScheduleResponse> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default)
     {
         return await _service.GetMortgageOfferFPScheduleAsync(new GetMortgageOfferFPScheduleRequest()

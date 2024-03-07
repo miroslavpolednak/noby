@@ -1,16 +1,25 @@
-﻿using System.Globalization;
-using System.Text.Encodings.Web;
+﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using ExternalServices.SbWebApi.Dto.CompleteTask;
 using ExternalServices.SbWebApi.Dto.UpdateTask;
 using ExternalServices.SbWebApi.V1.Contracts;
 using DomainServices.UserService.Clients;
+using System.Globalization;
 
 namespace ExternalServices.SbWebApi.V1;
 
 internal sealed class RealSbWebApiClient
     : ISbWebApiClient
 {
+    public async Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime date, CancellationToken cancellationToken)
+    {
+        var httpResponse = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/refixationservices/getinterestrate?uver_id={caseId}&date={date:yyyy-MM-dd}&fixation_time", cancellationToken);
+
+        var responseObject = await RequestHelper.ProcessResponse<GetInterestRate_response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
+        
+        return (Convert.ToDecimal(responseObject.Interest_rate, CultureInfo.InvariantCulture), responseObject.Fixation_time_new);
+    }
+
     public async Task<IList<IReadOnlyDictionary<string, string>>> FindTasksByContractNumber(Dto.FindTasks.FindByContractNumberRequest request, CancellationToken cancellationToken = default)
     {
         var easRequest = new WFS_Request_ByContractNo

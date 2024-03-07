@@ -7,6 +7,7 @@ using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
 using System.ServiceModel.Channels;
 
 namespace ExternalServices.EasSimulationHT.V1;
+
 public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient, IHT_WS_SB_Services>, IEasSimulationHTClient
 {
     public RealEasSimulationHTClient(
@@ -17,6 +18,14 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
     }
 
     protected override string ServiceName => StartupExtensions.ServiceName;
+
+    public async Task<SimHu_RetenceHedge_Response> RunSimulationRetention(SimHu_RetenceHedge_Request message, CancellationToken cancellationToken)
+    {
+        return await callMethod(async () =>
+        {
+            return await Client.SimHu_RetenceHedgeAsync(message).WithCancellation(cancellationToken);
+        });
+    }
 
     public async Task<WFS_FindItem[]> FindTasks(WFS_Header header, WFS_Find_ByCaseId message, CancellationToken cancellationToken)
     {

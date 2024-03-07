@@ -1,10 +1,13 @@
+// 20240306222805
+// https://sb2-test-server.vsskb.cz/WebApi/FAT/swagger/docs/v1
+
 {
 	"swagger": "2.0",
 	"info": {
 		"version": "v1",
 		"title": "SBWebApi"
 	},
-	"host": "sb2_test_server.mpss.cz",
+	"host": "sb2-test-server.vsskb.cz",
 	"basePath": "/WebApi/FAT",
 	"schemes": [
 		"https"
@@ -16,7 +19,9 @@
 					"BookOfTerms"
 				],
 				"operationId": "BookOfTerms_GetBookOfTermsAndLoanPurpose",
-				"consumes": [],
+				"consumes": [
+
+				],
 				"produces": [
 					"application/json",
 					"text/json",
@@ -1345,13 +1350,263 @@
 				"deprecated": false
 			}
 		},
+		"/api/refixationservices/hedgerefixationappendix": {
+			"post": {
+				"tags": [
+					"RefixationServices"
+				],
+				"operationId": "RefixationServices_RS_HedgeRefixationAppendix",
+				"consumes": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/x-www-form-urlencoded",
+					"application/vnd.api+json"
+				],
+				"produces": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/vnd.api+json"
+				],
+				"parameters": [
+					{
+						"name": "request",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/HedgeRefixationAppendix_request"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "RS_HedgeRefixationAppendix received successfully",
+						"schema": {
+							"$ref": "#/definitions/HedgeRefixationAppendix_response"
+						}
+					},
+					"400": {
+						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/api/refixationservices/retentionappendix": {
+			"post": {
+				"tags": [
+					"RefixationServices"
+				],
+				"operationId": "RefixationServices_RS_RetentionAppendix",
+				"consumes": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/x-www-form-urlencoded",
+					"application/vnd.api+json"
+				],
+				"produces": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/vnd.api+json"
+				],
+				"parameters": [
+					{
+						"name": "request",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/RetentionAppendix_request"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "RS_RetentionAppendix received successfully",
+						"schema": {
+							"$ref": "#/definitions/RetentionAppendix_response"
+						}
+					},
+					"400": {
+						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/api/refixationservices/interestratenotification": {
+			"post": {
+				"tags": [
+					"RefixationServices"
+				],
+				"operationId": "RefixationServices_RS_InterestRateNotification",
+				"consumes": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/x-www-form-urlencoded",
+					"application/vnd.api+json"
+				],
+				"produces": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/vnd.api+json"
+				],
+				"parameters": [
+					{
+						"name": "request",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/InterestRateNotification_request"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "RS_InterestRateNotification received successfully",
+						"schema": {
+							"$ref": "#/definitions/InterestRateNotification_response"
+						}
+					},
+					"400": {
+						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/api/refixationservices/calculationdocuments": {
+			"post": {
+				"tags": [
+					"RefixationServices"
+				],
+				"operationId": "RefixationServices_RS_CalculationDocuments",
+				"consumes": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/x-www-form-urlencoded",
+					"application/vnd.api+json"
+				],
+				"produces": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/vnd.api+json"
+				],
+				"parameters": [
+					{
+						"name": "request",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/CalculationDocuments_request"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "RS_CalculationDocuments received successfully",
+						"schema": {
+							"$ref": "#/definitions/CalculationDocuments_response"
+						}
+					},
+					"400": {
+						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
+		"/api/refixationservices/getinterestrate": {
+			"get": {
+				"tags": [
+					"RefixationServices"
+				],
+				"operationId": "RefixationServices_RS_GetInterestRate",
+				"consumes": [
+
+				],
+				"produces": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/vnd.api+json"
+				],
+				"parameters": [
+					{
+						"name": "uver_id",
+						"in": "query",
+						"required": true,
+						"type": "integer",
+						"format": "int32"
+					},
+					{
+						"name": "date",
+						"in": "query",
+						"required": true,
+						"type": "string",
+						"format": "date-time"
+					},
+					{
+						"name": "fixation_time",
+						"in": "query",
+						"required": true,
+						"type": "integer",
+						"format": "int32"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "RS_GetInterestRate received successfully",
+						"schema": {
+							"$ref": "#/definitions/GetInterestRate_response"
+						}
+					},
+					"400": {
+						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"deprecated": false
+			}
+		},
 		"/api/supportservice/getversioninfo": {
 			"get": {
 				"tags": [
 					"SupportService"
 				],
 				"operationId": "SupportService_GetVersionInfo",
-				"consumes": [],
+				"consumes": [
+
+				],
 				"produces": [
 					"application/json",
 					"text/json",
@@ -1390,7 +1645,9 @@
 					"Transactions"
 				],
 				"operationId": "Transactions_GetTransactions",
-				"consumes": [],
+				"consumes": [
+
+				],
 				"produces": [
 					"application/json",
 					"text/json",
@@ -2829,6 +3086,284 @@
 				}
 			}
 		},
+		"HedgeRefixationAppendix_request": {
+			"type": "object",
+			"properties": {
+				"case_id": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"interest_rate": {
+					"format": "double",
+					"type": "number"
+				},
+				"date_from": {
+					"format": "date-time",
+					"type": "string"
+				},
+				"fixation_time": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"payment_amount": {
+					"format": "double",
+					"type": "number"
+				},
+				"count_of_payments": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"maturity_date": {
+					"format": "date-time",
+					"type": "string"
+				},
+				"print_signature_form": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"cpm": {
+					"type": "string"
+				},
+				"icp": {
+					"type": "string"
+				},
+				"deadline_for_signature": {
+					"format": "date-time",
+					"type": "string"
+				},
+				"individual_pricing": {
+					"type": "boolean"
+				}
+			}
+		},
+		"HedgeRefixationAppendix_response": {
+			"type": "object",
+			"properties": {
+				"result": {
+					"$ref": "#/definitions/CommonResultEx"
+				},
+				"ea_number": {
+					"type": "string"
+				}
+			}
+		},
+		"CommonResultEx": {
+			"type": "object",
+			"properties": {
+				"warning_val": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"warning_text": {
+					"type": "string"
+				},
+				"return_val": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"return_text": {
+					"type": "string"
+				}
+			}
+		},
+		"RetentionAppendix_request": {
+			"type": "object",
+			"properties": {
+				"case_id": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"interest_rate": {
+					"format": "double",
+					"type": "number"
+				},
+				"date_from": {
+					"format": "date-time",
+					"type": "string"
+				},
+				"payment_amount": {
+					"format": "double",
+					"type": "number"
+				},
+				"print_signature_form": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"cpm": {
+					"type": "string"
+				},
+				"icp": {
+					"type": "string"
+				},
+				"deadline_for_signature": {
+					"format": "date-time",
+					"type": "string"
+				},
+				"individual_pricing": {
+					"type": "boolean"
+				},
+				"fee": {
+					"format": "double",
+					"type": "number"
+				}
+			}
+		},
+		"RetentionAppendix_response": {
+			"type": "object",
+			"properties": {
+				"result": {
+					"$ref": "#/definitions/CommonResultEx"
+				},
+				"ea_number": {
+					"type": "string"
+				}
+			}
+		},
+		"InterestRateNotification_request": {
+			"type": "object",
+			"properties": {
+				"case_id": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"interest_rate": {
+					"format": "double",
+					"type": "number"
+				},
+				"date_from": {
+					"format": "date-time",
+					"type": "string"
+				},
+				"fixation_time": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"payment_amount": {
+					"format": "double",
+					"type": "number"
+				},
+				"print_signature_form": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"cpm": {
+					"type": "string"
+				},
+				"icp": {
+					"type": "string"
+				}
+			}
+		},
+		"InterestRateNotification_response": {
+			"type": "object",
+			"properties": {
+				"result": {
+					"$ref": "#/definitions/CommonResultEx"
+				},
+				"ea_number": {
+					"type": "string"
+				}
+			}
+		},
+		"CalculationDocuments_request": {
+			"type": "object",
+			"properties": {
+				"case_id": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"full_repayment": {
+					"type": "boolean"
+				},
+				"calculation_date": {
+					"format": "date-time",
+					"type": "string"
+				},
+				"extra_payment_date": {
+					"format": "date-time",
+					"type": "string"
+				},
+				"client_id": {
+					"type": "string"
+				},
+				"extra_payment_sum": {
+					"format": "double",
+					"type": "number"
+				},
+				"uvn_amount": {
+					"format": "double",
+					"type": "number"
+				},
+				"principal_amount": {
+					"format": "double",
+					"type": "number"
+				},
+				"interest_amount": {
+					"format": "double",
+					"type": "number"
+				},
+				"other_unpaid_fees": {
+					"format": "double",
+					"type": "number"
+				},
+				"interest_on_late": {
+					"format": "double",
+					"type": "number"
+				},
+				"interest_covid": {
+					"format": "double",
+					"type": "number"
+				},
+				"loan_overdue": {
+					"type": "boolean"
+				},
+				"payment_reduction": {
+					"type": "boolean"
+				},
+				"new_maturity_date": {
+					"format": "date-time",
+					"type": "string"
+				},
+				"new_payment_amount": {
+					"format": "double",
+					"type": "number"
+				}
+			}
+		},
+		"CalculationDocuments_response": {
+			"type": "object",
+			"properties": {
+				"result": {
+					"$ref": "#/definitions/CommonResultEx"
+				},
+				"calculation_type": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"ea_numbers": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"GetInterestRate_response": {
+			"type": "object",
+			"properties": {
+				"result": {
+					"$ref": "#/definitions/CommonResultEx"
+				},
+				"interest_rate": {
+					"format": "double",
+					"type": "number"
+				},
+				"fixation_time_new": {
+					"format": "int32",
+					"type": "integer"
+				}
+			}
+		},
 		"GetVersionInfoResponse": {
 			"type": "object",
 			"properties": {
@@ -2860,6 +3395,9 @@
 					"type": "string"
 				},
 				"User": {
+					"type": "string"
+				},
+				"CurrentCulture": {
 					"type": "string"
 				},
 				"DebugInfo": {

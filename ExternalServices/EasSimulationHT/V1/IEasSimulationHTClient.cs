@@ -6,6 +6,8 @@ namespace ExternalServices.EasSimulationHT.V1;
 public interface IEasSimulationHTClient
     : IExternalServiceClient
 {
+    Task<SimHu_RetenceHedge_Response> RunSimulationRetention(SimHu_RetenceHedge_Request message, CancellationToken cancellationToken);
+
     /// <summary>
     /// Call simulation HT method
     /// </summary>

@@ -1,5 +1,5 @@
 {
-  "runtime": "Net70",
+  "runtime": "Net80",
   "defaultVariables": "",
   "documentGenerator": {
     "fromDocument": {
@@ -14,7 +14,9 @@
       "clientBaseClass": null,
       "configurationClass": null,
       "generateClientClasses": false,
+      "suppressClientClassesOutput": false,
       "generateClientInterfaces": false,
+      "suppressClientInterfacesOutput": false,
       "clientBaseInterface": null,
       "injectHttpClient": true,
       "disposeHttpClient": true,
@@ -32,6 +34,8 @@
       "exposeJsonSerializerSettings": false,
       "clientClassAccessModifier": "internal",
       "typeAccessModifier": "internal",
+      "propertySetterAccessModifier": "",
+      "generateNativeRecords": false,
       "generateContractsOutput": true,
       "contractsNamespace": "ExternalServices.SbWebApi.V1.Contracts",
       "contractsOutputFilePath": "../Contracts.cs",
@@ -90,9 +94,6 @@
       "generateOptionalPropertiesAsNullable": false,
       "generateNullableReferenceTypes": true,
       "templateDirectory": null,
-      "typeNameGeneratorType": null,
-      "propertyNameGeneratorType": null,
-      "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
       "output": "",
