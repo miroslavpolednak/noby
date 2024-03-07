@@ -48,4 +48,6 @@ public interface IOfferServiceClient
     Task<GetOfferDeveloperResponse> GetOfferDeveloper(int offerId, CancellationToken cancellationToken  = default);
 
     Task UpdateOffer(UpdateOfferRequest request, CancellationToken cancellationToken = default);
+
+    Task<decimal> GetInterestRate(long caseId, DateTime futureInterestRateValidTo, CancellationToken cancellationToken = default);
 }

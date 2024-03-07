@@ -24,9 +24,19 @@ internal sealed class GetOfferHandler
             case OfferTypes.Mortgage:
                 model.MortgageOffer = await getMortgageData(model.Data.OfferId, cancellationToken);
                 break;
+
+            case OfferTypes.MortgageRetention:
+                model.MortgageRetention = await getRetentionData(model.Data.OfferId, cancellationToken);
+                break;
         }
 
         return model;
+    }
+
+    private async Task<MortgageRetentionFullData> getRetentionData(int offerId, CancellationToken cancellationToken)
+    {
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageRetentionData>(offerId, cancellationToken);
+        return _retentionMapper.MapToFullData(offerData!.Data!);
     }
 
     private async Task<MortgageOfferBaseData> getMortgageData(int offerId, CancellationToken cancellationToken)
@@ -45,14 +55,17 @@ internal sealed class GetOfferHandler
     private readonly IMediator _mediator;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper;
+    private readonly Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _retentionMapper;
 
     public GetOfferHandler(
         IDocumentDataStorage documentDataStorage,
         Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper offerMapper,
-        IMediator mediator)
+        IMediator mediator,
+        Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper retentionMapper)
     {
         _documentDataStorage = documentDataStorage;
         _offerMapper = offerMapper;
         _mediator = mediator;
+        _retentionMapper = retentionMapper;
     }
 }

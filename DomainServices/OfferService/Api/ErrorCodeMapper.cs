@@ -21,6 +21,8 @@ internal sealed class ErrorCodeMapper
     public const int CreditWorthinessNullInput = 10021;
     public const int MortgageRetentionAmountNotValid = 10026;
     public const int MortgageRetentionAmountIndividualPriceNotValid = 10027;
+    public const int CaseIdNotFoundOnOffer = 10029;
+    public const int CaseIdIsEmpty = 10030;
 
     public static IErrorCodesDictionary Init()
     {
@@ -28,6 +30,7 @@ internal sealed class ErrorCodeMapper
         {
             { OfferNotFound, "Offer ID {PropertyValue} not found" },
             { OfferIdIsEmpty, "OfferId is not specified" },
+            { CaseIdIsEmpty, "CaseId is not specified" },
             { ResourceProcessIdIsEmpty, "ResourceProcessId is missing or is in invalid format" },
             { SimulationInputsIsEmpty, "SimulationInputs are not specified" },
             { ProductTypeIdIsEmpty, "SimulationInputs.ProductTypeId is not specified" },
@@ -42,6 +45,7 @@ internal sealed class ErrorCodeMapper
             { CreditWorthinessNullInput, "Credit Worthiness was requested but the input is null" },
             { MortgageRetentionAmountNotValid, "SimulateMortgageRetentionRequest.BasicParameters.Amount is not valid" },
             { MortgageRetentionAmountIndividualPriceNotValid, "SimulateMortgageRetentionRequest.BasicParameters.AmountIndividualPrice is not valid" },
+            { CaseIdNotFoundOnOffer, "Offer.CaseId is empty" }
         });
 
         return Messages;

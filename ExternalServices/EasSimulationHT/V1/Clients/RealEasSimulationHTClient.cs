@@ -19,11 +19,30 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
     protected override string ServiceName => StartupExtensions.ServiceName;
 
-    public async Task<SimHu_RetenceHedge_Response> RunSimulationRetention(SimHu_RetenceHedge_Request message, CancellationToken cancellationToken)
+    public async Task<decimal> RunSimulationRetention(long caseId, decimal newInterestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken)
     {
         return await callMethod(async () =>
         {
-            return await Client.SimHu_RetenceHedgeAsync(message).WithCancellation(cancellationToken);
+            var request = new SimHu_RetenceHedge_Request
+            {
+                settings = new()
+                {
+                    uverId = Convert.ToInt32(caseId),
+                    mode = 1,
+                    novaSazba = newInterestRate,
+                    novaSazbaOd = interestRateValidFrom
+                }
+            };
+
+            var result = await Client.SimHu_RetenceHedgeAsync(request).WithCancellation(cancellationToken);
+
+            if ((result.errorInfo?.kodChyby ?? 0) != 0)
+            {
+                Logger.ExternalServiceResponseError($"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]");
+                throw new CisValidationException(10028, result.errorInfo!.textChyby);
+            }
+
+            return result.vysledky?.novaVyseSplatky ?? 0;
         });
     }
 

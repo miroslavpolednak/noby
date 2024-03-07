@@ -860,6 +860,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216233">EmploymentTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800055209">FeeChangeRequests</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405524365">Genders</a>
              - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> 
@@ -2449,6 +2450,16 @@
             </summary>
             <example>2002-10-26</example>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRetention(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest)">
+            <summary>
+            Simulace KB retencí.
+            </summary>
+            <remarks>
+            Provolá simulační službu Starbuildu pro retence.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BFEF73A4-5876-4b5b-940B-8F65FEB5F660"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgage(NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest)">
             <summary>
             Simulace KB hypotéky.
@@ -2515,6 +2526,37 @@
             Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D43515EA-4014-47a1-AD45-0E80EE43AEB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.InterestRateValidFrom">
+            <summary>
+            Platnost nové úrokové sazby od.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.InterestRateDiscount">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>0.09</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.FeeAmountIndividualPrice">
+            <summary>
+            Upravená výše poplatku. Relevantní pouze pro retence.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.OfferId">
+            <summary>
+            ID vytvorene simulace.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.LoanPaymentAmountIndividualPrice">
+            <summary>
+            Výše měsíční splátky se zohledněním IC.
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.WorthinessResult">
             <summary>
@@ -3108,6 +3150,31 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetInterestRatesValidFrom.GetInterestRatesValidFromRequest.CaseId">
+            <summary>
+            ID Case-u
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetInterestRatesValidFrom.GetInterestRatesValidFromResponseItem.InterestRateValidFrom">
+            <summary>
+            Platnost nové úrokové sazby od (nabízená hodnota).
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetInterestRatesValidFrom.GetInterestRatesValidFromResponseItem.IsDefault">
+            <summary>
+            Indikuje defaultní volbu pro výběr na FE.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetInterestRate.GetInterestRateRequest.CaseId">
+            <summary>
+            ID Case-u
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetInterestRate.GetInterestRateResponse.LoanInterestRateCurrent">
+            <summary>
+            Aktuální úroková sazba.
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRefinancingParameters(System.Int64)">
             <summary>
             Žádosti o změnu sazby
@@ -3116,6 +3183,26 @@
             Operace slouží k získání informací a žádostí ke změnám sazeb.
             
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EBF744FA-9F0F-421e-89F8-CFFFAEC76BB1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetInterestRatesValidFrom(System.Int64)">
+            <summary>
+            Seznam možných platností sazby od
+            </summary>
+            <remarks>
+            Vrátí kolekci možných platností sazby od pro konkrétní úvěr.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetInterestRate(System.Int64)">
+            <summary>
+            Aktuální úroková sazba
+            </summary>
+            <remarks>
+            Operace slouží k získání informací o aktuální úrokové sazbě.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">

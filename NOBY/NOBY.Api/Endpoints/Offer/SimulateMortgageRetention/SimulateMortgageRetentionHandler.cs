@@ -8,22 +8,8 @@ internal sealed class SimulateMortgageRetentionHandler
 {
     public async Task<SimulateMortgageRetentionResponse> Handle(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken)
     {
-        DateTime? interestRateValidFrom = request.InterestRateValidFrom;
-
-        if (interestRateValidFrom.HasValue)
-        {
-            if (false)
-            {
-                throw new NobyValidationException(90032, "InterestRateValidFrom is not valid");
-            }
-        }
-        else
-        {
-            interestRateValidFrom = DateTime.Now;
-        }
-
         // ziskat int.rate
-        //await _offerService.GetInterestRate()
+        var interestRate = await _offerService.GetInterestRate(request.CaseId, request.InterestRateValidFrom, cancellationToken);
 
         var dsRequest = new DomainServices.OfferService.Contracts.SimulateMortgageRetentionRequest
         {
@@ -31,11 +17,11 @@ internal sealed class SimulateMortgageRetentionHandler
             BasicParameters = new()
             {
                 Amount = (await _codebookService.FeeChangeRequests(cancellationToken)).First(t => t.IsDefault).Amount,
-                AmountIndividualPrice = request.FeeAmountIndividualPrice
+                AmountDiscount = request.FeeAmountIndividualPrice
             },
             SimulationInputs = new()
             {
-                InterestRate = 1,//GetInterestRate
+                InterestRate = interestRate,
                 InterestRateDiscount = request.InterestRateDiscount,
                 InterestRateValidFrom = request.InterestRateValidFrom
             }

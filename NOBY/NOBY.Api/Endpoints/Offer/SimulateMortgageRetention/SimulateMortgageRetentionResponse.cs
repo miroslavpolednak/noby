@@ -2,6 +2,9 @@
 
 public sealed class SimulateMortgageRetentionResponse
 {
+    /// <summary>
+    /// ID vytvorene simulace.
+    /// </summary>
     public int OfferId { get; set; }
 
     /// <summary>

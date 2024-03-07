@@ -27,4 +27,36 @@ public sealed class RefinancingController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetRefinancingParameters.GetRefinancingParametersResponse> GetRefinancingParameters([FromRoute] long caseId)
         => await _mediator.Send(new GetRefinancingParameters.GetRefinancingParametersRequest(caseId));
+
+    /// <summary>
+    /// Seznam možných platností sazby od
+    /// </summary>
+    /// <remarks>
+    /// Vrátí kolekci možných platností sazby od pro konkrétní úvěr.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("case/{caseId:long}/interest-rates-valid-from")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    [ProducesResponseType(typeof(GetInterestRatesValidFrom.GetInterestRatesValidFromResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetInterestRatesValidFrom.GetInterestRatesValidFromResponse> GetInterestRatesValidFrom([FromRoute] long caseId)
+        => await _mediator.Send(new GetInterestRatesValidFrom.GetInterestRatesValidFromRequest(caseId));
+
+    /// <summary>
+    /// Aktuální úroková sazba
+    /// </summary>
+    /// <remarks>
+    /// Operace slouží k získání informací o aktuální úrokové sazbě.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("case/{caseId:long}/interest-rate")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    [ProducesResponseType(typeof(GetInterestRate.GetInterestRateResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetInterestRate.GetInterestRateResponse> GetInterestRate([FromRoute] long caseId)
+        => await _mediator.Send(new GetInterestRate.GetInterestRateRequest(caseId));
 }

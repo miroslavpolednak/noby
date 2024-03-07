@@ -11,9 +11,9 @@ namespace ExternalServices.SbWebApi.V1;
 internal sealed class RealSbWebApiClient
     : ISbWebApiClient
 {
-    public async Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime date, CancellationToken cancellationToken)
+    public async Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime interestRateValidTo, CancellationToken cancellationToken)
     {
-        var httpResponse = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/refixationservices/getinterestrate?uver_id={caseId}&date={date:yyyy-MM-dd}&fixation_time", cancellationToken);
+        var httpResponse = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/api/refixationservices/getinterestrate?uver_id={caseId}&date={interestRateValidTo:yyyy-MM-dd}&fixation_time", cancellationToken);
 
         var responseObject = await RequestHelper.ProcessResponse<GetInterestRate_response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
         

@@ -22,8 +22,9 @@ internal sealed class SimulateMortgageRetentionRequestValidator
                 .GreaterThanOrEqualTo(0)
                 .WithErrorCode(ErrorCodeMapper.MortgageRetentionAmountNotValid);
 
-            RuleFor(t => (decimal)t.BasicParameters.AmountIndividualPrice)
+            RuleFor(t => (decimal)t.BasicParameters.AmountDiscount!)
                 .GreaterThanOrEqualTo(0)
+                .When(t => t.BasicParameters.AmountDiscount != null)
                 .WithErrorCode(ErrorCodeMapper.MortgageRetentionAmountIndividualPriceNotValid);
         });
     }

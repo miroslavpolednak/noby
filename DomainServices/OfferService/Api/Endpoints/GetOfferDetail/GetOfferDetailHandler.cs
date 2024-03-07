@@ -24,9 +24,19 @@ internal sealed class GetOfferDetailHandler
             case OfferTypes.Mortgage:
                 model.MortgageOffer = await getMortgageData(model.Data.OfferId, model.Data.IsCreditWorthinessSimpleRequested, cancellationToken);
                 break;
+
+            case OfferTypes.MortgageRetention:
+                model.MortgageRetention = await getRetentionData(model.Data.OfferId, cancellationToken);
+                break;
         }
 
         return model;
+    }
+
+    private async Task<MortgageRetentionFullData> getRetentionData(int offerId, CancellationToken cancellationToken)
+    {
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageRetentionData>(offerId, cancellationToken);
+        return _retentionMapper.MapToFullData(offerData!.Data!);
     }
 
     private async Task<MortgageOfferFullData> getMortgageData(int offerId, bool isCreditWorthinessSimpleRequested, CancellationToken cancellationToken)
@@ -54,6 +64,7 @@ internal sealed class GetOfferDetailHandler
     private readonly IMediator _mediator;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper;
+    private readonly Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _retentionMapper;
     private readonly Database.DocumentDataEntities.Mappers.MortgageAdditionalSimulationResultsDataMapper _additionalResultsMapper;
     private readonly Database.DocumentDataEntities.Mappers.MortgageCreditWorthinessSimpleDataMapper _creditWorthinessMapper;
 
@@ -62,12 +73,14 @@ internal sealed class GetOfferDetailHandler
         Database.DocumentDataEntities.Mappers.MortgageAdditionalSimulationResultsDataMapper additionalResultsMapper,
         Database.DocumentDataEntities.Mappers.MortgageCreditWorthinessSimpleDataMapper creditWorthinessMapper,
         Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper offerMapper,
-        IMediator mediator)
+        IMediator mediator,
+        Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper retentionMapper)
     {
         _additionalResultsMapper = additionalResultsMapper;
         _creditWorthinessMapper = creditWorthinessMapper;
         _documentDataStorage = documentDataStorage;
         _offerMapper = offerMapper;
         _mediator = mediator;
+        _retentionMapper = retentionMapper;
     }
 }

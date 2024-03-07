@@ -34,3 +34,8 @@ public partial class UpdateOfferRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 {
 }
+
+public partial class GetInterestRateRequest
+    : MediatR.IRequest<GetInterestRateResponse>, CIS.Core.Validation.IValidatableRequest
+{
+}

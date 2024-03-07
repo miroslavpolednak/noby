@@ -8,16 +8,22 @@ import "GrpcDate.proto";
 
 message MortgageRetentionBasicParameters {
 	cis.types.GrpcDecimal Amount  = 1;
-	cis.types.GrpcDecimal AmountIndividualPrice  = 2;
+	cis.types.NullableGrpcDecimal AmountDiscount  = 2;
 }
 
 message MortgageRetentionSimulationInputs {
 	cis.types.GrpcDate InterestRateValidFrom = 1;
-	cis.types.GrpcDecimal InterestRate = 2;
+	cis.types.NullableGrpcDecimal InterestRate = 2;
 	cis.types.NullableGrpcDecimal InterestRateDiscount = 3;
 }
 
 message MortgageRetentionSimulationResults {
 	cis.types.GrpcDecimal LoanPaymentAmount = 1;
 	cis.types.NullableGrpcDecimal LoanPaymentAmountDiscounted = 2;
+}
+
+message MortgageRetentionFullData {
+	MortgageRetentionBasicParameters BasicParameters = 1;
+	MortgageRetentionSimulationInputs SimulationInputs = 2;
+	MortgageRetentionSimulationResults SimulationResults = 3;
 }

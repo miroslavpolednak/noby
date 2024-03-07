@@ -27,6 +27,6 @@ internal sealed class MortgageRetentionData
     public sealed class BasicParametersData
     {
         public decimal Amount { get; set; }
-        public decimal AmountIndividualPrice { get; set; }
+        public decimal? AmountDiscount { get; set; }
     }
 }
