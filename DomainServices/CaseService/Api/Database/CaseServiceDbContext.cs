@@ -11,7 +11,8 @@ internal sealed class CaseServiceDbContext
 
     public DbSet<Case> Cases { get; set; }
     public DbSet<ActiveTask> ActiveTasks { get; set; }
-    
+    public DbSet<ConfirmedPriceException> ConfirmedPriceExceptions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.RegisterCisTemporalTable<Case>();

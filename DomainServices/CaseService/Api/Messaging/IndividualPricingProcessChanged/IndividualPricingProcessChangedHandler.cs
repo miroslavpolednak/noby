@@ -4,6 +4,7 @@ using DomainServices.CaseService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using KafkaFlow;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
@@ -13,18 +14,20 @@ internal class IndividualPricingProcessChangedHandler : IMessageHandler<Individu
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ActiveTasksService _activeTasksService;
     private readonly ILogger<IndividualPricingProcessChangedHandler> _logger;
+    private readonly Database.CaseServiceDbContext _dbContext;
 
     public IndividualPricingProcessChangedHandler(
         IMediator mediator,
         ISalesArrangementServiceClient salesArrangementService,
         ActiveTasksService activeTasksService,
-        ILogger<IndividualPricingProcessChangedHandler> logger)
+        ILogger<IndividualPricingProcessChangedHandler> logger,
+        Database.CaseServiceDbContext dbContext)
     {
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
         _activeTasksService = activeTasksService;
         _logger = logger;
-        
+        _dbContext = dbContext;
     }
 
     public async Task Handle(IMessageContext context, IndividualPricingProcessChanged message)
@@ -52,7 +55,18 @@ internal class IndividualPricingProcessChangedHandler : IMessageHandler<Individu
 
         if (message.state is ProcessStateEnum.COMPLETED && taskDetail.TaskObject.DecisionId == 1)
         {
-
+            var existingConfirmedEntity = _dbContext.ConfirmedPriceExceptions.FirstOrDefault(t => t.TaskIdSB == currentTaskId);
+            if (existingConfirmedEntity is null)
+            {
+                existingConfirmedEntity = new Database.Entities.ConfirmedPriceException
+                {
+                    TaskIdSB = currentTaskId,
+                    CaseId = caseId
+                };
+            }
+            existingConfirmedEntity.ConfirmedDate = message.occurredOn;
+            existingConfirmedEntity.CreatedTime = DateTime.Now;
+            _dbContext.SaveChanges();
         }
 
         if (taskDetail.TaskObject.ProcessTypeId != 1)
