@@ -4,43 +4,70 @@ using DomainServices.CaseService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using KafkaFlow;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
-internal class IndividualPricingProcessChangedHandler : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.IndividualPricingProcessChanged>
+internal class IndividualPricingProcessChangedHandler : IMessageHandler<IndividualPricingProcessChanged>
 {
     private readonly IMediator _mediator;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ActiveTasksService _activeTasksService;
     private readonly ILogger<IndividualPricingProcessChangedHandler> _logger;
+    private readonly Database.CaseServiceDbContext _dbContext;
 
     public IndividualPricingProcessChangedHandler(
         IMediator mediator,
         ISalesArrangementServiceClient salesArrangementService,
         ActiveTasksService activeTasksService,
-        ILogger<IndividualPricingProcessChangedHandler> logger)
+        ILogger<IndividualPricingProcessChangedHandler> logger,
+        Database.CaseServiceDbContext dbContext)
     {
         _mediator = mediator;
         _salesArrangementService = salesArrangementService;
         _activeTasksService = activeTasksService;
         _logger = logger;
-        
+        _dbContext = dbContext;
     }
 
-    public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.IndividualPricingProcessChanged message)
+    public async Task Handle(IMessageContext context, IndividualPricingProcessChanged message)
     {
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
             _logger.KafkaMessageCurrentTaskIdIncorrectFormat(nameof(IndividualPricingProcessChangedHandler), message.currentTask.id);
+            return;
         }
         
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
             _logger.KafkaMessageCaseIdIncorrectFormat(nameof(IndividualPricingProcessChangedHandler), message.@case.caseId.id);
+            return;
         }
-        
+
+        if (message.state is not (ProcessStateEnum.ACTIVE or ProcessStateEnum.TERMINATED or ProcessStateEnum.COMPLETED))
+        {
+            _logger.KafkaMessageCurrentTaskIdIncorrectFormat(nameof(IndividualPricingProcessChangedHandler), message.currentTask.id);
+            return;
+        }
+
         // detail tasku
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId });
+
+        if (message.state is ProcessStateEnum.COMPLETED && taskDetail.TaskObject.DecisionId == 1)
+        {
+            var existingConfirmedEntity = _dbContext.ConfirmedPriceExceptions.FirstOrDefault(t => t.TaskIdSB == currentTaskId);
+            if (existingConfirmedEntity is null)
+            {
+                existingConfirmedEntity = new Database.Entities.ConfirmedPriceException
+                {
+                    TaskIdSB = currentTaskId,
+                    CaseId = caseId
+                };
+            }
+            existingConfirmedEntity.ConfirmedDate = message.occurredOn;
+            existingConfirmedEntity.CreatedTime = DateTime.Now;
+            _dbContext.SaveChanges();
+        }
 
         if (taskDetail.TaskObject.ProcessTypeId != 1)
         {
@@ -60,11 +87,7 @@ internal class IndividualPricingProcessChangedHandler : IMessageHandler<cz.mpss.
         
         if (flowSwitches.Count != 0)
         {
-            var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId);
-            var productSaleArrangements = salesArrangementResponse.SalesArrangements
-                .Where(t => t.IsProductSalesArrangement())
-                .ToList();
-            
+            var productSaleArrangements = await _salesArrangementService.GetProductSalesArrangements(caseId);
             foreach (var salesArrangement in productSaleArrangements)
             {
                 await _salesArrangementService.SetFlowSwitches(salesArrangement.SalesArrangementId, flowSwitches);
