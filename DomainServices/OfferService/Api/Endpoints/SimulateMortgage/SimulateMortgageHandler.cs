@@ -161,8 +161,8 @@ internal sealed class SimulateMortgageHandler
                 {
                     ProductTypeId = request.SimulationInputs.ProductTypeId,
                     LoanDuration = simulationResults.uverVysledky.splatnostUveru,
-                    LoanInterestRate = simulationResults.urokovaSazba.urokovaSazba,
-                    LoanAmount = (int)(decimal)simulationResults.uverVysledky.vyseUveru,
+                    LoanInterestRate = simulationResults.uverVysledky.sazbaPoskytnuta,
+                    LoanAmount = (int)simulationResults.uverVysledky.vyseUveru,
                     LoanPaymentAmount = (int)((decimal?)simulationResults.uverVysledky.splatkaUveru ?? 0m),
                     FixedRatePeriod = request.SimulationInputs.FixedRatePeriod ?? 0
                 }

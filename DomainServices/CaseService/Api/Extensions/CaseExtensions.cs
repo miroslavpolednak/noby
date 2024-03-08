@@ -1,8 +1,5 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CaseService.Contracts;
+﻿using DomainServices.CaseService.Contracts;
 using FastEnumUtility;
-using Google.Protobuf.WellKnownTypes;
-using cz.kb.api.mortgageservicingevents.v2.mortgageinstance;
 
 namespace DomainServices.CaseService.Api;
 

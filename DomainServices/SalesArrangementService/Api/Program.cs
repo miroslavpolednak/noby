@@ -35,10 +35,7 @@ SharedComponents.GrpcServiceBuilder
 
         builder.AddDocumentDataStorage();
 
-        // background svc
-        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckJob>();
-        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelCase.CancelCaseJob>();
-        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelServiceSalesArrangement.CancelServiceSalesArrangementJob>();
+        bgServices(builder);
     })
     .MapGrpcServices(app =>
     {
@@ -46,6 +43,14 @@ SharedComponents.GrpcServiceBuilder
         app.MapGrpcService<DomainServices.SalesArrangementService.Api.Endpoints.MaintananceService>();
     })
     .Run();
+
+[Obsolete("Odstranit po nasazeni scheduling service")]
+void bgServices(WebApplicationBuilder builder)
+{
+    builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckJob>();
+    builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelCase.CancelCaseJob>();
+    builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelServiceSalesArrangement.CancelServiceSalesArrangementJob>();
+}
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

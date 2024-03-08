@@ -81,10 +81,12 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632253">RealEstateTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413632953">RealEstatePurchaseTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RefixationOfferType">RefixationOfferTypes</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/RefinancingState">RefinancingStates</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RefinancingType">RefinancingTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800899040">SignatureTypeDetail</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchemas</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructures</a>

@@ -9,7 +9,7 @@ namespace NOBY.Services.CreateProductTrain.Handlers;
 [ScopedService, SelfService]
 internal sealed class CreateRiskBusinessCase
 {
-    public async Task Run(
+    public async Task<(string RiskSegment, string RiskBusinessCaseId, string LoanApplicationDataVersion)?> Run(
         int salesArrangementId,
         CancellationToken cancellationToken)
     {
@@ -29,6 +29,8 @@ internal sealed class CreateRiskBusinessCase
                     RiskBusinessCaseId = riskCase.RiskBusinessCaseId,
                     LoanApplicationDataVersion = riskCase.LoanApplicationDataVersion
                 }, cancellationToken);
+
+                return (riskCase.RiskSegment, riskCase.RiskBusinessCaseId, riskCase.LoanApplicationDataVersion);
             }
             catch (CisValidationException ex)
             {
@@ -39,6 +41,8 @@ internal sealed class CreateRiskBusinessCase
         {
             _logger.LogInformation($"SalesArrangement #{salesArrangementId} already contains RiskBusinessCaseId");
         }
+
+        return default;
     }
 
     private readonly ISalesArrangementServiceClient _salesArrangementService;

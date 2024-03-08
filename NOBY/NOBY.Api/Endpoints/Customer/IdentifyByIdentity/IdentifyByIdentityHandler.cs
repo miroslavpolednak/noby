@@ -58,7 +58,7 @@ internal sealed class IdentifyByIdentityHandler
             // hlavni klient
             if (customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Debtor)
             {
-                await _createProductTrain.Run(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers, cancellationToken);
+                await _createProductTrain.RunAll(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers, cancellationToken);
             }
             else // vytvoreni klienta v konsDb. Pro dluznika se to dela v notification, pro ostatni se to dubluje tady
             {

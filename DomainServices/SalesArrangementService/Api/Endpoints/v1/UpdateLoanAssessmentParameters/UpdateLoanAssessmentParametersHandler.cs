@@ -1,5 +1,9 @@
-﻿using DomainServices.SalesArrangementService.Api.Database;
+﻿using CIS.Core.Security;
+using DomainServices.CaseService.Clients;
+using DomainServices.CodebookService.Clients;
+using DomainServices.SalesArrangementService.Api.Database;
 using DomainServices.SalesArrangementService.Contracts;
+using DomainServices.UserService.Clients;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateLoanAssessmentParameters;
@@ -13,6 +17,9 @@ internal sealed class UpdateLoanAssessmentParametersHandler
             .SalesArrangements
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
+        
+        // puvodni rbcid
+        string? rbcid = entity.RiskBusinessCaseId;
 
         if (!string.IsNullOrEmpty(request.RiskSegment))
         {
@@ -51,15 +58,42 @@ internal sealed class UpdateLoanAssessmentParametersHandler
             entity.State = (int)SalesArrangementStates.InProgress;
         }
 
+        // ulozeni zmen
         await _dbContext.SaveChangesAsync(cancellation);
+
+        // meni se rbcid, notifikovat SB
+        if (!string.IsNullOrEmpty(request.RiskBusinessCaseId) && !request.RiskBusinessCaseId.Equals(rbcid, StringComparison.OrdinalIgnoreCase))
+        {
+            // case
+            var caseInstance = await _caseService.GetCaseDetail(entity.CaseId, cancellation);
+
+            // get current user's login
+            string? userLogin = null;
+            if (_userAccessor.User?.Id > 0)
+                userLogin = (await _userService.GetUser(_userAccessor.User!.Id, cancellation)).UserIdentifiers.FirstOrDefault()?.Identity ?? "anonymous";
+
+            // get case owner
+            var ownerInstance = await _userService.GetUser(caseInstance.CaseOwner.UserId, cancellation);
+            var productType = (await _codebookService.ProductTypes(cancellation)).First(t => t.Id == caseInstance.Data.ProductTypeId);
+
+            await _caseService.NotifyStarbuild(entity.CaseId, request.RiskBusinessCaseId, cancellation);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
+    private readonly ICaseServiceClient _caseService;
+    private readonly ICurrentUserAccessor _userAccessor;
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly IUserServiceClient _userService;
     private readonly SalesArrangementServiceDbContext _dbContext;
 
-    public UpdateLoanAssessmentParametersHandler(SalesArrangementServiceDbContext dbContext)
+    public UpdateLoanAssessmentParametersHandler(SalesArrangementServiceDbContext dbContext, ICaseServiceClient caseService, ICurrentUserAccessor userAccessor, ICodebookServiceClient codebookService, IUserServiceClient userService)
     {
         _dbContext = dbContext;
+        _caseService = caseService;
+        _userAccessor = userAccessor;
+        _codebookService = codebookService;
+        _userService = userService;
     }
 }

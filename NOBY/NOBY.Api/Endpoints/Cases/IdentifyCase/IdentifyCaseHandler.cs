@@ -7,12 +7,13 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using SharedTypes.GrpcTypes;
 using System.Text.RegularExpressions;
 using PaymentAccount = NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount;
 
 namespace NOBY.Api.Endpoints.Cases.IdentifyCase;
 
-internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest, IdentifyCaseResponse>
+internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest, IdentifyCaseResponse>
 {
     public async Task<IdentifyCaseResponse> Handle(IdentifyCaseRequest request, CancellationToken cancellationToken)
     {
@@ -22,7 +23,20 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
             Criterion.PaymentAccount => await handleByPaymentAccount(request.Account!, cancellationToken),
             Criterion.CaseId => await handleByCaseId(request.CaseId!.Value, cancellationToken),
             Criterion.ContractNumber => await handleByContractNumber(request.ContractNumber!.Trim(), cancellationToken),
+            Criterion.CustomerIdentity => await handleByCustomerIdentity(request.CustomerIdentity, cancellationToken),
             _ => throw new NobyValidationException("Criterion unknown")
+        };
+    }
+
+    private async Task<IdentifyCaseResponse> handleByCustomerIdentity(Identity? identity, CancellationToken cancellationToken)
+    {
+        var result = await _productServiceClient.SearchProducts(identity, cancellationToken);
+        return new IdentifyCaseResponse
+        {
+            Cases = result.Select(t => new IdentifyCaseResponseItem(t.CaseId)
+            {
+                ContractRelationshipTypeId = t.ContractRelationshipTypeId
+            }).ToList()
         };
     }
 
@@ -33,7 +47,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
 
         var document = documentListResponse
             .Metadata
-            .Where(t => Regex.IsMatch(t.DocumentId[7..], "^[0-9]+$"))
+            .Where(t => handlerByFormIdRegex().IsMatch(t.DocumentId[7..]))
             .FirstOrDefault();
         var caseId = document?.CaseId;
 
@@ -71,7 +85,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
 
         if (taskSubList.Count == 0)
         {
-            return new IdentifyCaseResponse { CaseId = caseId };
+            return new IdentifyCaseResponse { Cases = [ new(caseId.Value) ] };
         }
 
         var taskDetails = new Dictionary<long, List<TaskDetailItem>>();
@@ -88,7 +102,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
 
         if (taskDetails.SelectMany(d => d.Value).Count() != 1)
         {
-            return new IdentifyCaseResponse { CaseId = caseId };
+            return new IdentifyCaseResponse { Cases = [new(caseId.Value)] };
         }
 
         var taskId = taskDetails.First().Key;
@@ -97,7 +111,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
 
         return new IdentifyCaseResponse
         {
-            CaseId = caseId,
+            Cases = [ new(caseId.Value) ],
             Task = taskDetailResponse.Task,
             TaskDetail = taskDetailResponse.TaskDetail,
             Documents = taskDetailResponse.Documents
@@ -143,7 +157,7 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
             SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
         }
         
-        return new IdentifyCaseResponse { CaseId = caseId };
+        return new IdentifyCaseResponse { Cases = [new(caseId)] };
     }
 
     private async Task<IdentifyCaseResponse> callProductService(GetCaseIdRequest request, CancellationToken cancellationToken)
@@ -158,6 +172,9 @@ internal sealed class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest,
             return new IdentifyCaseResponse();
         }
     }
+
+    [GeneratedRegex(@"^[0-9]+$")]
+    private static partial Regex handlerByFormIdRegex();
 
     private readonly IMediator _mediator;
     private readonly ICurrentUserAccessor _currentUser;

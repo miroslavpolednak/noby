@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class LoanWithdrawal : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""LoanWithdrawal"",""doc"":""One withdrawal from one sold loan's purpose.. ## Request for withdrawals (not necessarily by customer). CDM entity name(s): LoanWithdrawal,WithdrawalRequest."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageinstance"",""fields"":[{""name"":""date"",""doc"":""Depends on state it has meaning: Planned date of withdrawal/ Date of performed withdrawal. CDM attribute class name: LoanWithdrawalDate. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""long"",""logicalType"":""timestamp-millis""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""LoanWithdrawal"",""doc"":""One withdrawal from one sold loan's purpose.. ## Request for withdrawals (not necessarily by customer). CDM entity name(s): LoanWithdrawal,WithdrawalRequest."",""namespace"":""cz.kb.api.mortgageservicingevents.v3.mortgageinstance"",""fields"":[{""name"":""date"",""doc"":""Depends on state it has meaning: Planned date of withdrawal/ Date of performed withdrawal. CDM attribute class name: LoanWithdrawalDate. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""long"",""logicalType"":""timestamp-millis""}}]}");
 		/// <summary>
 		/// Depends on state it has meaning: Planned date of withdrawal/ Date of performed withdrawal. CDM attribute class name: LoanWithdrawalDate. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>

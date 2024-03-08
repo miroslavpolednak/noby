@@ -4,6 +4,8 @@ using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 namespace NOBY.Api.Endpoints.Workflow.UpdateTaskDetail;
 
 internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetailRequest>

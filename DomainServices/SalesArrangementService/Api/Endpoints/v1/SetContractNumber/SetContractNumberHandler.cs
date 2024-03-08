@@ -78,8 +78,7 @@ internal sealed class SetContractNumberHandler : IRequestHandler<SetContractNumb
         await _mediator.Send(new UpdateSalesArrangementRequest
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
-            ContractNumber = contractNumber,
-            RiskBusinessCaseId = salesArrangement.RiskBusinessCaseId
+            ContractNumber = contractNumber
         }, cancellationToken);
 
         salesArrangement.ContractNumber = contractNumber;

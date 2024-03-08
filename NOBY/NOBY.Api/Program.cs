@@ -79,7 +79,7 @@ try
     // swagger
     if (!envConfiguration.DisableContractDescriptionPropagation)
     {
-        builder.AddFomsSwagger();
+        builder.AddNobySwagger();
     }
 
     // podpora SPA

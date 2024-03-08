@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"ut catalogue specification of business product in offer.catalogue = no situation" +
 				"/context available, i.e. generic definition of product.  CDM entity name(s): Cat" +
 				"alogueMktItemInOfferSpecsInfo.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v" +
-				"2.mortgageinstance\",\"fields\":[{\"name\":\"catalogueItemObjectCode\",\"type\":{\"type\":\"" +
+				"3.mortgageinstance\",\"fields\":[{\"name\":\"catalogueItemObjectCode\",\"type\":{\"type\":\"" +
 				"record\",\"name\":\"CatalogueItemObjectCode\",\"doc\":\"Multiattribute property of any c" +
 				"atalog item identification (product, service, offer...). The identifier (object " +
 				"code) does not change when the version changes Multi-attribute is used because t" +
@@ -33,7 +33,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				") se nemeni pri zmene verze Vice atributu je pouzito z duvodu ze neexistuje pouz" +
 				"e jedina identifikace produktovych polozek banky (produktu, sluzeb), ale muze ji" +
 				"ch byt vice. CDM entity name(s): CatalogueItemObjectCode.\",\"namespace\":\"cz.kb.ap" +
-				"i.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"objectCode\",\"d" +
+				"i.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"objectCode\",\"d" +
 				"oc\":\"The identifier of the catalog item (product, service, offering, etc.) that " +
 				"does not change when the version of the item changes.For example, the Standard T" +
 				"ariff Offer has different settings in different versions (e.g. different types a" +
@@ -49,7 +49,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"s supposed to be human-readable.E.g. SystemApplicationCode, ProductGroupCode.\",\"" +
 				"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,100}$\"}}]}}]}" +
 				"");
-		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.CatalogueItemObjectCode _catalogueItemObjectCode;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageinstance.CatalogueItemObjectCode _catalogueItemObjectCode;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -57,7 +57,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				return CatalogueMktItemInOfferSpecsInfo._SCHEMA;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.CatalogueItemObjectCode catalogueItemObjectCode
+		public cz.kb.api.mortgageservicingevents.v3.mortgageinstance.CatalogueItemObjectCode catalogueItemObjectCode
 		{
 			get
 			{
@@ -80,7 +80,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 		{
 			switch (fieldPos)
 			{
-			case 0: this.catalogueItemObjectCode = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.CatalogueItemObjectCode)fieldValue; break;
+			case 0: this.catalogueItemObjectCode = (cz.kb.api.mortgageservicingevents.v3.mortgageinstance.CatalogueItemObjectCode)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

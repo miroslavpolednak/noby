@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"LoanBalance\",\"doc\":\"Information entity with various loan" +
 				"/credit balance information on given date.. CDM entity name(s): LoanBalance.\",\"n" +
-				"amespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"na" +
+				"amespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"na" +
 				"me\":\"amountNotYetWithdrawn\",\"doc\":\"Amount money that was not yet withdrawn from " +
 				"this loan. CDM attribute class name: LoanBalanceAmountNotYetWithdrawn. Attribute" +
 				" has simple type ST_AmountMoney with description: Castka.Decimal number represen" +
@@ -58,7 +58,12 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"amount that would be needed. CDM attribute class name: LoanBalanceTotalAmount. A" +
 				"ttribute has simple type ST_AmountMoney with description: Castka.Decimal number " +
 				"representing an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\"," +
-				"\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]}]}");
+				"\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"totalAmountWithoutU" +
+				"ncreditedInterest\",\"doc\":\".If loan was to be completely repaid at this time, thi" +
+				"s is total amount that would be needed. CDM attribute class name: LoanBalanceTot" +
+				"alAmount. Attribute has simple type ST_AmountMoney with description: Castka.Deci" +
+				"mal number representing an amount of money.\",\"default\":null,\"type\":[\"null\",{\"typ" +
+				"e\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]}]}");
 		/// <summary>
 		/// Amount money that was not yet withdrawn from this loan. CDM attribute class name: LoanBalanceAmountNotYetWithdrawn. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
@@ -91,6 +96,10 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 		/// If loan was to be completely repaid at this time, this is total amount that would be needed. CDM attribute class name: LoanBalanceTotalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
 		/// </summary>
 		private System.Nullable<Avro.AvroDecimal> _totalAmount;
+		/// <summary>
+		/// .If loan was to be completely repaid at this time, this is total amount that would be needed. CDM attribute class name: LoanBalanceTotalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// </summary>
+		private System.Nullable<Avro.AvroDecimal> _totalAmountWithoutUncreditedInterest;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -210,6 +219,20 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				this._totalAmount = value;
 			}
 		}
+		/// <summary>
+		/// .If loan was to be completely repaid at this time, this is total amount that would be needed. CDM attribute class name: LoanBalanceTotalAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decimal number representing an amount of money.
+		/// </summary>
+		public System.Nullable<Avro.AvroDecimal> totalAmountWithoutUncreditedInterest
+		{
+			get
+			{
+				return this._totalAmountWithoutUncreditedInterest;
+			}
+			set
+			{
+				this._totalAmountWithoutUncreditedInterest = value;
+			}
+		}
 		public virtual object Get(int fieldPos)
 		{
 			switch (fieldPos)
@@ -222,6 +245,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 			case 5: return this.overdueInstallmentAmount;
 			case 6: return this.principalAmount;
 			case 7: return this.totalAmount;
+			case 8: return this.totalAmountWithoutUncreditedInterest;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Get()");
 			};
 		}
@@ -237,6 +261,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 			case 5: this.overdueInstallmentAmount = (System.Nullable<Avro.AvroDecimal>)fieldValue; break;
 			case 6: this.principalAmount = (System.Nullable<Avro.AvroDecimal>)fieldValue; break;
 			case 7: this.totalAmount = (System.Nullable<Avro.AvroDecimal>)fieldValue; break;
+			case 8: this.totalAmountWithoutUncreditedInterest = (System.Nullable<Avro.AvroDecimal>)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

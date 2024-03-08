@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using System.Reflection;
+using CIS.Infrastructure.Logging;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -47,9 +48,7 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
 
         if (extraProperties.Count != 0)
         {
-            _logger.LogWarning("Request {RequestName} has additional properties than contract. Differences: {ExtraProperties}", 
-                               typeof(TRequest).FullName, 
-                               extraProperties);
+            _logger.RequestHasAdditionalPropsThanContract(typeof(TRequest).FullName, extraProperties);
         }
 
         return await next();

@@ -6,6 +6,7 @@ using Polly;
 using Polly.Retry;
 using Polly.Timeout;
 using System.Net;
+using System.Net.Http.Json;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers;
 

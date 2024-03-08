@@ -22,6 +22,9 @@ internal sealed class TaskSchedulingService
     public override async Task<Empty> UpdateScheduler(UpdateSchedulerRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    public override async Task<GetJobStatusesResponse> GetJobStatuses(GetJobStatusesRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
     private readonly IMediator _mediator;
     public TaskSchedulingService(IMediator mediator)
         => _mediator = mediator;

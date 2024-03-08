@@ -1,5 +1,5 @@
 ﻿using DomainServices.CaseService.Contracts;
-using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
+using ExternalServices.SbWebApi.V1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
@@ -84,29 +84,39 @@ internal sealed class CreateTaskHandler
         if (priceException is null)
             return;
 
-        metadata.Add("ukol_overeni_ic_sazba_dat_do", priceException.Expiration is not null ?
-            ((DateOnly)priceException.Expiration!).ToSbFormat() 
-            : string.Empty);
-        metadata.Add("ukol_overeni_ic_sazba_nabid", priceException.LoanInterestRate.LoanInterestRate.ToSbFormat());
-        metadata.Add("ukol_overeni_ic_sazba_vysled", priceException.LoanInterestRate.LoanInterestRateProvided.ToSbFormat());
-        metadata.Add("ukol_overeni_ic_sazba_typ", priceException.LoanInterestRate.LoanInterestRateAnnouncedType.HasValue ?
-            priceException.LoanInterestRate.LoanInterestRateAnnouncedType.Value.ToString(CultureInfo.InvariantCulture)
-            : string.Empty);
-        metadata.Add("ukol_overeni_ic_sazba_sleva", priceException.LoanInterestRate.LoanInterestRateDiscount.ToSbFormat());
-        metadata.Add("ukol_overeni_ic_kod_produktu", priceException.ProductTypeId.HasValue ?
-            priceException.ProductTypeId.Value.ToString(CultureInfo.InvariantCulture)
-            : string.Empty);
-        metadata.Add("ukol_overeni_ic_vyse_uveru", priceException.LoanAmount.HasValue ?
-            priceException.LoanAmount.Value.ToString(CultureInfo.InvariantCulture) : string.Empty);
-        metadata.Add("ukol_overeni_ic_splatnost_uveru_poc_mes", priceException.LoanDuration.HasValue ?
-            priceException.LoanDuration.Value.ToString(CultureInfo.InvariantCulture)
-            : string.Empty);
-        metadata.Add("ukol_overeni_ic_uver_ltv", priceException.LoanToValue.HasValue ?
-            priceException.LoanToValue.Value.ToString(CultureInfo.InvariantCulture)
-            : string.Empty);
-        metadata.Add("ukol_overeni_ic_fixace_uveru_poc_mes", priceException.FixedRatePeriod.HasValue ?
-            priceException.FixedRatePeriod.Value.ToString(CultureInfo.InvariantCulture)
-            : string.Empty);
+        if (priceException.LoanInterestRate is null && priceException.Fees.Count == 0)
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.PriceExceptionLoanInterestRateOrFeesFillIn);
+
+        if (priceException.Expiration is not null)
+            metadata.Add("ukol_overeni_ic_sazba_dat_do", ((DateOnly)priceException.Expiration!).ToSbFormat());
+
+        if (priceException.LoanInterestRate is not null)
+        {
+            if (priceException.LoanInterestRate.LoanInterestRate is not null)
+                metadata.Add("ukol_overeni_ic_sazba_nabid", priceException.LoanInterestRate.LoanInterestRate.ToSbFormat());
+
+            metadata.Add("ukol_overeni_ic_sazba_vysled", priceException.LoanInterestRate.LoanInterestRateProvided.ToSbFormat());
+
+            if (priceException.LoanInterestRate.LoanInterestRateAnnouncedType is not null)
+                metadata.Add("ukol_overeni_ic_sazba_typ", priceException.LoanInterestRate.LoanInterestRateAnnouncedType.Value.ToString(CultureInfo.InvariantCulture));
+
+            metadata.Add("ukol_overeni_ic_sazba_sleva", priceException.LoanInterestRate.LoanInterestRateDiscount.ToSbFormat());
+        }
+
+        if (priceException.ProductTypeId is not null)
+            metadata.Add("ukol_overeni_ic_kod_produktu", priceException.ProductTypeId.Value.ToString(CultureInfo.InvariantCulture));
+
+        if (priceException.LoanAmount is not null)
+            metadata.Add("ukol_overeni_ic_vyse_uveru", priceException.LoanAmount.Value.ToString(CultureInfo.InvariantCulture));
+
+        if (priceException.LoanDuration is not null)
+            metadata.Add("ukol_overeni_ic_splatnost_uveru_poc_mes", priceException.LoanDuration.Value.ToString(CultureInfo.InvariantCulture));
+
+        if (priceException.LoanToValue is not null)
+            metadata.Add("ukol_overeni_ic_uver_ltv", priceException.LoanToValue.Value.ToString(CultureInfo.InvariantCulture));
+
+        if (priceException.FixedRatePeriod is not null)
+            metadata.Add("ukol_overeni_ic_fixace_uveru_poc_mes", priceException.FixedRatePeriod.Value.ToString(CultureInfo.InvariantCulture));
 
         for (var i = 0; i < priceException.Fees.Count; i++)
         {

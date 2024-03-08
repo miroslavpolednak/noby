@@ -53,6 +53,7 @@ public sealed class HouseholdObligationItem
     /// <summary>
     /// Výše limitu
     /// </summary>
+    [Obsolete("Odstranit v breznu")]
     public decimal? CreditCardLimitTotal { get; set; }
 
     /// <summary>

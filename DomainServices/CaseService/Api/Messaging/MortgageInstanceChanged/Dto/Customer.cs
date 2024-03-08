@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -14,17 +14,14 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 	using global::Avro.Specific;
 	
 	/// <summary>
-	///  CDM entity name(s): Customer.
+	/// Subject registred in Customer Management. CDM entity name(s): Customer.
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class Customer : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"Customer\",\"doc\":\" CDM entity name(s): Customer.\",\"namesp" +
-				"ace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"" +
-				"customerId\",\"doc\":\" CDM attribute class name: CustomerCustomerId.\",\"type\":\"long\"" +
-				"}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Customer"",""doc"":""Subject registred in Customer Management. CDM entity name(s): Customer."",""namespace"":""cz.kb.api.mortgageservicingevents.v3.mortgageinstance"",""fields"":[{""name"":""customerId"",""doc"":""Identifier of the customer  (KBID - identifier of customer in Customer Management system). CDM attribute class name: CustomerCustomerId."",""type"":""long""}]}");
 		/// <summary>
-		///  CDM attribute class name: CustomerCustomerId.
+		/// Identifier of the customer  (KBID - identifier of customer in Customer Management system). CDM attribute class name: CustomerCustomerId.
 		/// </summary>
 		private long _customerId;
 		public virtual global::Avro.Schema Schema
@@ -35,7 +32,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 			}
 		}
 		/// <summary>
-		///  CDM attribute class name: CustomerCustomerId.
+		/// Identifier of the customer  (KBID - identifier of customer in Customer Management system). CDM attribute class name: CustomerCustomerId.
 		/// </summary>
 		public long customerId
 		{

@@ -3,12 +3,9 @@ using DomainServices.CaseService.Clients;
 using DomainServices.CaseService.Contracts;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Api.Database.Entities;
-using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using MassTransit;
-using Newtonsoft.Json;
 using SharedComponents.DocumentDataStorage;
-using System.Threading;
 
 namespace DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged;
 

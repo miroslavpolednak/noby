@@ -1,0 +1,1 @@
+UPDATE RiskLoanApplicationDataField SET DataFieldId = 7 WHERE JsonPropertyName = 'Product.LoanInterestRate'

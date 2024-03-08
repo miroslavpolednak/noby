@@ -1,15 +1,18 @@
-﻿using CIS.Core.Data;
-using CIS.Infrastructure.Data;
-using CIS.InternalServices.TaskSchedulingService.Contracts;
+﻿using CIS.InternalServices.TaskSchedulingService.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Endpoints.GetJobs;
 
 internal sealed class GetJobsHandler
     : IRequestHandler<GetJobsRequest, GetJobsResponse>
 {
-    public async Task<GetJobsResponse> Handle(GetJobsRequest request, CancellationToken cancellation)
+    public async Task<GetJobsResponse> Handle(GetJobsRequest request, CancellationToken cancellationToken)
     {
-        var result = await _connectionProvider.ExecuteDapperRawSqlToListAsync<Job>(_sql, cancellation);
+        var result = await _dbContext
+            .ScheduleJobs
+            .AsNoTracking()
+            .OrderBy(t => t.JobName)
+            .ToListAsync(cancellationToken);
         
         var response = new GetJobsResponse();
         response.Jobs.AddRange(result.Select(t => new GetJobsResponse.Types.Job
@@ -23,21 +26,10 @@ internal sealed class GetJobsHandler
         return response;
     }
 
-    class Job
+    private readonly Database.TaskSchedulingServiceDbContext _dbContext;
+
+    public GetJobsHandler(Database.TaskSchedulingServiceDbContext dbContext)
     {
-        public Guid ScheduleJobId { get; set; }
-        public string JobName { get; set; } = null!;
-        public string JobType { get; set; } = null!;
-        public string? Description { get; set; }
-        public bool IsDisabled { get; set; }
-    }
-
-    private const string _sql = "SELECT * FROM dbo.ScheduleJob ORDER BY JobName";
-
-    private readonly Core.Data.IConnectionProvider _connectionProvider;
-
-    public GetJobsHandler(IConnectionProvider connectionProvider)
-    {
-        _connectionProvider = connectionProvider;
+        _dbContext = dbContext;
     }
 }

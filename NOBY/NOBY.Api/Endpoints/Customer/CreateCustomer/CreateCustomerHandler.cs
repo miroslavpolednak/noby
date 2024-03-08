@@ -100,7 +100,7 @@ internal sealed class CreateCustomerHandler
 
         if (customerOnSA.CustomerRoleId == (int)CustomerRoles.Debtor)
         {
-            await _createProductTrain.Run(saInstance.CaseId, customerOnSA.SalesArrangementId, request.CustomerOnSAId, updateResponse.CustomerIdentifiers, cancellationToken);
+            await _createProductTrain.RunAll(saInstance.CaseId, customerOnSA.SalesArrangementId, request.CustomerOnSAId, updateResponse.CustomerIdentifiers, cancellationToken);
         }
         else
         {

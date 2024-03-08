@@ -1,12 +1,12 @@
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
-using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using ExternalServices;
 using ExternalServices.SbQueues;
 using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using ExternalServices.ESignatures.V1;
+using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
+using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -39,19 +39,25 @@ SharedComponents.GrpcServiceBuilder
         // ePodpisy fronta
         builder.AddExternalService<ISbQueuesRepository>();
 
-        // registrace background jobu
-        builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
-        builder.AddCisBackgroundService<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
-        builder.AddCisBackgroundService<UpdateDocumentStatusJob>();
-
         // dbcontext
         builder.AddEntityFramework<DomainServices.DocumentOnSAService.Api.Database.DocumentOnSAServiceDbContext>();
+
+        bgServices(builder);
     })
     .MapGrpcServices(app =>
     {
         app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.DocumentOnSAServiceGrpc>();
+        app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.MaintananceService>();
     })
     .Run();
+
+[Obsolete("Odstranit po nasazeni scheduling service")]
+void bgServices(WebApplicationBuilder builder)
+{
+    builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
+    builder.AddCisBackgroundService<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
+    builder.AddCisBackgroundService<UpdateDocumentStatusJob>();
+}
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

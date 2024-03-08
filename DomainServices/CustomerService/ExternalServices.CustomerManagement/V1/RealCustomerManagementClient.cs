@@ -35,8 +35,8 @@ internal sealed class RealCustomerManagementClient
     {
         var query = new Dictionary<string, string?>
         {
-            { "numberOfEntries", searchRequest.NumberOfEntries.ToString() },
-            { "customerId", searchRequest.CustomerId.ToString() },
+            { "numberOfEntries", searchRequest.NumberOfEntries?.ToString(CultureInfo.InvariantCulture) },
+            { "customerId", searchRequest.CustomerId ?.ToString(CultureInfo.InvariantCulture) },
             { "name", searchRequest.Name },
             { "firstName", searchRequest.FirstName },
             { "birthEstablishedDate", searchRequest.BirthEstablishedDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) },

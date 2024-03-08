@@ -1,6 +1,5 @@
-﻿using CIS.Core.Data;
-using CIS.Infrastructure.Data;
-using CIS.InternalServices.TaskSchedulingService.Contracts;
+﻿using CIS.InternalServices.TaskSchedulingService.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Endpoints.GetTriggers;
 
@@ -9,8 +8,11 @@ internal sealed class GetTriggersHandler
 {
     public async Task<GetTriggersResponse> Handle(GetTriggersRequest request, CancellationToken cancellation)
     {
-        var result = await _connectionProvider.ExecuteDapperRawSqlToListAsync<Trigger>(_sql, cancellation);
-
+        var result = await _dbContext
+            .ScheduleTriggers
+            .AsNoTracking()
+            .ToListAsync(cancellation);
+        
         var response = new GetTriggersResponse();
         response.Triggers.AddRange(result.Select(t =>
         {
@@ -27,31 +29,18 @@ internal sealed class GetTriggersHandler
                 CronExpression = t.Cron,
                 CronExpressionText = description,
                 JobId = t.ScheduleJobId.ToString(),
-                JobName = t.JobName,
-                JobType = t.JobType,
+                JobName = t.Job.JobName,
+                JobType = t.Job.JobType,
                 IsDisabled = t.IsDisabled
             };
         }));
         return response;
     }
 
-    class Trigger
+    private readonly Database.TaskSchedulingServiceDbContext _dbContext;
+
+    public GetTriggersHandler(Database.TaskSchedulingServiceDbContext dbContext)
     {
-        public Guid ScheduleTriggerId { get; set; }
-        public Guid ScheduleJobId { get; set; }
-        public string JobName { get; set; } = null!;
-        public string JobType { get; set; } = null!;
-        public string TriggerName { get; set; } = null!;
-        public string Cron { get; set; } = null!;
-        public bool IsDisabled { get; set; }
-    }
-
-    private const string _sql = "SELECT A.*, B.JobName, B.JobType FROM [dbo].[ScheduleTrigger] A INNER JOIN [dbo].[ScheduleJob] B ON A.ScheduleJobId=B.ScheduleJobId";
-
-    private readonly Core.Data.IConnectionProvider _connectionProvider;
-
-    public GetTriggersHandler(IConnectionProvider connectionProvider)
-    {
-        _connectionProvider = connectionProvider;
+        _dbContext = dbContext;
     }
 }

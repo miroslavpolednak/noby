@@ -7,6 +7,13 @@ namespace CIS.Infrastructure.StartupExtensions;
 
 public static class CisCoreFeatures
 {
+    /// <summary>
+    /// Adds CIS core features to the WebApplicationBuilder.
+    /// </summary>
+    /// <param name="builder">The WebApplicationBuilder instance.</param>
+    /// <param name="addDefaultTimeProvider">Indicates whether to add the default time provider.</param>
+    /// <param name="addFeatureManagement">Indicates whether to add feature management.</param>
+    /// <returns>The modified WebApplicationBuilder instance.</returns>
     public static WebApplicationBuilder AddCisCoreFeatures(this WebApplicationBuilder builder, bool addDefaultTimeProvider = false, bool addFeatureManagement = false)
     {
         // datetime unification

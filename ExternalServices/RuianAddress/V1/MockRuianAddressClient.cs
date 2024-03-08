@@ -2,7 +2,7 @@
 
 namespace ExternalServices.RuianAddress.V1;
 
-internal class MockRuianAddressClient : IRuianAddressClient
+internal sealed class MockRuianAddressClient : IRuianAddressClient
 {
     public Task<AddressDTO> GetAddressDetail(long addressId, CancellationToken cancellationToken)
     {

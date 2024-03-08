@@ -8,6 +8,8 @@ internal sealed class Job2Handler
     public Task Execute(string? jobData, CancellationToken cancellationToken)
     {
         Console.WriteLine("Test job 2 chyba");
+#pragma warning disable CA2201 // Do not raise reserved exception types
         throw new Exception("Tohle je strasna chyba jobu 2");
+#pragma warning restore CA2201 // Do not raise reserved exception types
     }
 }

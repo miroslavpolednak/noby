@@ -6,6 +6,8 @@ namespace ExternalServices.MpHome.V1;
 public interface IMpHomeClient
     : IExternalServiceClient
 {
+    const string Version = "V1";
+
     /// <summary>
     /// inserts/updates row in table dbo.Uver in KonsDB (according to provided data)
     /// </summary>
@@ -24,7 +26,6 @@ public interface IMpHomeClient
     Task UpdatePartner(long partnerId, PartnerRequest request, CancellationToken cancellationToken = default(CancellationToken));
 
     Task UpdatePartnerKbId(long partnerId, long kbId, CancellationToken cancellationToken = default);
-
-    const string Version = "V1";
+    
     Task CancelLoan(long loanId, CancellationToken cancellationToken = default);
 }

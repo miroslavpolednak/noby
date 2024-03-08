@@ -1,11 +1,17 @@
 ﻿using CIS.Core.Exceptions.ExternalServices;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers;
 
 public static class Helpers
 {
+    private static JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
+
     public static async Task<string?> SafeReadAsStringAsync(this HttpResponseMessage? response, CancellationToken cancellationToken = default)
         => response?.Content == null ? null : await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
@@ -53,7 +59,7 @@ public static class Helpers
     {
         await response.EnsureSuccessStatusCode(serviceName, cancellationToken: cancellationToken);
 
-        return await response!.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken)
+        return await response!.Content.ReadFromJsonAsync<TResponse>(_jsonSerializerOptions, cancellationToken)
             ?? throw new CisExternalServiceResponseDeserializationException(0, serviceName, callerName, typeof(TResponse).ToString());
     }
 
@@ -67,7 +73,7 @@ public static class Helpers
     {
         await response.EnsureSuccessStatusCodeWithCustomErrorCodes(serviceName, customErrorCodes, cancellationToken);
 
-        return await response!.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken)
+        return await response!.Content.ReadFromJsonAsync<TResponse>(_jsonSerializerOptions, cancellationToken)
             ?? throw new CisExternalServiceResponseDeserializationException(0, serviceName, callerName, typeof(TResponse).ToString());
     }
 }

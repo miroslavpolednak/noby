@@ -1,4 +1,5 @@
-﻿using CIS.Core.ErrorCodes;
+﻿using Amazon.Runtime.Internal.Transform;
+using CIS.Core.ErrorCodes;
 
 namespace DomainServices.ProductService.Api;
 
@@ -25,7 +26,8 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int ContractNumberNotFound = 12023;
     public const int NotFound12024 = 12024;
     public const int PcpIdNotFound = 12025;
-    
+    public const int IdentityNotFound = 12026;
+
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>
@@ -50,7 +52,8 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { PaymentAccountNotFound, "Payment account {PropertyValue} not found." },
             { ContractNumberNotFound, "Contract number {PropertyValue} not found." },
             { NotFound12024, "Covenant not found." },
-            { PcpIdNotFound, "PCP ID {PropertyValue} not found." }
+            { PcpIdNotFound, "PCP ID {PropertyValue} not found." },
+            { IdentityNotFound, "Identity is empty" }
         });
         return Messages;
     }

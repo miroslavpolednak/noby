@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageapplication
 {
 	using System;
 	using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"InstanceState\",\"doc\":\"State of any marketable item insta" +
 				"nce (agreement, product instance, service instance,...).#CZ#Stav instance jakeko" +
 				"liv prodejne polozky (obchod, instance produktu, instance sluzby...). CDM entity" +
-				" name(s): InstanceState.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mort" +
+				" name(s): InstanceState.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mort" +
 				"gageapplication\",\"fields\":[{\"name\":\"instanceStateCode\",\"type\":{\"type\":\"record\",\"" +
 				"name\":\"InstanceStateCode\",\"doc\":\"Multicodebook property of marketable item insta" +
 				"nce state (agreement, product instance, service instance,...) identifier.It is m" +
@@ -32,14 +32,14 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 				"e sluzby...). Jedna se o vicehodnotou ciselnikovou promenou, protoze stav je obe" +
 				"cna promenna. Ta ma individualne definovane stavy v zavislosti na tom, zda jde o" +
 				" obchod, produkt... . CDM entity name(s): InstanceStateCode.\",\"namespace\":\"cz.kb" +
-				".api.mortgageservicingevents.v2.mortgageapplication\",\"fields\":[{\"name\":\"state\",\"" +
+				".api.mortgageservicingevents.v3.mortgageapplication\",\"fields\":[{\"name\":\"state\",\"" +
 				"doc\":\"Codebook value of state itself.#CZ#Vlastni ciselnikova hodnota stavu. Attr" +
 				"ibute has specific codebook type: CB_MortgageLifeCyclePhase. CDM attribute class" +
 				" name: InstanceStateCodeState. Attribute has simple type CB_MultiCodebookValue w" +
 				"ith description: Represents information that value can be from more than one cod" +
 				"ebook. Codebook type: CB_MortgageLifeCyclePhase.\",\"type\":{\"type\":\"string\",\"avro." +
 				"java.string\":\"String\",\"pattern\":\"^.{0,100}$\"}}]}}]}");
-		private cz.kb.api.mortgageservicingevents.v2.mortgageapplication.InstanceStateCode _instanceStateCode;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageapplication.InstanceStateCode _instanceStateCode;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -47,7 +47,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 				return InstanceState._SCHEMA;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageapplication.InstanceStateCode instanceStateCode
+		public cz.kb.api.mortgageservicingevents.v3.mortgageapplication.InstanceStateCode instanceStateCode
 		{
 			get
 			{
@@ -70,7 +70,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 		{
 			switch (fieldPos)
 			{
-			case 0: this.instanceStateCode = (cz.kb.api.mortgageservicingevents.v2.mortgageapplication.InstanceStateCode)fieldValue; break;
+			case 0: this.instanceStateCode = (cz.kb.api.mortgageservicingevents.v3.mortgageapplication.InstanceStateCode)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

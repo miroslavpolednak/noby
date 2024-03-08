@@ -3,7 +3,7 @@ using NOBY.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.SharedDto;
 
-internal class IdentificationDocumentValidator : AbstractValidator<IdentificationDocumentFull>
+internal sealed class IdentificationDocumentValidator : AbstractValidator<IdentificationDocumentFull>
 {
     private const int CustomerValidationErrorCode = 90032;
     private const int IdentityCardId = 1;

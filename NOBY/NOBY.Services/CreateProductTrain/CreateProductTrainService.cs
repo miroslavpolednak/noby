@@ -7,7 +7,7 @@ namespace NOBY.Services.CreateProductTrain;
 internal sealed class CreateProductTrainService
     : ICreateProductTrainService
 {
-    public async Task Run(
+    public async Task RunAll(
         long caseId,
         int salesArrangementId,
         int customerOnSAId,
@@ -32,6 +32,17 @@ internal sealed class CreateProductTrainService
         }
         
         _logger.LogDebug("CreateProductTrainService finished");
+    }
+
+    public async Task CreateRiskBusinessCaseAndUpdateSalesArrangement(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, CancellationToken cancellationToken)
+    {
+        var result = await _createRiskBusinessCase.Run(saInstance.SalesArrangementId, cancellationToken);
+        if (result is not null)
+        {
+            saInstance.RiskBusinessCaseId = result.Value.RiskBusinessCaseId;
+            saInstance.RiskSegment = result.Value.RiskSegment;
+            saInstance.LoanApplicationDataVersion = result.Value.LoanApplicationDataVersion;
+        }
     }
 
     private readonly ILogger<CreateProductTrainService> _logger;

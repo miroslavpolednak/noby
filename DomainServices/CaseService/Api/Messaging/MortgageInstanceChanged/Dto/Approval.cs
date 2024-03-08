@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class Approval : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Approval"",""doc"":""General entity representing approval process E.g. agreement or exception approval. CDM entity name(s): Approval."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageinstance"",""fields"":[{""name"":""on"",""doc"":""Time when overall approval was made. CDM attribute class name: ApprovalOn. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""default"":null,""type"":[""null"",{""type"":""long"",""logicalType"":""timestamp-millis""}]},{""name"":""requestedOn"",""doc"":""Time when overall approval was requested. CDM attribute class name: ApprovalRequestedOn. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""long"",""logicalType"":""timestamp-millis""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""Approval"",""doc"":""General entity representing approval process E.g. agreement or exception approval. CDM entity name(s): Approval."",""namespace"":""cz.kb.api.mortgageservicingevents.v3.mortgageinstance"",""fields"":[{""name"":""on"",""doc"":""Time when overall approval was made. CDM attribute class name: ApprovalOn. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""default"":null,""type"":[""null"",{""type"":""long"",""logicalType"":""timestamp-millis""}]},{""name"":""requestedOn"",""doc"":""Time when overall approval was requested. CDM attribute class name: ApprovalRequestedOn. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""long"",""logicalType"":""timestamp-millis""}}]}");
 		/// <summary>
 		/// Time when overall approval was made. CDM attribute class name: ApprovalOn. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>

@@ -15,6 +15,7 @@ import "Messages/GetCaseId.proto";
 import "Messages/GetCovenantDetail.proto";
 import "Messages/GetCovenantList.proto";
 import "Messages/CancelMortgage.proto";
+import "Messages/SearchProducts.proto";
 
 service ProductService {
    rpc GetProductList (GetProductListRequest) returns (GetProductListResponse);
@@ -40,4 +41,6 @@ service ProductService {
    rpc GetCovenantList (GetCovenantListRequest) returns (GetCovenantListResponse);
 
    rpc CancelMortgage (CancelMortgageRequest) returns (google.protobuf.Empty);
+
+   rpc SearchProducts (SearchProductsRequest) returns (SearchProductsResponse);
 }

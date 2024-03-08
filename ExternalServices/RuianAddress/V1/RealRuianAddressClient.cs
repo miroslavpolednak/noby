@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace ExternalServices.RuianAddress.V1;
 
-internal class RealRuianAddressClient : IRuianAddressClient
+internal sealed class RealRuianAddressClient : IRuianAddressClient
 {
     private readonly HttpClient _httpClient;
 

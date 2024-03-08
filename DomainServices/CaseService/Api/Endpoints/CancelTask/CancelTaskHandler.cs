@@ -1,5 +1,5 @@
 ﻿using DomainServices.CaseService.Contracts;
-using DomainServices.CaseService.ExternalServices.SbWebApi.V1;
+using ExternalServices.SbWebApi.V1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.CodebookService.Clients;
 

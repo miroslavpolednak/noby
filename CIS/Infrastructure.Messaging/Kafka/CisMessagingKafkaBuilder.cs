@@ -72,7 +72,7 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
     public IKafkaRiderConfiguration Build()
     {
         // skip integration testing
-        if (_configuration.Disabled || _builder.AppBuilder.Environment.EnvironmentName == "Testing")
+        if (_configuration.Disabled || _builder._appBuilder.Environment.EnvironmentName == "Testing")
         {
             return _configuration;
         }
@@ -82,7 +82,7 @@ internal sealed class CisMessagingKafkaBuilder : ICisMessagingKafkaBuilder
             throw new Core.Exceptions.CisConfigurationException(0, "Kafka Consumers and Producers collection is empty");
         }
 
-        _builder.AppBuilder.Services.AddMassTransit(configurator =>
+        _builder._appBuilder.Services.AddMassTransit(configurator =>
         {
             configurator.UsingInMemory((context, config) =>
             {
