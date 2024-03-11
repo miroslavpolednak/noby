@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.FeatureManagement;
 using SharedTypes;
 
-namespace DomainServices.CodebookService.Api.Endpoints;
+namespace DomainServices.CodebookService.Api.Endpoints.v1;
 
 [Authorize]
 internal partial class CodebookService

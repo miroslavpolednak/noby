@@ -2,7 +2,7 @@
 using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using _Case = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;

@@ -1,5 +1,5 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Clients.Services;
 using DomainServices.CustomerService.Clients;

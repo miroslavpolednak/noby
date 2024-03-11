@@ -1,5 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 
 namespace DomainServices.ProductService.Api.Endpoints.CreateMortgage;
 

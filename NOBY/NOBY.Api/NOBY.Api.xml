@@ -747,9 +747,8 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponse.Cases">
             <summary>
-            ID obchodního případu
+            Nalezene case-s
             </summary>
-            <example>24777</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponseItem.CaseId">
             <summary>

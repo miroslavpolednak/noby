@@ -1,5 +1,5 @@
 ﻿using DomainServices.DocumentArchiveService.Contracts;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.DocumentArchiveService.Clients;
 using NOBY.Services.DocumentHelper;
 using NOBY.Services.WorkflowMapper;

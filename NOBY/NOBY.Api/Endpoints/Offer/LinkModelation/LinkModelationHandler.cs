@@ -64,10 +64,10 @@ internal sealed class LinkModelationHandler
 
     private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
 
     public LinkModelationHandler(
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService,
+        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
     {

@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 

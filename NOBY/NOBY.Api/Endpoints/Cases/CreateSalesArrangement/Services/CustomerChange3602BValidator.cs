@@ -1,4 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 

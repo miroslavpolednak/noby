@@ -1,4 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.ProductService.Api.Database.Models;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetCovenantList;

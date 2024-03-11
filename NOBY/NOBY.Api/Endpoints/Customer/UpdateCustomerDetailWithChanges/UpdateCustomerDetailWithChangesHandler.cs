@@ -4,7 +4,7 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Newtonsoft.Json;
 using __Household = DomainServices.HouseholdService.Contracts;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;

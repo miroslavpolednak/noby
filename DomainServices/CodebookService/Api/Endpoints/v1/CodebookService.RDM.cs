@@ -1,7 +1,7 @@
 ﻿using DomainServices.CodebookService.Contracts.v1;
 using System.Globalization;
 
-namespace DomainServices.CodebookService.Api.Endpoints;
+namespace DomainServices.CodebookService.Api.Endpoints.v1;
 
 internal partial class CodebookService
 {

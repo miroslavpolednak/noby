@@ -33,6 +33,9 @@ grpcurl -insecure -d "{\"CaseId\":3050603}" -H "noby-user-id: 3048" -H "noby-use
 grpcurl -insecure -d "{\"CaseId\":303065859,\"IsUserInvoked\":true}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.v1.CaseService/CancelCase
 grpcurl -insecure -d "{\"CaseId\":1,\"TaskIdSb\":1}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:31001 DomainServices.CaseService.v1.CaseService/UpdateTask
 
+grpcurl -insecure -d "{\"OlderThan\":{\"year\":2024,\"month\":12,\"day\":18}}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.MaintananceService/GetConfirmedPriceExceptions
+grpcurl -insecure -d "{\"CaseId\":3053048}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30001 DomainServices.CaseService.MaintananceService/DeleteConfirmedPriceException
+
 ## run batch
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj"

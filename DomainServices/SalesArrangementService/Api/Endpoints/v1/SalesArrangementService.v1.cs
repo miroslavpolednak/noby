@@ -2,10 +2,10 @@
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DomainServices.SalesArrangementService.Api.Endpoints;
+namespace DomainServices.SalesArrangementService.Api.Endpoints.v1;
 
 [Authorize]
-internal sealed class SalesArrangementService 
+internal sealed class SalesArrangementService
     : Contracts.v1.SalesArrangementService.SalesArrangementServiceBase
 {
     private readonly IMediator _mediator;
@@ -58,7 +58,7 @@ internal sealed class SalesArrangementService
     public override async Task<Google.Protobuf.WellKnownTypes.Empty> SetFlowSwitches(SetFlowSwitchesRequest request, ServerCallContext context)
        => await _mediator.Send(request, context.CancellationToken);
 
-    public override async Task<SetContractNumberResponse> SetContractNumber(SetContractNumberRequest request, ServerCallContext context) => 
+    public override async Task<SetContractNumberResponse> SetContractNumber(SetContractNumberRequest request, ServerCallContext context) =>
         await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(ValidateSalesArrangementIdRequest request, ServerCallContext context) =>

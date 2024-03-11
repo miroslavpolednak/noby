@@ -1,6 +1,6 @@
 ﻿using DomainServices.CodebookService.Contracts.v1;
 
-namespace DomainServices.CodebookService.Api.Endpoints;
+namespace DomainServices.CodebookService.Api.Endpoints.v1;
 
 internal partial class CodebookService
 {

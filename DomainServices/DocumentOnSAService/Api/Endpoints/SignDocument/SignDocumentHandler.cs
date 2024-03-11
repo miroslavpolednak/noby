@@ -3,7 +3,7 @@ using CIS.Core.Security;
 using SharedTypes.Enums;
 using SharedAudit;
 using SharedTypes.GrpcTypes;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;

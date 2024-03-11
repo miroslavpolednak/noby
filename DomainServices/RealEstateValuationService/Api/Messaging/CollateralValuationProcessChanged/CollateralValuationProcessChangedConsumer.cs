@@ -1,5 +1,5 @@
 ﻿using cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Api.Database.Entities;

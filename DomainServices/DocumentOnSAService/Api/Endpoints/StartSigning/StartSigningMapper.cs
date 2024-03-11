@@ -16,7 +16,7 @@ using CIS.Core.Security;
 using DomainServices.UserService.Clients;
 using DomainServices.CodebookService.Clients;
 using System.Globalization;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using static ExternalServices.ESignatures.Dto.PrepareDocumentRequest;
 using SharedTypes.Types;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
