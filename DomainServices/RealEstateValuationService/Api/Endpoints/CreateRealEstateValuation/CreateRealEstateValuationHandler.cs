@@ -53,10 +53,10 @@ internal sealed class CreateRealEstateValuationHandler
     private static int[] _stateIdsForValidation = new[] { 4, 5 };
 
     private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
     private readonly RealEstateValuationServiceDbContext _dbContext;
 
-    public CreateRealEstateValuationHandler(RealEstateValuationServiceDbContext dbContext, CaseService.Clients.ICaseServiceClient caseService, IDocumentDataStorage documentDataStorage)
+    public CreateRealEstateValuationHandler(RealEstateValuationServiceDbContext dbContext, CaseService.Clients.v1.ICaseServiceClient caseService, IDocumentDataStorage documentDataStorage)
     {
         _documentDataStorage = documentDataStorage;
         _dbContext = dbContext;

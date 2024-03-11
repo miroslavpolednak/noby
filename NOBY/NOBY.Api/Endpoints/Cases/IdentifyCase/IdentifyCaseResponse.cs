@@ -3,9 +3,8 @@
 public sealed class IdentifyCaseResponse
 {
     /// <summary>
-    /// ID obchodního případu
+    /// Nalezene case-s
     /// </summary>
-    /// <example>24777</example>
     public List<IdentifyCaseResponseItem>? Cases { get; set; }
     
     public NOBY.Dto.Workflow.WorkflowTask? Task { get; set; }

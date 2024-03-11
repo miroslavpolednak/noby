@@ -3,7 +3,7 @@ using Google.Protobuf.WellKnownTypes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DomainServices.CodebookService.Api.Endpoints;
+namespace DomainServices.CodebookService.Api.Endpoints.Maintanance;
 
 [Authorize]
 internal sealed class MaintananceService

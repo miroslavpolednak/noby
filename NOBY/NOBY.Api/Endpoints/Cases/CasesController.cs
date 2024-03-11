@@ -126,15 +126,16 @@ public class CasesController : ControllerBase
         => await _mediator.Send(request);
 
     /// <summary>
-    /// Identifikace obchodního případu podle jednoho ze čtyř možných kritérií.
+    /// Identifikace obchodních případy podle jednoho níže uvedených možných kritérií.
     /// </summary>
     /// <remarks>
-    /// Endpoint umožnuje identifikovat obchodní případ podle:
+    /// Endpoint umožnuje identifikovat obchodní případy podle:
     /// 
-    /// - čárového kódu dokumentu (formId)
-    /// - čísla úvěrového účtu
-    /// - ID obchodního případu
-    /// - čísla smlouvy
+    /// - čárového kódu dokumentu (formId) (vždy 1 case)
+    /// - čísla úvěrového účtu (vždy 1 case)
+    /// - ID obchodního případu (vždy 1 case)
+    /// - čísla smlouvy (vždy 1 case)
+    /// - identity klienta (vrací kolekci case-s)
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=60DB6DA4-D938-4901-98DC-0C8DF8011589"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>

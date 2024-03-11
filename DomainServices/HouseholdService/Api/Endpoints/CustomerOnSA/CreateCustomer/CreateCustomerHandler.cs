@@ -1,5 +1,5 @@
 ﻿using SharedAudit;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;

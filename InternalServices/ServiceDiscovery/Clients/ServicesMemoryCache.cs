@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
+using Polly;
 
 namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
@@ -29,8 +30,10 @@ internal sealed class ServicesMemoryCache
             {
                 if (!_cache.TryGetValue(environmentName, out cacheEntry))
                 {
+                    var retryPolicy = Policy<IReadOnlyList<DiscoverableService>>.Handle<Exception>().WaitAndRetryAsync(18, _ => TimeSpan.FromSeconds(10));
+
                     // Key not in cache, so get data.
-                    cacheEntry = await getServicesFromRemote(environmentName, cancellationToken);
+                    cacheEntry = await retryPolicy.ExecuteAsync(() => getServicesFromRemote(environmentName, cancellationToken));
                     _cache.Set(environmentName, cacheEntry, new MemoryCacheEntryOptions
                     {
                         Size = 1,

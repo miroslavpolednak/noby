@@ -229,7 +229,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
     ];
 
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
     private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
@@ -238,7 +238,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
 
     public GetCaseParametersHandler(
         DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService,
+        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService,
         DomainServices.ProductService.Clients.IProductServiceClient productService,
         DomainServices.OfferService.Clients.IOfferServiceClient offerService,
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,

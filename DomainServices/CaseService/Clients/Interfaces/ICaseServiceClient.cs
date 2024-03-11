@@ -2,7 +2,7 @@
 using SharedTypes.Enums;
 using DomainServices.CaseService.Contracts;
 
-namespace DomainServices.CaseService.Clients;
+namespace DomainServices.CaseService.Clients.v1;
 
 public interface ICaseServiceClient
 {

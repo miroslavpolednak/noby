@@ -21,7 +21,7 @@ using DomainServices.ProductService.Clients;
 using ExternalServices.ESignatures.V1;
 using _Domain = DomainServices.DocumentOnSAService.Contracts;
 using SharedTypes.GrpcTypes;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CustomerService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.DocumentOnSAService.Api.Common;

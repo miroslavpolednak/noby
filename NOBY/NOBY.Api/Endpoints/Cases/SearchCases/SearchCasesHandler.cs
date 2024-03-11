@@ -54,12 +54,12 @@ internal sealed class SearchCasesHandler
 
     private readonly ICurrentUserAccessor _userAccessor;
     private readonly CasesModelConverter _converter;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
 
     public SearchCasesHandler(
         ICurrentUserAccessor userAccessor,
         CasesModelConverter converter,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService)
+        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService)
     {
         _converter = converter;
         _userAccessor = userAccessor;

@@ -2,7 +2,7 @@
 using SharedTypes.Enums;
 using DomainServices.CaseService.Contracts;
 
-namespace DomainServices.CaseService.Clients.Services;
+namespace DomainServices.CaseService.Clients.v1;
 
 internal sealed class CaseServiceClient
     : ICaseServiceClient

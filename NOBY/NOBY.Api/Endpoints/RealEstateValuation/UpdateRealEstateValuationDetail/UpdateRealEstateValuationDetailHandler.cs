@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.RealEstateValuationService.Clients;
 using NOBY.Dto.RealEstateValuation;
 using NOBY.Dto.RealEstateValuation.SpecificDetails;

@@ -1,8 +1,6 @@
 ﻿using CIS.Infrastructure.gRPC;
 using CIS.InternalServices;
 using Microsoft.Extensions.DependencyInjection;
-using DomainServices.CaseService.Clients;
-using __Services = DomainServices.CaseService.Clients.Services;
 using __Contracts = DomainServices.CaseService.Contracts;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -18,15 +16,21 @@ public static class StartupExtensions
     public static IServiceCollection AddCaseService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
-        services.TryAddScoped<ICaseServiceClient, __Services.CaseServiceClient>();
+        services.TryAddScoped<CaseService.Clients.v1.ICaseServiceClient, CaseService.Clients.v1.CaseServiceClient>();
+        services.TryAddScoped<CaseService.Clients.IMaintananceClient, CaseService.Clients.Services.MaintananceClient>();
+
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.CaseService.CaseServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.CaseService.CaseServiceClient>(ServiceName, customServiceKey: "CaseMaintananceServiceClient");
         return services;
     }
 
     public static IServiceCollection AddCaseService(this IServiceCollection services, string serviceUrl)
     {
-        services.TryAddScoped<ICaseServiceClient, __Services.CaseServiceClient>();
+        services.TryAddScoped<CaseService.Clients.v1.ICaseServiceClient, CaseService.Clients.v1.CaseServiceClient>();
+        services.TryAddScoped<CaseService.Clients.IMaintananceClient, CaseService.Clients.Services.MaintananceClient>();
+
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.CaseService.CaseServiceClient>(serviceUrl);
+        services.TryAddCisGrpcClientUsingUrl<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.CaseService.CaseServiceClient>(ServiceName, customServiceKey: "CaseMaintananceServiceClient");
         return services;
     }
 }

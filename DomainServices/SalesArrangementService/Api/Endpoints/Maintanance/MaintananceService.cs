@@ -2,7 +2,7 @@
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DomainServices.SalesArrangementService.Api.Endpoints;
+namespace DomainServices.SalesArrangementService.Api.Endpoints.Maintanance;
 
 [Authorize]
 internal sealed class MaintananceService

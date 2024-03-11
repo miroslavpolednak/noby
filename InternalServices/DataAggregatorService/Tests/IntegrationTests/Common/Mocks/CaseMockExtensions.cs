@@ -1,5 +1,5 @@
 ﻿using CIS.Testing.Common;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 
 namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.Common.Mocks;
