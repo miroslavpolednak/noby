@@ -27,7 +27,6 @@ public sealed class CreateCaseFromExternalSourcesService
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState);
 
         // instance uzivatele
-
         var customerIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
         var customer = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);
 
