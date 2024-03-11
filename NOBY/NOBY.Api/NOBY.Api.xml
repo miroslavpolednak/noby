@@ -4951,7 +4951,7 @@
             </remarks>
             <param name="processId">Noby proces ID. Jde o ID sady úkolů generované Starbuildem.</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.CancelTask(System.Int64,System.Int64,NOBY.Api.Endpoints.Workflow.CancelTask.CancelTaskRequest)">
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.CancelTask(System.Int64,System.Int64)">
             <summary>
             Stornování úkolu ve SB
             </summary>

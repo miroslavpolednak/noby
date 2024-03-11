@@ -17,6 +17,4 @@ public sealed class CancelTaskRequest
         CaseId = caseId;
         return this;
     }
-
-    public int? TaskIdSB { get; set; }
 }
