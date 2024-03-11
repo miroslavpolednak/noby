@@ -11,6 +11,14 @@ namespace NOBY.Services.WorkflowTask;
 internal sealed class WorkflowTaskService
     : IWorkflowTaskService
 {
+    public async Task<DomainServices.CaseService.Contracts.WorkflowTask> LoadAndCheckIfTaskExists(long caseId, long taskId, CancellationToken cancellationToken)
+    {
+        var taskList = await _caseService.GetTaskList(caseId, cancellationToken);
+
+        return taskList.FirstOrDefault(t => t.TaskId == taskId)
+               ?? throw new NobyValidationException($"Task {taskId} not found.");
+    }
+
     public async Task<(Dto.Workflow.WorkflowTask Task, Dto.Workflow.WorkflowTaskDetail TaskDetail, List<Dto.Documents.DocumentsMetadata> Documents)> GetTaskDetail(
         long caseId, 
         int taskIdSb, 

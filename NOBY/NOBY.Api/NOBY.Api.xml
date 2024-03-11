@@ -691,6 +691,41 @@
             KBID
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.CaseId">
+            <summary>
+            ID obchodního případu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.ContractRelationshipTypeId">
+            <summary>
+            Typ vztahu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.State">
+            <summary>
+            Stav Case - ciselnik CaseStates
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.StateName">
+            <summary>
+            Slovne nazev stavu Case.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.ContractNumber">
+            <summary>
+            ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.TargetAmount">
+            <summary>
+            Cílová částka zobrazující se na dashboardu.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.ProductName">
+            <summary>
+            Nazev produktu slovne - ciselnik CaseStates
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount.Prefix">
             <summary>
             Prefix čísla úvěrového účtu, podle kterého se má vyhledávat
@@ -749,16 +784,6 @@
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponse.Cases">
             <summary>
             Nalezene case-s
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponseItem.CaseId">
-            <summary>
-            ID obchodního případu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponseItem.ContractRelationshipTypeId">
-            <summary>
-            Typ vztahu
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest.FilterId">
@@ -4990,12 +5015,6 @@
             SB ID úkolu, není zobrazeno na FE UI
             </summary>
             <example>22456</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest.TaskTypeId">
-            <summary>
-            ID typu úkolu podle <a href="https://wiki.kb.cz/display/HT/WorkflowTaskProcessType+%28CIS_WFL_CISELNIKY_HODNOTY+s+CISELNIK_ID+%3D+10%29+-+MOCK">číselníku typu úkolů</a>
-            </summary>
-            <example>1</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest.TaskResponseTypeId">
             <summary>

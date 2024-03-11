@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Security;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Services.WorkflowTask;
 
 namespace NOBY.Api.Endpoints.Workflow.CancelTask;
 
@@ -12,7 +13,9 @@ internal sealed class CancelTaskHandler
         // jen check jestli case existuje
         await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
 
-        var task = await _caseService.GetTaskDetail(request.TaskIdSB, cancellationToken);
+        var taskIdSb = request.TaskIdSB ?? (await _workflowTaskService.LoadAndCheckIfTaskExists(request.CaseId, request.TaskId, cancellationToken)).TaskIdSb;
+
+        var task = await _caseService.GetTaskDetail(taskIdSb, cancellationToken);
         
         // overeni prav
         WorkflowHelpers.ValidateTaskManagePermission(
@@ -31,7 +34,7 @@ internal sealed class CancelTaskHandler
         }
 
         // cancel task in SB
-        await _caseService.CancelTask(request.CaseId, request.TaskIdSB, cancellationToken);
+        await _caseService.CancelTask(request.CaseId, taskIdSb, cancellationToken);
 
         // cancel SA in NOBY
         if (task.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.Retention)
@@ -65,11 +68,13 @@ internal sealed class CancelTaskHandler
 
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly ICaseServiceClient _caseService;
+    private readonly IWorkflowTaskService _workflowTaskService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
-    public CancelTaskHandler(ICaseServiceClient caseService, ICurrentUserAccessor currentUserAccessor, ISalesArrangementServiceClient salesArrangementService)
+    public CancelTaskHandler(ICaseServiceClient caseService, IWorkflowTaskService workflowTaskService, ICurrentUserAccessor currentUserAccessor, ISalesArrangementServiceClient salesArrangementService)
     {
         _caseService = caseService;
+        _workflowTaskService = workflowTaskService;
         _currentUserAccessor = currentUserAccessor;
         _salesArrangementService = salesArrangementService;
     }

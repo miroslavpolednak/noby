@@ -79,7 +79,7 @@ internal class IndividualPricingProcessChangedHandler : IMessageHandler<Individu
 
         var flowSwitches = (message.state switch
         {
-            ProcessStateEnum.COMPLETED => GetFlowSwitchesForCompleted(taskDetail.TaskDetail.PriceException.DecisionId),
+            ProcessStateEnum.COMPLETED => GetFlowSwitchesForCompleted(taskDetail.TaskObject.DecisionId),
             ProcessStateEnum.ACTIVE => GetFlowSwitchesForActive(),
             ProcessStateEnum.TERMINATED => GetFlowSwitchesForTerminated(),
             _ => [],
