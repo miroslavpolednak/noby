@@ -62,6 +62,14 @@ internal sealed class SalesArrangementAuthorizationService
         }
     }
 
+    public void ValidateRefinancing241Permission()
+    {
+        if (_currentUser.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage))
+            return;
+
+        throw new CisAuthorizationException($"User does not have permission {UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage} ({(int)UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage})");
+    }
+
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICurrentUserAccessor _currentUser;
 
