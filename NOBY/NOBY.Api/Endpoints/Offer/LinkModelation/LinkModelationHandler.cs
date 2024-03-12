@@ -91,9 +91,19 @@ internal sealed class LinkModelationHandler
                 LoanInterestRate = offer.MortgageRetention.SimulationInputs.InterestRate,
                 LoanInterestRateProvided = ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRate ?? 0) - ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount ?? 0),
                 LoanPaymentAmount = (int)(decimal)offer.MortgageRetention.SimulationResults.LoanPaymentAmount,
-                LoanPaymentAmountFinal = (int?)(decimal?)offer.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted
+                LoanPaymentAmountFinal = (int?)(decimal?)offer.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted,
             }
         };
+
+        if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.Retention)
+        {
+            taskUpdateRequest.Retention.FeeSum = (int)(decimal)offer.MortgageRetention.BasicParameters.Amount;
+            taskUpdateRequest.Retention.FeeFinalSum = (int?)(decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount;
+        } 
+        else if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.Refixation)
+        {
+            //taskUpdateRequest.Retention.FixedRatePeriod = //Offer FixedRatePeriod
+        }
 
         await _caseService.UpdateTask(taskUpdateRequest, cancellationToken);
 
