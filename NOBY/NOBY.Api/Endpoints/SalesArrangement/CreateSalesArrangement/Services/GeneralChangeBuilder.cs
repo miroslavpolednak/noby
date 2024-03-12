@@ -1,12 +1,12 @@
-﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+﻿using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;
 
 internal sealed class GeneralChangeBuilder
     : BaseBuilder
 {
-    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default)
     {
         Request.GeneralChange = new __SA.SalesArrangementParametersGeneralChange
         {

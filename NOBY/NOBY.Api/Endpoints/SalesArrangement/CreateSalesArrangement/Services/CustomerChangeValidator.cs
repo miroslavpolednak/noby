@@ -1,11 +1,11 @@
-﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+﻿using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;
 
-internal sealed class HUBNValidator
-    : BaseValidator<HUBNBuilder>, ICreateSalesArrangementParametersValidator
+internal sealed class CustomerChangeValidator
+    : BaseValidator<CustomerChangeBuilder>, ICreateSalesArrangementParametersValidator
 {
-    public HUBNValidator(BuilderValidatorAggregate aggregate)
+    public CustomerChangeValidator(BuilderValidatorAggregate aggregate)
         : base(aggregate) { }
 
     public override async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default)

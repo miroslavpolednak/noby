@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement;
+namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement;
 
 public sealed class CreateSalesArrangementRequest
     : IRequest<CreateSalesArrangementResponse>
@@ -17,7 +17,7 @@ public sealed class CreateSalesArrangementRequest
 
     internal CreateSalesArrangementRequest InfuseId(long caseId)
     {
-        this.CaseId = caseId;
+        CaseId = caseId;
         return this;
     }
 }

@@ -1,13 +1,13 @@
 ﻿using __SA = DomainServices.SalesArrangementService.Contracts;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 
 internal abstract class BaseBuilder
     : ICreateSalesArrangementParametersBuilder
 {
-    protected DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest Request => _aggregate.Request;
-    
-    private readonly BuilderValidatorAggregate _aggregate;
+    protected __SA.CreateSalesArrangementRequest Request => _aggregate.Request;
+
+    protected readonly BuilderValidatorAggregate _aggregate;
 
     public BaseBuilder(BuilderValidatorAggregate aggregate)
     {

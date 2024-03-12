@@ -1,7 +1,7 @@
-﻿using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
-using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+﻿using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;
+using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement;
+namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class CreateSalesArrangementParametersFactory
@@ -23,7 +23,7 @@ internal sealed class CreateSalesArrangementParametersFactory
             SalesArrangementTypeId = salesArrangementTypeId
         },
         _httpContextAccessor);
-        
+
         return (SalesArrangementTypes)salesArrangementTypeId switch
         {
             //>= 1 and <= 5 => new MortgageBuilder(salesArrangementId, _logger),

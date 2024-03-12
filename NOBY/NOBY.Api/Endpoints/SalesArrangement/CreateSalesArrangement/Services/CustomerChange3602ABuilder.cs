@@ -1,11 +1,9 @@
-﻿using SharedTypes.Enums;
-using DomainServices.HouseholdService.Contracts;
-using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
-using __SA = DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
+using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;
 
-internal sealed class CustomerChange3602BBuilder
+internal sealed class CustomerChange3602ABuilder
     : BaseBuilder
 {
     public override async Task PostCreateProcessing(int salesArrangementId, CancellationToken cancellationToken = default)
@@ -36,13 +34,13 @@ internal sealed class CustomerChange3602BBuilder
         await salesArrangementService.UpdateSalesArrangementParameters(new()
         {
             SalesArrangementId = salesArrangementId,
-            CustomerChange3602B = new()
+            CustomerChange3602A = new()
             {
                 HouseholdId = householdId
             }
         }, cancellationToken);
     }
 
-    public CustomerChange3602BBuilder(BuilderValidatorAggregate aggregate)
+    public CustomerChange3602ABuilder(BuilderValidatorAggregate aggregate)
         : base(aggregate) { }
 }

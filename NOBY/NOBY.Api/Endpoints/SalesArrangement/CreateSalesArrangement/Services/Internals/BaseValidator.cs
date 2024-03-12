@@ -1,14 +1,14 @@
 ﻿using CIS.Core.Security;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 
 internal abstract class BaseValidator<TBuilder>
     : ICreateSalesArrangementParametersValidator
     where TBuilder : class, ICreateSalesArrangementParametersBuilder
 {
     protected DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest Request => _aggregate.Request;
-    
-    private readonly BuilderValidatorAggregate _aggregate;
+
+    protected readonly BuilderValidatorAggregate _aggregate;
 
     public BaseValidator(BuilderValidatorAggregate aggregate)
     {

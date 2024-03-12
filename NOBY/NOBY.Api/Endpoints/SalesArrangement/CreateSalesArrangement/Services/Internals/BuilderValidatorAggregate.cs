@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+﻿namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 
 internal sealed class BuilderValidatorAggregate
 {

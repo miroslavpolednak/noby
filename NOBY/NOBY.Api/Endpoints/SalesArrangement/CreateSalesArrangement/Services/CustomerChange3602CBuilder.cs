@@ -1,9 +1,10 @@
 ﻿using DomainServices.HouseholdService.Contracts;
-using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
+using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
+using __SA = DomainServices.SalesArrangementService.Contracts;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;
 
-internal sealed class CustomerChange3602ABuilder
+internal sealed class CustomerChange3602CBuilder
     : BaseBuilder
 {
     public override async Task PostCreateProcessing(int salesArrangementId, CancellationToken cancellationToken = default)
@@ -31,16 +32,16 @@ internal sealed class CustomerChange3602ABuilder
         await householdService.LinkCustomerOnSAToHousehold(householdId, createCustomerResult.CustomerOnSAId, null, cancellationToken);
 
         // update parametru
-        await salesArrangementService.UpdateSalesArrangementParameters(new()
+        await salesArrangementService.UpdateSalesArrangementParameters(new __SA.UpdateSalesArrangementParametersRequest
         {
             SalesArrangementId = salesArrangementId,
-            CustomerChange3602A = new()
+            CustomerChange3602C = new __SA.SalesArrangementParametersCustomerChange3602
             {
                 HouseholdId = householdId
             }
         }, cancellationToken);
     }
 
-    public CustomerChange3602ABuilder(BuilderValidatorAggregate aggregate)
+    public CustomerChange3602CBuilder(BuilderValidatorAggregate aggregate)
         : base(aggregate) { }
 }

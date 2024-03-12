@@ -1,20 +1,20 @@
 ﻿using SharedTypes.GrpcTypes;
-using NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services.Internals;
 using __SA = DomainServices.SalesArrangementService.Contracts;
+using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 
-namespace NOBY.Api.Endpoints.Cases.CreateSalesArrangement.Services;
+namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;
 
 internal sealed class CustomerChangeBuilder
     : BaseBuilder
 {
-    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default(CancellationToken))
+    public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default)
     {
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
         var productService = GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
         var customerService = GetRequiredService<DomainServices.CustomerService.Clients.ICustomerServiceClient>();
 
         Request.CustomerChange = new();
-        
+
         try
         {
             var mortgageInstance = await productService.GetMortgage(Request.CaseId, cancellationToken);
@@ -48,7 +48,7 @@ internal sealed class CustomerChangeBuilder
                     {
                         FirstName = customerDetail.NaturalPerson?.FirstName ?? "",
                         LastName = customerDetail.NaturalPerson?.LastName ?? "",
-                        DateOfBirth = ((DateTime?)customerDetail.NaturalPerson?.DateOfBirth) ?? DateTime.MinValue
+                        DateOfBirth = (DateTime?)customerDetail.NaturalPerson?.DateOfBirth ?? DateTime.MinValue
                     },
                     IdentificationDocument = new()
                     {
