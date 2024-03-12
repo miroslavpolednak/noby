@@ -6,9 +6,11 @@ using DomainServices;
 using CIS.InternalServices;
 using Microsoft.AspNetCore.HttpLogging;
 using CIS.Infrastructure.WebApi;
+using KafkaFlow.Admin.Dashboard;
 using NOBY.Infrastructure.Configuration;
 using SharedAudit;
 using SharedComponents.Storage;
+using CIS.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,6 +84,11 @@ try
         builder.AddNobySwagger();
     }
 
+    if (appConfiguration.UseKafkaFlowDashboard)
+    {
+        builder.AddCisMessaging().AddKafkaFlowDashboard();
+    }
+
     // podpora SPA
     builder.Services.AddSpaStaticFiles(configuration =>
     {
@@ -118,7 +125,12 @@ try
         var descriptions = app.DescribeApiVersions();
         app.UseNobySwagger(descriptions);
     }
-    
+
+    if (appConfiguration.UseKafkaFlowDashboard)
+    {
+        app.UseKafkaFlowDashboard(dashboard => dashboard.ConfigureEndpoint(endpoint => endpoint.AllowAnonymous().ShortCircuit()));
+    }
+
     log.ApplicationRun();
     app.Run();
 }

@@ -31,6 +31,7 @@
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.0" />
     <PackageReference Include="CompareNETObjects" Version="4.83.0" />
+    <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="3.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.2" />
     <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.2.0" />
@@ -43,6 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj" />
     <ProjectReference Include="..\..\Shared\SharedAudit\SharedAudit.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Caching\CIS.Infrastructure.Caching.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />
