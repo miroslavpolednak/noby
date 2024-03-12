@@ -8,11 +8,11 @@ public static class RefinancingHelper
 {
     public static string GetRefinancingTypeText(List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodesMain, ProcessTask process, List<GenericCodebookResponse.Types.GenericCodebookItem> refinancingTypes)
     {
-        var text = eaCodesMain.Find(e => e.Id == process.RetentionProcess.RefinancingDocumentEACode)?.Name;
+        var text = eaCodesMain.Find(e => e.Id == process.RefinancingProcess.RefinancingDocumentEACode)?.Name;
 
         if (string.IsNullOrWhiteSpace(text))
         {
-            text = process.RetentionProcess.RefinancingType switch
+            text = process.RefinancingProcess.RefinancingType switch
             {
                 1 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.Retence).Name,
                 2 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.Refixace).Name,
@@ -42,8 +42,8 @@ public static class RefinancingHelper
     {
         return process.ProcessTypeId switch
         {
-            3 when process.RetentionProcess.RefinancingType == 1 => 1, // Retence
-            3 when process.RetentionProcess.RefinancingType == 2 => 2, // Refixace
+            3 when process.RefinancingProcess.RefinancingType == 1 => 1, // Retence
+            3 when process.RefinancingProcess.RefinancingType == 2 => 2, // Refixace
             _ => 0
         };
     }

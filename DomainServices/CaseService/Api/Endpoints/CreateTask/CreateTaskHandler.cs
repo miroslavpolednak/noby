@@ -32,6 +32,9 @@ internal sealed class CreateTaskHandler
             {
                 metadata.Add("ukol_konzultace_order_id", $"{request.OrderId}");
             }
+        } else if (request.TaskTypeId == (int)WorkflowTaskTypes.Retention)
+        {
+            metadata.Add("ukol_retence_druh", $"{request.TaskSubtypeId}");
         }
 
         // ID dokumentu

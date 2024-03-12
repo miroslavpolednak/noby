@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Workflow.CancelTask;
 
@@ -18,7 +17,4 @@ public sealed class CancelTaskRequest
         CaseId = caseId;
         return this;
     }
-
-    [Required]
-    public int TaskIdSB { get; set; }
 }

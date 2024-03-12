@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CaseService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 
@@ -8,9 +7,7 @@ internal sealed class GetTaskDetailHandler
 {
     public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
-        var taskList = await _caseService.GetTaskList(request.CaseId, cancellationToken);
-        var task = taskList.FirstOrDefault(t => t.TaskId == request.TaskId)
-            ?? throw new NobyValidationException($"Task {request.TaskId} not found.");
+        var task = await _workflowTaskService.LoadAndCheckIfTaskExists(request.CaseId, request.TaskId, cancellationToken);
 
         if (!_allowedTaskTypeIds.Contains(task.TaskTypeId))
         {
@@ -56,7 +53,6 @@ internal sealed class GetTaskDetailHandler
 
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
-    private readonly ICaseServiceClient _caseService;
     private static int[] _allowedTaskTypeIds =
         [
             (int)WorkflowTaskTypes.Dozadani,
@@ -68,11 +64,9 @@ internal sealed class GetTaskDetailHandler
 
     public GetTaskDetailHandler(
         ICurrentUserAccessor currentUserAccessor,
-        Services.WorkflowTask.IWorkflowTaskService workflowTaskService,
-        ICaseServiceClient caseService)
+        Services.WorkflowTask.IWorkflowTaskService workflowTaskService)
     {
         _currentUserAccessor = currentUserAccessor;
         _workflowTaskService = workflowTaskService;
-        _caseService = caseService;
     }
 }
