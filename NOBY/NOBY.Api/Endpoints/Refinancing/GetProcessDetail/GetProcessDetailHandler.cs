@@ -1,21 +1,58 @@
-﻿using NOBY.Dto.Refinancing;
+﻿using DomainServices.CaseService.Clients.v1;
+using DomainServices.CodebookService.Clients;
+using DomainServices.ProductService.Clients;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetProcessDetail;
 
-public class GetProcessDetailHandler
+internal class GetProcessDetailHandler : IRequestHandler<GetProcessDetailRequest, GetProcessDetailResponse>
 {
-    public ProcessDetail ProcessDetail { get; set; } = null!;
+    private readonly ICaseServiceClient _caseService;
+    private readonly IProductServiceClient _productService;
+    private readonly ICodebookServiceClient _codebookService;
 
-    public decimal LoanInterestRate { get; set; }
+    public GetProcessDetailHandler(
+        ICaseServiceClient caseService,
+        IProductServiceClient productService,
+        ICodebookServiceClient codebookService)
+    {
+        _caseService = caseService;
+        _productService = productService;
+        _codebookService = codebookService;
+    }
 
-    public int LoanPaymentAmount { get; set; }
+    public async Task<GetProcessDetailResponse> Handle(GetProcessDetailRequest request, CancellationToken cancellationToken)
+    {
+        var process = (await _caseService.GetProcessList(request.caseId, cancellationToken))
+            .SingleOrDefault(p => p.ProcessId == request.processId)
+            ?? throw new NobyValidationException(90043, $"ProccesId not found in list {request.processId}");
 
-    public int LoanPaymentAmountFinal { get; set; }
+        if (process.ProcessTypeId is not 3)
+            throw new NobyValidationException(90032, "Only processTypeId == 3 is allowed");
 
-    public int FeeSum { get; set; }
+        var eaCodesMain = await _codebookService.EaCodesMain(cancellationToken);
+        var refinancingTypes = await _codebookService.RefinancingTypes(cancellationToken);
+        var mortgage = (await _productService.GetMortgage(request.caseId, cancellationToken)).Mortgage;
 
-    public int FeeFinalSum { get; set; }
-
-    public DateTime InterestRateValidFrom { get; set; }
-    
+        return new()
+        {
+            ProcessDetail = new()
+            {
+                ProcessId = process.ProcessId,
+                RefinancingTypeId = RefinancingHelper.GetRefinancingType(process),
+                RefinancingTypeText = RefinancingHelper.GetRefinancingTypeText(eaCodesMain, process, refinancingTypes),
+                RefinancingStateId = RefinancingHelper.GetRefinancingState(null, process),
+                CreatedTime = process.CreatedOn,
+                LoanInterestRateProvided = process.RefinancingProcess?.LoanInterestRateProvided ?? process.RefinancingProcess?.LoanInterestRate,
+                LoanInterestRateValidFrom = process.RefinancingProcess?.InterestRateValidFrom,
+                LoanInterestRateValidTo = mortgage.FixedRateValidTo, // This should be mapped from process in near feature (SB has to implement it first)
+                EffectiveDate = process.RefinancingProcess?.EffectiveDate,
+                DocumentId = process.RefinancingProcess?.RefinancingDocumentId
+            },
+            LoanInterestRate = process.RefinancingProcess?.LoanInterestRate,
+            LoanPaymentAmount = process.RefinancingProcess?.LoanPaymentAmount,
+            LoanPaymentAmountFinal = process.RefinancingProcess?.LoanPaymentAmountFinal,
+            FeeSum = process.RefinancingProcess?.FeeSum,
+            FeeFinalSum = process.RefinancingProcess?.FeeFinalSum,
+        };
+    }
 }
