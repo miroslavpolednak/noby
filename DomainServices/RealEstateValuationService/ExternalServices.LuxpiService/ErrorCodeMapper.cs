@@ -12,7 +12,7 @@ internal sealed class ErrorCodeMapper
     {
         SetMessages(new Dictionary<int, string>()
         {
-            { LuxpiKbModelUnknownStatus, "KB Model Status unknown: '{PropertyValue}'" },
+            { LuxpiKbModelUnknownStatus, "KB Model Status unknown: {PropertyValue}" },
             { LuxpiKbModelIncorrectResult, "KB Model did not respond correctly" }
         });
 

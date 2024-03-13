@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
+using Microsoft.Extensions.Logging;
 
 namespace DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.V1;
 
@@ -12,6 +13,7 @@ internal sealed class RealLuxpiServiceClient
             .ConfigureAwait(false);
 
         var model = await response.EnsureSuccessStatusAndReadJson<Contracts.ValuationRequest>(StartupExtensions.ServiceName, cancellationToken);
+        _logger.LogInformation("Status '{Status}'", model.Status);
 
         return model.Status switch
         {
@@ -43,10 +45,12 @@ internal sealed class RealLuxpiServiceClient
         }
     }
 
+    private readonly ILogger<RealLuxpiServiceClient> _logger;
     private readonly HttpClient _httpClient;
-    
-    public RealLuxpiServiceClient(HttpClient httpClient)
+
+    public RealLuxpiServiceClient(HttpClient httpClient, ILogger<RealLuxpiServiceClient> logger)
     {
         _httpClient = httpClient;
+        _logger = logger;
     }
 }
