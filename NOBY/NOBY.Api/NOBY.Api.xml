@@ -3150,7 +3150,7 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRefinancingParameters(System.Int64)">
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRefinancingParameters(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Žádosti o změnu sazby
             </summary>
@@ -3158,6 +3158,16 @@
             Operace slouží k získání informací a žádostí ke změnám sazeb.
             
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EBF744FA-9F0F-421e-89F8-CFFFAEC76BB1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetProcessDetail(System.Int64,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Detail workflow procesu dotažený ze SB.
+            </summary>
+            <remarks>
+            Detail workflow procesu dotažený ze SB. <br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DB093BE8-72C4-4bd2-9FD0-8E7393C2F8B5"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br/><br/>
+            <strong style="color:red;">Required permissions</strong><br/>CaseOwnerCheck()
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
@@ -4951,7 +4961,7 @@
             </remarks>
             <param name="processId">Noby proces ID. Jde o ID sady úkolů generované Starbuildem.</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.CancelTask(System.Int64,System.Int64)">
+        <member name="M:NOBY.Api.Endpoints.Workflow.WorkflowController.CancelTask(System.Int64,System.Int64,NOBY.Api.Endpoints.Workflow.CancelTask.CancelTaskRequest)">
             <summary>
             Stornování úkolu ve SB
             </summary>

@@ -57,15 +57,15 @@ public static class RefinancingHelper
 
     public static int GetRefinancingState(_SaContract.SalesArrangement? sa, ProcessTask process)
     {
-        if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == false && process.ProcessPhaseId == 1 && process.ProcessId == sa.TaskProcessId)
+        if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId == sa?.TaskProcessId)
         {
             return (int)RefinancingStates.RozpracovanoVNoby; // 1
         }
-        else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == false && process.ProcessPhaseId == 1 && process.ProcessId != sa.TaskProcessId)
+        else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId != sa?.TaskProcessId)
         {
             return (int)RefinancingStates.RozpracovanoVSB;  // 2
         }
-        else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == false && process.ProcessPhaseId == 3)
+        else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 != true && process.ProcessPhaseId == 3)
         {
             return (int)RefinancingStates.Podepisovani; // 3
         }
