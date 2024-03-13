@@ -19,6 +19,9 @@ internal sealed class UpdateCustomerHandler
         // helper aby se nemuselo porad null checkovat
         entity.Identities ??= new List<Database.Entities.CustomerOnSAIdentity>();
 
+        // customerOnSA byl jiz updatovan z KB CM
+        bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == IdentitySchemes.Kb);
+
         // v tomto pripade natvrdo beru identity z requestu a nezajima me, jake mel pred tim
         if (request.SkipValidations)
         {
@@ -45,9 +48,6 @@ internal sealed class UpdateCustomerHandler
 
             entity.Identities.AddRange(newSchemasToAdd.Select(t => new Database.Entities.CustomerOnSAIdentity(t, entity.CustomerOnSAId)));
         }
-
-        // customerOnSA byl jiz updatovan z KB CM
-        bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == IdentitySchemes.Kb);
 
         // provolat sulm - pokud jiz ma nebo mu byla akorat pridana KB identita
         var kbIdentity = entity.Identities.FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);

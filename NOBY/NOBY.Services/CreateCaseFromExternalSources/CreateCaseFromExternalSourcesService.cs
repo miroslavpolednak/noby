@@ -27,7 +27,6 @@ public sealed class CreateCaseFromExternalSourcesService
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState);
 
         // instance uzivatele
-
         var customerIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
         var customer = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);
 
@@ -101,7 +100,7 @@ public sealed class CreateCaseFromExternalSourcesService
     private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
 
     public CreateCaseFromExternalSourcesService(
@@ -109,7 +108,7 @@ public sealed class CreateCaseFromExternalSourcesService
         DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
         DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         DomainServices.ProductService.Clients.IProductServiceClient productService,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService,
+        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService,
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _customerService = customerService;

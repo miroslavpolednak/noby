@@ -54,6 +54,9 @@ internal sealed class ProductService : Contracts.v1.ProductService.ProductServic
     public override async Task<GetCovenantDetailResponse> GetCovenantDetail(GetCovenantDetailRequest request, ServerCallContext context)
         => await _mediator.Send(request);
 
+    public override async Task<SearchProductsResponse> SearchProducts(SearchProductsRequest request, ServerCallContext context)
+        => await _mediator.Send(request);
+
     public override async Task<Empty> CancelMortgage(CancelMortgageRequest request, ServerCallContext context)
     {
         await _mediator.Send(request, context.CancellationToken);

@@ -27,10 +27,10 @@ internal sealed class GetSalesArrangementsListHandler
         return model;
     }
 
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
     private readonly SalesArrangementServiceDbContext _dbContext;
 
-    public GetSalesArrangementsListHandler(SalesArrangementServiceDbContext dbContext, CaseService.Clients.ICaseServiceClient caseService)
+    public GetSalesArrangementsListHandler(SalesArrangementServiceDbContext dbContext, CaseService.Clients.v1.ICaseServiceClient caseService)
     {
         _dbContext = dbContext;
         _caseService = caseService;

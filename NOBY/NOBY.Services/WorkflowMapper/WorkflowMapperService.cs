@@ -63,7 +63,7 @@ internal sealed class WorkflowMapperService
                 _Case.TaskDetailItem.AmendmentsOneofCase.Request => mapAmendmentsRequest(taskDetailItem.Request),
                 _Case.TaskDetailItem.AmendmentsOneofCase.Signing => await mapAmendmentsSigning(task, taskDetailItem.Signing, cancellationToken),
                 _Case.TaskDetailItem.AmendmentsOneofCase.ConsultationData => mapAmendmentsConsultationData(taskDetailItem.ConsultationData),
-                _Case.TaskDetailItem.AmendmentsOneofCase.PriceException => await mapAmendmentsPriceException(taskDetailItem.PriceException, cancellationToken),
+                _Case.TaskDetailItem.AmendmentsOneofCase.PriceException => await mapAmendmentsPriceException(task.DecisionId, taskDetailItem.PriceException, cancellationToken),
                 _ => null
             }
         };
@@ -105,7 +105,7 @@ internal sealed class WorkflowMapperService
         TaskSubtypeId = consultationData.TaskSubtypeId
     };
 
-    private async Task<_Dto.AmendmentsPriceException> mapAmendmentsPriceException(_Case.AmendmentPriceException amendmentPriceException, CancellationToken cancellationToken)
+    private async Task<_Dto.AmendmentsPriceException> mapAmendmentsPriceException(int? taskDecisionId, _Case.AmendmentPriceException amendmentPriceException, CancellationToken cancellationToken)
     {
         var decisionTypes = await _codebookService.WorkflowPriceExceptionDecisionTypes(cancellationToken);
         var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
@@ -115,7 +115,7 @@ internal sealed class WorkflowMapperService
         {
             Expiration = amendmentPriceException.Expiration is null ? default(DateOnly?) : amendmentPriceException.Expiration,
             Decision = decisionTypes
-            .FirstOrDefault(t => t.Id == amendmentPriceException.DecisionId)?
+            .FirstOrDefault(t => t.Id == taskDecisionId)?
             .Name ?? string.Empty,
             Fees = amendmentPriceException.Fees
             .Select(t => new _Dto.Fee()

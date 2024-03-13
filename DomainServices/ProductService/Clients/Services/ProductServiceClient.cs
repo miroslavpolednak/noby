@@ -1,9 +1,16 @@
 ﻿using DomainServices.ProductService.Contracts;
+using SharedTypes.GrpcTypes;
 
 namespace DomainServices.ProductService.Clients.Services;
 
 internal sealed class ProductServiceClient : IProductServiceClient
 {
+    public async Task<List<SearchProductsResponse.Types.SearchProductsItem>> SearchProducts(Identity? identity, CancellationToken cancellationToken = default)
+        => (await _service.SearchProductsAsync(new SearchProductsRequest
+        {
+            Identity = identity
+        }, cancellationToken: cancellationToken)).Products.ToList();
+
     public async Task<GetProductListResponse> GetProductList(long caseId, CancellationToken cancellationToken = default)
     {
         return await _service.GetProductListAsync(new GetProductListRequest { CaseId = caseId }, cancellationToken: cancellationToken);

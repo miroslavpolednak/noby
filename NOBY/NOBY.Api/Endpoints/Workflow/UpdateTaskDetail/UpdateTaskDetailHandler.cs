@@ -1,8 +1,9 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Services.WorkflowTask;
 
 #pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 
@@ -13,7 +14,10 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
     public async Task Handle(UpdateTaskDetailRequest request, CancellationToken cancellationToken)
     {
         var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
-        var taskDetail = await _caseService.GetTaskDetail(request.TaskIdSB, cancellationToken);
+
+        var taskIdSb = (await _workflowTask.LoadAndCheckIfTaskExists(request.CaseId, request.TaskId, cancellationToken)).TaskIdSb;
+
+        var taskDetail = await _caseService.GetTaskDetail(taskIdSb, cancellationToken);
 
         // validace requestu
         await validateTaskUpdate(taskDetail, cancellationToken);
@@ -21,12 +25,12 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         var completeTaskRequest = new CompleteTaskRequest
         {
             CaseId = request.CaseId,
-            TaskIdSb = request.TaskIdSB,
+            TaskIdSb = taskIdSb,
             TaskResponseTypeId = request.TaskResponseTypeId,
-            TaskTypeId = request.TaskTypeId,
+            TaskTypeId = taskDetail.TaskObject.TaskTypeId,
             TaskUserResponse = request.TaskUserResponse,
             TaskId = request.TaskId,
-            CompletionTypeId = setCompletitionType(request)
+            CompletionTypeId = setCompletitionType(taskDetail.TaskObject.TaskTypeId, request)
         };
 
         // prilohy
@@ -40,7 +44,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         await _caseService.CompleteTask(completeTaskRequest, cancellationToken);
 
         // retence
-        if (request.TaskTypeId == (int)WorkflowTaskTypes.Retention)
+        if (taskDetail.TaskObject.TaskTypeId == (int)WorkflowTaskTypes.Retention)
         {
             await updateRetentionSalesArrangementParameters(request, taskDetail.TaskObject.ProcessId, cancellationToken);
         }
@@ -79,12 +83,12 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
     }
 
-    private int? setCompletitionType(UpdateTaskDetailRequest request)
+    private int? setCompletitionType(int taskTypeId, UpdateTaskDetailRequest request)
     {
         int? completionTypeId = null;
 
         // podepisovani
-        if (request.TaskTypeId == (int)WorkflowTaskTypes.Signing)
+        if (taskTypeId == (int)WorkflowTaskTypes.Signing)
         {
             completionTypeId = _currentUserAccessor!.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningAttachments) ? 2 : 1;
 
@@ -95,7 +99,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
 
         // retence
-        if (request.TaskTypeId == (int)WorkflowTaskTypes.Retention)
+        if (taskTypeId == (int)WorkflowTaskTypes.Retention)
         {
             if (!_currentUserAccessor!.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage))
             {
@@ -116,7 +120,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
                 TempFileId = t.Guid!.Value,
-                FormId = request.TaskTypeId == 6 ? taskDetail.TaskDetail?.Signing?.FormId : null
+                FormId = taskDetail.TaskObject.TaskTypeId == 6 ? taskDetail.TaskDetail?.Signing?.FormId : null
             })
             .ToList();
     }
@@ -176,6 +180,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
 
     private readonly ILogger<UpdateTaskDetailHandler> _logger;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IWorkflowTaskService _workflowTask;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly ICaseServiceClient _caseService;
@@ -189,6 +194,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         ICaseServiceClient caseService,
         SharedComponents.Storage.ITempStorage tempFileManager,
         ISalesArrangementServiceClient salesArrangementService,
+        IWorkflowTaskService workflowTask,
         ILogger<UpdateTaskDetailHandler> logger)
     {
         _codebookService = codebookService;
@@ -197,6 +203,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         _caseService = caseService;
         _tempFileManager = tempFileManager;
         _salesArrangementService = salesArrangementService;
+        _workflowTask = workflowTask;
         _logger = logger;
     }
 }

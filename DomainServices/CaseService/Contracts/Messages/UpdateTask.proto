@@ -22,4 +22,5 @@ message Retention {
 	google.protobuf.Int32Value LoanPaymentAmountFinal = 5;
 	google.protobuf.Int32Value FeeSum = 6;
 	google.protobuf.Int32Value FeeFinalSum = 7;
+	google.protobuf.Int32Value FixedRatePeriod = 8;
 }

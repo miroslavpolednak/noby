@@ -1,0 +1,32 @@
+﻿syntax = "proto3";
+package DomainServices.ProductService;
+option csharp_namespace = "DomainServices.ProductService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "Identity.proto";
+import "NullableGrpcDecimal.proto";
+
+message SearchProductsRequest {
+	cis.types.Identity Identity = 1;
+}
+
+message SearchProductsResponse {
+	repeated SearchProductsItem Products = 1;
+
+	message SearchProductsItem {
+		int64 CaseId = 1;
+		int32 ContractRelationshipTypeId = 2;
+
+		// Stav Case
+		google.protobuf.Int32Value State = 3;
+		
+		// Produkt
+		google.protobuf.Int32Value ProductTypeId = 4;
+	
+		// Cilova castka / vyse hypoteky
+		cis.types.NullableGrpcDecimal TargetAmount = 5;
+	
+		// Cislo smlouvy hypo nebo SS
+		google.protobuf.StringValue ContractNumber = 6;
+	}
+}

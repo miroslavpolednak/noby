@@ -27,13 +27,13 @@ SharedComponents.GrpcServiceBuilder
                 {
                     appConfiguration.Validate();
 
-                    builder.Services.AddControllers();
+                    bgServices(builder);
 
                     // EAS svc
                     builder.AddExternalService<Ext1.Eas.V1.IEasClient>();
 
-        // SB webapi svc
-        builder.AddExternalService<Ext1.SbWebApi.V1.ISbWebApiClient>();
+                    // SB webapi svc
+                    builder.AddExternalService<Ext1.SbWebApi.V1.ISbWebApiClient>();
 
                     // dbcontext
                     builder.AddEntityFramework<CaseServiceDbContext>();
@@ -69,8 +69,15 @@ SharedComponents.GrpcServiceBuilder
                 .MapGrpcServices((app, _) =>
                 {
                     app.MapGrpcService<DomainServices.CaseService.Api.Endpoints.CaseService>();
+                    app.MapGrpcService<DomainServices.CaseService.Api.Endpoints.Maintanance.MaintananceService>();
                 })
                 .Run();
+
+[Obsolete("Odstranit po nasazeni scheduling service")]
+void bgServices(WebApplicationBuilder builder)
+{
+    builder.AddCisBackgroundService<DomainServices.CaseService.Api.BackgroundServices.CancelConfirmedPriceExceptionCases.CancelConfirmedPriceExceptionCasesJob>();
+}
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

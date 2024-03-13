@@ -37,11 +37,11 @@ message ProcessTask {
 	bool Cancelled = 10;
 
 	oneof Amendments {
-		RetentionProcess RetentionProcess = 11;
+		RefinancingProcess RefinancingProcess = 11;
 	}
 }
 
-message RetentionProcess{
+message RefinancingProcess{
 	int32 RefinancingType = 1;
 	cis.types.NullableGrpcDate InterestRateValidFrom = 2;
 	cis.types.NullableGrpcDecimal LoanInterestRate = 3;
@@ -53,4 +53,5 @@ message RetentionProcess{
 	google.protobuf.StringValue RefinancingDocumentId = 9;
 	google.protobuf.Int32Value RefinancingDocumentEACode = 10;
 	cis.types.NullableGrpcDate EffectiveDate = 11;
+	google.protobuf.Int32Value FixedRatePeriod = 12;
 }

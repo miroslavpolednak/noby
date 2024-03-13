@@ -1,5 +1,5 @@
 ﻿using SharedTypes.GrpcTypes;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
@@ -54,7 +54,7 @@ internal sealed class SendToCmpHandler
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
-        if (saInstance.SalesArrangementTypeId is not ((int)SalesArrangementTypes.Mortgage or (int)SalesArrangementTypes.Drawing))
+        if (saInstance.SalesArrangementTypeId is ((int)SalesArrangementTypes.Retention or (int)SalesArrangementTypes.Refixation or (int)SalesArrangementTypes.MimoradnaSplatka))
         {
             throw new NobyValidationException(90032);
         }

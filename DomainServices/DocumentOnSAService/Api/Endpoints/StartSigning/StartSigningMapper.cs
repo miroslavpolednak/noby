@@ -16,7 +16,7 @@ using CIS.Core.Security;
 using DomainServices.UserService.Clients;
 using DomainServices.CodebookService.Clients;
 using System.Globalization;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using static ExternalServices.ESignatures.Dto.PrepareDocumentRequest;
 using SharedTypes.Types;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
@@ -132,7 +132,7 @@ public class StartSigningMapper
                     Identities = item.SigningIdentityJson.CustomerIdentifiers.Select(p => new CustomerIdentity(p.IdentityId, p.IdentityScheme)),
                     CodeIndex = ++counter,
                     FullName = $"{item.SigningIdentityJson.FirstName} {item.SigningIdentityJson.LastName}",
-                    Phone = item.SigningIdentityJson.MobilePhone?.PhoneNumber,
+                    Phone = string.Concat(item.SigningIdentityJson.MobilePhone?.PhoneIDC, item.SigningIdentityJson.MobilePhone?.PhoneNumber),
                     Email = item.SigningIdentityJson.EmailAddress
                 };
                 request.OtherClients.Add(otherClient);
@@ -146,7 +146,7 @@ public class StartSigningMapper
     {
         clientData.FullName = $"{signingIdentity.FirstName} {signingIdentity.LastName}";
         clientData.BirthNumber = signingIdentity.BirthNumber;
-        clientData.Phone = signingIdentity.MobilePhone?.PhoneNumber;
+        clientData.Phone = string.Concat(signingIdentity.MobilePhone?.PhoneIDC, signingIdentity.MobilePhone?.PhoneNumber);
         clientData.Email = signingIdentity.EmailAddress;
         clientData.Identities = signingIdentity.CustomerIdentifiers.Select(s => new CustomerIdentity(s.IdentityId, s.IdentityScheme));
     }

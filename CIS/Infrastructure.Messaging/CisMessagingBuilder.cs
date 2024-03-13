@@ -61,4 +61,30 @@ internal sealed class CisMessagingBuilder : ICisMessagingBuilder
 
         return this;
     }
+
+    public ICisMessagingBuilder AddKafkaFlowDashboard()
+    {
+        var settings = new KafkaFlowConfiguratorSettings(_appBuilder.Configuration);
+
+        if (_appBuilder.Environment.EnvironmentName.Equals("Testing", StringComparison.OrdinalIgnoreCase))
+            return this;
+
+        if (settings.Configuration.Disabled || string.IsNullOrWhiteSpace(settings.Configuration.AdminTopic))
+            throw new InvalidOperationException("KafkaFlow messaging is not configured");
+
+        _appBuilder.Services.AddKafkaFlowHostedService(
+            kafka => kafka.AddCluster(cluster =>
+                          {
+                              cluster.WithBrokers(settings.Configuration.Brokers);
+
+                              cluster.WithSecurityInformation(
+                                  securityInfo => KafkaFlowSecurityInformationHelper.SetSecurityInfo(settings.Configuration, securityInfo)
+                              );
+
+                              cluster.EnableAdminMessages(settings.Configuration.AdminTopic).EnableTelemetry(settings.Configuration.AdminTopic);
+                          })
+                          .UseMicrosoftLog());
+
+        return this;
+    }
 }

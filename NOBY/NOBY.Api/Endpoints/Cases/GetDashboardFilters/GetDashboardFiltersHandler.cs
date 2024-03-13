@@ -22,11 +22,11 @@ internal sealed class GetDashboardFiltersHandler
     }
 
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
 
     public GetDashboardFiltersHandler(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService)
+        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService)
     {
         _userAccessor = userAccessor;
         _caseService = caseService;

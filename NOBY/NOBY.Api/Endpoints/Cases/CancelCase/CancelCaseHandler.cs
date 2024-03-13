@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using CIS.Core.Security;
 using CIS.InternalServices.DataAggregatorService.Contracts;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentArchiveService.Clients;

@@ -69,7 +69,10 @@ internal sealed class RealSbWebApiClient
 
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/createtask", easRequest, _jsonSerializerOptions, cancellationToken);
 
-        var responseObject = await RequestHelper.ProcessResponse<WFS_Manage_CreateTask_Response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
+        var responseObject = await RequestHelper.ProcessResponse<WFS_Manage_CreateTask_Response>(httpResponse, 
+                                                                                                 x => x.Result,
+                                                                                                 returnVal2ErrorCodesMapping: [(6792, ErrorCodeMapper.RefinancingError)], 
+                                                                                                 cancellationToken: cancellationToken);
 
         return new Dto.CreateTask.CreateTaskResponse
         {
@@ -207,7 +210,7 @@ internal sealed class RealSbWebApiClient
             Message = new WFS_Manage_UpdateTask
             {
                 Task_id = request.TaskIdSb,
-                Metadata = request.Metadata.Select(t => new WFS_MetadataItem
+                Metadata = request.Metadata.Where(m => m.Value is not null).Select(t => new WFS_MetadataItem
                 {
                     Mtdt_def = t.Key,
                     Mtdt_val = t.Value
@@ -224,7 +227,7 @@ internal sealed class RealSbWebApiClient
     private readonly IUserServiceClient _userService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
 
-    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };

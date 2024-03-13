@@ -73,6 +73,11 @@ Důležité je správně nastavit **LogType** v konfiguraci logování, který o
 **File Sink** - používáme pro export logů do KB Logman. Serilog vytváří soubory na serveru, ty jsou následně zpracovány Filebeatem, parsovány a odeslány do Kafky. 
 Kafka je následně pošle do ELKu v KB - tj. do Logmana. Formát souboru je pevně daný a hardcodovaný v projektu.
 
+Formtátovací řetězec pro File Sink je:
+```
+{Timestamp:yyyy-MM-dd HH:mm:ss,fff zzz} [{ThreadId}] [{Level:u}] [{TraceId}] [{SpanId}] [{ParentId}] [{CisAppKey}] [{Version}] [{Assembly}] [{SourceContext}] [{MachineName}] [{ClientIp}] [{CisUserId}] [{CisUserIdent}] [{RequestId}] [{RequestPath}] [{ConnectionId}] [{Message}] [{Exception}{Payload}]{NewLine}
+```
+
 **Console** - užitečné pouze pro debugování nebo lokální spouštění služeb.
 
 **Seq** - protože do Logmana se skoro nikdo nedostane, používáme na prohlížení logů Seq, který je nainstalovaný na aplikačních serverech. Aktuální adresa Seq instance je http://172.30.35.51:6341/.

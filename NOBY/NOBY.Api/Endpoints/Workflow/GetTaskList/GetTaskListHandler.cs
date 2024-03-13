@@ -1,4 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
 using NOBY.Services.WorkflowMapper;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskList;
