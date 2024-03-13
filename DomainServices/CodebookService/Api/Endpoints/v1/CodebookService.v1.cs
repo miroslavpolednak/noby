@@ -18,7 +18,7 @@ internal partial class CodebookService
         => Helpers.GetGenericItems<SharedTypes.Enums.RefinancingStates>(true);
 
     public override Task<GenericCodebookResponse> RefixationOfferTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<SharedTypes.Enums.RefixationOfferTypes>(true);
+        => Helpers.GetGenericItems<SharedTypes.Enums.RefixationOfferTypes>();
 
     public override Task<GenericCodebookResponse> RefinancingTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<SharedTypes.Enums.RefinancingTypes>(true);
