@@ -30,6 +30,12 @@ public class LinkModelationRequest
 
     public NOBY.Dto.ContactsDto? OfferContacts { get; set; }
 
+    /// <summary>
+    /// Komentář k Cenové výjimce
+    /// </summary>
+    /// <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
+    public string? IndividualPriceCommentLastVersion { get; set; }
+
     internal LinkModelationRequest InfuseId(int salesArrangementId)
     {
         this.SalesArrangementId = salesArrangementId;

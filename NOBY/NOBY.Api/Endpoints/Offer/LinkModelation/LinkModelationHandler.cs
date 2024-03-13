@@ -1,10 +1,9 @@
 ﻿using DomainServices.OfferService.Clients;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Services.InterestRatesValidFrom;
 using NOBY.Services.WorkflowTask;
-using System;
-using DomainServices.SalesArrangementService.Contracts;
 using _Ca = DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.LinkModelation;
@@ -32,12 +31,12 @@ internal sealed class LinkModelationHandler
 
             case SalesArrangementTypes.Refixation:
                 ValidateRefixation(saInstance);
-                await UpdateRefinancing(saInstance, offer, cancellationToken);
+                await UpdateRefinancing(request, saInstance, offer, cancellationToken);
                 break;
 
             case SalesArrangementTypes.Retention:
                 await ValidateRetention(saInstance, offer, cancellationToken);
-                await UpdateRefinancing(saInstance, offer, cancellationToken);
+                await UpdateRefinancing(request, saInstance, offer, cancellationToken);
                 break;
 
             default:
@@ -77,7 +76,7 @@ internal sealed class LinkModelationHandler
         }
     }
 
-    private async Task UpdateRefinancing(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
+    private async Task UpdateRefinancing(LinkModelationRequest request, DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
         var taskIdSb = (await _workflowTaskService.LoadAndCheckIfTaskExists(salesArrangement.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken)).TaskIdSb;
 
@@ -126,32 +125,47 @@ internal sealed class LinkModelationHandler
 
         _salesArrangementAuthorization.ValidateRefinancing241Permission();
 
-        //Update SA comment
+        if (salesArrangement.SalesArrangementTypeId != (int)SalesArrangementTypes.Retention)
+            return;
+
+        salesArrangement.Retention.IndividualPriceCommentLastVersion = request.IndividualPriceCommentLastVersion;
+
+        await _salesArrangementService.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            Retention = salesArrangement.Retention
+        }, cancellationToken);
 
         var createTaskRequest = new _Ca.CreateTaskRequest
         {
             CaseId = salesArrangement.CaseId,
             TaskTypeId = (int)WorkflowTaskTypes.PriceException,
             ProcessId = salesArrangement.TaskProcessId,
-            TaskRequest = "n/a",
+            TaskRequest = salesArrangement.Retention?.IndividualPriceCommentLastVersion,
             PriceException = new _Ca.TaskPriceException
             {
                 LoanInterestRate = new _Ca.PriceExceptionLoanInterestRateItem
                 {
-                    LoanInterestRate = (decimal?)offer.MortgageRetention.SimulationInputs.InterestRate ?? 0,
+                    LoanInterestRate = offer.MortgageRetention.SimulationInputs.InterestRate.GetDecimal(0),
                     LoanInterestRateDiscount = offer.MortgageRetention.SimulationInputs.InterestRateDiscount,
-                    LoanInterestRateProvided = ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRate ?? 0) - ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount ?? 0)
+                    LoanInterestRateProvided = offer.MortgageRetention.SimulationInputs.InterestRate.GetDecimal(0) - offer.MortgageRetention.SimulationInputs.InterestRateDiscount.GetDecimal(0)
+                },
+                Fees =
+                {
+                    new _Ca.PriceExceptionFeesItem
+                    {
+                        TariffSum = offer.MortgageRetention.BasicParameters.Amount,
+                        FinalSum = offer.MortgageRetention.BasicParameters.AmountDiscount.GetDecimal(0),
+                        DiscountPercentage = 100 * (offer.MortgageRetention.BasicParameters.Amount - offer.MortgageRetention.BasicParameters.AmountDiscount.GetDecimal(0)) / offer.MortgageRetention.BasicParameters.Amount
+                    }
                 }
             }
-
         };
 
         await _caseService.CreateTask(createTaskRequest, cancellationToken);
     }
 
-
-
-    private void ValidateRefixation(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement)
+    private static void ValidateRefixation(DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement)
     {
         if (salesArrangement.Refixation.ManagedByRC2 == true)
             throw new NobyValidationException(90032);
