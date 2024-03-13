@@ -11,10 +11,9 @@ internal sealed class RealLuxpiServiceClient
         var response = await _httpClient
             .PostAsJsonAsync(getUrl(), request, cancellationToken)
             .ConfigureAwait(false);
-
+        
         var model = await response.EnsureSuccessStatusAndReadJson<Contracts.ValuationRequest>(StartupExtensions.ServiceName, cancellationToken);
-        _logger.LogInformation("Status '{Status}'", model.Status);
-
+        
         return model.Status switch
         {
             "OK" => createResponse(),
