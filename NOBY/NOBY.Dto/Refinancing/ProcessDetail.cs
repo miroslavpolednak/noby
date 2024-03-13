@@ -11,8 +11,6 @@ public class ProcessDetail
 
     public DateTime? CreatedTime { get; set; }
 
-    public string? CreatedBy { get; set; }
-
     public decimal? LoanInterestRateProvided { get; set; }
 
     public DateTime? LoanInterestRateValidFrom { get; set; }
