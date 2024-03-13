@@ -43,9 +43,9 @@ public class WorkflowController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Workflow Task" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CancelTask([FromRoute] long caseId, [FromRoute] long taskId)
+    public async Task<IActionResult> CancelTask([FromRoute] long caseId, [FromRoute] long taskId, [FromBody][Required] CancelTask.CancelTaskRequest request)
     {
-        await _mediator.Send(new CancelTask.CancelTaskRequest().InfuseId(caseId, taskId));
+        await _mediator.Send(request.InfuseId(caseId, taskId));
         return NoContent();
     }
 
