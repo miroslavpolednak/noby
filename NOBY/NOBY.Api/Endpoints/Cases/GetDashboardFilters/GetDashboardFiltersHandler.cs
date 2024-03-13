@@ -8,7 +8,7 @@ internal sealed class GetDashboardFiltersHandler
         // zavolat BE sluzbu
         var result = await _caseService.GetCaseCounts(_userAccessor.User!.Id, cancellationToken);
 
-        result.RemoveAll(x => x.State is 6 or 7 or 10 || x.State is 5 && !_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing));
+        result.RemoveAll(x => x.State is (6 or 7 or 10) || x.State is 5 && !_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing));
 
         // rucne vytvorena kolekce podle Motalika
         return new List<GetDashboardFiltersResponse>
