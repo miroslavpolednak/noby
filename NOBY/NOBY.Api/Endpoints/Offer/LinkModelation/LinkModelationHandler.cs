@@ -88,16 +88,16 @@ internal sealed class LinkModelationHandler
             {
                 InterestRateValidFrom = (DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom,
                 LoanInterestRate = offer.MortgageRetention.SimulationInputs.InterestRate,
-                LoanInterestRateProvided = ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRate ?? 0) - ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount ?? 0),
-                LoanPaymentAmount = (int)(decimal)offer.MortgageRetention.SimulationResults.LoanPaymentAmount,
-                LoanPaymentAmountFinal = (int?)(decimal?)offer.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted,
+                LoanInterestRateProvided = ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRate?? 0) - ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount ?? 0),
+                LoanPaymentAmount = (decimal)offer.MortgageRetention.SimulationResults.LoanPaymentAmount,
+                LoanPaymentAmountFinal = (decimal?)offer.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted,
             }
         };
 
         if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.Retention)
         {
-            taskUpdateRequest.Retention.FeeSum = (int)(decimal)offer.MortgageRetention.BasicParameters.Amount;
-            taskUpdateRequest.Retention.FeeFinalSum = (int?)(decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount;
+            taskUpdateRequest.Retention.FeeSum = (decimal)offer.MortgageRetention.BasicParameters.Amount;
+            taskUpdateRequest.Retention.FeeFinalSum = (decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount;
         } 
         else if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.Refixation)
         {
@@ -146,17 +146,17 @@ internal sealed class LinkModelationHandler
             {
                 LoanInterestRate = new _Ca.PriceExceptionLoanInterestRateItem
                 {
-                    LoanInterestRate = offer.MortgageRetention.SimulationInputs.InterestRate.GetDecimal(0),
+                    LoanInterestRate = (decimal?)offer.MortgageRetention.SimulationInputs.InterestRate ?? 0m,
                     LoanInterestRateDiscount = offer.MortgageRetention.SimulationInputs.InterestRateDiscount,
-                    LoanInterestRateProvided = offer.MortgageRetention.SimulationInputs.InterestRate.GetDecimal(0) - offer.MortgageRetention.SimulationInputs.InterestRateDiscount.GetDecimal(0)
+                    LoanInterestRateProvided = ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRate ?? 0m) - (offer.MortgageRetention.SimulationInputs.InterestRateDiscount ?? 0m)
                 },
                 Fees =
                 {
                     new _Ca.PriceExceptionFeesItem
                     {
                         TariffSum = offer.MortgageRetention.BasicParameters.Amount,
-                        FinalSum = offer.MortgageRetention.BasicParameters.AmountDiscount.GetDecimal(0),
-                        DiscountPercentage = 100 * (offer.MortgageRetention.BasicParameters.Amount - offer.MortgageRetention.BasicParameters.AmountDiscount.GetDecimal(0)) / offer.MortgageRetention.BasicParameters.Amount
+                        FinalSum = (decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount ?? 0m,
+                        DiscountPercentage = 100 * (offer.MortgageRetention.BasicParameters.Amount - (offer.MortgageRetention.BasicParameters.AmountDiscount ?? 0m)) / offer.MortgageRetention.BasicParameters.Amount
                     }
                 }
             }
