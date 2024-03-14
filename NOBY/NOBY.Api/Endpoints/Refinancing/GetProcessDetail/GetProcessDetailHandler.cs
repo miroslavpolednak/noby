@@ -43,7 +43,7 @@ internal class GetProcessDetailHandler : IRequestHandler<GetProcessDetailRequest
                 RefinancingStateId = RefinancingHelper.GetRefinancingState(null, process),
                 CreatedTime = process.CreatedOn,
                 LoanInterestRateProvided = process.RefinancingProcess?.LoanInterestRateProvided ?? process.RefinancingProcess?.LoanInterestRate,
-                LoanInterestRateValidFrom = process.RefinancingProcess?.InterestRateValidFrom,
+                LoanInterestRateValidFrom = process.RefinancingProcess?.InterestRateValidFrom!,
                 LoanInterestRateValidTo = mortgage.FixedRateValidTo, // This should be mapped from process in near feature (SB has to implement it first)
                 EffectiveDate = process.RefinancingProcess?.EffectiveDate,
                 DocumentId = process.RefinancingProcess?.RefinancingDocumentId
