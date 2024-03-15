@@ -24,6 +24,7 @@ using CIS.Infrastructure.gRPC;
 using DomainServices.DocumentOnSAService.Api.Extensions;
 using SharedTypes.Enums;
 using FastEnumUtility;
+using DomainServices.ProductService.Clients;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
@@ -39,6 +40,7 @@ public class StartSigningMapper
     private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
+    private readonly IProductServiceClient _productServiceClient;
     private readonly IMediator _mediator;
 
     public StartSigningMapper(
@@ -50,6 +52,7 @@ public class StartSigningMapper
         ICodebookServiceClient codebookServiceClient,
         ICaseServiceClient caseServiceClient,
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
+        IProductServiceClient productServiceClient,
         IMediator mediator)
     {
         _dateTime = dateTime;
@@ -60,6 +63,7 @@ public class StartSigningMapper
         _codebookServiceClient = codebookServiceClient;
         _caseServiceClient = caseServiceClient;
         _documentGeneratorServiceClient = documentGeneratorServiceClient;
+        _productServiceClient = productServiceClient;
         _mediator = mediator;
     }
 
@@ -86,6 +90,7 @@ public class StartSigningMapper
 
         var request = new PrepareDocumentRequest
         {
+            ExternalId = await GetExternalId(salesArrangement.CaseId, cancellationToken),
             CurrentUserInfo = new()
             {
                 Cpm = currentUser.UserInfo.Cpm,
@@ -140,6 +145,27 @@ public class StartSigningMapper
         }
 
         return request;
+    }
+
+    private async Task<string> GetExternalId(long caseId, CancellationToken cancellationToken)
+    {
+        var caseDetail = await _caseServiceClient.GetCaseDetail(caseId, cancellationToken);
+
+        var identityOnCase = (caseDetail.Customer?.Identity)
+            ?? throw new NotSupportedException("Customer identity on Case cannot be null");
+
+        if (identityOnCase?.IdentityScheme == Identity.Types.IdentitySchemes.Mp)
+        {
+            return identityOnCase.IdentityId.ToString(CultureInfo.InvariantCulture);
+        }
+        else
+        {
+            var kbIdentityId = identityOnCase!.IdentityId;
+            var customersResponse = await _productServiceClient.GetCustomersOnProduct(caseId, cancellationToken);
+            var customer = customersResponse.Customers.Single(c => c.CustomerIdentifiers.Any(i => i.IdentityId == kbIdentityId));
+            var mpIndentity = customer.CustomerIdentifiers.Single(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+            return mpIndentity.IdentityId.ToString(CultureInfo.InvariantCulture);
+        }
     }
 
     private static void MapClientData(ClientInfo clientData, SigningIdentityJson signingIdentity)
