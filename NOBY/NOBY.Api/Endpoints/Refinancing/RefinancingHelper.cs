@@ -38,13 +38,13 @@ public static class RefinancingHelper
                                                            or (int)SalesArrangementTypes.CustomerChange3602A);
     }
 
-    public static int GetRefinancingType(ProcessTask process)
+    public static RefinancingTypes GetRefinancingType(ProcessTask process)
     {
         return process.ProcessTypeId switch
         {
-            3 when process.RefinancingProcess.RefinancingType == 1 => 1, // Retence
-            3 when process.RefinancingProcess.RefinancingType == 2 => 2, // Refixace
-            _ => 0
+            3 when process.RefinancingProcess.RefinancingType == 1 => RefinancingTypes.Retence,  // Retence
+            3 when process.RefinancingProcess.RefinancingType == 2 => RefinancingTypes.Refixace, // Refixace
+            _ => throw new NotSupportedException()
         };
     }
 
@@ -55,35 +55,35 @@ public static class RefinancingHelper
             : (DateTime?)default;
     }
 
-    public static int GetRefinancingState(_SaContract.SalesArrangement? sa, ProcessTask process)
+    public static RefinancingStates GetRefinancingState(_SaContract.SalesArrangement? sa, ProcessTask process)
     {
         if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId == sa?.TaskProcessId)
         {
-            return (int)RefinancingStates.RozpracovanoVNoby; // 1
+            return RefinancingStates.RozpracovanoVNoby; // 1
         }
         else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId != sa?.TaskProcessId)
         {
-            return (int)RefinancingStates.RozpracovanoVSB;  // 2
+            return RefinancingStates.RozpracovanoVSB;  // 2
         }
         else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 != true && process.ProcessPhaseId == 3)
         {
-            return (int)RefinancingStates.Podepisovani; // 3
+            return RefinancingStates.Podepisovani; // 3
         }
         else if (!process.Cancelled && process.StateIdSB == 30)
         {
-            return (int)RefinancingStates.Dokonceno; // 4 
+            return RefinancingStates.Dokonceno; // 4 
         }
         else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == true)
         {
-            return (int)RefinancingStates.PredanoRC2; // 5
+            return RefinancingStates.PredanoRC2; // 5
         }
         else if (process.Cancelled)
         {
-            return (int)RefinancingStates.Zruseno; // 6
+            return RefinancingStates.Zruseno; // 6
         }
         else
         {
-            return 0; // Unknow 
+            throw new ArgumentException("Unsupported state (RefinancingStates)"); // Unknow 
         }
     }
 }
