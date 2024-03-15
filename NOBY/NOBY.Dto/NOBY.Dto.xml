@@ -549,19 +549,9 @@
             Noby proces ID daného procesu Refinancí. Jde o ID sady úkolů generované Starbuildem.
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.RefinancingTypeId">
-            <summary>
-            Enum: 0 - Unknown, 1 - Retence, 2 - Refixace
-            </summary>
-        </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.RefinancingTypeText">
             <summary>
             Vracíme textaci specifickou podle typu dodatku. Pro jeden refinancingTypeId se tedy může vrátit 1 z n různých textací.
-            </summary>
-        </member>
-        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.RefinancingStateId">
-            <summary>
-            Hodnota z číselníku RefinancingState dynamicky vyhodnocovaná: RozpracovanoVNoby:1, RozpracovanoVSB:2, Podepisovani:3, Dokonceno:4, PredanoRC2:5, Zruseno:6, Unknow:0 
             </summary>
         </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.LoanInterestRateProvided">
