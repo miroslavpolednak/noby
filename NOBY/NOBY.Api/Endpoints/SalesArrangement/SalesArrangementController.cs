@@ -72,30 +72,6 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
     /// <param name="newAssessmentRequired">Požadováno nové posouzení</param>
-    /// <returns><see cref="GetLoanApplicationAssessment.V1.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
-    [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
-    [ApiVersion("1", Deprecated = true)]
-    [Obsolete("Replaced with v2 (with Exposure changes)")]
-    [Produces("application/json")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
-    [ProducesResponseType(typeof(GetLoanApplicationAssessment.V1.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetLoanApplicationAssessment.V1.GetLoanApplicationAssessmentResponse> GetLoanApplicationAssessmentV1([FromRoute] int salesArrangementId, [FromQuery] bool newAssessmentRequired, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetLoanApplicationAssessment.V1.GetLoanApplicationAssessmentRequest(salesArrangementId, newAssessmentRequired), cancellationToken);
-
-    /// <summary>
-    /// Vrací vyhodnocení dané úvěrové žádosti
-    /// </summary>
-    /// <remarks>
-    /// Použít pro Skóring - výsledek vyhodnocení<br /> 
-    /// - výsledek vyhodnocení žádosti<br />
-    /// - výsledek vyhodnocení za jednotlivé domácnosti<br />
-    /// Možno vyžadovat nové vyhodnocení<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CB8E73AD-C282-4555-B587-A571EE896E81"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-    /// </remarks>
-    /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
-    /// <param name="newAssessmentRequired">Požadováno nové posouzení</param>
     /// <returns><see cref="GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
     [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
     [ApiVersion("2")]

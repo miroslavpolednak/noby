@@ -1,21 +1,31 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V1.Dto;
+﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto;
 
-public class Household
+public class LoanApplication
 {
-    /// <summary>
-    /// ID domácnosti
-    /// </summary>
-    public long? HouseholdId { get; set; }
-
     /// <summary>
     /// Limit výše úvěru
     /// </summary>
-    public decimal? LoanApplicationLimit { get; set; }
+    public decimal? Limit { get; set; }
+
+    /// <summary>
+    /// Požadováno
+    /// </summary>
+    public decimal? LoanAmount { get; set; }
 
     /// <summary>
     /// Limit výše splátky
     /// </summary>
-    public decimal? LoanApplicationInstallmentLimit { get; set; }
+    public decimal? InstallmentLimit { get; set; }
+
+    /// <summary>
+    /// Požadováno
+    /// </summary>
+    public decimal? LoanPaymentAmount { get; set; }
+
+    /// <summary>
+    /// Zbývá na živobytí s požadovanou splátkou
+    /// </summary>
+    public decimal? RemainingAnnuityLivingAmount { get; set; }
 
     /// <summary>
     /// Celkové příjmy
@@ -30,12 +40,12 @@ public class Household
     /// <summary>
     /// Celkové stávající splátky v KB
     /// </summary>
-    public decimal? MonthlyInstallmentsInKBAmount { get; set; }
+    public decimal? MonthlyInstallmentsInKB { get; set; }
 
     /// <summary>
     /// Celkové stávající splátky FOP v KB
     /// </summary>
-    public decimal? MonthlyEntrepreneurInstallmentsInKBAmount { get; set; }
+    public decimal? MonthlyEntrepreneurInstallmentsInKB { get; set; }
 
     /// <summary>
     /// Celkové stávající splátky MPSS
@@ -53,6 +63,9 @@ public class Household
     public decimal? MonthlyInstallmentsInCBCB { get; set; }
 
     public decimal? DTI { get; set; }
-    public long? DSTI { get; set; }
-    public long? CIR { get; set; }
+    public decimal? DSTI { get; set; }
+    public decimal? CIR { get; set; }
+    public decimal? LTV { get; set; }
+    public decimal? LFTV { get; set; }
+    public decimal? LTCP { get; set; }
 }
