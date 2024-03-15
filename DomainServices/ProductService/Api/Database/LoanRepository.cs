@@ -18,9 +18,9 @@ internal sealed class LoanRepository
     public Task<List<SearchProductsResponse.Types.SearchProductsItem>> SearchProducts(Identity? identity, CancellationToken cancellationToken)
     {
         string query = """
-        select 'Loan' as [CaseType],
+        select
             u.Id as CaseId, 
-            null as State,
+            StavHU as State,
             vu.VztahId as ContractRelationshipTypeId,
             u.KodProduktyUv as ProductTypeId,
             u.VyseUveru as TargetAmount,
@@ -34,7 +34,7 @@ internal sealed class LoanRepository
 
         union all
 
-        select 'Saving' as [CaseType],
+        select
             s.Id as CaseId, 
             null as State,
             vs.VztahId as ContractRelationshipTypeId,
