@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Refinancing;
@@ -59,4 +60,23 @@ public sealed class RefinancingController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetInterestRate.GetInterestRateResponse> GetInterestRate([FromRoute] long caseId)
         => await _mediator.Send(new GetInterestRate.GetInterestRateRequest(caseId));
+
+    /// <summary>
+    /// Generování dokumentu Refinancování
+    /// </summary>
+    /// <remarks>
+    /// Operace slouží k vygenerování dokumentu Retence<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("/api/case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/refinancing-documents")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    public async Task GenerateRefinancingDocument(
+       long caseId,
+       int salesArrangementId,
+       [FromBody] GenerateRefinancingDocumentRequest request)
+       => await _mediator.Send(request.InfuseCaseId(caseId).InfuseSalesArrangementId(salesArrangementId));
 }

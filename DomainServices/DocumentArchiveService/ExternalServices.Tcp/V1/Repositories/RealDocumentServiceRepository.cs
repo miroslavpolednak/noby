@@ -69,7 +69,7 @@ public class RealDocumentServiceRepository : IDocumentServiceRepository
 
     public RealDocumentServiceRepository(IConnectionProvider<ITcpDapperConnectionProvider> connectionProvider)
     {
-        Dapper.SqlMapper.Settings.CommandTimeout = 10;
+        Dapper.SqlMapper.Settings.CommandTimeout = 100;
         _connectionProvider = connectionProvider;
     }
 
