@@ -24,7 +24,7 @@ public class UpdateTaskHandler : IRequestHandler<UpdateTaskRequest, Empty>
             { "ukol_retence_splatka_vysl", request.Retention.LoanPaymentAmountFinal!.Value.ToString(CultureInfo.InvariantCulture) },
             { "ukol_retence_popl_kalk", request.Retention.FeeSum?.ToString(CultureInfo.InvariantCulture)},
             { "ukol_retence_popl_vysl", request.Retention.FeeFinalSum?.ToString(CultureInfo.InvariantCulture)},
-            { "ukol_refixace_TBD", request.Retention.FixedRatePeriod?.ToString(CultureInfo.InvariantCulture) }
+            //{ "ukol_refixace_TBD", request.Retention.FixedRatePeriod?.ToString(CultureInfo.InvariantCulture) } HACH-10693 SB neumí refixaci
         };
 
         await _sbWebApi.UpdateTask(new ExternalServices.SbWebApi.Dto.UpdateTask.UpdateTaskRequest { TaskIdSb = request.TaskIdSb, Metadata = metadata }, cancellationToken);
