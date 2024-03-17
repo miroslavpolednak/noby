@@ -92,7 +92,7 @@ SharedComponents.GrpcServiceBuilder
     #endregion legacy code
     .MapGrpcServices((app, _) =>
     {
-        app.MapGrpcService<CIS.InternalServices.NotificationService.Api.Endpoints.v2.NotificationServiceV2>();
+        app.MapGrpcService<CIS.InternalServices.NotificationService.Api.Endpoints.v2.NotificationService>();
     })
     .Run();
 

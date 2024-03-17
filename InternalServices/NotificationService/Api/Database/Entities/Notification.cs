@@ -30,4 +30,14 @@ internal sealed class Notification
     public string? CreatedUserName { get; set; }
 
     public DateTime CreatedTime { get; set; }
+
+    public DateTime? ResultTime { get; set; }
+
+    public List<NotificationError>? Errors { get; set; }
+}
+
+internal sealed class NotificationError
+{
+    public string Code { get; set; } = null!;
+    public string Message { get; set; } = null!;
 }

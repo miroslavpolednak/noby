@@ -2,7 +2,7 @@
 
 namespace CIS.InternalServices.NotificationService.Api;
 
-internal static class Extensions
+internal static class StringExtensions
 {
     public static string GetDomainFromEmail(this string email)
     {

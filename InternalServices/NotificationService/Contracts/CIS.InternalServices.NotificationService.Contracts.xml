@@ -118,11 +118,8 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.GetResultRequest.NotificationIdFieldNumber">
             <summary>Field number for the "NotificationId" field.</summary>
         </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.IdentityFieldNumber">
-            <summary>Field number for the "Identity" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.IdentitySchemeFieldNumber">
-            <summary>Field number for the "IdentityScheme" field.</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.IdentifierFieldNumber">
+            <summary>Field number for the "Identifier" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.CaseIdFieldNumber">
             <summary>Field number for the "CaseId" field.</summary>
@@ -313,8 +310,8 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.Types.SmsRequestData.PhoneFieldNumber">
             <summary>Field number for the "Phone" field.</summary>
         </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.Types.SmsRequestData.TypeFieldNumber">
-            <summary>Field number for the "Type" field.</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.Types.SmsRequestData.SmsTypeFieldNumber">
+            <summary>Field number for the "SmsType" field.</summary>
         </member>
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsReflection">
             <summary>Holder for reflection information generated from Messages/SendSms.proto</summary>

@@ -60,7 +60,7 @@
             Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
             </remarks>
         </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendSms.SendSmsHandler.getSmsType(System.String,System.Threading.CancellationToken)">
+        <member name="M:CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendSms.SendSmsHandler.getAndValidateSmsType(System.String,System.Threading.CancellationToken)">
             <summary>
             Ziskat typ notifikace z ciselniku
             </summary>

@@ -2,15 +2,15 @@
 package CIS.InternalServices.NotificationService.v2;
 option csharp_namespace = "CIS.InternalServices.NotificationService.Contracts.v2";
 
+import "UserIdentity.proto";
 import "Messages/Types.proto";
 import "google/protobuf/wrappers.proto";
 
 message SearchResultsRequest {
-	google.protobuf.StringValue Identity = 1;
-    google.protobuf.StringValue IdentityScheme = 2;
-    google.protobuf.Int64Value CaseId = 3;
-    google.protobuf.StringValue CustomId = 4;
-    google.protobuf.StringValue DocumentId = 5;
+	cis.types.UserIdentity Identifier = 1;
+    google.protobuf.Int64Value CaseId = 2;
+    google.protobuf.StringValue CustomId = 3;
+    google.protobuf.StringValue DocumentId = 4;
 }
 
 message SearchResultsResponse {

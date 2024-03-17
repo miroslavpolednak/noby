@@ -1,4 +1,4 @@
-﻿using CIS.Core.Exceptions;
+﻿using CIS.Core.Exceptions.ExternalServices;
 using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.v2;
@@ -14,13 +14,16 @@ internal sealed class SendEmailHandler
 {
     public async Task<NotificationIdResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
     {
+        var notificationId = Guid.NewGuid();
+        _logger.NotificationRequestReceived(notificationId, NotificationChannels.Email);
+
         var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
         // kontrola na domenu uz je ve validatoru
         var senderType = _appConfiguration.EmailSenders.Mcs.Contains(domainName, StringComparer.OrdinalIgnoreCase) ? Mandants.Kb : Mandants.Mp;
 
         Database.Entities.Notification result = new()
         {
-            Id = Guid.NewGuid(),
+            Id = notificationId,
             Channel = NotificationChannels.Email,
             State = NotificationStates.InProgress,
             Identity = request.Identifier?.Identity,
@@ -58,7 +61,7 @@ internal sealed class SendEmailHandler
             result.State = NotificationStates.Error;
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            throw new CisServiceServerErrorException(ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "SendEmail request failed due to internal server error.");
+            throw new CisExternalServiceServerErrorException(ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "Unable to upload attachment to storage service");
         }
 
         // ulozit obsah SMS

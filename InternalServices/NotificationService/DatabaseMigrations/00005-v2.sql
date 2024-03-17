@@ -40,7 +40,9 @@ CREATE TABLE [dbo].[Notification](
 	[DocumentHash] [varchar](max) NULL,
 	[HashAlgorithm] [varchar](30) NULL,
 	[CreatedUserName] [varchar](100) NOT NULL,
-	[CreatedTime] datetime
+	[CreatedTime] [datetime] NOT NULL,
+	[ResultTime] [datetime] NULL,
+	[Errors] [nvarchar](max) NULL
  CONSTRAINT [PK_Notification] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

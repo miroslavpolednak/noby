@@ -15,13 +15,16 @@ internal sealed class SendSmsHandler
 {
     public async Task<NotificationIdResponse> Handle(SendSmsRequest request, CancellationToken cancellationToken)
     {
-        var smsType = await getSmsType(request.Type, cancellationToken);
+        var notificationId = Guid.NewGuid();
+        _logger.NotificationRequestReceived(notificationId, NotificationChannels.Sms);
+
+        var smsType = await getAndValidateSmsType(request.Type, cancellationToken);
         _ = request.PhoneNumber.TryParsePhone(out string? countryCode, out string? nationalNumber);
 
         // pripravit zpravu do databaze
-        Database.Entities.Notification result = new()
+        Database.Entities.Notification notificationInstance = new()
         {
-            Id = Guid.NewGuid(),
+            Id = notificationId,
             State = NotificationStates.InProgress,
             Channel = NotificationChannels.Sms,
             Identity = request.Identifier?.Identity,
@@ -34,24 +37,24 @@ internal sealed class SendSmsHandler
             CreatedTime = _dateTime.GetLocalNow().DateTime,
             CreatedUserName = _serviceUser.UserName
         };
-        _dbContext.Add(result);
+        _dbContext.Add(notificationInstance);
         // ulozit do databaze
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // ulozit obsah SMS
-        await _documentDataStorage.Add(result.Id.ToString(), new Database.DocumentDataEntities.SmsData
+        await _documentDataStorage.Add(notificationInstance.Id.ToString(), new Database.DocumentDataEntities.SmsData
         {
             CountryCode = countryCode!,
             NationalNumber = nationalNumber!,
             Text = request.Text,
-            Type = smsType.Code,
+            SmsType = smsType.Code,
             ProcessingPriority = request.ProcessingPriority
         }, cancellationToken);
 
         // pripravit zpravu do MCS
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
-            id = result.Id.ToString(),
+            id = notificationInstance.Id.ToString(),
             phone = new()
             {
                 countryCode = countryCode,
@@ -72,52 +75,72 @@ internal sealed class SendSmsHandler
             await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
 
             // nastavit stav v databazi
-            result.State = NotificationStates.Sent;
+            notificationInstance.State = NotificationStates.Sent;
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            _logger.NotificationSent(result.Id, NotificationChannels.Sms);
-            createAuditLog(request, smsType, _serviceUser.ConsumerId, result.Id);
+            _logger.NotificationSent(notificationInstance.Id, NotificationChannels.Sms);
+            createAuditLog(request, smsType, _serviceUser.ConsumerId, notificationInstance.Id, true);
         }
         catch (Exception ex)
         {
             // nastavit stav v databazi
-            result.State = NotificationStates.Error;
+            notificationInstance.State = NotificationStates.Error;
+            notificationInstance.Errors = [ new() { Code = "1", Message = "Unable to send message to Kafka" } ];
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            _logger.NotificationFailedToSend(result.Id, NotificationChannels.Sms, ex);
-            createAuditLog(request, smsType, _serviceUser.ConsumerId);
-            throw new CIS.Core.Exceptions.ExternalServices.CisExternalServiceUnavailableException(1, "MCS");
+            _logger.NotificationFailedToSend(notificationInstance.Id, NotificationChannels.Sms, ex);
+            createAuditLog(request, smsType, _serviceUser.ConsumerId, notificationInstance.Id, false, ex.Message);
+
+            throw new CIS.Core.Exceptions.ExternalServices.CisExternalServiceUnavailableException(0, "MCS");
         }
 
         return new NotificationIdResponse 
         { 
-            NotificationId = result.Id.ToString()
+            NotificationId = notificationInstance.Id.ToString()
         };
     }
 
-    private void createAuditLog(SendSmsRequest request, SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, in string consumerId, in Guid? result = null)
+    private void createAuditLog(
+        SendSmsRequest request, 
+        in SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, 
+        in string consumerId, 
+        in Guid notificationId,
+        in bool isSuccesful,
+        in string? errorMessage = null)
     {
         if (smsType.IsAuditLogEnabled)
         {
+            var bodyBefore = new Dictionary<string, string>
+            {
+                { "smsType", smsType.Code },
+                { "consumer", consumerId },
+                { "serviceUserName", _serviceUser.UserName },
+                { "phoneNumber", request.PhoneNumber },
+                { "processingPriority", request.ProcessingPriority?.ToString(CultureInfo.InvariantCulture) ?? "" },
+                { "type", request.Type },
+                { "text", request.Text },
+                { "identityId", request.Identifier?.Identity ?? string.Empty },
+                { "identityScheme", request.Identifier?.IdentityScheme.ToString() ?? string.Empty },
+                { "caseId", request.CaseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
+                { "customId", request.CustomId ?? string.Empty },
+                { "documentId", request.DocumentId ?? string.Empty },
+                { "documentHash", request.DocumentHash?.Hash ?? string.Empty },
+                { "documentHashAlgorithm", request.DocumentHash?.HashAlgorithm.ToString() ?? string.Empty }
+            };
+
+            if (!isSuccesful)
+            {
+                bodyBefore.Add("errorMessage", errorMessage ?? "");
+            }
+
             _auditLogger.Log(
                 AuditEventTypes.Noby013,
-                result.HasValue ? "Produced message SendSMS to KAFKA" : "Could not produce message SendSMS to KAFKA",
-                bodyBefore: new Dictionary<string, string>
+                isSuccesful ? "Produced message SendSMS to KAFKA" : "Could not produce message SendSMS to KAFKA",
+                bodyBefore: bodyBefore,
+                bodyAfter: new Dictionary<string, string>
                 {
-                    { "smsType", smsType.Code },
-                    { "consumer", consumerId },
-                    { "identity", request.Identifier?.Identity ?? string.Empty },
-                    { "identityScheme", request.Identifier?.IdentityScheme.ToString() ?? string.Empty },
-                    { "caseId", request.CaseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
-                    { "customId", request.CustomId ?? string.Empty },
-                    { "documentId", request.DocumentId ?? string.Empty },
-                    { "documentHash", request.DocumentHash?.Hash ?? string.Empty },
-                    { "hashAlgorithm", request.DocumentHash?.HashAlgorithm.ToString() ?? string.Empty }
-                },
-                bodyAfter: result.HasValue ? new Dictionary<string, string>
-                {
-                    { "notificationId", result.Value.ToString() }
-                } : null
+                    { "notificationId", notificationId.ToString() }
+                }
             );
         }
     }
@@ -125,7 +148,7 @@ internal sealed class SendSmsHandler
     /// <summary>
     /// Ziskat typ notifikace z ciselniku
     /// </summary>
-    private async Task<SmsNotificationTypesResponse.Types.SmsNotificationTypeItem> getSmsType(string smsType, CancellationToken cancellationToken)
+    private async Task<SmsNotificationTypesResponse.Types.SmsNotificationTypeItem> getAndValidateSmsType(string smsType, CancellationToken cancellationToken)
     {
         var smsTypes = await _codebookService.SmsNotificationTypes(cancellationToken);
         return smsTypes

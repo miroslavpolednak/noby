@@ -15,9 +15,13 @@ internal sealed class NotificationDbContext : BaseDbContext<NotificationDbContex
     public DbSet<Result> Results { get; set; } = null!;
     public DbSet<EmailResult> EmailResults { get; set; } = null!;
     public DbSet<SmsResult> SmsResults { get; set; } = null!;
+    #endregion legacy code
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Notification>().OwnsMany(notification => notification.Errors, b => b.ToJson());
+
+        #region legacy code
         modelBuilder.Entity<Result>()
             .UseTpcMappingStrategy();
 
@@ -26,8 +30,8 @@ internal sealed class NotificationDbContext : BaseDbContext<NotificationDbContex
 
         modelBuilder.Entity<EmailResult>()
             .ToTable(nameof(EmailResult));
+        #endregion legacy code
     }
-    #endregion legacy code
 
     public NotificationDbContext(BaseDbContextAggregate<NotificationDbContext> aggregate) : base(aggregate)
     {
