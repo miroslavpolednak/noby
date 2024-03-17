@@ -44,7 +44,7 @@ public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, Consum
         var report = request.NotificationReport;
         if (!Guid.TryParse(report.id, out var id))
         {
-            _logger.LogDebug("Skipped for notificationId: {id}", report.id);
+            _logger.LogTrace("Skipped for notificationId: {id}", report.id);
             return new ConsumeResultResponse();
         }
 
@@ -82,7 +82,7 @@ public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, Consum
         }
         catch (CisNotFoundException)
         {
-            _logger.LogDebug("Result not found for notificationId: {id}", report.id);
+            _logger.LogTrace("Result not found for notificationId: {id}", report.id);
         }
         catch (Exception e)
         {

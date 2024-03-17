@@ -58,6 +58,9 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
             : hashAlgorithms.FirstOrDefault(s => s.Code == request.DocumentHash.HashAlgorithm) ?? 
         throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash.HashAlgorithm}'. Allowed HashAlgorithms: {hashAlgorithmCodes}");
 
+        // zmenit text podle spec GSM 03.38
+        request.Text = request.Text.ToGSMString();
+
         var result = _repository.NewSmsResult();
         var phone = request.PhoneNumber.ParsePhone()!;
         result.Identity = request.Identifier?.Identity;
@@ -74,7 +77,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         result.PhoneNumber = phone.NationalNumber;
 
         result.CreatedBy = username;
-        
+
         try
         {
             await _repository.AddResult(result, cancellationToken);
