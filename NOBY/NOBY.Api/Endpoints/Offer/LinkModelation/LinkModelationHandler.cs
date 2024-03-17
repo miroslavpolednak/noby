@@ -112,21 +112,19 @@ internal sealed class LinkModelationHandler
         {
             var oldOffer = await _offerService.GetOffer(salesArrangement.OfferId!.Value, cancellationToken);
 
-            if ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount == oldOffer.MortgageRetention.SimulationInputs.InterestRateDiscount)
+            if ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount == oldOffer.MortgageRetention.SimulationInputs.InterestRateDiscount &&
+                (decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount == oldOffer.MortgageRetention.BasicParameters.AmountDiscount)
                 return;
 
             _salesArrangementAuthorization.ValidateRefinancing241Permission();
 
             await _caseService.CancelTask(salesArrangement.CaseId, taskIdSb, cancellationToken);
-
-            if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is null)
-                return;
         }
 
-        _salesArrangementAuthorization.ValidateRefinancing241Permission();
-
-        if (salesArrangement.SalesArrangementTypeId != (int)SalesArrangementTypes.Retention)
+        if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is null || offer.MortgageRetention.BasicParameters.AmountDiscount is null)
             return;
+
+        _salesArrangementAuthorization.ValidateRefinancing241Permission();
 
         salesArrangement.Retention.IndividualPriceCommentLastVersion = request.IndividualPriceCommentLastVersion;
 
