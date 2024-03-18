@@ -51,14 +51,18 @@ public class GenerateRefinancingDocumentHandler : IRequestHandler<GenerateRefina
             if (taskList.Count == 0)
                 throw new NobyValidationException(90032, "Empty collection");
 
-            if (taskList.All(t => t.Cancelled))
+            var nonCanceledTask = taskList.SingleOrDefault(t => !t.Cancelled);
+
+            if (nonCanceledTask is null)
                 throw new NobyValidationException(90050);
 
-            if (!taskList.Any(t => t.StateIdSb == 30))
+            if (nonCanceledTask.StateIdSb != 30)
                 throw new NobyValidationException(90049);
 
-            if (!taskList.Any(t => t.DecisionId == 1))
+            if (nonCanceledTask.DecisionId != 1)
                 throw new NobyValidationException(90032, "Not exist DecisionId == 1");
+
+            
         }
         else
         {
