@@ -79,6 +79,6 @@ internal static class TaskDataExtensions
     public static string ToSbFormat(this GrpcDecimal d)
         => ((decimal)d).ToString(CultureInfo.InvariantCulture);
 
-    public static string ToSbFormat(this NullableGrpcDecimal d)
+    public static string ToSbFormat(this NullableGrpcDecimal? d)
         => d is null ? "" : ((decimal)d!).ToString(CultureInfo.InvariantCulture);
 }

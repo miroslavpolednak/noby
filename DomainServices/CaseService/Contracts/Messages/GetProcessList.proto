@@ -46,10 +46,10 @@ message RefinancingProcess{
 	cis.types.NullableGrpcDate InterestRateValidFrom = 2;
 	cis.types.NullableGrpcDecimal LoanInterestRate = 3;
 	cis.types.NullableGrpcDecimal LoanInterestRateProvided = 4;
-	google.protobuf.Int32Value LoanPaymentAmount = 5;
-	google.protobuf.Int32Value LoanPaymentAmountFinal = 6;
-	google.protobuf.Int32Value FeeSum = 7;
-	google.protobuf.Int32Value FeeFinalSum = 8;
+	cis.types.NullableGrpcDecimal LoanPaymentAmount = 5;
+	cis.types.NullableGrpcDecimal LoanPaymentAmountFinal = 6;
+	cis.types.NullableGrpcDecimal FeeSum = 7;
+	cis.types.NullableGrpcDecimal FeeFinalSum = 8;
 	google.protobuf.StringValue RefinancingDocumentId = 9;
 	google.protobuf.Int32Value RefinancingDocumentEACode = 10;
 	cis.types.NullableGrpcDate EffectiveDate = 11;

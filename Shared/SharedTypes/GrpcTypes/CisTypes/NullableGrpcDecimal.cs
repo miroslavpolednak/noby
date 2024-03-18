@@ -32,6 +32,4 @@ public partial class NullableGrpcDecimal
         var nanos = decimal.ToInt32((value.Value - units) * NanoFactor);
         return new NullableGrpcDecimal(units, nanos);
     }
-
-    public decimal? GetDecimal(decimal? defaultValue = default) => (decimal?)this ?? defaultValue;
 }

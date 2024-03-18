@@ -2502,6 +2502,12 @@
             </summary>
             <example>2002-10-26</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.IndividualPriceCommentLastVersion">
+            <summary>
+            Komentář k Cenové výjimce
+            </summary>
+            <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRetention(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest)">
             <summary>
             Simulace KB retencí.
