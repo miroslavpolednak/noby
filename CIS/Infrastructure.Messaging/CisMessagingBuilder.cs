@@ -79,13 +79,13 @@ internal sealed class CisMessagingBuilder : ICisMessagingBuilder
         if (_appBuilder.Environment.EnvironmentName.Equals("Testing", StringComparison.OrdinalIgnoreCase))
             return this;
 
-        if (settings.Configuration.Disabled || settings.Configuration.Admin is null)
+        if (settings.Configuration.Disabled || string.IsNullOrWhiteSpace(settings.Configuration.Admin?.Topic))
             throw new InvalidOperationException("KafkaFlow messaging is not configured");
 
         _appBuilder.Services.AddKafkaFlowHostedService(
             kafka => kafka.AddCluster(cluster =>
                           {
-                              cluster.WithBrokers(settings.Configuration.Brokers);
+                              cluster.WithBrokers([settings.Configuration.Admin.Broker]);
 
                               cluster.WithSecurityInformation(
                                   securityInfo => KafkaFlowSecurityInformationHelper.SetSecurityInfo(settings.Configuration, securityInfo)
