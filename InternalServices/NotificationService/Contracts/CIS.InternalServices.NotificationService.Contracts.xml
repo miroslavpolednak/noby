@@ -70,6 +70,9 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.DocumentHashFieldNumber">
             <summary>Field number for the "DocumentHash" field.</summary>
         </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.IsAuditableFieldNumber">
+            <summary>Field number for the "IsAuditable" field.</summary>
+        </member>
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types">
             <summary>Container for nested types declared in the SendEmailRequest message type.</summary>
         </member>

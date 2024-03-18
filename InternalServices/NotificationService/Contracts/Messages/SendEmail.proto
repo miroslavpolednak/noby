@@ -20,6 +20,7 @@ message SendEmailRequest {
 	google.protobuf.StringValue CustomId = 11;
 	google.protobuf.StringValue DocumentId = 12;
 	DocumentHash DocumentHash = 13;
+	bool IsAuditable = 14;
 
 	message EmailContent
 	{

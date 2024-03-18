@@ -3,9 +3,11 @@ using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstracti
 using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CodebookService.Contracts.v1;
 using SharedAudit;
 using SharedComponents.DocumentDataStorage;
 using SharedComponents.Storage;
+using System.Globalization;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendEmail;
 
@@ -21,7 +23,7 @@ internal sealed class SendEmailHandler
         // kontrola na domenu uz je ve validatoru
         var senderType = _appConfiguration.EmailSenders.Mcs.Contains(domainName, StringComparer.OrdinalIgnoreCase) ? Mandants.Kb : Mandants.Mp;
 
-        Database.Entities.Notification result = new()
+        Database.Entities.Notification notificationInstance = new()
         {
             Id = notificationId,
             Channel = NotificationChannels.Email,
@@ -36,7 +38,7 @@ internal sealed class SendEmailHandler
             CreatedTime = _dateTime.GetLocalNow().DateTime,
             CreatedUserName = _serviceUser.UserName,
         };
-        _dbContext.Add(result);
+        _dbContext.Add(notificationInstance);
         // ulozit do databaze
         await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -55,17 +57,17 @@ internal sealed class SendEmailHandler
         }
         catch (Exception ex)
         {
-            _logger.SaveAttachmentFailed(result.Id, ex);
+            _logger.SaveAttachmentFailed(notificationInstance.Id, ex);
 
             // nastavit stav v databazi
-            result.State = NotificationStates.Error;
+            notificationInstance.State = NotificationStates.Error;
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             throw new CisExternalServiceServerErrorException(ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "Unable to upload attachment to storage service");
         }
 
         // ulozit obsah SMS
-        await _documentDataStorage.Add(result.Id.ToString(), new Database.DocumentDataEntities.EmailData
+        await _documentDataStorage.Add(notificationInstance.Id.ToString(), new Database.DocumentDataEntities.EmailData
         {
             Subject = request.Subject,
             Text = request.Content.Text,
@@ -88,7 +90,7 @@ internal sealed class SendEmailHandler
         {
             var sendEmail = new McsSendApi.v4.email.SendEmail
             {
-                id = result.Id.ToString(),
+                id = notificationInstance.Id.ToString(),
                 notificationConsumer = new()
                 {
                     consumerId = _serviceUser.ConsumerId
@@ -123,18 +125,27 @@ internal sealed class SendEmailHandler
                 await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
 
                 // nastavit stav v databazi
-                result.State = NotificationStates.Sent;
+                notificationInstance.State = NotificationStates.Sent;
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
-                _logger.NotificationSent(result.Id, NotificationChannels.Email);
+                _logger.NotificationSent(notificationInstance.Id, NotificationChannels.Email);
+                if (request.IsAuditable)
+                {
+                    createAuditLog(request, _serviceUser.ConsumerId, notificationInstance.Id, true);
+                }
             }
             catch (Exception ex)
             {
                 // nastavit stav v databazi
-                result.State = NotificationStates.Error;
+                notificationInstance.State = NotificationStates.Error;
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
-                _logger.NotificationFailedToSend(result.Id, NotificationChannels.Email, ex);
+                _logger.NotificationFailedToSend(notificationInstance.Id, NotificationChannels.Email, ex);
+                if (request.IsAuditable)
+                {
+                    createAuditLog(request, _serviceUser.ConsumerId, notificationInstance.Id, false, ex.Message);
+                }
+                
                 throw;
             }
         }
@@ -145,14 +156,66 @@ internal sealed class SendEmailHandler
                 //Data = request
             };
 
-            await _documentDataStorage.Add(result.Id.ToString(), email, cancellationToken);
+            await _documentDataStorage.Add(notificationInstance.Id.ToString(), email, cancellationToken);
 
         }
         
         return new NotificationIdResponse
         {
-            NotificationId = result.Id.ToString()
+            NotificationId = notificationInstance.Id.ToString()
         };
+    }
+
+    private void createAuditLog(
+        SendEmailRequest request,
+        in string consumerId,
+        in Guid notificationId,
+        in bool isSuccesful,
+        in string? errorMessage = null)
+    {
+        var bodyBefore = new Dictionary<string, string>
+        {
+            { "subject", request.Subject },
+            { "text", request.Content.Text },
+            { "consumer", consumerId },
+            { "serviceUserName", _serviceUser.UserName },
+            { "identityId", request.Identifier?.Identity ?? string.Empty },
+            { "identityScheme", request.Identifier?.IdentityScheme.ToString() ?? string.Empty },
+            { "caseId", request.CaseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
+            { "customId", request.CustomId ?? string.Empty },
+            { "documentId", request.DocumentId ?? string.Empty },
+            { "documentHash", request.DocumentHash?.Hash ?? string.Empty },
+            { "documentHashAlgorithm", request.DocumentHash?.HashAlgorithm.ToString() ?? string.Empty }
+        };
+
+        addToBody("from", request.From);
+        addToBody("to", request.To);
+        addToBody("cc", request.Cc);
+        addToBody("bcc", request.Bcc);
+        addToBody("replyTo", request.ReplyTo);
+
+        if (!isSuccesful)
+        {
+            bodyBefore.Add("errorMessage", errorMessage ?? "");
+        }
+
+        _auditLogger.Log(
+            AuditEventTypes.Noby013,
+            isSuccesful ? "Produced message SendEmail to KAFKA" : "Could not produce message SendEmail to KAFKA",
+            bodyBefore: bodyBefore,
+            bodyAfter: new Dictionary<string, string>
+            {
+                { "notificationId", notificationId.ToString() }
+            }
+        );
+
+        void addToBody<TData>(in string key, TData? data)
+        {
+            if (data is not null)
+            {
+                bodyBefore.Add(key, System.Text.Json.JsonSerializer.Serialize(data));
+            }
+        }
     }
 
     private static string getLanguage(Contracts.v2.SendEmailRequest.Types.EmailLanguages language)
