@@ -10,6 +10,9 @@ internal static class KafkaFlowServiceCollectionExtensions
 {
     public static IServiceCollection AddSchemaRegistryClient(this IServiceCollection services, KafkaFlowConfiguratorSettings settings)
     {
+        if (settings.Configuration.SchemaRegistry is null)
+            return services;
+
         var httpClientRetryPolicy = HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
         services.AddSingleton(settings.Configuration.SchemaRegistry);

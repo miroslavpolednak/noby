@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.Messaging.KafkaFlow.Configuration;
+using CIS.Infrastructure.Messaging.KafkaFlow.JsonSchema;
 using CIS.Infrastructure.Messaging.KafkaFlow.Middlewares;
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
@@ -17,8 +18,6 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
     private KafkaFlowMessagingConfigurator(KafkaFlowConfiguratorSettings settings)
     {
         _settings = settings;
-
-        SetAdminMessages();
     }
 
     public static void Configure(KafkaFlowConfiguratorSettings settings, Action<IKafkaFlowMessagingConfigurator> messaging, IClusterConfigurationBuilder cluster)
@@ -37,28 +36,16 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(topic, nameof(topic));
 
-        _clusterBuilder += kafka => kafka.AddConsumer(consumer =>
-        {
-            consumer.Topic(topic).WithAutoOffsetReset(AutoOffsetReset.Earliest)
-                    .WithGroupId(_settings.GroupId).WithManualMessageCompletion()
-                    .WithBufferSize(2).WithWorkersCount(10)
-                    .AddMiddlewares(m =>
-                    {
-                        m.AddAtBeginning<ActivitySourceMiddleware>(MiddlewareLifetime.Message);
-                        m.Add<ConsumerErrorHandlingMiddleware>(MiddlewareLifetime.Singleton);
+        _clusterBuilder += kafka => kafka.AddConsumer(consumer => SetupConsumer(consumer.Topic(topic), m => m.AddSchemaRegistryAvroDeserializer(), handlers));
 
-                        _settings.RetryStrategy.Configure(m); //Retry Middleware
+        return this;
+    }
 
-                        m.AddSchemaRegistryAvroDeserializer();
+    public IKafkaFlowMessagingConfigurator AddConsumerJson(string topic, Action<TypedHandlerConfigurationBuilder> handlers)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(topic, nameof(topic));
 
-                        m.Add(resolver => new LoggingKnownMessagesMiddleware(
-                                  _settings.Configuration,
-                                  resolver.Resolve<ILogger<LoggingKnownMessagesMiddleware>>()
-                              ), MiddlewareLifetime.Singleton);
-
-                        m.AddTypedHandlers(handlers += h => h.WithHandlerLifetime(InstanceLifetime.Scoped));
-                    });
-        });
+        _clusterBuilder += kafka => kafka.AddConsumer(consumer => SetupConsumer(consumer.Topic(topic), m => m.AddSchemaRegistryJsonDeserializer(), handlers));
 
         return this;
     }
@@ -87,11 +74,27 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
         return this;
     }
 
-    private void SetAdminMessages()
+    private void SetupConsumer(IConsumerConfigurationBuilder consumer, Action<IConsumerMiddlewareConfigurationBuilder> deserializerConfig, Action<TypedHandlerConfigurationBuilder> handlers)
     {
-        if (string.IsNullOrWhiteSpace(_settings.Configuration.AdminTopic))
-            return;
+        consumer.WithAutoOffsetReset(AutoOffsetReset.Earliest)
+                .WithGroupId(_settings.GroupId).WithManualMessageCompletion()
+                .WithBufferSize(2).WithWorkersCount(10)
+                .AddMiddlewares(m =>
+                {
+                    m.AddAtBeginning<ActivitySourceMiddleware>(MiddlewareLifetime.Message);
+                    m.Add<ConsumerErrorHandlingMiddleware>(MiddlewareLifetime.Singleton);
 
-        _clusterBuilder += kafka => kafka.EnableTelemetry(_settings.Configuration.AdminTopic).EnableAdminMessages(_settings.Configuration.AdminTopic);
+                    _settings.RetryStrategy.Configure(m); //Retry Middleware
+
+                    deserializerConfig(m);
+
+                    m.Add(resolver => new LoggingKnownMessagesMiddleware(
+                              _settings.Configuration,
+                              resolver.Resolve<ILogger<LoggingKnownMessagesMiddleware>>()
+                          ),
+                          MiddlewareLifetime.Singleton);
+
+                    m.AddTypedHandlers(handlers += h => h.WithHandlerLifetime(InstanceLifetime.Scoped));
+                });
     }
 }
