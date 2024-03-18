@@ -64,7 +64,7 @@ internal sealed class CisMessagingBuilder : ICisMessagingBuilder
                         cluster.WithBrokers([settings.Configuration.Admin.Broker]);
                         cluster.WithSecurityInformation(securityInfo => KafkaFlowSecurityInformationHelper.SetSecurityInfo(settings.Configuration, securityInfo));
 
-                        cluster.EnableAdminMessages(settings.Configuration.Admin.Topic).EnableTelemetry(settings.Configuration.Admin.Topic);
+                        cluster.EnableAdminMessages(settings.Configuration.Admin.Topic).EnableCisTelemetry(settings.Configuration.Admin.Topic);
                     });
                 }
             });
