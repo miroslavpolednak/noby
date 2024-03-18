@@ -11,6 +11,7 @@ using NOBY.Infrastructure.Configuration;
 using SharedAudit;
 using SharedComponents.Storage;
 using CIS.Infrastructure.Messaging;
+using NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,10 +79,13 @@ try
     // authentication
     builder.AddNobyAuthentication(appConfiguration);
 
+    var codebookMap = new CodebookMap();
+    builder.Services.AddSingleton<ICodebookMap>(codebookMap);
+
     // swagger
     if (!envConfiguration.DisableContractDescriptionPropagation)
     {
-        builder.AddNobySwagger();
+        builder.AddNobySwagger(codebookMap);
     }
 
     if (appConfiguration.UseKafkaFlowDashboard)
