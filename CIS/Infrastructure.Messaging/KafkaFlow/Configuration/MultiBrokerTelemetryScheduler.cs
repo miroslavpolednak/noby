@@ -35,7 +35,7 @@ public class MultiBrokerTelemetryScheduler
             _ => ProduceTelemetry(topicName, topicPartition, consumers, producer),
             null,
             TimeSpan.Zero,
-            TimeSpan.FromSeconds(5));
+            TimeSpan.FromSeconds(15));
     }
 
     public void Stop(string telemetryId)
