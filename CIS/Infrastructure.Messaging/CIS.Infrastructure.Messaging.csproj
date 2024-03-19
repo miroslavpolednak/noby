@@ -30,14 +30,14 @@
 
 	<ItemGroup>
 		<!-- DO NOT UPGRADE VERSIONS -->
-		<PackageReference Include="KafkaFlow" Version="3.0.4" />
-		<PackageReference Include="KafkaFlow.Admin" Version="3.0.4" />
-		<PackageReference Include="KafkaFlow.Extensions.Hosting" Version="3.0.4" />
-		<PackageReference Include="KafkaFlow.LogHandler.Microsoft" Version="3.0.4" />
-		<PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="3.0.4" />
+		<PackageReference Include="KafkaFlow" Version="3.0.5" />
+		<PackageReference Include="KafkaFlow.Admin" Version="3.0.5" />
+		<PackageReference Include="KafkaFlow.Extensions.Hosting" Version="3.0.5" />
+		<PackageReference Include="KafkaFlow.LogHandler.Microsoft" Version="3.0.5" />
+		<PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="3.0.5" />
 		<PackageReference Include="KafkaFlow.Retry.SqlServer" Version="3.0.1" />
-		<PackageReference Include="KafkaFlow.Serializer.SchemaRegistry.ConfluentAvro" Version="3.0.4" />
-		<PackageReference Include="KafkaFlow.Serializer.SchemaRegistry.ConfluentJson" Version="3.0.4" />
+		<PackageReference Include="KafkaFlow.Serializer.SchemaRegistry.ConfluentAvro" Version="3.0.5" />
+		<PackageReference Include="KafkaFlow.Serializer.SchemaRegistry.ConfluentJson" Version="3.0.5" />
 		<PackageReference Include="KB.Speed.MassTransit.Kafka" Version="1.3.0.48" />
 		<PackageReference Include="MassTransit" Version="8.1.1" />
 		<PackageReference Include="MassTransit.Kafka" Version="8.1.1" />
