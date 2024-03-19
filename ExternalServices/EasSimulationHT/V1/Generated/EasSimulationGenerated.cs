@@ -40,17 +40,47 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
         System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.GetValidityResponse> GetValidityAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.GetValidityRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SplatkovyKalendar", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SplatkovyKalendar")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SimHu_SplatkovyKalendar", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SimHu_SplatkovyKalendar")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
-        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SplatkovyKalendarResponse> SplatkovyKalendarAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SplatkovyKalendarRequest request);
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHu_SplatkovyKalendar_Response> SimHu_SplatkovyKalendarAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHu_SplatkovyKalendar_Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SimHu_RetenceHedge", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SimHu_RetenceHedge")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHu_RetenceHedge_Response> SimHu_RetenceHedgeAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHu_RetenceHedge_Request request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/SimHT_UVN", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/SimHT_UVN")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
         System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHT_UVN_Response> SimHT_UVNAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHT_UVN_Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/refinancGetContracts", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/refinancGetContracts")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancGetContracts_Response> refinancGetContractsAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancGetContracts_Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/refinancGetContractsDetail", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/refinancGetContractsDetail")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancGetContractsDetail_Response> refinancGetContractsDetailAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancGetContractsDetail_Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/refinancCalculation", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/refinancCalculation")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancCalculation_Response> refinancCalculationAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancCalculation_Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/refinancCalculationNewBusiness", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/refinancCalculationNewBusiness")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancCalculationNewBusiness_Response> refinancCalculationNewBusinessAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancCalculationNewBusiness_Request request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/WFS_FindTasks", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/WFS_FindTasks")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -111,6 +141,36 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
         System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.Coll_BG_Valuation_Response> BG_ValuationAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.Coll_Header header, ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.Coll_BG_Valuation message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/RS_HedgeRefixationAppendix", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/RS_HedgeRefixationAppendix")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.HedgeRefixationAppendix_response> RS_HedgeRefixationAppendixAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.HedgeRefixationAppendix_request message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/RS_RetentionAppendix", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/RS_RetentionAppendix")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.RetentionAppendix_response> RS_RetentionAppendixAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.RetentionAppendix_request message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/RS_InterestRateNotification", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/RS_InterestRateNotification")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.InterestRateNotification_response> RS_InterestRateNotificationAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.InterestRateNotification_request message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/RS_CalculationDocuments", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/RS_CalculationDocuments")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.CalculationDocuments_response> RS_CalculationDocumentsAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.CalculationDocuments_request message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/RS_GetInterestRate", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/RS_GetInterestRate")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.GetInterestRate_response> RS_GetInterestRateAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.GetInterestRate_request message);
     }
     
     /// <remarks/>
@@ -139,6 +199,8 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         private string dODField;
         
         private string userField;
+        
+        private string currentCultureField;
         
         private string debugInfoField;
         
@@ -286,6 +348,20 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        public string CurrentCulture
+        {
+            get
+            {
+                return this.currentCultureField;
+            }
+            set
+            {
+                this.currentCultureField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
         public string DebugInfo
         {
             get
@@ -299,7 +375,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
         public int Mandant
         {
             get
@@ -309,6 +385,1143 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
             set
             {
                 this.mandantField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class GetInterestRate_response
+    {
+        
+        private CommonResultEx resultField;
+        
+        private decimal interest_rateField;
+        
+        private int fixation_time_newField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public CommonResultEx result
+        {
+            get
+            {
+                return this.resultField;
+            }
+            set
+            {
+                this.resultField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public decimal interest_rate
+        {
+            get
+            {
+                return this.interest_rateField;
+            }
+            set
+            {
+                this.interest_rateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public int fixation_time_new
+        {
+            get
+            {
+                return this.fixation_time_newField;
+            }
+            set
+            {
+                this.fixation_time_newField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class CommonResultEx : CommonResult
+    {
+        
+        private int warning_valField;
+        
+        private string warning_textField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int warning_val
+        {
+            get
+            {
+                return this.warning_valField;
+            }
+            set
+            {
+                this.warning_valField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        public string warning_text
+        {
+            get
+            {
+                return this.warning_textField;
+            }
+            set
+            {
+                this.warning_textField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CommonResultEx))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class CommonResult
+    {
+        
+        private int return_valField;
+        
+        private string return_textField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int return_val
+        {
+            get
+            {
+                return this.return_valField;
+            }
+            set
+            {
+                this.return_valField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        public string return_text
+        {
+            get
+            {
+                return this.return_textField;
+            }
+            set
+            {
+                this.return_textField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class GetInterestRate_request
+    {
+        
+        private int uver_idField;
+        
+        private System.DateTime dateField;
+        
+        private System.Nullable<int> fixation_timeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int uver_id
+        {
+            get
+            {
+                return this.uver_idField;
+            }
+            set
+            {
+                this.uver_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public System.DateTime date
+        {
+            get
+            {
+                return this.dateField;
+            }
+            set
+            {
+                this.dateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        public System.Nullable<int> fixation_time
+        {
+            get
+            {
+                return this.fixation_timeField;
+            }
+            set
+            {
+                this.fixation_timeField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class CalculationDocuments_response
+    {
+        
+        private CommonResultEx resultField;
+        
+        private int calculation_typeField;
+        
+        private string[] ea_numbersField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public CommonResultEx result
+        {
+            get
+            {
+                return this.resultField;
+            }
+            set
+            {
+                this.resultField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public int calculation_type
+        {
+            get
+            {
+                return this.calculation_typeField;
+            }
+            set
+            {
+                this.calculation_typeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("ea_numbers", Order=2)]
+        public string[] ea_numbers
+        {
+            get
+            {
+                return this.ea_numbersField;
+            }
+            set
+            {
+                this.ea_numbersField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class CalculationDocuments_request
+    {
+        
+        private int case_idField;
+        
+        private bool full_repaymentField;
+        
+        private System.DateTime calculation_dateField;
+        
+        private System.DateTime extra_payment_dateField;
+        
+        private string client_idField;
+        
+        private decimal extra_payment_sumField;
+        
+        private decimal uvn_amountField;
+        
+        private decimal principal_amountField;
+        
+        private decimal interest_amountField;
+        
+        private decimal other_unpaid_feesField;
+        
+        private decimal interest_on_lateField;
+        
+        private decimal interest_covidField;
+        
+        private bool loan_overdueField;
+        
+        private bool payment_reductionField;
+        
+        private System.Nullable<System.DateTime> new_maturity_dateField;
+        
+        private System.Nullable<decimal> new_payment_amountField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int case_id
+        {
+            get
+            {
+                return this.case_idField;
+            }
+            set
+            {
+                this.case_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public bool full_repayment
+        {
+            get
+            {
+                return this.full_repaymentField;
+            }
+            set
+            {
+                this.full_repaymentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public System.DateTime calculation_date
+        {
+            get
+            {
+                return this.calculation_dateField;
+            }
+            set
+            {
+                this.calculation_dateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public System.DateTime extra_payment_date
+        {
+            get
+            {
+                return this.extra_payment_dateField;
+            }
+            set
+            {
+                this.extra_payment_dateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string client_id
+        {
+            get
+            {
+                return this.client_idField;
+            }
+            set
+            {
+                this.client_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public decimal extra_payment_sum
+        {
+            get
+            {
+                return this.extra_payment_sumField;
+            }
+            set
+            {
+                this.extra_payment_sumField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public decimal uvn_amount
+        {
+            get
+            {
+                return this.uvn_amountField;
+            }
+            set
+            {
+                this.uvn_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public decimal principal_amount
+        {
+            get
+            {
+                return this.principal_amountField;
+            }
+            set
+            {
+                this.principal_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public decimal interest_amount
+        {
+            get
+            {
+                return this.interest_amountField;
+            }
+            set
+            {
+                this.interest_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        public decimal other_unpaid_fees
+        {
+            get
+            {
+                return this.other_unpaid_feesField;
+            }
+            set
+            {
+                this.other_unpaid_feesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        public decimal interest_on_late
+        {
+            get
+            {
+                return this.interest_on_lateField;
+            }
+            set
+            {
+                this.interest_on_lateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        public decimal interest_covid
+        {
+            get
+            {
+                return this.interest_covidField;
+            }
+            set
+            {
+                this.interest_covidField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        public bool loan_overdue
+        {
+            get
+            {
+                return this.loan_overdueField;
+            }
+            set
+            {
+                this.loan_overdueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        public bool payment_reduction
+        {
+            get
+            {
+                return this.payment_reductionField;
+            }
+            set
+            {
+                this.payment_reductionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=14)]
+        public System.Nullable<System.DateTime> new_maturity_date
+        {
+            get
+            {
+                return this.new_maturity_dateField;
+            }
+            set
+            {
+                this.new_maturity_dateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=15)]
+        public System.Nullable<decimal> new_payment_amount
+        {
+            get
+            {
+                return this.new_payment_amountField;
+            }
+            set
+            {
+                this.new_payment_amountField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class InterestRateNotification_response
+    {
+        
+        private CommonResultEx resultField;
+        
+        private string ea_numberField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public CommonResultEx result
+        {
+            get
+            {
+                return this.resultField;
+            }
+            set
+            {
+                this.resultField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string ea_number
+        {
+            get
+            {
+                return this.ea_numberField;
+            }
+            set
+            {
+                this.ea_numberField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class InterestRateNotification_request
+    {
+        
+        private int case_idField;
+        
+        private decimal interest_rateField;
+        
+        private System.DateTime date_fromField;
+        
+        private int fixation_timeField;
+        
+        private decimal payment_amountField;
+        
+        private int print_signature_formField;
+        
+        private string cpmField;
+        
+        private string icpField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int case_id
+        {
+            get
+            {
+                return this.case_idField;
+            }
+            set
+            {
+                this.case_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public decimal interest_rate
+        {
+            get
+            {
+                return this.interest_rateField;
+            }
+            set
+            {
+                this.interest_rateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public System.DateTime date_from
+        {
+            get
+            {
+                return this.date_fromField;
+            }
+            set
+            {
+                this.date_fromField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public int fixation_time
+        {
+            get
+            {
+                return this.fixation_timeField;
+            }
+            set
+            {
+                this.fixation_timeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public decimal payment_amount
+        {
+            get
+            {
+                return this.payment_amountField;
+            }
+            set
+            {
+                this.payment_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public int print_signature_form
+        {
+            get
+            {
+                return this.print_signature_formField;
+            }
+            set
+            {
+                this.print_signature_formField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public string cpm
+        {
+            get
+            {
+                return this.cpmField;
+            }
+            set
+            {
+                this.cpmField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public string icp
+        {
+            get
+            {
+                return this.icpField;
+            }
+            set
+            {
+                this.icpField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class RetentionAppendix_response
+    {
+        
+        private CommonResultEx resultField;
+        
+        private string ea_numberField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public CommonResultEx result
+        {
+            get
+            {
+                return this.resultField;
+            }
+            set
+            {
+                this.resultField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string ea_number
+        {
+            get
+            {
+                return this.ea_numberField;
+            }
+            set
+            {
+                this.ea_numberField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class RetentionAppendix_request
+    {
+        
+        private int case_idField;
+        
+        private decimal interest_rateField;
+        
+        private System.DateTime date_fromField;
+        
+        private decimal payment_amountField;
+        
+        private int print_signature_formField;
+        
+        private string cpmField;
+        
+        private string icpField;
+        
+        private System.Nullable<System.DateTime> deadline_for_signatureField;
+        
+        private bool individual_pricingField;
+        
+        private decimal feeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int case_id
+        {
+            get
+            {
+                return this.case_idField;
+            }
+            set
+            {
+                this.case_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public decimal interest_rate
+        {
+            get
+            {
+                return this.interest_rateField;
+            }
+            set
+            {
+                this.interest_rateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public System.DateTime date_from
+        {
+            get
+            {
+                return this.date_fromField;
+            }
+            set
+            {
+                this.date_fromField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public decimal payment_amount
+        {
+            get
+            {
+                return this.payment_amountField;
+            }
+            set
+            {
+                this.payment_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public int print_signature_form
+        {
+            get
+            {
+                return this.print_signature_formField;
+            }
+            set
+            {
+                this.print_signature_formField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public string cpm
+        {
+            get
+            {
+                return this.cpmField;
+            }
+            set
+            {
+                this.cpmField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public string icp
+        {
+            get
+            {
+                return this.icpField;
+            }
+            set
+            {
+                this.icpField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=7)]
+        public System.Nullable<System.DateTime> deadline_for_signature
+        {
+            get
+            {
+                return this.deadline_for_signatureField;
+            }
+            set
+            {
+                this.deadline_for_signatureField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public bool individual_pricing
+        {
+            get
+            {
+                return this.individual_pricingField;
+            }
+            set
+            {
+                this.individual_pricingField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        public decimal fee
+        {
+            get
+            {
+                return this.feeField;
+            }
+            set
+            {
+                this.feeField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class HedgeRefixationAppendix_response
+    {
+        
+        private CommonResultEx resultField;
+        
+        private string ea_numberField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public CommonResultEx result
+        {
+            get
+            {
+                return this.resultField;
+            }
+            set
+            {
+                this.resultField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string ea_number
+        {
+            get
+            {
+                return this.ea_numberField;
+            }
+            set
+            {
+                this.ea_numberField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class HedgeRefixationAppendix_request
+    {
+        
+        private int case_idField;
+        
+        private decimal interest_rateField;
+        
+        private System.DateTime date_fromField;
+        
+        private int fixation_timeField;
+        
+        private decimal payment_amountField;
+        
+        private System.Nullable<int> count_of_paymentsField;
+        
+        private System.Nullable<System.DateTime> maturity_dateField;
+        
+        private int print_signature_formField;
+        
+        private string cpmField;
+        
+        private string icpField;
+        
+        private System.Nullable<System.DateTime> deadline_for_signatureField;
+        
+        private bool individual_pricingField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int case_id
+        {
+            get
+            {
+                return this.case_idField;
+            }
+            set
+            {
+                this.case_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public decimal interest_rate
+        {
+            get
+            {
+                return this.interest_rateField;
+            }
+            set
+            {
+                this.interest_rateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public System.DateTime date_from
+        {
+            get
+            {
+                return this.date_fromField;
+            }
+            set
+            {
+                this.date_fromField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public int fixation_time
+        {
+            get
+            {
+                return this.fixation_timeField;
+            }
+            set
+            {
+                this.fixation_timeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public decimal payment_amount
+        {
+            get
+            {
+                return this.payment_amountField;
+            }
+            set
+            {
+                this.payment_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=5)]
+        public System.Nullable<int> count_of_payments
+        {
+            get
+            {
+                return this.count_of_paymentsField;
+            }
+            set
+            {
+                this.count_of_paymentsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=6)]
+        public System.Nullable<System.DateTime> maturity_date
+        {
+            get
+            {
+                return this.maturity_dateField;
+            }
+            set
+            {
+                this.maturity_dateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public int print_signature_form
+        {
+            get
+            {
+                return this.print_signature_formField;
+            }
+            set
+            {
+                this.print_signature_formField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public string cpm
+        {
+            get
+            {
+                return this.cpmField;
+            }
+            set
+            {
+                this.cpmField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        public string icp
+        {
+            get
+            {
+                return this.icpField;
+            }
+            set
+            {
+                this.icpField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=10)]
+        public System.Nullable<System.DateTime> deadline_for_signature
+        {
+            get
+            {
+                return this.deadline_for_signatureField;
+            }
+            set
+            {
+                this.deadline_for_signatureField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        public bool individual_pricing
+        {
+            get
+            {
+                return this.individual_pricingField;
+            }
+            set
+            {
+                this.individual_pricingField = value;
             }
         }
     }
@@ -706,46 +1919,6 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
             set
             {
                 this.resultField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class CommonResult
-    {
-        
-        private int return_valField;
-        
-        private string return_textField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int return_val
-        {
-            get
-            {
-                return this.return_valField;
-            }
-            set
-            {
-                this.return_valField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
-        public string return_text
-        {
-            get
-            {
-                return this.return_textField;
-            }
-            set
-            {
-                this.return_textField = value;
             }
         }
     }
@@ -4529,6 +5702,902 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class refinancCalculationNewBusiness_Response
+    {
+        
+        private decimal marginField;
+        
+        private decimal monthly_paymentField;
+        
+        private decimal flat_costsField;
+        
+        private decimal commissionField;
+        
+        private decimal revenue_until_end_of_fixField;
+        
+        private decimal net_revenueField;
+        
+        private int errorField;
+        
+        private string error_messageField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public decimal margin
+        {
+            get
+            {
+                return this.marginField;
+            }
+            set
+            {
+                this.marginField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public decimal monthly_payment
+        {
+            get
+            {
+                return this.monthly_paymentField;
+            }
+            set
+            {
+                this.monthly_paymentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public decimal flat_costs
+        {
+            get
+            {
+                return this.flat_costsField;
+            }
+            set
+            {
+                this.flat_costsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public decimal commission
+        {
+            get
+            {
+                return this.commissionField;
+            }
+            set
+            {
+                this.commissionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public decimal revenue_until_end_of_fix
+        {
+            get
+            {
+                return this.revenue_until_end_of_fixField;
+            }
+            set
+            {
+                this.revenue_until_end_of_fixField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public decimal net_revenue
+        {
+            get
+            {
+                return this.net_revenueField;
+            }
+            set
+            {
+                this.net_revenueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public int error
+        {
+            get
+            {
+                return this.errorField;
+            }
+            set
+            {
+                this.errorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public string error_message
+        {
+            get
+            {
+                return this.error_messageField;
+            }
+            set
+            {
+                this.error_messageField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class refinancCalculationNewBusiness_Request
+    {
+        
+        private loanContractCalc[] contractsField;
+        
+        private decimal refinancing_loansField;
+        
+        private decimal refinancing_purpose_loans_kbField;
+        
+        private decimal refinancing_purpose_loans_jpuField;
+        
+        private decimal refinancing_non_purpose_loans_kbField;
+        
+        private decimal refinancing_non_purpose_loans_jpuField;
+        
+        private decimal purpose_increaseField;
+        
+        private decimal non_purpose_increaseField;
+        
+        private System.DateTime maturity_dateField;
+        
+        private int fixation_periodField;
+        
+        private decimal individual_rateField;
+        
+        private bool bank_advisor_dealField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
+        public loanContractCalc[] contracts
+        {
+            get
+            {
+                return this.contractsField;
+            }
+            set
+            {
+                this.contractsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public decimal refinancing_loans
+        {
+            get
+            {
+                return this.refinancing_loansField;
+            }
+            set
+            {
+                this.refinancing_loansField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public decimal refinancing_purpose_loans_kb
+        {
+            get
+            {
+                return this.refinancing_purpose_loans_kbField;
+            }
+            set
+            {
+                this.refinancing_purpose_loans_kbField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public decimal refinancing_purpose_loans_jpu
+        {
+            get
+            {
+                return this.refinancing_purpose_loans_jpuField;
+            }
+            set
+            {
+                this.refinancing_purpose_loans_jpuField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public decimal refinancing_non_purpose_loans_kb
+        {
+            get
+            {
+                return this.refinancing_non_purpose_loans_kbField;
+            }
+            set
+            {
+                this.refinancing_non_purpose_loans_kbField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public decimal refinancing_non_purpose_loans_jpu
+        {
+            get
+            {
+                return this.refinancing_non_purpose_loans_jpuField;
+            }
+            set
+            {
+                this.refinancing_non_purpose_loans_jpuField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public decimal purpose_increase
+        {
+            get
+            {
+                return this.purpose_increaseField;
+            }
+            set
+            {
+                this.purpose_increaseField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public decimal non_purpose_increase
+        {
+            get
+            {
+                return this.non_purpose_increaseField;
+            }
+            set
+            {
+                this.non_purpose_increaseField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public System.DateTime maturity_date
+        {
+            get
+            {
+                return this.maturity_dateField;
+            }
+            set
+            {
+                this.maturity_dateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        public int fixation_period
+        {
+            get
+            {
+                return this.fixation_periodField;
+            }
+            set
+            {
+                this.fixation_periodField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        public decimal individual_rate
+        {
+            get
+            {
+                return this.individual_rateField;
+            }
+            set
+            {
+                this.individual_rateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        public bool bank_advisor_deal
+        {
+            get
+            {
+                return this.bank_advisor_dealField;
+            }
+            set
+            {
+                this.bank_advisor_dealField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class loanContractCalc
+    {
+        
+        private int contract_idField;
+        
+        private decimal rate_until_end_of_fixationField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int contract_id
+        {
+            get
+            {
+                return this.contract_idField;
+            }
+            set
+            {
+                this.contract_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public decimal rate_until_end_of_fixation
+        {
+            get
+            {
+                return this.rate_until_end_of_fixationField;
+            }
+            set
+            {
+                this.rate_until_end_of_fixationField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class LoanContractRefinancCalc
+    {
+        
+        private int contract_idField;
+        
+        private string contract_numberField;
+        
+        private decimal new_margin_until_end_of_current_fixField;
+        
+        private decimal new_monthly_paymentField;
+        
+        private decimal total_interest_bonusField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int contract_id
+        {
+            get
+            {
+                return this.contract_idField;
+            }
+            set
+            {
+                this.contract_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string contract_number
+        {
+            get
+            {
+                return this.contract_numberField;
+            }
+            set
+            {
+                this.contract_numberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public decimal new_margin_until_end_of_current_fix
+        {
+            get
+            {
+                return this.new_margin_until_end_of_current_fixField;
+            }
+            set
+            {
+                this.new_margin_until_end_of_current_fixField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public decimal new_monthly_payment
+        {
+            get
+            {
+                return this.new_monthly_paymentField;
+            }
+            set
+            {
+                this.new_monthly_paymentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public decimal total_interest_bonus
+        {
+            get
+            {
+                return this.total_interest_bonusField;
+            }
+            set
+            {
+                this.total_interest_bonusField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class refinancCalculation_Response
+    {
+        
+        private LoanContractRefinancCalc[] contractsField;
+        
+        private int errorField;
+        
+        private string error_messageField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
+        public LoanContractRefinancCalc[] contracts
+        {
+            get
+            {
+                return this.contractsField;
+            }
+            set
+            {
+                this.contractsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public int error
+        {
+            get
+            {
+                return this.errorField;
+            }
+            set
+            {
+                this.errorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string error_message
+        {
+            get
+            {
+                return this.error_messageField;
+            }
+            set
+            {
+                this.error_messageField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class refinancCalculation_Request
+    {
+        
+        private loanContractCalc[] contractsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
+        public loanContractCalc[] contracts
+        {
+            get
+            {
+                return this.contractsField;
+            }
+            set
+            {
+                this.contractsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class LoanContract2
+    {
+        
+        private int contract_idField;
+        
+        private string contract_numberField;
+        
+        private decimal loan_principalField;
+        
+        private int months_until_end_of_current_fixField;
+        
+        private decimal current_rateField;
+        
+        private decimal monthly_paymentField;
+        
+        private decimal loss_until_end_of_current_fixField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int contract_id
+        {
+            get
+            {
+                return this.contract_idField;
+            }
+            set
+            {
+                this.contract_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string contract_number
+        {
+            get
+            {
+                return this.contract_numberField;
+            }
+            set
+            {
+                this.contract_numberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public decimal loan_principal
+        {
+            get
+            {
+                return this.loan_principalField;
+            }
+            set
+            {
+                this.loan_principalField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public int months_until_end_of_current_fix
+        {
+            get
+            {
+                return this.months_until_end_of_current_fixField;
+            }
+            set
+            {
+                this.months_until_end_of_current_fixField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public decimal current_rate
+        {
+            get
+            {
+                return this.current_rateField;
+            }
+            set
+            {
+                this.current_rateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public decimal monthly_payment
+        {
+            get
+            {
+                return this.monthly_paymentField;
+            }
+            set
+            {
+                this.monthly_paymentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public decimal loss_until_end_of_current_fix
+        {
+            get
+            {
+                return this.loss_until_end_of_current_fixField;
+            }
+            set
+            {
+                this.loss_until_end_of_current_fixField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class refinancGetContractsDetail_Response
+    {
+        
+        private LoanContract2[] contractsField;
+        
+        private int errorField;
+        
+        private string error_messageField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
+        public LoanContract2[] contracts
+        {
+            get
+            {
+                return this.contractsField;
+            }
+            set
+            {
+                this.contractsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public int error
+        {
+            get
+            {
+                return this.errorField;
+            }
+            set
+            {
+                this.errorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string error_message
+        {
+            get
+            {
+                return this.error_messageField;
+            }
+            set
+            {
+                this.error_messageField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class refinancGetContractsDetail_Request
+    {
+        
+        private int[] contractsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
+        public int[] contracts
+        {
+            get
+            {
+                return this.contractsField;
+            }
+            set
+            {
+                this.contractsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class LoanContract
+    {
+        
+        private int contract_idField;
+        
+        private string contract_numberField;
+        
+        private decimal loan_principalField;
+        
+        private int product_idField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int contract_id
+        {
+            get
+            {
+                return this.contract_idField;
+            }
+            set
+            {
+                this.contract_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string contract_number
+        {
+            get
+            {
+                return this.contract_numberField;
+            }
+            set
+            {
+                this.contract_numberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public decimal loan_principal
+        {
+            get
+            {
+                return this.loan_principalField;
+            }
+            set
+            {
+                this.loan_principalField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public int product_id
+        {
+            get
+            {
+                return this.product_idField;
+            }
+            set
+            {
+                this.product_idField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class refinancGetContracts_Response
+    {
+        
+        private LoanContract[] contractsField;
+        
+        private int errorField;
+        
+        private string error_messageField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order=0)]
+        public LoanContract[] contracts
+        {
+            get
+            {
+                return this.contractsField;
+            }
+            set
+            {
+                this.contractsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public int error
+        {
+            get
+            {
+                return this.errorField;
+            }
+            set
+            {
+                this.errorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string error_message
+        {
+            get
+            {
+                return this.error_messageField;
+            }
+            set
+            {
+                this.error_messageField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class refinancGetContracts_Request
+    {
+        
+        private int loan_idField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int loan_id
+        {
+            get
+            {
+                return this.loan_idField;
+            }
+            set
+            {
+                this.loan_idField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class SimUvnDopis
     {
         
@@ -6000,7 +8069,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         
         private string textWarninguField;
         
-        private string internalMsgField;
+        private string publicMsgField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
@@ -6032,15 +8101,15 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public string internalMsg
+        public string publicMsg
         {
             get
             {
-                return this.internalMsgField;
+                return this.publicMsgField;
             }
             set
             {
-                this.internalMsgField = value;
+                this.publicMsgField = value;
             }
         }
     }
@@ -6193,7 +8262,343 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class SplatkovyKalendarResponse
+    public partial class SimRetenceHedgeVysledky
+    {
+        
+        private decimal novaSazbaField;
+        
+        private System.Nullable<System.DateTime> novaSazbaOdField;
+        
+        private System.Nullable<System.DateTime> novaSazbaDoField;
+        
+        private decimal novaVyseSplatkyField;
+        
+        private System.Nullable<System.DateTime> novaVyseSplatkyOdField;
+        
+        private System.Nullable<System.DateTime> novaVyseSplatkyDoField;
+        
+        private System.DateTime novaSplatnostField;
+        
+        private int pocetSplatekField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public decimal novaSazba
+        {
+            get
+            {
+                return this.novaSazbaField;
+            }
+            set
+            {
+                this.novaSazbaField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=1)]
+        public System.Nullable<System.DateTime> novaSazbaOd
+        {
+            get
+            {
+                return this.novaSazbaOdField;
+            }
+            set
+            {
+                this.novaSazbaOdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=2)]
+        public System.Nullable<System.DateTime> novaSazbaDo
+        {
+            get
+            {
+                return this.novaSazbaDoField;
+            }
+            set
+            {
+                this.novaSazbaDoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public decimal novaVyseSplatky
+        {
+            get
+            {
+                return this.novaVyseSplatkyField;
+            }
+            set
+            {
+                this.novaVyseSplatkyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=4)]
+        public System.Nullable<System.DateTime> novaVyseSplatkyOd
+        {
+            get
+            {
+                return this.novaVyseSplatkyOdField;
+            }
+            set
+            {
+                this.novaVyseSplatkyOdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=5)]
+        public System.Nullable<System.DateTime> novaVyseSplatkyDo
+        {
+            get
+            {
+                return this.novaVyseSplatkyDoField;
+            }
+            set
+            {
+                this.novaVyseSplatkyDoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public System.DateTime novaSplatnost
+        {
+            get
+            {
+                return this.novaSplatnostField;
+            }
+            set
+            {
+                this.novaSplatnostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public int pocetSplatek
+        {
+            get
+            {
+                return this.pocetSplatekField;
+            }
+            set
+            {
+                this.pocetSplatekField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SimHu_RetenceHedge_Response
+    {
+        
+        private SimRetenceHedgeVysledky vysledkyField;
+        
+        private SimErrorInfo errorInfoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public SimRetenceHedgeVysledky vysledky
+        {
+            get
+            {
+                return this.vysledkyField;
+            }
+            set
+            {
+                this.vysledkyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public SimErrorInfo errorInfo
+        {
+            get
+            {
+                return this.errorInfoField;
+            }
+            set
+            {
+                this.errorInfoField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SimRetenceHedgeSettings
+    {
+        
+        private int uverIdField;
+        
+        private int modeField;
+        
+        private decimal novaSazbaField;
+        
+        private System.DateTime novaSazbaOdField;
+        
+        private System.Nullable<System.DateTime> novaSazbaDoField;
+        
+        private int periodaFixaceField;
+        
+        private System.Nullable<System.DateTime> novaSplatnostField;
+        
+        private decimal novaVyseSplatkyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int uverId
+        {
+            get
+            {
+                return this.uverIdField;
+            }
+            set
+            {
+                this.uverIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public int mode
+        {
+            get
+            {
+                return this.modeField;
+            }
+            set
+            {
+                this.modeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public decimal novaSazba
+        {
+            get
+            {
+                return this.novaSazbaField;
+            }
+            set
+            {
+                this.novaSazbaField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public System.DateTime novaSazbaOd
+        {
+            get
+            {
+                return this.novaSazbaOdField;
+            }
+            set
+            {
+                this.novaSazbaOdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=4)]
+        public System.Nullable<System.DateTime> novaSazbaDo
+        {
+            get
+            {
+                return this.novaSazbaDoField;
+            }
+            set
+            {
+                this.novaSazbaDoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public int periodaFixace
+        {
+            get
+            {
+                return this.periodaFixaceField;
+            }
+            set
+            {
+                this.periodaFixaceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=6)]
+        public System.Nullable<System.DateTime> novaSplatnost
+        {
+            get
+            {
+                return this.novaSplatnostField;
+            }
+            set
+            {
+                this.novaSplatnostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public decimal novaVyseSplatky
+        {
+            get
+            {
+                return this.novaVyseSplatkyField;
+            }
+            set
+            {
+                this.novaVyseSplatkyField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SimHu_RetenceHedge_Request
+    {
+        
+        private SimRetenceHedgeSettings settingsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public SimRetenceHedgeSettings settings
+        {
+            get
+            {
+                return this.settingsField;
+            }
+            set
+            {
+                this.settingsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class SimHu_SplatkovyKalendar_Response
     {
         
         private Umoreni[] splatkovyKalendarField;
@@ -6233,7 +8638,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class SplatkovyKalendarSettings
+    public partial class SimSplatkovyKalendarSettings
     {
         
         private int uverIdField;
@@ -6305,14 +8710,16 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class SplatkovyKalendarRequest
+    public partial class SimHu_SplatkovyKalendar_Request
     {
         
-        private SplatkovyKalendarSettings settingsField;
+        private SimSplatkovyKalendarSettings settingsField;
+        
+        private MimoradnaOperace[] mimoradneOperaceField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public SplatkovyKalendarSettings settings
+        public SimSplatkovyKalendarSettings settings
         {
             get
             {
@@ -6321,6 +8728,92 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
             set
             {
                 this.settingsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order=1)]
+        public MimoradnaOperace[] mimoradneOperace
+        {
+            get
+            {
+                return this.mimoradneOperaceField;
+            }
+            set
+            {
+                this.mimoradneOperaceField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class MimoradnaOperace
+    {
+        
+        private int klicField;
+        
+        private System.DateTime valutaField;
+        
+        private decimal sumaField;
+        
+        private string poznamkaField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int klic
+        {
+            get
+            {
+                return this.klicField;
+            }
+            set
+            {
+                this.klicField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public System.DateTime valuta
+        {
+            get
+            {
+                return this.valutaField;
+            }
+            set
+            {
+                this.valutaField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public decimal suma
+        {
+            get
+            {
+                return this.sumaField;
+            }
+            set
+            {
+                this.sumaField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string poznamka
+        {
+            get
+            {
+                return this.poznamkaField;
+            }
+            set
+            {
+                this.poznamkaField = value;
             }
         }
     }
@@ -6600,6 +9093,8 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         
         private int uV_kodZvyhodneniUvField;
         
+        private int uV_UverovaJinaAkceField;
+        
         private int uV_developerIdField;
         
         private System.DateTime uV_DatumSplatnostiField;
@@ -6708,6 +9203,20 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public int UV_UverovaJinaAkce
+        {
+            get
+            {
+                return this.uV_UverovaJinaAkceField;
+            }
+            set
+            {
+                this.uV_UverovaJinaAkceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
         public int UV_developerId
         {
             get
@@ -6721,7 +9230,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
         public System.DateTime UV_DatumSplatnosti
         {
             get
@@ -6735,7 +9244,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
         public int UV_PeriodaFixace
         {
             get
@@ -6749,7 +9258,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
         public int UV_TypZajisteni
         {
             get
@@ -6763,7 +9272,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
         public decimal UV_LTV
         {
             get
@@ -6777,7 +9286,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
         public int UV_jeDomicilace
         {
             get
@@ -6791,7 +9300,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
         public int UV_jeRzp
         {
             get
@@ -6805,7 +9314,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
         public int UV_kanal
         {
             get
@@ -6819,7 +9328,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
         public decimal UV_vyseUveru
         {
             get
@@ -6833,7 +9342,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=16)]
         public int UV_hlavniUcelUveru
         {
             get
@@ -6847,7 +9356,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=16)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=17)]
         public int UV_formaPodpisu
         {
             get
@@ -8521,78 +11030,6 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
-    public partial class MimoradnaOperace
-    {
-        
-        private int klicField;
-        
-        private System.DateTime valutaField;
-        
-        private decimal sumaField;
-        
-        private string poznamkaField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int klic
-        {
-            get
-            {
-                return this.klicField;
-            }
-            set
-            {
-                this.klicField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public System.DateTime valuta
-        {
-            get
-            {
-                return this.valutaField;
-            }
-            set
-            {
-                this.valutaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public decimal suma
-        {
-            get
-            {
-                return this.sumaField;
-            }
-            set
-            {
-                this.sumaField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public string poznamka
-        {
-            get
-            {
-                return this.poznamkaField;
-            }
-            set
-            {
-                this.poznamkaField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
     public partial class SimSettingsUrokovaSazba
     {
         
@@ -9307,14 +11744,39 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
             return base.Channel.GetValidityAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SplatkovyKalendarResponse> SplatkovyKalendarAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SplatkovyKalendarRequest request)
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHu_SplatkovyKalendar_Response> SimHu_SplatkovyKalendarAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHu_SplatkovyKalendar_Request request)
         {
-            return base.Channel.SplatkovyKalendarAsync(request);
+            return base.Channel.SimHu_SplatkovyKalendarAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHu_RetenceHedge_Response> SimHu_RetenceHedgeAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHu_RetenceHedge_Request request)
+        {
+            return base.Channel.SimHu_RetenceHedgeAsync(request);
         }
         
         public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHT_UVN_Response> SimHT_UVNAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.SimHT_UVN_Request request)
         {
             return base.Channel.SimHT_UVNAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancGetContracts_Response> refinancGetContractsAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancGetContracts_Request request)
+        {
+            return base.Channel.refinancGetContractsAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancGetContractsDetail_Response> refinancGetContractsDetailAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancGetContractsDetail_Request request)
+        {
+            return base.Channel.refinancGetContractsDetailAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancCalculation_Response> refinancCalculationAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancCalculation_Request request)
+        {
+            return base.Channel.refinancCalculationAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancCalculationNewBusiness_Response> refinancCalculationNewBusinessAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.refinancCalculationNewBusiness_Request request)
+        {
+            return base.Channel.refinancCalculationNewBusinessAsync(request);
         }
         
         public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.WFS_Find_Response> WFS_FindTasksAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.WFS_Header header, ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.WFS_Message message)
@@ -9367,6 +11829,31 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
             return base.Channel.BG_ValuationAsync(header, message);
         }
         
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.HedgeRefixationAppendix_response> RS_HedgeRefixationAppendixAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.HedgeRefixationAppendix_request message)
+        {
+            return base.Channel.RS_HedgeRefixationAppendixAsync(message);
+        }
+        
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.RetentionAppendix_response> RS_RetentionAppendixAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.RetentionAppendix_request message)
+        {
+            return base.Channel.RS_RetentionAppendixAsync(message);
+        }
+        
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.InterestRateNotification_response> RS_InterestRateNotificationAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.InterestRateNotification_request message)
+        {
+            return base.Channel.RS_InterestRateNotificationAsync(message);
+        }
+        
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.CalculationDocuments_response> RS_CalculationDocumentsAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.CalculationDocuments_request message)
+        {
+            return base.Channel.RS_CalculationDocumentsAsync(message);
+        }
+        
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.GetInterestRate_response> RS_GetInterestRateAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.GetInterestRate_request message)
+        {
+            return base.Channel.RS_GetInterestRateAsync(message);
+        }
+        
         public virtual System.Threading.Tasks.Task OpenAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
@@ -9382,6 +11869,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
                 result.MaxReceivedMessageSize = int.MaxValue;
                 result.AllowCookies = true;
                 result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
+                result.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
                 return result;
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
@@ -9391,7 +11879,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IHT_WS_SB_Services))
             {
-                return new System.ServiceModel.EndpointAddress("https://adpra136.vsskb.cz/FAT/HT_WS_SB_Services.svc");
+                return new System.ServiceModel.EndpointAddress("https://adpra236.vsskb.cz/SIT/HT_WS_SB_Services.svc");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

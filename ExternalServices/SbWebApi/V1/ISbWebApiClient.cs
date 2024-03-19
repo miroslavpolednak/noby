@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
 using ExternalServices.SbWebApi.Dto.CompleteTask;
+using ExternalServices.SbWebApi.Dto.GenerateRetentionDocument;
 
 namespace ExternalServices.SbWebApi.V1;
 
@@ -39,4 +40,8 @@ public interface ISbWebApiClient
     Task CancelTask(int taskIdSB, CancellationToken cancellationToken = default(CancellationToken));
 
     Task UpdateTask(Dto.UpdateTask.UpdateTaskRequest request, CancellationToken cancellationToken = default);
+
+    Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime interestRateValidTo, CancellationToken cancellationToken);
+
+    Task<string?> GenerateRetentionDocument(GenerateRetentionDocumentRequest request, CancellationToken cancellationToken);
 }

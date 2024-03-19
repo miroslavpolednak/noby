@@ -7,6 +7,7 @@ using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
 using System.ServiceModel.Channels;
 
 namespace ExternalServices.EasSimulationHT.V1;
+
 public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient, IHT_WS_SB_Services>, IEasSimulationHTClient
 {
     public RealEasSimulationHTClient(
@@ -17,6 +18,33 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
     }
 
     protected override string ServiceName => StartupExtensions.ServiceName;
+
+    public async Task<decimal> RunSimulationRetention(long caseId, decimal newInterestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken)
+    {
+        return await callMethod(async () =>
+        {
+            var request = new SimHu_RetenceHedge_Request
+            {
+                settings = new()
+                {
+                    uverId = Convert.ToInt32(caseId),
+                    mode = 1,
+                    novaSazba = newInterestRate,
+                    novaSazbaOd = interestRateValidFrom
+                }
+            };
+
+            var result = await Client.SimHu_RetenceHedgeAsync(request).WithCancellation(cancellationToken);
+
+            if ((result.errorInfo?.kodChyby ?? 0) != 0)
+            {
+                Logger.ExternalServiceResponseError($"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]");
+                throw new CisValidationException(10028, result.errorInfo!.textChyby);
+            }
+
+            return result.vysledky?.novaVyseSplatky ?? 0;
+        });
+    }
 
     public async Task<WFS_FindItem[]> FindTasks(WFS_Header header, WFS_Find_ByCaseId message, CancellationToken cancellationToken)
     {

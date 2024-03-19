@@ -45,6 +45,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj" />
+    <ProjectReference Include="..\..\ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj" />
     <ProjectReference Include="..\..\Shared\SharedAudit\SharedAudit.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.Caching\CIS.Infrastructure.Caching.csproj" />
     <ProjectReference Include="..\..\CIS\Infrastructure.CisMediatR\CIS.Infrastructure.CisMediatR.csproj" />

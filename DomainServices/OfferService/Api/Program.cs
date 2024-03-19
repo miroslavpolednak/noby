@@ -16,6 +16,7 @@ SharedComponents.GrpcServiceBuilder
     {
         // EAS EasSimulationHT svc
         builder.AddExternalService<ExternalServices.EasSimulationHT.V1.IEasSimulationHTClient>();
+        builder.AddExternalService<ExternalServices.SbWebApi.V1.ISbWebApiClient>();
 
         builder.AddDocumentDataStorage();
 

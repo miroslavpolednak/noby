@@ -11,6 +11,15 @@ namespace DomainServices.CodebookService.Api.Endpoints.v1;
 internal partial class CodebookService
     : Contracts.v1.CodebookService.CodebookServiceBase
 {
+    public override Task<FeeChangeRequestsResponse> FeeChangeRequests(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+    => Helpers.GetItems(() =>
+        {
+            var items = _db.GetList<FeeChangeRequestsResponse.Types.FeeChangeRequestsItem>(nameof(FeeChangeRequests));
+            var m = items.Max(t => t.Amount);
+            items.First(t => t.Amount == m).IsDefault = true;
+            return (new FeeChangeRequestsResponse()).AddItems(items);
+        });
+
     public override Task<SignatureTypeDetailResponse> SignatureTypeDetails(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<SignatureTypeDetailResponse, SignatureTypeDetailResponse.Types.SignatureTypeDetailItem>();
 

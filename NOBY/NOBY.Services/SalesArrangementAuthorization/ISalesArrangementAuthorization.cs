@@ -38,4 +38,6 @@ public interface ISalesArrangementAuthorizationService
             (int)SalesArrangementTypes.CustomerChange3602B,
             (int)SalesArrangementTypes.CustomerChange3602C
         }).AsReadOnly();
+
+    void ValidateRefinancing241Permission();
 }

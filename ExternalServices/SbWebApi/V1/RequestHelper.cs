@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Threading;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using ExternalServices.SbWebApi.V1.Contracts;
 
@@ -6,11 +7,7 @@ namespace ExternalServices.SbWebApi.V1;
 
 internal static class RequestHelper
 {
-    public static async Task<TResponse> ProcessResponse<TResponse>(HttpResponseMessage response,
-                                                                   Func<TResponse, CommonResult?> commonResultGetter,
-                                                                   IList<(int ReturnVal, int ErrorCode)>? returnVal2ErrorCodesMapping = null,
-                                                                   CancellationToken cancellationToken = default(CancellationToken),
-                                                                   [CallerMemberName] string callerName = "")
+    private static async Task<TResponse> getResponseObject<TResponse>(HttpResponseMessage response, string callerName, CancellationToken cancellationToken)
     {
         if (!response.IsSuccessStatusCode)
         {
@@ -22,9 +19,11 @@ internal static class RequestHelper
         if (responseObject is null)
             throw new CisExternalServiceResponseDeserializationException(0, StartupExtensions.ServiceName, callerName, typeof(TResponse).Name);
 
-        var commonResult = commonResultGetter(responseObject);
+        return responseObject;
+    }
 
-        int returnVal = commonResult?.Return_val ?? -999;
+    private static void validateResponse(int returnVal, in string? callerName, in string? returnText, IList<(int ReturnVal, int ErrorCode)>? returnVal2ErrorCodesMapping)
+    {
         if (returnVal != 0)
         {
             if (returnVal2ErrorCodesMapping?.Any(t => t.ReturnVal == returnVal) ?? false)
@@ -33,10 +32,34 @@ internal static class RequestHelper
             }
             else
             {
-                throw new CisExternalServiceValidationException(returnVal, $"{StartupExtensions.ServiceName}.{callerName}: {returnVal}: {commonResult?.Return_text}");
+                throw new CisExternalServiceValidationException(returnVal, $"{StartupExtensions.ServiceName}.{callerName}: {returnVal}: {returnText}");
             }
         }
-        
+    }
+
+    public static async Task<TResponse> ProcessResponse<TResponse>(HttpResponseMessage response,
+                                                                   Func<TResponse, CommonResultEx?> commonResultGetter,
+                                                                   IList<(int ReturnVal, int ErrorCode)>? returnVal2ErrorCodesMapping = null,
+                                                                   CancellationToken cancellationToken = default,
+                                                                   [CallerMemberName] string callerName = "")
+    {
+        var responseObject = await getResponseObject<TResponse>(response, callerName, cancellationToken);
+        var commonResult = commonResultGetter(responseObject);
+        validateResponse(commonResult?.Return_val ?? -999, callerName, commonResult?.Return_text, returnVal2ErrorCodesMapping);
+
+        return responseObject;
+    }
+
+    public static async Task<TResponse> ProcessResponse<TResponse>(HttpResponseMessage response,
+                                                                   Func<TResponse, CommonResult?> commonResultGetter,
+                                                                   IList<(int ReturnVal, int ErrorCode)>? returnVal2ErrorCodesMapping = null,
+                                                                   CancellationToken cancellationToken = default,
+                                                                   [CallerMemberName] string callerName = "")
+    {
+        var responseObject = await getResponseObject<TResponse>(response, callerName, cancellationToken);
+        var commonResult = commonResultGetter(responseObject);
+        validateResponse(commonResult?.Return_val ?? -999, callerName, commonResult?.Return_text, returnVal2ErrorCodesMapping);
+
         return responseObject;
     }
 
