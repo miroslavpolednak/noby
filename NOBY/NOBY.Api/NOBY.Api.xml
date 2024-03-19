@@ -3198,7 +3198,6 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetProcessDetail.GetProcessDetailResponse.LoanInterestRate">
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest.SignatureTypeDetailId">
             <summary>
             Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
@@ -3239,41 +3238,12 @@
             Aktuální úroková sazba.
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRefinancingParameters(System.Int64)">
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetProcessDetail.GetProcessDetailResponse.LoanInterestRate">
             <summary>
             Úroková sazba bez slevy
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetInterestRatesValidFrom(System.Int64)">
-            <summary>
-            Seznam možných platností sazby od
-            </summary>
-            <remarks>
-            Vrátí kolekci možných platností sazby od pro konkrétní úvěr.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetInterestRate(System.Int64)">
-            <summary>
-            Aktuální úroková sazba
-            </summary>
-            <remarks>
-            Operace slouží k získání informací o aktuální úrokové sazbě.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRefinancingDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest)">
-            <summary>
-            Generování dokumentu Refinancování
-            </summary>
-            <remarks>
-            Operace slouží k vygenerování dokumentu Retence<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetProcessDetail.GetProcessDetailResponse.LoanPaymentAmount">
             <summary>
             Splátka bez slevy v Kč
             </summary>
@@ -3378,7 +3348,7 @@
             SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRefinancingParameters(System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRefinancingParameters(System.Int64)">
             <summary>
             Žádosti o změnu sazby
             </summary>
@@ -3388,14 +3358,31 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EBF744FA-9F0F-421e-89F8-CFFFAEC76BB1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetProcessDetail(System.Int64,System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetInterestRatesValidFrom(System.Int64)">
             <summary>
-            Detail workflow procesu dotažený ze SB.
+            Seznam možných platností sazby od
             </summary>
             <remarks>
-            Detail workflow procesu dotažený ze SB. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DB093BE8-72C4-4bd2-9FD0-8E7393C2F8B5"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br/><br/>
-            <strong style="color:red;">Required permissions</strong><br/>CaseOwnerCheck()
+            Vrátí kolekci možných platností sazby od pro konkrétní úvěr.
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetInterestRate(System.Int64)">
+            <summary>
+            Aktuální úroková sazba
+            </summary>
+            <remarks>
+            Operace slouží k získání informací o aktuální úrokové sazbě.
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRefinancingDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest)">
+            <summary>
+            Generování dokumentu Refinancování
+            </summary>
+            <remarks>
+            Operace slouží k vygenerování dokumentu Retence<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
