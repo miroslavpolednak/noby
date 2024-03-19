@@ -14,20 +14,20 @@ public class GetProcessDetailResponse
     /// <summary>
     /// Splátka bez slevy v Kč
     /// </summary>
-    public int? LoanPaymentAmount { get; set; }
+    public decimal? LoanPaymentAmount { get; set; }
 
     /// <summary>
     /// Splátka se slevou v Kč
     /// </summary>
-    public int? LoanPaymentAmountFinal { get; set; }
+    public decimal? LoanPaymentAmountFinal { get; set; }
 
     /// <summary>
     /// Poplatek bez slevy v Kč
     /// </summary>
-    public int? FeeSum { get; set; }
+    public decimal? FeeSum { get; set; }
 
     /// <summary>
     /// Poplatek se slevou v Kč
     /// </summary>
-    public int? FeeFinalSum { get; set; }
+    public decimal? FeeFinalSum { get; set; }
 }

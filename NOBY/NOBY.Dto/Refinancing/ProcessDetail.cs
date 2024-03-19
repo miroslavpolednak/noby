@@ -15,7 +15,10 @@ public class ProcessDetail
     /// </summary>
     public string? RefinancingTypeText { get; set; }
 
-    public RefinancingStates RefinancingStateId { get; set; }
+    /// <summary>
+    /// Číselník: <a href="https://wiki.kb.cz/display/HT/RefinancingState">RefinancingState</a>
+    /// </summary>
+    public int RefinancingStateId { get; set; }
 
     public DateTime CreatedTime { get; set; }
 

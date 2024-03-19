@@ -554,6 +554,11 @@
             Vracíme textaci specifickou podle typu dodatku. Pro jeden refinancingTypeId se tedy může vrátit 1 z n různých textací.
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.RefinancingStateId">
+            <summary>
+            Číselník: <a href="https://wiki.kb.cz/display/HT/RefinancingState">RefinancingState</a>
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.LoanInterestRateProvided">
             <summary>
             Úroková sazba poskytnutá (včetně slevy)
