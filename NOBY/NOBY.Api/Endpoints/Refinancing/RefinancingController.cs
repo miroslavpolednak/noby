@@ -74,9 +74,12 @@ public sealed class RefinancingController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    public async Task GenerateRefinancingDocument(
+    public async Task<IActionResult> GenerateRefinancingDocument(
        long caseId,
        int salesArrangementId,
        [FromBody] GenerateRefinancingDocumentRequest request)
-       => await _mediator.Send(request.InfuseCaseId(caseId).InfuseSalesArrangementId(salesArrangementId));
+    {
+        await _mediator.Send(request.InfuseCaseId(caseId).InfuseSalesArrangementId(salesArrangementId));
+        return NoContent();
+    }
 }
