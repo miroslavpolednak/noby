@@ -16,7 +16,7 @@ public sealed class OfferController : ControllerBase
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BFEF73A4-5876-4b5b-940B-8F65FEB5F660"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("case/{caseId:long}/offer/mortgage-retention")]
+    [HttpPost("case/{caseId:long}/simulate-mortgage-retention-offer")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.REFINANCING_Manage)]
