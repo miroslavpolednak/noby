@@ -1,6 +1,7 @@
 ﻿using CIS.Core;
 using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Database;
+using CIS.InternalServices.NotificationService.Api.Helpers;
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Legacy.Helpers;
@@ -57,6 +58,9 @@ internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
             throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash?.HashAlgorithm}'.");
         }
 
+        // zmenit text podle spec GSM 03.38
+        request.Text = request.Text.ToGSMString();
+
         var result = _repository.NewSmsResult();
         var phone = request.PhoneNumber.ParsePhone()!;
         result.Identity = request.Identifier?.Identity;
@@ -73,7 +77,7 @@ internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         result.PhoneNumber = phone.NationalNumber;
 
         result.CreatedBy = username;
-        
+
         try
         {
             await _repository.AddResult(result, cancellationToken);

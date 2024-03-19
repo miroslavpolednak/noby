@@ -44,8 +44,8 @@ SharedComponents.GrpcServiceBuilder
     })
     .MapGrpcServices((app, _) =>
     {
-        app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.CodebookService>();
-        app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.MaintananceService>();
+        app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.v1.CodebookService>();
+        app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.Maintanance.MaintananceService>();
     })
     .Run();
 

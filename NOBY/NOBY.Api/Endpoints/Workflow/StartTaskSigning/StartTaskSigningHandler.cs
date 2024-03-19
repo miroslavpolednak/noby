@@ -1,4 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentOnSAService.Clients;

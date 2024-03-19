@@ -20,7 +20,7 @@ internal static class CaseExtensions
             StateIdSb = taskData.GetInteger("ukol_stav_poz"),
             Cancelled = taskData.GetBoolean("ukol_stornovano"),
             PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel") ?? "",
-            ProcessTypeId = taskData.GetInteger("ukol_top_proces_typ_noby")
+            ProcessTypeId = taskData.GetInteger("ukol_top_proces_typ_noby"),
         };
 
         task.PhaseTypeId = task.TaskTypeId switch
@@ -39,6 +39,8 @@ internal static class CaseExtensions
             (6, 2) => SignatureTypes.Electronic.ToByte(),
             _ => null
         };
+
+        task.DecisionId = task.TaskTypeId == 2 ? taskData.GetNInteger("ukol_overeni_ic_zpusob_reseni") : null;
 
         return task;
     }
@@ -68,7 +70,7 @@ internal static class CaseExtensions
             },
             StateIdSB = taskData.GetInteger("ukol_stav_poz"),
             Cancelled = taskData.GetBoolean("ukol_stornovano"),
-            RetentionProcess = taskData.GetInteger("ukol_proces_typ_noby") switch
+            RefinancingProcess = taskData.GetInteger("ukol_proces_typ_noby") switch
             {
                 3 => GetRetentionProcess(taskData),
                 _ => null
@@ -76,9 +78,9 @@ internal static class CaseExtensions
         };
     }
 
-    private static RetentionProcess GetRetentionProcess(IReadOnlyDictionary<string, string> taskData)
+    private static RefinancingProcess GetRetentionProcess(IReadOnlyDictionary<string, string> taskData)
     {
-        return new RetentionProcess()
+        return new RefinancingProcess
         {
             RefinancingType = taskData.GetInteger("ukol_retence_druh"),
             InterestRateValidFrom = taskData.GetDate("ukol_retence_sazba_dat_od"),
@@ -88,6 +90,7 @@ internal static class CaseExtensions
             LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
             FeeSum = taskData.GetNInteger("ukol_retence_popl_kalk"),
             FeeFinalSum = taskData.GetNInteger("ukol_retence_popl_vysl"),
+            FixedRatePeriod = taskData.GetNInteger("ukol_refinance_TBD"),
             RefinancingDocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
             RefinancingDocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
             EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
@@ -125,8 +128,7 @@ internal static class CaseExtensions
                             LoanInterestRateProvided = taskData.GetDecimal("ukol_overeni_ic_sazba_vysled"),
                             LoanInterestRateAnnouncedType = taskData.GetInteger("ukol_overeni_ic_sazba_typ"),
                             LoanInterestRateDiscount = taskData.GetDecimal("ukol_overeni_ic_sazba_sleva")
-                        },
-                        DecisionId = taskData.GetNInteger("ukol_overeni_ic_zpusob_reseni")
+                        }
                     };
                     for (int i = 1; i < 20; i++)
                     {

@@ -36,6 +36,8 @@ public interface IOfferServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 10018; SimulationInputs.CollateralAmount is not specified</exception>
     Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default);
 
+    Task<SimulateMortgageRetentionResponse> SimulateMortgageRetention(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Získání plného splátkového kalendáře KB Hypotéky
     /// </summary>
@@ -46,4 +48,6 @@ public interface IOfferServiceClient
     Task<GetOfferDeveloperResponse> GetOfferDeveloper(int offerId, CancellationToken cancellationToken  = default);
 
     Task UpdateOffer(UpdateOfferRequest request, CancellationToken cancellationToken = default);
+
+    Task<decimal> GetInterestRate(long caseId, DateTime futureInterestRateValidTo, CancellationToken cancellationToken = default);
 }

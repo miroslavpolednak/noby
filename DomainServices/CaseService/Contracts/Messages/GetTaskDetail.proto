@@ -60,7 +60,6 @@ message AmendmentConsultationData {
 
 message AmendmentPriceException {
 	cis.types.GrpcDate Expiration = 1;
-	google.protobuf.Int32Value DecisionId = 2;
 	PriceExceptionLoanInterestRateItem LoanInterestRate = 3;
 	repeated PriceExceptionFeesItem Fees = 4;
 }

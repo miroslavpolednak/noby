@@ -1,16 +1,27 @@
-﻿using System.Globalization;
-using System.Text.Encodings.Web;
+﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using ExternalServices.SbWebApi.Dto.CompleteTask;
 using ExternalServices.SbWebApi.Dto.UpdateTask;
 using ExternalServices.SbWebApi.V1.Contracts;
 using DomainServices.UserService.Clients;
+using System.Globalization;
+using ExternalServices.SbWebApi.Dto.GenerateRetentionDocument;
+using System.Threading;
 
 namespace ExternalServices.SbWebApi.V1;
 
 internal sealed class RealSbWebApiClient
     : ISbWebApiClient
 {
+    public async Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime interestRateValidTo, CancellationToken cancellationToken)
+    {
+        var httpResponse = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/api/refixationservices/getinterestrate?uver_id={caseId}&date={interestRateValidTo:yyyy-MM-dd}&fixation_time", cancellationToken);
+
+        var responseObject = await RequestHelper.ProcessResponse<GetInterestRate_response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
+
+        return (Convert.ToDecimal(responseObject.Interest_rate, CultureInfo.InvariantCulture), responseObject.Fixation_time_new);
+    }
+
     public async Task<IList<IReadOnlyDictionary<string, string>>> FindTasksByContractNumber(Dto.FindTasks.FindByContractNumberRequest request, CancellationToken cancellationToken = default)
     {
         var easRequest = new WFS_Request_ByContractNo
@@ -69,7 +80,10 @@ internal sealed class RealSbWebApiClient
 
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/createtask", easRequest, _jsonSerializerOptions, cancellationToken);
 
-        var responseObject = await RequestHelper.ProcessResponse<WFS_Manage_CreateTask_Response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
+        var responseObject = await RequestHelper.ProcessResponse<WFS_Manage_CreateTask_Response>(httpResponse,
+                                                                                                 x => x.Result,
+                                                                                                 returnVal2ErrorCodesMapping: [(6792, ErrorCodeMapper.RefinancingError)],
+                                                                                                 cancellationToken: cancellationToken);
 
         return new Dto.CreateTask.CreateTaskResponse
         {
@@ -207,7 +221,7 @@ internal sealed class RealSbWebApiClient
             Message = new WFS_Manage_UpdateTask
             {
                 Task_id = request.TaskIdSb,
-                Metadata = request.Metadata.Select(t => new WFS_MetadataItem
+                Metadata = request.Metadata.Where(m => m.Value is not null).Select(t => new WFS_MetadataItem
                 {
                     Mtdt_def = t.Key,
                     Mtdt_val = t.Value
@@ -218,6 +232,27 @@ internal sealed class RealSbWebApiClient
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/wfs/managetask/updatetask", sbRequest, cancellationToken);
 
         await RequestHelper.ProcessResponse<WFS_CommonResponse>(httpResponse, x => x.Result, new List<(int ReturnVal, int ErrorCode)> { (2, ErrorCodeMapper.TaskIdNotFound) }, cancellationToken);
+    }
+
+    public async Task<string?> GenerateRetentionDocument(GenerateRetentionDocumentRequest request, CancellationToken cancellationToken = default)
+    {
+        var sbRequest = new RetentionAppendix_request
+        {
+            Case_id = (int?)request.CaseId,
+            Interest_rate = (double?)request.InterestRate,
+            Date_from = request.DateFrom,
+            Payment_amount = (double?)request.PaymentAmount,
+            Print_signature_form = request.SignatureTypeDetailId,
+            Cpm = request.Cpm,
+            Icp = request.Icp,
+            Deadline_for_signature = request.SignatureDeadline,
+            Individual_pricing = request.IndividualPricing,
+            Fee = (double?)request.Fee
+        };
+
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/api/refixationservices/retentionappendix", sbRequest, cancellationToken);
+        var responseObject = await RequestHelper.ProcessResponse<RetentionAppendix_response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
+        return responseObject?.Ea_number;
     }
 
     private readonly HttpClient _httpClient;

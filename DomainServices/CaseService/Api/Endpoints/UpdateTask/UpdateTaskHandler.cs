@@ -15,19 +15,20 @@ public class UpdateTaskHandler : IRequestHandler<UpdateTaskRequest, Empty>
 
     public async Task<Empty> Handle(UpdateTaskRequest request, CancellationToken cancellationToken)
     {
-        Dictionary<string, string> metadata = new()
+        Dictionary<string, string?> metadata = new()
         {
             { "ukol_retence_sazba_dat_od", ((DateOnly)request.Retention.InterestRateValidFrom!).ToSbFormat() },
             { "ukol_retence_sazba_kalk", request.Retention.LoanInterestRate!.ToSbFormat() },
             { "ukol_retence_sazba_vysl", request.Retention.LoanInterestRateProvided!.ToSbFormat() },
-            { "ukol_retence_splatka_kalk", request.Retention.LoanPaymentAmount!.Value.ToString(CultureInfo.InvariantCulture) },
-            { "ukol_retence_splatka_vysl", request.Retention.LoanPaymentAmountFinal!.Value.ToString(CultureInfo.InvariantCulture) },
-            { "ukol_retence_popl_kalk", request.Retention.FeeSum!.Value.ToString(CultureInfo.InvariantCulture)},
-            { "ukol_retence_popl_vysl", request.Retention.FeeFinalSum !.Value.ToString(CultureInfo.InvariantCulture)}
+            { "ukol_retence_splatka_kalk", request.Retention.LoanPaymentAmount.ToSbFormat() },
+            { "ukol_retence_splatka_vysl", request.Retention.LoanPaymentAmountFinal.ToSbFormat() },
+            { "ukol_retence_popl_kalk", request.Retention.FeeSum?.ToSbFormat()},
+            { "ukol_retence_popl_vysl", request.Retention.FeeFinalSum?.ToSbFormat()},
+            //{ "ukol_refixace_TBD", request.Retention.FixedRatePeriod?.ToString(CultureInfo.InvariantCulture) } HACH-10693 SB neumí refixaci
         };
 
-        await _sbWebApi.UpdateTask(new() { TaskIdSb = request.TaskIdSb, Metadata = metadata }, cancellationToken);
+        await _sbWebApi.UpdateTask(new ExternalServices.SbWebApi.Dto.UpdateTask.UpdateTaskRequest { TaskIdSb = request.TaskIdSb, Metadata = metadata }, cancellationToken);
 
-        return new();
+        return new Empty();
     }
 }

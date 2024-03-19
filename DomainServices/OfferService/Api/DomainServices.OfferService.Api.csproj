@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-    <PackageReference Include="dbup-core" Version="5.0.76" />
+    <PackageReference Include="dbup-core" Version="5.0.87" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
 	  <PackageReference Include="Grpc.AspNetCore" Version="2.61.0" />
@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj" />
+    <ProjectReference Include="..\..\..\ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj" />
     <ProjectReference Include="..\..\..\Shared\DatabaseMigrationsSupport\DatabaseMigrationsSupport.csproj" />
     <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.OfferService.Contracts.csproj" />

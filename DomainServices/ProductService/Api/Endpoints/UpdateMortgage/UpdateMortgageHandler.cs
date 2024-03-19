@@ -1,4 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.SalesArrangementService.Clients;

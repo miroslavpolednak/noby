@@ -18,12 +18,9 @@ internal static class NobySwagger
 {
     static string xmlFileName(Type type) => type.GetTypeInfo().Module.Name.Replace(".dll", ".xml").Replace(".exe", ".xml");
 
-    public static WebApplicationBuilder AddNobySwagger(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddNobySwagger(this WebApplicationBuilder builder, ICodebookMap codebookMap)
     {
         builder.Services.AddEndpointsApiExplorer();
-
-        var codebookMap = new CodebookMap();
-        builder.Services.AddSingleton<ICodebookMap>(codebookMap);
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();

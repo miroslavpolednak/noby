@@ -6,6 +6,8 @@ namespace ExternalServices.EasSimulationHT.V1;
 public interface IEasSimulationHTClient
     : IExternalServiceClient
 {
+    Task<decimal> RunSimulationRetention(long caseId, decimal newInterestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken);
+
     /// <summary>
     /// Call simulation HT method
     /// </summary>

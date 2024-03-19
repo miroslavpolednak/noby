@@ -8,4 +8,5 @@ public interface ICisMessagingBuilder
 {
     ICisMessagingKafkaBuilder AddKafka(Assembly? assembly = null);
     ICisMessagingBuilder AddKafkaFlow(Action<IKafkaFlowMessagingConfigurator> messaging);
+    ICisMessagingBuilder AddKafkaFlowDashboard();
 }

@@ -133,14 +133,14 @@ internal sealed class GetCustomersHandler
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
 
     public GetCustomersHandler(
         DomainServices.ProductService.Clients.IProductServiceClient productService,
         DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
         DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
         DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService, 
+        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService, 
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
     {
         _productService = productService;

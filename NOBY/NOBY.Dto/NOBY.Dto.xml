@@ -544,6 +544,46 @@
             Číslo parcely
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.ProcessId">
+            <summary>
+            Noby proces ID daného procesu Refinancí. Jde o ID sady úkolů generované Starbuildem.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.RefinancingTypeText">
+            <summary>
+            Vracíme textaci specifickou podle typu dodatku. Pro jeden refinancingTypeId se tedy může vrátit 1 z n různých textací.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.RefinancingStateId">
+            <summary>
+            Číselník: <a href="https://wiki.kb.cz/display/HT/RefinancingState">RefinancingState</a>
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.LoanInterestRateProvided">
+            <summary>
+            Úroková sazba poskytnutá (včetně slevy)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.LoanInterestRateValidFrom">
+            <summary>
+            Platnost nové úrokové sazby od.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.LoanInterestRateValidTo">
+            <summary>
+            Platnost nové úrokové sazby do (datum následující refixace).
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.EffectiveDate">
+            <summary>
+            Datum účinnosti (kdy byl požadavek podepsán a finalizován ve SB)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.DocumentId">
+            <summary>
+            Slouží k náhledu na dokumenty
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Signing.DocumentData.DocumentOnSAId">
             <summary>
             Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.

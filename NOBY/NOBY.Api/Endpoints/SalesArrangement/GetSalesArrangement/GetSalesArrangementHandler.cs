@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
@@ -34,7 +34,9 @@ internal sealed class GetSalesArrangementHandler
             OfferGuaranteeDateFrom = saInstance.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = saInstance.OfferGuaranteeDateTo,
             Parameters = parameters,
-            State = saInstance.State
+            State = saInstance.State,
+            OfferId = saInstance.OfferId,
+            TaskProcessId = saInstance.TaskProcessId
         };
     }
 

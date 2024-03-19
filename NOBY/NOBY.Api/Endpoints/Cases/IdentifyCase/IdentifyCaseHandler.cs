@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
+using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
@@ -31,11 +32,26 @@ internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCase
     private async Task<IdentifyCaseResponse> handleByCustomerIdentity(Identity? identity, CancellationToken cancellationToken)
     {
         var result = await _productServiceClient.SearchProducts(identity, cancellationToken);
+        
+        // projit a dozalozit pripadne chybejici produkty
+        foreach (var item in result)
+        {
+            await handleByCaseId(item.CaseId, cancellationToken);
+        }
+
+        var productTypes = await _codebookService.ProductTypes(cancellationToken);
+        var caseStates = await _codebookService.CaseStates(cancellationToken);
+
         return new IdentifyCaseResponse
         {
-            Cases = result.Select(t => new IdentifyCaseResponseItem(t.CaseId)
+            Cases = result.Select(t => new Dto.IdentifyCaseResponseItem(t.CaseId)
             {
-                ContractRelationshipTypeId = t.ContractRelationshipTypeId
+                ContractRelationshipTypeId = t.ContractRelationshipTypeId,
+                ContractNumber = t.ContractNumber,
+                State = (CaseStates)t.State!.Value,
+                TargetAmount = t.TargetAmount,
+                StateName = caseStates.First(x => x.Id == t.State).Name,
+                ProductName = productTypes.First(x => x.Id == t.ProductTypeId).Name
             }).ToList()
         };
     }
@@ -183,6 +199,7 @@ internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCase
     private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICodebookServiceClient _codebookService;
     private readonly Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService _createCaseFromExternalSources;
 
     public IdentifyCaseHandler(
@@ -193,7 +210,8 @@ internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCase
         ICaseServiceClient caseServiceClient,
         IDocumentArchiveServiceClient documentArchiveServiceClient,
         IDocumentOnSAServiceClient documentOnSAService,
-        ISalesArrangementServiceClient salesArrangementService)
+        ISalesArrangementServiceClient salesArrangementService,
+        ICodebookServiceClient codebookService)
     {
         _createCaseFromExternalSources = createCaseFromExternalSources;
         _currentUser = currentUser;
@@ -203,5 +221,6 @@ internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCase
         _documentArchiveServiceClient = documentArchiveServiceClient;
         _documentOnSAService = documentOnSAService;
         _salesArrangementService = salesArrangementService;
+        _codebookService = codebookService;
     }
 }

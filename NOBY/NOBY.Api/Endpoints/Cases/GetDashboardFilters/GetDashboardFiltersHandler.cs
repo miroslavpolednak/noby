@@ -8,7 +8,7 @@ internal sealed class GetDashboardFiltersHandler
         // zavolat BE sluzbu
         var result = await _caseService.GetCaseCounts(_userAccessor.User!.Id, cancellationToken);
 
-        result.RemoveAll(x => x.State is 6 or 7 or 10 || x.State is 5 && !_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing));
+        result.RemoveAll(x => x.State is (6 or 7 or 10) || x.State is 5 && !_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing));
 
         // rucne vytvorena kolekce podle Motalika
         return new List<GetDashboardFiltersResponse>
@@ -22,11 +22,11 @@ internal sealed class GetDashboardFiltersHandler
     }
 
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
 
     public GetDashboardFiltersHandler(
         CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService)
+        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService)
     {
         _userAccessor = userAccessor;
         _caseService = caseService;

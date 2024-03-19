@@ -1,4 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients;
 using DomainServices.ProductService.Clients;
@@ -146,7 +146,7 @@ internal sealed class OrderAggregate
             var mortgage = await _productService.GetMortgage(caseId, cancellationToken);
 
             var purpose = await getLoanPurpose(mortgage.Mortgage.LoanPurposes?.FirstOrDefault()?.LoanPurposeId);
-            var loanAmount = mortgage.Mortgage.LoanPaymentAmount;
+            var loanAmount = ((decimal?)mortgage.Mortgage.AvailableForDrawing).GetValueOrDefault() > 0 ? mortgage.Mortgage.LoanAmount : mortgage.Mortgage.CurrentAmount;
             return new GetProductPropertiesResult(null, loanAmount, null, purpose);
         }
     }

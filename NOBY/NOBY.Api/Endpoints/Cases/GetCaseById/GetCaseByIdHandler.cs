@@ -34,13 +34,13 @@ internal sealed class GetCaseByIdHandler
     private readonly Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService _createCaseFromExternalSources;
     private readonly CasesModelConverter _converter;
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
 
     public GetCaseByIdHandler(
         Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService createCaseFromExternalSources,
         CasesModelConverter converter,
         DomainServices.UserService.Clients.IUserServiceClient userService,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService)
+        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService)
     {
         _createCaseFromExternalSources = createCaseFromExternalSources;
         _userService = userService;

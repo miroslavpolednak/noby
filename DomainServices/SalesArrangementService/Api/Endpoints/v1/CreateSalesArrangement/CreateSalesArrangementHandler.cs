@@ -117,7 +117,7 @@ internal sealed class CreateSalesArrangementHandler
     private readonly TimeProvider _timeProvider;
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly OfferService.Clients.IOfferServiceClient _offerService;
-    private readonly CaseService.Clients.ICaseServiceClient _caseService;
+    private readonly CaseService.Clients.v1.ICaseServiceClient _caseService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly ILogger<CreateSalesArrangementHandler> _logger;
     private readonly IMediator _mediator;
@@ -129,7 +129,7 @@ internal sealed class CreateSalesArrangementHandler
         IUserServiceClient userService,
         IMediator mediator,
         OfferService.Clients.IOfferServiceClient offerService,
-        CaseService.Clients.ICaseServiceClient caseService,
+        CaseService.Clients.v1.ICaseServiceClient caseService,
         CodebookService.Clients.ICodebookServiceClient codebookService,
         Database.SalesArrangementServiceDbContext dbContext,
         ILogger<CreateSalesArrangementHandler> logger,

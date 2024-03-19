@@ -49,6 +49,9 @@ internal sealed class GetLoanApplicationAssessmentResultService
             DisplayWarningExposureDoesNotWork = exposure is null
         };
 
+        // zjisteni spoludluzniku a smazani jejich pripadnych zavazku ve prospech hlavniho dluznika
+        _codebtors = exposure is null ? new() : findAndProcessCodebtors(exposure);
+
         // vytvoreni response - households
         foreach (var household in households)
         {
@@ -76,6 +79,91 @@ internal sealed class GetLoanApplicationAssessmentResultService
         return response;
     }
 
+    private Dictionary<int, List<string>> findAndProcessCodebtors(CustomerExposureCalculateResponse exposure)
+    {
+        List<ExposureItemsHelperDto> items = new();
+        exposure!.Customers!.ForEach(t =>
+        {
+            int customerId = t.GetHashCode();
+
+            t.RequestedCBCBNaturalPersonExposureItem ??= new(0);
+            t.RequestedCBCBJuridicalPersonExposureItem ??= new(0);
+            t.RequestedKBGroupNaturalPersonExposures ??= new(0);
+            t.RequestedKBGroupJuridicalPersonExposures ??= new(0);
+            t.ExistingCBCBNaturalPersonExposureItem ??= new(0);
+            t.ExistingCBCBJuridicalPersonExposureItem ??= new(0);
+            t.ExistingKBGroupNaturalPersonExposures ??= new(0);
+            t.ExistingKBGroupJuridicalPersonExposures ??= new(0);
+
+            if (t.RequestedCBCBNaturalPersonExposureItem.Count != 0)
+            {
+                items.AddRange(t.RequestedCBCBNaturalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.CbcbContractId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+            }
+            if (t.RequestedCBCBJuridicalPersonExposureItem.Count != 0)
+            {
+                items.AddRange(t.RequestedCBCBJuridicalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.CbcbContractId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+            }
+            if (t.RequestedKBGroupNaturalPersonExposures.Count != 0)
+            {
+                items.AddRange(t.RequestedKBGroupNaturalPersonExposures!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.RiskBusinessCaseId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+            }
+            if (t.RequestedKBGroupJuridicalPersonExposures.Count != 0)
+            {
+                items.AddRange(t.RequestedKBGroupJuridicalPersonExposures!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.RiskBusinessCaseId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+            }
+            if (t.ExistingCBCBNaturalPersonExposureItem.Count != 0)
+            {
+                items.AddRange(t.ExistingCBCBNaturalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.CbcbContractId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+            }
+            if (t.ExistingCBCBJuridicalPersonExposureItem.Count != 0)
+            {
+                items.AddRange(t.ExistingCBCBJuridicalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.CbcbContractId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+            }
+            if (t.ExistingKBGroupNaturalPersonExposures.Count != 0)
+            {
+                items.AddRange(t.ExistingKBGroupNaturalPersonExposures!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), getBankAccount(x.BankAccount), x.CustomerRoleId.GetValueOrDefault())));
+            }
+            if (t.ExistingKBGroupJuridicalPersonExposures.Count != 0)
+            {
+                items.AddRange(t.ExistingKBGroupJuridicalPersonExposures!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), getBankAccount(x.BankAccount), x.CustomerRoleId.GetValueOrDefault())));
+            }
+
+            string getBankAccount(BankAccountDetail? bankAccount)
+                => bankAccount is null ? "" : $"{bankAccount.NumberPrefix}-{bankAccount.Number}/{bankAccount.BankCode}";
+        });
+
+        Dictionary<int, List<string>> codebtors = new();
+
+        items
+            .GroupBy(t => t.Account)
+            .Where(t => t.Count() > 1)
+            .ToList()
+            .ForEach(t =>
+            {
+                var c = t.FirstOrDefault(x => x.Role == 1) ?? t.First();
+                codebtors.TryAdd(c.Hash, new());
+
+                foreach (var other in t.Where(x => x.Hash != c.Hash))
+                {
+                    var otherCustomer = exposure.Customers.First(x => x.GetHashCode() == other.CustomerHash);
+
+                    var oc = _customers.First(t => t.CustomerOnSAId == otherCustomer.InternalCustomerId!.Value);
+                    codebtors[c.Hash].Add($"{oc.FirstNameNaturalPerson} {oc.Name}");
+
+                    otherCustomer.RequestedCBCBNaturalPersonExposureItem!.RemoveAll(x => x.GetHashCode() == other.Hash);
+                    otherCustomer.RequestedCBCBJuridicalPersonExposureItem!.RemoveAll(x => x.GetHashCode() == other.Hash);
+                    otherCustomer.RequestedKBGroupNaturalPersonExposures!.RemoveAll(x => x.GetHashCode() == other.Hash);
+                    otherCustomer.RequestedKBGroupJuridicalPersonExposures!.RemoveAll(x => x.GetHashCode() == other.Hash);
+                    otherCustomer.ExistingCBCBNaturalPersonExposureItem!.RemoveAll(x => x.GetHashCode() == other.Hash);
+                    otherCustomer.ExistingCBCBJuridicalPersonExposureItem!.RemoveAll(x => x.GetHashCode() == other.Hash);
+                    otherCustomer.ExistingKBGroupNaturalPersonExposures!.RemoveAll(x => x.GetHashCode() == other.Hash);
+                    otherCustomer.ExistingKBGroupJuridicalPersonExposures!.RemoveAll(x => x.GetHashCode() == other.Hash);
+                }
+            });
+
+        return codebtors;
+    }
+
     private Dto.HouseholdCustomerObligations getCustomer(
         int customerOnSAId,
         CustomerExposureCalculateResponse? exposure)
@@ -89,10 +177,9 @@ internal sealed class GetLoanApplicationAssessmentResultService
             DateOfBirth = customer.DateOfBirthNaturalPerson,
             FirstName = customer.FirstNameNaturalPerson,
             LastName = customer.Name,
-            RoleId = (CustomerRoles)customer.CustomerRoleId,
-            
+            RoleId = (CustomerRoles)customer.CustomerRoleId
         };
-
+        
         if (customerExposure is null)
         {
             obligationCustomer.ExistingObligations = obligations.CreateHouseholdObligations(_obligationTypes)
@@ -101,50 +188,43 @@ internal sealed class GetLoanApplicationAssessmentResultService
         }
         else
         {
-            var otherCustomers = exposure!
-                .Customers
-                ?.Where(t => t.InternalCustomerId.HasValue && t.InternalCustomerId != customerExposure?.InternalCustomerId)
-                ?.ToList();
-
-            obligationCustomer.ExistingObligations = getExistingObligations(customerExposure, obligations, otherCustomers);
+            obligationCustomer.ExistingObligations = getExistingObligations(customerExposure, obligations);
 
             if (_currentUser.HasPermission(UserPermissions.CLIENT_EXPOSURE_DisplayRequestedExposure))
             {
-                obligationCustomer.RequestedObligations = getRequestedObligations(customerExposure, otherCustomers);
+                obligationCustomer.RequestedObligations = getRequestedObligations(customerExposure);
             }
         }
         
         return obligationCustomer;
     }
 
-    private List<Dto.HouseholdObligationItem> getRequestedObligations(
-        CustomerExposureCustomer customerExposure,
-        List<CustomerExposureCustomer>? otherCustomers)
+    private List<Dto.HouseholdObligationItem> getRequestedObligations(CustomerExposureCustomer customerExposure)
     {
         var obligations = new List<Dto.HouseholdObligationItem>();
 
-        foreach (var exp in (customerExposure.RequestedCBCBNaturalPersonExposureItem ?? _emptyRequestedCBCBGroupItems))
+        foreach (var exp in customerExposure.RequestedCBCBNaturalPersonExposureItem!)
         {
-            var itemToAdd = addRequestedCbCbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false), otherCustomers!, exp.CbcbContractId);
-            obligations.Add(itemToAdd);
+            var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false);
+            obligations.Add(updateCodebtors(item, exp.GetHashCode()));
         }
 
-        foreach (var exp in (customerExposure.RequestedCBCBJuridicalPersonExposureItem ?? _emptyRequestedCBCBGroupItems))
+        foreach (var exp in customerExposure.RequestedCBCBJuridicalPersonExposureItem!)
         {
-            var itemToAdd = addRequestedCbCbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true), otherCustomers!, exp.CbcbContractId);
-            obligations.Add(itemToAdd);
+            var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true);
+            obligations.Add(updateCodebtors(item, exp.GetHashCode()));
         }
 
-        foreach (var exp in (customerExposure.RequestedKBGroupNaturalPersonExposures ?? _emptyRequestedKBGroupItems))
+        foreach (var exp in customerExposure.RequestedKBGroupNaturalPersonExposures!)
         {
-            var itemToAdd = addRequestedKbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false), otherCustomers!, exp.RiskBusinessCaseId);
-            obligations.Add(itemToAdd);
+            var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false);
+            obligations.Add(updateCodebtors(item, exp.GetHashCode()));
         }
 
-        foreach (var exp in (customerExposure.RequestedKBGroupJuridicalPersonExposures ?? _emptyRequestedKBGroupItems))
+        foreach (var exp in customerExposure.RequestedKBGroupJuridicalPersonExposures!)
         {
-            var itemToAdd = addRequestedKbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true), otherCustomers!, exp.RiskBusinessCaseId);
-            obligations.Add(itemToAdd);
+            var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true);
+            obligations.Add(updateCodebtors(item, exp.GetHashCode()));
         }
 
         return obligations
@@ -154,33 +234,32 @@ internal sealed class GetLoanApplicationAssessmentResultService
 
     private List<Dto.HouseholdObligationItem> getExistingObligations(
         CustomerExposureCustomer customerExposure, 
-        List<Obligation> nobyObligations,
-        List<CustomerExposureCustomer>? otherCustomers)
+        List<Obligation> nobyObligations)
     {
         var obligations = new List<Dto.HouseholdObligationItem>();
         
-        foreach (var exp in (customerExposure.ExistingCBCBNaturalPersonExposureItem ?? _emptyExistingCBCBGroupItems))
+        foreach (var exp in customerExposure.ExistingCBCBNaturalPersonExposureItem!)
         {
-            var itemToAdd = addExistingCbCbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false), otherCustomers!, exp.CbcbContractId);
-            obligations.Add(itemToAdd);
+            var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false);
+            obligations.Add(updateCodebtors(item, exp.GetHashCode()));
         }
 
-        foreach (var exp in (customerExposure.ExistingCBCBJuridicalPersonExposureItem ?? _emptyExistingCBCBGroupItems))
+        foreach (var exp in customerExposure.ExistingCBCBJuridicalPersonExposureItem!)
         {
-            var itemToAdd = addExistingCbCbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true), otherCustomers!, exp.CbcbContractId);
-            obligations.Add(itemToAdd);
+            var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true);
+            obligations.Add(updateCodebtors(item, exp.GetHashCode()));
         }
     
-        foreach (var exp in (customerExposure.ExistingKBGroupNaturalPersonExposures ?? _emptyExistingKBGroupItems))
+        foreach (var exp in customerExposure.ExistingKBGroupNaturalPersonExposures!)
         {
-            var itemToAdd = addExistingKbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false), otherCustomers!, exp.BankAccount);
-            obligations.Add(itemToAdd);
+            var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false);
+            obligations.Add(updateCodebtors(item, exp.GetHashCode()));
         }
 
-        foreach (var exp in (customerExposure.ExistingKBGroupJuridicalPersonExposures ?? _emptyExistingKBGroupItems))
+        foreach (var exp in customerExposure.ExistingKBGroupJuridicalPersonExposures!)
         {
-            var itemToAdd = addExistingKbCodebtors(exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true), otherCustomers!, exp.BankAccount);
-            obligations.Add(itemToAdd);
+            var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true);
+            obligations.Add(updateCodebtors(item, exp.GetHashCode()));
         }
 
         // zavazky NOBY
@@ -192,120 +271,19 @@ internal sealed class GetLoanApplicationAssessmentResultService
             .ToList();
     }
 
-    // najit vsechny zavazky, ktere ma tento klient spolecne s ostatnimi klienty v exposure KB
-    private Dto.HouseholdObligationItem addRequestedKbCodebtors(Dto.HouseholdObligationItem item, List<CustomerExposureCustomer> otherCustomers, string? riskBusinessCaseId)
+    private Dto.HouseholdObligationItem updateCodebtors(Dto.HouseholdObligationItem item, int hash)
     {
-        if (!string.IsNullOrEmpty(riskBusinessCaseId))
+        if (_codebtors!.TryGetValue(hash, out List<string>? value))
         {
-            foreach (var otherCustomer in otherCustomers)
-            {
-                var itemToUnion1 = otherCustomer.RequestedKBGroupNaturalPersonExposures?.FirstOrDefault(o => o.RiskBusinessCaseId == riskBusinessCaseId);
-                if (itemToUnion1 is not null)
-                {
-                    otherCustomer.RequestedKBGroupNaturalPersonExposures!.Remove(itemToUnion1);
-                    addCodebtorNames(item, otherCustomer.InternalCustomerId!.Value);
-                }
-
-                var itemToUnion2 = otherCustomer.RequestedKBGroupJuridicalPersonExposures?.FirstOrDefault(o => o.RiskBusinessCaseId == riskBusinessCaseId);
-                if (itemToUnion2 is not null)
-                {
-                    otherCustomer.RequestedKBGroupJuridicalPersonExposures!.Remove(itemToUnion2);
-                    addCodebtorNames(item, otherCustomer.InternalCustomerId!.Value);
-                }
-            }
+            item.Codebtors = value;
         }
         return item;
     }
 
-    // najit vsechny zavazky, ktere ma tento klient spolecne s ostatnimi klienty v exposure CBCB
-    private Dto.HouseholdObligationItem addRequestedCbCbCodebtors(Dto.HouseholdObligationItem item, List<CustomerExposureCustomer> otherCustomers, string? cbcbContractId)
-    {
-        if (!string.IsNullOrEmpty(cbcbContractId))
-        {
-            foreach (var otherCustomer in otherCustomers)
-            {
-                var itemToUnion1 = otherCustomer.RequestedCBCBNaturalPersonExposureItem?.FirstOrDefault(o => o.CbcbContractId == cbcbContractId);
-                if (itemToUnion1 is not null)
-                {
-                    otherCustomer.RequestedCBCBNaturalPersonExposureItem!.Remove(itemToUnion1);
-                    addCodebtorNames(item, otherCustomer.InternalCustomerId!.Value);
-                }
+    private sealed record ExposureItemsHelperDto(int CustomerHash, int Hash, string Account, int Role) { }
 
-                var itemToUnion2 = otherCustomer.RequestedCBCBJuridicalPersonExposureItem?.FirstOrDefault(o => o.CbcbContractId == cbcbContractId);
-                if (itemToUnion2 is not null)
-                {
-                    otherCustomer.RequestedCBCBJuridicalPersonExposureItem!.Remove(itemToUnion2);
-                    addCodebtorNames(item, otherCustomer.InternalCustomerId!.Value);
-                }
-            }
-        }
-        return item;
-    }
-
-    // najit vsechny zavazky, ktere ma tento klient spolecne s ostatnimi klienty v exposure KB
-    private Dto.HouseholdObligationItem addExistingKbCodebtors(Dto.HouseholdObligationItem item, List<CustomerExposureCustomer> otherCustomers, BankAccountDetail? bankAccount)
-    {
-        if (bankAccount is not null)
-        {
-            foreach (var otherCustomer in otherCustomers)
-            {
-                var itemToUnion1 = otherCustomer.ExistingKBGroupNaturalPersonExposures?.FirstOrDefault(o => bankAccount.BankAccountEquals(o.BankAccount));
-                if (itemToUnion1 is not null)
-                {
-                    otherCustomer.ExistingKBGroupNaturalPersonExposures!.Remove(itemToUnion1);
-                    addCodebtorNames(item, otherCustomer.InternalCustomerId!.Value);
-                }
-
-                var itemToUnion2 = otherCustomer.ExistingKBGroupJuridicalPersonExposures?.FirstOrDefault(o => bankAccount.BankAccountEquals(o.BankAccount));
-                if (itemToUnion2 is not null)
-                {
-                    otherCustomer.ExistingKBGroupJuridicalPersonExposures!.Remove(itemToUnion2);
-                    addCodebtorNames(item, otherCustomer.InternalCustomerId!.Value);
-                }
-            }
-        }
-        return item;
-    }
-
-    // najit vsechny zavazky, ktere ma tento klient spolecne s ostatnimi klienty v exposure CBCB
-    private Dto.HouseholdObligationItem addExistingCbCbCodebtors(Dto.HouseholdObligationItem item, List<CustomerExposureCustomer> otherCustomers, string? cbcbContractId)
-    {
-        if (!string.IsNullOrEmpty(cbcbContractId))
-        {
-            foreach (var otherCustomer in otherCustomers)
-            {
-                var itemToUnion1 = otherCustomer.ExistingCBCBNaturalPersonExposureItem?.FirstOrDefault(o => o.CbcbContractId == cbcbContractId);
-                if (itemToUnion1 is not null)
-                {
-                    otherCustomer.ExistingCBCBNaturalPersonExposureItem!.Remove(itemToUnion1);
-                    addCodebtorNames(item, otherCustomer.InternalCustomerId!.Value);
-                }
-
-                var itemToUnion2 = otherCustomer.ExistingCBCBJuridicalPersonExposureItem?.FirstOrDefault(o => o.CbcbContractId == cbcbContractId);
-                if (itemToUnion2 is not null)
-                {
-                    otherCustomer.ExistingCBCBJuridicalPersonExposureItem!.Remove(itemToUnion2);
-                    addCodebtorNames(item, otherCustomer.InternalCustomerId!.Value);
-                }
-            }
-        }
-        return item;
-    }
-
-    private void addCodebtorNames(Dto.HouseholdObligationItem item, long internalCustomerId)
-    {
-        var c = _customers.First(t => t.CustomerOnSAId == internalCustomerId);
-
-        item.Codebtors ??= new List<string>();
-        item.Codebtors.Add($"{c.FirstNameNaturalPerson} {c.Name}");
-
-    }
-
-    // empty arrays for easily readable code (imo :-))
-    private static List<CustomerExposureRequestedCBCBItem> _emptyRequestedCBCBGroupItems = new(0);
-    private static List<CustomerExposureRequestedKBGroupItem> _emptyRequestedKBGroupItems = new(0);
-    private static List<CustomerExposureExistingKBGroupItem> _emptyExistingKBGroupItems = new(0);
-    private static List<CustomerExposureExistingCBCBItem> _emptyExistingCBCBGroupItems = new(0);
+    // [int = hash exposure.Customer.obligationItem[] objektu, List<> = jmena spoludluzniku]
+    private Dictionary<int, List<string>>? _codebtors;
 
     // exec time props
     private List<CustomerOnSA> _customers = null!;

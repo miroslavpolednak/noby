@@ -16,10 +16,15 @@ internal sealed class CreateTaskHandler
 
         Dictionary<string, string> metadata = new()
         {
-            { getTaskTypeKey(), request.TaskRequest },
             { "ukol_uver_id", request.CaseId.ToString(CultureInfo.InvariantCulture) },
             { "ukol_mandant", "2" }
         };
+
+        // taskRequest pouze pokud je vyplneny
+        if (!string.IsNullOrEmpty(request.TaskRequest))
+        {
+            metadata.Add(getTaskTypeKey(), request.TaskRequest);
+        }
 
         MapPriceException(metadata, request.PriceException);
 
@@ -32,6 +37,9 @@ internal sealed class CreateTaskHandler
             {
                 metadata.Add("ukol_konzultace_order_id", $"{request.OrderId}");
             }
+        } else if (request.TaskTypeId == (int)WorkflowTaskTypes.Retention)
+        {
+            metadata.Add("ukol_retence_druh", $"{request.TaskSubtypeId}");
         }
 
         // ID dokumentu

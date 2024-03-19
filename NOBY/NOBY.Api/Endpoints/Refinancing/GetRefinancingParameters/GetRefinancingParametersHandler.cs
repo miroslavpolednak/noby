@@ -1,4 +1,4 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -91,12 +91,11 @@ internal sealed class GetRefinancingParametersHandler
                     RefinancingTypeText = RefinancingHelper.GetRefinancingTypeText(eaCodesMain, s.Process, refinancingTypes),
                     RefinancingStateId = RefinancingHelper.GetRefinancingState(s.Sa, s.Process),
                     CreatedTime = s.Process.CreatedOn,
-                    CreatedBy = null, // in this case is always null
-                    LoanInterestRateProvided = s.Process.RetentionProcess?.LoanInterestRateProvided ?? s.Process.RetentionProcess?.LoanInterestRate,
-                    LoanInterestRateValidFrom = s.Process.RetentionProcess?.InterestRateValidFrom,
+                    LoanInterestRateProvided = s.Process.RefinancingProcess?.LoanInterestRateProvided ?? s.Process.RefinancingProcess?.LoanInterestRate,
+                    LoanInterestRateValidFrom = s.Process?.RefinancingProcess?.InterestRateValidFrom!,
                     LoanInterestRateValidTo = mortgage.FixedRateValidTo,
-                    EffectiveDate = s.Process.RetentionProcess?.EffectiveDate,
-                    DocumentId = s.Process.RetentionProcess?.RefinancingDocumentId
+                    EffectiveDate = s.Process?.RefinancingProcess?.EffectiveDate,
+                    DocumentId = s.Process?.RefinancingProcess?.RefinancingDocumentId
                 }
             }).ToList()
         };

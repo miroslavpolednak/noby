@@ -7,13 +7,15 @@ internal sealed class ErrorCodeMapper
 {
     public const int ContractNumberSbNotFound = 13031;
     public const int TaskIdNotFound = 13026;
+    public const int RefinancingError = 13037;
 
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
         {
             { ContractNumberSbNotFound, "Contract number not found in SB" },
-            { TaskIdNotFound, "TaskId {PropertyValue} not found" }
+            { TaskIdNotFound, "TaskId {PropertyValue} not found" },
+            { RefinancingError, "Not possible to have more active Retention/Refixation processes" }
         });
 
         return Messages;

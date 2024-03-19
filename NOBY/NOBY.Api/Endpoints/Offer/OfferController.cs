@@ -4,12 +4,27 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace NOBY.Api.Endpoints.Offer;
 
 [ApiController]
-[Route("api/offer")]
+[Route("api")]
 [ApiVersion(1)]
 public sealed class OfferController : ControllerBase
 {
-    private readonly IMediator _mediator;
-    public OfferController(IMediator mediator) =>  _mediator = mediator;
+    /// <summary>
+    /// Simulace KB retencí.
+    /// </summary>
+    /// <remarks>
+    /// Provolá simulační službu Starbuildu pro retence.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BFEF73A4-5876-4b5b-940B-8F65FEB5F660"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("case/{caseId:long}/offer/mortgage-retention")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [ProducesResponseType(typeof(SimulateMortgageRetention.SimulateMortgageRetentionResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<SimulateMortgageRetention.SimulateMortgageRetentionResponse> SimulateMortgageRetention([FromRoute] long caseId, [FromBody] SimulateMortgageRetention.SimulateMortgageRetentionRequest request)
+        => await _mediator.Send((request ?? new SimulateMortgageRetention.SimulateMortgageRetentionRequest()).InfuseId(caseId));
 
     /// <summary>
     /// Simulace KB hypotéky.
@@ -20,7 +35,7 @@ public sealed class OfferController : ControllerBase
     /// </remarks>
     /// <param name="request">Nastaveni simulace.</param>
     /// <returns>ID vytvořené simulace a její výsledky.</returns>
-    [HttpPost("mortgage")]
+    [HttpPost("offer/mortgage")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
@@ -38,7 +53,7 @@ public sealed class OfferController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=43139152-F859-4d55-9D06-11353DA80961"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <returns>Vstupy a výstupy uložené simulace.</returns>
-    [HttpGet("mortgage/sales-arrangement/{salesArrangementId:int}")]
+    [HttpGet("offer/mortgage/sales-arrangement/{salesArrangementId:int}")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(SharedDto.GetMortgageResponse), StatusCodes.Status200OK)]
@@ -59,7 +74,7 @@ public sealed class OfferController : ControllerBase
     /// </remarks>
     /// <param name="request">Identifikace klienta a ID simulace.</param>
     /// <returns>ID nově vytvořeného Case</returns>
-    [HttpPost("mortgage/create-case")]
+    [HttpPost("offer/mortgage/create-case")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.DASHBOARD_CreateNewCase)]
@@ -76,7 +91,7 @@ public sealed class OfferController : ControllerBase
     /// Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPut("mortgage/sales-arrangement/{salesArrangementId:int}/link")]
+    [HttpPut("offer/mortgage/sales-arrangement/{salesArrangementId:int}/link")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -91,7 +106,7 @@ public sealed class OfferController : ControllerBase
     /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=994B63B5-C1C0-4433-AB92-9FCC23760F52" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width= "20" height= "20" /> Diagram v EA</a>
     /// </remarks>
     /// <returns>Plný splátkový kalendář simulace.</returns>
-    [HttpGet("mortgage/{offerId:int}/full-payment-schedule")]
+    [HttpGet("offer/mortgage/{offerId:int}/full-payment-schedule")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(SharedDto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
@@ -110,10 +125,13 @@ public sealed class OfferController : ControllerBase
     /// Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D43515EA-4014-47a1-AD45-0E80EE43AEB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("mortgage/developer-project/search")]
+    [HttpPost("offer/mortgage/developer-project/search")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(DeveloperSearch.DeveloperSearchResponse), StatusCodes.Status200OK)]
     public async Task<DeveloperSearch.DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearch.DeveloperSearchRequest request)
         => await _mediator.Send(request ?? new DeveloperSearch.DeveloperSearchRequest());
+
+    private readonly IMediator _mediator;
+    public OfferController(IMediator mediator) => _mediator = mediator;
 }

@@ -18,17 +18,38 @@ internal sealed class LoanRepository
     public Task<List<SearchProductsResponse.Types.SearchProductsItem>> SearchProducts(Identity? identity, CancellationToken cancellationToken)
     {
         string query = """
-        SELECT C.Id 'CaseId', A.VztahId 'ContractRelationshipTypeId'
-            FROM [dbo].[VztahUver] A
-            INNER JOIN [dbo].[Partner] B ON A.PartnerId=B.Id
-            INNER JOIN [dbo].[Uver] C ON A.UverId=C.Id
-            WHERE A.Neaktivni=0
+        select
+            u.Id as CaseId, 
+            StavHU as State,
+            vu.VztahId as ContractRelationshipTypeId,
+            u.KodProduktyUv as ProductTypeId,
+            u.VyseUveru as TargetAmount,
+            u.CisloSmlouvy as ContractNumber
+        from [dbo].[VztahUver] vu
+        inner join [dbo].[Partner] p on p.Id = vu.PartnerId
+        inner join [dbo].[Uver] u on u.Id = vu.UverId
+        where  vu.Neaktivni = 0 
+               and u.Neaktivni = 0 
+               and ((@schema=2 and p.KBId=@id) or (@schema=1 and p.Id=@id))
+
+        union all
+
+        select
+            s.Id as CaseId, 
+            null as State,
+            vs.VztahId as ContractRelationshipTypeId,
+            null as ProductTypeId,
+            s.CilovaCastka as TargetAmount,
+            s.CisloSmlouvy as ContractNumber
+        from [dbo].[VztahSporeni] vs
+        inner join [dbo].[Partner] p on p.Id = vs.PartnerId
+        inner join [dbo].[Sporeni] s on s.Id = vs.SporeniId 
+        where  vs.Neaktivni = 0 and ((@schema=2 and p.KBId=@id) or (@schema=1 and p.Id=@id))
         """;
 
         if (identity is not null)
         {
-            query += identity.IdentityScheme == Identity.Types.IdentitySchemes.Kb ? " AND B.KBId=@identity" : " AND B.Id=@identity";
-            return _connectionProvider.ExecuteDapperRawSqlToListAsync<SearchProductsResponse.Types.SearchProductsItem>(query, new { identity = identity.IdentityId }, cancellationToken);
+            return _connectionProvider.ExecuteDapperRawSqlToListAsync<SearchProductsResponse.Types.SearchProductsItem>(query, new { schema = (int)identity.IdentityScheme, id = identity.IdentityId }, cancellationToken);
         }
 
         throw new NotImplementedException();

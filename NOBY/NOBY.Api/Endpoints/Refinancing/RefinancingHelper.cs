@@ -8,11 +8,11 @@ public static class RefinancingHelper
 {
     public static string GetRefinancingTypeText(List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodesMain, ProcessTask process, List<GenericCodebookResponse.Types.GenericCodebookItem> refinancingTypes)
     {
-        var text = eaCodesMain.Find(e => e.Id == process.RetentionProcess.RefinancingDocumentEACode)?.Name;
+        var text = eaCodesMain.Find(e => e.Id == process.RefinancingProcess.RefinancingDocumentEACode)?.Name;
 
         if (string.IsNullOrWhiteSpace(text))
         {
-            text = process.RetentionProcess.RefinancingType switch
+            text = process.RefinancingProcess.RefinancingType switch
             {
                 1 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.Retence).Name,
                 2 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.Refixace).Name,
@@ -38,13 +38,13 @@ public static class RefinancingHelper
                                                            or (int)SalesArrangementTypes.CustomerChange3602A);
     }
 
-    public static int GetRefinancingType(ProcessTask process)
+    public static RefinancingTypes GetRefinancingType(ProcessTask process)
     {
         return process.ProcessTypeId switch
         {
-            3 when process.RetentionProcess.RefinancingType == 1 => 1, // Retence
-            3 when process.RetentionProcess.RefinancingType == 2 => 2, // Refixace
-            _ => 0
+            3 when process.RefinancingProcess.RefinancingType == 1 => RefinancingTypes.Retence,  // Retence
+            3 when process.RefinancingProcess.RefinancingType == 2 => RefinancingTypes.Refixace, // Refixace
+            _ => RefinancingTypes.Unknown
         };
     }
 
@@ -57,15 +57,15 @@ public static class RefinancingHelper
 
     public static int GetRefinancingState(_SaContract.SalesArrangement? sa, ProcessTask process)
     {
-        if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == false && process.ProcessPhaseId == 1 && process.ProcessId == sa.TaskProcessId)
+        if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId == sa?.TaskProcessId)
         {
             return (int)RefinancingStates.RozpracovanoVNoby; // 1
         }
-        else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == false && process.ProcessPhaseId == 1 && process.ProcessId != sa.TaskProcessId)
+        else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId != sa?.TaskProcessId)
         {
             return (int)RefinancingStates.RozpracovanoVSB;  // 2
         }
-        else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 == false && process.ProcessPhaseId == 3)
+        else if (!process.Cancelled && process.StateIdSB != 30 && sa?.Retention?.ManagedByRC2 != true && process.ProcessPhaseId == 3)
         {
             return (int)RefinancingStates.Podepisovani; // 3
         }
@@ -83,7 +83,7 @@ public static class RefinancingHelper
         }
         else
         {
-            return 0; // Unknow 
+            throw new ArgumentException("Unsupported RefinancingStates");
         }
     }
 }

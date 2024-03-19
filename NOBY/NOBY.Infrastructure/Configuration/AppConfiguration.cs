@@ -22,6 +22,8 @@ public sealed class AppConfiguration
     /// </summary>
     public int MaxFileSize { get; set; } = 20;
 
+    public bool UseKafkaFlowDashboard { get; set; }
+
     public IcapAntivirusConfiguration? IcapAntivirus { get; set; }
 
     public sealed class IcapAntivirusConfiguration

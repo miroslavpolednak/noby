@@ -28,11 +28,15 @@ SharedComponents.GrpcServiceBuilder
         builder.AddExternalService<ExternalServices.MpHome.V1.IMpHomeClient>();
 
         builder.AddCisMessaging()
-            .AddKafka()
-            .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyCreated.PartyCreatedConsumer>()
-            .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyUpdated.PartyUpdatedConsumer>()
-            .AddConsumerTopicJson<DomainServices.CustomerService.Api.Messaging.Abstraction.ICustomerManagementEvent>(appConfiguration.CustomerManagementEventTopic)
-            .Build();
+               .AddKafkaFlow(msg =>
+               {
+                   msg.AddConsumerJson(appConfiguration.CustomerManagementEventTopic,
+                                       handlers =>
+                                       {
+                                           handlers.AddHandler<DomainServices.CustomerService.Api.Messaging.PartyCreated.PartyCreatedHandler>();
+                                           handlers.AddHandler<DomainServices.CustomerService.Api.Messaging.PartyUpdated.PartyUpdatedHandler>();
+                                       });
+               });
     })
     .MapGrpcServices((app, _) =>
     {

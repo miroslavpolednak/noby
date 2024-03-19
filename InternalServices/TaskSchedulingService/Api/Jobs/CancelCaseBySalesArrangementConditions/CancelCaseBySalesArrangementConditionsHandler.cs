@@ -1,5 +1,5 @@
 ﻿using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.CancelCaseBySalesArrangementConditions;
 
