@@ -70,6 +70,9 @@ public sealed class CreateCaseFromExternalSourcesService
             State = (int)SalesArrangementStates.InApproval
         };
         await _salesArrangementService.CreateSalesArrangement(saRequest, cancellationToken);
+
+        // update active task - pozor, spravne se pouze vola getTaskList, tim se uvnitr Case service updatuji tasky
+        await _caseService.GetTaskList(caseId, cancellationToken);
     }
 
     private static bool validateMortgageData(MortgageData mortgageData)
