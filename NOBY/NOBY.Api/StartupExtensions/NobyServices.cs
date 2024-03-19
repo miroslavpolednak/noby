@@ -38,7 +38,7 @@ internal static class NobyServices
             .AddClasses(x => x.AssignableTo(typeof(FluentValidation.IValidator<>)))
             .AsImplementedInterfaces()
             .WithTransientLifetime());
-        
+
         // controllers and validation
         builder.Services
             .AddControllers(x => x.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None }))
@@ -61,6 +61,7 @@ internal static class NobyServices
         builder.AddExternalService<ExternalServices.Crem.V1.ICremClient>();
         builder.AddExternalService<ExternalServices.AddressWhisperer.V1.IAddressWhispererClient>(CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue, CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers.KbHeadersHttpHandler.DefaultAppCompOriginatorValue);
         builder.AddExternalService<ExternalServices.RuianAddress.V1.IRuianAddressClient>();
+        builder.AddExternalService<ExternalServices.SbWebApi.V1.ISbWebApiClient>();
 
         // pridat mpss cookie
         builder.AddMpssSecurityCookie();

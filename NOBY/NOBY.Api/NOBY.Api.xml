@@ -3213,6 +3213,21 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest.SignatureTypeDetailId">
+            <summary>
+            Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest.RefinancingDocumentTypeId">
+            <summary>
+            Typ Refinančního dokumentu. 1 - Retenční dodatek, 2 - Individuální sdělení, 3 - Hedgeový dodatek
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest.SignatureDeadline">
+            <summary>
+            Nejzazší datum podpisu dokumentu
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetInterestRatesValidFrom.GetInterestRatesValidFromRequest.CaseId">
             <summary>
             ID Case-u
@@ -3266,6 +3281,15 @@
             Operace slouží k získání informací o aktuální úrokové sazbě.
             
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRefinancingDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest)">
+            <summary>
+            Generování dokumentu Refinancování
+            </summary>
+            <remarks>
+            Operace slouží k vygenerování dokumentu Retence<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItemButton.IsActive">
