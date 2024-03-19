@@ -3,18 +3,27 @@ using DomainServices.CaseService.Clients.v1;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Api.Database.Entities;
 using DomainServices.RealEstateValuationService.Contracts;
-using MassTransit;
+using KafkaFlow;
 
 namespace DomainServices.RealEstateValuationService.Api.Messaging.InformationRequestProcessChanged;
 
-internal sealed class InformationRequestProcessChangedConsumer
-    : IConsumer<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged>
+internal class InformationRequestProcessChangedHandler  : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged>
 {
-    public async Task Consume(ConsumeContext<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged> context)
+    private readonly RealEstateValuationServiceDbContext _dbContext;
+    private readonly ICaseServiceClient _caseService;
+    private readonly ILogger<InformationRequestProcessChangedHandler> _logger;
+
+    public InformationRequestProcessChangedHandler(RealEstateValuationServiceDbContext dbContext,
+                                                   ICaseServiceClient caseService,
+                                                   ILogger<InformationRequestProcessChangedHandler> logger)
     {
-        var token = context.CancellationToken;
-        var message = context.Message;
-        
+        _dbContext = dbContext;
+        _caseService = caseService;
+        _logger = logger;
+    }
+
+    public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged message)
+    {
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
             _logger.KafkaMessageCurrentTaskIdIncorrectFormat(message.currentTask.id);
@@ -25,7 +34,7 @@ internal sealed class InformationRequestProcessChangedConsumer
             _logger.KafkaMessageCaseIdIncorrectFormat(message.@case.caseId.id);
         }
         
-        var taskDetail = await _caseService.GetTaskDetail(currentTaskId, token);
+        var taskDetail = await _caseService.GetTaskDetail(currentTaskId);
         var orderId = taskDetail.TaskDetail.Request.OrderId;
 
         if (orderId is null)
@@ -34,7 +43,7 @@ internal sealed class InformationRequestProcessChangedConsumer
         }
 
         var realEstateValuation = await _dbContext.RealEstateValuations
-            .FirstOrDefaultAsync(r => r.CaseId == caseId && r.OrderId == orderId, token);
+                                                  .FirstOrDefaultAsync(r => r.CaseId == caseId && r.OrderId == orderId);
 
         if (realEstateValuation == null || realEstateValuation.ValuationStateId == 5)
         {
@@ -51,9 +60,9 @@ internal sealed class InformationRequestProcessChangedConsumer
                 break;
         }
         
-        await _dbContext.SaveChangesAsync(token);
+        await _dbContext.SaveChangesAsync();
     }
-    
+
     private static void HandleStateActiveOrSuspended(RealEstateValuation realEstateValuationListItem)
     {
         if (realEstateValuationListItem is { ValuationStateId: 4, ValuationTypeId: (int)ValuationTypes.Online } or { ValuationStateId: 8 })
@@ -71,19 +80,5 @@ internal sealed class InformationRequestProcessChangedConsumer
                 when realEstateValuationListItem.ValuationStateId != 4 => 8,
             _ => realEstateValuationListItem.ValuationStateId
         };
-    }
-    
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ILogger<InformationRequestProcessChangedConsumer> _logger;
-
-    public InformationRequestProcessChangedConsumer(
-        RealEstateValuationServiceDbContext dbContext,
-        ICaseServiceClient caseService,
-        ILogger<InformationRequestProcessChangedConsumer> logger)
-    {
-        _caseService = caseService;
-        _logger = logger;
-        _dbContext = dbContext;
-    }
+    } 
 }

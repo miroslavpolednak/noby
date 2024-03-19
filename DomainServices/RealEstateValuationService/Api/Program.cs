@@ -36,13 +36,16 @@ SharedComponents.GrpcServiceBuilder
         builder.AddExternalService<DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1.IPreorderServiceClient>();
         builder.AddExternalService<DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.V1.ILuxpiServiceClient>();
 
-        // kafka messaging
         builder.AddCisMessaging()
-            .AddKafka(typeof(Program).Assembly)
-            .AddConsumer<DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged.CollateralValuationProcessChangedConsumer>()
-            .AddConsumer<DomainServices.RealEstateValuationService.Api.Messaging.InformationRequestProcessChanged.InformationRequestProcessChangedConsumer>()
-            .AddConsumerTopicAvro<ISbWorkflowProcessEvent>(appConfiguration.SbWorkflowProcessTopic!)
-            .Build();
+               .AddKafkaFlow(msg =>
+               {
+                   msg.AddConsumerAvro(appConfiguration.SbWorkflowProcessTopic!,
+                                       handlers =>
+                                       {
+                                           handlers.AddHandler<DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged.CollateralValuationProcessHandler>();
+                                           handlers.AddHandler<DomainServices.RealEstateValuationService.Api.Messaging.InformationRequestProcessChanged.InformationRequestProcessChangedHandler>();
+                                       });
+               });
     })
     .MapGrpcServices((app, _) =>
     {
