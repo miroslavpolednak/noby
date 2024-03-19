@@ -7,6 +7,10 @@ namespace SharedTypes.Enums;
 public enum RefinancingTypes : byte
 {
     [EnumMember]
+    [Display(Name = "Unknown")]
+    Unknown = 0,
+
+    [EnumMember]
     [Display(Name = "Dodatek - Retence")]
     Retence = 1,
 

@@ -92,10 +92,10 @@ internal sealed class GetRefinancingParametersHandler
                     RefinancingStateId = RefinancingHelper.GetRefinancingState(s.Sa, s.Process),
                     CreatedTime = s.Process.CreatedOn,
                     LoanInterestRateProvided = s.Process.RefinancingProcess?.LoanInterestRateProvided ?? s.Process.RefinancingProcess?.LoanInterestRate,
-                    LoanInterestRateValidFrom = s.Process.RefinancingProcess?.InterestRateValidFrom,
+                    LoanInterestRateValidFrom = s.Process?.RefinancingProcess?.InterestRateValidFrom!,
                     LoanInterestRateValidTo = mortgage.FixedRateValidTo,
-                    EffectiveDate = s.Process.RefinancingProcess?.EffectiveDate,
-                    DocumentId = s.Process.RefinancingProcess?.RefinancingDocumentId
+                    EffectiveDate = s.Process?.RefinancingProcess?.EffectiveDate,
+                    DocumentId = s.Process?.RefinancingProcess?.RefinancingDocumentId
                 }
             }).ToList()
         };
