@@ -1,4 +1,6 @@
 ﻿using Asp.Versioning;
+using NOBY.Api.Endpoints.Refinancing.GetProcessDetail;
+using NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
 using NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -24,17 +26,16 @@ public sealed class RefinancingController : ControllerBase
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(GetRefinancingParameters.GetRefinancingParametersResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetRefinancingParametersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetRefinancingParameters.GetRefinancingParametersResponse> GetRefinancingParameters([FromRoute] long caseId)
-        => await _mediator.Send(new GetRefinancingParameters.GetRefinancingParametersRequest(caseId));
+    public async Task<GetRefinancingParametersResponse> GetRefinancingParameters([FromRoute] long caseId)
+        => await _mediator.Send(new GetRefinancingParametersRequest(caseId));
 
     /// <summary>
     /// Seznam možných platností sazby od
     /// </summary>
     /// <remarks>
     /// Vrátí kolekci možných platností sazby od pro konkrétní úvěr.
-    /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/interest-rates-valid-from")]
@@ -50,7 +51,6 @@ public sealed class RefinancingController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Operace slouží k získání informací o aktuální úrokové sazbě.
-    /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/interest-rate")]

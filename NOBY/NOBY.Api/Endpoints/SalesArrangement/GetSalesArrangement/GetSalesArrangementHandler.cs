@@ -34,7 +34,9 @@ internal sealed class GetSalesArrangementHandler
             OfferGuaranteeDateFrom = saInstance.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = saInstance.OfferGuaranteeDateTo,
             Parameters = parameters,
-            State = saInstance.State
+            State = saInstance.State,
+            OfferId = saInstance.OfferId,
+            TaskProcessId = saInstance.TaskProcessId
         };
     }
 

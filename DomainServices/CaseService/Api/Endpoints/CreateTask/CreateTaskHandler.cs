@@ -16,10 +16,15 @@ internal sealed class CreateTaskHandler
 
         Dictionary<string, string> metadata = new()
         {
-            { getTaskTypeKey(), request.TaskRequest },
             { "ukol_uver_id", request.CaseId.ToString(CultureInfo.InvariantCulture) },
             { "ukol_mandant", "2" }
         };
+
+        // taskRequest pouze pokud je vyplneny
+        if (!string.IsNullOrEmpty(request.TaskRequest))
+        {
+            metadata.Add(getTaskTypeKey(), request.TaskRequest);
+        }
 
         MapPriceException(metadata, request.PriceException);
 

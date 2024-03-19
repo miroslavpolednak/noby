@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2;
+﻿using NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto;
+
+namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2;
 
 public class GetLoanApplicationAssessmentResponse
 {
@@ -15,9 +17,9 @@ public class GetLoanApplicationAssessmentResponse
     /// <summary>
     /// Důvody
     /// </summary>
-    public List<GetLoanApplicationAssessment.Dto.AssessmentReason>? Reasons { get; set; }
+    public List<AssessmentReason>? Reasons { get; set; }
 
-    public GetLoanApplicationAssessment.Dto.LoanApplication? Application { get; set; }
+    public LoanApplication? Application { get; set; }
 
     /// <summary>
     /// Domácnosti

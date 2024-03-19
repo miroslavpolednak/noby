@@ -130,5 +130,6 @@ internal static class NobyAppBuilder
         => !context.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment)
             && !context.Request.Path.StartsWithSegments("/api")
             && !context.Request.Path.StartsWithSegments("/swagger")
-            && !context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);
+            && !context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl)
+            && !context.Request.Path.StartsWithSegments("/kafkaflow");
 }

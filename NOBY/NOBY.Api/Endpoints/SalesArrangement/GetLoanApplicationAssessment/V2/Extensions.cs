@@ -1,8 +1,8 @@
-﻿using NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.Dto;
-using cRS = DomainServices.RiskIntegrationService.Contracts.Shared;
+﻿using cRS = DomainServices.RiskIntegrationService.Contracts.Shared;
 using cOffer = DomainServices.OfferService.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
+using NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2;
 

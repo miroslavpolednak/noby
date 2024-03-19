@@ -67,7 +67,7 @@ public class SendSmsFromTemplateHandler : IRequestHandler<SendSmsFromTemplateReq
         var keyValues = request.Placeholders.ToDictionary(p => p.Key, p => p.Value);
         
         smsType.SmsText.Validate(keyValues.Keys);
-        var text = smsType.SmsText.Interpolate(keyValues);
+        var text = smsType.SmsText.Interpolate(keyValues).ToGSMString();
 
         if (text.Length > _maxSmsTextLength)
         {

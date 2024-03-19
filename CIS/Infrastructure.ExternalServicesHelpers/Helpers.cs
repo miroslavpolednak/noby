@@ -9,7 +9,8 @@ public static class Helpers
 {
     private static JsonSerializerOptions _jsonSerializerOptions = new()
     {
-        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        PropertyNameCaseInsensitive = true //!!! dokud to v KB neopravi
     };
 
     public static async Task<string?> SafeReadAsStringAsync(this HttpResponseMessage? response, CancellationToken cancellationToken = default)

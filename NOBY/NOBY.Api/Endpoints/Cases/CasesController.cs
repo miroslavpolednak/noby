@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
+using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Cases;
@@ -63,10 +64,10 @@ public class CasesController : ControllerBase
     [Consumes("application/json")]
     [Produces("application/json")]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
-    [ProducesResponseType(typeof(CreateSalesArrangement.CreateSalesArrangementResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<CreateSalesArrangement.CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangement.CreateSalesArrangementRequest request)
+    public async Task<CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangementRequest request)
         => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>

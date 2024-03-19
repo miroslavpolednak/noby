@@ -20,7 +20,7 @@ public class KafkaFlowConfiguration
 
     public IEnumerable<string> Brokers { get; set; } = [];
 
-    public SchemaRegistryConfiguration SchemaRegistry { get; set; } = new();
+    public SchemaRegistryConfiguration? SchemaRegistry { get; set; }
 
     public RetryPolicy RetryPolicy { get; set; } = RetryPolicy.Default;
 
@@ -28,7 +28,7 @@ public class KafkaFlowConfiguration
 
     public int TimeBetweenTriesMs { get; set; } = 1000;
 
-    public string? AdminTopic { get; set; }
+    public AdminConfiguration? Admin { get; set; }
 
     public bool LogConsumingMessagePayload { get; set; } = true;
 
@@ -45,5 +45,12 @@ public class KafkaFlowConfiguration
         public string SchemaRegistryUrl { get; set; } = null!;
 
         public SchemaIdentificationType SchemaIdentificationType { get; set; } = SchemaIdentificationType.ContentId;
+    }
+
+    public class AdminConfiguration
+    {
+        public string Broker { get; set; } = null!;
+
+        public string Topic { get; set; } = null!;
     }
 }

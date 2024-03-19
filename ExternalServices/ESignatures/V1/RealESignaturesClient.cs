@@ -152,7 +152,7 @@ internal sealed class RealESignaturesClient
             ClientData = new()
             {
                 UniversalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == SharedTypes.Enums.IdentitySchemes.Kb)?.Id.ToString(CultureInfo.InvariantCulture),
-                ExternalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == SharedTypes.Enums.IdentitySchemes.Mp)?.Id.ToString(CultureInfo.InvariantCulture) ?? "",
+                ExternalId = request.ExternalId,
                 Name = request.ClientData.FullName!,
                 BirthNumber_RegNumber = request.ClientData.BirthNumber,
                 PhoneNumber = request.ClientData.Phone,

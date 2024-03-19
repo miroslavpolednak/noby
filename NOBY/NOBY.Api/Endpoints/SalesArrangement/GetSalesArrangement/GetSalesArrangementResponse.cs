@@ -45,6 +45,16 @@ public sealed class GetSalesArrangementResponse
     public DateTime OfferGuaranteeDateTo { get; set; }
 
     /// <summary>
+    /// ID nalinkované Offer.
+    /// </summary>
+    public int? OfferId { get; set; }
+
+    /// <summary>
+    /// Id odpovídajícího procesu ve SB
+    /// </summary>
+    public long? TaskProcessId { get; set; }
+
+    /// <summary>
     /// Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.
     /// </summary>
     /// <remarks>

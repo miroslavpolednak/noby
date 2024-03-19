@@ -13,7 +13,9 @@ internal sealed class CancelTaskHandler
         // jen check jestli case existuje
         await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
 
-        var taskIdSb = request.TaskIdSB ?? (await _workflowTaskService.LoadAndCheckIfTaskExists(request.CaseId, request.TaskId, cancellationToken)).TaskIdSb;
+        var taskIdSb = request.TaskIdSB;
+        if (taskIdSb == 0)
+            taskIdSb = (await _workflowTaskService.LoadAndCheckIfTaskExists(request.CaseId, request.TaskId, cancellationToken)).TaskIdSb;
 
         var task = await _caseService.GetTaskDetail(taskIdSb, cancellationToken);
         

@@ -15,6 +15,7 @@ message SearchProductsResponse {
 
 	message SearchProductsItem {
 		int64 CaseId = 1;
+
 		int32 ContractRelationshipTypeId = 2;
 
 		// Stav Case
