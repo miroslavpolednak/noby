@@ -69,6 +69,13 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
             await ValidateSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
         }
 
+        if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.Drawing
+             && request.SignatureTypeId == (int)SignatureTypes.Electronic
+             && salesArrangement.Drawing.Agent.IsActive)
+        {
+            throw new NobyValidationException(90053);
+        }
+
         int? customerOnSAId1 = null;
         int? customerOnSAId2 = null;
 
@@ -150,7 +157,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         var detailWithChangedData = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
 
         var signingIdentity = new _DocOnSA.SigningIdentity();
-        
+
         // Product, CRS and Service with household mapping
         signingIdentity.CustomerIdentifiers.AddRange(customerOnSa.CustomerIdentifiers.Select(s => new SharedTypes.GrpcTypes.Identity
         {
