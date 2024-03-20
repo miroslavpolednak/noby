@@ -10,7 +10,7 @@ using UpdateCustomerRequest = DomainServices.HouseholdService.Contracts.UpdateCu
 
 namespace DomainServices.CustomerService.Api.Messaging.PartyUpdated;
 
-internal class PartyUpdatedHandler : IMessageHandler<PartyUpdatedV1>
+internal sealed class PartyUpdatedHandler : IMessageHandler<PartyUpdatedV1>
 {
     private readonly ICodebookServiceClient _codebookClient;
     private readonly ICustomerOnSAServiceClient _customerOnSaClient;

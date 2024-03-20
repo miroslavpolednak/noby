@@ -62,6 +62,9 @@ internal sealed class OfferService
     public async Task<SimulateMortgageRefixationResponse> SimulateMortgageRefixation(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken = default)
         => await _service.SimulateMortgageRefixationAsync(request, cancellationToken: cancellationToken);
 
+    public async Task<SimulateMortgageExtraPaymentResponse> SimulateMortgageExtraPayment(SimulateMortgageExtraPaymentRequest request, CancellationToken cancellationToken = default)
+        => await _service.SimulateMortgageExtraPaymentAsync(request, cancellationToken: cancellationToken);
+
     private int? _cacheGetOfferResponseId;
     private GetOfferResponse? _cacheGetMortgageOfferResponse;
 

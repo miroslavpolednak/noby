@@ -6,7 +6,7 @@ using CIS.Infrastructure.Messaging.Configuration;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Middlewares;
 
-internal class LoggingKnownMessagesMiddleware : IMessageMiddleware
+internal sealed class LoggingKnownMessagesMiddleware : IMessageMiddleware
 {
     private readonly KafkaFlowConfiguration _configuration;
     private readonly ILogger<LoggingKnownMessagesMiddleware> _logger;

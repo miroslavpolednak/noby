@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Middlewares;
 
-internal class ConsumerErrorHandlingMiddleware : IMessageMiddleware
+internal sealed class ConsumerErrorHandlingMiddleware : IMessageMiddleware
 {
     private readonly ILogger<ConsumerErrorHandlingMiddleware> _logger;
 

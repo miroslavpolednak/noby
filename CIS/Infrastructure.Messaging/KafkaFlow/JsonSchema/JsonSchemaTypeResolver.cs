@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.JsonSchema;
 
-internal class JsonSchemaTypeResolver : IMessageTypeResolver
+internal sealed class JsonSchemaTypeResolver : IMessageTypeResolver
 {
     private static readonly ConcurrentDictionary<string, Type?> _types = new();
     private static readonly SemaphoreSlim _semaphore = new(1, 1);
