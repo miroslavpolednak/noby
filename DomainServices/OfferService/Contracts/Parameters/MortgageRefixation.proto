@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "GrpcDecimal.proto";
+import "NullableGrpcDecimal.proto";
+import "GrpcDate.proto";
+
+message MortgageRefixationBasicParameters {
+	
+}
+
+message MortgageRefixationSimulationInputs {
+	
+}
+
+message MortgageRefixationSimulationResults {
+	cis.types.GrpcDecimal LoanPaymentAmount = 1;
+	cis.types.NullableGrpcDecimal LoanPaymentAmountDiscounted = 2;
+}
+
+message MortgageRefixationFullData {
+	MortgageRefixationBasicParameters BasicParameters = 1;
+	MortgageRefixationSimulationInputs SimulationInputs = 2;
+	MortgageRefixationSimulationResults SimulationResults = 3;
+}

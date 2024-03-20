@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "Parameters/MortgageRefixation.proto";
+import "ModificationStamp.proto";
+
+message SimulateMortgageRefixationRequest {
+	MortgageRefixationBasicParameters BasicParameters = 1;
+	MortgageRefixationSimulationInputs SimulationInputs = 2;
+	int64 CaseId = 3;
+}
+
+message SimulateMortgageRefixationResponse {
+	int32 OfferId = 1;
+	cis.types.ModificationStamp Created = 2;
+	MortgageRefixationBasicParameters BasicParameters = 3;
+	MortgageRefixationSimulationInputs SimulationInputs = 4;
+	MortgageRefixationSimulationResults SimulationResults = 5;
+}

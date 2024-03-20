@@ -39,35 +39,28 @@ internal sealed class OfferService
         }, cancellationToken: cancellationToken);
 
     public async Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default)
-    {
-        return await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken);
-    }
+        =>  await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken);
 
     public async Task<SimulateMortgageRetentionResponse> SimulateMortgageRetention(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken = default)
-    {
-        return await _service.SimulateMortgageRetentionAsync(request, cancellationToken: cancellationToken);
-    }
+        => await _service.SimulateMortgageRetentionAsync(request, cancellationToken: cancellationToken);
 
     public async Task<GetMortgageOfferFPScheduleResponse> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default)
-    {
-        return await _service.GetMortgageOfferFPScheduleAsync(new GetMortgageOfferFPScheduleRequest()
+        => await _service.GetMortgageOfferFPScheduleAsync(new GetMortgageOfferFPScheduleRequest()
         {
             OfferId = offerId
         }, cancellationToken: cancellationToken);
-    }
 
     public async Task<GetOfferDeveloperResponse> GetOfferDeveloper(int offerId, CancellationToken cancellationToken = default) 
-    {
-        return await _service.GetOfferDeveloperAsync(new GetOfferDeveloperRequest
+        => await _service.GetOfferDeveloperAsync(new GetOfferDeveloperRequest
         {
             OfferId = offerId
         }, cancellationToken: cancellationToken);
-    }
 
     public async Task UpdateOffer(UpdateOfferRequest request, CancellationToken cancellationToken = default)
-    {
-        await _service.UpdateOfferAsync(request, cancellationToken: cancellationToken);
-    }
+        => await _service.UpdateOfferAsync(request, cancellationToken: cancellationToken);
+
+    public async Task<SimulateMortgageRefixationResponse> SimulateMortgageRefixation(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken = default)
+        => await _service.SimulateMortgageRefixationAsync(request, cancellationToken: cancellationToken);
 
     private int? _cacheGetOfferResponseId;
     private GetOfferResponse? _cacheGetMortgageOfferResponse;

@@ -11,6 +11,7 @@ import "Messages/GetMortgageOfferFPSchedule.proto";
 import "Messages/GetOfferDeveloper.proto";
 import "Messages/UpdateOffer.proto";
 import "Messages/SimulateMortgageRetention.proto";
+import "Messages/SimulateMortgageRefixation.proto";
 import "Messages/GetInterestRate.proto";
 
 service OfferService {
@@ -23,6 +24,8 @@ service OfferService {
 	rpc SimulateMortgage (SimulateMortgageRequest) returns (SimulateMortgageResponse);
 
 	rpc SimulateMortgageRetention (SimulateMortgageRetentionRequest) returns (SimulateMortgageRetentionResponse);
+
+	rpc SimulateMortgageRefixation (SimulateMortgageRefixationRequest) returns (SimulateMortgageRefixationResponse);
 
 	rpc GetMortgageOfferFPSchedule (GetMortgageOfferFPScheduleRequest) returns (GetMortgageOfferFPScheduleResponse);
 

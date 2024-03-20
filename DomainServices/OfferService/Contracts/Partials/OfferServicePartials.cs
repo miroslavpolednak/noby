@@ -22,6 +22,10 @@ public partial class SimulateMortgageRetentionRequest
     : MediatR.IRequest<SimulateMortgageRetentionResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
+public partial class SimulateMortgageRefixationRequest
+    : MediatR.IRequest<SimulateMortgageRefixationResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
+
 public partial class GetMortgageOfferFPScheduleRequest
     : MediatR.IRequest<GetMortgageOfferFPScheduleResponse>, CIS.Core.Validation.IValidatableRequest
 { }
