@@ -51,11 +51,11 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="Messaging\AvroSchemas\Mcs\NotificationReport.json" />
-    <None Include="Messaging\AvroSchemas\Mcs\SendEmail.json" />
-    <None Include="Messaging\AvroSchemas\Mcs\SendSMS.json" />
-    <None Include="Messaging\AvroSchemas\Mpss\NotificationReport.json" />
-    <None Include="Messaging\AvroSchemas\Mpss\SendEmail.json" />
+    <None Include="Messaging\NotificationReport\NotificationReport.json" />
+    <None Include="Legacy\Messaging\AvroSchemas\Mcs\SendEmail.json" />
+    <None Include="Legacy\Messaging\AvroSchemas\Mcs\SendSMS.json" />
+    <None Include="Legacy\Messaging\AvroSchemas\Mpss\NotificationReport.json" />
+    <None Include="Legacy\Messaging\AvroSchemas\Mpss\SendEmail.json" />
   </ItemGroup>
   
 </Project>
