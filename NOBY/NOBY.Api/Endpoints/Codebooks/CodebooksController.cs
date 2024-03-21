@@ -129,21 +129,6 @@ public class CodebooksController : ControllerBase
     }
 
     /// <summary>
-    /// Číselník fixace úvěru.
-    /// </summary>
-    /// <returns>Kolekce dob fixací v měsících.</returns>
-    /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit fixace.</param>
-    [HttpGet("fixation-period-length")]
-    [Produces("application/json")]
-    [ProducesResponseType(typeof(List<int>), StatusCodes.Status200OK)]
-    public async Task<List<int>> GetFixationPeriodLength([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
-        => (await svc.FixedRatePeriods(cancellationToken))
-            .Where(t => t.ProductTypeId == productTypeId)
-            .Select(t => t.FixedRatePeriod)
-            .OrderBy(t => t)
-            .ToList();
-
-    /// <summary>
     /// Číselník druhu úveru.
     /// </summary>
     /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
@@ -166,6 +151,9 @@ public class CodebooksController : ControllerBase
     /// <summary>
     /// FixedRatePeriod s filtrací na product
     /// </summary>
+    /// <remarks>
+    /// Vyfiltruje fixed rate dle zadaného ProductTypeId a pouze s atributem IsNewProduct=true.
+    /// </remarks>
     /// <param name="productTypeId">ID typu produktu</param>
     [HttpGet("fixed-rate-periods")]
     [Produces("application/json")]
@@ -173,7 +161,6 @@ public class CodebooksController : ControllerBase
     public async Task<List<FixedRatePeriodsResponse.Types.FixedRatePeriodItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
             .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct)
-            .GroupBy(t => new { t.FixedRatePeriod, t.MandantId })
             .Select(t => t.OrderBy(x => x.IsValid ? 0 : 1).First())
             .ToList();
 
