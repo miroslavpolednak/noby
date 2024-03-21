@@ -31,11 +31,11 @@ public enum SalesArrangementTypes : byte
     CustomerChange3602C = 12,
 
     [EnumMember]
-    Retention = 13,
+    MortgageRetention = 13,
 
     [EnumMember]
-    Refixation = 14,
+    MortgageRefixation = 14,
 
     [EnumMember]
-    MimoradnaSplatka = 15
+    MortgageExtraPayment = 15
 }

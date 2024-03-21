@@ -109,8 +109,8 @@ internal sealed class CreateSalesArrangementHandler
             SalesArrangementTypes.CustomerChange3602A when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602A => true,
             SalesArrangementTypes.CustomerChange3602B when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602B => true,
             SalesArrangementTypes.CustomerChange3602C when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602C => true,
-            SalesArrangementTypes.Retention when dataCase == CreateSalesArrangementRequest.DataOneofCase.Retention => true,
-            SalesArrangementTypes.Refixation when dataCase == CreateSalesArrangementRequest.DataOneofCase.Refixation => true,
+            SalesArrangementTypes.MortgageRetention when dataCase == CreateSalesArrangementRequest.DataOneofCase.Retention => true,
+            SalesArrangementTypes.MortgageRefixation when dataCase == CreateSalesArrangementRequest.DataOneofCase.Refixation => true,
             _ => throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.DataObjectIsNotValid, salesArrangementTypeId)
         };
 

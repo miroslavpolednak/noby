@@ -102,8 +102,8 @@ internal sealed class UpdateSalesArrangementParametersHandler : IRequestHandler<
             SalesArrangementTypes.CustomerChange3602A => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange3602A.MapCustomerChange3602(), cancellationToken),
             SalesArrangementTypes.CustomerChange3602B => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange3602B.MapCustomerChange3602(), cancellationToken),
             SalesArrangementTypes.CustomerChange3602C => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange3602C.MapCustomerChange3602(), cancellationToken),
-            SalesArrangementTypes.Retention => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.Retention.MapRetention(), cancellationToken),
-            SalesArrangementTypes.Refixation => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.Refixation.MapRefixation(), cancellationToken),
+            SalesArrangementTypes.MortgageRetention => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.Retention.MapRetention(), cancellationToken),
+            SalesArrangementTypes.MortgageRefixation => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.Refixation.MapRefixation(), cancellationToken),
             _ => throw new ArgumentOutOfRangeException(nameof(salesArrangementType), salesArrangementType, null)
         };
     }

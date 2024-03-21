@@ -21,9 +21,9 @@ public interface ISalesArrangementAuthorizationService
     public static ReadOnlyCollection<int> RefinancingSATypes => _refinancingSATypes;
     private static ReadOnlyCollection<int> _refinancingSATypes = (new int[]
         {
-            (int)SalesArrangementTypes.Refixation,
-            (int)SalesArrangementTypes.Retention,
-            (int)SalesArrangementTypes.MimoradnaSplatka
+            (int)SalesArrangementTypes.MortgageRefixation,
+            (int)SalesArrangementTypes.MortgageRetention,
+            (int)SalesArrangementTypes.MortgageExtraPayment
         }).AsReadOnly();
 
     public static ReadOnlyCollection<int> NonRefinancingSATypes => _nonRefinancingSATypes;

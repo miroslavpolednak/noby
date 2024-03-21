@@ -28,6 +28,7 @@ internal sealed class ValidateOfferIdHandler
                 ResourceProcessId = instance.ResourceProcessId.ToString(),
                 DocumentId = instance.DocumentId,
                 OfferType = (OfferTypes)instance.OfferType,
+                Flags = instance.Flags,
                 ValidTo = instance.ValidTo,
                 IsCreditWorthinessSimpleRequested = instance.IsCreditWorthinessSimpleRequested,
                 Created = new SharedTypes.GrpcTypes.ModificationStamp

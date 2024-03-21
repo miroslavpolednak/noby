@@ -25,4 +25,6 @@ internal sealed class Offer
     public int OfferType { get; set; }
 
     public DateTime? FirstGeneratedDocumentDate { get; set; }
+
+    public int Flags { get; set; }
 }

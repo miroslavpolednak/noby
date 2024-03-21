@@ -54,7 +54,7 @@ internal sealed class SendToCmpHandler
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
-        if (saInstance.SalesArrangementTypeId is ((int)SalesArrangementTypes.Retention or (int)SalesArrangementTypes.Refixation or (int)SalesArrangementTypes.MimoradnaSplatka))
+        if (saInstance.SalesArrangementTypeId is ((int)SalesArrangementTypes.MortgageRetention or (int)SalesArrangementTypes.MortgageRefixation or (int)SalesArrangementTypes.MortgageExtraPayment))
         {
             throw new NobyValidationException(90032);
         }

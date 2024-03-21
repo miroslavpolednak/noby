@@ -75,7 +75,7 @@ internal sealed class StartTaskSigningHandler(
         return processTypeId switch
         {
             1 => await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken),
-            3 => salesArrangementsResponse.SalesArrangements.Single(s => s.SalesArrangementTypeId == SalesArrangementTypes.Retention.ToByte()),
+            3 => salesArrangementsResponse.SalesArrangements.Single(s => s.SalesArrangementTypeId == SalesArrangementTypes.MortgageRetention.ToByte()),
             _ => throw new ArgumentException($"Unsupported processTypeId {processTypeId}, cannot get SA")
         };
     }
