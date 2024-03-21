@@ -32,7 +32,7 @@ internal static class RequestHelper
             }
             else
             {
-                throw new CisExternalServiceValidationException(returnVal, $"{StartupExtensions.ServiceName}.{callerName}: {returnVal}: {returnText}");
+                throw new CisExternalServiceServerErrorException(returnVal, $"{StartupExtensions.ServiceName}.{callerName}: {returnVal}: {returnText}");
             }
         }
     }
