@@ -20,7 +20,7 @@ internal sealed class LinkModelationHandler
         // validace prav
         _salesArrangementAuthorization.ValidateSaAccessBySaType213And248(saInstance.SalesArrangementTypeId);
         
-        if (saInstance.CaseId != offer.Data.CaseId || (saInstance.State != (int)SalesArrangementStates.InProgress && saInstance.State != (int)SalesArrangementStates.NewArrangement))
+        if ((offer.Data.CaseId.HasValue && saInstance.CaseId != offer.Data.CaseId) || (saInstance.State != (int)SalesArrangementStates.InProgress && saInstance.State != (int)SalesArrangementStates.NewArrangement))
             throw new NobyValidationException(90032);
         
         switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)
