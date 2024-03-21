@@ -961,13 +961,6 @@
              <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
              <returns>Kolekce vyzadanych ciselniku.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixationPeriodLength(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
-            <summary>
-            Číselník fixace úvěru.
-            </summary>
-            <returns>Kolekce dob fixací v měsících.</returns>
-            <param name="productTypeId">ID typu produktu, pro který se mají vrátit fixace.</param>
-        </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetProductLoanKinds(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
             Číselník druhu úveru.
@@ -978,6 +971,9 @@
             <summary>
             FixedRatePeriod s filtrací na product
             </summary>
+            <remarks>
+            Vyfiltruje fixed rate dle zadaného ProductTypeId a pouze s atributem IsNewProduct=true.
+            </remarks>
             <param name="productTypeId">ID typu produktu</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloper(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
