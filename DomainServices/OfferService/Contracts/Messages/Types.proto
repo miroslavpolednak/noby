@@ -25,7 +25,7 @@ message CommonOfferData {
 	cis.types.ModificationStamp Created = 7;
 	OfferTypes OfferType = 8;
 	bool IsCreditWorthinessSimpleRequested = 9;
-	google.protobuf.Int32Value Flags = 10;
+	int32 Flags = 10;
 }
 
 message SimulationResultWarning {
