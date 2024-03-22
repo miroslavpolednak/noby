@@ -3,7 +3,7 @@ using KafkaFlow;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Middlewares;
 
-internal class ActivitySourceMiddleware : IMessageMiddleware
+internal sealed class ActivitySourceMiddleware : IMessageMiddleware
 {
     private static readonly ActivitySource _activitySource = new(nameof(ActivitySourceMiddleware));
 

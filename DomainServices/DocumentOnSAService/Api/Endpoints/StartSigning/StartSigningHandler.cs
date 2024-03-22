@@ -3,7 +3,6 @@ using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CaseService.Clients.v1;
-using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -22,13 +21,11 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 {
     private const int _crsDocumentType = 13;
 
-
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IMediator _mediator;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
     private readonly IDataAggregatorServiceClient _dataAggregatorServiceClient;
-    private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly StartSigningMapper _startSigningMapper;
     private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseServiceClient;
@@ -41,7 +38,6 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         IHouseholdServiceClient householdClient,
         ISalesArrangementServiceClient salesArrangementServiceClient,
         IDataAggregatorServiceClient dataAggregatorServiceClient,
-        ICodebookServiceClient codebookServiceClient,
         StartSigningMapper startSigningMapper,
         ICurrentUserAccessor currentUser,
         ICaseServiceClient caseServiceClient,
@@ -53,7 +49,6 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         _householdClient = householdClient;
         _salesArrangementServiceClient = salesArrangementServiceClient;
         _dataAggregatorServiceClient = dataAggregatorServiceClient;
-        _codebookServiceClient = codebookServiceClient;
         _startSigningMapper = startSigningMapper;
         _currentUser = currentUser;
         _caseServiceClient = caseServiceClient;

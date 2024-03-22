@@ -37,5 +37,11 @@ public sealed class CisExternalServiceServerErrorException
         ServiceName = serviceName;
     }
 
+    public CisExternalServiceServerErrorException(int exceptionCode, string serviceName, string message)
+        : base(exceptionCode, message)
+    {
+        ServiceName = serviceName;
+    }
+
     public bool IsDefaultExceptionCode => ExceptionCode == DefaultExceptionCode.ToString(CultureInfo.InvariantCulture);
 }

@@ -16,10 +16,10 @@ internal sealed class RetentionBuilder
         
         switch ((SalesArrangementTypes)Request.SalesArrangementTypeId)
         {
-            case SalesArrangementTypes.Retention:
+            case SalesArrangementTypes.MortgageRetention:
                 Request.Retention = new();
                 break;
-            case SalesArrangementTypes.Refixation:
+            case SalesArrangementTypes.MortgageRefixation:
                 Request.Refixation = new();
                 break;
         }
@@ -36,7 +36,7 @@ internal sealed class RetentionBuilder
             var wfTaskRequest = new DomainServices.CaseService.Contracts.CreateTaskRequest
             {
                 CaseId = caseId,
-                TaskSubtypeId = Request.SalesArrangementTypeId == (int)SalesArrangementTypes.Retention ? 1 : 2,
+                TaskSubtypeId = Request.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention ? 1 : 2,
                 TaskTypeId = 9
             };
             var response = await caseService.CreateTask(wfTaskRequest, cancellationToken);

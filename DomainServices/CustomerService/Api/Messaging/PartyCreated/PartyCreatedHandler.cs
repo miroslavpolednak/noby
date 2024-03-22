@@ -3,7 +3,7 @@ using KafkaFlow;
 
 namespace DomainServices.CustomerService.Api.Messaging.PartyCreated;
 
-internal class PartyCreatedHandler : IMessageHandler<PartyCreatedV1>
+internal sealed class PartyCreatedHandler : IMessageHandler<PartyCreatedV1>
 {
     public Task Handle(IMessageContext context, PartyCreatedV1 message)
     {

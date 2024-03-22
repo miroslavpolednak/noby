@@ -13,7 +13,7 @@ internal sealed class GetOfferHandler
                 OfferId = request.OfferId,
                 ThrowExceptionIfNotFound = true
             }, cancellationToken);
-
+        
         var model = new GetOfferResponse
         {
             Data = offerInstance.Data

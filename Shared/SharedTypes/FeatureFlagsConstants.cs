@@ -13,4 +13,9 @@ public static class FeatureFlagsConstants
     /// zapíná/vypíná elektronické podepisování
     /// </summary>
     public const string ElectronicSigning = "ElectronicSigning";
+
+    /// <summary>
+    /// zapíná/vypíná elektronické podepisování workflow úkolů
+    /// </summary>
+    public const string ElectronicWorkflowSigning = "ElectronicWorkflowSigning";
 }

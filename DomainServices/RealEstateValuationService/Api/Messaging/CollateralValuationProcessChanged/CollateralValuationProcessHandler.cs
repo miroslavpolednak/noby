@@ -9,7 +9,7 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged;
 
-internal class CollateralValuationProcessHandler : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged>
+internal sealed class CollateralValuationProcessHandler : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged>
 {
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly RealEstateValuationServiceDbContext _dbContext;

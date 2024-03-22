@@ -3,6 +3,7 @@ using DomainServices.CaseService.Contracts;
 using ExternalServices.SbWebApi.V1;
 using DomainServices.CaseService.Api.Database;
 using ExternalServices.SbWebApi.Dto.FindTasks;
+using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.CaseService.Api.Endpoints.GetTaskList;
 
@@ -17,29 +18,48 @@ internal sealed class GetTaskListHandler
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
         }
 
-        return await _commonDataProvider.GetAndUpdateTasksList(request.CaseId, async (taskStateIds) =>
+        // load codebooks
+        var taskStateIds = (await _codebookService.WorkflowTaskStates(cancellationToken))
+            .Select(i => i.Id)
+            .ToList();
+
+        // call SB
+        var sbRequest = new FindByCaseIdRequest
         {
-            var sbRequest = new FindByCaseIdRequest
-            {
-                CaseId = request.CaseId,
-                TaskStates = taskStateIds,
-                SearchPattern = "LoanProcessSubtasks"
-            };
-            return await _sbWebApiClient.FindTasksByCaseId(sbRequest, cancellationToken);
-        }, cancellationToken);
+            CaseId = request.CaseId,
+            TaskStates = taskStateIds,
+            SearchPattern = "LoanProcessSubtasks"
+        };
+        var result = await _sbWebApiClient.FindTasksByCaseId(sbRequest, cancellationToken);
+
+        var tasks = result
+            .Where(t => Helpers.AllowedTaskTypeId.Contains(int.Parse(t["ukol_typ_noby"], CultureInfo.InvariantCulture)))
+            .Select(taskData => taskData.ToWorkflowTask())
+            .ToList();
+
+        // update active tasks
+        await _activeTasks.SyncActiveTasks(request.CaseId, tasks, cancellationToken);
+
+        // response
+        var response = new GetTaskListResponse();
+        response.Tasks.AddRange(tasks);
+        return response;
     }
 
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly Services.ActiveTasksService _activeTasks;
     private readonly CaseServiceDbContext _dbContext;
-    private readonly SbWebApiCommonDataProvider _commonDataProvider;
     private readonly ISbWebApiClient _sbWebApiClient;
 
     public GetTaskListHandler(
         CaseServiceDbContext dbContext,
-        SbWebApiCommonDataProvider commonDataProvider,
-        ISbWebApiClient sbWebApiClient)
+        ISbWebApiClient sbWebApiClient,
+        ActiveTasksService activeTasks,
+        ICodebookServiceClient codebookService)
     {
         _dbContext = dbContext;
-        _commonDataProvider = commonDataProvider;
         _sbWebApiClient = sbWebApiClient;
+        _activeTasks = activeTasks;
+        _codebookService = codebookService;
     }
 }

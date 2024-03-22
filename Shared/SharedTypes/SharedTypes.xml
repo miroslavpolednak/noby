@@ -109,6 +109,11 @@
             zapíná/vypíná elektronické podepisování
             </summary>
         </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.ElectronicWorkflowSigning">
+            <summary>
+            zapíná/vypíná elektronické podepisování workflow úkolů
+            </summary>
+        </member>
         <member name="F:SharedTypes.GrpcTypes.GrpcAddress.StreetFieldNumber">
             <summary>Field number for the "Street" field.</summary>
         </member>

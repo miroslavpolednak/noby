@@ -1,6 +1,6 @@
 ﻿using DomainServices.CaseService.Api.Database;
-using DomainServices.CaseService.Api.Services;
 using DomainServices.CaseService.Contracts;
+using DomainServices.CodebookService.Clients;
 using ExternalServices.SbWebApi.Dto.FindTasks;
 using ExternalServices.SbWebApi.V1;
 
@@ -10,14 +10,14 @@ internal sealed class GetProcessListHandler
     : IRequestHandler<GetProcessListRequest, GetProcessListResponse>
 {
     private readonly CaseServiceDbContext _dbContext;
-    private readonly SbWebApiCommonDataProvider _commonDataProvider;
     private readonly ISbWebApiClient _sbWebApiClient;
+    private readonly ICodebookServiceClient _codebookService;
 
-    public GetProcessListHandler(CaseServiceDbContext dbContext, SbWebApiCommonDataProvider commonDataProvider, ISbWebApiClient sbWebApiClient)
+    public GetProcessListHandler(CaseServiceDbContext dbContext, ISbWebApiClient sbWebApiClient, ICodebookServiceClient codebookService)
     {
         _dbContext = dbContext;
-        _commonDataProvider = commonDataProvider;
         _sbWebApiClient = sbWebApiClient;
+        _codebookService = codebookService;
     }
 
     public async Task<GetProcessListResponse> Handle(GetProcessListRequest request, CancellationToken cancellationToken)
@@ -27,10 +27,14 @@ internal sealed class GetProcessListHandler
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
         }
 
+        var taskStateIds = (await _codebookService.WorkflowTaskStates(cancellationToken))
+            .Select(i => i.Id)
+            .ToList();
+
         var sbRequest = new FindByCaseIdRequest
         {
             CaseId = request.CaseId,
-            TaskStates = await _commonDataProvider.GetValidTaskStateIds(cancellationToken),
+            TaskStates = taskStateIds,
             SearchPattern = "MainLoanProcessTasks"
         };
 

@@ -5,6 +5,7 @@ using ExternalServices.SbWebApi.Dto.UpdateTask;
 using ExternalServices.SbWebApi.V1.Contracts;
 using DomainServices.UserService.Clients;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using ExternalServices.SbWebApi.Dto.GenerateRetentionDocument;
 using System.Threading;
 
@@ -261,7 +262,8 @@ internal sealed class RealSbWebApiClient
 
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     };
 
     public RealSbWebApiClient(HttpClient httpClient, IUserServiceClient userService, CIS.Core.Security.ICurrentUserAccessor userAccessor)

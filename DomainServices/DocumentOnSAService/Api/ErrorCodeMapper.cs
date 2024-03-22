@@ -28,7 +28,7 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int NoDocumentsToSignForSa = 19024;
     public const int UnableGetExternalIdForDocumentOnSaId = 19025;
     public const int DocumentOnSaDoesntExistForFormId = 19026;
-    
+
     // Gap 
     public const int SalesArrangementIdIsRequired = 19030;
     public const int DocumentTypeIdIsRequired = 19031;
@@ -47,7 +47,6 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int DocumentOnSaDoesntExistForSalesArrangement = 19045;
 
     public const int ElectronicSigningFeatureIsDisabled = 19046;
-
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
@@ -90,8 +89,8 @@ public sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { UnsuccessfulCustomerDataUpdateToCM, "Unsuccessful customer data update to CM"},
             { UnsupportedDocumentForSigningType, "Unsupported DocumentForSigningType {PropertyValue}" },
             { DocumentOnSaDoesntExistForSalesArrangement, "DocumentOnSa doesn't exist for specified SalesArrangementId {PropertyValue}" },
-
             { ElectronicSigningFeatureIsDisabled, "Electronic signing is disabled" }
+
         });
 
         return Messages;

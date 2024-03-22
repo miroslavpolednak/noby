@@ -961,13 +961,6 @@
              <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
              <returns>Kolekce vyzadanych ciselniku.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixationPeriodLength(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
-            <summary>
-            Číselník fixace úvěru.
-            </summary>
-            <returns>Kolekce dob fixací v měsících.</returns>
-            <param name="productTypeId">ID typu produktu, pro který se mají vrátit fixace.</param>
-        </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetProductLoanKinds(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
             Číselník druhu úveru.
@@ -978,6 +971,9 @@
             <summary>
             FixedRatePeriod s filtrací na product
             </summary>
+            <remarks>
+            Vyfiltruje fixed rate dle zadaného ProductTypeId a pouze s atributem IsNewProduct=true.
+            </remarks>
             <param name="productTypeId">ID typu produktu</param>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetDeveloper(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
@@ -3198,17 +3194,12 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest.SignatureTypeDetailId">
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRetentionDocumentRequest.SignatureTypeDetailId">
             <summary>
             Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest.RefinancingDocumentTypeId">
-            <summary>
-            Typ Refinančního dokumentu. 1 - Retenční dodatek, 2 - Individuální sdělení, 3 - Hedgeový dodatek
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest.SignatureDeadline">
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRetentionDocumentRequest.SignatureDeadline">
             <summary>
             Nejzazší datum podpisu dokumentu
             </summary>
@@ -3376,13 +3367,14 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRefinancingDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRefinancingDocumentRequest)">
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRetentionDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRetentionDocumentRequest)">
             <summary>
-            Generování dokumentu Refinancování
+            Generování dokumentu Retenčního dodatku
             </summary>
             <remarks>
-            Operace slouží k vygenerování dokumentu Retence<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Operace slouží k vygenerování dokumentu Retenčního dodatku<br /><br />
+            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9" >
+            <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">

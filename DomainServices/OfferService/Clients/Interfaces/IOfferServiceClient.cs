@@ -38,6 +38,10 @@ public interface IOfferServiceClient
 
     Task<SimulateMortgageRetentionResponse> SimulateMortgageRetention(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken = default);
 
+    Task<SimulateMortgageRefixationResponse> SimulateMortgageRefixation(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken = default);
+
+    Task<SimulateMortgageExtraPaymentResponse> SimulateMortgageExtraPayment(SimulateMortgageExtraPaymentRequest request, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Získání plného splátkového kalendáře KB Hypotéky
     /// </summary>

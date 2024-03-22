@@ -1,5 +1,4 @@
-﻿using DomainServices.CaseService.Api.Services;
-using DomainServices.CaseService.Contracts;
+﻿using DomainServices.CaseService.Contracts;
 using ExternalServices.SbWebApi.Dto.FindTasks;
 using ExternalServices.SbWebApi.V1;
 using DomainServices.CodebookService.Clients;
@@ -12,10 +11,14 @@ internal sealed class GetTaskDetailHandler
 {
     public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
+        var taskStateIds = (await _codebookService.WorkflowTaskStates(cancellationToken))
+            .Select(i => i.Id)
+            .ToList();
+
         var sbRequest = new FindByTaskIdRequest
         {
             TaskIdSb = request.TaskIdSb,
-            TaskStates = await _commonDataProvider.GetValidTaskStateIds(cancellationToken)
+            TaskStates = taskStateIds
         };
 
         var tasks = await _sbWebApiClient.FindTasksByTaskId(sbRequest, cancellationToken);
@@ -107,13 +110,11 @@ internal sealed class GetTaskDetailHandler
 
     private static readonly Regex _messagePatternRegex = new(@"#Separator(?:Response|Request)#\s*([\s\S]*?)(?=\s*#Separator(?:Response|Request)#|$)", RegexOptions.Compiled);
 
-    private readonly SbWebApiCommonDataProvider _commonDataProvider;
     private readonly ISbWebApiClient _sbWebApiClient;
     private readonly ICodebookServiceClient _codebookService;
 
-    public GetTaskDetailHandler(SbWebApiCommonDataProvider commonDataProvider, ISbWebApiClient sbWebApiClient, ICodebookServiceClient codebookService)
+    public GetTaskDetailHandler(ISbWebApiClient sbWebApiClient, ICodebookServiceClient codebookService)
     {
-        _commonDataProvider = commonDataProvider;
         _sbWebApiClient = sbWebApiClient;
         _codebookService = codebookService;
     }

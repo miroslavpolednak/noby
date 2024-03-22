@@ -12,7 +12,7 @@ public static class OfferMockExtensions
 
         fixture.Behaviors.Add(new RepeatedFieldBehavior());
 
-        var offer = fixture.Create<GetOfferDetailResponse>();
+        var offer = fixture.Build<GetOfferDetailResponse>().Without(o => o.MortgageRetention).Create();
         var fullPaymentSchedule = fixture.Create<GetMortgageOfferFPScheduleResponse>();
 
         offerServiceClient.GetOfferDetail(Arg.Any<int>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(offer);
