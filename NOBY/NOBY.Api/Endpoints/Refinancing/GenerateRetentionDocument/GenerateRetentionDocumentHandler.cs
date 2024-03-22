@@ -12,7 +12,7 @@ using _contract = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument;
 
-public class GenerateRefinancingDocumentHandler : IRequestHandler<GenerateRefinancingDocumentRequest>
+public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentionDocumentRequest>
 {
     private readonly TimeProvider _time;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
@@ -23,7 +23,7 @@ public class GenerateRefinancingDocumentHandler : IRequestHandler<GenerateRefina
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISbWebApiClient _sbWebApi;
 
-    public GenerateRefinancingDocumentHandler(
+    public GenerateRetentionDocumentHandler(
         TimeProvider time,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
@@ -44,19 +44,15 @@ public class GenerateRefinancingDocumentHandler : IRequestHandler<GenerateRefina
         _sbWebApi = sbWebApi;
     }
 
-    public async Task Handle(GenerateRefinancingDocumentRequest request, CancellationToken cancellationToken)
+    public async Task Handle(GenerateRetentionDocumentRequest request, CancellationToken cancellationToken)
     {
-        // In feature here should be 2 and 3 too
-        if (request.RefinancingDocumentTypeId is not 1)
-            throw new NobyValidationException(90032);
-
         var signatureTypeDetail = (await _codebookService.SignatureTypeDetails(cancellationToken))
-                               .SingleOrDefault(s => s.Id == request.SignatureTypeDetailId);
+                                .SingleOrDefault(s => s.Id == request.SignatureTypeDetailId);
 
         if (signatureTypeDetail?.IsRetentionAvailable != true)
             throw new NobyValidationException(90032);
 
-        if (request.SignatureDeadline < _time.GetLocalNow())
+        if (request.SignatureDeadline < _time.GetLocalNow() && request.SignatureDeadline is not null)
             throw new NobyValidationException(90032, "SignatureDeadline is lower than current time");
 
         var saDetail = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
@@ -81,25 +77,12 @@ public class GenerateRefinancingDocumentHandler : IRequestHandler<GenerateRefina
 
         var user = await _userService.GetUser(_currentUser.User!.Id, cancellationToken);
 
-        switch (request.RefinancingDocumentTypeId)
-        {
-            case 1:
-                await GenerateRetentionDocument(user, saDetail, offer, request, cancellationToken);
-                break;
-            case 2:
-                await GenerateIndividualAnnouncement(user, cancellationToken);
-                break;
-            case 3:
-                await GenerateHedgeDocument(user, cancellationToken);
-                break;
-            default:
-                throw new NobyValidationException(90032);
-        }
+        await GenerateRetentionDocument(user, saDetail, offer, request, cancellationToken);
 
         await _salesArrangementService.UpdateSalesArrangementState(saDetail.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
     }
 
-    private async Task ValidateTask(GenerateRefinancingDocumentRequest request, _contract.SalesArrangement saDetail, GetOfferDetailResponse offer, CancellationToken cancellationToken)
+    private async Task ValidateTask(GenerateRetentionDocumentRequest request, _contract.SalesArrangement saDetail, GetOfferDetailResponse offer, CancellationToken cancellationToken)
     {
         var taskList = (await _caseService.GetTaskList(request.CaseId, cancellationToken))
             .Where(p => p.ProcessId == saDetail.TaskProcessId && p.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
@@ -127,20 +110,10 @@ public class GenerateRefinancingDocumentHandler : IRequestHandler<GenerateRefina
         }
     }
 
-    private Task GenerateHedgeDocument(User user, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    private Task GenerateIndividualAnnouncement(User user, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
     private async Task GenerateRetentionDocument(User user,
         _contract.SalesArrangement sa,
         GetOfferDetailResponse offerDetail,
-        GenerateRefinancingDocumentRequest request,
+        GenerateRetentionDocumentRequest request,
         CancellationToken cancellationToken)
     {
         var simulationInputs = offerDetail.MortgageRetention.SimulationInputs;
@@ -165,7 +138,7 @@ public class GenerateRefinancingDocumentHandler : IRequestHandler<GenerateRefina
         }, cancellationToken);
     }
 
-    private async Task UpdateSaParams(GenerateRefinancingDocumentRequest request, _contract.SalesArrangement sa, CancellationToken cancellationToken)
+    private async Task UpdateSaParams(GenerateRetentionDocumentRequest request, _contract.SalesArrangement sa, CancellationToken cancellationToken)
     {
         sa.Retention.SignatureTypeDetailId = request.SignatureTypeDetailId;
         sa.Retention.SignatureDeadline = request.SignatureDeadline;

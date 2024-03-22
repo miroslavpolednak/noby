@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument;
 
-public class GenerateRefinancingDocumentRequest : IRequest
+public class GenerateRetentionDocumentRequest : IRequest
 {
     [JsonIgnore]
     public long CaseId { get; set; }
@@ -16,22 +16,17 @@ public class GenerateRefinancingDocumentRequest : IRequest
     public required int SignatureTypeDetailId { get; set; }
 
     /// <summary>
-    /// Typ Refinančního dokumentu. 1 - Retenční dodatek, 2 - Individuální sdělení, 3 - Hedgeový dodatek
-    /// </summary>
-    public required int RefinancingDocumentTypeId { get; set; }
-
-    /// <summary>
     /// Nejzazší datum podpisu dokumentu
     /// </summary>
     public DateTime? SignatureDeadline { get; set; }
 
-    internal GenerateRefinancingDocumentRequest InfuseCaseId(long caseId)
+    internal GenerateRetentionDocumentRequest InfuseCaseId(long caseId)
     {
         CaseId = caseId;
         return this;
     }
 
-    internal GenerateRefinancingDocumentRequest InfuseSalesArrangementId(int salesArrangementId)
+    internal GenerateRetentionDocumentRequest InfuseSalesArrangementId(int salesArrangementId)
     {
         SalesArrangementId = salesArrangementId;
         return this;
