@@ -1,0 +1,24 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "GrpcDecimal.proto";
+import "NullableGrpcDecimal.proto";
+import "GrpcDate.proto";
+
+message MortgageExtraPaymentBasicParameters {
+	
+}
+
+message MortgageExtraPaymentSimulationInputs {
+	
+}
+
+message MortgageExtraPaymentSimulationResults {
+}
+
+message MortgageExtraPaymentFullData {
+	MortgageExtraPaymentBasicParameters BasicParameters = 1;
+	MortgageExtraPaymentSimulationInputs SimulationInputs = 2;
+	MortgageExtraPaymentSimulationResults SimulationResults = 3;
+}

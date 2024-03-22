@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "Parameters/MortgageExtraPayment.proto";
+import "ModificationStamp.proto";
+
+message SimulateMortgageExtraPaymentRequest {
+	MortgageExtraPaymentBasicParameters BasicParameters = 1;
+	MortgageExtraPaymentSimulationInputs SimulationInputs = 2;
+	int64 CaseId = 3;
+}
+
+message SimulateMortgageExtraPaymentResponse {
+	int32 OfferId = 1;
+	cis.types.ModificationStamp Created = 2;
+	MortgageExtraPaymentBasicParameters BasicParameters = 3;
+	MortgageExtraPaymentSimulationInputs SimulationInputs = 4;
+	MortgageExtraPaymentSimulationResults SimulationResults = 5;
+}

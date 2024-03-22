@@ -62,12 +62,12 @@ internal sealed class GetSalesArrangementHandler
                 model.CustomerChange3602C = customerChange3602CData?.MapCustomerChange3602();
                 break;
 
-            case SalesArrangementTypes.Retention:
+            case SalesArrangementTypes.MortgageRetention:
                 var retentionData = await GetParametersData<RetentionData>(model.SalesArrangementId, cancellation);
                 model.Retention = retentionData?.MapRetention();
                 break;
 
-            case SalesArrangementTypes.Refixation:
+            case SalesArrangementTypes.MortgageRefixation:
                 var refixationData = await GetParametersData<RefixationData>(model.SalesArrangementId, cancellation);
                 model.Refixation = refixationData?.MapRefixation();
                 break;

@@ -36,6 +36,11 @@ internal sealed class UpdateOfferHandler
             offer.SalesArrangementId = request.SalesArrangementId.Value;
         }
 
+        if (request.Flags.HasValue)
+        {
+            offer.Flags = request.Flags.Value;
+        }
+
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Empty();

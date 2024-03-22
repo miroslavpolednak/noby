@@ -7,7 +7,7 @@ using KafkaFlow;
 
 namespace DomainServices.RealEstateValuationService.Api.Messaging.InformationRequestProcessChanged;
 
-internal class InformationRequestProcessChangedHandler  : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged>
+internal sealed class InformationRequestProcessChangedHandler  : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged>
 {
     private readonly RealEstateValuationServiceDbContext _dbContext;
     private readonly ICaseServiceClient _caseService;

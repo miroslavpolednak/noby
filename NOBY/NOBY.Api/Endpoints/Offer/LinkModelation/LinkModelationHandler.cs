@@ -29,12 +29,12 @@ internal sealed class LinkModelationHandler
                 await updateMortgage(request, saInstance, cancellationToken);
                 break;
 
-            case SalesArrangementTypes.Refixation:
+            case SalesArrangementTypes.MortgageRefixation:
                 ValidateRefixation(saInstance);
                 await UpdateRefinancing(request, saInstance, offer, cancellationToken);
                 break;
 
-            case SalesArrangementTypes.Retention:
+            case SalesArrangementTypes.MortgageRetention:
                 await ValidateRetention(saInstance, offer, cancellationToken);
                 await UpdateRefinancing(request, saInstance, offer, cancellationToken);
                 break;
@@ -94,12 +94,12 @@ internal sealed class LinkModelationHandler
             }
         };
 
-        if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.Retention)
+        if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention)
         {
             taskUpdateRequest.Retention.FeeSum = (decimal)offer.MortgageRetention.BasicParameters.Amount;
             taskUpdateRequest.Retention.FeeFinalSum = (decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount;
         } 
-        else if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.Refixation)
+        else if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation)
         {
             //taskUpdateRequest.Retention.FixedRatePeriod = //Offer FixedRatePeriod
         }
