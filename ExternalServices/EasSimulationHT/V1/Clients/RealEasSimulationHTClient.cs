@@ -19,9 +19,32 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
     protected override string ServiceName => StartupExtensions.ServiceName;
 
+    public async Task<decimal> RunSimulationRefixation(long caseId, decimal newInterestRate, DateTime interestRateValidFrom, int fixedRatePeriod, DateTime futureInterestRateValidTo, CancellationToken cancellationToken)
+    {
+        var result = await callMethod(async () =>
+        {
+            var request = new SimHu_RetenceHedge_Request
+            {
+                settings = new()
+                {
+                    uverId = Convert.ToInt32(caseId),
+                    mode = 2,
+                    novaSazba = newInterestRate,
+                    novaSazbaOd = interestRateValidFrom,
+                    periodaFixace = fixedRatePeriod,
+                    novaSplatnost = futureInterestRateValidTo
+                }
+            };
+
+            return await Client.SimHu_RetenceHedgeAsync(request).WithCancellation(cancellationToken);
+        }, r => r.errorInfo, 10028);
+
+        return result.vysledky?.novaVyseSplatky ?? 0;
+    }
+
     public async Task<decimal> RunSimulationRetention(long caseId, decimal newInterestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken)
     {
-        return await callMethod(async () =>
+        var result = await callMethod(async () =>
         {
             var request = new SimHu_RetenceHedge_Request
             {
@@ -34,40 +57,34 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
                 }
             };
 
-            var result = await Client.SimHu_RetenceHedgeAsync(request).WithCancellation(cancellationToken);
+            return await Client.SimHu_RetenceHedgeAsync(request).WithCancellation(cancellationToken);
+        }, r => r.errorInfo, 10028);
 
-            if ((result.errorInfo?.kodChyby ?? 0) != 0)
-            {
-                Logger.ExternalServiceResponseError($"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]");
-                throw new CisValidationException(10028, result.errorInfo!.textChyby);
-            }
-
-            return result.vysledky?.novaVyseSplatky ?? 0;
-        });
+        return result.vysledky?.novaVyseSplatky ?? 0;
     }
 
     public async Task<WFS_FindItem[]> FindTasks(WFS_Header header, WFS_Find_ByCaseId message, CancellationToken cancellationToken)
     {
-        return await callMethod<WFS_FindItem[]>(async () =>
-        {
-            var result = await Client.WFS_FindTasksAsync(header, message).WithCancellation(cancellationToken);
-            return result.tasks;
-        });
+        return await callMethod<WFS_FindItem[]>(async () => (await Client.WFS_FindTasksAsync(header, message).WithCancellation(cancellationToken)).tasks);
     }
 
     public async Task<SimulationHTResponse> RunSimulationHT(SimulationHTRequest request, CancellationToken cancellationToken)
     {
-        return await callMethod(async () =>
-        {
-            var result = await Client.SimulationHTAsync(request).WithCancellation(cancellationToken);
+        return await callMethod(async () => await Client.SimulationHTAsync(request).WithCancellation(cancellationToken), r => r.errorInfo, 10020);
+    }
 
-            if ((result.errorInfo?.kodChyby ?? 0) != 0)
-            {
-                Logger.ExternalServiceResponseError($"Error occured during call external service EAS [{result.errorInfo?.kodChyby} : {result.errorInfo?.textChyby}]");
-                throw new CisValidationException(10020, result.errorInfo!.textChyby);
-            }
-            return result;
-        });
+    private async Task<TResult> callMethod<TResult>(Func<Task<TResult>> fce, Func<TResult, SimErrorInfo?> errorInfoGetter, int exceptionCode)
+    {
+        var result = await base.callMethod(fce);
+        var errorInfo = errorInfoGetter(result);
+
+        if ((errorInfo?.kodChyby ?? 0) != 0)
+        {
+            Logger.ExternalServiceResponseError($"Error occured during call external service EAS [{errorInfo?.kodChyby} : {errorInfo?.textChyby}]");
+            throw new CisValidationException(exceptionCode, errorInfo!.textChyby);
+        }
+
+        return result;
     }
 
     protected override Binding CreateBinding()

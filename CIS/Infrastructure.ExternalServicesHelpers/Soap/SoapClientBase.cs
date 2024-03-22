@@ -78,7 +78,7 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
     protected abstract Binding CreateBinding();
     protected abstract string ServiceName { get; }
 
-    protected async Task<TResult> callMethod<TResult>(Func<Task<TResult>> fce)
+    protected virtual async Task<TResult> callMethod<TResult>(Func<Task<TResult>> fce)
     {
         try
         {
