@@ -1,7 +1,4 @@
-﻿using CIS.Infrastructure.Messaging.Kafka;
-using KB.Speed.Messaging.Kafka.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using System.Reflection;
+﻿using Microsoft.AspNetCore.Builder;
 using KafkaFlow;
 using CIS.Infrastructure.Messaging.KafkaFlow;
 using CIS.Infrastructure.Messaging.KafkaFlow.Configuration;
@@ -15,26 +12,6 @@ internal sealed class CisMessagingBuilder : ICisMessagingBuilder
     public CisMessagingBuilder(WebApplicationBuilder builder)
     {
         _appBuilder = builder;
-    }
-
-    public ICisMessagingKafkaBuilder AddKafka(Assembly? assembly = null)
-    {
-        var configuration = _appBuilder.GetKafkaRiderConfiguration();
-
-        if (!configuration.Disabled)
-        {
-            _appBuilder.Services.AddAvroSerializerConfiguration();
-            _appBuilder.Services.AddAvroDeserializerConfiguration();
-            _appBuilder.Services.AddJsonSerializerConfiguration();
-            _appBuilder.Services.AddJsonDeserializerConfiguration();
-            _appBuilder.Services.AddApicurioSchemaRegistry();
-        }
-
-        if (assembly is null)
-        {
-            assembly = Assembly.GetEntryAssembly()!;
-        }
-        return new CisMessagingKafkaBuilder(this, configuration, assembly);
     }
 
     public ICisMessagingBuilder AddKafkaFlow(Action<IKafkaFlowMessagingConfigurator> messaging)
