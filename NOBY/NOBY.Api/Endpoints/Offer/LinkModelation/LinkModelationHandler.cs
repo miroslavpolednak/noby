@@ -96,8 +96,8 @@ internal sealed class LinkModelationHandler
 
         if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention)
         {
-            taskUpdateRequest.Retention.FeeSum = (decimal)offer.MortgageRetention.BasicParameters.Amount;
-            taskUpdateRequest.Retention.FeeFinalSum = (decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount;
+            taskUpdateRequest.Retention.FeeSum = (decimal)offer.MortgageRetention.BasicParameters.FeeAmount;
+            taskUpdateRequest.Retention.FeeFinalSum = (decimal?)offer.MortgageRetention.BasicParameters.FeeAmountDiscounted;
         } 
         else if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation)
         {
@@ -113,7 +113,7 @@ internal sealed class LinkModelationHandler
             var oldOffer = await _offerService.GetOffer(salesArrangement.OfferId!.Value, cancellationToken);
 
             if ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount == oldOffer.MortgageRetention.SimulationInputs.InterestRateDiscount &&
-                (decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount == oldOffer.MortgageRetention.BasicParameters.AmountDiscount)
+                (decimal?)offer.MortgageRetention.BasicParameters.FeeAmountDiscounted == oldOffer.MortgageRetention.BasicParameters.FeeAmountDiscounted)
                 return;
 
             _salesArrangementAuthorization.ValidateRefinancing241Permission();
@@ -121,7 +121,7 @@ internal sealed class LinkModelationHandler
             await _caseService.CancelTask(salesArrangement.CaseId, taskIdSb, cancellationToken);
         }
 
-        if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is null || offer.MortgageRetention.BasicParameters.AmountDiscount is null)
+        if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is null || offer.MortgageRetention.BasicParameters.FeeAmountDiscounted is null)
             return;
 
         _salesArrangementAuthorization.ValidateRefinancing241Permission();
@@ -152,9 +152,9 @@ internal sealed class LinkModelationHandler
                 {
                     new _Ca.PriceExceptionFeesItem
                     {
-                        TariffSum = offer.MortgageRetention.BasicParameters.Amount,
-                        FinalSum = (decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount ?? 0m,
-                        DiscountPercentage = 100 * (offer.MortgageRetention.BasicParameters.Amount - (offer.MortgageRetention.BasicParameters.AmountDiscount ?? 0m)) / offer.MortgageRetention.BasicParameters.Amount
+                        TariffSum = offer.MortgageRetention.BasicParameters.FeeAmount,
+                        FinalSum = (decimal?)offer.MortgageRetention.BasicParameters.FeeAmountDiscounted ?? 0m,
+                        DiscountPercentage = 100 * (offer.MortgageRetention.BasicParameters.FeeAmount - (offer.MortgageRetention.BasicParameters.FeeAmountDiscounted ?? 0m)) / offer.MortgageRetention.BasicParameters.FeeAmount
                     }
                 }
             }

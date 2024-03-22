@@ -19,4 +19,9 @@ internal sealed class MockEasSimulationHTClient
     {
         throw new NotImplementedException();
     }
+
+    public Task<decimal> RunSimulationRefixation(long caseId, decimal newInterestRate, DateTime interestRateValidFrom, int fixedRatePeriod, DateTime futureInterestRateValidTo, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

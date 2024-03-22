@@ -18,13 +18,13 @@ internal sealed class SimulateMortgageRetentionRequestValidator
 
         When(t => t.BasicParameters is not null, () =>
         {
-            RuleFor(t => (decimal)t.BasicParameters.Amount)
+            RuleFor(t => (decimal)t.BasicParameters.FeeAmount)
                 .GreaterThanOrEqualTo(0)
                 .WithErrorCode(ErrorCodeMapper.MortgageRetentionAmountNotValid);
 
-            RuleFor(t => (decimal)t.BasicParameters.AmountDiscount!)
+            RuleFor(t => (decimal)t.BasicParameters.FeeAmountDiscounted!)
                 .GreaterThanOrEqualTo(0)
-                .When(t => t.BasicParameters.AmountDiscount != null)
+                .When(t => t.BasicParameters.FeeAmountDiscounted != null)
                 .WithErrorCode(ErrorCodeMapper.MortgageRetentionAmountIndividualPriceNotValid);
         });
     }

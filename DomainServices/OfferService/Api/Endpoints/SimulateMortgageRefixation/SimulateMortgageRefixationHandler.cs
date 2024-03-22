@@ -10,11 +10,12 @@ internal sealed class SimulateMortgageRefixationHandler
 {
     public async Task<SimulateMortgageRefixationResponse> Handle(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
+        throw new NotImplementedException();
         // ziskat urokovou sazbu
-        var interestRate = await _sbWebApi.GetRefixationInterestRate(request.CaseId, DateTime.Now(), cancellationToken);
+        /*var interestRate = await _sbWebApi.GetRefixationInterestRate(request.CaseId, request.SimulationInputs.FutureInterestRateValidTo, cancellationToken);
 
         // get simulation outputs
-        var easSimulationRes1 = await _easSimulationHTClient.RunSimulationRefixation(request.CaseId, interestRate.InterestRate, request.SimulationInputs.FixedRatePeriod, request.SimulationInputs.FutureInterestRateValidTo, cancellationToken);
+        var easSimulationRes1 = await _easSimulationHTClient.RunSimulationRefixation(request.CaseId, interestRate.InterestRate, DateTime.Now, request.SimulationInputs.FixedRatePeriod, request.SimulationInputs.FutureInterestRateValidTo, cancellationToken);
 
         // doc entita
         var documentEntity = new Database.DocumentDataEntities.MortgageRefixationData
@@ -57,7 +58,7 @@ internal sealed class SimulateMortgageRefixationHandler
             SimulationInputs = _offerMapper.MapFromDataInputs(documentEntity.SimulationInputs),
             BasicParameters = _offerMapper.MapFromDataBasicParameters(documentEntity.BasicParameters),
             SimulationResults = _offerMapper.MapFromDataOutputs(documentEntity.SimulationOutputs)
-        };
+        };*/
     }
 
     private readonly IDocumentDataStorage _documentDataStorage;

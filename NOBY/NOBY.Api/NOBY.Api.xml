@@ -2577,7 +2577,7 @@
             </summary>
             <example>0.09</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.FeeAmountIndividualPrice">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.FeeAmountDiscounted">
             <summary>
             Upravená výše poplatku. Relevantní pouze pro retence.
             </summary>

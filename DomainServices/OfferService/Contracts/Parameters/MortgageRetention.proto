@@ -7,8 +7,8 @@ import "NullableGrpcDecimal.proto";
 import "GrpcDate.proto";
 
 message MortgageRetentionBasicParameters {
-	cis.types.GrpcDecimal Amount  = 1;
-	cis.types.NullableGrpcDecimal AmountDiscount  = 2;
+	cis.types.GrpcDecimal FeeAmount  = 1;
+	cis.types.NullableGrpcDecimal FeeAmountDiscounted  = 2;
 }
 
 message MortgageRetentionSimulationInputs {

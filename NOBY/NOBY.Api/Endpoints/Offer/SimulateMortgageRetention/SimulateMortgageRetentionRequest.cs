@@ -24,7 +24,7 @@ public sealed class SimulateMortgageRetentionRequest
     /// <summary>
     /// Upravená výše poplatku. Relevantní pouze pro retence.
     /// </summary>
-    public decimal? FeeAmountIndividualPrice { get; set; }
+    public decimal? FeeAmountDiscounted { get; set; }
 
     internal SimulateMortgageRetentionRequest InfuseId(long caseId)
     {

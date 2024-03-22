@@ -26,8 +26,8 @@ internal sealed class MortgageRetentionDataMapper
             },
             BasicParameters = new()
             {
-                Amount = data.BasicParameters.Amount,
-                AmountDiscount = data.BasicParameters.AmountDiscount
+                FeeAmount = data.BasicParameters.FeeAmount,
+                FeeAmountDiscounted = data.BasicParameters.FeeAmountDiscounted
             }
         };
     }
@@ -36,8 +36,8 @@ internal sealed class MortgageRetentionDataMapper
     {
         return new()
         {
-            Amount = basicParameters.Amount,
-            AmountDiscount = basicParameters.AmountDiscount
+            FeeAmount = basicParameters.FeeAmount,
+            FeeAmountDiscounted = basicParameters.FeeAmountDiscounted
         };
     }
 
@@ -55,8 +55,8 @@ internal sealed class MortgageRetentionDataMapper
     {
         return new()
         {
-            Amount = basicParameters.Amount,
-            AmountDiscount = basicParameters.AmountDiscount
+            FeeAmount = basicParameters.FeeAmount,
+            FeeAmountDiscounted = basicParameters.FeeAmountDiscounted
         };
     }
 
