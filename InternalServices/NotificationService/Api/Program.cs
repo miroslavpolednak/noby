@@ -48,7 +48,6 @@ SharedComponents.GrpcServiceBuilder
                 msg.AddConsumerAvro<CIS.InternalServices.NotificationService.Api.Messaging.NotificationReport.NotificationReportHandler>(configuration.KafkaTopics.McsResult);
                 msg.AddProducerAvro<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail>(configuration.KafkaTopics.McsSender);
                 msg.AddProducerAvro<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS>(configuration.KafkaTopics.McsSender);
-                //msg.AddProducerAvro<cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail>(configuration.KafkaTopics.McsSender);//??ma to tu byt nebo ne???
             });
 
         #region registrace background jobu
