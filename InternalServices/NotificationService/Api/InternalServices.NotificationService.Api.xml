@@ -65,129 +65,9 @@
             Ziskat typ notifikace z ciselniku
             </summary>
         </member>
-        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Channel">
+        <member name="M:CIS.InternalServices.NotificationService.Api.Messaging.NotificationReport.NotificationReportHandler.auditLogSmsResult(cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport)">
             <summary>
-            Represents communication channel of bank with party. . ## Multicodebook property that uniquely identifies channel. It is multicodebook as here can be any of subsets of Channel codebook, which are defined as standalone codebooks. But here should not be any principally different codebook. (e.g. ObtainType should not be here). CDM entity name(s): Channel,ChannelIdentification.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Channel._id">
-            <summary>
-            Multicodebook value of channel id itself. CDM attribute class name: ChannelIdentificationID. Codebook type: CB_MultiCodebookValue.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Channel.id">
-            <summary>
-            Multicodebook value of channel id itself. CDM attribute class name: ChannelIdentificationID. Codebook type: CB_MultiCodebookValue.
-            </summary>
-        </member>
-        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Installation">
-            <summary>
-            Specific instance of direct channel fat application, that is installed on specific user's device. CDM entity name(s): DirectChannelFatAppInstallation.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Installation._externalId">
-            <summary>
-            Unique identifier of installation. CDM attribute class name: ExternalId.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Installation.externalId">
-            <summary>
-            Unique identifier of installation. CDM attribute class name: ExternalId.
-            </summary>
-        </member>
-        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgAction">
-            <summary>
-             CDM entity name(s): MessageAction.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgAction._area">
-            <summary>
-             CDM attribute class name: DirectChannelMessageArea. Codebook type: CB_MsgbArea.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgAction._platform">
-            <summary>
-             CDM attribute class name: DirectChannelMessagePlatform. Codebook type: CB_MsgbPlatform.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgAction.area">
-            <summary>
-             CDM attribute class name: DirectChannelMessageArea. Codebook type: CB_MsgbArea.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgAction.platform">
-            <summary>
-             CDM attribute class name: DirectChannelMessagePlatform. Codebook type: CB_MsgbPlatform.
-            </summary>
-        </member>
-        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgBoxSpecific">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.NotificationError">
-            <summary>
-            Description of something that went wrong.. ## Any category of error in categorization.. ## Multicodebook property uniquely identifying error type.Multicodebook because there are many different error categorizations. CDM entity name(s): Error,ErrorType,ErrorTypeCode.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.NotificationError._code">
-            <summary>
-            Unique identifier of error type itself. CDM attribute class name: ErrorTypeCodeCode. Codebook type: CB_MultiCodebookValue.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.NotificationError._message">
-            <summary>
-            Message about error given to actor affected by error. CDM attribute class name: ErrorMessage.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.NotificationError.code">
-            <summary>
-            Unique identifier of error type itself. CDM attribute class name: ErrorTypeCodeCode. Codebook type: CB_MultiCodebookValue.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.NotificationError.message">
-            <summary>
-            Message about error given to actor affected by error. CDM attribute class name: ErrorMessage.
-            </summary>
-        </member>
-        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.PushSpecific">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport">
-            <summary>
-            NotificationReportEvent is designed for the purposes of sending notification status to the consumer in order to ensure that a consumer is notified regarding each notification message (SMS, EMAIL, MSGBOX, PUSH)Further details available at https://wiki.kb.cz/display/BST/NotificationReportNotificationReportEvent works over the Kafka Asynchronous topic and is essentially used for sending a state for each notification. All available states are reflected at https://wiki.kb.cz/confluence/display/PATHFINDER/CB_NotificationStateVersion 3 changes includes:- /finalState is removed- /channelId kardinality has changed to compulsory- /MsgBoxSpecific.installation.externalId has been added. ## Represents activity of sending content to recipient through multi channel sender.. ## Timestamp is defined data and time when something was done.. ## Multicodebook component representing state of sending.Multicodebook because states can be different for sending different content type (sms, email, push, direct channel message). CDM entity name(s): Send,Timestamp,SendState.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport._exactlyOn">
-            <summary>
-            DateTime format of timestamp. CDM attribute class name: TimestampExactlyOn.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport._id">
-            <summary>
-            Unique identifier. CDM attribute class name: SendId.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport._state">
-            <summary>
-            Value of multicodebook attribute state itself. CDM attribute class name: SendStateState. Codebook type: CB_MultiCodebookValue.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport.exactlyOn">
-            <summary>
-            DateTime format of timestamp. CDM attribute class name: TimestampExactlyOn.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport.id">
-            <summary>
-            Unique identifier. CDM attribute class name: SendId.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport.state">
-            <summary>
-            Value of multicodebook attribute state itself. CDM attribute class name: SendStateState. Codebook type: CB_MultiCodebookValue.
+            Auditni log
             </summary>
         </member>
         <member name="T:cz.kb.osbs.mcs.sender.sendapi.v4.Attachment">
@@ -355,51 +235,6 @@
             Textual email addressE.g. jozko.mrkvicka@gmail.com. CDM attribute class name: EmailAddressValue.
             </summary>
         </member>
-        <member name="T:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail">
-            <summary>
-            Activity of sending short (digital) message from bank to a user or party (typically, but not limited to customer). Typically about important:- task events- case changesThis is one notification and will be sent to all recipients through the same defined channels and the same attached documents.E.g. if there is need to send different attachments, then multiple notifications has to be created.. ## Timing when notification is sent to recipient. CDM entity name(s): Notification,DeliveryTiming.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail._latestOn">
-            <summary>
-            Time, before which notification should be sent to recipient . CDM attribute class name: DeliveryTimingLatestOn.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail._processingPriority">
-            <summary>
-            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail._soonestOn">
-            <summary>
-            Time, after which notification should be sent to recipient . CDM attribute class name: DeliveryTimingSoonestOn.
-            </summary>
-        </member>
-        <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail._subject">
-            <summary>
-            Name/title of notification. CDM attribute class name: NotificationSubject.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail.latestOn">
-            <summary>
-            Time, before which notification should be sent to recipient . CDM attribute class name: DeliveryTimingLatestOn.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail.processingPriority">
-            <summary>
-            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail.soonestOn">
-            <summary>
-            Time, after which notification should be sent to recipient . CDM attribute class name: DeliveryTimingSoonestOn.
-            </summary>
-        </member>
-        <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail.subject">
-            <summary>
-            Name/title of notification. CDM attribute class name: NotificationSubject.
-            </summary>
-        </member>
         <member name="T:cz.kb.osbs.mcs.sender.sendapi.v4.KBCustomer">
             <summary>
             Customer is a party role. It is view on party from banks perspective and context that party had/has/will have or is even only related to a product or service from KB.(party has some relationship to bank in context of Customer Management). CDM entity name(s): KBCustomer.
@@ -525,6 +360,51 @@
              CDM attribute class name: ContentInBucketObjectKey.
             </summary>
         </member>
+        <member name="T:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail">
+            <summary>
+            Activity of sending short (digital) message from bank to a user or party (typically, but not limited to customer). Typically about important:- task events- case changesThis is one notification and will be sent to all recipients through the same defined channels and the same attached documents.E.g. if there is need to send different attachments, then multiple notifications has to be created.. ## Timing when notification is sent to recipient. CDM entity name(s): Notification,DeliveryTiming.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail._latestOn">
+            <summary>
+            Time, before which notification should be sent to recipient . CDM attribute class name: DeliveryTimingLatestOn.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail._processingPriority">
+            <summary>
+            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail._soonestOn">
+            <summary>
+            Time, after which notification should be sent to recipient . CDM attribute class name: DeliveryTimingSoonestOn.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail._subject">
+            <summary>
+            Name/title of notification. CDM attribute class name: NotificationSubject.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail.latestOn">
+            <summary>
+            Time, before which notification should be sent to recipient . CDM attribute class name: DeliveryTimingLatestOn.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail.processingPriority">
+            <summary>
+            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail.soonestOn">
+            <summary>
+            Time, after which notification should be sent to recipient . CDM attribute class name: DeliveryTimingSoonestOn.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail.subject">
+            <summary>
+            Name/title of notification. CDM attribute class name: NotificationSubject.
+            </summary>
+        </member>
         <member name="T:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS">
             <summary>
             Represents any content.. ## Activity of sending short (digital) message from bank to a user or party (typically, but not limited to customer). Typically about important:- task events- case changesThis is one notification and will be sent to all recipients through the same defined channels and the same attached documents.E.g. if there is need to send different attachments, then multiple notifications has to be created. CDM entity name(s): Content,Notification.
@@ -568,6 +448,131 @@
         <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS.type">
             <summary>
             Multicodebook attribute type itself. CDM attribute class name: NotificationTypeType. Codebook type: CB_MultiCodebookValue.
+            </summary>
+        </member>
+        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Channel">
+            <summary>
+            Represents communication channel of bank with party. . ## Multicodebook property that uniquely identifies channel. It is multicodebook as here can be any of subsets of Channel codebook, which are defined as standalone codebooks. But here should not be any principally different codebook. (e.g. ObtainType should not be here). CDM entity name(s): Channel,ChannelIdentification.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Channel._id">
+            <summary>
+            Multicodebook value of channel id itself. CDM attribute class name: ChannelIdentificationID. Codebook type: CB_MultiCodebookValue.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Channel.id">
+            <summary>
+            Multicodebook value of channel id itself. CDM attribute class name: ChannelIdentificationID. Codebook type: CB_MultiCodebookValue.
+            </summary>
+        </member>
+        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Installation">
+            <summary>
+            Specific instance of direct channel fat application, that is installed on specific user's device. CDM entity name(s): DirectChannelFatAppInstallation.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Installation._externalId">
+            <summary>
+            Unique identifier of installation. CDM attribute class name: ExternalId.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Installation.externalId">
+            <summary>
+            Unique identifier of installation. CDM attribute class name: ExternalId.
+            </summary>
+        </member>
+        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgAction">
+            <summary>
+             CDM entity name(s): MessageAction.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgAction._area">
+            <summary>
+             CDM attribute class name: DirectChannelMessageArea. Codebook type: CB_MsgbArea.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgAction._platform">
+            <summary>
+             CDM attribute class name: DirectChannelMessagePlatform. Codebook type: CB_MsgbPlatform.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgAction.area">
+            <summary>
+             CDM attribute class name: DirectChannelMessageArea. Codebook type: CB_MsgbArea.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgAction.platform">
+            <summary>
+             CDM attribute class name: DirectChannelMessagePlatform. Codebook type: CB_MsgbPlatform.
+            </summary>
+        </member>
+        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.MsgBoxSpecific">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.NotificationError">
+            <summary>
+            Description of something that went wrong.. ## Any category of error in categorization.. ## Multicodebook property uniquely identifying error type.Multicodebook because there are many different error categorizations. CDM entity name(s): Error,ErrorType,ErrorTypeCode.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.NotificationError._code">
+            <summary>
+            Unique identifier of error type itself. CDM attribute class name: ErrorTypeCodeCode. Codebook type: CB_MultiCodebookValue.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.NotificationError._message">
+            <summary>
+            Message about error given to actor affected by error. CDM attribute class name: ErrorMessage.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.NotificationError.code">
+            <summary>
+            Unique identifier of error type itself. CDM attribute class name: ErrorTypeCodeCode. Codebook type: CB_MultiCodebookValue.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.NotificationError.message">
+            <summary>
+            Message about error given to actor affected by error. CDM attribute class name: ErrorMessage.
+            </summary>
+        </member>
+        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.PushSpecific">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport">
+            <summary>
+            NotificationReportEvent is designed for the purposes of sending notification status to the consumer in order to ensure that a consumer is notified regarding each notification message (SMS, EMAIL, MSGBOX, PUSH)Further details available at https://wiki.kb.cz/display/BST/NotificationReportNotificationReportEvent works over the Kafka Asynchronous topic and is essentially used for sending a state for each notification. All available states are reflected at https://wiki.kb.cz/confluence/display/PATHFINDER/CB_NotificationStateVersion 3 changes includes:- /finalState is removed- /channelId kardinality has changed to compulsory- /MsgBoxSpecific.installation.externalId has been added. ## Represents activity of sending content to recipient through multi channel sender.. ## Timestamp is defined data and time when something was done.. ## Multicodebook component representing state of sending.Multicodebook because states can be different for sending different content type (sms, email, push, direct channel message). CDM entity name(s): Send,Timestamp,SendState.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport._exactlyOn">
+            <summary>
+            DateTime format of timestamp. CDM attribute class name: TimestampExactlyOn.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport._id">
+            <summary>
+            Unique identifier. CDM attribute class name: SendId.
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport._state">
+            <summary>
+            Value of multicodebook attribute state itself. CDM attribute class name: SendStateState. Codebook type: CB_MultiCodebookValue.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport.exactlyOn">
+            <summary>
+            DateTime format of timestamp. CDM attribute class name: TimestampExactlyOn.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport.id">
+            <summary>
+            Unique identifier. CDM attribute class name: SendId.
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport.state">
+            <summary>
+            Value of multicodebook attribute state itself. CDM attribute class name: SendStateState. Codebook type: CB_MultiCodebookValue.
             </summary>
         </member>
         <member name="T:cz.mpss.api.noby.notification.sendapi.v1.Attachment">
@@ -710,51 +715,6 @@
             Textual email addressE.g. jozko.mrkvicka@gmail.com. CDM attribute class name: EmailAddressValue.
             </summary>
         </member>
-        <member name="T:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail">
-            <summary>
-            Activity of sending short (digital) message from bank to a user or party (typically, but not limited to customer). Typically about important:- task events- case changesThis is one notification and will be sent to all recipients through the same defined channels and the same attached documents.E.g. if there is need to send different attachments, then multiple notifications has to be created.. ## Timing when notification is sent to recipient. CDM entity name(s): Notification,DeliveryTiming.
-            </summary>
-        </member>
-        <member name="F:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail._latestOn">
-            <summary>
-            Time, before which notification should be sent to recipient . CDM attribute class name: DeliveryTimingLatestOn.
-            </summary>
-        </member>
-        <member name="F:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail._processingPriority">
-            <summary>
-            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
-            </summary>
-        </member>
-        <member name="F:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail._soonestOn">
-            <summary>
-            Time, after which notification should be sent to recipient . CDM attribute class name: DeliveryTimingSoonestOn.
-            </summary>
-        </member>
-        <member name="F:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail._subject">
-            <summary>
-            Name/title of notification. CDM attribute class name: NotificationSubject.
-            </summary>
-        </member>
-        <member name="P:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail.latestOn">
-            <summary>
-            Time, before which notification should be sent to recipient . CDM attribute class name: DeliveryTimingLatestOn.
-            </summary>
-        </member>
-        <member name="P:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail.processingPriority">
-            <summary>
-            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
-            </summary>
-        </member>
-        <member name="P:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail.soonestOn">
-            <summary>
-            Time, after which notification should be sent to recipient . CDM attribute class name: DeliveryTimingSoonestOn.
-            </summary>
-        </member>
-        <member name="P:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail.subject">
-            <summary>
-            Name/title of notification. CDM attribute class name: NotificationSubject.
-            </summary>
-        </member>
         <member name="T:cz.mpss.api.noby.notification.sendapi.v1.KBCustomer">
             <summary>
             Customer is a party role. It is view on party from banks perspective and context that party had/has/will have or is even only related to a product or service from KB.(party has some relationship to bank in context of Customer Management). CDM entity name(s): KBCustomer.
@@ -853,6 +813,51 @@
         <member name="P:cz.mpss.api.noby.notification.sendapi.v1.S3Content.objectKey">
             <summary>
              CDM attribute class name: ContentInBucketObjectKey.
+            </summary>
+        </member>
+        <member name="T:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail">
+            <summary>
+            Activity of sending short (digital) message from bank to a user or party (typically, but not limited to customer). Typically about important:- task events- case changesThis is one notification and will be sent to all recipients through the same defined channels and the same attached documents.E.g. if there is need to send different attachments, then multiple notifications has to be created.. ## Timing when notification is sent to recipient. CDM entity name(s): Notification,DeliveryTiming.
+            </summary>
+        </member>
+        <member name="F:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail._latestOn">
+            <summary>
+            Time, before which notification should be sent to recipient . CDM attribute class name: DeliveryTimingLatestOn.
+            </summary>
+        </member>
+        <member name="F:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail._processingPriority">
+            <summary>
+            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
+            </summary>
+        </member>
+        <member name="F:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail._soonestOn">
+            <summary>
+            Time, after which notification should be sent to recipient . CDM attribute class name: DeliveryTimingSoonestOn.
+            </summary>
+        </member>
+        <member name="F:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail._subject">
+            <summary>
+            Name/title of notification. CDM attribute class name: NotificationSubject.
+            </summary>
+        </member>
+        <member name="P:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail.latestOn">
+            <summary>
+            Time, before which notification should be sent to recipient . CDM attribute class name: DeliveryTimingLatestOn.
+            </summary>
+        </member>
+        <member name="P:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail.processingPriority">
+            <summary>
+            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
+            </summary>
+        </member>
+        <member name="P:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail.soonestOn">
+            <summary>
+            Time, after which notification should be sent to recipient . CDM attribute class name: DeliveryTimingSoonestOn.
+            </summary>
+        </member>
+        <member name="P:cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail.subject">
+            <summary>
+            Name/title of notification. CDM attribute class name: NotificationSubject.
             </summary>
         </member>
     </members>

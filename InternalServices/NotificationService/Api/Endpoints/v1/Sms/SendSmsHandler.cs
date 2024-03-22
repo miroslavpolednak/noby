@@ -1,23 +1,20 @@
-﻿using CIS.Core;
-using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Database;
+﻿using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Helpers;
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Legacy.Helpers;
 using CIS.InternalServices.NotificationService.Api.Legacy.Mappers;
-using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
 using DomainServices.CodebookService.Clients;
-using MediatR;
+using KafkaFlow;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms;
 
 internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 {
     private readonly TimeProvider _dateTime;
-    private readonly IMcsSmsProducer _mcsSmsProducer;
+    private readonly IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS> _mcsSmsProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
     private readonly ICodebookServiceClient _codebookService;
@@ -26,7 +23,7 @@ internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 
     public SendSmsHandler(
         TimeProvider dateTime,
-        IMcsSmsProducer mcsSmsProducer,
+        IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS> mcsSmsProducer,
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
         ICodebookServiceClient codebookService,
@@ -103,7 +100,7 @@ internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         
         try
         {
-            await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
+            await _mcsSmsProducer.ProduceAsync(sendSms, cancellationToken);
             _smsAuditLogger.LogKafkaProduced(smsType, result.Id, username,
                 request.Identifier?.Identity,
                 request.Identifier?.IdentityScheme,

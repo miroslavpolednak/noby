@@ -1,24 +1,22 @@
-﻿using CIS.Core;
-using CIS.Core.Exceptions;
+﻿using CIS.Core.Exceptions;
 using CIS.InternalServices.NotificationService.Api.Configuration;
 using CIS.InternalServices.NotificationService.Api.Database.DocumentDataEntities;
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Legacy.Mappers;
-using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.S3.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Email;
 using DomainServices.CodebookService.Clients;
+using KafkaFlow;
 using Microsoft.Extensions.Options;
 using SharedComponents.DocumentDataStorage;
-using SharedComponents.Storage;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email;
 
 internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendEmailResponse>
 {
     private readonly TimeProvider _dateTime;
-    private readonly IMcsEmailProducer _mcsEmailProducer;
+    private readonly IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail> _mcsEmailProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
     private readonly ICodebookServiceClient _codebookService;
@@ -31,7 +29,7 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
 
     public SendEmailHandler(
         TimeProvider dateTime,
-        IMcsEmailProducer mcsEmailProducer,
+        IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail> mcsEmailProducer,
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
         ICodebookServiceClient codebookService,
@@ -132,7 +130,7 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
                         .ToList()
                 };
                 
-                await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
+                await _mcsEmailProducer.ProduceAsync(sendEmail, cancellationToken);
             }
             else if (result.SenderType == LegacyContracts.Statistics.Dto.SenderType.MP)
             {

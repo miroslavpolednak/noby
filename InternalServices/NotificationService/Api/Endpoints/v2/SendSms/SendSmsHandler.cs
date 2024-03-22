@@ -1,9 +1,9 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
+using KafkaFlow;
 using SharedAudit;
 using SharedComponents.DocumentDataStorage;
 using System.Globalization;
@@ -72,7 +72,7 @@ internal sealed class SendSmsHandler
         try
         {
             // odeslat do MCS
-            await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
+            await _mcsSmsProducer.ProduceAsync(sendSms, cancellationToken);
 
             // nastavit stav v databazi
             notificationInstance.State = NotificationStates.Sent;
@@ -163,7 +163,7 @@ internal sealed class SendSmsHandler
     private readonly ILogger<SendSmsHandler> _logger;
     private readonly ServiceUserHelper _serviceUser;
     private readonly Database.NotificationDbContext _dbContext;
-    private readonly IMcsSmsProducer _mcsSmsProducer;
+    private readonly IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS> _mcsSmsProducer;
 
     public SendSmsHandler(
         TimeProvider dateTime,
@@ -171,7 +171,7 @@ internal sealed class SendSmsHandler
         ILogger<SendSmsHandler> logger,
         ServiceUserHelper serviceUser,
         Database.NotificationDbContext dbContext,
-        IMcsSmsProducer mcsSmsProducer,
+        IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS> mcsSmsProducer,
         IAuditLogger auditLogger,
         IDocumentDataStorage documentDataStorage)
     {

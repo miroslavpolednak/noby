@@ -9,7 +9,6 @@ using CIS.InternalServices.NotificationService.Api.Database;
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.Infrastructure.Messaging;
-using CIS.InternalServices.NotificationService.Api.Configuration;
 using Microsoft.FeatureManagement;
 
 SharedComponents.GrpcServiceBuilder
@@ -43,7 +42,14 @@ SharedComponents.GrpcServiceBuilder
         builder.AddDocumentDataStorage();
 
         // messaging - kafka consumers and producers
-        addMessaging(builder, configuration);
+        builder.AddCisMessaging()
+            .AddKafkaFlow(msg =>
+            {
+                msg.AddConsumerAvro<CIS.InternalServices.NotificationService.Api.Messaging.NotificationReport.NotificationReportHandler>(configuration.KafkaTopics.McsResult);
+                msg.AddProducerAvro<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail>(configuration.KafkaTopics.McsSender);
+                msg.AddProducerAvro<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS>(configuration.KafkaTopics.McsSender);
+                //msg.AddProducerAvro<cz.mpss.api.noby.notification.sendapi.v1.email.SendEmail>(configuration.KafkaTopics.McsSender);//??ma to tu byt nebo ne???
+            });
 
         #region registrace background jobu
         // odeslani MPSS emailu
@@ -95,31 +101,6 @@ SharedComponents.GrpcServiceBuilder
         app.MapGrpcService<CIS.InternalServices.NotificationService.Api.Endpoints.v2.NotificationService>();
     })
     .Run();
-
-static void addMessaging(WebApplicationBuilder builder, AppConfiguration configuration)
-{
-    var kafkaConfiguration = builder
-        .AddCisMessaging()
-        .AddKafka()
-            // Mcs
-            .AddConsumer<CIS.InternalServices.NotificationService.Api.Messaging.Consumers.Result.McsResultConsumer>()
-            .AddConsumerTopicAvro<CIS.InternalServices.NotificationService.Api.Messaging.Messages.Partials.IMcsResultTopic>(configuration.KafkaTopics.McsResult)
-            .AddProducerAvro<CIS.InternalServices.NotificationService.Api.Messaging.Messages.Partials.IMcsSenderTopic>(configuration.KafkaTopics.McsSender)
-        .Build();
-
-    if (kafkaConfiguration.Disabled)
-    {
-        builder.Services
-            .AddScoped<CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsEmailProducer>(_ => default(CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsEmailProducer))
-            .AddScoped<CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsSmsProducer>(_ => default(CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsSmsProducer));
-    }
-    else
-    {
-        builder.Services
-            .AddScoped<CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsEmailProducer, CIS.InternalServices.NotificationService.Api.Messaging.Producers.McsEmailProducer>()
-            .AddScoped<CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction.IMcsSmsProducer, CIS.InternalServices.NotificationService.Api.Messaging.Producers.McsSmsProducer>();
-    }
-}
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

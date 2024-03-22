@@ -14,6 +14,10 @@
 		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Content Remove="Messaging\SendEmail\SendEmail.json" />
+	</ItemGroup>
+
   <ItemGroup>
 	<PackageReference Include="MediatR" Version="12.2.0" />
 	<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.61.0" />
@@ -52,10 +56,9 @@
   
   <ItemGroup>
     <None Include="Messaging\NotificationReport\NotificationReport.json" />
-    <None Include="Legacy\Messaging\AvroSchemas\Mcs\SendEmail.json" />
-    <None Include="Legacy\Messaging\AvroSchemas\Mcs\SendSMS.json" />
-    <None Include="Legacy\Messaging\AvroSchemas\Mpss\NotificationReport.json" />
-    <None Include="Legacy\Messaging\AvroSchemas\Mpss\SendEmail.json" />
+    <None Include="Messaging\SendSMS\SendSMS.json" />
+    <None Include="Messaging\SendEmailMpss\SendEmail.json" />
+    <None Include="Messaging\SendEmail\SendEmail.json" />
   </ItemGroup>
   
 </Project>

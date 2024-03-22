@@ -22,7 +22,7 @@ internal sealed class NotificationReportHandler
             .Where(t => t.Id == notificationId)
             .FirstOrDefaultAsync();
 
-        /* az se odstrani stara cesta!
+        /*TODO az se odstrani stara cesta!
         if (notificationInstance is null)
         {
             _logger.KafkaNotificationResultNotificationNotFound(notificationId);
@@ -33,7 +33,7 @@ internal sealed class NotificationReportHandler
         #region legacy code
         if (notificationInstance is null)
         {
-            await _mediator.Send(new ConsumeResultRequest { NotificationReport = context.Message });
+            await _mediator.Send(new ConsumeResultRequest { NotificationReport = message });
         }
         #endregion legacy code
         else

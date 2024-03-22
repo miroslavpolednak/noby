@@ -1,9 +1,8 @@
 ﻿using CIS.Core.Exceptions.ExternalServices;
-using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.v1;
+using KafkaFlow;
 using SharedAudit;
 using SharedComponents.DocumentDataStorage;
 using SharedComponents.Storage;
@@ -122,7 +121,7 @@ internal sealed class SendEmailHandler
 
             try
             {
-                await _mcsEmailProducer.SendEmail(sendEmail, cancellationToken);
+                await _mcsEmailProducer.ProduceAsync(sendEmail, cancellationToken);
 
                 // nastavit stav v databazi
                 notificationInstance.State = NotificationStates.Sent;
@@ -225,7 +224,7 @@ internal sealed class SendEmailHandler
         => format == SendEmailRequest.Types.EmailFormats.PlainText ? "text/plain" : "text/html";
 
     private readonly IStorageClient<IMcsStorage> _storageClient;
-    private readonly IMcsEmailProducer _mcsEmailProducer;
+    private readonly IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail> _mcsEmailProducer;
     private readonly IAuditLogger _auditLogger;
     private readonly TimeProvider _dateTime;
     private readonly ICodebookServiceClient _codebookService;
@@ -233,7 +232,6 @@ internal sealed class SendEmailHandler
     private readonly ServiceUserHelper _serviceUser;
     private readonly Database.NotificationDbContext _dbContext;
     private readonly Configuration.AppConfiguration _appConfiguration;
-    private readonly IMcsSmsProducer _mcsSmsProducer;
     private readonly IDocumentDataStorage _documentDataStorage;
 
     public SendEmailHandler(
@@ -243,9 +241,8 @@ internal sealed class SendEmailHandler
         ServiceUserHelper serviceUser,
         Database.NotificationDbContext dbContext,
         Configuration.AppConfiguration appConfiguration,
-        IMcsSmsProducer mcsSmsProducer,
         IAuditLogger auditLogger,
-        IMcsEmailProducer mcsEmailProducer,
+        IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail> mcsEmailProducer,
         IStorageClient<IMcsStorage> storageClient,
         IDocumentDataStorage documentDataStorage)
     {
@@ -255,7 +252,6 @@ internal sealed class SendEmailHandler
         _serviceUser = serviceUser;
         _dbContext = dbContext;
         _appConfiguration = appConfiguration;
-        _mcsSmsProducer = mcsSmsProducer;
         _auditLogger = auditLogger;
         _mcsEmailProducer = mcsEmailProducer;
         _storageClient = storageClient;
