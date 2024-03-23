@@ -54,6 +54,7 @@ message SalesArrangementParametersHUBN {
 		bool IsActive = 1;
 		cis.types.GrpcDate AgreedDrawingDateTo = 2;
 		google.protobuf.Int32Value ExtensionDrawingDateToByMonths = 3;
+		bool IsDrawingDateEarlier = 4;
 	}
 
 	message CommentToChangeRequestObject {

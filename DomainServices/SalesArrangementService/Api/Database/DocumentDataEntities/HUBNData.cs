@@ -57,6 +57,7 @@ internal sealed class HUBNData : IDocumentData
         public bool IsActive { get; set; }
         public DateTime AgreedDrawingDateTo { get; set; }
         public int? ExtensionDrawingDateToByMonths { get; set; }
+        public bool? IsDrawingDateEarlier { get; set; }
     }
 
     public sealed class HUBNCommentToChangeRequestData

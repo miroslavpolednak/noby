@@ -33,11 +33,13 @@ internal sealed class UpdateParametersHelper
                 break;
 
             case Dto.HUBNUpdate m:
+                validateExtensionDrawingDate(m.DrawingDateTo.ExtensionDrawingDateToByMonths);
                 await validateLoanRealEstate(m.LoanRealEstates);
                 await validateApplicant(m.Applicant, salesArrangement.CaseId);
                 break;
 
             case Dto.GeneralChangeUpdate m:
+                validateExtensionDrawingDate(m.DrawingDateTo.ExtensionDrawingDateToByMonths);
                 await validateApplicant(m.Applicant, salesArrangement.CaseId);
                 break;
 
@@ -79,6 +81,14 @@ internal sealed class UpdateParametersHelper
         }
 
         return model;
+    }
+
+    private void validateExtensionDrawingDate(int? extension)
+    {
+        if (extension.HasValue && (extension.Value < 1 || extension.Value > 36))
+        {
+            throw new NobyValidationException("extensionDrawingDateToByMonths must be between 1 and 36");
+        }
     }
 
     private async Task validateApplicant(List<SharedTypes.Types.CustomerIdentity>? identities, long caseId)

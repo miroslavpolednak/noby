@@ -205,7 +205,8 @@ internal static class UpdateParametersExtensions
             {
                 IsActive = parameters.DrawingDateTo?.IsActive ?? false,
                 AgreedDrawingDateTo = originalParameter?.DrawingDateTo?.AgreedDrawingDateTo,
-                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo?.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo?.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = parameters.DrawingDateTo?.IsDrawingDateEarlier ?? false
             },
             CommentToChangeRequest = new()
             {
