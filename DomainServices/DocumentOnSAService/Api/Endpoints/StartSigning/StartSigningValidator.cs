@@ -26,7 +26,7 @@ public class StartSigningValidator : AbstractValidator<StartSigningRequest>
             .WithErrorCode(ErrorCodeMapper.ElectronicSigningFeatureIsDisabled);
 
         RuleFor(t => t)
-          .MustAsync(async (request, ct) => request.SignatureTypeId != (int)SignatureTypes.Electronic || (await codebookService.DocumentTypes(ct)).Single(d => d.Id == request.DocumentTypeId).IsElectronicSigningEnabled)
+          .MustAsync(async (request, ct) => request.SignatureTypeId != (int)SignatureTypes.Electronic || request.TaskId is not null || (await codebookService.DocumentTypes(ct)).Single(d => d.Id == request.DocumentTypeId).IsElectronicSigningEnabled)
           .WithErrorCode(ErrorCodeMapper.ElectronicSigningFeatureIsDisabled);
     }
 

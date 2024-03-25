@@ -106,4 +106,6 @@ public sealed class DrawingDateTo
     /// Prodloužení konce lhůty čerpání o kolik měsíců
     /// </summary>
     public int? ExtensionDrawingDateToByMonths { get; set; }
+
+    public bool IsDrawingDateEarlier { get; set; }
 }

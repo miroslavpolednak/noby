@@ -209,7 +209,8 @@ internal static class SalesArrangementParametersMapperExtensions
             {
                 IsActive = hubnData.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = hubnData.DrawingDateTo.AgreedDrawingDateTo,
-                ExtensionDrawingDateToByMonths = hubnData.DrawingDateTo.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = hubnData.DrawingDateTo.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = hubnData.DrawingDateTo.IsDrawingDateEarlier ?? false
             },
             CommentToChangeRequest = hubnData.CommentToChangeRequest is null ? null : new SalesArrangementParametersHUBN.Types.CommentToChangeRequestObject
             {
@@ -259,7 +260,8 @@ internal static class SalesArrangementParametersMapperExtensions
             {
                 IsActive = hubn.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = hubn.DrawingDateTo.AgreedDrawingDateTo,
-                ExtensionDrawingDateToByMonths = hubn.DrawingDateTo.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = hubn.DrawingDateTo.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = hubn.DrawingDateTo.IsDrawingDateEarlier
             },
             CommentToChangeRequest = hubn.CommentToChangeRequest is null ? null : new HUBNData.HUBNCommentToChangeRequestData
             {
