@@ -41,11 +41,11 @@ internal sealed class MortgageRetentionDataMapper
         };
     }
 
-    public SimulationInputsData MapToDataInputs(__Contracts.MortgageRetentionSimulationInputs inputs, decimal interestRate)
+    public SimulationInputsData MapToDataInputs(__Contracts.MortgageRetentionSimulationInputs inputs)
     {
         return new()
         {
-            InterestRate = interestRate,
+            InterestRate = inputs.InterestRate,
             InterestRateDiscount = inputs.InterestRateDiscount,
             InterestRateValidFrom = inputs.InterestRateValidFrom
         };

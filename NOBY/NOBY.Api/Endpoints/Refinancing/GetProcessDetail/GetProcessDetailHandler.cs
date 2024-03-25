@@ -40,7 +40,7 @@ internal class GetProcessDetailHandler : IRequestHandler<GetProcessDetailRequest
                 ProcessId = process.ProcessId,
                 RefinancingTypeId = RefinancingHelper.GetRefinancingType(process),
                 RefinancingTypeText = RefinancingHelper.GetRefinancingTypeText(eaCodesMain, process, refinancingTypes),
-                RefinancingStateId = RefinancingHelper.GetRefinancingState(null, process),
+                RefinancingStateId = (int)RefinancingHelper.GetRefinancingState(false, null, process),
                 CreatedTime = process.CreatedOn,
                 LoanInterestRateProvided = process.RefinancingProcess?.LoanInterestRateProvided ?? process.RefinancingProcess?.LoanInterestRate,
                 LoanInterestRateValidFrom = process.RefinancingProcess?.InterestRateValidFrom!,

@@ -15,12 +15,12 @@ internal sealed class MockEasSimulationHTClient
         return Task.FromResult(Array.Empty<WFS_FindItem>());
     }
 
-    public Task<decimal> RunSimulationRetention(long caseId, decimal newInterestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken)
+    public Task<decimal> RunSimulationRefixation(long caseId, decimal interestRate, DateTime interestRateValidFrom, int fixedRatePeriod, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public Task<decimal> RunSimulationRefixation(long caseId, decimal newInterestRate, DateTime interestRateValidFrom, int fixedRatePeriod, DateTime futureInterestRateValidTo, CancellationToken cancellationToken)
+    public Task<decimal> RunSimulationRetention(long caseId, decimal interestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

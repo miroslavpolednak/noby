@@ -7,11 +7,11 @@ import "NullableGrpcDecimal.proto";
 import "GrpcDate.proto";
 
 message MortgageRefixationBasicParameters {
-	
+	cis.types.GrpcDate FixedRateValidTo = 1;
 }
 
 message MortgageRefixationSimulationInputs {
-	cis.types.GrpcDate FutureInterestRateValidTo = 1;
+	cis.types.GrpcDate InterestRateValidFrom = 1;
 	int32 FixedRatePeriod = 2;
 	cis.types.GrpcDecimal InterestRate = 3;
 	cis.types.NullableGrpcDecimal InterestRateDiscount = 4;

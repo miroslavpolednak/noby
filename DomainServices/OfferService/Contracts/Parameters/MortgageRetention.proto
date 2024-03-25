@@ -13,7 +13,7 @@ message MortgageRetentionBasicParameters {
 
 message MortgageRetentionSimulationInputs {
 	cis.types.GrpcDate InterestRateValidFrom = 1;
-	cis.types.NullableGrpcDecimal InterestRate = 2;
+	cis.types.GrpcDecimal InterestRate = 2;
 	cis.types.NullableGrpcDecimal InterestRateDiscount = 3;
 }
 

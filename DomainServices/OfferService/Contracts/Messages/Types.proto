@@ -15,6 +15,11 @@ enum OfferTypes {
 	MortgageRetention = 3;
 }
 
+enum OfferOrigins {
+	OfferService = 0;
+	BigDataPlatform = 1;
+}
+
 message CommonOfferData {
 	int32 OfferId = 1;
 	string ResourceProcessId = 2;
@@ -26,6 +31,8 @@ message CommonOfferData {
 	OfferTypes OfferType = 8;
 	bool IsCreditWorthinessSimpleRequested = 9;
 	int32 Flags = 10;
+	OfferOrigins Origin = 11;
+
 }
 
 message SimulationResultWarning {

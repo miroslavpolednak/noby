@@ -10,18 +10,14 @@ internal sealed class SimulateMortgageRefixationHandler
 {
     public async Task<SimulateMortgageRefixationResponse> Handle(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-        // ziskat urokovou sazbu
-        /*var interestRate = await _sbWebApi.GetRefixationInterestRate(request.CaseId, request.SimulationInputs.FutureInterestRateValidTo, cancellationToken);
-
         // get simulation outputs
-        var easSimulationRes1 = await _easSimulationHTClient.RunSimulationRefixation(request.CaseId, interestRate.InterestRate, DateTime.Now, request.SimulationInputs.FixedRatePeriod, request.SimulationInputs.FutureInterestRateValidTo, cancellationToken);
+        var easSimulationRes1 = await _easSimulationHTClient.RunSimulationRefixation(request.CaseId, request.SimulationInputs.InterestRate, request.SimulationInputs.InterestRateValidFrom, request.SimulationInputs.FixedRatePeriod, cancellationToken);
 
         // doc entita
         var documentEntity = new Database.DocumentDataEntities.MortgageRefixationData
         {
             BasicParameters = _offerMapper.MapToDataBasicParameters(request.BasicParameters),
-            SimulationInputs = _offerMapper.MapToDataInputs(request.SimulationInputs, interestRate.InterestRate),
+            SimulationInputs = _offerMapper.MapToDataInputs(request.SimulationInputs),
             SimulationOutputs = new()
             {
                 LoanPaymentAmount = easSimulationRes1
@@ -31,7 +27,7 @@ internal sealed class SimulateMortgageRefixationHandler
         // druhy beh simulace se slevou
         if (request.SimulationInputs.InterestRateDiscount != null)
         {
-            var easSimulationRes2 = await _easSimulationHTClient.RunSimulationRefixation(request.CaseId, interestRate.InterestRate - (decimal)request.SimulationInputs.InterestRateDiscount!, request.SimulationInputs.FixedRatePeriod, request.SimulationInputs.FutureInterestRateValidTo, cancellationToken);
+            var easSimulationRes2 = await _easSimulationHTClient.RunSimulationRefixation(request.CaseId, request.SimulationInputs.InterestRate - (decimal)request.SimulationInputs.InterestRateDiscount!, request.SimulationInputs.InterestRateValidFrom, request.SimulationInputs.FixedRatePeriod, cancellationToken);
             documentEntity.SimulationOutputs.LoanPaymentAmountDiscounted = easSimulationRes2;
         }
 
@@ -40,7 +36,8 @@ internal sealed class SimulateMortgageRefixationHandler
         {
             ResourceProcessId = Guid.NewGuid(),
             CaseId = request.CaseId,
-            OfferType = (int)OfferTypes.MortgageRefixation
+            OfferType = (int)OfferTypes.MortgageRefixation,
+            Origin = (int)OfferOrigins.OfferService
         };
         _dbContext.Offers.Add(entity);
 
@@ -51,28 +48,30 @@ internal sealed class SimulateMortgageRefixationHandler
 
         _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
-        return new SimulateMortgageRetentionResponse
+        return new SimulateMortgageRefixationResponse
         {
             OfferId = entity.OfferId,
             Created = new ModificationStamp(entity),
             SimulationInputs = _offerMapper.MapFromDataInputs(documentEntity.SimulationInputs),
             BasicParameters = _offerMapper.MapFromDataBasicParameters(documentEntity.BasicParameters),
             SimulationResults = _offerMapper.MapFromDataOutputs(documentEntity.SimulationOutputs)
-        };*/
+        };
     }
 
+    private readonly Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _offerMapper;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly IEasSimulationHTClient _easSimulationHTClient;
     private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApi;
     private readonly Database.OfferServiceDbContext _dbContext;
     private readonly ILogger<SimulateMortgageRefixationHandler> _logger;
 
-    public SimulateMortgageRefixationHandler(IEasSimulationHTClient easSimulationHTClient, ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApi, Database.OfferServiceDbContext dbContext, ILogger<SimulateMortgageRefixationHandler> logger, IDocumentDataStorage documentDataStorage)
+    public SimulateMortgageRefixationHandler(IEasSimulationHTClient easSimulationHTClient, ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApi, Database.OfferServiceDbContext dbContext, ILogger<SimulateMortgageRefixationHandler> logger, IDocumentDataStorage documentDataStorage, Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper offerMapper)
     {
         _easSimulationHTClient = easSimulationHTClient;
         _sbWebApi = sbWebApi;
         _dbContext = dbContext;
         _logger = logger;
         _documentDataStorage = documentDataStorage;
+        _offerMapper = offerMapper;
     }
 }

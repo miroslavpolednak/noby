@@ -11,7 +11,6 @@ internal sealed class GetRetentionDetailHandler
     public async Task<GetRetentionDetailResponse> Handle(GetRetentionDetailRequest request, CancellationToken cancellationToken)
     {
         // zjistit refinancingState
-        RefinancingHelper.GetRefinancingState()
         var refinancingState = await getRefinancingStateId(request.CaseId, request.ProcessId, cancellationToken);
 
         if (refinancingState is (RefinancingStates.Zruseno or RefinancingStates.Dokonceno))
@@ -27,6 +26,11 @@ internal sealed class GetRetentionDetailHandler
         if (refinancingState == RefinancingStates.RozpracovanoVNoby)
         {
             var offer = await _offerService.GetOffer(1, cancellationToken);
+
+            return new GetRetentionDetailResponse
+            {
+                IsReadonly = false
+            };
         }
         else
         {
@@ -47,13 +51,24 @@ internal sealed class GetRetentionDetailHandler
         if (currentProcessSA is not null)
         {
             var currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
-            if (!currentProcessSA.Retention.ManagedByRC2.GetValueOrDefault())
+            if (currentProcessSA.Retention?.ManagedByRC2 ?? false)
             {
-
+                // ref.state staci vzit pouze z SA
+                return RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State);
             }
         }
 
-        return RefinancingStates.RozpracovanoVNoby;
+        // ziskat detail procesu
+        var processes = await _caseService.GetProcessList(caseId, cancellationToken);
+        var process = processes.FirstOrDefault(t => t.ProcessId == processId)
+            ?? throw new NobyValidationException($"ProcessId {processId} not found in GetProcessList");
+
+        if (process.ProcessTypeId != 3 || process.RefinancingProcess?.RefinancingType != 1)
+        {
+            throw new NobyValidationException(90032, "ProcessTypeId!=3 or RefinancingType!=1");
+        }
+
+        return RefinancingHelper.GetRefinancingState(currentProcessSA?.Retention?.ManagedByRC2 ?? false, currentProcessSA?.TaskProcessId, process);
     }
 
     private readonly IOfferServiceClient _offerService;

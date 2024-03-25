@@ -19,7 +19,7 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
     protected override string ServiceName => StartupExtensions.ServiceName;
 
-    public async Task<decimal> RunSimulationRefixation(long caseId, decimal newInterestRate, DateTime interestRateValidFrom, int fixedRatePeriod, DateTime futureInterestRateValidTo, CancellationToken cancellationToken)
+    public async Task<decimal> RunSimulationRefixation(long caseId, decimal interestRate, DateTime interestRateValidFrom, int fixedRatePeriod, CancellationToken cancellationToken)
     {
         var result = await callMethod(async () =>
         {
@@ -29,10 +29,9 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
                 {
                     uverId = Convert.ToInt32(caseId),
                     mode = 2,
-                    novaSazba = newInterestRate,
+                    novaSazba = interestRate,
                     novaSazbaOd = interestRateValidFrom,
-                    periodaFixace = fixedRatePeriod,
-                    novaSplatnost = futureInterestRateValidTo
+                    periodaFixace = fixedRatePeriod
                 }
             };
 
@@ -42,7 +41,7 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
         return result.vysledky?.novaVyseSplatky ?? 0;
     }
 
-    public async Task<decimal> RunSimulationRetention(long caseId, decimal newInterestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken)
+    public async Task<decimal> RunSimulationRetention(long caseId, decimal interestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken)
     {
         var result = await callMethod(async () =>
         {
@@ -52,7 +51,7 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
                 {
                     uverId = Convert.ToInt32(caseId),
                     mode = 1,
-                    novaSazba = newInterestRate,
+                    novaSazba = interestRate,
                     novaSazbaOd = interestRateValidFrom
                 }
             };

@@ -41,7 +41,8 @@ internal sealed class SimulateMortgageHandler
             ValidTo = request.ValidTo,
             SalesArrangementId = request.SalesArrangementId,
             CaseId = request.CaseId,
-            OfferType = (int)OfferTypes.Mortgage
+            OfferType = (int)OfferTypes.Mortgage,
+            Origin = (int)OfferOrigins.OfferService
         };
         _dbContext.Offers.Add(entity);
 
