@@ -36,9 +36,9 @@ internal class MainLoanProcessChangedHandler : IMessageHandler<cz.mpss.api.starb
                 StateUpdatedInStarbuild = UpdatedInStarbuildStates.Ok
             });
         }
-        catch (CisValidationException)
+        catch (Exception ex) when (ex is CisNotFoundException or CisValidationException)
         {
-            //Ignore
+            _logger.CaseStateChangedFailed(caseId, ex);
         }
     }
 }
