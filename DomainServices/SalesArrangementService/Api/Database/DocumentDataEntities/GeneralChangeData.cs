@@ -39,6 +39,7 @@ internal sealed class GeneralChangeData : IDocumentData
         public DateTime AgreedDrawingDateTo { get; set; }
         public int? ExtensionDrawingDateToByMonths { get; set; }
         public string? CommentToDrawingDateTo { get; set; }
+        public bool? IsDrawingDateEarlier { get; set; }
     }
 
     public sealed class GeneralChangePaymentAccountData

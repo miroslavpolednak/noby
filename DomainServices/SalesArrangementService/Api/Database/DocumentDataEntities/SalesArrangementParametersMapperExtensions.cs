@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
+using Microsoft.AspNetCore.SignalR;
 using SharedTypes.GrpcTypes;
 using SharedTypes.Types;
 
@@ -293,7 +294,8 @@ internal static class SalesArrangementParametersMapperExtensions
                 IsActive = generalChangeData.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = generalChangeData.DrawingDateTo.AgreedDrawingDateTo,
                 ExtensionDrawingDateToByMonths = generalChangeData.DrawingDateTo.ExtensionDrawingDateToByMonths,
-                CommentToDrawingDateTo = generalChangeData.DrawingDateTo.CommentToDrawingDateTo ?? ""
+                CommentToDrawingDateTo = generalChangeData.DrawingDateTo.CommentToDrawingDateTo ?? "",
+                IsDrawingDateEarlier = generalChangeData.DrawingDateTo.IsDrawingDateEarlier ?? false
             },
             RepaymentAccount = generalChangeData.RepaymentAccount is null ? null : new SalesArrangementParametersGeneralChange.Types.PaymentAccountObject
             {
