@@ -1,0 +1,13 @@
+syntax = "proto3";
+package DomainServices.MaintananceService;
+option csharp_namespace = "DomainServices.MaintananceService.Contracts";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+
+service MaintananceService{
+	rpc ImportOfferFromDatamart(ImportOfferFromDatamartRequest) returns (google.protobuf.Empty);
+}
+
+message ImportOfferFromDatamartRequest {}
