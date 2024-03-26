@@ -7,13 +7,13 @@ import "NullableGrpcDecimal.proto";
 import "GrpcDate.proto";
 
 message MortgageRetentionBasicParameters {
-	cis.types.GrpcDecimal Amount  = 1;
-	cis.types.NullableGrpcDecimal AmountDiscount  = 2;
+	cis.types.GrpcDecimal FeeAmount  = 1;
+	cis.types.NullableGrpcDecimal FeeAmountDiscounted  = 2;
 }
 
 message MortgageRetentionSimulationInputs {
 	cis.types.GrpcDate InterestRateValidFrom = 1;
-	cis.types.NullableGrpcDecimal InterestRate = 2;
+	cis.types.GrpcDecimal InterestRate = 2;
 	cis.types.NullableGrpcDecimal InterestRateDiscount = 3;
 }
 

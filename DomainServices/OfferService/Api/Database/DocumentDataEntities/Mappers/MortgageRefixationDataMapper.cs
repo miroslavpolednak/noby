@@ -15,12 +15,19 @@ internal sealed class MortgageRefixationDataMapper
         {
             SimulationInputs = new()
             {
+                FixedRatePeriod = data.SimulationInputs.FixedRatePeriod,
+                InterestRateDiscount = data.SimulationInputs.InterestRateDiscount,
+                InterestRate = data.SimulationInputs.InterestRate,
+                InterestRateValidFrom = data.SimulationInputs.InterestRateValidFrom
             },
             SimulationResults = new()
             {
+                LoanPaymentAmount = data.SimulationOutputs.LoanPaymentAmount,
+                LoanPaymentAmountDiscounted = data.SimulationOutputs.LoanPaymentAmountDiscounted
             },
             BasicParameters = new()
             {
+                FixedRateValidTo = data.BasicParameters.FixedRateValidTo
             }
         };
     }
@@ -29,13 +36,18 @@ internal sealed class MortgageRefixationDataMapper
     {
         return new()
         {
+            FixedRateValidTo = basicParameters.FixedRateValidTo
         };
     }
 
-    public SimulationInputsData MapToDataInputs(__Contracts.MortgageRefixationSimulationInputs inputs, decimal interestRate)
+    public SimulationInputsData MapToDataInputs(__Contracts.MortgageRefixationSimulationInputs inputs)
     {
         return new()
         {
+            FixedRatePeriod = inputs.FixedRatePeriod,
+            InterestRate = inputs.InterestRate,
+            InterestRateDiscount = inputs.InterestRateDiscount,
+            InterestRateValidFrom = inputs.InterestRateValidFrom
         };
     }
 
@@ -43,6 +55,7 @@ internal sealed class MortgageRefixationDataMapper
     {
         return new()
         {
+            FixedRateValidTo = basicParameters.FixedRateValidTo
         };
     }
 
@@ -50,6 +63,10 @@ internal sealed class MortgageRefixationDataMapper
     {
         return new()
         {
+            FixedRatePeriod = inputs.FixedRatePeriod,
+            InterestRate = inputs.InterestRate,
+            InterestRateDiscount = inputs.InterestRateDiscount,
+            InterestRateValidFrom = inputs.InterestRateValidFrom
         };
     }
 
@@ -57,6 +74,8 @@ internal sealed class MortgageRefixationDataMapper
     {
         return new()
         {
+            LoanPaymentAmount = output.LoanPaymentAmount,
+            LoanPaymentAmountDiscounted = output.LoanPaymentAmountDiscounted
         };
     }
 }

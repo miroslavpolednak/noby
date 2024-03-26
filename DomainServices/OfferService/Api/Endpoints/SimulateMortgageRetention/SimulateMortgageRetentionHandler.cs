@@ -10,17 +10,14 @@ internal sealed class SimulateMortgageRetentionHandler
 {
     public async Task<SimulateMortgageRetentionResponse> Handle(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken)
     {
-        // ziskat urokovou sazbu
-        var interestRate = await _sbWebApi.GetRefixationInterestRate(request.CaseId, request.SimulationInputs.InterestRateValidFrom, cancellationToken);
-
         // get simulation outputs
-        var easSimulationRes1 = await _easSimulationHTClient.RunSimulationRetention(request.CaseId, interestRate.InterestRate, request.SimulationInputs.InterestRateValidFrom, cancellationToken);
+        var easSimulationRes1 = await _easSimulationHTClient.RunSimulationRetention(request.CaseId, request.SimulationInputs.InterestRate, request.SimulationInputs.InterestRateValidFrom, cancellationToken);
 
         // doc entita
         var documentEntity = new Database.DocumentDataEntities.MortgageRetentionData
         {
             BasicParameters = _offerMapper.MapToDataBasicParameters(request.BasicParameters),
-            SimulationInputs = _offerMapper.MapToDataInputs(request.SimulationInputs, interestRate.InterestRate),
+            SimulationInputs = _offerMapper.MapToDataInputs(request.SimulationInputs),
             SimulationOutputs = new()
             {
                 LoanPaymentAmount = easSimulationRes1
@@ -30,7 +27,7 @@ internal sealed class SimulateMortgageRetentionHandler
         // druhy beh simulace se slevou
         if (request.SimulationInputs.InterestRateDiscount != null)
         {
-            var easSimulationRes2 = await _easSimulationHTClient.RunSimulationRetention(request.CaseId, interestRate.InterestRate - (decimal)request.SimulationInputs.InterestRateDiscount!, request.SimulationInputs.InterestRateValidFrom, cancellationToken);
+            var easSimulationRes2 = await _easSimulationHTClient.RunSimulationRetention(request.CaseId, request.SimulationInputs.InterestRate - (decimal)request.SimulationInputs.InterestRateDiscount!, request.SimulationInputs.InterestRateValidFrom, cancellationToken);
             documentEntity.SimulationOutputs.LoanPaymentAmountDiscounted = easSimulationRes2;
         }
 
@@ -39,7 +36,8 @@ internal sealed class SimulateMortgageRetentionHandler
         {
             ResourceProcessId = Guid.NewGuid(),
             CaseId = request.CaseId,
-            OfferType = (int)OfferTypes.MortgageRetention
+            OfferType = (int)OfferTypes.MortgageRetention,
+            Origin = (int)OfferOrigins.OfferService
         };
         _dbContext.Offers.Add(entity);
 

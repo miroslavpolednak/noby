@@ -26,8 +26,8 @@ internal sealed class MortgageRetentionDataMapper
             },
             BasicParameters = new()
             {
-                Amount = data.BasicParameters.Amount,
-                AmountDiscount = data.BasicParameters.AmountDiscount
+                FeeAmount = data.BasicParameters.FeeAmount,
+                FeeAmountDiscounted = data.BasicParameters.FeeAmountDiscounted
             }
         };
     }
@@ -36,16 +36,16 @@ internal sealed class MortgageRetentionDataMapper
     {
         return new()
         {
-            Amount = basicParameters.Amount,
-            AmountDiscount = basicParameters.AmountDiscount
+            FeeAmount = basicParameters.FeeAmount,
+            FeeAmountDiscounted = basicParameters.FeeAmountDiscounted
         };
     }
 
-    public SimulationInputsData MapToDataInputs(__Contracts.MortgageRetentionSimulationInputs inputs, decimal interestRate)
+    public SimulationInputsData MapToDataInputs(__Contracts.MortgageRetentionSimulationInputs inputs)
     {
         return new()
         {
-            InterestRate = interestRate,
+            InterestRate = inputs.InterestRate,
             InterestRateDiscount = inputs.InterestRateDiscount,
             InterestRateValidFrom = inputs.InterestRateValidFrom
         };
@@ -55,8 +55,8 @@ internal sealed class MortgageRetentionDataMapper
     {
         return new()
         {
-            Amount = basicParameters.Amount,
-            AmountDiscount = basicParameters.AmountDiscount
+            FeeAmount = basicParameters.FeeAmount,
+            FeeAmountDiscounted = basicParameters.FeeAmountDiscounted
         };
     }
 

@@ -68,7 +68,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
         if (((DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom) < _time.GetLocalNow().Date)
             throw new NobyValidationException(90051);
 
-        if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is not null || offer.MortgageRetention.BasicParameters.AmountDiscount is not null)
+        if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is not null || offer.MortgageRetention.BasicParameters.FeeAmountDiscounted is not null)
         {
             await ValidateTask(request, saDetail, offer, cancellationToken);
         }
@@ -104,7 +104,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
 
         // ToDo refixation missing
         if (!(taskDetail.TaskDetail.PriceException.LoanInterestRate.LoanInterestRateDiscount == offer.MortgageRetention.SimulationInputs.InterestRateDiscount
-                       && taskDetail.TaskDetail.PriceException.Fees[0].FinalSum == offer.MortgageRetention.BasicParameters.AmountDiscount))
+                       && taskDetail.TaskDetail.PriceException.Fees[0].FinalSum == offer.MortgageRetention.BasicParameters.FeeAmountDiscounted))
         {
             throw new NobyValidationException(90048);
         }
@@ -133,8 +133,8 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
             Cpm = user.UserInfo.Cpm,
             Icp = user.UserInfo.Icp,
             SignatureDeadline = request.SignatureDeadline,
-            IndividualPricing = simulationInputs.InterestRateDiscount is not null || basicParams.AmountDiscount is not null,
-            Fee = basicParams.AmountDiscount ?? basicParams.Amount
+            IndividualPricing = simulationInputs.InterestRateDiscount is not null || basicParams.FeeAmountDiscounted is not null,
+            Fee = basicParams.FeeAmountDiscounted ?? basicParams.FeeAmount
         }, cancellationToken);
     }
 

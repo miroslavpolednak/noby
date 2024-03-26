@@ -89,7 +89,7 @@ internal sealed class GetRefinancingParametersHandler
                     ProcessId = s.Process.ProcessId,
                     RefinancingTypeId = RefinancingHelper.GetRefinancingType(s.Process),
                     RefinancingTypeText = RefinancingHelper.GetRefinancingTypeText(eaCodesMain, s.Process, refinancingTypes),
-                    RefinancingStateId = RefinancingHelper.GetRefinancingState(s.Sa, s.Process),
+                    RefinancingStateId = (int)RefinancingHelper.GetRefinancingState(s.Sa?.Refixation?.ManagedByRC2 ?? s.Sa?.Retention?.ManagedByRC2 ?? false, s.Sa?.TaskProcessId, s.Process),
                     CreatedTime = s.Process.CreatedOn,
                     LoanInterestRateProvided = s.Process.RefinancingProcess?.LoanInterestRateProvided ?? s.Process.RefinancingProcess?.LoanInterestRate,
                     LoanInterestRateValidFrom = s.Process?.RefinancingProcess?.InterestRateValidFrom!,
