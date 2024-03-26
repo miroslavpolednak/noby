@@ -26,12 +26,19 @@ internal class MainLoanProcessChangedHandler : IMessageHandler<cz.mpss.api.starb
 
         var caseState = message.processData.@private.mainLoanProcessData.processPhase.code;
         _logger.UpdateCaseStateStart(caseId, caseState);
-        
-        await _mediator.Send(new UpdateCaseStateRequest
+
+        try
         {
-            CaseId = caseId,
-            State = caseState,
-            StateUpdatedInStarbuild = UpdatedInStarbuildStates.Ok
-        });
+            await _mediator.Send(new UpdateCaseStateRequest
+            {
+                CaseId = caseId,
+                State = caseState,
+                StateUpdatedInStarbuild = UpdatedInStarbuildStates.Ok
+            });
+        }
+        catch (CisValidationException)
+        {
+            //Ignore
+        }
     }
 }

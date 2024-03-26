@@ -20,8 +20,6 @@ internal sealed class ConsumerErrorHandlingMiddleware : IMessageMiddleware
         try
         {
             await next(context);
-
-            context.ConsumerContext.Complete();
         }
         catch (BaseCisException ex)
         {
@@ -30,6 +28,9 @@ internal sealed class ConsumerErrorHandlingMiddleware : IMessageMiddleware
         catch (SchemaRegistryException ex)
         {
             _logger.SchemaRegistryError(ex);
+
+            //Return to not mark message as completed
+            return;
         }
         catch (Exception ex)
         {
@@ -47,6 +48,8 @@ internal sealed class ConsumerErrorHandlingMiddleware : IMessageMiddleware
                 _logger.ConsumingMessageFailed(GetMessageId(context), ex);
             }
         }
+
+        context.ConsumerContext.Complete();
     }
 
     private static string GetMessageId(IMessageContext context)
