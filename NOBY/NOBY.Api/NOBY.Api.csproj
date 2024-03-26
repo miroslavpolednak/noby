@@ -77,4 +77,8 @@
     <ProjectReference Include="..\NOBY.Services\NOBY.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Endpoints\Offer\_SharedDto\LinkModelation\" />
+  </ItemGroup>
+
 </Project>
