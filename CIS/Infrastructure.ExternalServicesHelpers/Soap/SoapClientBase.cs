@@ -88,7 +88,7 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
         {
             throw new CisExternalServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
         }
-        catch (FaultException ex)
+        catch (Exception ex) when (ex is FaultException || ex is TimeoutException)
         {
             throw new CisExternalServiceServerErrorException(ServiceName, nameof(callMethod), ex.Message);
         }
