@@ -47,7 +47,7 @@ internal sealed class RealEstateValuationTypeService
                     throw new NobyValidationException("Product.Mortgage object is null");
                 }
 
-                dsRequest.LoanAmount = product.Mortgage.CurrentAmount;
+                dsRequest.LoanAmount = ((decimal?)product.Mortgage.AvailableForDrawing).GetValueOrDefault() > 0 ? product.Mortgage.LoanAmount : product.Mortgage.CurrentAmount;
                 if (detail.LoanPurposeDetails?.LoanPurposes?.Any() ?? false)
                 {
                     dsRequest.LoanPurposes.AddRange(detail.LoanPurposeDetails.LoanPurposes);
