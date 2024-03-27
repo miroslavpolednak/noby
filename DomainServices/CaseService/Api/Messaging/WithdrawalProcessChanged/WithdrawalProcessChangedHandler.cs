@@ -1,6 +1,7 @@
 ﻿using DomainServices.CaseService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using KafkaFlow;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
@@ -44,8 +45,18 @@ internal class WithdrawalProcessChangedHandler : IMessageHandler<cz.mpss.api.sta
         
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId });
         var taskDocumentIds = taskDetail.TaskDetail.TaskDocumentIds.ToHashSet();
-        
-        var salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId);
+
+        GetSalesArrangementListResponse salesArrangementResponse;
+        try
+        {
+            salesArrangementResponse = await _salesArrangementService.GetSalesArrangementList(caseId);
+        }
+        catch (CisNotFoundException)
+        {
+            _logger.KafkaCaseIdNotFound(nameof(WithdrawalProcessChangedHandler), caseId);
+
+            return;
+        }
         
         foreach (var salesArrangement in salesArrangementResponse.SalesArrangements.Where(t => t.SalesArrangementTypeId == (int)SalesArrangementTypes.Drawing))
         {
