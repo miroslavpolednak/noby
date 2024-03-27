@@ -1,7 +1,9 @@
 ﻿using CIS.Core;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using System.Diagnostics;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetRetentionDetail;
 
@@ -10,50 +12,60 @@ internal sealed class GetRetentionDetailHandler
 {
     public async Task<GetRetentionDetailResponse> Handle(GetRetentionDetailRequest request, CancellationToken cancellationToken)
     {
+        // detail retencniho procesu
+        var retentionProcess = await getRetentionProcess(request.CaseId, request.ProcessId, cancellationToken);
+        
         // zjistit refinancingState
-        var (offerId, refinancingState) = await getRefinancingStateId(request.CaseId, request.ProcessId, cancellationToken);
+        var (salesArrangement, refinancingState) = await getRefinancingStateId(request.CaseId, retentionProcess, cancellationToken);
 
         if (refinancingState is (RefinancingStates.Zruseno or RefinancingStates.Dokonceno))
         {
             throw new NobyValidationException(90032, $"RefinancingState is not allowed: {refinancingState}");
         }
-
+        
         // vsechny tasky z WF, potom vyfiltrovat jen na konkretni processId
         var tasks = (await _caseService.GetTaskList(request.CaseId, cancellationToken))
             .Where(t => t.ProcessId == request.ProcessId)
             .ToList();
 
-        // pro IC potrebujeme i detail
-        var icTask = tasks.FirstOrDefault(t => !t.Cancelled && t.TaskTypeId == (int)WorkflowTaskTypes.PriceException);
+        // toto je aktivni task!
+        bool existActiveIC = tasks.Any(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled && t.DecisionId != 2 && t.PhaseTypeId == 2);
 
         var response = new GetRetentionDetailResponse
         {
-            IsReadonly = refinancingState == RefinancingStates.RozpracovanoVNoby,
-            OtherWorkflowTasks = (await tasks
-                .Where(t => t.TaskId != icTask?.TaskId)
+            IsReadOnly = refinancingState == RefinancingStates.RozpracovanoVNoby,
+            Tasks = (await tasks
                 .SelectAsync(t => _workflowMapper.MapTask(t, cancellationToken)))
                 .ToList(),
-            CurrentPriceExceptionTask = await getIC(icTask, cancellationToken),
-            ICkomentar = "!!! TODO !!!"
+            IndividualPriceCommentLastVersion = salesArrangement?.Retention?.IndividualPriceCommentLastVersion,
+            SignatureTypeDetailId = salesArrangement?.Retention?.SignatureTypeDetailId,
+            DocumentId = retentionProcess.RefinancingProcess.RefinancingDocumentId,
+            RefinancingDocumentEACode = retentionProcess.RefinancingProcess.RefinancingDocumentEACode,
+            // doplnit data simulace z procesu (pozdeji mozna prepsat offerou)
+            InterestRate = (decimal?)retentionProcess.RefinancingProcess.LoanInterestRate ?? 0M,
+            InterestRateDiscount = (decimal?)retentionProcess.RefinancingProcess.LoanInterestRateProvided,
+            LoanPaymentAmount = (decimal?)retentionProcess.RefinancingProcess.LoanPaymentAmount ?? 0M,
+            LoanPaymentAmountDiscounted = retentionProcess.RefinancingProcess.LoanPaymentAmountFinal,
+            FeeAmount = (decimal?)retentionProcess.RefinancingProcess.FeeSum ?? 0M,
+            FeeAmountDiscounted = retentionProcess.RefinancingProcess.FeeFinalSum,
+            IsGenerateDocumentEnabled = salesArrangement?.OfferId is not null && refinancingState == RefinancingStates.RozpracovanoVNoby && existActiveIC
         };
 
         // pokud existuje Offer
-        if (offerId.HasValue)
+        if (salesArrangement?.OfferId is not null)
         {
             // detail offer
-            response.Offer = await getOffer(offerId.Value, cancellationToken);
+            var offerInstance = await _offerService.GetOffer(salesArrangement.OfferId.Value, cancellationToken);
+            // nacpat data z offer do response misto puvodnich dat z procesu
+            replaceTaskDataWithOfferData(response, offerInstance);
 
-            // jestlize neexistuje IC, ujisti se, ze na Offer neni zadna informace o IC
-            if (response.CurrentPriceExceptionTask is null)
+            if (existActiveIC)
             {
-                response.Offer.InterestRateDiscount = null;
-                response.Offer.LoanPaymentAmountDiscounted = null;
-            }
-            // jestlize se nalezena IC neshoduje s parametry na Offer
-            else if (response.Offer.InterestRateDiscount != response.CurrentPriceExceptionTask?.PriceExceptionDetails?.LoanInterestRate?.LoanInterestRateDiscount
-                || response.Offer.FeeAmountDiscounted != response.CurrentPriceExceptionTask?.PriceExceptionDetails?.Fees?.FirstOrDefault()?.FinalSum)
-            {
-                response.ContainsInconsistentIndividualPriceData = true;
+                response.ContainsInconsistentIndividualPriceData = offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount != response.InterestRateDiscount || offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted != response.FeeAmountDiscounted;
+
+                response.InterestRateDiscount = offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount;
+                response.LoanPaymentAmountDiscounted = offerInstance.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted;
+                response.FeeAmountDiscounted = offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted;
             }
         }
 
@@ -61,71 +73,49 @@ internal sealed class GetRetentionDetailHandler
     }
 
     /// <summary>
-    /// Vytvoreni detailu IC
+    /// Detail procesu retence
     /// </summary>
-    private async Task<Dto.GetRetentionDetailPriceExceptionTask?> getIC(DomainServices.CaseService.Contracts.WorkflowTask? task, CancellationToken cancellationToken)
+    public async Task<DomainServices.CaseService.Contracts.ProcessTask> getRetentionProcess(long caseId, long processId, CancellationToken cancellationToken)
     {
-        if (task is null)
-        {
-            return null;
-        }
-
-        var taskDetail = await _caseService.GetTaskDetail(task.TaskIdSb, cancellationToken);
-        var mappedTaskDetail = await _workflowMapper.MapTaskDetail(task, taskDetail.TaskDetail, cancellationToken);
-
-        return new Dto.GetRetentionDetailPriceExceptionTask
-        {
-            Task = await _workflowMapper.MapTask(task, cancellationToken),
-            PriceExceptionDetails = mappedTaskDetail.Amendments as NOBY.Dto.Workflow.AmendmentsPriceException
-        };
-    }
-
-    /// <summary>
-    /// Vytvoreni detail Offer
-    /// </summary>
-    private async Task<Dto.GetRetentionDetailOffer> getOffer(int offerId, CancellationToken cancellationToken)
-    {
-        var offerInstance = await _offerService.GetOffer(offerId, cancellationToken);
-
-        return new Dto.GetRetentionDetailOffer
-        {
-            FeeAmountDiscounted = offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted,
-            FeeAmount = offerInstance.MortgageRetention.BasicParameters.FeeAmount,
-            InterestRateValidFrom = offerInstance.MortgageRetention.SimulationInputs.InterestRateValidFrom,
-            InterestRate = offerInstance.MortgageRetention.SimulationInputs.InterestRate,
-            InterestRateDiscount = offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount,
-            LoanPaymentAmount = offerInstance.MortgageRetention.SimulationResults.LoanPaymentAmount,
-            LoanPaymentAmountDiscounted = offerInstance.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted,
-            OfferId = offerId
-        };
-    }
-
-    private async Task<(int? OfferId, RefinancingStates RefinancingState)> getRefinancingStateId(long caseId, long processId, CancellationToken cancellationToken)
-    {
-        var allSalesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
-
-        var currentProcessSA = allSalesArrangements.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == processId);
-        if (currentProcessSA is not null)
-        {
-            var currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
-            if (currentProcessSA.Retention?.ManagedByRC2 ?? false)
-            {
-                // ref.state staci vzit pouze z SA
-                return (currentProcessSADetail.OfferId, RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State));
-            }
-        }
-
-        // ziskat detail procesu
-        var processes = await _caseService.GetProcessList(caseId, cancellationToken);
-        var process = processes.FirstOrDefault(t => t.ProcessId == processId)
-            ?? throw new NobyValidationException($"ProcessId {processId} not found in GetProcessList");
+        var process = (await _caseService.GetProcessList(caseId, cancellationToken))
+            .FirstOrDefault(p => p.ProcessId == processId)
+            ?? throw new NobyValidationException(90043, $"ProccesId not found in list {processId}");
 
         if (process.ProcessTypeId != 3 || process.RefinancingProcess?.RefinancingType != 1)
         {
             throw new NobyValidationException(90032, "ProcessTypeId!=3 or RefinancingType!=1");
         }
 
-        return (null, RefinancingHelper.GetRefinancingState(currentProcessSA?.Retention?.ManagedByRC2 ?? false, currentProcessSA?.TaskProcessId, process));
+        return process;
+    }
+
+    /// <summary>
+    /// Vytvoreni detail Offer
+    /// </summary>
+    private static void replaceTaskDataWithOfferData(GetRetentionDetailResponse response, GetOfferResponse offerInstance)
+    {
+        response.FeeAmount = offerInstance.MortgageRetention.BasicParameters.FeeAmount;
+        response.InterestRateValidFrom = offerInstance.MortgageRetention.SimulationInputs.InterestRateValidFrom;
+        response.InterestRate = offerInstance.MortgageRetention.SimulationInputs.InterestRate;
+        response.LoanPaymentAmount = offerInstance.MortgageRetention.SimulationResults.LoanPaymentAmount;
+    }
+
+    private async Task<(DomainServices.SalesArrangementService.Contracts.SalesArrangement? salesArrangement, RefinancingStates RefinancingState)> getRefinancingStateId(long caseId, DomainServices.CaseService.Contracts.ProcessTask process, CancellationToken cancellationToken)
+    {
+        var allSalesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
+
+        var currentProcessSA = allSalesArrangements.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == process.ProcessId);
+        if (currentProcessSA is not null)
+        {
+            var currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
+            if (currentProcessSA.Retention?.ManagedByRC2 ?? false)
+            {
+                // ref.state staci vzit pouze z SA
+                return (currentProcessSADetail, RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State));
+            }
+        }
+
+        return (null, RefinancingHelper.GetRefinancingState(false, currentProcessSA?.TaskProcessId, process));
     }
 
     private readonly Services.WorkflowMapper.IWorkflowMapperService _workflowMapper;

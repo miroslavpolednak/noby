@@ -4,6 +4,7 @@ using ExternalServices;
 using Ext1 = ExternalServices;
 using CIS.Infrastructure.Messaging;
 using DomainServices.CaseService.Api.Messaging.MessageHandlers;
+using DomainServices.CaseService.Api.Endpoints.v1;
 
 SharedComponents.GrpcServiceBuilder
                 .CreateGrpcService(args, typeof(Program))
@@ -68,7 +69,7 @@ SharedComponents.GrpcServiceBuilder
                 })
                 .MapGrpcServices((app, _) =>
                 {
-                    app.MapGrpcService<DomainServices.CaseService.Api.Endpoints.CaseService>();
+                    app.MapGrpcService<CaseService>();
                     app.MapGrpcService<DomainServices.CaseService.Api.Endpoints.Maintanance.MaintananceService>();
                 })
                 .Run();
