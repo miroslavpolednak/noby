@@ -1,7 +1,7 @@
 ﻿namespace NOBY.Dto.Workflow;
 
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
-public class AmendmentsPriceException
+public sealed class AmendmentsPriceException
 #pragma warning restore CA1711 // Identifiers should not have incorrect suffix
 {
     /// <summary>
@@ -24,7 +24,7 @@ public class AmendmentsPriceException
     public string Decision { get; set; } = null!;
 }
 
-public class LoanInterestRates
+public sealed class LoanInterestRates
 {
     /// <summary>
     /// Nabídková sazba
@@ -54,7 +54,7 @@ public class LoanInterestRates
     public decimal? LoanInterestRateDiscount { get; set; }
 }
 
-public class Fee
+public sealed class Fee
 {
     /// <summary>
     /// Název poplatku

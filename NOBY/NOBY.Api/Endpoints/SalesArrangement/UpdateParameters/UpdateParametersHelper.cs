@@ -83,7 +83,7 @@ internal sealed class UpdateParametersHelper
         return model;
     }
 
-    private void validateExtensionDrawingDate(int? extension)
+    private static void validateExtensionDrawingDate(int? extension)
     {
         if (extension.HasValue && (extension.Value < 1 || extension.Value > 36))
         {

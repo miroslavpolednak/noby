@@ -17,7 +17,7 @@ internal sealed class RealLuxpiServiceClient
         return model.Status switch
         {
             "OK" => createResponse(),
-            "KNOCKED_OUT" or "NO_PRICE_AVAILABLE" => new Dto.CreateKbmodelFlatResponse
+            "KNOCKED_OUT" or "NO_PRICE_AVAILABLE" or "CHECK_LOAN_NOT_PASSED" => new Dto.CreateKbmodelFlatResponse
             {
                 NoPriceAvailable = true
             },

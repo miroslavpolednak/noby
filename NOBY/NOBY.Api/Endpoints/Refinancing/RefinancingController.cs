@@ -2,6 +2,7 @@
 using NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
 using NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument;
 using Swashbuckle.AspNetCore.Annotations;
+using NOBY.Api.Endpoints.Refinancing.GetRetentionDetail;
 
 namespace NOBY.Api.Endpoints.Refinancing;
 
@@ -12,6 +13,23 @@ public sealed class RefinancingController : ControllerBase
 {
     private readonly IMediator _mediator;
     public RefinancingController(IMediator mediator) => _mediator = mediator;
+
+    /// <summary>
+    /// Detail retence
+    /// </summary>
+    /// <remarks>
+    /// Operace slouží k získání informací o vybran0m retenčním procesu.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=E0F5C17D-A6F5-4713-93DC-73E06D98AD09 "><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("case/{caseId:long}/mortgage-retention/{processId:long}")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    [ProducesResponseType(typeof(GetRetentionDetailResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetRetentionDetailResponse> GetRetentionDetail([FromRoute] long caseId, [FromRoute] long processId)
+        => await _mediator.Send(new GetRetentionDetailRequest(caseId, processId));
 
     /// <summary>
     /// Žádosti o změnu sazby

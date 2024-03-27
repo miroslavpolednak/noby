@@ -3359,6 +3359,92 @@
             SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto.GetRetentionDetailOffer.OfferId">
+            <summary>
+            ID vytvorene simulace.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto.GetRetentionDetailOffer.FeeAmountDiscounted">
+            <summary>
+            Upravená výše poplatku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto.GetRetentionDetailOffer.InterestRateValidFrom">
+            <summary>
+            Platnost nové úrokové sazby od.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto.GetRetentionDetailOffer.InterestRateDiscount">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>0.09</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto.GetRetentionDetailOffer.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto.GetRetentionDetailOffer.LoanPaymentAmountDiscounted">
+            <summary>
+            Výše měsíční splátky se zohledněním IC.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto.GetRetentionDetailPriceExceptionTask.Task">
+            <summary>
+            Detail úkolu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto.GetRetentionDetailPriceExceptionTask.PriceExceptionDetails">
+            <summary>
+            Detail cenové vyjímky
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailHandler.getIC(DomainServices.CaseService.Contracts.WorkflowTask,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoreni detailu IC
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailHandler.getOffer(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Vytvoreni detail Offer
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.IsReadonly">
+            <summary>
+            Informace zda se jedná o readonly režim
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.ContainsInconsistentIndividualPriceData">
+            <summary>
+            Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.Offer">
+            <summary>
+            Aktuálně vybraná nabídka
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.CurrentPriceExceptionTask">
+            <summary>
+            Informace o aktuální cenové vyjímce pokud existuje
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.OtherWorkflowTasks">
+            <summary>
+            Všechny workflow úkoly pro daný proces retence
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRetentionDetail(System.Int64,System.Int64)">
+            <summary>
+            Detail retence
+            </summary>
+            <remarks>
+            Operace slouží k získání informací o vybran0m retenčním procesu.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=E0F5C17D-A6F5-4713-93DC-73E06D98AD09 "><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRefinancingParameters(System.Int64)">
             <summary>
             Žádosti o změnu sazby
