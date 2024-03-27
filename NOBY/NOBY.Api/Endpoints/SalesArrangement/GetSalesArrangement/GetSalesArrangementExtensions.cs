@@ -90,7 +90,8 @@ internal static class GetSalesArrangementExtensions
                 IsActive = model.DrawingDateTo?.IsActive ?? false,
                 AgreedDrawingDateTo = model.DrawingDateTo?.AgreedDrawingDateTo,
                 CommentToDrawingDateTo = model.DrawingDateTo?.CommentToDrawingDateTo,
-                ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = model.DrawingDateTo?.IsDrawingDateEarlier ?? false
             },
             RepaymentAccount = new Dto.PaymentAccount()
             {

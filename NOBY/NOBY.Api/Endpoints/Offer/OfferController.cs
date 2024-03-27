@@ -9,6 +9,24 @@ namespace NOBY.Api.Endpoints.Offer;
 public sealed class OfferController : ControllerBase
 {
     /// <summary>
+    /// Simulace KB refixací.
+    /// </summary>
+    /// <remarks>
+    /// Provolá simulační službu Starbuildu pro refixace.
+    /// 
+    /// </remarks>
+    [HttpPost("case/{caseId:long}/simulate-mortgage-refixation-offer")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [NobySkipCaseStateAndProductSAValidation]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [ProducesResponseType(typeof(SimulateMortgageRefixation.SimulateMortgageRefixationResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<SimulateMortgageRefixation.SimulateMortgageRefixationResponse> SimulateMortgageRetention([FromRoute] long caseId, [FromBody] SimulateMortgageRefixation.SimulateMortgageRefixationRequest request)
+        => await _mediator.Send((request ?? new SimulateMortgageRefixation.SimulateMortgageRefixationRequest()).InfuseId(caseId));
+
+    /// <summary>
     /// Simulace KB retencí.
     /// </summary>
     /// <remarks>
@@ -19,6 +37,7 @@ public sealed class OfferController : ControllerBase
     [HttpPost("case/{caseId:long}/simulate-mortgage-retention-offer")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [NobySkipCaseStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgageRetention.SimulateMortgageRetentionResponse), StatusCodes.Status200OK)]

@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRetention;
+namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation;
 
-public sealed class SimulateMortgageRetentionRequest
-    : IRequest<SimulateMortgageRetentionResponse>
+public sealed class SimulateMortgageRefixationRequest
+    : IRequest<SimulateMortgageRefixationResponse>
 {
     [JsonIgnore]
     internal long CaseId { get; set; }
@@ -13,7 +13,7 @@ public sealed class SimulateMortgageRetentionRequest
     /// Platnost nové úrokové sazby od.
     /// </summary>
     [Required]
-    public DateTime InterestRateValidFrom { get; set; }
+    public int FixedRatePeriod { get; set; }
 
     /// <summary>
     /// Sleva ze sazby
@@ -21,12 +21,7 @@ public sealed class SimulateMortgageRetentionRequest
     /// <example>0.09</example>
     public decimal? InterestRateDiscount { get; set; }
 
-    /// <summary>
-    /// Upravená výše poplatku. Relevantní pouze pro retence.
-    /// </summary>
-    public decimal? FeeAmountDiscounted { get; set; }
-
-    internal SimulateMortgageRetentionRequest InfuseId(long caseId)
+    internal SimulateMortgageRefixationRequest InfuseId(long caseId)
     {
         this.CaseId = caseId;
         return this;

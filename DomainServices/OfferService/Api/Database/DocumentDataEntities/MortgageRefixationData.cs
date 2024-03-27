@@ -13,16 +13,20 @@ internal sealed class MortgageRefixationData
 
     public sealed class SimulationInputsData
     {
-        
+        public DateTime InterestRateValidFrom { get; set; }
+        public int FixedRatePeriod { get; set; }
+        public decimal InterestRate { get; set; }
+        public decimal? InterestRateDiscount { get; set; }
     }
 
     public sealed class SimulationOutputsData
     {
-        
+        public decimal LoanPaymentAmount { get; set; }
+        public decimal? LoanPaymentAmountDiscounted { get; set; }
     }
 
     public sealed class BasicParametersData
     {
-        
+        public DateTime FixedRateValidTo { get; set; }
     }
 }

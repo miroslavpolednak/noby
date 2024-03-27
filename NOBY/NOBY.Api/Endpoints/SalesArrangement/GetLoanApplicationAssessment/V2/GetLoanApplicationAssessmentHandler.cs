@@ -26,7 +26,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         // neexistuje RBC -> vytvorit novy a ulozit
         if (string.IsNullOrEmpty(saInstance.RiskBusinessCaseId))
         {
-            await _createProductTrain.CreateRiskBusinessCaseAndUpdateSalesArrangement(saInstance, cancellationToken);
+            await createRBC(saInstance, cancellationToken);
         }
         // nemame ulozenou DataVersion na SA nebo chceme vytvorit novy assessment
         else if (string.IsNullOrEmpty(saInstance.LoanApplicationDataVersion) || request.NewAssessmentRequired)
@@ -89,6 +89,24 @@ internal sealed class GetLoanApplicationAssessmentHandler
         }
     }
 
+    private async Task createRBC(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, CancellationToken cancellationToken)
+    {
+        var createResult = await _riskCaseProcessor.CreateOrUpdateRiskCase(saInstance.SalesArrangementId, cancellationToken);
+
+        // update
+        await _salesArrangementService.UpdateLoanAssessmentParameters(new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
+        {
+            SalesArrangementId = saInstance.SalesArrangementId,
+            RiskBusinessCaseId = createResult.RiskBusinessCaseId,
+            RiskSegment = createResult.RiskSegment,
+            LoanApplicationDataVersion = createResult.LoanApplicationDataVersion
+        }, cancellationToken);
+
+        saInstance.RiskBusinessCaseId = createResult.RiskBusinessCaseId;
+        saInstance.RiskSegment = createResult.RiskSegment;
+        saInstance.LoanApplicationDataVersion = createResult.LoanApplicationDataVersion;
+    }
+
     private async Task createNewAssessment(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, GetOfferResponse offer, CancellationToken cancellationToken)
     {
         // create assesment
@@ -147,7 +165,6 @@ internal sealed class GetLoanApplicationAssessmentHandler
     private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly NOBY.Services.RiskCaseProcessor.RiskCaseProcessorService _riskCaseProcessor;
-    private readonly Services.CreateProductTrain.ICreateProductTrainService _createProductTrain;
     private readonly DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService;
     private readonly DomainServices.RiskIntegrationService.Clients.CustomerExposure.V2.ICustomerExposureServiceClient _customerExposureService;
 
@@ -159,8 +176,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         Services.RiskCaseProcessor.RiskCaseProcessorService riskCaseProcessor,
         DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
-        DomainServices.RiskIntegrationService.Clients.CustomerExposure.V2.ICustomerExposureServiceClient customerExposureService,
-        Services.CreateProductTrain.ICreateProductTrainService createProductTrain)
+        DomainServices.RiskIntegrationService.Clients.CustomerExposure.V2.ICustomerExposureServiceClient customerExposureService)
     {
         _resultService = resultService;
         _offerService = offerService;
@@ -170,6 +186,5 @@ internal sealed class GetLoanApplicationAssessmentHandler
         _salesArrangementService = salesArrangementService;
         _riskCaseProcessor = riskCaseProcessor;
         _customerExposureService = customerExposureService;
-        _createProductTrain = createProductTrain;
     }
 }

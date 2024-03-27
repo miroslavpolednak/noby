@@ -30,6 +30,7 @@ internal sealed class ValidateOfferIdHandler
                 OfferType = (OfferTypes)instance.OfferType,
                 Flags = instance.Flags,
                 ValidTo = instance.ValidTo,
+                Origin = (OfferOrigins)instance.Origin,
                 IsCreditWorthinessSimpleRequested = instance.IsCreditWorthinessSimpleRequested,
                 Created = new SharedTypes.GrpcTypes.ModificationStamp
                 {

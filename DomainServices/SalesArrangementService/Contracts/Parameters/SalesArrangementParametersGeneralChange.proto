@@ -39,6 +39,7 @@ message SalesArrangementParametersGeneralChange {
 		cis.types.GrpcDate AgreedDrawingDateTo = 2;
 		google.protobuf.Int32Value ExtensionDrawingDateToByMonths = 3;
 		google.protobuf.StringValue CommentToDrawingDateTo = 4;
+		bool IsDrawingDateEarlier = 5;
 	}
 
 	message PaymentAccountObject {
