@@ -23,7 +23,7 @@ internal sealed class ConsumerErrorHandlingMiddleware : IMessageMiddleware
         }
         catch (BaseCisException ex)
         {
-            _logger.ConsumingMessageFailed(GetMessageId(context), ex);
+            _logger.ConsumingMessageFailed(GetMessageId(context), context.ConsumerContext.Topic, ex);
         }
         catch (SchemaRegistryException ex)
         {
@@ -36,7 +36,6 @@ internal sealed class ConsumerErrorHandlingMiddleware : IMessageMiddleware
         {
             var loggerData = new Dictionary<string, object>
             {
-                { nameof(context.ConsumerContext.Topic), context.ConsumerContext.Topic },
                 { nameof(context.ConsumerContext.ConsumerName), context.ConsumerContext.ConsumerName }
             };
 
@@ -45,7 +44,7 @@ internal sealed class ConsumerErrorHandlingMiddleware : IMessageMiddleware
 
             using (_logger.BeginScope(loggerData))
             {
-                _logger.ConsumingMessageFailed(GetMessageId(context), ex);
+                _logger.ConsumingMessageFailed(GetMessageId(context), context.ConsumerContext.Topic, ex);
             }
         }
 
