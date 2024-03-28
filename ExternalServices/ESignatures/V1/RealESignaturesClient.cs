@@ -143,6 +143,7 @@ internal sealed class RealESignaturesClient
             },
             DocumentData = new()
             {
+                AllowSendPreview = true,
                 TypeCode = docType.ShortName,
                 TemplateVersion = docVersion.TemplateProcessingType,
                 Name = request.DocumentData.FileName,

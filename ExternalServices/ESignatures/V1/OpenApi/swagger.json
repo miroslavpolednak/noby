@@ -3,41 +3,24 @@
   "info": {
     "version": "V6",
     "title": "ePodpisy",
-    "x-swagger-net-version": "8.4.12.001"
+    "x-swagger-net-version": "8.4.19.001"
   },
   "host": "fatepodpisy.mpss.cz",
   "basePath": "/WS",
-  "schemes": [
-    "https"
-  ],
+  "schemes": [ "https" ],
   "paths": {
     "/{org}/REST/DocumentService/PrepareDocument": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_PrepareDocument",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/PrepareDocumentRequest"
-            }
+            "schema": { "$ref": "#/definitions/PrepareDocumentRequest" }
           },
           {
             "name": "org",
@@ -49,35 +32,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/UploadReference"
-            }
+            "schema": { "$ref": "#/definitions/UploadReference" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/UploadDocument": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_UploadDocument",
-        "consumes": [
-          "application/octet-stream"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/octet-stream" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "referenceId",
@@ -116,47 +81,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ResponseUrl"
-            }
+            "schema": { "$ref": "#/definitions/ResponseUrl" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/GetDocumentDetailUrl": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_GetDocumentDetailUrl",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/DocumentDetailUrlRequest"
-            }
+            "schema": { "$ref": "#/definitions/DocumentDetailUrlRequest" }
           },
           {
             "name": "org",
@@ -168,47 +109,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ResponseUrl"
-            }
+            "schema": { "$ref": "#/definitions/ResponseUrl" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/PrepareFinalization": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_PrepareFinalization",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/PrepareFinalizationRequest"
-            }
+            "schema": { "$ref": "#/definitions/PrepareFinalizationRequest" }
           },
           {
             "name": "org",
@@ -220,35 +137,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/UploadReference"
-            }
+            "schema": { "$ref": "#/definitions/UploadReference" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/FinalizeSelection": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_FinalizeSelection",
-        "consumes": [
-          "application/octet-stream"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/octet-stream" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "referenceId",
@@ -287,35 +186,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/GetDocumentStatus": {
       "get": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_GetDocumentStatus",
-        "consumes": [
-
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "id",
@@ -333,47 +214,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ResponseStatus"
-            }
+            "schema": { "$ref": "#/definitions/ResponseStatus" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/GetCreditDocumentsByUser": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_GetCreditDocumentsByUser",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/GetCreditDocumentsByUserRequest"
-            }
+            "schema": { "$ref": "#/definitions/GetCreditDocumentsByUserRequest" }
           },
           {
             "name": "org",
@@ -385,47 +242,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/CreditDocuments"
-            }
+            "schema": { "$ref": "#/definitions/CreditDocuments" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/GetCreditDocumentsByContract": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_GetCreditDocumentsByContract",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/GetCreditDocumentsByContractRequest"
-            }
+            "schema": { "$ref": "#/definitions/GetCreditDocumentsByContractRequest" }
           },
           {
             "name": "org",
@@ -437,47 +270,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/CreditDocuments"
-            }
+            "schema": { "$ref": "#/definitions/CreditDocuments" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/PrepareAttachment": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_PrepareAttachment",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/PrepareAttachmentRequest"
-            }
+            "schema": { "$ref": "#/definitions/PrepareAttachmentRequest" }
           },
           {
             "name": "org",
@@ -489,35 +298,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/UploadReference"
-            }
+            "schema": { "$ref": "#/definitions/UploadReference" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/UploadAttachment": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_UploadAttachment",
-        "consumes": [
-          "application/octet-stream"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/octet-stream" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "referenceId",
@@ -556,47 +347,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/PrepareAttachmentByContract": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_PrepareAttachmentByContract",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/PrepareAttachmentByContractRequest"
-            }
+            "schema": { "$ref": "#/definitions/PrepareAttachmentByContractRequest" }
           },
           {
             "name": "org",
@@ -608,35 +375,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/UploadReference"
-            }
+            "schema": { "$ref": "#/definitions/UploadReference" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/UploadAttachmentByContract": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_UploadAttachmentByContract",
-        "consumes": [
-          "application/octet-stream"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/octet-stream" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "referenceId",
@@ -675,35 +424,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/ResendSMS": {
       "post": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_ResendSms",
-        "consumes": [
-
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "messageToClientToken",
@@ -722,35 +453,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/DocumentService/isAlive": {
       "get": {
-        "tags": [
-          "DocumentService"
-        ],
+        "tags": [ "DocumentService" ],
         "operationId": "DocumentService_IsAlive",
-        "consumes": [
-
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "org",
@@ -762,40 +475,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         }
       }
     },
     "/{org}/REST/v2/DocumentService/PrepareDocument": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_PrepareDocument",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/PrepareDocumentRequest2"
-            }
+            "schema": { "$ref": "#/definitions/PrepareDocumentRequest2" }
           },
           {
             "name": "org",
@@ -807,35 +503,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/UploadReference"
-            }
+            "schema": { "$ref": "#/definitions/UploadReference" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/UploadDocument": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_UploadDocument",
-        "consumes": [
-          "application/octet-stream"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/octet-stream" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "referenceId",
@@ -874,47 +552,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ResponseUrl2"
-            }
+            "schema": { "$ref": "#/definitions/ResponseUrl2" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/GetDocumentDetailUrl": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_GetDocumentDetailUrl",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/DocumentDetailUrlRequest"
-            }
+            "schema": { "$ref": "#/definitions/DocumentDetailUrlRequest" }
           },
           {
             "name": "org",
@@ -926,47 +580,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ResponseUrl"
-            }
+            "schema": { "$ref": "#/definitions/ResponseUrl2" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/PrepareFinalization": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_PrepareFinalization",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/PrepareFinalizationRequest"
-            }
+            "schema": { "$ref": "#/definitions/PrepareFinalizationRequest" }
           },
           {
             "name": "org",
@@ -978,35 +608,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/UploadReference"
-            }
+            "schema": { "$ref": "#/definitions/UploadReference" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/FinalizeSelection": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_FinalizeSelection",
-        "consumes": [
-          "application/octet-stream"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/octet-stream" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "referenceId",
@@ -1045,35 +657,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/GetDocumentStatus": {
       "get": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_GetDocumentStatus",
-        "consumes": [
-
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "id",
@@ -1091,47 +685,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ResponseStatus"
-            }
+            "schema": { "$ref": "#/definitions/ResponseStatus" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/GetCreditDocumentsByUser": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_GetCreditDocumentsByUser",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/GetCreditDocumentsByUserRequest"
-            }
+            "schema": { "$ref": "#/definitions/GetCreditDocumentsByUserRequest" }
           },
           {
             "name": "org",
@@ -1143,47 +713,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/CreditDocuments2"
-            }
+            "schema": { "$ref": "#/definitions/CreditDocuments2" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/GetCreditDocumentsByContract": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_GetCreditDocumentsByContract",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/GetCreditDocumentsByContractRequest"
-            }
+            "schema": { "$ref": "#/definitions/GetCreditDocumentsByContractRequest" }
           },
           {
             "name": "org",
@@ -1195,47 +741,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/CreditDocuments2"
-            }
+            "schema": { "$ref": "#/definitions/CreditDocuments2" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/PrepareAttachment": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_PrepareAttachment",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/PrepareAttachmentRequest"
-            }
+            "schema": { "$ref": "#/definitions/PrepareAttachmentRequest" }
           },
           {
             "name": "org",
@@ -1247,35 +769,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/UploadReference"
-            }
+            "schema": { "$ref": "#/definitions/UploadReference" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/UploadAttachment": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_UploadAttachment",
-        "consumes": [
-          "application/octet-stream"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/octet-stream" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "referenceId",
@@ -1314,47 +818,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/PrepareAttachmentByContract": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_PrepareAttachmentByContract",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/PrepareAttachmentByContractRequest"
-            }
+            "schema": { "$ref": "#/definitions/PrepareAttachmentByContractRequest" }
           },
           {
             "name": "org",
@@ -1366,35 +846,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/UploadReference"
-            }
+            "schema": { "$ref": "#/definitions/UploadReference" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/UploadAttachmentByContract": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_UploadAttachmentByContract",
-        "consumes": [
-          "application/octet-stream"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/octet-stream" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "referenceId",
@@ -1433,35 +895,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/ResendSMS": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_ResendSms",
-        "consumes": [
-
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "messageToClientToken",
@@ -1480,47 +924,23 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/GetAvailableSigningMethods": {
       "post": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_GetAvailableSigningMethods",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "request",
             "in": "body",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/GetAvailableSigningMethodsRequest"
-            }
+            "schema": { "$ref": "#/definitions/GetAvailableSigningMethodsRequest" }
           },
           {
             "name": "org",
@@ -1532,33 +952,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/AvailableSigningMethods"
-            }
+            "schema": { "$ref": "#/definitions/AvailableSigningMethods" }
           }
-        },
-        "security": [
-          {
-            "Basic": [
-
-            ]
-          }
-        ]
-      },
+        }
+      }
+    },
+    "/{org}/REST/v2/DocumentService/DeleteDocument": {
       "delete": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_DeleteDocument",
-        "consumes": [
-
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "externalId",
@@ -1576,35 +980,101 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
           }
-        },
-        "security": [
+        }
+      }
+    },
+    "/{org}/REST/v2/DocumentService/DownloadDocumentPreview": {
+      "get": {
+        "tags": [ "DocumentService2" ],
+        "operationId": "DocumentService2_DownloadDocumentPreview",
+        "consumes": [],
+        "produces": [ "application/json", "text/json" ],
+        "parameters": [
           {
-            "Basic": [
-
-            ]
+            "name": "externalId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ActionResultFile" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/v2/DocumentService/SubmitDispatchForm": {
+      "post": {
+        "tags": [ "DocumentService2" ],
+        "operationId": "DocumentService2_SubmitDispatchForm",
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/SubmitDispatchFormRequest" }
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/v2/DocumentService/SendDocumentPreview": {
+      "post": {
+        "tags": [ "DocumentService2" ],
+        "operationId": "DocumentService2_SendDocumentPreview",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "externalId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
+          }
+        }
       }
     },
     "/{org}/REST/v2/DocumentService/isAlive": {
       "get": {
-        "tags": [
-          "DocumentService2"
-        ],
+        "tags": [ "DocumentService2" ],
         "operationId": "DocumentService2_IsAlive",
-        "consumes": [
-
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "org",
@@ -1616,147 +1086,17 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/{org}/REST/DocumentService2/DownloadDocumentPreview": {
-      "post": {
-        "tags": [
-          "DocumentService2"
-        ],
-        "operationId": "DocumentService2_DownloadDocumentPreview",
-        "consumes": [
-
-        ],
-        "produces": [
-          "application/octet-stream"
-        ],
-        "parameters": [
-          {
-            "name": "externalId",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "org",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "description": "OK",
-              "type": "file",
-              "format": "binary"
-            }
-          }
-        }
-      }
-    },
-    "/{org}/REST/DocumentService2/SubmitDispatchForm": {
-      "post": {
-        "tags": [
-          "DocumentService2"
-        ],
-        "operationId": "DocumentService2_SubmitDispatchForm",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/SubmitDispatchFormRequest"
-            }
-          },
-          {
-            "name": "org",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
-          }
-        }
-      }
-    },
-    "/{org}/REST/DocumentService2/SendDocumentPreview": {
-      "post": {
-        "tags": [
-          "DocumentService2"
-        ],
-        "operationId": "DocumentService2_SendDocumentPreview",
-        "consumes": [
-
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "externalId",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "org",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ProcessingResult"
-            }
+            "schema": { "type": "string" }
           }
         }
       }
     },
     "/{org}/REST/inSignService/Callback": {
       "get": {
-        "tags": [
-          "InSignService"
-        ],
+        "tags": [ "InSignService" ],
         "operationId": "InSignService_Callback",
-        "consumes": [
-
-        ],
-        "produces": [
-
-        ],
+        "consumes": [],
+        "produces": [],
         "parameters": [
           {
             "name": "eventId",
@@ -1777,28 +1117,15 @@
             "type": "string"
           }
         ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          }
-        }
+        "responses": { "204": { "description": "No Content" } }
       }
     },
     "/{org}/REST/inSignService/isAlive": {
       "get": {
-        "tags": [
-          "InSignService"
-        ],
+        "tags": [ "InSignService" ],
         "operationId": "InSignService_IsAlive",
-        "consumes": [
-
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
         "parameters": [
           {
             "name": "org",
@@ -1810,9 +1137,292 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/testService/SendEmail": {
+      "post": {
+        "tags": [ "TestService" ],
+        "operationId": "TestService_SendEmail",
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/SendEmailRequest" }
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/testService/SendSms": {
+      "post": {
+        "tags": [ "TestService" ],
+        "operationId": "TestService_SendSms",
+        "consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded" ],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/SendSmsRequest" }
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ProcessingResult" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/testService/NotifyExternal": {
+      "post": {
+        "tags": [ "TestService" ],
+        "operationId": "TestService_NotifyExternal",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "documentExternalId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/BoolResult" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/testService/GetManagedTask": {
+      "get": {
+        "tags": [ "TestService" ],
+        "operationId": "TestService_GetManagedTask",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ManagedTaskInfoResult" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/testService/GetManagedTasks": {
+      "get": {
+        "tags": [ "TestService" ],
+        "operationId": "TestService_GetManagedTasks",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "referenceId",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ManagedTaskInfosResult" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/testService/GetManagedTasksByExternalId": {
+      "get": {
+        "tags": [ "TestService" ],
+        "operationId": "TestService_GetManagedTasksByExternalId",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "documentExternalId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "maxCount",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ManagedTaskInfosResult" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/testService/ContinueTask": {
+      "post": {
+        "tags": [ "TestService" ],
+        "operationId": "TestService_ContinueTask",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/BoolResult" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/testService/ExecuteTestIterationWorkflowTask": {
+      "post": {
+        "tags": [ "TestService" ],
+        "operationId": "TestService_ExecuteTestIterationWorkflowTask",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/NumberResult" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/testService/GetincomingMessages": {
+      "get": {
+        "tags": [ "TestService" ],
+        "operationId": "TestService_GetIncomingMessages",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "maxCount",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/IncomingMessagesResult" }
+          }
+        }
+      }
+    },
+    "/{org}/REST/testService/isAlive": {
+      "get": {
+        "tags": [ "TestService" ],
+        "operationId": "TestService_IsAlive",
+        "consumes": [],
+        "produces": [ "application/json", "text/json", "application/xml", "text/xml" ],
+        "parameters": [
+          {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "type": "string" }
           }
         }
       }
@@ -1820,51 +1430,26 @@
   },
   "definitions": {
     "PrepareDocumentRequest": {
-      "required": [
-        "DocumentData",
-        "ClientData",
-        "CurrentUserInfo",
-        "CreatorInfo"
-      ],
+      "required": [ "DocumentData", "ClientData", "CurrentUserInfo", "CreatorInfo" ],
       "properties": {
-        "DocumentData": {
-          "$ref": "#/definitions/DocumentInfo"
-        },
-        "ClientData": {
-          "$ref": "#/definitions/ClientInfo"
-        },
+        "DocumentData": { "$ref": "#/definitions/DocumentInfo" },
+        "ClientData": { "$ref": "#/definitions/ClientInfo" },
         "OtherClients": {
-          "items": {
-            "$ref": "#/definitions/SigneeInfo"
-          },
+          "items": { "$ref": "#/definitions/SigneeInfo" },
           "type": "array"
         },
-        "CurrentUserInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "CreatorInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
+        "CurrentUserInfo": { "$ref": "#/definitions/UserInfo" },
+        "CreatorInfo": { "$ref": "#/definitions/UserInfo" },
         "NonClientSignatures": {
-          "items": {
-            "$ref": "#/definitions/SignatureData"
-          },
+          "items": { "$ref": "#/definitions/SignatureData" },
           "type": "array"
         },
-        "AdditionalData": {
-          "type": "string"
-        }
+        "AdditionalData": { "type": "string" }
       },
       "type": "object"
     },
     "DocumentInfo": {
-      "required": [
-        "TypeCode",
-        "TemplateVersion",
-        "Name",
-        "FormId",
-        "ContractNumber"
-      ],
+      "required": [ "TypeCode", "TemplateVersion", "Name", "FormId", "ContractNumber" ],
       "properties": {
         "TypeCode": {
           "type": "string",
@@ -1882,34 +1467,27 @@
           "minLength": 0
         },
         "ExternalId": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 30,
+          "minLength": 0
         },
         "FormId": {
           "type": "string",
           "maxLength": 15,
           "minLength": 0
         },
-        "EaCodeMain": {
-          "type": "string",
-          "maxLength": 4,
-          "minLength": 0
-        },
+        "EaCodeMain": { "type": "string" },
         "EaCodeOthers": {
           "type": "string",
           "maxLength": 255,
           "minLength": 0
         },
-        "ContractNumber": {
-          "type": "string"
-        }
+        "ContractNumber": { "type": "string" }
       },
       "type": "object"
     },
     "ClientInfo": {
-      "required": [
-        "Name",
-        "ExternalId"
-      ],
+      "required": [ "Name", "ExternalId" ],
       "properties": {
         "Name": {
           "type": "string",
@@ -1936,9 +1514,7 @@
           "minLength": 0
         },
         "Signatures": {
-          "items": {
-            "$ref": "#/definitions/SignatureData"
-          },
+          "items": { "$ref": "#/definitions/SignatureData" },
           "type": "array",
           "minLength": 1
         },
@@ -1951,9 +1527,7 @@
       "type": "object"
     },
     "SigneeInfo": {
-      "required": [
-        "Signatures"
-      ],
+      "required": [ "Signatures" ],
       "properties": {
         "PhoneNumber": {
           "type": "string",
@@ -1966,9 +1540,7 @@
           "minLength": 0
         },
         "Signatures": {
-          "items": {
-            "$ref": "#/definitions/SignatureData"
-          },
+          "items": { "$ref": "#/definitions/SignatureData" },
           "type": "array",
           "minLength": 1
         }
@@ -1976,18 +1548,14 @@
       "type": "object"
     },
     "UserInfo": {
-      "required": [
-        "CPM"
-      ],
+      "required": [ "CPM" ],
       "properties": {
         "CPM": {
           "type": "string",
           "maxLength": 8,
-          "minLength": 8
+          "minLength": 0
         },
-        "ICP": {
-          "type": "string"
-        },
+        "ICP": { "type": "string" },
         "Name": {
           "type": "string",
           "maxLength": 255,
@@ -1997,13 +1565,11 @@
       "type": "object"
     },
     "SignatureData": {
-      "required": [
-        "Code"
-      ],
+      "required": [ "Code" ],
       "properties": {
         "Code": {
           "type": "string",
-          "maxLength": 30,
+          "maxLength": 255,
           "minLength": 0
         },
         "Info1": {
@@ -2030,9 +1596,7 @@
           "type": "integer",
           "format": "int64"
         },
-        "Result": {
-          "$ref": "#/definitions/ProcessingResult"
-        }
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
       },
       "type": "object"
     },
@@ -2042,148 +1606,90 @@
           "type": "integer",
           "format": "int32"
         },
-        "Message": {
-          "type": "string"
-        }
+        "Message": { "type": "string" }
       },
       "type": "object"
     },
     "ResponseUrl": {
       "properties": {
-        "TargetUrl": {
-          "type": "string"
-        },
-        "Result": {
-          "$ref": "#/definitions/ProcessingResult"
-        }
+        "TargetUrl": { "type": "string" },
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
       },
       "type": "object"
     },
     "DocumentDetailUrlRequest": {
-      "required": [
-        "CurrentUserInfo",
-        "CreatorInfo",
-        "DocumentExternalId"
-      ],
+      "required": [ "CurrentUserInfo", "CreatorInfo", "DocumentExternalId" ],
       "properties": {
-        "CurrentUserInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "CreatorInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
+        "CurrentUserInfo": { "$ref": "#/definitions/UserInfo" },
+        "CreatorInfo": { "$ref": "#/definitions/UserInfo" },
         "DocumentExternalId": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 30,
+          "minLength": 0
         }
       },
       "type": "object"
     },
     "PrepareFinalizationRequest": {
-      "required": [
-        "CurrentUserInfo",
-        "CreatorInfo",
-        "MainItemData"
-      ],
+      "required": [ "CurrentUserInfo", "CreatorInfo", "MainItemData" ],
       "properties": {
-        "CurrentUserInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "CreatorInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "MainItemData": {
-          "$ref": "#/definitions/FinalizationInfo"
-        },
+        "CurrentUserInfo": { "$ref": "#/definitions/UserInfo" },
+        "CreatorInfo": { "$ref": "#/definitions/UserInfo" },
+        "MainItemData": { "$ref": "#/definitions/FinalizationInfo" },
         "OtherItemsData": {
-          "items": {
-            "$ref": "#/definitions/FinalizationInfo"
-          },
+          "items": { "$ref": "#/definitions/FinalizationInfo" },
           "type": "array"
         }
       },
       "type": "object"
     },
     "FinalizationInfo": {
-      "required": [
-        "DocumentExternalId",
-        "EaCode"
-      ],
+      "required": [ "DocumentExternalId", "EaCode" ],
       "properties": {
         "DocumentExternalId": {
-          "type": "string"
-        },
-        "EaCode": {
           "type": "string",
-          "maxLength": 4,
+          "maxLength": 30,
           "minLength": 0
-        }
+        },
+        "EaCode": { "type": "string" }
       },
       "type": "object"
     },
     "ResponseStatus": {
       "properties": {
-        "Status": {
-          "type": "string"
-        },
-        "Result": {
-          "$ref": "#/definitions/ProcessingResult"
-        }
+        "Status": { "type": "string" },
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
       },
       "type": "object"
     },
     "GetCreditDocumentsByUserRequest": {
-      "required": [
-        "CurrentUserInfo"
-      ],
-      "properties": {
-        "CurrentUserInfo": {
-          "$ref": "#/definitions/UserInfo"
-        }
-      },
+      "required": [ "CurrentUserInfo" ],
+      "properties": { "CurrentUserInfo": { "$ref": "#/definitions/UserInfo" } },
       "type": "object"
     },
     "CreditDocuments": {
-      "required": [
-        "DocumentsList"
-      ],
+      "required": [ "DocumentsList" ],
       "properties": {
         "DocumentsList": {
-          "items": {
-            "$ref": "#/definitions/CreditDocument"
-          },
+          "items": { "$ref": "#/definitions/CreditDocument" },
           "type": "array"
         },
-        "Result": {
-          "$ref": "#/definitions/ProcessingResult"
-        }
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
       },
       "type": "object"
     },
     "CreditDocument": {
-      "required": [
-        "ExternalId",
-        "Status",
-        "Category",
-        "ContractNumber",
-        "ClientName",
-        "CreationDate"
-      ],
+      "required": [ "ExternalId", "Status", "Category", "ContractNumber", "ClientName", "CreationDate" ],
       "properties": {
         "ExternalId": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 30,
+          "minLength": 0
         },
-        "Status": {
-          "type": "string"
-        },
-        "Category": {
-          "type": "string"
-        },
-        "ContractNumber": {
-          "type": "string"
-        },
-        "ClientName": {
-          "type": "string"
-        },
+        "Status": { "type": "string" },
+        "Category": { "type": "string" },
+        "ContractNumber": { "type": "string" },
+        "ClientName": { "type": "string" },
         "CreationDate": {
           "type": "string",
           "format": "date-time"
@@ -2196,48 +1702,21 @@
       "type": "object"
     },
     "GetCreditDocumentsByContractRequest": {
-      "required": [
-        "ContractNumber"
-      ],
-      "properties": {
-        "ContractNumber": {
-          "type": "string"
-        }
-      },
+      "required": [ "ContractNumber" ],
+      "properties": { "ContractNumber": { "type": "string" } },
       "type": "object"
     },
     "PrepareAttachmentRequest": {
-      "required": [
-        "CurrentUserInfo",
-        "CreatorInfo",
-        "AttachmentData"
-      ],
+      "required": [ "CurrentUserInfo", "CreatorInfo", "AttachmentData" ],
       "properties": {
-        "CurrentUserInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "CreatorInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "AttachmentData": {
-          "$ref": "#/definitions/AttachmentInfo"
-        }
+        "CurrentUserInfo": { "$ref": "#/definitions/UserInfo" },
+        "CreatorInfo": { "$ref": "#/definitions/UserInfo" },
+        "AttachmentData": { "$ref": "#/definitions/AttachmentInfo" }
       },
       "type": "object"
     },
     "AttachmentInfo": {
-      "required": [
-        "DocumentExternalId",
-        "Name",
-        "ExternalId",
-        "EaCodeMain",
-        "TypeCode",
-        "Note",
-        "SendToCMP",
-        "SendToPreview",
-        "SendCompletedMail",
-        "Poznamka"
-      ],
+      "required": [ "DocumentExternalId", "Name", "ExternalId", "EaCodeMain", "TypeCode", "Note", "SendToCMP", "SendToPreview", "SendCompletedMail", "Poznamka" ],
       "properties": {
         "DocumentExternalId": {
           "type": "string",
@@ -2254,34 +1733,18 @@
           "maxLength": 30,
           "minLength": 0
         },
-        "EaCodeMain": {
-          "type": "string",
-          "maxLength": 4,
-          "minLength": 0
-        },
-        "TypeCode": {
-          "type": "string"
-        },
-        "DeclarationCode": {
-          "type": "string"
-        },
+        "EaCodeMain": { "type": "string" },
+        "TypeCode": { "type": "string" },
+        "DeclarationCode": { "type": "string" },
         "Note": {
           "type": "string",
           "maxLength": 255,
           "minLength": 0
         },
-        "SendToCMP": {
-          "type": "boolean"
-        },
-        "SendToPreview": {
-          "type": "boolean"
-        },
-        "SendCompletedMail": {
-          "type": "boolean"
-        },
-        "FileContentType": {
-          "type": "string"
-        },
+        "SendToCMP": { "type": "boolean" },
+        "SendToPreview": { "type": "boolean" },
+        "SendCompletedMail": { "type": "boolean" },
+        "FileContentType": { "type": "string" },
         "Poznamka": {
           "type": "string",
           "maxLength": 1000,
@@ -2291,46 +1754,23 @@
       "type": "object"
     },
     "PrepareAttachmentByContractRequest": {
-      "required": [
-        "CurrentUserInfo",
-        "CreatorInfo",
-        "AttachmentData"
-      ],
+      "required": [ "CurrentUserInfo", "CreatorInfo", "AttachmentData" ],
       "properties": {
-        "CurrentUserInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "CreatorInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "AttachmentData": {
-          "$ref": "#/definitions/AttachmentInfoByContract"
-        }
+        "CurrentUserInfo": { "$ref": "#/definitions/UserInfo" },
+        "CreatorInfo": { "$ref": "#/definitions/UserInfo" },
+        "AttachmentData": { "$ref": "#/definitions/AttachmentInfoByContract" }
       },
       "type": "object"
     },
     "AttachmentInfoByContract": {
-      "required": [
-        "ContractNumber",
-        "Name",
-        "ExternalId",
-        "EaCodeMain",
-        "TypeCode",
-        "Note",
-        "SendToCMP",
-        "SendToPreview",
-        "SendCompletedMail",
-        "Poznamka"
-      ],
+      "required": [ "ContractNumber", "Name", "ExternalId", "EaCodeMain", "TypeCode", "Note", "SendToCMP", "SendToPreview", "SendCompletedMail", "Poznamka" ],
       "properties": {
         "DocumentExternalId": {
           "type": "string",
           "maxLength": 30,
           "minLength": 0
         },
-        "ContractNumber": {
-          "type": "string"
-        },
+        "ContractNumber": { "type": "string" },
         "Name": {
           "type": "string",
           "maxLength": 255,
@@ -2341,34 +1781,18 @@
           "maxLength": 30,
           "minLength": 0
         },
-        "EaCodeMain": {
-          "type": "string",
-          "maxLength": 4,
-          "minLength": 0
-        },
-        "TypeCode": {
-          "type": "string"
-        },
-        "DeclarationCode": {
-          "type": "string"
-        },
+        "EaCodeMain": { "type": "string" },
+        "TypeCode": { "type": "string" },
+        "DeclarationCode": { "type": "string" },
         "Note": {
           "type": "string",
           "maxLength": 255,
           "minLength": 0
         },
-        "SendToCMP": {
-          "type": "boolean"
-        },
-        "SendToPreview": {
-          "type": "boolean"
-        },
-        "SendCompletedMail": {
-          "type": "boolean"
-        },
-        "FileContentType": {
-          "type": "string"
-        },
+        "SendToCMP": { "type": "boolean" },
+        "SendToPreview": { "type": "boolean" },
+        "SendCompletedMail": { "type": "boolean" },
+        "FileContentType": { "type": "string" },
         "Poznamka": {
           "type": "string",
           "maxLength": 1000,
@@ -2378,59 +1802,35 @@
       "type": "object"
     },
     "PrepareDocumentRequest2": {
-      "required": [
-        "DocumentData",
-        "ClientData",
-        "CurrentUserInfo",
-        "CreatorInfo"
-      ],
+      "required": [ "DocumentData", "ClientData", "CurrentUserInfo", "CreatorInfo" ],
       "properties": {
-        "DocumentData": {
-          "$ref": "#/definitions/DocumentInfo2"
-        },
-        "ClientData": {
-          "$ref": "#/definitions/ClientInfo2"
-        },
+        "DocumentData": { "$ref": "#/definitions/DocumentInfo2" },
+        "ClientData": { "$ref": "#/definitions/ClientInfo2" },
         "OtherClients": {
-          "items": {
-            "$ref": "#/definitions/SigneeInfo2"
-          },
+          "items": { "$ref": "#/definitions/SigneeInfo2" },
           "type": "array"
         },
-        "CurrentUserInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "CreatorInfo": {
-          "$ref": "#/definitions/UserInfo"
-        },
+        "CurrentUserInfo": { "$ref": "#/definitions/UserInfo" },
+        "CreatorInfo": { "$ref": "#/definitions/UserInfo" },
         "NonClientSignatures": {
-          "items": {
-            "$ref": "#/definitions/SignatureData"
-          },
+          "items": { "$ref": "#/definitions/SignatureData" },
           "type": "array"
         },
-        "AdditionalData": {
-          "type": "string"
-        }
+        "AdditionalData": { "type": "string" }
       },
       "type": "object"
     },
     "DocumentInfo2": {
-      "required": [
-        "TypeCode",
-        "TemplateVersion",
-        "Name",
-        "FormId",
-        "ContractNumber"
-      ],
+      "required": [ "TypeCode", "TemplateVersion", "Name", "FormId", "ContractNumber" ],
       "properties": {
-        "Account": {
-          "$ref": "#/definitions/AccountInfo"
-        },
+        "Account": { "$ref": "#/definitions/AccountInfo" },
         "ExpirationDate": {
           "type": "string",
           "format": "date-time"
         },
+        "AutoSendToCmp": { "type": "boolean" },
+        "AllowSendPreview": { "type": "boolean" },
+        "AutoSendEmail": { "type": "boolean" },
         "TypeCode": {
           "type": "string",
           "maxLength": 30,
@@ -2447,34 +1847,27 @@
           "minLength": 0
         },
         "ExternalId": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 30,
+          "minLength": 0
         },
         "FormId": {
           "type": "string",
           "maxLength": 15,
           "minLength": 0
         },
-        "EaCodeMain": {
-          "type": "string",
-          "maxLength": 4,
-          "minLength": 0
-        },
+        "EaCodeMain": { "type": "string" },
         "EaCodeOthers": {
           "type": "string",
           "maxLength": 255,
           "minLength": 0
         },
-        "ContractNumber": {
-          "type": "string"
-        }
+        "ContractNumber": { "type": "string" }
       },
       "type": "object"
     },
     "ClientInfo2": {
-      "required": [
-        "Name",
-        "ExternalId"
-      ],
+      "required": [ "Name", "ExternalId" ],
       "properties": {
         "UniversalId": {
           "type": "string",
@@ -2506,9 +1899,7 @@
           "minLength": 0
         },
         "Signatures": {
-          "items": {
-            "$ref": "#/definitions/SignatureData"
-          },
+          "items": { "$ref": "#/definitions/SignatureData" },
           "type": "array",
           "minLength": 1
         },
@@ -2521,9 +1912,7 @@
       "type": "object"
     },
     "SigneeInfo2": {
-      "required": [
-        "Signatures"
-      ],
+      "required": [ "Signatures" ],
       "properties": {
         "UniversalId": {
           "type": "string",
@@ -2541,9 +1930,7 @@
           "minLength": 0
         },
         "Signatures": {
-          "items": {
-            "$ref": "#/definitions/SignatureData"
-          },
+          "items": { "$ref": "#/definitions/SignatureData" },
           "type": "array",
           "minLength": 1
         }
@@ -2551,10 +1938,7 @@
       "type": "object"
     },
     "AccountInfo": {
-      "required": [
-        "Prefix",
-        "Core"
-      ],
+      "required": [ "Prefix", "Core" ],
       "properties": {
         "Prefix": {
           "type": "string",
@@ -2571,66 +1955,37 @@
     },
     "ResponseUrl2": {
       "properties": {
-        "ExternalId": {
-          "type": "string"
-        },
-        "TargetUrl": {
-          "type": "string"
-        },
-        "Result": {
-          "$ref": "#/definitions/ProcessingResult"
-        }
+        "ExternalId": { "type": "string" },
+        "TargetUrl": { "type": "string" },
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
       },
       "type": "object"
     },
     "CreditDocuments2": {
-      "required": [
-        "DocumentsList"
-      ],
+      "required": [ "DocumentsList" ],
       "properties": {
         "DocumentsList": {
-          "items": {
-            "$ref": "#/definitions/CreditDocument2"
-          },
+          "items": { "$ref": "#/definitions/CreditDocument2" },
           "type": "array"
         },
-        "Result": {
-          "$ref": "#/definitions/ProcessingResult"
-        }
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
       },
       "type": "object"
     },
     "CreditDocument2": {
-      "required": [
-        "ExternalId",
-        "Status",
-        "Category",
-        "ContractNumber",
-        "ClientName",
-        "CreationDate"
-      ],
+      "required": [ "ExternalId", "Status", "Category", "ContractNumber", "ClientName", "CreationDate" ],
       "properties": {
-        "DelegatedTo": {
-          "type": "string"
-        },
-        "DocumentType": {
-          "$ref": "#/definitions/DocumentTypeInfo"
-        },
+        "DelegatedTo": { "type": "string" },
+        "DocumentType": { "$ref": "#/definitions/DocumentTypeInfo" },
         "ExternalId": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 30,
+          "minLength": 0
         },
-        "Status": {
-          "type": "string"
-        },
-        "Category": {
-          "type": "string"
-        },
-        "ContractNumber": {
-          "type": "string"
-        },
-        "ClientName": {
-          "type": "string"
-        },
+        "Status": { "type": "string" },
+        "Category": { "type": "string" },
+        "ContractNumber": { "type": "string" },
+        "ClientName": { "type": "string" },
         "CreationDate": {
           "type": "string",
           "format": "date-time"
@@ -2644,20 +1999,13 @@
     },
     "DocumentTypeInfo": {
       "properties": {
-        "Code": {
-          "type": "string"
-        },
-        "Name": {
-          "type": "string"
-        }
+        "Code": { "type": "string" },
+        "Name": { "type": "string" }
       },
       "type": "object"
     },
     "GetAvailableSigningMethodsRequest": {
-      "required": [
-        "DocumentTypeExternalCode",
-        "DocumentTypeVersion"
-      ],
+      "required": [ "DocumentTypeExternalCode", "DocumentTypeVersion" ],
       "properties": {
         "DocumentTypeExternalCode": {
           "type": "string",
@@ -2674,74 +2022,184 @@
     },
     "AvailableSigningMethods": {
       "properties": {
-        "Methods": {
-          "items": {
-            "$ref": "#/definitions/AvailableSigningMethod"
-          },
+        "Signatures": {
+          "items": { "$ref": "#/definitions/AvailableSigningMethodsForAnchor" },
           "type": "array"
         },
-        "Result": {
-          "$ref": "#/definitions/ProcessingResult"
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
+      },
+      "type": "object"
+    },
+    "AvailableSigningMethodsForAnchor": {
+      "properties": {
+        "Anchor": { "type": "string" },
+        "Methods": {
+          "items": { "$ref": "#/definitions/AvailableSigningMethod" },
+          "type": "array"
         }
       },
       "type": "object"
     },
     "AvailableSigningMethod": {
       "properties": {
-        "Type": {
-          "type": "string"
-        },
-        "Category": {
-          "type": "string"
-        }
+        "Type": { "type": "string" },
+        "Category": { "type": "string" }
       },
       "type": "object"
     },
-    "FileResult": {
+    "ActionResultFile": {
       "type": "file",
       "format": "binary"
     },
     "SubmitDispatchFormRequest": {
-      "required": [
-        "Documents"
-      ],
+      "required": [ "Documents" ],
       "properties": {
         "Documents": {
-          "items": {
-            "$ref": "#/definitions/DispatchFormDocument"
-          },
+          "items": { "$ref": "#/definitions/DispatchFormDocument" },
           "type": "array",
           "minLength": 1
         },
-        "DocumentsValid": {
-          "type": "boolean"
-        }
+        "DocumentsValid": { "type": "boolean" }
       },
       "type": "object"
     },
     "DispatchFormDocument": {
-      "required": [
-        "ExternalId"
-      ],
+      "required": [ "ExternalId" ],
       "properties": {
         "ExternalId": {
           "type": "string",
           "maxLength": 15,
           "minLength": 0
         },
-        "EaCode": {
+        "EaCode": { "type": "string" },
+        "IsCancelled": { "type": "boolean" },
+        "AttachmentsExternalIds": {
+          "items": { "type": "string" },
+          "type": "array"
+        },
+        "AttachmentsComplete": { "type": "boolean" },
+        "NotCompletedReason": { "type": "string" }
+      },
+      "type": "object"
+    },
+    "SendEmailRequest": {
+      "properties": {
+        "SendTo": { "type": "string" },
+        "SendToCC": {
+          "items": { "type": "string" },
+          "type": "array"
+        },
+        "DocumentExternalId": { "type": "string" },
+        "PhoneNumber": { "type": "string" },
+        "ClientBirthNoOrRegNo": { "type": "string" },
+        "ClientName": { "type": "string" }
+      },
+      "type": "object"
+    },
+    "SendSmsRequest": {
+      "properties": {
+        "DocumentExternalId": { "type": "string" },
+        "PhoneNumber": { "type": "string" },
+        "ClientBirthNoOrRegNo": { "type": "string" },
+        "ClientName": { "type": "string" }
+      },
+      "type": "object"
+    },
+    "BoolResult": {
+      "properties": {
+        "Value": { "type": "boolean" },
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
+      },
+      "type": "object"
+    },
+    "ManagedTaskInfoResult": {
+      "properties": {
+        "Value": { "$ref": "#/definitions/ManagedTaskInfo" },
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
+      },
+      "type": "object"
+    },
+    "ManagedTaskInfo": {
+      "properties": {
+        "Id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Name": { "type": "string" },
+        "Status": { "type": "string" },
+        "PreviousStatus": { "type": "string" },
+        "ReferenceId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "ReferenceName": { "type": "string" },
+        "CurrentId": { "type": "string" },
+        "Data": { "type": "object" },
+        "Context": { "type": "string" },
+        "ParentId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "ActiveChangeId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "type": "object"
+    },
+    "ManagedTaskInfosResult": {
+      "properties": {
+        "ManagedTasks": {
+          "items": { "$ref": "#/definitions/ManagedTaskInfo" },
+          "type": "array"
+        },
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
+      },
+      "type": "object"
+    },
+    "NumberResult": {
+      "properties": {
+        "Value": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
+      },
+      "type": "object"
+    },
+    "IncomingMessagesResult": {
+      "properties": {
+        "Messages": {
+          "items": { "$ref": "#/definitions/IncomingMessageInfo" },
+          "type": "array"
+        },
+        "Result": { "$ref": "#/definitions/ProcessingResult" }
+      },
+      "type": "object"
+    },
+    "IncomingMessageInfo": {
+      "required": [ "SerializedMessage", "SerializedHeaders" ],
+      "properties": {
+        "Id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Topic": { "type": "string" },
+        "RetryDate": {
           "type": "string",
-          "maxLength": 4,
-          "minLength": 0
+          "format": "date-time"
         },
-        "IsCancelled": {
-          "type": "boolean"
+        "RetryCount": {
+          "readOnly": true,
+          "type": "integer",
+          "format": "int64"
         },
-        "AttachmentsComplete": {
-          "type": "boolean"
-        },
-        "NotCompletedReason": {
-          "type": "string"
+        "SerializedMessage": { "type": "string" },
+        "SerializedHeaders": { "type": "string" },
+        "LastErrorMessage": { "type": "string" },
+        "LastErrorDate": {
+          "type": "string",
+          "format": "date-time"
         }
       },
       "type": "object"
@@ -2754,14 +2212,9 @@
     }
   },
   "tags": [
-    {
-      "name": "DocumentService"
-    },
-    {
-      "name": "DocumentService2"
-    },
-    {
-      "name": "InSignService"
-    }
+    { "name": "DocumentService" },
+    { "name": "DocumentService2" },
+    { "name": "InSignService" },
+    { "name": "TestService" }
   ]
 }
