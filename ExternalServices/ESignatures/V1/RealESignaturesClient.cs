@@ -168,7 +168,8 @@ internal sealed class RealESignaturesClient
                         Info3 = request.ClientData.Email
                     }
                 }
-            }
+            },
+            AdditionalData = request.AdditionalData
         };
 
         if (request.OtherClients is not null)
