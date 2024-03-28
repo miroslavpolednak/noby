@@ -1,39 +1,37 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
-using DomainServices.OfferService.Clients;
-using DomainServices.SalesArrangementService.Clients;
+using DomainServices.OfferService.Contracts;
+using NOBY.Services.OfferLink;
+using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Offer.LinkMortgageOffer;
 
-internal class LinkMortgageOfferHandler : IRequestHandler<LinkMortgageOfferRequest>
+internal sealed class LinkMortgageOfferHandler : IRequestHandler<LinkMortgageOfferRequest>
 {
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
+    private static readonly MortgageOfferLinkValidator _validator = new()
+    {
+        SalesArrangementType = SalesArrangementTypes.Mortgage,
+        OfferType = OfferTypes.Mortgage,
+        AdditionalValidation = AdditionalValidation
+    };
 
-    public LinkMortgageOfferHandler(ICaseServiceClient caseService, ISalesArrangementServiceClient salesArrangementService, IOfferServiceClient offerService)
+    private readonly ICaseServiceClient _caseService;
+    private readonly MortgageOfferLinkService _mortgageOfferLinkService;
+
+    public LinkMortgageOfferHandler(ICaseServiceClient caseService, MortgageOfferLinkService mortgageOfferLinkService)
     {
         _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
+        _mortgageOfferLinkService = mortgageOfferLinkService;
     }
 
     public async Task Handle(LinkMortgageOfferRequest request, CancellationToken cancellationToken)
     {
-        var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-        var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
-
-        if (offer.Data.CaseId.HasValue && salesArrangement.CaseId != offer.Data.CaseId ||
-            salesArrangement.State != (int)SalesArrangementStates.InProgress && salesArrangement.State != (int)SalesArrangementStates.NewArrangement ||
-            salesArrangement.SalesArrangementTypeId != (int)SalesArrangementTypes.Mortgage)
-        {
-            throw new NobyValidationException(90032);
-        }
+        var (salesArrangement, _) = await _mortgageOfferLinkService.LoadAndValidateData(request.SalesArrangementId, request.OfferId, _validator, cancellationToken);
 
         await UpdateOfferContracts(salesArrangement.CaseId, request.OfferContacts, cancellationToken);
         await UpdateCustomerData(salesArrangement.CaseId, request, cancellationToken);
 
-        await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
+        await _mortgageOfferLinkService.LinkOfferToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
     }
 
     private async Task UpdateOfferContracts(long caseId, Dto.ContactsDto? contacts, CancellationToken cancellationToken)
@@ -58,14 +56,16 @@ internal class LinkMortgageOfferHandler : IRequestHandler<LinkMortgageOfferReque
         if (caseInstance.Customer?.Identity is not null && caseInstance.Customer.Identity.IdentityId != 0)
             return;
 
-        await _caseService.UpdateCustomerData(
-            caseId,
-            new CustomerData
-            {
-                DateOfBirthNaturalPerson = request.DateOfBirth,
-                FirstNameNaturalPerson = request.FirstName ?? "",
-                Name = request.LastName ?? "",
-            },
-            cancellationToken);
+        var customerData = new CustomerData
+        {
+            DateOfBirthNaturalPerson = request.DateOfBirth,
+            FirstNameNaturalPerson = request.FirstName ?? "",
+            Name = request.LastName ?? "",
+        };
+
+        await _caseService.UpdateCustomerData(caseId, customerData, cancellationToken);
     }
+
+    private static Task<bool> AdditionalValidation(_SA salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken) => 
+        Task.FromResult(!offer.Data.CaseId.HasValue || salesArrangement.CaseId == offer.Data.CaseId);
 }

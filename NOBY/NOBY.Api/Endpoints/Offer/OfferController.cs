@@ -133,7 +133,7 @@ public sealed class OfferController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [Obsolete("Use LinkMortgageModelation endpoint")]
+    [Obsolete("Use LinkMortgageOffer endpoint")]
     public async Task LinkModelation([FromRoute] int salesArrangementId, [FromBody] LinkModelation.LinkModelationRequest request)
         => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? new LinkModelation.LinkModelationRequest());
 
@@ -192,6 +192,7 @@ public sealed class OfferController : ControllerBase
     /// </remarks>
     [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-offer")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task LinkMortgageOffer([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageOffer.LinkMortgageOfferRequest request)
@@ -206,9 +207,25 @@ public sealed class OfferController : ControllerBase
     /// </remarks>
     [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-retention-offer")]
     [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task LinkMortgageRetentionOffer([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest request)
+        => await _mediator.Send(request.InfuseId(caseId, salesArrangementId));
+
+    /// <summary>
+    /// Nalinkuje mimořádnou splátku na stávající SA.
+    /// </summary>
+    /// <remarks>
+    /// Nalinkuje mimořádnou splátku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=138F178A-72B5-46f6-85B2-D8414F5043B3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-extra-payment")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
+    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task LinkMortgageExtraPayment([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest request)
         => await _mediator.Send(request.InfuseId(caseId, salesArrangementId));
 
     private readonly IMediator _mediator;
