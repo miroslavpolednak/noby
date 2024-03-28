@@ -5,7 +5,6 @@ option csharp_namespace = "DomainServices.OfferService.Contracts.v1";
 import "google/protobuf/empty.proto";
 import "Messages/ValidateOfferId.proto";
 import "Messages/GetOffer.proto";
-import "Messages/GetOfferDetail.proto";
 import "Messages/SimulateMortgage.proto";
 import "Messages/GetMortgageOfferFPSchedule.proto";
 import "Messages/GetOfferDeveloper.proto";
@@ -15,13 +14,12 @@ import "Messages/SimulateMortgageRefixation.proto";
 import "Messages/GetInterestRate.proto";
 import "Messages/SimulateMortgageExtraPayment.proto";
 import "Messages/GetOfferList.proto";
+import "Messages/GetMortgageDetail.proto";
 
 service OfferService {
 	rpc ValidateOfferId (ValidateOfferIdRequest) returns (ValidateOfferIdResponse);
 
 	rpc GetOffer (GetOfferRequest) returns (GetOfferResponse);
-
-	rpc GetOfferDetail (GetOfferDetailRequest) returns (GetOfferDetailResponse);
 
 	rpc SimulateMortgage (SimulateMortgageRequest) returns (SimulateMortgageResponse);
 
@@ -40,4 +38,6 @@ service OfferService {
 	rpc GetInterestRate (GetInterestRateRequest) returns (GetInterestRateResponse);
 
 	rpc GetOfferList (GetOfferListRequest) returns (GetOfferListResponse);
+
+	rpc GetMortgageDetail (GetMortgageDetailRequest) returns (GetMortgageDetailResponse);
 }

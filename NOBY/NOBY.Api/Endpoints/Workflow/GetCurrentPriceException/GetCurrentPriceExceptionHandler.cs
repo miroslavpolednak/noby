@@ -1,6 +1,6 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.GetCurrentPriceException;
@@ -27,7 +27,7 @@ internal sealed class GetCurrentPriceExceptionHandler
         else
         {
             var productSA = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First();
-            var offer = await _offerService.GetOfferDetail(productSA.OfferId.GetValueOrDefault(), cancellationToken);
+            var offer = await _offerService.GetMortgageDetail(productSA.OfferId.GetValueOrDefault(), cancellationToken);
             var process = (await _caseService.GetProcessList(request.CaseId, cancellationToken)).FirstOrDefault(t => t.ProcessTypeId == (int)WorkflowProcesses.Main);
             string? taskTypeName = (await _codebookService.WorkflowTaskTypes(cancellationToken)).FirstOrDefault(t => t.Id == (int)WorkflowTaskTypes.PriceException)?.Name;
             var loanInterestRateAnnouncedTypes = await _codebookService.LoanInterestRateAnnouncedTypes(cancellationToken);
@@ -39,17 +39,17 @@ internal sealed class GetCurrentPriceExceptionHandler
                     ProcessNameLong = process?.ProcessNameLong ?? "",
                     Amendments = new NOBY.Dto.Workflow.AmendmentsPriceException
                     {
-                        Expiration = DateOnly.FromDateTime(offer.MortgageOffer.BasicParameters.GuaranteeDateTo),
+                        Expiration = DateOnly.FromDateTime(offer.BasicParameters.GuaranteeDateTo),
                         LoanInterestRate = new()
                         {
-                            LoanInterestRate = offer.MortgageOffer.SimulationResults.LoanInterestRate,
-                            LoanInterestRateProvided = offer.MortgageOffer.SimulationResults.LoanInterestRateProvided,
+                            LoanInterestRate = offer.SimulationResults.LoanInterestRate,
+                            LoanInterestRateProvided = offer.SimulationResults.LoanInterestRateProvided,
                             LoanInterestRateAnnouncedTypeName = loanInterestRateAnnouncedTypes
-                                .FirstOrDefault(t => t.Id == offer.MortgageOffer.SimulationResults.LoanInterestRateAnnouncedType)?
+                                .FirstOrDefault(t => t.Id == offer.SimulationResults.LoanInterestRateAnnouncedType)?
                                 .Name ?? string.Empty,
-                            LoanInterestRateDiscount = offer.MortgageOffer.SimulationInputs.InterestRateDiscount
+                            LoanInterestRateDiscount = offer.SimulationInputs.InterestRateDiscount
                         },
-                        Fees = offer.MortgageOffer.AdditionalSimulationResults.Fees?.Select(t => new Dto.Workflow.Fee
+                        Fees = offer.AdditionalSimulationResults.Fees?.Select(t => new Dto.Workflow.Fee
                         {
                             FeeName = t.Name.ToString(System.Globalization.CultureInfo.InvariantCulture),
                             TariffSum = (decimal?)t.TariffSum ?? 0,

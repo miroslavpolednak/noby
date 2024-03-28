@@ -1,4 +1,4 @@
-﻿using DomainServices.OfferService.Clients;
+﻿using DomainServices.OfferService.Clients.v1;
 using NOBY.Api.Endpoints.Offer.SharedDto;
 using Abstraction = DomainServices.SalesArrangementService.Clients;
 
@@ -16,17 +16,17 @@ internal sealed class GetMortgageBySalesArrangementHandler
         if (!salesArrangementInstance.OfferId.HasValue)
             throw new NobyValidationException("SalesArrangement is not linked to any Offer");
 
-        var result = await _offerService.GetOfferDetail(salesArrangementInstance.OfferId.Value, cancellationToken);
+        var offer = await _offerService.GetMortgageDetail(salesArrangementInstance.OfferId.Value, cancellationToken);
 
         // predelat z DS na FE Dto
         return new GetMortgageResponse
         {
-            OfferId = result.Data.OfferId,
-            OfferGuaranteeDateTo = result.MortgageOffer.BasicParameters.GuaranteeDateTo,
-            ResourceProcessId = result.Data.ResourceProcessId,
-            SimulationInputs = result.MortgageOffer.SimulationInputs.ToApiResponse(result.MortgageOffer.BasicParameters),
-            SimulationResults = result.MortgageOffer.SimulationResults.ToApiResponse(result.MortgageOffer.SimulationInputs, result.MortgageOffer.AdditionalSimulationResults),
-            CreditWorthinessSimpleInputs = result.MortgageOffer.CreditWorthinessSimpleInputs.ToApiResponse(result.MortgageOffer.IsCreditWorthinessSimpleRequested),
+            OfferId = offer.Data.OfferId,
+            OfferGuaranteeDateTo = offer.BasicParameters.GuaranteeDateTo,
+            ResourceProcessId = offer.Data.ResourceProcessId,
+            SimulationInputs = offer.SimulationInputs.ToApiResponse(offer.BasicParameters),
+            SimulationResults = offer.SimulationResults.ToApiResponse(offer.SimulationInputs, offer.AdditionalSimulationResults),
+            CreditWorthinessSimpleInputs = offer.CreditWorthinessSimpleInputs.ToApiResponse(offer.Data.IsCreditWorthinessSimpleRequested)
         };
     }
 

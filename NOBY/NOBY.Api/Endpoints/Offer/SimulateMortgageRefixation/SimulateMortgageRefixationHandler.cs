@@ -1,6 +1,6 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation;

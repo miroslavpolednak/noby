@@ -29,7 +29,7 @@ internal sealed class SearchCasesHandler
             .Skip(paginable.RecordOffset)
             .Take(paginable.PageSize)
             .AsNoTracking()
-            .Select(CaseServiceDatabaseExpressions.CaseDetail()
+            .Select(DatabaseExpressions.CaseDetail()
         ).ToListAsync(cancellation);
 
         // get active tasks - nejde delat pres EF kvuli Grpc kolekci

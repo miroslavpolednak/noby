@@ -1,6 +1,6 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.HouseholdService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using SharedTypes.Enums;
 
@@ -19,7 +19,7 @@ internal sealed class UpdateMortgageHandler
         }
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(productSA!.SalesArrangementId, cancellationToken);
-        var offer = await _offerService.GetOfferDetail(salesArrangement.OfferId!.Value, cancellationToken);
+        var offer = await _offerService.GetOffer(salesArrangement.OfferId!.Value, cancellationToken);
         var customers = await _customerOnSAService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
         var caseInstance = await _caseService.ValidateCaseId(salesArrangement.CaseId, false, cancellationToken);
 

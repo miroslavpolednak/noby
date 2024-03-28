@@ -37,7 +37,7 @@
 		<Protobuf Include="Messages\ValidateOfferId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages/Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\GetOffer.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
-		<Protobuf Include="Messages\GetOfferDetail.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Messages\GetMortgageDetail.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages/SimulateMortgage.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\GetMortgageOfferFPSchedule.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages/GetOfferDeveloper.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />

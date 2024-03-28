@@ -162,7 +162,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
     private readonly GetLoanApplicationAssessmentResultService _resultService;
     private readonly ICurrentUserAccessor _currentUser;
     private readonly IUserServiceClient _userService;
-    private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
+    private readonly DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly NOBY.Services.RiskCaseProcessor.RiskCaseProcessorService _riskCaseProcessor;
     private readonly DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService;
@@ -172,7 +172,7 @@ internal sealed class GetLoanApplicationAssessmentHandler
         GetLoanApplicationAssessmentResultService resultService,
         IUserServiceClient userService,
         ICurrentUserAccessor currentUser,
-        DomainServices.OfferService.Clients.IOfferServiceClient offerService,
+        DomainServices.OfferService.Clients.v1.IOfferServiceClient offerService,
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         Services.RiskCaseProcessor.RiskCaseProcessorService riskCaseProcessor,
         DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,

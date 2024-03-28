@@ -1,6 +1,6 @@
 ﻿using CIS.Core;
 using DomainServices.CaseService.Clients.v1;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 

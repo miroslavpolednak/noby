@@ -1,5 +1,5 @@
 ﻿using DomainServices.CaseService.Clients.v1;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -31,7 +31,7 @@ internal sealed class RealEstateValuationTypeService
             if (caseInstance.State!.Value == (int)CaseStates.InProgress)
             {
                 var productSA = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First();
-                var offerInstance = await _offerService.GetOfferDetail(productSA.OfferId!.Value, cancellationToken);
+                var offerInstance = await _offerService.GetOffer(productSA.OfferId!.Value, cancellationToken);
 
                 dsRequest.LoanAmount = offerInstance.MortgageOffer.SimulationResults.LoanAmount;
                 if (offerInstance.MortgageOffer.SimulationInputs.LoanPurposes?.Any() ?? false)

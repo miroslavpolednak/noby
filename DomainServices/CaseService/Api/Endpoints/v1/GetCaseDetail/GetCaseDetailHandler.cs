@@ -18,7 +18,7 @@ internal sealed class GetCaseDetailHandler
         var model = await _dbContext.Cases
             .Where(t => t.CaseId == request.CaseId)
             .AsNoTracking()
-            .Select(CaseServiceDatabaseExpressions.CaseDetail())
+            .Select(DatabaseExpressions.CaseDetail())
             .FirstOrDefaultAsync(cancellation)
             ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
