@@ -37,7 +37,8 @@ internal sealed class SimulateMortgageRefixationHandler
             ResourceProcessId = Guid.NewGuid(),
             CaseId = request.CaseId,
             OfferType = (int)OfferTypes.MortgageRefixation,
-            Origin = (int)OfferOrigins.OfferService
+            Origin = (int)OfferOrigins.OfferService,
+            Flags = (int)OfferFlagTypes.Current
         };
         _dbContext.Offers.Add(entity);
 

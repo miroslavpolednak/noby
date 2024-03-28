@@ -9,6 +9,24 @@ namespace NOBY.Api.Endpoints.Offer;
 public sealed class OfferController : ControllerBase
 {
     /// <summary>
+    /// Simulace mimořádné splátky hypotéky.
+    /// </summary>
+    /// <remarks>
+    /// Provolá simulační službu Starbuildu pro refixace.
+    /// 
+    /// </remarks>
+    [HttpPost("case/{caseId:long}/simulate-mortgage-extra-payment-offer")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [NobySkipCaseStateAndProductSAValidation]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [ProducesResponseType(typeof(SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse> SimulateMortgageExtraPayment([FromRoute] long caseId, [FromBody] SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest request)
+        => await _mediator.Send((request ?? new SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest()).InfuseId(caseId));
+
+    /// <summary>
     /// Simulace KB refixací.
     /// </summary>
     /// <remarks>
