@@ -17,7 +17,7 @@ internal sealed class SimulateMortgageRetentionRequestValidator
             .MustAsync(async (req, t, cancellationToken) => 
             {
                 var dates = await ratesValidFromService.GetValidityDates(req.CaseId, cancellationToken);
-                return dates.Date1 == t || dates.Date2 == t;
+                return dates.Date1 == t.Date || dates.Date2 == t.Date;
             })
             .When(t => t.FeeAmountDiscounted.HasValue);
     }

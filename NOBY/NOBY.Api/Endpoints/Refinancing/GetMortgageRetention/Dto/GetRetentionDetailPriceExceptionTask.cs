@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto;
+﻿namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.Dto;
 
 public sealed class GetRetentionDetailPriceExceptionTask
 {

@@ -1,6 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Refinancing.GetRetentionDetail;
+﻿namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 
-public sealed class GetRetentionDetailResponse
+public sealed class GetMortgageRetentionResponse
 {
     /// <summary>
     /// Informace zda se jedná o readonly režim

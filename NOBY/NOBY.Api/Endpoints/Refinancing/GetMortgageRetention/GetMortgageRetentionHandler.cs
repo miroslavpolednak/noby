@@ -3,14 +3,13 @@ using DomainServices.CaseService.Clients.v1;
 using DomainServices.OfferService.Clients;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using System.Diagnostics;
 
-namespace NOBY.Api.Endpoints.Refinancing.GetRetentionDetail;
+namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 
-internal sealed class GetRetentionDetailHandler
-    : IRequestHandler<GetRetentionDetailRequest, GetRetentionDetailResponse>
+internal sealed class GetMortgageRetentionHandler
+    : IRequestHandler<GetMortgageRetentionRequest, GetMortgageRetentionResponse>
 {
-    public async Task<GetRetentionDetailResponse> Handle(GetRetentionDetailRequest request, CancellationToken cancellationToken)
+    public async Task<GetMortgageRetentionResponse> Handle(GetMortgageRetentionRequest request, CancellationToken cancellationToken)
     {
         // detail retencniho procesu
         var retentionProcess = await getRetentionProcess(request.CaseId, request.ProcessId, cancellationToken);
@@ -31,7 +30,7 @@ internal sealed class GetRetentionDetailHandler
         // toto je aktivni task!
         bool existActiveIC = tasks.Any(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled && t.DecisionId != 2 && t.PhaseTypeId == 2);
 
-        var response = new GetRetentionDetailResponse
+        var response = new GetMortgageRetentionResponse
         {
             IsReadOnly = refinancingState == RefinancingStates.RozpracovanoVNoby,
             Tasks = (await tasks
@@ -92,7 +91,7 @@ internal sealed class GetRetentionDetailHandler
     /// <summary>
     /// Vytvoreni detail Offer
     /// </summary>
-    private static void replaceTaskDataWithOfferData(GetRetentionDetailResponse response, GetOfferResponse offerInstance)
+    private static void replaceTaskDataWithOfferData(GetMortgageRetentionResponse response, GetOfferResponse offerInstance)
     {
         response.FeeAmount = offerInstance.MortgageRetention.BasicParameters.FeeAmount;
         response.InterestRateValidFrom = offerInstance.MortgageRetention.SimulationInputs.InterestRateValidFrom;
@@ -123,7 +122,7 @@ internal sealed class GetRetentionDetailHandler
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICaseServiceClient _caseService;
 
-    public GetRetentionDetailHandler(ISalesArrangementServiceClient salesArrangementService, ICaseServiceClient caseService, IOfferServiceClient offerService, Services.WorkflowMapper.IWorkflowMapperService workflowMapper)
+    public GetMortgageRetentionHandler(ISalesArrangementServiceClient salesArrangementService, ICaseServiceClient caseService, IOfferServiceClient offerService, Services.WorkflowMapper.IWorkflowMapperService workflowMapper)
     {
         _salesArrangementService = salesArrangementService;
         _caseService = caseService;
