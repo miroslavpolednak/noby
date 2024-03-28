@@ -2,7 +2,7 @@
 using NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
 using NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument;
 using Swashbuckle.AspNetCore.Annotations;
-using NOBY.Api.Endpoints.Refinancing.GetRetentionDetail;
+using NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 
 namespace NOBY.Api.Endpoints.Refinancing;
 
@@ -26,10 +26,10 @@ public sealed class RefinancingController : ControllerBase
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(GetRetentionDetailResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetMortgageRetentionResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetRetentionDetailResponse> GetRetentionDetail([FromRoute] long caseId, [FromRoute] long processId)
-        => await _mediator.Send(new GetRetentionDetailRequest(caseId, processId));
+    public async Task<GetMortgageRetentionResponse> GetRetentionDetail([FromRoute] long caseId, [FromRoute] long processId)
+        => await _mediator.Send(new GetMortgageRetentionRequest(caseId, processId));
 
     /// <summary>
     /// Žádosti o změnu sazby

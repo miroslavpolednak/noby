@@ -105,7 +105,7 @@ internal sealed class JobRunnerHandler
         }
         catch (Exception ex)
         {
-            saveStatusChange(statusEntity, ScheduleJobStatuses.Failed);
+            saveStatusChange(statusEntity, ScheduleJobStatuses.Failed, ex.Message);
             _logger.JobFailed(notification.JobId, ex.Message, ex);
         }
     }
@@ -114,6 +114,7 @@ internal sealed class JobRunnerHandler
     {
         statusEntity.Status = newStatus.ToString();
         statusEntity.FailedMessage = failedMessage;
+        statusEntity.StatusChangedAt = _timeProvider.GetLocalNow().DateTime;
         
         _dbContext!.SaveChanges();
     }

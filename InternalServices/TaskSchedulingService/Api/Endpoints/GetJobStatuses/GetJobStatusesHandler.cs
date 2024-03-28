@@ -10,10 +10,6 @@ internal sealed class GetJobStatusesHandler
     {
         var query = _dbContext.ScheduleJobStatuses
             .AsNoTracking()
-            .Include(t => t.Trigger)
-            .Include(t => t.Job)
-            .OrderByDescending(t => t.StartedAt)
-            .Take(request.PageSize).Skip((request.Page - 1) * request.PageSize)
             .AsQueryable();
 
         if (!string.IsNullOrEmpty(request.TraceId))
@@ -27,6 +23,8 @@ internal sealed class GetJobStatusesHandler
         }
         
         var result = await query
+            .OrderByDescending(t => t.StartedAt)
+            .Take(request.PageSize).Skip((request.Page - 1) * request.PageSize)
             .Select(t => new GetJobStatusesResponse.Types.GetJobStatuseItem
             {
                 StartedAt = t.StartedAt,

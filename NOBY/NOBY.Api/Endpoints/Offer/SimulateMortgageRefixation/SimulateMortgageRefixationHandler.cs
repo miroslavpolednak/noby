@@ -21,7 +21,11 @@ internal sealed class SimulateMortgageRefixationHandler
         var product = await _productService.GetMortgage(request.CaseId, cancellationToken);
 
         // validace fixed period
-        //(await _codebookService.FixedRatePeriods(cancellationToken)).Any(t => t.IsValid && t.FixedRatePeriod = request.FixedRatePeriod && t.ProductTypeId == )
+        var periods = await _codebookService.FixedRatePeriods(cancellationToken);
+        if (!periods.Any(t => t.IsValid && t.FixedRatePeriod == request.FixedRatePeriod && t.ProductTypeId == product.Mortgage.ProductTypeId))
+        {
+            throw new NobyValidationException("FixedRatePeriod cant be validated");
+        }
 
         var validFrom = ((DateTime?)product.Mortgage.FixedRateValidTo ?? DateTime.MinValue).AddDays(1);
 

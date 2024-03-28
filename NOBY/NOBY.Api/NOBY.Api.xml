@@ -3264,6 +3264,90 @@
             Aktuální úroková sazba.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.Dto.GetRetentionDetailPriceExceptionTask.Task">
+            <summary>
+            Detail úkolu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.Dto.GetRetentionDetailPriceExceptionTask.PriceExceptionDetails">
+            <summary>
+            Detail cenové vyjímky
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionHandler.getRetentionProcess(System.Int64,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Detail procesu retence
+            </summary>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionHandler.replaceTaskDataWithOfferData(NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse,DomainServices.OfferService.Contracts.GetOfferResponse)">
+            <summary>
+            Vytvoreni detail Offer
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.IsReadOnly">
+            <summary>
+            Informace zda se jedná o readonly režim
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.FeeAmountDiscounted">
+            <summary>
+            Upravená výše poplatku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.InterestRateValidFrom">
+            <summary>
+            Platnost nové úrokové sazby od.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.InterestRate">
+            <summary>
+            Úroková sazba
+            </summary>
+            <example>4.7</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.InterestRateDiscount">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>0.2</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.InterestRateDiscounted">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>4.5</example>
+            !!! dopocitat pro FE - rozdil mezi InterestRate - InterestRateDiscounted
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.LoanPaymentAmountDiscounted">
+            <summary>
+            Výše měsíční splátky se zohledněním IC.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.ContainsInconsistentIndividualPriceData">
+            <summary>
+            Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.IndividualPriceCommentLastVersion">
+            <summary>
+            Komentář k IC
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.IsGenerateDocumentEnabled">
+            <summary>
+            Označuje zda má být aktivní button Generovat dokument
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.Tasks">
+            <summary>
+            Všechny workflow úkoly pro daný proces retence
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.GetRefinancingParametersResponse.IsAnotherSalesArrangementInProgress">
             <summary>
             True, pokud existuje rozpracovaná relevantní žádost
@@ -3347,90 +3431,6 @@
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingProcess.SalesArrangementId">
             <summary>
             SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto.GetRetentionDetailPriceExceptionTask.Task">
-            <summary>
-            Detail úkolu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.Dto.GetRetentionDetailPriceExceptionTask.PriceExceptionDetails">
-            <summary>
-            Detail cenové vyjímky
-            </summary>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailHandler.getRetentionProcess(System.Int64,System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Detail procesu retence
-            </summary>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailHandler.replaceTaskDataWithOfferData(NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse,DomainServices.OfferService.Contracts.GetOfferResponse)">
-            <summary>
-            Vytvoreni detail Offer
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.IsReadOnly">
-            <summary>
-            Informace zda se jedná o readonly režim
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.FeeAmountDiscounted">
-            <summary>
-            Upravená výše poplatku
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.InterestRateValidFrom">
-            <summary>
-            Platnost nové úrokové sazby od.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.InterestRate">
-            <summary>
-            Úroková sazba
-            </summary>
-            <example>4.7</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.InterestRateDiscount">
-            <summary>
-            Sleva ze sazby
-            </summary>
-            <example>0.2</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.InterestRateDiscounted">
-            <summary>
-            Sleva ze sazby
-            </summary>
-            <example>4.5</example>
-            !!! dopocitat pro FE - rozdil mezi InterestRate - InterestRateDiscounted
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.LoanPaymentAmount">
-            <summary>
-            Výše měsíční splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.LoanPaymentAmountDiscounted">
-            <summary>
-            Výše měsíční splátky se zohledněním IC.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.ContainsInconsistentIndividualPriceData">
-            <summary>
-            Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.IndividualPriceCommentLastVersion">
-            <summary>
-            Komentář k IC
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.IsGenerateDocumentEnabled">
-            <summary>
-            Označuje zda má být aktivní button Generovat dokument
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRetentionDetail.GetRetentionDetailResponse.Tasks">
-            <summary>
-            Všechny workflow úkoly pro daný proces retence
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRetentionDetail(System.Int64,System.Int64)">
