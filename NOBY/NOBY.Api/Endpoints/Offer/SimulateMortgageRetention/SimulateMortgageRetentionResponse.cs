@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRetention;
 
-public class SimulateMortgageRetentionResponse
+public sealed class SimulateMortgageRetentionResponse
 {
     /// <summary>
     /// ID vytvorene simulace.
