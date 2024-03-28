@@ -91,6 +91,7 @@ public class StartSigningMapper
         var request = new PrepareDocumentRequest
         {
             ExternalId = await GetExternalId(salesArrangement.CaseId, cancellationToken),
+            AdditionalData = $"case_id:{salesArrangement.CaseId}",
             CurrentUserInfo = new()
             {
                 Cpm = currentUser.UserInfo.Cpm,
