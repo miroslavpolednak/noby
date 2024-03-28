@@ -14,6 +14,7 @@ import "Messages/SimulateMortgageRetention.proto";
 import "Messages/SimulateMortgageRefixation.proto";
 import "Messages/GetInterestRate.proto";
 import "Messages/SimulateMortgageExtraPayment.proto";
+import "Messages/GetOfferList.proto";
 
 service OfferService {
 	rpc ValidateOfferId (ValidateOfferIdRequest) returns (ValidateOfferIdResponse);
@@ -37,4 +38,6 @@ service OfferService {
 	rpc UpdateOffer (UpdateOfferRequest) returns (google.protobuf.Empty);
 
 	rpc GetInterestRate (GetInterestRateRequest) returns (GetInterestRateResponse);
+
+	rpc GetOfferList (GetOfferListRequest) returns (GetOfferListResponse);
 }
