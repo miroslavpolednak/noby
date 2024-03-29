@@ -17,7 +17,7 @@ internal class OfferServiceWrapper : IServiceWrapper
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
         input.ValidateOfferId();
-
+        
         data.Offer = await _offerService.GetMortgageDetail(input.OfferId!.Value, cancellationToken);
     }
 
