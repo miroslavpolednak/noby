@@ -136,6 +136,18 @@ public sealed class OfferController : ControllerBase
         => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? new LinkModelation.LinkModelationRequest());
 
     /// <summary>
+    /// Nastavuje příznaky na modelaci.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    [HttpPut("case/{caseId:long}/offer/{offerId:int}/flags")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task SetOfferFlags([FromRoute] long caseId, [FromRoute] int offerId, [FromBody] SetOfferFlags.SetOfferFlagsRequest request)
+        => await _mediator.Send((request ?? new SetOfferFlags.SetOfferFlagsRequest()).InfuseId(offerId));
+
+    /// <summary>
     /// Plný splátkový kalendář dle ID simulace.
     /// </summary>
     /// <remarks>

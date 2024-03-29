@@ -28,23 +28,26 @@ internal sealed class GetOfferListHandler
                 Data = offer
             };
 
-            switch (offer.OfferType)
+            if (!request.OmmitParametersFromResponse)
             {
-                case OfferTypes.Mortgage:
-                    result.MortgageOffer = _offerMapper.MapToFullData((Database.DocumentDataEntities.MortgageOfferData)offersData[offer.OfferId]);
-                    break;
+                switch (offer.OfferType)
+                {
+                    case OfferTypes.Mortgage:
+                        result.MortgageOffer = _offerMapper.MapToFullData((Database.DocumentDataEntities.MortgageOfferData)offersData[offer.OfferId]);
+                        break;
 
-                case OfferTypes.MortgageRetention:
-                    result.MortgageRetention = _retentionMapper.MapToFullData((Database.DocumentDataEntities.MortgageRetentionData)offersData[offer.OfferId]);
-                    break;
+                    case OfferTypes.MortgageRetention:
+                        result.MortgageRetention = _retentionMapper.MapToFullData((Database.DocumentDataEntities.MortgageRetentionData)offersData[offer.OfferId]);
+                        break;
 
-                case OfferTypes.MortgageRefixation:
-                    result.MortgageRefixation = _refixationMapper.MapToFullData((Database.DocumentDataEntities.MortgageRefixationData)offersData[offer.OfferId]);
-                    break;
+                    case OfferTypes.MortgageRefixation:
+                        result.MortgageRefixation = _refixationMapper.MapToFullData((Database.DocumentDataEntities.MortgageRefixationData)offersData[offer.OfferId]);
+                        break;
 
-                case OfferTypes.MortgageExtraPayment:
-                    //result.MortgageExtraPayment = _offerMapper.MapToFullData((Database.DocumentDataEntities.MortgageOfferData)offersData[offer.OfferId]);
-                    break;
+                    case OfferTypes.MortgageExtraPayment:
+                        //result.MortgageExtraPayment = _offerMapper.MapToFullData((Database.DocumentDataEntities.MortgageOfferData)offersData[offer.OfferId]);
+                        break;
+                }
             }
 
             return result;

@@ -11,6 +11,8 @@ public interface IOfferServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
     Task<GetOfferResponse> GetOffer(int offerId, CancellationToken cancellationToken = default);
 
+    Task<List<Contracts.GetOfferListResponse.Types.GetOfferListItem>> GetOfferList(long caseId, OfferTypes OfferType, bool ommitParametersFromResponse = false, CancellationToken cancellationToken = default);
+
     Task<ValidateOfferIdResponse> ValidateOfferId(int offerId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
 
     /// <summary>

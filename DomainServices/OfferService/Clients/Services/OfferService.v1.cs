@@ -12,6 +12,16 @@ internal sealed class OfferService
             FutureInterestRateValidTo = futureInterestRateValidTo
         }, cancellationToken: cancellationToken)).LoanInterestRate;
 
+    public async Task<List<Contracts.GetOfferListResponse.Types.GetOfferListItem>> GetOfferList(long caseId, OfferTypes offerType, bool ommitParametersFromResponse = false, CancellationToken cancellationToken = default)
+        => (await _service.GetOfferListAsync(new GetOfferListRequest
+        {
+            CaseId = caseId,
+            OfferType = offerType,
+            OmmitParametersFromResponse = ommitParametersFromResponse
+        }, cancellationToken: cancellationToken))
+        .Offers
+        .ToList();
+
     public async Task<ValidateOfferIdResponse> ValidateOfferId(int offerId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
         => await _service.ValidateOfferIdAsync(new ValidateOfferIdRequest 
         { 

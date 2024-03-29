@@ -17,6 +17,16 @@ internal sealed class SimulateMortgageRefixationHandler
             throw new NobyValidationException("CaseState is not 4,5");
         }
 
+        // validace zda na Case jiz neexistuje simulace se stejnou delkou fixace
+        var existingOffers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken);
+        if (existingOffers.Any(t => 
+            ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Current) 
+            && !((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated) 
+            && t.MortgageRefixation.SimulationInputs.FixedRatePeriod == request.FixedRatePeriod))
+        {
+            throw new NobyValidationException("Offer with the same fixed period already exist");
+        }
+
         // info o hypotece kvuli FixedRateValidTo
         var product = await _productService.GetMortgage(request.CaseId, cancellationToken);
 
