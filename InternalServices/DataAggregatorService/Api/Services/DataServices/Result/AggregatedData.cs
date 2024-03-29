@@ -32,7 +32,7 @@ internal class AggregatedData
 
     public Case Case { get; set; } = null!;
 
-    public GetOfferDetailResponse Offer { get; set; } = null!;
+    public GetMortgageDetailResponse Offer { get; set; } = null!;
 
     public GetMortgageOfferFPScheduleResponse OfferPaymentSchedule { get; set; } = null!;
 

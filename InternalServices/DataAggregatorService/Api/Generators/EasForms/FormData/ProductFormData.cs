@@ -27,23 +27,23 @@ internal class ProductFormData : LoanApplicationBaseFormData
 
     public int? SalesArrangementStateId => IsCancelled ? 2 : _codebookManager.SalesArrangementStates.Where(x => x.Id == SalesArrangement.State).Select(x => x.StarbuildId).FirstOrDefault(1);
 
-    public decimal? InterestRateDiscount => (decimal?)Offer.MortgageOffer.SimulationInputs.InterestRateDiscount * -1;
+    public decimal? InterestRateDiscount => (decimal?)Offer.SimulationInputs.InterestRateDiscount * -1;
 
-    public int? DrawingTypeId => _codebookManager.DrawingTypes.FirstOrDefault(d => d.Id == Offer.MortgageOffer.SimulationInputs.DrawingTypeId)?.StarbuildId;
+    public int? DrawingTypeId => _codebookManager.DrawingTypes.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingTypeId)?.StarbuildId;
 
-    public int? DrawingDurationId => _codebookManager.DrawingDurations.FirstOrDefault(d => d.Id == Offer.MortgageOffer.SimulationInputs.DrawingDurationId)?.DrawingDuration;
+    public int? DrawingDurationId => _codebookManager.DrawingDurations.FirstOrDefault(d => d.Id == Offer.SimulationInputs.DrawingDurationId)?.DrawingDuration;
 
     public long? MpIdentityId => GetMpIdentityId();
 
-    public bool IsEmployeeBonusRequested => Offer.MortgageOffer.SimulationInputs.IsEmployeeBonusRequested == true;
+    public bool IsEmployeeBonusRequested => Offer.SimulationInputs.IsEmployeeBonusRequested == true;
 
-    public IEnumerable<ResultFee> OfferFees => Offer.MortgageOffer.AdditionalSimulationResults.Fees.Where(f => f.UsageText.Contains('F', StringComparison.InvariantCultureIgnoreCase));
+    public IEnumerable<ResultFee> OfferFees => Offer.AdditionalSimulationResults.Fees.Where(f => f.UsageText.Contains('F', StringComparison.InvariantCultureIgnoreCase));
 
     public string? ContractSegment => HouseholdData.CustomersHasPRIV ? "PRIV" : default;
 
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(Case.Data.ProductTypeId, Offer.MortgageOffer.SimulationInputs.LoanKindId), this);
+        ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(Case.Data.ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
 
         return Task.WhenAll(base.LoadAdditionalData(cancellationToken), LoadPerformerData(cancellationToken));
     }
