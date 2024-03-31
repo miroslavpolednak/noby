@@ -40,20 +40,20 @@ internal class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMortgageR
             TaskProcessId = salesArrangement.TaskProcessId!.Value
         };
 
-        await ProcessWorkflow(mortgageParameters, cancellationToken);
+        await ProcessWorkflow(request, mortgageParameters, cancellationToken);
 
         await UpdateSalesArrangementParameters(request, salesArrangement, cancellationToken);
 
         await _salesArrangementService.LinkModelationToSalesArrangement(salesArrangement.SalesArrangementId, offer.Data.OfferId, cancellationToken);
     }
 
-    private async Task ProcessWorkflow(IMortgageParameters mortgageParameters, CancellationToken cancellationToken)
+    private async Task ProcessWorkflow(LinkMortgageRetentionOfferRequest request, IMortgageParameters mortgageParameters, CancellationToken cancellationToken)
     {
         var workflowResult = await _retentionWorkflowService.GetTaskInfoByTaskId(mortgageParameters.CaseId, mortgageParameters.TaskProcessId, cancellationToken);
 
         await _retentionWorkflowService.UpdateRetentionWorkflowProcess(mortgageParameters, workflowResult.TaskIdSb, cancellationToken);
 
-        await _retentionWorkflowService.CreateIndividualPriceWorkflowTask(workflowResult.TaskList, mortgageParameters, cancellationToken);
+        await _retentionWorkflowService.CreateIndividualPriceWorkflowTask(workflowResult.TaskList, mortgageParameters, request.IndividualPriceCommentLastVersion, cancellationToken);
     }
 
     private Task UpdateSalesArrangementParameters(LinkMortgageRetentionOfferRequest request, _SA salesArrangement, CancellationToken cancellationToken)

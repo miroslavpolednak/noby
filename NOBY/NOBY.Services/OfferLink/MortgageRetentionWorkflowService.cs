@@ -44,7 +44,7 @@ public class MortgageRetentionWorkflowService
         await _caseService.UpdateTask(updateRequest, cancellationToken);
     }
 
-    public async Task CreateIndividualPriceWorkflowTask(List<WFL> taskList, IMortgageParameters mortgageParameters, CancellationToken cancellationToken)
+    public async Task CreateIndividualPriceWorkflowTask(List<WFL> taskList, IMortgageParameters mortgageParameters, string? taskRequest, CancellationToken cancellationToken)
     {
         if (!await CancelExistingPriceExceptions(taskList, mortgageParameters, cancellationToken) || mortgageParameters.LoanInterestRateDiscount is null or 0 || mortgageParameters.FeeFinalSum == 0)
             return;
@@ -56,7 +56,7 @@ public class MortgageRetentionWorkflowService
             CaseId = mortgageParameters.CaseId,
             TaskTypeId = (int)WorkflowTaskTypes.PriceException,
             ProcessId = mortgageParameters.TaskProcessId,
-            TaskRequest = "",
+            TaskRequest = taskRequest,
             PriceException = new TaskPriceException
             {
                 LoanInterestRate = new PriceExceptionLoanInterestRateItem
