@@ -1,6 +1,8 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 using NOBY.Services.OfferLink;
 using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
@@ -16,22 +18,27 @@ internal sealed class LinkMortgageOfferHandler : IRequestHandler<LinkMortgageOff
     };
 
     private readonly ICaseServiceClient _caseService;
-    private readonly MortgageOfferLinkService _mortgageOfferLinkService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly IOfferServiceClient _offerService;
 
-    public LinkMortgageOfferHandler(ICaseServiceClient caseService, MortgageOfferLinkService mortgageOfferLinkService)
+    public LinkMortgageOfferHandler(ICaseServiceClient caseService, ISalesArrangementServiceClient salesArrangementService, IOfferServiceClient offerService)
     {
         _caseService = caseService;
-        _mortgageOfferLinkService = mortgageOfferLinkService;
+        _salesArrangementService = salesArrangementService;
+        _offerService = offerService;
     }
 
     public async Task Handle(LinkMortgageOfferRequest request, CancellationToken cancellationToken)
     {
-        var (salesArrangement, _) = await _mortgageOfferLinkService.LoadAndValidateData(request.SalesArrangementId, request.OfferId, _validator, cancellationToken);
+        var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+        var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
+
+        await _validator.Validate(salesArrangement, offer, cancellationToken);
 
         await UpdateOfferContracts(salesArrangement.CaseId, request.OfferContacts, cancellationToken);
         await UpdateCustomerData(salesArrangement.CaseId, request, cancellationToken);
 
-        await _mortgageOfferLinkService.LinkOfferToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
+        await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
     }
 
     private async Task UpdateOfferContracts(long caseId, Dto.ContactsDto? contacts, CancellationToken cancellationToken)

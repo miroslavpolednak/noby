@@ -14,7 +14,7 @@ public class MortgageOfferLinkValidator
 
     public AdditionalValidator AdditionalValidation { get; init; } = EmptyAdditionalValidation;
 
-    internal async Task ValidateAsync(SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
+    public async Task Validate(SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
         if (salesArrangement.SalesArrangementTypeId != (int)SalesArrangementType || offer.Data.OfferType != OfferType)
             throw new NobyValidationException(90032);

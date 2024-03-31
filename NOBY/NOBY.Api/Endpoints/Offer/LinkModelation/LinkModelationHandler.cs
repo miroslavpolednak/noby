@@ -78,12 +78,12 @@ internal sealed class LinkModelationHandler
 
     private async Task UpdateRefinancing(LinkModelationRequest request, DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
-        var taskIdSb = (await _workflowTaskService.LoadAndCheckIfTaskExists(salesArrangement.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken)).TaskIdSb;
+        var taskResult = await _caseService.GetTaskByTaskId(salesArrangement.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
 
         var taskUpdateRequest = new _Ca.UpdateTaskRequest
         {
             CaseId = salesArrangement.CaseId,
-            TaskIdSb = taskIdSb,
+            TaskIdSb = taskResult.TaskIdSb,
             Retention = new _Ca.Retention
             {
                 InterestRateValidFrom = (DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom,
@@ -118,7 +118,7 @@ internal sealed class LinkModelationHandler
 
             _salesArrangementAuthorization.ValidateRefinancing241Permission();
 
-            await _caseService.CancelTask(salesArrangement.CaseId, taskIdSb, cancellationToken);
+            await _caseService.CancelTask(salesArrangement.CaseId, taskResult.TaskIdSb, cancellationToken);
         }
 
         if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is null || offer.MortgageRetention.BasicParameters.FeeAmountDiscounted is null)

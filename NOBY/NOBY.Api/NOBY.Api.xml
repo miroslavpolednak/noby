@@ -2489,6 +2489,30 @@
             </summary>
             <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest.FirstName">
+            <summary>
+            Jméno
+            </summary>
+            <example>Jonatán</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest.LastName">
+            <summary>
+            Příjmení
+            </summary>
+            <example>Skočdopole</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest.DateOfBirth">
+            <summary>
+            Datum narození
+            </summary>
+            <example>2002-10-26</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest.IndividualPriceCommentLastVersion">
+            <summary>
+            Komentář k Cenové výjimce
+            </summary>
+            <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageExtraPayment(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest)">
             <summary>
             Simulace mimořádné splátky hypotéky.
@@ -2562,6 +2586,13 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SetOfferFlags(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.SetOfferFlags.SetOfferFlagsRequest)">
+            <summary>
+            Nastavuje příznaky na modelaci.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.GetFullPaymentScheduleByOfferId(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Plný splátkový kalendář dle ID simulace.
@@ -2583,6 +2614,48 @@
             Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D43515EA-4014-47a1-AD45-0E80EE43AEB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageOffer(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest)">
+            <summary>
+            Nalinkuje novou modelaci na stávající SA.
+            </summary>
+            <remarks>
+            Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageRetentionOffer(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest)">
+            <summary>
+            Nalinkuje retenční nabídku na stávající SA.
+            </summary>
+            <remarks>
+            Nalinkuje retenční nabídku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=92B4B98B-3F57-4541-9828-EB8CFDFA9035"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageExtraPayment(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest)">
+            <summary>
+            Nalinkuje mimořádnou splátku na stávající SA.
+            </summary>
+            <remarks>
+            Nalinkuje mimořádnou splátku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=138F178A-72B5-46f6-85B2-D8414F5043B3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SetOfferFlags.SetOfferFlagsRequest.Flags">
+            <summary>
+            Seznam příznaku k nastavení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SetOfferFlags.SetOfferFlagsRequestItem.FlagType">
+            <summary>
+            Typ příznaku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SetOfferFlags.SetOfferFlagsRequestItem.SetFlag">
+            <summary>
+            True = set flag, False = unset flag
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OfferId">
             <summary>
