@@ -1,4 +1,7 @@
-﻿namespace NOBY.Api.Endpoints.Address.AddressSearch;
+﻿using ExternalServices.RuianAddress.V1;
+using System.Globalization;
+
+namespace NOBY.Api.Endpoints.Address.AddressSearch;
 
 internal sealed class AddressSearchHandler
     : IRequestHandler<AddressSearchRequest, AddressSearchResponse>
@@ -6,35 +9,53 @@ internal sealed class AddressSearchHandler
     public async Task<AddressSearchResponse> Handle(AddressSearchRequest request, CancellationToken cancellationToken)
     {
         // zeme z ciselniku
-        string? country = null;
-        if (request.CountryId.GetValueOrDefault() > 0)
-            country = (await _codebookService.Countries(cancellationToken)).FirstOrDefault(t => t.Id == request.CountryId)?.ShortName;
+        var country = (await _codebookService.Countries(cancellationToken))
+            .FirstOrDefault(t => t.Id == request.CountryId);
+
+        var response = new AddressSearchResponse
+        {
+            PageSize = request.PageSize
+        };
+
         try
         {
-            var result = await _addressWhispererClient.GetSuggestions(request.SessionId, request.SearchText, request.PageSize, country, cancellationToken);
-
-            return new AddressSearchResponse
+            if (country?.Id != 16)
             {
-                PageSize = request.PageSize,
-                Rows = result.Select(x => new Dto.AddressLine
+                var result = await _addressWhispererClient.GetSuggestions(request.SessionId, request.SearchText, request.PageSize, country?.ShortName, cancellationToken);
+
+                response.Rows = result.Select(x => new Dto.AddressLine
                 {
                     Id = x.AddressId,
                     Title = x.Title
-                }).ToList()
-            };
+                }).ToList();
+            }
+            else
+            {
+                var result = await _ruianAddress.FindAddresses(request.SearchText, request.PageSize, cancellationToken);
+
+                response.Rows = result.Select(t => new Dto.AddressLine
+                {
+                    Id = t.Id.ToString(CultureInfo.InvariantCulture),
+                    Title = t.FullAddress ?? ""
+                }).ToList();
+            }
         }
         catch
         {
             throw new NobyValidationException(90020);
         }
+
+        return response;
     }
 
-    private ExternalServices.AddressWhisperer.V1.IAddressWhispererClient _addressWhispererClient;
-    private DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
+    private readonly IRuianAddressClient _ruianAddress;
+    private readonly ExternalServices.AddressWhisperer.V1.IAddressWhispererClient _addressWhispererClient;
+    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
 
-    public AddressSearchHandler(ExternalServices.AddressWhisperer.V1.IAddressWhispererClient addressWhispererClient, DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService)
+    public AddressSearchHandler(ExternalServices.AddressWhisperer.V1.IAddressWhispererClient addressWhispererClient, DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService, IRuianAddressClient ruianAddress)
     {
         _addressWhispererClient = addressWhispererClient;
         _codebookService = codebookService;
+        _ruianAddress = ruianAddress;
     }
 }
