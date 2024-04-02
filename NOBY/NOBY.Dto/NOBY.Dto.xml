@@ -289,6 +289,36 @@
             </summary>
             <example>Skočdopole</example>
         </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.BuildingTechnicalStateCode">
+            <summary>
+            Technický stav budovy, hodnota z číselníku RealEstateValuationBuildingTechnicalState
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.BuildingMaterialStructureCode">
+            <summary>
+            Konstrukční materiál budovy, hodnota z číselníku RealEstateValuationBuildingMaterialStructure
+            </summary>
+            <example>CIHLA</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.FlatSchemaCode">
+            <summary>
+            Dispozice, hodnota z číselníku RealEstateValuationFlatSchema
+            </summary>
+            <example>1+1</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.FlatArea">
+            <summary>
+            Čistá podlahová plocha bytu
+            </summary>
+            <example>55</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.BuildingAgeCode">
+            <summary>
+            Stáří budovy, hodnota z číselníku RealEstateValuationBuildingAge
+            </summary>
+            <example>99</example>
+        </member>
         <member name="P:NOBY.Dto.RealEstateValuation.RealEstatePriceDetail.Price">
             <summary>
             Výsledná cena nemovitosti v Kč

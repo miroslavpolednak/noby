@@ -8,8 +8,33 @@ namespace NOBY.Api.Endpoints.RealEstateValuation;
 [ApiController]
 [Route("api/case")]
 [ApiVersion(1)]
-public sealed class RealEstateValuationController : ControllerBase
+public sealed class RealEstateValuationController 
+    : ControllerBase
 {
+    /// <summary>
+    /// Uložení detailů pro online ocenění
+    /// </summary>
+    /// <remarks>
+    /// Průběžné uložení detailů nutných k online ocenění pro pozdější použití.
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=526BB471-CC8D-4bad-8B6C-E0DC6F4872C1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/online-preorder-details")]
+    [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
+    [RealEstateValuationStateValidation]
+    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SaveOnlinePreorderDetails(
+        [FromRoute] long caseId,
+        [FromRoute] int realEstateValuationId,
+        [FromBody] SaveOnlinePreorderDetails.SaveOnlinePreorderDetailsRequest request,
+        CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
+        return NoContent();
+    }
+
     /// <summary>
     /// Uložení dat pro místní šetření
     /// </summary>

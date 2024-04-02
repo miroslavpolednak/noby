@@ -67,6 +67,14 @@ internal sealed class GetRealEstateValuationDetailHandler : IRequestHandler<GetR
                     PhoneNumber = valuationDetail.LocalSurveyDetails?.PhoneNumber ?? ""
                 }
             },
+            OnlinePreorderDetails = valuationDetail.OnlinePreorderDetails is null ? null : new OnlinePreorderData
+            {
+                BuildingMaterialStructureCode = valuationDetail.OnlinePreorderDetails.BuildingMaterialStructureCode,
+                FlatArea = valuationDetail.OnlinePreorderDetails.FlatArea,
+                BuildingTechnicalStateCode = valuationDetail.OnlinePreorderDetails.BuildingTechnicalStateCode,
+                BuildingAgeCode = valuationDetail.OnlinePreorderDetails.BuildingAgeCode,
+                FlatSchemaCode = valuationDetail.OnlinePreorderDetails.FlatSchemaCode
+            },
             Attachments = getAttachments(valuationDetail.Attachments, categories),
             DeedOfOwnershipDocuments = getDeedOfOwnerships(deeds),
             Documents = await GetDocuments(request.CaseId, valuationDetail.Documents, cancellationToken)
