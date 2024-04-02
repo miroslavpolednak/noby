@@ -28,7 +28,7 @@ public sealed class RefinancingController : ControllerBase
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(typeof(GetMortgageRetentionResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetMortgageRetentionResponse> GetRetentionDetail([FromRoute] long caseId, [FromRoute] long processId)
+    public async Task<GetMortgageRetentionResponse> GetMortgageRetention([FromRoute] long caseId, [FromRoute] long processId)
         => await _mediator.Send(new GetMortgageRetentionRequest(caseId, processId));
 
     /// <summary>
