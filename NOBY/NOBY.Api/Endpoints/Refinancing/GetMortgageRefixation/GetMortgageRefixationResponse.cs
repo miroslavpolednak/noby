@@ -1,29 +1,45 @@
-﻿namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
+﻿namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
 
-public sealed class GetMortgageRetentionResponse
+public sealed class GetMortgageRefixationResponse
     : NOBY.Dto.Refinancing.BaseRefinancingDetailResponse
 {
     /// <summary>
-    /// Informace zda se jedná o readonly režim
+    /// Seznam nabídek pro daný proces
     /// </summary>
-    public bool IsReadOnly { get; set; }
+    public List<RefixationOfferDetail>? Offers { get; set; }
+}
 
-    public decimal FeeAmount { get; set; }
-
-    /// <summary>
-    /// Upravená výše poplatku
-    /// </summary>
-    public decimal? FeeAmountDiscounted { get; set; }
+public sealed class RefixationOfferDetail
+{
+    public int OfferId { get; set; }
 
     /// <summary>
-    /// Platnost nové úrokové sazby od.
+    /// Jedná se o zákonné sdělení
     /// </summary>
-    public DateTime InterestRateValidFrom { get; set; }
+    public bool IsLegalNotice { get; set; }
 
     /// <summary>
-    /// Úroková sazba
+    /// Jedná se o Aktuální nabídku
     /// </summary>
-    /// <example>4.7</example>
+    public bool IsCurrent { get; set; }
+
+    /// <summary>
+    /// Jedná se o sdělenou nabídku
+    /// </summary>
+    public bool IsCommunicated { get; set; }
+
+    /// <summary>
+    /// Jedná se o likovanou nabídku
+    /// </summary>
+    public bool IsLiked { get; set; }
+
+    /// <summary>
+    /// Jedná se o vybranou nabídku
+    /// </summary>
+    public bool IsSelected { get; set; }
+
+    public int FixedRatePeriod { get; set; }
+    
     public decimal InterestRate { get; set; }
 
     /// <summary>
@@ -47,16 +63,4 @@ public sealed class GetMortgageRetentionResponse
     /// Výše měsíční splátky se zohledněním IC.
     /// </summary>
     public decimal? LoanPaymentAmountDiscounted { get; set; }
-
-    public string? DocumentId { get; set; }
-
-    public int? RefinancingDocumentEACode { get; set; }
-
-    public int? SignatureTypeDetailId { get; set; }
-
-    /// <summary>
-    /// Označuje zda má být aktivní button Generovat dokument
-    /// </summary>
-    // offerid is not null, refinancingState=1, dalsi podminka je prvni pinda pokud existuje offer
-    public bool IsGenerateDocumentEnabled { get; set; }
 }

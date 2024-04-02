@@ -3,6 +3,9 @@ using NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
 using NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument;
 using Swashbuckle.AspNetCore.Annotations;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
+using NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
+using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment;
+using NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 
 namespace NOBY.Api.Endpoints.Refinancing;
 
@@ -11,16 +14,67 @@ namespace NOBY.Api.Endpoints.Refinancing;
 [ApiVersion(1)]
 public sealed class RefinancingController : ControllerBase
 {
-    private readonly IMediator _mediator;
-    public RefinancingController(IMediator mediator) => _mediator = mediator;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// 
+    /// 
+    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:long}/update-mortgage-refixation")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateMortgageRefixation([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody] UpdateMortgageRefixationRequest request)
+    {
+        await _mediator.Send((request ?? new()).InfuseId(caseId, salesArrangementId));
+        return NoContent();
+    }
+    
+    /// <summary>
+    /// Detail mimořádné splátky
+    /// </summary>
+    /// <remarks>
+    /// Operace slouží k získání informací o vybraném procesu mimořádné splátky.
+    /// 
+    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("case/{caseId:long}/mortgage-extra-payment/{processId:long}")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    [ProducesResponseType(typeof(GetMortgageExtraPaymentResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetMortgageExtraPaymentResponse> GetMortgageExtraPayment([FromRoute] long caseId, [FromQuery] long processId)
+        => await _mediator.Send(new GetMortgageExtraPaymentRequest(caseId, processId));
+
+    /// <summary>
+    /// Detail refixace
+    /// </summary>
+    /// <remarks>
+    /// Operace slouží k získání informací o vybraném refixačním procesu.
+    /// 
+    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("case/{caseId:long}/mortgage-refixation/{processId:long}")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    [ProducesResponseType(typeof(GetMortgageRefixationResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetMortgageRefixationResponse> GetMortgageRefixation([FromRoute] long caseId, [FromQuery] long? processId = null)
+        => await _mediator.Send(new GetMortgageRefixationRequest(caseId, processId));
 
     /// <summary>
     /// Detail retence
     /// </summary>
     /// <remarks>
-    /// Operace slouží k získání informací o vybran0m retenčním procesu.
+    /// Operace slouží k získání informací o vybraném retenčním procesu.
     /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=E0F5C17D-A6F5-4713-93DC-73E06D98AD09 "><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=E0F5C17D-A6F5-4713-93DC-73E06D98AD09"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-retention/{processId:long}")]
     [Produces("application/json")]
@@ -100,4 +154,7 @@ public sealed class RefinancingController : ControllerBase
         await _mediator.Send(request.InfuseCaseId(caseId).InfuseSalesArrangementId(salesArrangementId));
         return NoContent();
     }
+
+    private readonly IMediator _mediator;
+    public RefinancingController(IMediator mediator) => _mediator = mediator;
 }

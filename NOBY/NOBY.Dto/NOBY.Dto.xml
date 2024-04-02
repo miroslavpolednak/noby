@@ -574,6 +574,26 @@
             Číslo parcely
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.IndividualPriceCommentLastVersion">
+            <summary>
+            Komentář k IC
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.Tasks">
+            <summary>
+            Všechny workflow úkoly pro daný proces retence
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.ContainsInconsistentIndividualPriceData">
+            <summary>
+            Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.ResponseCodes">
+            <summary>
+            Seznam odpovědních kódů
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.ProcessId">
             <summary>
             Noby proces ID daného procesu Refinancí. Jde o ID sady úkolů generované Starbuildem.
