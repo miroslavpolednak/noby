@@ -3530,7 +3530,7 @@
             SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRetentionDetail(System.Int64,System.Int64)">
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetMortgageRetention(System.Int64,System.Int64)">
             <summary>
             Detail retence
             </summary>
