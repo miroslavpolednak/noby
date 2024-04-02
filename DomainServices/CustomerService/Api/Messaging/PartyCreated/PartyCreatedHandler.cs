@@ -1,4 +1,4 @@
-﻿using cz.kb.cm.be.@event.partycreated.v1.PartyCreatedV1;
+﻿using cz.kb.cm.be.@event.partycreated.v1;
 using KafkaFlow;
 
 namespace DomainServices.CustomerService.Api.Messaging.PartyCreated;
