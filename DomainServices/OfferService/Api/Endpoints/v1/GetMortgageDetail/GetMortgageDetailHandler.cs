@@ -25,6 +25,7 @@ internal sealed class GetMortgageDetailHandler
 
         return new GetMortgageDetailResponse
         {
+            Data = offerInstance.Data,
             SimulationInputs = data.SimulationInputs,
             SimulationResults = data.SimulationResults,
             BasicParameters = data.BasicParameters,
