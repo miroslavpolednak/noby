@@ -21,12 +21,12 @@ public sealed class SimulateMortgageExtraPaymentRequest
     /// <summary>
     /// Důvod mimořádné splátky
     /// </summary>
-    public string ExtraPaymentReason { get; set; }
+    public int ExtraPaymentReasonId { get; set; }
 
     /// <summary>
     /// Typ mimořádné splátky
     /// </summary>
-    public string ExtraPaymentType { get; set; }
+    public int ExtraPaymentTypeId { get; set; }
 
     internal SimulateMortgageExtraPaymentRequest InfuseId(long caseId)
     {
