@@ -291,19 +291,19 @@
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.BuildingTechnicalStateCode">
             <summary>
-            Technický stav budovy, hodnota z číselníku RealEstateValuationBuildingTechnicalState
+            Technický stav budovy, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingTechnicalState">RealEstateValuationBuildingTechnicalState</a>
             </summary>
             <example>1</example>
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.BuildingMaterialStructureCode">
             <summary>
-            Konstrukční materiál budovy, hodnota z číselníku RealEstateValuationBuildingMaterialStructure
+            Konstrukční materiál budovy, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructure</a>
             </summary>
             <example>CIHLA</example>
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.FlatSchemaCode">
             <summary>
-            Dispozice, hodnota z číselníku RealEstateValuationFlatSchema
+            Dispozice, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchema</a>
             </summary>
             <example>1+1</example>
         </member>
@@ -315,7 +315,7 @@
         </member>
         <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.BuildingAgeCode">
             <summary>
-            Stáří budovy, hodnota z číselníku RealEstateValuationBuildingAge
+            Stáří budovy, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingAge">RealEstateValuationBuildingAge</a>
             </summary>
             <example>99</example>
         </member>
