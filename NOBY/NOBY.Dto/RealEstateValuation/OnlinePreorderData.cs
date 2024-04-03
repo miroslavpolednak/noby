@@ -31,7 +31,6 @@ public class OnlinePreorderData
     /// </summary>
     /// <example>55</example>
     [Required]
-    [MinLength(1)]
     public decimal FlatArea { get; set; }
 
     /// <summary>
