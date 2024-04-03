@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation;
+namespace NOBY.Api.Endpoints.RealEstateValuation.SaveOnlinePreorderDetails;
 
 /// <summary>
-/// Upřesňující údaje k předobjednávce online ocenění
+/// Detaily k online ocenění
 /// </summary>
-public sealed class PreorderOnlineValuationRequest
+public sealed class SaveOnlinePreorderDetailsRequest
     : Dto.RealEstateValuation.OnlinePreorderData, IRequest
 {
     [JsonIgnore]
@@ -14,7 +14,7 @@ public sealed class PreorderOnlineValuationRequest
     [JsonIgnore]
     internal int RealEstateValuationId;
 
-    internal PreorderOnlineValuationRequest InfuseId(long caseId, int realEstateValuationId)
+    internal SaveOnlinePreorderDetailsRequest InfuseId(long caseId, int realEstateValuationId)
     {
         CaseId = caseId;
         RealEstateValuationId = realEstateValuationId;

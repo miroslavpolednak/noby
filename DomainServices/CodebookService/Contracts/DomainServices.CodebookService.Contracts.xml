@@ -926,6 +926,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.LoanKindIdsFieldNumber">
             <summary>Field number for the "LoanKindIds" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem.PcpObjectCodeFieldNumber">
+            <summary>Field number for the "PcpObjectCode" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.ProductTypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>

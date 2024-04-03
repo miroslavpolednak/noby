@@ -3052,34 +3052,15 @@
             Upřesňující údaje k předobjednávce online ocenění
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation.PreorderOnlineValuationRequest.BuildingTechnicalStateCode">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveOnlinePreorderDetails(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SaveOnlinePreorderDetails.SaveOnlinePreorderDetailsRequest,System.Threading.CancellationToken)">
             <summary>
-            Kód technického stavu budovy
+            Uložení detailů pro online ocenění
             </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation.PreorderOnlineValuationRequest.BuildingMaterialStructureCode">
-            <summary>
-            Kód konstrukčního materiálu budovy
-            </summary>
-            <example>CIHLA</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation.PreorderOnlineValuationRequest.FlatSchemaCode">
-            <summary>
-            Kód dispozice
-            </summary>
-            <example>1+KK</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation.PreorderOnlineValuationRequest.FlatArea">
-            <summary>
-            Čistá podlahová plocha bytu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation.PreorderOnlineValuationRequest.BuildingAgeCode">
-            <summary>
-            Kód stáří budovy
-            </summary>
-            <example>0</example>
+            <remarks>
+            Průběžné uložení detailů nutných k online ocenění pro pozdější použití.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=526BB471-CC8D-4bad-8B6C-E0DC6F4872C1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveLocalSurveyDetails(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SaveLocalSurveyDetails.SaveLocalSurveyDetailsRequest,System.Threading.CancellationToken)">
             <summary>
@@ -3234,6 +3215,11 @@
             
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=68C49245-60DD-48a4-9681-B328C52D86F4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
+        </member>
+        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.SaveOnlinePreorderDetails.SaveOnlinePreorderDetailsRequest">
+            <summary>
+            Detaily k online ocenění
+            </summary>
         </member>
         <member name="F:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsHandler._maxAllowedFileSize">
             <summary>
@@ -3530,7 +3516,7 @@
             SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetRetentionDetail(System.Int64,System.Int64)">
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetMortgageRetention(System.Int64,System.Int64)">
             <summary>
             Detail retence
             </summary>

@@ -533,6 +533,7 @@ message ProductTypesResponse {
 	   google.protobuf.Int32Value KonsDbLoanType = 13;
 	   google.protobuf.StringValue PcpProductId = 14;
 	   repeated int32 LoanKindIds = 15;
+	   google.protobuf.StringValue  PcpObjectCode = 16;
 	}
 }
 
