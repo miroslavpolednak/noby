@@ -4,11 +4,13 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 
 import "Parameters/MortgageRefixation.proto";
 import "ModificationStamp.proto";
+import "google/protobuf/wrappers.proto";
 
 message SimulateMortgageRefixationRequest {
 	MortgageRefixationBasicParameters BasicParameters = 1;
 	MortgageRefixationSimulationInputs SimulationInputs = 2;
 	int64 CaseId = 3;
+	google.protobuf.Int32Value OfferId = 4;
 }
 
 message SimulateMortgageRefixationResponse {

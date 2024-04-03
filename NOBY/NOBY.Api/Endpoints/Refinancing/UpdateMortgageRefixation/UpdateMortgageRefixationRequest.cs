@@ -18,6 +18,11 @@ public sealed class UpdateMortgageRefixationRequest
     public string? IndividualPriceCommentLastVersion { get; set; }
 
     /// <summary>
+    /// Komentář k refixaci
+    /// </summary>
+    public string? Comment { get; set; }
+
+    /// <summary>
     /// Sleva ze sazby
     /// </summary>
     /// <example>0.2</example>
