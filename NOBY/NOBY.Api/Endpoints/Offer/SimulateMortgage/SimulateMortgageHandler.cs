@@ -1,5 +1,5 @@
 ﻿using CIS.Core.Security;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 

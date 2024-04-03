@@ -1,7 +1,5 @@
 ﻿using DomainServices.CaseService.Clients.v1;
-using DomainServices.CaseService.Contracts.v1;
 using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
-using System.Threading;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;

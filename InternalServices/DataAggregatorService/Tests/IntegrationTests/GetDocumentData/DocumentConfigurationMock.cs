@@ -15,11 +15,11 @@ internal static class DocumentConfigurationMock
             SourceFields = new DocumentSourceField[]
             {
                 new() { AcroFieldName = "RegCislo", DataService = DataService.SalesArrangementService, FieldPath = "SalesArrangement.ContractNumber" },
-                new() { AcroFieldName = "VyseUveru", DataService = DataService.OfferService, FieldPath = "Offer.MortgageOffer.SimulationInputs.LoanAmount", StringFormat = "{0:C0}" },
+                new() { AcroFieldName = "VyseUveru", DataService = DataService.OfferService, FieldPath = "Offer.SimulationInputs.LoanAmount", StringFormat = "{0:C0}" },
                 new() { AcroFieldName = "PocetDetiDo10", DataService = DataService.HouseholdService, FieldPath = "HouseholdMain.Household.Data.ChildrenUpToTenYearsCount" },
                 new() { AcroFieldName = "JsemNejsem1Odrazka", DataService = DataService.HouseholdMainService, FieldPath = "HouseholdMain.Debtor.CustomerAdditionalData.HasRelationshipWithKB" },
                 new() { AcroFieldName = "SpoluzadatelJsemNejsem1Odrazka", DataService = DataService.HouseholdMainService, FieldPath = "HouseholdMain.Codebtor.CustomerAdditionalData.HasRelationshipWithKB" },
-                new() { AcroFieldName = "CisloSplatky", DataService = DataService.OfferService, FieldPath = "Offer.MortgageOffer.AdditionalSimulationResults.PaymentScheduleSimple[].PaymentNumber" },
+                new() { AcroFieldName = "CisloSplatky", DataService = DataService.OfferService, FieldPath = "Offer.AdditionalSimulationResults.PaymentScheduleSimple[].PaymentNumber" },
             },
             DynamicInputParameters = new List<DynamicInputParameter>
             {

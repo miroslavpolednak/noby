@@ -1,4 +1,6 @@
 ﻿using CIS.Core.Security;
+using DomainServices.CaseService.Clients.v1;
+using NOBY.Services.WorkflowTask;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 
@@ -7,7 +9,8 @@ internal sealed class GetTaskDetailHandler
 {
     public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
-        var task = await _workflowTaskService.LoadAndCheckIfTaskExists(request.CaseId, request.TaskId, cancellationToken);
+        var taskResult = await _caseService.GetTaskByTaskId(request.CaseId, request.TaskId, cancellationToken);
+        var task = taskResult.Task;
 
         if (!_allowedTaskTypeIds.Contains(task.TaskTypeId))
         {
@@ -52,7 +55,8 @@ internal sealed class GetTaskDetailHandler
     }
 
     private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
+    private readonly ICaseServiceClient _caseService;
+    private readonly IWorkflowTaskService _workflowTaskService;
     private static int[] _allowedTaskTypeIds =
         [
             (int)WorkflowTaskTypes.Dozadani,
@@ -64,9 +68,11 @@ internal sealed class GetTaskDetailHandler
 
     public GetTaskDetailHandler(
         ICurrentUserAccessor currentUserAccessor,
-        Services.WorkflowTask.IWorkflowTaskService workflowTaskService)
+        ICaseServiceClient caseService,
+        IWorkflowTaskService workflowTaskService)
     {
         _currentUserAccessor = currentUserAccessor;
+        _caseService = caseService;
         _workflowTaskService = workflowTaskService;
     }
 }

@@ -17,6 +17,8 @@ public sealed class PrepareDocumentRequest
 
     public List<OtherClient>? OtherClients { get; set; } = null!;
 
+    public string? AdditionalData { get; set; }
+
     public sealed class DocumentInfo
     {
         /// <summary>

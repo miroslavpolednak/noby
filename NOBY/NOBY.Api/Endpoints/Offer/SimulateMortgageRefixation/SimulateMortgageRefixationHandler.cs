@@ -1,6 +1,6 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation;
@@ -17,11 +17,25 @@ internal sealed class SimulateMortgageRefixationHandler
             throw new NobyValidationException("CaseState is not 4,5");
         }
 
+        // validace zda na Case jiz neexistuje simulace se stejnou delkou fixace
+        var existingOffers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken);
+        if (existingOffers.Any(t => 
+            ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Current) 
+            && !((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated) 
+            && t.MortgageRefixation.SimulationInputs.FixedRatePeriod == request.FixedRatePeriod))
+        {
+            throw new NobyValidationException("Offer with the same fixed period already exist");
+        }
+
         // info o hypotece kvuli FixedRateValidTo
         var product = await _productService.GetMortgage(request.CaseId, cancellationToken);
 
         // validace fixed period
-        //(await _codebookService.FixedRatePeriods(cancellationToken)).Any(t => t.IsValid && t.FixedRatePeriod = request.FixedRatePeriod && t.ProductTypeId == )
+        var periods = await _codebookService.FixedRatePeriods(cancellationToken);
+        if (!periods.Any(t => t.IsValid && t.FixedRatePeriod == request.FixedRatePeriod && t.ProductTypeId == product.Mortgage.ProductTypeId))
+        {
+            throw new NobyValidationException("FixedRatePeriod cant be validated");
+        }
 
         var validFrom = ((DateTime?)product.Mortgage.FixedRateValidTo ?? DateTime.MinValue).AddDays(1);
 

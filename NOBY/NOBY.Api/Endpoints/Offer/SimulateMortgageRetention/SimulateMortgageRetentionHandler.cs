@@ -1,5 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRetention;
 

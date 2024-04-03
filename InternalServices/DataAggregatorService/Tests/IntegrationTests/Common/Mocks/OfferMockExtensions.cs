@@ -1,5 +1,5 @@
 ﻿using CIS.Testing.Common;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 
 namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.Common.Mocks;
@@ -12,10 +12,10 @@ public static class OfferMockExtensions
 
         fixture.Behaviors.Add(new RepeatedFieldBehavior());
 
-        var offer = fixture.Build<GetOfferDetailResponse>().Without(o => o.MortgageRetention).Create();
+        var offer = fixture.Build<GetMortgageDetailResponse>().Create();
         var fullPaymentSchedule = fixture.Create<GetMortgageOfferFPScheduleResponse>();
 
-        offerServiceClient.GetOfferDetail(Arg.Any<int>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(offer);
+        offerServiceClient.GetMortgageDetail(Arg.Any<int>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(offer);
         offerServiceClient.GetMortgageOfferFPSchedule(Arg.Any<int>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(fullPaymentSchedule);
     }
 }

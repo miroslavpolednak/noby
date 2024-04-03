@@ -28,8 +28,8 @@ WHERE
 	SalesArrangementTypeId = 1
 	and (
 		(FirstSignatureDate is null and CreatedTime<DATEADD(DAY, -90, GETDATE()))
-		or (isnull(LoanApplicationAssessmentId, '')='' and CreatedTime<DATEADD(DAY, -40, GETDATE()))
-		or (isnull(LoanApplicationAssessmentId, '')!='' and State!=2 and CreatedTime<DATEADD(DAY, -140, GETDATE()))
+		or (isnull(LoanApplicationAssessmentId, '')='' and FirstSignatureDate<DATEADD(DAY, -40, GETDATE()))
+		or (isnull(LoanApplicationAssessmentId, '')!='' and State!=2 and FirstSignatureDate<DATEADD(DAY, -140, GETDATE()))
 	)
 ";
 

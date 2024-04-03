@@ -1,4 +1,5 @@
-﻿using Asp.Versioning;
+﻿using System.ComponentModel.DataAnnotations;
+using Asp.Versioning;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Offer;
@@ -8,6 +9,24 @@ namespace NOBY.Api.Endpoints.Offer;
 [ApiVersion(1)]
 public sealed class OfferController : ControllerBase
 {
+    /// <summary>
+    /// Simulace mimořádné splátky hypotéky.
+    /// </summary>
+    /// <remarks>
+    /// Provolá simulační službu Starbuildu pro refixace.
+    /// 
+    /// </remarks>
+    [HttpPost("case/{caseId:long}/simulate-mortgage-extra-payment-offer")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [NobySkipCaseStateAndProductSAValidation]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [ProducesResponseType(typeof(SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse> SimulateMortgageExtraPayment([FromRoute] long caseId, [FromBody] SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest request)
+        => await _mediator.Send((request ?? new SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest()).InfuseId(caseId));
+
     /// <summary>
     /// Simulace KB refixací.
     /// </summary>
@@ -23,7 +42,7 @@ public sealed class OfferController : ControllerBase
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgageRefixation.SimulateMortgageRefixationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<SimulateMortgageRefixation.SimulateMortgageRefixationResponse> SimulateMortgageRetention([FromRoute] long caseId, [FromBody] SimulateMortgageRefixation.SimulateMortgageRefixationRequest request)
+    public async Task<SimulateMortgageRefixation.SimulateMortgageRefixationResponse> SimulateMortgageRefixation([FromRoute] long caseId, [FromBody] SimulateMortgageRefixation.SimulateMortgageRefixationRequest request)
         => await _mediator.Send((request ?? new SimulateMortgageRefixation.SimulateMortgageRefixationRequest()).InfuseId(caseId));
 
     /// <summary>
@@ -114,8 +133,21 @@ public sealed class OfferController : ControllerBase
     [Produces("application/json")]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [Obsolete("Use LinkMortgageOffer endpoint")]
     public async Task LinkModelation([FromRoute] int salesArrangementId, [FromBody] LinkModelation.LinkModelationRequest request)
         => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? new LinkModelation.LinkModelationRequest());
+
+    /// <summary>
+    /// Nastavuje příznaky na modelaci.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    [HttpPut("case/{caseId:long}/offer/{offerId:int}/flags")]
+    [Produces("application/json")]
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task SetOfferFlags([FromRoute] long caseId, [FromRoute] int offerId, [FromBody] SetOfferFlags.SetOfferFlagsRequest request)
+        => await _mediator.Send((request ?? new SetOfferFlags.SetOfferFlagsRequest()).InfuseId(offerId));
 
     /// <summary>
     /// Plný splátkový kalendář dle ID simulace.
@@ -150,6 +182,51 @@ public sealed class OfferController : ControllerBase
     [ProducesResponseType(typeof(DeveloperSearch.DeveloperSearchResponse), StatusCodes.Status200OK)]
     public async Task<DeveloperSearch.DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearch.DeveloperSearchRequest request)
         => await _mediator.Send(request ?? new DeveloperSearch.DeveloperSearchRequest());
+
+    /// <summary>
+    /// Nalinkuje novou modelaci na stávající SA.
+    /// </summary>
+    /// <remarks>
+    /// Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-offer")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task LinkMortgageOffer([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageOffer.LinkMortgageOfferRequest request)
+        => await _mediator.Send(request.InfuseId(caseId, salesArrangementId));
+
+    /// <summary>
+    /// Nalinkuje retenční nabídku na stávající SA.
+    /// </summary>
+    /// <remarks>
+    /// Nalinkuje retenční nabídku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=92B4B98B-3F57-4541-9828-EB8CFDFA9035"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-retention-offer")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
+    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task LinkMortgageRetentionOffer([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest request)
+        => await _mediator.Send(request.InfuseId(caseId, salesArrangementId));
+
+    /// <summary>
+    /// Nalinkuje mimořádnou splátku na stávající SA.
+    /// </summary>
+    /// <remarks>
+    /// Nalinkuje mimořádnou splátku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=138F178A-72B5-46f6-85B2-D8414F5043B3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-extra-payment")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
+    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task LinkMortgageExtraPayment([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest request)
+        => await _mediator.Send(request.InfuseId(caseId, salesArrangementId));
 
     private readonly IMediator _mediator;
     public OfferController(IMediator mediator) => _mediator = mediator;

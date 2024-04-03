@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using KafkaFlow;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
@@ -32,8 +33,19 @@ internal class LoanRetentionProcessChangedHandler : IMessageHandler<cz.mpss.api.
             return;
         }
 
-        var salesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId);
-        var sa = salesArrangements.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == processId);
+        SalesArrangement? sa;
+        try
+        {
+            var salesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId);
+            sa = salesArrangements.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == processId);
+        }
+        catch (CisNotFoundException)
+        {
+            _logger.KafkaCaseIdNotFound(nameof(LoanRetentionProcessChangedHandler), caseId);
+
+            return;
+        }
+        
 
         if (sa is not null)
         {

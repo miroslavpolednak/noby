@@ -29,6 +29,8 @@ internal sealed class LoggingKnownMessagesMiddleware : IMessageMiddleware
         var loggerData = new Dictionary<string, object>
         {
             { "ConsumerName", context.ConsumerContext.ConsumerName },
+            { "MessageType", context.Message.Value.GetType().FullName! },
+            { "KafkaOffset", context.ConsumerContext.Offset }
         };
 
         if (_configuration.LogConsumingMessagePayload)

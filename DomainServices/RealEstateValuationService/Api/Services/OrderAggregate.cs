@@ -1,6 +1,6 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities;
@@ -133,7 +133,7 @@ internal sealed class OrderAggregate
         if (caseState == (int)CaseStates.InProgress)
         {
             var offerId = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First().OfferId;
-            var offer = await _offerService.GetOfferDetail(offerId!.Value, cancellationToken);
+            var offer = await _offerService.GetOffer(offerId!.Value, cancellationToken);
 
             var collateralAmount = offer.MortgageOffer.SimulationInputs.CollateralAmount;
             var loanDuration = offer.MortgageOffer.SimulationInputs.LoanDuration;

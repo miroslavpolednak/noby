@@ -1,4 +1,4 @@
-﻿using DomainServices.OfferService.Clients;
+﻿using DomainServices.OfferService.Clients.v1;
 using NOBY.Services.InterestRatesValidFrom;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetInterestRate;

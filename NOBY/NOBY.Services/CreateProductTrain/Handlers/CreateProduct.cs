@@ -1,6 +1,6 @@
 ﻿using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using SharedTypes.GrpcTypes;
 using _Product = DomainServices.ProductService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;

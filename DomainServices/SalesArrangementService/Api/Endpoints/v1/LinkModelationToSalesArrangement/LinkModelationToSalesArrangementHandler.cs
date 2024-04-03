@@ -232,7 +232,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
     private readonly ProductService.Clients.IProductServiceClient _productService;
     private readonly CaseService.Clients.v1.ICaseServiceClient _caseService;
-    private readonly OfferService.Clients.IOfferServiceClient _offerService;
+    private readonly OfferService.Clients.v1.IOfferServiceClient _offerService;
     private readonly IDocumentDataStorage _documentDataStorage;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly IMediator _mediator;
@@ -244,7 +244,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         IMediator mediator,
         CaseService.Clients.v1.ICaseServiceClient caseService,
         Database.SalesArrangementServiceDbContext dbContext,
-        OfferService.Clients.IOfferServiceClient offerService,
+        OfferService.Clients.v1.IOfferServiceClient offerService,
         IDocumentDataStorage documentDataStorage)
     {
         _productService = productService;

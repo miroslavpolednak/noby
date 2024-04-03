@@ -9,19 +9,10 @@ import "GrpcDate.proto";
 import "NullableGrpcDate.proto";
 import "Messages/Types.proto";
 
-message MortgageOfferBaseData {
-	MortgageOfferBasicParameters BasicParameters = 1;
-	MortgageOfferSimulationInputs SimulationInputs = 2;
-	MortgageOfferSimulationResults SimulationResults = 3;
-}
-
 message MortgageOfferFullData {
 	MortgageOfferBasicParameters BasicParameters = 1;
 	MortgageOfferSimulationInputs SimulationInputs = 2;
 	MortgageOfferSimulationResults SimulationResults = 3;
-	MortgageOfferAdditionalSimulationResults AdditionalSimulationResults = 4;
-	bool IsCreditWorthinessSimpleRequested = 8;
-	MortgageOfferCreditWorthinessSimpleInputs CreditWorthinessSimpleInputs = 9;
 }
 
 message MortgageOfferBasicParameters {

@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Security;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
@@ -63,7 +63,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
         if (saDetail.State is not (int)SalesArrangementStates.InProgress)
             throw new NobyValidationException(90032, "SA has to be in state InProgress(1)");
 
-        var offer = await _offerService.GetOfferDetail(saDetail.OfferId!.Value, cancellationToken);
+        var offer = await _offerService.GetOffer(saDetail.OfferId!.Value, cancellationToken);
 
         if (((DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom) < _time.GetLocalNow().Date)
             throw new NobyValidationException(90051);
@@ -82,7 +82,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
         await _salesArrangementService.UpdateSalesArrangementState(saDetail.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
     }
 
-    private async Task ValidateTask(GenerateRetentionDocumentRequest request, _contract.SalesArrangement saDetail, GetOfferDetailResponse offer, CancellationToken cancellationToken)
+    private async Task ValidateTask(GenerateRetentionDocumentRequest request, _contract.SalesArrangement saDetail, GetOfferResponse offer, CancellationToken cancellationToken)
     {
         var taskList = (await _caseService.GetTaskList(request.CaseId, cancellationToken))
             .Where(p => p.ProcessId == saDetail.TaskProcessId && p.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
@@ -112,7 +112,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
 
     private async Task GenerateRetentionDocument(User user,
         _contract.SalesArrangement sa,
-        GetOfferDetailResponse offerDetail,
+        GetOfferResponse offerDetail,
         GenerateRetentionDocumentRequest request,
         CancellationToken cancellationToken)
     {

@@ -1,4 +1,4 @@
-﻿using cz.kb.cm.be.@event.partyupdated.v1.PartyUpdatedV1;
+﻿using cz.kb.cm.be.@event.partyupdated.v1;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;

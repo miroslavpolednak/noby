@@ -15,5 +15,7 @@ public sealed class GetRealEstateValuationDetailResponse
     public List<Dto.Documents.DocumentsMetadata>? Documents { get; set; }
 
     public LocalSurveyData? LocalSurveyDetails { get; set; }
+
+    public OnlinePreorderData? OnlinePreorderDetails { get; set; }
 }
 

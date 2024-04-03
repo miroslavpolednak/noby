@@ -143,6 +143,7 @@ internal sealed class RealESignaturesClient
             },
             DocumentData = new()
             {
+                AllowSendPreview = true,
                 TypeCode = docType.ShortName,
                 TemplateVersion = docVersion.TemplateProcessingType,
                 Name = request.DocumentData.FileName,
@@ -167,7 +168,8 @@ internal sealed class RealESignaturesClient
                         Info3 = request.ClientData.Email
                     }
                 }
-            }
+            },
+            AdditionalData = request.AdditionalData
         };
 
         if (request.OtherClients is not null)

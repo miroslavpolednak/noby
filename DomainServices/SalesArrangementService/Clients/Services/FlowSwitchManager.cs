@@ -1,7 +1,7 @@
 ﻿using SharedTypes.Enums;
 using DomainServices.SalesArrangementService.Contracts;
 
-namespace DomainServices.SalesArrangementService.Clients.Services;
+namespace DomainServices.SalesArrangementService.Clients;
 
 internal sealed class FlowSwitchManager
     : IFlowSwitchManager

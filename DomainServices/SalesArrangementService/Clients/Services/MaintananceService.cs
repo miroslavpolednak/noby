@@ -1,7 +1,6 @@
-﻿
-using DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.SalesArrangementService.Contracts;
 
-namespace DomainServices.SalesArrangementService.Clients.Services;
+namespace DomainServices.SalesArrangementService.Clients;
 
 internal sealed class MaintananceService
     : IMaintananceService
