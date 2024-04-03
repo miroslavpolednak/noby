@@ -25,8 +25,11 @@ public sealed class MortgageRefinancingWorkflowService
 
     public async Task CreateIndividualPriceWorkflowTask(List<WFL> taskList, MortgageRefinancingWorkflowParameters mortgageParameters, string? taskRequest, CancellationToken cancellationToken)
     {
-        if (!await CancelExistingPriceExceptions(taskList, mortgageParameters, cancellationToken) || mortgageParameters.LoanInterestRateDiscount is null or 0 || (mortgageParameters.Fee is not null && mortgageParameters.Fee.FeeFinalSum == 0))
+        if (!await CancelExistingPriceExceptions(taskList, mortgageParameters, cancellationToken)
+            || (mortgageParameters.LoanInterestRateDiscount is (null or 0) && (mortgageParameters.Fee?.FeeFinalSum ?? 0) == 0))
+        {
             return;
+        }
 
         ValidatePermission();
 
