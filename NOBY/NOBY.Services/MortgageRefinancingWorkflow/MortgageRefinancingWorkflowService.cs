@@ -6,15 +6,15 @@ using NOBY.Infrastructure.Security;
 using NOBY.Services.WorkflowTask;
 using WFL = DomainServices.CaseService.Contracts.WorkflowTask;
 
-namespace NOBY.Services.OfferLink;
+namespace NOBY.Services.MortgageRefinancingWorkflow;
 
 [ScopedService, SelfService]
-public class MortgageRetentionWorkflowService
+public sealed class MortgageRefinancingWorkflowService
 {
     private readonly ICaseServiceClient _caseService;
     private readonly ICurrentUserAccessor _currentUserAccessor;
 
-    public MortgageRetentionWorkflowService(ICaseServiceClient caseService, ICurrentUserAccessor currentUserAccessor)
+    public MortgageRefinancingWorkflowService(ICaseServiceClient caseService, ICurrentUserAccessor currentUserAccessor)
     {
         _caseService = caseService;
         _currentUserAccessor = currentUserAccessor;
@@ -23,30 +23,9 @@ public class MortgageRetentionWorkflowService
     public Task<WorkflowTaskByTaskId.WorkflowTaskByTaskIdResult> GetTaskInfoByTaskId(long caseId, long taskId, CancellationToken cancellationToken) => 
         _caseService.GetTaskByTaskId(caseId, taskId, cancellationToken);
 
-    public async Task UpdateRetentionWorkflowProcess(IMortgageParameters mortgageParameters, int taskIdSb, CancellationToken cancellationToken)
+    public async Task CreateIndividualPriceWorkflowTask(List<WFL> taskList, MortgageRefinancingWorkflowParameters mortgageParameters, string? taskRequest, CancellationToken cancellationToken)
     {
-        var updateRequest = new UpdateTaskRequest
-        {
-            CaseId = mortgageParameters.CaseId,
-            TaskIdSb = taskIdSb,
-            Retention = new Retention
-            {
-                InterestRateValidFrom = mortgageParameters.InterestRateValidFrom,
-                LoanInterestRate = mortgageParameters.LoanInterestRate,
-                LoanInterestRateProvided = mortgageParameters.LoanInterestRateProvided,
-                LoanPaymentAmount = mortgageParameters.LoanPaymentAmount,
-                LoanPaymentAmountFinal = mortgageParameters.LoanPaymentAmountFinal,
-                FeeSum = mortgageParameters.FeeSum,
-                FeeFinalSum = mortgageParameters.FeeFinalSum
-            }
-        };
-
-        await _caseService.UpdateTask(updateRequest, cancellationToken);
-    }
-
-    public async Task CreateIndividualPriceWorkflowTask(List<WFL> taskList, IMortgageParameters mortgageParameters, string? taskRequest, CancellationToken cancellationToken)
-    {
-        if (!await CancelExistingPriceExceptions(taskList, mortgageParameters, cancellationToken) || mortgageParameters.LoanInterestRateDiscount is null or 0 || mortgageParameters.FeeFinalSum == 0)
+        if (!await CancelExistingPriceExceptions(taskList, mortgageParameters, cancellationToken) || mortgageParameters.LoanInterestRateDiscount is null or 0 || (mortgageParameters.Fee is not null && mortgageParameters.Fee.FeeFinalSum == 0))
             return;
 
         ValidatePermission();
@@ -64,23 +43,24 @@ public class MortgageRetentionWorkflowService
                     LoanInterestRate = mortgageParameters.LoanInterestRate,
                     LoanInterestRateDiscount = mortgageParameters.LoanInterestRateDiscount,
                     LoanInterestRateProvided = mortgageParameters.LoanInterestRate - mortgageParameters.LoanInterestRateDiscount
-                },
-                Fees =
-                {
-                    new PriceExceptionFeesItem
-                    {
-                        TariffSum = mortgageParameters.FeeSum,
-                        FinalSum = mortgageParameters.FeeFinalSum,
-                        DiscountPercentage = 100 * (mortgageParameters.FeeSum - mortgageParameters.FeeFinalSum) / mortgageParameters.FeeSum
-                    }
                 }
             }
         };
 
+        if (mortgageParameters.Fee is not null)
+        {
+            createTaskRequest.PriceException.Fees.Add(new PriceExceptionFeesItem
+            {
+                TariffSum = mortgageParameters.Fee.FeeSum,
+                FinalSum = mortgageParameters.Fee.FeeFinalSum,
+                DiscountPercentage = 100 * (mortgageParameters.Fee.FeeSum - mortgageParameters.Fee.FeeFinalSum) / mortgageParameters.Fee.FeeSum
+            });
+        }
+
         await _caseService.CreateTask(createTaskRequest, cancellationToken);
     }
 
-    private async Task<bool> CancelExistingPriceExceptions(IEnumerable<WFL> taskList, IMortgageParameters mortgageParameters, CancellationToken cancellationToken)
+    private async Task<bool> CancelExistingPriceExceptions(IEnumerable<WFL> taskList, MortgageRefinancingWorkflowParameters mortgageParameters, CancellationToken cancellationToken)
     {
         var priceExceptionTasks = taskList.Where(t => t.ProcessId == mortgageParameters.TaskProcessId && t is { TaskTypeId: (int)WorkflowTaskTypes.PriceException, Cancelled: false })
                                           .ToList();
@@ -97,7 +77,7 @@ public class MortgageRetentionWorkflowService
             var taskLoanInterestRateDiscount = ((decimal?)priceExceptionTaskDetail.TaskDetail.PriceException.LoanInterestRate.LoanInterestRateDiscount).GetValueOrDefault();
             var taskFeeFinalSum = ((decimal?)priceExceptionTaskDetail.TaskDetail.PriceException.Fees.FirstOrDefault()?.FinalSum).GetValueOrDefault();
 
-            if (taskLoanInterestRateDiscount != mortgageParameters.LoanInterestRateDiscount.GetValueOrDefault() && taskFeeFinalSum != mortgageParameters.FeeFinalSum)
+            if (taskLoanInterestRateDiscount != mortgageParameters.LoanInterestRateDiscount.GetValueOrDefault() && taskFeeFinalSum != mortgageParameters.Fee?.FeeFinalSum)
             {
                 priceExceptionWasCancelled = false;
 
