@@ -2513,6 +2513,15 @@
             </summary>
             <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRefixationOfferList(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest)">
+            <summary>
+            Vezme stávající simulace k refixacím, aktuální i sdělené a přepočítá všechny s novou slevou na sazbě
+            </summary>
+            <remarks>
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DAE69855-3C72-4ec4-8332-81E91814FA47"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageExtraPayment(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest)">
             <summary>
             Simulace mimořádné splátky hypotéky.
@@ -2520,6 +2529,7 @@
             <remarks>
             Provolá simulační službu Starbuildu pro refixace.
             
+            <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRefixation(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationRequest)">
@@ -2529,6 +2539,7 @@
             <remarks>
             Provolá simulační službu Starbuildu pro refixace.
             
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B794F3FC-3B89-4280-AF28-449F0442ACFD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRetention(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest)">
@@ -2667,12 +2678,12 @@
             Částka mimořádné splátky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentReason">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentReasonId">
             <summary>
             Důvod mimořádné splátky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentType">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentTypeId">
             <summary>
             Typ mimořádné splátky
             </summary>
@@ -2691,6 +2702,12 @@
             <summary>
             Výše měsíční splátky se zohledněním IC.
             </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest.InterestRateDiscount">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>0.09</example>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationRequest.FixedRatePeriod">
             <summary>
@@ -3367,61 +3384,9 @@
             Aktuální úroková sazba.
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationHandler.getOfferList(System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Seznam nabidek
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.Offers">
             <summary>
             Seznam nabídek pro daný proces
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.RefixationOfferDetail.IsLegalNotice">
-            <summary>
-            Jedná se o zákonné sdělení
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.RefixationOfferDetail.IsCurrent">
-            <summary>
-            Jedná se o Aktuální nabídku
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.RefixationOfferDetail.IsCommunicated">
-            <summary>
-            Jedná se o sdělenou nabídku
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.RefixationOfferDetail.IsLiked">
-            <summary>
-            Jedná se o likovanou nabídku
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.RefixationOfferDetail.IsSelected">
-            <summary>
-            Jedná se o vybranou nabídku
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.RefixationOfferDetail.InterestRateDiscount">
-            <summary>
-            Sleva ze sazby
-            </summary>
-            <example>0.2</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.RefixationOfferDetail.InterestRateDiscounted">
-            <summary>
-            Sleva ze sazby
-            </summary>
-            <example>4.5</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.RefixationOfferDetail.LoanPaymentAmount">
-            <summary>
-            Výše měsíční splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.RefixationOfferDetail.LoanPaymentAmountDiscounted">
-            <summary>
-            Výše měsíční splátky se zohledněním IC.
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionHandler.getRetentionProcess(System.Int64,System.Int64,System.Threading.CancellationToken)">
@@ -3644,6 +3609,28 @@
             <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9" >
             <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest.IndividualPriceCommentLastVersion">
+            <summary>
+            Komentář k Cenové výjimce
+            </summary>
+            <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest.Comment">
+            <summary>
+            Komentář k refixaci
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest.InterestRateDiscount">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>0.2</example>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest.HasInterestRateDiscount">
+            <summary>
+            Příznak zda je nastavena sleva ze sazby
+            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
             <summary>

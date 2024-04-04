@@ -634,6 +634,53 @@
             Slouží k náhledu na dokumenty
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsLegalNotice">
+            <summary>
+            Jedná se o zákonné sdělení
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsCurrent">
+            <summary>
+            Jedná se o Aktuální nabídku
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsCommunicated">
+            <summary>
+            Jedná se o sdělenou nabídku
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsLiked">
+            <summary>
+            Jedná se o likovanou nabídku
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsSelected">
+            <summary>
+            Jedná se o zvolenou nabídku
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.InterestRateDiscount">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>0.2</example>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.InterestRateDiscounted">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>4.5</example>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.LoanPaymentAmountDiscounted">
+            <summary>
+            Výše měsíční splátky se zohledněním IC.
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Signing.DocumentData.DocumentOnSAId">
             <summary>
             Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.

@@ -8,4 +8,5 @@ internal sealed class RefixationData : IDocumentData
 
     public bool? ManagedByRC2 { get; set; }
     public string? Comment { get; set; }
+    public string? IndividualPriceCommentLastVersion { get; set; }
 }

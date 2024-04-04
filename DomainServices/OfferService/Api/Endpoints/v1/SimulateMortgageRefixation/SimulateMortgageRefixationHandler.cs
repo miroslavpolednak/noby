@@ -32,17 +32,30 @@ internal sealed class SimulateMortgageRefixationHandler
             documentEntity.SimulationOutputs.LoanPaymentAmountDiscounted = easSimulationRes2;
         }
 
-        // save to DB
-        var entity = await (request.OfferId.HasValue ? updateOffer(request.OfferId.Value, documentEntity, cancellationToken) : insertOffer(request.CaseId, documentEntity, cancellationToken));
-
-        return new SimulateMortgageRefixationResponse
+        var result = new SimulateMortgageRefixationResponse
         {
-            OfferId = entity.OfferId,
-            Created = entity.Stamp,
             SimulationInputs = _offerMapper.MapFromDataInputs(documentEntity.SimulationInputs),
             BasicParameters = _offerMapper.MapFromDataBasicParameters(documentEntity.BasicParameters),
             SimulationResults = _offerMapper.MapFromDataOutputs(documentEntity.SimulationOutputs)
         };
+
+        if (request.IsVirtual)
+        {
+            result.OfferId = request.OfferId.GetValueOrDefault();
+        }
+        else if (request.OfferId.HasValue)
+        {
+            result.Created = await updateOffer(request.OfferId.Value, documentEntity, cancellationToken);
+            result.OfferId = request.OfferId.Value;
+        }
+        else
+        {
+            var (offerId, stamp) = await insertOffer(request.CaseId, documentEntity, cancellationToken);
+            result.Created = stamp;
+            result.OfferId = offerId;
+        }
+
+        return result;
     }
 
     private async Task<(int OfferId, ModificationStamp Stamp)> insertOffer(long caseId, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)
@@ -67,7 +80,7 @@ internal sealed class SimulateMortgageRefixationHandler
         return (entity.OfferId, new ModificationStamp(entity));
     }
 
-    private async Task<(int OfferId, ModificationStamp Stamp)> updateOffer(int offerId, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)
+    private async Task<ModificationStamp> updateOffer(int offerId, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)
     {
         // kontrola zda offer existuje
         var entity = await _dbContext.Offers
@@ -78,7 +91,7 @@ internal sealed class SimulateMortgageRefixationHandler
 
         await _documentDataStorage.UpdateByEntityId(offerId, documentEntity);
 
-        return (offerId, new ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime));
+        return new ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime);
     }
 
     private readonly Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _offerMapper;

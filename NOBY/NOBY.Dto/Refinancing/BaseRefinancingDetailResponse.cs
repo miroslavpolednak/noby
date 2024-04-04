@@ -7,6 +7,8 @@ public class BaseRefinancingDetailResponse
     /// </summary>
     public string? IndividualPriceCommentLastVersion { get; set; }
 
+    public string? Comment { get; set; }
+
     /// <summary>
     /// Všechny workflow úkoly pro daný proces retence
     /// </summary>

@@ -33,7 +33,7 @@ public sealed class RefinancingController : ControllerBase
         await _mediator.Send((request ?? new()).InfuseId(caseId, salesArrangementId));
         return NoContent();
     }
-    
+
     /// <summary>
     /// Detail mimořádné splátky
     /// </summary>

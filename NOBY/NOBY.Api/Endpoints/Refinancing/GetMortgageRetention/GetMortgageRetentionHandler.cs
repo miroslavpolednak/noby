@@ -37,6 +37,7 @@ internal sealed class GetMortgageRetentionHandler
                 .SelectAsync(t => _workflowMapper.MapTask(t, cancellationToken)))
                 .ToList(),
             IndividualPriceCommentLastVersion = salesArrangement?.Retention?.IndividualPriceCommentLastVersion,
+            Comment = salesArrangement?.Retention?.Comment,
             SignatureTypeDetailId = salesArrangement?.Retention?.SignatureTypeDetailId,
             DocumentId = retentionProcess.RefinancingProcess.RefinancingDocumentId,
             RefinancingDocumentEACode = retentionProcess.RefinancingProcess.RefinancingDocumentEACode,

@@ -8,7 +8,7 @@ public sealed class MortgageRefinancingWorkflowParameters
 
     public decimal? LoanInterestRateDiscount { get; init; }
 
-    public decimal LoanInterestRate { get; init; }
+    public decimal? LoanInterestRate { get; init; }
 
     public FeeObject? Fee { get; init; }
 

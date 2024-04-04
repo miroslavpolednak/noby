@@ -1,5 +1,4 @@
 ﻿using DomainServices.CaseService.Clients.v1;
-using DomainServices.CaseService.Contracts;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
@@ -21,7 +20,6 @@ internal sealed class UpdateMortgageRefixationHandler
         {
             CaseId = salesArrangement.CaseId,
             TaskProcessId = salesArrangement.TaskProcessId!.Value,
-            LoanInterestRate = request.InterestRate,
             LoanInterestRateDiscount = request.InterestRateDiscount
         };
 
