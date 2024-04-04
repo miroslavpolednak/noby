@@ -1,6 +1,5 @@
 ﻿using CIS.Core;
 using DomainServices.CaseService.Clients.v1;
-using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList;
 
@@ -11,7 +10,10 @@ internal sealed class GetMortgageRefixationHandler
 {
     public async Task<GetMortgageRefixationResponse> Handle(GetMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
-        GetMortgageRefixationResponse response = new();
+        GetMortgageRefixationResponse response = new()
+        {
+            ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, cancellationToken)
+        };
         decimal? icRate = null;
 
         if (request.ProcessId.HasValue)
@@ -59,16 +61,18 @@ internal sealed class GetMortgageRefixationHandler
         response.Comment = salesArrangement?.Retention?.Comment;
     }
 
+    private readonly Services.ResponseCodes.ResponseCodesService _responseCodes;
     private readonly IMediator _mediator;
     private readonly Services.WorkflowMapper.IWorkflowMapperService _workflowMapper;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICaseServiceClient _caseService;
 
-    public GetMortgageRefixationHandler(ISalesArrangementServiceClient salesArrangementService, ICaseServiceClient caseService, Services.WorkflowMapper.IWorkflowMapperService workflowMapper, IMediator mediator)
+    public GetMortgageRefixationHandler(ISalesArrangementServiceClient salesArrangementService, ICaseServiceClient caseService, Services.WorkflowMapper.IWorkflowMapperService workflowMapper, IMediator mediator, Services.ResponseCodes.ResponseCodesService responseCodes)
     {
         _salesArrangementService = salesArrangementService;
         _caseService = caseService;
         _workflowMapper = workflowMapper;
         _mediator = mediator;
+        _responseCodes = responseCodes;
     }
 }
