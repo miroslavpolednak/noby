@@ -17,6 +17,7 @@ internal sealed class GetResponseCodeListHandler
                 ResponseCodeTypeId = t.ResponseCodeTypeId,
                 ResponseCodeId = t.ResponseCodeId,
                 Data = t.Data,
+                Created = new SharedTypes.GrpcTypes.ModificationStamp(t.CreatedUserId, t.CreatedUserName, t.CreatedTime)
             })
             .ToListAsync(cancellationToken);
 

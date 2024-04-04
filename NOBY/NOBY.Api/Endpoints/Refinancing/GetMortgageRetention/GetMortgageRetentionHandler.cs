@@ -36,6 +36,7 @@ internal sealed class GetMortgageRetentionHandler
             Tasks = (await tasks
                 .SelectAsync(t => _workflowMapper.MapTask(t, cancellationToken)))
                 .ToList(),
+            ResponseCodes = null,
             IndividualPriceCommentLastVersion = salesArrangement?.Retention?.IndividualPriceCommentLastVersion,
             Comment = salesArrangement?.Retention?.Comment,
             SignatureTypeDetailId = salesArrangement?.Retention?.SignatureTypeDetailId,
