@@ -11,6 +11,13 @@ namespace NOBY.Api.Endpoints.Offer.LinkModelation;
 internal sealed class LinkModelationHandler
     : IRequestHandler<LinkModelationRequest>
 {
+    private static readonly SalesArrangementStates[] _allowedStates = [
+        SalesArrangementStates.InProgress,
+        SalesArrangementStates.NewArrangement,
+        SalesArrangementStates.InSigning,
+        SalesArrangementStates.ToSend
+    ];
+
     public async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
     {
         // get SA data
@@ -20,7 +27,7 @@ internal sealed class LinkModelationHandler
         // validace prav
         _salesArrangementAuthorization.ValidateSaAccessBySaType213And248(saInstance.SalesArrangementTypeId);
         
-        if ((offer.Data.CaseId.HasValue && saInstance.CaseId != offer.Data.CaseId) || (saInstance.State != (int)SalesArrangementStates.InProgress && saInstance.State != (int)SalesArrangementStates.NewArrangement))
+        if ((offer.Data.CaseId.HasValue && saInstance.CaseId != offer.Data.CaseId) || !_allowedStates.Contains((SalesArrangementStates)saInstance.State))
             throw new NobyValidationException(90032);
         
         switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)

@@ -1,6 +1,6 @@
 ﻿using KafkaFlow.Configuration;
 using KafkaFlow.Middlewares.Serializer;
-using KafkaFlow.Serializer.SchemaRegistry;
+using KafkaFlow.Serializer;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.JsonSchema;
 
@@ -10,7 +10,7 @@ internal static class JsonSchemaBuilderExtensions
     {
         return middlewares.Add(
             _ => new DeserializerConsumerMiddleware(
-                new ConfluentJsonDeserializer(),
+                new JsonCoreDeserializer(),
                 new JsonSchemaTypeResolver()));
     }
 }
