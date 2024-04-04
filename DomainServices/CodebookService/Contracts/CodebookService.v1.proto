@@ -9,6 +9,12 @@ import "Messages/GenericCodebook.proto";
 import "Messages/GetACVAndBagmanRealEstateType.proto";
 
 service CodebookService {
+	rpc ResponseCodes (google.protobuf.Empty) returns (ResponseCodesResponse) {
+	   option (google.api.http) = {
+			get: "/v1/response-codes"
+		};
+   }
+
    rpc FeeChangeRequests (google.protobuf.Empty) returns (FeeChangeRequestsResponse) {
 	   option (google.api.http) = {
 			get: "/v1/fee-change-requests"

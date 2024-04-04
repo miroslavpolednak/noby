@@ -6,6 +6,7 @@ using NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment;
 using NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
+using NOBY.Api.Endpoints.Refinancing.SendMortgageResponseCode;
 
 namespace NOBY.Api.Endpoints.Refinancing;
 
@@ -15,10 +16,28 @@ namespace NOBY.Api.Endpoints.Refinancing;
 public sealed class RefinancingController : ControllerBase
 {
     /// <summary>
-    /// 
+    /// Vytvoří odpovědní kód
     /// </summary>
     /// <remarks>
     /// 
+    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("case/{caseId:long}/mortgage/sendResponseCode")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> SendMortgageResponseCode([FromRoute] long caseId, [FromBody] SendMortgageResponseCodeRequest request)
+    {
+        await _mediator.Send((request ?? new()).InfuseId(caseId));
+        return NoContent();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
     /// 
     /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>

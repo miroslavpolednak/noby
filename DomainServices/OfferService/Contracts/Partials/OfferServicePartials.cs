@@ -52,3 +52,13 @@ public partial class GetOfferListRequest
     : MediatR.IRequest<GetOfferListResponse>, CIS.Core.Validation.IValidatableRequest
 {
 }
+
+public partial class CreateResponseCodeRequest
+    : MediatR.IRequest<CreateResponseCodeResponse>, CIS.Core.Validation.IValidatableRequest
+{
+}
+
+public partial class GetResponseCodeListRequest
+    : MediatR.IRequest<GetResponseCodeListResponse>, CIS.Core.Validation.IValidatableRequest
+{
+}
