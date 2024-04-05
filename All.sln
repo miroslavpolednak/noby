@@ -599,6 +599,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	ProjectSection(SolutionItems) = preProject
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00001-initial_creation.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00001-initial_creation.sql
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00002-initial_seed.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00002-initial_seed.sql
+		InternalServices\TaskSchedulingService\DatabaseMigrations\00003-HACH-10688.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00003-HACH-10688.sql
+		InternalServices\TaskSchedulingService\DatabaseMigrations\00004-ImportFromDatamartJob.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00004-ImportFromDatamartJob.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.SbWebApi", "ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj", "{FA184421-6232-4157-BDEC-DE7D03D3B88C}"
