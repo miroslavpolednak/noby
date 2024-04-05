@@ -98,6 +98,7 @@ public sealed class MortgageRefinancingWorkflowService
 
     private void ValidatePermission()
     {
+        // TODO: projit zda je potreba s Klarou a Davidem
         if (_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage))
             return;
 

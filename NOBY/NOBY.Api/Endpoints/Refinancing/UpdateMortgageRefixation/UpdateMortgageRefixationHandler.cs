@@ -40,7 +40,8 @@ internal sealed class UpdateMortgageRefixationHandler
         foreach (var offer in offers)
         {
             // mame ulozenou jinou slevu ze sazby nez je v requestu
-            if (offer.MortgageRefixation.SimulationInputs.InterestRateDiscount != request.InterestRateDiscount)
+            if (!((OfferFlagTypes)offer.Data.Flags).HasFlag(OfferFlagTypes.LegalNotice)
+                && offer.MortgageRefixation.SimulationInputs.InterestRateDiscount != request.InterestRateDiscount)
             {
                 var simulationRequest = new SimulateMortgageRefixationRequest
                 {
@@ -72,13 +73,11 @@ internal sealed class UpdateMortgageRefixationHandler
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
     private readonly MortgageRefinancingWorkflowService _retentionWorkflowService;
-    private readonly ICaseServiceClient _caseService;
 
-    public UpdateMortgageRefixationHandler(IOfferServiceClient offerService, ISalesArrangementServiceClient salesArrangementService, MortgageRefinancingWorkflowService retentionWorkflowService, ICaseServiceClient caseService)
+    public UpdateMortgageRefixationHandler(IOfferServiceClient offerService, ISalesArrangementServiceClient salesArrangementService, MortgageRefinancingWorkflowService retentionWorkflowService)
     {
         _offerService = offerService;
         _salesArrangementService = salesArrangementService;
         _retentionWorkflowService = retentionWorkflowService;
-        _caseService = caseService;
     }
 }

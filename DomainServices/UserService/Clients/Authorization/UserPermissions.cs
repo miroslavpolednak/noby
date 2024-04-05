@@ -2,8 +2,9 @@
 
 public enum UserPermissions : int
 {
-    WFL_TASK_DETAIL_SigningDocuments = 100,
+    WFL_TASK_DETAIL_PaperSigningDocuments = 100,
     WFL_TASK_DETAIL_SigningAttachments = 101,
+    WFL_TASK_DETAIL_DigitalSigningDocuments = 102,
     DASHBOARD_IdentifyCase = 110,
     APPLICATION_BasicAccess = 201,
     DASHBOARD_CreateNewCase = 202,

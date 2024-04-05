@@ -856,6 +856,16 @@
             </summary>
             <example>01_23_046_111203_SF_0001</example>
         </member>
+        <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.SignatureLinkVisible">
+            <summary>
+            True, pokud má být zobrazen link "Přejít k podepisování"
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.SendButtonVisible">
+            <summary>
+            True, pokud má být zobrazeno tlačítko "Odeslat"
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Workflow.TaskCommunicationItem.TaskRequest">
             <summary>
             Text požadavku
