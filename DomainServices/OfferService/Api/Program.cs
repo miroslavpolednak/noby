@@ -27,6 +27,7 @@ SharedComponents.GrpcServiceBuilder
     .MapGrpcServices(app =>
     {
         app.MapGrpcService<OfferService>();
+        app.MapGrpcService<DomainServices.OfferService.Api.Endpoints.MaintananceService>();
     })
     .Run();
 

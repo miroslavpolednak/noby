@@ -16,15 +16,22 @@ public static class StartupExtensions
     public static IServiceCollection AddOfferService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
-        services.TryAddTransient<OfferService.Clients.v1.IOfferServiceClient, OfferService.Clients.v1.OfferService >();
+
+        services.TryAddTransient<OfferService.Clients.v1.IOfferServiceClient, OfferService.Clients.v1.OfferService>();
+        services.TryAddTransient<OfferService.Clients.Interfaces.IMaintananceService, OfferService.Clients.Services.MaintananceService>();
+
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.OfferService.OfferServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.OfferService.OfferServiceClient>(ServiceName, customServiceKey: "OFMaintananceServiceClient");
         return services;
     }
 
     public static IServiceCollection AddOfferService(this IServiceCollection services, string serviceUrl)
     {
-        services.TryAddTransient<OfferService.Clients.v1.IOfferServiceClient, OfferService.Clients.v1.OfferService >();
+        services.TryAddTransient<OfferService.Clients.v1.IOfferServiceClient, OfferService.Clients.v1.OfferService>();
+        services.TryAddTransient<OfferService.Clients.Interfaces.IMaintananceService, OfferService.Clients.Services.MaintananceService>();
+
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.OfferService.OfferServiceClient>(serviceUrl);
+        services.TryAddCisGrpcClientUsingUrl<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.OfferService.OfferServiceClient>(ServiceName, customServiceKey: "OFMaintananceServiceClient");
         return services;
     }
 }

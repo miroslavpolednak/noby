@@ -256,6 +256,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00009-HFICH-10398_3.sql = DomainServices\OfferService\DatabaseMigrations\00009-HFICH-10398_3.sql
 		DomainServices\OfferService\DatabaseMigrations\00010-HFICH-10600.sql = DomainServices\OfferService\DatabaseMigrations\00010-HFICH-10600.sql
 		DomainServices\OfferService\DatabaseMigrations\00011-Flags.sql = DomainServices\OfferService\DatabaseMigrations\00011-Flags.sql
+		DomainServices\OfferService\DatabaseMigrations\00012-Origin.sql = DomainServices\OfferService\DatabaseMigrations\00012-Origin.sql
+		DomainServices\OfferService\DatabaseMigrations\00013-refix_extrapayment_tables.sql = DomainServices\OfferService\DatabaseMigrations\00013-refix_extrapayment_tables.sql
+		DomainServices\OfferService\DatabaseMigrations\00014-HACH-10961-DatamartDbStructure.sql = DomainServices\OfferService\DatabaseMigrations\00014-HACH-10961-DatamartDbStructure.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
@@ -483,8 +486,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\DataAggregatorService\DatabaseMigrations\00070_Fixed_SADrawing_SpecificSymbol_Path.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00070_Fixed_SADrawing_SpecificSymbol_Path.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00071_HFICH-10398_Offer.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00071_HFICH-10398_Offer.sql
 		InternalServices\DataAggregatorService\DatabaseMigrations\00072_HFICH-10730_Risk_LoanInteresetRate.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00072_HFICH-10730_Risk_LoanInteresetRate.sql
-		InternalServices\DataAggregatorService\DatabaseMigrations\00073_Offer_AnotherStructureChange.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00073_Offer_AnotherStructureChange.sql
-		InternalServices\DataAggregatorService\DatabaseMigrations\00074_HFICH-9465.sql = InternalServices\DataAggregatorService\DatabaseMigrations\00074_HFICH-9465.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Infrastructure.Messaging", "CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj", "{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872}"
