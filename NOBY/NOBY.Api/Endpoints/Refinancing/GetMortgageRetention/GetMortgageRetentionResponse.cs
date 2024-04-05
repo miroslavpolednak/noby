@@ -1,6 +1,7 @@
 ﻿namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 
 public sealed class GetMortgageRetentionResponse
+    : NOBY.Dto.Refinancing.BaseRefinancingDetailResponse
 {
     /// <summary>
     /// Informace zda se jedná o readonly režim
@@ -35,7 +36,6 @@ public sealed class GetMortgageRetentionResponse
     /// Sleva ze sazby
     /// </summary>
     /// <example>4.5</example>
-    /// !!! dopocitat pro FE - rozdil mezi InterestRate - InterestRateDiscounted
     public decimal? InterestRateDiscounted { get => InterestRateDiscount.HasValue ? InterestRate - InterestRateDiscount : null; }
 
     /// <summary>
@@ -48,16 +48,6 @@ public sealed class GetMortgageRetentionResponse
     /// </summary>
     public decimal? LoanPaymentAmountDiscounted { get; set; }
 
-    /// <summary>
-    /// Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
-    /// </summary>
-    public bool ContainsInconsistentIndividualPriceData { get; set; }
-
-    /// <summary>
-    /// Komentář k IC
-    /// </summary>
-    public string? IndividualPriceCommentLastVersion { get; set; }
-
     public string? DocumentId { get; set; }
 
     public int? RefinancingDocumentEACode { get; set; }
@@ -69,9 +59,4 @@ public sealed class GetMortgageRetentionResponse
     /// </summary>
     // offerid is not null, refinancingState=1, dalsi podminka je prvni pinda pokud existuje offer
     public bool IsGenerateDocumentEnabled { get; set; }
-
-    /// <summary>
-    /// Všechny workflow úkoly pro daný proces retence
-    /// </summary>
-    public List<NOBY.Dto.Workflow.WorkflowTask>? Tasks { get; set; }
 }

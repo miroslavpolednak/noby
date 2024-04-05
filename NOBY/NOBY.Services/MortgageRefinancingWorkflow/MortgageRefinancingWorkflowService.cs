@@ -44,8 +44,8 @@ public sealed class MortgageRefinancingWorkflowService
                 LoanInterestRate = new PriceExceptionLoanInterestRateItem
                 {
                     LoanInterestRate = mortgageParameters.LoanInterestRate,
-                    LoanInterestRateDiscount = mortgageParameters.LoanInterestRateDiscount,
-                    LoanInterestRateProvided = mortgageParameters.LoanInterestRate - mortgageParameters.LoanInterestRateDiscount
+                    LoanInterestRateProvided = mortgageParameters.LoanInterestRate.HasValue ? mortgageParameters.LoanInterestRate - mortgageParameters.LoanInterestRateDiscount.GetValueOrDefault() : null,
+                    LoanInterestRateDiscount = mortgageParameters.LoanInterestRateDiscount
                 }
             }
         };

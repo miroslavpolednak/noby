@@ -16,7 +16,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.26.1" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.61.0" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.62.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.62.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -29,8 +29,10 @@
 
 	<ItemGroup>
 		<Protobuf Include="./OfferService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Messages\GetResponseCodeList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="MaintananceService.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\GetInterestRate.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Messages\CreateResponseCode.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\GetOfferList.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\SimulateMortgageRefixation.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\SimulateMortgageExtraPayment.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />

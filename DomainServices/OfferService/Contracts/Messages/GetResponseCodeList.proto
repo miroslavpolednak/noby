@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "ModificationStamp.proto";
+
+message GetResponseCodeListRequest {
+	int64 CaseId = 1;
+}
+
+message GetResponseCodeListResponse {
+	repeated GetResponseCodeItem Responses = 1;
+
+	message GetResponseCodeItem {
+		int32 ResponseCodeId = 1;
+		int32 ResponseCodeTypeId = 2;
+		google.protobuf.StringValue Data = 3;
+		cis.types.ModificationStamp Created = 7;
+	}
+}

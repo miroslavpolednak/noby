@@ -45,6 +45,12 @@ public class OfferService
     public override async Task<GetInterestRateResponse> GetInterestRate(GetInterestRateRequest request, ServerCallContext context)
         => await _mediator.Send(request);
 
+    public override async Task<CreateResponseCodeResponse> CreateResponseCode(CreateResponseCodeRequest request, ServerCallContext context)
+        => await _mediator.Send(request);
+
+    public override async Task<GetResponseCodeListResponse> GetResponseCodeList(GetResponseCodeListRequest request, ServerCallContext context)
+        => await _mediator.Send(request);
+
     private readonly IMediator _mediator;
     public OfferService(IMediator mediator)
         => _mediator = mediator;

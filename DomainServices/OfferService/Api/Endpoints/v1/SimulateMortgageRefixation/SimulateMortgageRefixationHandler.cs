@@ -1,5 +1,6 @@
 ﻿using DomainServices.OfferService.Contracts;
 using ExternalServices.EasSimulationHT.V1;
+using Microsoft.EntityFrameworkCore;
 using SharedComponents.DocumentDataStorage;
 using SharedTypes.GrpcTypes;
 
@@ -31,11 +32,38 @@ internal sealed class SimulateMortgageRefixationHandler
             documentEntity.SimulationOutputs.LoanPaymentAmountDiscounted = easSimulationRes2;
         }
 
-        // save to DB
+        var result = new SimulateMortgageRefixationResponse
+        {
+            SimulationInputs = _offerMapper.MapFromDataInputs(documentEntity.SimulationInputs),
+            BasicParameters = _offerMapper.MapFromDataBasicParameters(documentEntity.BasicParameters),
+            SimulationResults = _offerMapper.MapFromDataOutputs(documentEntity.SimulationOutputs)
+        };
+
+        if (request.IsVirtual)
+        {
+            result.OfferId = request.OfferId.GetValueOrDefault();
+        }
+        else if (request.OfferId.HasValue)
+        {
+            result.Created = await updateOffer(request.OfferId.Value, documentEntity, cancellationToken);
+            result.OfferId = request.OfferId.Value;
+        }
+        else
+        {
+            var (offerId, stamp) = await insertOffer(request.CaseId, documentEntity, cancellationToken);
+            result.Created = stamp;
+            result.OfferId = offerId;
+        }
+
+        return result;
+    }
+
+    private async Task<(int OfferId, ModificationStamp Stamp)> insertOffer(long caseId, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)
+    {
         var entity = new Database.Entities.Offer
         {
             ResourceProcessId = Guid.NewGuid(),
-            CaseId = request.CaseId,
+            CaseId = caseId,
             OfferType = (int)OfferTypes.MortgageRefixation,
             Origin = (int)OfferOrigins.OfferService,
             Flags = (int)OfferFlagTypes.Current
@@ -49,14 +77,21 @@ internal sealed class SimulateMortgageRefixationHandler
 
         _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
-        return new SimulateMortgageRefixationResponse
-        {
-            OfferId = entity.OfferId,
-            Created = new ModificationStamp(entity),
-            SimulationInputs = _offerMapper.MapFromDataInputs(documentEntity.SimulationInputs),
-            BasicParameters = _offerMapper.MapFromDataBasicParameters(documentEntity.BasicParameters),
-            SimulationResults = _offerMapper.MapFromDataOutputs(documentEntity.SimulationOutputs)
-        };
+        return (entity.OfferId, new ModificationStamp(entity));
+    }
+
+    private async Task<ModificationStamp> updateOffer(int offerId, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)
+    {
+        // kontrola zda offer existuje
+        var entity = await _dbContext.Offers
+            .Where(t => t.OfferId == offerId)
+            .Select(t => new { t.CreatedTime, t.CreatedUserId, t.CreatedUserName })
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, offerId);
+
+        await _documentDataStorage.UpdateByEntityId(offerId, documentEntity);
+
+        return new ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime);
     }
 
     private readonly Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _offerMapper;

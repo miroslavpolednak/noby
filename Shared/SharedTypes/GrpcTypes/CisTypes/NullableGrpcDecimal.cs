@@ -24,6 +24,13 @@ public partial class NullableGrpcDecimal
         return grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor;
     }
 
+    public static implicit operator NullableGrpcDecimal?(decimal value)
+    {
+        var units = decimal.ToInt64(value);
+        var nanos = decimal.ToInt32((value - units) * NanoFactor);
+        return new NullableGrpcDecimal(units, nanos);
+    }
+
     public static implicit operator NullableGrpcDecimal?(decimal? value)
     {
         if (!value.HasValue) return default(NullableGrpcDecimal);

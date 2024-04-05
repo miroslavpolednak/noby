@@ -10,17 +10,36 @@ namespace NOBY.Api.Endpoints.Offer;
 public sealed class OfferController : ControllerBase
 {
     /// <summary>
+    /// Vezme stávající simulace k refixacím, aktuální i sdělené a přepočítá všechny s novou slevou na sazbě
+    /// </summary>
+    /// <remarks>
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DAE69855-3C72-4ec4-8332-81E91814FA47"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("case/{caseId:long}/simulate-mortgage-refixation-offer-list")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [NobySkipCaseStateAndProductSAValidation]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [ProducesResponseType(typeof(SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListResponse> SimulateMortgageRefixationOfferList([FromRoute] long caseId, [FromBody] SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest request)
+        => await _mediator.Send((request ?? new SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest()).InfuseId(caseId));
+
+    /// <summary>
     /// Simulace mimořádné splátky hypotéky.
     /// </summary>
     /// <remarks>
     /// Provolá simulační službu Starbuildu pro refixace.
     /// 
+    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/simulate-mortgage-extra-payment-offer")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobySkipCaseStateAndProductSAValidation]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.REFINANCING_Manage)]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,12 +52,13 @@ public sealed class OfferController : ControllerBase
     /// <remarks>
     /// Provolá simulační službu Starbuildu pro refixace.
     /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B794F3FC-3B89-4280-AF28-449F0442ACFD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/simulate-mortgage-refixation-offer")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobySkipCaseStateAndProductSAValidation]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.REFINANCING_Manage)]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgageRefixation.SimulateMortgageRefixationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -57,7 +77,7 @@ public sealed class OfferController : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobySkipCaseStateAndProductSAValidation]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.REFINANCING_Manage)]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgageRetention.SimulateMortgageRetentionResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -75,6 +75,17 @@ internal sealed class OfferService
     public async Task<SimulateMortgageExtraPaymentResponse> SimulateMortgageExtraPayment(SimulateMortgageExtraPaymentRequest request, CancellationToken cancellationToken = default)
         => await _service.SimulateMortgageExtraPaymentAsync(request, cancellationToken: cancellationToken);
 
+    public async Task<int> CreateResponseCode(CreateResponseCodeRequest request, CancellationToken cancellationToken = default)
+        => (await _service.CreateResponseCodeAsync(request, cancellationToken: cancellationToken)).ResponseCodeId;
+
+    public async Task<List<Contracts.GetResponseCodeListResponse.Types.GetResponseCodeItem>> GetResponseCodeList(long caseId, CancellationToken cancellationToken = default)
+        => (await _service.GetResponseCodeListAsync(new GetResponseCodeListRequest
+        {
+            CaseId = caseId
+        }, cancellationToken: cancellationToken))
+        .Responses
+        .ToList();
+
     private int? _cacheGetOfferResponseId;
     private GetOfferResponse? _cacheGetMortgageOfferResponse;
 

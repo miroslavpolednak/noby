@@ -258,7 +258,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00011-Flags.sql = DomainServices\OfferService\DatabaseMigrations\00011-Flags.sql
 		DomainServices\OfferService\DatabaseMigrations\00012-Origin.sql = DomainServices\OfferService\DatabaseMigrations\00012-Origin.sql
 		DomainServices\OfferService\DatabaseMigrations\00013-refix_extrapayment_tables.sql = DomainServices\OfferService\DatabaseMigrations\00013-refix_extrapayment_tables.sql
-		DomainServices\OfferService\DatabaseMigrations\00014-HACH-10961-DatamartDbStructure.sql = DomainServices\OfferService\DatabaseMigrations\00014-HACH-10961-DatamartDbStructure.sql
+		DomainServices\OfferService\DatabaseMigrations\00014-ResponseCodes.sql = DomainServices\OfferService\DatabaseMigrations\00014-ResponseCodes.sql
+		DomainServices\OfferService\DatabaseMigrations\00015-HACH-10961-DatamartDbStructure.sql = DomainServices\OfferService\DatabaseMigrations\00015-HACH-10961-DatamartDbStructure.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"

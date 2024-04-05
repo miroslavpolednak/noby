@@ -103,8 +103,9 @@ internal sealed class CreateTaskHandler
         {
             if (priceException.LoanInterestRate.LoanInterestRate is not null)
                 metadata.Add("ukol_overeni_ic_sazba_nabid", priceException.LoanInterestRate.LoanInterestRate.ToSbFormat());
-
-            metadata.Add("ukol_overeni_ic_sazba_vysled", priceException.LoanInterestRate.LoanInterestRateProvided.ToSbFormat());
+            
+            if (priceException.LoanInterestRate.LoanInterestRateProvided is not null)
+                metadata.Add("ukol_overeni_ic_sazba_vysled", priceException.LoanInterestRate.LoanInterestRateProvided.ToSbFormat());
 
             if (priceException.LoanInterestRate.LoanInterestRateAnnouncedType is not null)
                 metadata.Add("ukol_overeni_ic_sazba_typ", priceException.LoanInterestRate.LoanInterestRateAnnouncedType.Value.ToString(CultureInfo.InvariantCulture));

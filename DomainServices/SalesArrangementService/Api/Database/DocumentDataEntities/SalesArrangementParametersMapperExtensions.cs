@@ -1,5 +1,4 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
-using Microsoft.AspNetCore.SignalR;
 using SharedTypes.GrpcTypes;
 using SharedTypes.Types;
 
@@ -54,6 +53,11 @@ internal static class SalesArrangementParametersMapperExtensions
     {
         return new SalesArrangementParametersRetention
         {
+            Comment = retentionData.Comment,
+            IndividualPriceCommentLastVersion = retentionData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = retentionData.ManagedByRC2,
+            SignatureTypeDetailId = retentionData.SignatureTypeDetailId,
+            SignatureDeadline = retentionData.SignatureDeadline
         };
     }
 
@@ -61,13 +65,21 @@ internal static class SalesArrangementParametersMapperExtensions
     {
         return new RetentionData
         {
+            Comment = retentionData.Comment,
+            IndividualPriceCommentLastVersion = retentionData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = retentionData.ManagedByRC2,
+            SignatureDeadline = retentionData.SignatureDeadline,
+            SignatureTypeDetailId = retentionData.SignatureTypeDetailId
         };
     }
 
-    public static SalesArrangementParametersRefixation MapRefixation(this RefixationData retentionData)
+    public static SalesArrangementParametersRefixation MapRefixation(this RefixationData refixationData)
     {
         return new SalesArrangementParametersRefixation
         {
+            Comment = refixationData.Comment,
+            IndividualPriceCommentLastVersion = refixationData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = refixationData.ManagedByRC2
         };
     }
 
@@ -75,6 +87,9 @@ internal static class SalesArrangementParametersMapperExtensions
     {
         return new RefixationData
         {
+            Comment = refixationData.Comment,
+            IndividualPriceCommentLastVersion = refixationData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = refixationData.ManagedByRC2
         };
     }
 

@@ -10,4 +10,5 @@ internal sealed class OfferServiceDbContext
         : base(aggregate) { }
 
     public DbSet<Entities.Offer> Offers { get; set; }
+    public DbSet<Entities.ResponseCode> ResponseCodes { get; set; }
 }

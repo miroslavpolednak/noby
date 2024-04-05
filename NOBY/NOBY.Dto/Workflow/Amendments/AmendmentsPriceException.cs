@@ -31,14 +31,14 @@ public sealed class LoanInterestRates
     /// </summary>
     /// <example>2.49</example>
     [Required]
-    public decimal LoanInterestRate { get; set; }
+    public decimal? LoanInterestRate { get; set; }
     
     /// <summary>
     /// Poskytnutá sazba
     /// </summary>
     /// <example>2.4</example>
     [Required]
-    public decimal LoanInterestRateProvided { get; set; }
+    public decimal? LoanInterestRateProvided { get; set; }
     
     /// <summary>
     /// Typ sazby

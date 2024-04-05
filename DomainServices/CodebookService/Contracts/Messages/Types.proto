@@ -4,6 +4,25 @@ option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 
 import "google/protobuf/wrappers.proto";
 
+message ResponseCodesResponse {
+	repeated ResponseCodesItem Items = 1;
+
+	message ResponseCodesItem {
+		int32 Id = 1;
+		string Name = 2;
+		ResponseCodesItemDataTypes DataType = 3;
+		bool IsAvailableForRetention = 4;
+		bool IsAvailableForRefixation = 5;
+		bool IsValid = 6;
+	}
+
+	enum ResponseCodesItemDataTypes {
+		String = 0;
+		Date = 1;
+		BankCode = 2;
+	}
+}
+
 message FeeChangeRequestsResponse {
 	repeated FeeChangeRequestsItem Items = 1;
 

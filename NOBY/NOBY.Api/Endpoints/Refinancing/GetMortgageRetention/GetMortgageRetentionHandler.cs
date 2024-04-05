@@ -36,7 +36,9 @@ internal sealed class GetMortgageRetentionHandler
             Tasks = (await tasks
                 .SelectAsync(t => _workflowMapper.MapTask(t, cancellationToken)))
                 .ToList(),
+            ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, cancellationToken),
             IndividualPriceCommentLastVersion = salesArrangement?.Retention?.IndividualPriceCommentLastVersion,
+            Comment = salesArrangement?.Retention?.Comment,
             SignatureTypeDetailId = salesArrangement?.Retention?.SignatureTypeDetailId,
             DocumentId = retentionProcess.RefinancingProcess.RefinancingDocumentId,
             RefinancingDocumentEACode = retentionProcess.RefinancingProcess.RefinancingDocumentEACode,
@@ -117,16 +119,18 @@ internal sealed class GetMortgageRetentionHandler
         return (null, RefinancingHelper.GetRefinancingState(false, currentProcessSA?.TaskProcessId, process));
     }
 
+    private readonly Services.ResponseCodes.ResponseCodesService _responseCodes;
     private readonly Services.WorkflowMapper.IWorkflowMapperService _workflowMapper;
     private readonly IOfferServiceClient _offerService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly ICaseServiceClient _caseService;
 
-    public GetMortgageRetentionHandler(ISalesArrangementServiceClient salesArrangementService, ICaseServiceClient caseService, IOfferServiceClient offerService, Services.WorkflowMapper.IWorkflowMapperService workflowMapper)
+    public GetMortgageRetentionHandler(ISalesArrangementServiceClient salesArrangementService, ICaseServiceClient caseService, IOfferServiceClient offerService, Services.WorkflowMapper.IWorkflowMapperService workflowMapper, Services.ResponseCodes.ResponseCodesService responseCodes)
     {
         _salesArrangementService = salesArrangementService;
         _caseService = caseService;
         _offerService = offerService;
         _workflowMapper = workflowMapper;
+        _responseCodes = responseCodes;
     }
 }

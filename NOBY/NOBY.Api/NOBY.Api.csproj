@@ -29,13 +29,13 @@
 	
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.2" />
     <PackageReference Include="CompareNETObjects" Version="4.83.0" />
     <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="3.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.3" />
     <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.2.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.59.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.60.1" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
