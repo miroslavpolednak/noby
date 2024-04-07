@@ -1,4 +1,4 @@
-﻿namespace NOBY.Services.MortgageRefinancingWorkflow;
+﻿namespace NOBY.Services.MortgageRefinancing;
 
 public sealed class MortgageRefinancingWorkflowParameters
 {

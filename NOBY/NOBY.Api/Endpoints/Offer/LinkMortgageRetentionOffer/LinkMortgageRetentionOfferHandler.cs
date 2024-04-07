@@ -3,10 +3,10 @@ using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using NOBY.Services.MortgageRefinancingWorkflow;
-using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 using DomainServices.CaseService.Clients.v1;
+using NOBY.Services.MortgageRefinancing;
 using NOBY.Services.OfferLink;
+using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer;
 
