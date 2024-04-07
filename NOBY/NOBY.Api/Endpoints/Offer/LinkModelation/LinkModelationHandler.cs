@@ -1,4 +1,4 @@
-﻿using DomainServices.OfferService.Clients;
+﻿using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
@@ -11,6 +11,13 @@ namespace NOBY.Api.Endpoints.Offer.LinkModelation;
 internal sealed class LinkModelationHandler
     : IRequestHandler<LinkModelationRequest>
 {
+    private static readonly SalesArrangementStates[] _allowedStates = [
+        SalesArrangementStates.InProgress,
+        SalesArrangementStates.NewArrangement,
+        SalesArrangementStates.InSigning,
+        SalesArrangementStates.ToSend
+    ];
+
     public async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
     {
         // get SA data
@@ -20,7 +27,7 @@ internal sealed class LinkModelationHandler
         // validace prav
         _salesArrangementAuthorization.ValidateSaAccessBySaType213And248(saInstance.SalesArrangementTypeId);
         
-        if ((offer.Data.CaseId.HasValue && saInstance.CaseId != offer.Data.CaseId) || (saInstance.State != (int)SalesArrangementStates.InProgress && saInstance.State != (int)SalesArrangementStates.NewArrangement))
+        if ((offer.Data.CaseId.HasValue && saInstance.CaseId != offer.Data.CaseId) || !_allowedStates.Contains((SalesArrangementStates)saInstance.State))
             throw new NobyValidationException(90032);
         
         switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)
@@ -78,12 +85,12 @@ internal sealed class LinkModelationHandler
 
     private async Task UpdateRefinancing(LinkModelationRequest request, DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
-        var taskIdSb = (await _workflowTaskService.LoadAndCheckIfTaskExists(salesArrangement.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken)).TaskIdSb;
+        var taskResult = await _caseService.GetTaskByTaskId(salesArrangement.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
 
         var taskUpdateRequest = new _Ca.UpdateTaskRequest
         {
             CaseId = salesArrangement.CaseId,
-            TaskIdSb = taskIdSb,
+            TaskIdSb = taskResult.TaskIdSb,
             Retention = new _Ca.Retention
             {
                 InterestRateValidFrom = (DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom,
@@ -96,8 +103,8 @@ internal sealed class LinkModelationHandler
 
         if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention)
         {
-            taskUpdateRequest.Retention.FeeSum = (decimal)offer.MortgageRetention.BasicParameters.Amount;
-            taskUpdateRequest.Retention.FeeFinalSum = (decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount;
+            taskUpdateRequest.Retention.FeeSum = (decimal)offer.MortgageRetention.BasicParameters.FeeAmount;
+            taskUpdateRequest.Retention.FeeFinalSum = (decimal?)offer.MortgageRetention.BasicParameters.FeeAmountDiscounted;
         } 
         else if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation)
         {
@@ -113,15 +120,15 @@ internal sealed class LinkModelationHandler
             var oldOffer = await _offerService.GetOffer(salesArrangement.OfferId!.Value, cancellationToken);
 
             if ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount == oldOffer.MortgageRetention.SimulationInputs.InterestRateDiscount &&
-                (decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount == oldOffer.MortgageRetention.BasicParameters.AmountDiscount)
+                (decimal?)offer.MortgageRetention.BasicParameters.FeeAmountDiscounted == oldOffer.MortgageRetention.BasicParameters.FeeAmountDiscounted)
                 return;
 
             _salesArrangementAuthorization.ValidateRefinancing241Permission();
 
-            await _caseService.CancelTask(salesArrangement.CaseId, taskIdSb, cancellationToken);
+            await _caseService.CancelTask(salesArrangement.CaseId, taskResult.TaskIdSb, cancellationToken);
         }
 
-        if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is null || offer.MortgageRetention.BasicParameters.AmountDiscount is null)
+        if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is null || offer.MortgageRetention.BasicParameters.FeeAmountDiscounted is null)
             return;
 
         _salesArrangementAuthorization.ValidateRefinancing241Permission();
@@ -152,9 +159,9 @@ internal sealed class LinkModelationHandler
                 {
                     new _Ca.PriceExceptionFeesItem
                     {
-                        TariffSum = offer.MortgageRetention.BasicParameters.Amount,
-                        FinalSum = (decimal?)offer.MortgageRetention.BasicParameters.AmountDiscount ?? 0m,
-                        DiscountPercentage = 100 * (offer.MortgageRetention.BasicParameters.Amount - (offer.MortgageRetention.BasicParameters.AmountDiscount ?? 0m)) / offer.MortgageRetention.BasicParameters.Amount
+                        TariffSum = offer.MortgageRetention.BasicParameters.FeeAmount,
+                        FinalSum = (decimal?)offer.MortgageRetention.BasicParameters.FeeAmountDiscounted ?? 0m,
+                        DiscountPercentage = 100 * (offer.MortgageRetention.BasicParameters.FeeAmount - (offer.MortgageRetention.BasicParameters.FeeAmountDiscounted ?? 0m)) / offer.MortgageRetention.BasicParameters.FeeAmount
                     }
                 }
             }

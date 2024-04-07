@@ -4,6 +4,7 @@ using _Dto = NOBY.Dto.Workflow;
 using CIS.Core.Security;
 using NOBY.Infrastructure.Security;
 using NOBY.Infrastructure.ErrorHandling;
+using _Perm = DomainServices.UserService.Clients.Authorization.UserPermissions;
 
 namespace NOBY.Services.WorkflowMapper;
 
@@ -77,19 +78,38 @@ internal sealed class WorkflowMapperService
 
     private async Task<_Dto.AmendmentsSigning> mapAmendmentsSigning(_Case.WorkflowTask task, _Case.AmendmentSigning signing, CancellationToken cancellationToken)
     {
-        var stateId = (int)getWorkflowState(task);
-        bool remove1 = _amendmentsSigningStates.Contains(stateId) || !_userAccessor.HasPermission(DomainServices.UserService.Clients.Authorization.UserPermissions.WFL_TASK_DETAIL_SigningDocuments);
-
         var eaCodeMain = (await _codebookService.EaCodesMain(cancellationToken)).FirstOrDefault(t => t.Id == signing.EACodeMain);
+        // stav tasku
+        var stateId = getWorkflowState(task);
+        
+        // helper props
+        bool hasPaperSig = _userAccessor.HasPermission(_Perm.WFL_TASK_DETAIL_PaperSigningDocuments);
+        bool hasDigitalSig = _userAccessor.HasPermission(_Perm.WFL_TASK_DETAIL_DigitalSigningDocuments);
+        bool hasAttachSig = _userAccessor.HasPermission(_Perm.WFL_TASK_DETAIL_SigningAttachments);
+        // ma alespon nejake podepisovaci pravo
+        bool hasSigningPermissions = hasPaperSig || hasDigitalSig;
+        
+        bool removeProposalForEntry = _amendmentsSigningStates.Contains(stateId) || !hasSigningPermissions;
+        bool sigLinkVisible = !_amendmentsSigningSignatureLinkStates.Contains(stateId) 
+            && ((hasPaperSig && task.SignatureTypeId == (int)SignatureTypes.Paper) || (hasDigitalSig && task.SignatureTypeId == (int)SignatureTypes.Electronic));
+        bool removeDocForSigning = stateId == WorkflowTaskStates.OperationalSupport && hasSigningPermissions && !sigLinkVisible;
+        bool sendButtonVisible = stateId switch
+        {
+            WorkflowTaskStates.OperationalSupport => hasAttachSig,
+            WorkflowTaskStates.ForProcessing => !hasPaperSig && (hasAttachSig || (hasDigitalSig && task.SignatureTypeId == (int)SignatureTypes.Paper)),
+            _ => false
+        }; ;
 
         return new()
         {
             SignatureTypeId = task.SignatureTypeId,
             Expiration = signing.Expiration,
             FormId = signing.FormId,
-            DocumentForSigning = remove1 || stateId == 2 ? "" : signing.DocumentForSigning,
+            DocumentForSigning = removeDocForSigning ? "" : signing.DocumentForSigning,
             DocumentForSigningType = signing.DocumentForSigningType,
-            ProposalForEntry = remove1 ? "" : (signing.ProposalForEntry == null || signing.ProposalForEntry.Count == 0 ? "" : signing.ProposalForEntry[0]),
+            ProposalForEntry = removeProposalForEntry ? "" : (signing.ProposalForEntry == null || signing.ProposalForEntry.Count == 0 ? "" : signing.ProposalForEntry[0]),
+            SignatureLinkVisible = sigLinkVisible,
+            SendButtonVisible = sendButtonVisible,
             EaCodeMain = eaCodeMain == null ? null : new()
             {
                 Id = eaCodeMain.Id,
@@ -138,41 +158,41 @@ internal sealed class WorkflowMapperService
         };
     }
 
-    private static _Dto.WorkflowTaskStates getWorkflowState(_Case.WorkflowTask task)
+    private static WorkflowTaskStates getWorkflowState(_Case.WorkflowTask task)
     {
         if (task.Cancelled)
-            return _Dto.WorkflowTaskStates.Cancelled;
+            return WorkflowTaskStates.Cancelled;
 
         if (task.StateIdSb == 30)
-            return _Dto.WorkflowTaskStates.Completed;
+            return WorkflowTaskStates.Completed;
 
         return task.TaskTypeId switch
         {
             1 => getRequestState(task),
             2 => getPriceExceptionState(task),
-            3 or 7 => _Dto.WorkflowTaskStates.Sent,
+            3 or 7 => WorkflowTaskStates.Sent,
             6 => getSignatureState(task),
             _ => throw new NobyValidationException($"TaskTypeId {task.TaskTypeId} out of range")
         };
     }
 
-    private static _Dto.WorkflowTaskStates getRequestState(_Case.WorkflowTask task) =>
+    private static WorkflowTaskStates getRequestState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => _Dto.WorkflowTaskStates.ForProcessing,
-            2 => _Dto.WorkflowTaskStates.Sent,
+            1 => WorkflowTaskStates.ForProcessing,
+            2 => WorkflowTaskStates.Sent,
             _ => throw new NobyValidationException($"PhaseTypeId {task.PhaseTypeId} out of range")
         };
 
-    private static _Dto.WorkflowTaskStates getPriceExceptionState(_Case.WorkflowTask task) =>
+    private static WorkflowTaskStates getPriceExceptionState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => _Dto.WorkflowTaskStates.Sent,
-            2 => _Dto.WorkflowTaskStates.Completed,
+            1 => WorkflowTaskStates.Sent,
+            2 => WorkflowTaskStates.Completed,
             _ => throw new NobyValidationException($"PhaseTypeId {task.PhaseTypeId} out of range")
         };
     
-    private static _Dto.WorkflowTaskStates getSignatureState(_Case.WorkflowTask task) =>
+    private static WorkflowTaskStates getSignatureState(_Case.WorkflowTask task) =>
         (SignatureTypes)task.SignatureTypeId! switch
         {
             SignatureTypes.Paper => getPaperSignatureState(task),
@@ -180,23 +200,34 @@ internal sealed class WorkflowMapperService
             _ => throw new NobyValidationException($"SignatureTypeId {task.SignatureTypeId} out of range")
         };
 
-    private static _Dto.WorkflowTaskStates getDigitalSignatureState(_Case.WorkflowTask task) =>
+    private static WorkflowTaskStates getDigitalSignatureState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => _Dto.WorkflowTaskStates.ForProcessing,
+            1 => WorkflowTaskStates.ForProcessing,
             _ => throw new NobyValidationException($"PhaseTypeId {task.PhaseTypeId} out of range")
         };
 
-    private static _Dto.WorkflowTaskStates getPaperSignatureState(_Case.WorkflowTask task) =>
+    private static WorkflowTaskStates getPaperSignatureState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
-            1 => _Dto.WorkflowTaskStates.ForProcessing,
-            2 => _Dto.WorkflowTaskStates.OperationalSupport,
-            3 => _Dto.WorkflowTaskStates.Sent,
+            1 => WorkflowTaskStates.ForProcessing,
+            2 => WorkflowTaskStates.OperationalSupport,
+            3 => WorkflowTaskStates.Sent,
             _ => throw new NobyValidationException($"PhaseTypeId {task.PhaseTypeId} out of range")
         };
 
-    private static int[] _amendmentsSigningStates = new[] { 3, 4, 5 };
+    private static WorkflowTaskStates[] _amendmentsSigningStates =
+    [
+        WorkflowTaskStates.Sent,
+        WorkflowTaskStates.Completed,
+        WorkflowTaskStates.Cancelled
+    ];
+
+    private static WorkflowTaskStates[] _amendmentsSigningSignatureLinkStates =
+    [
+        .. _amendmentsSigningStates,
+        WorkflowTaskStates.OperationalSupport
+    ];
 
     private readonly ICurrentUserAccessor _userAccessor;
     private readonly ICodebookServiceClient _codebookService;

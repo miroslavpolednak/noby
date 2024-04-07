@@ -9,16 +9,16 @@ internal sealed class SimulateMortgageRetentionRequestValidator
 {
     public SimulateMortgageRetentionRequestValidator(ICodebookServiceClient codebookService, InterestRatesValidFromService ratesValidFromService)
     {
-        RuleFor(t => t.FeeAmountIndividualPrice)
+        RuleFor(t => t.FeeAmountDiscounted)
             .MustAsync(async (t, cancellationToken) => (await codebookService.FeeChangeRequests(cancellationToken)).Any(x => x.Amount == t))
-            .When(t => t.FeeAmountIndividualPrice.HasValue);
+            .When(t => t.FeeAmountDiscounted.HasValue);
 
         RuleFor(t => t.InterestRateValidFrom)
             .MustAsync(async (req, t, cancellationToken) => 
             {
                 var dates = await ratesValidFromService.GetValidityDates(req.CaseId, cancellationToken);
-                return dates.Date1 == t || dates.Date2 == t;
+                return dates.Date1 == t.Date || dates.Date2 == t.Date;
             })
-            .When(t => t.FeeAmountIndividualPrice.HasValue);
+            .When(t => t.FeeAmountDiscounted.HasValue);
     }
 }

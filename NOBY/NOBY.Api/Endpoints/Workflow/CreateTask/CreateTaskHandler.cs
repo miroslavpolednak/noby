@@ -1,6 +1,6 @@
 ﻿using CIS.Core.Security;
 using DomainServices.CaseService.Clients.v1;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.CreateTask;
@@ -102,28 +102,28 @@ internal sealed class CreateTaskHandler
         {
             throw new NobyValidationException($"OfferId is null for SalesArrangementId={saId}");
         }
-        var offerInstance = await _offerService.GetOfferDetail(saInstance.OfferId.Value, cancellationToken);
+        var offerInstance = await _offerService.GetMortgageDetail(saInstance.OfferId.Value, cancellationToken);
 
         request.PriceException = new()
         {
-            ProductTypeId = offerInstance.MortgageOffer.SimulationInputs.ProductTypeId,
-            FixedRatePeriod = offerInstance.MortgageOffer.SimulationInputs.FixedRatePeriod.GetValueOrDefault(),
-            LoanAmount = Convert.ToInt32(offerInstance.MortgageOffer.SimulationResults.LoanAmount),
-            LoanDuration = offerInstance.MortgageOffer.SimulationResults.LoanDuration,
-            LoanToValue = Convert.ToInt32(offerInstance.MortgageOffer.SimulationResults.LoanToValue),
-            Expiration = ((DateTime?)offerInstance.MortgageOffer.BasicParameters.GuaranteeDateTo ?? DateTime.Now), // nikdo nerekl co delat, pokud datum bude null...
+            ProductTypeId = offerInstance.SimulationInputs.ProductTypeId,
+            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod.GetValueOrDefault(),
+            LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount),
+            LoanDuration = offerInstance.SimulationResults.LoanDuration,
+            LoanToValue = Convert.ToInt32(offerInstance.SimulationResults.LoanToValue),
+            Expiration = ((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.Now), // nikdo nerekl co delat, pokud datum bude null...
             LoanInterestRate = new()
             {
-                LoanInterestRate = offerInstance.MortgageOffer.SimulationResults.LoanInterestRate,
-                LoanInterestRateProvided = offerInstance.MortgageOffer.SimulationResults.LoanInterestRateProvided,
-                LoanInterestRateAnnouncedType = offerInstance.MortgageOffer.SimulationResults.LoanInterestRateAnnouncedType,
-                LoanInterestRateDiscount = offerInstance.MortgageOffer.SimulationInputs.InterestRateDiscount
+                LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
+                LoanInterestRateProvided = offerInstance.SimulationResults.LoanInterestRateProvided,
+                LoanInterestRateAnnouncedType = offerInstance.SimulationResults.LoanInterestRateAnnouncedType,
+                LoanInterestRateDiscount = offerInstance.SimulationInputs.InterestRateDiscount
             }
         };
 
-        if (offerInstance.MortgageOffer.AdditionalSimulationResults.Fees is not null)
+        if (offerInstance.AdditionalSimulationResults.Fees is not null)
         {
-            request.PriceException.Fees.AddRange(offerInstance.MortgageOffer.AdditionalSimulationResults.Fees.Select(t => new DomainServices.CaseService.Contracts.PriceExceptionFeesItem
+            request.PriceException.Fees.AddRange(offerInstance.AdditionalSimulationResults.Fees.Select(t => new DomainServices.CaseService.Contracts.PriceExceptionFeesItem
             {
                 FinalSum = (decimal?)t.FinalSum ?? 0,
                 TariffSum = (decimal?)t.TariffSum ?? 0,
@@ -132,10 +132,10 @@ internal sealed class CreateTaskHandler
             }));
         }
 
-        if (offerInstance.MortgageOffer.AdditionalSimulationResults.MarketingActions is not null)
+        if (offerInstance.AdditionalSimulationResults.MarketingActions is not null)
         {
             request.PriceException.AppliedMarketingActionsCodes.AddRange(
-                offerInstance.MortgageOffer.AdditionalSimulationResults.MarketingActions
+                offerInstance.AdditionalSimulationResults.MarketingActions
                     .Where(t => t.Applied.GetValueOrDefault() == 1)
                     .Select(t => t.Code)
             );

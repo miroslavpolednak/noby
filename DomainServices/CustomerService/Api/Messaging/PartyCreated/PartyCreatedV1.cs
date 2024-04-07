@@ -5,7 +5,7 @@
 //----------------------
 
 
-namespace cz.kb.cm.be.@event.partycreated.v1.PartyCreatedV1
+namespace cz.kb.cm.be.@event.partycreated.v1
 {
     #pragma warning disable // Disable all warnings
 

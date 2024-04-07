@@ -20,22 +20,22 @@ internal sealed class ConsumerErrorHandlingMiddleware : IMessageMiddleware
         try
         {
             await next(context);
-
-            context.ConsumerContext.Complete();
         }
         catch (BaseCisException ex)
         {
-            _logger.ConsumingMessageFailed(GetMessageId(context), ex);
+            _logger.ConsumingMessageFailed(GetMessageId(context), context.ConsumerContext.Topic, ex);
         }
         catch (SchemaRegistryException ex)
         {
             _logger.SchemaRegistryError(ex);
+
+            //Return to not mark message as completed
+            return;
         }
         catch (Exception ex)
         {
             var loggerData = new Dictionary<string, object>
             {
-                { nameof(context.ConsumerContext.Topic), context.ConsumerContext.Topic },
                 { nameof(context.ConsumerContext.ConsumerName), context.ConsumerContext.ConsumerName }
             };
 
@@ -44,9 +44,11 @@ internal sealed class ConsumerErrorHandlingMiddleware : IMessageMiddleware
 
             using (_logger.BeginScope(loggerData))
             {
-                _logger.ConsumingMessageFailed(GetMessageId(context), ex);
+                _logger.ConsumingMessageFailed(GetMessageId(context), context.ConsumerContext.Topic, ex);
             }
         }
+
+        context.ConsumerContext.Complete();
     }
 
     private static string GetMessageId(IMessageContext context)

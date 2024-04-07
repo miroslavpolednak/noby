@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Security;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
@@ -63,12 +63,12 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
         if (saDetail.State is not (int)SalesArrangementStates.InProgress)
             throw new NobyValidationException(90032, "SA has to be in state InProgress(1)");
 
-        var offer = await _offerService.GetOfferDetail(saDetail.OfferId!.Value, cancellationToken);
+        var offer = await _offerService.GetOffer(saDetail.OfferId!.Value, cancellationToken);
 
         if (((DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom) < _time.GetLocalNow().Date)
             throw new NobyValidationException(90051);
 
-        if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is not null || offer.MortgageRetention.BasicParameters.AmountDiscount is not null)
+        if (offer.MortgageRetention.SimulationInputs.InterestRateDiscount is not null || offer.MortgageRetention.BasicParameters.FeeAmountDiscounted is not null)
         {
             await ValidateTask(request, saDetail, offer, cancellationToken);
         }
@@ -82,7 +82,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
         await _salesArrangementService.UpdateSalesArrangementState(saDetail.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
     }
 
-    private async Task ValidateTask(GenerateRetentionDocumentRequest request, _contract.SalesArrangement saDetail, GetOfferDetailResponse offer, CancellationToken cancellationToken)
+    private async Task ValidateTask(GenerateRetentionDocumentRequest request, _contract.SalesArrangement saDetail, GetOfferResponse offer, CancellationToken cancellationToken)
     {
         var taskList = (await _caseService.GetTaskList(request.CaseId, cancellationToken))
             .Where(p => p.ProcessId == saDetail.TaskProcessId && p.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
@@ -104,7 +104,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
 
         // ToDo refixation missing
         if (!(taskDetail.TaskDetail.PriceException.LoanInterestRate.LoanInterestRateDiscount == offer.MortgageRetention.SimulationInputs.InterestRateDiscount
-                       && taskDetail.TaskDetail.PriceException.Fees[0].FinalSum == offer.MortgageRetention.BasicParameters.AmountDiscount))
+                       && taskDetail.TaskDetail.PriceException.Fees[0].FinalSum == offer.MortgageRetention.BasicParameters.FeeAmountDiscounted))
         {
             throw new NobyValidationException(90048);
         }
@@ -112,7 +112,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
 
     private async Task GenerateRetentionDocument(User user,
         _contract.SalesArrangement sa,
-        GetOfferDetailResponse offerDetail,
+        GetOfferResponse offerDetail,
         GenerateRetentionDocumentRequest request,
         CancellationToken cancellationToken)
     {
@@ -133,8 +133,8 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
             Cpm = user.UserInfo.Cpm,
             Icp = user.UserInfo.Icp,
             SignatureDeadline = request.SignatureDeadline,
-            IndividualPricing = simulationInputs.InterestRateDiscount is not null || basicParams.AmountDiscount is not null,
-            Fee = basicParams.AmountDiscount ?? basicParams.Amount
+            IndividualPricing = simulationInputs.InterestRateDiscount is not null || basicParams.FeeAmountDiscounted is not null,
+            Fee = basicParams.FeeAmountDiscounted ?? basicParams.FeeAmount
         }, cancellationToken);
     }
 

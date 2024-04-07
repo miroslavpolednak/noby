@@ -12,18 +12,22 @@ internal sealed class SalesArrangementAuthorizationService
 {
     public List<SalesArrangement> FiltrSalesArrangements(IEnumerable<SalesArrangement> salesArrangements)
     {
-        // refinancing
-        if (!_currentUser.HasPermission(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess))
+        if ((_currentUser.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) || _currentUser.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningAttachments)) && _currentUser.HasPermission(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess))
         {
-            salesArrangements = salesArrangements.Where(t => !ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(t.SalesArrangementTypeId));
+            return salesArrangements.ToList();
         }
-        // ostatni sa
-        if (!_currentUser.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
+        else if (_currentUser.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) || _currentUser.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningAttachments))
         {
-            salesArrangements = salesArrangements.Where(t => ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(t.SalesArrangementTypeId));
+            return salesArrangements.Where(t => !ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(t.SalesArrangementTypeId)).ToList();
         }
-
-        return salesArrangements.ToList();
+        else if (_currentUser.HasPermission(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess))
+        {
+            return salesArrangements.Where(t => ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(t.SalesArrangementTypeId)).ToList();
+        }
+        else
+        {
+            throw new CisAuthorizationException("User doesn't have permission for this operation");
+        }
     }
 
     public async Task ValidateSaAccessBySaType213And248BySAId(int salesArrangementId, CancellationToken cancellationToken)

@@ -1,0 +1,30 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "Messages/Types.proto";
+import "Parameters/MortgageOffer.proto";
+import "Parameters/MortgageRetention.proto";
+import "Parameters/MortgageRefixation.proto";
+import "Parameters/MortgageExtraPayment.proto";
+ 
+message GetOfferListRequest {
+	int64 CaseId = 1;
+	OfferTypes OfferType = 2;
+	bool OmmitParametersFromResponse = 3;
+}
+
+message GetOfferListResponse {
+	repeated GetOfferListItem Offers = 1;
+
+	message GetOfferListItem {
+		CommonOfferData Data = 1;
+	
+		oneof Parameters {
+			MortgageOfferFullData MortgageOffer = 20;
+			MortgageRetentionFullData MortgageRetention = 21;
+			MortgageRefixationFullData MortgageRefixation = 22;
+			MortgageExtraPaymentFullData MortgageExtraPayment = 23;
+		}
+	}
+}

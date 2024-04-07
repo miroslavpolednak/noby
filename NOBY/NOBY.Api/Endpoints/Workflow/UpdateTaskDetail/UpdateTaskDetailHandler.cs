@@ -15,7 +15,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
     {
         var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
-        var taskIdSb = (await _workflowTask.LoadAndCheckIfTaskExists(request.CaseId, request.TaskId, cancellationToken)).TaskIdSb;
+        var taskIdSb = (await _caseService.GetTaskByTaskId(request.CaseId, request.TaskId, cancellationToken)).TaskIdSb;
 
         var taskDetail = await _caseService.GetTaskDetail(taskIdSb, cancellationToken);
 

@@ -1,0 +1,4 @@
+INSERT [dbo].[ScheduleJob] ([ScheduleJobId], [JobName], [JobType], [Description], [IsDisabled]) VALUES (N'9800F488-D502-4E01-B493-04436DD57B32', N'SyncDatamartRefixation', N'CIS.InternalServices.TaskSchedulingService.Api.Jobs.SyncDatamartRefixation.SyncDatamartRefixationHandler', N'Job pro import dat z datamartu do offer databáze (jedná se o refixace)', 0)
+GO
+INSERT [dbo].[ScheduleTrigger] ([ScheduleTriggerId], [ScheduleJobId], [TriggerName], [Cron], [JobData], [IsDisabled]) VALUES (N'504DB35B-C7BA-49AC-9A7E-8C1FA8E847DF', N'9800F488-D502-4E01-B493-04436DD57B32', N'SyncDatamartRefixation', N'0 4 * * *', N'{"BatchSize": 10000}', 0)
+GO

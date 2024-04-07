@@ -76,4 +76,25 @@ internal partial class CodebookService
 
             return (new SigningMethodsForNaturalPersonResponse()).AddItems(finalItems);
         });
+
+    public override Task<ResponseCodesResponse> ResponseCodes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        => Helpers.GetItems(() =>
+        {
+            // MOCK
+            List<ResponseCodesResponse.Types.ResponseCodesItem> items = 
+            [
+                new ResponseCodesResponse.Types.ResponseCodesItem { Id = 1, Name = "Nabídka nezaujala", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
+                new ResponseCodesResponse.Types.ResponseCodesItem { Id = 2, Name = "Klient nezastižen", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
+                new ResponseCodesResponse.Types.ResponseCodesItem { Id = 3, Name = "Nabídka zaujala s příslibem", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
+                new ResponseCodesResponse.Types.ResponseCodesItem { Id = 4, Name = "Aktivně řešení v jiné Bance", DataType = ResponseCodesResponse.Types.ResponseCodesItemDataTypes.BankCode, IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
+                new ResponseCodesResponse.Types.ResponseCodesItem { Id = 5, Name = "Pro teď nemá zájem řešit", DataType = ResponseCodesResponse.Types.ResponseCodesItemDataTypes.Date, IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
+                new ResponseCodesResponse.Types.ResponseCodesItem { Id = 6, Name = "Nerelevantní nabídka, nedošlo ke kontaktu", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
+                new ResponseCodesResponse.Types.ResponseCodesItem { Id = 7, Name = "Jiný důvod (Ukončit událost/kampaň)", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
+                new ResponseCodesResponse.Types.ResponseCodesItem { Id = 8, Name = "Nabídka zaujala, klient spokojen", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
+                new ResponseCodesResponse.Types.ResponseCodesItem { Id = 9, Name = "Špatné telefonní číslo", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
+                new ResponseCodesResponse.Types.ResponseCodesItem { Id = 10, Name = "Otevřít prodejní aplikaci", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true }
+            ];
+
+            return (new ResponseCodesResponse()).AddItems(items);
+        });
 }

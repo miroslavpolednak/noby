@@ -53,7 +53,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
             var salesArrangementInstance = await _salesArrangementService.GetSalesArrangement(sa.SalesArrangementId, cancellationToken);
 
             // get Offer
-            var offerInstance = await _offerService.GetOfferDetail(salesArrangementInstance.OfferId!.Value, cancellationToken);
+            var offerInstance = await _offerService.GetOffer(salesArrangementInstance.OfferId!.Value, cancellationToken);
 
             // load User
             var caseOwnerOrig = await getUserInstance(caseInstance.CaseOwner?.UserId, cancellationToken);
@@ -231,7 +231,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
     private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
-    private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
+    private readonly DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService;
     private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
     private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
     private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
@@ -240,7 +240,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
         DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService,
         DomainServices.ProductService.Clients.IProductServiceClient productService,
-        DomainServices.OfferService.Clients.IOfferServiceClient offerService,
+        DomainServices.OfferService.Clients.v1.IOfferServiceClient offerService,
         DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
         DomainServices.UserService.Clients.IUserServiceClient userService,
         DomainServices.CustomerService.Clients.ICustomerServiceClient customerService

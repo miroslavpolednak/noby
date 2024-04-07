@@ -1,4 +1,4 @@
-﻿using DomainServices.OfferService.Clients;
+﻿using DomainServices.OfferService.Clients.v1;
 using NOBY.Api.Endpoints.Offer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Offer.GetFullPaymentScheduleByOfferId;

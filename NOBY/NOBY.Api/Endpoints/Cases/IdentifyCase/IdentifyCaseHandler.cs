@@ -166,7 +166,14 @@ internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCase
         if (!caseInstance.Exists)
         {
             // osetrena vyjimka - spoustime logiku na vytvoreni case z konsDB
-            await _createCaseFromExternalSources.CreateCase(caseId, cancellationToken);
+            try
+            {
+                await _createCaseFromExternalSources.CreateCase(caseId, cancellationToken);
+            }
+            catch (CisNotFoundException)
+            {
+                return new IdentifyCaseResponse();
+            }
         }
         else
         {

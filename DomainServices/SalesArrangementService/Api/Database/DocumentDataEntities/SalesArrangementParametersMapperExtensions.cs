@@ -53,6 +53,11 @@ internal static class SalesArrangementParametersMapperExtensions
     {
         return new SalesArrangementParametersRetention
         {
+            Comment = retentionData.Comment,
+            IndividualPriceCommentLastVersion = retentionData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = retentionData.ManagedByRC2,
+            SignatureTypeDetailId = retentionData.SignatureTypeDetailId,
+            SignatureDeadline = retentionData.SignatureDeadline
         };
     }
 
@@ -60,13 +65,21 @@ internal static class SalesArrangementParametersMapperExtensions
     {
         return new RetentionData
         {
+            Comment = retentionData.Comment,
+            IndividualPriceCommentLastVersion = retentionData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = retentionData.ManagedByRC2,
+            SignatureDeadline = retentionData.SignatureDeadline,
+            SignatureTypeDetailId = retentionData.SignatureTypeDetailId
         };
     }
 
-    public static SalesArrangementParametersRefixation MapRefixation(this RefixationData retentionData)
+    public static SalesArrangementParametersRefixation MapRefixation(this RefixationData refixationData)
     {
         return new SalesArrangementParametersRefixation
         {
+            Comment = refixationData.Comment,
+            IndividualPriceCommentLastVersion = refixationData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = refixationData.ManagedByRC2
         };
     }
 
@@ -74,6 +87,9 @@ internal static class SalesArrangementParametersMapperExtensions
     {
         return new RefixationData
         {
+            Comment = refixationData.Comment,
+            IndividualPriceCommentLastVersion = refixationData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = refixationData.ManagedByRC2
         };
     }
 
@@ -293,7 +309,8 @@ internal static class SalesArrangementParametersMapperExtensions
                 IsActive = generalChangeData.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = generalChangeData.DrawingDateTo.AgreedDrawingDateTo,
                 ExtensionDrawingDateToByMonths = generalChangeData.DrawingDateTo.ExtensionDrawingDateToByMonths,
-                CommentToDrawingDateTo = generalChangeData.DrawingDateTo.CommentToDrawingDateTo ?? ""
+                CommentToDrawingDateTo = generalChangeData.DrawingDateTo.CommentToDrawingDateTo ?? "",
+                IsDrawingDateEarlier = generalChangeData.DrawingDateTo.IsDrawingDateEarlier ?? false
             },
             RepaymentAccount = generalChangeData.RepaymentAccount is null ? null : new SalesArrangementParametersGeneralChange.Types.PaymentAccountObject
             {

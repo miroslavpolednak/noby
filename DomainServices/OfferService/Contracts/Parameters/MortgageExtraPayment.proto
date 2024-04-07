@@ -7,14 +7,20 @@ import "NullableGrpcDecimal.proto";
 import "GrpcDate.proto";
 
 message MortgageExtraPaymentBasicParameters {
-	
+	cis.types.GrpcDecimal FeeAmount  = 1;
+	cis.types.NullableGrpcDecimal FeeAmountDiscounted  = 2;
 }
 
 message MortgageExtraPaymentSimulationInputs {
-	
+	cis.types.GrpcDate ExtraPaymentDate = 1;
+	cis.types.GrpcDecimal ExtraPaymentAmount = 2;
+	string ExtraPaymentReason = 3;
+	string ExtraPaymentType = 4;
 }
 
 message MortgageExtraPaymentSimulationResults {
+	cis.types.GrpcDecimal LoanPaymentAmount = 1;
+	cis.types.NullableGrpcDecimal LoanPaymentAmountDiscounted = 2;
 }
 
 message MortgageExtraPaymentFullData {

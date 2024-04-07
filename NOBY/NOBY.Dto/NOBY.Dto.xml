@@ -289,6 +289,36 @@
             </summary>
             <example>Skočdopole</example>
         </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.BuildingTechnicalStateCode">
+            <summary>
+            Technický stav budovy, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingTechnicalState">RealEstateValuationBuildingTechnicalState</a>
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.BuildingMaterialStructureCode">
+            <summary>
+            Konstrukční materiál budovy, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructure</a>
+            </summary>
+            <example>CIHLA</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.FlatSchemaCode">
+            <summary>
+            Dispozice, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchema</a>
+            </summary>
+            <example>1+1</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.FlatArea">
+            <summary>
+            Čistá podlahová plocha bytu
+            </summary>
+            <example>55</example>
+        </member>
+        <member name="P:NOBY.Dto.RealEstateValuation.OnlinePreorderData.BuildingAgeCode">
+            <summary>
+            Stáří budovy, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingAge">RealEstateValuationBuildingAge</a>
+            </summary>
+            <example>99</example>
+        </member>
         <member name="P:NOBY.Dto.RealEstateValuation.RealEstatePriceDetail.Price">
             <summary>
             Výsledná cena nemovitosti v Kč
@@ -544,6 +574,26 @@
             Číslo parcely
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.IndividualPriceCommentLastVersion">
+            <summary>
+            Komentář k IC
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.Tasks">
+            <summary>
+            Všechny workflow úkoly pro daný proces retence
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.ContainsInconsistentIndividualPriceData">
+            <summary>
+            Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.ResponseCodes">
+            <summary>
+            Seznam odpovědních kódů
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.ProcessId">
             <summary>
             Noby proces ID daného procesu Refinancí. Jde o ID sady úkolů generované Starbuildem.
@@ -582,6 +632,53 @@
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.DocumentId">
             <summary>
             Slouží k náhledu na dokumenty
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsLegalNotice">
+            <summary>
+            Jedná se o zákonné sdělení
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsCurrent">
+            <summary>
+            Jedná se o Aktuální nabídku
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsCommunicated">
+            <summary>
+            Jedná se o sdělenou nabídku
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsLiked">
+            <summary>
+            Jedná se o likovanou nabídku
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsSelected">
+            <summary>
+            Jedná se o zvolenou nabídku
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.InterestRateDiscount">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>0.2</example>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.InterestRateDiscounted">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>4.5</example>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.LoanPaymentAmountDiscounted">
+            <summary>
+            Výše měsíční splátky se zohledněním IC.
             </summary>
         </member>
         <member name="P:NOBY.Dto.Signing.DocumentData.DocumentOnSAId">
@@ -758,6 +855,16 @@
             Podepisování: ID dokumentu návrhu na vklad
             </summary>
             <example>01_23_046_111203_SF_0001</example>
+        </member>
+        <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.SignatureLinkVisible">
+            <summary>
+            True, pokud má být zobrazen link "Přejít k podepisování"
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Workflow.AmendmentsSigning.SendButtonVisible">
+            <summary>
+            True, pokud má být zobrazeno tlačítko "Odeslat"
+            </summary>
         </member>
         <member name="P:NOBY.Dto.Workflow.TaskCommunicationItem.TaskRequest">
             <summary>

@@ -122,6 +122,7 @@ public sealed class DrawingDateToExtended
     /// </summary>
     public string? CommentToDrawingDateTo { get; set; }
 
+    public bool IsDrawingDateEarlier { get; set; }
 }
 
 /// <summary>

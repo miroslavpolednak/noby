@@ -99,6 +99,31 @@
             Je možné oceňovat nemovitost
             </summary>
         </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.Current">
+            <summary>
+            Aktuální nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.Communicated">
+            <summary>
+            Komunikovaná nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.LegalNotice">
+            <summary>
+            Zákonné oznámení
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.Liked">
+            <summary>
+            Likovaná nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.Selected">
+            <summary>
+            Vybraná nabídka
+            </summary>
+        </member>
         <member name="F:SharedTypes.FeatureFlagsConstants.BlueBang">
             <summary>
             Flag oznacujici zda jsou zapnute modre produkty nebo ne (TRUE jsou zapnute)

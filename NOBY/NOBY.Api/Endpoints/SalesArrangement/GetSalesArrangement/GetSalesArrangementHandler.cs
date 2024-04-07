@@ -50,7 +50,8 @@ internal sealed class GetSalesArrangementHandler
             _SA.SalesArrangement.ParametersOneofCase.CustomerChange => saInstance.CustomerChange.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602A => saInstance.CustomerChange3602A.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602B => saInstance.CustomerChange3602B.ToApiResponse(),
-            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602C => saInstance.CustomerChange3602C.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.Retention => saInstance.Retention,
+            _SA.SalesArrangement.ParametersOneofCase.Refixation => saInstance.Refixation,
             _SA.SalesArrangement.ParametersOneofCase.None => null,
             _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };

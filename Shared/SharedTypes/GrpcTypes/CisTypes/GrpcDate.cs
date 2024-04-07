@@ -28,5 +28,8 @@ public partial class GrpcDate
     public static implicit operator GrpcDate(DateTime value)
         => new GrpcDate(value.Year, value.Month, value.Day);
 
+    public static implicit operator NullableGrpcDate(GrpcDate value)
+        => new NullableGrpcDate(value.Year, value.Month, value.Day);
+
     public static explicit operator GrpcDate(NullableGrpcDate nullableGrpcDate) => new(nullableGrpcDate.Year, nullableGrpcDate.Month, nullableGrpcDate.Day);
 }

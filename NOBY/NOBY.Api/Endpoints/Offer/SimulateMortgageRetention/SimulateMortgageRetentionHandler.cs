@@ -1,5 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRetention;
 
@@ -16,8 +16,8 @@ internal sealed class SimulateMortgageRetentionHandler
             CaseId = request.CaseId,
             BasicParameters = new()
             {
-                Amount = (await _codebookService.FeeChangeRequests(cancellationToken)).First(t => t.IsDefault).Amount,
-                AmountDiscount = request.FeeAmountIndividualPrice
+                FeeAmount = (await _codebookService.FeeChangeRequests(cancellationToken)).First(t => t.IsDefault).Amount,
+                FeeAmountDiscounted = request.FeeAmountDiscounted
             },
             SimulationInputs = new()
             {

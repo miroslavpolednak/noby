@@ -5,7 +5,7 @@
 //----------------------
 
 
-namespace cz.kb.cm.be.@event.partyupdated.v1.PartyUpdatedV1
+namespace cz.kb.cm.be.@event.partyupdated.v1
 {
     #pragma warning disable // Disable all warnings
 

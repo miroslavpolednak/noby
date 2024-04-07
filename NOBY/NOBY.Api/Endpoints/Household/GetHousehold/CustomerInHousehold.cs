@@ -18,6 +18,8 @@ public class CustomerInHousehold
 
     public DateTime? LockedIncomeDateTime { get; set; }
 
+    public bool IsIdentificationRequested => !Identities?.Any() ?? true;
+
     /// <summary>
     /// Identity klienta v KB nebo MP
     /// </summary>

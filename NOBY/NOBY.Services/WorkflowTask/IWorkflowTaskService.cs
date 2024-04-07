@@ -6,6 +6,4 @@ public interface IWorkflowTaskService
         long caseId,
         int taskIdSb,
         CancellationToken cancellationToken = default);
-
-    Task<DomainServices.CaseService.Contracts.WorkflowTask> LoadAndCheckIfTaskExists(long caseId, long taskId, CancellationToken cancellationToken);
 }

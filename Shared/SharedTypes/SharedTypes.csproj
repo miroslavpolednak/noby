@@ -21,8 +21,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="FastEnum" Version="1.8.0" />
-		<PackageReference Include="Google.Protobuf" Version="3.26.0" />
-		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.61.0" />
+		<PackageReference Include="Google.Protobuf" Version="3.26.1" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.62.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.62.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

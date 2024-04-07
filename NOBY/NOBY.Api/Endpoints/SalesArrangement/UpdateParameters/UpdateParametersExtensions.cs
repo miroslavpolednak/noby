@@ -112,7 +112,8 @@ internal static class UpdateParametersExtensions
                 IsActive = parameters.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = originalParameter?.DrawingDateTo?.AgreedDrawingDateTo,
                 CommentToDrawingDateTo = parameters.DrawingDateTo.CommentToDrawingDateTo,
-                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = parameters.DrawingDateTo?.IsDrawingDateEarlier ?? false
             },
             RepaymentAccount = new()
             {

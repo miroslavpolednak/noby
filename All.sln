@@ -249,6 +249,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00009-HFICH-10398_3.sql = DomainServices\OfferService\DatabaseMigrations\00009-HFICH-10398_3.sql
 		DomainServices\OfferService\DatabaseMigrations\00010-HFICH-10600.sql = DomainServices\OfferService\DatabaseMigrations\00010-HFICH-10600.sql
 		DomainServices\OfferService\DatabaseMigrations\00011-Flags.sql = DomainServices\OfferService\DatabaseMigrations\00011-Flags.sql
+		DomainServices\OfferService\DatabaseMigrations\00012-Origin.sql = DomainServices\OfferService\DatabaseMigrations\00012-Origin.sql
+		DomainServices\OfferService\DatabaseMigrations\00013-refix_extrapayment_tables.sql = DomainServices\OfferService\DatabaseMigrations\00013-refix_extrapayment_tables.sql
+		DomainServices\OfferService\DatabaseMigrations\00014-ResponseCodes.sql = DomainServices\OfferService\DatabaseMigrations\00014-ResponseCodes.sql
+		DomainServices\OfferService\DatabaseMigrations\00015-HACH-10961-DatamartDbStructure.sql = DomainServices\OfferService\DatabaseMigrations\00015-HACH-10961-DatamartDbStructure.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
@@ -587,6 +591,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 	ProjectSection(SolutionItems) = preProject
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00001-initial_creation.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00001-initial_creation.sql
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00002-initial_seed.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00002-initial_seed.sql
+		InternalServices\TaskSchedulingService\DatabaseMigrations\00003-HACH-10688.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00003-HACH-10688.sql
+		InternalServices\TaskSchedulingService\DatabaseMigrations\00004-ImportFromDatamartJob.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00004-ImportFromDatamartJob.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.SbWebApi", "ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj", "{FA184421-6232-4157-BDEC-DE7D03D3B88C}"

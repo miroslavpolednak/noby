@@ -11,6 +11,7 @@ internal sealed class GetTriggersHandler
         var result = await _dbContext
             .ScheduleTriggers
             .AsNoTracking()
+            .Include(t => t.Job)
             .ToListAsync(cancellation);
         
         var response = new GetTriggersResponse();

@@ -1,4 +1,5 @@
 using CIS.Infrastructure.StartupExtensions;
+using DomainServices.OfferService.Api.Endpoints.v1;
 using ExternalServices;
 using SharedComponents.DocumentDataStorage;
 
@@ -25,7 +26,8 @@ SharedComponents.GrpcServiceBuilder
     })
     .MapGrpcServices(app =>
     {
-        app.MapGrpcService<DomainServices.OfferService.Api.Endpoints.OfferService>();
+        app.MapGrpcService<OfferService>();
+        app.MapGrpcService<DomainServices.OfferService.Api.Endpoints.MaintananceService>();
     })
     .Run();
 

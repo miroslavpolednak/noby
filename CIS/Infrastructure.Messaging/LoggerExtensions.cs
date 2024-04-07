@@ -4,16 +4,16 @@ namespace CIS.Infrastructure.Messaging;
 
 internal static class LoggerExtensions
 {
-    private static readonly Action<ILogger, string, Exception> _consumingMessageFailed;
+    private static readonly Action<ILogger, string, string, Exception> _consumingMessageFailed;
     private static readonly Action<ILogger, Exception> _schemaRegistryError;
     private static readonly Action<ILogger, string, string, Exception> _consumingKnownMessage;
 
     static LoggerExtensions()
     {
-        _consumingMessageFailed = LoggerMessage.Define<string>(
+        _consumingMessageFailed = LoggerMessage.Define<string, string>(
             LogLevel.Error,
             new EventId(901, nameof(ConsumingMessageFailed)),
-            "Failed to consume message with ID '{MessageId}'"
+            "Failed to consume message with ID '{MessageId}' from {Topic}"
         );
 
         _schemaRegistryError = LoggerMessage.Define(
@@ -25,16 +25,16 @@ internal static class LoggerExtensions
         _consumingKnownMessage = LoggerMessage.Define<string, string>(
             LogLevel.Information,
             new EventId(903, nameof(ConsumingKnownMessage)),
-            "Consuming message with ID '{MessageId}' from {TopicId}"
+            "Consuming message with ID '{MessageId}' from {Topic}"
         );
     }
 
-    public static void ConsumingMessageFailed(this ILogger logger, string messageId, Exception ex) => 
-        _consumingMessageFailed(logger, messageId, ex);
+    public static void ConsumingMessageFailed(this ILogger logger, string messageId, string topic, Exception ex) => 
+        _consumingMessageFailed(logger, messageId, topic, ex);
 
     public static void SchemaRegistryError(this ILogger logger, Exception ex) =>
         _schemaRegistryError(logger, ex);
 
-    public static void ConsumingKnownMessage(this ILogger logger, string messageId, string topicId) =>
-        _consumingKnownMessage(logger, messageId, topicId, null!);
+    public static void ConsumingKnownMessage(this ILogger logger, string messageId, string topic) =>
+        _consumingKnownMessage(logger, messageId, topic, null!);
 }

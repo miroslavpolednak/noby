@@ -27,4 +27,6 @@ internal sealed class Offer
     public DateTime? FirstGeneratedDocumentDate { get; set; }
 
     public int Flags { get; set; }
+
+    public int Origin { get; set; }
 }

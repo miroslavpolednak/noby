@@ -7,4 +7,5 @@ import "google/protobuf/wrappers.proto";
 message SalesArrangementParametersRefixation {
 	google.protobuf.BoolValue ManagedByRC2 = 1;
 	google.protobuf.StringValue Comment = 2;
+	google.protobuf.StringValue IndividualPriceCommentLastVersion = 3;
 }

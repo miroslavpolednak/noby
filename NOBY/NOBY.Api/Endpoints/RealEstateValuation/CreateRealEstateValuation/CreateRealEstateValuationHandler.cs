@@ -1,7 +1,6 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CaseService.Clients.v1;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.RealEstateValuationService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 

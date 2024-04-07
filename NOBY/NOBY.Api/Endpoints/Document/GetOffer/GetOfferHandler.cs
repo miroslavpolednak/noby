@@ -1,4 +1,4 @@
-﻿using DomainServices.OfferService.Clients;
+﻿using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Document.SharedDto;
 
