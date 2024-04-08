@@ -25,6 +25,7 @@ using DomainServices.DocumentOnSAService.Api.Extensions;
 using SharedTypes.Enums;
 using FastEnumUtility;
 using DomainServices.ProductService.Clients;
+using Google.Protobuf.Collections;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
@@ -355,13 +356,14 @@ public class StartSigningMapper
         switch (salesArrangement.ParametersCase)
         {
             case SalesArrangement.ParametersOneofCase.Drawing:
-                identities.Add(salesArrangement.Drawing.Applicant.First());
+                identities.Add(
+                    GetIdentity(salesArrangement.Drawing.Applicant));
                 break;
             case SalesArrangement.ParametersOneofCase.GeneralChange:
-                identities.Add(salesArrangement.GeneralChange.Applicant.First());
+                identities.Add(GetIdentity(salesArrangement.GeneralChange.Applicant));
                 break;
             case SalesArrangement.ParametersOneofCase.HUBN:
-                identities.Add(salesArrangement.HUBN.Applicant.First());
+                identities.Add(GetIdentity(salesArrangement.HUBN.Applicant));
                 break;
             case SalesArrangement.ParametersOneofCase.CustomerChange:
                 identities.AddRange(salesArrangement.CustomerChange.Applicants.SelectMany(s => s.Identity));
@@ -369,6 +371,13 @@ public class StartSigningMapper
         }
 
         return identities;
+    }
+
+    private static Identity GetIdentity(RepeatedField<Identity> identities)
+    {
+        return identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+                            ?? identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp)
+                            ?? throw new NotSupportedException();
     }
 
     private static void MapSigningIdentities(StartSigningRequest request, DocumentOnSa entity)
