@@ -50,7 +50,7 @@ internal sealed class SimulateMortgageRefixationHandler
         }
         else
         {
-            var (offerId, stamp) = await insertOffer(request.CaseId, documentEntity, cancellationToken);
+            var (offerId, stamp) = await insertOffer(request.CaseId, request.ValidTo, documentEntity, cancellationToken);
             result.Created = stamp;
             result.OfferId = offerId;
         }
@@ -58,7 +58,7 @@ internal sealed class SimulateMortgageRefixationHandler
         return result;
     }
 
-    private async Task<(int OfferId, ModificationStamp Stamp)> insertOffer(long caseId, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)
+    private async Task<(int OfferId, ModificationStamp Stamp)> insertOffer(long caseId, DateTime? validTo, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)
     {
         var entity = new Database.Entities.Offer
         {
@@ -66,7 +66,8 @@ internal sealed class SimulateMortgageRefixationHandler
             CaseId = caseId,
             OfferType = (int)OfferTypes.MortgageRefixation,
             Origin = (int)OfferOrigins.OfferService,
-            Flags = (int)OfferFlagTypes.Current
+            Flags = (int)OfferFlagTypes.Current,
+            ValidTo = validTo
         };
         _dbContext.Offers.Add(entity);
 

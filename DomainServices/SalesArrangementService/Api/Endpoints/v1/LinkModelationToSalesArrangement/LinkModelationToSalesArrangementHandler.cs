@@ -24,6 +24,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AlreadyLinkedToOffer, request.SalesArrangementId);
         }
+        int? offerIdToRemoveSAId = salesArrangementInstance.OfferId;
 
         // validace na existenci offer
         var offerInstance = await _offerService.GetOffer(request.OfferId, cancellation);
@@ -41,6 +42,16 @@ internal sealed class LinkModelationToSalesArrangementHandler
             CaseId = salesArrangementInstance.CaseId,
             SalesArrangementId = salesArrangementInstance.SalesArrangementId
         }, cancellation);
+
+        // odstranit SA ID ze stare Offer
+        if (offerIdToRemoveSAId.HasValue)
+        {
+            await _offerService.UpdateOffer(new __Offer.UpdateOfferRequest
+            {
+                OfferId = request.OfferId,
+                SalesArrangementId = 0
+            }, cancellation);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
