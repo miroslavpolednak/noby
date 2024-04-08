@@ -1,14 +1,16 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument;
+namespace NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument;
 
-public class GenerateRetentionDocumentRequest : IRequest
+public class GenerateRefixationDocumentRequest : IRequest
 {
     [JsonIgnore]
-    public long CaseId { get; set; }
+    internal long CaseId { get; set; }
 
     [JsonIgnore]
-    public int SalesArrangementId { get; set; }
+    internal int SalesArrangementId { get; set; }
+
+    public required int RefinancingDocumentTypeId { get; set; }
 
     /// <summary>
     /// Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
@@ -20,15 +22,11 @@ public class GenerateRetentionDocumentRequest : IRequest
     /// </summary>
     public DateTime? SignatureDeadline { get; set; }
 
-    internal GenerateRetentionDocumentRequest InfuseCaseId(long caseId)
+    internal GenerateRefixationDocumentRequest Infuse(long caseId, int salesArrangementId)
     {
         CaseId = caseId;
-        return this;
-    }
-
-    internal GenerateRetentionDocumentRequest InfuseSalesArrangementId(int salesArrangementId)
-    {
         SalesArrangementId = salesArrangementId;
+
         return this;
     }
 }

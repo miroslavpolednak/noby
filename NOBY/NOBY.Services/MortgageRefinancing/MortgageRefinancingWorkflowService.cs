@@ -2,11 +2,12 @@
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.UserService.Clients.Authorization;
+using NOBY.Infrastructure.ErrorHandling;
 using NOBY.Infrastructure.Security;
 using NOBY.Services.WorkflowTask;
 using WFL = DomainServices.CaseService.Contracts.WorkflowTask;
 
-namespace NOBY.Services.MortgageRefinancingWorkflow;
+namespace NOBY.Services.MortgageRefinancing;
 
 [ScopedService, SelfService]
 public sealed class MortgageRefinancingWorkflowService
@@ -22,6 +23,28 @@ public sealed class MortgageRefinancingWorkflowService
 
     public Task<WorkflowTaskByTaskId.WorkflowTaskByTaskIdResult> GetTaskInfoByTaskId(long caseId, long taskId, CancellationToken cancellationToken) => 
         _caseService.GetTaskByTaskId(caseId, taskId, cancellationToken);
+
+    public async Task<MortgageRefinancingIndividualPrice> GetIndividualPrices(long caseId, long taskProcessId, CancellationToken cancellationToken)
+    {
+        var taskList = await _caseService.GetTaskList(caseId, cancellationToken);
+
+        var priceExceptionTasks = GetPriceExceptionTasks(taskList, taskProcessId).ToList();
+
+        if (priceExceptionTasks.Count == 0)
+            throw new NobyValidationException(90032, "Empty collection");
+
+        var priceExceptionTask = priceExceptionTasks.SingleOrDefault() ?? throw new NobyValidationException(90050);
+
+        if (priceExceptionTask.StateIdSb != 30)
+            throw new NobyValidationException(90049);
+
+        if (priceExceptionTask.DecisionId != 1)
+            throw new NobyValidationException(90032, "Not exist DecisionId == 1");
+
+        var priceExceptionDetail = await _caseService.GetTaskDetail(priceExceptionTask.TaskIdSb, cancellationToken);
+
+        return new MortgageRefinancingIndividualPrice(priceExceptionDetail.TaskDetail.PriceException);
+    }
 
     public async Task CreateIndividualPriceWorkflowTask(List<WFL> taskList, MortgageRefinancingWorkflowParameters mortgageParameters, string? taskRequest, CancellationToken cancellationToken)
     {
@@ -65,22 +88,15 @@ public sealed class MortgageRefinancingWorkflowService
 
     private async Task<bool> CancelExistingPriceExceptions(IEnumerable<WFL> taskList, MortgageRefinancingWorkflowParameters mortgageParameters, CancellationToken cancellationToken)
     {
-        var priceExceptionTasks = taskList.Where(t => t.ProcessId == mortgageParameters.TaskProcessId && t is { TaskTypeId: (int)WorkflowTaskTypes.PriceException, Cancelled: false })
-                                          .ToList();
-
         var priceExceptionWasCancelled = true;
 
-        if (priceExceptionTasks.Count == 0) 
-            return priceExceptionWasCancelled;
-
-        foreach (var task in priceExceptionTasks)
+        foreach (var task in GetPriceExceptionTasks(taskList, mortgageParameters.TaskProcessId))
         {
             var priceExceptionTaskDetail = await _caseService.GetTaskDetail(task.TaskIdSb, cancellationToken);
 
-            var taskLoanInterestRateDiscount = ((decimal?)priceExceptionTaskDetail.TaskDetail.PriceException.LoanInterestRate.LoanInterestRateDiscount).GetValueOrDefault();
-            var taskFeeFinalSum = ((decimal?)priceExceptionTaskDetail.TaskDetail.PriceException.Fees.FirstOrDefault()?.FinalSum).GetValueOrDefault();
+            var taskIndividualPrice = new MortgageRefinancingIndividualPrice(priceExceptionTaskDetail.TaskDetail.PriceException);
 
-            if (taskLoanInterestRateDiscount != mortgageParameters.LoanInterestRateDiscount.GetValueOrDefault() && taskFeeFinalSum != mortgageParameters.Fee?.FeeFinalSum)
+            if (new MortgageRefinancingIndividualPrice(mortgageParameters.LoanInterestRateDiscount, mortgageParameters.Fee?.FeeFinalSum).Equals(taskIndividualPrice))
             {
                 priceExceptionWasCancelled = false;
 
@@ -95,7 +111,9 @@ public sealed class MortgageRefinancingWorkflowService
         return priceExceptionWasCancelled;
     }
 
-
+    private static IEnumerable<WFL> GetPriceExceptionTasks(IEnumerable<WFL> taskList, long taskProcessId) => 
+        taskList.Where(t => t.ProcessId == taskProcessId && t is { TaskTypeId: (int)WorkflowTaskTypes.PriceException, Cancelled: false });
+    
     private void ValidatePermission()
     {
         // TODO: projit zda je potreba s Klarou a Davidem
