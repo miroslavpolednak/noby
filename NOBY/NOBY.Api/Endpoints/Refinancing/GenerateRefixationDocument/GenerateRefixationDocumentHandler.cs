@@ -71,7 +71,7 @@ internal class GenerateRefixationDocumentHandler : IRequestHandler<GenerateRefix
     {
         var offer = await _offerService.GetOffer(offerId, cancellationToken);
 
-        if ((DateTime)offer.MortgageRefixation.SimulationInputs.InterestRateValidFrom < DateTime.UtcNow.ToLocalTime().Date)
+        if ((DateTime)offer.MortgageRefixation.SimulationInputs.InterestRateValidFrom < DateTime.UtcNow.ToLocalTime().Date || (DateTime?)offer.Data.ValidTo < DateTime.UtcNow.ToLocalTime().Date)
             throw new NobyValidationException(90051);
 
         return offer;
