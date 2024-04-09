@@ -24,9 +24,9 @@ public sealed class SimulateMortgageExtraPaymentRequest
     public int ExtraPaymentReasonId { get; set; }
 
     /// <summary>
-    /// Typ mimořádné splátky
+    /// Typ mimořádné splátky - částečná false, úplná true
     /// </summary>
-    public int ExtraPaymentTypeId { get; set; }
+    public bool IsExtraPaymentFullyRepaid { get; set; }
 
     internal SimulateMortgageExtraPaymentRequest InfuseId(long caseId)
     {

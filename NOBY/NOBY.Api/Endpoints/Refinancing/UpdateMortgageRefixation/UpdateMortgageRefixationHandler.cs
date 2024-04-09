@@ -9,9 +9,9 @@ using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 namespace NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 
 internal sealed class UpdateMortgageRefixationHandler
-    : IRequestHandler<UpdateMortgageRefixationRequest>
+    : IRequestHandler<UpdateMortgageRefixationRequest, UpdateMortgageRefixationResponse>
 {
-    public async Task Handle(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
+    public async Task<UpdateMortgageRefixationResponse> Handle(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         var workflowResult = await _retentionWorkflowService.GetTaskInfoByTaskId(request.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
@@ -31,6 +31,11 @@ internal sealed class UpdateMortgageRefixationHandler
 
         // presimulovat modelace
         await updateOffers(request, cancellationToken);
+
+        return new UpdateMortgageRefixationResponse
+        {
+            ProcessId = salesArrangement.TaskProcessId!.Value
+        };
     }
 
     private async Task updateOffers(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)

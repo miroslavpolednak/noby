@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 
 public sealed class UpdateMortgageRefixationRequest
-    : IRequest
+    : IRequest<UpdateMortgageRefixationResponse>
 {
     [JsonIgnore]
     internal long CaseId { get; set; }

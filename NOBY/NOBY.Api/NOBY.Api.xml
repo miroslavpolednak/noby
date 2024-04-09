@@ -2684,9 +2684,9 @@
             Důvod mimořádné splátky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentTypeId">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.IsExtraPaymentFullyRepaid">
             <summary>
-            Typ mimořádné splátky
+            Typ mimořádné splátky - částečná false, úplná true
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OfferId">
@@ -3658,6 +3658,11 @@
         <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest.HasInterestRateDiscount">
             <summary>
             Příznak zda je nastavena sleva ze sazby
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationResponse.ProcessId">
+            <summary>
+            ID refixacniho procesu
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">

@@ -42,18 +42,24 @@ internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCase
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
         var caseStates = await _codebookService.CaseStates(cancellationToken);
 
-        return new IdentifyCaseResponse
+        IdentifyCaseResponse response = new() { Cases = new(result.Count) };
+
+        foreach (var product in result)
         {
-            Cases = result.Select(t => new Dto.IdentifyCaseResponseItem(t.CaseId)
+            var caseInstance = await _caseServiceClient.GetCaseDetail(product.CaseId, cancellationToken);
+
+            response.Cases.Add(new Dto.IdentifyCaseResponseItem
             {
-                ContractRelationshipTypeId = t.ContractRelationshipTypeId,
-                ContractNumber = t.ContractNumber,
-                State = (CaseStates)t.State!.Value,
-                TargetAmount = t.TargetAmount,
-                StateName = caseStates.First(x => x.Id == t.State).Name,
-                ProductName = productTypes.First(x => x.Id == t.ProductTypeId).Name
-            }).ToList()
-        };
+                ContractRelationshipTypeId = product.ContractRelationshipTypeId,
+                ContractNumber = caseInstance.Data.ContractNumber,
+                State = (CaseStates)caseInstance.State,
+                TargetAmount = caseInstance.Data.TargetAmount,
+                StateName = caseStates.First(x => x.Id == caseInstance.State).Name,
+                ProductName = productTypes.First(x => x.Id == caseInstance.Data.ProductTypeId).Name
+            });
+        }
+
+        return response;
     }
 
     private async Task<IdentifyCaseResponse> handleByFormId(string formId, CancellationToken cancellationToken)
