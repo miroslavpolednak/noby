@@ -260,6 +260,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00013-refix_extrapayment_tables.sql = DomainServices\OfferService\DatabaseMigrations\00013-refix_extrapayment_tables.sql
 		DomainServices\OfferService\DatabaseMigrations\00014-ResponseCodes.sql = DomainServices\OfferService\DatabaseMigrations\00014-ResponseCodes.sql
 		DomainServices\OfferService\DatabaseMigrations\00015-HACH-10961-DatamartDbStructure.sql = DomainServices\OfferService\DatabaseMigrations\00015-HACH-10961-DatamartDbStructure.sql
+		DomainServices\OfferService\DatabaseMigrations\00016-HACH-11133-landing_tab_deleteProc.sql = DomainServices\OfferService\DatabaseMigrations\00016-HACH-11133-landing_tab_deleteProc.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
@@ -601,6 +602,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00002-initial_seed.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00002-initial_seed.sql
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00003-HACH-10688.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00003-HACH-10688.sql
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00004-ImportFromDatamartJob.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00004-ImportFromDatamartJob.sql
+		InternalServices\TaskSchedulingService\DatabaseMigrations\00005-HACH-10962-DeleteOfferOlderThan.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00005-HACH-10962-DeleteOfferOlderThan.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.SbWebApi", "ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj", "{FA184421-6232-4157-BDEC-DE7D03D3B88C}"

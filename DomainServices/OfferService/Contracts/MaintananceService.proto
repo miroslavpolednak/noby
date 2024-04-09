@@ -8,8 +8,13 @@ import "google/protobuf/wrappers.proto";
 
 service MaintananceService{
 	rpc ImportOfferFromDatamart(ImportOfferFromDatamartRequest) returns (google.protobuf.Empty);
+	rpc DeleteRefixationOfferOlderThan(DeleteRefixationOfferOlderThanRequest) returns (google.protobuf.Empty);
 }
 
 message ImportOfferFromDatamartRequest {
 	google.protobuf.Int32Value BatchSize = 1;
+}
+
+message DeleteRefixationOfferOlderThanRequest {
+
 }

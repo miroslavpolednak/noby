@@ -24,6 +24,9 @@ grpcurl -insecure -d "{\"ResourceProcessId\":\"4D115798-0E05-4CF0-8A5A-1A3F871B3
 grpcurl -insecure -d "{\"OfferId\":1}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30006 DomainServices.OfferService.v1.OfferService/GetOfferDeveloper
 grpcurl -insecure -d "{\"CaseId\":303063381,\"FutureInterestRateValidTo\":{\"year\":2024,\"month\":4,\"day\":8}}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30006 DomainServices.OfferService.v1.OfferService/GetInterestRate
 
+grpcurl -insecure -d "{\"BatchSize\":50}" -H "Authorization: Basic YTph" 127.0.0.1:31006 DomainServices.OfferService.MaintananceService/ImportOfferFromDatamart
+grpcurl -insecure -d "{}" -H "Authorization: Basic YTph" 127.0.0.1:31006 DomainServices.OfferService.MaintananceService/DeleteRefixationOfferOlderThan
+
 ## run batch
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj"
