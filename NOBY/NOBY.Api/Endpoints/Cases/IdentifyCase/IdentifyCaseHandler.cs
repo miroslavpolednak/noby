@@ -50,6 +50,7 @@ internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCase
 
             response.Cases.Add(new Dto.IdentifyCaseResponseItem
             {
+                CaseId = product.CaseId,
                 ContractRelationshipTypeId = product.ContractRelationshipTypeId,
                 ContractNumber = caseInstance.Data.ContractNumber,
                 State = (CaseStates)caseInstance.State,
