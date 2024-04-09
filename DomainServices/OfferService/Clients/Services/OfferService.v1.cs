@@ -86,6 +86,12 @@ internal sealed class OfferService
         .Responses
         .ToList();
 
+    public async Task DeleteOffers(IEnumerable<int> offerIds, CancellationToken cancellationToken = default)
+        => await _service.DeleteOffersAsync(new DeleteOffersRequest
+        {
+            OfferIds = { offerIds }
+        }, cancellationToken: cancellationToken);
+
     private int? _cacheGetOfferResponseId;
     private GetOfferResponse? _cacheGetMortgageOfferResponse;
 
