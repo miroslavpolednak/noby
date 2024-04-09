@@ -23,7 +23,9 @@ internal sealed class MortgageRefixationDataMapper
             SimulationResults = new()
             {
                 LoanPaymentAmount = data.SimulationOutputs.LoanPaymentAmount,
-                LoanPaymentAmountDiscounted = data.SimulationOutputs.LoanPaymentAmountDiscounted
+                LoanPaymentAmountDiscounted = data.SimulationOutputs.LoanPaymentAmountDiscounted,
+                LoanPaymentsCount = data.SimulationOutputs.LoanPaymentsCount,
+                MaturityDate = data.SimulationOutputs.MaturityDate
             },
             BasicParameters = new()
             {
@@ -75,7 +77,9 @@ internal sealed class MortgageRefixationDataMapper
         return new()
         {
             LoanPaymentAmount = output.LoanPaymentAmount,
-            LoanPaymentAmountDiscounted = output.LoanPaymentAmountDiscounted
+            LoanPaymentAmountDiscounted = output.LoanPaymentAmountDiscounted,
+            LoanPaymentsCount = output.LoanPaymentsCount,
+            MaturityDate = output.MaturityDate
         };
     }
 }

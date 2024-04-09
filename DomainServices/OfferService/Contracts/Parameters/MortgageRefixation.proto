@@ -20,6 +20,8 @@ message MortgageRefixationSimulationInputs {
 message MortgageRefixationSimulationResults {
 	cis.types.GrpcDecimal LoanPaymentAmount = 1;
 	cis.types.NullableGrpcDecimal LoanPaymentAmountDiscounted = 2;
+	int32 LoanPaymentsCount = 3;
+	cis.types.GrpcDate MaturityDate = 4;
 }
 
 message MortgageRefixationFullData {

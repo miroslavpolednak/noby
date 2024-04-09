@@ -12,7 +12,7 @@ internal sealed class SimulateMortgageRetentionHandler
     {
         // get simulation outputs
         var easSimulationRes1 = await _easSimulationHTClient.RunSimulationRetention(request.CaseId, request.SimulationInputs.InterestRate, request.SimulationInputs.InterestRateValidFrom, cancellationToken);
-
+        
         // doc entita
         var documentEntity = new Database.DocumentDataEntities.MortgageRetentionData
         {
@@ -20,7 +20,7 @@ internal sealed class SimulateMortgageRetentionHandler
             SimulationInputs = _offerMapper.MapToDataInputs(request.SimulationInputs),
             SimulationOutputs = new()
             {
-                LoanPaymentAmount = easSimulationRes1
+                LoanPaymentAmount = easSimulationRes1.LoanPaymentAmount
             }
         };
 
@@ -28,7 +28,7 @@ internal sealed class SimulateMortgageRetentionHandler
         if (request.SimulationInputs.InterestRateDiscount != null)
         {
             var easSimulationRes2 = await _easSimulationHTClient.RunSimulationRetention(request.CaseId, request.SimulationInputs.InterestRate - (decimal)request.SimulationInputs.InterestRateDiscount!, request.SimulationInputs.InterestRateValidFrom, cancellationToken);
-            documentEntity.SimulationOutputs.LoanPaymentAmountDiscounted = easSimulationRes2;
+            documentEntity.SimulationOutputs.LoanPaymentAmountDiscounted = easSimulationRes2.LoanPaymentAmount;
         }
 
         // save to DB

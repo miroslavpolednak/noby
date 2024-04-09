@@ -21,7 +21,9 @@ internal sealed class SimulateMortgageRefixationHandler
             SimulationInputs = _offerMapper.MapToDataInputs(request.SimulationInputs),
             SimulationOutputs = new()
             {
-                LoanPaymentAmount = easSimulationRes1
+                LoanPaymentAmount = easSimulationRes1.LoanPaymentAmount,
+                LoanPaymentsCount = easSimulationRes1.LoanPaymentsCount,
+                MaturityDate = easSimulationRes1.MaturityDate
             }
         };
 
@@ -29,7 +31,7 @@ internal sealed class SimulateMortgageRefixationHandler
         if (request.SimulationInputs.InterestRateDiscount != null)
         {
             var easSimulationRes2 = await _easSimulationHTClient.RunSimulationRefixation(request.CaseId, request.SimulationInputs.InterestRate - (decimal)request.SimulationInputs.InterestRateDiscount!, request.SimulationInputs.InterestRateValidFrom, request.SimulationInputs.FixedRatePeriod, cancellationToken);
-            documentEntity.SimulationOutputs.LoanPaymentAmountDiscounted = easSimulationRes2;
+            documentEntity.SimulationOutputs.LoanPaymentAmountDiscounted = easSimulationRes2.LoanPaymentAmount;
         }
 
         var result = new SimulateMortgageRefixationResponse
