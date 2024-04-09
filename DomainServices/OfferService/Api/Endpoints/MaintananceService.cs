@@ -9,4 +9,7 @@ public sealed class MaintananceService(IMediator mediator)
 {
     public override async Task<Empty> ImportOfferFromDatamart(ImportOfferFromDatamartRequest request, ServerCallContext context)
       => await mediator.Send(request, context.CancellationToken);
+
+    public override async Task<Empty> DeleteRefixationOfferOlderThan(DeleteRefixationOfferOlderThanRequest request, ServerCallContext context)
+     => await mediator.Send(request, context.CancellationToken);
 }

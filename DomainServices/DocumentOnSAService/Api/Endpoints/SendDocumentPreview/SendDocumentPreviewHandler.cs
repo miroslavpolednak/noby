@@ -25,9 +25,13 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
         {
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnableToSendDocumentPreviewForPaperSignedDocuments);
         }
-        
+
         var (code, message) = await _signaturesClient.SendDocumentPreview(documentOnSa.ExternalIdESignatures ?? string.Empty, cancellationToken);
-        
+
+        documentOnSa.IsPreviewSentToCustomer = true;
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
         _auditLogger.Log(
             AuditEventTypes.Noby011,
             "Dokument byl odeslán klientovi k náhledu",
@@ -38,7 +42,7 @@ public class SendDocumentPreviewHandler : IRequestHandler<SendDocumentPreviewReq
                 new(AuditConstants.ProductNamesForm, documentOnSa.FormId)
             }
         );
-        
+
         return new Empty();
     }
 

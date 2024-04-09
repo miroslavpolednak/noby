@@ -67,17 +67,37 @@ internal sealed class StartTaskSigningHandler(
 
     private async Task<_SaDomain.SalesArrangement> GetSalesArrangementId(long caseId, List<WorkflowTask> workflowTasks, long taskId, CancellationToken cancellationToken)
     {
-        var processTypeId = workflowTasks.Find(t => t.TaskId == taskId)?.ProcessTypeId;
+        var wfTask = workflowTasks.Single(t => t.TaskId == taskId);
+
+        var process = (await _caseService.GetProcessList(caseId, cancellationToken)).Single(p => p.ProcessId == wfTask.ProcessId);
 
         var salesArrangementsResponse = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
 
-        // 1 hlavní úvěrový proces, 3 retenční proces
-        return processTypeId switch
+        if (wfTask.ProcessTypeId != 3)
         {
-            1 => await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken),
-            3 => salesArrangementsResponse.SalesArrangements.Single(s => s.SalesArrangementTypeId == SalesArrangementTypes.MortgageRetention.ToByte()),
-            _ => throw new ArgumentException($"Unsupported processTypeId {processTypeId}, cannot get SA")
-        };
+            return await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
+        }
+        else if (wfTask.ProcessTypeId == 3 && process.RefinancingProcess?.RefinancingType == (int)RefinancingTypes.Retence)
+        {
+            var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention
+                                                                                      && s.State != (int)SalesArrangementStates.Cancelled
+                                                                                      && s.State != (int)SalesArrangementStates.Finished);
+
+            return sa ?? await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
+
+        }
+        else if (wfTask.ProcessTypeId == 3 && process?.RefinancingProcess?.RefinancingType != (int)RefinancingTypes.Retence)
+        {
+            var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation
+                                                                                     && s.State != (int)SalesArrangementStates.Cancelled
+                                                                                     && s.State != (int)SalesArrangementStates.Finished);
+
+            return sa ?? await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
+        }
+        else
+        {
+            throw new ArgumentException($"Unsupported combination of processTypeId {wfTask.ProcessTypeId} and RefinancingType {process.RefinancingProcess?.RefinancingType}, cannot get SA");
+        }
     }
 
     private async Task<_SaDomain.SalesArrangement> GetSaAccordingToSaCategory(GetSalesArrangementListResponse saList, CancellationToken cancellationToken)
