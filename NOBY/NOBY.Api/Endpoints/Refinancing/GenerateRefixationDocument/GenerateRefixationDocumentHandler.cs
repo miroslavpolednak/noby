@@ -1,4 +1,5 @@
-﻿using DomainServices.CodebookService.Clients;
+﻿using CIS.Core.Configuration;
+using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
@@ -16,23 +17,30 @@ internal class GenerateRefixationDocumentHandler : IRequestHandler<GenerateRefix
     private readonly IOfferServiceClient _offerService;
     private readonly ISbWebApiClient _sbWebApi;
     private readonly MortgageRefinancingDocumentService _refinancingDocumentService;
+    private readonly ICisEnvironmentConfiguration _configuration;
 
     public GenerateRefixationDocumentHandler(
         ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
         ISbWebApiClient sbWebApi,
-        MortgageRefinancingDocumentService refinancingDocumentService)
+        MortgageRefinancingDocumentService refinancingDocumentService,
+        ICisEnvironmentConfiguration configuration)
     {
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
         _sbWebApi = sbWebApi;
         _refinancingDocumentService = refinancingDocumentService;
+        _configuration = configuration;
     }
 
     public async Task Handle(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken)
     {
+        //TODO: we have just one CaseId, we cannot lose it
+        if (_configuration.EnvironmentName != "PROD" && request.CaseId == 3075599)
+            throw new NotSupportedException("Case ID for testing only");
+
         await ValidateSignatureTypeDetailId(request, cancellationToken);
 
         var salesArrangement = await _refinancingDocumentService.LoadAndValidateSA(request.SalesArrangementId, SalesArrangementTypes.MortgageRefixation, cancellationToken);
