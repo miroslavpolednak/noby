@@ -19,12 +19,8 @@ internal sealed class LoanRepository
     {
         string query = """
         select
-            u.Id as CaseId, 
-            StavHU as State,
-            vu.VztahId as ContractRelationshipTypeId,
-            u.KodProduktyUv as ProductTypeId,
-            u.VyseUveru as TargetAmount,
-            u.CisloSmlouvy as ContractNumber
+            u.Id as CaseId,
+            vu.VztahId as ContractRelationshipTypeId
         from [dbo].[VztahUver] vu
         inner join [dbo].[Partner] p on p.Id = vu.PartnerId
         inner join [dbo].[Uver] u on u.Id = vu.UverId
@@ -35,12 +31,8 @@ internal sealed class LoanRepository
         union all
 
         select
-            s.Id as CaseId, 
-            null as State,
-            vs.VztahId as ContractRelationshipTypeId,
-            null as ProductTypeId,
-            s.CilovaCastka as TargetAmount,
-            s.CisloSmlouvy as ContractNumber
+            s.Id as CaseId,
+            vs.VztahId as ContractRelationshipTypeId
         from [dbo].[VztahSporeni] vs
         inner join [dbo].[Partner] p on p.Id = vs.PartnerId
         inner join [dbo].[Sporeni] s on s.Id = vs.SporeniId 
