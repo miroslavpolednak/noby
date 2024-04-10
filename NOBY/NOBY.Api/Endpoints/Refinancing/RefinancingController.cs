@@ -78,7 +78,7 @@ public sealed class RefinancingController : ControllerBase
     /// 
     /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpGet("case/{caseId:long}/mortgage-refixation/{processId:long}")]
+    [HttpGet("case/{caseId:long}/mortgage-refixation")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
