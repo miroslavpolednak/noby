@@ -8,6 +8,7 @@ using ExternalServices.ESignatures.V1;
 using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;
 using Source = DomainServices.DocumentOnSAService.Api.Database.Enums.Source;
+using DomainServices.DocumentOnSAService.Api.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StopSigning;
 
@@ -16,6 +17,7 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IESignaturesClient _eSignaturesClient;
     private readonly IAuditLogger _auditLogger;
+    private readonly ILogger<StopSigningHandler> _logger;
     private readonly ISalesArrangementStateManager _salesArrangementStateManager;
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
 
@@ -24,12 +26,14 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
         IESignaturesClient eSignaturesClient,
         ISalesArrangementStateManager salesArrangementStateManager,
         ISalesArrangementServiceClient salesArrangementServiceClient,
-        IAuditLogger auditLogger)
+        IAuditLogger auditLogger,
+        ILogger<StopSigningHandler> logger)
 
     {
         _dbContext = dbContext;
         _eSignaturesClient = eSignaturesClient;
         _auditLogger = auditLogger;
+        _logger = logger;
         _salesArrangementStateManager = salesArrangementStateManager;
         _salesArrangementServiceClient = salesArrangementServiceClient;
     }
@@ -49,7 +53,16 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
         }
 
         if (documentOnSa.SignatureTypeId == SignatureTypes.Electronic.ToByte() && request.NotifyESignatures) // 3
-            await _eSignaturesClient.DeleteDocument(documentOnSa.ExternalIdESignatures!, cancellationToken);
+        {
+            try
+            {
+                await _eSignaturesClient.DeleteDocument(documentOnSa.ExternalIdESignatures!, cancellationToken);
+            }
+            catch (Exception exp)
+            {
+                _logger.StopSigningError(documentOnSa.DocumentOnSAId, exp);
+            }
+        }
 
         documentOnSa.IsValid = false;
 
