@@ -117,11 +117,8 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
     private async Task LinkOffer(SalesArrangement salesArrangementInstance, __Offer.GetOfferResponse offerInstance, CancellationToken cancellationToken)
     {
-        salesArrangementInstance.OfferGuaranteeDateFrom = DateTime.UtcNow;
-        salesArrangementInstance.OfferGuaranteeDateTo = offerInstance.Data.ValidTo;
         salesArrangementInstance.OfferId = offerInstance.Data.OfferId;
-        salesArrangementInstance.ResourceProcessId = Guid.Parse(offerInstance.Data.ResourceProcessId);
-
+        
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
