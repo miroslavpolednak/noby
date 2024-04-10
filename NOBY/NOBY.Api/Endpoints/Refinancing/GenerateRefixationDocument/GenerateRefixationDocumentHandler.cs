@@ -10,7 +10,7 @@ using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument;
 
-internal class GenerateRefixationDocumentHandler : IRequestHandler<GenerateRefixationDocumentRequest>
+internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<GenerateRefixationDocumentRequest>
 {
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;

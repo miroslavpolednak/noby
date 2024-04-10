@@ -15,21 +15,6 @@ public class UsersController : ControllerBase
     /// Informace a oprávnění o přihlášeném uživateli
     /// </summary>
     /// <remarks>
-    /// Pokud je uživatel přihlášen (existuje platná auth cookie), vrací základní informace o uživateli.
-    /// </remarks>
-    /// <returns>Instance přihlášeného uživatele.</returns>
-    [HttpGet("users")]
-    [ProducesResponseType(typeof(GetCurrentUser.GetCurrentUserResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [Produces("application/json")]
-    [Obsolete]
-    public async Task<GetCurrentUser.GetCurrentUserResponse> GetCurrentUser(CancellationToken cancellationToken)
-        => await _mediator.Send(new GetCurrentUser.GetCurrentUserRequest(), cancellationToken);
-
-    /// <summary>
-    /// Informace a oprávnění o přihlášeném uživateli
-    /// </summary>
-    /// <remarks>
     /// Vrací o uživateli data z XXVVSS - základní údaje, identity (počítáme s tím, že je alespoň jedna, vetšinou více) a set oprávnění pro identitu, kterou se přihlásil. <br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FC765415-4D2E-4b7c-B1C8-3F4B78A005DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>

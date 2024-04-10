@@ -32,7 +32,7 @@ internal sealed class GetAddressDetailHandler
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "GetAddressDetail external service call failed: " + ex.Message);
+            _logger.LogError(ex, "GetAddressDetail external service call failed: {Message}", ex.Message);
             throw new NobyValidationException(90020);
         }
     }

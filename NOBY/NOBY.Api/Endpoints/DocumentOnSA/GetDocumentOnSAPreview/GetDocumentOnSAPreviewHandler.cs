@@ -70,7 +70,7 @@ public sealed class GetDocumentOnSAPreviewHandler : IRequestHandler<GetDocumentO
             throw new NobyValidationException("Invalid electronic document is not allowed.");
         }
 
-        if (documentOnSA.SignatureTypeId == (int)SignatureTypes.Paper && ((documentOnSA.IsSigned && documentOnSA.EArchivIdsLinked.Any()) || !documentOnSA.IsValid))
+        if (documentOnSA.SignatureTypeId == (int)SignatureTypes.Paper && ((documentOnSA.IsSigned && documentOnSA.EArchivIdsLinked.Count != 0) || !documentOnSA.IsValid))
         {
             throw new NobyValidationException("Signed or invalid paper document is not allowed.");
         }

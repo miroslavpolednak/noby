@@ -20,7 +20,7 @@ internal sealed class IdentifyByIdentityHandler
         // customer On SA
         var customerOnSaInstance = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
 
-        if (customerOnSaInstance.CustomerIdentifiers is not null && customerOnSaInstance.CustomerIdentifiers.Any())
+        if (customerOnSaInstance.CustomerIdentifiers is not null && customerOnSaInstance.CustomerIdentifiers.Count != 0)
         {
             throw new NobyValidationException("CustomerOnSA has been already identified");
         }

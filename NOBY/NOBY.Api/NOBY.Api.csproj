@@ -15,7 +15,7 @@
     <DocumentationFile>NOBY.Api.xml</DocumentationFile>
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	<PublishDocumentationFile>true</PublishDocumentationFile>
-    <NoWarn>1701;1702;CS1573</NoWarn>
+    <NoWarn>1701;1702;CS1573;CA1848</NoWarn>
   </PropertyGroup>
 	
 	<PropertyGroup>
@@ -33,9 +33,9 @@
     <PackageReference Include="CompareNETObjects" Version="4.83.0" />
     <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="3.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.4" />
     <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.2.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.60.1" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.60.2" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />

@@ -189,7 +189,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     /// <summary>
     /// Vytvori metadata CustomerOnSA
     /// </summary>
-    private __Household.CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request, dynamic? delta)
+    private static __Household.CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request, dynamic? delta)
     {
         var metadata = new __Household.CustomerChangeMetadata
         {
@@ -252,7 +252,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     /// Vytvori / upravi JSON data v prop CustomerAdditionalData
     /// Data se upravuji na zaklade toho, co prijde v requestu.
     /// </summary>
-    private __Household.CustomerAdditionalData createAdditionalData(
+    private static __Household.CustomerAdditionalData createAdditionalData(
         __Household.CustomerOnSA customerOnSA,
         UpdateCustomerDetailWithChangesRequest request)
     {

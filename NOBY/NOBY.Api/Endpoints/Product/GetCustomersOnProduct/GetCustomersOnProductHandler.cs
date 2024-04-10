@@ -14,7 +14,7 @@ internal sealed class GetCustomersOnProductHandler
         // detail customeru z customerService
         var identifiedCustomers = customers.Customers.Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).ToList();
         var customerDetails = new List<_Cust.CustomerDetailResponse>();
-        if (identifiedCustomers.Any())
+        if (identifiedCustomers.Count != 0)
         {
             customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)), cancellationToken)).Customers.ToList();
         }

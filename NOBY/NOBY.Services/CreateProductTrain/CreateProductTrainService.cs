@@ -28,7 +28,7 @@ internal sealed class CreateProductTrainService
         }
         else
         {
-            _logger.LogInformation($"CreateRiskBusinessCaseService for CaseId #{caseId} not proceeding / missing MP ID");
+            _logger.LogInformation("CreateRiskBusinessCaseService for CaseId #{CaseId} not proceeding / missing MP ID", caseId);
         }
         
         _logger.LogDebug("CreateProductTrainService finished");

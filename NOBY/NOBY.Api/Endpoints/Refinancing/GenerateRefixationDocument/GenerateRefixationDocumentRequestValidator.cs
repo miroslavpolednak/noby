@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument;
 
-internal class GenerateRefixationDocumentRequestValidator : AbstractValidator<GenerateRefixationDocumentRequest>
+internal sealed class GenerateRefixationDocumentRequestValidator : AbstractValidator<GenerateRefixationDocumentRequest>
 {
     public GenerateRefixationDocumentRequestValidator()
     {

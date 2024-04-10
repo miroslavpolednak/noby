@@ -4,13 +4,21 @@ using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
 
-internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParametersRequest, GetCaseParametersResponse>
+internal sealed class GetCaseParametersHandler(
+    DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
+    DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
+    DomainServices.ProductService.Clients.IProductServiceClient _productService,
+    DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService,
+    DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    DomainServices.UserService.Clients.IUserServiceClient _userService,
+    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService
+        ) : IRequestHandler<GetCaseParametersRequest, GetCaseParametersResponse>
 {
     public async Task<GetCaseParametersResponse> Handle(GetCaseParametersRequest request, CancellationToken cancellationToken)
     {
         var response = new GetCaseParametersResponse
         {
-            CaseParameters = new List<CaseParameters>()
+            CaseParameters = []
         };
 
         // instance case
@@ -45,7 +53,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         var loanKindTypes = await _codebookService.LoanKinds(cancellationToken);
         var loanPurposeTypes = await _codebookService.LoanPurposes(cancellationToken);
 
-        List<Dto.CaseParameters> response = new();
+        List<Dto.CaseParameters> response = [];
 
         foreach (var sa in salesArrangements)
         {
@@ -93,7 +101,7 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         var caseOwnerOrig = await getUserInstance(mortgageData.CaseOwnerUserOrigId, cancellationToken);
         var caseOwnerCurrent = await getUserInstance(mortgageData.CaseOwnerUserCurrentId, cancellationToken);
 
-        List<Dto.CaseParameters> response = new();
+        List<Dto.CaseParameters> response = [];
 
         var parameters = new Dto.CaseParameters
         {
@@ -130,14 +138,12 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         if (mortgageData.Statement is not null)
         {
             var statementTypes = await _codebookService.StatementTypes(cancellationToken);
-            var statementSubscriptionTypes = await _codebookService.StatementSubscriptionTypes(cancellationToken);
             var statementFrequencies = await _codebookService.StatementFrequencies(cancellationToken);
 
             parameters.Statement = new StatementDto
             {
                 TypeId = mortgageData.Statement.TypeId,
                 TypeShortName = statementTypes.FirstOrDefault(x => x.Id == mortgageData.Statement.TypeId)?.ShortName,
-                SubscriptionType = statementSubscriptionTypes.FirstOrDefault(x => x.Id == mortgageData.Statement.SubscriptionTypeId)?.Name,
                 Frequency = statementFrequencies.FirstOrDefault(x => x.Id == mortgageData.Statement?.FrequencyId)?.Name,
                 EmailAddress1 = mortgageData.Statement.EmailAddress1,
                 EmailAddress2 = mortgageData.Statement.EmailAddress2
@@ -220,38 +226,11 @@ internal sealed class GetCaseParametersHandler : IRequestHandler<GetCaseParamete
         }
     }
 
-    private static int[] _allowedSAStates =
+    private static readonly int[] _allowedSAStates =
     [
         (int)SalesArrangementStates.InSigning,
         (int)SalesArrangementStates.ToSend,
         (int)SalesArrangementStates.NewArrangement,
         (int)SalesArrangementStates.InProgress 
     ];
-
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
-    private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
-    private readonly DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
-    private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
-
-    public GetCaseParametersHandler(
-        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
-        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService,
-        DomainServices.ProductService.Clients.IProductServiceClient productService,
-        DomainServices.OfferService.Clients.v1.IOfferServiceClient offerService,
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        DomainServices.UserService.Clients.IUserServiceClient userService,
-        DomainServices.CustomerService.Clients.ICustomerServiceClient customerService
-        )
-    {
-        _codebookService = codebookService;
-        _caseService = caseService;
-        _productService = productService;
-        _offerService = offerService;
-        _salesArrangementService = salesArrangementService;
-        _userService = userService;
-        _customerService = customerService;
-    }
 }

@@ -46,7 +46,7 @@ public class CustomerController : ControllerBase
     [SwaggerOperation(Tags = new [] { "Klient" })]
     [ProducesResponseType(typeof(SearchCustomers.SearchCustomersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<SearchCustomers.SearchCustomersResponse> SearchCustomers([FromBody] SearchCustomers.SearchCustomersRequest request, CancellationToken cancellationToken)
+    public async Task<SearchCustomers.SearchCustomersResponse?> SearchCustomers([FromBody] SearchCustomers.SearchCustomersRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 
     /// <summary>
@@ -100,7 +100,7 @@ public class CustomerController : ControllerBase
     [ProducesResponseType(typeof(SearchCustomers.Dto.CustomerInList), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<SearchCustomers.Dto.CustomerInList> Identify([FromBody] Identify.IdentifyRequest request)
+    public async Task<SearchCustomers.Dto.CustomerInList?> Identify([FromBody] Identify.IdentifyRequest request)
         => await _mediator.Send(request);
 
     /// <summary>

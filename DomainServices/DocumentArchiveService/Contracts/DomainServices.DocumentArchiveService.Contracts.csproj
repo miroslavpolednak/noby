@@ -22,7 +22,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="MediatR.Contracts" Version="2.0.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="8.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="8.0.4" />
 		<PackageReference Include="protobuf-net.Core" Version="3.2.30" />
 		<PackageReference Include="System.ServiceModel.Primitives" Version="8.0.0" />
 	</ItemGroup>

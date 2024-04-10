@@ -49,7 +49,7 @@ public sealed class ProductController : ControllerBase
     {
         var items = await _mediator.Send(new GetProductObligationList.GetProductObligationListRequest(caseId), cancellationToken);
 
-        return items.Any() ? Ok(items) : NoContent();
+        return items.Count != 0 ? Ok(items) : NoContent();
     }
 
     /// <summary>

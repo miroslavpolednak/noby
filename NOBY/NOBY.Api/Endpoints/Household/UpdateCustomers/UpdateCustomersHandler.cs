@@ -214,7 +214,7 @@ internal sealed class UpdateCustomersHandler
         }
         catch (Exception ex)
         {
-            _logger.LogInformation($"Can not delete relationship for #{partnerId} in Case {caseId}: {ex.Message}");
+            _logger.LogInformation(ex, "Can not delete relationship for #{PartnerId} in Case {CaseId}: {Message}", partnerId, caseId, ex.Message);
         }
     }
 

@@ -5,7 +5,7 @@ namespace NOBY.Api.Endpoints.Codebooks.GetAll.Dto;
 public class ProductTypeItem
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     public int? MandantId { get; set; }
     public bool IsValid { get; set; }
     public int Order { get; set; }

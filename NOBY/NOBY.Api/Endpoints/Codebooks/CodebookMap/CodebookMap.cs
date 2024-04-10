@@ -20,10 +20,10 @@ public class CodebookMap : ICodebookMap
         {
             var optimizedCode = code.ToLowerInvariant();
 
-            if (!_endpoints.ContainsKey(optimizedCode))
+            if (!_endpoints.TryGetValue(optimizedCode, out ICodebookEndpoint? endpoint))
                 throw new NotImplementedException($"Codebook code '{code}' is not implemented");
-
-            return _endpoints[optimizedCode]; 
+            else
+                return endpoint; 
 
         }
     }

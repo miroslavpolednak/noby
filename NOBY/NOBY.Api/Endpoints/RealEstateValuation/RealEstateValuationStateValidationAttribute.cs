@@ -51,12 +51,12 @@ internal sealed class RealEstateValuationStateValidationAttribute
         {
             if (!context.HttpContext.Request.RouteValues.ContainsKey(_caseIdKey))
             {
-                throw new ArgumentNullException(nameof(context.HttpContext.Request.RouteValues), $"{_caseIdKey} is missing in route values");
+                throw new ArgumentException($"Request.RouteValues {_caseIdKey} is missing in route values");
             }
 
             if (!context.HttpContext.Request.RouteValues.ContainsKey(_realEstateValuationIdKey))
             {
-                throw new ArgumentNullException(nameof(context.HttpContext.Request.RouteValues), $"{_realEstateValuationIdKey} is missing in route values");
+                throw new ArgumentException($"Request.RouteValues {_realEstateValuationIdKey} is missing in route values");
             }
 
             long caseId = long.Parse(context.HttpContext.Request.RouteValues[_caseIdKey]!.ToString()!, CultureInfo.InvariantCulture);

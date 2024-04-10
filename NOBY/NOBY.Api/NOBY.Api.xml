@@ -507,12 +507,6 @@
             </summary>
             <example>Elektronický</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.SubscriptionType">
-            <summary>
-            Způsob odběru výpisů
-            </summary>
-            <example>elektronicky</example>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.Frequency">
             <summary>
             Frekvence výpisů
@@ -3815,11 +3809,6 @@
             Limit
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.CreditCardLimitTotal">
-            <summary>
-            Výše limitu
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.RoleId">
             <summary>
             Role klienta
@@ -5127,29 +5116,6 @@
             Severita chyby
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
-            <summary>
-            ID uzivatele - xxvvss.v33id
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Name">
-            <summary>
-            Cele jmeno uzivatele
-            </summary>
-            <example>John Doe</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.CPM">
-            <summary>
-            CPM uzivatele
-            </summary>
-            <example>99800001</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.ICP">
-            <summary>
-            ICP uzivatele
-            </summary>
-            <example>999999999</example>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserId">
             <summary>
             ID uzivatele - V33ID
@@ -5229,15 +5195,6 @@
             Vybranne identitni schema pro prihlaseni, moznosti jsou: <a href="https://wiki.kb.cz/display/HT/IdentityScheme">https://wiki.kb.cz/display/HT/IdentityScheme</a>
             </summary>
             <example>KBUID</example>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
-            <summary>
-            Informace a oprávnění o přihlášeném uživateli
-            </summary>
-            <remarks>
-            Pokud je uživatel přihlášen (existuje platná auth cookie), vrací základní informace o uživateli.
-            </remarks>
-            <returns>Instance přihlášeného uživatele.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetLoggedInUser(System.Threading.CancellationToken)">
             <summary>

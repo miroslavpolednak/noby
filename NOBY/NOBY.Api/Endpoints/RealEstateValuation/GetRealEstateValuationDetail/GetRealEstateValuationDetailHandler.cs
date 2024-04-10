@@ -11,21 +11,12 @@ using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail;
 
-internal sealed class GetRealEstateValuationDetailHandler : IRequestHandler<GetRealEstateValuationDetailRequest, GetRealEstateValuationDetailResponse>
+internal sealed class GetRealEstateValuationDetailHandler(
+    IMediator _mediator, 
+    ICaseServiceClient _caseService, 
+    IRealEstateValuationServiceClient _realEstateValuationService, 
+    ICodebookServiceClient _codebookService) : IRequestHandler<GetRealEstateValuationDetailRequest, GetRealEstateValuationDetailResponse>
 {
-    private readonly IMediator _mediator;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-    private readonly ICodebookServiceClient _codebookService;
-
-    public GetRealEstateValuationDetailHandler(IMediator mediator, ICaseServiceClient caseService, IRealEstateValuationServiceClient realEstateValuationService, ICodebookServiceClient codebookService)
-    {
-        _mediator = mediator;
-        _caseService = caseService;
-        _realEstateValuationService = realEstateValuationService;
-        _codebookService = codebookService;
-    }
-
     public async Task<GetRealEstateValuationDetailResponse> Handle(GetRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
@@ -49,7 +40,7 @@ internal sealed class GetRealEstateValuationDetailHandler : IRequestHandler<GetR
                 CaseInProgress = caseInstance.State == (int)CaseStates.InProgress,
                 RealEstateVariant = GetRealEstateVariant(valuationDetail.RealEstateTypeId),
                 RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
-                LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = valuationDetail.LoanPurposeDetails.LoanPurposes.ToList() },
+                LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = [.. valuationDetail.LoanPurposeDetails.LoanPurposes] },
                 SpecificDetails = GetSpecificDetailsObject(valuationDetail)
             },
             LocalSurveyDetails = valuationDetail.LocalSurveyDetails is null ? null : new LocalSurveyData
@@ -157,16 +148,6 @@ internal sealed class GetRealEstateValuationDetailHandler : IRequestHandler<GetR
                 PriceTypeName = priceTypes.FirstOrDefault(xx => xx.Code == x.PriceSourceType)?.Name ?? x.PriceSourceType
             }).ToList()
         };
-
-        // to be removed
-        if (valuationDetail.Prices?.Any(x => x.PriceSourceType == "STANDARD_PRICE_EXIST") ?? false)
-        {
-            model.ValuationResultCurrentPrice = valuationDetail.Prices.First(x => x.PriceSourceType == "STANDARD_PRICE_EXIST").Price;
-        }
-        if (valuationDetail.Prices?.Any(x => x.PriceSourceType == "STANDARD_PRICE_FUTURE") ?? false)
-        {
-            model.ValuationResultFuturePrice = valuationDetail.Prices.First(x => x.PriceSourceType == "STANDARD_PRICE_FUTURE").Price;
-        }
 
         return model;
     }

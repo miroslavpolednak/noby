@@ -7,6 +7,7 @@ using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using NOBY.Services.DocumentHelper;
+using System.Globalization;
 
 namespace NOBY.Api.Endpoints.Document.SharedDto;
 
@@ -67,7 +68,7 @@ internal sealed class DocumentArchiveManager
         var request = new GetDocumentRequest
         {
             DocumentId = documentId,
-            UserLogin = documentRequest.InputParameters.UserId.ToString(),
+            UserLogin = documentRequest.InputParameters.UserId?.ToString(CultureInfo.InvariantCulture) ?? "",
             WithContent = true
         };
 

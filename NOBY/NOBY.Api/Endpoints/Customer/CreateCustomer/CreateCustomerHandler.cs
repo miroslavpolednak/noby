@@ -59,23 +59,23 @@ internal sealed class CreateCustomerHandler
         // Více klientů
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11024")
         {
-            _logger.LogInformation("CreateCustomer: more clients found", ex);
+            _logger.LogInformation(ex, "CreateCustomer: more clients found");
             throw new NobyValidationException(90006, 409);
         }
         // Registry nefungují
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11025")
         {
-            _logger.LogInformation("CreateCustomer: registry failed", ex);
+            _logger.LogInformation(ex, "CreateCustomer: registry failed");
             throw new NobyValidationException(90007);
         }
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11026")
         {
-            _logger.LogInformation("CreateCustomer: registry failed", ex);
+            _logger.LogInformation(ex, "CreateCustomer: registry failed");
             throw new NobyValidationException(90008, 500);
         }
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11035")
         {
-            _logger.LogInformation("CreateCustomer: Special handling of identification document type and issuing country combination", ex);
+            _logger.LogInformation(ex, "CreateCustomer: Special handling of identification document type and issuing country combination");
             throw new NobyValidationException(90044);
         }
         catch
@@ -115,7 +115,7 @@ internal sealed class CreateCustomerHandler
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Can not create customer in KonsDB", ex);
+                _logger.LogInformation(ex, "Can not create customer in KonsDB");
             }
         }
 

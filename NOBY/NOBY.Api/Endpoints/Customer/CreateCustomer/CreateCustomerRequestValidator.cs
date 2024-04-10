@@ -3,7 +3,7 @@ using NOBY.Api.Endpoints.Customer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
-internal class CreateCustomerRequestValidator : AbstractValidator<CreateCustomerRequest>
+internal sealed class CreateCustomerRequestValidator : AbstractValidator<CreateCustomerRequest>
 {
     private const int CustomerValidationErrorCode = 90032;
 

@@ -84,7 +84,7 @@ internal sealed class GetCaseMenuFlagsHandler
             {
                 response.Flag = GetCaseMenuFlagsTypes.ExclamationMark;
             }
-            else if (documentsInQueue.QueuedDocuments.Any(t => (new[] { 100, 110, 200 }).Contains(t.StatusInQueue)))
+            else if (documentsInQueue.QueuedDocuments.Any(t => _requiredStatusesInDocumentQueue.Contains(t.StatusInQueue)))
             {
                 response.Flag = GetCaseMenuFlagsTypes.InProcessing;
             }
@@ -92,6 +92,8 @@ internal sealed class GetCaseMenuFlagsHandler
 
         return response;
     }
+
+    private static int[] _requiredStatusesInDocumentQueue = [100, 110, 200];
 
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IProductServiceClient _productService;

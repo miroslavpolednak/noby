@@ -12,7 +12,7 @@ internal sealed class ApplySwaggerRealEstateValuationAttributes
         bool reqPermSection = false;
 
         // case owner info
-        if (context.MethodInfo.GetCustomAttributes(typeof(RealEstateValuationStateValidationAttribute), false).Any())
+        if (context.MethodInfo.GetCustomAttributes(typeof(RealEstateValuationStateValidationAttribute), false).Length != 0)
         {
             if (!reqPermSection)
                 operation.Description += _requiredPermissionsLabel;

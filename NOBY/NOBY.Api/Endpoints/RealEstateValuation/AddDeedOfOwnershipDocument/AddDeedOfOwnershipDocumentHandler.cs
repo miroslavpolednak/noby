@@ -1,5 +1,7 @@
 ﻿using DomainServices.RealEstateValuationService.Clients;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 namespace NOBY.Api.Endpoints.RealEstateValuation.AddDeedOfOwnershipDocument;
 
 internal sealed class AddDeedOfOwnershipDocumentHandler

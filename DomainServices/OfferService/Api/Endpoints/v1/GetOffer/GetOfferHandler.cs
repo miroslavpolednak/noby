@@ -49,8 +49,8 @@ internal sealed class GetOfferHandler
 
     private async Task<MortgageExtraPaymentFullData> getExtraPaymentData(int offerId, CancellationToken cancellationToken)
     {
-        //var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageExtraPaymentData>(offerId, cancellationToken);
-        return null;
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageExtraPaymentData>(offerId, cancellationToken);
+        return _extraPaymentDataMapper.MapToFullData(offerData!.Data!);
     }
 
     private async Task<MortgageRetentionFullData> getRetentionData(int offerId, CancellationToken cancellationToken)
@@ -71,18 +71,21 @@ internal sealed class GetOfferHandler
     private readonly Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper;
     private readonly Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _retentionMapper;
     private readonly Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _refixationMapper;
+    private readonly Database.DocumentDataEntities.Mappers.MortgageExtraPaymentDataMapper _extraPaymentDataMapper;
 
     public GetOfferHandler(
         IDocumentDataStorage documentDataStorage,
         Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper offerMapper,
         IMediator mediator,
         Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper retentionMapper,
-        Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper refixationMapper)
+        Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper refixationMapper,
+        Database.DocumentDataEntities.Mappers.MortgageExtraPaymentDataMapper extraPaymentDataMapper)
     {
         _documentDataStorage = documentDataStorage;
         _offerMapper = offerMapper;
         _mediator = mediator;
         _retentionMapper = retentionMapper;
         _refixationMapper = refixationMapper;
+        _extraPaymentDataMapper = extraPaymentDataMapper;
     }
 }

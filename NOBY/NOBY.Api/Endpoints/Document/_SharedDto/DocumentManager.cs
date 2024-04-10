@@ -36,7 +36,7 @@ public class DocumentManager
             CustomerOnSaId = customerOnSaId
         };
     
-    internal byte[] GetByteArray(ReadOnlyMemory<byte> memory)
+    internal static byte[] GetByteArray(ReadOnlyMemory<byte> memory)
     {
         if (!MemoryMarshal.TryGetArray(memory, out var arraySegment))
             throw new InvalidOperationException("Failed to get memory of document buffer");

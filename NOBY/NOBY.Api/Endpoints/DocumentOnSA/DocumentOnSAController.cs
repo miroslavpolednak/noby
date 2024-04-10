@@ -14,6 +14,8 @@ using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAStatus;
 using Asp.Versioning;
 using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentOnSAPreview;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 [ApiController]

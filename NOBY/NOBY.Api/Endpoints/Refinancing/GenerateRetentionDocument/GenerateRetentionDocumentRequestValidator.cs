@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument;
 
-internal class GenerateRetentionDocumentRequestValidator : AbstractValidator<GenerateRetentionDocumentRequest>
+internal sealed class GenerateRetentionDocumentRequestValidator : AbstractValidator<GenerateRetentionDocumentRequest>
 {
     public GenerateRetentionDocumentRequestValidator()
     {

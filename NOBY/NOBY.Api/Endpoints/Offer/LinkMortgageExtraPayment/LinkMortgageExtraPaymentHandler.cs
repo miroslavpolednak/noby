@@ -6,7 +6,7 @@ using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment;
 
-internal class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMortgageExtraPaymentRequest>
+internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMortgageExtraPaymentRequest>
 {
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
