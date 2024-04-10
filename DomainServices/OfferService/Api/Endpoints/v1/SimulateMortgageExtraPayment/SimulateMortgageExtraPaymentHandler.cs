@@ -5,7 +5,7 @@ namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgageExtraPaym
 internal sealed class SimulateMortgageExtraPaymentHandler
     : IRequestHandler<SimulateMortgageExtraPaymentRequest, SimulateMortgageExtraPaymentResponse>
 {
-    public async Task<SimulateMortgageExtraPaymentResponse> Handle(SimulateMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
+    public Task<SimulateMortgageExtraPaymentResponse> Handle(SimulateMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

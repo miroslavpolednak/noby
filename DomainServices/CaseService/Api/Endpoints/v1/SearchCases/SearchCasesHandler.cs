@@ -3,10 +3,12 @@ using CIS.Infrastructure.Data;
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 namespace DomainServices.CaseService.Api.Endpoints.v1.SearchCases;
 
-internal sealed class SearchCasesHandler
-    : IRequestHandler<SearchCasesRequest, SearchCasesResponse>
+internal sealed class SearchCasesHandler(CaseServiceDbContext _dbContext)
+        : IRequestHandler<SearchCasesRequest, SearchCasesResponse>
 {
     /// <summary>
     /// Seznam Case s moznosti strankovani. Vetsinou pro daneho uzivatele.
@@ -16,7 +18,7 @@ internal sealed class SearchCasesHandler
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
             .FromRequest(request.Pagination)
-            .EnsureAndTranslateSortFields(sortingMapper);
+            .EnsureAndTranslateSortFields(_sortingMapper);
 
         // dotaz do DB
         var query = getQuery(request, paginable);
@@ -93,7 +95,7 @@ internal sealed class SearchCasesHandler
     private static IQueryable<Database.Entities.Case> adjustPaging(IQueryable<Database.Entities.Case> query, Paginable paginable)
     {
         if (paginable.HasSorting)
-            query = query.ApplyOrderBy(new[] { Tuple.Create(paginable.Sorting!.First().Field, paginable.Sorting!.First().Descending) });
+            query = query.ApplyOrderBy([Tuple.Create(paginable.Sorting!.First().Field, paginable.Sorting!.First().Descending)]);
         else
             query = query.OrderByDescending(t => t.StateUpdateTime);
 
@@ -101,15 +103,8 @@ internal sealed class SearchCasesHandler
     }
 
     // povolena pole pro sortovani
-    private static List<Paginable.MapperField> sortingMapper = new()
-    {
+    private static readonly List<Paginable.MapperField> _sortingMapper =
+    [
         new("StateUpdatedOn", "StateUpdateTime")
-    };
-
-    private readonly CaseServiceDbContext _dbContext;
-
-    public SearchCasesHandler(CaseServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    ];
 }
