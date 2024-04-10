@@ -1,5 +1,4 @@
-﻿using DomainServices.CaseService.Clients.v1;
-using DomainServices.OfferService.Clients.v1;
+﻿using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
@@ -14,7 +13,6 @@ internal sealed class UpdateMortgageRefixationHandler
     public async Task<UpdateMortgageRefixationResponse> Handle(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-        var workflowResult = await _retentionWorkflowService.GetTaskInfoByTaskId(request.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
 
         var mortgageParameters = new MortgageRefinancingWorkflowParameters
         {
@@ -24,7 +22,7 @@ internal sealed class UpdateMortgageRefixationHandler
         };
 
         // vytvorit / updatovat IC task pokud je treba
-        await _retentionWorkflowService.CreateIndividualPriceWorkflowTask(workflowResult.TaskList, mortgageParameters, request.IndividualPriceCommentLastVersion, cancellationToken);
+        await _retentionWorkflowService.CreateIndividualPriceWorkflowTask(mortgageParameters, request.IndividualPriceCommentLastVersion, cancellationToken);
 
         // ulozit SA params refixace (poznamky)
         await updateSalesArrangementParameters(request, salesArrangement, cancellationToken);

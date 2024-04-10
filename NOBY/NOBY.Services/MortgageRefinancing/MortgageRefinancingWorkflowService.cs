@@ -21,8 +21,8 @@ public sealed class MortgageRefinancingWorkflowService
         _currentUserAccessor = currentUserAccessor;
     }
 
-    public Task<WorkflowTaskByTaskId.WorkflowTaskByTaskIdResult> GetTaskInfoByTaskId(long caseId, long taskId, CancellationToken cancellationToken) => 
-        _caseService.GetTaskByTaskId(caseId, taskId, cancellationToken);
+    public Task<WorkflowTaskByTaskId.WorkflowProcessByProcessIdResult> GetProcessInfoByProcessId(long caseId, long processId, CancellationToken cancellationToken) => 
+        _caseService.GetProcessByProcessId(caseId, processId, cancellationToken);
 
     public async Task<MortgageRefinancingIndividualPrice> GetIndividualPrices(long caseId, long taskProcessId, CancellationToken cancellationToken)
     {
@@ -46,8 +46,10 @@ public sealed class MortgageRefinancingWorkflowService
         return new MortgageRefinancingIndividualPrice(priceExceptionDetail.TaskDetail.PriceException);
     }
 
-    public async Task CreateIndividualPriceWorkflowTask(List<WFL> taskList, MortgageRefinancingWorkflowParameters mortgageParameters, string? taskRequest, CancellationToken cancellationToken)
+    public async Task CreateIndividualPriceWorkflowTask(MortgageRefinancingWorkflowParameters mortgageParameters, string? taskRequest, CancellationToken cancellationToken)
     {
+        var taskList = await _caseService.GetTaskList(mortgageParameters.CaseId, cancellationToken);
+
         if (!await CancelExistingPriceExceptions(taskList, mortgageParameters, cancellationToken)
             || (mortgageParameters.LoanInterestRateDiscount is (null or 0) && (mortgageParameters.Fee?.FeeFinalSum ?? 0) == 0))
         {
