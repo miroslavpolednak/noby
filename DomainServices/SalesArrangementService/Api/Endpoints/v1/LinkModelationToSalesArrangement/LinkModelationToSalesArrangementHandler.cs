@@ -34,6 +34,10 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             await linkToMortgage(request, salesArrangementInstance, offerInstance, cancellation);
         }
+        else
+        {
+            await LinkOffer(salesArrangementInstance, offerInstance, cancellation);
+        }
 
         // update IDs na Offer
         await _offerService.UpdateOffer(new __Offer.UpdateOfferRequest
@@ -109,6 +113,16 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
         }
+    }
+
+    private async Task LinkOffer(SalesArrangement salesArrangementInstance, __Offer.GetOfferResponse offerInstance, CancellationToken cancellationToken)
+    {
+        salesArrangementInstance.OfferGuaranteeDateFrom = DateTime.UtcNow;
+        salesArrangementInstance.OfferGuaranteeDateTo = offerInstance.Data.ValidTo;
+        salesArrangementInstance.OfferId = offerInstance.Data.OfferId;
+        salesArrangementInstance.ResourceProcessId = Guid.Parse(offerInstance.Data.ResourceProcessId);
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>
