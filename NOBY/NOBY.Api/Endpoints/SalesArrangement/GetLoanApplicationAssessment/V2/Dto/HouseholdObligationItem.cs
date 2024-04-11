@@ -51,12 +51,6 @@ public sealed class HouseholdObligationItem
     public decimal? CreditCardLimit { get; set; }
 
     /// <summary>
-    /// Výše limitu
-    /// </summary>
-    [Obsolete("Odstranit v breznu")]
-    public decimal? CreditCardLimitTotal { get; set; }
-
-    /// <summary>
     /// Role klienta
     /// </summary>
     public int? RoleId { get; set; }

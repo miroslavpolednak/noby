@@ -138,9 +138,9 @@ internal static class CaseExtensions
                         taskDetail.PriceException.Fees.Add(new PriceExceptionFeesItem
                         {
                             FeeId = taskData.GetInteger($"ukol_overeni_ic_popl_kodsb{i}"),
-                            TariffSum = taskData.GetInteger($"ukol_overeni_ic_popl_sazeb{i}"),
-                            FinalSum = taskData.GetInteger($"ukol_overeni_ic_popl_vysl{i}"),
-                            DiscountPercentage = taskData.GetInteger($"ukol_overeni_ic_popl_sleva_perc{i}")
+                            TariffSum = taskData.GetDecimal($"ukol_overeni_ic_popl_sazeb{i}"),
+                            FinalSum = taskData.GetDecimal($"ukol_overeni_ic_popl_vysl{i}"),
+                            DiscountPercentage = taskData.GetDecimal($"ukol_overeni_ic_popl_sleva_perc{i}")
                         });
                     }
                     break;

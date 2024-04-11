@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 
 public sealed class UpdateMortgageRefixationRequest
-    : IRequest
+    : IRequest<UpdateMortgageRefixationResponse>
 {
     [JsonIgnore]
     internal long CaseId { get; set; }
@@ -27,11 +27,6 @@ public sealed class UpdateMortgageRefixationRequest
     /// </summary>
     /// <example>0.2</example>
     public decimal? InterestRateDiscount { get; set; }
-
-    /// <summary>
-    /// Příznak zda je nastavena sleva ze sazby
-    /// </summary>
-    public bool HasInterestRateDiscount { get; set; }
 
     internal UpdateMortgageRefixationRequest InfuseId(long caseId, int salesArrangementId)
     {

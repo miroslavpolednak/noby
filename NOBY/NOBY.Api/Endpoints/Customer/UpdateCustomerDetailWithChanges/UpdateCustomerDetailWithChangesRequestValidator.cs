@@ -34,7 +34,7 @@ internal sealed class UpdateCustomerDetailWithChangesRequestValidator : Abstract
                  RuleFor(r => r.IdentificationDocument!).SetValidator(new IdentificationDocumentValidator());
              });
 
-        When(r => r.Addresses is not null && r.Addresses.Any(),
+        When(r => r.Addresses is not null && r.Addresses!.Count != 0,
              () =>
              {
                  RuleForEach(r => r.Addresses!)

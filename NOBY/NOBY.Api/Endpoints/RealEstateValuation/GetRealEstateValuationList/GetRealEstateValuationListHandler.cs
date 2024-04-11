@@ -6,10 +6,17 @@ using DomainServices.SalesArrangementService.Clients;
 using NOBY.Dto.RealEstateValuation;
 using Helpers = DomainServices.RealEstateValuationService.Contracts.Helpers;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationList;
 
-internal sealed class GetRealEstateValuationListHandler
-    : IRequestHandler<GetRealEstateValuationListRequest, List<RealEstateValuationListItem>>
+internal sealed class GetRealEstateValuationListHandler(
+    IOfferServiceClient _offerService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICodebookServiceClient _codebookService,
+    IRealEstateValuationServiceClient _realEstateValuationService,
+    ICaseServiceClient _caseService)
+        : IRequestHandler<GetRealEstateValuationListRequest, List<RealEstateValuationListItem>>
 {
     public async Task<List<RealEstateValuationListItem>> Handle(GetRealEstateValuationListRequest request, CancellationToken cancellationToken)
     {
@@ -110,37 +117,7 @@ internal sealed class GetRealEstateValuationListHandler
                 }).ToList()
             };
 
-            // to be removed
-            if (t.Prices?.Any(x => x.PriceSourceType == "STANDARD_PRICE_EXIST") ?? false)
-            {
-                model.ValuationResultCurrentPrice = t.Prices.First(x => x.PriceSourceType == "STANDARD_PRICE_EXIST").Price;
-            }
-            if (t.Prices?.Any(x => x.PriceSourceType == "STANDARD_PRICE_FUTURE") ?? false)
-            {
-                model.ValuationResultFuturePrice = t.Prices.First(x => x.PriceSourceType == "STANDARD_PRICE_FUTURE").Price;
-            }
-
             return model;
         }).ToList();
-    }
-
-    private readonly IOfferServiceClient _offerService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public GetRealEstateValuationListHandler(
-        IOfferServiceClient offerService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICodebookServiceClient codebookService,
-        IRealEstateValuationServiceClient realEstateValuationService,
-        ICaseServiceClient caseService)
-    {
-        _offerService = offerService;
-        _salesArrangementService = salesArrangementService;
-        _caseService = caseService;
-        _codebookService = codebookService;
-        _realEstateValuationService = realEstateValuationService;
     }
 }

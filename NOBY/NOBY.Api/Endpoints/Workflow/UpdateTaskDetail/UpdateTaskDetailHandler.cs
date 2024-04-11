@@ -79,7 +79,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
         else
         {
-            _logger.LogInformation($"SalesArrangement for Case {request.CaseId} with TaskProcessId {processId} not found");
+            _logger.LogInformation("SalesArrangement for Case {CaseId} with TaskProcessId {ProcessId} not found", request.CaseId, processId);
         }
     }
 

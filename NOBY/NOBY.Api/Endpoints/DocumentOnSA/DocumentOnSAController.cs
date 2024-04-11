@@ -14,6 +14,8 @@ using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAStatus;
 using Asp.Versioning;
 using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentOnSAPreview;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 [ApiController]
@@ -110,7 +112,8 @@ public class DocumentOnSAController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A1B54B66-9AF8-4e5c-A240-93FEF635449F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/preview")]
-        [Produces(MediaTypeNames.Application.Pdf)]
+    [Produces(MediaTypeNames.Application.Pdf)]
+    [NobySkipCaseStateAndProductSAValidation]
     [SwaggerOperation(Tags = [ "Dokument" ])]
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

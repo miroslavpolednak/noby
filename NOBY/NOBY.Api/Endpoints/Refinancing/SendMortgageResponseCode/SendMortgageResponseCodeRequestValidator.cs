@@ -10,15 +10,15 @@ internal sealed class SendMortgageResponseCodeRequestValidator
     {
         RuleFor(t => t.ResponseCodeTypeId)
             .Cascade(CascadeMode.Stop)
-            .MustAsync(async (id, c) => (await codebookService.ResponseCodes(c)).Any(t => t.Id == id))
+            .MustAsync(async (id, c) => (await codebookService.ResponseCodeTypes(c)).Any(t => t.Id == id))
             .WithMessage("Unknown ResponseCodeTypeId")
             .MustAsync(async (req, id, c) =>
             {
-                var cb = (await codebookService.ResponseCodes(c)).First(t => t.Id == id);
+                var cb = (await codebookService.ResponseCodeTypes(c)).First(t => t.Id == id);
                 return cb.DataType switch
                 {
-                    DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types.ResponseCodesItemDataTypes.Date => req.DataDateTime.HasValue,
-                    DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types.ResponseCodesItemDataTypes.BankCode => (await codebookService.BankCodes(c)).Any(t => t.BankCode == req.DataBankCode),
+                    DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date => req.DataDateTime.HasValue,
+                    DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.BankCode => (await codebookService.BankCodes(c)).Any(t => t.BankCode == req.DataBankCode),
                     _ => true
                 };
             })

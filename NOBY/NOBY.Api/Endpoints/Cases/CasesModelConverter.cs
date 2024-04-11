@@ -40,7 +40,7 @@ internal sealed class CasesModelConverter
 		};
 
         if (!string.IsNullOrEmpty(model.OfferContacts?.EmailForOffer))
-            converted.OfferContacts.EmailAddress = new() { EmailAddress = model.OfferContacts?.EmailForOffer };
+            converted.OfferContacts.EmailAddress = new() { EmailAddress = model.OfferContacts?.EmailForOffer ?? "" };
 
         if (!string.IsNullOrEmpty(model.OfferContacts?.PhoneNumberForOffer?.PhoneNumber))
             converted.OfferContacts.MobilePhone = new()

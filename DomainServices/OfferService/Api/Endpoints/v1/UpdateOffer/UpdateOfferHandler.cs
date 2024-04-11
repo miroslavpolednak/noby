@@ -28,12 +28,12 @@ internal sealed class UpdateOfferHandler
 
         if (request.CaseId.HasValue)
         {
-            offer.CaseId = request.CaseId.Value;
+            offer.CaseId = request.CaseId.Value == 0 ? null : request.CaseId.Value;
         }
 
         if (request.SalesArrangementId.HasValue)
         {
-            offer.SalesArrangementId = request.SalesArrangementId.Value;
+            offer.SalesArrangementId = request.SalesArrangementId.Value == 0 ? null : request.SalesArrangementId.Value;
         }
 
         if (request.Flags.HasValue)

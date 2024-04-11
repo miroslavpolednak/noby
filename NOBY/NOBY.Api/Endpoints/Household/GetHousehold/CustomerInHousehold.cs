@@ -1,5 +1,7 @@
 ﻿namespace NOBY.Api.Endpoints.Household.GetHousehold;
 
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
+
 public class CustomerInHousehold
     : SharedDto.BaseCustomer
 {

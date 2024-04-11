@@ -21,7 +21,7 @@ internal sealed class SearchCustomersHandler
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
         var searchResult = await _customerService.SearchCustomers(dsRequest, cancellationToken);
 
-        if (searchResult.Customers.Any())
+        if (searchResult.Customers.Count != 0)
         {
             return new SearchCustomersResponse
             {

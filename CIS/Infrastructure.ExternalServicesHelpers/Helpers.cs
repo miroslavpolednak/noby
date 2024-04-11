@@ -33,7 +33,7 @@ public static class Helpers
                 switch (response!.StatusCode)
                 {
                     case System.Net.HttpStatusCode.NotFound:
-                        throw new CisExternalServiceValidationException($"{serviceName} Not found: {await response.SafeReadAsStringAsync(cancellationToken)}");
+                        throw new CisNotFoundException(0, $"{serviceName} Not found: {await response.SafeReadAsStringAsync(cancellationToken)}");
                         
                     case System.Net.HttpStatusCode.BadRequest:
                         throw new CisExternalServiceValidationException($"{serviceName} Bad request: {await response.SafeReadAsStringAsync(cancellationToken)}");

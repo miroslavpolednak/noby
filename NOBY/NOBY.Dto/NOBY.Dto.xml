@@ -468,18 +468,6 @@
             </summary>
             <example>31.12.2023</example>
         </member>
-        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.ValuationResultCurrentPrice">
-            <summary>
-            Současná cena nemovitosti v Kč
-            </summary>
-            <example>3000000</example>
-        </member>
-        <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.ValuationResultFuturePrice">
-            <summary>
-            Budoucí cena nemovitosti v Kč
-            </summary>
-            <example>3250000</example>
-        </member>
         <member name="P:NOBY.Dto.RealEstateValuation.RealEstateValuationListItem.IsRevaluationRequired">
             <summary>
             True pokud je potřeba kontrolní ocenění

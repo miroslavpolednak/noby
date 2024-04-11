@@ -50,7 +50,7 @@ SharedComponents.GrpcServiceBuilder
     .Run();
 
 [Obsolete("Odstranit po nasazeni scheduling service")]
-void bgServices(WebApplicationBuilder builder)
+static void bgServices(WebApplicationBuilder builder)
 {
     builder.AddCisBackgroundService<DomainServices.CodebookService.Api.BackgroundServices.DownloadRdmCodebooksJob.DownloadRdmCodebooksJob>();
 }

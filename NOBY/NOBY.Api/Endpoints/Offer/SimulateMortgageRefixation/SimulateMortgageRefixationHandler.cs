@@ -42,6 +42,7 @@ internal sealed class SimulateMortgageRefixationHandler
         var dsRequest = new DomainServices.OfferService.Contracts.SimulateMortgageRefixationRequest
         {
             CaseId = request.CaseId,
+            ValidTo = product.Mortgage.FixedRateValidTo,
             BasicParameters = new()
             {
                 FixedRateValidTo = (DateTime)product.Mortgage.FixedRateValidTo!

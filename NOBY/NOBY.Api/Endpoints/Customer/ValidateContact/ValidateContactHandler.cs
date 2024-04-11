@@ -39,7 +39,7 @@ internal sealed class ValidateContactHandler: IRequestHandler<ValidateContactReq
         ContactType.Unknown => Dto.ContactType.Unknown,
         ContactType.Phone => Dto.ContactType.Phone,
         ContactType.Email => Dto.ContactType.Email,
-        _ => throw new ArgumentException()
+        _ => throw new ArgumentException("unknown contact type")
     };
 
     public ValidateContactHandler(ICustomerServiceClient customerService)

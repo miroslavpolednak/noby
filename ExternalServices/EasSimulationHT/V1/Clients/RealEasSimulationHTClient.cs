@@ -19,7 +19,7 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
     protected override string ServiceName => StartupExtensions.ServiceName;
 
-    public async Task<decimal> RunSimulationRefixation(long caseId, decimal interestRate, DateTime interestRateValidFrom, int fixedRatePeriod, CancellationToken cancellationToken)
+    public async Task<Dto.RefinancingSimulationResult> RunSimulationRefixation(long caseId, decimal interestRate, DateTime interestRateValidFrom, int fixedRatePeriod, CancellationToken cancellationToken)
     {
         var result = await callMethod(async () =>
         {
@@ -38,10 +38,15 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
             return await Client.SimHu_RetenceHedgeAsync(request).WithCancellation(cancellationToken);
         }, r => r.errorInfo, 10028);
 
-        return result.vysledky?.novaVyseSplatky ?? 0;
+        return new Dto.RefinancingSimulationResult
+        {
+            LoanPaymentAmount = result.vysledky?.novaVyseSplatky ?? 0,
+            LoanPaymentsCount = result.vysledky?.pocetSplatek ?? 0,
+            MaturityDate = result.vysledky?.novaSplatnost ?? DateTime.MinValue
+        };
     }
 
-    public async Task<decimal> RunSimulationRetention(long caseId, decimal interestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken)
+    public async Task<Dto.RefinancingSimulationResult> RunSimulationRetention(long caseId, decimal interestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken)
     {
         var result = await callMethod(async () =>
         {
@@ -59,7 +64,12 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
             return await Client.SimHu_RetenceHedgeAsync(request).WithCancellation(cancellationToken);
         }, r => r.errorInfo, 10028);
 
-        return result.vysledky?.novaVyseSplatky ?? 0;
+        return new Dto.RefinancingSimulationResult
+        {
+            LoanPaymentAmount = result.vysledky?.novaVyseSplatky ?? 0,
+            LoanPaymentsCount = result.vysledky?.pocetSplatek ?? 0,
+            MaturityDate = result.vysledky?.novaSplatnost ?? DateTime.MinValue
+        };
     }
 
     public async Task<WFS_FindItem[]> FindTasks(WFS_Header header, WFS_Find_ByCaseId message, CancellationToken cancellationToken)

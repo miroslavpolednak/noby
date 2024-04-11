@@ -8,7 +8,7 @@ internal sealed class SendMortgageResponseCodeHandler
 {
     public async Task Handle(SendMortgageResponseCodeRequest request, CancellationToken cancellationToken)
     {
-        var responseCode = (await _codebookService.ResponseCodes(cancellationToken))
+        var responseCode = (await _codebookService.ResponseCodeTypes(cancellationToken))
             .First(t => t.Id == request.ResponseCodeTypeId);
 
         var serviceRequest = new DomainServices.OfferService.Contracts.CreateResponseCodeRequest
@@ -17,8 +17,8 @@ internal sealed class SendMortgageResponseCodeHandler
             ResponseCodeTypeId = request.ResponseCodeTypeId,
             Data = responseCode.DataType switch 
             { 
-                DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types.ResponseCodesItemDataTypes.Date => request.DataDateTime!.Value.ToString("s"),
-                DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types.ResponseCodesItemDataTypes.BankCode => request.DataBankCode,
+                DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date => request.DataDateTime!.Value.ToString("s"),
+                DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.BankCode => request.DataBankCode,
                 _ => request.DataString
             }
         };

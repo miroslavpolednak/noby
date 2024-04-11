@@ -76,7 +76,7 @@ internal static class Extensions
             }));
         }
 
-        if (request.LoanPurposes is not null && request.LoanPurposes.Any())
+        if (request.LoanPurposes is not null && request.LoanPurposes.Count != 0)
             model.SimulationInputs.LoanPurposes.AddRange(
                 request.LoanPurposes.Select(t => new DomainServices.OfferService.Contracts.LoanPurpose() { LoanPurposeId = t.Id, Sum = t.Sum })
                 );

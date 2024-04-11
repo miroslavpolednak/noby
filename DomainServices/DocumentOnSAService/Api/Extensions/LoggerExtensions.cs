@@ -5,6 +5,7 @@ public static class LoggerExtensions
     private static readonly Action<ILogger, int, Exception> _updateCustomerFailed;
     private static readonly Action<ILogger, long, Exception> _updateOfSbQueuesFailed;
     private static readonly Action<ILogger, Exception> _customExp;
+    private static readonly Action<ILogger, int, Exception> _stopSigningError;
 
     static LoggerExtensions()
     {
@@ -22,6 +23,11 @@ public static class LoggerExtensions
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.CustomExp, nameof(CustomExp)),
            "Exception was trow");
+
+        _stopSigningError = LoggerMessage.Define<int>(
+            LogLevel.Error,
+            new EventId(LoggerEventIdCodes.StopSigningError, nameof(UpdateCustomerFailed)),
+           "For DocumentOnSaId:{DocumentOnSaId} error when call stop signing (Esignature)");
     }
 
     public static void CustomExp(this ILogger logger, Exception exception)
@@ -32,4 +38,7 @@ public static class LoggerExtensions
 
     public static void UpdateCustomerFailed(this ILogger logger, int customerOnSaId, Exception exception)
     => _updateCustomerFailed(logger, customerOnSaId, exception);
+
+    public static void StopSigningError(this ILogger logger, int documentOnSaId, Exception exception)
+    => _stopSigningError(logger, documentOnSaId, exception);
 }

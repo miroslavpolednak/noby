@@ -2,6 +2,8 @@
 using System.Security.Principal;
 using System.Text;
 
+#pragma warning disable IDE0018 // Inline variable declaration
+#pragma warning disable CS0649
 #pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable IDE0044 // Add readonly modifier
 #pragma warning disable CA1305 // Specify IFormatProvider
@@ -162,7 +164,7 @@ internal sealed class IdentityBase : IIdentity
     #region serializace
     public override string ToString()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         sb.AppendFormat("{0}{1}", CPM, SecurityCookie.Separator[0]);
         sb.AppendFormat("{0}{1}", ICP, SecurityCookie.Separator[0]);
         sb.AppendFormat("{0}{1}", Name, SecurityCookie.Separator[0]);
@@ -187,7 +189,7 @@ internal sealed class IdentityBase : IIdentity
 
     internal static IdentityBase GetFromString(string value)
     {
-        IdentityBase ident = new IdentityBase(true);
+        IdentityBase ident = new(true);
         string[] arr = value.Split(SecurityCookie.Separator);
         ident.CPM = arr[0];
         ident.ICP = arr[1];

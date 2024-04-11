@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument;
+namespace NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument;
 
 public class GenerateRetentionDocumentRequest : IRequest
 {

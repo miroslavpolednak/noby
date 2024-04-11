@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Threading;
 using CIS.Infrastructure.ExternalServicesHelpers;
 using ExternalServices.SbWebApi.V1.Contracts;
 
@@ -30,9 +29,13 @@ internal static class RequestHelper
             {
                 throw ErrorCodeMapper.CreateExternalServiceValidationException(returnVal2ErrorCodesMapping.First(t => t.ReturnVal == returnVal).ErrorCode);
             }
-            else
+            else if (returnVal < 0)
             {
                 throw new CisExternalServiceServerErrorException(returnVal, StartupExtensions.ServiceName, $"{StartupExtensions.ServiceName}.{callerName}: {returnVal}: {returnText}");
+            }
+            else
+            {
+                throw new CisExternalServiceValidationException(returnText ?? "Unknown error");
             }
         }
     }

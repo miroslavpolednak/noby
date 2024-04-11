@@ -31,10 +31,10 @@ internal sealed class IdentifyCaseRequestValidator : AbstractValidator<IdentifyC
                 .NotNull()
                 .ChildRules(account =>
                 {
-                    account.RuleFor(a => a.Prefix)
+                    account.RuleFor(a => a!.Prefix)
                         .MaximumLength(6);
                     
-                    account.RuleFor(a => a.Number)
+                    account.RuleFor(a => a!.Number)
                         .NotEmpty()
                         .MinimumLength(3)
                         .MaximumLength(10);
@@ -47,7 +47,7 @@ internal sealed class IdentifyCaseRequestValidator : AbstractValidator<IdentifyC
                 .NotNull()
                 .ChildRules(identity =>
                 {
-                    identity.RuleFor(t => t.IdentityId)
+                    identity.RuleFor(t => t!.IdentityId)
                         .NotEmpty();
                 });
         });

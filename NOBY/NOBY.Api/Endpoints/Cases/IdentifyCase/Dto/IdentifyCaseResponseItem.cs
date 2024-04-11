@@ -37,6 +37,8 @@ public sealed record IdentifyCaseResponseItem
     /// </summary>
     public string? ProductName { get; set; }
 
+    public IdentifyCaseResponseItem() { }
+
     public IdentifyCaseResponseItem(long caseId)
     {
         CaseId = caseId;

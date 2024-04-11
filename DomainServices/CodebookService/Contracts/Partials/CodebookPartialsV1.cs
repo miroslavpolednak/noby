@@ -7,7 +7,7 @@ public partial class GenericCodebookResponse : IItemsResponse<GenericCodebookRes
         public partial class GenericCodebookItem : IBaseCodebook { }
     }
 }
-public partial class ResponseCodesResponse : IItemsResponse<ResponseCodesResponse.Types.ResponseCodesItem> { }
+public partial class ResponseCodeTypesResponse : IItemsResponse<ResponseCodeTypesResponse.Types.ResponseCodeTypesItem> { }
 public partial class FeeChangeRequestsResponse : IItemsResponse<FeeChangeRequestsResponse.Types.FeeChangeRequestsItem> { }
 public partial class SignatureTypeDetailResponse : IItemsResponse<SignatureTypeDetailResponse.Types.SignatureTypeDetailItem> { }
 public partial class AddressTypesResponse : IItemsResponse<AddressTypesResponse.Types.AddressTypeItem> { }

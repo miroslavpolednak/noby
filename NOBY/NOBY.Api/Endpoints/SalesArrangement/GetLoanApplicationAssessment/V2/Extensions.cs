@@ -169,7 +169,6 @@ internal static class Extensions
             LoanAmountCurrent = isLimit ? null : exposureAmount,
             CreditCardLimit = !isLimit ? null : loanAmount,
             LoanAmountTotal = isLimit ? null : loanAmount,
-            CreditCardLimitTotal = !isLimit ? null : loanAmount,
             InstallmentAmount = isLimit ? null : installmentAmount,
             ObligationLaExposureId = loanType?.Id,
             ObligationLaExposureName = loanType?.Name,

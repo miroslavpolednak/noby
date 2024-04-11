@@ -6,9 +6,9 @@ namespace ExternalServices.EasSimulationHT.V1;
 public interface IEasSimulationHTClient
     : IExternalServiceClient
 {
-    Task<decimal> RunSimulationRefixation(long caseId, decimal interestRate, DateTime interestRateValidFrom, int fixedRatePeriod, CancellationToken cancellationToken);
+    Task<Dto.RefinancingSimulationResult> RunSimulationRefixation(long caseId, decimal interestRate, DateTime interestRateValidFrom, int fixedRatePeriod, CancellationToken cancellationToken);
 
-    Task<decimal> RunSimulationRetention(long caseId, decimal interestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken);
+    Task<Dto.RefinancingSimulationResult> RunSimulationRetention(long caseId, decimal interestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken);
 
     /// <summary>
     /// Call simulation HT method

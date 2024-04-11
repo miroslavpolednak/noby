@@ -1,6 +1,5 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
-using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using Asp.Versioning;
 using NOBY.Api.Endpoints.Document.SharedDto;
@@ -31,7 +30,7 @@ public class DocumentController : ControllerBase
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("offer/sales-arrangement/{salesArrangementId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = ["Dokument"])]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -59,7 +58,7 @@ public class DocumentController : ControllerBase
     /// <param name="offerId">Offer ID</param>
     [HttpGet("calculation/offer/{offerId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = ["Dokument"])]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -80,7 +79,7 @@ public class DocumentController : ControllerBase
     /// <param name="offerId">Offer ID</param>
     [HttpGet("payment-schedule/offer/{offerId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = ["Dokument"])]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -101,7 +100,7 @@ public class DocumentController : ControllerBase
     /// <param name="customerOnSAId">Customer on SA ID</param>
     [HttpGet("cancel-confirmation/customer-on-sa/{customerOnSAId}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = ["Dokument"])]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -130,7 +129,7 @@ public class DocumentController : ControllerBase
     /// Vrací se steam binárních dat.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=258EEA87-9394-42ec-B51F-C13F091686E0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [SwaggerOperation(Tags = new[] { "Dokument" })]
+    [SwaggerOperation(Tags = ["Dokument"])]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
@@ -166,6 +165,6 @@ public class DocumentController : ControllerBase
     {
         var fileName = await _documentManager.GetFileName(baseRequest, cancellationToken);
 
-        return File(_documentManager.GetByteArray(memory), MediaTypeNames.Application.Pdf, fileName);
+        return File(DocumentManager.GetByteArray(memory), MediaTypeNames.Application.Pdf, fileName);
     }
 }

@@ -23,6 +23,8 @@ internal sealed class MortgageRefixationData
     {
         public decimal LoanPaymentAmount { get; set; }
         public decimal? LoanPaymentAmountDiscounted { get; set; }
+        public int LoanPaymentsCount { get; set; }
+        public DateTime MaturityDate { get; set; }
     }
 
     public sealed class BasicParametersData

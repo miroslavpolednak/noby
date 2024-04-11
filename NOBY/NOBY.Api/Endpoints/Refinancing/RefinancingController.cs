@@ -1,6 +1,6 @@
 ﻿using Asp.Versioning;
+using NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument;
 using NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
-using NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument;
 using Swashbuckle.AspNetCore.Annotations;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
@@ -45,13 +45,10 @@ public sealed class RefinancingController : ControllerBase
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(UpdateMortgageRefixationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateMortgageRefixation([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody] UpdateMortgageRefixationRequest request)
-    {
-        await _mediator.Send((request ?? new()).InfuseId(caseId, salesArrangementId));
-        return NoContent();
-    }
+    public async Task<UpdateMortgageRefixationResponse> UpdateMortgageRefixation([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody] UpdateMortgageRefixationRequest request)
+        => await _mediator.Send((request ?? new()).InfuseId(caseId, salesArrangementId));
 
     /// <summary>
     /// Detail mimořádné splátky
@@ -78,7 +75,7 @@ public sealed class RefinancingController : ControllerBase
     /// 
     /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpGet("case/{caseId:long}/mortgage-refixation/{processId:long}")]
+    [HttpGet("case/{caseId:long}/mortgage-refixation")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -173,6 +170,22 @@ public sealed class RefinancingController : ControllerBase
         await _mediator.Send(request.InfuseCaseId(caseId).InfuseSalesArrangementId(salesArrangementId));
         return NoContent();
     }
+
+    /// <summary>
+    /// Generování dokumentu pro Refixace nebo Individuální sdělení
+    /// </summary>
+    /// <remarks>
+    /// Operace slouží k vygenerování dokumentu pro Refixace nebo Individuální sdělení<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A415BC33-46AF-40f9-B50C-5F7297DC0B26"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("/api/case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/refixation-document")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    public async Task GenerateRefixationDocument(long caseId, int salesArrangementId, [FromBody] GenerateRefixationDocument.GenerateRefixationDocumentRequest request) => 
+        await _mediator.Send(request.Infuse(caseId, salesArrangementId));
 
     private readonly IMediator _mediator;
     public RefinancingController(IMediator mediator) => _mediator = mediator;

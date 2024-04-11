@@ -43,6 +43,7 @@ internal sealed class SetOfferFlagsHandler
     private async Task validateSelectedOffer(GetOfferResponse offerInstance, CancellationToken cancellationToken)
     {
         var list = await _offerService.GetOfferList(offerInstance.Data.CaseId!.Value, offerInstance.Data.OfferType, true, cancellationToken);
+
         if (list.Any(t => t.Data.OfferId != offerInstance.Data.OfferId
             && ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Selected)
             && ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated)))

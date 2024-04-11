@@ -2,7 +2,7 @@
 using ExternalServices.SbWebApi.Dto.CompleteTask;
 using ExternalServices.SbWebApi.Dto.CreateTask;
 using ExternalServices.SbWebApi.Dto.FindTasks;
-using ExternalServices.SbWebApi.Dto.GenerateRetentionDocument;
+using ExternalServices.SbWebApi.Dto.Refinancing;
 using ExternalServices.SbWebApi.Dto.UpdateTask;
 
 namespace ExternalServices.SbWebApi.V1;
@@ -60,6 +60,16 @@ internal sealed class MockSbWebApiClient
     }
 
     Task<string?> ISbWebApiClient.GenerateRetentionDocument(GenerateRetentionDocumentRequest request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string?> GenerateRefixationDocument(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string?> GenerateInterestRateNotificationDocument(GenerateInterestRateNotificationDocumentRequest documentRequest, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

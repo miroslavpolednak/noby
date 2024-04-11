@@ -3,14 +3,14 @@ using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using NOBY.Services.MortgageRefinancingWorkflow;
-using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 using DomainServices.CaseService.Clients.v1;
+using NOBY.Services.MortgageRefinancing;
 using NOBY.Services.OfferLink;
+using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer;
 
-internal class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMortgageRetentionOfferRequest>
+internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMortgageRetentionOfferRequest>
 {
     private static readonly MortgageOfferLinkValidator _validator = new()
     {
@@ -48,9 +48,9 @@ internal class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMortgageR
 
     private async Task ProcessWorkflow(LinkMortgageRetentionOfferRequest request, MortgageRetentionFullData retention, _SA salesArrangement, CancellationToken cancellationToken)
     {
-        var workflowResult = await _retentionWorkflowService.GetTaskInfoByTaskId(request.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
+        var workflowResult = await _retentionWorkflowService.GetProcessInfoByProcessId(request.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
 
-        await UpdateRetentionWorkflowProcess(retention, salesArrangement.CaseId, workflowResult.TaskIdSb, cancellationToken);
+        await UpdateRetentionWorkflowProcess(retention, salesArrangement.CaseId, workflowResult.ProcessIdSb, cancellationToken);
 
         var mortgageParameters = new MortgageRefinancingWorkflowParameters
         {
@@ -65,7 +65,7 @@ internal class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMortgageR
             }
         };
 
-        await _retentionWorkflowService.CreateIndividualPriceWorkflowTask(workflowResult.TaskList, mortgageParameters, request.IndividualPriceCommentLastVersion, cancellationToken);
+        await _retentionWorkflowService.CreateIndividualPriceWorkflowTask(mortgageParameters, request.IndividualPriceCommentLastVersion, cancellationToken);
     }
 
     private Task UpdateSalesArrangementParameters(LinkMortgageRetentionOfferRequest request, _SA salesArrangement, CancellationToken cancellationToken)

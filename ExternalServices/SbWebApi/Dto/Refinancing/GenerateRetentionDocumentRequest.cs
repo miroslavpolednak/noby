@@ -1,4 +1,4 @@
-﻿namespace ExternalServices.SbWebApi.Dto.GenerateRetentionDocument;
+﻿namespace ExternalServices.SbWebApi.Dto.Refinancing;
 
 public class GenerateRetentionDocumentRequest
 {

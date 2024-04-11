@@ -103,12 +103,13 @@ internal sealed class GetMortgageRetentionHandler
 
     private async Task<(DomainServices.SalesArrangementService.Contracts.SalesArrangement? salesArrangement, RefinancingStates RefinancingState)> getRefinancingStateId(long caseId, DomainServices.CaseService.Contracts.ProcessTask process, CancellationToken cancellationToken)
     {
+        DomainServices.SalesArrangementService.Contracts.SalesArrangement? currentProcessSADetail = null;
         var allSalesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
 
         var currentProcessSA = allSalesArrangements.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == process.ProcessId);
         if (currentProcessSA is not null)
         {
-            var currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
+            currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
             if (currentProcessSA.Retention?.ManagedByRC2 ?? false)
             {
                 // ref.state staci vzit pouze z SA
@@ -116,7 +117,7 @@ internal sealed class GetMortgageRetentionHandler
             }
         }
 
-        return (null, RefinancingHelper.GetRefinancingState(false, currentProcessSA?.TaskProcessId, process));
+        return (currentProcessSADetail, RefinancingHelper.GetRefinancingState(false, currentProcessSA?.TaskProcessId, process));
     }
 
     private readonly Services.ResponseCodes.ResponseCodesService _responseCodes;

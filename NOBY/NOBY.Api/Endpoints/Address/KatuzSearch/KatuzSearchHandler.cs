@@ -3,7 +3,7 @@ using NOBY.Api.Endpoints.Address.KatuzSearch.Dto;
 
 namespace NOBY.Api.Endpoints.Address.KatuzSearch;
 
-internal class KatuzSearchHandler : IRequestHandler<KatuzSearchRequest, KatuzSearchResponse>
+internal sealed class KatuzSearchHandler : IRequestHandler<KatuzSearchRequest, KatuzSearchResponse>
 {
     private readonly IRuianAddressClient _ruianAddressClient;
 

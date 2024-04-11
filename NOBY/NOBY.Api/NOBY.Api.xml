@@ -507,12 +507,6 @@
             </summary>
             <example>Elektronický</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.SubscriptionType">
-            <summary>
-            Způsob odběru výpisů
-            </summary>
-            <example>elektronicky</example>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.StatementDto.Frequency">
             <summary>
             Frekvence výpisů
@@ -934,7 +928,7 @@
              - <a href="https://wiki.kb.cz/display/HT/RefixationOfferType">RefixationOfferTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/RefinancingState">RefinancingStates</a>
              - <a href="https://wiki.kb.cz/display/HT/RefinancingType">RefinancingTypes</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835727392">ResponseCodes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835727392">ResponseCodeTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
@@ -2684,9 +2678,9 @@
             Důvod mimořádné splátky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentTypeId">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.IsExtraPaymentFullyRepaid">
             <summary>
-            Typ mimořádné splátky
+            Typ mimořádné splátky - částečná false, úplná true
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OfferId">
@@ -3350,12 +3344,22 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRetentionDocumentRequest.SignatureTypeDetailId">
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.SignatureTypeDetailId">
             <summary>
             Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRetentionDocumentRequest.SignatureDeadline">
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.SignatureDeadline">
+            <summary>
+            Nejzazší datum podpisu dokumentu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument.GenerateRetentionDocumentRequest.SignatureTypeDetailId">
+            <summary>
+            Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument.GenerateRetentionDocumentRequest.SignatureDeadline">
             <summary>
             Nejzazší datum podpisu dokumentu
             </summary>
@@ -3609,7 +3613,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRetentionDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRefinancingDocument.GenerateRetentionDocumentRequest)">
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRetentionDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument.GenerateRetentionDocumentRequest)">
             <summary>
             Generování dokumentu Retenčního dodatku
             </summary>
@@ -3617,6 +3621,15 @@
             Operace slouží k vygenerování dokumentu Retenčního dodatku<br /><br />
             <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9" >
             <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRefixationDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest)">
+            <summary>
+            Generování dokumentu pro Refixace nebo Individuální sdělení
+            </summary>
+            <remarks>
+            Operace slouží k vygenerování dokumentu pro Refixace nebo Individuální sdělení<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A415BC33-46AF-40f9-B50C-5F7297DC0B26"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest.IndividualPriceCommentLastVersion">
@@ -3636,9 +3649,9 @@
             </summary>
             <example>0.2</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest.HasInterestRateDiscount">
+        <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationResponse.ProcessId">
             <summary>
-            Příznak zda je nastavena sleva ze sazby
+            ID refixacniho procesu
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
@@ -3789,11 +3802,6 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.CreditCardLimit">
             <summary>
             Limit
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.CreditCardLimitTotal">
-            <summary>
-            Výše limitu
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.HouseholdObligationItem.RoleId">
@@ -5103,29 +5111,6 @@
             Severita chyby
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Id">
-            <summary>
-            ID uzivatele - xxvvss.v33id
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.Name">
-            <summary>
-            Cele jmeno uzivatele
-            </summary>
-            <example>John Doe</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.CPM">
-            <summary>
-            CPM uzivatele
-            </summary>
-            <example>99800001</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Users.GetCurrentUser.GetCurrentUserResponse.ICP">
-            <summary>
-            ICP uzivatele
-            </summary>
-            <example>999999999</example>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Users.GetLoggedInUser.GetLoggedInUserResponse.UserId">
             <summary>
             ID uzivatele - V33ID
@@ -5205,15 +5190,6 @@
             Vybranne identitni schema pro prihlaseni, moznosti jsou: <a href="https://wiki.kb.cz/display/HT/IdentityScheme">https://wiki.kb.cz/display/HT/IdentityScheme</a>
             </summary>
             <example>KBUID</example>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentUser(System.Threading.CancellationToken)">
-            <summary>
-            Informace a oprávnění o přihlášeném uživateli
-            </summary>
-            <remarks>
-            Pokud je uživatel přihlášen (existuje platná auth cookie), vrací základní informace o uživateli.
-            </remarks>
-            <returns>Instance přihlášeného uživatele.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetLoggedInUser(System.Threading.CancellationToken)">
             <summary>

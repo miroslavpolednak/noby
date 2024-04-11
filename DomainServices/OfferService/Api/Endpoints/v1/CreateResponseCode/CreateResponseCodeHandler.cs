@@ -17,6 +17,9 @@ internal sealed class CreateResponseCodeHandler
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
+        //TODO: zalozit do BDP
+
+
         return new CreateResponseCodeResponse
         {
             ResponseCodeId = entity.ResponseCodeId

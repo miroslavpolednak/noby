@@ -1,20 +1,18 @@
-﻿using DomainServices.CaseService.Clients.v1;
-using DomainServices.OfferService.Clients.v1;
+﻿using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using NOBY.Services.MortgageRefinancingWorkflow;
+using NOBY.Services.MortgageRefinancing;
 using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 
 internal sealed class UpdateMortgageRefixationHandler
-    : IRequestHandler<UpdateMortgageRefixationRequest>
+    : IRequestHandler<UpdateMortgageRefixationRequest, UpdateMortgageRefixationResponse>
 {
-    public async Task Handle(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
+    public async Task<UpdateMortgageRefixationResponse> Handle(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-        var workflowResult = await _retentionWorkflowService.GetTaskInfoByTaskId(request.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
 
         var mortgageParameters = new MortgageRefinancingWorkflowParameters
         {
@@ -24,13 +22,18 @@ internal sealed class UpdateMortgageRefixationHandler
         };
 
         // vytvorit / updatovat IC task pokud je treba
-        await _retentionWorkflowService.CreateIndividualPriceWorkflowTask(workflowResult.TaskList, mortgageParameters, request.IndividualPriceCommentLastVersion, cancellationToken);
+        await _retentionWorkflowService.CreateIndividualPriceWorkflowTask(mortgageParameters, request.IndividualPriceCommentLastVersion, cancellationToken);
 
         // ulozit SA params refixace (poznamky)
         await updateSalesArrangementParameters(request, salesArrangement, cancellationToken);
 
         // presimulovat modelace
         await updateOffers(request, cancellationToken);
+
+        return new UpdateMortgageRefixationResponse
+        {
+            ProcessId = salesArrangement.TaskProcessId!.Value
+        };
     }
 
     private async Task updateOffers(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)

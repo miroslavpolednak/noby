@@ -5,6 +5,7 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 import "Parameters/MortgageRefixation.proto";
 import "ModificationStamp.proto";
 import "google/protobuf/wrappers.proto";
+import "NullableGrpcDate.proto";
 
 message SimulateMortgageRefixationRequest {
 	MortgageRefixationBasicParameters BasicParameters = 1;
@@ -12,6 +13,7 @@ message SimulateMortgageRefixationRequest {
 	int64 CaseId = 3;
 	google.protobuf.Int32Value OfferId = 4;
 	bool IsVirtual = 5;
+	cis.types.NullableGrpcDate ValidTo = 6;
 }
 
 message SimulateMortgageRefixationResponse {

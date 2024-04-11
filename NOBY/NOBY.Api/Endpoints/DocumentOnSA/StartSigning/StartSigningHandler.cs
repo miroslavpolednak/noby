@@ -108,7 +108,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
             }
             else // Service request without households
             {
-                if (houseHolds.Any())
+                if (houseHolds.Count != 0)
                     throw new NobyValidationException($"Households should by empty for service request without household (DocumentTypeId: {request.DocumentTypeId})");
             }
         }

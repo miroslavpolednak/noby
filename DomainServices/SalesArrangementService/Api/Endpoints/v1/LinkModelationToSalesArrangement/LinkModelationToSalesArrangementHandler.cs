@@ -24,6 +24,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AlreadyLinkedToOffer, request.SalesArrangementId);
         }
+        int? offerIdToRemoveSAId = salesArrangementInstance.OfferId;
 
         // validace na existenci offer
         var offerInstance = await _offerService.GetOffer(request.OfferId, cancellation);
@@ -33,6 +34,10 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             await linkToMortgage(request, salesArrangementInstance, offerInstance, cancellation);
         }
+        else
+        {
+            await LinkOffer(salesArrangementInstance, offerInstance, cancellation);
+        }
 
         // update IDs na Offer
         await _offerService.UpdateOffer(new __Offer.UpdateOfferRequest
@@ -41,6 +46,16 @@ internal sealed class LinkModelationToSalesArrangementHandler
             CaseId = salesArrangementInstance.CaseId,
             SalesArrangementId = salesArrangementInstance.SalesArrangementId
         }, cancellation);
+
+        // odstranit SA ID ze stare Offer
+        if (offerIdToRemoveSAId.HasValue)
+        {
+            await _offerService.UpdateOffer(new __Offer.UpdateOfferRequest
+            {
+                OfferId = request.OfferId,
+                SalesArrangementId = 0
+            }, cancellation);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
@@ -98,6 +113,13 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
         }
+    }
+
+    private async Task LinkOffer(SalesArrangement salesArrangementInstance, __Offer.GetOfferResponse offerInstance, CancellationToken cancellationToken)
+    {
+        salesArrangementInstance.OfferId = offerInstance.Data.OfferId;
+        
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>

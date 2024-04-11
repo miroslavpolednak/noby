@@ -75,14 +75,12 @@ SharedComponents.GrpcServiceBuilder
                 .Run();
 
 [Obsolete("Odstranit po nasazeni scheduling service")]
-void bgServices(WebApplicationBuilder builder)
+static void bgServices(WebApplicationBuilder builder)
 {
     builder.AddCisBackgroundService<DomainServices.CaseService.Api.BackgroundServices.CancelConfirmedPriceExceptionCases.CancelConfirmedPriceExceptionCasesJob>();
 }
 
-#pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program
-#pragma warning restore CA1050 // Declare types in namespaces
 {
     // Expose the Program class for use with WebApplicationFactory<T>
 }
