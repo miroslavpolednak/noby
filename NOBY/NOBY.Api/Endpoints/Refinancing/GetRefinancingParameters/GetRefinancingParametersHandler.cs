@@ -2,29 +2,17 @@
 using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Services.MortgageRefinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
 
-internal sealed class GetRefinancingParametersHandler
-    : IRequestHandler<GetRefinancingParametersRequest, GetRefinancingParametersResponse>
+internal sealed class GetRefinancingParametersHandler(
+    ICaseServiceClient _caseService,
+    IProductServiceClient _productService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICodebookServiceClient _codebookService)
+        : IRequestHandler<GetRefinancingParametersRequest, GetRefinancingParametersResponse>
 {
-    private readonly ICaseServiceClient _caseService;
-    private readonly IProductServiceClient _productService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
-
-    public GetRefinancingParametersHandler(
-        ICaseServiceClient caseService,
-        IProductServiceClient productService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICodebookServiceClient codebookService)
-    {
-        _caseService = caseService;
-        _productService = productService;
-        _salesArrangementService = salesArrangementService;
-        _codebookService = codebookService;
-    }
-
     public async Task<GetRefinancingParametersResponse> Handle(GetRefinancingParametersRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);

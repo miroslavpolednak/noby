@@ -562,6 +562,11 @@
             Číslo parcely
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.IsReadOnly">
+            <summary>
+            Informace zda se jedná o readonly režim
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.IndividualPriceCommentLastVersion">
             <summary>
             Komentář k IC
@@ -667,6 +672,26 @@
         <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.LoanPaymentAmountDiscounted">
             <summary>
             Výše měsíční splátky se zohledněním IC.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingResponseCode.Id">
+            <summary>
+            ID instance response kódu
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingResponseCode.ResponseCodeTypeId">
+            <summary>
+            Typ response k=odu
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingResponseCode.CreatedTime">
+            <summary>
+            Čas vytvoření response kódu
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingResponseCode.CreatedBy">
+            <summary>
+            Kdo vytvořil response kód
             </summary>
         </member>
         <member name="P:NOBY.Dto.Signing.DocumentData.DocumentOnSAId">

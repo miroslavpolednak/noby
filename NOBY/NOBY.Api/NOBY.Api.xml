@@ -3394,19 +3394,9 @@
             Seznam nabídek pro daný proces
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionHandler.getRetentionProcess(System.Int64,System.Int64,System.Threading.CancellationToken)">
-            <summary>
-            Detail procesu retence
-            </summary>
-        </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionHandler.replaceTaskDataWithOfferData(NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse,DomainServices.OfferService.Contracts.GetOfferResponse)">
             <summary>
             Vytvoreni detail Offer
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.IsReadOnly">
-            <summary>
-            Informace zda se jedná o readonly režim
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.FeeAmountDiscounted">

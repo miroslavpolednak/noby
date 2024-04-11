@@ -1,66 +1,48 @@
-﻿using CIS.Core;
-using DomainServices.CaseService.Clients.v1;
-using DomainServices.OfferService.Clients.v1;
+﻿using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
-using DomainServices.SalesArrangementService.Clients;
+using NOBY.Services.MortgageRefinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 
-internal sealed class GetMortgageRetentionHandler
-    : IRequestHandler<GetMortgageRetentionRequest, GetMortgageRetentionResponse>
+internal sealed class GetMortgageRetentionHandler(
+    IOfferServiceClient _offerService, 
+    Services.ResponseCodes.ResponseCodesService _responseCodes, 
+    MortgageRefinancingWorkflowService _refinancingWorkflowService)
+        : IRequestHandler<GetMortgageRetentionRequest, GetMortgageRetentionResponse>
 {
     public async Task<GetMortgageRetentionResponse> Handle(GetMortgageRetentionRequest request, CancellationToken cancellationToken)
     {
-        // detail retencniho procesu
-        var retentionProcess = await getRetentionProcess(request.CaseId, request.ProcessId, cancellationToken);
+        var retentionData = await _refinancingWorkflowService.GetRefinancingData(request.CaseId, request.ProcessId, RefinancingTypes.MortgageRetention, cancellationToken);
         
-        // zjistit refinancingState
-        var (salesArrangement, refinancingState) = await getRefinancingStateId(request.CaseId, retentionProcess, cancellationToken);
-
-        if (refinancingState is (RefinancingStates.Zruseno or RefinancingStates.Dokonceno))
-        {
-            throw new NobyValidationException(90032, $"RefinancingState is not allowed: {refinancingState}");
-        }
-        
-        // vsechny tasky z WF, potom vyfiltrovat jen na konkretni processId
-        var tasks = (await _caseService.GetTaskList(request.CaseId, cancellationToken))
-            .Where(t => t.ProcessId == request.ProcessId)
-            .ToList();
-
-        // toto je aktivni task!
-        bool existActiveIC = tasks.Any(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled && t.DecisionId != 2 && t.PhaseTypeId == 2);
-
         var response = new GetMortgageRetentionResponse
         {
-            IsReadOnly = refinancingState == RefinancingStates.RozpracovanoVNoby,
-            Tasks = (await tasks
-                .SelectAsync(t => _workflowMapper.MapTask(t, cancellationToken)))
-                .ToList(),
-            ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, cancellationToken),
-            IndividualPriceCommentLastVersion = salesArrangement?.Retention?.IndividualPriceCommentLastVersion,
-            Comment = salesArrangement?.Retention?.Comment,
-            SignatureTypeDetailId = salesArrangement?.Retention?.SignatureTypeDetailId,
-            DocumentId = retentionProcess.RefinancingProcess.RefinancingDocumentId,
-            RefinancingDocumentEACode = retentionProcess.RefinancingProcess.RefinancingDocumentEACode,
+            IsReadOnly = retentionData.RefinancingState == RefinancingStates.RozpracovanoVNoby,
+            Tasks = retentionData.Tasks,
+            ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, OfferTypes.MortgageRefixation, cancellationToken),
+            IndividualPriceCommentLastVersion = retentionData.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion,
+            Comment = retentionData.SalesArrangement?.Retention?.Comment,
+            SignatureTypeDetailId = retentionData.SalesArrangement?.Retention?.SignatureTypeDetailId,
+            DocumentId = retentionData.Process!.RefinancingProcess.RefinancingDocumentId,
+            RefinancingDocumentEACode = retentionData.Process.RefinancingProcess.RefinancingDocumentEACode,
             // doplnit data simulace z procesu (pozdeji mozna prepsat offerou)
-            InterestRate = (decimal?)retentionProcess.RefinancingProcess.LoanInterestRate ?? 0M,
-            InterestRateDiscount = (decimal?)retentionProcess.RefinancingProcess.LoanInterestRateProvided,
-            LoanPaymentAmount = (decimal?)retentionProcess.RefinancingProcess.LoanPaymentAmount ?? 0M,
-            LoanPaymentAmountDiscounted = retentionProcess.RefinancingProcess.LoanPaymentAmountFinal,
-            FeeAmount = (decimal?)retentionProcess.RefinancingProcess.FeeSum ?? 0M,
-            FeeAmountDiscounted = retentionProcess.RefinancingProcess.FeeFinalSum,
-            IsGenerateDocumentEnabled = salesArrangement?.OfferId is not null && refinancingState == RefinancingStates.RozpracovanoVNoby && existActiveIC
+            InterestRate = (decimal?)retentionData.Process.RefinancingProcess.LoanInterestRate ?? 0M,
+            InterestRateDiscount = (decimal?)retentionData.Process.RefinancingProcess.LoanInterestRateProvided,
+            LoanPaymentAmount = (decimal?)retentionData.Process.RefinancingProcess.LoanPaymentAmount ?? 0M,
+            LoanPaymentAmountDiscounted = retentionData.Process.RefinancingProcess.LoanPaymentAmountFinal,
+            FeeAmount = (decimal?)retentionData.Process.RefinancingProcess.FeeSum ?? 0M,
+            FeeAmountDiscounted = retentionData.Process.RefinancingProcess.FeeFinalSum,
+            IsGenerateDocumentEnabled = retentionData.SalesArrangement?.OfferId is not null && retentionData.RefinancingState == RefinancingStates.RozpracovanoVNoby && retentionData.ActivePriceExceptionTaskIdSb.HasValue
         };
 
         // pokud existuje Offer
-        if (salesArrangement?.OfferId is not null)
+        if (retentionData.SalesArrangement?.OfferId is not null)
         {
             // detail offer
-            var offerInstance = await _offerService.GetOffer(salesArrangement.OfferId.Value, cancellationToken);
+            var offerInstance = await _offerService.GetOffer(retentionData.SalesArrangement.OfferId.Value, cancellationToken);
             // nacpat data z offer do response misto puvodnich dat z procesu
             replaceTaskDataWithOfferData(response, offerInstance);
 
-            if (existActiveIC)
+            if (retentionData.ActivePriceExceptionTaskIdSb.HasValue)
             {
                 response.ContainsInconsistentIndividualPriceData = offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount != response.InterestRateDiscount || offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted != response.FeeAmountDiscounted;
 
@@ -74,23 +56,6 @@ internal sealed class GetMortgageRetentionHandler
     }
 
     /// <summary>
-    /// Detail procesu retence
-    /// </summary>
-    public async Task<DomainServices.CaseService.Contracts.ProcessTask> getRetentionProcess(long caseId, long processId, CancellationToken cancellationToken)
-    {
-        var process = (await _caseService.GetProcessList(caseId, cancellationToken))
-            .FirstOrDefault(p => p.ProcessId == processId)
-            ?? throw new NobyValidationException(90043, $"ProccesId not found in list {processId}");
-
-        if (process.ProcessTypeId != 3 || process.RefinancingProcess?.RefinancingType != 1)
-        {
-            throw new NobyValidationException(90032, "ProcessTypeId!=3 or RefinancingType!=1");
-        }
-
-        return process;
-    }
-
-    /// <summary>
     /// Vytvoreni detail Offer
     /// </summary>
     private static void replaceTaskDataWithOfferData(GetMortgageRetentionResponse response, GetOfferResponse offerInstance)
@@ -99,39 +64,5 @@ internal sealed class GetMortgageRetentionHandler
         response.InterestRateValidFrom = offerInstance.MortgageRetention.SimulationInputs.InterestRateValidFrom;
         response.InterestRate = offerInstance.MortgageRetention.SimulationInputs.InterestRate;
         response.LoanPaymentAmount = offerInstance.MortgageRetention.SimulationResults.LoanPaymentAmount;
-    }
-
-    private async Task<(DomainServices.SalesArrangementService.Contracts.SalesArrangement? salesArrangement, RefinancingStates RefinancingState)> getRefinancingStateId(long caseId, DomainServices.CaseService.Contracts.ProcessTask process, CancellationToken cancellationToken)
-    {
-        DomainServices.SalesArrangementService.Contracts.SalesArrangement? currentProcessSADetail = null;
-        var allSalesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
-
-        var currentProcessSA = allSalesArrangements.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == process.ProcessId);
-        if (currentProcessSA is not null)
-        {
-            currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
-            if (currentProcessSA.Retention?.ManagedByRC2 ?? false)
-            {
-                // ref.state staci vzit pouze z SA
-                return (currentProcessSADetail, RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State));
-            }
-        }
-
-        return (currentProcessSADetail, RefinancingHelper.GetRefinancingState(false, currentProcessSA?.TaskProcessId, process));
-    }
-
-    private readonly Services.ResponseCodes.ResponseCodesService _responseCodes;
-    private readonly Services.WorkflowMapper.IWorkflowMapperService _workflowMapper;
-    private readonly IOfferServiceClient _offerService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICaseServiceClient _caseService;
-
-    public GetMortgageRetentionHandler(ISalesArrangementServiceClient salesArrangementService, ICaseServiceClient caseService, IOfferServiceClient offerService, Services.WorkflowMapper.IWorkflowMapperService workflowMapper, Services.ResponseCodes.ResponseCodesService responseCodes)
-    {
-        _salesArrangementService = salesArrangementService;
-        _caseService = caseService;
-        _offerService = offerService;
-        _workflowMapper = workflowMapper;
-        _responseCodes = responseCodes;
     }
 }

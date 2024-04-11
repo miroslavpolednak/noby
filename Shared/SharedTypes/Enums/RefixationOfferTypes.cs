@@ -8,13 +8,13 @@ public enum RefixationOfferTypes : byte
 {
     [EnumMember]
     [Display(Name = "Aktuální")]
-    Aktualni = 1,
+    Current = 1,
 
     [EnumMember]
     [Display(Name = "Sdělená")]
-    Sdelena = 2,
+    Communicated = 2,
 
     [EnumMember]
     [Display(Name = "Zákonné oznámení")]
-    ZakonneOznameni = 3
+    LegalNotice = 3
 }

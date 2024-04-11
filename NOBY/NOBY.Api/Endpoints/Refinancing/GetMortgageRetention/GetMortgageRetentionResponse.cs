@@ -3,11 +3,6 @@
 public sealed class GetMortgageRetentionResponse
     : NOBY.Dto.Refinancing.BaseRefinancingDetailResponse
 {
-    /// <summary>
-    /// Informace zda se jedná o readonly režim
-    /// </summary>
-    public bool IsReadOnly { get; set; }
-
     public decimal FeeAmount { get; set; }
 
     /// <summary>

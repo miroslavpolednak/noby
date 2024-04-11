@@ -3,6 +3,11 @@
 public class BaseRefinancingDetailResponse
 {
     /// <summary>
+    /// Informace zda se jedná o readonly režim
+    /// </summary>
+    public bool IsReadOnly { get; set; }
+
+    /// <summary>
     /// Komentář k IC
     /// </summary>
     public string? IndividualPriceCommentLastVersion { get; set; }

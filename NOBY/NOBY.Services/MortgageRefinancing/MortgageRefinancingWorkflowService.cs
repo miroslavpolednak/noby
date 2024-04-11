@@ -1,24 +1,74 @@
-﻿using CIS.Core.Security;
+﻿using CIS.Core;
+using CIS.Core.Security;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients.Authorization;
 using NOBY.Infrastructure.ErrorHandling;
 using NOBY.Infrastructure.Security;
 using NOBY.Services.WorkflowTask;
+using System.Diagnostics;
 using WFL = DomainServices.CaseService.Contracts.WorkflowTask;
 
 namespace NOBY.Services.MortgageRefinancing;
 
 [ScopedService, SelfService]
-public sealed class MortgageRefinancingWorkflowService
+public sealed class MortgageRefinancingWorkflowService(
+    ICaseServiceClient _caseService, 
+    ICurrentUserAccessor _currentUserAccessor, 
+    ISalesArrangementServiceClient _salesArrangementService, 
+    WorkflowMapper.IWorkflowMapperService _workflowMapper)
 {
-    private readonly ICaseServiceClient _caseService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-
-    public MortgageRefinancingWorkflowService(ICaseServiceClient caseService, ICurrentUserAccessor currentUserAccessor)
+    public async Task<GetRefinancingDataResult> GetRefinancingData(long caseId, long? processId, RefinancingTypes refinancingType, CancellationToken cancellationToken)
     {
-        _caseService = caseService;
-        _currentUserAccessor = currentUserAccessor;
+        GetRefinancingDataResult result = new();
+
+        if (processId.HasValue)
+        {
+            // detail procesu
+            var process = (await _caseService.GetProcessList(caseId, cancellationToken))
+                .FirstOrDefault(p => p.ProcessId == processId)
+                ?? throw new NobyValidationException(90043, $"ProccesId {processId} not found in list");
+
+            // validace typu procesu
+            int refType = refinancingType == RefinancingTypes.MortgageRetention ? 1 : 2;
+            if (process.ProcessTypeId != 3 || process.RefinancingProcess?.RefinancingType != refType)
+            {
+                throw new NobyValidationException(90032, $"ProcessTypeId!=3 or RefinancingType!={refType}");
+            }
+
+            // zjistit refinancingState
+            var (salesArrangement, refinancingState) = await getRefinancingStateId(caseId, process, cancellationToken);
+
+            if (refinancingState is (RefinancingStates.Zruseno or RefinancingStates.Dokonceno))
+            {
+                throw new NobyValidationException(90032, $"RefinancingState is not allowed: {refinancingState}");
+            }
+
+            result.Process = process;
+            result.SalesArrangement = salesArrangement;
+            result.RefinancingState = refinancingState;
+        }
+        else
+        {
+            result.RefinancingState = RefinancingStates.Unknown;
+        }
+
+        // vsechny tasky z WF, potom vyfiltrovat jen na konkretni processId
+        var tasks = (await _caseService.GetTaskList(caseId, cancellationToken))
+            .Where(t => t.ProcessId == processId)
+            .ToList();
+
+        result.Tasks = (await tasks
+                .SelectAsync(t => _workflowMapper.MapTask(t, cancellationToken)))
+                .ToList();
+
+        // toto je aktivni task!
+        result.ActivePriceExceptionTaskIdSb = tasks
+            .FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled && t.DecisionId != 2 && t.PhaseTypeId == 2)
+            ?.TaskIdSb;
+
+        return result;
     }
 
     public Task<WorkflowTaskByTaskId.WorkflowProcessByProcessIdResult> GetProcessInfoByProcessId(long caseId, long processId, CancellationToken cancellationToken) => 
@@ -115,7 +165,26 @@ public sealed class MortgageRefinancingWorkflowService
 
     private static IEnumerable<WFL> GetPriceExceptionTasks(IEnumerable<WFL> taskList, long taskProcessId) => 
         taskList.Where(t => t.ProcessId == taskProcessId && t is { TaskTypeId: (int)WorkflowTaskTypes.PriceException, Cancelled: false });
-    
+
+    private async Task<(DomainServices.SalesArrangementService.Contracts.SalesArrangement? salesArrangement, RefinancingStates RefinancingState)> getRefinancingStateId(long caseId, ProcessTask process, CancellationToken cancellationToken)
+    {
+        DomainServices.SalesArrangementService.Contracts.SalesArrangement? currentProcessSADetail = null;
+        var allSalesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
+
+        var currentProcessSA = allSalesArrangements.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == process.ProcessId);
+        if (currentProcessSA is not null)
+        {
+            currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
+            if (currentProcessSA.Retention?.ManagedByRC2 ?? false)
+            {
+                // ref.state staci vzit pouze z SA
+                return (currentProcessSADetail, RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State));
+            }
+        }
+
+        return (currentProcessSADetail, RefinancingHelper.GetRefinancingState(false, currentProcessSA?.TaskProcessId, process));
+    }
+
     private void ValidatePermission()
     {
         // TODO: projit zda je potreba s Klarou a Davidem
