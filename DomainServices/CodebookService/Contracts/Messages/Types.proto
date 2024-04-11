@@ -4,10 +4,10 @@ option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 
 import "google/protobuf/wrappers.proto";
 
-message ResponseCodesResponse {
-	repeated ResponseCodesItem Items = 1;
+message ResponseCodeTypesResponse {
+	repeated ResponseCodeTypesItem Items = 1;
 
-	message ResponseCodesItem {
+	message ResponseCodeTypesItem {
 		int32 Id = 1;
 		string Name = 2;
 		ResponseCodesItemDataTypes DataType = 3;

@@ -928,7 +928,7 @@
              - <a href="https://wiki.kb.cz/display/HT/RefixationOfferType">RefixationOfferTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/RefinancingState">RefinancingStates</a>
              - <a href="https://wiki.kb.cz/display/HT/RefinancingType">RefinancingTypes</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835727392">ResponseCodes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835727392">ResponseCodeTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
@@ -3648,11 +3648,6 @@
             Sleva ze sazby
             </summary>
             <example>0.2</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest.HasInterestRateDiscount">
-            <summary>
-            Příznak zda je nastavena sleva ze sazby
-            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationResponse.ProcessId">
             <summary>

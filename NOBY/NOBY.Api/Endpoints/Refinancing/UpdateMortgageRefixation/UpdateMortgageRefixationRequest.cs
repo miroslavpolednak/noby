@@ -28,11 +28,6 @@ public sealed class UpdateMortgageRefixationRequest
     /// <example>0.2</example>
     public decimal? InterestRateDiscount { get; set; }
 
-    /// <summary>
-    /// Příznak zda je nastavena sleva ze sazby
-    /// </summary>
-    public bool HasInterestRateDiscount { get; set; }
-
     internal UpdateMortgageRefixationRequest InfuseId(long caseId, int salesArrangementId)
     {
         this.SalesArrangementId = salesArrangementId;

@@ -45,13 +45,10 @@ public sealed class RefinancingController : ControllerBase
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(UpdateMortgageRefixationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateMortgageRefixation([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody] UpdateMortgageRefixationRequest request)
-    {
-        await _mediator.Send((request ?? new()).InfuseId(caseId, salesArrangementId));
-        return NoContent();
-    }
+    public async Task<UpdateMortgageRefixationResponse> UpdateMortgageRefixation([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody] UpdateMortgageRefixationRequest request)
+        => await _mediator.Send((request ?? new()).InfuseId(caseId, salesArrangementId));
 
     /// <summary>
     /// Detail mimořádné splátky
