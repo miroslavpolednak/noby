@@ -37,28 +37,28 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.ItemsFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types">
-            <summary>Container for nested types declared in the ResponseCodesResponse message type.</summary>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types">
+            <summary>Container for nested types declared in the ResponseCodeTypesResponse message type.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types.ResponseCodesItem.IdFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodeTypesItem.IdFieldNumber">
             <summary>Field number for the "Id" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types.ResponseCodesItem.NameFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodeTypesItem.NameFieldNumber">
             <summary>Field number for the "Name" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types.ResponseCodesItem.DataTypeFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodeTypesItem.DataTypeFieldNumber">
             <summary>Field number for the "DataType" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types.ResponseCodesItem.IsAvailableForRetentionFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodeTypesItem.IsAvailableForRetentionFieldNumber">
             <summary>Field number for the "IsAvailableForRetention" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types.ResponseCodesItem.IsAvailableForRefixationFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodeTypesItem.IsAvailableForRefixationFieldNumber">
             <summary>Field number for the "IsAvailableForRefixation" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodesResponse.Types.ResponseCodesItem.IsValidFieldNumber">
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodeTypesItem.IsValidFieldNumber">
             <summary>Field number for the "IsValid" field.</summary>
         </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.FeeChangeRequestsResponse.ItemsFieldNumber">

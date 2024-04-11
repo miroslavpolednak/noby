@@ -84,7 +84,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/RefixationOfferType">RefixationOfferTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RefinancingState">RefinancingStates</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RefinancingType">RefinancingTypes</a>
-    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835727392">ResponseCodes</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835727392">ResponseCodeTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
