@@ -23,6 +23,7 @@ internal sealed class UpdateCustomerService
             FirstName = cmCustomer.NaturalPerson.FirstName,
             LastName = cmCustomer.NaturalPerson.LastName,
             DateOfBirth = cmCustomer.NaturalPerson.DateOfBirth,
+            Gender = (Genders)cmCustomer.NaturalPerson.GenderId,
             // firmu neresime?
             ClientType = string.IsNullOrWhiteSpace(cmCustomer.NaturalPerson.BirthNumber)
                 ? ExternalServices.Eas.Dto.ClientDataModel.ClientTypes.Foreigner
