@@ -151,7 +151,7 @@ internal sealed class LoanRepository
                    [StavKyc] as Kyc
             FROM [dbo].[VztahUver] A
             LEFT JOIN [dbo].[Partner] B ON A.PartnerId = B.Id
-            WHERE [UverId] = @caseId AND A.[Neaktivni] = 0 AND B.[Neaktivni] = 0
+            WHERE [UverId] = @caseId AND A.[Neaktivni] = 0
             """;
         
         return _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.Relationship>(Query, param: new { caseId }, cancellationToken);
