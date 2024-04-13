@@ -29,5 +29,5 @@ public sealed class RefinancingSimulationResult
     /// <summary>
     /// Výše měsíční splátky se zohledněním IC.
     /// </summary>
-    public decimal? LoanPaymentAmountIndividualPrice { get; set; }
+    public decimal? LoanPaymentAmountDiscounted { get; set; }
 }

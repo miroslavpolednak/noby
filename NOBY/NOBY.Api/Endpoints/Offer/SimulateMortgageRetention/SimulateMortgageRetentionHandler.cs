@@ -37,7 +37,7 @@ internal sealed class SimulateMortgageRetentionHandler
             InterestRate = interestRate,
             InterestRateDiscount = request.InterestRateDiscount,
             LoanPaymentAmount = result.SimulationResults.LoanPaymentAmount,
-            LoanPaymentAmountIndividualPrice = result.SimulationResults.LoanPaymentAmountDiscounted
+            LoanPaymentAmountDiscounted = result.SimulationResults.LoanPaymentAmountDiscounted
         };
     }
 

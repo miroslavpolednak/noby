@@ -716,7 +716,7 @@
             Výše měsíční splátky.
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Refinancing.RefinancingSimulationResult.LoanPaymentAmountIndividualPrice">
+        <member name="P:NOBY.Dto.Refinancing.RefinancingSimulationResult.LoanPaymentAmountDiscounted">
             <summary>
             Výše měsíční splátky se zohledněním IC.
             </summary>

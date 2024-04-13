@@ -2688,16 +2688,6 @@
             ID vytvorene simulace.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.LoanPaymentAmount">
-            <summary>
-            Výše měsíční splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.LoanPaymentAmountIndividualPrice">
-            <summary>
-            Výše měsíční splátky se zohledněním IC.
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest.InterestRateDiscount">
             <summary>
             Sleva ze sazby
