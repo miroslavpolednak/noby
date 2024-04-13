@@ -694,6 +694,33 @@
             Kdo vytvořil response kód
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingSimulationResult.OfferId">
+            <summary>
+            ID vytvorene simulace.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingSimulationResult.InterestRateDiscount">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>0.2</example>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingSimulationResult.InterestRateDiscounted">
+            <summary>
+            Sleva ze sazby
+            </summary>
+            <example>4.5</example>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingSimulationResult.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky.
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingSimulationResult.LoanPaymentAmountIndividualPrice">
+            <summary>
+            Výše měsíční splátky se zohledněním IC.
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Signing.DocumentData.DocumentOnSAId">
             <summary>
             Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.

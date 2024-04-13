@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
+using NOBY.Dto.Refinancing;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Offer;
@@ -60,9 +61,9 @@ public sealed class OfferController : ControllerBase
     [NobySkipCaseStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(SimulateMortgageRefixation.SimulateMortgageRefixationResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingSimulationResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<SimulateMortgageRefixation.SimulateMortgageRefixationResponse> SimulateMortgageRefixation([FromRoute] long caseId, [FromBody] SimulateMortgageRefixation.SimulateMortgageRefixationRequest request)
+    public async Task<RefinancingSimulationResult> SimulateMortgageRefixation([FromRoute] long caseId, [FromBody] SimulateMortgageRefixation.SimulateMortgageRefixationRequest request)
         => await _mediator.Send((request ?? new SimulateMortgageRefixation.SimulateMortgageRefixationRequest()).InfuseId(caseId));
 
     /// <summary>
@@ -79,9 +80,9 @@ public sealed class OfferController : ControllerBase
     [NobySkipCaseStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(SimulateMortgageRetention.SimulateMortgageRetentionResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingSimulationResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<SimulateMortgageRetention.SimulateMortgageRetentionResponse> SimulateMortgageRetention([FromRoute] long caseId, [FromBody] SimulateMortgageRetention.SimulateMortgageRetentionRequest request)
+    public async Task<RefinancingSimulationResult> SimulateMortgageRetention([FromRoute] long caseId, [FromBody] SimulateMortgageRetention.SimulateMortgageRetentionRequest request)
         => await _mediator.Send((request ?? new SimulateMortgageRetention.SimulateMortgageRetentionRequest()).InfuseId(caseId));
 
     /// <summary>

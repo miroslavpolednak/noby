@@ -2715,21 +2715,6 @@
             </summary>
             <example>0.09</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationResponse.OfferId">
-            <summary>
-            ID vytvorene simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationResponse.LoanPaymentAmount">
-            <summary>
-            Výše měsíční splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationResponse.LoanPaymentAmountIndividualPrice">
-            <summary>
-            Výše měsíční splátky se zohledněním IC.
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.InterestRateValidFrom">
             <summary>
             Platnost nové úrokové sazby od.
@@ -2744,21 +2729,6 @@
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.FeeAmountDiscounted">
             <summary>
             Upravená výše poplatku. Relevantní pouze pro retence.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.OfferId">
-            <summary>
-            ID vytvorene simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.LoanPaymentAmount">
-            <summary>
-            Výše měsíční splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.LoanPaymentAmountIndividualPrice">
-            <summary>
-            Výše měsíční splátky se zohledněním IC.
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.WorthinessResult">

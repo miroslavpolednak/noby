@@ -2,13 +2,14 @@
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
+using NOBY.Dto.Refinancing;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation;
 
 internal sealed class SimulateMortgageRefixationHandler
-    : IRequestHandler<SimulateMortgageRefixationRequest, SimulateMortgageRefixationResponse>
+    : IRequestHandler<SimulateMortgageRefixationRequest, RefinancingSimulationResult>
 {
-    public async Task<SimulateMortgageRefixationResponse> Handle(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
+    public async Task<RefinancingSimulationResult> Handle(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         // validace na stav case
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
@@ -59,9 +60,11 @@ internal sealed class SimulateMortgageRefixationHandler
         // spocitat simulaci
         var result = await _offerService.SimulateMortgageRefixation(dsRequest, cancellationToken);
 
-        return new SimulateMortgageRefixationResponse
+        return new RefinancingSimulationResult
         {
             OfferId = result.OfferId,
+            InterestRate = interestRate,
+            InterestRateDiscount = request.InterestRateDiscount,
             LoanPaymentAmount = result.SimulationResults.LoanPaymentAmount,
             LoanPaymentAmountIndividualPrice = result.SimulationResults.LoanPaymentAmountDiscounted
         };

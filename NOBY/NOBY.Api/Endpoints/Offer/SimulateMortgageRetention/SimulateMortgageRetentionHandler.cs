@@ -1,12 +1,13 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
+using NOBY.Dto.Refinancing;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRetention;
 
 internal sealed class SimulateMortgageRetentionHandler
-    : IRequestHandler<SimulateMortgageRetentionRequest, SimulateMortgageRetentionResponse>
+    : IRequestHandler<SimulateMortgageRetentionRequest, RefinancingSimulationResult>
 {
-    public async Task<SimulateMortgageRetentionResponse> Handle(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken)
+    public async Task<RefinancingSimulationResult> Handle(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken)
     {
         // ziskat int.rate
         var interestRate = await _offerService.GetInterestRate(request.CaseId, request.InterestRateValidFrom, cancellationToken);
@@ -30,9 +31,11 @@ internal sealed class SimulateMortgageRetentionHandler
         // spocitat simulaci
         var result = await _offerService.SimulateMortgageRetention(dsRequest, cancellationToken);
 
-        return new SimulateMortgageRetentionResponse
+        return new RefinancingSimulationResult
         {
             OfferId = result.OfferId,
+            InterestRate = interestRate,
+            InterestRateDiscount = request.InterestRateDiscount,
             LoanPaymentAmount = result.SimulationResults.LoanPaymentAmount,
             LoanPaymentAmountIndividualPrice = result.SimulationResults.LoanPaymentAmountDiscounted
         };
