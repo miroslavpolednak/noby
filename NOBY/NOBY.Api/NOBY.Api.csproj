@@ -78,6 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Endpoints\Offer\CommunicateMortgageRefixation\" />
     <Folder Include="Endpoints\Offer\_SharedDto\LinkModelation\" />
   </ItemGroup>
 

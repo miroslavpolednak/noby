@@ -41,6 +41,11 @@ internal sealed class UpdateOfferHandler
             offer.Flags = request.Flags.Value;
         }
 
+        if (request.ValidTo is not null)
+        {
+            offer.ValidTo = request.ValidTo;
+        }
+
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Empty();

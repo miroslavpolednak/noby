@@ -62,3 +62,7 @@ public partial class GetResponseCodeListRequest
     : MediatR.IRequest<GetResponseCodeListResponse>, CIS.Core.Validation.IValidatableRequest
 {
 }
+
+public partial class DeleteOffersRequest : MediatR.IRequest
+{
+}
