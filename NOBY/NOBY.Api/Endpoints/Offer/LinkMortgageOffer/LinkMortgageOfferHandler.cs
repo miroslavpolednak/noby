@@ -14,7 +14,8 @@ internal sealed class LinkMortgageOfferHandler : IRequestHandler<LinkMortgageOff
     {
         SalesArrangementType = SalesArrangementTypes.Mortgage,
         OfferType = OfferTypes.Mortgage,
-        AdditionalValidation = AdditionalValidation
+        AdditionalValidation = AdditionalValidation,
+        ValidStates = { SalesArrangementStates.InSigning, SalesArrangementStates.ToSend }
     };
 
     private readonly ICaseServiceClient _caseService;

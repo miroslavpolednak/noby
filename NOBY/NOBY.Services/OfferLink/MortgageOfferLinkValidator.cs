@@ -14,12 +14,14 @@ public class MortgageOfferLinkValidator
 
     public AdditionalValidator AdditionalValidation { get; init; } = EmptyAdditionalValidation;
 
+    public List<SalesArrangementStates> ValidStates { get; init; } = [SalesArrangementStates.InProgress, SalesArrangementStates.NewArrangement];
+
     public async Task Validate(SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
         if (salesArrangement.SalesArrangementTypeId != (int)SalesArrangementType || offer.Data.OfferType != OfferType)
             throw new NobyValidationException(90032);
 
-        if (salesArrangement.State is not (int)SalesArrangementStates.InProgress and not (int)SalesArrangementStates.NewArrangement)
+        if (!ValidStates.Contains((SalesArrangementStates)salesArrangement.State))
             throw new NobyValidationException(90032);
 
         if (await AdditionalValidation(salesArrangement, offer, cancellationToken))

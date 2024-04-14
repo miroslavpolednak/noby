@@ -7,7 +7,6 @@ using DomainServices.UserService.Clients.Authorization;
 using NOBY.Infrastructure.ErrorHandling;
 using NOBY.Infrastructure.Security;
 using NOBY.Services.WorkflowTask;
-using System.Diagnostics;
 using WFL = DomainServices.CaseService.Contracts.WorkflowTask;
 
 namespace NOBY.Services.MortgageRefinancing;
