@@ -165,8 +165,7 @@ public sealed class RefinancingController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Operace slouží k vygenerování dokumentu Retenčního dodatku<br /><br />
-    /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9" >
-    /// <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("/api/case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/retention-document")]
     [Produces("application/json")]
@@ -174,11 +173,8 @@ public sealed class RefinancingController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    public async Task<IActionResult> GenerateRetentionDocument(long caseId, int salesArrangementId, [FromBody] GenerateRetentionDocument.GenerateRetentionDocumentRequest request)
-    {
+    public async Task GenerateRetentionDocument(long caseId, int salesArrangementId, [FromBody] GenerateRetentionDocument.GenerateRetentionDocumentRequest request) => 
         await _mediator.Send(request.Infuse(caseId, salesArrangementId));
-        return NoContent();
-    }
 
     /// <summary>
     /// Generování dokumentu pro Refixace nebo Individuální sdělení
@@ -194,6 +190,22 @@ public sealed class RefinancingController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     public async Task GenerateRefixationDocument(long caseId, int salesArrangementId, [FromBody] GenerateRefixationDocument.GenerateRefixationDocumentRequest request) => 
+        await _mediator.Send(request.Infuse(caseId, salesArrangementId));
+
+    /// <summary>
+    /// Generování dokumentu mimořádné splátky
+    /// </summary>
+    /// <remarks>
+    /// Operace slouží k vygenerování dokumentu mimořádné splátky<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6ABBB7A4-03E8-4cd2-8D6B-FAD3C407AC20"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("/api/case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/extra-payment-document")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    public async Task GenerateExtraPaymentDocument(long caseId, int salesArrangementId, [FromBody] GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest request) => 
         await _mediator.Send(request.Infuse(caseId, salesArrangementId));
 
     private readonly IMediator _mediator;

@@ -3304,6 +3304,16 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.SignatureTypeDetailId">
+            <summary>
+            Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.SignatureDeadline">
+            <summary>
+            Nejzazší datum podpisu dokumentu
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.SignatureTypeDetailId">
             <summary>
             Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
@@ -3565,11 +3575,10 @@
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.CommunicateMortgageRefixation(System.Int64)">
             <summary>
-            Sdělení refixačních nabídek.
+            Sdělení nabídek refixací.
             </summary>
             <remarks>
-            Smaže sdělené nabídky (pokud nejsou shodné s aktuálními) a označí aktuální paletu nabídek jako sdělenou.
-            
+            Smaže sdělené nabídky (pokud nejsou shodné s aktuálními) a označí aktuální paletu nabídek jako sdělenou.<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=95CE2766-FF1F-4267-9873-177189302EDD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
@@ -3579,8 +3588,7 @@
             </summary>
             <remarks>
             Operace slouží k vygenerování dokumentu Retenčního dodatku<br /><br />
-            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9" >
-            <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRefixationDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest)">
@@ -3590,6 +3598,15 @@
             <remarks>
             Operace slouží k vygenerování dokumentu pro Refixace nebo Individuální sdělení<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A415BC33-46AF-40f9-B50C-5F7297DC0B26"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateExtraPaymentDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest)">
+            <summary>
+            Generování dokumentu mimořádné splátky
+            </summary>
+            <remarks>
+            Operace slouží k vygenerování dokumentu mimořádné splátky<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6ABBB7A4-03E8-4cd2-8D6B-FAD3C407AC20"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest.IndividualPriceCommentLastVersion">
