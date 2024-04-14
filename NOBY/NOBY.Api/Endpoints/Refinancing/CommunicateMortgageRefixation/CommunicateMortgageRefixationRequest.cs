@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.Offer.CommunicateMortgageRefixation;
+﻿namespace NOBY.Api.Endpoints.Refinancing.CommunicateMortgageRefixation;
 
 public class CommunicateMortgageRefixationRequest : IRequest<CommunicateMortgageRefixationResponse>
 {

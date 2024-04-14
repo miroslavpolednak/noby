@@ -1,12 +1,10 @@
 ﻿using Asp.Versioning;
-using NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument;
 using NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
 using Swashbuckle.AspNetCore.Annotations;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment;
 using NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
-using NOBY.Api.Endpoints.Refinancing.SendMortgageResponseCode;
 
 namespace NOBY.Api.Endpoints.Refinancing;
 
@@ -28,9 +26,9 @@ public sealed class RefinancingController : ControllerBase
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> SendMortgageResponseCode([FromRoute] long caseId, [FromBody] SendMortgageResponseCodeRequest request)
+    public async Task<IActionResult> SendMortgageResponseCode([FromRoute] long caseId, [FromBody] SendMortgageResponseCode.SendMortgageResponseCodeRequest? request)
     {
-        await _mediator.Send((request ?? new()).InfuseId(caseId));
+        await _mediator.Send((request ?? new SendMortgageResponseCode.SendMortgageResponseCodeRequest()).InfuseId(caseId));
         return NoContent();
     }
 
@@ -47,7 +45,7 @@ public sealed class RefinancingController : ControllerBase
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(typeof(UpdateMortgageRefixationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<UpdateMortgageRefixationResponse> UpdateMortgageRefixation([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody] UpdateMortgageRefixationRequest request)
+    public async Task<UpdateMortgageRefixationResponse> UpdateMortgageRefixation([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody] UpdateMortgageRefixationRequest? request)
         => await _mediator.Send((request ?? new()).InfuseId(caseId, salesArrangementId));
 
     /// <summary>
@@ -149,6 +147,20 @@ public sealed class RefinancingController : ControllerBase
         => await _mediator.Send(new GetInterestRate.GetInterestRateRequest(caseId));
 
     /// <summary>
+    /// Sdělení nabídek refixací.
+    /// </summary>
+    /// <remarks>
+    /// Smaže sdělené nabídky (pokud nejsou shodné s aktuálními) a označí aktuální paletu nabídek jako sdělenou.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=95CE2766-FF1F-4267-9873-177189302EDD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPost("case/{caseId:long}/mortgage-refixation-offer-list/communicate")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [ProducesResponseType(typeof(CommunicateMortgageRefixation.CommunicateMortgageRefixationResponse), StatusCodes.Status200OK)]
+    public async Task<CommunicateMortgageRefixation.CommunicateMortgageRefixationResponse> CommunicateMortgageRefixation(long caseId) => 
+        await _mediator.Send(new CommunicateMortgageRefixation.CommunicateMortgageRefixationRequest { CaseId = caseId});
+
+    /// <summary>
     /// Generování dokumentu Retenčního dodatku
     /// </summary>
     /// <remarks>
@@ -162,12 +174,9 @@ public sealed class RefinancingController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    public async Task<IActionResult> GenerateRetentionDocument(
-       long caseId,
-       int salesArrangementId,
-       [FromBody] GenerateRetentionDocumentRequest request)
+    public async Task<IActionResult> GenerateRetentionDocument(long caseId, int salesArrangementId, [FromBody] GenerateRetentionDocument.GenerateRetentionDocumentRequest request)
     {
-        await _mediator.Send(request.InfuseCaseId(caseId).InfuseSalesArrangementId(salesArrangementId));
+        await _mediator.Send(request.Infuse(caseId, salesArrangementId));
         return NoContent();
     }
 

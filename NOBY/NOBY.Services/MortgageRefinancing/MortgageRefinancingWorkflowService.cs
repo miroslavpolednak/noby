@@ -20,7 +20,10 @@ public sealed class MortgageRefinancingWorkflowService(
 {
     public async Task<GetRefinancingDataResult> GetRefinancingData(long caseId, long? processId, RefinancingTypes refinancingType, CancellationToken cancellationToken)
     {
-        GetRefinancingDataResult result = new();
+        GetRefinancingDataResult result = new()
+        {
+            RefinancingState = RefinancingStates.Unknown
+        };
 
         if (processId.HasValue)
         {
@@ -30,7 +33,7 @@ public sealed class MortgageRefinancingWorkflowService(
                 ?? throw new NobyValidationException(90043, $"ProccesId {processId} not found in list");
 
             // validace typu procesu
-            int refType = refinancingType == RefinancingTypes.MortgageRetention ? 1 : 2;
+            var refType = refinancingType == RefinancingTypes.MortgageRetention ? 1 : 2;
             if (process.ProcessTypeId != 3 || process.RefinancingProcess?.RefinancingType != refType)
             {
                 throw new NobyValidationException(90032, $"ProcessTypeId!=3 or RefinancingType!={refType}");
@@ -47,10 +50,6 @@ public sealed class MortgageRefinancingWorkflowService(
             result.Process = process;
             result.SalesArrangement = salesArrangement;
             result.RefinancingState = refinancingState;
-        }
-        else
-        {
-            result.RefinancingState = RefinancingStates.Unknown;
         }
 
         // vsechny tasky z WF, potom vyfiltrovat jen na konkretni processId

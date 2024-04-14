@@ -85,12 +85,6 @@ public sealed class OfferController : ControllerBase
     public async Task<RefinancingSimulationResult> SimulateMortgageRetention([FromRoute] long caseId, [FromBody] SimulateMortgageRetention.SimulateMortgageRetentionRequest request)
         => await _mediator.Send((request ?? new SimulateMortgageRetention.SimulateMortgageRetentionRequest()).InfuseId(caseId));
 
-    [HttpPost("case/{caseId:long}/mortgage-refixation-offer-list/communicate")]
-    public async Task CommunicateMortgageRefixation(long caseId)
-    {
-        await _mediator.Send(new CommunicateMortgageRefixation.CommunicateMortgageRefixationRequest { CaseId = caseId});
-    }
-
     /// <summary>
     /// Simulace KB hypotéky.
     /// </summary>

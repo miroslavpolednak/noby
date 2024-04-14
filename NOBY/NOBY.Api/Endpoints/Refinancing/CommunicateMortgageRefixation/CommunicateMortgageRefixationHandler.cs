@@ -2,7 +2,7 @@
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 
-namespace NOBY.Api.Endpoints.Offer.CommunicateMortgageRefixation;
+namespace NOBY.Api.Endpoints.Refinancing.CommunicateMortgageRefixation;
 
 internal sealed class CommunicateMortgageRefixationHandler : IRequestHandler<CommunicateMortgageRefixationRequest, CommunicateMortgageRefixationResponse>
 {
@@ -35,9 +35,9 @@ internal sealed class CommunicateMortgageRefixationHandler : IRequestHandler<Com
             await _offerService.UpdateOffer(updateOfferRequest, cancellationToken);
         }
 
-        //ProcessId?
         var saList = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
-        var sa = saList.SalesArrangements.FirstOrDefault(sa => sa.State is (int)SalesArrangementStates.NewArrangement or (int)SalesArrangementStates.InProgress);
+        var sa = saList.SalesArrangements.FirstOrDefault(sa => sa.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation &&
+                                                               sa.State is (int)SalesArrangementStates.NewArrangement or (int)SalesArrangementStates.InProgress);
 
         return new CommunicateMortgageRefixationResponse
         {
