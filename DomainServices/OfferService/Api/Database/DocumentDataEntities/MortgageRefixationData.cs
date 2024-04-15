@@ -30,5 +30,6 @@ internal sealed class MortgageRefixationData
     public sealed class BasicParametersData
     {
         public DateTime FixedRateValidTo { get; set; }
+        public DateTime? LegalNoticeGeneratedDate { get; set; }
     }
 }

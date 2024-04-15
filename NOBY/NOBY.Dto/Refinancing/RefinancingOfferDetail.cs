@@ -32,6 +32,11 @@ public sealed class RefinancingOfferDetail
     /// </summary>
     public bool IsSelected { get; set; }
 
+    /// <summary>
+    /// Jedná se o výchozí nabídku
+    /// </summary>
+    public bool IsLegalNoticeDefault { get; set; }
+
     public int FixedRatePeriod { get; set; }
 
     public decimal InterestRate { get; set; }
@@ -82,5 +87,6 @@ public sealed class RefinancingOfferDetail
         instance.IsLegalNotice = flags.HasFlag(OfferFlagTypes.LegalNotice);
         instance.IsLiked = flags.HasFlag(OfferFlagTypes.Liked);
         instance.IsSelected = flags.HasFlag(OfferFlagTypes.Selected);
+        instance.IsLegalNoticeDefault = flags.HasFlag(OfferFlagTypes.LegalNoticeDefault);
     }
 }

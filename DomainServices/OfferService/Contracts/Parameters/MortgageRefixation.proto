@@ -8,6 +8,7 @@ import "GrpcDate.proto";
 
 message MortgageRefixationBasicParameters {
 	cis.types.GrpcDate FixedRateValidTo = 1;
+	cis.types.GrpcDate LegalNoticeGeneratedDate = 2;
 }
 
 message MortgageRefixationSimulationInputs {

@@ -1,13 +1,14 @@
 ﻿using DomainServices.CaseService.Clients.v1;
-using NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList;
+using DomainServices.OfferService.Clients.v1;
 using NOBY.Services.MortgageRefinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
 
 internal sealed class GetMortgageRefixationHandler(
+    TimeProvider _timeProvider,
+    IOfferServiceClient _offerService,
     ICaseServiceClient _caseService,
     MortgageRefinancingWorkflowService _refinancingWorkflowService,
-    IMediator _mediator, 
     Services.ResponseCodes.ResponseCodesService _responseCodes)
         : IRequestHandler<GetMortgageRefixationRequest, GetMortgageRefixationResponse>
 {
@@ -33,14 +34,14 @@ internal sealed class GetMortgageRefixationHandler(
             icRate = taskDetail.TaskDetail.PriceException?.LoanInterestRate?.LoanInterestRateDiscount;
         }
 
-        // seznam nabidek
-        response.Offers = (await _mediator.Send(new SimulateMortgageRefixationOfferListRequest
-        {
-            CaseId = request.CaseId,
-            InterestRateDiscount = icRate
-        }, cancellationToken))
-            .Offers;
+        var offers = (await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken))
+            .Where(t => t.Data.ValidTo >= _timeProvider.GetLocalNow().Date)
+            .ToList();
 
+        // seznam nabidek
+        response.Offers = offers?.Select(Dto.Refinancing.RefinancingOfferDetail.CreateRefixationOffer).ToList();
+        response.CommunicatedOffersValidTo = offers?.FirstOrDefault(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated))?.Data.ValidTo;
+        response.LegalNoticeGeneratedDate = offers?.FirstOrDefault(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated))?.MortgageRefixation?.BasicParameters?.LegalNoticeGeneratedDate;
         response.ContainsInconsistentIndividualPriceData = !(response.Offers?.All(t => t.InterestRateDiscount == icRate) ?? true);
 
         return response;

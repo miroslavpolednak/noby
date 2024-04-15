@@ -99,19 +99,24 @@
             Je možné oceňovat nemovitost
             </summary>
         </member>
+        <member name="T:SharedTypes.Enums.OfferFlagTypes">
+            <summary>
+            Položky označené * není možné měnit pomocí API SetOfferFlags
+            </summary>
+        </member>
         <member name="F:SharedTypes.Enums.OfferFlagTypes.Current">
             <summary>
-            Aktuální nabídka
+            * Aktuální nabídka
             </summary>
         </member>
         <member name="F:SharedTypes.Enums.OfferFlagTypes.Communicated">
             <summary>
-            Komunikovaná nabídka
+            * Komunikovaná nabídka
             </summary>
         </member>
         <member name="F:SharedTypes.Enums.OfferFlagTypes.LegalNotice">
             <summary>
-            Zákonné oznámení
+            * Zákonné oznámení
             </summary>
         </member>
         <member name="F:SharedTypes.Enums.OfferFlagTypes.Liked">
@@ -122,6 +127,11 @@
         <member name="F:SharedTypes.Enums.OfferFlagTypes.Selected">
             <summary>
             Vybraná nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.LegalNoticeDefault">
+            <summary>
+            * Výchozí nabídka
             </summary>
         </member>
         <member name="F:SharedTypes.FeatureFlagsConstants.BlueBang">

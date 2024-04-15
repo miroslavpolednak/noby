@@ -29,7 +29,8 @@ internal sealed class MortgageRefixationDataMapper
             },
             BasicParameters = new()
             {
-                FixedRateValidTo = data.BasicParameters.FixedRateValidTo
+                FixedRateValidTo = data.BasicParameters.FixedRateValidTo,
+                LegalNoticeGeneratedDate = data.BasicParameters.LegalNoticeGeneratedDate
             }
         };
     }
@@ -38,7 +39,8 @@ internal sealed class MortgageRefixationDataMapper
     {
         return new()
         {
-            FixedRateValidTo = basicParameters.FixedRateValidTo
+            FixedRateValidTo = basicParameters.FixedRateValidTo,
+            LegalNoticeGeneratedDate = basicParameters.LegalNoticeGeneratedDate
         };
     }
 
@@ -57,7 +59,8 @@ internal sealed class MortgageRefixationDataMapper
     {
         return new()
         {
-            FixedRateValidTo = basicParameters.FixedRateValidTo
+            FixedRateValidTo = basicParameters.FixedRateValidTo,
+            LegalNoticeGeneratedDate = basicParameters.LegalNoticeGeneratedDate
         };
     }
 

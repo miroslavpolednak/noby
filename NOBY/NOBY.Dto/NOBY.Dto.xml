@@ -652,6 +652,11 @@
             Jedná se o zvolenou nabídku
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsLegalNoticeDefault">
+            <summary>
+            Jedná se o výchozí nabídku
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.InterestRateDiscount">
             <summary>
             Sleva ze sazby
