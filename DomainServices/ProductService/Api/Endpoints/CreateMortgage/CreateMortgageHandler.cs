@@ -1,5 +1,6 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.CaseService.Clients.v1;
+using CIS.Core;
 
 namespace DomainServices.ProductService.Api.Endpoints.CreateMortgage;
 
@@ -8,19 +9,22 @@ internal sealed class CreateMortgageHandler : IRequestHandler<CreateMortgageRequ
     private readonly ICodebookServiceClient _codebookService;
     private readonly LoanRepository _repository;
     private readonly IMpHomeClient _mpHomeClient;
+    private readonly IConfiguration _configuration;
     private readonly ICaseServiceClient _caseService;
-    private readonly ExternalServices.Pcp.V1.IPcpClient _pcpClient;
+    private readonly ExternalServices.Pcp.IPcpClient _pcpClient;
 
     public CreateMortgageHandler(
-        ExternalServices.Pcp.V1.IPcpClient pcpClient,
+        ExternalServices.Pcp.IPcpClient pcpClient,
         ICodebookServiceClient codebookService,
         ICaseServiceClient caseService,
         LoanRepository repository,
-        IMpHomeClient mpHomeClient)
+        IMpHomeClient mpHomeClient,
+        IConfiguration configuration)
     {
         _codebookService = codebookService;
         _repository = repository;
         _mpHomeClient = mpHomeClient;
+        _configuration = configuration;
         _pcpClient = pcpClient;
         _caseService = caseService;
     }
@@ -39,15 +43,24 @@ internal sealed class CreateMortgageHandler : IRequestHandler<CreateMortgageRequ
         {
             // create in pcp
             var productTypes = await _codebookService.ProductTypes(cancellationToken);
-            var pcpProductId = productTypes.First(t => t.Id == request.Mortgage.ProductTypeId).PcpProductId;
-            pcpId = await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpProductId, cancellationToken);
+
+            var pcpCurrentVersion = _configuration[$"{CisGlobalConstants.ExternalServicesConfigurationSectionName}:{ExternalServices.Pcp.IPcpClient.ServiceName}:VersionInUse"];
+
+            string pcpProductIdOrObjectCode = pcpCurrentVersion switch
+            {
+                ExternalServices.Pcp.IPcpClient.Version => productTypes.First(t => t.Id == request.Mortgage.ProductTypeId).PcpProductId,
+                ExternalServices.Pcp.IPcpClient.Version2 => productTypes.First(t => t.Id == request.Mortgage.ProductTypeId).PcpObjectCode,
+                _ => throw new ArgumentException("Not implemented version")
+            };
+
+            pcpId = await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpProductIdOrObjectCode, cancellationToken);
 
             // create in konsdb
             await _mpHomeClient.UpdateLoan(request.CaseId, request.Mortgage.ToMortgageRequest(pcpId), cancellationToken);
         }
-        
-        return new CreateMortgageResponse 
-        { 
+
+        return new CreateMortgageResponse
+        {
             ProductId = request.CaseId,
             PcpId = pcpId
         };
