@@ -391,7 +391,8 @@ internal static class SalesArrangementParametersMapperExtensions
                 IsActive = generalChange.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = generalChange.DrawingDateTo.AgreedDrawingDateTo,
                 ExtensionDrawingDateToByMonths = generalChange.DrawingDateTo.ExtensionDrawingDateToByMonths,
-                CommentToDrawingDateTo = generalChange.DrawingDateTo.CommentToDrawingDateTo
+                CommentToDrawingDateTo = generalChange.DrawingDateTo.CommentToDrawingDateTo,
+                IsDrawingDateEarlier = generalChange.DrawingDateTo.IsDrawingDateEarlier
             },
             RepaymentAccount = generalChange.RepaymentAccount is null ? null : new GeneralChangeData.GeneralChangePaymentAccountData
             {
