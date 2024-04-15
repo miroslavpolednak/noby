@@ -10,7 +10,7 @@ internal sealed class RetentionBuilder
     public override async Task<__SA.CreateSalesArrangementRequest> UpdateParameters(CancellationToken cancellationToken = default)
     {
         // vytvorit WF task
-        Request.TaskProcessId = await createProcessId(Request.CaseId, cancellationToken);
+        Request.ProcessId = await createProcessId(Request.CaseId, cancellationToken);
         
         switch ((SalesArrangementTypes)Request.SalesArrangementTypeId)
         {

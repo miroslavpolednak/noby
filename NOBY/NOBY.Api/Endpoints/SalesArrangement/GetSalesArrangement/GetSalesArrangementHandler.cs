@@ -36,7 +36,7 @@ internal sealed class GetSalesArrangementHandler
             Parameters = parameters,
             State = saInstance.State,
             OfferId = saInstance.OfferId,
-            TaskProcessId = saInstance.TaskProcessId
+            ProcessId = saInstance.ProcessId
         };
     }
 

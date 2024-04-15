@@ -17,7 +17,7 @@ internal sealed class UpdateMortgageRefixationHandler
         var mortgageParameters = new MortgageRefinancingWorkflowParameters
         {
             CaseId = salesArrangement.CaseId,
-            TaskProcessId = salesArrangement.TaskProcessId!.Value,
+            ProcessId = salesArrangement.ProcessId!.Value,
             LoanInterestRateDiscount = request.InterestRateDiscount
         };
 
@@ -32,7 +32,7 @@ internal sealed class UpdateMortgageRefixationHandler
 
         return new UpdateMortgageRefixationResponse
         {
-            ProcessId = salesArrangement.TaskProcessId!.Value
+            ProcessId = salesArrangement.ProcessId!.Value
         };
     }
 

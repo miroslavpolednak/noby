@@ -99,7 +99,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
 
     private async Task UpdateRefixationProcess(_SA salesArrangement, GetOfferListResponse.Types.GetOfferListItem offer, CancellationToken cancellationToken)
     {
-        var workflowResult = await _caseService.GetProcessByProcessId(salesArrangement.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
+        var workflowResult = await _caseService.GetProcessByProcessId(salesArrangement.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
 
         var updateRequest = new UpdateTaskRequest
         {

@@ -52,7 +52,7 @@ internal sealed class CancelTaskHandler
     {
         // najit retencni SA
         var saList = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
-        var saId = saList.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == processId)?.SalesArrangementId;
+        var saId = saList.SalesArrangements.FirstOrDefault(t => t.ProcessId == processId)?.SalesArrangementId;
 
         if (saId.HasValue)
         {

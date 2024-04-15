@@ -24,7 +24,7 @@ internal sealed class CreateSalesArrangementHandler
             ContractNumber = request.ContractNumber,
             ChannelId = user.UserInfo.ChannelId,
             PcpId = request.PcpId,
-            TaskProcessId = request.TaskProcessId
+            ProcessId = request.ProcessId
         };
 
         // get default SA state

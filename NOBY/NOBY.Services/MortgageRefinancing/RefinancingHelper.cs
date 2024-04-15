@@ -64,13 +64,13 @@ public static class RefinancingHelper
             _ => RefinancingStates.RozpracovanoVNoby
         };
 
-    public static RefinancingStates GetRefinancingState(in bool managedByRC2, in long? taskProcessId, ProcessTask process)
+    public static RefinancingStates GetRefinancingState(in bool managedByRC2, in long? processId, ProcessTask process)
     {
-        if (!process.Cancelled && process.StateIdSB != 30 && managedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId == taskProcessId)
+        if (!process.Cancelled && process.StateIdSB != 30 && managedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId == processId)
         {
             return RefinancingStates.RozpracovanoVNoby; // 1
         }
-        else if (!process.Cancelled && process.StateIdSB != 30 && managedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId != taskProcessId)
+        else if (!process.Cancelled && process.StateIdSB != 30 && managedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId != processId)
         {
             return RefinancingStates.RozpracovanoVSB;  // 2
         }

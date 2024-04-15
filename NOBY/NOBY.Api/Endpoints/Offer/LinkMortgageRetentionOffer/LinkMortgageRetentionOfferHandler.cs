@@ -48,14 +48,14 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
 
     private async Task ProcessWorkflow(LinkMortgageRetentionOfferRequest request, MortgageRetentionFullData retention, _SA salesArrangement, CancellationToken cancellationToken)
     {
-        var workflowResult = await _retentionWorkflowService.GetProcessInfoByProcessId(request.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
+        var workflowResult = await _retentionWorkflowService.GetProcessInfoByProcessId(request.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
 
         await UpdateRetentionWorkflowProcess(retention, salesArrangement.CaseId, workflowResult.ProcessIdSb, cancellationToken);
 
         var mortgageParameters = new MortgageRefinancingWorkflowParameters
         {
             CaseId = salesArrangement.CaseId,
-            TaskProcessId = salesArrangement.TaskProcessId!.Value,
+            ProcessId = salesArrangement.ProcessId!.Value,
             LoanInterestRate = retention.SimulationInputs.InterestRate,
             LoanInterestRateDiscount = retention.SimulationInputs.InterestRateDiscount,
             Fee = new MortgageRefinancingWorkflowParameters.FeeObject

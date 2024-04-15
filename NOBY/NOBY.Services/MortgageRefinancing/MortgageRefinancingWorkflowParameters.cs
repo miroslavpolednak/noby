@@ -4,7 +4,7 @@ public sealed class MortgageRefinancingWorkflowParameters
 {
     public long CaseId { get; init; }
 
-    public long TaskProcessId { get; init; }
+    public long ProcessId { get; init; }
 
     public decimal? LoanInterestRateDiscount { get; init; }
 

@@ -41,7 +41,7 @@ internal sealed class CommunicateMortgageRefixationHandler : IRequestHandler<Com
 
         return new CommunicateMortgageRefixationResponse
         {
-            ProcessId = sa?.TaskProcessId
+            ProcessId = sa?.ProcessId
         };
     }
 }

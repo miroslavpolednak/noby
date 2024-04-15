@@ -62,7 +62,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
     {
         // najit retencni SA
         var saList = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
-        var saId = saList.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == processId)?.SalesArrangementId;
+        var saId = saList.SalesArrangements.FirstOrDefault(t => t.ProcessId == processId)?.SalesArrangementId;
 
         if (saId.HasValue)
         {
@@ -79,7 +79,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
         else
         {
-            _logger.LogInformation("SalesArrangement for Case {CaseId} with TaskProcessId {ProcessId} not found", request.CaseId, processId);
+            _logger.LogInformation("SalesArrangement for Case {CaseId} with ProcessId {ProcessId} not found", request.CaseId, processId);
         }
     }
 

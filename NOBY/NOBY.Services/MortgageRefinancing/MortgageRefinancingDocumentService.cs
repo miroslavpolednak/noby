@@ -45,7 +45,7 @@ public class MortgageRefinancingDocumentService
 
     public async Task<bool> IsIndividualPriceValid(SalesArrangement salesArrangement, MortgageRefinancingIndividualPrice offerIndividualPrice, CancellationToken cancellationToken)
     {
-        var workflowIndividualPrice = await _refinancingWorkflowService.GetIndividualPrices(salesArrangement.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
+        var workflowIndividualPrice = await _refinancingWorkflowService.GetIndividualPrices(salesArrangement.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
 
         return offerIndividualPrice.Equals(workflowIndividualPrice);
     }

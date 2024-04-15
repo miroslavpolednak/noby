@@ -28,7 +28,7 @@ message CreateSalesArrangementRequest {
 
 	google.protobuf.StringValue PcpId = 6;
 
-	google.protobuf.Int64Value TaskProcessId = 7;
+	google.protobuf.Int64Value ProcessId = 7;
 	
 	oneof Data {
         SalesArrangementParametersMortgage Mortgage = 20;

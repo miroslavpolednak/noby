@@ -7,7 +7,7 @@ internal sealed class ErrorCodeMapper
     : ErrorCodeMapperBase
 {
     public const int CaseNotFound = 13000;
-    public const int TaskProcessIdNotUnique = 13001;
+    public const int ProcessIdNotUnique = 13001;
     public const int ProductTypeIdIsEmpty = 13002;
     public const int CaseOwnerIsEmpty = 13003;
     public const int CaseStateAlreadySet = 13005;
@@ -45,7 +45,7 @@ internal sealed class ErrorCodeMapper
         SetMessages(new Dictionary<int, string>()
         {
             { CaseNotFound, "Case ID {PropertyValue} not found" },
-            { TaskProcessIdNotUnique, "TaskProcessId must be unique" },
+            { ProcessIdNotUnique, "ProcessId must be unique" },
             { ProductTypeIdIsEmpty, "ProductTypeId must be > 0" },
             { CaseOwnerIsEmpty, "CaseOwnerUserId must be > 0" },
             { CaseStateAlreadySet, "Case state already set to the same value" },

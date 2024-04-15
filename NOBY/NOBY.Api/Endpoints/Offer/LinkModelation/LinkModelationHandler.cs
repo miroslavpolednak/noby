@@ -85,7 +85,7 @@ internal sealed class LinkModelationHandler
 
     private async Task UpdateRefinancing(LinkModelationRequest request, DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
-        var taskResult = await _caseService.GetTaskByTaskId(salesArrangement.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
+        var taskResult = await _caseService.GetTaskByTaskId(salesArrangement.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
 
         var taskUpdateRequest = new _Ca.UpdateTaskRequest
         {
@@ -115,7 +115,7 @@ internal sealed class LinkModelationHandler
 
         var tasks = await _caseService.GetTaskList(salesArrangement.CaseId, cancellationToken);
 
-        if (tasks.Where(t => t.ProcessId != salesArrangement.TaskProcessId && t.TaskTypeId != (int)WorkflowTaskTypes.PriceException).Any(t => !t.Cancelled))
+        if (tasks.Where(t => t.ProcessId != salesArrangement.ProcessId && t.TaskTypeId != (int)WorkflowTaskTypes.PriceException).Any(t => !t.Cancelled))
         {
             var oldOffer = await _offerService.GetOffer(salesArrangement.OfferId!.Value, cancellationToken);
 
@@ -145,7 +145,7 @@ internal sealed class LinkModelationHandler
         {
             CaseId = salesArrangement.CaseId,
             TaskTypeId = (int)WorkflowTaskTypes.PriceException,
-            ProcessId = salesArrangement.TaskProcessId,
+            ProcessId = salesArrangement.ProcessId,
             TaskRequest = salesArrangement.Retention?.IndividualPriceCommentLastVersion,
             PriceException = new _Ca.TaskPriceException
             {
