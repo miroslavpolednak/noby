@@ -34,7 +34,7 @@ public sealed class OfferController : ControllerBase
     /// <remarks>
     /// Provolá simulační službu Starbuildu pro refixace.
     /// 
-    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F3564317-C787-445d-AB54-A6B4FE1847C0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/simulate-mortgage-extra-payment-offer")]
     [Produces("application/json")]

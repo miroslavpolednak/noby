@@ -18,7 +18,7 @@ public sealed class RefinancingController : ControllerBase
     /// </summary>
     /// <remarks>
     /// 
-    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BA03AE2F-C91E-4308-9C92-C24A7CF66D08"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("case/{caseId:long}/mortgage/sendResponseCode")]
     [Produces("application/json")]
@@ -37,7 +37,7 @@ public sealed class RefinancingController : ControllerBase
     /// </summary>
     /// <remarks>
     /// 
-    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=32807AA6-9D09-4c6e-9BBB-F21A962437FE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:long}/update-mortgage-refixation")]
     [Produces("application/json")]
@@ -71,7 +71,7 @@ public sealed class RefinancingController : ControllerBase
     /// <remarks>
     /// Operace slouží k získání informací o vybraném refixačním procesu.
     /// 
-    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=06834209-6BE1-42bf-8C6A-DD4D4371B14F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-refixation")]
     [Produces("application/json")]
