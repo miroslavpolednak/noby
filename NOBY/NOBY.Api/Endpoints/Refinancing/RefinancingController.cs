@@ -5,14 +5,31 @@ using NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment;
 using NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
+using NOBY.Api.Endpoints.Refinancing.GetAvailableFixedRatePeriods;
 
 namespace NOBY.Api.Endpoints.Refinancing;
 
 [ApiController]
 [Route("api")]
 [ApiVersion(1)]
-public sealed class RefinancingController : ControllerBase
+public sealed class RefinancingController(IMediator _mediator) : ControllerBase
 {
+    /// <summary>
+    /// Seznam dostupných délek fixací pro refixace
+    /// </summary>
+    /// <remarks>
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpPut("case/{caseId:long}/mortgage-refixation/available-fixed-rate-periods")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    [ProducesResponseType(typeof(GetAvailableFixedRatePeriodsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetAvailableFixedRatePeriodsResponse> GetAvailableFixedRatePeriods([FromRoute] long caseId)
+        => await _mediator.Send(new GetAvailableFixedRatePeriodsRequest(caseId));
+
     /// <summary>
     /// Vytvoří odpovědní kód
     /// </summary>
@@ -20,8 +37,7 @@ public sealed class RefinancingController : ControllerBase
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BA03AE2F-C91E-4308-9C92-C24A7CF66D08"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPut("case/{caseId:long}/mortgage/sendResponseCode")]
-    [Produces("application/json")]
+    [HttpPut("case/{caseId:long}/mortgage/send-response-code")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -207,7 +223,4 @@ public sealed class RefinancingController : ControllerBase
     [SwaggerOperation(Tags = ["Refinancing"])]
     public async Task GenerateExtraPaymentDocument(long caseId, int salesArrangementId, [FromBody] GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest request) => 
         await _mediator.Send(request.Infuse(caseId, salesArrangementId));
-
-    private readonly IMediator _mediator;
-    public RefinancingController(IMediator mediator) => _mediator = mediator;
 }

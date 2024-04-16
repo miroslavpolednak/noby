@@ -3507,6 +3507,15 @@
             SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetAvailableFixedRatePeriods(System.Int64)">
+            <summary>
+            Seznam dostupných délek fixací pro refixace
+            </summary>
+            <remarks>
+            
+            <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.SendMortgageResponseCode(System.Int64,NOBY.Api.Endpoints.Refinancing.SendMortgageResponseCode.SendMortgageResponseCodeRequest)">
             <summary>
             Vytvoří odpovědní kód
