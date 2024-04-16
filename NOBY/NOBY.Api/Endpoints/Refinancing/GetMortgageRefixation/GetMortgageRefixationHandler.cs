@@ -35,14 +35,14 @@ internal sealed class GetMortgageRefixationHandler(
         }
 
         var offers = (await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken))
-            .Where(t => t.Data.ValidTo >= _timeProvider.GetLocalNow().Date)
+            .Where(t => !(t.Data.ValidTo < _timeProvider.GetLocalNow().Date))
             .ToList();
 
         // seznam nabidek
         response.Offers = offers?.Select(Dto.Refinancing.RefinancingOfferDetail.CreateRefixationOffer).ToList();
         response.CommunicatedOffersValidTo = offers?.FirstOrDefault(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated))?.Data.ValidTo;
         response.LegalNoticeGeneratedDate = offers?.FirstOrDefault(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated))?.MortgageRefixation?.BasicParameters?.LegalNoticeGeneratedDate;
-        response.ContainsInconsistentIndividualPriceData = !(response.Offers?.All(t => t.InterestRateDiscount == icRate) ?? true);
+        response.ContainsInconsistentIndividualPriceData = !(response.Offers?.All(t => t.IsLegalNotice || t.InterestRateDiscount == icRate) ?? true);
 
         return response;
     }

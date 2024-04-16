@@ -10,7 +10,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
     public async Task<SimulateMortgageRefixationOfferListResponse> Handle(SimulateMortgageRefixationOfferListRequest request, CancellationToken cancellationToken)
     {
         var offers = (await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken))
-            .Where(t => t.Data.ValidTo >= _timeProvider.GetLocalNow().Date)
+            .Where(t => !(t.Data.ValidTo < _timeProvider.GetLocalNow().Date))
             .ToList();
 
         List<Dto.Refinancing.RefinancingOfferDetail> finalOffers = new();

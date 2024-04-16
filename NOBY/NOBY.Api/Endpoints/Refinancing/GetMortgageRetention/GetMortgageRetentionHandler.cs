@@ -46,10 +46,6 @@ internal sealed class GetMortgageRetentionHandler(
             if (retentionData.ActivePriceExceptionTaskIdSb.HasValue)
             {
                 response.ContainsInconsistentIndividualPriceData = offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount != response.InterestRateDiscount || offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted != response.FeeAmountDiscounted;
-
-                response.InterestRateDiscount = offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount;
-                response.LoanPaymentAmountDiscounted = offerInstance.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted;
-                response.FeeAmountDiscounted = offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted;
             }
         }
 
@@ -65,5 +61,8 @@ internal sealed class GetMortgageRetentionHandler(
         response.InterestRateValidFrom = offerInstance.MortgageRetention.SimulationInputs.InterestRateValidFrom;
         response.InterestRate = offerInstance.MortgageRetention.SimulationInputs.InterestRate;
         response.LoanPaymentAmount = offerInstance.MortgageRetention.SimulationResults.LoanPaymentAmount;
+        response.InterestRateDiscount = offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount;
+        response.LoanPaymentAmountDiscounted = offerInstance.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted;
+        response.FeeAmountDiscounted = offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted;
     }
 }
