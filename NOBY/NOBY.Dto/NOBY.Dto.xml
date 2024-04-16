@@ -627,6 +627,11 @@
             Slouží k náhledu na dokumenty
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.ValidTo">
+            <summary>
+            Platnost nabídky do
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.IsLegalNotice">
             <summary>
             Jedná se o zákonné sdělení
@@ -704,6 +709,12 @@
             ID vytvorene simulace.
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingSimulationResult.InterestRate">
+            <summary>
+            Sazba
+            </summary>
+            <example>4.7</example>
+        </member>
         <member name="P:NOBY.Dto.Refinancing.RefinancingSimulationResult.InterestRateDiscount">
             <summary>
             Sleva ze sazby
@@ -712,7 +723,7 @@
         </member>
         <member name="P:NOBY.Dto.Refinancing.RefinancingSimulationResult.InterestRateDiscounted">
             <summary>
-            Sleva ze sazby
+            Sazba po slevě
             </summary>
             <example>4.5</example>
         </member>
