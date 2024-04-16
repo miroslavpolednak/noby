@@ -7,6 +7,10 @@ public sealed class RefinancingSimulationResult
     /// </summary>
     public int OfferId { get; set; }
 
+    /// <summary>
+    /// Sazba
+    /// </summary>
+    /// <example>4.7</example>
     public decimal InterestRate { get; set; }
 
     /// <summary>
@@ -16,7 +20,7 @@ public sealed class RefinancingSimulationResult
     public decimal? InterestRateDiscount { get; set; }
 
     /// <summary>
-    /// Sleva ze sazby
+    /// Sazba po slevě
     /// </summary>
     /// <example>4.5</example>
     public decimal? InterestRateDiscounted { get => InterestRateDiscount.HasValue ? InterestRate - InterestRateDiscount : null; }

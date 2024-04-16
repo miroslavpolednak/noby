@@ -45,7 +45,7 @@ public sealed class GetMortgageRetentionResponse
 
     public string? DocumentId { get; set; }
 
-    public int? RefinancingDocumentEACode { get; set; }
+    public int? DocumentEACode { get; set; }
 
     public int? SignatureTypeDetailId { get; set; }
 

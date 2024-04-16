@@ -24,7 +24,7 @@ internal sealed class GetMortgageRetentionHandler(
             Comment = retentionData.SalesArrangement?.Retention?.Comment,
             SignatureTypeDetailId = retentionData.SalesArrangement?.Retention?.SignatureTypeDetailId,
             DocumentId = retentionData.Process!.RefinancingProcess.RefinancingDocumentId,
-            RefinancingDocumentEACode = retentionData.Process.RefinancingProcess.RefinancingDocumentEACode,
+            DocumentEACode = retentionData.Process.RefinancingProcess.RefinancingDocumentEACode,
             // doplnit data simulace z procesu (pozdeji mozna prepsat offerou)
             InterestRate = (decimal?)retentionData.Process.RefinancingProcess.LoanInterestRate ?? 0M,
             InterestRateDiscount = (decimal?)retentionData.Process.RefinancingProcess.LoanInterestRateProvided,
