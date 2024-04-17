@@ -5,8 +5,13 @@ using SharedTypes.GrpcTypes;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgageRetention;
 
-internal sealed class SimulateMortgageRetentionHandler
-    : IRequestHandler<SimulateMortgageRetentionRequest, SimulateMortgageRetentionResponse>
+internal sealed class SimulateMortgageRetentionHandler(
+    Database.OfferServiceDbContext _dbContext,
+    IEasSimulationHTClient _easSimulationHTClient,
+    IDocumentDataStorage _documentDataStorage,
+    Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _offerMapper,
+    ILogger<SimulateMortgageRetentionHandler> _logger)
+        : IRequestHandler<SimulateMortgageRetentionRequest, SimulateMortgageRetentionResponse>
 {
     public async Task<SimulateMortgageRetentionResponse> Handle(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken)
     {
@@ -56,28 +61,5 @@ internal sealed class SimulateMortgageRetentionHandler
             BasicParameters = _offerMapper.MapFromDataBasicParameters(documentEntity.BasicParameters),
             SimulationResults = _offerMapper.MapFromDataOutputs(documentEntity.SimulationOutputs)
         };
-    }
-
-    private readonly Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _offerMapper;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly IEasSimulationHTClient _easSimulationHTClient;
-    private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApi;
-    private readonly Database.OfferServiceDbContext _dbContext;
-    private readonly ILogger<SimulateMortgageRetentionHandler> _logger;
-
-    public SimulateMortgageRetentionHandler(
-        Database.OfferServiceDbContext dbContext,
-        IEasSimulationHTClient easSimulationHTClient,
-        IDocumentDataStorage documentDataStorage,
-        Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper offerMapper,
-        ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApi,
-        ILogger<SimulateMortgageRetentionHandler> logger)
-    {
-        _dbContext = dbContext;
-        _easSimulationHTClient = easSimulationHTClient;
-        _documentDataStorage = documentDataStorage;
-        _offerMapper = offerMapper;
-        _sbWebApi = sbWebApi;
-        _logger = logger;
     }
 }

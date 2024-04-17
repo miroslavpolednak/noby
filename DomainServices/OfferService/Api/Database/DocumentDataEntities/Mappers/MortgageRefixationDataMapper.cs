@@ -13,25 +13,9 @@ internal sealed class MortgageRefixationDataMapper
     {
         return new __Contracts.MortgageRefixationFullData
         {
-            SimulationInputs = new()
-            {
-                FixedRatePeriod = data.SimulationInputs.FixedRatePeriod,
-                InterestRateDiscount = data.SimulationInputs.InterestRateDiscount,
-                InterestRate = data.SimulationInputs.InterestRate,
-                InterestRateValidFrom = data.SimulationInputs.InterestRateValidFrom
-            },
-            SimulationResults = new()
-            {
-                LoanPaymentAmount = data.SimulationOutputs.LoanPaymentAmount,
-                LoanPaymentAmountDiscounted = data.SimulationOutputs.LoanPaymentAmountDiscounted,
-                LoanPaymentsCount = data.SimulationOutputs.LoanPaymentsCount,
-                MaturityDate = data.SimulationOutputs.MaturityDate
-            },
-            BasicParameters = new()
-            {
-                FixedRateValidTo = data.BasicParameters.FixedRateValidTo,
-                LegalNoticeGeneratedDate = data.BasicParameters.LegalNoticeGeneratedDate
-            }
+            SimulationInputs = MapFromDataInputs(data.SimulationInputs),
+            SimulationResults = MapFromDataOutputs(data.SimulationOutputs),
+            BasicParameters = MapFromDataBasicParameters(data.BasicParameters)
         };
     }
 

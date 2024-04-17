@@ -28,7 +28,11 @@ internal sealed class DeleteCustomerHandler
         // SULM
         if (kbIdentity is not null)
         {
-            await _sulmClient.StartUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMLAX, cancellationToken);
+            // zahodit chybu
+            try
+            {
+                await _sulmClient.StartUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMLAX, cancellationToken);
+            } catch { }
         }
 
         // Invalidate DocumentsOnSa Crs

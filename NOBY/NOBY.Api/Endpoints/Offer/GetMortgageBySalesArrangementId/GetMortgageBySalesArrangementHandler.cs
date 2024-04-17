@@ -4,8 +4,11 @@ using Abstraction = DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 
-internal sealed class GetMortgageBySalesArrangementHandler
-    : IRequestHandler<GetMortgageBySalesArrangementRequest, SharedDto.GetMortgageResponse>
+internal sealed class GetMortgageBySalesArrangementHandler(
+    IMediator _mediator,
+    Abstraction.ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService)
+        : IRequestHandler<GetMortgageBySalesArrangementRequest, SharedDto.GetMortgageResponse>
 {
     public async Task<SharedDto.GetMortgageResponse> Handle(GetMortgageBySalesArrangementRequest request, CancellationToken cancellationToken)
     {
@@ -28,19 +31,5 @@ internal sealed class GetMortgageBySalesArrangementHandler
             SimulationResults = offer.SimulationResults.ToApiResponse(offer.SimulationInputs, offer.AdditionalSimulationResults),
             CreditWorthinessSimpleInputs = offer.CreditWorthinessSimpleInputs.ToApiResponse(offer.Data.IsCreditWorthinessSimpleRequested)
         };
-    }
-
-    private readonly Abstraction.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly IMediator _mediator;
-    
-    public GetMortgageBySalesArrangementHandler(
-        IMediator mediator,
-        Abstraction.ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService)
-    {
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _mediator = mediator;
     }
 }

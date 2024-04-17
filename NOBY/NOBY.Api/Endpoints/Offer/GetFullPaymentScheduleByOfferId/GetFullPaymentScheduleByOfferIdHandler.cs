@@ -3,8 +3,8 @@ using NOBY.Api.Endpoints.Offer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Offer.GetFullPaymentScheduleByOfferId;
 
-internal sealed class GetFullPaymentScheduleByOfferIdHandler
-    : IRequestHandler<GetFullPaymentScheduleByOfferIdRequest, SharedDto.GetFullPaymentScheduleResponse>
+internal sealed class GetFullPaymentScheduleByOfferIdHandler(IOfferServiceClient _offerService)
+        : IRequestHandler<GetFullPaymentScheduleByOfferIdRequest, SharedDto.GetFullPaymentScheduleResponse>
 {
     public async Task<SharedDto.GetFullPaymentScheduleResponse> Handle(GetFullPaymentScheduleByOfferIdRequest request, CancellationToken cancellationToken)
     {
@@ -32,12 +32,5 @@ internal sealed class GetFullPaymentScheduleByOfferIdHandler
             // rethrow to be catched by validation middleware
             throw new CisValidationException(ex.ExceptionCode, ex.Message);
         }
-    }
-
-    private readonly IOfferServiceClient _offerService;
-
-    public GetFullPaymentScheduleByOfferIdHandler(IOfferServiceClient offerService)
-    {
-        _offerService = offerService;
     }
 }

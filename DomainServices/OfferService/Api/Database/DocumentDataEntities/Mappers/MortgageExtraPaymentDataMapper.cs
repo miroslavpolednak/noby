@@ -11,17 +11,12 @@ internal sealed class MortgageExtraPaymentDataMapper
 {
     public __Contracts.MortgageExtraPaymentFullData MapToFullData(MortgageExtraPaymentData data)
     {
+        
         return new __Contracts.MortgageExtraPaymentFullData
         {
-            SimulationInputs = new()
-            {
-            },
-            SimulationResults = new()
-            {
-            },
-            BasicParameters = new()
-            {
-            }
+            SimulationInputs = MapFromDataInputs(data.SimulationInputs),
+            SimulationResults = MapFromDataOutputs(data.SimulationOutputs),
+            BasicParameters = MapFromDataBasicParameters(data.BasicParameters)
         };
     }
 
@@ -29,34 +24,75 @@ internal sealed class MortgageExtraPaymentDataMapper
     {
         return new()
         {
+            FeeAmountDiscount = basicParameters.FeeAmountDiscount
         };
     }
 
-    public SimulationInputsData MapToDataInputs(__Contracts.MortgageRetentionSimulationInputs inputs)
+    public SimulationInputsData MapToDataInputs(__Contracts.MortgageExtraPaymentSimulationInputs inputs)
     {
         return new()
         {
+            ExtraPaymentAmount = inputs.ExtraPaymentAmount,
+            ExtraPaymentDate = inputs.ExtraPaymentDate,
+            ExtraPaymentReasonId = inputs.ExtraPaymentReasonId,
+            IsExtraPaymentComplete = inputs.IsExtraPaymentComplete
         };
     }
 
-    public __Contracts.MortgageRetentionBasicParameters MapFromDataBasicParameters(BasicParametersData basicParameters)
+    public SimulationOutputsData MapToDataOutputs(ExternalServices.EasSimulationHT.Dto.MortgageExtraPaymentResult result)
     {
         return new()
         {
+            ExtraPaymentAmount = result.ExtraPaymentAmount,
+            FeeAmount = result.FeeAmount,
+            InterestAmount = result.InterestAmount,
+            InterestCovid = result.InterestCovid,
+            InterestOnLate = result.InterestOnLate,
+            IsExtraPaymentComplete = result.IsExtraPaymentComplete,
+            IsLoanOverdue = result.IsLoanOverdue,
+            IsPaymentReduced = result.IsPaymentReduced,
+            NewMaturityDate = result.NewMaturityDate,
+            NewPaymentAmount = result.NewPaymentAmount,
+            OtherUnpaidFees = result.OtherUnpaidFees,
+            PrincipalAmount = result.PrincipalAmount
         };
     }
 
-    public __Contracts.MortgageRetentionSimulationInputs MapFromDataInputs(SimulationInputsData inputs)
+    public __Contracts.MortgageExtraPaymentBasicParameters MapFromDataBasicParameters(BasicParametersData basicParameters)
     {
         return new()
         {
+            FeeAmountDiscount = basicParameters.FeeAmountDiscount
         };
     }
 
-    public __Contracts.MortgageRetentionSimulationResults MapFromDataOutputs(SimulationOutputsData output)
+    public __Contracts.MortgageExtraPaymentSimulationInputs MapFromDataInputs(SimulationInputsData inputs)
     {
         return new()
         {
+            ExtraPaymentAmount = inputs.ExtraPaymentAmount,
+            ExtraPaymentDate = inputs.ExtraPaymentDate,
+            ExtraPaymentReasonId = inputs.ExtraPaymentReasonId,
+            IsExtraPaymentComplete = inputs.IsExtraPaymentComplete
+        };
+    }
+
+    public __Contracts.MortgageExtraPaymentSimulationResults MapFromDataOutputs(SimulationOutputsData output)
+    {
+        return new()
+        {
+            ExtraPaymentAmount = output.ExtraPaymentAmount,
+            FeeAmount = output.FeeAmount,
+            InterestAmount = output.InterestAmount,
+            InterestCovid = output.InterestCovid,
+            InterestOnLate = output.InterestOnLate,
+            IsExtraPaymentComplete = output.IsExtraPaymentComplete,
+            IsLoanOverdue = output.IsLoanOverdue,
+            IsPaymentReduced = output.IsPaymentReduced,
+            NewMaturityDate = output.NewMaturityDate,
+            NewPaymentAmount = output.NewPaymentAmount,
+            OtherUnpaidFees = output.OtherUnpaidFees,
+            PrincipalAmount = output.PrincipalAmount
         };
     }
 }

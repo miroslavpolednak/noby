@@ -19,6 +19,43 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
     protected override string ServiceName => StartupExtensions.ServiceName;
 
+    public async Task<Dto.MortgageExtraPaymentResult> RunSimulationExtraPayment(long caseId, DateTime extraPaymentDate, decimal extraPaymentAmount, int extraPaymentReasonId, bool isExtraPaymentComplete, CancellationToken cancellationToken)
+    {
+        var result = await callMethod(async () =>
+        {
+            var request = new SimHT_UVN_Request
+            {
+                settings = new()
+                {
+                    uverId = Convert.ToInt32(caseId),
+                    mode = 2,
+                    typMimoradneSplatky = isExtraPaymentComplete ? 2 : 412,
+                    duvodMimoradneSplatky = extraPaymentReasonId,
+                    sumaMimoradneSplatky = extraPaymentAmount,
+                    datumMimoradneSplatky = extraPaymentDate
+                }
+            };
+
+            return await Client.SimHT_UVNAsync(request).WithCancellation(cancellationToken);
+        }, r => r.errorInfo, 10028);
+
+        return new Dto.MortgageExtraPaymentResult
+        {
+            /*ExtraPaymentAmount = result.dataProDopis,
+            FeeAmount = result.FeeAmount,
+            InterestAmount = result.InterestAmount,
+            InterestCovid = result.InterestCovid,
+            InterestOnLate = result.InterestOnLate,
+            IsExtraPaymentComplete = result.IsExtraPaymentComplete,
+            IsLoanOverdue = result.IsLoanOverdue,
+            IsPaymentReduced = result.IsPaymentReduced,
+            NewMaturityDate = result.NewMaturityDate,
+            NewPaymentAmount = result.NewPaymentAmount,
+            OtherUnpaidFees = result.OtherUnpaidFees,
+            PrincipalAmount = result.PrincipalAmount*/
+        };
+    }
+
     public async Task<Dto.RefinancingSimulationResult> RunSimulationRefixation(long caseId, decimal interestRate, DateTime interestRateValidFrom, int fixedRatePeriod, CancellationToken cancellationToken)
     {
         var result = await callMethod(async () =>

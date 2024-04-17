@@ -1,23 +1,18 @@
-﻿using DomainServices.CaseService.Clients.v1;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using NOBY.Dto.Refinancing;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation;
 
-internal sealed class SimulateMortgageRefixationHandler
-    : IRequestHandler<SimulateMortgageRefixationRequest, RefinancingSimulationResult>
+internal sealed class SimulateMortgageRefixationHandler(
+    IOfferServiceClient _offerService, 
+    ICodebookServiceClient _codebookService, 
+    IProductServiceClient _productService)
+        : IRequestHandler<SimulateMortgageRefixationRequest, RefinancingSimulationResult>
 {
     public async Task<RefinancingSimulationResult> Handle(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
-        // validace na stav case
-        var caseInstance = await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
-        if (caseInstance.State!.Value is not ((int)CaseStates.InAdministration or (int)CaseStates.InDisbursement))
-        {
-            throw new NobyValidationException("CaseState is not 4,5");
-        }
-
         // validace zda na Case jiz neexistuje simulace se stejnou delkou fixace
         var existingOffers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken);
         if (existingOffers.Any(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Current) && t.MortgageRefixation.SimulationInputs.FixedRatePeriod == request.FixedRatePeriod))
@@ -68,18 +63,5 @@ internal sealed class SimulateMortgageRefixationHandler
             LoanPaymentAmount = result.SimulationResults.LoanPaymentAmount,
             LoanPaymentAmountDiscounted = result.SimulationResults.LoanPaymentAmountDiscounted
         };
-    }
-
-    private readonly IProductServiceClient _productService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly ICaseServiceClient _caseService;
-
-    public SimulateMortgageRefixationHandler(IOfferServiceClient offerService, ICodebookServiceClient codebookService, IProductServiceClient productService, ICaseServiceClient caseService)
-    {
-        _offerService = offerService;
-        _codebookService = codebookService;
-        _productService = productService;
-        _caseService = caseService;
     }
 }

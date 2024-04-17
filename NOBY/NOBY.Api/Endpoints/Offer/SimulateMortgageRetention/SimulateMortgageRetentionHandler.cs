@@ -4,8 +4,10 @@ using NOBY.Dto.Refinancing;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRetention;
 
-internal sealed class SimulateMortgageRetentionHandler
-    : IRequestHandler<SimulateMortgageRetentionRequest, RefinancingSimulationResult>
+internal sealed class SimulateMortgageRetentionHandler(
+    IOfferServiceClient _offerService, 
+    ICodebookServiceClient _codebookService)
+        : IRequestHandler<SimulateMortgageRetentionRequest, RefinancingSimulationResult>
 {
     public async Task<RefinancingSimulationResult> Handle(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken)
     {
@@ -39,14 +41,5 @@ internal sealed class SimulateMortgageRetentionHandler
             LoanPaymentAmount = result.SimulationResults.LoanPaymentAmount,
             LoanPaymentAmountDiscounted = result.SimulationResults.LoanPaymentAmountDiscounted
         };
-    }
-
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly IOfferServiceClient _offerService;
-
-    public SimulateMortgageRetentionHandler(IOfferServiceClient offerService, ICodebookServiceClient codebookService)
-    {
-        _offerService = offerService;
-        _codebookService = codebookService;
     }
 }
