@@ -193,7 +193,7 @@ internal sealed class WorkflowMapperService
         };
     
     private static WorkflowTaskStates getSignatureState(_Case.WorkflowTask task) =>
-        (SignatureTypes)task.SignatureTypeId! switch
+        (SignatureTypes?)task.SignatureTypeId switch
         {
             SignatureTypes.Paper => getPaperSignatureState(task),
             SignatureTypes.Electronic => getDigitalSignatureState(task),
