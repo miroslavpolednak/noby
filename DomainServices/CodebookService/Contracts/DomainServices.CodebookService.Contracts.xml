@@ -1521,6 +1521,21 @@
         <member name="P:DomainServices.CodebookService.Contracts.v1.GenericCodebookReflection.Descriptor">
             <summary>File descriptor for Messages/GenericCodebook.proto</summary>
         </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.GetBankingDaysReflection">
+            <summary>Holder for reflection information generated from Messages/GetBankingDays.proto</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.GetBankingDaysReflection.Descriptor">
+            <summary>File descriptor for Messages/GetBankingDays.proto</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetBankingDaysRequest.DateFromFieldNumber">
+            <summary>Field number for the "DateFrom" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetBankingDaysRequest.DateToFieldNumber">
+            <summary>Field number for the "DateTo" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetBankingDaysResponse.NonBankingDaysFieldNumber">
+            <summary>Field number for the "NonBankingDays" field.</summary>
+        </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeReflection">
             <summary>Holder for reflection information generated from Messages/GetACVAndBagmanRealEstateType.proto</summary>
         </member>

@@ -4,6 +4,8 @@ namespace DomainServices.CodebookService.Clients;
 
 public partial interface ICodebookServiceClient
 {
+    Task<List<DateOnly>> GetBankingDays(DateOnly dateFrom, DateOnly dateTo, CancellationToken cancellationToken = default);
+
     Task<GetOperatorResponse> GetOperator(string performerLogin, CancellationToken cancellationToken = default);
 
     Task<GetDeveloperResponse> GetDeveloper(int developerId, CancellationToken cancellationToken = default);

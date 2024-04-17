@@ -963,7 +963,7 @@
             </summary>
             <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetBankingDays(DomainServices.CodebookService.Contracts.v1.GetBankingDaysRequest,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetBankingDays(NOBY.Api.Endpoints.Codebooks.Dto.GetBankingDaysRequest,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
             Vrací seznam všedních dnů, které jsou svátky
             </summary>
@@ -2702,66 +2702,6 @@
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OfferId">
             <summary>
             ID vytvorene simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.IsExtraPaymentComplete">
-            <summary>
-            Typ mimořádné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.ExtraPaymentAmount">
-            <summary>
-            Celková výše mimořádné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.FeeAmount">
-            <summary>
-            Výše účelně vynaložených nákladů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.PrincipalAmount">
-            <summary>
-            Jistina splacená mimořádnou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.InterestAmount">
-            <summary>
-            Úroky splacené mimořádnou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OtherUnpaidFees">
-            <summary>
-            Neuhrazené poplatky splacené mimořádnou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.InterestOnLate">
-            <summary>
-            Úroky z prodlení splacené mimořádnou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.InterestCovid">
-            <summary>
-            Úroky s odloženou splatností splacené mimořádnou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.IsLoanOverdue">
-            <summary>
-            Příznak, zda je úvěr po splatnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.IsPaymentReduced">
-            <summary>
-            Příznak, zda se snižuje výše pravidelné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.NewMaturityDate">
-            <summary>
-            Nové datum splatnosti, pokud se zkracuje splacením mimořádné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.NewPaymentAmount">
-            <summary>
-            Nová výše splátky, pokud se snižuje výše splátky splacením mimořádné splátky
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest.InterestRateDiscount">

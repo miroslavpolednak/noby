@@ -10,26 +10,23 @@ public partial class GrpcDate
     }
 
     public static implicit operator DateOnly(GrpcDate grpcDate)
-    {
-        ArgumentNullException.ThrowIfNull(grpcDate);
-
-        return new DateOnly(grpcDate.Year, grpcDate.Month, grpcDate.Day);
-    }
+        => new(grpcDate.Year, grpcDate.Month, grpcDate.Day);
 
     public static implicit operator GrpcDate(DateOnly value)
-        => new GrpcDate(value.Year, value.Month, value.Day);
+        => new(value.Year, value.Month, value.Day);
 
     public static implicit operator DateTime(GrpcDate grpcDate)
-        => new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day);
+        => new(grpcDate.Year, grpcDate.Month, grpcDate.Day);
 
     public static implicit operator DateTime?(GrpcDate? grpcDate)
         => grpcDate == null ? null : new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day);
 
     public static implicit operator GrpcDate(DateTime value)
-        => new GrpcDate(value.Year, value.Month, value.Day);
+        => new(value.Year, value.Month, value.Day);
 
     public static implicit operator NullableGrpcDate(GrpcDate value)
-        => new NullableGrpcDate(value.Year, value.Month, value.Day);
+        => new(value.Year, value.Month, value.Day);
 
-    public static explicit operator GrpcDate(NullableGrpcDate nullableGrpcDate) => new(nullableGrpcDate.Year, nullableGrpcDate.Month, nullableGrpcDate.Day);
+    public static explicit operator GrpcDate(NullableGrpcDate nullableGrpcDate) 
+        => new(nullableGrpcDate.Year, nullableGrpcDate.Month, nullableGrpcDate.Day);
 }
