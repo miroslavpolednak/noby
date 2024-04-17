@@ -11,6 +11,7 @@ grpcurl -insecure -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzb
 grpcurl -insecure -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30003 DomainServices.CodebookService.v1.CodebookService/RealEstateValuationBuildingMaterialStructures
 grpcurl -insecure -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30003 DomainServices.CodebookService.v1.CodebookService/ProfessionCategories
 grpcurl -insecure -d "{\"RealEstateStateId\":1,\"RealEstateSubtypeId\":1,\"RealEstateTypeId\":1}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30003 DomainServices.CodebookService.v1.CodebookService/GetACVAndBagmanRealEstateType
+grpcurl -insecure -d "{\"DateFrom\":{\"year\":2023,\"month\":12,\"day\":18},\"DateTo\":{\"year\":2024,\"month\":2,\"day\":18}}" -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService.v1.CodebookService/GetBankingDays
 
 grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:30003 DomainServices.CodebookService.MaintananceService/DownloadRdmCodebooks
 

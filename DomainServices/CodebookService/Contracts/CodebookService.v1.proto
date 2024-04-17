@@ -7,8 +7,22 @@ import "google/protobuf/empty.proto";
 import "Messages/Types.proto";
 import "Messages/GenericCodebook.proto";
 import "Messages/GetACVAndBagmanRealEstateType.proto";
+import "Messages/GetBankingDays.proto";
 
 service CodebookService {
+	rpc GetBankingDays (GetBankingDaysRequest) returns (GetBankingDaysResponse) {
+	   option (google.api.http) = {
+			post: "/v1/banking-days",
+			body: "*"
+		};
+   }
+
+	rpc ExtraPaymentReasons (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/extra-payment-reasons"
+		};
+   }
+
 	rpc ResponseCodeTypes (google.protobuf.Empty) returns (ResponseCodeTypesResponse) {
 	   option (google.api.http) = {
 			get: "/v1/response-code-types"
