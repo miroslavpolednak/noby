@@ -5,8 +5,10 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.GetOfferDeveloper;
 
-internal sealed class GetOfferDeveloperHandler
-    : IRequestHandler<GetOfferDeveloperRequest, GetOfferDeveloperResponse>
+internal sealed class GetOfferDeveloperHandler(
+    IDocumentDataStorage _documentDataStorage,
+    ICodebookServiceClient _codebookService)
+        : IRequestHandler<GetOfferDeveloperRequest, GetOfferDeveloperResponse>
 {
     public async Task<GetOfferDeveloperResponse> Handle(GetOfferDeveloperRequest request, CancellationToken cancellationToken)
     {
@@ -32,16 +34,5 @@ internal sealed class GetOfferDeveloperHandler
         return response;
     }
 
-    private static int[] _allowedMassValuations = new int[] { -1, 1 };
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly ICodebookServiceClient _codebookService;
-
-    public GetOfferDeveloperHandler(
-        IDocumentDataStorage documentDataStorage,
-        ICodebookServiceClient codebookService)
-    {
-        _documentDataStorage = documentDataStorage;
-        _codebookService = codebookService;
-    }
+    private static int[] _allowedMassValuations = [-1, 1];
 }

@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.ValidateOfferId;
 
-internal sealed class ValidateOfferIdHandler
-    : IRequestHandler<ValidateOfferIdRequest, ValidateOfferIdResponse>
+internal sealed class ValidateOfferIdHandler(Database.OfferServiceDbContext _dbContext)
+        : IRequestHandler<ValidateOfferIdRequest, ValidateOfferIdResponse>
 {
     public async Task<ValidateOfferIdResponse> Handle(ValidateOfferIdRequest request, CancellationToken cancellationToken)
     {
@@ -24,12 +24,5 @@ internal sealed class ValidateOfferIdHandler
             Exists = instance is not null,
             Data = instance
         };
-    }
-
-    private readonly Database.OfferServiceDbContext _dbContext;
-
-    public ValidateOfferIdHandler(Database.OfferServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.GetInterestRate;
 
-internal sealed class GetInterestRateHandler
-    : IRequestHandler<GetInterestRateRequest, GetInterestRateResponse>
+internal sealed class GetInterestRateHandler(ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApi)
+        : IRequestHandler<GetInterestRateRequest, GetInterestRateResponse>
 {
     public async Task<GetInterestRateResponse> Handle(GetInterestRateRequest request, CancellationToken cancellationToken)
     {
@@ -13,12 +13,5 @@ internal sealed class GetInterestRateHandler
         {
             LoanInterestRate = result.InterestRate
         };
-    }
-
-    private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApi;
-
-    public GetInterestRateHandler(ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApi)
-    {
-        _sbWebApi = sbWebApi;
     }
 }

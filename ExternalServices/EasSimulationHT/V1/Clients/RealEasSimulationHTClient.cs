@@ -41,18 +41,18 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
         return new Dto.MortgageExtraPaymentResult
         {
-            /*ExtraPaymentAmount = result.dataProDopis,
-            FeeAmount = result.FeeAmount,
-            InterestAmount = result.InterestAmount,
-            InterestCovid = result.InterestCovid,
-            InterestOnLate = result.InterestOnLate,
-            IsExtraPaymentComplete = result.IsExtraPaymentComplete,
-            IsLoanOverdue = result.IsLoanOverdue,
-            IsPaymentReduced = result.IsPaymentReduced,
-            NewMaturityDate = result.NewMaturityDate,
-            NewPaymentAmount = result.NewPaymentAmount,
-            OtherUnpaidFees = result.OtherUnpaidFees,
-            PrincipalAmount = result.PrincipalAmount*/
+            ExtraPaymentAmount = result.dataProDopis.extra_payment_sum,
+            FeeAmount = result.dataProDopis.uvn_amount,
+            InterestAmount = result.dataProDopis.interest_amount,
+            InterestCovid = result.dataProDopis.interest_covid,
+            InterestOnLate = result.dataProDopis.interest_on_late,
+            IsExtraPaymentComplete = result.dataProDopis.full_repayment,
+            IsLoanOverdue = result.dataProDopis.loan_overdue,
+            IsPaymentReduced = result.dataProDopis.payment_reduction,
+            NewMaturityDate = result.dataProDopis.new_maturity_date,
+            NewPaymentAmount = result.dataProDopis.new_payment_amount,
+            OtherUnpaidFees = result.dataProDopis.other_unpaid_fees,
+            PrincipalAmount = result.dataProDopis.principal_amount
         };
     }
 

@@ -2,8 +2,8 @@
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.CreateResponseCode;
 
-internal sealed class CreateResponseCodeHandler
-    : IRequestHandler<CreateResponseCodeRequest, CreateResponseCodeResponse>
+internal sealed class CreateResponseCodeHandler(Database.OfferServiceDbContext _dbContext)
+        : IRequestHandler<CreateResponseCodeRequest, CreateResponseCodeResponse>
 {
     public async Task<CreateResponseCodeResponse> Handle(CreateResponseCodeRequest request, CancellationToken cancellationToken)
     {
@@ -24,12 +24,5 @@ internal sealed class CreateResponseCodeHandler
         {
             ResponseCodeId = entity.ResponseCodeId
         };
-    }
-
-    private readonly Database.OfferServiceDbContext _dbContext;
-
-    public CreateResponseCodeHandler(Database.OfferServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

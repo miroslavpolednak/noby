@@ -3,8 +3,14 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.GetOffer;
 
-internal sealed class GetOfferHandler
-    : IRequestHandler<GetOfferRequest, GetOfferResponse>
+internal sealed class GetOfferHandler(
+    IDocumentDataStorage _documentDataStorage,
+    Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper,
+    IMediator _mediator,
+    Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _retentionMapper,
+    Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _refixationMapper,
+    Database.DocumentDataEntities.Mappers.MortgageExtraPaymentDataMapper _extraPaymentDataMapper)
+        : IRequestHandler<GetOfferRequest, GetOfferResponse>
 {
     public async Task<GetOfferResponse> Handle(GetOfferRequest request, CancellationToken cancellationToken)
     {
@@ -64,28 +70,5 @@ internal sealed class GetOfferHandler
         var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageOfferData>(offerId, cancellationToken);
         return _offerMapper.MapToFullData(offerData!.Data!);
 
-    }
-
-    private readonly IMediator _mediator;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper;
-    private readonly Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _retentionMapper;
-    private readonly Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _refixationMapper;
-    private readonly Database.DocumentDataEntities.Mappers.MortgageExtraPaymentDataMapper _extraPaymentDataMapper;
-
-    public GetOfferHandler(
-        IDocumentDataStorage documentDataStorage,
-        Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper offerMapper,
-        IMediator mediator,
-        Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper retentionMapper,
-        Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper refixationMapper,
-        Database.DocumentDataEntities.Mappers.MortgageExtraPaymentDataMapper extraPaymentDataMapper)
-    {
-        _documentDataStorage = documentDataStorage;
-        _offerMapper = offerMapper;
-        _mediator = mediator;
-        _retentionMapper = retentionMapper;
-        _refixationMapper = refixationMapper;
-        _extraPaymentDataMapper = extraPaymentDataMapper;
     }
 }
