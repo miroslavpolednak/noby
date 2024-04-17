@@ -3513,7 +3513,7 @@
             </summary>
             <remarks>
             
-            <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.SendMortgageResponseCode(System.Int64,NOBY.Api.Endpoints.Refinancing.SendMortgageResponseCode.SendMortgageResponseCodeRequest)">

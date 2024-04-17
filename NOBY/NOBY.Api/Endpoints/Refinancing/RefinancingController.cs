@@ -21,7 +21,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPut("case/{caseId:long}/mortgage-refixation/available-fixed-rate-periods")]
+    [HttpGet("case/{caseId:long}/mortgage-refixation/available-fixed-rate-periods")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -38,6 +38,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BA03AE2F-C91E-4308-9C92-C24A7CF66D08"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("case/{caseId:long}/mortgage/send-response-code")]
+    [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -57,6 +58,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:long}/update-mortgage-refixation")]
     [Produces("application/json")]
+    [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(typeof(UpdateMortgageRefixationResponse), StatusCodes.Status200OK)]

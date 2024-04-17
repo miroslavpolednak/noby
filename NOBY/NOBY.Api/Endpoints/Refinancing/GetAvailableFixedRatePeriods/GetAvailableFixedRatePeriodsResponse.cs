@@ -2,4 +2,5 @@
 
 public sealed class GetAvailableFixedRatePeriodsResponse
 {
+    public List<int>? AvailableFixedRatePeriods { get; set; }
 }
