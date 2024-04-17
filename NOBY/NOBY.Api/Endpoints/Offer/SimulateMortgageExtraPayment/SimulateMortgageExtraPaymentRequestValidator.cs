@@ -15,7 +15,7 @@ internal sealed class SimulateMortgageExtraPaymentRequestValidator
             .MustAsync(async (id, cancellationToken) => (await codebookService.ExtraPaymentReasons(cancellationToken)).Any(t => t.Id == id));
 
         RuleFor(t => t.ExtraPaymentDate)
-            .MustAsync(async (d, cancellationToken) => (await codebookService.GetBankingDays(DateOnly.FromDateTime(d), DateOnly.FromDateTime(d), cancellationToken)).Count == 0)
+            .MustAsync(async (d, cancellationToken) => (await codebookService.GetNonBankingDays(DateOnly.FromDateTime(d), DateOnly.FromDateTime(d), cancellationToken)).Count == 0)
             .GreaterThan(DateTime.Now);
     }
 }

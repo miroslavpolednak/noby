@@ -5,8 +5,8 @@ namespace DomainServices.CodebookService.Clients.Services;
 internal sealed partial class CodebookService
     : ICodebookServiceClient
 {
-    public async Task<List<DateOnly>> GetBankingDays(DateOnly dateFrom, DateOnly dateTo, CancellationToken cancellationToken = default)
-        => (await _service.GetBankingDaysAsync(new GetBankingDaysRequest
+    public async Task<List<DateOnly>> GetNonBankingDays(DateOnly dateFrom, DateOnly dateTo, CancellationToken cancellationToken = default)
+        => (await _service.GetNonBankingDaysAsync(new GetNonBankingDaysRequest
         {
             DateFrom = dateFrom,
             DateTo = dateTo,

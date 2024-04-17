@@ -29,7 +29,7 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
                 {
                     uverId = Convert.ToInt32(caseId),
                     mode = 2,
-                    typMimoradneSplatky = isExtraPaymentComplete ? 2 : 412,
+                    typMimoradneSplatky = isExtraPaymentComplete,
                     duvodMimoradneSplatky = extraPaymentReasonId,
                     sumaMimoradneSplatky = extraPaymentAmount,
                     datumMimoradneSplatky = extraPaymentDate

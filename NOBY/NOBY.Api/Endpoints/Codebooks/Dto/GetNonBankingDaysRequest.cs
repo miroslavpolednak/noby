@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Codebooks.Dto;
 
-public sealed class GetBankingDaysRequest
+public sealed class GetNonBankingDaysRequest
 {
     /// <summary>
     /// Ohraničení vrácených dat datumem od

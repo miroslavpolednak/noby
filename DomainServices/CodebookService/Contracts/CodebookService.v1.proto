@@ -7,12 +7,12 @@ import "google/protobuf/empty.proto";
 import "Messages/Types.proto";
 import "Messages/GenericCodebook.proto";
 import "Messages/GetACVAndBagmanRealEstateType.proto";
-import "Messages/GetBankingDays.proto";
+import "Messages/GetNonBankingDays.proto";
 
 service CodebookService {
-	rpc GetBankingDays (GetBankingDaysRequest) returns (GetBankingDaysResponse) {
+	rpc GetNonBankingDays (GetNonBankingDaysRequest) returns (GetNonBankingDaysResponse) {
 	   option (google.api.http) = {
-			post: "/v1/banking-days",
+			post: "/v1/non-banking-days",
 			body: "*"
 		};
    }

@@ -18,7 +18,7 @@
 
 	<ItemGroup>
 	  <None Remove="MaintananceService.proto" />
-	  <None Remove="Messages\GetBankingDays.proto" />
+	  <None Remove="Messages\GetNonBankingDays.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -41,7 +41,7 @@
 		
 		<Protobuf Include="Messages/Types.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\GenericCodebook.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
-		<Protobuf Include="Messages\GetBankingDays.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Messages\GetNonBankingDays.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages\GetACVAndBagmanRealEstateType.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	</ItemGroup>
 

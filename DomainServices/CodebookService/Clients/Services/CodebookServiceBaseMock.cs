@@ -4,7 +4,7 @@ namespace DomainServices.CodebookService.Clients.Services;
 
 public abstract partial class CodebookServiceBaseMock
 {
-    public Task<List<DateOnly>> GetBankingDays(DateOnly dateFrom, DateOnly dateTo, CancellationToken cancellationToken = default)
+    public Task<List<DateOnly>> GetNonBankingDays(DateOnly dateFrom, DateOnly dateTo, CancellationToken cancellationToken = default)
         => throw new NotImplementedException();
 
     public virtual Task<List<DeveloperSearchResponse.Types.DeveloperSearchItem>> DeveloperSearch(string term, CancellationToken cancellationToken = default)

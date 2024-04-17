@@ -1,1 +1,1 @@
-INSERT INTO [dbo].[SqlQuery] ([SqlQueryId],[SqlQueryText],[DatabaseProvider]) VALUES ('GetBankingDays','SELECT DATUM FROM SBR.HTEDM_CIS_DATUMY WHERE PRACOVNY_DEN=0 AND DEN_V_TYZDNI NOT IN (6,7) AND DATUM BETWEEN @dateFrom AND @dateTo',2);
+INSERT INTO [dbo].[SqlQuery] ([SqlQueryId],[SqlQueryText],[DatabaseProvider]) VALUES ('GetNonBankingDays','SELECT DATUM FROM SBR.HTEDM_CIS_DATUMY WHERE PRACOVNY_DEN=0 AND DEN_V_TYZDNI NOT IN (6,7) AND DATUM BETWEEN @dateFrom AND @dateTo',2);

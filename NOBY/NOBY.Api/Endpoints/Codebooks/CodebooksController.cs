@@ -89,7 +89,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
-    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800899040">SignatureTypeDetail</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800899040">SignatureTypeDetails</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchemas</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructures</a>
@@ -156,8 +156,8 @@ public class CodebooksController : ControllerBase
     [HttpPost("banking-days")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
-    public async Task<List<DateOnly>> GetBankingDays([FromBody] Dto.GetBankingDaysRequest request, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
-        => (await svc.GetBankingDays(request.DateFrom, request.DateTo, cancellationToken)).ToList();
+    public async Task<List<DateOnly>> GetNonBankingDays([FromBody] Dto.GetNonBankingDaysRequest request, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
+        => (await svc.GetNonBankingDays(request.DateFrom, request.DateTo, cancellationToken)).ToList();
 
     /// <summary>
     /// FixedRatePeriod s filtrací na product
