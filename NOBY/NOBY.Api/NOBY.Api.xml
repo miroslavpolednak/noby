@@ -890,6 +890,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=400823251">EaCodesMain</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216233">EmploymentTypes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835723767">ExtraPaymentReasons</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800055209">FeeChangeRequests</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
@@ -962,6 +963,11 @@
             </summary>
             <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetBankingDays(NOBY.Api.Endpoints.Codebooks.Dto.GetBankingDaysRequest,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
+            <summary>
+            Vrací seznam všedních dnů, které jsou svátky
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixedRatePeriods(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
             FixedRatePeriod s filtrací na product
@@ -1019,6 +1025,16 @@
         <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.DeveloperStatus.StatusText">
             <summary>
             Status developera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.GetBankingDaysRequest.DateFrom">
+            <summary>
+            Ohraničení vrácených dat datumem od
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.GetBankingDaysRequest.DateTo">
+            <summary>
+            Ohraničení vrácených dat datumem do
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest.Data">

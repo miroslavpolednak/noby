@@ -156,7 +156,7 @@ public class CodebooksController : ControllerBase
     [HttpPost("banking-days")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
-    public async Task<List<DateOnly>> GetBankingDays([FromBody] GetBankingDaysRequest request, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
+    public async Task<List<DateOnly>> GetBankingDays([FromBody] Dto.GetBankingDaysRequest request, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.GetBankingDays(request.DateFrom, request.DateTo, cancellationToken)).ToList();
 
     /// <summary>
