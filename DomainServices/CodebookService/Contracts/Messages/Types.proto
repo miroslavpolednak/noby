@@ -669,6 +669,7 @@ message SalesArrangementTypesResponse {
 	   int32 SalesArrangementCategory = 3;
 	   google.protobuf.StringValue Description = 4;
 	   bool IsFormSentToCmp = 5;
+	   google.protobuf.Int32Value FeeId = 6;
 	}
 }
 

@@ -14,6 +14,8 @@ public sealed class MortgageRefinancingWorkflowParameters
 
     public sealed class FeeObject
     {
+        public int FeeId { get; set; }
+
         public decimal FeeSum { get; set; }
 
         public decimal FeeFinalSum { get; set; }
