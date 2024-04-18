@@ -5,7 +5,6 @@ using Abstraction = DomainServices.SalesArrangementService.Clients;
 namespace NOBY.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 
 internal sealed class GetMortgageBySalesArrangementHandler(
-    IMediator _mediator,
     Abstraction.ISalesArrangementServiceClient _salesArrangementService,
     IOfferServiceClient _offerService)
         : IRequestHandler<GetMortgageBySalesArrangementRequest, SharedDto.GetMortgageResponse>

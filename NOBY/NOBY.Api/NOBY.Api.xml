@@ -2163,6 +2163,11 @@
             </summary>
             <example>1</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.LockedIncome">
+            <summary>
+            Příznak zamknutí příjmů daného CustomerOnSA
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.Identities">
             <summary>
             Identity klienta v KB nebo MP

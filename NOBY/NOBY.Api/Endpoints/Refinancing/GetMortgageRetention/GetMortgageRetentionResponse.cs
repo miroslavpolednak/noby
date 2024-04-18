@@ -52,6 +52,5 @@ public sealed class GetMortgageRetentionResponse
     /// <summary>
     /// Označuje zda má být aktivní button Generovat dokument
     /// </summary>
-    // offerid is not null, refinancingState=1, dalsi podminka je prvni pinda pokud existuje offer
     public bool IsGenerateDocumentEnabled { get; set; }
 }
