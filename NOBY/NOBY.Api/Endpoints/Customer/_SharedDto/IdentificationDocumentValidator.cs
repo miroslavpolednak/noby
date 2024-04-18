@@ -19,6 +19,9 @@ internal sealed class IdentificationDocumentValidator : AbstractValidator<Identi
         RuleFor(document => document.IssuedOn)
             .LessThanOrEqualTo(DateTime.Today).WithErrorCode(CustomerValidationErrorCode);
 
+        RuleFor(document => document.Number)
+            .NotEmpty().WithErrorCode(CustomerValidationErrorCode);
+
         When(document => document.IssuingCountryId == 16,
              () =>
              {
