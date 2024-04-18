@@ -9,10 +9,11 @@ namespace DomainServices.OfferService.Api.Endpoints.Maintanance;
 
 public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<ImportOfferFromDatamartHandler> logger) : IRequestHandler<ImportOfferFromDatamartRequest, Empty>
 {
-    private const int _technicalTimeout = 500; // [s]
-    private const string _existBatchForProcessingSql = """SELECT COUNT(*) FROM dbo.D_CUST_RETENTION_BATCH b WHERE b.Load_Status='Complete' AND b.Was_Processed_By_Noby = 0""";
-    private const string _oldestBatchIdForProcessing = """SELECT TOP (1) b.Batch_Id FROM dbo.D_CUST_RETENTION_BATCH b WHERE b.Load_Status='Complete' AND b.Was_Processed_By_Noby = 0 ORDER BY b.Batch_Id""";
-    private const string _existDataForProcessingSql = """SELECT COUNT(*) FROM dbo.D_CUST_RETENTION_ACCOUNT a WHERE a.Was_Processed_By_Noby = 0 AND Batch_Id = @BatchId""";
+    private const int _technicalTimeout = 3600; // [s]
+    private int _maxAllowedBatchPerJob = 10;
+    private const string _existBatchForProcessingSql = """SELECT COUNT(*) FROM bdp.D_CUST_RETENTION_BATCH b WHERE b.Load_Status='Complete' AND b.Was_Processed_By_Noby = 0""";
+    private const string _oldestBatchIdForProcessing = """SELECT TOP (1) b.Batch_Id FROM bdp.D_CUST_RETENTION_BATCH b WHERE b.Load_Status='Complete' AND b.Was_Processed_By_Noby = 0 ORDER BY b.Batch_Id""";
+    private const string _existDataForProcessingSql = """SELECT COUNT(*) FROM bdp.D_CUST_RETENTION_OFFER o WHERE o.Was_Processed_By_Noby = 0 AND o.Batch_Id = @BatchId""";
 
     private readonly IConfiguration _config = config;
     private readonly ILogger<ImportOfferFromDatamartHandler> _logger = logger;
@@ -25,8 +26,13 @@ public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<Impor
         using var connection = new SqlConnection(connectionStr);
         await connection.OpenAsync(cancellationToken);
 
-        int maxAllowedBatchPerJob = 10;
-        while (await connection.ExecuteScalarAsync<int>(_existBatchForProcessingSql) > 0 && maxAllowedBatchPerJob > 0)
+        // Import data for pairing (translate account nbr to CaseId)
+        await connection.QueryFirstOrDefaultAsync<int>(
+        "[dbo].[ImportKonstDbView]",
+        commandType: CommandType.StoredProcedure,
+        commandTimeout: _technicalTimeout);
+
+        while (await connection.ExecuteScalarAsync<int>(_existBatchForProcessingSql) > 0 && _maxAllowedBatchPerJob > 0)
         {
             var batchId = await connection.ExecuteScalarAsync<long>(_oldestBatchIdForProcessing);
             _logger.BatchIdForProcessing(batchId);
@@ -48,7 +54,7 @@ public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<Impor
                 commandType: CommandType.StoredProcedure,
                 commandTimeout: _technicalTimeout);
             }
-
+            
             // Delete data from stage tables (datalake) after import (data for batchId) 
             await connection.QueryFirstOrDefaultAsync<int>(
                     "dbo.DeleteDatamartStageTables",
@@ -57,7 +63,7 @@ public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<Impor
                     commandTimeout: _technicalTimeout
                     );
 
-            maxAllowedBatchPerJob--;
+            _maxAllowedBatchPerJob--;
         }
         return new();
     }
