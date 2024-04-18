@@ -47,6 +47,7 @@ public class GetEasFormTests : IntegrationTestBase
         SalesArrangementServiceClient.MockGetSalesArrangement<SalesArrangementParametersDrawing>((sa, parameter) =>
         {
             sa.Drawing = parameter;
+            sa.SalesArrangementTypeId = (int)SalesArrangementTypes.Drawing;
             parameter.Applicant.Add(new Identity());
             ProductServiceClient.MockGetCustomersOnProduct(parameter.Applicant.First());
         });
