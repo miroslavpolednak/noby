@@ -51,7 +51,7 @@ public class OfferService
     public override async Task<GetResponseCodeListResponse> GetResponseCodeList(GetResponseCodeListRequest request, ServerCallContext context)
         => await _mediator.Send(request);
 
-    public override async Task<Empty> DeleteOffers(DeleteOffersRequest request, ServerCallContext context)
+    public override async Task<Empty> DeleteOfferList(DeleteOfferListRequest request, ServerCallContext context)
     {
         await _mediator.Send(request);
 

@@ -22,7 +22,7 @@ internal sealed class CommunicateMortgageRefixationHandler : IRequestHandler<Com
         var currentOffers = offerList.Where(o => ((OfferFlagTypes)o.Data.Flags).HasFlag(OfferFlagTypes.Current)).ToList();
         var communicatedOffers = offerList.Where(o => ((OfferFlagTypes)o.Data.Flags).HasFlag(OfferFlagTypes.Communicated)).ToList();
 
-        await _offerService.DeleteOffers(communicatedOffers.Except(currentOffers).Select(o => o.Data.OfferId), cancellationToken);
+        await _offerService.DeleteOfferList(communicatedOffers.Except(currentOffers).Select(o => o.Data.OfferId), cancellationToken);
 
         foreach (var offer in currentOffers)
         {

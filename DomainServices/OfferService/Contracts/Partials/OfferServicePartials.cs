@@ -63,6 +63,6 @@ public partial class GetResponseCodeListRequest
 {
 }
 
-public partial class DeleteOffersRequest : MediatR.IRequest
+public partial class DeleteOfferListRequest : MediatR.IRequest
 {
 }

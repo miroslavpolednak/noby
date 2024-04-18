@@ -2,6 +2,6 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
-message DeleteOffersRequest {
+message DeleteOfferListRequest {
 	repeated int32 OfferIds = 1;
 }
