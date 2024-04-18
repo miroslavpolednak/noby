@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.DeleteOffers;
 
-internal class DeleteOffersHandler : IRequestHandler<DeleteOffersRequest>
+internal sealed class DeleteOffersHandler : IRequestHandler<DeleteOffersRequest>
 {
     private readonly OfferServiceDbContext _dbContext;
 

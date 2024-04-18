@@ -5,8 +5,12 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement;
 
-internal sealed class GetSalesArrangementHandler
-    : IRequestHandler<GetSalesArrangementRequest, GetSalesArrangementResponse>
+internal sealed class GetSalesArrangementHandler(
+    ICurrentUserAccessor _currentUser,
+    ICaseServiceClient _caseService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization)
+        : IRequestHandler<GetSalesArrangementRequest, GetSalesArrangementResponse>
 {
     public async Task<GetSalesArrangementResponse> Handle(GetSalesArrangementRequest request, CancellationToken cancellationToken)
     {
@@ -50,26 +54,10 @@ internal sealed class GetSalesArrangementHandler
             _SA.SalesArrangement.ParametersOneofCase.CustomerChange => saInstance.CustomerChange.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602A => saInstance.CustomerChange3602A.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602B => saInstance.CustomerChange3602B.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602C => saInstance.CustomerChange3602C.ToApiResponse(),
             _SA.SalesArrangement.ParametersOneofCase.Retention => saInstance.Retention,
             _SA.SalesArrangement.ParametersOneofCase.Refixation => saInstance.Refixation,
             _SA.SalesArrangement.ParametersOneofCase.None => null,
             _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };
-
-    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-
-    public GetSalesArrangementHandler(
-        ICurrentUserAccessor currentUser,
-        ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
-    {
-        _currentUser = currentUser;
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-        _salesArrangementAuthorization = salesArrangementAuthorization;
-    }
 }
