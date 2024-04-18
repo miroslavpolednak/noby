@@ -18,6 +18,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Seznam dostupných délek fixací pro refixace
     /// </summary>
     /// <remarks>
+    /// Délky fixace jsou uvedeny v měsících.
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>

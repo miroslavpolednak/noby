@@ -26,7 +26,7 @@ internal sealed class MockEasSimulationHTClient
         throw new NotImplementedException();
     }
 
-    public Task<MortgageExtraPaymentResult> RunSimulationExtraPayment(long caseId, DateTime extraPaymentDate, decimal extraPaymentAmount, int extraPaymentReasonId, bool isExtraPaymentComplete, CancellationToken cancellationToken)
+    public Task<MortgageExtraPaymentResult> RunSimulationExtraPayment(long caseId, DateTime extraPaymentDate, decimal extraPaymentAmount, int extraPaymentReasonId, bool isExtraPaymentFullyRepaid, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

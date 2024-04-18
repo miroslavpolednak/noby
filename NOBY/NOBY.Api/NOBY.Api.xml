@@ -2679,6 +2679,11 @@
             True = set flag, False = unset flag
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.FeeAmountDiscounted">
+            <summary>
+            Sleva z pokuty
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentDate">
             <summary>
             Datum mimořádné splátky
@@ -2762,6 +2767,16 @@
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.NewPaymentAmount">
             <summary>
             Nová výše splátky, pokud se snižuje výše splátky splacením mimořádné splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.FeeAmountTotal">
+            <summary>
+            Spočítaná pokuta (Pokuta – sleva za pokutu, minimálně 0)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.ExtraPaymentAmountTotal">
+            <summary>
+            Spočítaná nová výše splátky jako ExtraPaymentAmount + FeeAmountTotal (s odečtenou slevou)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest.InterestRateDiscount">
@@ -3410,6 +3425,11 @@
             Nejzazší datum podpisu dokumentu
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetAvailableFixedRatePeriods.GetAvailableFixedRatePeriodsResponse.AvailableFixedRatePeriods">
+            <summary>
+            Dostupné délky fixace pro daný Case v měsících
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetInterestRatesValidFrom.GetInterestRatesValidFromRequest.CaseId">
             <summary>
             ID Case-u
@@ -3588,6 +3608,7 @@
             Seznam dostupných délek fixací pro refixace
             </summary>
             <remarks>
+            Délky fixace jsou uvedeny v měsících.
             
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>

@@ -66,4 +66,14 @@ public sealed class SimulateMortgageExtraPaymentResponse
     /// Nová výše splátky, pokud se snižuje výše splátky splacením mimořádné splátky
     /// </summary>
     public decimal NewPaymentAmount { get; set; }
+
+    /// <summary>
+    /// Spočítaná pokuta (Pokuta – sleva za pokutu, minimálně 0)
+    /// </summary>
+    public decimal FeeAmountTotal { get; set; }
+
+    /// <summary>
+    /// Spočítaná nová výše splátky jako ExtraPaymentAmount + FeeAmountTotal (s odečtenou slevou)
+    /// </summary>
+    public decimal ExtraPaymentAmountTotal { get; set; }
 }

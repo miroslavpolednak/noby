@@ -12,14 +12,14 @@ internal sealed class SimulateMortgageExtraPaymentHandler(IOfferServiceClient _o
             CaseId = request.CaseId,
             BasicParameters = new()
             {
-                FeeAmountDiscount = 0
+                FeeAmountDiscounted = request.FeeAmountDiscounted
             },
             SimulationInputs = new()
             {
                 ExtraPaymentAmount = request.ExtraPaymentAmount,
                 ExtraPaymentDate = request.ExtraPaymentDate,
                 ExtraPaymentReasonId = request.ExtraPaymentReasonId,
-                IsExtraPaymentComplete = request.IsExtraPaymentFullyRepaid
+                IsExtraPaymentFullyRepaid = request.IsExtraPaymentFullyRepaid
             }
         };
 
@@ -30,17 +30,20 @@ internal sealed class SimulateMortgageExtraPaymentHandler(IOfferServiceClient _o
         {
             OfferId = result.OfferId,
             ExtraPaymentAmount = result.SimulationResults.ExtraPaymentAmount,
-            FeeAmount = result.SimulationResults.ExtraPaymentAmount,
+            FeeAmount = result.SimulationResults.FeeAmount,
             InterestAmount = result.SimulationResults.InterestAmount,
             InterestCovid = result.SimulationResults.InterestCovid,
             InterestOnLate = result.SimulationResults.InterestOnLate,
-            IsExtraPaymentComplete = result.SimulationResults.IsExtraPaymentComplete,
+            IsExtraPaymentComplete = result.SimulationResults.IsExtraPaymentFullyRepaid,
             NewMaturityDate = result.SimulationResults.NewMaturityDate,
             IsLoanOverdue = result.SimulationResults.IsLoanOverdue,
             IsPaymentReduced = result.SimulationResults.IsPaymentReduced,
             NewPaymentAmount = result.SimulationResults.NewPaymentAmount,
             OtherUnpaidFees = result.SimulationResults.OtherUnpaidFees,
-            PrincipalAmount = result.SimulationResults.PrincipalAmount
+            PrincipalAmount = result.SimulationResults.PrincipalAmount,
+            
+            FeeAmountTotal = result.SimulationResults.FeeAmount - request.FeeAmountDiscounted.GetValueOrDefault(),
+            ExtraPaymentAmountTotal = result.SimulationResults.ExtraPaymentAmount + result.SimulationResults.FeeAmount - request.FeeAmountDiscounted.GetValueOrDefault()
         };
     }
 }

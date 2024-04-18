@@ -8,7 +8,7 @@ namespace NOBY.Api.Endpoints.Offer;
 [ApiController]
 [Route("api")]
 [ApiVersion(1)]
-public sealed class OfferController : ControllerBase
+public sealed class OfferController(IMediator _mediator) : ControllerBase
 {
     /// <summary>
     /// Vezme stávající simulace k refixacím, aktuální i sdělené a přepočítá všechny s novou slevou na sazbě
@@ -21,6 +21,7 @@ public sealed class OfferController : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobySkipCaseStateAndProductSAValidation]
+    [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListResponse), StatusCodes.Status200OK)]
@@ -250,7 +251,4 @@ public sealed class OfferController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task LinkMortgageExtraPayment([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest request)
         => await _mediator.Send(request.InfuseId(caseId, salesArrangementId));
-
-    private readonly IMediator _mediator;
-    public OfferController(IMediator mediator) => _mediator = mediator;
 }

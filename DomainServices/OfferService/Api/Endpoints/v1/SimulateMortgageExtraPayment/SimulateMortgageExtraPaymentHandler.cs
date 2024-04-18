@@ -16,7 +16,7 @@ internal sealed class SimulateMortgageExtraPaymentHandler(
     public async Task<SimulateMortgageExtraPaymentResponse> Handle(SimulateMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
     {
         // get simulation outputs
-        var easSimulationRes = await _easSimulationHTClient.RunSimulationExtraPayment(request.CaseId, request.SimulationInputs.ExtraPaymentDate, request.SimulationInputs.ExtraPaymentAmount, request.SimulationInputs.ExtraPaymentReasonId, request.SimulationInputs.IsExtraPaymentComplete, cancellationToken);
+        var easSimulationRes = await _easSimulationHTClient.RunSimulationExtraPayment(request.CaseId, request.SimulationInputs.ExtraPaymentDate, request.SimulationInputs.ExtraPaymentAmount, request.SimulationInputs.ExtraPaymentReasonId, request.SimulationInputs.IsExtraPaymentFullyRepaid, cancellationToken);
 
         // doc entita
         var documentEntity = new Database.DocumentDataEntities.MortgageExtraPaymentData

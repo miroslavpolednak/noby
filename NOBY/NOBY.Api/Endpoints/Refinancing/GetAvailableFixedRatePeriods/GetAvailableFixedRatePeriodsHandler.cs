@@ -15,16 +15,17 @@ internal sealed class GetAvailableFixedRatePeriodsHandler(
         // info o hypo
         var productInstance = await _productService.GetMortgage(request.CaseId, cancellationToken);
 
+        if (productInstance.Mortgage.FixedRateValidTo is null)
+        {
+            throw new NobyValidationException("Mortgage.FixedRateValidTo is Null");
+        }
+
         // seznam jiz ulozenych offer
         var offers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken);
 
         // periody pouzite v ulozenych offers
         List<int> usedPeriods = offers
-            ?.Where(t =>
-            {
-                var flag = (OfferFlagTypes)t.Data.Flags;
-                return flag.HasFlag(OfferFlagTypes.Current) && !flag.HasFlag(OfferFlagTypes.Communicated);
-            })
+            ?.Where(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Current))
             .Select(t => t.MortgageRefixation.SimulationInputs.FixedRatePeriod)
             .ToList() ?? [];
 
@@ -33,9 +34,7 @@ internal sealed class GetAvailableFixedRatePeriodsHandler(
             .Where(t => t.IsValid && t.MandantId == (int)Mandants.Kb && t.ProductTypeId == productInstance.Mortgage.ProductTypeId)
             .ToList();
 
-        // nevim kdy muze byt FixedRateValidTo NULL, ale na DEVu se mi to stavalo... co s tim?
-        DateTime productFixedRateValidTo = (DateTime?)productInstance.Mortgage.FixedRateValidTo ?? DateTime.Now;
-
+        DateTime productFixedRateValidTo = (DateTime)productInstance.Mortgage.FixedRateValidTo;
         // prvni perioda fixace, ktera presahuje splatnost uveru
         int? minOverflowedPeriod = availablePeriods
             .Where(t => productFixedRateValidTo.AddMonths(t.FixedRatePeriod) > productInstance.Mortgage.LoanDueDate)

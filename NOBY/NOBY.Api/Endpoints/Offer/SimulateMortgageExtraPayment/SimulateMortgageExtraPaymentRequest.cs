@@ -10,6 +10,11 @@ public sealed class SimulateMortgageExtraPaymentRequest
     internal long CaseId { get; set; }
 
     /// <summary>
+    /// Sleva z pokuty
+    /// </summary>
+    public decimal? FeeAmountDiscounted { get; set; }
+
+    /// <summary>
     /// Datum mimořádné splátky
     /// </summary>
     [Required]

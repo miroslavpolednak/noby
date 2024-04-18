@@ -16,12 +16,12 @@ internal sealed class MortgageExtraPaymentData
         public DateTime ExtraPaymentDate { get; set; }
         public decimal ExtraPaymentAmount { get; set; }
         public int ExtraPaymentReasonId { get; set; }
-        public bool IsExtraPaymentComplete { get; set; }
+        public bool IsExtraPaymentFullyRepaid { get; set; }
     }
 
     public sealed class SimulationOutputsData
     {
-        public bool IsExtraPaymentComplete { get; set; }
+        public bool IsExtraPaymentFullyRepaid { get; set; }
         public decimal ExtraPaymentAmount { get; set; }
         public decimal FeeAmount { get; set; }
         public decimal PrincipalAmount { get; set; }
@@ -37,6 +37,6 @@ internal sealed class MortgageExtraPaymentData
 
     public sealed class BasicParametersData
     {
-        public decimal? FeeAmountDiscount { get; set; }
+        public decimal? FeeAmountDiscounted { get; set; }
     }
 }
