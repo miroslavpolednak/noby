@@ -15,7 +15,7 @@
     <DocumentationFile>NOBY.Api.xml</DocumentationFile>
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	<PublishDocumentationFile>true</PublishDocumentationFile>
-    <NoWarn>1701;1702;CS1573;CA1848</NoWarn>
+    <NoWarn>1701;1702;CS1573;CA1848;CA1707</NoWarn>
   </PropertyGroup>
 	
 	<PropertyGroup>

@@ -24,7 +24,7 @@ internal sealed class MortgageExtraPaymentDataMapper
     {
         return new()
         {
-            FeeAmountDiscount = basicParameters.FeeAmountDiscount
+            FeeAmountDiscounted = basicParameters.FeeAmountDiscounted
         };
     }
 
@@ -35,7 +35,7 @@ internal sealed class MortgageExtraPaymentDataMapper
             ExtraPaymentAmount = inputs.ExtraPaymentAmount,
             ExtraPaymentDate = inputs.ExtraPaymentDate,
             ExtraPaymentReasonId = inputs.ExtraPaymentReasonId,
-            IsExtraPaymentComplete = inputs.IsExtraPaymentComplete
+            IsExtraPaymentFullyRepaid = inputs.IsExtraPaymentFullyRepaid
         };
     }
 
@@ -48,7 +48,7 @@ internal sealed class MortgageExtraPaymentDataMapper
             InterestAmount = result.InterestAmount,
             InterestCovid = result.InterestCovid,
             InterestOnLate = result.InterestOnLate,
-            IsExtraPaymentComplete = result.IsExtraPaymentComplete,
+            IsExtraPaymentFullyRepaid = result.IsExtraPaymentComplete,
             IsLoanOverdue = result.IsLoanOverdue,
             IsPaymentReduced = result.IsPaymentReduced,
             NewMaturityDate = result.NewMaturityDate,
@@ -62,7 +62,7 @@ internal sealed class MortgageExtraPaymentDataMapper
     {
         return new()
         {
-            FeeAmountDiscount = basicParameters.FeeAmountDiscount
+            FeeAmountDiscounted = basicParameters.FeeAmountDiscounted
         };
     }
 
@@ -73,7 +73,7 @@ internal sealed class MortgageExtraPaymentDataMapper
             ExtraPaymentAmount = inputs.ExtraPaymentAmount,
             ExtraPaymentDate = inputs.ExtraPaymentDate,
             ExtraPaymentReasonId = inputs.ExtraPaymentReasonId,
-            IsExtraPaymentComplete = inputs.IsExtraPaymentComplete
+            IsExtraPaymentFullyRepaid = inputs.IsExtraPaymentFullyRepaid
         };
     }
 
@@ -86,7 +86,7 @@ internal sealed class MortgageExtraPaymentDataMapper
             InterestAmount = output.InterestAmount,
             InterestCovid = output.InterestCovid,
             InterestOnLate = output.InterestOnLate,
-            IsExtraPaymentComplete = output.IsExtraPaymentComplete,
+            IsExtraPaymentFullyRepaid = output.IsExtraPaymentFullyRepaid,
             IsLoanOverdue = output.IsLoanOverdue,
             IsPaymentReduced = output.IsPaymentReduced,
             NewMaturityDate = output.NewMaturityDate,
