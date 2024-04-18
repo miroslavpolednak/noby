@@ -18,6 +18,11 @@ public class CustomerInHousehold
     /// <example>1</example>
     public int RoleId { get; set; }
 
+    /// <summary>
+    /// Příznak zamknutí příjmů daného CustomerOnSA
+    /// </summary>
+    public bool LockedIncome { get; set; }
+
     public DateTime? LockedIncomeDateTime { get; set; }
 
     public bool IsIdentificationRequested => !Identities?.Any() ?? true;
