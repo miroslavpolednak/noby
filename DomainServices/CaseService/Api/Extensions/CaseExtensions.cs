@@ -37,6 +37,7 @@ internal static class CaseExtensions
         {
             (6, 1) => SignatureTypes.Paper.ToByte(),
             (6, 2) => SignatureTypes.Electronic.ToByte(),
+            (6, 3) => SignatureTypes.Paper.ToByte(),
             _ => null
         };
 
