@@ -148,7 +148,8 @@ internal sealed class RealESignaturesClient
                 TemplateVersion = docVersion.TemplateProcessingType,
                 Name = request.DocumentData.FileName,
                 FormId = request.DocumentData.FormId,
-                ContractNumber = request.DocumentData.ContractNumber
+                ContractNumber = request.DocumentData.ContractNumber,
+                AutoSendToCmp = true
             },
             ClientData = new()
             {
@@ -169,7 +170,8 @@ internal sealed class RealESignaturesClient
                     }
                 }
             },
-            AdditionalData = request.AdditionalData
+            AdditionalData = request.AdditionalData,
+
         };
 
         if (request.OtherClients is not null)
