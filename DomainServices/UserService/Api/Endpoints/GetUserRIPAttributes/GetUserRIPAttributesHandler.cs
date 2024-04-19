@@ -2,8 +2,8 @@
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserRIPAttributes;
 
-internal sealed class GetUserRIPAttributesHandler(IConnectionProvider db)
-        : IRequestHandler<Contracts.GetUserRIPAttributesRequest, Contracts.UserRIPAttributes>
+internal sealed class GetUserRIPAttributesHandler(IConnectionProvider _db)
+    : IRequestHandler<Contracts.GetUserRIPAttributesRequest, Contracts.UserRIPAttributes>
 {
     public async Task<UserRIPAttributes> Handle(GetUserRIPAttributesRequest request, CancellationToken cancellationToken)
     {
