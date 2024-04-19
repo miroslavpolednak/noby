@@ -22,7 +22,9 @@ internal sealed class DeleteHouseholdHandler
 
         // kontrola ze to neni main household
         if (household.HouseholdTypeId == HouseholdTypes.Main && !request.HardDelete)
+        {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CantDeleteDebtorHousehold);
+        }
 
         //Invalidate DocumentOnSa (stop signing)
         var documentsOnSaToSing = await _documentOnSAServiceClient.GetDocumentsToSignList(household.SalesArrangementId, cancellationToken);

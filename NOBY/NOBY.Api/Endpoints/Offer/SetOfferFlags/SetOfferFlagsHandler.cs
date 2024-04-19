@@ -3,8 +3,8 @@ using DomainServices.OfferService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.SetOfferFlags;
 
-internal sealed class SetOfferFlagsHandler
-    : IRequestHandler<SetOfferFlagsRequest>
+internal sealed class SetOfferFlagsHandler(IOfferServiceClient _offerService)
+        : IRequestHandler<SetOfferFlagsRequest>
 {
     public async Task Handle(SetOfferFlagsRequest request, CancellationToken cancellationToken)
     {
@@ -50,12 +50,5 @@ internal sealed class SetOfferFlagsHandler
         {
             throw new NobyValidationException("Selected offer already exist");
         }
-    }
-
-    private readonly IOfferServiceClient _offerService;
-
-    public SetOfferFlagsHandler(IOfferServiceClient offerService)
-    {
-        _offerService = offerService;
     }
 }

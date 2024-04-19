@@ -52,7 +52,7 @@ public sealed class GetSalesArrangementResponse
     /// <summary>
     /// Id odpovídajícího procesu ve SB
     /// </summary>
-    public long? TaskProcessId { get; set; }
+    public long? ProcessId { get; set; }
 
     /// <summary>
     /// Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.

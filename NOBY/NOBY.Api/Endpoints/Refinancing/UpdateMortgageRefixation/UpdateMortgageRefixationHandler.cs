@@ -7,8 +7,11 @@ using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 
-internal sealed class UpdateMortgageRefixationHandler
-    : IRequestHandler<UpdateMortgageRefixationRequest, UpdateMortgageRefixationResponse>
+internal sealed class UpdateMortgageRefixationHandler(
+    IOfferServiceClient _offerService, 
+    ISalesArrangementServiceClient _salesArrangementService, 
+    MortgageRefinancingWorkflowService _retentionWorkflowService)
+        : IRequestHandler<UpdateMortgageRefixationRequest, UpdateMortgageRefixationResponse>
 {
     public async Task<UpdateMortgageRefixationResponse> Handle(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
@@ -17,7 +20,7 @@ internal sealed class UpdateMortgageRefixationHandler
         var mortgageParameters = new MortgageRefinancingWorkflowParameters
         {
             CaseId = salesArrangement.CaseId,
-            TaskProcessId = salesArrangement.TaskProcessId!.Value,
+            ProcessId = salesArrangement.ProcessId!.Value,
             LoanInterestRateDiscount = request.InterestRateDiscount
         };
 
@@ -32,7 +35,7 @@ internal sealed class UpdateMortgageRefixationHandler
 
         return new UpdateMortgageRefixationResponse
         {
-            ProcessId = salesArrangement.TaskProcessId!.Value
+            ProcessId = salesArrangement.ProcessId!.Value
         };
     }
 
@@ -71,16 +74,5 @@ internal sealed class UpdateMortgageRefixationHandler
             SalesArrangementId = salesArrangement.SalesArrangementId,
             Refixation = salesArrangement.Refixation
         }, cancellationToken);
-    }
-
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly MortgageRefinancingWorkflowService _retentionWorkflowService;
-
-    public UpdateMortgageRefixationHandler(IOfferServiceClient offerService, ISalesArrangementServiceClient salesArrangementService, MortgageRefinancingWorkflowService retentionWorkflowService)
-    {
-        _offerService = offerService;
-        _salesArrangementService = salesArrangementService;
-        _retentionWorkflowService = retentionWorkflowService;
     }
 }

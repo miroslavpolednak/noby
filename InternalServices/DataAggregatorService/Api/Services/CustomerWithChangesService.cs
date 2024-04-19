@@ -27,7 +27,11 @@ public class CustomerWithChangesService
         var customerOnSa = customerOnSaList.FirstOrDefault(c => c.CustomerIdentifiers.Contains(identity));
 
         if (customerOnSa is not null)
+        {
+            customerOnSa = await _customerOnSAService.GetCustomer(customerOnSa.CustomerOnSAId, cancellationToken);
+
             _customerChangeDataMerger.MergeAll(customer, customerOnSa);
+        }
 
         return (customer, customerOnSa);
     }
@@ -60,6 +64,9 @@ public class CustomerWithChangesService
 
             if (customerOnSa is null)
                 continue;
+
+            //CustomerOnSa full detail
+            customerOnSa = await _customerOnSAService.GetCustomer(customerOnSa.CustomerOnSAId, cancellationToken);
 
             _customerChangeDataMerger.MergeAll(customerDetail, customerOnSa);
         }

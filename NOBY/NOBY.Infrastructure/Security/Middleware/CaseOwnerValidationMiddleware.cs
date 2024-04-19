@@ -5,6 +5,7 @@ using DomainServices.SalesArrangementService.Clients;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using NOBY.Infrastructure.ErrorHandling;
 using NOBY.Infrastructure.Security.Attributes;
 
 #pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
@@ -111,6 +112,13 @@ public sealed class CaseOwnerValidationMiddleware
                 };
 
                 SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState, !skipValidateCaseStateAndProductSA, salesArrangementTypeId);
+
+                // pokud endpoint vyzaduje specificky stav Case
+                var requiredCaseStates = endpoint?.Metadata.OfType<NobyRequiredCaseStatesAttribute>().FirstOrDefault();
+                if ((requiredCaseStates?.CaseStates.Length ?? 0) > 0 && !requiredCaseStates!.CaseStates.Contains((CaseStates)caseInstance.CaseState))
+                {
+                    throw new NobyValidationException(90032, $"Case is in forbidden State: {caseInstance.CaseState}; required states: {string.Join(",", requiredCaseStates.CaseStates)}");
+                }
             }
 
             async Task<(int OwnerUserId, int CaseState)> getCaseDataFromDetail()

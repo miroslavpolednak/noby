@@ -5,8 +5,12 @@ using DomainServices.UserService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
-internal sealed class SimulateMortgageHandler
-    : IRequestHandler<SimulateMortgageRequest, SimulateMortgageResponse>
+internal sealed class SimulateMortgageHandler(
+    ICurrentUserAccessor _userAccessor,
+    IOfferServiceClient _offerService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IUserServiceClient _userService)
+        : IRequestHandler<SimulateMortgageRequest, SimulateMortgageResponse>
 {
     public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellationToken)
     {
@@ -52,22 +56,5 @@ internal sealed class SimulateMortgageHandler
             SimulationResults = result.SimulationResults.ToApiResponse(model.SimulationInputs, result.AdditionalSimulationResults),
             CreditWorthinessSimpleResults = result.CreditWorthinessSimpleResults.ToApiResponse()
         };
-    }
-
-    private readonly ICurrentUserAccessor _userAccessor;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IUserServiceClient _userService;
-    private readonly IOfferServiceClient _offerService;
-    
-    public SimulateMortgageHandler(
-        ICurrentUserAccessor userAccessor,
-        IOfferServiceClient offerService, 
-        ISalesArrangementServiceClient salesArrangementService,
-        IUserServiceClient userService)
-    {
-        _userAccessor = userAccessor;
-        _salesArrangementService = salesArrangementService;
-        _userService = userService;
-        _offerService = offerService;
     }
 }

@@ -37,15 +37,15 @@ public class MortgageRefinancingDocumentService
         if (GetManagedByRC2(salesArrangement) != true)
             throw new NobyValidationException(90032, "ManagedByRC2 is true or SA is not retention SA");
 
-        if (salesArrangement.State is not (int)SalesArrangementStates.InProgress)
-            throw new NobyValidationException(90032, "SA has to be in state InProgress(1)");
+        if (salesArrangement.State is not ((int)SalesArrangementStates.InProgress or (int)SalesArrangementStates.NewArrangement))
+            throw new NobyValidationException(90032, "SA has to be in state InProgress(1) or NewArrangement(5)");
 
         return salesArrangement;
     }
 
     public async Task<bool> IsIndividualPriceValid(SalesArrangement salesArrangement, MortgageRefinancingIndividualPrice offerIndividualPrice, CancellationToken cancellationToken)
     {
-        var workflowIndividualPrice = await _refinancingWorkflowService.GetIndividualPrices(salesArrangement.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
+        var workflowIndividualPrice = await _refinancingWorkflowService.GetIndividualPrices(salesArrangement.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
 
         return offerIndividualPrice.Equals(workflowIndividualPrice);
     }

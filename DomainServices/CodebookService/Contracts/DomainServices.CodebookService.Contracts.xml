@@ -1112,6 +1112,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.IsFormSentToCmpFieldNumber">
             <summary>Field number for the "IsFormSentToCmp" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementTypesResponse.Types.SalesArrangementTypeItem.FeeIdFieldNumber">
+            <summary>Field number for the "FeeId" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.SigningMethodsForNaturalPersonResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
@@ -1508,6 +1511,21 @@
         </member>
         <member name="P:DomainServices.CodebookService.Contracts.v1.GenericCodebookReflection.Descriptor">
             <summary>File descriptor for Messages/GenericCodebook.proto</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.GetNonBankingDaysReflection">
+            <summary>Holder for reflection information generated from Messages/GetNonBankingDays.proto</summary>
+        </member>
+        <member name="P:DomainServices.CodebookService.Contracts.v1.GetNonBankingDaysReflection.Descriptor">
+            <summary>File descriptor for Messages/GetNonBankingDays.proto</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetNonBankingDaysRequest.DateFromFieldNumber">
+            <summary>Field number for the "DateFrom" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetNonBankingDaysRequest.DateToFieldNumber">
+            <summary>Field number for the "DateTo" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.GetNonBankingDaysResponse.NonBankingDaysFieldNumber">
+            <summary>Field number for the "NonBankingDays" field.</summary>
         </member>
         <member name="T:DomainServices.CodebookService.Contracts.v1.GetACVAndBagmanRealEstateTypeReflection">
             <summary>Holder for reflection information generated from Messages/GetACVAndBagmanRealEstateType.proto</summary>

@@ -171,6 +171,12 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
         System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.GetInterestRate_response> RS_GetInterestRateAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.GetInterestRate_request message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://asseco/EAS/EAS_WS_SB_Services/extraPayment", ReplyAction="http://asseco/EAS/EAS_WS_SB_Services/extraPayment")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_CommonResponse))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Coll_Message))]
+        System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.extraPaymentCalculation_Response> extraPaymentCalculationAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.extraPaymentCalculation_Request request);
     }
     
     /// <remarks/>
@@ -385,6 +391,494 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
             set
             {
                 this.mandantField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class ExtraPaymentCalc
+    {
+        
+        private decimal other_unpaid_feesField;
+        
+        private decimal contract_penaltiesField;
+        
+        private decimal interest_amountField;
+        
+        private decimal interest_on_lateField;
+        
+        private decimal interest_covidField;
+        
+        private decimal basis_for_calculation_penaltiesField;
+        
+        private int penalties_typeField;
+        
+        private decimal uvn_amountField;
+        
+        private System.DateTime new_maturity_dateField;
+        
+        private decimal new_payment_amountField;
+        
+        private decimal principal_amountField;
+        
+        private decimal extra_payment_sumField;
+        
+        private int repayment_typeField;
+        
+        private System.DateTime contract_anniversary_fromField;
+        
+        private System.DateTime contract_anniversary_toField;
+        
+        private decimal contract_anniversary_paymentField;
+        
+        private System.DateTime fixation_anniversary_fromField;
+        
+        private System.DateTime fixation_anniversary_toField;
+        
+        private decimal fixation_anniversary_paymentField;
+        
+        private int installment_method_of_calculationField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public decimal other_unpaid_fees
+        {
+            get
+            {
+                return this.other_unpaid_feesField;
+            }
+            set
+            {
+                this.other_unpaid_feesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public decimal contract_penalties
+        {
+            get
+            {
+                return this.contract_penaltiesField;
+            }
+            set
+            {
+                this.contract_penaltiesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public decimal interest_amount
+        {
+            get
+            {
+                return this.interest_amountField;
+            }
+            set
+            {
+                this.interest_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public decimal interest_on_late
+        {
+            get
+            {
+                return this.interest_on_lateField;
+            }
+            set
+            {
+                this.interest_on_lateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public decimal interest_covid
+        {
+            get
+            {
+                return this.interest_covidField;
+            }
+            set
+            {
+                this.interest_covidField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public decimal basis_for_calculation_penalties
+        {
+            get
+            {
+                return this.basis_for_calculation_penaltiesField;
+            }
+            set
+            {
+                this.basis_for_calculation_penaltiesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public int penalties_type
+        {
+            get
+            {
+                return this.penalties_typeField;
+            }
+            set
+            {
+                this.penalties_typeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public decimal uvn_amount
+        {
+            get
+            {
+                return this.uvn_amountField;
+            }
+            set
+            {
+                this.uvn_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public System.DateTime new_maturity_date
+        {
+            get
+            {
+                return this.new_maturity_dateField;
+            }
+            set
+            {
+                this.new_maturity_dateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        public decimal new_payment_amount
+        {
+            get
+            {
+                return this.new_payment_amountField;
+            }
+            set
+            {
+                this.new_payment_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        public decimal principal_amount
+        {
+            get
+            {
+                return this.principal_amountField;
+            }
+            set
+            {
+                this.principal_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        public decimal extra_payment_sum
+        {
+            get
+            {
+                return this.extra_payment_sumField;
+            }
+            set
+            {
+                this.extra_payment_sumField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        public int repayment_type
+        {
+            get
+            {
+                return this.repayment_typeField;
+            }
+            set
+            {
+                this.repayment_typeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        public System.DateTime contract_anniversary_from
+        {
+            get
+            {
+                return this.contract_anniversary_fromField;
+            }
+            set
+            {
+                this.contract_anniversary_fromField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        public System.DateTime contract_anniversary_to
+        {
+            get
+            {
+                return this.contract_anniversary_toField;
+            }
+            set
+            {
+                this.contract_anniversary_toField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
+        public decimal contract_anniversary_payment
+        {
+            get
+            {
+                return this.contract_anniversary_paymentField;
+            }
+            set
+            {
+                this.contract_anniversary_paymentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=16)]
+        public System.DateTime fixation_anniversary_from
+        {
+            get
+            {
+                return this.fixation_anniversary_fromField;
+            }
+            set
+            {
+                this.fixation_anniversary_fromField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=17)]
+        public System.DateTime fixation_anniversary_to
+        {
+            get
+            {
+                return this.fixation_anniversary_toField;
+            }
+            set
+            {
+                this.fixation_anniversary_toField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=18)]
+        public decimal fixation_anniversary_payment
+        {
+            get
+            {
+                return this.fixation_anniversary_paymentField;
+            }
+            set
+            {
+                this.fixation_anniversary_paymentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=19)]
+        public int installment_method_of_calculation
+        {
+            get
+            {
+                return this.installment_method_of_calculationField;
+            }
+            set
+            {
+                this.installment_method_of_calculationField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class extraPaymentCalculation_Response
+    {
+        
+        private ExtraPaymentCalc extraPaymentField;
+        
+        private int errorField;
+        
+        private string error_messageField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public ExtraPaymentCalc extraPayment
+        {
+            get
+            {
+                return this.extraPaymentField;
+            }
+            set
+            {
+                this.extraPaymentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public int error
+        {
+            get
+            {
+                return this.errorField;
+            }
+            set
+            {
+                this.errorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string error_message
+        {
+            get
+            {
+                return this.error_messageField;
+            }
+            set
+            {
+                this.error_messageField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://asseco/EAS/EAS_WS_SB_Services")]
+    public partial class extraPaymentCalculation_Request
+    {
+        
+        private int loan_idField;
+        
+        private int installment_method_of_calculationField;
+        
+        private decimal payment_amountField;
+        
+        private System.DateTime payment_dateField;
+        
+        private int payment_reasonField;
+        
+        private decimal reference_rateField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int loan_id
+        {
+            get
+            {
+                return this.loan_idField;
+            }
+            set
+            {
+                this.loan_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public int installment_method_of_calculation
+        {
+            get
+            {
+                return this.installment_method_of_calculationField;
+            }
+            set
+            {
+                this.installment_method_of_calculationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public decimal payment_amount
+        {
+            get
+            {
+                return this.payment_amountField;
+            }
+            set
+            {
+                this.payment_amountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public System.DateTime payment_date
+        {
+            get
+            {
+                return this.payment_dateField;
+            }
+            set
+            {
+                this.payment_dateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public int payment_reason
+        {
+            get
+            {
+                return this.payment_reasonField;
+            }
+            set
+            {
+                this.payment_reasonField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public decimal reference_rate
+        {
+            get
+            {
+                return this.reference_rateField;
+            }
+            set
+            {
+                this.reference_rateField = value;
             }
         }
     }
@@ -6601,227 +7095,195 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
     public partial class SimUvnDopis
     {
         
-        private decimal simZustJistinaField;
+        private bool full_repaymentField;
         
-        private decimal simZustUrokyBezneField;
+        private decimal extra_payment_sumField;
         
-        private decimal simZustUrokyOdlozeneField;
+        private decimal uvn_amountField;
         
-        private decimal simZustPoplatkyField;
+        private decimal principal_amountField;
         
-        private decimal simZustPoplatkyMimField;
+        private decimal interest_amountField;
         
-        private decimal simZustSmluvniPokutyField;
+        private decimal other_unpaid_feesField;
         
-        private decimal simZustUrokyzProdleniField;
+        private decimal interest_on_lateField;
         
-        private decimal simZustUrokySankciField;
+        private decimal interest_covidField;
         
-        private decimal simZustPojisteniField;
+        private bool loan_overdueField;
         
-        private decimal simCrUrokyBezneField;
+        private bool payment_reductionField;
         
-        private decimal simCrUrokyOdlozeneField;
+        private System.DateTime new_maturity_dateField;
         
-        private decimal simCrUrokyzProdleniField;
-        
-        private decimal simCrUrokySankcniField;
-        
-        private decimal simPreplatekField;
+        private decimal new_payment_amountField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public decimal simZustJistina
+        public bool full_repayment
         {
             get
             {
-                return this.simZustJistinaField;
+                return this.full_repaymentField;
             }
             set
             {
-                this.simZustJistinaField = value;
+                this.full_repaymentField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public decimal simZustUrokyBezne
+        public decimal extra_payment_sum
         {
             get
             {
-                return this.simZustUrokyBezneField;
+                return this.extra_payment_sumField;
             }
             set
             {
-                this.simZustUrokyBezneField = value;
+                this.extra_payment_sumField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public decimal simZustUrokyOdlozene
+        public decimal uvn_amount
         {
             get
             {
-                return this.simZustUrokyOdlozeneField;
+                return this.uvn_amountField;
             }
             set
             {
-                this.simZustUrokyOdlozeneField = value;
+                this.uvn_amountField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public decimal simZustPoplatky
+        public decimal principal_amount
         {
             get
             {
-                return this.simZustPoplatkyField;
+                return this.principal_amountField;
             }
             set
             {
-                this.simZustPoplatkyField = value;
+                this.principal_amountField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=4)]
-        public decimal simZustPoplatkyMim
+        public decimal interest_amount
         {
             get
             {
-                return this.simZustPoplatkyMimField;
+                return this.interest_amountField;
             }
             set
             {
-                this.simZustPoplatkyMimField = value;
+                this.interest_amountField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=5)]
-        public decimal simZustSmluvniPokuty
+        public decimal other_unpaid_fees
         {
             get
             {
-                return this.simZustSmluvniPokutyField;
+                return this.other_unpaid_feesField;
             }
             set
             {
-                this.simZustSmluvniPokutyField = value;
+                this.other_unpaid_feesField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=6)]
-        public decimal simZustUrokyzProdleni
+        public decimal interest_on_late
         {
             get
             {
-                return this.simZustUrokyzProdleniField;
+                return this.interest_on_lateField;
             }
             set
             {
-                this.simZustUrokyzProdleniField = value;
+                this.interest_on_lateField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=7)]
-        public decimal simZustUrokySankci
+        public decimal interest_covid
         {
             get
             {
-                return this.simZustUrokySankciField;
+                return this.interest_covidField;
             }
             set
             {
-                this.simZustUrokySankciField = value;
+                this.interest_covidField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=8)]
-        public decimal simZustPojisteni
+        public bool loan_overdue
         {
             get
             {
-                return this.simZustPojisteniField;
+                return this.loan_overdueField;
             }
             set
             {
-                this.simZustPojisteniField = value;
+                this.loan_overdueField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=9)]
-        public decimal simCrUrokyBezne
+        public bool payment_reduction
         {
             get
             {
-                return this.simCrUrokyBezneField;
+                return this.payment_reductionField;
             }
             set
             {
-                this.simCrUrokyBezneField = value;
+                this.payment_reductionField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=10)]
-        public decimal simCrUrokyOdlozene
+        public System.DateTime new_maturity_date
         {
             get
             {
-                return this.simCrUrokyOdlozeneField;
+                return this.new_maturity_dateField;
             }
             set
             {
-                this.simCrUrokyOdlozeneField = value;
+                this.new_maturity_dateField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=11)]
-        public decimal simCrUrokyzProdleni
+        public decimal new_payment_amount
         {
             get
             {
-                return this.simCrUrokyzProdleniField;
+                return this.new_payment_amountField;
             }
             set
             {
-                this.simCrUrokyzProdleniField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
-        public decimal simCrUrokySankcni
-        {
-            get
-            {
-                return this.simCrUrokySankcniField;
-            }
-            set
-            {
-                this.simCrUrokySankcniField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
-        public decimal simPreplatek
-        {
-            get
-            {
-                return this.simPreplatekField;
-            }
-            set
-            {
-                this.simPreplatekField = value;
+                this.new_payment_amountField = value;
             }
         }
     }
@@ -8069,7 +8531,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         
         private string textWarninguField;
         
-        private string publicMsgField;
+        private string internalMsgField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
@@ -8101,15 +8563,15 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public string publicMsg
+        public string internalMsg
         {
             get
             {
-                return this.publicMsgField;
+                return this.internalMsgField;
             }
             set
             {
-                this.publicMsgField = value;
+                this.internalMsgField = value;
             }
         }
     }
@@ -8133,7 +8595,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         
         private int duvodMimoradneSplatkyField;
         
-        private int typMimoradneSplatkyField;
+        private bool typMimoradneSplatkyField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
@@ -8221,7 +8683,7 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=6)]
-        public int typMimoradneSplatky
+        public bool typMimoradneSplatky
         {
             get
             {
@@ -11852,6 +12314,11 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.GetInterestRate_response> RS_GetInterestRateAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.GetInterestRate_request message)
         {
             return base.Channel.RS_GetInterestRateAsync(message);
+        }
+        
+        public System.Threading.Tasks.Task<ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.extraPaymentCalculation_Response> extraPaymentCalculationAsync(ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper.extraPaymentCalculation_Request request)
+        {
+            return base.Channel.extraPaymentCalculationAsync(request);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

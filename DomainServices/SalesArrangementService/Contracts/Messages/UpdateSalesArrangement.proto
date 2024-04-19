@@ -12,5 +12,5 @@ message UpdateSalesArrangementRequest {
 
 	google.protobuf.Timestamp FirstSignatureDate = 5;
 
-	google.protobuf.Int32Value TaskProcessId = 6;
+	google.protobuf.Int32Value ProcessId = 6;
 }

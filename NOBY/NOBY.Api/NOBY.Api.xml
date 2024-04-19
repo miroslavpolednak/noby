@@ -890,6 +890,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=400823251">EaCodesMain</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216233">EmploymentTypes</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835723767">ExtraPaymentReasons</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800055209">FeeChangeRequests</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
@@ -932,7 +933,7 @@
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
              - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800899040">SignatureTypeDetail</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800899040">SignatureTypeDetails</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
              - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchemas</a>
              - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructures</a>
@@ -961,6 +962,11 @@
             Číselník druhu úveru.
             </summary>
             <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetNonBankingDays(NOBY.Api.Endpoints.Codebooks.Dto.GetNonBankingDaysRequest,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
+            <summary>
+            Vrací seznam všedních dnů, které jsou svátky
+            </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetFixedRatePeriods(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
@@ -1019,6 +1025,16 @@
         <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.DeveloperStatus.StatusText">
             <summary>
             Status developera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.GetNonBankingDaysRequest.DateFrom">
+            <summary>
+            Ohraničení vrácených dat datumem od
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Codebooks.Dto.GetNonBankingDaysRequest.DateTo">
+            <summary>
+            Ohraničení vrácených dat datumem do
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.CustomerIncome.CreateIncome.CreateIncomeRequest.Data">
@@ -2147,6 +2163,11 @@
             </summary>
             <example>1</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.LockedIncome">
+            <summary>
+            Příznak zamknutí příjmů daného CustomerOnSA
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.Identities">
             <summary>
             Identity klienta v KB nebo MP
@@ -2524,7 +2545,7 @@
             <remarks>
             Provolá simulační službu Starbuildu pro refixace.
             
-            <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F3564317-C787-445d-AB54-A6B4FE1847C0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRefixation(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationRequest)">
@@ -2663,6 +2684,11 @@
             True = set flag, False = unset flag
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.FeeAmountDiscounted">
+            <summary>
+            Sleva z pokuty
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentDate">
             <summary>
             Datum mimořádné splátky
@@ -2688,14 +2714,74 @@
             ID vytvorene simulace.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.LoanPaymentAmount">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.IsExtraPaymentComplete">
             <summary>
-            Výše měsíční splátky.
+            Typ mimořádné splátky
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.LoanPaymentAmountIndividualPrice">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.ExtraPaymentAmount">
             <summary>
-            Výše měsíční splátky se zohledněním IC.
+            Celková výše mimořádné splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.FeeAmount">
+            <summary>
+            Výše účelně vynaložených nákladů
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.PrincipalAmount">
+            <summary>
+            Jistina splacená mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.InterestAmount">
+            <summary>
+            Úroky splacené mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OtherUnpaidFees">
+            <summary>
+            Neuhrazené poplatky splacené mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.InterestOnLate">
+            <summary>
+            Úroky z prodlení splacené mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.InterestCovid">
+            <summary>
+            Úroky s odloženou splatností splacené mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.IsLoanOverdue">
+            <summary>
+            Příznak, zda je úvěr po splatnosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.IsPaymentReduced">
+            <summary>
+            Příznak, zda se snižuje výše pravidelné splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.NewMaturityDate">
+            <summary>
+            Nové datum splatnosti, pokud se zkracuje splacením mimořádné splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.NewPaymentAmount">
+            <summary>
+            Nová výše splátky, pokud se snižuje výše splátky splacením mimořádné splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.FeeAmountTotal">
+            <summary>
+            Spočítaná pokuta (Pokuta – sleva za pokutu, minimálně 0)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.ExtraPaymentAmountTotal">
+            <summary>
+            Spočítaná nová výše splátky jako ExtraPaymentAmount + FeeAmountTotal (s odečtenou slevou)
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest.InterestRateDiscount">
@@ -2715,21 +2801,6 @@
             </summary>
             <example>0.09</example>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationResponse.OfferId">
-            <summary>
-            ID vytvorene simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationResponse.LoanPaymentAmount">
-            <summary>
-            Výše měsíční splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationResponse.LoanPaymentAmountIndividualPrice">
-            <summary>
-            Výše měsíční splátky se zohledněním IC.
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.InterestRateValidFrom">
             <summary>
             Platnost nové úrokové sazby od.
@@ -2744,21 +2815,6 @@
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.FeeAmountDiscounted">
             <summary>
             Upravená výše poplatku. Relevantní pouze pro retence.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.OfferId">
-            <summary>
-            ID vytvorene simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.LoanPaymentAmount">
-            <summary>
-            Výše měsíční splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.LoanPaymentAmountIndividualPrice">
-            <summary>
-            Výše měsíční splátky se zohledněním IC.
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.WorthinessResult">
@@ -3344,6 +3400,16 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.SignatureTypeDetailId">
+            <summary>
+            Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.SignatureDeadline">
+            <summary>
+            Nejzazší datum podpisu dokumentu
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.SignatureTypeDetailId">
             <summary>
             Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
@@ -3362,6 +3428,11 @@
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument.GenerateRetentionDocumentRequest.SignatureDeadline">
             <summary>
             Nejzazší datum podpisu dokumentu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetAvailableFixedRatePeriods.GetAvailableFixedRatePeriodsResponse.AvailableFixedRatePeriods">
+            <summary>
+            Dostupné délky fixace pro daný Case v měsících
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetInterestRatesValidFrom.GetInterestRatesValidFromRequest.CaseId">
@@ -3394,19 +3465,19 @@
             Seznam nabídek pro daný proces
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionHandler.getRetentionProcess(System.Int64,System.Int64,System.Threading.CancellationToken)">
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.CommunicatedOffersValidTo">
             <summary>
-            Detail procesu retence
+            Datum platnosti sdělených nabídek
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.LegalNoticeGeneratedDate">
+            <summary>
+            Datum odeslání zákonných oznámení
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionHandler.replaceTaskDataWithOfferData(NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse,DomainServices.OfferService.Contracts.GetOfferResponse)">
             <summary>
             Vytvoreni detail Offer
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.IsReadOnly">
-            <summary>
-            Informace zda se jedná o readonly režim
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.FeeAmountDiscounted">
@@ -3537,13 +3608,23 @@
             SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetAvailableFixedRatePeriods(System.Int64)">
+            <summary>
+            Seznam dostupných délek fixací pro refixace
+            </summary>
+            <remarks>
+            Délky fixace jsou uvedeny v měsících.
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.SendMortgageResponseCode(System.Int64,NOBY.Api.Endpoints.Refinancing.SendMortgageResponseCode.SendMortgageResponseCodeRequest)">
             <summary>
             Vytvoří odpovědní kód
             </summary>
             <remarks>
             
-            <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BA03AE2F-C91E-4308-9C92-C24A7CF66D08"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.UpdateMortgageRefixation(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest)">
@@ -3552,7 +3633,7 @@
             </summary>
             <remarks>
             
-            <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=32807AA6-9D09-4c6e-9BBB-F21A962437FE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetMortgageExtraPayment(System.Int64,System.Int64)">
@@ -3572,7 +3653,7 @@
             <remarks>
             Operace slouží k získání informací o vybraném refixačním procesu.
             
-            <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=06834209-6BE1-42bf-8C6A-DD4D4371B14F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetMortgageRetention(System.Int64,System.Int64)">
@@ -3613,14 +3694,22 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.CommunicateMortgageRefixation(System.Int64)">
+            <summary>
+            Sdělení nabídek refixací.
+            </summary>
+            <remarks>
+            Smaže sdělené nabídky (pokud nejsou shodné s aktuálními) a označí aktuální paletu nabídek jako sdělenou.<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=95CE2766-FF1F-4267-9873-177189302EDD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRetentionDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument.GenerateRetentionDocumentRequest)">
             <summary>
             Generování dokumentu Retenčního dodatku
             </summary>
             <remarks>
             Operace slouží k vygenerování dokumentu Retenčního dodatku<br /><br />
-            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9" >
-            <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateRefixationDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest)">
@@ -3630,6 +3719,15 @@
             <remarks>
             Operace slouží k vygenerování dokumentu pro Refixace nebo Individuální sdělení<br /><br />
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A415BC33-46AF-40f9-B50C-5F7297DC0B26"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GenerateExtraPaymentDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest)">
+            <summary>
+            Generování dokumentu mimořádné splátky
+            </summary>
+            <remarks>
+            Operace slouží k vygenerování dokumentu mimořádné splátky<br /><br />
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6ABBB7A4-03E8-4cd2-8D6B-FAD3C407AC20"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest.IndividualPriceCommentLastVersion">
@@ -4439,7 +4537,7 @@
             ID nalinkované Offer.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementResponse.TaskProcessId">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement.GetSalesArrangementResponse.ProcessId">
             <summary>
             Id odpovídajícího procesu ve SB
             </summary>

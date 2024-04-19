@@ -2,13 +2,15 @@
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList;
 
-internal sealed class SimulateMortgageRefixationOfferListHandler
-    : IRequestHandler<SimulateMortgageRefixationOfferListRequest, SimulateMortgageRefixationOfferListResponse>
+internal sealed class SimulateMortgageRefixationOfferListHandler(
+    IOfferServiceClient _offerService, 
+    TimeProvider _timeProvider)
+        : IRequestHandler<SimulateMortgageRefixationOfferListRequest, SimulateMortgageRefixationOfferListResponse>
 {
     public async Task<SimulateMortgageRefixationOfferListResponse> Handle(SimulateMortgageRefixationOfferListRequest request, CancellationToken cancellationToken)
     {
         var offers = (await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken))
-            .Where(t => t.Data.ValidTo >= _timeProvider.GetLocalNow().Date)
+            .Where(t => !(t.Data.ValidTo < _timeProvider.GetLocalNow().Date))
             .ToList();
 
         List<Dto.Refinancing.RefinancingOfferDetail> finalOffers = new();
@@ -47,14 +49,5 @@ internal sealed class SimulateMortgageRefixationOfferListHandler
         {
             Offers = finalOffers
         };
-    }
-
-    private readonly TimeProvider _timeProvider;
-    private readonly IOfferServiceClient _offerService;
-
-    public SimulateMortgageRefixationOfferListHandler(IOfferServiceClient offerService, TimeProvider timeProvider)
-    {
-        _offerService = offerService;
-        _timeProvider = timeProvider;
     }
 }

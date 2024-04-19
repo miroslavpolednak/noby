@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment;
 
@@ -9,18 +10,26 @@ public sealed class SimulateMortgageExtraPaymentRequest
     internal long CaseId { get; set; }
 
     /// <summary>
+    /// Sleva z pokuty
+    /// </summary>
+    public decimal? FeeAmountDiscounted { get; set; }
+
+    /// <summary>
     /// Datum mimořádné splátky
     /// </summary>
+    [Required]
     public DateTime ExtraPaymentDate { get; set; }
 
     /// <summary>
     /// Částka mimořádné splátky
     /// </summary>
+    [Required]
     public decimal ExtraPaymentAmount { get; set;}
 
     /// <summary>
     /// Důvod mimořádné splátky
     /// </summary>
+    [Required]
     public int ExtraPaymentReasonId { get; set; }
 
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
+using NOBY.Dto.Refinancing;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Offer;
@@ -7,7 +8,7 @@ namespace NOBY.Api.Endpoints.Offer;
 [ApiController]
 [Route("api")]
 [ApiVersion(1)]
-public sealed class OfferController : ControllerBase
+public sealed class OfferController(IMediator _mediator) : ControllerBase
 {
     /// <summary>
     /// Vezme stávající simulace k refixacím, aktuální i sdělené a přepočítá všechny s novou slevou na sazbě
@@ -20,6 +21,7 @@ public sealed class OfferController : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobySkipCaseStateAndProductSAValidation]
+    [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListResponse), StatusCodes.Status200OK)]
@@ -33,12 +35,13 @@ public sealed class OfferController : ControllerBase
     /// <remarks>
     /// Provolá simulační službu Starbuildu pro refixace.
     /// 
-    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F3564317-C787-445d-AB54-A6B4FE1847C0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/simulate-mortgage-extra-payment-offer")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobySkipCaseStateAndProductSAValidation]
+    [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse), StatusCodes.Status200OK)]
@@ -58,11 +61,12 @@ public sealed class OfferController : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobySkipCaseStateAndProductSAValidation]
+    [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(SimulateMortgageRefixation.SimulateMortgageRefixationResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingSimulationResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<SimulateMortgageRefixation.SimulateMortgageRefixationResponse> SimulateMortgageRefixation([FromRoute] long caseId, [FromBody] SimulateMortgageRefixation.SimulateMortgageRefixationRequest request)
+    public async Task<RefinancingSimulationResult> SimulateMortgageRefixation([FromRoute] long caseId, [FromBody] SimulateMortgageRefixation.SimulateMortgageRefixationRequest request)
         => await _mediator.Send((request ?? new SimulateMortgageRefixation.SimulateMortgageRefixationRequest()).InfuseId(caseId));
 
     /// <summary>
@@ -79,9 +83,9 @@ public sealed class OfferController : ControllerBase
     [NobySkipCaseStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(SimulateMortgageRetention.SimulateMortgageRetentionResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingSimulationResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<SimulateMortgageRetention.SimulateMortgageRetentionResponse> SimulateMortgageRetention([FromRoute] long caseId, [FromBody] SimulateMortgageRetention.SimulateMortgageRetentionRequest request)
+    public async Task<RefinancingSimulationResult> SimulateMortgageRetention([FromRoute] long caseId, [FromBody] SimulateMortgageRetention.SimulateMortgageRetentionRequest request)
         => await _mediator.Send((request ?? new SimulateMortgageRetention.SimulateMortgageRetentionRequest()).InfuseId(caseId));
 
     /// <summary>
@@ -247,7 +251,4 @@ public sealed class OfferController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task LinkMortgageExtraPayment([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest request)
         => await _mediator.Send(request.InfuseId(caseId, salesArrangementId));
-
-    private readonly IMediator _mediator;
-    public OfferController(IMediator mediator) => _mediator = mediator;
 }

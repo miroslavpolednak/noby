@@ -37,7 +37,7 @@ internal class LoanRetentionProcessChangedHandler : IMessageHandler<cz.mpss.api.
         try
         {
             var salesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId);
-            sa = salesArrangements.SalesArrangements.FirstOrDefault(t => t.TaskProcessId == processId);
+            sa = salesArrangements.SalesArrangements.FirstOrDefault(t => t.ProcessId == processId);
         }
         catch (CisNotFoundException)
         {

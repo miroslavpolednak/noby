@@ -13,24 +13,9 @@ internal sealed class MortgageRefixationDataMapper
     {
         return new __Contracts.MortgageRefixationFullData
         {
-            SimulationInputs = new()
-            {
-                FixedRatePeriod = data.SimulationInputs.FixedRatePeriod,
-                InterestRateDiscount = data.SimulationInputs.InterestRateDiscount,
-                InterestRate = data.SimulationInputs.InterestRate,
-                InterestRateValidFrom = data.SimulationInputs.InterestRateValidFrom
-            },
-            SimulationResults = new()
-            {
-                LoanPaymentAmount = data.SimulationOutputs.LoanPaymentAmount,
-                LoanPaymentAmountDiscounted = data.SimulationOutputs.LoanPaymentAmountDiscounted,
-                LoanPaymentsCount = data.SimulationOutputs.LoanPaymentsCount,
-                MaturityDate = data.SimulationOutputs.MaturityDate
-            },
-            BasicParameters = new()
-            {
-                FixedRateValidTo = data.BasicParameters.FixedRateValidTo
-            }
+            SimulationInputs = MapFromDataInputs(data.SimulationInputs),
+            SimulationResults = MapFromDataOutputs(data.SimulationOutputs),
+            BasicParameters = MapFromDataBasicParameters(data.BasicParameters)
         };
     }
 
@@ -38,7 +23,8 @@ internal sealed class MortgageRefixationDataMapper
     {
         return new()
         {
-            FixedRateValidTo = basicParameters.FixedRateValidTo
+            FixedRateValidTo = basicParameters.FixedRateValidTo,
+            LegalNoticeGeneratedDate = basicParameters.LegalNoticeGeneratedDate
         };
     }
 
@@ -57,7 +43,8 @@ internal sealed class MortgageRefixationDataMapper
     {
         return new()
         {
-            FixedRateValidTo = basicParameters.FixedRateValidTo
+            FixedRateValidTo = basicParameters.FixedRateValidTo,
+            LegalNoticeGeneratedDate = basicParameters.LegalNoticeGeneratedDate
         };
     }
 

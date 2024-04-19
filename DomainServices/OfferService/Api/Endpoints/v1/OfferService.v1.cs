@@ -51,6 +51,13 @@ public class OfferService
     public override async Task<GetResponseCodeListResponse> GetResponseCodeList(GetResponseCodeListRequest request, ServerCallContext context)
         => await _mediator.Send(request);
 
+    public override async Task<Empty> DeleteOfferList(DeleteOfferListRequest request, ServerCallContext context)
+    {
+        await _mediator.Send(request);
+
+        return new Empty();
+    }
+
     private readonly IMediator _mediator;
     public OfferService(IMediator mediator)
         => _mediator = mediator;

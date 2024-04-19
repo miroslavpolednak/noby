@@ -4,8 +4,11 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.GetMortgageOfferFPSchedule;
 
-internal sealed class GetMortgageOfferFPScheduleHandler
-    : IRequestHandler<GetMortgageOfferFPScheduleRequest, GetMortgageOfferFPScheduleResponse>
+internal sealed class GetMortgageOfferFPScheduleHandler(
+    IDocumentDataStorage _documentDataStorage,
+    ICodebookServiceClient _codebookService,
+    EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient)
+        : IRequestHandler<GetMortgageOfferFPScheduleRequest, GetMortgageOfferFPScheduleResponse>
 {
     public async Task<GetMortgageOfferFPScheduleResponse> Handle(GetMortgageOfferFPScheduleRequest request, CancellationToken cancellationToken)
     {
@@ -30,19 +33,5 @@ internal sealed class GetMortgageOfferFPScheduleHandler
         model.PaymentScheduleFull.Add(fullPaymentSchedule);
 
         return model;
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly EasSimulationHT.IEasSimulationHTClient _easSimulationHTClient;
-
-    public GetMortgageOfferFPScheduleHandler(
-        IDocumentDataStorage documentDataStorage,
-        ICodebookServiceClient codebookService,
-        EasSimulationHT.IEasSimulationHTClient easSimulationHTClient)
-    {
-        _documentDataStorage = documentDataStorage;
-        _codebookService = codebookService;
-        _easSimulationHTClient = easSimulationHTClient;
     }
 }

@@ -5,29 +5,28 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms;
 
 public static class EasFormTypeFactory
 {
-    private static readonly Dictionary<int, EasFormType> _formTypeMap = new()
-    {
-        { 4, EasFormType.F3601 },
-        { 5, EasFormType.F3602 },
-        { 6, EasFormType.F3700 },
-        { 11, EasFormType.F3602 },
-        { 12, EasFormType.F3602 },
-        { 16, EasFormType.F3602 }
-    };
+    private static readonly List<FormTypeMapItem> _formTypeMap =
+    [
+        new FormTypeMapItem { DocumentTypeId = 4, SalesArrangementType = SalesArrangementTypes.Mortgage, EasFormType = EasFormType.F3601 },
+        new FormTypeMapItem { DocumentTypeId = 5, SalesArrangementType = SalesArrangementTypes.Mortgage, EasFormType = EasFormType.F3602 },
+        new FormTypeMapItem { DocumentTypeId = 6, SalesArrangementType = SalesArrangementTypes.Drawing, EasFormType = EasFormType.F3700 },
+        new FormTypeMapItem { DocumentTypeId = 11, SalesArrangementType = SalesArrangementTypes.CustomerChange3602C, EasFormType = EasFormType.F3602 },
+        new FormTypeMapItem { DocumentTypeId = 12, SalesArrangementType = SalesArrangementTypes.CustomerChange3602A, EasFormType = EasFormType.F3602 },
+        new FormTypeMapItem { DocumentTypeId = 16, SalesArrangementType = SalesArrangementTypes.CustomerChange3602B, EasFormType = EasFormType.F3602 }
+    ];
 
     public static EasFormType GetEasFormType(int documentTypeId)
     {
-        if (!_formTypeMap.TryGetValue(documentTypeId, out var formType))
-            throw new CisValidationException($"The eas form does not support document type {documentTypeId}");
+        var formType = _formTypeMap.FirstOrDefault(m => m.DocumentTypeId == documentTypeId);
 
-        return formType;
+        return formType?.EasFormType ?? throw new CisValidationException($"The eas form does not support document type {documentTypeId}");
     }
 
-    public static DefaultValues CreateDefaultValues(EasFormType easFormType, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes)
+    public static DefaultValues CreateDefaultValues(EasFormType easFormType, SalesArrangementTypes salesArrangementType, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes)
     {
-        var documentTypeId = _formTypeMap.First(v => v.Value == easFormType).Key;
+        var formType = _formTypeMap.First(m => m.EasFormType == easFormType && m.SalesArrangementType == salesArrangementType);
 
-        var eaCodeMainId = documentTypes.First(d => d.Id == documentTypeId).EACodeMainId;
+        var eaCodeMainId = documentTypes.First(d => d.Id == formType.DocumentTypeId).EACodeMainId;
 
         var formTypeName = easFormType switch
         {
@@ -38,5 +37,14 @@ public static class EasFormTypeFactory
         };
 
         return new DefaultValues { FormType = formTypeName, EaCodeMainId = eaCodeMainId };
+    }
+
+    private class FormTypeMapItem
+    {
+        public int DocumentTypeId { get; init; }
+
+        public SalesArrangementTypes SalesArrangementType { get; init; }
+
+        public EasFormType EasFormType { get; init; }
     }
 }

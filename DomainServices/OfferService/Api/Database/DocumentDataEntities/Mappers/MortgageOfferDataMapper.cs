@@ -111,7 +111,7 @@ internal sealed class MortgageOfferDataMapper
             model.Warnings = results.errorInfo.warningy.Select(t => new MortgageOfferData.SimulationResultWarningData
             {
                 WarningCode = t.kodWarningu,
-                WarningInternalMessage = t.publicMsg ?? "",
+                WarningInternalMessage = t.internalMsg ?? "",
                 WarningText = t.textWarningu ?? ""
             }).ToList();
         }

@@ -46,6 +46,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=400823251">EaCodesMain</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216233">EmploymentTypes</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835723767">ExtraPaymentReasons</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800055209">FeeChangeRequests</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
@@ -88,7 +89,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementState">SalesArrangementStates</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SalesArrangementType">SalesArrangementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/SignatureType">SignatureTypes</a>
-    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800899040">SignatureTypeDetail</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800899040">SignatureTypeDetails</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235799">StatementFrequencies</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchemas</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructures</a>
@@ -148,6 +149,15 @@ public class CodebooksController : ControllerBase
             .Where(t => loanKindsIds.Contains(t.Id))
             .ToList();
     }
+
+    /// <summary>
+    /// Vrací seznam všedních dnů, které jsou svátky
+    /// </summary>
+    [HttpPost("banking-days")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
+    public async Task<List<DateOnly>> GetNonBankingDays([FromBody] Dto.GetNonBankingDaysRequest request, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
+        => (await svc.GetNonBankingDays(request.DateFrom, request.DateTo, cancellationToken)).ToList();
 
     /// <summary>
     /// FixedRatePeriod s filtrací na product

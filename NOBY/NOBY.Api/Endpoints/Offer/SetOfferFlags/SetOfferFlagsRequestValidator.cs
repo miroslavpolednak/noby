@@ -14,8 +14,13 @@ internal sealed class SetOfferFlagsRequestValidator
             .ChildRules(c =>
             {
                 c.RuleFor(t => t.FlagType)
-                    .IsInEnum();
+                    .Cascade(CascadeMode.Stop)
+                    .IsInEnum()
+                    // validace na moznost zmeny
+                    .Must(t => t is OfferFlagTypes.Liked or OfferFlagTypes.Selected);
             })
             .When(t => t.Flags is not null);
+
+        
     }
 }

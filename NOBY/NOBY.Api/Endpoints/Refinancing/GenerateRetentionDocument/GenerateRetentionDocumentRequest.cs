@@ -20,14 +20,9 @@ public class GenerateRetentionDocumentRequest : IRequest
     /// </summary>
     public DateTime? SignatureDeadline { get; set; }
 
-    internal GenerateRetentionDocumentRequest InfuseCaseId(long caseId)
+    internal GenerateRetentionDocumentRequest Infuse(long caseId, int salesArrangementId)
     {
         CaseId = caseId;
-        return this;
-    }
-
-    internal GenerateRetentionDocumentRequest InfuseSalesArrangementId(int salesArrangementId)
-    {
         SalesArrangementId = salesArrangementId;
         return this;
     }

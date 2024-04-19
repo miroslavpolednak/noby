@@ -19,6 +19,43 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
     protected override string ServiceName => StartupExtensions.ServiceName;
 
+    public async Task<Dto.MortgageExtraPaymentResult> RunSimulationExtraPayment(long caseId, DateTime extraPaymentDate, decimal extraPaymentAmount, int extraPaymentReasonId, bool isExtraPaymentFullyRepaid, CancellationToken cancellationToken)
+    {
+        var result = await callMethod(async () =>
+        {
+            var request = new SimHT_UVN_Request
+            {
+                settings = new()
+                {
+                    uverId = Convert.ToInt32(caseId),
+                    mode = 2,
+                    typMimoradneSplatky = isExtraPaymentFullyRepaid,
+                    duvodMimoradneSplatky = extraPaymentReasonId,
+                    sumaMimoradneSplatky = extraPaymentAmount,
+                    datumMimoradneSplatky = extraPaymentDate
+                }
+            };
+
+            return await Client.SimHT_UVNAsync(request).WithCancellation(cancellationToken);
+        }, r => r.errorInfo, 10028);
+
+        return new Dto.MortgageExtraPaymentResult
+        {
+            ExtraPaymentAmount = result.dataProDopis.extra_payment_sum,
+            FeeAmount = result.dataProDopis.uvn_amount,
+            InterestAmount = result.dataProDopis.interest_amount,
+            InterestCovid = result.dataProDopis.interest_covid,
+            InterestOnLate = result.dataProDopis.interest_on_late,
+            IsExtraPaymentComplete = result.dataProDopis.full_repayment,
+            IsLoanOverdue = result.dataProDopis.loan_overdue,
+            IsPaymentReduced = result.dataProDopis.payment_reduction,
+            NewMaturityDate = result.dataProDopis.new_maturity_date,
+            NewPaymentAmount = result.dataProDopis.new_payment_amount,
+            OtherUnpaidFees = result.dataProDopis.other_unpaid_fees,
+            PrincipalAmount = result.dataProDopis.principal_amount
+        };
+    }
+
     public async Task<Dto.RefinancingSimulationResult> RunSimulationRefixation(long caseId, decimal interestRate, DateTime interestRateValidFrom, int fixedRatePeriod, CancellationToken cancellationToken)
     {
         var result = await callMethod(async () =>

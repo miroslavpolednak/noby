@@ -63,6 +63,13 @@ internal sealed class DatabaseAggregate
         return connectionProvider.ExecuteDapperRawSqlToList<T>(item.Query);
     }
 
+    public List<T> GetList<T>(string sqlQueryId, object par)
+    {
+        var item = Sql[sqlQueryId];
+        var connectionProvider = getConnectionProvider(item.Provider);
+        return connectionProvider.ExecuteDapperRawSqlToList<T>(item.Query, par);
+    }
+
     public List<dynamic> GetDynamicList(string sqlQueryId, int suffix)
         => GetDynamicList($"{sqlQueryId}{suffix}");
 

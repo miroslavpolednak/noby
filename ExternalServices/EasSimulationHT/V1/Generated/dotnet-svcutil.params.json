@@ -3,9 +3,8 @@
   "version": "2.1.0",
   "options": {
     "inputs": [
-      "../HT_WS_SB_Services_2.xml"
+      "../HT_WS_SB_Services.xml"
     ],
-    "internalTypeAccess": true,
     "namespaceMappings": [
       "*, ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper"
     ],

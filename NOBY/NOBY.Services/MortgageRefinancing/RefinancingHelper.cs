@@ -1,8 +1,8 @@
 ﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.SalesArrangementService.Contracts;
-using _SaContract = DomainServices.SalesArrangementService.Contracts;
-namespace NOBY.Api.Endpoints.Refinancing;
+
+namespace NOBY.Services.MortgageRefinancing;
 
 public static class RefinancingHelper
 {
@@ -14,9 +14,9 @@ public static class RefinancingHelper
         {
             text = process.RefinancingProcess.RefinancingType switch
             {
-                1 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.Retence).Name,
-                2 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.Refixace).Name,
-                3 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.MimoradnaSplatka).Name,
+                1 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.MortgageRetention).Name,
+                2 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.MortgageRefixation).Name,
+                3 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.MortgageExtraPayment).Name,
                 _ => string.Empty
             };
         }
@@ -42,8 +42,8 @@ public static class RefinancingHelper
     {
         return process.ProcessTypeId switch
         {
-            3 when process.RefinancingProcess.RefinancingType == 1 => RefinancingTypes.Retence,  // Retence
-            3 when process.RefinancingProcess.RefinancingType == 2 => RefinancingTypes.Refixace, // Refixace
+            3 when process.RefinancingProcess.RefinancingType == 1 => RefinancingTypes.MortgageRetention,  // Retence
+            3 when process.RefinancingProcess.RefinancingType == 2 => RefinancingTypes.MortgageRefixation, // Refixace
             _ => RefinancingTypes.Unknown
         };
     }
@@ -64,13 +64,13 @@ public static class RefinancingHelper
             _ => RefinancingStates.RozpracovanoVNoby
         };
 
-    public static RefinancingStates GetRefinancingState(in bool managedByRC2, in long? taskProcessId, ProcessTask process)
+    public static RefinancingStates GetRefinancingState(in bool managedByRC2, in long? processId, ProcessTask process)
     {
-        if (!process.Cancelled && process.StateIdSB != 30 && managedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId == taskProcessId)
+        if (!process.Cancelled && process.StateIdSB != 30 && managedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId == processId)
         {
             return RefinancingStates.RozpracovanoVNoby; // 1
         }
-        else if (!process.Cancelled && process.StateIdSB != 30 && managedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId != taskProcessId)
+        else if (!process.Cancelled && process.StateIdSB != 30 && managedByRC2 != true && process.ProcessPhaseId == 1 && process.ProcessId != processId)
         {
             return RefinancingStates.RozpracovanoVSB;  // 2
         }

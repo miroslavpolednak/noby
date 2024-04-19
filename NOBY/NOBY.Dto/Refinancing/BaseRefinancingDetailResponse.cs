@@ -2,6 +2,13 @@
 
 public class BaseRefinancingDetailResponse
 {
+    public int? SalesArrangementId { get; set; }
+
+    /// <summary>
+    /// Informace zda se jedná o readonly režim
+    /// </summary>
+    public bool IsReadOnly { get; set; }
+
     /// <summary>
     /// Komentář k IC
     /// </summary>

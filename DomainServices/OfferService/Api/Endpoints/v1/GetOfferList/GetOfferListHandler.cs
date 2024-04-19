@@ -5,8 +5,14 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.GetOfferList;
 
-internal sealed class GetOfferListHandler
-    : IRequestHandler<GetOfferListRequest, GetOfferListResponse>
+internal sealed class GetOfferListHandler(
+    OfferServiceDbContext _dbContext, 
+    IDocumentDataStorage _documentDataStorage, 
+    Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper, 
+    Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _retentionMapper, 
+    Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _refixationMapper, 
+    Database.DocumentDataEntities.Mappers.MortgageExtraPaymentDataMapper _extraPaymentMapper)
+        : IRequestHandler<GetOfferListRequest, GetOfferListResponse>
 {
     public async Task<GetOfferListResponse> Handle(GetOfferListRequest request, CancellationToken cancellationToken)
     {
@@ -45,7 +51,7 @@ internal sealed class GetOfferListHandler
                         break;
 
                     case OfferTypes.MortgageExtraPayment:
-                        //result.MortgageExtraPayment = _offerMapper.MapToFullData((Database.DocumentDataEntities.MortgageOfferData)offersData[offer.OfferId]);
+                        result.MortgageExtraPayment = _extraPaymentMapper.MapToFullData((Database.DocumentDataEntities.MortgageExtraPaymentData)offersData[offer.OfferId]);
                         break;
                 }
             }
@@ -66,20 +72,5 @@ internal sealed class GetOfferListHandler
             OfferTypes.MortgageExtraPayment => (await _documentDataStorage.GetList<Database.DocumentDataEntities.MortgageExtraPaymentData>(ids, cancellationToken)).ToDictionary(k => k.EntityIdInt, v => (IDocumentData)v.Data!),
             _ => throw new NotImplementedException()
         };
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly OfferServiceDbContext _dbContext;
-    private readonly Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper;
-    private readonly Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _retentionMapper;
-    private readonly Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _refixationMapper;
-
-    public GetOfferListHandler(OfferServiceDbContext dbContext, IDocumentDataStorage documentDataStorage, Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper offerMapper, Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper retentionMapper, Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper refixationMapper)
-    {
-        _dbContext = dbContext;
-        _documentDataStorage = documentDataStorage;
-        _offerMapper = offerMapper;
-        _retentionMapper = retentionMapper;
-        _refixationMapper = refixationMapper;
     }
 }

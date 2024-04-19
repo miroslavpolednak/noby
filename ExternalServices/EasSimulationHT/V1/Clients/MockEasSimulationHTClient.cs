@@ -1,4 +1,5 @@
-﻿using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
+﻿using ExternalServices.EasSimulationHT.Dto;
+using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
 
 namespace ExternalServices.EasSimulationHT.V1;
 
@@ -21,6 +22,11 @@ internal sealed class MockEasSimulationHTClient
     }
 
     public Task<Dto.RefinancingSimulationResult> RunSimulationRetention(long caseId, decimal interestRate, DateTime interestRateValidFrom, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<MortgageExtraPaymentResult> RunSimulationExtraPayment(long caseId, DateTime extraPaymentDate, decimal extraPaymentAmount, int extraPaymentReasonId, bool isExtraPaymentFullyRepaid, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

@@ -3,8 +3,8 @@ using CIS.Infrastructure.WebApi.Types;
 
 namespace NOBY.Api.Endpoints.Offer.DeveloperSearch;
 
-internal sealed class DeveloperSearchHandler
-    : IRequestHandler<DeveloperSearchRequest, DeveloperSearchResponse>
+internal sealed class DeveloperSearchHandler(DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService)
+        : IRequestHandler<DeveloperSearchRequest, DeveloperSearchResponse>
 {
     public async Task<DeveloperSearchResponse> Handle(DeveloperSearchRequest request, CancellationToken cancellationToken)
     {
@@ -24,12 +24,5 @@ internal sealed class DeveloperSearchHandler
             Rows = rows,
             Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Count)
         };
-    }
-
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-
-    public DeveloperSearchHandler(DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService)
-    {
-        _codebookService = codebookService;
     }
 }

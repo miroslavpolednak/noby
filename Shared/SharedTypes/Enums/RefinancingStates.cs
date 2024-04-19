@@ -6,6 +6,10 @@ namespace SharedTypes.Enums;
 [DataContract]
 public enum RefinancingStates
 {
+    [Display(Name = "Neznámý")]
+    [EnumMember]
+    Unknown = 0,
+
     [Display(Name = "Rozpracováno v Noby")]
     [EnumMember]
     RozpracovanoVNoby = 1,

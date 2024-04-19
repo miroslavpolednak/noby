@@ -5,16 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.UpdateOffer;
 
-internal sealed class UpdateOfferHandler
-    : IRequestHandler<UpdateOfferRequest, Empty>
+internal sealed class UpdateOfferHandler(OfferServiceDbContext _dbContext)
+        : IRequestHandler<UpdateOfferRequest, Empty>
 {
-    private readonly OfferServiceDbContext _dbContext;
-
-    public UpdateOfferHandler(OfferServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task<Empty> Handle(UpdateOfferRequest request, CancellationToken cancellationToken)
     {
         var offer = await _dbContext.Offers.FirstOrDefaultAsync(t => t.OfferId == request.OfferId, cancellationToken)
@@ -39,6 +32,11 @@ internal sealed class UpdateOfferHandler
         if (request.Flags.HasValue)
         {
             offer.Flags = request.Flags.Value;
+        }
+
+        if (request.ValidTo is not null)
+        {
+            offer.ValidTo = request.ValidTo;
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);

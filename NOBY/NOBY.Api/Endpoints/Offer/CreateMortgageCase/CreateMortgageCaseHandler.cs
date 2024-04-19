@@ -9,12 +9,22 @@ using _HO = DomainServices.HouseholdService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using DomainServices.CustomerService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
-internal sealed class CreateMortgageCaseHandler
-    : IRequestHandler<CreateMortgageCaseRequest, CreateMortgageCaseResponse>
+internal sealed class CreateMortgageCaseHandler(
+    IRollbackBag _bag,
+    Services.CreateProductTrain.ICreateProductTrainService _createProductTrain,
+    CIS.Core.Security.ICurrentUserAccessor _userAccessor,
+    ICustomerServiceClient _customerService,
+    ICustomerOnSAServiceClient _customerOnSAService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IHouseholdServiceClient _householdService,
+    ICaseServiceClient _caseService,
+    ICodebookServiceClient _codebookService,
+    IOfferServiceClient _offerService,
+    ILogger<CreateMortgageCaseHandler> _logger)
+        : IRequestHandler<CreateMortgageCaseRequest, CreateMortgageCaseResponse>
 {
     public async Task<CreateMortgageCaseResponse> Handle(CreateMortgageCaseRequest request, CancellationToken cancellationToken)
     {
@@ -129,43 +139,5 @@ internal sealed class CreateMortgageCaseHandler
         if (customer.NaturalPerson.DateOfBirth is not null)
             request.Customer.DateOfBirthNaturalPerson = customer.NaturalPerson.DateOfBirth;
         request.Customer.MaritalStatusId = customer.NaturalPerson.MaritalStatusStateId;
-    }
-
-    private readonly IRollbackBag _bag;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly ILogger<CreateMortgageCaseHandler> _logger;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly Services.CreateProductTrain.ICreateProductTrainService _createProductTrain;
-
-    public CreateMortgageCaseHandler(
-        IRollbackBag bag,
-        Services.CreateProductTrain.ICreateProductTrainService createProductTrain,
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        ICustomerServiceClient customerService,
-        ICustomerOnSAServiceClient customerOnSAService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IHouseholdServiceClient householdService,
-        ICaseServiceClient caseService,
-        ICodebookServiceClient codebookService, 
-        IOfferServiceClient offerService, 
-        ILogger<CreateMortgageCaseHandler> logger)
-    {
-        _bag = bag;
-        _customerService = customerService;
-        _customerOnSAService = customerOnSAService;
-        _createProductTrain = createProductTrain;
-        _userAccessor = userAccessor;
-        _caseService = caseService;
-        _householdService = householdService;
-        _salesArrangementService = salesArrangementService;
-        _codebookService = codebookService;
-        _logger = logger;
-        _offerService = offerService;
     }
 }

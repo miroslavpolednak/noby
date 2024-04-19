@@ -149,9 +149,9 @@ internal sealed class LoanRepository
                    [KbId] as KbId,
                    [Zmocnenec] as Agent,
                    [StavKyc] as Kyc
-            FROM [dbo].[VztahUver] 
-            LEFT JOIN [dbo].[Partner] ON [VztahUver].PartnerId = [Partner].Id
-            WHERE [UverId] = @caseId AND [Neaktivni] = 0
+            FROM [dbo].[VztahUver] A
+            LEFT JOIN [dbo].[Partner] B ON A.PartnerId = B.Id
+            WHERE [UverId] = @caseId AND A.[Neaktivni] = 0
             """;
         
         return _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.Relationship>(Query, param: new { caseId }, cancellationToken);

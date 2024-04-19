@@ -12,8 +12,18 @@ using DomainServices.OfferService.Api.Database.DocumentDataEntities;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgage;
 
-internal sealed class SimulateMortgageHandler
-    : IRequestHandler<SimulateMortgageRequest, SimulateMortgageResponse>
+internal sealed class SimulateMortgageHandler(
+    Database.DocumentDataEntities.Mappers.MortgageCreditWorthinessSimpleDataMapper _worthinessMapper,
+    Database.DocumentDataEntities.Mappers.MortgageAdditionalSimulationResultsDataMapper _additionalDataMapper,
+    Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper,
+    IDocumentDataStorage _documentDataStorage,
+    OfferServiceDbContext _dbContext,
+    ILogger<SimulateMortgageHandler> _logger,
+    ICodebookServiceClient _codebookService,
+    IEasSimulationHTClient _easSimulationHTClient,
+    ICreditWorthinessServiceClient _creditWorthinessService
+    )
+        : IRequestHandler<SimulateMortgageRequest, SimulateMortgageResponse>
 {
     public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellationToken)
     {
@@ -176,38 +186,5 @@ internal sealed class SimulateMortgageHandler
         await _documentDataStorage.Add(offerId, documentEntity, cancellationToken);
 
         return documentEntity;
-    }
-
-    private readonly Database.DocumentDataEntities.Mappers.MortgageCreditWorthinessSimpleDataMapper _worthinessMapper;
-    private readonly Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper;
-    private readonly Database.DocumentDataEntities.Mappers.MortgageAdditionalSimulationResultsDataMapper _additionalDataMapper;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly ILogger<SimulateMortgageHandler> _logger;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly IEasSimulationHTClient _easSimulationHTClient;
-    private readonly ICreditWorthinessServiceClient _creditWorthinessService;
-    private readonly OfferServiceDbContext _dbContext;
-
-    public SimulateMortgageHandler(
-        Database.DocumentDataEntities.Mappers.MortgageCreditWorthinessSimpleDataMapper worthinessMapper,
-        Database.DocumentDataEntities.Mappers.MortgageAdditionalSimulationResultsDataMapper additionalDataMapper,
-        Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper offerMapper,
-        IDocumentDataStorage documentDataStorage,
-        OfferServiceDbContext dbContext,
-        ILogger<SimulateMortgageHandler> logger,
-        ICodebookServiceClient codebookService,
-        IEasSimulationHTClient easSimulationHTClient,
-        ICreditWorthinessServiceClient creditWorthinessService
-    )
-    {
-        _worthinessMapper = worthinessMapper;
-        _additionalDataMapper = additionalDataMapper;
-        _offerMapper = offerMapper;
-        _documentDataStorage = documentDataStorage;
-        _logger = logger;
-        _codebookService = codebookService;
-        _easSimulationHTClient = easSimulationHTClient;
-        _creditWorthinessService = creditWorthinessService;
-        _dbContext = dbContext;
     }
 }

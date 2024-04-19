@@ -13,22 +13,9 @@ internal sealed class MortgageRetentionDataMapper
     {
         return new __Contracts.MortgageRetentionFullData
         {
-            SimulationInputs = new()
-            {
-                InterestRateDiscount = data.SimulationInputs.InterestRateDiscount,
-                InterestRate = data.SimulationInputs.InterestRate,
-                InterestRateValidFrom = data.SimulationInputs.InterestRateValidFrom
-            },
-            SimulationResults = new()
-            {
-                LoanPaymentAmount = data.SimulationOutputs.LoanPaymentAmount,
-                LoanPaymentAmountDiscounted = data.SimulationOutputs.LoanPaymentAmountDiscounted
-            },
-            BasicParameters = new()
-            {
-                FeeAmount = data.BasicParameters.FeeAmount,
-                FeeAmountDiscounted = data.BasicParameters.FeeAmountDiscounted
-            }
+            SimulationInputs = MapFromDataInputs(data.SimulationInputs),
+            SimulationResults = MapFromDataOutputs(data.SimulationOutputs),
+            BasicParameters = MapFromDataBasicParameters(data.BasicParameters)
         };
     }
 

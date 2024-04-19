@@ -8,12 +8,72 @@ public sealed class SimulateMortgageExtraPaymentResponse
     public int OfferId { get; set; }
 
     /// <summary>
-    /// Výše měsíční splátky.
+    /// Typ mimořádné splátky
     /// </summary>
-    public decimal LoanPaymentAmount { get; set; }
+    public bool IsExtraPaymentComplete { get; set; }
 
     /// <summary>
-    /// Výše měsíční splátky se zohledněním IC.
+    /// Celková výše mimořádné splátky
     /// </summary>
-    public decimal? LoanPaymentAmountIndividualPrice { get; set; }
+    public decimal ExtraPaymentAmount { get; set; }
+
+    /// <summary>
+    /// Výše účelně vynaložených nákladů
+    /// </summary>
+    public decimal FeeAmount { get; set; }
+
+    /// <summary>
+    /// Jistina splacená mimořádnou splátkou
+    /// </summary>
+    public decimal PrincipalAmount { get; set; }
+
+    /// <summary>
+    /// Úroky splacené mimořádnou splátkou
+    /// </summary>
+    public decimal InterestAmount { get; set; }
+
+    /// <summary>
+    /// Neuhrazené poplatky splacené mimořádnou splátkou
+    /// </summary>
+    public decimal OtherUnpaidFees { get; set; }
+
+    /// <summary>
+    /// Úroky z prodlení splacené mimořádnou splátkou
+    /// </summary>
+    public decimal InterestOnLate { get; set; }
+
+    /// <summary>
+    /// Úroky s odloženou splatností splacené mimořádnou splátkou
+    /// </summary>
+    public decimal InterestCovid { get; set; }
+
+    /// <summary>
+    /// Příznak, zda je úvěr po splatnosti
+    /// </summary>
+    public bool IsLoanOverdue { get; set; }
+
+    /// <summary>
+    /// Příznak, zda se snižuje výše pravidelné splátky
+    /// </summary>
+    public bool IsPaymentReduced { get; set; }
+
+    /// <summary>
+    /// Nové datum splatnosti, pokud se zkracuje splacením mimořádné splátky
+    /// </summary>
+    public DateTime NewMaturityDate { get; set; }
+
+    /// <summary>
+    /// Nová výše splátky, pokud se snižuje výše splátky splacením mimořádné splátky
+    /// </summary>
+    public decimal NewPaymentAmount { get; set; }
+
+    /// <summary>
+    /// Spočítaná pokuta (Pokuta – sleva za pokutu, minimálně 0)
+    /// </summary>
+    public decimal FeeAmountTotal { get; set; }
+
+    /// <summary>
+    /// Spočítaná nová výše splátky jako ExtraPaymentAmount + FeeAmountTotal (s odečtenou slevou)
+    /// </summary>
+    public decimal ExtraPaymentAmountTotal { get; set; }
 }

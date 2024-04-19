@@ -6,8 +6,13 @@ using SharedTypes.GrpcTypes;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgageRefixation;
 
-internal sealed class SimulateMortgageRefixationHandler
-    : IRequestHandler<SimulateMortgageRefixationRequest, SimulateMortgageRefixationResponse>
+internal sealed class SimulateMortgageRefixationHandler(
+    IEasSimulationHTClient _easSimulationHTClient, 
+    Database.OfferServiceDbContext _dbContext, 
+    ILogger<SimulateMortgageRefixationHandler> _logger, 
+    IDocumentDataStorage _documentDataStorage, 
+    Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _offerMapper)
+        : IRequestHandler<SimulateMortgageRefixationRequest, SimulateMortgageRefixationResponse>
 {
     public async Task<SimulateMortgageRefixationResponse> Handle(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
@@ -95,22 +100,5 @@ internal sealed class SimulateMortgageRefixationHandler
         await _documentDataStorage.UpdateByEntityId(offerId, documentEntity);
 
         return new ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime);
-    }
-
-    private readonly Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _offerMapper;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly IEasSimulationHTClient _easSimulationHTClient;
-    private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApi;
-    private readonly Database.OfferServiceDbContext _dbContext;
-    private readonly ILogger<SimulateMortgageRefixationHandler> _logger;
-
-    public SimulateMortgageRefixationHandler(IEasSimulationHTClient easSimulationHTClient, ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApi, Database.OfferServiceDbContext dbContext, ILogger<SimulateMortgageRefixationHandler> logger, IDocumentDataStorage documentDataStorage, Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper offerMapper)
-    {
-        _easSimulationHTClient = easSimulationHTClient;
-        _sbWebApi = sbWebApi;
-        _dbContext = dbContext;
-        _logger = logger;
-        _documentDataStorage = documentDataStorage;
-        _offerMapper = offerMapper;
     }
 }

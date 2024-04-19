@@ -3,11 +3,6 @@
 public sealed class GetMortgageRetentionResponse
     : NOBY.Dto.Refinancing.BaseRefinancingDetailResponse
 {
-    /// <summary>
-    /// Informace zda se jedná o readonly režim
-    /// </summary>
-    public bool IsReadOnly { get; set; }
-
     public decimal FeeAmount { get; set; }
 
     /// <summary>
@@ -50,13 +45,12 @@ public sealed class GetMortgageRetentionResponse
 
     public string? DocumentId { get; set; }
 
-    public int? RefinancingDocumentEACode { get; set; }
+    public int? DocumentEACode { get; set; }
 
     public int? SignatureTypeDetailId { get; set; }
 
     /// <summary>
     /// Označuje zda má být aktivní button Generovat dokument
     /// </summary>
-    // offerid is not null, refinancingState=1, dalsi podminka je prvni pinda pokud existuje offer
     public bool IsGenerateDocumentEnabled { get; set; }
 }

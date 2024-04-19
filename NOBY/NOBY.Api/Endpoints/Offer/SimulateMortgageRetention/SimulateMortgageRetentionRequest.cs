@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using NOBY.Dto.Refinancing;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRetention;
 
 public sealed class SimulateMortgageRetentionRequest
-    : IRequest<SimulateMortgageRetentionResponse>
+    : IRequest<RefinancingSimulationResult>
 {
     [JsonIgnore]
     internal long CaseId { get; set; }

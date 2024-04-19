@@ -4,6 +4,7 @@ using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.CaseService.Clients.v1;
+using DomainServices.CodebookService.Clients;
 using NOBY.Services.MortgageRefinancing;
 using NOBY.Services.OfferLink;
 using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
@@ -19,13 +20,20 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
         AdditionalValidation = AdditionalValidation
     };
 
+    private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
     private readonly MortgageRefinancingWorkflowService _retentionWorkflowService;
     private readonly ICaseServiceClient _caseService;
 
-    public LinkMortgageRetentionOfferHandler(ISalesArrangementServiceClient salesArrangementService, IOfferServiceClient offerService, MortgageRefinancingWorkflowService retentionWorkflowService, ICaseServiceClient caseService)
+    public LinkMortgageRetentionOfferHandler(
+        ICodebookServiceClient codebookService,
+        ISalesArrangementServiceClient salesArrangementService,
+        IOfferServiceClient offerService,
+        MortgageRefinancingWorkflowService retentionWorkflowService,
+        ICaseServiceClient caseService)
     {
+        _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
         _retentionWorkflowService = retentionWorkflowService;
@@ -48,18 +56,19 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
 
     private async Task ProcessWorkflow(LinkMortgageRetentionOfferRequest request, MortgageRetentionFullData retention, _SA salesArrangement, CancellationToken cancellationToken)
     {
-        var workflowResult = await _retentionWorkflowService.GetProcessInfoByProcessId(request.CaseId, salesArrangement.TaskProcessId!.Value, cancellationToken);
+        var workflowResult = await _retentionWorkflowService.GetProcessInfoByProcessId(request.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
 
         await UpdateRetentionWorkflowProcess(retention, salesArrangement.CaseId, workflowResult.ProcessIdSb, cancellationToken);
 
         var mortgageParameters = new MortgageRefinancingWorkflowParameters
         {
             CaseId = salesArrangement.CaseId,
-            TaskProcessId = salesArrangement.TaskProcessId!.Value,
+            ProcessId = salesArrangement.ProcessId!.Value,
             LoanInterestRate = retention.SimulationInputs.InterestRate,
             LoanInterestRateDiscount = retention.SimulationInputs.InterestRateDiscount,
             Fee = new MortgageRefinancingWorkflowParameters.FeeObject
             {
+                FeeId = await GetFeeId(salesArrangement, cancellationToken),
                 FeeSum = retention.BasicParameters.FeeAmount,
                 FeeFinalSum = ((decimal?)retention.BasicParameters.FeeAmountDiscounted).GetValueOrDefault()
             }
@@ -98,6 +107,13 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
         };
 
         await _caseService.UpdateTask(updateRequest, cancellationToken);
+    }
+
+    private async Task<int> GetFeeId(_SA salesArrangement, CancellationToken cancellationToken)
+    {
+        var saTypes = await _codebookService.SalesArrangementTypes(cancellationToken);
+
+        return saTypes.First(s => s.Id == salesArrangement.SalesArrangementTypeId).FeeId ?? throw new InvalidOperationException("FeeId of SalesArrangementType codebook is null");
     }
 
     private static Task<bool> AdditionalValidation(_SA salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)

@@ -15,12 +15,12 @@ internal abstract class LoanApplicationBaseFormData : AggregatedData
 
     public DefaultValues DefaultValues3602 { get; private set; } = null!;
 
-    public IEnumerable<HouseholdDto> HouseholdList => new[] { HouseholdData.HouseholdDto };
+    public IEnumerable<HouseholdDto> HouseholdList => [HouseholdData.HouseholdDto];
 
     public override Task LoadAdditionalData(CancellationToken cancellationToken)
     {
-        DefaultValues3601 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3601, _codebookManager.DocumentTypes);
-        DefaultValues3602 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3602, _codebookManager.DocumentTypes);
+        DefaultValues3601 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3601, SalesArrangementTypes.Mortgage, _codebookManager.DocumentTypes);
+        DefaultValues3602 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3602, (SalesArrangementTypes)SalesArrangement.SalesArrangementTypeId,_codebookManager.DocumentTypes);
 
         HouseholdData.PrepareCodebooks(_codebookManager);
 
