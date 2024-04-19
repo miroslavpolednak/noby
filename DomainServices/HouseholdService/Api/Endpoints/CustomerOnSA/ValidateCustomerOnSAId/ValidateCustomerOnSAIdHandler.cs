@@ -3,8 +3,8 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.ValidateCustomerOnSAId;
 
-internal sealed class ValidateCustomerOnSAIdHandler
-    : IRequestHandler<ValidateCustomerOnSAIdRequest, ValidateCustomerOnSAIdResponse>
+internal sealed class ValidateCustomerOnSAIdHandler(HouseholdServiceDbContext _dbContext)
+        : IRequestHandler<ValidateCustomerOnSAIdRequest, ValidateCustomerOnSAIdResponse>
 {
     public async Task<ValidateCustomerOnSAIdResponse> Handle(ValidateCustomerOnSAIdRequest request, CancellationToken cancellationToken)
     {
@@ -24,12 +24,5 @@ internal sealed class ValidateCustomerOnSAIdHandler
             SalesArrangementId = instance?.SalesArrangementId,
             CaseId = instance?.CaseId
         };
-    }
-
-    private readonly HouseholdServiceDbContext _dbContext;
-    
-    public ValidateCustomerOnSAIdHandler(HouseholdServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

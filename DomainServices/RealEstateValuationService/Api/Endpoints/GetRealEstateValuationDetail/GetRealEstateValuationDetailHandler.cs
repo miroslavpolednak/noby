@@ -54,7 +54,7 @@ internal sealed class GetRealEstateValuationDetailHandler
         // attachments
         response.Attachments.AddRange(await getAttachments(request.RealEstateValuationId, cancellationToken));
 
-        var revDetail = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(request.RealEstateValuationId, cancellationToken);
+        var revDetail = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData, int>(request.RealEstateValuationId, cancellationToken);
         _mapper.MapFromDataToSingle(revDetail?.Data, response);
 
         return response;

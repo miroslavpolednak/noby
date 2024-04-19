@@ -2,8 +2,11 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.CreateHousehold;
 
-internal sealed class CreateHouseholdHandler
-    : IRequestHandler<CreateHouseholdRequest, CreateHouseholdResponse>
+internal sealed class CreateHouseholdHandler(
+    SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    Database.HouseholdServiceDbContext _dbContext,
+    ILogger<CreateHouseholdHandler> _logger)
+        : IRequestHandler<CreateHouseholdRequest, CreateHouseholdResponse>
 {
     public async Task<CreateHouseholdResponse> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
     {
@@ -61,19 +64,5 @@ internal sealed class CreateHouseholdHandler
         {
             HouseholdId = entity.HouseholdId
         };
-    }
-
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly Database.HouseholdServiceDbContext _dbContext;
-    private readonly ILogger<CreateHouseholdHandler> _logger;
-
-    public CreateHouseholdHandler(
-        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        Database.HouseholdServiceDbContext dbContext,
-        ILogger<CreateHouseholdHandler> logger)
-    {
-        _salesArrangementService = salesArrangementService;
-        _dbContext = dbContext;
-        _logger = logger;
     }
 }

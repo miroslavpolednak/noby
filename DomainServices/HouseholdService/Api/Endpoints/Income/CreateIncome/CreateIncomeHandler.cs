@@ -4,8 +4,11 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.CreateIncome;
 
-internal sealed class CreateIncomeHandler
-    : IRequestHandler<CreateIncomeRequest, CreateIncomeResponse>
+internal sealed class CreateIncomeHandler(
+    IDocumentDataStorage _documentDataStorage,
+    IncomeMapper _incomeMapper,
+    ILogger<CreateIncomeHandler> _logger)
+        : IRequestHandler<CreateIncomeRequest, CreateIncomeResponse>
 {
     public async Task<CreateIncomeResponse> Handle(CreateIncomeRequest request, CancellationToken cancellationToken)
     {
@@ -19,19 +22,5 @@ internal sealed class CreateIncomeHandler
         {
             IncomeId = id
         };
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly IncomeMapper _incomeMapper;
-    private readonly ILogger<CreateIncomeHandler> _logger;
-
-    public CreateIncomeHandler(
-        IDocumentDataStorage documentDataStorage,
-        IncomeMapper incomeMapper,
-        ILogger<CreateIncomeHandler> logger)
-    {
-        _incomeMapper = incomeMapper;
-        _documentDataStorage = documentDataStorage;
-        _logger = logger;
     }
 }

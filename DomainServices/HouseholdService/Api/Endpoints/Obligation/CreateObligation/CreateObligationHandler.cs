@@ -4,8 +4,11 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.CreateObligation;
 
-internal sealed class CreateObligationHandler
-    : IRequestHandler<CreateObligationRequest, CreateObligationResponse>
+internal sealed class CreateObligationHandler(
+    IDocumentDataStorage _documentDataStorage,
+    ObligationMapper _mapper,
+    ILogger<CreateObligationHandler> _logger)
+        : IRequestHandler<CreateObligationRequest, CreateObligationResponse>
 {
     public async Task<CreateObligationResponse> Handle(CreateObligationRequest request, CancellationToken cancellationToken)
     {
@@ -19,19 +22,5 @@ internal sealed class CreateObligationHandler
         {
             ObligationId = id
         };
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly ObligationMapper _mapper;
-    private readonly ILogger<CreateObligationHandler> _logger;
-
-    public CreateObligationHandler(
-        IDocumentDataStorage documentDataStorage,
-        ObligationMapper mapper,
-        ILogger<CreateObligationHandler> logger)
-    {
-        _documentDataStorage = documentDataStorage;
-        _mapper = mapper;
-        _logger = logger;
     }
 }

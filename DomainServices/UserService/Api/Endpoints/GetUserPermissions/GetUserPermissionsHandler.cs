@@ -2,8 +2,10 @@
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserPermissions;
 
-internal sealed class GetUserPermissionsHandler
-    : IRequestHandler<Contracts.GetUserPermissionsRequest, Contracts.GetUserPermissionsResponse>
+internal sealed class GetUserPermissionsHandler(
+    IConnectionProvider _db,
+    IDistributedCache _distributedCache)
+        : IRequestHandler<Contracts.GetUserPermissionsRequest, Contracts.GetUserPermissionsResponse>
 {
     public async Task<Contracts.GetUserPermissionsResponse> Handle(Contracts.GetUserPermissionsRequest request, CancellationToken cancellationToken)
     {
@@ -40,14 +42,4 @@ internal sealed class GetUserPermissionsHandler
     }
 
     private const int _minutesInCache = 30;
-    private readonly IConnectionProvider _db;
-    private readonly IDistributedCache _distributedCache;
-
-    public GetUserPermissionsHandler(
-        IConnectionProvider db,
-        IDistributedCache distributedCache)
-    {
-        _db = db;
-        _distributedCache = distributedCache;
-    }
 }

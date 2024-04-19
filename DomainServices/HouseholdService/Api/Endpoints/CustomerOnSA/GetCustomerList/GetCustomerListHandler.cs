@@ -4,8 +4,10 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetCustomerList;
 
-internal sealed class GetCustomerListHandler
-    : IRequestHandler<GetCustomerListRequest, GetCustomerListResponse>
+internal sealed class GetCustomerListHandler(
+    HouseholdServiceDbContext _dbContext, 
+    SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService)
+        : IRequestHandler<GetCustomerListRequest, GetCustomerListResponse>
 {
     public async Task<GetCustomerListResponse> Handle(GetCustomerListRequest request, CancellationToken cancellationToken)
     {
@@ -40,14 +42,5 @@ internal sealed class GetCustomerListHandler
         model.Customers.AddRange(customers);
 
         return model;
-    }
-
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly HouseholdServiceDbContext _dbContext;
-
-    public GetCustomerListHandler(HouseholdServiceDbContext dbContext, SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
-    {
-        _dbContext = dbContext;
-        _salesArrangementService = salesArrangementService;
     }
 }

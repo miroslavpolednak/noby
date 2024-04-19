@@ -4,8 +4,13 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateCustomer;
 
-internal sealed class UpdateCustomerHandler
-    : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
+internal sealed class UpdateCustomerHandler(
+    SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    IAuditLogger _auditLogger,
+    SulmService.ISulmClientHelper _sulmClient,
+    UpdateCustomerService _updateService,
+    Database.HouseholdServiceDbContext _dbContext)
+        : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
 {
     public async Task<UpdateCustomerResponse> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
@@ -101,25 +106,5 @@ internal sealed class UpdateCustomerHandler
         }
 
         return model;
-    }
-
-    private readonly IAuditLogger _auditLogger;
-    private readonly SulmService.ISulmClientHelper _sulmClient;
-    private readonly UpdateCustomerService _updateService;
-    private readonly Database.HouseholdServiceDbContext _dbContext;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-
-    public UpdateCustomerHandler(
-        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        IAuditLogger auditLogger,
-        SulmService.ISulmClientHelper sulmClient,
-        UpdateCustomerService updateService,
-        Database.HouseholdServiceDbContext dbContext)
-    {
-        _salesArrangementService = salesArrangementService;
-        _auditLogger = auditLogger;
-        _sulmClient = sulmClient;
-        _updateService = updateService;
-        _dbContext = dbContext;
     }
 }

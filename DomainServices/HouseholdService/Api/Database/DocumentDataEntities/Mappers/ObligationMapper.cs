@@ -36,11 +36,11 @@ internal sealed class ObligationMapper
         };
     }
 
-    public __Contracts.Obligation MapFromDataToList(DocumentDataItem<Obligation> item)
+    public __Contracts.Obligation MapFromDataToList(DocumentDataItem<Obligation, int> item)
     {
         var model = MapFromDataToSingle(item.Data) ?? new __Contracts.Obligation();
         model.ObligationId = item.DocumentDataStorageId;
-        model.CustomerOnSAId = item.EntityIdInt;
+        model.CustomerOnSAId = item.EntityId;
         return model;
     }
 

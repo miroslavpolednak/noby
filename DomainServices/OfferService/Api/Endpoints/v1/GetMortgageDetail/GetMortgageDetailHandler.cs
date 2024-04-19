@@ -19,13 +19,13 @@ internal sealed class GetMortgageDetailHandler(
             ThrowExceptionIfNotFound = true
         }, cancellationToken);
 
-        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageOfferData>(request.OfferId, cancellationToken);
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageOfferData, int>(request.OfferId, cancellationToken);
         var data = _offerMapper.MapToFullData(offerData!.Data!);
 
-        var additionalData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageAdditionalSimulationResultsData>(request.OfferId, cancellationToken);
+        var additionalData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageAdditionalSimulationResultsData, int>(request.OfferId, cancellationToken);
         var mappedAdditionalData = _additionalResultsMapper.MapFromDataToSingle(additionalData!.Data);
 
-        var worthinessData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageCreditWorthinessSimpleData>(request.OfferId, cancellationToken);
+        var worthinessData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageCreditWorthinessSimpleData, int>(request.OfferId, cancellationToken);
         var mappedWorthinessData = _creditWorthinessMapper.MapFromDataToSingle(worthinessData?.Data);
 
         return new GetMortgageDetailResponse

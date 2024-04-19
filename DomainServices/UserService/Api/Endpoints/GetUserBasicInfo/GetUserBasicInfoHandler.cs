@@ -2,8 +2,10 @@
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserBasicInfo;
 
-internal sealed class GetUserBasicInfoHandler
-    : IRequestHandler<Contracts.GetUserBasicInfoRequest, Contracts.GetUserBasicInfoResponse>
+internal sealed class GetUserBasicInfoHandler(
+    IConnectionProvider _db,
+    IDistributedCache _distributedCache)
+        : IRequestHandler<Contracts.GetUserBasicInfoRequest, Contracts.GetUserBasicInfoResponse>
 {
     public async Task<Contracts.GetUserBasicInfoResponse> Handle(Contracts.GetUserBasicInfoRequest request, CancellationToken cancellationToken)
     {
@@ -42,14 +44,4 @@ internal sealed class GetUserBasicInfoHandler
     }
 
     private const int _minutesInCache = 30;
-    private readonly IConnectionProvider _db;
-    private readonly IDistributedCache _distributedCache;
-
-    public GetUserBasicInfoHandler(
-        IConnectionProvider db,
-        IDistributedCache distributedCache)
-    {
-        _db = db;
-        _distributedCache = distributedCache;
-    }
 }

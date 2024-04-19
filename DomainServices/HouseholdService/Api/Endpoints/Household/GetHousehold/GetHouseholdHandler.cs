@@ -2,8 +2,8 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.GetHousehold;
 
-internal sealed class GetHouseholdHandler
-    : IRequestHandler<GetHouseholdRequest, Contracts.Household>
+internal sealed class GetHouseholdHandler(Database.HouseholdServiceDbContext _dbContext)
+        : IRequestHandler<GetHouseholdRequest, Contracts.Household>
 {
     public async Task<Contracts.Household> Handle(GetHouseholdRequest request, CancellationToken cancellationToken)
     {
@@ -15,12 +15,5 @@ internal sealed class GetHouseholdHandler
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.HouseholdNotFound);
 
         return model;
-    }
-
-    private readonly Database.HouseholdServiceDbContext _dbContext;
-
-    public GetHouseholdHandler(Database.HouseholdServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }
