@@ -2817,6 +2817,16 @@
             Upravená výše poplatku. Relevantní pouze pro retence.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.FeeAmount">
+            <summary>
+            Výše poplatku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.FeeAmountDiscounted">
+            <summary>
+            Upravená výše poplatku
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.WorthinessResult">
             <summary>
             Výsledek bonity
@@ -3478,6 +3488,11 @@
         <member name="M:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionHandler.replaceTaskDataWithOfferData(NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse,DomainServices.OfferService.Contracts.GetOfferResponse)">
             <summary>
             Vytvoreni detail Offer
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.FeeAmount">
+            <summary>
+            Výše poplatku
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.FeeAmountDiscounted">

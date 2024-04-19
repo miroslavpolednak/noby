@@ -3,8 +3,6 @@ using CIS.InternalServices.NotificationService.Api;
 using SharedComponents.DocumentDataStorage;
 using SharedComponents.Storage;
 using CIS.InternalServices.NotificationService.Api.Legacy.ErrorHandling;
-using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
-using CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
 using CIS.InternalServices.NotificationService.Api.Database;
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
@@ -45,7 +43,7 @@ SharedComponents.GrpcServiceBuilder
         builder.AddCisMessaging()
             .AddKafkaFlow(msg =>
             {
-                //msg.AddConsumerAvro<CIS.InternalServices.NotificationService.Api.Messaging.NotificationReport.NotificationReportHandler>(configuration.KafkaTopics.McsResult);
+                msg.AddConsumerAvro<CIS.InternalServices.NotificationService.Api.Messaging.NotificationReport.NotificationReportHandler>(configuration.KafkaTopics.McsResult);
                 msg.AddProducerAvro<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail>(configuration.KafkaTopics.McsSender);
                 msg.AddProducerAvro<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS>(configuration.KafkaTopics.McsSender);
             });
