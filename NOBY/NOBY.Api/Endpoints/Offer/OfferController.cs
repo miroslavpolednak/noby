@@ -64,9 +64,9 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(RefinancingSimulationResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SimulateMortgageRefixation.SimulateMortgageRefixationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<RefinancingSimulationResult> SimulateMortgageRefixation([FromRoute] long caseId, [FromBody] SimulateMortgageRefixation.SimulateMortgageRefixationRequest request)
+    public async Task<SimulateMortgageRefixation.SimulateMortgageRefixationResponse> SimulateMortgageRefixation([FromRoute] long caseId, [FromBody] SimulateMortgageRefixation.SimulateMortgageRefixationRequest request)
         => await _mediator.Send((request ?? new SimulateMortgageRefixation.SimulateMortgageRefixationRequest()).InfuseId(caseId));
 
     /// <summary>
@@ -83,9 +83,9 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [NobySkipCaseStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(RefinancingSimulationResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SimulateMortgageRetention.SimulateMortgageRetentionResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<RefinancingSimulationResult> SimulateMortgageRetention([FromRoute] long caseId, [FromBody] SimulateMortgageRetention.SimulateMortgageRetentionRequest request)
+    public async Task<SimulateMortgageRetention.SimulateMortgageRetentionResponse> SimulateMortgageRetention([FromRoute] long caseId, [FromBody] SimulateMortgageRetention.SimulateMortgageRetentionRequest request)
         => await _mediator.Send((request ?? new SimulateMortgageRetention.SimulateMortgageRetentionRequest()).InfuseId(caseId));
 
     /// <summary>
