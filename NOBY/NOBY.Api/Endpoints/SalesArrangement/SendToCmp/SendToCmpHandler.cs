@@ -81,8 +81,6 @@ internal sealed class SendToCmpHandler
 
             await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
 
-            await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
-
             // odeslat do SB
             await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
 
@@ -91,19 +89,9 @@ internal sealed class SendToCmpHandler
         }
         else
         {
-            await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
-
             // odeslat do SB
             await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
         }
-    }
-
-    private async Task ArchiveElectronicDocumets(int salesArrangementId, CancellationToken cancellationToken)
-    {
-        var digitallySignedDocuments = (await _documentOnSAService.GetDocumentsOnSAList(salesArrangementId, cancellationToken))
-                                       .DocumentsOnSA.Where(d => d.IsSigned && d.SignatureTypeId == (int)SignatureTypes.Electronic);
-        
-        await Task.WhenAll(digitallySignedDocuments.Select(doc => _documentOnSAService.SetDocumentOnSAArchived(doc.DocumentOnSAId!.Value, cancellationToken)));
     }
 
     private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)

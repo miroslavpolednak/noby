@@ -9,9 +9,9 @@ internal sealed class SimulateMortgageRefixationHandler(
     IOfferServiceClient _offerService, 
     ICodebookServiceClient _codebookService, 
     IProductServiceClient _productService)
-        : IRequestHandler<SimulateMortgageRefixationRequest, RefinancingSimulationResult>
+        : IRequestHandler<SimulateMortgageRefixationRequest, SimulateMortgageRefixationResponse>
 {
-    public async Task<RefinancingSimulationResult> Handle(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
+    public async Task<SimulateMortgageRefixationResponse> Handle(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         // validace zda na Case jiz neexistuje simulace se stejnou delkou fixace
         var existingOffers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken);
@@ -55,7 +55,7 @@ internal sealed class SimulateMortgageRefixationHandler(
         // spocitat simulaci
         var result = await _offerService.SimulateMortgageRefixation(dsRequest, cancellationToken);
 
-        return new RefinancingSimulationResult
+        return new SimulateMortgageRefixationResponse
         {
             OfferId = result.OfferId,
             InterestRate = interestRate,

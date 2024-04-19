@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation;
 
 public sealed class SimulateMortgageRefixationRequest
-    : IRequest<RefinancingSimulationResult>
+    : IRequest<SimulateMortgageRefixationResponse>
 {
     [JsonIgnore]
     internal long CaseId { get; set; }
