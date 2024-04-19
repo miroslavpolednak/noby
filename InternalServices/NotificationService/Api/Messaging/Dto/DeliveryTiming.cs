@@ -19,13 +19,13 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class DeliveryTiming : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""DeliveryTiming"",""doc"":""Date and time range.At least one of min, max must be defined. If only one is defined, then the other one is automatically +,- infinity. CDM entity name(s): DateTimeRange."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v4"",""fields"":[{""name"":""max"",""doc"":""max, inclusive. CDM attribute class name: DateTimeRangeMax."",""default"":null,""type"":[""null"",{""type"":""long"",""logicalType"":""timestamp-millis""}]},{""name"":""min"",""doc"":""min, inclusive. CDM attribute class name: DateTimeRangeMin."",""default"":null,""type"":[""null"",{""type"":""long"",""logicalType"":""timestamp-millis""}]}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""DeliveryTiming"",""doc"":""Date and time range.At least one of min, max must be defined. If only one is defined, then the other one is automatically +,- infinity. CDM entity name(s): DateTimeRange."",""namespace"":""cz.kb.osbs.mcs.sender.sendapi.v4"",""fields"":[{""name"":""max"",""doc"":""max, inclusive. CDM attribute class name: DateTimeRangeMax.##"",""default"":null,""type"":[""null"",{""type"":""long"",""logicalType"":""timestamp-millis""}]},{""name"":""min"",""doc"":""min, inclusive. CDM attribute class name: DateTimeRangeMin.##"",""default"":null,""type"":[""null"",{""type"":""long"",""logicalType"":""timestamp-millis""}]}]}");
 		/// <summary>
-		/// max, inclusive. CDM attribute class name: DateTimeRangeMax.
+		/// max, inclusive. CDM attribute class name: DateTimeRangeMax.##
 		/// </summary>
 		private System.Nullable<System.DateTime> _max;
 		/// <summary>
-		/// min, inclusive. CDM attribute class name: DateTimeRangeMin.
+		/// min, inclusive. CDM attribute class name: DateTimeRangeMin.##
 		/// </summary>
 		private System.Nullable<System.DateTime> _min;
 		public virtual global::Avro.Schema Schema
@@ -36,7 +36,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4
 			}
 		}
 		/// <summary>
-		/// max, inclusive. CDM attribute class name: DateTimeRangeMax.
+		/// max, inclusive. CDM attribute class name: DateTimeRangeMax.##
 		/// </summary>
 		public System.Nullable<System.DateTime> max
 		{
@@ -50,7 +50,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4
 			}
 		}
 		/// <summary>
-		/// min, inclusive. CDM attribute class name: DateTimeRangeMin.
+		/// min, inclusive. CDM attribute class name: DateTimeRangeMin.##
 		/// </summary>
 		public System.Nullable<System.DateTime> min
 		{

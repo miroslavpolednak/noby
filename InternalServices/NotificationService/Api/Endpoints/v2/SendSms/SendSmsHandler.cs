@@ -52,7 +52,7 @@ internal sealed class SendSmsHandler
         }, cancellationToken);
 
         // pripravit zpravu do MCS
-        var sendSms = new McsSendApi.v4.sms.SendSMS
+        var message = new McsSendApi.v4.sms.SendSMS
         {
             id = notificationInstance.Id.ToString(),
             phone = new()
@@ -72,7 +72,7 @@ internal sealed class SendSmsHandler
         try
         {
             // odeslat do MCS
-            await _mcsSmsProducer.ProduceAsync(sendSms, cancellationToken);
+            await _mcsSmsProducer.ProduceAsync(message.id, message);
 
             // nastavit stav v databazi
             notificationInstance.State = NotificationStates.Sent;
@@ -96,7 +96,7 @@ internal sealed class SendSmsHandler
 
         return new NotificationIdResponse 
         { 
-            NotificationId = notificationInstance.Id.ToString()
+            NotificationId = message.id
         };
     }
 

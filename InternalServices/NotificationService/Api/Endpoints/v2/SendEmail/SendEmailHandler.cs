@@ -87,7 +87,7 @@ internal sealed class SendEmailHandler
 
         if (senderType == Mandants.Kb)
         {
-            var sendEmail = new McsSendApi.v4.email.SendEmail
+            var message = new McsSendApi.v4.email.SendEmail
             {
                 id = notificationInstance.Id.ToString(),
                 notificationConsumer = new()
@@ -121,7 +121,7 @@ internal sealed class SendEmailHandler
 
             try
             {
-                await _mcsEmailProducer.ProduceAsync(sendEmail, cancellationToken);
+                await _mcsEmailProducer.ProduceAsync(message.id, message);
 
                 // nastavit stav v databazi
                 notificationInstance.State = NotificationStates.Sent;

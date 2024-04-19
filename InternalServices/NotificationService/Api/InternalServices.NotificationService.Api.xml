@@ -152,22 +152,22 @@
         </member>
         <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.DeliveryTiming._max">
             <summary>
-            max, inclusive. CDM attribute class name: DateTimeRangeMax.
+            max, inclusive. CDM attribute class name: DateTimeRangeMax.##
             </summary>
         </member>
         <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.DeliveryTiming._min">
             <summary>
-            min, inclusive. CDM attribute class name: DateTimeRangeMin.
+            min, inclusive. CDM attribute class name: DateTimeRangeMin.##
             </summary>
         </member>
         <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.DeliveryTiming.max">
             <summary>
-            max, inclusive. CDM attribute class name: DateTimeRangeMax.
+            max, inclusive. CDM attribute class name: DateTimeRangeMax.##
             </summary>
         </member>
         <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.DeliveryTiming.min">
             <summary>
-            min, inclusive. CDM attribute class name: DateTimeRangeMin.
+            min, inclusive. CDM attribute class name: DateTimeRangeMin.##
             </summary>
         </member>
         <member name="T:cz.kb.osbs.mcs.sender.sendapi.v4.Document">
@@ -317,22 +317,22 @@
         </member>
         <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.Phone._countryCode">
             <summary>
-            Country code of the MSISDN. It is 'CC' part of msisdn, see belowBy definition, MSISDN is composed of CC+NDC+SN where<ul>	<li>CC stands for 'Country Code'</li>	<li>NDC stands for 'National Destination Code'</li>	<li>SN stands for 'Subscriber Name'</li></ul>E.g.: 420. CDM attribute class name: PhoneNumberCountryCode.
+            Country code of the MSISDN. It is 'CC' part of msisdn, see belowBy definition, MSISDN is composed of CC+NDC+SN where<ul>	<li>CC stands for 'Country Code'</li>	<li>NDC stands for 'National Destination Code'</li>	<li>SN stands for 'Subscriber Name'</li></ul>E.g.: 420. CDM attribute class name: PhoneNumberCountryCode.##
             </summary>
         </member>
         <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.Phone._nationalPhoneNumber">
             <summary>
-            Local part of the MSISDN. It is concatenated 'NDC+SN', see definition below.By definition, MSISDN is composed of CC+NDC+SN where<ul>	<li>CC stands for 'Country Code'</li>	<li>NDC stands for 'National Destination Code'</li>	<li>SN stands for 'Subscriber Name'</li></ul>E.g.: 603123456. CDM attribute class name: PhoneNumberNationalPhoneNumber.
+            Local part of the MSISDN. It is concatenated 'NDC+SN', see definition below.By definition, MSISDN is composed of CC+NDC+SN where<ul>	<li>CC stands for 'Country Code'</li>	<li>NDC stands for 'National Destination Code'</li>	<li>SN stands for 'Subscriber Name'</li></ul>E.g.: 603123456. CDM attribute class name: PhoneNumberNationalPhoneNumber.##
             </summary>
         </member>
         <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.Phone.countryCode">
             <summary>
-            Country code of the MSISDN. It is 'CC' part of msisdn, see belowBy definition, MSISDN is composed of CC+NDC+SN where<ul>	<li>CC stands for 'Country Code'</li>	<li>NDC stands for 'National Destination Code'</li>	<li>SN stands for 'Subscriber Name'</li></ul>E.g.: 420. CDM attribute class name: PhoneNumberCountryCode.
+            Country code of the MSISDN. It is 'CC' part of msisdn, see belowBy definition, MSISDN is composed of CC+NDC+SN where<ul>	<li>CC stands for 'Country Code'</li>	<li>NDC stands for 'National Destination Code'</li>	<li>SN stands for 'Subscriber Name'</li></ul>E.g.: 420. CDM attribute class name: PhoneNumberCountryCode.##
             </summary>
         </member>
         <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.Phone.nationalPhoneNumber">
             <summary>
-            Local part of the MSISDN. It is concatenated 'NDC+SN', see definition below.By definition, MSISDN is composed of CC+NDC+SN where<ul>	<li>CC stands for 'Country Code'</li>	<li>NDC stands for 'National Destination Code'</li>	<li>SN stands for 'Subscriber Name'</li></ul>E.g.: 603123456. CDM attribute class name: PhoneNumberNationalPhoneNumber.
+            Local part of the MSISDN. It is concatenated 'NDC+SN', see definition below.By definition, MSISDN is composed of CC+NDC+SN where<ul>	<li>CC stands for 'Country Code'</li>	<li>NDC stands for 'National Destination Code'</li>	<li>SN stands for 'Subscriber Name'</li></ul>E.g.: 603123456. CDM attribute class name: PhoneNumberNationalPhoneNumber.##
             </summary>
         </member>
         <member name="T:cz.kb.osbs.mcs.sender.sendapi.v4.S3Content">
@@ -412,42 +412,52 @@
         </member>
         <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS._id">
             <summary>
-            ID of the notification. CDM attribute class name: NotificationId.
+            ID of the notification. CDM attribute class name: NotificationId.##
             </summary>
         </member>
         <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS._processingPriority">
             <summary>
-            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
+            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.##
+            </summary>
+        </member>
+        <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS._sendingTimeframe">
+            <summary>
+            ##
             </summary>
         </member>
         <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS._text">
             <summary>
-            Content in text format. CDM attribute class name: ContentText.
+            Content in text format. CDM attribute class name: ContentText.##
             </summary>
         </member>
         <member name="F:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS._type">
             <summary>
-            Multicodebook attribute type itself. CDM attribute class name: NotificationTypeType. Codebook type: CB_MultiCodebookValue.
+            Multicodebook attribute type itself. CDM attribute class name: NotificationTypeType. Codebook type: CB_MultiCodebookValue.##
             </summary>
         </member>
         <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS.id">
             <summary>
-            ID of the notification. CDM attribute class name: NotificationId.
+            ID of the notification. CDM attribute class name: NotificationId.##
             </summary>
         </member>
         <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS.processingPriority">
             <summary>
-            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
+            Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.##
+            </summary>
+        </member>
+        <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS.sendingTimeframe">
+            <summary>
+            ##
             </summary>
         </member>
         <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS.text">
             <summary>
-            Content in text format. CDM attribute class name: ContentText.
+            Content in text format. CDM attribute class name: ContentText.##
             </summary>
         </member>
         <member name="P:cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS.type">
             <summary>
-            Multicodebook attribute type itself. CDM attribute class name: NotificationTypeType. Codebook type: CB_MultiCodebookValue.
+            Multicodebook attribute type itself. CDM attribute class name: NotificationTypeType. Codebook type: CB_MultiCodebookValue.##
             </summary>
         </member>
         <member name="T:cz.kb.osbs.mcs.notificationreport.eventapi.v3.notificationreport.Channel">

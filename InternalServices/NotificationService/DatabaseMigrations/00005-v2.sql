@@ -1,4 +1,6 @@
-CREATE TABLE [DDS].[SmsData](
+DROP TABLE IF EXISTS [DDS].[SmsData]
+GO
+CREATE  TABLE [DDS].[SmsData](
 	[DocumentDataStorageId] [int] IDENTITY(1,1) NOT NULL,
 	[DocumentDataEntityId] [varchar](50) NULL,
 	[DocumentDataVersion] [int] NOT NULL,
@@ -13,6 +15,8 @@ CREATE TABLE [DDS].[SmsData](
 )
 GO
 
+DROP TABLE IF EXISTS [DDS].[EmailData]
+GO
 CREATE TABLE [DDS].[EmailData](
 	[DocumentDataStorageId] [int] IDENTITY(1,1) NOT NULL,
 	[DocumentDataEntityId] [varchar](50) NULL,
@@ -28,6 +32,8 @@ CREATE TABLE [DDS].[EmailData](
 )
 GO
 
+DROP TABLE IF EXISTS [dbo].Notification
+GO
 CREATE TABLE [dbo].[Notification](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Channel] [int] NOT NULL,

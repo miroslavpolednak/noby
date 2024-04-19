@@ -31,55 +31,61 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4.sms
 				"e defined. If only one is defined, then the other one is automatically +,- infin" +
 				"ity. CDM entity name(s): DateTimeRange.\",\"namespace\":\"cz.kb.osbs.mcs.sender.send" +
 				"api.v4\",\"fields\":[{\"name\":\"max\",\"doc\":\"max, inclusive. CDM attribute class name:" +
-				" DateTimeRangeMax.\",\"default\":null,\"type\":[\"null\",{\"type\":\"long\",\"logicalType\":\"" +
-				"timestamp-millis\"}]},{\"name\":\"min\",\"doc\":\"min, inclusive. CDM attribute class na" +
-				"me: DateTimeRangeMin.\",\"default\":null,\"type\":[\"null\",{\"type\":\"long\",\"logicalType" +
-				"\":\"timestamp-millis\"}]}]}]},{\"name\":\"id\",\"doc\":\"ID of the notification. CDM attr" +
-				"ibute class name: NotificationId.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"S" +
-				"tring\",\"pattern\":\"^.{0,30}$\"}},{\"name\":\"notificationConsumer\",\"type\":{\"type\":\"re" +
-				"cord\",\"name\":\"NotificationConsumer\",\"doc\":\"ConsumerID bude prirazeno pri registr" +
-				"aci konzumenta na Sender.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"field" +
-				"s\":[{\"name\":\"consumerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}" +
-				"},{\"name\":\"phone\",\"type\":{\"type\":\"record\",\"name\":\"Phone\",\"doc\":\"Phone as a conta" +
-				"ct on party.. ## Represents telephone number. CDM entity name(s): PhoneContact,P" +
-				"honeNumber.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"name\":\"c" +
-				"ountryCode\",\"doc\":\"Country code of the MSISDN. It is \'CC\' part of msisdn, see be" +
-				"lowBy definition, MSISDN is composed of CC+NDC+SN where<ul>\\t<li>CC stands for \'" +
-				"Country Code\'</li>\\t<li>NDC stands for \'National Destination Code\'</li>\\t<li>SN " +
-				"stands for \'Subscriber Name\'</li></ul>E.g.: 420. CDM attribute class name: Phone" +
-				"NumberCountryCode.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern" +
-				"\":\"^.{0,5}$\"}},{\"name\":\"nationalPhoneNumber\",\"doc\":\"Local part of the MSISDN. It" +
-				" is concatenated \'NDC+SN\', see definition below.By definition, MSISDN is compose" +
-				"d of CC+NDC+SN where<ul>\\t<li>CC stands for \'Country Code\'</li>\\t<li>NDC stands " +
-				"for \'National Destination Code\'</li>\\t<li>SN stands for \'Subscriber Name\'</li></" +
-				"ul>E.g.: 603123456. CDM attribute class name: PhoneNumberNationalPhoneNumber.\",\"" +
-				"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,14}$\"}}]}},{\"" +
-				"name\":\"processingPriority\",\"doc\":\"Priority of notification that determines order" +
-				" in which notification are sent.e.g. high or standard. CDM attribute class name:" +
-				" NotificationProcessingPriority.\",\"default\":null,\"type\":[\"null\",\"int\"]},{\"name\":" +
-				"\"text\",\"doc\":\"Content in text format. CDM attribute class name: ContentText.\",\"t" +
-				"ype\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"type\",\"doc\":\"Multic" +
-				"odebook attribute type itself. CDM attribute class name: NotificationTypeType. C" +
-				"odebook type: CB_MultiCodebookValue.\",\"type\":{\"type\":\"string\",\"avro.java.string\"" +
-				":\"String\",\"pattern\":\"^.{0,100}$\"}}],\"javaAnnotation\":\"cz.kb.api.common.annotatio" +
-				"n.ConfluentSchemaRegistryCompatible\"}");
+				" DateTimeRangeMax.##\",\"default\":null,\"type\":[\"null\",{\"type\":\"long\",\"logicalType\"" +
+				":\"timestamp-millis\"}]},{\"name\":\"min\",\"doc\":\"min, inclusive. CDM attribute class " +
+				"name: DateTimeRangeMin.##\",\"default\":null,\"type\":[\"null\",{\"type\":\"long\",\"logical" +
+				"Type\":\"timestamp-millis\"}]}]}]},{\"name\":\"id\",\"doc\":\"ID of the notification. CDM " +
+				"attribute class name: NotificationId.##\",\"type\":{\"type\":\"string\",\"avro.java.stri" +
+				"ng\":\"String\",\"pattern\":\"^.{0,30}$\"}},{\"name\":\"notificationConsumer\",\"type\":{\"typ" +
+				"e\":\"record\",\"name\":\"NotificationConsumer\",\"doc\":\"ConsumerID bude prirazeno pri r" +
+				"egistraci konzumenta na Sender.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\"," +
+				"\"fields\":[{\"name\":\"consumerId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"Strin" +
+				"g\"}}]}},{\"name\":\"phone\",\"type\":{\"type\":\"record\",\"name\":\"Phone\",\"doc\":\"Phone as a" +
+				" contact on party.. ## Represents telephone number. CDM entity name(s): PhoneCon" +
+				"tact,PhoneNumber.\",\"namespace\":\"cz.kb.osbs.mcs.sender.sendapi.v4\",\"fields\":[{\"na" +
+				"me\":\"countryCode\",\"doc\":\"Country code of the MSISDN. It is \'CC\' part of msisdn, " +
+				"see belowBy definition, MSISDN is composed of CC+NDC+SN where<ul>\\t<li>CC stands" +
+				" for \'Country Code\'</li>\\t<li>NDC stands for \'National Destination Code\'</li>\\t<" +
+				"li>SN stands for \'Subscriber Name\'</li></ul>E.g.: 420. CDM attribute class name:" +
+				" PhoneNumberCountryCode.##\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"," +
+				"\"pattern\":\"^.{0,5}$\"}},{\"name\":\"nationalPhoneNumber\",\"doc\":\"Local part of the MS" +
+				"ISDN. It is concatenated \'NDC+SN\', see definition below.By definition, MSISDN is" +
+				" composed of CC+NDC+SN where<ul>\\t<li>CC stands for \'Country Code\'</li>\\t<li>NDC" +
+				" stands for \'National Destination Code\'</li>\\t<li>SN stands for \'Subscriber Name" +
+				"\'</li></ul>E.g.: 603123456. CDM attribute class name: PhoneNumberNationalPhoneNu" +
+				"mber.##\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,14}" +
+				"$\"}}]}},{\"name\":\"processingPriority\",\"doc\":\"Priority of notification that determ" +
+				"ines order in which notification are sent.e.g. high or standard. CDM attribute c" +
+				"lass name: NotificationProcessingPriority.##\",\"default\":null,\"type\":[\"null\",\"int" +
+				"\"]},{\"name\":\"sendingTimeframe\",\"doc\":\"##\",\"default\":null,\"type\":[\"null\",{\"type\":" +
+				"\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,20}$\"}]},{\"name\":\"text\",\"do" +
+				"c\":\"Content in text format. CDM attribute class name: ContentText.##\",\"type\":{\"t" +
+				"ype\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"type\",\"doc\":\"Multicodebook " +
+				"attribute type itself. CDM attribute class name: NotificationTypeType. Codebook " +
+				"type: CB_MultiCodebookValue.##\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"Stri" +
+				"ng\",\"pattern\":\"^.{0,100}$\"}}],\"javaAnnotation\":\"cz.kb.api.common.annotation.Conf" +
+				"luentSchemaRegistryCompatible\"}");
 		private cz.kb.osbs.mcs.sender.sendapi.v4.DeliveryTiming _deliveryTiming;
 		/// <summary>
-		/// ID of the notification. CDM attribute class name: NotificationId.
+		/// ID of the notification. CDM attribute class name: NotificationId.##
 		/// </summary>
 		private string _id;
 		private cz.kb.osbs.mcs.sender.sendapi.v4.NotificationConsumer _notificationConsumer;
 		private cz.kb.osbs.mcs.sender.sendapi.v4.Phone _phone;
 		/// <summary>
-		/// Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
+		/// Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.##
 		/// </summary>
 		private System.Nullable<System.Int32> _processingPriority;
 		/// <summary>
-		/// Content in text format. CDM attribute class name: ContentText.
+		/// ##
+		/// </summary>
+		private string _sendingTimeframe;
+		/// <summary>
+		/// Content in text format. CDM attribute class name: ContentText.##
 		/// </summary>
 		private string _text;
 		/// <summary>
-		/// Multicodebook attribute type itself. CDM attribute class name: NotificationTypeType. Codebook type: CB_MultiCodebookValue.
+		/// Multicodebook attribute type itself. CDM attribute class name: NotificationTypeType. Codebook type: CB_MultiCodebookValue.##
 		/// </summary>
 		private string _type;
 		public virtual global::Avro.Schema Schema
@@ -101,7 +107,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4.sms
 			}
 		}
 		/// <summary>
-		/// ID of the notification. CDM attribute class name: NotificationId.
+		/// ID of the notification. CDM attribute class name: NotificationId.##
 		/// </summary>
 		public string id
 		{
@@ -137,7 +143,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4.sms
 			}
 		}
 		/// <summary>
-		/// Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.
+		/// Priority of notification that determines order in which notification are sent.e.g. high or standard. CDM attribute class name: NotificationProcessingPriority.##
 		/// </summary>
 		public System.Nullable<System.Int32> processingPriority
 		{
@@ -151,7 +157,21 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4.sms
 			}
 		}
 		/// <summary>
-		/// Content in text format. CDM attribute class name: ContentText.
+		/// ##
+		/// </summary>
+		public string sendingTimeframe
+		{
+			get
+			{
+				return this._sendingTimeframe;
+			}
+			set
+			{
+				this._sendingTimeframe = value;
+			}
+		}
+		/// <summary>
+		/// Content in text format. CDM attribute class name: ContentText.##
 		/// </summary>
 		public string text
 		{
@@ -165,7 +185,7 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4.sms
 			}
 		}
 		/// <summary>
-		/// Multicodebook attribute type itself. CDM attribute class name: NotificationTypeType. Codebook type: CB_MultiCodebookValue.
+		/// Multicodebook attribute type itself. CDM attribute class name: NotificationTypeType. Codebook type: CB_MultiCodebookValue.##
 		/// </summary>
 		public string type
 		{
@@ -187,8 +207,9 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4.sms
 			case 2: return this.notificationConsumer;
 			case 3: return this.phone;
 			case 4: return this.processingPriority;
-			case 5: return this.text;
-			case 6: return this.type;
+			case 5: return this.sendingTimeframe;
+			case 6: return this.text;
+			case 7: return this.type;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Get()");
 			};
 		}
@@ -201,8 +222,9 @@ namespace cz.kb.osbs.mcs.sender.sendapi.v4.sms
 			case 2: this.notificationConsumer = (cz.kb.osbs.mcs.sender.sendapi.v4.NotificationConsumer)fieldValue; break;
 			case 3: this.phone = (cz.kb.osbs.mcs.sender.sendapi.v4.Phone)fieldValue; break;
 			case 4: this.processingPriority = (System.Nullable<System.Int32>)fieldValue; break;
-			case 5: this.text = (System.String)fieldValue; break;
-			case 6: this.type = (System.String)fieldValue; break;
+			case 5: this.sendingTimeframe = (System.String)fieldValue; break;
+			case 6: this.text = (System.String)fieldValue; break;
+			case 7: this.type = (System.String)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}
