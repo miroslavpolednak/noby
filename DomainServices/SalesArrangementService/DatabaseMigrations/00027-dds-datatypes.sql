@@ -5,7 +5,7 @@ GO
 DROP TABLE IF EXISTS [dbo].[SalesArrangementParametersHistory]
 GO
 
-DROP INDEX IF EXISTS [Idx_EntityId] ON [DDS].[Income]
+DROP INDEX IF EXISTS [IX_EntityId] ON [DDS].[SalesArrangementParameters]
 GO
 
 ALTER TABLE [DDS].[SalesArrangementParameters] SET ( SYSTEM_VERSIONING = OFF  );
