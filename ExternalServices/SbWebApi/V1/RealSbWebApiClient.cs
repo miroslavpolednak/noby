@@ -255,7 +255,7 @@ internal sealed class RealSbWebApiClient
         return responseObject?.Ea_number;
     }
 
-    public async Task<string?> GenerateRefixationDocument(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken = default)
+    public async Task<string?> GenerateHedgeAppendixDocument(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken = default)
     {
         var sbRequest = new HedgeRefixationAppendix_request
         {

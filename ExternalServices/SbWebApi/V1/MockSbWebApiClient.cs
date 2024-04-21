@@ -64,7 +64,7 @@ internal sealed class MockSbWebApiClient
         throw new NotImplementedException();
     }
 
-    public Task<string?> GenerateRefixationDocument(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken = default)
+    public Task<string?> GenerateHedgeAppendixDocument(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
