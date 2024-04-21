@@ -3,8 +3,8 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.DeleteIncome;
 
-internal sealed class DeleteIncomeHandler
-    : IRequestHandler<DeleteIncomeRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class DeleteIncomeHandler(IDocumentDataStorage _documentDataStorage)
+        : IRequestHandler<DeleteIncomeRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteIncomeRequest request, CancellationToken cancellationToken)
     {
@@ -16,12 +16,5 @@ internal sealed class DeleteIncomeHandler
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-
-    public DeleteIncomeHandler(IDocumentDataStorage documentDataStorage)
-    {
-        _documentDataStorage = documentDataStorage;
     }
 }

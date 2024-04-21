@@ -10,8 +10,17 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
 
-internal sealed class CreateCustomerHandler
-    : IRequestHandler<CreateCustomerRequest, CreateCustomerResponse>
+internal sealed class CreateCustomerHandler(
+    IDocumentDataStorage _documentDataStorage,
+    IAuditLogger _auditLogger,
+    ICustomerServiceClient _customerService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    SulmService.ISulmClientHelper _sulmClient,
+    UpdateCustomerService _updateService,
+    ICaseServiceClient _caseService,
+    Database.HouseholdServiceDbContext _dbContext,
+    ILogger<CreateCustomerHandler> _logger)
+        : IRequestHandler<CreateCustomerRequest, CreateCustomerResponse>
 {
     public async Task<CreateCustomerResponse> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
@@ -137,37 +146,5 @@ internal sealed class CreateCustomerHandler
             Name = entity.Name,
             Identity = identity
         }, cancellationToken);
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly IAuditLogger _auditLogger;
-    private readonly ICaseServiceClient _caseService;
-    private readonly SulmService.ISulmClientHelper _sulmClient;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly UpdateCustomerService _updateService;
-    private readonly Database.HouseholdServiceDbContext _dbContext;
-    private readonly ILogger<CreateCustomerHandler> _logger;
-
-    public CreateCustomerHandler(
-        IDocumentDataStorage documentDataStorage,
-        IAuditLogger auditLogger,
-        ICustomerServiceClient customerService,
-        ISalesArrangementServiceClient salesArrangementService,
-        SulmService.ISulmClientHelper sulmClient,
-        UpdateCustomerService updateService,
-        ICaseServiceClient caseService,
-        Database.HouseholdServiceDbContext dbContext,
-        ILogger<CreateCustomerHandler> logger)
-    {
-        _documentDataStorage = documentDataStorage;
-        _auditLogger = auditLogger;
-        _caseService = caseService;
-        _customerService = customerService;
-        _salesArrangementService = salesArrangementService;
-        _sulmClient = sulmClient;
-        _updateService = updateService;
-        _dbContext = dbContext;
-        _logger = logger;
     }
 }

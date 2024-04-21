@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Dto.Refinancing;
 
-public sealed class RefinancingSimulationResult
+public abstract class RefinancingSimulationResult
 {
     /// <summary>
     /// ID vytvorene simulace.

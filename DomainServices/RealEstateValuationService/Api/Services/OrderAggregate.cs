@@ -64,7 +64,7 @@ internal sealed class OrderAggregate
 
         // REV data
         var revDetailData = (await _documentDataStorage
-            .FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(realEstateValuationId, cancellationToken))
+            .FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData, int>(realEstateValuationId, cancellationToken))
             ?.Data;
 
         return (entity, revDetailData, realEstateIds, attachments, caseInstance, addressPointId);

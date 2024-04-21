@@ -4,8 +4,10 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.UpdateIncome;
 
-internal sealed class UpdateIncomeHandler
-    : IRequestHandler<UpdateIncomeRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateIncomeHandler(
+    IncomeMapper _incomeMapper,
+    IDocumentDataStorage _documentDataStorage)
+        : IRequestHandler<UpdateIncomeRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateIncomeRequest request, CancellationToken cancellationToken)
     {
@@ -14,16 +16,5 @@ internal sealed class UpdateIncomeHandler
         await _documentDataStorage.Update(request.IncomeId, documentEntity);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly IncomeMapper _incomeMapper;
-
-    public UpdateIncomeHandler(
-        IncomeMapper incomeMapper,
-        IDocumentDataStorage documentDataStorage)
-    {
-        _documentDataStorage = documentDataStorage;
-        _incomeMapper = incomeMapper;
     }
 }

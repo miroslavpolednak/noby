@@ -82,7 +82,7 @@ internal sealed class GetSalesArrangementHandler
     private async Task<TData?> GetParametersData<TData>(int salesArrangementId, CancellationToken cancellationToken) 
         where TData : class, IDocumentData
     {
-        var documentData = await _documentDataStorage.FirstOrDefaultByEntityId<TData>(salesArrangementId, SalesArrangementParametersConst.TableName, cancellationToken);
+        var documentData = await _documentDataStorage.FirstOrDefaultByEntityId<TData, int>(salesArrangementId, SalesArrangementParametersConst.TableName, cancellationToken);
 
         return documentData?.Data;
     }

@@ -3,6 +3,9 @@
 public sealed class GetMortgageRetentionResponse
     : NOBY.Dto.Refinancing.BaseRefinancingDetailResponse
 {
+    /// <summary>
+    /// Výše poplatku
+    /// </summary>
     public decimal FeeAmount { get; set; }
 
     /// <summary>

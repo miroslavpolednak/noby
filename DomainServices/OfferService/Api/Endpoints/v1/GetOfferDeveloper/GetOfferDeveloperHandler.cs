@@ -12,7 +12,7 @@ internal sealed class GetOfferDeveloperHandler(
 {
     public async Task<GetOfferDeveloperResponse> Handle(GetOfferDeveloperRequest request, CancellationToken cancellationToken)
     {
-        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageOfferData>(request.OfferId, cancellationToken)
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageOfferData, int>(request.OfferId, cancellationToken)
             ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.OfferNotFound, request.OfferId);
         var inputs = offerData.Data!.SimulationInputs;
 

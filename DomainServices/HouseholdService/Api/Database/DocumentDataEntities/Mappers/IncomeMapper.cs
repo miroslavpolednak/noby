@@ -53,7 +53,7 @@ internal sealed class IncomeMapper
         return model;
     }
 
-    public __Contracts.IncomeInList MapFromDataToList(DocumentDataItem<Income> item)
+    public __Contracts.IncomeInList MapFromDataToList(DocumentDataItem<Income, int> item)
     {
         return new __Contracts.IncomeInList
         {

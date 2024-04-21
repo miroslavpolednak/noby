@@ -3,8 +3,10 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.UpdateObligation;
 
-internal sealed class UpdateObligationHandler
-    : IRequestHandler<Contracts.Obligation, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateObligationHandler(
+    IDocumentDataStorage _documentDataStorage,
+    ObligationMapper _mapper)
+        : IRequestHandler<Contracts.Obligation, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.Obligation request, CancellationToken cancellationToken)
     {
@@ -13,16 +15,5 @@ internal sealed class UpdateObligationHandler
         await _documentDataStorage.Update(request.ObligationId, documentEntity);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly ObligationMapper _mapper;
-
-    public UpdateObligationHandler(
-        IDocumentDataStorage documentDataStorage,
-        ObligationMapper mapper)
-    {
-        _documentDataStorage = documentDataStorage;
-        _mapper = mapper;
     }
 }

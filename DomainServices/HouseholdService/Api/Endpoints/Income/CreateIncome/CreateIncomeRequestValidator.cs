@@ -29,7 +29,7 @@ internal sealed class CreateIncomeRequestValidator
             {
                 CustomerIncomeTypes incomeType = (CustomerIncomeTypes)incomeTypeId;
 
-                var incomes = await documentDataStorage.GetList<Database.DocumentDataEntities.Income>(request.CustomerOnSAId, cancellationToken);
+                var incomes = await documentDataStorage.GetList<Database.DocumentDataEntities.Income, int>(request.CustomerOnSAId, cancellationToken);
                 int totalIncomesOfType = incomes.Count(t => t.Data?.IncomeTypeId == incomeType);
 
                 return !IncomeHelpers.AlreadyHasMaxIncomes(incomeType, totalIncomesOfType);

@@ -40,7 +40,7 @@ internal sealed class UpdateRealEstateValuationDetailHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         // ulozit json data
-        var revDetailData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(request.RealEstateValuationId, cancellationToken);
+        var revDetailData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData, int>(request.RealEstateValuationId, cancellationToken);
         _mapper.MapToData(request, revDetailData!.Data);
 
         await _documentDataStorage.Update(revDetailData.DocumentDataStorageId, revDetailData.Data!);

@@ -3,8 +3,8 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.LinkCustomerOnSAToHousehold;
 
-internal sealed class LinkCustomerOnSAToHouseholdHandler
-    : IRequestHandler<LinkCustomerOnSAToHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class LinkCustomerOnSAToHouseholdHandler(HouseholdServiceDbContext _dbContext)
+        : IRequestHandler<LinkCustomerOnSAToHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(LinkCustomerOnSAToHouseholdRequest request, CancellationToken cancellationToken)
     {
@@ -34,12 +34,5 @@ internal sealed class LinkCustomerOnSAToHouseholdHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly HouseholdServiceDbContext _dbContext;
-
-    public LinkCustomerOnSAToHouseholdHandler(HouseholdServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }
