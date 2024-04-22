@@ -3,16 +3,12 @@ using CIS.InternalServices.NotificationService.Contracts.v2;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.GetStatistics;
 
-/*internal sealed class GetStatisticsHandler(
-    NotificationDbContext _dbContext, 
-    IUserAdapterService _userAdapterService)
+internal sealed class GetStatisticsHandler(NotificationDbContext _dbContext)
         : IRequestHandler<GetStatisticsRequest, GetStatisticsResponse>
 {
     public async Task<GetStatisticsResponse> Handle(GetStatisticsRequest request, CancellationToken cancellationToken)
     {
-        _userAdapterService.CheckReceiveStatisticsAccess();
-
-        var query = _dbContext.Results.AsQueryable();
+        var query = _dbContext.Notifications.AsQueryable();
 
         if (request.States != null && request.States.Count > 0)
             query = query.Where(t => request.States.Contains(t.State));
@@ -21,10 +17,16 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.GetStatistic
             query = query.Where(t => request.Channels.Contains(t.Channel));
 
         if (request.TimeFrom != null)
-            query = query.Where(t => t.RequestTimestamp >= request.TimeFrom);
+        {
+            var d1 = request.TimeFrom.ToDateTime();
+            query = query.Where(t => t.CreatedTime >= d1);
+        }
 
         if (request.TimeTo != null)
-            query = query.Where(t => t.RequestTimestamp <= request.TimeTo);
+        {
+            var d2 = request.TimeTo.ToDateTime();
+            query = query.Where(t => t.CreatedTime <= d2);
+        }
 
         var data = await query
             .GroupBy(t => new { t.Channel, t.State })
@@ -69,4 +71,4 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.GetStatistic
         int? getDefault(NotificationStates state)
             => request.States == null || request.States.Contains(state) ? 0 : null;
     }
-}*/
+}

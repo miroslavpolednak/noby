@@ -1,34 +1,38 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Database;
-using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.GetDetailedStatistics;
 
-/*internal sealed class GetDetailedStatisticsHandler(
-    NotificationDbContext _dbContext, 
-    IUserAdapterService _userAdapterService, 
+internal sealed class GetDetailedStatisticsHandler(
+    NotificationDbContext _dbContext,
     IMediator _mediator)
         : IRequestHandler<GetDetailedStatisticsRequest, GetDetailedStatisticsResponse>
 {
     public async Task<GetDetailedStatisticsResponse> Handle(GetDetailedStatisticsRequest request, CancellationToken cancellationToken)
     {
-        _userAdapterService.CheckReceiveStatisticsAccess();
-
-        var dateFrom = request.StatisticsDate.Date;
+        var dateFrom = request.StatisticsDate.ToDateTime().Date;
         var dateTo = dateFrom.AddDays(1);
 
         // statistiky
-        var statistics = await _mediator.Send(new GetStatisticsRequest
+        var statisticsRequest = new GetStatisticsRequest
         {
-            Channels = request.Channels,
-            States = request.States,
-            TimeFrom = dateFrom,
-            TimeTo = dateTo
-        }, cancellationToken);
+            TimeFrom = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(dateFrom),
+            TimeTo = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(dateTo)
+        };
+        if (request.Channels is not null)
+        {
+            statisticsRequest.Channels.AddRange(request.Channels);
+        }
+        if (request.States is not null)
+        {
+            statisticsRequest.States.AddRange(request.States);
+        }
+
+        var statistics = await _mediator.Send(statisticsRequest, cancellationToken);
 
         // notifikace
-        var query = _dbContext.Results
-            .Where(t => t.RequestTimestamp >= dateFrom && t.RequestTimestamp <= dateTo)
+        var query = _dbContext.Notifications
+            .Where(t => t.CreatedTime >= dateFrom && t.CreatedTime <= dateTo)
             .AsQueryable();
 
         if (request.States != null && request.States.Count > 0)
@@ -38,21 +42,15 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.GetDetailedS
             query = query.Where(t => request.Channels.Contains(t.Channel));
 
         var data = await query
-            .Select(t => new LegacyContracts.Statistics.Dto.Result
-            {
-                NotificationId = t.Id,
-                Channel = t.Channel,
-                Mandant = (t is EmailResult) ? ((EmailResult)t).SenderType : null,
-                RequestTimestamp = t.RequestTimestamp,
-                State = t.State
-            })
-            .OrderBy(t => t.RequestTimestamp)
+            .OrderBy(t => t.CreatedTime)
+            .Take(1000) // radsi omezit max?
             .ToListAsync(cancellationToken);
 
-        return new GetDetailedStatisticsResponse()
+        var response = new GetDetailedStatisticsResponse()
         {
-            Statistics = statistics.Statistics,
-            Results = data
+            Statistics = statistics.Statistics
         };
+        response.Results.AddRange(data.Select(t => t.MapToResultDataV2()));
+        return response;
     }
-}*/
+}

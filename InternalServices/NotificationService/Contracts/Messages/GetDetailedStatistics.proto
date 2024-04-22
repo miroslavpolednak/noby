@@ -13,5 +13,5 @@ message GetDetailedStatisticsRequest {
 
 message GetDetailedStatisticsResponse {
     StatisticsData Statistics = 1;
-    ResultData Results = 2;
+    repeated ResultData Results = 2;
 }

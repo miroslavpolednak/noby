@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2;
 
-[Authorize]
 internal sealed class NotificationService(IMediator _mediator)
         : Contracts.v2.NotificationService.NotificationServiceBase
 {
@@ -22,5 +21,13 @@ internal sealed class NotificationService(IMediator _mediator)
 
     [Authorize(Roles = UserRoles.ReadResult)]
     public override async Task<SearchResultsResponse> SearchResults(SearchResultsRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    [Authorize(Roles = UserRoles.ReceiveStatistics)]
+    public override async Task<GetStatisticsResponse> GetStatistics(GetStatisticsRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    [Authorize(Roles = UserRoles.ReceiveStatistics)]
+    public override async Task<GetDetailedStatisticsResponse> GetDetailedStatistics(GetDetailedStatisticsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 }

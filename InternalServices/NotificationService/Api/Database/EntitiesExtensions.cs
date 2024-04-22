@@ -1,6 +1,5 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.v2;
 using SharedComponents.DocumentDataStorage;
-using System.Threading;
 
 namespace CIS.InternalServices.NotificationService.Api.Database;
 

@@ -1,13 +1,12 @@
 ﻿using CIS.Infrastructure.Data;
 using CIS.InternalServices.NotificationService.Api.Database.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.NotificationService.Api.Database;
 
 // dotnet tool install --global --add-source C:\path\dotnet-ef --version 7.0.2
 // dotnet-ef migrations add [migration-name] --output-dir Services/Repositories/Migrations
 // dotnet-ef migrations script
-internal sealed class NotificationDbContext : BaseDbContext<NotificationDbContext>
+internal sealed class NotificationDbContext(BaseDbContextAggregate<NotificationDbContext> aggregate) : BaseDbContext<NotificationDbContext>(aggregate)
 {
     public DbSet<Notification> Notifications { get; set; } = null!;
 
@@ -19,7 +18,9 @@ internal sealed class NotificationDbContext : BaseDbContext<NotificationDbContex
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Notification>().OwnsMany(notification => notification.Errors, b => b.ToJson());
+        modelBuilder
+            .Entity<Notification>()
+            .OwnsMany(notification => notification.Errors, b => b.ToJson());
 
         #region legacy code
         modelBuilder.Entity<Result>()
@@ -31,9 +32,5 @@ internal sealed class NotificationDbContext : BaseDbContext<NotificationDbContex
         modelBuilder.Entity<EmailResult>()
             .ToTable(nameof(EmailResult));
         #endregion legacy code
-    }
-
-    public NotificationDbContext(BaseDbContextAggregate<NotificationDbContext> aggregate) : base(aggregate)
-    {
     }
 }
