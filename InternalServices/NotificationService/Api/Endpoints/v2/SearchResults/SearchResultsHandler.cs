@@ -1,12 +1,13 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.v2;
-using Microsoft.EntityFrameworkCore;
 using SharedComponents.DocumentDataStorage;
 using CIS.InternalServices.NotificationService.Api.Database;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SearchResults;
 
-internal sealed class SearchResultsHandler
-    : IRequestHandler<SearchResultsRequest, SearchResultsResponse>
+internal sealed class SearchResultsHandler(
+    NotificationDbContext _dbContext, 
+    IDocumentDataStorage _documentDataStorage)
+        : IRequestHandler<SearchResultsRequest, SearchResultsResponse>
 {
     public async Task<SearchResultsResponse> Handle(SearchResultsRequest request, CancellationToken cancellationToken)
     {
@@ -21,7 +22,7 @@ internal sealed class SearchResultsHandler
 
         // dotahnout detail notifikace, resime jen sms
         string[] entityIds = mappedNotifications.Where(t => t.Channel == NotificationChannels.Sms).Select(t => t.NotificationId).ToArray();
-        var details = await _documentDataStorage.GetList<Database.DocumentDataEntities.SmsData>(entityIds, cancellationToken);
+        var details = await _documentDataStorage.GetList<Database.DocumentDataEntities.SmsData, string>(entityIds, cancellationToken);
         foreach (var detail in details)
         {
             mappedNotifications.First(t => t.NotificationId == detail.EntityId).SmsData = detail.MapToSmsResult();
@@ -57,14 +58,5 @@ internal sealed class SearchResultsHandler
         }
 
         return query;
-    }
-
-    private readonly Database.NotificationDbContext _dbContext;
-    private readonly IDocumentDataStorage _documentDataStorage;
-
-    public SearchResultsHandler(NotificationDbContext dbContext, IDocumentDataStorage documentDataStorage)
-    {
-        _dbContext = dbContext;
-        _documentDataStorage = documentDataStorage;
     }
 }

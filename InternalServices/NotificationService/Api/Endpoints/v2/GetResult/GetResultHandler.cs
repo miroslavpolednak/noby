@@ -1,12 +1,13 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.v2;
-using Microsoft.EntityFrameworkCore;
 using SharedComponents.DocumentDataStorage;
 using CIS.InternalServices.NotificationService.Api.Database;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.GetResult;
 
-internal sealed class GetResultHandler
-    : IRequestHandler<GetResultRequest, ResultData>
+internal sealed class GetResultHandler(
+    IDocumentDataStorage _documentDataStorage, 
+    Database.NotificationDbContext _dbContext)
+        : IRequestHandler<GetResultRequest, ResultData>
 {
     public async Task<ResultData> Handle(GetResultRequest request, CancellationToken cancellationToken)
     {
@@ -33,18 +34,9 @@ internal sealed class GetResultHandler
         {
             case NotificationChannels.Sms:
                 result.SmsData = (await _documentDataStorage
-                    .FirstOrDefaultByEntityId<Database.DocumentDataEntities.SmsData>(result.NotificationId, cancellationToken))
+                    .FirstOrDefaultByEntityId<Database.DocumentDataEntities.SmsData, string>(result.NotificationId, cancellationToken))
                     .MapToSmsResult();
                 break;
         }
-    }
-
-    private readonly Database.NotificationDbContext _dbContext;
-    private readonly IDocumentDataStorage _documentDataStorage;
-
-    public GetResultHandler(IDocumentDataStorage documentDataStorage, Database.NotificationDbContext dbContext)
-    {
-        _documentDataStorage = documentDataStorage;
-        _dbContext = dbContext;
     }
 }

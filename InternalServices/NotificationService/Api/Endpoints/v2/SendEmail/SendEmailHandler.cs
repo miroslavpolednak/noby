@@ -10,8 +10,18 @@ using System.Globalization;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendEmail;
 
-internal sealed class SendEmailHandler
-    : IRequestHandler<SendEmailRequest, NotificationIdResponse>
+internal sealed class SendEmailHandler(
+    TimeProvider _dateTime,
+    ICodebookServiceClient _codebookService,
+    ILogger<SendEmailHandler> _logger,
+    ServiceUserHelper _serviceUser,
+    Database.NotificationDbContext _dbContext,
+    Configuration.AppConfiguration _appConfiguration,
+    IAuditLogger _auditLogger,
+    IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail> _mcsEmailProducer,
+    IStorageClient<IMcsStorage> _storageClient,
+    IDocumentDataStorage _documentDataStorage)
+        : IRequestHandler<SendEmailRequest, NotificationIdResponse>
 {
     public async Task<NotificationIdResponse> Handle(SendEmailRequest request, CancellationToken cancellationToken)
     {
@@ -222,39 +232,4 @@ internal sealed class SendEmailHandler
 
     private static string getFormat(Contracts.v2.SendEmailRequest.Types.EmailFormats format)
         => format == SendEmailRequest.Types.EmailFormats.PlainText ? "text/plain" : "text/html";
-
-    private readonly IStorageClient<IMcsStorage> _storageClient;
-    private readonly IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail> _mcsEmailProducer;
-    private readonly IAuditLogger _auditLogger;
-    private readonly TimeProvider _dateTime;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ILogger<SendEmailHandler> _logger;
-    private readonly ServiceUserHelper _serviceUser;
-    private readonly Database.NotificationDbContext _dbContext;
-    private readonly Configuration.AppConfiguration _appConfiguration;
-    private readonly IDocumentDataStorage _documentDataStorage;
-
-    public SendEmailHandler(
-        TimeProvider dateTime,
-        ICodebookServiceClient codebookService,
-        ILogger<SendEmailHandler> logger,
-        ServiceUserHelper serviceUser,
-        Database.NotificationDbContext dbContext,
-        Configuration.AppConfiguration appConfiguration,
-        IAuditLogger auditLogger,
-        IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail> mcsEmailProducer,
-        IStorageClient<IMcsStorage> storageClient,
-        IDocumentDataStorage documentDataStorage)
-    {
-        _dateTime = dateTime;
-        _codebookService = codebookService;
-        _logger = logger;
-        _serviceUser = serviceUser;
-        _dbContext = dbContext;
-        _appConfiguration = appConfiguration;
-        _auditLogger = auditLogger;
-        _mcsEmailProducer = mcsEmailProducer;
-        _storageClient = storageClient;
-        _documentDataStorage = documentDataStorage;
-    }
 }

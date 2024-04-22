@@ -55,7 +55,7 @@ internal static class EntitiesExtensions
         return result;
     }
 
-    public static ResultData.Types.SmsRequestData? MapToSmsResult(this DocumentDataItem<Database.DocumentDataEntities.SmsData>? documentEntity)
+    public static ResultData.Types.SmsRequestData? MapToSmsResult(this DocumentDataItem<Database.DocumentDataEntities.SmsData, string>? documentEntity)
     {
         if (documentEntity?.Data is null)
         {

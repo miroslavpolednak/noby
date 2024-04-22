@@ -68,7 +68,7 @@ internal sealed class NotificationReportHandler
     /// </summary>
     private async Task auditLogSmsResult(cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport message)
     {
-        var smsData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.SmsData>(message.id);
+        var smsData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.SmsData, string>(message.id);
         var smsType = (await _codebookService.SmsNotificationTypes()).First(s => s.Code == smsData?.Data?.SmsType);
 
         if (smsType.IsAuditLogEnabled)

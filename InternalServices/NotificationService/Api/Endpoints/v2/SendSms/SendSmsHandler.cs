@@ -10,8 +10,16 @@ using System.Globalization;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendSms;
 
-internal sealed class SendSmsHandler
-    : IRequestHandler<SendSmsRequest, NotificationIdResponse>
+internal sealed class SendSmsHandler(
+    TimeProvider _dateTime,
+    ICodebookServiceClient _codebookService,
+    ILogger<SendSmsHandler> _logger,
+    ServiceUserHelper _serviceUser,
+    Database.NotificationDbContext _dbContext,
+    IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS> _mcsSmsProducer,
+    IAuditLogger _auditLogger,
+    IDocumentDataStorage _documentDataStorage)
+        : IRequestHandler<SendSmsRequest, NotificationIdResponse>
 {
     public async Task<NotificationIdResponse> Handle(SendSmsRequest request, CancellationToken cancellationToken)
     {
@@ -154,34 +162,5 @@ internal sealed class SendSmsHandler
         return smsTypes
             .FirstOrDefault(s => s.Code == smsType) ??
             throw new CisValidationException($"Invalid Type = '{smsType}'. Allowed Types: {string.Join("; ", smsTypes.Select(s => s.Code))}");
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly IAuditLogger _auditLogger;
-    private readonly TimeProvider _dateTime;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ILogger<SendSmsHandler> _logger;
-    private readonly ServiceUserHelper _serviceUser;
-    private readonly Database.NotificationDbContext _dbContext;
-    private readonly IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS> _mcsSmsProducer;
-
-    public SendSmsHandler(
-        TimeProvider dateTime,
-        ICodebookServiceClient codebookService,
-        ILogger<SendSmsHandler> logger,
-        ServiceUserHelper serviceUser,
-        Database.NotificationDbContext dbContext,
-        IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS> mcsSmsProducer,
-        IAuditLogger auditLogger,
-        IDocumentDataStorage documentDataStorage)
-    {
-        _dateTime = dateTime;
-        _codebookService = codebookService;
-        _logger = logger;
-        _serviceUser = serviceUser;
-        _dbContext = dbContext;
-        _mcsSmsProducer = mcsSmsProducer;
-        _auditLogger = auditLogger;
-        _documentDataStorage = documentDataStorage;
     }
 }
