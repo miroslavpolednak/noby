@@ -234,9 +234,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\HouseholdService\DatabaseMigrations\00003-DocDataStorageMigration.sql = DomainServices\HouseholdService\DatabaseMigrations\00003-DocDataStorageMigration.sql
 		DomainServices\HouseholdService\DatabaseMigrations\00004-ObligationsMigration.sql = DomainServices\HouseholdService\DatabaseMigrations\00004-ObligationsMigration.sql
 		DomainServices\HouseholdService\DatabaseMigrations\00005-HFICH-9706.sql = DomainServices\HouseholdService\DatabaseMigrations\00005-HFICH-9706.sql
-		DomainServices\HouseholdService\DatabaseMigrations\00006-indexes.sql = DomainServices\HouseholdService\DatabaseMigrations\00006-indexes.sql
-		DomainServices\HouseholdService\DatabaseMigrations\00007-cleanup.sql = DomainServices\HouseholdService\DatabaseMigrations\00007-cleanup.sql
-		DomainServices\HouseholdService\DatabaseMigrations\00008-dds-datatypes.sql = DomainServices\HouseholdService\DatabaseMigrations\00008-dds-datatypes.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainServices.CustomerService.ExternalServices.CustomerManagement", "DomainServices\CustomerService\ExternalServices.CustomerManagement\DomainServices.CustomerService.ExternalServices.CustomerManagement.csproj", "{D88FFFB8-826B-4626-892C-5A4DE6EB1095}"
@@ -266,6 +263,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00016-Datamart-Import.sql = DomainServices\OfferService\DatabaseMigrations\00016-Datamart-Import.sql
 		DomainServices\OfferService\DatabaseMigrations\00017-FixBdpNamming.sql = DomainServices\OfferService\DatabaseMigrations\00017-FixBdpNamming.sql
 		DomainServices\OfferService\DatabaseMigrations\00018-KonstDbViewCopy.sql = DomainServices\OfferService\DatabaseMigrations\00018-KonstDbViewCopy.sql
+		00019-DatamartDocumentDataEntityIdTypeChange.sql = 00019-DatamartDocumentDataEntityIdTypeChange.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
