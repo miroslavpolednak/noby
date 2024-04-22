@@ -18,6 +18,7 @@ internal sealed class GetMortgageRefixationHandler(
 
         GetMortgageRefixationResponse response = new()
         {
+            RefinancingStateId = (int)retentionData.RefinancingState,
             SalesArrangementId = retentionData.SalesArrangement?.SalesArrangementId,
             ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, cancellationToken),
             IsReadOnly = retentionData.RefinancingState == RefinancingStates.RozpracovanoVNoby,

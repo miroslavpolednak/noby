@@ -30,4 +30,6 @@ public class BaseRefinancingDetailResponse
     /// Seznam odpovědních kódů
     /// </summary>
     public List<RefinancingResponseCode>? ResponseCodes { get; set; }
+
+    public int RefinancingStateId { get; set; }
 }

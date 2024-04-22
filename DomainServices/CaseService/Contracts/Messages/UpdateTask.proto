@@ -3,24 +3,35 @@ package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "google/protobuf/wrappers.proto";
-import "NullableGrpcDate.proto";
-import "NullableGrpcDecimal.proto";
+import "GrpcDate.proto";
+import "GrpcDecimal.proto";
 
 message UpdateTaskRequest {
 	int64 CaseId =  1;
 	int32 TaskIdSb = 2;
+
 	oneof Amendments {
-		Retention Retention = 3;
+		RetentionObject Retention = 20;
+		RefixationObject Refixation = 21;
+	}
+
+	message RetentionObject {
+		cis.types.GrpcDate InterestRateValidFrom = 1;
+		cis.types.GrpcDecimal LoanInterestRate = 2;
+		cis.types.GrpcDecimal LoanInterestRateProvided = 3;
+		cis.types.GrpcDecimal LoanPaymentAmount = 4;
+		cis.types.GrpcDecimal LoanPaymentAmountFinal = 5;
+		cis.types.GrpcDecimal FeeSum = 6;
+		cis.types.GrpcDecimal FeeFinalSum = 7;
+	}
+
+	message RefixationObject {
+		cis.types.GrpcDate InterestRateValidFrom = 1;
+		cis.types.GrpcDecimal LoanInterestRate = 2;
+		cis.types.GrpcDecimal LoanInterestRateProvided = 3;
+		cis.types.GrpcDecimal LoanPaymentAmount = 4;
+		cis.types.GrpcDecimal LoanPaymentAmountFinal = 5;
+		google.protobuf.Int32Value FixedRatePeriod = 6;
 	}
 }
 
-message Retention {
-	cis.types.NullableGrpcDate InterestRateValidFrom = 1;
-	cis.types.NullableGrpcDecimal LoanInterestRate = 2;
-	cis.types.NullableGrpcDecimal LoanInterestRateProvided = 3;
-	cis.types.NullableGrpcDecimal LoanPaymentAmount = 4;
-	cis.types.NullableGrpcDecimal LoanPaymentAmountFinal = 5;
-	cis.types.NullableGrpcDecimal FeeSum = 6;
-	cis.types.NullableGrpcDecimal FeeFinalSum = 7;
-	google.protobuf.Int32Value FixedRatePeriod = 8;
-}

@@ -17,6 +17,12 @@ public class UpdateTaskValidator : AbstractValidator<UpdateTaskRequest>
 
         RuleFor(t => t.Retention)
             .NotNull()
+            .When(t => t.AmendmentsCase == UpdateTaskRequest.AmendmentsOneofCase.Retention)
+            .WithErrorCode(ErrorCodeMapper.RetentionNull);
+
+        RuleFor(t => t.Refixation)
+            .NotNull()
+            .When(t => t.AmendmentsCase == UpdateTaskRequest.AmendmentsOneofCase.Refixation)
             .WithErrorCode(ErrorCodeMapper.RetentionNull);
 
         When(t => t.Retention is not null, () =>
@@ -50,5 +56,27 @@ public class UpdateTaskValidator : AbstractValidator<UpdateTaskRequest>
             .WithErrorCode(ErrorCodeMapper.FeeFinalSumEmpty);
         });
 
+        When(t => t.Refixation is not null, () =>
+        {
+            RuleFor(t => t.Retention.InterestRateValidFrom)
+           .NotNull()
+           .WithErrorCode(ErrorCodeMapper.InterestRateValidFromEmpty);
+
+            RuleFor(t => t.Retention.LoanInterestRate)
+            .NotNull()
+            .WithErrorCode(ErrorCodeMapper.LoanInterestRateEmpty);
+
+            RuleFor(t => t.Retention.LoanInterestRateProvided)
+            .NotNull()
+            .WithErrorCode(ErrorCodeMapper.LoanInterestRateProvidedEmpty);
+
+            RuleFor(t => t.Retention.LoanPaymentAmount)
+            .NotNull()
+            .WithErrorCode(ErrorCodeMapper.LoanPaymentAmountEmpty);
+
+            RuleFor(t => t.Retention.LoanPaymentAmountFinal)
+           .NotNull()
+           .WithErrorCode(ErrorCodeMapper.LoanPaymentAmountFinalEmpty);
+        });
     }
 }
