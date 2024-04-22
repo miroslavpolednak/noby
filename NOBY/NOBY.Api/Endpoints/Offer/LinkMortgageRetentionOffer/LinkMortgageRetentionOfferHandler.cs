@@ -100,9 +100,9 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
                 LoanInterestRate = (decimal?)retention.SimulationInputs.InterestRate,
                 LoanInterestRateProvided = (decimal)retention.SimulationInputs.InterestRate - ((decimal?)retention.SimulationInputs.InterestRateDiscount ?? 0),
                 LoanPaymentAmount = retention.SimulationResults.LoanPaymentAmount,
-                LoanPaymentAmountFinal = retention.SimulationResults.LoanPaymentAmountDiscounted,
+                LoanPaymentAmountFinal = retention.SimulationResults.LoanPaymentAmountDiscounted ?? retention.SimulationResults.LoanPaymentAmount,
                 FeeSum = retention.BasicParameters.FeeAmount,
-                FeeFinalSum = ((decimal?)retention.BasicParameters.FeeAmountDiscounted).GetValueOrDefault()
+                FeeFinalSum = retention.BasicParameters.FeeAmountDiscounted ?? retention.BasicParameters.FeeAmount
             }
         };
 
