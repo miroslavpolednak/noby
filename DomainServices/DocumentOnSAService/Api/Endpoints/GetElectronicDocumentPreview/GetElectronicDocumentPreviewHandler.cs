@@ -44,11 +44,11 @@ public sealed class GetElectronicDocumentPreviewHandler : IRequestHandler<GetEle
         var documentPreviewData = await _eSignaturesClient.DownloadDocumentPreview(documentOnSA.ExternalIdESignatures ?? string.Empty, cancellationToken);
 
         var templates = await _codebookService.DocumentTypes(cancellationToken);
-        var fileName = templates.First(t => t.Id == documentOnSA.DocumentTypeId).FileName;
+        var fileName = templates.Find(t => t.Id == documentOnSA.DocumentTypeId)?.FileName;
 
         return new GetElectronicDocumentPreviewResponse
         {
-            Filename = $"{fileName}_{documentOnSA.DocumentOnSAId}_{_dateTime.GetLocalNow().ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
+            Filename = $"{fileName ?? "WFDocument"}_{documentOnSA.DocumentOnSAId}_{_dateTime.GetLocalNow().ToString("ddMMyy_HHmmyy", CultureInfo.InvariantCulture)}.pdf",
             MimeType = MediaTypeNames.Application.Pdf,
             BinaryData = ByteString.CopyFrom(documentPreviewData)
         };

@@ -97,12 +97,12 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         {
             CaseId = salesArrangement.CaseId,
             TaskIdSb = workflowResult.ProcessIdSb,
-            Retention = new Retention
+            Refixation = new()
             {
                 LoanInterestRate = (decimal?)offer.MortgageRefixation.SimulationInputs.InterestRate,
                 LoanInterestRateProvided = (decimal)offer.MortgageRefixation.SimulationInputs.InterestRate - ((decimal?)offer.MortgageRefixation.SimulationInputs.InterestRateDiscount ?? 0),
                 LoanPaymentAmount = offer.MortgageRefixation.SimulationResults.LoanPaymentAmount,
-                LoanPaymentAmountFinal = offer.MortgageRefixation.SimulationResults.LoanPaymentAmountDiscounted,
+                LoanPaymentAmountFinal = (decimal?)offer.MortgageRefixation.SimulationResults.LoanPaymentAmountDiscounted ?? offer.MortgageRefixation.SimulationResults.LoanPaymentAmount,
                 FixedRatePeriod = offer.MortgageRefixation.SimulationInputs.FixedRatePeriod
             }
         };

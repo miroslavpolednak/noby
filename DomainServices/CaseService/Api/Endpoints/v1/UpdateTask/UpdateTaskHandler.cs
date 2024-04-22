@@ -4,30 +4,39 @@ using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.UpdateTask;
 
-public class UpdateTaskHandler : IRequestHandler<UpdateTaskRequest, Empty>
+internal sealed class UpdateTaskHandler(ISbWebApiClient _sbWebApi) 
+    : IRequestHandler<UpdateTaskRequest, Empty>
 {
-    private readonly ISbWebApiClient _sbWebApi;
-
-    public UpdateTaskHandler(ISbWebApiClient sbWebApi)
-    {
-        _sbWebApi = sbWebApi;
-    }
-
     public async Task<Empty> Handle(UpdateTaskRequest request, CancellationToken cancellationToken)
     {
-        Dictionary<string, string?> metadata = new()
-        {
-            { "ukol_retence_sazba_dat_od", ((DateOnly)request.Retention.InterestRateValidFrom!).ToSbFormat() },
-            { "ukol_retence_sazba_kalk", request.Retention.LoanInterestRate!.ToSbFormat() },
-            { "ukol_retence_sazba_vysl", request.Retention.LoanInterestRateProvided!.ToSbFormat() },
-            { "ukol_retence_splatka_kalk", request.Retention.LoanPaymentAmount.ToSbFormat() },
-            { "ukol_retence_splatka_vysl", request.Retention.LoanPaymentAmountFinal.ToSbFormat() },
-            { "ukol_retence_popl_kalk", request.Retention.FeeSum?.ToSbFormat()},
-            { "ukol_retence_popl_vysl", request.Retention.FeeFinalSum?.ToSbFormat()},
-            //{ "ukol_refixace_TBD", request.Retention.FixedRatePeriod?.ToString(CultureInfo.InvariantCulture) } HACH-10693 SB neumí refixaci
-        };
+        Dictionary<string, string?> metadata = [];
 
-        await _sbWebApi.UpdateTask(new ExternalServices.SbWebApi.Dto.UpdateTask.UpdateTaskRequest { TaskIdSb = request.TaskIdSb, Metadata = metadata }, cancellationToken);
+        switch (request.AmendmentsCase)
+        {
+            case UpdateTaskRequest.AmendmentsOneofCase.Retention:
+                metadata.Add("ukol_retence_sazba_dat_od", ((DateOnly)request.Retention.InterestRateValidFrom).ToSbFormat());
+                metadata.Add("ukol_retence_sazba_kalk", request.Retention.LoanInterestRate.ToSbFormat());
+                metadata.Add("ukol_retence_sazba_vysl", request.Retention.LoanInterestRateProvided.ToSbFormat());
+                metadata.Add("ukol_retence_splatka_kalk", request.Retention.LoanPaymentAmount.ToSbFormat());
+                metadata.Add("ukol_retence_splatka_vysl", request.Retention.LoanPaymentAmountFinal.ToSbFormat());
+                metadata.Add("ukol_retence_popl_kalk", request.Retention.FeeSum.ToSbFormat());
+                metadata.Add("ukol_retence_popl_vysl", request.Retention.FeeFinalSum.ToSbFormat());
+                break;
+
+            case UpdateTaskRequest.AmendmentsOneofCase.Refixation:
+                metadata.Add("ukol_retence_sazba_dat_od", ((DateOnly)request.Refixation.InterestRateValidFrom).ToSbFormat());
+                metadata.Add("ukol_retence_sazba_kalk", request.Refixation.LoanInterestRate.ToSbFormat());
+                metadata.Add("ukol_retence_sazba_vysl", request.Refixation.LoanInterestRateProvided.ToSbFormat());
+                metadata.Add("ukol_retence_splatka_kalk", request.Refixation.LoanPaymentAmount.ToSbFormat());
+                metadata.Add("ukol_retence_splatka_vysl", request.Refixation.LoanPaymentAmountFinal.ToSbFormat());
+                break;
+        }
+        
+        await _sbWebApi.UpdateTask(new ExternalServices.SbWebApi.Dto.UpdateTask.UpdateTaskRequest 
+        { 
+            TaskIdSb = request.TaskIdSb, 
+            Metadata = metadata 
+        }, cancellationToken);
 
         return new Empty();
     }
