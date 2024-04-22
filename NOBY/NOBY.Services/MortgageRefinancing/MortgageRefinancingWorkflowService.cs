@@ -127,6 +127,7 @@ public sealed class MortgageRefinancingWorkflowService(
         {
             createTaskRequest.PriceException.Fees.Add(new PriceExceptionFeesItem
             {
+                FeeId = mortgageParameters.Fee.FeeId,
                 TariffSum = mortgageParameters.Fee.FeeSum,
                 FinalSum = mortgageParameters.Fee.FeeFinalSum,
                 DiscountPercentage = 100 * (mortgageParameters.Fee.FeeSum - mortgageParameters.Fee.FeeFinalSum) / mortgageParameters.Fee.FeeSum
