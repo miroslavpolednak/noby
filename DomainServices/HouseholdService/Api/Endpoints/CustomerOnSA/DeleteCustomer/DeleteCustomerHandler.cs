@@ -6,8 +6,13 @@ using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteCustomer;
 
-internal sealed class DeleteCustomerHandler
-    : IRequestHandler<DeleteCustomerRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class DeleteCustomerHandler(
+    IDocumentDataStorage _documentDataStorage,
+    SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    SulmService.ISulmClientHelper _sulmClient,
+    Database.HouseholdServiceDbContext _dbContext,
+    IDocumentOnSAServiceClient _documentOnSAServiceClient)
+        : IRequestHandler<DeleteCustomerRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteCustomerRequest request, CancellationToken cancellationToken)
     {
@@ -103,25 +108,5 @@ internal sealed class DeleteCustomerHandler
             SalesArrangementId = salesArrangementId,
             Mortgage = saInstance.Mortgage
         }, cancellationToken);
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly SulmService.ISulmClientHelper _sulmClient;
-    private readonly Database.HouseholdServiceDbContext _dbContext;
-    private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
-
-    public DeleteCustomerHandler(
-        IDocumentDataStorage documentDataStorage,
-        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        SulmService.ISulmClientHelper sulmClient,
-        Database.HouseholdServiceDbContext dbContext,
-        IDocumentOnSAServiceClient documentOnSAServiceClient)
-    {
-        _documentDataStorage = documentDataStorage;
-        _salesArrangementService = salesArrangementService;
-        _sulmClient = sulmClient;
-        _dbContext = dbContext;
-        _documentOnSAServiceClient = documentOnSAServiceClient;
     }
 }

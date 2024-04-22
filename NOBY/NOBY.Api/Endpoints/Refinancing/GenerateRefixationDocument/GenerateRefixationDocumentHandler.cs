@@ -1,5 +1,4 @@
-﻿using CIS.Core.Configuration;
-using DomainServices.CaseService.Clients.v1;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
@@ -21,7 +20,6 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
     private readonly IOfferServiceClient _offerService;
     private readonly ISbWebApiClient _sbWebApi;
     private readonly MortgageRefinancingDocumentService _refinancingDocumentService;
-    private readonly ICisEnvironmentConfiguration _configuration;
 
     public GenerateRefixationDocumentHandler(
         ICodebookServiceClient codebookService,
@@ -29,8 +27,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
         ISbWebApiClient sbWebApi,
-        MortgageRefinancingDocumentService refinancingDocumentService,
-        ICisEnvironmentConfiguration configuration)
+        MortgageRefinancingDocumentService refinancingDocumentService)
     {
         _codebookService = codebookService;
         _caseService = caseService;
@@ -38,15 +35,10 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         _offerService = offerService;
         _sbWebApi = sbWebApi;
         _refinancingDocumentService = refinancingDocumentService;
-        _configuration = configuration;
     }
 
     public async Task Handle(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken)
     {
-        //TODO: we have just one CaseId, we cannot lose it
-        if (_configuration.EnvironmentName != "PROD" && request.CaseId == 3075599)
-            throw new NotSupportedException("Case ID for testing only");
-
         await ValidateSignatureTypeDetailId(request, cancellationToken);
 
         var salesArrangement = await _refinancingDocumentService.LoadAndValidateSA(request.SalesArrangementId, SalesArrangementTypes.MortgageRefixation, cancellationToken);
@@ -62,8 +54,8 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         await UpdateRefixationProcess(salesArrangement, offer, cancellationToken);
         await _salesArrangementService.LinkModelationToSalesArrangement(salesArrangement.SalesArrangementId, offer.Data.OfferId, cancellationToken);
 
-        if (request.RefinancingDocumentTypeId == 3)
-            await GenerateRefixationDocument(salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
+        if (request.RefinancingDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix)
+            await GenerateHedgeAppendixDocument(salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
         else
             await GenerateInterestRateNotificationDocument(salesArrangement, offer, cancellationToken);
 
@@ -75,8 +67,8 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         var signatureTypeDetails = await _codebookService.SignatureTypeDetails(cancellationToken);
 
         if (signatureTypeDetails.Any(s => s.Id == request.SignatureTypeDetailId &&
-                                          s.IsHedgeAvailable == (request.RefinancingDocumentTypeId == 3) &&
-                                          s.IsIndividualAvailable == (request.RefinancingDocumentTypeId == 2)))
+                                          s.IsHedgeAvailable == (request.RefinancingDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix) &&
+                                          s.IsIndividualAvailable == (request.RefinancingDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix)))
         {
             return;
         }
@@ -132,7 +124,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
     }
 
-    private async Task GenerateRefixationDocument(_SA salesArrangement, GetOfferListResponse.Types.GetOfferListItem offer, bool hasIndividualPrice, CancellationToken cancellationToken)
+    private async Task GenerateHedgeAppendixDocument(_SA salesArrangement, GetOfferListResponse.Types.GetOfferListItem offer, bool hasIndividualPrice, CancellationToken cancellationToken)
     {
         var user = await _refinancingDocumentService.LoadUserInfo(cancellationToken);
 
@@ -153,7 +145,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
             FixedRatePeriod = simulationInputs.FixedRatePeriod
         };
 
-        await _sbWebApi.GenerateRefixationDocument(request, cancellationToken);
+        await _sbWebApi.GenerateHedgeAppendixDocument(request, cancellationToken);
     }
 
     private async Task GenerateInterestRateNotificationDocument(_SA salesArrangement, GetOfferListResponse.Types.GetOfferListItem offer, CancellationToken cancellationToken)

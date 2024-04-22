@@ -21,11 +21,11 @@ DELETE FROM DocumentSpecialDataField WHERE DocumentId = 8 AND DocumentVersion = 
 
 INSERT INTO DocumentDataField VALUES (8, '001', 'ZmenaLhutyCerpaniLabel', 207, 'Změna lhůty čerpání', NULL, NULL, NULL)
 
-INSERT INTO DocumentDynamicStringFormat VALUES (126, 10, '001', 'ZmenaLhutyCerpaniLabel', 'Zkrácení lhůty čerpání', 1)
+INSERT INTO DocumentDynamicStringFormat VALUES (126, 8, '001', 'ZmenaLhutyCerpaniLabel', 'Zkrácení lhůty čerpání', 1)
 
 INSERT INTO DocumentDynamicStringFormatCondition VALUES (126, 'True', 224)
 INSERT INTO DocumentDynamicStringFormatCondition VALUES (126, 'True', 225)
 
-INSERT INTO DocumentDynamicStringFormat VALUES (127, 10, '001', 'ZmenaLhutyCerpaniLabel', 'Prodloužení lhůty čerpání', 2)
+INSERT INTO DocumentDynamicStringFormat VALUES (127, 8, '001', 'ZmenaLhutyCerpaniLabel', 'Prodloužení lhůty čerpání', 2)
 
 INSERT INTO DocumentDynamicStringFormatCondition VALUES (127, 'True', 224)

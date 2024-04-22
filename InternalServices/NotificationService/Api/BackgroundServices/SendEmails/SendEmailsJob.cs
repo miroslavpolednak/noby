@@ -63,7 +63,7 @@ internal sealed class SendEmailsJob
         await client.ConnectAsync(_configuration.SmtpConfiguration.Host, _configuration.SmtpConfiguration.Port, _configuration.SmtpConfiguration.SecureSocket, default);
 
         // vytahnout k emailum payload
-        var emailPayloads = await _documentDataStorage.GetList<SendEmail>(emails.Select(t => t.Id.ToString()).ToArray(), cancellationToken);
+        var emailPayloads = await _documentDataStorage.GetList<SendEmail, string>(emails.Select(t => t.Id.ToString()).ToArray(), cancellationToken);
 
         // projit vsechny emaily a odeslat je
         foreach (var email in emails)

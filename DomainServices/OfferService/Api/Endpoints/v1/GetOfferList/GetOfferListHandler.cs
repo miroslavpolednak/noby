@@ -66,10 +66,10 @@ internal sealed class GetOfferListHandler(
     {
         return offerType switch
         {
-            OfferTypes.Mortgage => (await _documentDataStorage.GetList<Database.DocumentDataEntities.MortgageOfferData>(ids, cancellationToken)).ToDictionary(k => k.EntityIdInt, v => (IDocumentData)v.Data!),
-            OfferTypes.MortgageRetention => (await _documentDataStorage.GetList<Database.DocumentDataEntities.MortgageRetentionData>(ids, cancellationToken)).ToDictionary(k => k.EntityIdInt, v => (IDocumentData)v.Data!),
-            OfferTypes.MortgageRefixation => (await _documentDataStorage.GetList<Database.DocumentDataEntities.MortgageRefixationData>(ids, cancellationToken)).ToDictionary(k => k.EntityIdInt, v => (IDocumentData)v.Data!),
-            OfferTypes.MortgageExtraPayment => (await _documentDataStorage.GetList<Database.DocumentDataEntities.MortgageExtraPaymentData>(ids, cancellationToken)).ToDictionary(k => k.EntityIdInt, v => (IDocumentData)v.Data!),
+            OfferTypes.Mortgage => (await _documentDataStorage.GetList<Database.DocumentDataEntities.MortgageOfferData, int>(ids, cancellationToken)).ToDictionary(k => k.EntityId, v => (IDocumentData)v.Data!),
+            OfferTypes.MortgageRetention => (await _documentDataStorage.GetList<Database.DocumentDataEntities.MortgageRetentionData, int>(ids, cancellationToken)).ToDictionary(k => k.EntityId, v => (IDocumentData)v.Data!),
+            OfferTypes.MortgageRefixation => (await _documentDataStorage.GetList<Database.DocumentDataEntities.MortgageRefixationData, int>(ids, cancellationToken)).ToDictionary(k => k.EntityId, v => (IDocumentData)v.Data!),
+            OfferTypes.MortgageExtraPayment => (await _documentDataStorage.GetList<Database.DocumentDataEntities.MortgageExtraPaymentData, int>(ids, cancellationToken)).ToDictionary(k => k.EntityId, v => (IDocumentData)v.Data!),
             _ => throw new NotImplementedException()
         };
     }

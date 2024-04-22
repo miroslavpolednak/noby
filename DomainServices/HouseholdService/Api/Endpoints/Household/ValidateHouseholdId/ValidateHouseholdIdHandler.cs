@@ -3,8 +3,8 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.ValidateHouseholdId;
 
-internal sealed class ValidateHouseholdIdHandler
-    : IRequestHandler<ValidateHouseholdIdRequest, ValidateHouseholdIdResponse>
+internal sealed class ValidateHouseholdIdHandler(HouseholdServiceDbContext _dbContext)
+        : IRequestHandler<ValidateHouseholdIdRequest, ValidateHouseholdIdResponse>
 {
     public async Task<ValidateHouseholdIdResponse> Handle(ValidateHouseholdIdRequest request, CancellationToken cancellationToken)
     {
@@ -24,12 +24,5 @@ internal sealed class ValidateHouseholdIdHandler
             SalesArrangementId = instance?.SalesArrangementId,
             CaseId = instance?.CaseId
         };
-    }
-
-    private readonly HouseholdServiceDbContext _dbContext;
-    
-    public ValidateHouseholdIdHandler(HouseholdServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

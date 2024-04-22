@@ -2,7 +2,7 @@
 
 namespace DomainServices.UserService.Api.Endpoints.GetUserRIPAttributes;
 
-internal sealed class GetUserRIPAttributesHandler
+internal sealed class GetUserRIPAttributesHandler(IConnectionProvider _db)
     : IRequestHandler<Contracts.GetUserRIPAttributesRequest, Contracts.UserRIPAttributes>
 {
     public async Task<UserRIPAttributes> Handle(GetUserRIPAttributesRequest request, CancellationToken cancellationToken)
@@ -32,12 +32,5 @@ internal sealed class GetUserRIPAttributesHandler
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.IdentitySchemeNotExist, request.IdentityScheme);
         }
-    }
-
-    private readonly IConnectionProvider _db;
-
-    public GetUserRIPAttributesHandler(IConnectionProvider db)
-    {
-        _db = db;
     }
 }

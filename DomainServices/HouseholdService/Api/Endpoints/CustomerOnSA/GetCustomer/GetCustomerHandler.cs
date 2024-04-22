@@ -6,8 +6,13 @@ using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetCustomer;
 
-internal sealed class GetCustomerHandler
-    : IRequestHandler<GetCustomerRequest, Contracts.CustomerOnSA>
+internal sealed class GetCustomerHandler(
+    CustomerOnSADataMapper _customerMapper,
+    HouseholdServiceDbContext _dbContext,
+    IDocumentDataStorage _documentDataStorage,
+    IncomeMapper _incomeMapper,
+    ObligationMapper _obligationMapper)
+        : IRequestHandler<GetCustomerRequest, Contracts.CustomerOnSA>
 {
     public async Task<Contracts.CustomerOnSA> Handle(GetCustomerRequest request, CancellationToken cancellationToken)
     {
@@ -33,7 +38,7 @@ internal sealed class GetCustomerHandler
         };
 
         // document data
-        var additionalData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.CustomerOnSAData>(request.CustomerOnSAId, cancellationToken);
+        var additionalData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.CustomerOnSAData, int>(request.CustomerOnSAId, cancellationToken);
         var (customerAdditionalData, customerChangeMetadata) = _customerMapper.MapFromDataToSingle(additionalData?.Data);
 
         customerInstance.CustomerAdditionalData = customerAdditionalData;
@@ -46,33 +51,13 @@ internal sealed class GetCustomerHandler
         }
 
         // obligations
-        var obligations = await _documentDataStorage.GetList<Database.DocumentDataEntities.Obligation>(request.CustomerOnSAId, cancellationToken);
+        var obligations = await _documentDataStorage.GetList<Database.DocumentDataEntities.Obligation, int>(request.CustomerOnSAId, cancellationToken);
         customerInstance.Obligations.AddRange(obligations.Select(t => _obligationMapper.MapFromDataToList(t)));
 
         // incomes
-        var incomes = await _documentDataStorage.GetList<Database.DocumentDataEntities.Income>(request.CustomerOnSAId, cancellationToken);
+        var incomes = await _documentDataStorage.GetList<Database.DocumentDataEntities.Income, int>(request.CustomerOnSAId, cancellationToken);
         customerInstance.Incomes.AddRange(incomes.Select(t => _incomeMapper.MapFromDataToList(t)));
 
         return customerInstance;
-    }
-
-    private readonly CustomerOnSADataMapper _customerMapper;
-    private readonly IncomeMapper _incomeMapper;
-    private readonly ObligationMapper _obligationMapper;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly HouseholdServiceDbContext _dbContext;
-
-    public GetCustomerHandler(
-        CustomerOnSADataMapper customerMapper,
-        HouseholdServiceDbContext dbContext, 
-        IDocumentDataStorage documentDataStorage,
-        IncomeMapper incomeMapper,
-        ObligationMapper obligationMapper)
-    {
-        _customerMapper = customerMapper;
-        _documentDataStorage = documentDataStorage;
-        _dbContext = dbContext;
-        _incomeMapper = incomeMapper;
-        _obligationMapper = obligationMapper;
     }
 }

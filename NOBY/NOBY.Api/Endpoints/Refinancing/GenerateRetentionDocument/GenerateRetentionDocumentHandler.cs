@@ -1,5 +1,4 @@
-﻿using CIS.Core.Configuration;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
@@ -17,30 +16,23 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISbWebApiClient _sbWebApi;
     private readonly MortgageRefinancingDocumentService _refinancingDocumentService;
-    private readonly ICisEnvironmentConfiguration _configuration;
 
     public GenerateRetentionDocumentHandler(
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
         ICodebookServiceClient codebookService,
         ISbWebApiClient sbWebApi,
-        MortgageRefinancingDocumentService refinancingDocumentService,
-        ICisEnvironmentConfiguration configuration)
+        MortgageRefinancingDocumentService refinancingDocumentService)
     {
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
         _codebookService = codebookService;
         _sbWebApi = sbWebApi;
         _refinancingDocumentService = refinancingDocumentService;
-        _configuration = configuration;
     }
 
     public async Task Handle(GenerateRetentionDocumentRequest request, CancellationToken cancellationToken)
     {
-        //TODO: we have just one CaseId, we cannot lose it
-        if (_configuration.EnvironmentName != "PROD" && request.CaseId == 3075599)
-            throw new NotSupportedException("Case ID for testing only");
-
         await ValidateSignatureTypeDetailId(request, cancellationToken);
 
         var salesArrangement = await _refinancingDocumentService.LoadAndValidateSA(request.SalesArrangementId, SalesArrangementTypes.MortgageRetention, cancellationToken);

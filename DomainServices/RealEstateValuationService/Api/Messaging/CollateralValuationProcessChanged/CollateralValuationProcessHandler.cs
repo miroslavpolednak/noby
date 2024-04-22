@@ -89,7 +89,7 @@ internal sealed class CollateralValuationProcessHandler : IMessageHandler<cz.mps
                                          })
                                          .ToList();
             
-            var loadedDetail = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(realEstateValuation.RealEstateValuationId);
+            var loadedDetail = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData, int>(realEstateValuation.RealEstateValuationId);
             loadedDetail!.Data!.Documents =
             [
                 new Database.DocumentDataEntities.RealEstateValudationData.RealEstateValuationDocument

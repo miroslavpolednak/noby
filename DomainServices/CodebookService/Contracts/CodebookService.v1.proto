@@ -53,6 +53,12 @@ service CodebookService {
 		};
    }
 
+   rpc RefixationDocumentTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/refixation-document-types"
+		};
+   }
+
    rpc RefixationOfferTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
 	   option (google.api.http) = {
 			get: "/v1/refixation-offer-types"

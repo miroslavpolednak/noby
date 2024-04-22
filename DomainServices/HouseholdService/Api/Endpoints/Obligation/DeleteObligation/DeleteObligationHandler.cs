@@ -3,8 +3,8 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.DeleteObligation;
 
-internal sealed class DeleteObligationHandler
-    : IRequestHandler<DeleteObligationRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class DeleteObligationHandler(IDocumentDataStorage _documentDataStorage)
+        : IRequestHandler<DeleteObligationRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteObligationRequest request, CancellationToken cancellationToken)
     {
@@ -16,12 +16,5 @@ internal sealed class DeleteObligationHandler
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-
-    public DeleteObligationHandler(IDocumentDataStorage documentDataStorage)
-    {
-        _documentDataStorage = documentDataStorage;
     }
 }

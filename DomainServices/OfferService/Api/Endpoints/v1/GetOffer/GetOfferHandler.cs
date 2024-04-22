@@ -49,25 +49,25 @@ internal sealed class GetOfferHandler(
 
     private async Task<MortgageRefixationFullData> getRefixationData(int offerId, CancellationToken cancellationToken)
     {
-        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageRefixationData>(offerId, cancellationToken);
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageRefixationData, int>(offerId, cancellationToken);
         return _refixationMapper.MapToFullData(offerData!.Data!);
     }
 
     private async Task<MortgageExtraPaymentFullData> getExtraPaymentData(int offerId, CancellationToken cancellationToken)
     {
-        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageExtraPaymentData>(offerId, cancellationToken);
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageExtraPaymentData, int>(offerId, cancellationToken);
         return _extraPaymentDataMapper.MapToFullData(offerData!.Data!);
     }
 
     private async Task<MortgageRetentionFullData> getRetentionData(int offerId, CancellationToken cancellationToken)
     {
-        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageRetentionData>(offerId, cancellationToken);
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageRetentionData, int>(offerId, cancellationToken);
         return _retentionMapper.MapToFullData(offerData!.Data!);
     }
 
     private async Task<MortgageOfferFullData> getMortgageData(int offerId, CancellationToken cancellationToken)
     {
-        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageOfferData>(offerId, cancellationToken);
+        var offerData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.MortgageOfferData, int>(offerId, cancellationToken);
         return _offerMapper.MapToFullData(offerData!.Data!);
 
     }

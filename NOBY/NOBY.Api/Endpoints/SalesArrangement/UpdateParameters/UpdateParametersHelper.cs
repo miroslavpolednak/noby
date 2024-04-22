@@ -33,13 +33,13 @@ internal sealed class UpdateParametersHelper
                 break;
 
             case Dto.HUBNUpdate m:
-                validateExtensionDrawingDate(m.DrawingDateTo.ExtensionDrawingDateToByMonths);
+                validateExtensionDrawingDate(m.DrawingDateTo.IsActive, m.DrawingDateTo.ExtensionDrawingDateToByMonths);
                 await validateLoanRealEstate(m.LoanRealEstates);
                 await validateApplicant(m.Applicant, salesArrangement.CaseId);
                 break;
 
             case Dto.GeneralChangeUpdate m:
-                validateExtensionDrawingDate(m.DrawingDateTo.ExtensionDrawingDateToByMonths);
+                validateExtensionDrawingDate(m.DrawingDateTo.IsActive, m.DrawingDateTo.ExtensionDrawingDateToByMonths);
                 await validateApplicant(m.Applicant, salesArrangement.CaseId);
                 break;
 
@@ -83,8 +83,11 @@ internal sealed class UpdateParametersHelper
         return model;
     }
 
-    private static void validateExtensionDrawingDate(int? extension)
+    private static void validateExtensionDrawingDate(bool isActive, int? extension)
     {
+        if (!isActive)
+            return;
+
         if (extension.HasValue && (extension.Value < 1 || extension.Value > 36))
         {
             throw new NobyValidationException("extensionDrawingDateToByMonths must be between 1 and 36");

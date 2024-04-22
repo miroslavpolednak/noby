@@ -2,8 +2,8 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.GetHouseholdList;
 
-internal sealed class GetHouseholdListHandler
-    : IRequestHandler<GetHouseholdListRequest, GetHouseholdListResponse>
+internal sealed class GetHouseholdListHandler(Database.HouseholdServiceDbContext _dbContext)
+        : IRequestHandler<GetHouseholdListRequest, GetHouseholdListResponse>
 {
     public async Task<GetHouseholdListResponse> Handle(GetHouseholdListRequest request, CancellationToken cancellationToken)
     {
@@ -16,12 +16,5 @@ internal sealed class GetHouseholdListHandler
         var response = new GetHouseholdListResponse();
         response.Households.AddRange(model);
         return response;
-    }
-
-    private readonly Database.HouseholdServiceDbContext _dbContext;
-
-    public GetHouseholdListHandler(Database.HouseholdServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

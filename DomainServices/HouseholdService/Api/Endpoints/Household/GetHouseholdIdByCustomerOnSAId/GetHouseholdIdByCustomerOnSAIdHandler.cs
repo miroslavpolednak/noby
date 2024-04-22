@@ -2,8 +2,8 @@
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.GetHouseholdIdByCustomerOnSAId;
 
-internal sealed class GetHouseholdIdByCustomerOnSAIdHandler
-    : IRequestHandler<GetHouseholdIdByCustomerOnSAIdRequest, GetHouseholdIdByCustomerOnSAIdResponse>
+internal sealed class GetHouseholdIdByCustomerOnSAIdHandler(Database.HouseholdServiceDbContext _dbContext)
+        : IRequestHandler<GetHouseholdIdByCustomerOnSAIdRequest, GetHouseholdIdByCustomerOnSAIdResponse>
 {
     public async Task<GetHouseholdIdByCustomerOnSAIdResponse> Handle(GetHouseholdIdByCustomerOnSAIdRequest request, CancellationToken cancellationToken)
     {
@@ -29,12 +29,5 @@ internal sealed class GetHouseholdIdByCustomerOnSAIdHandler
         {
             HouseholdId = model?.HouseholdId
         };
-    }
-
-    private readonly Database.HouseholdServiceDbContext _dbContext;
-
-    public GetHouseholdIdByCustomerOnSAIdHandler(Database.HouseholdServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }
