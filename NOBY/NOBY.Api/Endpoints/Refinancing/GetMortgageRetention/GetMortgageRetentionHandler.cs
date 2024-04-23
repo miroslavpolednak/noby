@@ -29,10 +29,13 @@ internal sealed class GetMortgageRetentionHandler(
             // doplnit data simulace z procesu (pozdeji mozna prepsat offerou)
             InterestRate = (decimal?)retentionData.Process.RefinancingProcess.LoanInterestRate ?? 0M,
             InterestRateDiscount = (decimal?)retentionData.Process.RefinancingProcess.LoanInterestRateProvided,
+            PriceExceptionInterestRateDiscount = (decimal?)retentionData.Process.RefinancingProcess.LoanInterestRateProvided,
             LoanPaymentAmount = (decimal?)retentionData.Process.RefinancingProcess.LoanPaymentAmount ?? 0M,
             LoanPaymentAmountDiscounted = retentionData.Process.RefinancingProcess.LoanPaymentAmountFinal,
             FeeAmount = (decimal?)retentionData.Process.RefinancingProcess.FeeSum ?? 0M,
             FeeAmountDiscounted = retentionData.Process.RefinancingProcess.FeeFinalSum,
+            PriceExceptionFeeDiscounted = retentionData.Process.RefinancingProcess.FeeFinalSum,
+            IsPriceExceptionActive = retentionData.ActivePriceExceptionTaskIdSb.HasValue,
             IsGenerateDocumentEnabled = retentionData.SalesArrangement?.OfferId is not null && retentionData.RefinancingState == RefinancingStates.RozpracovanoVNoby && retentionData.ActivePriceExceptionTaskIdSb.HasValue
         };
 
@@ -44,12 +47,9 @@ internal sealed class GetMortgageRetentionHandler(
             // nacpat data z offer do response misto puvodnich dat z procesu
             replaceTaskDataWithOfferData(response, offerInstance);
 
-            if (retentionData.ActivePriceExceptionTaskIdSb.HasValue)
-            {
-                response.ContainsInconsistentIndividualPriceData = offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount != response.InterestRateDiscount || offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted != response.FeeAmountDiscounted;
-            }
+            response.ContainsInconsistentIndividualPriceData = offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount != response.InterestRateDiscount || offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted != response.FeeAmountDiscounted;
         }
-
+        
         return response;
     }
 
