@@ -133,8 +133,11 @@ internal static class CaseExtensions
                     };
                     for (int i = 1; i < 20; i++)
                     {
-                        if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")))
+                        if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")) ||
+                            taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}") == "0")
+                        {
                             break;
+                        }
 
                         taskDetail.PriceException.Fees.Add(new PriceExceptionFeesItem
                         {
