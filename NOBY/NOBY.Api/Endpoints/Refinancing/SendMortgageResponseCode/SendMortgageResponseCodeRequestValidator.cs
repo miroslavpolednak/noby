@@ -1,12 +1,13 @@
 ﻿using DomainServices.CodebookService.Clients;
 using FluentValidation;
+using Microsoft.FeatureManagement;
 
 namespace NOBY.Api.Endpoints.Refinancing.SendMortgageResponseCode;
 
 internal sealed class SendMortgageResponseCodeRequestValidator
     : AbstractValidator<SendMortgageResponseCodeRequest>
 {
-    public SendMortgageResponseCodeRequestValidator(ICodebookServiceClient codebookService)
+    public SendMortgageResponseCodeRequestValidator(ICodebookServiceClient codebookService, IFeatureManager featureManager)
     {
         RuleFor(t => t.ResponseCodeTypeId)
             .Cascade(CascadeMode.Stop)
@@ -23,5 +24,10 @@ internal sealed class SendMortgageResponseCodeRequestValidator
                 };
             })
             .WithMessage("Unknown ResponseCodeTypeId");
+        
+        
+        RuleFor(t => t)
+         .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Retention))
+         .WithErrorCode(90054);
     }
 }

@@ -149,6 +149,26 @@
             zapíná/vypíná elektronické podepisování workflow úkolů
             </summary>
         </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.Retention">
+            <summary>
+            zapíná/vypíná retenční endpointy
+            </summary>
+        </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.Refixation">
+            <summary>
+            zapíná/vypíná refixační endpointy
+            </summary>
+        </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.ExtraPayment">
+            <summary>
+            zapíná/vypíná endpointy související s mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.InternalRefinancing">
+            <summary>
+            zapíná/vypíná endpointy související s interním refinancováním
+            </summary>
+        </member>
         <member name="F:SharedTypes.GrpcTypes.GrpcAddress.StreetFieldNumber">
             <summary>Field number for the "Street" field.</summary>
         </member>
