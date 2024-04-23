@@ -110,9 +110,9 @@ internal static class CreateAssessmentExtensions
     private static _sh.LoanApplicationAssessmentCollateralRiskCharacteristics ToCollateral(this _C4M.CollateralRiskCharacteristics model)
         => new()
         {
-            Ltv = model.Ltv,
+            Ltv = model.Ltv * 100,
             Lftv = model.Lftv,
-            Ltp = model.Ltp,
+            Ltp = model.Ltp * 100,
             SumAppraisedValue = model.SumAppraisedValue,
             TotalUsedValue = model.TotalCollUsedValue
         };
