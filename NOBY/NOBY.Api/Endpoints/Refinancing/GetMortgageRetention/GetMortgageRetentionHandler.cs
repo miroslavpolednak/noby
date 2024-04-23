@@ -40,7 +40,9 @@ internal sealed class GetMortgageRetentionHandler(
 
         // rozhodnuti pro generovani doc.
         var refinancingIP = new MortgageRefinancingIndividualPrice(response.InterestRateDiscount, response.FeeAmountDiscounted);
-        response.IsGenerateDocumentEnabled = refinancingIP.HasIndividualPrice;
+        response.IsGenerateDocumentEnabled = retentionData.SalesArrangement?.OfferId is not null &&
+                                             retentionData.RefinancingState == RefinancingStates.RozpracovanoVNoby &&
+                                             !(response.IsPriceExceptionActive || refinancingIP.HasIndividualPrice);
 
         // pokud existuje Offer
         if (retentionData.SalesArrangement?.OfferId is not null)
