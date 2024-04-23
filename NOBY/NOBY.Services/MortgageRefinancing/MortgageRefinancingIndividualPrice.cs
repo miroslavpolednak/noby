@@ -16,7 +16,7 @@ public class MortgageRefinancingIndividualPrice
         FeeFinalSum = priceException.Fees.FirstOrDefault()?.FinalSum;
     }
 
-    public bool HasIndividualPrice => LoanInterestRateDiscount != 0 || FeeFinalSum != 0;
+    public bool HasIndividualPrice => LoanInterestRateDiscount.GetValueOrDefault() != 0 || FeeFinalSum.GetValueOrDefault() != 0;
 
     public decimal? LoanInterestRateDiscount { get; init; }
 
