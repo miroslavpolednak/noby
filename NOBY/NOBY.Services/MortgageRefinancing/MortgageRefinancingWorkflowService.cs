@@ -33,10 +33,9 @@ public sealed class MortgageRefinancingWorkflowService(
                 ?? throw new NobyValidationException(90043, $"ProccesId {processId} not found in list");
 
             // validace typu procesu
-            var refType = refinancingType == RefinancingTypes.MortgageRetention ? 1 : 2;
-            if (process.ProcessTypeId != 3 || process.RefinancingProcess?.RefinancingType != refType)
+            if (process.ProcessTypeId != 3 || process.RefinancingProcess?.RefinancingType != (int)refinancingType)
             {
-                throw new NobyValidationException(90032, $"ProcessTypeId!=3 or RefinancingType!={refType}");
+                throw new NobyValidationException(90032, $"ProcessTypeId!=3 or RefinancingType!={refinancingType}");
             }
 
             // zjistit refinancingState

@@ -20,7 +20,7 @@ internal sealed class RetentionValidator
             .SalesArrangements
             .Any(t => t.SalesArrangementTypeId == Request.SalesArrangementTypeId && t.State is not ((int)SalesArrangementStates.Finished) or (int)SalesArrangementStates.Cancelled))
         {
-            throw new NobyValidationException(90032, "Found another unfinished SA with the same type");
+            throw new NobyValidationException(90052, "Found another unfinished SA with the same type");
         }
 
         return await base.Validate(cancellationToken);
