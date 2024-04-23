@@ -3518,6 +3518,21 @@
             </summary>
             <example>0.2</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.PriceExceptionInterestRateDiscount">
+            <summary>
+            Sleva na úrokové sazbě z IC workflow úkolu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.PriceExceptionFeeDiscounted">
+            <summary>
+            Sleva na poplatku z IC workflow úkolu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.IsPriceExceptionActive">
+            <summary>
+            Existuje workflow úkol cenové vyjímky
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.InterestRateDiscounted">
             <summary>
             Sleva ze sazby
