@@ -35,9 +35,12 @@ internal sealed class GetMortgageRetentionHandler(
             FeeAmount = (decimal?)retentionData.Process.RefinancingProcess.FeeSum ?? 0M,
             FeeAmountDiscounted = retentionData.Process.RefinancingProcess.FeeFinalSum,
             PriceExceptionFeeDiscounted = retentionData.Process.RefinancingProcess.FeeFinalSum,
-            IsPriceExceptionActive = retentionData.ActivePriceExceptionTaskIdSb.HasValue,
-            IsGenerateDocumentEnabled = retentionData.SalesArrangement?.OfferId is not null && retentionData.RefinancingState == RefinancingStates.RozpracovanoVNoby && retentionData.ActivePriceExceptionTaskIdSb.HasValue
+            IsPriceExceptionActive = retentionData.ActivePriceExceptionTaskIdSb.HasValue
         };
+
+        // rozhodnuti pro generovani doc.
+        var refinancingIP = new MortgageRefinancingIndividualPrice(response.InterestRateDiscount, response.FeeAmountDiscounted);
+        response.IsGenerateDocumentEnabled = refinancingIP.HasIndividualPrice;
 
         // pokud existuje Offer
         if (retentionData.SalesArrangement?.OfferId is not null)
