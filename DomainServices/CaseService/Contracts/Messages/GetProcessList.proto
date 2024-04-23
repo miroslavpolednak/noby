@@ -16,7 +16,7 @@ message GetProcessListResponse {
 }
 
 message ProcessTask {
-	int32 ProcessIdSb = 1
+	int32 ProcessIdSb = 1;
 	int64 ProcessId = 2;
 	cis.types.GrpcDateTime CreatedOn = 3;
 	int32 ProcessTypeId = 4;
