@@ -31,7 +31,7 @@ message UpdateTaskRequest {
 		cis.types.GrpcDecimal LoanInterestRateProvided = 3;
 		cis.types.GrpcDecimal LoanPaymentAmount = 4;
 		cis.types.GrpcDecimal LoanPaymentAmountFinal = 5;
-		google.protobuf.Int32Value FixedRatePeriod = 6;
+		int32 FixedRatePeriod = 6;
 	}
 }
 

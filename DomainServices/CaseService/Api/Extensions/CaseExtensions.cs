@@ -91,7 +91,7 @@ internal static class CaseExtensions
             LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
             FeeSum = taskData.GetNInteger("ukol_retence_popl_kalk"),
             FeeFinalSum = taskData.GetNInteger("ukol_retence_popl_vysl"),
-            FixedRatePeriod = taskData.GetNInteger("ukol_refinance_TBD"),
+            FixedRatePeriod = taskData.GetNInteger("ukol_retence_perioda_fixace"),
             RefinancingDocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
             RefinancingDocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
             EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")

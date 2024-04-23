@@ -29,6 +29,7 @@ internal sealed class UpdateTaskHandler(ISbWebApiClient _sbWebApi)
                 metadata.Add("ukol_retence_sazba_vysl", request.Refixation.LoanInterestRateProvided.ToSbFormat());
                 metadata.Add("ukol_retence_splatka_kalk", request.Refixation.LoanPaymentAmount.ToSbFormat());
                 metadata.Add("ukol_retence_splatka_vysl", request.Refixation.LoanPaymentAmountFinal.ToSbFormat());
+                metadata.Add("ukol_retence_perioda_fixace", request.Refixation.FixedRatePeriod.ToString(CultureInfo.InvariantCulture));
                 break;
         }
         

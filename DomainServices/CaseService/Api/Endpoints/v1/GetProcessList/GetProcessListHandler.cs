@@ -6,20 +6,12 @@ using ExternalServices.SbWebApi.V1;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.GetProcessList;
 
-internal sealed class GetProcessListHandler
-    : IRequestHandler<GetProcessListRequest, GetProcessListResponse>
+internal sealed class GetProcessListHandler(
+    CaseServiceDbContext _dbContext, 
+    ISbWebApiClient _sbWebApiClient, 
+    ICodebookServiceClient _codebookService)
+        : IRequestHandler<GetProcessListRequest, GetProcessListResponse>
 {
-    private readonly CaseServiceDbContext _dbContext;
-    private readonly ISbWebApiClient _sbWebApiClient;
-    private readonly ICodebookServiceClient _codebookService;
-
-    public GetProcessListHandler(CaseServiceDbContext dbContext, ISbWebApiClient sbWebApiClient, ICodebookServiceClient codebookService)
-    {
-        _dbContext = dbContext;
-        _sbWebApiClient = sbWebApiClient;
-        _codebookService = codebookService;
-    }
-
     public async Task<GetProcessListResponse> Handle(GetProcessListRequest request, CancellationToken cancellationToken)
     {
         if (!await _dbContext.Cases.AnyAsync(c => c.CaseId == request.CaseId, cancellationToken))
