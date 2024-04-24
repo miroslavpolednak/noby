@@ -3624,6 +3624,15 @@
             SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetExtraPaymentList(System.Int64)">
+            <summary>
+            Rozscestník mimořádných splátek 
+            </summary>
+            <remarks>
+            
+            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=28D30BA8-03AF-403f-B672-EC163451D45B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetAvailableFixedRatePeriods(System.Int64)">
             <summary>
             Seznam dostupných délek fixací pro refixace
