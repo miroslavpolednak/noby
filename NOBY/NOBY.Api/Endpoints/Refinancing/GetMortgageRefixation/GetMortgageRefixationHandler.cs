@@ -7,7 +7,6 @@ namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
 internal sealed class GetMortgageRefixationHandler(
     TimeProvider _timeProvider,
     IOfferServiceClient _offerService,
-    ICaseServiceClient _caseService,
     MortgageRefinancingWorkflowService _refinancingWorkflowService,
     Services.ResponseCodes.ResponseCodesService _responseCodes)
         : IRequestHandler<GetMortgageRefixationRequest, GetMortgageRefixationResponse>
@@ -29,10 +28,9 @@ internal sealed class GetMortgageRefixationHandler(
 
         // zjistit rate ICcka
         decimal? icRate = null;
-        if (retentionData.ActivePriceExceptionTaskIdSb.HasValue)
+        if (retentionData.ActivePriceException is not null)
         {
-            var taskDetail = await _caseService.GetTaskDetail(retentionData.ActivePriceExceptionTaskIdSb.Value, cancellationToken);
-            icRate = taskDetail.TaskDetail.PriceException?.LoanInterestRate?.LoanInterestRateDiscount;
+            icRate = retentionData.ActivePriceException.LoanInterestRate?.LoanInterestRateDiscount;
         }
 
         var offers = (await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken))

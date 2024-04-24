@@ -61,9 +61,15 @@ public sealed class MortgageRefinancingWorkflowService(
                 .ToList();
 
         // toto je aktivni task!
-        result.ActivePriceExceptionTaskIdSb = tasks
+        var activePriceExceptionTaskIdSb = tasks
             .FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled && t.DecisionId != 2 && t.PhaseTypeId == 2)
             ?.TaskIdSb;
+
+        // detail IC tasku
+        if (activePriceExceptionTaskIdSb.HasValue)
+        {
+            result.ActivePriceException = (await _caseService.GetTaskDetail(activePriceExceptionTaskIdSb.Value, cancellationToken))?.TaskDetail?.PriceException;
+        }
 
         return result;
     }

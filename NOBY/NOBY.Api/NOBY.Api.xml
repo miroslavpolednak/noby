@@ -3486,11 +3486,6 @@
             Datum odeslání zákonných oznámení
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionHandler.replaceTaskDataWithOfferData(NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse,DomainServices.OfferService.Contracts.GetOfferResponse)">
-            <summary>
-            Vytvoreni detail Offer
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.FeeAmount">
             <summary>
             Výše poplatku
@@ -3517,16 +3512,6 @@
             Sleva ze sazby
             </summary>
             <example>0.2</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.PriceExceptionInterestRateDiscount">
-            <summary>
-            Sleva na úrokové sazbě z IC workflow úkolu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.PriceExceptionFeeDiscounted">
-            <summary>
-            Sleva na poplatku z IC workflow úkolu
-            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.IsPriceExceptionActive">
             <summary>
