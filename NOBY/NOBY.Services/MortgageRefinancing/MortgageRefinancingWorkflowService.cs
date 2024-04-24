@@ -33,7 +33,14 @@ public sealed class MortgageRefinancingWorkflowService(
                 ?? throw new NobyValidationException(90043, $"ProccesId {processId} not found in list");
 
             // validace typu procesu
-            if (process.ProcessTypeId != 3 || process.RefinancingProcess?.RefinancingType != (int)refinancingType)
+            DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase requiredAmendment = refinancingType switch
+            {
+                RefinancingTypes.MortgageRetention => DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase.MortgageRetention,
+                RefinancingTypes.MortgageRefixation => DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase.MortgageRefixation,
+                RefinancingTypes.MortgageExtraPayment => DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase.MortgageExtraPayment,
+                _ => throw new NotImplementedException()
+            }; ;
+            if (process.AmendmentsCase != requiredAmendment)
             {
                 throw new NobyValidationException(90032, $"ProcessTypeId!=3 or RefinancingType!={refinancingType}");
             }

@@ -96,7 +96,7 @@ internal sealed class LinkModelationHandler
 
         if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention)
         {
-            taskUpdateRequest.Retention = new _Ca.UpdateTaskRequest.Types.RetentionObject
+            taskUpdateRequest.MortgageRetention = new _Ca.UpdateTaskRequest.Types.TaskAmendmentMortgageRetention
             {
                 InterestRateValidFrom = (DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom,
                 LoanInterestRate = offer.MortgageRetention.SimulationInputs.InterestRate,
@@ -109,9 +109,8 @@ internal sealed class LinkModelationHandler
         } 
         else if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation)
         {
-            taskUpdateRequest.Refixation = new _Ca.UpdateTaskRequest.Types.RefixationObject
+            taskUpdateRequest.MortgageRefixation = new _Ca.UpdateTaskRequest.Types.TaskAmendmentMortgageRefixation
             {
-                InterestRateValidFrom = (DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom,
                 LoanInterestRate = offer.MortgageRetention.SimulationInputs.InterestRate,
                 LoanInterestRateProvided = ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRate ?? 0) - ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount ?? 0),
                 LoanPaymentAmount = (decimal)offer.MortgageRetention.SimulationResults.LoanPaymentAmount,

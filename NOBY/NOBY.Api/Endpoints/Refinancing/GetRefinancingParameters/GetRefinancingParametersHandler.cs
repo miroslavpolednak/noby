@@ -79,11 +79,11 @@ internal sealed class GetRefinancingParametersHandler(
                     RefinancingTypeText = RefinancingHelper.GetRefinancingTypeText(eaCodesMain, s.Process, refinancingTypes),
                     RefinancingStateId = (int)RefinancingHelper.GetRefinancingState(s.Sa?.Refixation?.ManagedByRC2 ?? s.Sa?.Retention?.ManagedByRC2 ?? false, s.Sa?.ProcessId, s.Process),
                     CreatedTime = s.Process.CreatedOn,
-                    LoanInterestRateProvided = s.Process.RefinancingProcess?.LoanInterestRateProvided ?? s.Process.RefinancingProcess?.LoanInterestRate,
+                    /*LoanInterestRateProvided = s.Process.RefinancingProcess?.LoanInterestRateProvided ?? s.Process.RefinancingProcess?.LoanInterestRate,
                     LoanInterestRateValidFrom = s.Process?.RefinancingProcess?.InterestRateValidFrom!,
                     LoanInterestRateValidTo = mortgage.FixedRateValidTo,
                     EffectiveDate = s.Process?.RefinancingProcess?.EffectiveDate,
-                    DocumentId = s.Process?.RefinancingProcess?.RefinancingDocumentId
+                    DocumentId = s.Process?.RefinancingProcess?.RefinancingDocumentId*/
                 }
             }).ToList()
         };

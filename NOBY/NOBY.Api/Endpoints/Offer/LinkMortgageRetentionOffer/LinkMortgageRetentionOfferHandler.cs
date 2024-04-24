@@ -94,7 +94,7 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
         {
             CaseId = caseId,
             TaskIdSb = taskIdSb,
-            Retention = new()
+            MortgageRetention = new()
             {
                 InterestRateValidFrom = retention.SimulationInputs.InterestRateValidFrom,
                 LoanInterestRate = (decimal?)retention.SimulationInputs.InterestRate,
