@@ -1,0 +1,1 @@
+UPDATE dbo.DocumentTypes set IsElectronicSigningEnabled=0;
