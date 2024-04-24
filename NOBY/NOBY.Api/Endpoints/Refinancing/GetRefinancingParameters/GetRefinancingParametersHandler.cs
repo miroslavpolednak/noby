@@ -1,7 +1,9 @@
 ﻿using DomainServices.CaseService.Clients.v1;
+using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.Dto.Refinancing;
 using NOBY.Services.MortgageRefinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
@@ -41,7 +43,6 @@ internal sealed class GetRefinancingParametersHandler(
             Sa = Array.Find(saFilteredWithDetail, sa => sa.ProcessId == pr.ProcessId)
         });
 
-
         var eaCodesMain = await _codebookService.EaCodesMain(cancellationToken);
         var refinancingTypes = await _codebookService.RefinancingTypes(cancellationToken);
 
@@ -72,24 +73,44 @@ internal sealed class GetRefinancingParametersHandler(
             RefinancingProcesses = mergeOfSaAndProcess.Select(s => new RefinancingProcess
             {
                 SalesArrangementId = s.Sa?.SalesArrangementId,
-                ProcessDetail = new()
-                {
-                    ProcessId = s.Process.ProcessId,
-                    RefinancingTypeId = RefinancingHelper.GetRefinancingType(s.Process),
-                    RefinancingTypeText = RefinancingHelper.GetRefinancingTypeText(eaCodesMain, s.Process, refinancingTypes),
-                    RefinancingStateId = (int)RefinancingHelper.GetRefinancingState(s.Sa?.Refixation?.ManagedByRC2 ?? s.Sa?.Retention?.ManagedByRC2 ?? false, s.Sa?.ProcessId, s.Process),
-                    CreatedTime = s.Process.CreatedOn,
-                    /*LoanInterestRateProvided = s.Process.RefinancingProcess?.LoanInterestRateProvided ?? s.Process.RefinancingProcess?.LoanInterestRate,
-                    LoanInterestRateValidFrom = s.Process?.RefinancingProcess?.InterestRateValidFrom!,
-                    LoanInterestRateValidTo = mortgage.FixedRateValidTo,
-                    EffectiveDate = s.Process?.RefinancingProcess?.EffectiveDate,
-                    DocumentId = s.Process?.RefinancingProcess?.RefinancingDocumentId*/
-                }
+                ProcessDetail = getProcessDetail(s.Process, s.Sa, mortgage.FixedRateValidTo, eaCodesMain, refinancingTypes)
             }).ToList()
         };
     }
 
+    private static ProcessDetail getProcessDetail(
+        ProcessTask process, 
+        DomainServices.SalesArrangementService.Contracts.SalesArrangement? sa,
+        DateTime? fixedRateValidTo,
+        List<DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem> eaCodesMain,
+        List<DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem> refinancingTypes)
+    {
+        ProcessDetail detail = new()
+        {
+            ProcessId = process.ProcessId,
+            RefinancingTypeId = RefinancingHelper.GetRefinancingType(process),
+            RefinancingTypeText = RefinancingHelper.GetRefinancingTypeText(eaCodesMain, process, refinancingTypes),
+            RefinancingStateId = (int)RefinancingHelper.GetRefinancingState(sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, sa?.ProcessId, process),
+            CreatedTime = process.CreatedOn,
+            LoanInterestRateValidTo = fixedRateValidTo
+        };
 
+        switch (process.AmendmentsCase)
+        {
+            case ProcessTask.AmendmentsOneofCase.MortgageRetention:
+                detail.LoanInterestRateProvided = process.MortgageRetention.LoanInterestRateProvided ?? process.MortgageRetention.LoanInterestRate;
+                detail.LoanInterestRateValidFrom = process.MortgageRetention.InterestRateValidFrom!;
+                detail.EffectiveDate = process.MortgageRetention.EffectiveDate;
+                detail.DocumentId = process.MortgageRetention.DocumentId;
+                break;
 
+            case ProcessTask.AmendmentsOneofCase.MortgageRefixation:
+                detail.LoanInterestRateProvided = process.MortgageRefixation.LoanInterestRateProvided ?? process.MortgageRetention.LoanInterestRate;
+                detail.EffectiveDate = process.MortgageRefixation.EffectiveDate;
+                detail.DocumentId = process.MortgageRefixation.DocumentId;
+                break;
+        }
 
+        return detail;
+    }
 }
