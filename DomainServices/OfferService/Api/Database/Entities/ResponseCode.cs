@@ -12,7 +12,9 @@ internal sealed class ResponseCode
 
     public long CaseId { get; set; }
 
-    public int ResponseCodeTypeId { get; set; }
+    public int? ResponseCodeTypeId { get; set; }
 
     public string? Data { get; set; }
+
+    public int ResponseCodeCategory { get; set; }
 }

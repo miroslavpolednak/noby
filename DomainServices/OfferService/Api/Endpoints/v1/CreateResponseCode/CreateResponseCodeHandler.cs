@@ -11,6 +11,7 @@ internal sealed class CreateResponseCodeHandler(Database.OfferServiceDbContext _
         {
             ResponseCodeTypeId = request.ResponseCodeTypeId,
             CaseId = request.CaseId,
+            ResponseCodeCategory = (int)request.ResponseCodeCategory,
             Data = request.Data
         };
         _dbContext.ResponseCodes.Add(entity);

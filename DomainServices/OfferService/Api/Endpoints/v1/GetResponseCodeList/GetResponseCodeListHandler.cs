@@ -14,6 +14,7 @@ internal sealed class GetResponseCodeListHandler(OfferServiceDbContext _dbContex
             .Where(t => t.CaseId == request.CaseId)
             .Select(t => new GetResponseCodeListResponse.Types.GetResponseCodeItem
             {
+                ResponseCodeCategory = (ResponseCodeCategories)t.ResponseCodeCategory,
                 ResponseCodeTypeId = t.ResponseCodeTypeId,
                 ResponseCodeId = t.ResponseCodeId,
                 Data = t.Data,

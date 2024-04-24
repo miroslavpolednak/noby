@@ -2,12 +2,14 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
+import "Messages/Types.proto";
 import "google/protobuf/wrappers.proto";
 
 message CreateResponseCodeRequest {
 	int64 CaseId = 1;
-	int32 ResponseCodeTypeId = 2;
+	google.protobuf.Int32Value ResponseCodeTypeId = 2;
 	google.protobuf.StringValue Data = 3;
+	ResponseCodeCategories ResponseCodeCategory = 4;
 }
 
 message CreateResponseCodeResponse {
