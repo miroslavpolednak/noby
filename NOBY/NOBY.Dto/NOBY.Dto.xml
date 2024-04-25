@@ -587,6 +587,11 @@
             Seznam odpovědních kódů
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.IsPriceExceptionActive">
+            <summary>
+            Existuje workflow úkol cenové vyjímky
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.ProcessId">
             <summary>
             Noby proces ID daného procesu Refinancí. Jde o ID sady úkolů generované Starbuildem.

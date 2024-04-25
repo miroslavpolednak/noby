@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using Google.Protobuf.Collections;
+﻿using Google.Protobuf.Collections;
 using NOBY.Dto;
 
 namespace NOBY.Api.Extensions;

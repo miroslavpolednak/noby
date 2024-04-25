@@ -11,18 +11,12 @@ using NOBY.Dto.Attributes;
 
 namespace NOBY.Infrastructure.ErrorHandling.Internals;
 
-public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse>(
+    IHttpContextAccessor _httpContextAccessor, 
+    ILogger<TRequest> _logger)
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogger<TRequest> _logger;
-
-    public NobyAdditionalRequestPropertiesLoggerBehavior(IHttpContextAccessor httpContextAccessor, ILogger<TRequest> logger)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _logger = logger;
-    }
-
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (_httpContextAccessor.HttpContext is null || _httpContextAccessor.HttpContext.Request.ContentType != MediaTypeNames.Application.Json)
@@ -97,15 +91,9 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
         return missingProperties;
     }
 
-    private sealed class ExcludeOneOfContractResolver : DefaultContractResolver
+    private sealed class ExcludeOneOfContractResolver(ICollection<string> _oneOfProperties) 
+        : DefaultContractResolver
     {
-        private readonly ICollection<string> _oneOfProperties;
-
-        public ExcludeOneOfContractResolver(ICollection<string> oneOfProperties)
-        {
-            _oneOfProperties = oneOfProperties;
-        }
-
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             if (member.GetCustomAttribute<SwaggerOneOfAttribute>() != null)

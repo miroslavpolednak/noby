@@ -15,18 +15,13 @@ namespace NOBY.Infrastructure.Security.Middleware;
 /// <summary>
 /// Middleware pro kontrolu vlastníka Case.
 /// </summary>
-public sealed class CaseOwnerValidationMiddleware
+public sealed class CaseOwnerValidationMiddleware(RequestDelegate _next)
 {
     // klíče pod kterými jsou v route daná ID entit
     const string _caseIdKey = "caseId";
     const string _salesArrangementIdKey = "salesArrangementId";
     const string _customerOnSAIdKey = "customerOnSAId";
     const string _householdIdKey = "householdId";
-
-    private readonly RequestDelegate _next;
-
-    public CaseOwnerValidationMiddleware(RequestDelegate next) =>
-        _next = next;
 
     public async Task Invoke(
         HttpContext context,

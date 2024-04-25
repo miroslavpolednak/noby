@@ -1,5 +1,4 @@
 ﻿using NOBY.Infrastructure.Configuration;
-using NOBY.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
