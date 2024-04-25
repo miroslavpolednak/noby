@@ -8,17 +8,18 @@ public static class RefinancingHelper
 {
     public static string GetRefinancingTypeText(List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodesMain, ProcessTask process, List<GenericCodebookResponse.Types.GenericCodebookItem> refinancingTypes)
     {
-        var text = eaCodesMain.Find(e => e.Id == process.RefinancingProcess.RefinancingDocumentEACode)?.Name;
+        int? eacode = process.AmendmentsCase switch
+        {
+            ProcessTask.AmendmentsOneofCase.MortgageRetention => process.MortgageRetention.DocumentEACode,
+            ProcessTask.AmendmentsOneofCase.MortgageRefixation => process.MortgageRetention.DocumentEACode,
+            ProcessTask.AmendmentsOneofCase.MortgageExtraPayment => process.MortgageRetention.DocumentEACode,
+            _ => null
+        };
+        var text = eaCodesMain.Find(e => e.Id == eacode)?.Name;
 
         if (string.IsNullOrWhiteSpace(text))
         {
-            text = process.RefinancingProcess.RefinancingType switch
-            {
-                1 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.MortgageRetention).Name,
-                2 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.MortgageRefixation).Name,
-                3 => refinancingTypes.Single(r => r.Id == (int)RefinancingTypes.MortgageExtraPayment).Name,
-                _ => string.Empty
-            };
+            text = refinancingTypes.FirstOrDefault(r => r.Id == (int)GetRefinancingType(process))?.Name ?? "";
         }
         return text;
     }
@@ -40,10 +41,11 @@ public static class RefinancingHelper
 
     public static RefinancingTypes GetRefinancingType(ProcessTask process)
     {
-        return process.ProcessTypeId switch
+        return process.AmendmentsCase switch
         {
-            3 when process.RefinancingProcess.RefinancingType == 1 => RefinancingTypes.MortgageRetention,  // Retence
-            3 when process.RefinancingProcess.RefinancingType == 2 => RefinancingTypes.MortgageRefixation, // Refixace
+            ProcessTask.AmendmentsOneofCase.MortgageRetention => RefinancingTypes.MortgageRetention,
+            ProcessTask.AmendmentsOneofCase.MortgageRefixation => RefinancingTypes.MortgageRefixation,
+            ProcessTask.AmendmentsOneofCase.MortgageExtraPayment => RefinancingTypes.MortgageExtraPayment,
             _ => RefinancingTypes.Unknown
         };
     }

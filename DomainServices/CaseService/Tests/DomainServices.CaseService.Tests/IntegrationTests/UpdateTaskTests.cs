@@ -36,7 +36,7 @@ public class UpdateTaskTests : IntegrationTestBase
         {
             CaseId = 1,
             TaskIdSb = 1,
-            Retention = new()
+            MortgageRetention = new()
             {
                 FeeSum = 1
             }
@@ -49,7 +49,7 @@ public class UpdateTaskTests : IntegrationTestBase
         {
             CaseId = 1,
             TaskIdSb = 1,
-            Retention = new()
+            MortgageRetention = new()
             {
                 FeeSum = 1,
                 FeeFinalSum = 1,

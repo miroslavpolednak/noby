@@ -23,7 +23,11 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
+	  <Compile Remove="Endpoints\Offer\CommunicateMortgageRefixation\**" />
+	  <Content Remove="Endpoints\Offer\CommunicateMortgageRefixation\**" />
+	  <EmbeddedResource Remove="Endpoints\Offer\CommunicateMortgageRefixation\**" />
 	  <EmbeddedResource Remove="wwwroot\**" />
+	  <None Remove="Endpoints\Offer\CommunicateMortgageRefixation\**" />
 	  <None Remove="wwwroot\**" />
 	</ItemGroup>
 	
@@ -78,7 +82,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\Offer\CommunicateMortgageRefixation\" />
     <Folder Include="Endpoints\Offer\_SharedDto\LinkModelation\" />
   </ItemGroup>
 

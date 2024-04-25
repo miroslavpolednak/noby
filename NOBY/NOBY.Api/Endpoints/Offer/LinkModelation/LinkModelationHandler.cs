@@ -1,4 +1,5 @@
-﻿using DomainServices.OfferService.Clients.v1;
+﻿using DomainServices.CaseService.Contracts;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
@@ -90,25 +91,32 @@ internal sealed class LinkModelationHandler
         var taskUpdateRequest = new _Ca.UpdateTaskRequest
         {
             CaseId = salesArrangement.CaseId,
-            TaskIdSb = taskResult.TaskIdSb,
-            Retention = new _Ca.Retention
-            {
-                InterestRateValidFrom = (DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom,
-                LoanInterestRate = offer.MortgageRetention.SimulationInputs.InterestRate,
-                LoanInterestRateProvided = ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRate?? 0) - ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount ?? 0),
-                LoanPaymentAmount = (decimal)offer.MortgageRetention.SimulationResults.LoanPaymentAmount,
-                LoanPaymentAmountFinal = (decimal?)offer.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted,
-            }
+            TaskIdSb = taskResult.TaskIdSb
         };
 
         if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention)
         {
-            taskUpdateRequest.Retention.FeeSum = (decimal)offer.MortgageRetention.BasicParameters.FeeAmount;
-            taskUpdateRequest.Retention.FeeFinalSum = (decimal?)offer.MortgageRetention.BasicParameters.FeeAmountDiscounted;
+            taskUpdateRequest.MortgageRetention = new _Ca.UpdateTaskRequest.Types.TaskAmendmentMortgageRetention
+            {
+                InterestRateValidFrom = (DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom,
+                LoanInterestRate = offer.MortgageRetention.SimulationInputs.InterestRate,
+                LoanInterestRateProvided = ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRate ?? 0) - ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount ?? 0),
+                LoanPaymentAmount = (decimal)offer.MortgageRetention.SimulationResults.LoanPaymentAmount,
+                LoanPaymentAmountFinal = (decimal?)offer.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted,
+                FeeSum = (decimal)offer.MortgageRetention.BasicParameters.FeeAmount,
+                FeeFinalSum = (decimal?)offer.MortgageRetention.BasicParameters.FeeAmountDiscounted
+            };
         } 
         else if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation)
         {
-            //taskUpdateRequest.Retention.FixedRatePeriod = //Offer FixedRatePeriod
+            taskUpdateRequest.MortgageRefixation = new _Ca.UpdateTaskRequest.Types.TaskAmendmentMortgageRefixation
+            {
+                LoanInterestRate = offer.MortgageRetention.SimulationInputs.InterestRate,
+                LoanInterestRateProvided = ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRate ?? 0) - ((decimal?)offer.MortgageRetention.SimulationInputs.InterestRateDiscount ?? 0),
+                LoanPaymentAmount = (decimal)offer.MortgageRetention.SimulationResults.LoanPaymentAmount,
+                LoanPaymentAmountFinal = (decimal?)offer.MortgageRetention.SimulationResults.LoanPaymentAmountDiscounted,
+                //taskUpdateRequest.Retention.FixedRatePeriod = //Offer FixedRatePeriod
+            };
         }
 
         await _caseService.UpdateTask(taskUpdateRequest, cancellationToken);

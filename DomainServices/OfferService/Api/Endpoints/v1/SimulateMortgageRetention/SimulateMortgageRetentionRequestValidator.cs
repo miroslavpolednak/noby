@@ -1,13 +1,13 @@
-﻿using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Contracts;
+﻿using DomainServices.OfferService.Contracts;
 using FluentValidation;
+using Microsoft.FeatureManagement;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgageRetention;
 
 internal sealed class SimulateMortgageRetentionRequestValidator
     : AbstractValidator<SimulateMortgageRetentionRequest>
 {
-    public SimulateMortgageRetentionRequestValidator()
+    public SimulateMortgageRetentionRequestValidator(IFeatureManager featureManager)
     {
         RuleFor(t => t.SimulationInputs)
             .Must(p => p != null)
@@ -28,5 +28,9 @@ internal sealed class SimulateMortgageRetentionRequestValidator
                 .When(t => t.BasicParameters.FeeAmountDiscounted != null)
                 .WithErrorCode(ErrorCodeMapper.MortgageRetentionAmountIndividualPriceNotValid);
         });
+
+        RuleFor(t => t)
+             .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Retention))
+             .WithMessage("Retence jsou zakázany");
     }
 }

@@ -94,15 +94,15 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
         {
             CaseId = caseId,
             TaskIdSb = taskIdSb,
-            Retention = new Retention
+            MortgageRetention = new()
             {
                 InterestRateValidFrom = retention.SimulationInputs.InterestRateValidFrom,
                 LoanInterestRate = (decimal?)retention.SimulationInputs.InterestRate,
                 LoanInterestRateProvided = (decimal)retention.SimulationInputs.InterestRate - ((decimal?)retention.SimulationInputs.InterestRateDiscount ?? 0),
                 LoanPaymentAmount = retention.SimulationResults.LoanPaymentAmount,
-                LoanPaymentAmountFinal = retention.SimulationResults.LoanPaymentAmountDiscounted,
+                LoanPaymentAmountFinal = (decimal?)retention.SimulationResults.LoanPaymentAmountDiscounted ?? retention.SimulationResults.LoanPaymentAmount,
                 FeeSum = retention.BasicParameters.FeeAmount,
-                FeeFinalSum = ((decimal?)retention.BasicParameters.FeeAmountDiscounted).GetValueOrDefault()
+                FeeFinalSum = (decimal?)retention.BasicParameters.FeeAmountDiscounted ?? retention.BasicParameters.FeeAmount
             }
         };
 

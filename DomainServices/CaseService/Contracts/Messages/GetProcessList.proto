@@ -17,41 +17,68 @@ message GetProcessListResponse {
 
 message ProcessTask {
 	int32 ProcessIdSb = 1;
-
 	int64 ProcessId = 2;
-
 	cis.types.GrpcDateTime CreatedOn = 3;
-
 	int32 ProcessTypeId = 4;
-
 	string ProcessNameLong = 5;
-
 	string StateName = 6;
-
 	google.protobuf.Int32Value StateIndicator = 7;
-
 	int32 ProcessPhaseId = 8;
-
 	int32 StateIdSB = 9;
-
 	bool Cancelled = 10;
+	google.protobuf.Int32Value RefinancingType = 11;
 
 	oneof Amendments {
-		RefinancingProcess RefinancingProcess = 11;
+		TaskAmendmentMortgageRetention MortgageRetention = 20;
+		TaskAmendmentMortgageRefixation MortgageRefixation = 21;
+		TaskAmendmentMortgageExtraPayment MortgageExtraPayment = 22;
+		TaskAmendmentMortgageLegalNotice MortgageLegalNotice = 23;
 	}
-}
 
-message RefinancingProcess{
-	int32 RefinancingType = 1;
-	cis.types.NullableGrpcDate InterestRateValidFrom = 2;
-	cis.types.NullableGrpcDecimal LoanInterestRate = 3;
-	cis.types.NullableGrpcDecimal LoanInterestRateProvided = 4;
-	cis.types.NullableGrpcDecimal LoanPaymentAmount = 5;
-	cis.types.NullableGrpcDecimal LoanPaymentAmountFinal = 6;
-	cis.types.NullableGrpcDecimal FeeSum = 7;
-	cis.types.NullableGrpcDecimal FeeFinalSum = 8;
-	google.protobuf.StringValue RefinancingDocumentId = 9;
-	google.protobuf.Int32Value RefinancingDocumentEACode = 10;
-	cis.types.NullableGrpcDate EffectiveDate = 11;
-	google.protobuf.Int32Value FixedRatePeriod = 12;
+	message TaskAmendmentMortgageRetention {
+		cis.types.NullableGrpcDate InterestRateValidFrom = 1;
+		cis.types.NullableGrpcDecimal LoanInterestRate = 2;
+		cis.types.NullableGrpcDecimal LoanInterestRateProvided = 3;
+		cis.types.NullableGrpcDecimal LoanPaymentAmount = 4;
+		cis.types.NullableGrpcDecimal LoanPaymentAmountFinal = 5;
+		cis.types.NullableGrpcDecimal FeeSum = 6;
+		cis.types.NullableGrpcDecimal FeeFinalSum = 7;
+		google.protobuf.StringValue DocumentId = 8;
+		google.protobuf.Int32Value DocumentEACode = 9;
+		cis.types.NullableGrpcDate EffectiveDate = 10;
+	}
+
+	message TaskAmendmentMortgageRefixation {
+		cis.types.NullableGrpcDecimal LoanInterestRate = 1;
+		cis.types.NullableGrpcDecimal LoanInterestRateProvided = 2;
+		cis.types.NullableGrpcDecimal LoanPaymentAmount = 3;
+		cis.types.NullableGrpcDecimal LoanPaymentAmountFinal = 4;
+		google.protobuf.Int32Value FixedRatePeriod = 5;
+		google.protobuf.StringValue DocumentId = 6;
+		google.protobuf.Int32Value DocumentEACode = 7;
+		cis.types.NullableGrpcDate EffectiveDate = 8;
+	}
+
+	message TaskAmendmentMortgageExtraPayment {
+		cis.types.NullableGrpcDate ExtraPaymentDate = 1;
+		cis.types.NullableGrpcDecimal ExtraPaymentAmount = 2;
+		cis.types.NullableGrpcDecimal ExtraPaymentAmountIncludingFee = 3;
+		bool IsFinalExtraPayment = 4;
+		google.protobuf.StringValue DocumentId = 5;
+		google.protobuf.Int32Value DocumentEACode = 6;
+		repeated ExtraPaymentAgreement ExtraPaymentAgreements = 7;
+	}
+
+	message ExtraPaymentAgreement {
+		google.protobuf.StringValue AgreementDocumentId = 5;
+		google.protobuf.Int32Value AgreementEACode = 6;
+	}
+
+	message TaskAmendmentMortgageLegalNotice {
+		cis.types.NullableGrpcDecimal LoanInterestRateProvided = 1;
+		cis.types.NullableGrpcDecimal LoanPaymentAmountFinal = 2;
+		cis.types.NullableGrpcDecimal FixedRatePeriod = 3;
+		google.protobuf.StringValue DocumentId = 5;
+		google.protobuf.Int32Value DocumentEACode = 6;
+	}
 }

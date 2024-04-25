@@ -3,24 +3,42 @@ package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
 import "google/protobuf/wrappers.proto";
-import "NullableGrpcDate.proto";
-import "NullableGrpcDecimal.proto";
+import "GrpcDate.proto";
+import "GrpcDecimal.proto";
 
 message UpdateTaskRequest {
 	int64 CaseId =  1;
 	int32 TaskIdSb = 2;
+
 	oneof Amendments {
-		Retention Retention = 3;
+		TaskAmendmentMortgageRetention MortgageRetention = 20;
+		TaskAmendmentMortgageRefixation MortgageRefixation = 21;
+		TaskAmendmentMortgageExtraPayment MortgageExtraPayment = 22;
+	}
+
+	message TaskAmendmentMortgageRetention {
+		cis.types.GrpcDate InterestRateValidFrom = 1;
+		cis.types.GrpcDecimal LoanInterestRate = 2;
+		cis.types.GrpcDecimal LoanInterestRateProvided = 3;
+		cis.types.GrpcDecimal LoanPaymentAmount = 4;
+		cis.types.GrpcDecimal LoanPaymentAmountFinal = 5;
+		cis.types.GrpcDecimal FeeSum = 6;
+		cis.types.GrpcDecimal FeeFinalSum = 7;
+	}
+
+	message TaskAmendmentMortgageRefixation {
+		cis.types.GrpcDecimal LoanInterestRate = 1;
+		cis.types.GrpcDecimal LoanInterestRateProvided = 2;
+		cis.types.GrpcDecimal LoanPaymentAmount = 3;
+		cis.types.GrpcDecimal LoanPaymentAmountFinal = 4;
+		int32 FixedRatePeriod = 5;
+	}
+
+	message TaskAmendmentMortgageExtraPayment {
+		cis.types.GrpcDate ExtraPaymentDate = 1;
+		cis.types.GrpcDecimal ExtraPaymentAmount = 2;
+		cis.types.GrpcDecimal ExtraPaymentAmountIncludingFee = 3;
+		bool IsFinalExtraPayment = 4;
 	}
 }
 
-message Retention {
-	cis.types.NullableGrpcDate InterestRateValidFrom = 1;
-	cis.types.NullableGrpcDecimal LoanInterestRate = 2;
-	cis.types.NullableGrpcDecimal LoanInterestRateProvided = 3;
-	cis.types.NullableGrpcDecimal LoanPaymentAmount = 4;
-	cis.types.NullableGrpcDecimal LoanPaymentAmountFinal = 5;
-	cis.types.NullableGrpcDecimal FeeSum = 6;
-	cis.types.NullableGrpcDecimal FeeFinalSum = 7;
-	google.protobuf.Int32Value FixedRatePeriod = 8;
-}

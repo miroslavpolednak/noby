@@ -77,7 +77,7 @@ internal sealed class StartTaskSigningHandler(
         {
             return await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
         }
-        else if (wfTask.ProcessTypeId == 3 && process.RefinancingProcess?.RefinancingType == (int)RefinancingTypes.MortgageRetention)
+        else if (process.RefinancingType == (int)RefinancingTypes.MortgageRetention)
         {
             var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention
                                                                                       && s.State != (int)SalesArrangementStates.Cancelled
@@ -86,7 +86,7 @@ internal sealed class StartTaskSigningHandler(
             return sa ?? await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
 
         }
-        else if (wfTask.ProcessTypeId == 3 && process?.RefinancingProcess?.RefinancingType != (int)RefinancingTypes.MortgageRetention)
+        else if (process.RefinancingType == (int)RefinancingTypes.MortgageRefixation)
         {
             var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation
                                                                                      && s.State != (int)SalesArrangementStates.Cancelled
@@ -96,7 +96,7 @@ internal sealed class StartTaskSigningHandler(
         }
         else
         {
-            throw new ArgumentException($"Unsupported combination of processTypeId {wfTask.ProcessTypeId} and RefinancingType {process.RefinancingProcess?.RefinancingType}, cannot get SA");
+            throw new ArgumentException($"Unsupported combination of processTypeId {wfTask.ProcessTypeId} and RefinancingType {process.RefinancingType}, cannot get SA");
         }
     }
 

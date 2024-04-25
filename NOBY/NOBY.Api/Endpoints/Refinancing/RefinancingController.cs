@@ -6,6 +6,7 @@ using NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment;
 using NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 using NOBY.Api.Endpoints.Refinancing.GetAvailableFixedRatePeriods;
+using NOBY.Api.Endpoints.Refinancing.GetExtraPaymentList;
 
 namespace NOBY.Api.Endpoints.Refinancing;
 
@@ -14,6 +15,22 @@ namespace NOBY.Api.Endpoints.Refinancing;
 [ApiVersion(1)]
 public sealed class RefinancingController(IMediator _mediator) : ControllerBase
 {
+    /// <summary>
+    /// Rozscestník mimořádných splátek 
+    /// </summary>
+    /// <remarks>
+    /// 
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=28D30BA8-03AF-403f-B672-EC163451D45B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// </remarks>
+    [HttpGet("case/{caseId:long}/mortgage-extra-payments")]
+    [Produces("application/json")]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [SwaggerOperation(Tags = ["Refinancing"])]
+    [ProducesResponseType(typeof(GetExtraPaymentListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<GetExtraPaymentListResponse> GetExtraPaymentList([FromRoute] long caseId)
+        => await _mediator.Send(new GetExtraPaymentListRequest(caseId));
+
     /// <summary>
     /// Seznam dostupných délek fixací pro refixace
     /// </summary>

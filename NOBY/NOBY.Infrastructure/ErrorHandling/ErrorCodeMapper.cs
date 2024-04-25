@@ -62,7 +62,11 @@ public sealed class ErrorCodeMapper
             { 90050, new("Sleva zřejmě expirovala", "Úkol Cenové výjimky pro slevu požadovanou v nabídce je zrušený zřejmě z důvodu expirace platnosti.") },
             { 90051, new("Platnost budoucí úrokové sazby v minulosti", "Požadované datum platnosti budoucí úrokové sazby je v minulosti.") },
             { 90052, new("Není povolen souběh požadavků Retence / Refixace.", "Není možné vytvořit nový požadavek, jelikož již existuje rozpracovaný požadavek z dřívějška.") },
-            { 90053, new("Nelze podepsat elektronicky, protože je podepisováno na základě plné moci.") }
+            { 90053, new("Nelze podepsat elektronicky, protože je podepisováno na základě plné moci.") },
+            { 90054, new("Retence jsou zakázány") },
+            { 90055, new("Refixace jsou zakázány") },
+            { 90056, new("Mimořádná splátka je zakázaná") },
+            { 90057, new("Interní refinancování je zakázáno") }
         };
 
         Messages = messages.AsReadOnly();

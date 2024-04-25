@@ -33,10 +33,9 @@ public sealed class MortgageRefinancingWorkflowService(
                 ?? throw new NobyValidationException(90043, $"ProccesId {processId} not found in list");
 
             // validace typu procesu
-            var refType = refinancingType == RefinancingTypes.MortgageRetention ? 1 : 2;
-            if (process.ProcessTypeId != 3 || process.RefinancingProcess?.RefinancingType != refType)
+            if (process.AmendmentsCase != getRequiredAmendmentCase(refinancingType))
             {
-                throw new NobyValidationException(90032, $"ProcessTypeId!=3 or RefinancingType!={refType}");
+                throw new NobyValidationException(90032, $"ProcessTypeId!=3 or RefinancingType!={refinancingType}");
             }
 
             // zjistit refinancingState
@@ -62,12 +61,27 @@ public sealed class MortgageRefinancingWorkflowService(
                 .ToList();
 
         // toto je aktivni task!
-        result.ActivePriceExceptionTaskIdSb = tasks
+        var activePriceExceptionTaskIdSb = tasks
             .FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled && t.DecisionId != 2 && t.PhaseTypeId == 2)
             ?.TaskIdSb;
 
+        // detail IC tasku
+        if (activePriceExceptionTaskIdSb.HasValue)
+        {
+            result.ActivePriceException = (await _caseService.GetTaskDetail(activePriceExceptionTaskIdSb.Value, cancellationToken))?.TaskDetail?.PriceException;
+        }
+
         return result;
     }
+
+    private ProcessTask.AmendmentsOneofCase getRequiredAmendmentCase(RefinancingTypes refinancingType)
+        => refinancingType switch
+        {
+            RefinancingTypes.MortgageRetention => ProcessTask.AmendmentsOneofCase.MortgageRetention,
+            RefinancingTypes.MortgageRefixation => ProcessTask.AmendmentsOneofCase.MortgageRefixation,
+            RefinancingTypes.MortgageExtraPayment => ProcessTask.AmendmentsOneofCase.MortgageExtraPayment,
+            _ => throw new NotImplementedException()
+        };
 
     public Task<WorkflowTaskByTaskId.WorkflowProcessByProcessIdResult> GetProcessInfoByProcessId(long caseId, long processId, CancellationToken cancellationToken) => 
         _caseService.GetProcessByProcessId(caseId, processId, cancellationToken);
@@ -127,6 +141,7 @@ public sealed class MortgageRefinancingWorkflowService(
         {
             createTaskRequest.PriceException.Fees.Add(new PriceExceptionFeesItem
             {
+                FeeId = mortgageParameters.Fee.FeeId,
                 TariffSum = mortgageParameters.Fee.FeeSum,
                 FinalSum = mortgageParameters.Fee.FeeFinalSum,
                 DiscountPercentage = 100 * (mortgageParameters.Fee.FeeSum - mortgageParameters.Fee.FeeFinalSum) / mortgageParameters.Fee.FeeSum

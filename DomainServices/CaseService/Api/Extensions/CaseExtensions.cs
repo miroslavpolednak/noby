@@ -48,12 +48,15 @@ internal static class CaseExtensions
 
     public static ProcessTask ToProcessTask(this IReadOnlyDictionary<string, string> taskData)
     {
-        return new ProcessTask
+        var taskType = taskData.GetInteger("ukol_proces_typ_noby");
+        var taskSubType = taskData.GetNInteger("ukol_retence_druh");
+
+        var result = new ProcessTask
         {
             ProcessIdSb = taskData.GetInteger("ukol_id"),
             ProcessId = taskData.GetLong("ukol_sada"),
             CreatedOn = taskData.GetDate("ukol_dat_start_proces"),
-            ProcessTypeId = taskData.GetInteger("ukol_proces_typ_noby"),
+            ProcessTypeId = taskType,
             ProcessNameLong = taskData.GetValueOrDefault("ukol_proces_nazev_noby") ?? "",
             StateName = getStateName(taskData),
             ProcessPhaseId = taskData.GetInteger("ukol_proces_typ_noby") switch
@@ -62,28 +65,87 @@ internal static class CaseExtensions
                 2 => taskData.GetInteger("ukol_faze_zm_procesu"),
                 3 => taskData.GetInteger("ukol_faze_rt_procesu"),
                 -1 => -1,
-                _ => throw new CisArgumentException(0, taskData["ukol_proces_typ_noby"], "ProcessPhaseId")
+                _ => throw new CisArgumentException(0, taskType.ToString(CultureInfo.InvariantCulture), "ProcessPhaseId")
             },
-            StateIndicator = taskData.GetInteger("ukol_proces_typ_noby") switch
+            StateIndicator = taskType switch
             {
                 1 or 2 or 3 => getStateIndicator(taskData),
                 _ => null
             },
             StateIdSB = taskData.GetInteger("ukol_stav_poz"),
-            Cancelled = taskData.GetBoolean("ukol_stornovano"),
-            RefinancingProcess = taskData.GetInteger("ukol_proces_typ_noby") switch
-            {
-                3 => GetRetentionProcess(taskData),
-                _ => null
-            }
+            Cancelled = taskData.GetBoolean("ukol_stornovano")
         };
+
+        
+        switch (taskType)
+        {
+            case 3 when taskSubType == 1:
+                result.RefinancingType = (int)RefinancingTypes.MortgageRetention;
+                result.MortgageRetention = GetRetentionProcess(taskData);
+                break;
+
+            case 3 when taskSubType == 2:
+                result.RefinancingType = (int)RefinancingTypes.MortgageRefixation;
+                result.MortgageRefixation = GetRefixationProcess(taskData);
+                break;
+
+            case 3 when taskSubType == 3:
+                result.RefinancingType = (int)RefinancingTypes.MortgageLegalNotice;
+                result.MortgageLegalNotice = GetLegalNoticeProcess(taskData);
+                break;
+
+            case 4:
+                result.RefinancingType = (int)RefinancingTypes.MortgageExtraPayment;
+                result.MortgageExtraPayment = GetExtraPaymentProcess(taskData);
+                break;
+        }
+
+        return result;
     }
 
-    private static RefinancingProcess GetRetentionProcess(IReadOnlyDictionary<string, string> taskData)
-    {
-        return new RefinancingProcess
+    private static Contracts.ProcessTask.Types.TaskAmendmentMortgageLegalNotice GetLegalNoticeProcess(IReadOnlyDictionary<string, string> taskData)
+        => new()
         {
-            RefinancingType = taskData.GetInteger("ukol_retence_druh"),
+            LoanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl"),
+            LoanPaymentAmountFinal = taskData.GetNDecimal("ukol_retence_splatka_vysl"),
+            FixedRatePeriod = taskData.GetNInteger("ukol_retence_perioda_fixace"),
+            DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+            DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod")
+        };
+
+    private static Contracts.ProcessTask.Types.TaskAmendmentMortgageExtraPayment GetExtraPaymentProcess(IReadOnlyDictionary<string, string> taskData)
+    {
+        var result = new Contracts.ProcessTask.Types.TaskAmendmentMortgageExtraPayment()
+        {
+            ExtraPaymentDate = taskData.GetDate("ukol_mspl_dat_spl"),
+            ExtraPaymentAmount = taskData.GetNDecimal("ukol_mspl_suma"),
+            ExtraPaymentAmountIncludingFee = taskData.GetNDecimal("ukol_mspl_suma_celkem"),
+            IsFinalExtraPayment = taskData.GetBool("ukol_mspl_typ"),
+            DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+            DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod")
+        };
+
+        var docs = taskData["ukol_mspl_souhlas_ea_cis"]?.Split(',', StringSplitOptions.RemoveEmptyEntries);
+        var docsEa = taskData["ukol_mspl_souhlas_ea_kod"]?.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+        if (docs is not null && docsEa is not null)
+        {
+            for (int i = 0; i < docs.Length; i++)
+            {
+                result.ExtraPaymentAgreements.Add(new ProcessTask.Types.ExtraPaymentAgreement
+                {
+                    AgreementDocumentId = docs[i],
+                    AgreementEACode = Convert.ToInt32(docsEa[i], CultureInfo.InvariantCulture)
+                });
+            }
+        }
+
+        return result;
+    }
+    
+    private static Contracts.ProcessTask.Types.TaskAmendmentMortgageRetention GetRetentionProcess(IReadOnlyDictionary<string, string> taskData)
+        => new()
+        {
             InterestRateValidFrom = taskData.GetDate("ukol_retence_sazba_dat_od"),
             LoanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk"),
             LoanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl"),
@@ -91,12 +153,23 @@ internal static class CaseExtensions
             LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
             FeeSum = taskData.GetNInteger("ukol_retence_popl_kalk"),
             FeeFinalSum = taskData.GetNInteger("ukol_retence_popl_vysl"),
-            FixedRatePeriod = taskData.GetNInteger("ukol_refinance_TBD"),
-            RefinancingDocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
-            RefinancingDocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
+            DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+            DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
             EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
         };
-    }
+
+    private static Contracts.ProcessTask.Types.TaskAmendmentMortgageRefixation GetRefixationProcess(IReadOnlyDictionary<string, string> taskData)
+        => new()
+        {
+            LoanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk"),
+            LoanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl"),
+            LoanPaymentAmount = taskData.GetNInteger("ukol_retence_splatka_kalk"),
+            LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
+            FixedRatePeriod = taskData.GetInteger("ukol_retence_perioda_fixace"),
+            DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+            DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
+            EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
+        };
 
     public static TaskDetailItem ToTaskDetail(this IReadOnlyDictionary<string, string> taskData)
     {
@@ -133,8 +206,11 @@ internal static class CaseExtensions
                     };
                     for (int i = 1; i < 20; i++)
                     {
-                        if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")))
+                        if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")) ||
+                            taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}") == "0")
+                        {
                             break;
+                        }
 
                         taskDetail.PriceException.Fees.Add(new PriceExceptionFeesItem
                         {

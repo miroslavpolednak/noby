@@ -34,7 +34,7 @@ public class MortgageRefinancingDocumentService
         if (salesArrangement.SalesArrangementTypeId != (int)expectedType)
             throw new NobyValidationException(90032, $"SA is not of type {expectedType}");
 
-        if (GetManagedByRC2(salesArrangement) != true)
+        if (GetManagedByRC2(salesArrangement) == true)
             throw new NobyValidationException(90032, "ManagedByRC2 is true or SA is not retention SA");
 
         if (salesArrangement.State is not ((int)SalesArrangementStates.InProgress or (int)SalesArrangementStates.NewArrangement))
@@ -63,7 +63,7 @@ public class MortgageRefinancingDocumentService
         {
             SalesArrangementTypes.MortgageRefixation => salesArrangement.Refixation!.ManagedByRC2,
             SalesArrangementTypes.MortgageRetention => salesArrangement.Retention!.ManagedByRC2,
-            _ => throw new NotSupportedException()
+            _ => null
         };
     }
 }

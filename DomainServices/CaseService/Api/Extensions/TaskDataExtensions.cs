@@ -49,6 +49,11 @@ internal static class TaskDataExtensions
         return long.Parse(taskData[key], CultureInfo.InvariantCulture);
     }
 
+    public static bool GetBool(this IReadOnlyDictionary<string, string> taskData, string key)
+    {
+        return taskData[key] == "1";
+    }
+
     public static DateTime? GetDate(this IReadOnlyDictionary<string, string> taskData, string key)
     {
         if (DateTime.TryParse(taskData[key], _czCulture, out DateTime d2))
@@ -78,6 +83,9 @@ internal static class TaskDataExtensions
 
     public static string ToSbFormat(this GrpcDecimal d)
         => ((decimal)d).ToString(CultureInfo.InvariantCulture);
+
+    public static string ToSbFormat(this bool d)
+        => d ? "1" : "0";
 
     public static string ToSbFormat(this NullableGrpcDecimal? d)
         => d is null ? "" : ((decimal)d!).ToString(CultureInfo.InvariantCulture);
