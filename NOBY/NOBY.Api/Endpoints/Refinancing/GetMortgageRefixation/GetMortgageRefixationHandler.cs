@@ -23,7 +23,8 @@ internal sealed class GetMortgageRefixationHandler(
             IsReadOnly = retentionData.RefinancingState != RefinancingStates.RozpracovanoVNoby,
             Tasks = retentionData.Tasks,
             IndividualPriceCommentLastVersion = retentionData.SalesArrangement?.Refixation?.IndividualPriceCommentLastVersion,
-            Comment = retentionData.SalesArrangement?.Refixation?.Comment
+            Comment = retentionData.SalesArrangement?.Refixation?.Comment,
+            IsPriceExceptionActive = retentionData.ActivePriceException is not null
         };
 
         // zjistit rate ICcka

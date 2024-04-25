@@ -31,11 +31,6 @@ public sealed class GetMortgageRetentionResponse
     public decimal? InterestRateDiscount { get; set; }
 
     /// <summary>
-    /// Existuje workflow úkol cenové vyjímky
-    /// </summary>
-    public bool IsPriceExceptionActive { get; set; }
-
-    /// <summary>
     /// Sleva ze sazby
     /// </summary>
     /// <example>4.5</example>
