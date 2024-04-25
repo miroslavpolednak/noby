@@ -38,7 +38,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
         var salesArrangement = await _refinancingDocumentService.LoadAndValidateSA(request.SalesArrangementId, SalesArrangementTypes.MortgageRetention, cancellationToken);
         var offer = await LoadAndValidateOffer(salesArrangement.OfferId!.Value, cancellationToken);
 
-        var offerIndividualPrice = new MortgageRefinancingIndividualPrice(offer.MortgageRefixation.SimulationInputs.InterestRateDiscount, offer.MortgageRetention.BasicParameters.FeeAmountDiscounted);
+        var offerIndividualPrice = new MortgageRefinancingIndividualPrice(offer.MortgageRetention.SimulationInputs.InterestRateDiscount, offer.MortgageRetention.BasicParameters.FeeAmountDiscounted);
 
         if (offerIndividualPrice.HasIndividualPrice && !await _refinancingDocumentService.IsIndividualPriceValid(salesArrangement, offerIndividualPrice, cancellationToken))
             throw new NobyValidationException(90048);
