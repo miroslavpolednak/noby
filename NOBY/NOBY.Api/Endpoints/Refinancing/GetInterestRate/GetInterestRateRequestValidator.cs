@@ -10,6 +10,6 @@ internal sealed class GetInterestRateRequestValidator : AbstractValidator<GetInt
     {
         RuleFor(t => t)
          .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Retention))
-         .WithErrorCode(90054);
+         .WithErrorCode(90056);
     }
 }

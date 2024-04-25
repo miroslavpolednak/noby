@@ -63,10 +63,12 @@ public sealed class ErrorCodeMapper
             { 90051, new("Platnost budoucí úrokové sazby v minulosti", "Požadované datum platnosti budoucí úrokové sazby je v minulosti.") },
             { 90052, new("Není povolen souběh požadavků Retence / Refixace.", "Není možné vytvořit nový požadavek, jelikož již existuje rozpracovaný požadavek z dřívějška.") },
             { 90053, new("Nelze podepsat elektronicky, protože je podepisováno na základě plné moci.") },
-            { 90054, new("Retence jsou zakázány") },
-            { 90055, new("Refixace jsou zakázány") },
-            { 90056, new("Mimořádná splátka je zakázaná") },
-            { 90057, new("Interní refinancování je zakázáno") }
+            { 90054, new("Soubor nelze stáhnout. Soubor neexistuje nebo je stále v procesu nahrávání do eArchivu, opakujte akci později.") },
+            { 90055, new("Neaktuální parametry mimořádné splátky")},
+            { 90056, new("Retence jsou zakázány") },
+            { 90057, new("Refixace jsou zakázány") },
+            { 90058, new("Mimořádná splátka je zakázaná") },
+            { 90059, new("Interní refinancování je zakázáno") }
         };
 
         Messages = messages.AsReadOnly();

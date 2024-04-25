@@ -15,8 +15,9 @@ internal sealed class SendMortgageResponseCodeHandler
         {
             CaseId = request.CaseId,
             ResponseCodeTypeId = request.ResponseCodeTypeId,
-            Data = responseCode.DataType switch 
-            { 
+            ResponseCodeCategory = DomainServices.OfferService.Contracts.ResponseCodeCategories.BusinessResponseCode,
+            Data = responseCode.DataType switch
+            {
                 DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date => request.DataDateTime!.Value.ToString("s"),
                 DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.BankCode => request.DataBankCode,
                 _ => request.DataString

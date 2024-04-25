@@ -9,6 +9,6 @@ public class LinkMortgageExtraPaymentRequestValidator: AbstractValidator<LinkMor
     {
         RuleFor(t => t)
          .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ExtraPayment))
-         .WithErrorCode(90056);
+         .WithErrorCode(90058);
     }
 }

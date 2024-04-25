@@ -4,10 +4,16 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 
+enum ResponseCodeCategories {
+	BusinessResponseCode = 0;
+	NewFixedRatePeriod = 1;
+}
+
 message CreateResponseCodeRequest {
 	int64 CaseId = 1;
 	int32 ResponseCodeTypeId = 2;
 	google.protobuf.StringValue Data = 3;
+	ResponseCodeCategories ResponseCodeCategory = 4;
 }
 
 message CreateResponseCodeResponse {
