@@ -9,7 +9,7 @@ internal sealed class GetMortgageRefixationRequestValidator : AbstractValidator<
     {
         RuleFor(t => t)
             .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Refixation))
-            .WithErrorCode(90055);
+            .WithErrorCode(90057);
     }
 
 }
