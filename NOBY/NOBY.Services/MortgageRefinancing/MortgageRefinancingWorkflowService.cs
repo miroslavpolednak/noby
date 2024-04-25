@@ -33,14 +33,7 @@ public sealed class MortgageRefinancingWorkflowService(
                 ?? throw new NobyValidationException(90043, $"ProccesId {processId} not found in list");
 
             // validace typu procesu
-            DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase requiredAmendment = refinancingType switch
-            {
-                RefinancingTypes.MortgageRetention => DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase.MortgageRetention,
-                RefinancingTypes.MortgageRefixation => DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase.MortgageRefixation,
-                RefinancingTypes.MortgageExtraPayment => DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase.MortgageExtraPayment,
-                _ => throw new NotImplementedException()
-            }; ;
-            if (process.AmendmentsCase != requiredAmendment)
+            if (process.AmendmentsCase != getRequiredAmendmentCase(refinancingType))
             {
                 throw new NobyValidationException(90032, $"ProcessTypeId!=3 or RefinancingType!={refinancingType}");
             }
@@ -80,6 +73,15 @@ public sealed class MortgageRefinancingWorkflowService(
 
         return result;
     }
+
+    private ProcessTask.AmendmentsOneofCase getRequiredAmendmentCase(RefinancingTypes refinancingType)
+        => refinancingType switch
+        {
+            RefinancingTypes.MortgageRetention => ProcessTask.AmendmentsOneofCase.MortgageRetention,
+            RefinancingTypes.MortgageRefixation => ProcessTask.AmendmentsOneofCase.MortgageRefixation,
+            RefinancingTypes.MortgageExtraPayment => ProcessTask.AmendmentsOneofCase.MortgageExtraPayment,
+            _ => throw new NotImplementedException()
+        };
 
     public Task<WorkflowTaskByTaskId.WorkflowProcessByProcessIdResult> GetProcessInfoByProcessId(long caseId, long processId, CancellationToken cancellationToken) => 
         _caseService.GetProcessByProcessId(caseId, processId, cancellationToken);
