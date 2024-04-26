@@ -23,14 +23,12 @@ internal sealed class CreateResponseCodeHandler(Database.OfferServiceDbContext _
             Data = request.Data,
         };
 
-        var responseCodes = await _codebookService.ResponseCodeTypes(cancellationToken);
-
         var caseIdAccountNumber = await _dbContext.CaseIdAccountNumbers.FirstOrDefaultAsync(c => c.CaseId == request.CaseId, cancellationToken)
                            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseIdNotFoundInKonsDb);
 
         var applicationEvents = request.ResponseCodeCategory switch
         {
-            ResponseCodeCategories.BusinessResponseCode => await CreateBussinesAppEvents(request, caseIdAccountNumber, cancellationToken),
+            ResponseCodeCategories.BusinessResponseCode => await CreateBusinessAppEvents(request, caseIdAccountNumber, cancellationToken),
             ResponseCodeCategories.NewFixedRatePeriod => CreateNewFixedRatePeriodAppEvents(request, caseIdAccountNumber),
             _ => throw new ArgumentException("Not supported ResponseCodeCategories")
         };
@@ -57,7 +55,7 @@ internal sealed class CreateResponseCodeHandler(Database.OfferServiceDbContext _
             };
     }
 
-    private async Task<List<ApplicationEvent>> CreateBussinesAppEvents(CreateResponseCodeRequest request, CaseIdAccountNumberKonstDb caseIdAccountNumber, CancellationToken cancellationToken)
+    private async Task<List<ApplicationEvent>> CreateBusinessAppEvents(CreateResponseCodeRequest request, CaseIdAccountNumberKonstDb caseIdAccountNumber, CancellationToken cancellationToken)
     {
         var responseCode = (await _codebookService.ResponseCodeTypes(cancellationToken))
            .First(t => t.Id == request.ResponseCodeTypeId);
