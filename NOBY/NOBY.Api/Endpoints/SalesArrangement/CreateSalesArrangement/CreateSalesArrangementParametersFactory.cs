@@ -35,6 +35,8 @@ internal sealed class CreateSalesArrangementParametersFactory
             SalesArrangementTypes.CustomerChange3602B => new CustomerChange3602BValidator(aggregate),
             SalesArrangementTypes.CustomerChange3602C => new CustomerChange3602CValidator(aggregate),
             SalesArrangementTypes.MortgageRetention => new RetentionValidator(aggregate),
+            SalesArrangementTypes.MortgageRefixation => new RefixationValidator(aggregate),
+            SalesArrangementTypes.MortgageExtraPayment => new ExtraPaymentValidator(aggregate),
             _ => throw new NotImplementedException($"Create Builder not implemented for SalesArrangementTypeId={salesArrangementTypeId}")
         };
     }

@@ -18,7 +18,8 @@ internal sealed class RetentionValidator
         var salesArrangements = await saService.GetSalesArrangementList(Request.CaseId, cancellationToken);
         if (salesArrangements
             .SalesArrangements
-            .Any(t => t.SalesArrangementTypeId == Request.SalesArrangementTypeId && t.State is not ((int)SalesArrangementStates.Finished) or (int)SalesArrangementStates.Cancelled))
+            .Any(t => t.SalesArrangementTypeId is (int)SalesArrangementTypes.MortgageRetention or (int)SalesArrangementTypes.MortgageRefixation && 
+                      t.State is not (int)SalesArrangementStates.Finished and not (int)SalesArrangementStates.Cancelled))
         {
             throw new NobyValidationException(90052);
         }

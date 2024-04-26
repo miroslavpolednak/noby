@@ -2506,6 +2506,12 @@
             </summary>
             <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest.IndividualPriceCommentLastVersion">
+            <summary>
+            Komentář k Cenové výjimce
+            </summary>
+            <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest.FirstName">
             <summary>
             Jméno
@@ -3339,16 +3345,6 @@
             Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.<br />
             Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.<br />
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.SignatureTypeDetailId">
-            <summary>
-            Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.SignatureDeadline">
-            <summary>
-            Nejzazší datum podpisu dokumentu
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.SignatureTypeDetailId">

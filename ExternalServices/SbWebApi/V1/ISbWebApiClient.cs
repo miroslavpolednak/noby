@@ -46,4 +46,5 @@ public interface ISbWebApiClient
     Task<string?> GenerateRetentionDocument(GenerateRetentionDocumentRequest request, CancellationToken cancellationToken);
     Task<string?> GenerateHedgeAppendixDocument(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken = default);
     Task<string?> GenerateInterestRateNotificationDocument(GenerateInterestRateNotificationDocumentRequest documentRequest, CancellationToken cancellationToken = default);
+    Task<ICollection<string>?> GenerateCalculationDocuments(GenerateCalculationDocumentsRequest request, CancellationToken cancellationToken = default);
 }

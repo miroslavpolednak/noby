@@ -77,7 +77,12 @@ internal sealed class CreateSalesArrangementHandler
                 case CreateSalesArrangementRequest.DataOneofCase.Refixation:
                     data.Refixation = request.Refixation;
                     break;
+
+                case CreateSalesArrangementRequest.DataOneofCase.ExtraPayment:
+                    data.ExtraPayment = request.ExtraPayment;
+                    break;
             }
+
             var updateMediatrRequest = new UpdateSalesArrangementParametersRequest(data);
 
             await _mediator.Send(updateMediatrRequest, cancellation);
@@ -111,12 +116,12 @@ internal sealed class CreateSalesArrangementHandler
             SalesArrangementTypes.CustomerChange3602C when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602C => true,
             SalesArrangementTypes.MortgageRetention when dataCase == CreateSalesArrangementRequest.DataOneofCase.Retention => true,
             SalesArrangementTypes.MortgageRefixation when dataCase == CreateSalesArrangementRequest.DataOneofCase.Refixation => true,
+            SalesArrangementTypes.MortgageExtraPayment when dataCase == CreateSalesArrangementRequest.DataOneofCase.ExtraPayment => true,
             _ => throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.DataObjectIsNotValid, salesArrangementTypeId)
         };
 
     private readonly TimeProvider _timeProvider;
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly OfferService.Clients.v1.IOfferServiceClient _offerService;
     private readonly CaseService.Clients.v1.ICaseServiceClient _caseService;
     private readonly Database.SalesArrangementServiceDbContext _dbContext;
     private readonly ILogger<CreateSalesArrangementHandler> _logger;
@@ -128,7 +133,6 @@ internal sealed class CreateSalesArrangementHandler
         IRollbackBag bag,
         IUserServiceClient userService,
         IMediator mediator,
-        OfferService.Clients.v1.IOfferServiceClient offerService,
         CaseService.Clients.v1.ICaseServiceClient caseService,
         CodebookService.Clients.ICodebookServiceClient codebookService,
         Database.SalesArrangementServiceDbContext dbContext,
@@ -138,7 +142,6 @@ internal sealed class CreateSalesArrangementHandler
         _bag = bag;
         _userService = userService;
         _mediator = mediator;
-        _offerService = offerService;
         _caseService = caseService;
         _codebookService = codebookService;
         _dbContext = dbContext;
