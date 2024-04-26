@@ -29,6 +29,7 @@ internal sealed class CommunicateMortgageRefixationHandler : IRequestHandler<Com
         {
             var updateOfferRequest = new UpdateOfferRequest
             {
+                OfferId = offer.Data.OfferId,
                 ValidTo = new[] { DateTime.UtcNow.AddDays(45), (DateTime)offer.MortgageRefixation.BasicParameters.FixedRateValidTo }.Min(),
                 Flags = (offer.Data.Flags & (int)OfferFlagTypes.Communicated) == 0 ? offer.Data.Flags | (int)OfferFlagTypes.Communicated : null
             };
