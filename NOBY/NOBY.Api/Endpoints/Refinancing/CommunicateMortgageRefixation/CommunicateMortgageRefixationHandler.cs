@@ -1,8 +1,6 @@
 ﻿using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using static IdentityModel.OidcConstants;
-using System.Threading;
 using System.Globalization;
 
 namespace NOBY.Api.Endpoints.Refinancing.CommunicateMortgageRefixation;

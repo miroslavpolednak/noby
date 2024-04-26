@@ -11,9 +11,5 @@ internal sealed class CreateResponseCodeRequestValidator
         RuleFor(t => t.CaseId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.CaseIdIsEmpty);
-
-        RuleFor(t => t.ResponseCodeTypeId)
-            .GreaterThan(0)
-            .WithErrorCode(ErrorCodeMapper.ResponseCodeTypeIdIsEmpty);
     }
 }

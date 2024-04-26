@@ -10,7 +10,7 @@ public sealed class RefinancingResponseCode
     /// <summary>
     /// Typ response k=odu
     /// </summary>
-    public int ResponseCodeTypeId { get; set; }
+    public int? ResponseCodeTypeId { get; set; }
 
     public DateTime? DataDateTime { get; set; }
 
