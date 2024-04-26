@@ -54,7 +54,15 @@ internal sealed class MortgageExtraPaymentDataMapper
             NewMaturityDate = result.NewMaturityDate,
             NewPaymentAmount = result.NewPaymentAmount,
             OtherUnpaidFees = result.OtherUnpaidFees,
-            PrincipalAmount = result.PrincipalAmount
+            PrincipalAmount = result.PrincipalAmount,
+            SanctionFreeAmount = result.SanctionFreeAmount,
+            SanctionFreePeriodTo = result.SanctionFreePeriodTo,
+            SanctionFreePeriodFrom = result.SanctionFreePeriodFrom,
+            FeeAmountContracted = result.FeeAmountContracted,
+            FeeCalculationBase = result.FeeCalculationBase,
+            FeeTypeId = result.FeeTypeId,
+            FixedRateValidFrom = result.FixedRateValidFrom,
+            FixedRateValidTo = result.FixedRateValidTo
         };
     }
 
@@ -92,7 +100,15 @@ internal sealed class MortgageExtraPaymentDataMapper
             NewMaturityDate = output.NewMaturityDate,
             NewPaymentAmount = output.NewPaymentAmount,
             OtherUnpaidFees = output.OtherUnpaidFees,
-            PrincipalAmount = output.PrincipalAmount
+            PrincipalAmount = output.PrincipalAmount,
+            SanctionFreeAmount = output.SanctionFreeAmount,
+            SanctionFreePeriodFrom = output.SanctionFreePeriodFrom,
+            SanctionFreePeriodTo = output.SanctionFreePeriodTo,
+            FeeAmountContracted = output.FeeAmountContracted,
+            FeeCalculationBase = output.FeeCalculationBase,
+            FeeTypeId = output.FeeTypeId,
+            FixedRateValidFrom = output.FixedRateValidFrom,
+            FixedRateValidTo = output.FixedRateValidTo
         };
     }
 }

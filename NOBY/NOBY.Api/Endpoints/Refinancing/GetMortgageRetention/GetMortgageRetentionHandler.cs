@@ -24,15 +24,22 @@ internal sealed class GetMortgageRetentionHandler(
             IndividualPriceCommentLastVersion = retentionData.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion,
             Comment = retentionData.SalesArrangement?.Retention?.Comment,
             SignatureTypeDetailId = retentionData.SalesArrangement?.Retention?.SignatureTypeDetailId,
-            DocumentId = retentionData.Process!.MortgageRetention.DocumentId,
-            DocumentEACode = retentionData.Process.MortgageRetention.DocumentEACode,
             // doplnit data simulace z procesu (pozdeji mozna prepsat offerou)
-            InterestRate = (decimal?)retentionData.Process.MortgageRetention.LoanInterestRate ?? 0M,
+            InterestRate = (decimal?)retentionData.Process!.MortgageRetention.LoanInterestRate ?? 0M,
             LoanPaymentAmount = (decimal?)retentionData.Process.MortgageRetention.LoanPaymentAmount ?? 0M,
             LoanPaymentAmountDiscounted = retentionData.Process.MortgageRetention.LoanPaymentAmountFinal,
             FeeAmount = (decimal?)retentionData.Process.MortgageRetention.FeeSum ?? 0M,
             IsPriceExceptionActive = retentionData.ActivePriceException is not null
         };
+
+        if (!string.IsNullOrEmpty(retentionData.Process.MortgageRetention?.DocumentId))
+        {
+            response.Document = new()
+            {
+                DocumentId = retentionData.Process.MortgageRetention.DocumentId,
+                DocumentEACode = retentionData.Process.MortgageRetention.DocumentEACode ?? 0
+            };
+        }
 
         // aktivni IC
         if (retentionData.ActivePriceException is not null)

@@ -46,9 +46,10 @@ public sealed class GetMortgageRetentionResponse
     /// </summary>
     public decimal? LoanPaymentAmountDiscounted { get; set; }
 
-    public string? DocumentId { get; set; }
-
-    public int? DocumentEACode { get; set; }
+    /// <summary>
+    /// Dokumentu refinancování
+    /// </summary>
+    public Dto.Refinancing.RefinancingDocument? Document { get; set; }
 
     public int? SignatureTypeDetailId { get; set; }
 

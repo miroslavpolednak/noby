@@ -14,4 +14,12 @@ public sealed class MortgageExtraPaymentResult
     public bool IsPaymentReduced { get; set; }
     public DateTime NewMaturityDate { get; set; }
     public decimal NewPaymentAmount { get; set; }
+    public int FeeTypeId { get; set; }
+    public decimal FeeCalculationBase { get; set; }
+    public decimal FeeAmountContracted { get; set; }
+    public DateTime FixedRateValidFrom { get; set; }
+    public DateTime FixedRateValidTo { get; set; }
+    public DateTime SanctionFreePeriodFrom { get; set; }
+    public DateTime SanctionFreePeriodTo { get; set; }
+    public decimal SanctionFreeAmount { get; set; }
 }
