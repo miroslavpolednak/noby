@@ -30,6 +30,14 @@ message MortgageExtraPaymentSimulationResults {
 	bool IsPaymentReduced = 10;
 	cis.types.GrpcDate NewMaturityDate = 11;
 	cis.types.GrpcDecimal NewPaymentAmount = 12;
+	int32 FeeTypeId = 13;
+	cis.types.GrpcDecimal FeeCalculationBase = 14;
+	cis.types.GrpcDecimal FeeAmountContracted = 15;
+	cis.types.GrpcDate FixedRateValidFrom = 16;
+	cis.types.GrpcDate FixedRateValidTo = 17;
+	cis.types.GrpcDate SanctionFreePeriodFrom = 18;
+	cis.types.GrpcDate SanctionFreePeriodTo = 19;
+	cis.types.GrpcDecimal SanctionFreeAmount = 20;
 }
 
 message MortgageExtraPaymentFullData {

@@ -81,6 +81,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobySkipCaseStateAndProductSAValidation]
+    [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgageRetention.SimulateMortgageRetentionResponse), StatusCodes.Status200OK)]

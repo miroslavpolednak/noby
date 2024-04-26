@@ -68,7 +68,8 @@ public sealed class ErrorCodeMapper
             { 90056, new("Retence jsou zakázány") },
             { 90057, new("Refixace jsou zakázány") },
             { 90058, new("Mimořádná splátka je zakázaná") },
-            { 90059, new("Interní refinancování je zakázáno") }
+            { 90059, new("Interní refinancování je zakázáno") },
+            { 90060, new("Sleva na úrokové sazbě je vyšší než úroková sazba.") }
         };
 
         Messages = messages.AsReadOnly();

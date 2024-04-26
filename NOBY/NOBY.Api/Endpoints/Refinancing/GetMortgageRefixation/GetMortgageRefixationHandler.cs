@@ -1,5 +1,4 @@
-﻿using DomainServices.CaseService.Clients.v1;
-using DomainServices.OfferService.Clients.v1;
+﻿using DomainServices.OfferService.Clients.v1;
 using NOBY.Services.MortgageRefinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;

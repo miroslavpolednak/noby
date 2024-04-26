@@ -1,7 +1,6 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
-using NOBY.Dto.Refinancing;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation;
 
@@ -34,6 +33,12 @@ internal sealed class SimulateMortgageRefixationHandler(
 
         // ziskat int.rate
         var interestRate = await _offerService.GetInterestRate(request.CaseId, validFrom, cancellationToken);
+
+        // validace rate
+        if (request.InterestRateDiscount.HasValue && (interestRate - request.InterestRateDiscount.Value) >= 0.1M)
+        {
+            throw new NobyValidationException(90060);
+        }
 
         var dsRequest = new DomainServices.OfferService.Contracts.SimulateMortgageRefixationRequest
         {

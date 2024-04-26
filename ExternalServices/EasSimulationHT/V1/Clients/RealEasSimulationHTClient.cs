@@ -52,7 +52,15 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
             NewMaturityDate = result.dataProDopis.new_maturity_date,
             NewPaymentAmount = result.dataProDopis.new_payment_amount,
             OtherUnpaidFees = result.dataProDopis.other_unpaid_fees,
-            PrincipalAmount = result.dataProDopis.principal_amount
+            PrincipalAmount = result.dataProDopis.principal_amount,
+            //FeeTypeId = result.vysledky.typPokuty,
+            //FeeCalculationBase = result.vysledky.zakladProVypocetPokuty,
+            //FeeAmountContracted = result.vysledky.smluvniPokuty,
+            //FixedRateValidFrom = result.vysledky.obdobiFixaceOd,
+            //FixedRateValidTo = result.vysledky.obdobiFixaceDo,
+            //SanctionFreePeriodFrom = result.vysledky.obdobiVyrociOd,
+            //SanctionFreePeriodTo = result.vysledky.obdobiVyrociDo,
+            //SanctionFreeAmount = result.vysledky.castkaBezPoplatkuVeVyroci
         };
     }
 

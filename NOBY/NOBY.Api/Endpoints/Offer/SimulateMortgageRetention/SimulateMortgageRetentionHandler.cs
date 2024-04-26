@@ -13,6 +13,12 @@ internal sealed class SimulateMortgageRetentionHandler(
         // ziskat int.rate
         var interestRate = await _offerService.GetInterestRate(request.CaseId, request.InterestRateValidFrom, cancellationToken);
         
+        // validace rate
+        if (request.InterestRateDiscount.HasValue && (interestRate - request.InterestRateDiscount.Value) >= 0.1M)
+        {
+            throw new NobyValidationException(90060);
+        }
+
         var dsRequest = new DomainServices.OfferService.Contracts.SimulateMortgageRetentionRequest
         {
             CaseId = request.CaseId,
