@@ -1,8 +1,17 @@
-﻿namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
+﻿using NOBY.Dto.Refinancing;
+
+namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 
 public sealed class GetMortgageRetentionResponse
     : NOBY.Dto.Refinancing.BaseRefinancingDetailResponse
 {
+    public string? Comment { get; set; }
+
+    /// <summary>
+    /// Seznam odpovědních kódů
+    /// </summary>
+    public List<RefinancingResponseCode>? ResponseCodes { get; set; }
+
     /// <summary>
     /// Výše poplatku
     /// </summary>

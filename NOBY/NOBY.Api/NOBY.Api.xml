@@ -3427,9 +3427,19 @@
             Upravená výše poplatku
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.ResponseCodes">
+            <summary>
+            Seznam odpovědních kódů
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.Offers">
             <summary>
             Seznam nabídek pro daný proces
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.InterestRateDiscount">
+            <summary>
+            Sleva sazby z IC
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.CommunicatedOffersValidTo">
@@ -3440,6 +3450,11 @@
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.LegalNoticeGeneratedDate">
             <summary>
             Datum odeslání zákonných oznámení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.ResponseCodes">
+            <summary>
+            Seznam odpovědních kódů
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.FeeAmount">

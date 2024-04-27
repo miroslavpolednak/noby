@@ -582,12 +582,6 @@
             Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.ResponseCodes">
-            <summary>
-            Seznam odpovědních kódů
-            </summary>
-            !!!!! nejsou v extra payment
-        </member>
         <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.IsPriceExceptionActive">
             <summary>
             Existuje workflow úkol cenové vyjímky

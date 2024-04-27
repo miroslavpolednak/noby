@@ -99,7 +99,12 @@ internal static class SalesArrangementParametersMapperExtensions
         {
             IndividualPriceCommentLastVersion = extraPayment.IndividualPriceCommentLastVersion,
             HandoverTypeDetailId = extraPayment.HandoverTypeDetailId,
-            ClientKBId = extraPayment.ClientKBId
+            Client = !extraPayment.ClientKBId.HasValue ? null : new SalesArrangementParametersExtraPayment.Types.SalesArrangementParametersExtraPaymentClient
+            {
+                KBId = extraPayment.ClientKBId.Value,
+                FirstName = extraPayment.ClientFirstName ?? "",
+                LastName = extraPayment.ClientLastName ?? ""
+            }
         };
     }
 
@@ -109,7 +114,9 @@ internal static class SalesArrangementParametersMapperExtensions
         {
             IndividualPriceCommentLastVersion = extraPayment.IndividualPriceCommentLastVersion,
             HandoverTypeDetailId = extraPayment.HandoverTypeDetailId,
-            ClientKBId = extraPayment.ClientKBId
+            ClientFirstName = extraPayment.Client?.FirstName,
+            ClientLastName = extraPayment.Client?.LastName,
+            ClientKBId = extraPayment.Client?.KBId
         };
     }
 
