@@ -8,21 +8,14 @@ using System.Text.Json;
 namespace CIS.InternalServices.ServiceDiscovery.Api.Endpoints.GlobalHealtCheck;
 
 [Core.Attributes.ScopedService, Core.Attributes.SelfService]
-internal sealed class GlobalHealthCheckHandler
+internal sealed class GlobalHealthCheckHandler(
+    ServicesMemoryCache _cache, 
+    Core.Configuration.ICisEnvironmentConfiguration _environmentConfiguration)
 {
     private static JsonWriterOptions _jsonWriterOptions = new JsonWriterOptions { Indented = true };
     private const string _healthyValue = "Healthy";
     private const string _unhealthyValue = "Unhealthy";
     private const int _deadlineSeconds = 2;
-
-    private readonly ServicesMemoryCache _cache;
-    private readonly Core.Configuration.ICisEnvironmentConfiguration _environmentConfiguration;
-
-    public GlobalHealthCheckHandler(ServicesMemoryCache cache, Core.Configuration.ICisEnvironmentConfiguration environmentConfiguration)
-    {
-        _environmentConfiguration = environmentConfiguration;
-        _cache = cache;
-    }
 
     public async Task<IResult> Handle(CancellationToken cancellationToken)
     {

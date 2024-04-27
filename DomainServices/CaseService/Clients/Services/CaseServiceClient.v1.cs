@@ -4,7 +4,7 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Clients.v1;
 
-internal sealed class CaseServiceClient
+internal sealed class CaseServiceClient(Contracts.v1.CaseService.CaseServiceClient _service)
     : ICaseServiceClient
 {
     public async Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
@@ -198,9 +198,4 @@ internal sealed class CaseServiceClient
     private long? _cacheValidateCaseIdResponseId;
     private ValidateCaseIdResponse? _cacheValidateCaseIdResponse;
     private Case? _cacheGetCaseDetail;
-
-    private readonly Contracts.v1.CaseService.CaseServiceClient _service;
-
-    public CaseServiceClient(Contracts.v1.CaseService.CaseServiceClient service)
-        => _service = service;
 }

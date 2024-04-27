@@ -4,8 +4,8 @@ using Grpc.Core;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Endpoints;
 
-internal sealed class TaskSchedulingService
-    : Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase
+internal sealed class TaskSchedulingService(IMediator _mediator)
+        : Contracts.v1.TaskSchedulingService.TaskSchedulingServiceBase
 {
     public override async Task<GetJobsResponse> GetJobs(GetJobsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
@@ -24,8 +24,4 @@ internal sealed class TaskSchedulingService
 
     public override async Task<GetJobStatusesResponse> GetJobStatuses(GetJobStatusesRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
-
-    private readonly IMediator _mediator;
-    public TaskSchedulingService(IMediator mediator)
-        => _mediator = mediator;
 }

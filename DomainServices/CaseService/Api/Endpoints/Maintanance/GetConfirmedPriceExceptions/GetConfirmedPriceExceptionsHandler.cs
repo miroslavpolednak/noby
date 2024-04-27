@@ -3,7 +3,7 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.Maintanance.GetConfirmedPriceExceptions;
 
-internal sealed class GetConfirmedPriceExceptionsHandler
+internal sealed class GetConfirmedPriceExceptionsHandler(CaseServiceDbContext _dbContext)
     : IRequestHandler<GetConfirmedPriceExceptionsRequest, GetConfirmedPriceExceptionsResponse>
 {
     public async Task<GetConfirmedPriceExceptionsResponse> Handle(GetConfirmedPriceExceptionsRequest request, CancellationToken cancellationToken)
@@ -18,12 +18,5 @@ internal sealed class GetConfirmedPriceExceptionsHandler
         var response = new GetConfirmedPriceExceptionsResponse();
         response.CaseId.AddRange(list);
         return response;
-    }
-
-    private readonly CaseServiceDbContext _dbContext;
-
-    public GetConfirmedPriceExceptionsHandler(CaseServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }
