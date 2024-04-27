@@ -3,8 +3,10 @@ using DomainServices.ProductService.Clients;
 
 namespace NOBY.Api.Endpoints.Cases.GetCovenants;
 
-internal sealed class GetCovenantsHandler
-    : IRequestHandler<GetCovenantsRequest, GetCovenantsResponse>
+internal sealed class GetCovenantsHandler(
+    IProductServiceClient _productService, 
+    ICodebookServiceClient _codebookService)
+        : IRequestHandler<GetCovenantsRequest, GetCovenantsResponse>
 {
     public async Task<GetCovenantsResponse> Handle(GetCovenantsRequest request, CancellationToken cancellationToken)
     {
@@ -51,14 +53,5 @@ internal sealed class GetCovenantsHandler
             Order = t.Order,
             OrderLetter = t.OrderLetter
         };
-    }
-
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly IProductServiceClient _productService;
-
-    public GetCovenantsHandler(IProductServiceClient productService, ICodebookServiceClient codebookService)
-    {
-        _codebookService = codebookService;
-        _productService = productService;
     }
 }

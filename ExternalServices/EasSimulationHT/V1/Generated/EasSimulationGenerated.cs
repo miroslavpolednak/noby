@@ -7299,6 +7299,22 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
         
         private decimal poplatekAdministrativniField;
         
+        private int typPokutyField;
+        
+        private decimal zakladProVypocetPokutyField;
+        
+        private decimal smluvniPokutyField;
+        
+        private System.DateTime obdobiFixaceOdField;
+        
+        private System.DateTime obdobiFixaceDoField;
+        
+        private System.DateTime obdobiVyrociOdField;
+        
+        private System.DateTime obdobiVyrociDoField;
+        
+        private decimal castkaBezPoplatkuVeVyrociField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public decimal poplatekZaMimSplatku
@@ -7324,6 +7340,118 @@ namespace ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper
             set
             {
                 this.poplatekAdministrativniField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public int typPokuty
+        {
+            get
+            {
+                return this.typPokutyField;
+            }
+            set
+            {
+                this.typPokutyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public decimal zakladProVypocetPokuty
+        {
+            get
+            {
+                return this.zakladProVypocetPokutyField;
+            }
+            set
+            {
+                this.zakladProVypocetPokutyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public decimal smluvniPokuty
+        {
+            get
+            {
+                return this.smluvniPokutyField;
+            }
+            set
+            {
+                this.smluvniPokutyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public System.DateTime obdobiFixaceOd
+        {
+            get
+            {
+                return this.obdobiFixaceOdField;
+            }
+            set
+            {
+                this.obdobiFixaceOdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public System.DateTime obdobiFixaceDo
+        {
+            get
+            {
+                return this.obdobiFixaceDoField;
+            }
+            set
+            {
+                this.obdobiFixaceDoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public System.DateTime obdobiVyrociOd
+        {
+            get
+            {
+                return this.obdobiVyrociOdField;
+            }
+            set
+            {
+                this.obdobiVyrociOdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public System.DateTime obdobiVyrociDo
+        {
+            get
+            {
+                return this.obdobiVyrociDoField;
+            }
+            set
+            {
+                this.obdobiVyrociDoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        public decimal castkaBezPoplatkuVeVyroci
+        {
+            get
+            {
+                return this.castkaBezPoplatkuVeVyrociField;
+            }
+            set
+            {
+                this.castkaBezPoplatkuVeVyrociField = value;
             }
         }
     }

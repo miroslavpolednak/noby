@@ -14,7 +14,17 @@ using PaymentAccount = NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount;
 
 namespace NOBY.Api.Endpoints.Cases.IdentifyCase;
 
-internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCaseRequest, IdentifyCaseResponse>
+internal sealed partial class IdentifyCaseHandler(
+    Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService _createCaseFromExternalSources,
+    ICurrentUserAccessor _currentUser,
+    IMediator _mediator,
+    IProductServiceClient _productServiceClient,
+    ICaseServiceClient _caseServiceClient,
+    IDocumentArchiveServiceClient _documentArchiveServiceClient,
+    IDocumentOnSAServiceClient _documentOnSAService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICodebookServiceClient _codebookService) 
+    : IRequestHandler<IdentifyCaseRequest, IdentifyCaseResponse>
 {
     public async Task<IdentifyCaseResponse> Handle(IdentifyCaseRequest request, CancellationToken cancellationToken)
     {
@@ -119,7 +129,7 @@ internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCase
 
             if (response.TaskDetail?.Signing?.FormId == formId)
             {
-                taskDetails.Add(task.TaskId, new() { response.TaskDetail });
+                taskDetails.Add(task.TaskId, [response.TaskDetail]);
             }
         }
 
@@ -205,36 +215,4 @@ internal sealed partial class IdentifyCaseHandler : IRequestHandler<IdentifyCase
 
     [GeneratedRegex(@"^[0-9]+$")]
     private static partial Regex handlerByFormIdRegex();
-
-    private readonly IMediator _mediator;
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly IProductServiceClient _productServiceClient;
-    private readonly ICaseServiceClient _caseServiceClient;
-    private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService _createCaseFromExternalSources;
-
-    public IdentifyCaseHandler(
-        Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService createCaseFromExternalSources,
-        ICurrentUserAccessor currentUser,
-        IMediator mediator,
-        IProductServiceClient productServiceClient,
-        ICaseServiceClient caseServiceClient,
-        IDocumentArchiveServiceClient documentArchiveServiceClient,
-        IDocumentOnSAServiceClient documentOnSAService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICodebookServiceClient codebookService)
-    {
-        _createCaseFromExternalSources = createCaseFromExternalSources;
-        _currentUser = currentUser;
-        _mediator = mediator;
-        _productServiceClient = productServiceClient;
-        _caseServiceClient = caseServiceClient;
-        _documentArchiveServiceClient = documentArchiveServiceClient;
-        _documentOnSAService = documentOnSAService;
-        _salesArrangementService = salesArrangementService;
-        _codebookService = codebookService;
-    }
 }

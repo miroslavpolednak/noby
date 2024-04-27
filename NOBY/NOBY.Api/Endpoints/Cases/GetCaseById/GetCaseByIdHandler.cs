@@ -1,7 +1,11 @@
 ﻿namespace NOBY.Api.Endpoints.Cases.GetCaseById;
 
-internal sealed class GetCaseByIdHandler
-    : IRequestHandler<GetCaseByIdRequest, SharedDto.CaseModel>
+internal sealed class GetCaseByIdHandler(
+    Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService _createCaseFromExternalSources,
+    CasesModelConverter _converter,
+    DomainServices.UserService.Clients.IUserServiceClient _userService,
+    DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService)
+        : IRequestHandler<GetCaseByIdRequest, SharedDto.CaseModel>
 {
     public async Task<SharedDto.CaseModel> Handle(GetCaseByIdRequest request, CancellationToken cancellationToken)
     {
@@ -29,22 +33,5 @@ internal sealed class GetCaseByIdHandler
         };
 
         return model;
-    }
-
-    private readonly Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService _createCaseFromExternalSources;
-    private readonly CasesModelConverter _converter;
-    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
-    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
-
-    public GetCaseByIdHandler(
-        Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService createCaseFromExternalSources,
-        CasesModelConverter converter,
-        DomainServices.UserService.Clients.IUserServiceClient userService,
-        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService)
-    {
-        _createCaseFromExternalSources = createCaseFromExternalSources;
-        _userService = userService;
-        _converter = converter;
-        _caseService = caseService;
     }
 }

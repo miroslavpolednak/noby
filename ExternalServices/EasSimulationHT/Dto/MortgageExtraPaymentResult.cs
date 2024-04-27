@@ -17,9 +17,9 @@ public sealed class MortgageExtraPaymentResult
     public int FeeTypeId { get; set; }
     public decimal FeeCalculationBase { get; set; }
     public decimal FeeAmountContracted { get; set; }
-    public DateTime FixedRateValidFrom { get; set; }
-    public DateTime FixedRateValidTo { get; set; }
-    public DateTime SanctionFreePeriodFrom { get; set; }
-    public DateTime SanctionFreePeriodTo { get; set; }
+    public DateTime FixedRateSanctionFreePeriodFrom { get; set; }
+    public DateTime FixedRateSanctionFreePeriodTo { get; set; }
+    public DateTime AnnualSanctionFreePeriodFrom { get; set; }
+    public DateTime AnnualSanctionFreePeriodTo { get; set; }
     public decimal SanctionFreeAmount { get; set; }
 }

@@ -18,7 +18,18 @@ using NOBY.Services.DocumentHelper;
 namespace NOBY.Api.Endpoints.Cases.CancelCase;
 
 #pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
-internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, CancelCaseResponse>
+internal sealed class CancelCaseHandler(
+    TimeProvider _dateTime,
+    ICodebookServiceClient _codebookService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICaseServiceClient _caseService,
+    ICustomerOnSAServiceClient _customerOnSaService,
+    DocumentGenerator _documentGenerator,
+    IDocumentArchiveServiceClient _documentArchiveService,
+    ICurrentUserAccessor _currentUserAccessor,
+    IDocumentHelperService _documentHelper,
+    IUserServiceClient _userService) 
+    : IRequestHandler<CancelCaseRequest, CancelCaseResponse>
 {
     const DocumentTypes _documentType = DocumentTypes.ODSTOUP;
     
@@ -96,40 +107,5 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
     {
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
         return documentTypes.First(t => t.Id == documentType.ToByte());
-    }
-
-    private readonly TimeProvider _dateTime;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly DocumentGenerator _documentGenerator;
-    private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IDocumentHelperService _documentHelper;
-    private readonly IUserServiceClient _userService;
-
-    public CancelCaseHandler(
-        TimeProvider dateTime,
-        ICodebookServiceClient codebookService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICaseServiceClient caseService,
-        ICustomerOnSAServiceClient customerOnSaService,
-        DocumentGenerator documentGenerator,
-        IDocumentArchiveServiceClient documentArchiveService,
-        ICurrentUserAccessor currentUserAccessor,
-        IDocumentHelperService documentHelper,
-        IUserServiceClient userService)
-    {
-        _dateTime = dateTime;
-        _codebookService = codebookService;
-        _salesArrangementService = salesArrangementService;
-        _caseService = caseService;
-        _customerOnSaService = customerOnSaService;
-        _documentGenerator = documentGenerator;
-        _documentArchiveService = documentArchiveService;
-        _currentUserAccessor = currentUserAccessor;
-        _documentHelper = documentHelper;
-        _userService = userService;
     }
 }

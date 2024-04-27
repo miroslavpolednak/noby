@@ -29,6 +29,7 @@ public class BaseRefinancingDetailResponse
     /// <summary>
     /// Seznam odpovědních kódů
     /// </summary>
+    /// !!!!! nejsou v extra payment
     public List<RefinancingResponseCode>? ResponseCodes { get; set; }
 
     public int RefinancingStateId { get; set; }

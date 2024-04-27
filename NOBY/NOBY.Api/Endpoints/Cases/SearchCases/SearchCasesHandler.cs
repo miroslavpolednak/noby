@@ -5,8 +5,11 @@ using CIS.Infrastructure.WebApi.Types;
 namespace NOBY.Api.Endpoints.Cases.SearchCases;
 
 #pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
-internal sealed class SearchCasesHandler
-    : IRequestHandler<SearchCasesRequest, SearchCasesResponse>
+internal sealed class SearchCasesHandler(
+    ICurrentUserAccessor _userAccessor,
+    CasesModelConverter _converter,
+    DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService)
+        : IRequestHandler<SearchCasesRequest, SearchCasesResponse>
 {
     public async Task<SearchCasesResponse> Handle(SearchCasesRequest request, CancellationToken cancellationToken)
     {
@@ -38,31 +41,17 @@ internal sealed class SearchCasesHandler
     static List<int>? getStatesFilter(int? filterId)
         => filterId switch
         {
-            1 => new List<int>() { 1, 2, 3, 4, 5, 8, 9 },
-            2 => new List<int>() { 1, 2, 8 },
-            3 => new List<int>() { 3 },
-            4 => new List<int>() { 4 },
-            5 => new List<int>() { 5 },
+            1 => [1, 2, 3, 4, 5, 8, 9],
+            2 => [1, 2, 8],
+            3 => [3],
+            4 => [4],
+            5 => [5],
             _ => throw new NotImplementedException($"Filter {filterId} is not implemented")
         };
 
-    static List<Paginable.MapperField> sortingMapper = new()
-    {
+    static readonly List<Paginable.MapperField> sortingMapper =
+    [
         new ("stateUpdated", "StateUpdatedOn"),
         new ("customerName", "Name")
-    };
-
-    private readonly ICurrentUserAccessor _userAccessor;
-    private readonly CasesModelConverter _converter;
-    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
-
-    public SearchCasesHandler(
-        ICurrentUserAccessor userAccessor,
-        CasesModelConverter converter,
-        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService)
-    {
-        _converter = converter;
-        _userAccessor = userAccessor;
-        _caseService = caseService;
-    }
+    ];
 }

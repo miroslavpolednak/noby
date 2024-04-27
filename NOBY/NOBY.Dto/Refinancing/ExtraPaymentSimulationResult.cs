@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Dto.Refinancing;
 
-public class BaseExtraPaymentSimulationResult
+public sealed class ExtraPaymentSimulationResult
 {
     /// <summary>
     /// Typ mimořádné splátky
@@ -80,22 +80,22 @@ public class BaseExtraPaymentSimulationResult
     /// <summary>
     /// Období k fixaci od
     /// </summary>
-    public DateTime FixedRateValidFrom { get; set; }
+    public DateTime FixedRateSanctionFreePeriodFrom { get; set; }
 
     /// <summary>
     /// Období k fixaci do
     /// </summary>
-    public DateTime FixedRateValidTo { get; set; }
+    public DateTime FixedRateSanctionFreePeriodTo { get; set; }
 
     /// <summary>
     /// Období bez sankce od
     /// </summary>
-    public DateTime SanctionFreePeriodFrom { get; set; }
+    public DateTime AnnualSanctionFreePeriodFrom { get; set; }
 
     /// <summary>
     /// Období bez sankce do
     /// </summary>
-    public DateTime SanctionFreePeriodTo { get; set; }
+    public DateTime AnnualSanctionFreePeriodTo { get; set; }
 
     /// <summary>
     /// Částka k období bez sankce

@@ -56,13 +56,13 @@ internal sealed class MortgageExtraPaymentDataMapper
             OtherUnpaidFees = result.OtherUnpaidFees,
             PrincipalAmount = result.PrincipalAmount,
             SanctionFreeAmount = result.SanctionFreeAmount,
-            SanctionFreePeriodTo = result.SanctionFreePeriodTo,
-            SanctionFreePeriodFrom = result.SanctionFreePeriodFrom,
+            FixedRateSanctionFreePeriodFrom = result.FixedRateSanctionFreePeriodFrom,
+            FixedRateSanctionFreePeriodTo = result.FixedRateSanctionFreePeriodTo,
             FeeAmountContracted = result.FeeAmountContracted,
             FeeCalculationBase = result.FeeCalculationBase,
             FeeTypeId = result.FeeTypeId,
-            FixedRateValidFrom = result.FixedRateValidFrom,
-            FixedRateValidTo = result.FixedRateValidTo
+            AnnualSanctionFreePeriodFrom = result.AnnualSanctionFreePeriodFrom,
+            AnnualSanctionFreePeriodTo = result.AnnualSanctionFreePeriodTo
         };
     }
 
@@ -102,13 +102,13 @@ internal sealed class MortgageExtraPaymentDataMapper
             OtherUnpaidFees = output.OtherUnpaidFees,
             PrincipalAmount = output.PrincipalAmount,
             SanctionFreeAmount = output.SanctionFreeAmount,
-            SanctionFreePeriodFrom = output.SanctionFreePeriodFrom,
-            SanctionFreePeriodTo = output.SanctionFreePeriodTo,
+            FixedRateSanctionFreePeriodFrom = output.FixedRateSanctionFreePeriodFrom,
+            FixedRateSanctionFreePeriodTo = output.FixedRateSanctionFreePeriodTo,
             FeeAmountContracted = output.FeeAmountContracted,
             FeeCalculationBase = output.FeeCalculationBase,
             FeeTypeId = output.FeeTypeId,
-            FixedRateValidFrom = output.FixedRateValidFrom,
-            FixedRateValidTo = output.FixedRateValidTo
+            AnnualSanctionFreePeriodFrom = output.AnnualSanctionFreePeriodFrom,
+            AnnualSanctionFreePeriodTo = output.AnnualSanctionFreePeriodTo
         };
     }
 }

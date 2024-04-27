@@ -2,8 +2,8 @@
 
 namespace NOBY.Api.Endpoints.Cases.GetCovenant;
 
-internal sealed class GetCovenantHandler
-    : IRequestHandler<GetCovenantRequest, GetCovenantResponse>
+internal sealed class GetCovenantHandler(IProductServiceClient _productService)
+        : IRequestHandler<GetCovenantRequest, GetCovenantResponse>
 {
     public async Task<GetCovenantResponse> Handle(GetCovenantRequest request, CancellationToken cancellationToken)
     {
@@ -17,12 +17,5 @@ internal sealed class GetCovenantHandler
             Text = covenant.Text,
             Description = covenant.Description
         };
-    }
-
-    private readonly IProductServiceClient _productService;
-
-    public GetCovenantHandler(IProductServiceClient productService)
-    {
-        _productService = productService;
     }
 }
