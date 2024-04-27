@@ -23,6 +23,7 @@ internal sealed class GetMortgageRefixationHandler(
             Tasks = retentionData.Tasks,
             IndividualPriceCommentLastVersion = retentionData.SalesArrangement?.Refixation?.IndividualPriceCommentLastVersion,
             Comment = retentionData.SalesArrangement?.Refixation?.Comment,
+            InterestRateDiscount = retentionData.ActivePriceException?.LoanInterestRate?.LoanInterestRateDiscount,
             IsPriceExceptionActive = retentionData.ActivePriceException is not null
         };
 

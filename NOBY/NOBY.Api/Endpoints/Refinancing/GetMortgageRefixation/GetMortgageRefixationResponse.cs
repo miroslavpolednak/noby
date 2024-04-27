@@ -9,6 +9,11 @@ public sealed class GetMortgageRefixationResponse
     public List<Dto.Refinancing.RefinancingOfferDetail>? Offers { get; set; }
 
     /// <summary>
+    /// Sleva sazby z IC
+    /// </summary>
+    public decimal? InterestRateDiscount { get; set; }
+
+    /// <summary>
     /// Datum platnosti sdělených nabídek
     /// </summary>
     public DateTime? CommunicatedOffersValidTo { get; set; }
