@@ -1,0 +1,1 @@
+ALTER TABLE ResponseCode ALTER COLUMN ResponseCodeTypeId INT NULL

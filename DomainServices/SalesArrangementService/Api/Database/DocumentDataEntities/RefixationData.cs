@@ -10,3 +10,15 @@ internal sealed class RefixationData : IDocumentData
     public string? Comment { get; set; }
     public string? IndividualPriceCommentLastVersion { get; set; }
 }
+
+
+internal sealed class ExtraPaymentData : IDocumentData
+{
+    public int Version => 1;
+
+    public string? IndividualPriceCommentLastVersion { get; set; }
+
+    public int? HandoverTypeDetailId { get; set; }
+
+    public int? ClientKBId { get; set; }
+}

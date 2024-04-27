@@ -73,4 +73,9 @@ internal sealed class MockSbWebApiClient
     {
         throw new NotImplementedException();
     }
+
+    public Task<ICollection<string>?> GenerateCalculationDocuments(GenerateCalculationDocumentsRequest request, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }

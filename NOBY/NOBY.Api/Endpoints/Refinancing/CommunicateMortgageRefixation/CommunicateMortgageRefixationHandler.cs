@@ -1,8 +1,6 @@
 ﻿using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using static IdentityModel.OidcConstants;
-using System.Threading;
 using System.Globalization;
 
 namespace NOBY.Api.Endpoints.Refinancing.CommunicateMortgageRefixation;
@@ -31,6 +29,7 @@ internal sealed class CommunicateMortgageRefixationHandler : IRequestHandler<Com
         {
             var updateOfferRequest = new UpdateOfferRequest
             {
+                OfferId = offer.Data.OfferId,
                 ValidTo = new[] { DateTime.UtcNow.AddDays(45), (DateTime)offer.MortgageRefixation.BasicParameters.FixedRateValidTo }.Min(),
                 Flags = (offer.Data.Flags & (int)OfferFlagTypes.Communicated) == 0 ? offer.Data.Flags | (int)OfferFlagTypes.Communicated : null
             };

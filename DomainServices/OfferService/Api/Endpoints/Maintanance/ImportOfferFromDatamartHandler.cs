@@ -37,6 +37,14 @@ public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<Impor
             var batchId = await connection.ExecuteScalarAsync<long>(_oldestBatchIdForProcessing);
             _logger.BatchIdForProcessing(batchId);
 
+            // Update customer information CustomerChurnRisk and CustomerPriceSensitivity on Case (CaseServiceDb)
+            await connection.QueryFirstOrDefaultAsync<int>(
+                 "dbo.UpdateCustomerInformation",
+                 new { BatchId = batchId },
+                 commandType: CommandType.StoredProcedure,
+                 commandTimeout: _technicalTimeout
+                 );
+
             //Delete all non Communicated refixation offer from datalake (only where is intersection of sets)
             await connection.QueryFirstOrDefaultAsync<int>(
                 "dbo.DeleteRefixationOffer",

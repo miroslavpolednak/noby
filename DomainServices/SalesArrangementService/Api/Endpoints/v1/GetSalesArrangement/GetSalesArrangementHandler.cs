@@ -72,6 +72,11 @@ internal sealed class GetSalesArrangementHandler
                 model.Refixation = refixationData?.MapRefixation();
                 break;
 
+            case SalesArrangementTypes.MortgageExtraPayment:
+                var extraPaymentData = await GetParametersData<ExtraPaymentData>(model.SalesArrangementId, cancellation);
+                model.ExtraPayment = extraPaymentData?.MapExtraPayment();
+                break;
+
             default:
                 throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SATypeNotSupported, model.SalesArrangementTypeId);
         }
