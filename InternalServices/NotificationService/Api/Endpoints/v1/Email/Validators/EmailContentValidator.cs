@@ -9,9 +9,9 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Valida
 internal sealed class EmailContentValidator : AbstractValidator<EmailContent>
 {
     // todo: options move to error code mapper => WithErrorCode(int param)
-    public EmailContentValidator(IOptions<AppConfiguration> options)
+    public EmailContentValidator(AppConfiguration appConfiguration)
     {
-        var formats = options.Value.EmailFormats;
+        var formats = appConfiguration.EmailFormats;
         RuleFor(content => content.Format)
             .NotEmpty()
                 .WithErrorCode(ErrorCodeMapper.FormatRequired)
@@ -19,7 +19,7 @@ internal sealed class EmailContentValidator : AbstractValidator<EmailContent>
                 .WithErrorCode($"{ErrorCodeMapper.FormatInvalid}")
                 .WithMessage($"Allowed values for {nameof(EmailContent.Format)}: {string.Join(", ", formats)}.");
 
-        var languageCodes = options.Value.EmailLanguageCodes;
+        var languageCodes = appConfiguration.EmailLanguageCodes;
         RuleFor(content => content.Language)
             .NotEmpty()
                 .WithErrorCode(ErrorCodeMapper.LanguageRequired)

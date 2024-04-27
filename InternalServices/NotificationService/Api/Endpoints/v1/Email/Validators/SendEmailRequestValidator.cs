@@ -8,12 +8,12 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Valida
 
 internal sealed class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>
 {
-    public SendEmailRequestValidator(IOptions<AppConfiguration> options)
+    public SendEmailRequestValidator(AppConfiguration appConfiguration)
     {
         RuleFor(request => request.From)
             .NotNull()
                 .WithErrorCode(ErrorCodeMapper.FromRequired)
-            .SetValidator(new EmailAddressFromValidator(options.Value))
+            .SetValidator(new EmailAddressFromValidator(appConfiguration))
                 .WithErrorCode(ErrorCodeMapper.FromInvalid);
         
         RuleFor(request => request.To)
@@ -46,7 +46,7 @@ internal sealed class SendEmailRequestValidator : AbstractValidator<SendEmailReq
         RuleFor(request => request.Content)
             .NotEmpty()
                 .WithErrorCode(ErrorCodeMapper.ContentRequired)
-            .SetValidator(new EmailContentValidator(options))
+            .SetValidator(new EmailContentValidator(appConfiguration))
                 .WithErrorCode(ErrorCodeMapper.ContentInvalid);
 
         RuleFor(request => request.Attachments.Count)

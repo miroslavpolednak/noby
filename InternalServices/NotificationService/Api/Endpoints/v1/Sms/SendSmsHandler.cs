@@ -50,7 +50,7 @@ internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {smsTypeCodes}");
 
-        if (!HashAlgorithms.Algorithms.Contains(request.DocumentHash?.HashAlgorithm ?? ""))
+        if (!string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm) && HashAlgorithms.Algorithms.Contains(request.DocumentHash.HashAlgorithm))
         {
             throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash?.HashAlgorithm}'.");
         }
@@ -100,7 +100,7 @@ internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         
         try
         {
-            await _mcsSmsProducer.ProduceAsync(sendSms, cancellationToken);
+            await _mcsSmsProducer.ProduceAsync(sendSms.id, sendSms);
             _smsAuditLogger.LogKafkaProduced(smsType, result.Id, username,
                 request.Identifier?.Identity,
                 request.Identifier?.IdentityScheme,

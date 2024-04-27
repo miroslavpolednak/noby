@@ -34,7 +34,7 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
         INotificationRepository repository,
         ICodebookServiceClient codebookService,
         IS3AdapterService s3Service,
-        IOptions<AppConfiguration> options,
+        AppConfiguration appConfiguration,
         ILogger<SendEmailHandler> logger,
         IDocumentDataStorage documentDataStorage,
         IOptions<SharedComponents.Storage.Configuration.StorageConfiguration> storageConfiguration)
@@ -45,8 +45,8 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
         _repository = repository;
         _codebookService = codebookService;
         _s3Service = s3Service;
-        _mcsSenders = options.Value.EmailSenders.Mcs.Select(e => e.ToLowerInvariant()).ToHashSet();
-        _mpssSenders = options.Value.EmailSenders.Mpss.Select(e => e.ToLowerInvariant()).ToHashSet();
+        _mcsSenders = appConfiguration.EmailSenders.Mcs.Select(e => e.ToLowerInvariant()).ToHashSet();
+        _mpssSenders = appConfiguration.EmailSenders.Mpss.Select(e => e.ToLowerInvariant()).ToHashSet();
         _logger = logger;
         _documentDataStorage = documentDataStorage;
         _storageConfiguration = storageConfiguration;
@@ -58,7 +58,7 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
             .CheckSendEmailAccess()
             .GetUsername();
         
-        if (!HashAlgorithms.Algorithms.Contains(request.DocumentHash?.HashAlgorithm ?? ""))
+        if (!string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm) && HashAlgorithms.Algorithms.Contains(request.DocumentHash.HashAlgorithm))
         {
             throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash?.HashAlgorithm}'.");
         }
@@ -130,7 +130,7 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
                         .ToList()
                 };
                 
-                await _mcsEmailProducer.ProduceAsync(sendEmail, cancellationToken);
+                await _mcsEmailProducer.ProduceAsync(sendEmail.id, sendEmail);
             }
             else if (result.SenderType == LegacyContracts.Statistics.Dto.SenderType.MP)
             {
