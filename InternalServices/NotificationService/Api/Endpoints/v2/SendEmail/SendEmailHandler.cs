@@ -51,31 +51,10 @@ internal sealed class SendEmailHandler(
         // ulozit do databaze
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        // ulozit soubory na S3
+        // ulozit soubory na S3 (jen pro MCS)
         var attachmentKeyFilenames = new List<(string Id, string Filename)>();
-        try
-        {
-            foreach (var attachment in request.Attachments)
-            {
-                var fileId = Guid.NewGuid().ToString();
-                var content = attachment.Binary.ToArray();
-                await _storageClient.SaveFile(content, fileId, cancellationToken: cancellationToken);
-
-                attachmentKeyFilenames.Add(new(fileId, attachment.Filename));
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.SaveAttachmentFailed(notificationInstance.Id, ex);
-
-            // nastavit stav v databazi
-            notificationInstance.State = NotificationStates.Error;
-            await _dbContext.SaveChangesAsync(cancellationToken);
-
-            throw new CisExternalServiceServerErrorException(ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "Unable to upload attachment to storage service");
-        }
-
-        // ulozit obsah SMS
+        
+        // ulozit obsah emailu
         await _documentDataStorage.Add(notificationInstance.Id.ToString(), new Database.DocumentDataEntities.EmailData
         {
             Subject = request.Subject,
@@ -97,6 +76,31 @@ internal sealed class SendEmailHandler(
 
         if (senderType == Mandants.Kb)
         {
+            try
+            {
+                if (request.Attachments != null)
+                {
+                    foreach (var attachment in request.Attachments)
+                    {
+                        var fileId = Guid.NewGuid().ToString();
+                        var content = attachment.Binary.ToArray();
+                        await _storageClient.SaveFile(content, fileId, cancellationToken: cancellationToken);
+
+                        attachmentKeyFilenames.Add(new(fileId, attachment.Filename));
+                    }
+                }                
+            }
+            catch (Exception ex)
+            {
+                _logger.SaveAttachmentFailed(notificationInstance.Id, ex);
+
+                // nastavit stav v databazi
+                notificationInstance.State = NotificationStates.Error;
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                throw new CisExternalServiceServerErrorException(ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "Unable to upload attachment to storage service");
+            }
+
             var message = new McsSendApi.v4.email.SendEmail
             {
                 id = notificationInstance.Id.ToString(),
@@ -157,16 +161,6 @@ internal sealed class SendEmailHandler(
                 
                 throw;
             }
-        }
-        else
-        {
-            Database.DocumentDataEntities.SendEmail email = new()
-            {
-                //Data = request
-            };
-
-            await _documentDataStorage.Add(notificationInstance.Id.ToString(), email, cancellationToken);
-
         }
         
         return new NotificationIdResponse

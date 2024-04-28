@@ -6,7 +6,7 @@ internal static class Mappers
     {
         return new()
         {
-            party = new()
+            party = emailAddress.Party?.LegalPerson is null && emailAddress.Party?.NaturalPerson is null ? null : new()
             {
                 legalPerson = emailAddress.Party?.LegalPerson is null ? null : new()
                 {
