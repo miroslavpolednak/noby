@@ -68,9 +68,9 @@ public class StartSigningMapper
         _mediator = mediator;
     }
 
-    public async Task<UploadDocumentRequest> MapUploadDocumentRequest(long referenceId, string filename, DocumentOnSa documentOnSa, CancellationToken cancellationToken)
+    public async Task<UploadDocumentRequest> MapUploadDocumentRequest(long referenceId, string filename, SalesArrangement salesArrangement, DocumentOnSa documentOnSa, CancellationToken cancellationToken)
     {
-        var docGenRequest = GenerateDocumentRequestMapper.CreateGenerateDocumentRequest(documentOnSa);
+        var docGenRequest = GenerateDocumentRequestMapper.CreateGenerateDocumentRequest(salesArrangement, documentOnSa);
         var docGenResponse = await _documentGeneratorServiceClient.GenerateDocument(docGenRequest, cancellationToken);
 
         return new()

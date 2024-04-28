@@ -1,11 +1,12 @@
 ﻿using CIS.InternalServices.DocumentGeneratorService.Contracts;
+using DomainServices.SalesArrangementService.Contracts;
 using Newtonsoft.Json;
 using __Entity = DomainServices.DocumentOnSAService.Api.Database.Entities;
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
 public static class GenerateDocumentRequestMapper
 {
-    public static GenerateDocumentRequest CreateGenerateDocumentRequest(__Entity.DocumentOnSa documentOnSa) => new()
+    public static GenerateDocumentRequest CreateGenerateDocumentRequest(SalesArrangement salesArrangement, __Entity.DocumentOnSa documentOnSa) => new()
     {
         DocumentTypeId = documentOnSa.DocumentTypeId!.Value,
         DocumentTemplateVersionId = documentOnSa.DocumentTemplateVersionId!.Value,
@@ -13,7 +14,7 @@ public static class GenerateDocumentRequestMapper
         ForPreview = false,
         OutputType = OutputFileType.Pdfa,
         Parts = { CreateDocPart(documentOnSa) },
-        DocumentFooter = CreateFooter(documentOnSa)
+        DocumentFooter = CreateFooter(salesArrangement, documentOnSa)
     };
 
     private static GenerateDocumentPart CreateDocPart(__Entity.DocumentOnSa documentOnSA)
@@ -29,10 +30,10 @@ public static class GenerateDocumentRequestMapper
         };
     }
 
-    private static DocumentFooter CreateFooter(__Entity.DocumentOnSa documentOnSa) => new()
+    private static DocumentFooter CreateFooter(SalesArrangement salesArrangement, __Entity.DocumentOnSa documentOnSa) => new()
     {
-        CaseId = documentOnSa.CaseId,
-        SalesArrangementId = documentOnSa.SalesArrangementId,
+        CaseId = salesArrangement.CaseId,
+        SalesArrangementId = salesArrangement.SalesArrangementId,
         DocumentOnSaId = documentOnSa.DocumentOnSAId,
         DocumentId = documentOnSa.EArchivId,
         BarcodeText = documentOnSa.FormId
