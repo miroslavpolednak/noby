@@ -6,8 +6,14 @@ using DomainServices.SalesArrangementService.Clients;
 namespace NOBY.Api.Endpoints.Workflow.CreateTask;
 
 #pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
-internal sealed class CreateTaskHandler
-    : IRequestHandler<CreateTaskRequest, long>
+internal sealed class CreateTaskHandler(
+    ICurrentUserAccessor _currentUserAccessor,
+    ICaseServiceClient _caseService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService,
+    SharedComponents.Storage.ITempStorage _tempFileManager,
+    Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive)
+        : IRequestHandler<CreateTaskRequest, long>
 {
     public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
@@ -86,9 +92,13 @@ internal sealed class CreateTaskHandler
         var processInstance = allProcesses.FirstOrDefault(t => t.ProcessId == processId)
             ?? throw new NobyValidationException($"Workflow process {processId} for Case {caseId} not found");
         
-        if (processInstance.ProcessTypeId is not ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && taskTypeId != (int)WorkflowTaskTypes.Consultation)
+        if (!_allowedProcessTypes.Contains(processInstance.ProcessTypeId))
         {
-            throw new NobyValidationException(90032, "validateProcess");
+            throw new NobyValidationException(90032, "validateProcess #1");
+        }
+        else if (processInstance.ProcessTypeId == (int)WorkflowProcesses.Refinancing && taskTypeId != (int)WorkflowTaskTypes.Consultation)
+        {
+            throw new NobyValidationException(90032, "validateProcess #2");
         }
 
         WorkflowHelpers.ValidateRefinancing(processInstance.ProcessTypeId, _currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_OtherManage, UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage);
@@ -153,26 +163,10 @@ internal sealed class CreateTaskHandler
         }
     }
 
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
-    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
-
-    public CreateTaskHandler(
-        ICurrentUserAccessor currentUserAccessor,
-        ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        SharedComponents.Storage.ITempStorage tempFileManager,
-        Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive)
-    {
-        _currentUserAccessor = currentUserAccessor;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _caseService = caseService;
-        _tempFileManager = tempFileManager;
-        _uploadDocumentToArchive = uploadDocumentToArchive;
-    }
+    private static readonly int[] _allowedProcessTypes =
+    [
+        (int)WorkflowProcesses.Main,
+        (int)WorkflowProcesses.Change,
+        (int)WorkflowProcesses.Refinancing
+    ];
 }

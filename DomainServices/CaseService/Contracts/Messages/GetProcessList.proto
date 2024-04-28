@@ -66,7 +66,8 @@ message ProcessTask {
 		bool IsFinalExtraPayment = 4;
 		google.protobuf.StringValue DocumentId = 5;
 		google.protobuf.Int32Value DocumentEACode = 6;
-		repeated ExtraPaymentAgreement ExtraPaymentAgreements = 7;
+		int32 PaymentState = 7;
+		repeated ExtraPaymentAgreement ExtraPaymentAgreements = 8;
 	}
 
 	message ExtraPaymentAgreement {
