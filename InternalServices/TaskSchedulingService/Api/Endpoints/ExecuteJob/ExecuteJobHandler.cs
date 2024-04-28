@@ -2,7 +2,7 @@
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Endpoints.ExecuteJob;
 
-internal sealed class ExecuteJobHandler
+internal sealed class ExecuteJobHandler(IMediator _mediator)
     : IRequestHandler<ExecuteJobRequest, ExecuteJobResponse>
 {
     public Task<ExecuteJobResponse> Handle(ExecuteJobRequest request, CancellationToken cancellation)
@@ -19,12 +19,5 @@ internal sealed class ExecuteJobHandler
         {
             ScheduleJobStatusId = statusId.ToString()
         });
-    }
-
-    private readonly IMediator _mediator;
-
-    public ExecuteJobHandler(IMediator mediator)
-    {
-        _mediator = mediator;
     }
 }

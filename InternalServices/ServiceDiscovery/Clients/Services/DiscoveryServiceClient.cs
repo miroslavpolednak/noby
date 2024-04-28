@@ -1,6 +1,8 @@
 ﻿namespace CIS.InternalServices.ServiceDiscovery.Clients;
 
-internal sealed class DiscoveryServiceClient 
+internal sealed class DiscoveryServiceClient(
+    ServicesMemoryCache _cache,
+    EnvironmentNameProvider _envName)
     : IDiscoveryServiceClient
 {
     public async Task<IReadOnlyList<DiscoverableService>> GetServices(CancellationToken cancellationToken = default)
@@ -37,17 +39,6 @@ internal sealed class DiscoveryServiceClient
     public IReadOnlyList<DiscoverableService> GetServicesSynchronously()
     {
         return _cache.GetServices(getEnvName(), default).GetAwaiter().GetResult();
-    }
-
-    private readonly ServicesMemoryCache _cache;
-    private readonly EnvironmentNameProvider _envName;
-
-    public DiscoveryServiceClient(
-        ServicesMemoryCache cache,
-        EnvironmentNameProvider envName)
-    {
-        _cache = cache;
-        _envName = envName;
     }
 
     private ApplicationEnvironmentName getEnvName()

@@ -8,5 +8,11 @@ import "NullableGrpcDate.proto";
 message SalesArrangementParametersExtraPayment {
 	google.protobuf.StringValue IndividualPriceCommentLastVersion = 1;
 	google.protobuf.Int32Value HandoverTypeDetailId = 2;
-	google.protobuf.Int32Value ClientKBId = 3;
+	SalesArrangementParametersExtraPaymentClient Client = 3;
+
+	message SalesArrangementParametersExtraPaymentClient {
+		int32 KBId = 1;
+		string FirstName = 2;
+		string LastName = 3;
+	}
 }

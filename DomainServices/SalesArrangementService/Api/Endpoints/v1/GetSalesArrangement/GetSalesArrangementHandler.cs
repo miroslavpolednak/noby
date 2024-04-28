@@ -6,7 +6,9 @@ using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.GetSalesArrangement;
 
-internal sealed class GetSalesArrangementHandler
+internal sealed class GetSalesArrangementHandler(
+    SalesArrangementServiceDbContext _dbContext, 
+    IDocumentDataStorage _documentDataStorage)
     : IRequestHandler<__SA.GetSalesArrangementRequest, __SA.SalesArrangement>
 {
     public async Task<__SA.SalesArrangement> Handle(__SA.GetSalesArrangementRequest request, CancellationToken cancellation)
@@ -90,14 +92,5 @@ internal sealed class GetSalesArrangementHandler
         var documentData = await _documentDataStorage.FirstOrDefaultByEntityId<TData, int>(salesArrangementId, SalesArrangementParametersConst.TableName, cancellationToken);
 
         return documentData?.Data;
-    }
-
-    private readonly SalesArrangementServiceDbContext _dbContext;
-    private readonly IDocumentDataStorage _documentDataStorage;
-
-    public GetSalesArrangementHandler(SalesArrangementServiceDbContext dbContext, IDocumentDataStorage documentDataStorage)
-    {
-        _dbContext = dbContext;
-        _documentDataStorage = documentDataStorage;
     }
 }

@@ -14,8 +14,6 @@ public class BaseRefinancingDetailResponse
     /// </summary>
     public string? IndividualPriceCommentLastVersion { get; set; }
 
-    public string? Comment { get; set; }
-
     /// <summary>
     /// Všechny workflow úkoly pro daný proces retence
     /// </summary>
@@ -25,12 +23,6 @@ public class BaseRefinancingDetailResponse
     /// Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
     /// </summary>
     public bool ContainsInconsistentIndividualPriceData { get; set; }
-
-    /// <summary>
-    /// Seznam odpovědních kódů
-    /// </summary>
-    /// !!!!! nejsou v extra payment
-    public List<RefinancingResponseCode>? ResponseCodes { get; set; }
 
     public int RefinancingStateId { get; set; }
 
