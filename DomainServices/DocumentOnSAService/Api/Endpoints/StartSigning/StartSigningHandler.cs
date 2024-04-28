@@ -86,6 +86,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
         try
         {
+            //Insert new DocumentOnSA and get DocumentOnSaId
             await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -96,7 +97,9 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
                 var referenceId = await _eSignaturesClient.PrepareDocument(prepareDocumentRequest, cancellationToken);
                 var uploadDocumentRequest = await _startSigningMapper.MapUploadDocumentRequest(referenceId, prepareDocumentRequest.DocumentData.FileName, salesArrangement, documentOnSaEntity, cancellationToken);
                 var (externalId, _) = await _eSignaturesClient.UploadDocument(uploadDocumentRequest.ReferenceId, uploadDocumentRequest.Filename, uploadDocumentRequest.CreationDate, uploadDocumentRequest.FileData, cancellationToken);
+                
                 documentOnSaEntity.ExternalIdESignatures = externalId;
+                await _dbContext.SaveChangesAsync(cancellationToken);
             }
 
             if (request.TaskId is null)
