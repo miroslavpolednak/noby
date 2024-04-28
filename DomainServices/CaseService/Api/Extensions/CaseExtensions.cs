@@ -64,12 +64,13 @@ internal static class CaseExtensions
                 1 => taskData.GetInteger("ukol_faze_uv_procesu"),
                 2 => taskData.GetInteger("ukol_faze_zm_procesu"),
                 3 => taskData.GetInteger("ukol_faze_rt_procesu"),
+                4 => 1,
                 -1 => -1,
                 _ => throw new CisArgumentException(0, taskType.ToString(CultureInfo.InvariantCulture), "ProcessPhaseId")
             },
             StateIndicator = taskType switch
             {
-                1 or 2 or 3 => getStateIndicator(taskData),
+                1 or 2 or 3 or 4 => getStateIndicator(taskData),
                 _ => null
             },
             StateIdSB = taskData.GetInteger("ukol_stav_poz"),
@@ -122,7 +123,8 @@ internal static class CaseExtensions
             ExtraPaymentAmountIncludingFee = taskData.GetNDecimal("ukol_mspl_suma_celkem"),
             IsFinalExtraPayment = taskData.GetBool("ukol_mspl_typ"),
             DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
-            DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod")
+            DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
+            PaymentState = taskData.GetInteger("ukol_mspl_stav_zauct_noby"),
         };
 
         var docs = taskData["ukol_mspl_souhlas_ea_cis"]?.Split(',', StringSplitOptions.RemoveEmptyEntries);
