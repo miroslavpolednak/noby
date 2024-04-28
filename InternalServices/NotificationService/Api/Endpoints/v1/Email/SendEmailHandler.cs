@@ -58,7 +58,7 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
             .CheckSendEmailAccess()
             .GetUsername();
         
-        if (!string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm) && HashAlgorithms.Algorithms.Contains(request.DocumentHash.HashAlgorithm))
+        if (!string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm) && !HashAlgorithms.Algorithms.Contains(request.DocumentHash.HashAlgorithm))
         {
             throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash?.HashAlgorithm}'.");
         }

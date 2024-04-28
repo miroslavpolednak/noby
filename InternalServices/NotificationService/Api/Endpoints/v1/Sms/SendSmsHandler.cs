@@ -50,7 +50,7 @@ internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {smsTypeCodes}");
 
-        if (!string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm) && HashAlgorithms.Algorithms.Contains(request.DocumentHash.HashAlgorithm))
+        if (!string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm) && !HashAlgorithms.Algorithms.Contains(request.DocumentHash.HashAlgorithm))
         {
             throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash?.HashAlgorithm}'.");
         }
