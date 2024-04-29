@@ -49,6 +49,8 @@ internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMort
 
         await ProcessWorkflow(request, offer.MortgageExtraPayment, salesArrangement, cancellationToken);
 
+        await UpdateSalesArrangementParameters(request, salesArrangement, cancellationToken);
+
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
     }
 
@@ -66,7 +68,7 @@ internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMort
             {
                 FeeId = await GetFeeId(salesArrangement, cancellationToken),
                 FeeSum = extraPayment.SimulationResults.FeeAmount,
-                FeeFinalSum = (decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? extraPayment.SimulationResults.FeeAmount
+                FeeFinalSum = extraPayment.SimulationResults.FeeAmount - ((decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? 0)
             }
         };
 
@@ -83,7 +85,7 @@ internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMort
             {
                 ExtraPaymentDate = extraPayment.SimulationInputs.ExtraPaymentDate,
                 ExtraPaymentAmount = extraPayment.SimulationInputs.ExtraPaymentAmount,
-                ExtraPaymentAmountIncludingFee = (decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? extraPayment.SimulationResults.FeeAmount
+                ExtraPaymentAmountIncludingFee = extraPayment.SimulationInputs.ExtraPaymentAmount + extraPayment.SimulationResults.FeeAmount - ((decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? 0)
             }
         };
 
@@ -92,12 +94,12 @@ internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMort
 
     private Task UpdateSalesArrangementParameters(LinkMortgageExtraPaymentRequest request, _SA salesArrangement, CancellationToken cancellationToken)
     {
-        salesArrangement.Retention.IndividualPriceCommentLastVersion = request.IndividualPriceCommentLastVersion;
+        salesArrangement.ExtraPayment.IndividualPriceCommentLastVersion = request.IndividualPriceCommentLastVersion;
 
         return _salesArrangementService.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
-            //ExtraPayment
+            ExtraPayment = salesArrangement.ExtraPayment
         }, cancellationToken);
     }
 

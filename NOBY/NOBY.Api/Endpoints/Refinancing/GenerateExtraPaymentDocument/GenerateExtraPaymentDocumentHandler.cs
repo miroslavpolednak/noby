@@ -45,7 +45,7 @@ internal class GenerateExtraPaymentDocumentHandler : IRequestHandler<GenerateExt
         var salesArrangement = await _refinancingDocumentService.LoadAndValidateSA(request.SalesArrangementId, SalesArrangementTypes.MortgageExtraPayment, cancellationToken);
         var offer = await LoadAndValidateOffer(salesArrangement.CaseId, salesArrangement.OfferId!.Value, cancellationToken);
         
-        var offerIndividualPrice = new MortgageRefinancingIndividualPrice(null, offer.MortgageExtraPayment.BasicParameters.FeeAmountDiscount);
+        var offerIndividualPrice = new MortgageRefinancingIndividualPrice(null, offer.MortgageExtraPayment.SimulationResults.FeeAmount - ((decimal?)offer.MortgageExtraPayment.BasicParameters.FeeAmountDiscount ?? 0));
 
         if (offerIndividualPrice.HasIndividualPrice && !await _refinancingDocumentService.IsIndividualPriceValid(salesArrangement, offerIndividualPrice, cancellationToken))
             throw new NobyValidationException(90048);
