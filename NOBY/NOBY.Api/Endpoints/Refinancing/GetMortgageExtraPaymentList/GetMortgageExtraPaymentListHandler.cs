@@ -1,14 +1,14 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 
-namespace NOBY.Api.Endpoints.Refinancing.GetExtraPaymentList;
+namespace NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList;
 
-internal sealed class GetExtraPaymentListHandler(
+internal sealed class GetMortgageExtraPaymentListHandler(
     ISalesArrangementServiceClient _salesArrangementService,
     ICaseServiceClient _caseService)
-    : IRequestHandler<GetExtraPaymentListRequest, GetExtraPaymentListResponse>
+    : IRequestHandler<GetMortgageExtraPaymentListRequest, GetMortgageExtraPaymentListResponse>
 {
-    public async Task<GetExtraPaymentListResponse> Handle(GetExtraPaymentListRequest request, CancellationToken cancellationToken)
+    public async Task<GetMortgageExtraPaymentListResponse> Handle(GetMortgageExtraPaymentListRequest request, CancellationToken cancellationToken)
     {
         var saList = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
         var tasks = await _caseService.GetTaskList(request.CaseId, cancellationToken);
