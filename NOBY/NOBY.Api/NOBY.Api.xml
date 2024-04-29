@@ -2691,7 +2691,7 @@
             True = set flag, False = unset flag
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.FeeAmountDiscounted">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.FeeAmountDiscount">
             <summary>
             Sleva z pokuty
             </summary>
@@ -3422,7 +3422,7 @@
             Způsob předání dokumentů
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.FeeAmountDiscounted">
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.FeeAmountDiscount">
             <summary>
             Upravená výše poplatku
             </summary>

@@ -66,7 +66,7 @@ internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMort
             {
                 FeeId = await GetFeeId(salesArrangement, cancellationToken),
                 FeeSum = extraPayment.SimulationResults.FeeAmount,
-                FeeFinalSum = (decimal?)extraPayment.BasicParameters.FeeAmountDiscounted ?? extraPayment.SimulationResults.FeeAmount
+                FeeFinalSum = (decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? extraPayment.SimulationResults.FeeAmount
             }
         };
 
@@ -83,7 +83,7 @@ internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMort
             {
                 ExtraPaymentDate = extraPayment.SimulationInputs.ExtraPaymentDate,
                 ExtraPaymentAmount = extraPayment.SimulationInputs.ExtraPaymentAmount,
-                ExtraPaymentAmountIncludingFee = (decimal?)extraPayment.BasicParameters.FeeAmountDiscounted ?? extraPayment.SimulationResults.FeeAmount
+                ExtraPaymentAmountIncludingFee = (decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? extraPayment.SimulationResults.FeeAmount
             }
         };
 

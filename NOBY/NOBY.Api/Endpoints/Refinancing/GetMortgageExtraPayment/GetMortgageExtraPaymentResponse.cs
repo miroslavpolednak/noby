@@ -29,7 +29,7 @@ public sealed class GetMortgageExtraPaymentResponse
     /// <summary>
     /// Upravená výše poplatku
     /// </summary>
-    public decimal? FeeAmountDiscounted { get; set; }
+    public decimal? FeeAmountDiscount { get; set; }
 
     public NOBY.Dto.Refinancing.ExtraPaymentSimulationResult? SimulationResults { get; set; }
 

@@ -61,7 +61,7 @@ internal sealed class GetMortgageExtraPaymentHandler(
         // aktivni IC
         if ((extraPaymentData.ActivePriceException?.Fees?.Count ?? 0) != 0)
         {
-            response.FeeAmountDiscounted = extraPaymentData.ActivePriceException!.Fees![0].FinalSum;
+            response.FeeAmountDiscount = extraPaymentData.ActivePriceException!.Fees![0].TariffSum - extraPaymentData.ActivePriceException.Fees[0].FinalSum;
         }
 
         // pokud existuje Offer
@@ -69,9 +69,9 @@ internal sealed class GetMortgageExtraPaymentHandler(
         {
             // detail offer
             var offerInstance = await _offerService.GetOffer(extraPaymentData.SalesArrangement.OfferId.Value, cancellationToken);
-            response.SimulationResults = offerInstance.MortgageExtraPayment.SimulationResults.ToDto(response.FeeAmountDiscounted);
+            response.SimulationResults = offerInstance.MortgageExtraPayment.SimulationResults.ToDto(offerInstance.Data.Created.DateTime, response.FeeAmountDiscount);
 
-            response.ContainsInconsistentIndividualPriceData = offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted != response.FeeAmountDiscounted;
+            response.ContainsInconsistentIndividualPriceData = offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted != response.FeeAmountDiscount;
         }
 
         return response;

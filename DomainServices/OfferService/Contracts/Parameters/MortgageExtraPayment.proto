@@ -7,7 +7,7 @@ import "NullableGrpcDecimal.proto";
 import "GrpcDate.proto";
 
 message MortgageExtraPaymentBasicParameters {
-	cis.types.NullableGrpcDecimal FeeAmountDiscounted = 1;
+	cis.types.NullableGrpcDecimal FeeAmountDiscount = 1;
 }
 
 message MortgageExtraPaymentSimulationInputs {

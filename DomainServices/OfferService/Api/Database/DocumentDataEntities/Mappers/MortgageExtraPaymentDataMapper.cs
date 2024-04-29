@@ -24,7 +24,7 @@ internal sealed class MortgageExtraPaymentDataMapper
     {
         return new()
         {
-            FeeAmountDiscounted = basicParameters.FeeAmountDiscounted
+            FeeAmountDiscount = basicParameters.FeeAmountDiscount
         };
     }
 
@@ -70,7 +70,7 @@ internal sealed class MortgageExtraPaymentDataMapper
     {
         return new()
         {
-            FeeAmountDiscounted = basicParameters.FeeAmountDiscounted
+            FeeAmountDiscount = basicParameters.FeeAmountDiscount
         };
     }
 

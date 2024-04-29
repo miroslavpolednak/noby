@@ -587,6 +587,11 @@
             Existuje workflow úkol cenové vyjímky
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.CreatedOn">
+            <summary>
+            Čas vytvoření Offer
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.IsExtraPaymentComplete">
             <summary>
             Typ mimořádné splátky

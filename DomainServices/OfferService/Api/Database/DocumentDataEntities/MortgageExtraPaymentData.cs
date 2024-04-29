@@ -45,6 +45,6 @@ internal sealed class MortgageExtraPaymentData
 
     public sealed class BasicParametersData
     {
-        public decimal? FeeAmountDiscounted { get; set; }
+        public decimal? FeeAmountDiscount { get; set; }
     }
 }
