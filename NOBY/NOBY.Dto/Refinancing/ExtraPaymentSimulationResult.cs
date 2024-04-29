@@ -3,6 +3,11 @@
 public sealed class ExtraPaymentSimulationResult
 {
     /// <summary>
+    /// Čas vytvoření Offer
+    /// </summary>
+    public DateTime CreatedOn { get; set; }
+
+    /// <summary>
     /// Typ mimořádné splátky
     /// </summary>
     public bool IsExtraPaymentComplete { get; set; }

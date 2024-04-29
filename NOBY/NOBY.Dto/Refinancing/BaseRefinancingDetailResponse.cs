@@ -24,6 +24,9 @@ public class BaseRefinancingDetailResponse
     /// </summary>
     public bool ContainsInconsistentIndividualPriceData { get; set; }
 
+    /// <summary>
+    /// Stav
+    /// </summary>
     public int RefinancingStateId { get; set; }
 
     /// <summary>

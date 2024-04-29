@@ -45,7 +45,7 @@ internal class GenerateExtraPaymentDocumentHandler : IRequestHandler<GenerateExt
         var salesArrangement = await _refinancingDocumentService.LoadAndValidateSA(request.SalesArrangementId, SalesArrangementTypes.MortgageExtraPayment, cancellationToken);
         var offer = await LoadAndValidateOffer(salesArrangement.CaseId, salesArrangement.OfferId!.Value, cancellationToken);
         
-        var offerIndividualPrice = new MortgageRefinancingIndividualPrice(null, offer.MortgageExtraPayment.BasicParameters.FeeAmountDiscounted);
+        var offerIndividualPrice = new MortgageRefinancingIndividualPrice(null, offer.MortgageExtraPayment.BasicParameters.FeeAmountDiscount);
 
         if (offerIndividualPrice.HasIndividualPrice && !await _refinancingDocumentService.IsIndividualPriceValid(salesArrangement, offerIndividualPrice, cancellationToken))
             throw new NobyValidationException(90048);
@@ -86,7 +86,7 @@ internal class GenerateExtraPaymentDocumentHandler : IRequestHandler<GenerateExt
             },
             BasicParameters = new MortgageExtraPaymentBasicParameters
             {
-                FeeAmountDiscounted = offer.MortgageExtraPayment.BasicParameters.FeeAmountDiscounted
+                FeeAmountDiscount = offer.MortgageExtraPayment.BasicParameters.FeeAmountDiscount
             }
         };
 

@@ -15,7 +15,7 @@ internal sealed class SimulateMortgageExtraPaymentHandler(
             CaseId = request.CaseId,
             BasicParameters = new()
             {
-                FeeAmountDiscounted = request.FeeAmountDiscounted
+                FeeAmountDiscount = request.FeeAmountDiscount
             },
             SimulationInputs = new()
             {
@@ -32,7 +32,7 @@ internal sealed class SimulateMortgageExtraPaymentHandler(
         var response = new SimulateMortgageExtraPaymentResponse
         {
             OfferId = result.OfferId,
-            NewOffer = result.SimulationResults.ToDto(request.FeeAmountDiscounted)
+            NewOffer = result.SimulationResults.ToDto(DateTime.Now, request.FeeAmountDiscount)
         };
 
         // najit puvodni simulaci
@@ -45,7 +45,7 @@ internal sealed class SimulateMortgageExtraPaymentHandler(
         if (offerId.HasValue)
         {
             var oldOffer = await _offerService.GetOffer(offerId.Value, cancellationToken);
-            response.OldOffer = oldOffer.MortgageExtraPayment.SimulationResults.ToDto(oldOffer.MortgageExtraPayment.BasicParameters.FeeAmountDiscounted);
+            response.OldOffer = oldOffer.MortgageExtraPayment.SimulationResults.ToDto(oldOffer.Data.Created.DateTime, oldOffer.MortgageExtraPayment.BasicParameters.FeeAmountDiscount);
         }
 
         return response;
