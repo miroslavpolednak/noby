@@ -8,7 +8,7 @@ internal sealed class GetRefinancingParametersRequestValidator : AbstractValidat
     public GetRefinancingParametersRequestValidator(IFeatureManager featureManager)
     {
         RuleFor(t => t)
-            .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Retention))
-            .WithErrorCode(90056);
+            .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Retention) || await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Refixation))
+            .WithMessage("Retence nebo refixace musejí být povoleny");
     }
 }

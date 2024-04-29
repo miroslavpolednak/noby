@@ -24,10 +24,25 @@ internal sealed class SendMortgageResponseCodeRequestValidator
                 };
             })
             .WithMessage("Unknown ResponseCodeTypeId");
-        
-        
+
+
         RuleFor(t => t)
-         .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Retention))
-         .WithErrorCode(90056);
+         .MustAsync(async (req, c) =>
+         {
+             var cb = (await codebookService.ResponseCodeTypes(c)).First(t => t.Id == req.ResponseCodeTypeId);
+             if (cb.IsAvailableForRetention && await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Retention))
+             {
+                 return true;
+             }
+             else if (cb.IsAvailableForRefixation && await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Refixation))
+             {
+                 return true;
+             }
+             else
+             {
+                 return false;
+             }
+         })
+         .WithMessage("Retence nebo refixace musejí být povoleny");
     }
 }
