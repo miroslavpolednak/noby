@@ -26,9 +26,9 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(GetMortgageExtraPaymentListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<GetMortgageExtraPaymentListResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetMortgageExtraPaymentListResponse> GetExtraPaymentList([FromRoute] long caseId)
+    public async Task<List<GetMortgageExtraPaymentListResponse>> GetExtraPaymentList([FromRoute] long caseId)
         => await _mediator.Send(new GetMortgageExtraPaymentListRequest(caseId));
 
     /// <summary>

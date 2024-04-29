@@ -24,17 +24,19 @@ internal sealed class GetMortgageExtraPaymentListHandler(
         return extraPayments.Select(process =>
         {
             var currentProcessSA = saList.SalesArrangements.FirstOrDefault(t => t.ProcessId == process.ProcessId);
-            RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State);
-            RefinancingHelper.GetRefinancingState(false, currentProcessSA?.ProcessId, process);
+            
+            //TODO: co s timhle?
+            var refinancingState = currentProcessSA is null ? RefinancingHelper.GetRefinancingState(false, null, process) : RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State);
+
             return new GetMortgageExtraPaymentListResponse
             {
-                CreatedOn = DateTime.Now,//????
+                CreatedOn = process.CreatedOn,
                 ExtraPaymentAmount = process.MortgageExtraPayment.ExtraPaymentAmountIncludingFee,
                 PrincipalAmount = process.MortgageExtraPayment.ExtraPaymentAmount,
                 ExtraPaymentDate = DateOnly.FromDateTime(process.MortgageExtraPayment.ExtraPaymentDate),
                 PaymentState = process.MortgageExtraPayment.PaymentState,
                 IsExtraPaymentFullyRepaid = process.MortgageExtraPayment.IsFinalExtraPayment,
-                RefinancingStateId = 1
+                RefinancingStateId = (int)refinancingState
             };
         })
         .ToList();

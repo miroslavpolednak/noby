@@ -3407,6 +3407,41 @@
             Aktuální úroková sazba.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.CreatedOn">
+            <summary>
+            datum vytvoření
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.IsExtraPaymentFullyRepaid">
+            <summary>
+            Způsob splacení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.ExtraPaymentAmount">
+            <summary>
+            Výše splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.PrincipalAmount">
+            <summary>
+            Výše splacené jistiny
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.ExtraPaymentDate">
+            <summary>
+            Datum splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.RefinancingStateId">
+            <summary>
+            Stav
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.PaymentState">
+            <summary>
+            Uhrazeno; 0 - Unknown; 1 - Uhrazeno; 2 - Neuhrazeno
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.Document">
             <summary>
             Dokumentu refinancování
