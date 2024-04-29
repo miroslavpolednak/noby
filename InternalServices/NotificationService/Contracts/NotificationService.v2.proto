@@ -45,19 +45,22 @@ service NotificationService {
 
    rpc GetStatistics(GetStatisticsRequest) returns (GetStatisticsResponse) {
 	   option (google.api.http) = {
-			post: "/v2/statistics"
+			post: "/v2/statistics",
+			body: "*"
 	   };
    }
 
    rpc GetDetailedStatistics(GetDetailedStatisticsRequest) returns (GetDetailedStatisticsResponse) {
 	   option (google.api.http) = {
-			post: "/v2/statistics-detailed"
+			post: "/v2/statistics-detailed",
+			body: "*"
 	   };
    }
 
    rpc Resend(ResendRequest) returns (google.protobuf.Empty) {
 	   option (google.api.http) = {
-			post: "/v2/resend"
+			post: "/v2/resend",
+			body: "*"
 	   };
    }
 }

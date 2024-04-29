@@ -39,16 +39,17 @@ CREATE TABLE [dbo].[Notification](
 	[Channel] [int] NOT NULL,
 	[State] [int] NOT NULL,
 	[Identity] [varchar](100) NULL,
-	[IdentityScheme] [varchar](50) NULL,
+	[IdentityScheme] int NULL,
 	[CaseId] bigint NULL,
 	[CustomId] [varchar](450) NULL,
 	[DocumentId] [varchar](450) NULL,
 	[DocumentHash] [varchar](max) NULL,
-	[HashAlgorithm] [varchar](30) NULL,
+	[HashAlgorithm] tinyint NULL,
 	[CreatedUserName] [varchar](100) NOT NULL,
 	[CreatedTime] [datetime] NOT NULL,
 	[ResultTime] [datetime] NULL,
-	[Errors] [nvarchar](max) NULL
+	[Errors] [nvarchar](max) NULL,
+	[Resend] bit NOT NULL
  CONSTRAINT [PK_Notification] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

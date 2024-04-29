@@ -1,4 +1,5 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.v2;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 
@@ -29,5 +30,9 @@ internal sealed class NotificationService(IMediator _mediator)
 
     [Authorize(Roles = UserRoles.ReceiveStatistics)]
     public override async Task<GetDetailedStatisticsResponse> GetDetailedStatistics(GetDetailedStatisticsRequest request, ServerCallContext context)
+        => await _mediator.Send(request, context.CancellationToken);
+
+    [Authorize(Roles = UserRoles.ResendNotifications)]
+    public override async Task<Empty> Resend(ResendRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 }

@@ -15,7 +15,7 @@ internal sealed class Notification
 
     public string? Identity { get; set; }
 
-    public string? IdentityScheme { get; set; }
+    public SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes? IdentityScheme { get; set; }
 
     public long? CaseId { get; set; }
 
@@ -25,7 +25,7 @@ internal sealed class Notification
 
     public string? DocumentHash { get; set; }
 
-    public string? HashAlgorithm { get; set; }
+    public Contracts.v2.DocumentHash.Types.HashAlgorithms? HashAlgorithm { get; set; }
 
     public string? CreatedUserName { get; set; }
 
@@ -34,6 +34,8 @@ internal sealed class Notification
     public DateTime? ResultTime { get; set; }
 
     public List<NotificationError>? Errors { get; set; }
+
+    public bool Resend { get; set; }
 }
 
 internal sealed class NotificationError

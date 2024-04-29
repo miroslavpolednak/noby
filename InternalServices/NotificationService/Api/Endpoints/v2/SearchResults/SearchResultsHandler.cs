@@ -39,7 +39,7 @@ internal sealed class SearchResultsHandler(
 
         if (!string.IsNullOrEmpty(request.Identifier?.Identity))
         {
-            query = query.Where(t => t.Identity == request.Identifier.Identity && t.IdentityScheme == request.Identifier.IdentityScheme.ToString());
+            query = query.Where(t => t.Identity == request.Identifier.Identity && t.IdentityScheme == request.Identifier.IdentityScheme);
         }
 
         if (request.CaseId.HasValue)

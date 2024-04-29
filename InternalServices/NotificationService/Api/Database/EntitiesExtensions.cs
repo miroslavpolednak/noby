@@ -36,18 +36,18 @@ internal static class EntitiesExtensions
         }
 
         // klient
-        if (!string.IsNullOrEmpty(notification.Identity) && !string.IsNullOrEmpty(notification.IdentityScheme))
+        if (!string.IsNullOrEmpty(notification.Identity) && notification.IdentityScheme != null)
         {
-            result.Identifier = new SharedTypes.GrpcTypes.UserIdentity(notification.Identity, Enum.Parse<UserIdentitySchemes>(notification.IdentityScheme));
+            result.Identifier = new SharedTypes.GrpcTypes.UserIdentity { Identity = notification.Identity, IdentityScheme = notification.IdentityScheme.Value };
         }
 
         // doc hash
-        if (!string.IsNullOrEmpty(notification.HashAlgorithm) && !string.IsNullOrEmpty(notification.DocumentHash))
+        if (notification.HashAlgorithm != null && !string.IsNullOrEmpty(notification.DocumentHash))
         {
             result.DocumentHash = new Contracts.v2.DocumentHash
             {
                 Hash = notification.DocumentHash,
-                HashAlgorithm = Enum.Parse<Contracts.v2.DocumentHash.Types.HashAlgorithms>(notification.HashAlgorithm)
+                HashAlgorithm = notification.HashAlgorithm.Value
             };
         }
 

@@ -14,7 +14,7 @@ internal sealed class IdentifierValidator
                 .WithErrorCode(ErrorCodeMapper.IdentityInvalid);
 
         RuleFor(request => request.IdentityScheme)
-            .Must(t => t != SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.Unknown)
+            .Must(t => t != SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.Unknown && Enum.IsDefined(t))
             .WithErrorCode(ErrorCodeMapper.IdentitySchemeInvalid);
     }
 }

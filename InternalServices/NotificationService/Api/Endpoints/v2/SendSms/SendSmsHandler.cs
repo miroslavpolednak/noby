@@ -36,12 +36,12 @@ internal sealed class SendSmsHandler(
             State = NotificationStates.InProgress,
             Channel = NotificationChannels.Sms,
             Identity = request.Identifier?.Identity,
-            IdentityScheme = request.Identifier?.IdentityScheme.ToString(),
+            IdentityScheme = request.Identifier?.IdentityScheme,
             CaseId = request.CaseId,
             CustomId = request.CustomId,
             DocumentId = request.DocumentId,
             DocumentHash = request.DocumentHash?.Hash,
-            HashAlgorithm = request.DocumentHash?.HashAlgorithm.ToString(),
+            HashAlgorithm = request.DocumentHash?.HashAlgorithm,//.ToString(),
             CreatedTime = _dateTime.GetLocalNow().DateTime,
             CreatedUserName = _serviceUser.UserName
         };

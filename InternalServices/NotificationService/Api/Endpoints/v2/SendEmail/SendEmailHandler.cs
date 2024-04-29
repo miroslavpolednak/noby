@@ -1,7 +1,6 @@
 ﻿using CIS.Core.Exceptions.ExternalServices;
 using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.v2;
-using DomainServices.CodebookService.Clients;
 using KafkaFlow;
 using SharedAudit;
 using SharedComponents.DocumentDataStorage;
@@ -12,7 +11,6 @@ namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendEmail;
 
 internal sealed class SendEmailHandler(
     TimeProvider _dateTime,
-    ICodebookServiceClient _codebookService,
     ILogger<SendEmailHandler> _logger,
     ServiceUserHelper _serviceUser,
     Database.NotificationDbContext _dbContext,
@@ -28,7 +26,7 @@ internal sealed class SendEmailHandler(
         var notificationId = Guid.NewGuid();
         _logger.NotificationRequestReceived(notificationId, NotificationChannels.Email);
 
-        var domainName = request.From.Value.ToLowerInvariant().Split('@').Last();
+        var domainName = request.From.Value.GetDomainFromEmail();
         // kontrola na domenu uz je ve validatoru
         var senderType = _appConfiguration.EmailSenders.Mcs.Contains(domainName, StringComparer.OrdinalIgnoreCase) ? Mandants.Kb : Mandants.Mp;
 
@@ -38,12 +36,12 @@ internal sealed class SendEmailHandler(
             Channel = NotificationChannels.Email,
             State = NotificationStates.InProgress,
             Identity = request.Identifier?.Identity,
-            IdentityScheme = request.Identifier?.IdentityScheme.ToString(),
+            IdentityScheme = request.Identifier?.IdentityScheme,
             CaseId = request.CaseId,
             CustomId = request.CustomId,
             DocumentId = request.DocumentId,
             DocumentHash = request.DocumentHash?.Hash,
-            HashAlgorithm = request.DocumentHash?.HashAlgorithm.ToString(),  
+            HashAlgorithm = request.DocumentHash?.HashAlgorithm,  
             CreatedTime = _dateTime.GetLocalNow().DateTime,
             CreatedUserName = _serviceUser.UserName,
         };
@@ -93,10 +91,6 @@ internal sealed class SendEmailHandler(
             catch (Exception ex)
             {
                 _logger.SaveAttachmentFailed(notificationInstance.Id, ex);
-
-                // nastavit stav v databazi
-                notificationInstance.State = NotificationStates.Error;
-                await _dbContext.SaveChangesAsync(cancellationToken);
 
                 throw new CisExternalServiceServerErrorException(ErrorCodeMapper.UploadAttachmentFailed, nameof(SendEmailHandler), "Unable to upload attachment to storage service");
             }

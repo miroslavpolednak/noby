@@ -14,7 +14,7 @@ public class DocumentHashValidator
                 .WithErrorCode(ErrorCodeMapper.HashInvalid);
 
         RuleFor(request => request.HashAlgorithm)
-            .Must(x => x != Contracts.v2.DocumentHash.Types.HashAlgorithms.Unknown)
+            .Must(x => x != Contracts.v2.DocumentHash.Types.HashAlgorithms.Unknown && Enum.IsDefined(x))
             .WithErrorCode(ErrorCodeMapper.HashAlgorithmRequired);
     }
 }

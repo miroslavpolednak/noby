@@ -18,7 +18,7 @@ internal sealed class ResendHandler
         var email = await _dbContext.EmailResults
             .Where(t => t.Id == request.NotificationId && t.SenderType == LegacyContracts.Statistics.Dto.SenderType.MP)
             .Where(t => t.State == LegacyContracts.Result.Dto.NotificationState.Invalid || t.State == LegacyContracts.Result.Dto.NotificationState.Unsent || t.State == LegacyContracts.Result.Dto.NotificationState.Error)
-            .FirstAsync(cancellationToken)
+            .FirstOrDefaultAsync(cancellationToken)
             ?? throw new CisNotFoundException(ErrorCodeMapper.ResultNotFound, $"Result with id = '{request.NotificationId}' not found."); ;
 
         email.State = LegacyContracts.Result.Dto.NotificationState.InProgress;
