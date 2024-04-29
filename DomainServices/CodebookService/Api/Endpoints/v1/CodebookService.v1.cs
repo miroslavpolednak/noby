@@ -35,6 +35,9 @@ internal partial class CodebookService
     public override Task<GenericCodebookResponse> RefinancingTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetGenericItems<SharedTypes.Enums.RefinancingTypes>(true);
 
+    public override Task<GenericCodebookResponse> HandoverTypeDetails(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context) => 
+        Helpers.GetGenericItems<SharedTypes.Enums.HandoverTypeDetail>(false);
+
     public override Task<GenericCodebookResponse> AcademicDegreesAfter(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 

@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Clients;
 
-internal sealed class MaintananceService
+internal sealed class MaintananceService(Contracts.MaintananceService.MaintananceServiceClient _service)
     : IMaintananceService
 {
     public async Task<long[]> GetCancelCaseJobIds(CancellationToken cancellationToken = default)
@@ -21,12 +21,5 @@ internal sealed class MaintananceService
     {
         var result = await _service.GetOfferGuaranteeDateToCheckAsync(new(), cancellationToken: cancellationToken);
         return result.Items?.ToArray() ?? Array.Empty<GetOfferGuaranteeDateToCheckResponse.Types.GetOfferGuaranteeDateToCheckItem>();
-    }
-
-    private readonly Contracts.MaintananceService.MaintananceServiceClient _service;
-
-    public MaintananceService(Contracts.MaintananceService.MaintananceServiceClient service)
-    {
-        _service = service;
     }
 }

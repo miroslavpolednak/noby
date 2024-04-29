@@ -8,12 +8,12 @@ internal sealed class GenerateRetentionDocumentRequestValidator : AbstractValida
     public GenerateRetentionDocumentRequestValidator(IFeatureManager featureManager)
     {
         RuleFor(x => x.SignatureDeadline)
-            .GreaterThanOrEqualTo(DateTime.UtcNow.ToLocalTime())
+            .GreaterThanOrEqualTo(DateTime.UtcNow.AddDays(1).Date.ToLocalTime())
             .WithErrorCode(90032)
             .WithMessage("SignatureDeadline is lower than current time");
         
         RuleFor(t => t)
         .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Retention))
-        .WithErrorCode(90054);
+        .WithErrorCode(90056);
     }
 }

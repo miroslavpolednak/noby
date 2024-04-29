@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using SharedTypes.Enums;
 using DomainServices.UserService.Clients.Authorization;
 using NOBY.Infrastructure.ErrorHandling;
 

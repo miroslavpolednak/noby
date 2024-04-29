@@ -9,11 +9,8 @@ namespace NOBY.Api.Endpoints.Workflow;
 [ApiController]
 [Route("api/case")]
 [ApiVersion(1)]
-public class WorkflowController : ControllerBase
+public class WorkflowController(IMediator _mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    public WorkflowController(IMediator mediator) => _mediator = mediator;
-
     /// <summary>
     /// Získání relevantních typů konzultace
     /// </summary>

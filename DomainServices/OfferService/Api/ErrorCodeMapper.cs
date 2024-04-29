@@ -23,7 +23,7 @@ internal sealed class ErrorCodeMapper
     public const int MortgageRetentionAmountIndividualPriceNotValid = 10027;
     public const int CaseIdNotFoundOnOffer = 10029;
     public const int CaseIdIsEmpty = 10030;
-    public const int ResponseCodeTypeIdIsEmpty = 10031;
+    public const int CaseIdNotFoundInKonsDb = 10032;
 
     public static IErrorCodesDictionary Init()
     {
@@ -47,7 +47,7 @@ internal sealed class ErrorCodeMapper
             { MortgageRetentionAmountNotValid, "SimulateMortgageRetentionRequest.BasicParameters.Amount is not valid" },
             { MortgageRetentionAmountIndividualPriceNotValid, "SimulateMortgageRetentionRequest.BasicParameters.AmountIndividualPrice is not valid" },
             { CaseIdNotFoundOnOffer, "Offer.CaseId is empty" },
-            { ResponseCodeTypeIdIsEmpty, "ResponseCodeTypeId is empty"}
+            { CaseIdNotFoundInKonsDb, "CaseId not found in konsDb view" }
         });
 
         return Messages;

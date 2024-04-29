@@ -1,6 +1,7 @@
 ﻿using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using System.Globalization;
 
 namespace NOBY.Api.Endpoints.Refinancing.CommunicateMortgageRefixation;
 
@@ -28,9 +29,15 @@ internal sealed class CommunicateMortgageRefixationHandler : IRequestHandler<Com
         {
             var updateOfferRequest = new UpdateOfferRequest
             {
+                OfferId = offer.Data.OfferId,
                 ValidTo = new[] { DateTime.UtcNow.AddDays(45), (DateTime)offer.MortgageRefixation.BasicParameters.FixedRateValidTo }.Min(),
                 Flags = (offer.Data.Flags & (int)OfferFlagTypes.Communicated) == 0 ? offer.Data.Flags | (int)OfferFlagTypes.Communicated : null
             };
+
+            if (offer.Data.Origin is not OfferOrigins.BigDataPlatform)
+            {
+                await CreateResponseCode(offer, cancellationToken);
+            }
 
             await _offerService.UpdateOffer(updateOfferRequest, cancellationToken);
         }
@@ -43,5 +50,17 @@ internal sealed class CommunicateMortgageRefixationHandler : IRequestHandler<Com
         {
             ProcessId = sa?.ProcessId
         };
+    }
+
+    private async Task CreateResponseCode(GetOfferListResponse.Types.GetOfferListItem offer, CancellationToken cancellationToken)
+    {
+        var serviceRequest = new CreateResponseCodeRequest
+        {
+            CaseId = offer.Data.CaseId ?? 0,
+            ResponseCodeCategory = ResponseCodeCategories.NewFixedRatePeriod,
+            Data = offer.MortgageRefixation.SimulationInputs.FixedRatePeriod.ToString(CultureInfo.InvariantCulture),
+        };
+
+        await _offerService.CreateResponseCode(serviceRequest, cancellationToken);
     }
 }

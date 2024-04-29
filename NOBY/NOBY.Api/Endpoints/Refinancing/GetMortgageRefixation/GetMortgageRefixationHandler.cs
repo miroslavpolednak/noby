@@ -1,5 +1,4 @@
-﻿using DomainServices.CaseService.Clients.v1;
-using DomainServices.OfferService.Clients.v1;
+﻿using DomainServices.OfferService.Clients.v1;
 using NOBY.Services.MortgageRefinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
@@ -24,6 +23,7 @@ internal sealed class GetMortgageRefixationHandler(
             Tasks = retentionData.Tasks,
             IndividualPriceCommentLastVersion = retentionData.SalesArrangement?.Refixation?.IndividualPriceCommentLastVersion,
             Comment = retentionData.SalesArrangement?.Refixation?.Comment,
+            InterestRateDiscount = retentionData.ActivePriceException?.LoanInterestRate?.LoanInterestRateDiscount,
             IsPriceExceptionActive = retentionData.ActivePriceException is not null
         };
 

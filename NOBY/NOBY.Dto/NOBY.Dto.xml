@@ -582,14 +582,129 @@
             Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.ResponseCodes">
+        <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.RefinancingStateId">
             <summary>
-            Seznam odpovědních kódů
+            Stav
             </summary>
         </member>
         <member name="P:NOBY.Dto.Refinancing.BaseRefinancingDetailResponse.IsPriceExceptionActive">
             <summary>
             Existuje workflow úkol cenové vyjímky
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.CreatedOn">
+            <summary>
+            Čas vytvoření Offer
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.IsExtraPaymentComplete">
+            <summary>
+            Typ mimořádné splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.ExtraPaymentAmount">
+            <summary>
+            Celková výše mimořádné splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.FeeAmount">
+            <summary>
+            Výše účelně vynaložených nákladů
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.PrincipalAmount">
+            <summary>
+            Jistina splacená mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.InterestAmount">
+            <summary>
+            Úroky splacené mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.OtherUnpaidFees">
+            <summary>
+            Neuhrazené poplatky splacené mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.InterestOnLate">
+            <summary>
+            Úroky z prodlení splacené mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.InterestCovid">
+            <summary>
+            Úroky s odloženou splatností splacené mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.IsLoanOverdue">
+            <summary>
+            Příznak, zda je úvěr po splatnosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.IsPaymentReduced">
+            <summary>
+            Příznak, zda se snižuje výše pravidelné splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.NewMaturityDate">
+            <summary>
+            Nové datum splatnosti, pokud se zkracuje splacením mimořádné splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.NewPaymentAmount">
+            <summary>
+            Nová výše splátky, pokud se snižuje výše splátky splacením mimořádné splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.FeeTypeId">
+            <summary>
+            Typ pokuty za předčasné splacení
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.FeeCalculationBase">
+            <summary>
+            Základ pro výpočet pokuty
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.FeeAmountContracted">
+            <summary>
+            Smluvní pokuty
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.FixedRateSanctionFreePeriodFrom">
+            <summary>
+            Období k fixaci od
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.FixedRateSanctionFreePeriodTo">
+            <summary>
+            Období k fixaci do
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.AnnualSanctionFreePeriodFrom">
+            <summary>
+            Období bez sankce od
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.AnnualSanctionFreePeriodTo">
+            <summary>
+            Období bez sankce do
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.SanctionFreeAmount">
+            <summary>
+            Částka k období bez sankce
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.FeeAmountTotal">
+            <summary>
+            Spočítaná pokuta (Pokuta – sleva za pokutu, minimálně 0)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.ExtraPaymentAmountTotal">
+            <summary>
+            Spočítaná nová výše splátky jako ExtraPaymentAmount + FeeAmountTotal (s odečtenou slevou)
             </summary>
         </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.ProcessId">
@@ -630,6 +745,16 @@
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.DocumentId">
             <summary>
             Slouží k náhledu na dokumenty
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.DocumentId">
+            <summary>
+            eArchiv ID dokumentu
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.DocumentEACode">
+            <summary>
+            EA kód dokumentu
             </summary>
         </member>
         <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.ValidTo">

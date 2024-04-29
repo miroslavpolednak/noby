@@ -67,8 +67,8 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         var signatureTypeDetails = await _codebookService.SignatureTypeDetails(cancellationToken);
 
         if (signatureTypeDetails.Any(s => s.Id == request.SignatureTypeDetailId &&
-                                          s.IsHedgeAvailable == (request.RefinancingDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix) &&
-                                          s.IsIndividualAvailable == (request.RefinancingDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix)))
+                                          (s.IsHedgeAvailable && request.RefinancingDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix) ||
+                                          (s.IsIndividualAvailable && request.RefinancingDocumentTypeId == (int)RefixationDocumentTypes.InterestRateNotification)))
         {
             return;
         }

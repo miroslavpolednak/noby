@@ -23,20 +23,20 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
-    private readonly MortgageRefinancingWorkflowService _retentionWorkflowService;
+    private readonly MortgageRefinancingWorkflowService _refinancingWorkflowService;
     private readonly ICaseServiceClient _caseService;
 
     public LinkMortgageRetentionOfferHandler(
         ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
-        MortgageRefinancingWorkflowService retentionWorkflowService,
+        MortgageRefinancingWorkflowService refinancingWorkflowService,
         ICaseServiceClient caseService)
     {
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
-        _retentionWorkflowService = retentionWorkflowService;
+        _refinancingWorkflowService = refinancingWorkflowService;
         _caseService = caseService;
     }
 
@@ -56,7 +56,7 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
 
     private async Task ProcessWorkflow(LinkMortgageRetentionOfferRequest request, MortgageRetentionFullData retention, _SA salesArrangement, CancellationToken cancellationToken)
     {
-        var workflowResult = await _retentionWorkflowService.GetProcessInfoByProcessId(request.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
+        var workflowResult = await _refinancingWorkflowService.GetProcessInfoByProcessId(request.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
 
         await UpdateRetentionWorkflowProcess(retention, salesArrangement.CaseId, workflowResult.ProcessIdSb, cancellationToken);
 
@@ -70,22 +70,11 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
             {
                 FeeId = await GetFeeId(salesArrangement, cancellationToken),
                 FeeSum = retention.BasicParameters.FeeAmount,
-                FeeFinalSum = ((decimal?)retention.BasicParameters.FeeAmountDiscounted).GetValueOrDefault()
+                FeeFinalSum = (decimal?)retention.BasicParameters.FeeAmountDiscounted ?? retention.BasicParameters.FeeAmount
             }
         };
 
-        await _retentionWorkflowService.CreateIndividualPriceWorkflowTask(mortgageParameters, request.IndividualPriceCommentLastVersion, cancellationToken);
-    }
-
-    private Task UpdateSalesArrangementParameters(LinkMortgageRetentionOfferRequest request, _SA salesArrangement, CancellationToken cancellationToken)
-    {
-        salesArrangement.Retention.IndividualPriceCommentLastVersion = request.IndividualPriceCommentLastVersion;
-
-        return _salesArrangementService.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
-        {
-            SalesArrangementId = salesArrangement.SalesArrangementId,
-            Retention = salesArrangement.Retention
-        }, cancellationToken);
+        await _refinancingWorkflowService.CreateIndividualPriceWorkflowTask(mortgageParameters, request.IndividualPriceCommentLastVersion, cancellationToken);
     }
 
     private async Task UpdateRetentionWorkflowProcess(MortgageRetentionFullData retention, long caseId, int taskIdSb, CancellationToken cancellationToken)
@@ -94,7 +83,7 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
         {
             CaseId = caseId,
             TaskIdSb = taskIdSb,
-            MortgageRetention = new()
+            MortgageRetention = new UpdateTaskRequest.Types.TaskAmendmentMortgageRetention
             {
                 InterestRateValidFrom = retention.SimulationInputs.InterestRateValidFrom,
                 LoanInterestRate = (decimal?)retention.SimulationInputs.InterestRate,
@@ -107,6 +96,17 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
         };
 
         await _caseService.UpdateTask(updateRequest, cancellationToken);
+    }
+
+    private Task UpdateSalesArrangementParameters(LinkMortgageRetentionOfferRequest request, _SA salesArrangement, CancellationToken cancellationToken)
+    {
+        salesArrangement.Retention.IndividualPriceCommentLastVersion = request.IndividualPriceCommentLastVersion;
+
+        return _salesArrangementService.UpdateSalesArrangementParameters(new UpdateSalesArrangementParametersRequest
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            Retention = salesArrangement.Retention
+        }, cancellationToken);
     }
 
     private async Task<int> GetFeeId(_SA salesArrangement, CancellationToken cancellationToken)

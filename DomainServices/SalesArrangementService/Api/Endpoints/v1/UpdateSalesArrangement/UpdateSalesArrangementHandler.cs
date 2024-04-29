@@ -2,7 +2,7 @@
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangement;
 
-internal sealed class UpdateSalesArrangementHandler
+internal sealed class UpdateSalesArrangementHandler(Database.SalesArrangementServiceDbContext _dbContext)
     : IRequestHandler<Contracts.UpdateSalesArrangementRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementRequest request, CancellationToken cancellation)
@@ -33,16 +33,9 @@ internal sealed class UpdateSalesArrangementHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private static int[] _allowedStates = 
+    private static readonly int[] _allowedStates = 
     [ 
         (int)SalesArrangementStates.InSigning, 
         (int)SalesArrangementStates.InProgress 
     ];
-
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-
-    public UpdateSalesArrangementHandler(Database.SalesArrangementServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
 }

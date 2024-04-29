@@ -258,6 +258,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00018-KonstDbViewCopy.sql = DomainServices\OfferService\DatabaseMigrations\00018-KonstDbViewCopy.sql
 		DomainServices\OfferService\DatabaseMigrations\00019-dds-datatypes.sql = DomainServices\OfferService\DatabaseMigrations\00019-dds-datatypes.sql
 		DomainServices\OfferService\DatabaseMigrations\00020-DatamartDocumentDataEntityIdTypeChange.sql = DomainServices\OfferService\DatabaseMigrations\00020-DatamartDocumentDataEntityIdTypeChange.sql
+		DomainServices\OfferService\DatabaseMigrations\00021-OfferDeleteFix.sql = DomainServices\OfferService\DatabaseMigrations\00021-OfferDeleteFix.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"

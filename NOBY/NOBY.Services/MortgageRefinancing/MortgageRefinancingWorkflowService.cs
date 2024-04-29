@@ -74,7 +74,7 @@ public sealed class MortgageRefinancingWorkflowService(
         return result;
     }
 
-    private ProcessTask.AmendmentsOneofCase getRequiredAmendmentCase(RefinancingTypes refinancingType)
+    private static ProcessTask.AmendmentsOneofCase getRequiredAmendmentCase(RefinancingTypes refinancingType)
         => refinancingType switch
         {
             RefinancingTypes.MortgageRetention => ProcessTask.AmendmentsOneofCase.MortgageRetention,

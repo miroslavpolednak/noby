@@ -10,6 +10,7 @@ import "Parameters/SalesArrangementParametersCustomerChange.proto";
 import "Parameters/SalesArrangementParametersCustomerChange3602.proto";
 import "Parameters/SalesArrangementParametersRetention.proto";
 import "Parameters/SalesArrangementParametersRefixation.proto";
+import "Parameters/SalesArrangementParametersExtraPayment.proto";
 import "google/protobuf/wrappers.proto";
 
 message CreateSalesArrangementRequest {
@@ -41,6 +42,7 @@ message CreateSalesArrangementRequest {
 		SalesArrangementParametersCustomerChange3602 CustomerChange3602C = 27;
 		SalesArrangementParametersRetention Retention = 28;
 		SalesArrangementParametersRefixation Refixation = 29;
+		SalesArrangementParametersExtraPayment ExtraPayment = 30;
     }
 }
 

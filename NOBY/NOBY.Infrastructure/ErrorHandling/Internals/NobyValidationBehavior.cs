@@ -9,17 +9,10 @@ namespace NOBY.Infrastructure.ErrorHandling.Internals;
 /// <remarks>
 /// Pokud v rámci pipeline handleru vrátí FluentValidation chyby, vyhodíme vyjímku CisValidationException a ukončí se flow requestu.
 /// </remarks>
-public sealed class NobyValidationBehavior<TRequest, TResponse>
+public sealed class NobyValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> _validators)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
-
-    public NobyValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
-    {
-        _validators = validators;
-    }
-
     public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var validationFailures = _validators

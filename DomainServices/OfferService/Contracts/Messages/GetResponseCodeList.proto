@@ -14,7 +14,7 @@ message GetResponseCodeListResponse {
 
 	message GetResponseCodeItem {
 		int32 ResponseCodeId = 1;
-		int32 ResponseCodeTypeId = 2;
+		google.protobuf.Int32Value ResponseCodeTypeId = 2;
 		google.protobuf.StringValue Data = 3;
 		cis.types.ModificationStamp Created = 7;
 	}

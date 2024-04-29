@@ -3,6 +3,7 @@ using CIS.Infrastructure.gRPC;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
+using System.Net;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 
@@ -11,15 +12,19 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly ILogger<GetDocumentHandler> _logger;
 
     public GetDocumentHandler(
         ICurrentUserAccessor currentUserAccessor,
         IDocumentArchiveServiceClient documentArchiveService,
-        IDocumentOnSAServiceClient documentOnSaService)
+        IDocumentOnSAServiceClient documentOnSaService,
+        ILogger<GetDocumentHandler> logger
+          )
     {
         _currentUserAccessor = currentUserAccessor;
         _documentArchiveService = documentArchiveService;
         _documentOnSAService = documentOnSaService;
+        _logger = logger;
     }
 
     public async Task<GetDocumentResponse> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
@@ -33,6 +38,19 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
     }
 
     private async Task<GetDocumentResponse> HandleByEArchive(string documentId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await GetDocumentFromEArchive(documentId, cancellationToken);
+        }
+        catch (Exception exp)
+        {
+            _logger.LogError(exp, "Error when getting document");
+            throw new NobyValidationException(90054, (int)HttpStatusCode.BadRequest);
+        }
+    }
+
+    private async Task<GetDocumentResponse> GetDocumentFromEArchive(string documentId, CancellationToken cancellationToken)
     {
         var user = _currentUserAccessor.User;
 

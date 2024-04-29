@@ -4,7 +4,7 @@ using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.CaseService.Api.Endpoints.Maintanance.DeleteConfirmedPriceException;
 
-internal sealed class DeleteConfirmedPriceExceptionHandler
+internal sealed class DeleteConfirmedPriceExceptionHandler(CaseServiceDbContext _dbContext)
     : IRequestHandler<DeleteConfirmedPriceExceptionRequest, Empty>
 {
     public async Task<Empty> Handle(DeleteConfirmedPriceExceptionRequest request, CancellationToken cancellationToken)
@@ -15,12 +15,5 @@ internal sealed class DeleteConfirmedPriceExceptionHandler
             .ExecuteDeleteAsync(cancellationToken);
 
         return new Empty();
-    }
-
-    private readonly CaseServiceDbContext _dbContext;
-
-    public DeleteConfirmedPriceExceptionHandler(CaseServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

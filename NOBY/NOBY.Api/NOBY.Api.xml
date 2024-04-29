@@ -2506,6 +2506,12 @@
             </summary>
             <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest.IndividualPriceCommentLastVersion">
+            <summary>
+            Komentář k Cenové výjimce
+            </summary>
+            <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest.FirstName">
             <summary>
             Jméno
@@ -2685,7 +2691,7 @@
             True = set flag, False = unset flag
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.FeeAmountDiscounted">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.FeeAmountDiscount">
             <summary>
             Sleva z pokuty
             </summary>
@@ -2715,74 +2721,14 @@
             ID vytvorene simulace.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.IsExtraPaymentComplete">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OldOffer">
             <summary>
-            Typ mimořádné splátky
+            Původní simulace nalinkovaná na SA
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.ExtraPaymentAmount">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.NewOffer">
             <summary>
-            Celková výše mimořádné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.FeeAmount">
-            <summary>
-            Výše účelně vynaložených nákladů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.PrincipalAmount">
-            <summary>
-            Jistina splacená mimořádnou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.InterestAmount">
-            <summary>
-            Úroky splacené mimořádnou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OtherUnpaidFees">
-            <summary>
-            Neuhrazené poplatky splacené mimořádnou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.InterestOnLate">
-            <summary>
-            Úroky z prodlení splacené mimořádnou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.InterestCovid">
-            <summary>
-            Úroky s odloženou splatností splacené mimořádnou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.IsLoanOverdue">
-            <summary>
-            Příznak, zda je úvěr po splatnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.IsPaymentReduced">
-            <summary>
-            Příznak, zda se snižuje výše pravidelné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.NewMaturityDate">
-            <summary>
-            Nové datum splatnosti, pokud se zkracuje splacením mimořádné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.NewPaymentAmount">
-            <summary>
-            Nová výše splátky, pokud se snižuje výše splátky splacením mimořádné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.FeeAmountTotal">
-            <summary>
-            Spočítaná pokuta (Pokuta – sleva za pokutu, minimálně 0)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.ExtraPaymentAmountTotal">
-            <summary>
-            Spočítaná nová výše splátky jako ExtraPaymentAmount + FeeAmountTotal (s odečtenou slevou)
+            Nově nasimolovaná nabídka
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest.InterestRateDiscount">
@@ -3411,16 +3357,6 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.SignatureTypeDetailId">
-            <summary>
-            Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.SignatureDeadline">
-            <summary>
-            Nejzazší datum podpisu dokumentu
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.SignatureTypeDetailId">
             <summary>
             Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
@@ -3471,9 +3407,74 @@
             Aktuální úroková sazba.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.CreatedOn">
+            <summary>
+            datum vytvoření
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.IsExtraPaymentFullyRepaid">
+            <summary>
+            Způsob splacení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.ExtraPaymentAmount">
+            <summary>
+            Výše splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.PrincipalAmount">
+            <summary>
+            Výše splacené jistiny
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.ExtraPaymentDate">
+            <summary>
+            Datum splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.RefinancingStateId">
+            <summary>
+            Stav
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.PaymentState">
+            <summary>
+            Uhrazeno; 0 - Unknown; 1 - Uhrazeno; 2 - Neuhrazeno
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.Document">
+            <summary>
+            Dokumentu refinancování
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.Agreements">
+            <summary>
+            Souhlasy
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.Handover">
+            <summary>
+            Způsob předání dokumentů
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.FeeAmountDiscount">
+            <summary>
+            Upravená výše poplatku
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.ResponseCodes">
+            <summary>
+            Seznam odpovědních kódů
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.Offers">
             <summary>
             Seznam nabídek pro daný proces
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.InterestRateDiscount">
+            <summary>
+            Sleva sazby z IC
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.CommunicatedOffersValidTo">
@@ -3484,6 +3485,11 @@
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.LegalNoticeGeneratedDate">
             <summary>
             Datum odeslání zákonných oznámení
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.ResponseCodes">
+            <summary>
+            Seznam odpovědních kódů
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.FeeAmount">
@@ -3527,6 +3533,11 @@
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.LoanPaymentAmountDiscounted">
             <summary>
             Výše měsíční splátky se zohledněním IC.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.Document">
+            <summary>
+            Dokumentu refinancování
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.IsGenerateDocumentEnabled">

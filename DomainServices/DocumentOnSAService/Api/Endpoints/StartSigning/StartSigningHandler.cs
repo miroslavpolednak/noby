@@ -84,23 +84,36 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         else
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedKindOfSigningRequest);
 
-        // For CRS, Product and Service request  
-        if (documentOnSaEntity.TaskId is null && documentOnSaEntity.SignatureTypeId is not null && documentOnSaEntity.SignatureTypeId == SignatureTypes.Electronic.ToByte())
+        try
         {
-            var prepareDocumentRequest = await _startSigningMapper.MapPrepareDocumentRequest(documentOnSaEntity, salesArrangement, cancellationToken);
-            var referenceId = await _eSignaturesClient.PrepareDocument(prepareDocumentRequest, cancellationToken);
-            var uploadDocumentRequest = await _startSigningMapper.MapUploadDocumentRequest(referenceId, prepareDocumentRequest.DocumentData.FileName, documentOnSaEntity, cancellationToken);
-            var (externalId, _) = await _eSignaturesClient.UploadDocument(uploadDocumentRequest.ReferenceId, uploadDocumentRequest.Filename, uploadDocumentRequest.CreationDate, uploadDocumentRequest.FileData, cancellationToken);
-            documentOnSaEntity.ExternalIdESignatures = externalId;
+            //Insert new DocumentOnSA and get DocumentOnSaId
+            await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            // For CRS, Product and Service request  
+            if (documentOnSaEntity.TaskId is null && documentOnSaEntity.SignatureTypeId is not null && documentOnSaEntity.SignatureTypeId == SignatureTypes.Electronic.ToByte())
+            {
+                var prepareDocumentRequest = await _startSigningMapper.MapPrepareDocumentRequest(documentOnSaEntity, salesArrangement, cancellationToken);
+                var referenceId = await _eSignaturesClient.PrepareDocument(prepareDocumentRequest, cancellationToken);
+                var uploadDocumentRequest = await _startSigningMapper.MapUploadDocumentRequest(referenceId, prepareDocumentRequest.DocumentData.FileName, salesArrangement, documentOnSaEntity, cancellationToken);
+                var (externalId, _) = await _eSignaturesClient.UploadDocument(uploadDocumentRequest.ReferenceId, uploadDocumentRequest.Filename, uploadDocumentRequest.CreationDate, uploadDocumentRequest.FileData, cancellationToken);
+                
+                documentOnSaEntity.ExternalIdESignatures = externalId;
+                await _dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            if (request.TaskId is null)
+                await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
+
+            return _startSigningMapper.MapToResponse(documentOnSaEntity);
         }
+        catch
+        {
+            _dbContext.DocumentOnSa.Remove(documentOnSaEntity);
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
-        if (request.TaskId is null)
-            await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
-
-        await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return _startSigningMapper.MapToResponse(documentOnSaEntity);
+            throw;
+        }
     }
 
     private async Task<DocumentOnSa> ProcessServiceRequest(StartSigningRequest request, SalesArrangement salesArrangement, CancellationToken cancellationToken)

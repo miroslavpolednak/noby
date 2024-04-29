@@ -1,8 +1,11 @@
 ﻿using DomainServices.OfferService.Clients.v1;
+using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment;
 
-internal sealed class SimulateMortgageExtraPaymentHandler(IOfferServiceClient _offerService)
+internal sealed class SimulateMortgageExtraPaymentHandler(
+    ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService)
     : IRequestHandler<SimulateMortgageExtraPaymentRequest, SimulateMortgageExtraPaymentResponse>
 {
     public async Task<SimulateMortgageExtraPaymentResponse> Handle(SimulateMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
@@ -12,7 +15,7 @@ internal sealed class SimulateMortgageExtraPaymentHandler(IOfferServiceClient _o
             CaseId = request.CaseId,
             BasicParameters = new()
             {
-                FeeAmountDiscounted = request.FeeAmountDiscounted
+                FeeAmountDiscount = request.FeeAmountDiscount
             },
             SimulationInputs = new()
             {
@@ -26,24 +29,25 @@ internal sealed class SimulateMortgageExtraPaymentHandler(IOfferServiceClient _o
         // spocitat simulaci
         var result = await _offerService.SimulateMortgageExtraPayment(dsRequest, cancellationToken);
 
-        return new SimulateMortgageExtraPaymentResponse
+        var response = new SimulateMortgageExtraPaymentResponse
         {
             OfferId = result.OfferId,
-            ExtraPaymentAmount = result.SimulationResults.ExtraPaymentAmount,
-            FeeAmount = result.SimulationResults.FeeAmount,
-            InterestAmount = result.SimulationResults.InterestAmount,
-            InterestCovid = result.SimulationResults.InterestCovid,
-            InterestOnLate = result.SimulationResults.InterestOnLate,
-            IsExtraPaymentComplete = result.SimulationResults.IsExtraPaymentFullyRepaid,
-            NewMaturityDate = result.SimulationResults.NewMaturityDate,
-            IsLoanOverdue = result.SimulationResults.IsLoanOverdue,
-            IsPaymentReduced = result.SimulationResults.IsPaymentReduced,
-            NewPaymentAmount = result.SimulationResults.NewPaymentAmount,
-            OtherUnpaidFees = result.SimulationResults.OtherUnpaidFees,
-            PrincipalAmount = result.SimulationResults.PrincipalAmount,
-            
-            FeeAmountTotal = result.SimulationResults.FeeAmount - request.FeeAmountDiscounted.GetValueOrDefault(),
-            ExtraPaymentAmountTotal = result.SimulationResults.ExtraPaymentAmount + result.SimulationResults.FeeAmount - request.FeeAmountDiscounted.GetValueOrDefault()
+            NewOffer = result.SimulationResults.ToDto(DateTime.Now, request.FeeAmountDiscount)
         };
+
+        // najit puvodni simulaci
+        var salesArrangements = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
+        int? offerId = salesArrangements
+            .SalesArrangements
+            .FirstOrDefault(t => t.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageExtraPayment && t.OfferId.HasValue && t.State == (int)SalesArrangementStates.InApproval)
+            ?.OfferId;
+
+        if (offerId.HasValue)
+        {
+            var oldOffer = await _offerService.GetOffer(offerId.Value, cancellationToken);
+            response.OldOffer = oldOffer.MortgageExtraPayment.SimulationResults.ToDto(oldOffer.Data.Created.DateTime, oldOffer.MortgageExtraPayment.BasicParameters.FeeAmountDiscount);
+        }
+
+        return response;
     }
 }

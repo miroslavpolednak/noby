@@ -24,7 +24,7 @@ internal sealed class MortgageExtraPaymentDataMapper
     {
         return new()
         {
-            FeeAmountDiscounted = basicParameters.FeeAmountDiscounted
+            FeeAmountDiscount = basicParameters.FeeAmountDiscount
         };
     }
 
@@ -54,7 +54,15 @@ internal sealed class MortgageExtraPaymentDataMapper
             NewMaturityDate = result.NewMaturityDate,
             NewPaymentAmount = result.NewPaymentAmount,
             OtherUnpaidFees = result.OtherUnpaidFees,
-            PrincipalAmount = result.PrincipalAmount
+            PrincipalAmount = result.PrincipalAmount,
+            SanctionFreeAmount = result.SanctionFreeAmount,
+            FixedRateSanctionFreePeriodFrom = result.FixedRateSanctionFreePeriodFrom,
+            FixedRateSanctionFreePeriodTo = result.FixedRateSanctionFreePeriodTo,
+            FeeAmountContracted = result.FeeAmountContracted,
+            FeeCalculationBase = result.FeeCalculationBase,
+            FeeTypeId = result.FeeTypeId,
+            AnnualSanctionFreePeriodFrom = result.AnnualSanctionFreePeriodFrom,
+            AnnualSanctionFreePeriodTo = result.AnnualSanctionFreePeriodTo
         };
     }
 
@@ -62,7 +70,7 @@ internal sealed class MortgageExtraPaymentDataMapper
     {
         return new()
         {
-            FeeAmountDiscounted = basicParameters.FeeAmountDiscounted
+            FeeAmountDiscount = basicParameters.FeeAmountDiscount
         };
     }
 
@@ -92,7 +100,15 @@ internal sealed class MortgageExtraPaymentDataMapper
             NewMaturityDate = output.NewMaturityDate,
             NewPaymentAmount = output.NewPaymentAmount,
             OtherUnpaidFees = output.OtherUnpaidFees,
-            PrincipalAmount = output.PrincipalAmount
+            PrincipalAmount = output.PrincipalAmount,
+            SanctionFreeAmount = output.SanctionFreeAmount,
+            FixedRateSanctionFreePeriodFrom = output.FixedRateSanctionFreePeriodFrom,
+            FixedRateSanctionFreePeriodTo = output.FixedRateSanctionFreePeriodTo,
+            FeeAmountContracted = output.FeeAmountContracted,
+            FeeCalculationBase = output.FeeCalculationBase,
+            FeeTypeId = output.FeeTypeId,
+            AnnualSanctionFreePeriodFrom = output.AnnualSanctionFreePeriodFrom,
+            AnnualSanctionFreePeriodTo = output.AnnualSanctionFreePeriodTo
         };
     }
 }

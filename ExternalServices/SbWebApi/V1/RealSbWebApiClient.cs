@@ -297,6 +297,34 @@ internal sealed class RealSbWebApiClient
         return responseObject.Ea_number;
     }
 
+    public async Task<ICollection<string>?> GenerateCalculationDocuments(GenerateCalculationDocumentsRequest request, CancellationToken cancellationToken = default)
+    {
+        var sbRequest = new CalculationDocuments_request
+        {
+            Case_id = (int?)request.CaseId,
+            Full_repayment = request.IsExtraPaymentComplete,
+            Calculation_date = DateTime.UtcNow,
+            Extra_payment_date = request.ExtraPaymentDate,
+            Client_id = request.ClientKbId.ToString(CultureInfo.InvariantCulture),
+            Extra_payment_sum = (double?)request.ExtraPaymentAmount,
+            Uvn_amount = (double?)request.FeeAmount,
+            Principal_amount = (double?)request.PrincipalAmount,
+            Interest_amount = (double?)request.InterestAmount,
+            Other_unpaid_fees = (double?)request.OtherUnpaidFees,
+            Interest_on_late = (double?)request.InterestOnLate,
+            Interest_covid = (double?)request.InterestCovid,
+            Loan_overdue = request.IsLoanOverdue,
+            Payment_reduction = request.IsPaymentReduced,
+            New_maturity_date = request.NewMaturityDate,
+            New_payment_amount = (double?)request.NewPaymentAmount
+        };
+
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/api/refixationservices/calculationdocuments", sbRequest, cancellationToken);
+        var responseObject = await RequestHelper.ProcessResponse<CalculationDocuments_response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
+
+        return responseObject.Ea_numbers;
+    }
+
     private readonly HttpClient _httpClient;
     private readonly IUserServiceClient _userService;
     private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;

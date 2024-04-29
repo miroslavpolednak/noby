@@ -11,7 +11,7 @@ internal sealed class CreateTaskRequestValidator
         RuleFor(t => t.TaskTypeId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.TaskTypeIdIsEmpty)
-            .Must(t => t is 2 or 3 or 7 or 9)
+            .Must(t => t is 2 or 3 or 7 or 9 or 10)
             .WithErrorCode(ErrorCodeMapper.TaskTypeIdNotAllowed);
 
         When(t => t.TaskTypeId is 2 or 3 or 7, () =>

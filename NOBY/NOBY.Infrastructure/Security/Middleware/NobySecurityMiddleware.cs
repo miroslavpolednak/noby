@@ -4,13 +4,8 @@ using System.Security.Claims;
 
 namespace NOBY.Infrastructure.Security.Middleware;
 
-public sealed class NobySecurityMiddleware
+public sealed class NobySecurityMiddleware(RequestDelegate _next)
 {
-    private readonly RequestDelegate _next;
-
-    public NobySecurityMiddleware(RequestDelegate next) =>
-        _next = next;
-
     public async Task Invoke(HttpContext context)
     {
         if (authenticateUser())

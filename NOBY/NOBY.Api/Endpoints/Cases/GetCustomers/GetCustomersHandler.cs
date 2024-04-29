@@ -7,8 +7,14 @@ using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomers;
 
-internal sealed class GetCustomersHandler
-    : IRequestHandler<GetCustomersRequest, List<GetCustomersResponseCustomer>>
+internal sealed class GetCustomersHandler(
+    DomainServices.ProductService.Clients.IProductServiceClient _productService,
+    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService,
+    DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService,
+    DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
+    DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
+    DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService)
+        : IRequestHandler<GetCustomersRequest, List<GetCustomersResponseCustomer>>
 {
     public async Task<List<GetCustomersResponseCustomer>> Handle(GetCustomersRequest request, CancellationToken cancellationToken)
     {
@@ -126,28 +132,5 @@ internal sealed class GetCustomersHandler
         return finalCustomerList.OrderBy(t => t.RoleId).ThenBy(t => t.LastName).ToList();
     }
 
-    private static int[] _allowedCustomerRoles = new[] { 1, 2 };
-    
-    private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
-    private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
-
-    public GetCustomersHandler(
-        DomainServices.ProductService.Clients.IProductServiceClient productService,
-        DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
-        DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
-        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
-        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService, 
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
-    {
-        _productService = productService;
-        _customerService = customerService;
-        _customerOnSAService = customerOnSAService;
-        _codebookService = codebookService;
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-    }
+    private static int[] _allowedCustomerRoles = [1, 2];
 }

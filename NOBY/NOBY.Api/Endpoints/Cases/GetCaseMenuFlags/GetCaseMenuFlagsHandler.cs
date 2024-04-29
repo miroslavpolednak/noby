@@ -4,12 +4,16 @@ using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.ProductService.Clients;
 using NOBY.Services.DocumentHelper;
-using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 
-internal sealed class GetCaseMenuFlagsHandler
-    : IRequestHandler<GetCaseMenuFlagsRequest, GetCaseMenuFlagsResponse>
+internal sealed class GetCaseMenuFlagsHandler(
+    ICurrentUserAccessor _currentUserAccessor,
+    ICaseServiceClient _caseService,
+    IProductServiceClient _productService,
+    IDocumentArchiveServiceClient _documentArchiveServiceClient,
+    IDocumentHelperService _documentHelper)
+        : IRequestHandler<GetCaseMenuFlagsRequest, GetCaseMenuFlagsResponse>
 {
     public async Task<GetCaseMenuFlagsResponse> Handle(GetCaseMenuFlagsRequest request, CancellationToken cancellationToken)
     {
@@ -93,28 +97,7 @@ internal sealed class GetCaseMenuFlagsHandler
         return response;
     }
 
-    private static int[] _requiredStatusesInDocumentQueue = [100, 110, 200];
-
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IProductServiceClient _productService;
-    private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
-    private readonly IDocumentHelperService _documentHelper;
-    private readonly ICaseServiceClient _caseService;
-
-    internal static readonly int[] _values = [ 100, 110, 200, 300 ];
-
-    public GetCaseMenuFlagsHandler(
-        ICurrentUserAccessor currentUserAccessor,
-        ICaseServiceClient caseService,
-        IProductServiceClient productService,
-        IDocumentArchiveServiceClient documentArchiveServiceClient,
-        IDocumentHelperService documentHelper)
-    {
-        _currentUserAccessor = currentUserAccessor;
-        _caseService = caseService;
-        _productService = productService;
-        _documentArchiveServiceClient = documentArchiveServiceClient;
-        _documentHelper = documentHelper;
-    }
+    private static readonly int[] _requiredStatusesInDocumentQueue = [100, 110, 200];
+    private static readonly int[] _values = [ 100, 110, 200, 300 ];
 }
 

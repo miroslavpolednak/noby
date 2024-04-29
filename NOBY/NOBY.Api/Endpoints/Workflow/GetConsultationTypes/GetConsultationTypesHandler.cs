@@ -3,8 +3,10 @@ using DomainServices.CodebookService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.GetConsultationTypes;
 
-internal sealed class GetConsultationTypesHandler
-    : IRequestHandler<GetConsultationTypesRequest, List<GetConsultationTypesResponseItem>>
+internal sealed class GetConsultationTypesHandler(
+    ICaseServiceClient _caseService, 
+    ICodebookServiceClient _codebookService)
+        : IRequestHandler<GetConsultationTypesRequest, List<GetConsultationTypesResponseItem>>
 {
     public async Task<List<GetConsultationTypesResponseItem>> Handle(GetConsultationTypesRequest request, CancellationToken cancellationToken)
     {
@@ -21,14 +23,5 @@ internal sealed class GetConsultationTypesHandler
                 TaskSubtypeId = t.TaskSubtypeId,
                 taskSubtypeName = t.TaskSubtypeName
             }).ToList();
-    }
-
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ICaseServiceClient _caseService;
-
-    public GetConsultationTypesHandler(ICaseServiceClient caseService, ICodebookServiceClient codebookService)
-    {
-        _codebookService = codebookService;
-        _caseService = caseService;
     }
 }

@@ -32,7 +32,7 @@ public sealed class NobyValidationException
         var item = ErrorCodeMapper.Messages[exceptionCode];
         this.Errors = new List<ApiErrorItem>
         {
-            new ApiErrorItem
+            new() 
             {
                 ErrorCode = exceptionCode,
                 Message = item.Message,
@@ -61,7 +61,7 @@ public sealed class NobyValidationException
 
         this.Errors = new List<ApiErrorItem>
         {
-            new ApiErrorItem(exceptionCode, message, ApiErrorItemServerity.Error)
+            new(exceptionCode, message, ApiErrorItemServerity.Error)
         }.AsReadOnly();
     }
 
@@ -78,7 +78,7 @@ public sealed class NobyValidationException
 
         this.Errors = new List<ApiErrorItem>
         {
-            new ApiErrorItem(exceptionCode, message, description, ApiErrorItemServerity.Error)
+            new(exceptionCode, message, description, ApiErrorItemServerity.Error)
         }.AsReadOnly();
     }
 

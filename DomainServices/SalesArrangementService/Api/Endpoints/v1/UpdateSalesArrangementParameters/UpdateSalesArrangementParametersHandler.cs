@@ -4,7 +4,12 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementParameters;
 
-internal sealed class UpdateSalesArrangementParametersHandler : IRequestHandler<Contracts.UpdateSalesArrangementParametersRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateSalesArrangementParametersHandler(
+    IMediator _mediator,
+    HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService,
+    Database.SalesArrangementServiceDbContext _dbContext,
+    IDocumentDataStorage _documentDataStorage) 
+    : IRequestHandler<Contracts.UpdateSalesArrangementParametersRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementParametersRequest request, CancellationToken cancellationToken)
     {
@@ -104,24 +109,8 @@ internal sealed class UpdateSalesArrangementParametersHandler : IRequestHandler<
             SalesArrangementTypes.CustomerChange3602C => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.CustomerChange3602C.MapCustomerChange3602(), cancellationToken),
             SalesArrangementTypes.MortgageRetention => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.Retention.MapRetention(), cancellationToken),
             SalesArrangementTypes.MortgageRefixation => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.Refixation.MapRefixation(), cancellationToken),
+            SalesArrangementTypes.MortgageExtraPayment => _documentDataStorage.AddOrUpdateByEntityId(request.SalesArrangementId, SalesArrangementParametersConst.TableName, request.ExtraPayment.MapExtraPayment(), cancellationToken),
             _ => throw new ArgumentOutOfRangeException(nameof(salesArrangementType), salesArrangementType, null)
         };
-    }
-
-    private readonly HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly IMediator _mediator;
-
-    public UpdateSalesArrangementParametersHandler(
-        IMediator mediator,
-        HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
-        Database.SalesArrangementServiceDbContext dbContext,
-        IDocumentDataStorage documentDataStorage)
-    {
-        _mediator = mediator;
-        _customerOnSAService = customerOnSAService;
-        _dbContext = dbContext;
-        _documentDataStorage = documentDataStorage;
     }
 }

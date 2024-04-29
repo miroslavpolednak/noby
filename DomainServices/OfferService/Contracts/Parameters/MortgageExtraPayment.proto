@@ -7,7 +7,7 @@ import "NullableGrpcDecimal.proto";
 import "GrpcDate.proto";
 
 message MortgageExtraPaymentBasicParameters {
-	cis.types.NullableGrpcDecimal FeeAmountDiscounted = 1;
+	cis.types.NullableGrpcDecimal FeeAmountDiscount = 1;
 }
 
 message MortgageExtraPaymentSimulationInputs {
@@ -30,6 +30,14 @@ message MortgageExtraPaymentSimulationResults {
 	bool IsPaymentReduced = 10;
 	cis.types.GrpcDate NewMaturityDate = 11;
 	cis.types.GrpcDecimal NewPaymentAmount = 12;
+	int32 FeeTypeId = 13;
+	cis.types.GrpcDecimal FeeCalculationBase = 14;
+	cis.types.GrpcDecimal FeeAmountContracted = 15;
+	cis.types.GrpcDate FixedRateSanctionFreePeriodFrom = 16;
+	cis.types.GrpcDate FixedRateSanctionFreePeriodTo = 17;
+	cis.types.GrpcDate AnnualSanctionFreePeriodFrom = 18;
+	cis.types.GrpcDate AnnualSanctionFreePeriodTo = 19;
+	cis.types.GrpcDecimal SanctionFreeAmount = 20;
 }
 
 message MortgageExtraPaymentFullData {

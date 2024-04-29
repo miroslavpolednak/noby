@@ -158,7 +158,7 @@ internal sealed class FormsDocumentService
             ForPreview = false,
             OutputType = OutputFileType.Pdfa,
             Parts = { CreateDocPart(documentOnSaData) },
-            DocumentFooter = CreateFooter(salesArrangement, dynamicFormValues)
+            DocumentFooter = CreateFooter(salesArrangement, dynamicFormValues, documentOnSaId)
         };
 
         return await _documentGeneratorService.GenerateDocument(generateDocumentRequest, cancellationToken);
@@ -186,12 +186,13 @@ internal sealed class FormsDocumentService
         return docPart;
     }
 
-    private static DocumentFooter CreateFooter(SalesArrangement salesArrangement, DynamicFormValues dynamicFormValues)
+    private static DocumentFooter CreateFooter(SalesArrangement salesArrangement, DynamicFormValues dynamicFormValues, int documentOnSaId)
     {
         return new DocumentFooter
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
             CaseId = salesArrangement.CaseId,
+            DocumentOnSaId = documentOnSaId,
             DocumentId = dynamicFormValues.DocumentId,
             BarcodeText = dynamicFormValues.FormId
         };

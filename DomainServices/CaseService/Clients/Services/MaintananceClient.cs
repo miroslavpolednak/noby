@@ -1,6 +1,6 @@
 ﻿namespace DomainServices.CaseService.Clients.Services;
 
-internal sealed class MaintananceClient
+internal sealed class MaintananceClient(Contracts.MaintananceService.MaintananceServiceClient _service)
     : IMaintananceClient
 {
     public async Task<List<long>> GetConfirmedPriceExceptionsRequest(DateTime olderThan, CancellationToken cancellationToken = default)
@@ -14,9 +14,4 @@ internal sealed class MaintananceClient
         {
             CaseId = caseId
         }, cancellationToken: cancellationToken);
-
-    private readonly Contracts.MaintananceService.MaintananceServiceClient _service;
-
-    public MaintananceClient(Contracts.MaintananceService.MaintananceServiceClient service)
-        => _service = service;
 }

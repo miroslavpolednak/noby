@@ -18,6 +18,7 @@
 	<ItemGroup>
 	  <None Remove="MaintananceService.proto" />
 	  <None Remove="Messages\UpdatePcpId.proto" />
+	  <None Remove="Parameters\SalesArrangementParametersExtraPayment.proto" />
 	  <None Remove="Parameters\SalesArrangementParametersRefixation.proto" />
 	  <None Remove="Parameters\SalesArrangementParametersRetention.proto" />
 	</ItemGroup>
@@ -37,10 +38,15 @@
 
 	<ItemGroup>
 		<Protobuf Include="MaintananceService.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Parameters\SalesArrangementParametersExtraPayment.proto">
+		  <ProtoRoot>./</ProtoRoot>
+		  <AdditionalImportDirs>../../../Shared/SharedTypes/GrpcTypes/Protos</AdditionalImportDirs>
+		</Protobuf>
 		<Protobuf Include="SalesArrangementService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 
 		<Protobuf Include="Parameters\SalesArrangementParametersRefixation.proto" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Parameters\SalesArrangementParametersRetention.proto" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Parameters\SalesArrangementParametersExtraPayment.proto" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Parameters\SalesArrangementParametersCustomerChange3602.proto" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Parameters\SalesArrangementParametersCustomerChange.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Parameters/SalesArrangementParametersHUBN.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />

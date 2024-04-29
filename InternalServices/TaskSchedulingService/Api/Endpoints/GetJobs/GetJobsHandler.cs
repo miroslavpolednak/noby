@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Endpoints.GetJobs;
 
-internal sealed class GetJobsHandler
+internal sealed class GetJobsHandler(Database.TaskSchedulingServiceDbContext _dbContext)
     : IRequestHandler<GetJobsRequest, GetJobsResponse>
 {
     public async Task<GetJobsResponse> Handle(GetJobsRequest request, CancellationToken cancellationToken)
@@ -24,12 +24,5 @@ internal sealed class GetJobsHandler
             IsDisabled = t.IsDisabled
         }));
         return response;
-    }
-
-    private readonly Database.TaskSchedulingServiceDbContext _dbContext;
-
-    public GetJobsHandler(Database.TaskSchedulingServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

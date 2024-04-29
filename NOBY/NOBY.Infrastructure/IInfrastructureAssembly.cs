@@ -1,6 +1,5 @@
-﻿namespace NOBY.Infrastructure
+﻿namespace NOBY.Infrastructure;
+
+public interface IInfrastructureAssembly
 {
-    public interface IInfrastructureAssembly
-    {
-    }
 }

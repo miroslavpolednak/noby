@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.CaseService.Api.Endpoints.Maintanance;
 
 [Authorize]
-internal sealed class MaintananceService
+internal sealed class MaintananceService(IMediator _mediator)
     : Contracts.MaintananceService.MaintananceServiceBase
 {
     public override async Task<GetConfirmedPriceExceptionsResponse> GetConfirmedPriceExceptions(GetConfirmedPriceExceptionsRequest request, ServerCallContext context)
@@ -14,8 +14,4 @@ internal sealed class MaintananceService
 
     public override async Task<Empty> DeleteConfirmedPriceException(DeleteConfirmedPriceExceptionRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
-
-    private readonly IMediator _mediator;
-    public MaintananceService(IMediator mediator)
-        => _mediator = mediator;
 }

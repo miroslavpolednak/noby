@@ -9,11 +9,13 @@ namespace DomainServices.OfferService.Api.Endpoints.Maintanance;
 
 public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<ImportOfferFromDatamartHandler> logger) : IRequestHandler<ImportOfferFromDatamartRequest, Empty>
 {
+    private const int _numberOfBatchsInHistory = 31;
     private const int _technicalTimeout = 3600; // [s]
     private int _maxAllowedBatchPerJob = 10;
     private const string _existBatchForProcessingSql = """SELECT COUNT(*) FROM bdp.D_CUST_RETENTION_BATCH b WHERE b.Load_Status='Complete' AND b.Was_Processed_By_Noby = 0""";
     private const string _oldestBatchIdForProcessing = """SELECT TOP (1) b.Batch_Id FROM bdp.D_CUST_RETENTION_BATCH b WHERE b.Load_Status='Complete' AND b.Was_Processed_By_Noby = 0 ORDER BY b.Batch_Id""";
     private const string _existDataForProcessingSql = """SELECT COUNT(*) FROM bdp.D_CUST_RETENTION_OFFER o WHERE o.Was_Processed_By_Noby = 0 AND o.Batch_Id = @BatchId""";
+    private const string _getProcessedBatchs = """SELECT b.Batch_Id FROM bdp.D_CUST_RETENTION_BATCH b WHERE b.Was_Processed_By_Noby = 1""";
 
     private readonly IConfiguration _config = config;
     private readonly ILogger<ImportOfferFromDatamartHandler> _logger = logger;
@@ -37,6 +39,14 @@ public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<Impor
             var batchId = await connection.ExecuteScalarAsync<long>(_oldestBatchIdForProcessing);
             _logger.BatchIdForProcessing(batchId);
 
+            // Update customer information CustomerChurnRisk and CustomerPriceSensitivity on Case (CaseServiceDb)
+            await connection.QueryFirstOrDefaultAsync<int>(
+                 "dbo.UpdateCustomerInformation",
+                 new { BatchId = batchId },
+                 commandType: CommandType.StoredProcedure,
+                 commandTimeout: _technicalTimeout
+                 );
+
             //Delete all non Communicated refixation offer from datalake (only where is intersection of sets)
             await connection.QueryFirstOrDefaultAsync<int>(
                 "dbo.DeleteRefixationOffer",
@@ -54,15 +64,21 @@ public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<Impor
                 commandType: CommandType.StoredProcedure,
                 commandTimeout: _technicalTimeout);
             }
-            
-            // Delete data from stage tables (datalake) after import (data for batchId) 
-            await connection.QueryFirstOrDefaultAsync<int>(
-                    "dbo.DeleteDatamartStageTables",
-                    new { BatchId = batchId },
-                    commandType: CommandType.StoredProcedure,
-                    commandTimeout: _technicalTimeout
-                    );
 
+            var processedBatches = (await connection.QueryAsync<long>(_getProcessedBatchs)).OrderBy(b => b).ToList();
+
+            // For observation reason we keep history of processed batches in stage tables. 
+            if (processedBatches.Count > _numberOfBatchsInHistory)
+            {
+                // Delete data from stage tables (datalake)  
+                await connection.QueryFirstOrDefaultAsync<int>(
+                        "dbo.DeleteDatamartStageTables",
+                        new { BatchId = processedBatches[0] },
+                        commandType: CommandType.StoredProcedure,
+                        commandTimeout: _technicalTimeout
+                        );
+            }
+            
             _maxAllowedBatchPerJob--;
         }
         return new();

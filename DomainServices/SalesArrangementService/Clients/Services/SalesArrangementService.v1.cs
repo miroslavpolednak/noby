@@ -3,7 +3,7 @@ using SharedTypes.Enums;
 
 namespace DomainServices.SalesArrangementService.Clients.v1;
 
-internal sealed class SalesArrangementService
+internal sealed class SalesArrangementService(Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service)
     : ISalesArrangementServiceClient
 {
     public async Task<List<GetProductSalesArrangementsResponse.Types.SalesArrangement>> GetProductSalesArrangements(long caseId, CancellationToken cancellationToken = default)
@@ -215,11 +215,4 @@ internal sealed class SalesArrangementService
     private SalesArrangement? _cacheGetSalesArrangement;
     private ValidateSalesArrangementIdResponse? _cacheValidateSalesArrangementId;
     private int? _cacheValidateSalesArrangementIdId;
-
-    private readonly Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service;
-
-    public SalesArrangementService(Contracts.v1.SalesArrangementService.SalesArrangementServiceClient service)
-    {
-        _service = service;
-    }
 }

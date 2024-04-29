@@ -7,13 +7,8 @@ internal sealed class GenerateExtraPaymentDocumentRequestValidator : AbstractVal
 {
     public GenerateExtraPaymentDocumentRequestValidator(IFeatureManager featureManager)
     {
-        RuleFor(x => x.SignatureDeadline)
-            .GreaterThanOrEqualTo(DateTime.UtcNow.ToLocalTime())
-            .WithErrorCode(90032)
-            .WithMessage("SignatureDeadline is lower than current time");
-
         RuleFor(t => t)
           .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ExtraPayment))
-          .WithErrorCode(90056);
+          .WithErrorCode(90058);
     }
 }

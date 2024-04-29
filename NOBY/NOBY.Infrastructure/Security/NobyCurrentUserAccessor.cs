@@ -5,19 +5,12 @@ using System.Security.Claims;
 
 namespace NOBY.Infrastructure.Security;
 
-public sealed class NobyCurrentUserAccessor 
-    : ICurrentUserAccessor
+public sealed class NobyCurrentUserAccessor(IHttpContextAccessor _httpContext)
+        : ICurrentUserAccessor
 {
-    private readonly IHttpContextAccessor _httpContext;
-
     private ICurrentUser? _user;
     private ICurrentUserDetails? _userDetails;
     private bool _userDetailsFetched;
-
-    public NobyCurrentUserAccessor(IHttpContextAccessor httpContext)
-    {
-        _httpContext = httpContext;
-    }
 
     public ICurrentUser? User
     {
@@ -43,7 +36,7 @@ public sealed class NobyCurrentUserAccessor
         get => _userDetailsFetched ? _userDetails : throw new InvalidOperationException("Trying to access UserDetails without fetching details first. Call FetchDetails() to ensure data being loaded.");
     }
 
-    public async Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<ICurrentUserDetails> EnsureDetails(CancellationToken cancellationToken = default)
     {
         if (!IsAuthenticated)
             throw new InvalidOperationException("Missing authenticated user - can not fetch user details");
@@ -61,7 +54,7 @@ public sealed class NobyCurrentUserAccessor
         return _userDetails;
     }
 
-    public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<TDetails> EnsureDetails<TDetails>(CancellationToken cancellationToken = default)
         where TDetails : ICurrentUserDetails
     {
         await EnsureDetails(cancellationToken);

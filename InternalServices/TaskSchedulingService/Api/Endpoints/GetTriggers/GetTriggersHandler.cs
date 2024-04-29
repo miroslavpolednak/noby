@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Endpoints.GetTriggers;
 
-internal sealed class GetTriggersHandler
+internal sealed class GetTriggersHandler(Database.TaskSchedulingServiceDbContext _dbContext)
     : IRequestHandler<GetTriggersRequest, GetTriggersResponse>
 {
     public async Task<GetTriggersResponse> Handle(GetTriggersRequest request, CancellationToken cancellation)
@@ -36,12 +36,5 @@ internal sealed class GetTriggersHandler
             };
         }));
         return response;
-    }
-
-    private readonly Database.TaskSchedulingServiceDbContext _dbContext;
-
-    public GetTriggersHandler(Database.TaskSchedulingServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

@@ -93,6 +93,33 @@ internal static class SalesArrangementParametersMapperExtensions
         };
     }
 
+    public static SalesArrangementParametersExtraPayment MapExtraPayment(this ExtraPaymentData extraPayment)
+    {
+        return new SalesArrangementParametersExtraPayment
+        {
+            IndividualPriceCommentLastVersion = extraPayment.IndividualPriceCommentLastVersion,
+            HandoverTypeDetailId = extraPayment.HandoverTypeDetailId,
+            Client = !extraPayment.ClientKBId.HasValue ? null : new SalesArrangementParametersExtraPayment.Types.SalesArrangementParametersExtraPaymentClient
+            {
+                KBId = extraPayment.ClientKBId.Value,
+                FirstName = extraPayment.ClientFirstName ?? "",
+                LastName = extraPayment.ClientLastName ?? ""
+            }
+        };
+    }
+
+    public static ExtraPaymentData MapExtraPayment(this SalesArrangementParametersExtraPayment extraPayment)
+    {
+        return new ExtraPaymentData
+        {
+            IndividualPriceCommentLastVersion = extraPayment.IndividualPriceCommentLastVersion,
+            HandoverTypeDetailId = extraPayment.HandoverTypeDetailId,
+            ClientFirstName = extraPayment.Client?.FirstName,
+            ClientLastName = extraPayment.Client?.LastName,
+            ClientKBId = extraPayment.Client?.KBId
+        };
+    }
+
     public static SalesArrangementParametersDrawing MapDrawing(this DrawingData drawingData)
     {
         return new SalesArrangementParametersDrawing
