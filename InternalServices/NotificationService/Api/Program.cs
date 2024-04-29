@@ -8,6 +8,8 @@ using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Services.S3;
 using CIS.Infrastructure.Messaging;
 using Microsoft.FeatureManagement;
+using Microsoft.AspNetCore.Grpc.JsonTranscoding;
+using System.Text.Json;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -28,6 +30,18 @@ SharedComponents.GrpcServiceBuilder
     })
     .Build((builder, configuration) =>
     {
+        // case insensitive nastaveni pro GRPC transcoding
+        builder.Services.PostConfigure<GrpcJsonTranscodingOptions>(options =>
+        {
+            string[] opts = [ "UnarySerializerOptions", "ServerStreamingSerializerOptions" ];
+            foreach (var name in opts)
+            {
+                var prop = options.GetType().GetProperty(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var serializerOptions = prop!.GetValue(options) as JsonSerializerOptions;
+                serializerOptions!.PropertyNameCaseInsensitive = true;
+            }
+        });
+
         // file storage
         builder
             .AddCisStorageServices()
