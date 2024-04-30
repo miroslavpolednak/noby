@@ -33,6 +33,7 @@ internal sealed class WorkflowMapperService
         return new()
         {
             TaskId = task.TaskId,
+            Cancelled = task.Cancelled,
             CreatedOn = task.CreatedOn,
             TaskTypeId = task.TaskTypeId,
             TaskTypeName = task.TaskTypeName,

@@ -1,6 +1,4 @@
-﻿using NOBY.Dto.Refinancing;
-
-namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
+﻿namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
 
 public sealed class GetMortgageRefixationResponse
     : NOBY.Dto.Refinancing.BaseRefinancingDetailResponse
@@ -10,7 +8,7 @@ public sealed class GetMortgageRefixationResponse
     /// <summary>
     /// Seznam odpovědních kódů
     /// </summary>
-    public List<RefinancingResponseCode>? ResponseCodes { get; set; }
+    public List<Dto.Refinancing.RefinancingResponseCode>? ResponseCodes { get; set; }
 
     /// <summary>
     /// Seznam nabídek pro daný proces
@@ -31,4 +29,6 @@ public sealed class GetMortgageRefixationResponse
     /// Datum odeslání zákonných oznámení
     /// </summary>
     public DateTime? LegalNoticeGeneratedDate { get; set; }
+
+    public Dto.Refinancing.RefinancingDocument Document { get; set; } = null!;
 }

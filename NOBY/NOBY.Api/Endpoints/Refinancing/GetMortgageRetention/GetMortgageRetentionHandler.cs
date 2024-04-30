@@ -7,75 +7,65 @@ namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 internal sealed class GetMortgageRetentionHandler(
     IOfferServiceClient _offerService,
     Services.ResponseCodes.ResponseCodesService _responseCodes,
-    MortgageRefinancingWorkflowService _refinancingWorkflowService)
+    MortgageRefinancingDataService _refinancingDataService)
         : IRequestHandler<GetMortgageRetentionRequest, GetMortgageRetentionResponse>
 {
     public async Task<GetMortgageRetentionResponse> Handle(GetMortgageRetentionRequest request, CancellationToken cancellationToken)
     {
-        var retentionData = await _refinancingWorkflowService.GetRefinancingData(request.CaseId, request.ProcessId, RefinancingTypes.MortgageRetention, cancellationToken);
+        // sesbirat vsechna potrebna data
+        var data = await _refinancingDataService.GetRefinancingData(request.CaseId, request.ProcessId, RefinancingTypes.MortgageRetention, cancellationToken);
 
-        var response = new GetMortgageRetentionResponse
-        {
-            RefinancingStateId = (int)retentionData.RefinancingState,
-            SalesArrangementId = retentionData.SalesArrangement?.SalesArrangementId,
-            IsReadOnly = retentionData.RefinancingState != RefinancingStates.RozpracovanoVNoby,
-            Tasks = retentionData.Tasks,
-            ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, OfferTypes.MortgageRefixation, cancellationToken),
-            IndividualPriceCommentLastVersion = retentionData.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion,
-            Comment = retentionData.SalesArrangement?.Retention?.Comment,
-            SignatureTypeDetailId = retentionData.SalesArrangement?.Retention?.SignatureTypeDetailId,
-            // doplnit data simulace z procesu (pozdeji mozna prepsat offerou)
-            InterestRate = (decimal?)retentionData.Process!.MortgageRetention.LoanInterestRate ?? 0M,
-            LoanPaymentAmount = (decimal?)retentionData.Process.MortgageRetention.LoanPaymentAmount ?? 0M,
-            LoanPaymentAmountDiscounted = retentionData.Process.MortgageRetention.LoanPaymentAmountFinal,
-            FeeAmount = (decimal?)retentionData.Process.MortgageRetention.FeeSum ?? 0M,
-            IsPriceExceptionActive = retentionData.ActivePriceException is not null
-        };
+        // vytvorit a naplnit zaklad response modelu
+        var response = data.UpdateBaseResponseModel(new GetMortgageRetentionResponse());
 
-        if (!string.IsNullOrEmpty(retentionData.Process.MortgageRetention?.DocumentId))
+        // retention specific data
+        response.ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, OfferTypes.MortgageRefixation, cancellationToken);
+        response.Document = await _refinancingDataService.CreateSigningDocument(data);
+        response.IndividualPriceCommentLastVersion = data.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion;
+        response.Comment = data.SalesArrangement?.Retention?.Comment;
+        response.InterestRate = (decimal?)data.Process!.MortgageRetention.LoanInterestRate ?? 0M;
+        response.LoanPaymentAmount = (decimal?)data.Process.MortgageRetention.LoanPaymentAmount ?? 0M;
+        response.FeeAmount = (decimal?)data.Process.MortgageRetention.FeeSum ?? 0M;
+        
+        if (((decimal?)data.Process.MortgageRetention.LoanPaymentAmountFinal ?? 0) > 0)
         {
-            response.Document = new()
-            {
-                DocumentId = retentionData.Process.MortgageRetention.DocumentId,
-                DocumentEACode = retentionData.Process.MortgageRetention.DocumentEACode ?? 0
-            };
+            response.LoanPaymentAmountDiscounted = data.Process.MortgageRetention.LoanPaymentAmountFinal;
         }
 
-        // aktivni IC
-        if (retentionData.ActivePriceException is not null)
+        // IC rate
+        if (((decimal?)data.ActivePriceException?.LoanInterestRate?.LoanInterestRateDiscount ?? 0) > 0)
         {
-            // rate
-            response.InterestRateDiscount = retentionData.ActivePriceException.LoanInterestRate?.LoanInterestRateDiscount;
-
-            // poplatek
-            if ((retentionData.ActivePriceException.Fees?.Count ?? 0) != 0)
-            {
-                response.FeeAmountDiscounted = retentionData.ActivePriceException.Fees![0].FinalSum;
-            }
+            response.InterestRateDiscount = data.ActivePriceException!.LoanInterestRate?.LoanInterestRateDiscount;
         }
 
-        // rozhodnuti pro generovani doc.
-        response.IsGenerateDocumentEnabled = retentionData.SalesArrangement?.OfferId is not null &&
-                                             retentionData.RefinancingState == RefinancingStates.RozpracovanoVNoby &&
-                                             !response.IsPriceExceptionActive;
+        // IC poplatek
+        if ((data.ActivePriceException?.Fees?.Count ?? 0) != 0)
+        {
+            response.FeeAmountDiscounted = data.ActivePriceException!.Fees![0].FinalSum;
+        }
 
         // pokud existuje Offer
-        if (retentionData.SalesArrangement?.OfferId is not null)
+        if (data.SalesArrangement?.OfferId is not null)
         {
             // detail offer
-            var offerInstance = await _offerService.GetOffer(retentionData.SalesArrangement.OfferId.Value, cancellationToken);
+            var offerInstance = await _offerService.GetOffer(data.SalesArrangement.OfferId.Value, cancellationToken);
 
             // nacpat data z offer do response
             response.InterestRateValidFrom = offerInstance.MortgageRetention.SimulationInputs.InterestRateValidFrom;
 
-            response.ContainsInconsistentIndividualPriceData = 
-                offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount != response.InterestRateDiscount
+            // priznak zda se lysi offer od dat z procesu
+            response.ContainsInconsistentIndividualPriceData = getContainsInconsistentIndividualPriceData(offerInstance, response);
+        }
+
+        return response;
+    }
+
+    private static bool getContainsInconsistentIndividualPriceData(GetOfferResponse offerInstance, GetMortgageRetentionResponse response)
+    {
+        return offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount != response.InterestRateDiscount
                 || offerInstance.MortgageRetention.SimulationInputs.InterestRate != response.InterestRate
                 || offerInstance.MortgageRetention.SimulationResults.LoanPaymentAmount != response.LoanPaymentAmount
                 || offerInstance.MortgageRetention.BasicParameters.FeeAmount != response.FeeAmount
                 || offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted != response.FeeAmountDiscounted;
-        }
-
-        return response;
     }
 }

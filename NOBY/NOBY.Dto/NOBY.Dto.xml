@@ -747,14 +747,39 @@
             Slouží k náhledu na dokumenty
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.DocumentId">
+        <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.TaskId">
             <summary>
-            eArchiv ID dokumentu
+            Noby task ID. Jde o ID sady úkolů generované Starbuildem.
+            zafiltrovat seznam tasku na taskTypeId = 6 a neni cancelled
+            </summary>
+            <example>22777</example>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.IsContinueEnabled">
+            <summary>
+            True pokud je k dispozici tlacitko Pokracovat
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.DocumentEACode">
+        <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.StateName">
             <summary>
-            EA kód dokumentu
+            Název Noby stavu úkolu
+            </summary>
+            <example>K VYŘÍZENÍ</example>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.StateFilter">
+            <summary>
+            Filter Noby stavu úkolu
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.StateIndicator">
+            <summary>
+            Indikátor barvy Noby stavu
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.IsGenerateDocumentEnabled">
+            <summary>
+            Označuje zda má být aktivní button Generovat dokument
             </summary>
         </member>
         <member name="P:NOBY.Dto.Refinancing.RefinancingOfferDetail.ValidTo">

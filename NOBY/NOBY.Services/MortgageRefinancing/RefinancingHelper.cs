@@ -6,6 +6,18 @@ namespace NOBY.Services.MortgageRefinancing;
 
 public static class RefinancingHelper
 {
+    public static TResponse UpdateBaseResponseModel<TResponse>(this GetRefinancingDataResult result, TResponse response)
+        where TResponse : NOBY.Dto.Refinancing.BaseRefinancingDetailResponse
+    {
+        response.RefinancingStateId = result.RefinancingState;
+        response.SalesArrangementId = result.SalesArrangement?.SalesArrangementId;
+        response.IsReadOnly = result.RefinancingState != RefinancingStates.RozpracovanoVNoby;
+        response.IsPriceExceptionActive = result.ActivePriceException is not null;
+        response.Tasks = result.Tasks;
+
+        return response;
+    }
+
     public static string GetRefinancingTypeText(List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodesMain, ProcessTask process, List<GenericCodebookResponse.Types.GenericCodebookItem> refinancingTypes)
     {
         int? eacode = process.AmendmentsCase switch

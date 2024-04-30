@@ -1,6 +1,4 @@
-﻿using NOBY.Dto.Refinancing;
-
-namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
+﻿namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 
 public sealed class GetMortgageRetentionResponse
     : NOBY.Dto.Refinancing.BaseRefinancingDetailResponse
@@ -10,7 +8,7 @@ public sealed class GetMortgageRetentionResponse
     /// <summary>
     /// Seznam odpovědních kódů
     /// </summary>
-    public List<RefinancingResponseCode>? ResponseCodes { get; set; }
+    public List<Dto.Refinancing.RefinancingResponseCode>? ResponseCodes { get; set; }
 
     /// <summary>
     /// Výše poplatku
@@ -58,12 +56,5 @@ public sealed class GetMortgageRetentionResponse
     /// <summary>
     /// Dokumentu refinancování
     /// </summary>
-    public Dto.Refinancing.RefinancingDocument? Document { get; set; }
-
-    public int? SignatureTypeDetailId { get; set; }
-
-    /// <summary>
-    /// Označuje zda má být aktivní button Generovat dokument
-    /// </summary>
-    public bool IsGenerateDocumentEnabled { get; set; }
+    public Dto.Refinancing.RefinancingDocument Document { get; set; } = null!;
 }

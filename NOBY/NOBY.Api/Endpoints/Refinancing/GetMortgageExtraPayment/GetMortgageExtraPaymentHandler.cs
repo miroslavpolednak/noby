@@ -6,51 +6,40 @@ namespace NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment;
 
 internal sealed class GetMortgageExtraPaymentHandler(
     IOfferServiceClient _offerService,
-    MortgageRefinancingWorkflowService _refinancingWorkflowService)
+    MortgageRefinancingDataService _refinancingDataService)
     : IRequestHandler<GetMortgageExtraPaymentRequest, GetMortgageExtraPaymentResponse>
 {
     public async Task<GetMortgageExtraPaymentResponse> Handle(GetMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
     {
-        var extraPaymentData = await _refinancingWorkflowService.GetRefinancingData(request.CaseId, request.ProcessId, RefinancingTypes.MortgageExtraPayment, cancellationToken);
+        // sesbirat vsechna potrebna data
+        var data = await _refinancingDataService.GetRefinancingData(request.CaseId, request.ProcessId, RefinancingTypes.MortgageExtraPayment, cancellationToken);
 
-        var response = new GetMortgageExtraPaymentResponse
-        {
-            RefinancingStateId = (int)extraPaymentData.RefinancingState,
-            SalesArrangementId = extraPaymentData.SalesArrangement?.SalesArrangementId,
-            IsReadOnly = extraPaymentData.RefinancingState != RefinancingStates.RozpracovanoVNoby,
-            Tasks = extraPaymentData.Tasks,
-            IndividualPriceCommentLastVersion = extraPaymentData.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion,
-            ExtraPaymentAmount = (decimal?)extraPaymentData.Process!.MortgageExtraPayment?.ExtraPaymentAmount ?? 0M,
-            ExtraPaymentDate = (DateTime?)extraPaymentData.Process.MortgageExtraPayment?.ExtraPaymentDate ?? DateTime.Now,
-            IsExtraPaymentFullyRepaid = extraPaymentData.Process.MortgageExtraPayment?.IsFinalExtraPayment ?? false,
-            PrincipalAmount = (decimal?)extraPaymentData.Process.MortgageExtraPayment?.ExtraPaymentAmount ?? 0M,
-            IsPriceExceptionActive = extraPaymentData.ActivePriceException is not null
-        };
+        // vytvorit a naplnit zaklad response modelu
+        var response = data.UpdateBaseResponseModel(new GetMortgageExtraPaymentResponse());
 
+        // extr payment specific data
+        response.Document = await _refinancingDataService.CreateSigningDocument(data);
+        response.IndividualPriceCommentLastVersion = data.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion;
+        response.ExtraPaymentAmount = (decimal?)data.Process!.MortgageExtraPayment?.ExtraPaymentAmount ?? 0M;
+        response.ExtraPaymentDate = (DateTime?)data.Process.MortgageExtraPayment?.ExtraPaymentDate ?? DateTime.Now;
+        response.IsExtraPaymentFullyRepaid = data.Process.MortgageExtraPayment?.IsFinalExtraPayment ?? false;
+        response.PrincipalAmount = (decimal?)data.Process.MortgageExtraPayment?.ExtraPaymentAmount ?? 0M;
+    
         // handover
-        if (extraPaymentData.SalesArrangement?.ExtraPayment?.HandoverTypeDetailId != null)
+        if (data.SalesArrangement?.ExtraPayment?.HandoverTypeDetailId != null)
         {
             response.Handover = new GetMortgageExtraPaymentResponse.HandoverObject
             {
-                FirstName = extraPaymentData.SalesArrangement.ExtraPayment.Client?.FirstName ?? "",
-                LastName = extraPaymentData.SalesArrangement.ExtraPayment.Client?.LastName ?? "",
-                HandoverTypeDetailId = extraPaymentData.SalesArrangement.ExtraPayment.HandoverTypeDetailId.Value
+                FirstName = data.SalesArrangement.ExtraPayment.Client?.FirstName ?? "",
+                LastName = data.SalesArrangement.ExtraPayment.Client?.LastName ?? "",
+                HandoverTypeDetailId = data.SalesArrangement.ExtraPayment.HandoverTypeDetailId.Value
             };
         }
 
-        if (!string.IsNullOrEmpty(extraPaymentData.Process.MortgageExtraPayment?.DocumentId))
+        if ((data.Process.MortgageExtraPayment?.ExtraPaymentAgreements?.Count ?? 0) > 0)
         {
-            response.Document = new()
-            {
-                DocumentId = extraPaymentData.Process.MortgageExtraPayment.DocumentId,
-                DocumentEACode = extraPaymentData.Process.MortgageExtraPayment.DocumentEACode ?? 0
-            };
-        }
-
-        if ((extraPaymentData.Process.MortgageExtraPayment?.ExtraPaymentAgreements?.Count ?? 0) > 0)
-        {
-            response.Agreements = extraPaymentData.Process.MortgageExtraPayment!.ExtraPaymentAgreements
-                .Select(t => new Dto.Refinancing.RefinancingDocument
+            response.Agreements = data.Process.MortgageExtraPayment!.ExtraPaymentAgreements
+                .Select(t => new GetMortgageExtraPaymentResponse.AgreementDocument
                 {
                     DocumentEACode = t.AgreementEACode.GetValueOrDefault(),
                     DocumentId = t.AgreementDocumentId
@@ -59,16 +48,16 @@ internal sealed class GetMortgageExtraPaymentHandler(
         }
 
         // aktivni IC
-        if ((extraPaymentData.ActivePriceException?.Fees?.Count ?? 0) != 0)
+        if ((data.ActivePriceException?.Fees?.Count ?? 0) > 0)
         {
-            response.FeeAmountDiscount = extraPaymentData.ActivePriceException!.Fees![0].TariffSum - extraPaymentData.ActivePriceException.Fees[0].FinalSum;
+            response.FeeAmountDiscount = data.ActivePriceException!.Fees![0].TariffSum - data.ActivePriceException.Fees[0].FinalSum;
         }
 
         // pokud existuje Offer
-        if (extraPaymentData.SalesArrangement?.OfferId is not null)
+        if (data.SalesArrangement?.OfferId is not null)
         {
             // detail offer
-            var offerInstance = await _offerService.GetOffer(extraPaymentData.SalesArrangement.OfferId.Value, cancellationToken);
+            var offerInstance = await _offerService.GetOffer(data.SalesArrangement.OfferId.Value, cancellationToken);
             response.SimulationResults = offerInstance.MortgageExtraPayment.SimulationResults.ToDto(offerInstance.Data.Created.DateTime, response.FeeAmountDiscount);
 
             response.ContainsInconsistentIndividualPriceData = offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted != response.FeeAmountDiscount;

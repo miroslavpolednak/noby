@@ -6,12 +6,12 @@ public sealed class GetMortgageExtraPaymentResponse
     /// <summary>
     /// Dokumentu refinancování
     /// </summary>
-    public Dto.Refinancing.RefinancingDocument? Document { get; set; }
+    public Dto.Refinancing.RefinancingDocument Document { get; set; } = null!;
 
     /// <summary>
     /// Souhlasy
     /// </summary>
-    public List<Dto.Refinancing.RefinancingDocument>? Agreements { get; set; }
+    public List<AgreementDocument>? Agreements { get; set; }
 
     /// <summary>
     /// Způsob předání dokumentů
@@ -40,5 +40,18 @@ public sealed class GetMortgageExtraPaymentResponse
         public string FirstName { get; set; } = string.Empty;
 
         public string LastName { get; set; } = string.Empty;
+    }
+
+    public sealed class AgreementDocument
+    {
+        /// <summary>
+        /// eArchiv ID dokumentu
+        /// </summary>
+        public string DocumentId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// EA kód dokumentu
+        /// </summary>
+        public int DocumentEACode { get; set; }
     }
 }

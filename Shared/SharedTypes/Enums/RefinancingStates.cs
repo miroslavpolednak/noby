@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace SharedTypes.Enums;
 
 [DataContract]
-public enum RefinancingStates
+public enum RefinancingStates : int
 {
     [Display(Name = "Neznámý")]
     [EnumMember]

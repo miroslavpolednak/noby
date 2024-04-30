@@ -1,4 +1,5 @@
 ﻿using DomainServices.OfferService.Clients.v1;
+using DomainServices.OfferService.Contracts;
 using NOBY.Services.MortgageRefinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
@@ -6,37 +7,37 @@ namespace NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
 internal sealed class GetMortgageRefixationHandler(
     TimeProvider _timeProvider,
     IOfferServiceClient _offerService,
-    MortgageRefinancingWorkflowService _refinancingWorkflowService,
+    MortgageRefinancingDataService _refinancingDataService,
     Services.ResponseCodes.ResponseCodesService _responseCodes)
         : IRequestHandler<GetMortgageRefixationRequest, GetMortgageRefixationResponse>
 {
     public async Task<GetMortgageRefixationResponse> Handle(GetMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
-        var retentionData = await _refinancingWorkflowService.GetRefinancingData(request.CaseId, request.ProcessId, RefinancingTypes.MortgageRefixation, cancellationToken);
+        // sesbirat vsechna potrebna data
+        var data = await _refinancingDataService.GetRefinancingData(request.CaseId, request.ProcessId, RefinancingTypes.MortgageRefixation, cancellationToken);
 
-        GetMortgageRefixationResponse response = new()
+        // vytvorit a naplnit zaklad response modelu
+        var response = data.UpdateBaseResponseModel(new GetMortgageRefixationResponse());
+
+        // refixation specific data
+        response.ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, OfferTypes.MortgageRefixation, cancellationToken);
+        response.Document = await _refinancingDataService.CreateSigningDocument(data);
+        response.IndividualPriceCommentLastVersion = data.SalesArrangement?.Refixation?.IndividualPriceCommentLastVersion;
+        response.Comment = data.SalesArrangement?.Refixation?.Comment;
+
+        if (((decimal?)data.ActivePriceException?.LoanInterestRate?.LoanInterestRateDiscount ?? 0) > 0)
         {
-            RefinancingStateId = (int)retentionData.RefinancingState,
-            SalesArrangementId = retentionData.SalesArrangement?.SalesArrangementId,
-            ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, cancellationToken),
-            IsReadOnly = retentionData.RefinancingState != RefinancingStates.RozpracovanoVNoby,
-            Tasks = retentionData.Tasks,
-            IndividualPriceCommentLastVersion = retentionData.SalesArrangement?.Refixation?.IndividualPriceCommentLastVersion,
-            Comment = retentionData.SalesArrangement?.Refixation?.Comment,
-            InterestRateDiscount = retentionData.ActivePriceException?.LoanInterestRate?.LoanInterestRateDiscount,
-            IsPriceExceptionActive = retentionData.ActivePriceException is not null
-        };
+            response.InterestRateDiscount = data.ActivePriceException?.LoanInterestRate?.LoanInterestRateDiscount;
+        }
 
         // zjistit rate ICcka
         decimal? icRate = null;
-        if (retentionData.ActivePriceException is not null)
+        if (data.ActivePriceException is not null)
         {
-            icRate = retentionData.ActivePriceException.LoanInterestRate?.LoanInterestRateDiscount;
+            icRate = response.InterestRateDiscount;
         }
 
-        var offers = (await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken))
-            .Where(t => !(t.Data.ValidTo < _timeProvider.GetLocalNow().Date))
-            .ToList();
+        var offers = await getOffers(request.CaseId, cancellationToken);
 
         // seznam nabidek
         response.Offers = offers?.Select(Dto.Refinancing.RefinancingOfferDetail.CreateRefixationOffer).ToList();
@@ -45,5 +46,12 @@ internal sealed class GetMortgageRefixationHandler(
         response.ContainsInconsistentIndividualPriceData = !(response.Offers?.All(t => t.IsLegalNotice || t.InterestRateDiscount == icRate) ?? true);
 
         return response;
+    }
+
+    private async Task<List<GetOfferListResponse.Types.GetOfferListItem>> getOffers(long caseId, CancellationToken cancellationToken)
+    {
+        return (await _offerService.GetOfferList(caseId, OfferTypes.MortgageRefixation, false, cancellationToken))
+            .Where(t => !(t.Data.ValidTo < _timeProvider.GetLocalNow().Date))
+            .ToList();
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace NOBY.Dto.Refinancing;
+﻿using SharedTypes.Enums;
+
+namespace NOBY.Dto.Refinancing;
 
 public class BaseRefinancingDetailResponse
 {
@@ -27,7 +29,7 @@ public class BaseRefinancingDetailResponse
     /// <summary>
     /// Stav
     /// </summary>
-    public int RefinancingStateId { get; set; }
+    public RefinancingStates RefinancingStateId { get; set; }
 
     /// <summary>
     /// Existuje workflow úkol cenové vyjímky

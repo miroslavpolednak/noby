@@ -14,7 +14,7 @@ public sealed class GetRefinancingDataResult
     /// <summary>
     /// Vsechny tasky vcetne IC na procesu
     /// </summary>
-    public List<NOBY.Dto.Workflow.WorkflowTask>? Tasks { get; set; }
+    public List<Dto.Workflow.WorkflowTask>? Tasks { get; set; }
 
     /// <summary>
     /// Detail refinancniho procesu

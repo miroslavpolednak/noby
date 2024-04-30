@@ -3462,6 +3462,16 @@
             Upravená výše poplatku
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.AgreementDocument.DocumentId">
+            <summary>
+            eArchiv ID dokumentu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.AgreementDocument.DocumentEACode">
+            <summary>
+            EA kód dokumentu
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation.GetMortgageRefixationResponse.ResponseCodes">
             <summary>
             Seznam odpovědních kódů
@@ -3538,11 +3548,6 @@
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.Document">
             <summary>
             Dokumentu refinancování
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageRetention.GetMortgageRetentionResponse.IsGenerateDocumentEnabled">
-            <summary>
-            Označuje zda má být aktivní button Generovat dokument
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.GetRefinancingParametersResponse.IsAnotherSalesArrangementInProgress">
