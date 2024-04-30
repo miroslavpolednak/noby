@@ -24,7 +24,7 @@ internal static class DatabaseExpressions
             {
                 DateTime = t.CreatedTime,
                 UserId = t.CreatedUserId == null ? null : t.CreatedUserId,
-                UserName = t.CreatedUserName == null ? null : t.CreatedUserName
+                UserName = t.CreatedUserName == null ? "" : t.CreatedUserName
             }
         };
     }
