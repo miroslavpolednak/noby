@@ -23,18 +23,7 @@ internal class Address
 
     public string DeliveryDetails => _address.DeliveryDetails;
 
-    public string? Postcode
-    {
-        get
-        {
-            if (string.IsNullOrWhiteSpace(_address.Postcode))
-                return null;
-
-            var value = _address.Postcode.Replace(" ", "");
-
-            return value.All(char.IsNumber) ? value : throw new InvalidOperationException($"PostCode value '{value}' isn't covertable to number.");
-        }
-    }
+    public string? Postcode => string.IsNullOrWhiteSpace(_address.Postcode) ? null : _address.Postcode.Replace(" ", "");
 
     public string City => _address.City;
 
