@@ -20,11 +20,11 @@ internal static class DatabaseExpressions
             ValidTo = t.ValidTo,
             Origin = (OfferOrigins)t.Origin,
             IsCreditWorthinessSimpleRequested = t.IsCreditWorthinessSimpleRequested,
-            Created = new SharedTypes.GrpcTypes.ModificationStamp
+            Created =  new SharedTypes.GrpcTypes.ModificationStamp
             {
                 DateTime = t.CreatedTime,
-                UserId = t.CreatedUserId,
-                UserName = t.CreatedUserName
+                UserId = t.CreatedUserId == null ? null : t.CreatedUserId,
+                UserName = t.CreatedUserName == null ? null : t.CreatedUserName
             }
         };
     }
