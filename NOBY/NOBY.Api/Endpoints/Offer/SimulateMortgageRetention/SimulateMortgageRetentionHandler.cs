@@ -14,7 +14,7 @@ internal sealed class SimulateMortgageRetentionHandler(
         var interestRate = await _offerService.GetInterestRate(request.CaseId, request.InterestRateValidFrom, cancellationToken);
         
         // validace rate
-        if (request.InterestRateDiscount.HasValue && (interestRate - request.InterestRateDiscount.Value) >= 0.1M)
+        if (request.InterestRateDiscount.GetValueOrDefault() > 0 && (interestRate - request.InterestRateDiscount!.Value) < 0.1M)
         {
             throw new NobyValidationException(90060);
         }

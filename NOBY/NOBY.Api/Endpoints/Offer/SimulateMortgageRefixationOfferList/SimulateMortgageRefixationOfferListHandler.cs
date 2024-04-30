@@ -13,7 +13,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
             .Where(t => !(t.Data.ValidTo < _timeProvider.GetLocalNow().Date))
             .ToList();
 
-        List<Dto.Refinancing.RefinancingOfferDetail> finalOffers = new();
+        List<Dto.Refinancing.RefinancingOfferDetail> finalOffers = [];
 
         foreach (var offer in offers)
         {
@@ -43,6 +43,12 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
             {
                 finalOffers.Add(Dto.Refinancing.RefinancingOfferDetail.CreateRefixationOffer(offer));
             }
+        }
+
+        // validace rate
+        if (request.InterestRateDiscount.GetValueOrDefault() > 0 && (finalOffers.Min(t => t.InterestRate) - request.InterestRateDiscount!.Value) < 0.1M)
+        {
+            throw new NobyValidationException(90060);
         }
 
         return new SimulateMortgageRefixationOfferListResponse
