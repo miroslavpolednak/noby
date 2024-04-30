@@ -54,8 +54,6 @@ internal class GenerateExtraPaymentDocumentHandler : IRequestHandler<GenerateExt
 
         await GenerateCalculationDocuments(request, salesArrangement, offer, cancellationToken);
 
-        await CompleteWorkflowProcess(salesArrangement.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
-
         await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.Finished, cancellationToken);
     }
 
@@ -132,18 +130,5 @@ internal class GenerateExtraPaymentDocumentHandler : IRequestHandler<GenerateExt
             NewMaturityDate = offer.MortgageExtraPayment.SimulationResults.NewMaturityDate,
             NewPaymentAmount = offer.MortgageExtraPayment.SimulationResults.NewPaymentAmount,
         }, cancellationToken);
-    }
-
-    private async Task CompleteWorkflowProcess(long caseId, long processId, CancellationToken cancellationToken)
-    {
-        var process = await _caseService.GetProcessByProcessId(caseId, processId, cancellationToken);
-
-        var completeTaskRequest = new CompleteTaskRequest
-        {
-            CaseId = caseId,
-            TaskIdSb = process.ProcessIdSb
-        };
-
-        await _caseService.CompleteTask(completeTaskRequest, cancellationToken);
     }
 }
