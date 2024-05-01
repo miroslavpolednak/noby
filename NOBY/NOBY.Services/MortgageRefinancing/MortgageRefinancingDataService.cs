@@ -21,57 +21,29 @@ public sealed class MortgageRefinancingDataService(
         // aktivni podepisovaci task
         var activeSigningTask = result.Tasks?.FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.Signing && !t.Cancelled);
 
+        var response = new Dto.Refinancing.RefinancingDocument
+        {
+            IsContinueEnabled = refinancingType == RefinancingTypes.MortgageRetention || (refinancingType == RefinancingTypes.MortgageRefixation && eaCode is (605353 or 604587)),
+            DocumentName = await getSigningDocumentName(refinancingType, eaCode),
+            SignatureTypeDetailId = result.SalesArrangement?.Retention?.SignatureTypeDetailId, // pouze pro retence
+            IsGenerateDocumentEnabled = result.SalesArrangement?.OfferId is not null
+                && result.RefinancingState == RefinancingStates.RozpracovanoVNoby
+                && result.ActivePriceException is null
+        };
+
+        // pokud existuje aktivni task na podepisovani
         if (activeSigningTask is not null)
         {
-            return new Dto.Refinancing.RefinancingDocument
-            {
-                TaskId = activeSigningTask.TaskId,
-                IsContinueEnabled = refinancingType == RefinancingTypes.MortgageRetention || (refinancingType == RefinancingTypes.MortgageRefixation && eaCode is (605353 or 604587)),
-                DocumentName = await getSigningDocumentName(refinancingType, eaCode),
-                StateIndicator = activeSigningTask.StateIndicator,
-                StateName = activeSigningTask.StateName,
-                StateFilter = activeSigningTask.StateFilter,
-                SignatureTypeDetailId = result.SalesArrangement?.Retention?.SignatureTypeDetailId, // pouze pro retence
-                // je mozne generovat dokument?
-                IsGenerateDocumentEnabled = getIsGenerateDocumentEnabled()
-            };
-        }
-        else
-        {
-            return new Dto.Refinancing.RefinancingDocument
-            {
-                IsContinueEnabled = false,
-                DocumentName = await getSigningDocumentName(refinancingType, eaCode),
-                SignatureTypeDetailId = result.SalesArrangement?.Retention?.SignatureTypeDetailId, // pouze pro retence
-                // je mozne generovat dokument?
-                IsGenerateDocumentEnabled = getIsGenerateDocumentEnabled()
-            };
+            response.TaskId = activeSigningTask.TaskId;
+            response.StateIndicator = activeSigningTask.StateIndicator;
+            response.StateName = activeSigningTask.StateName;
+            response.StateFilter = activeSigningTask.StateFilter;
+
+            // odstranit task z kolekce
+            result.Tasks!.Remove(activeSigningTask);
         }
 
-        bool getIsGenerateDocumentEnabled()
-        {
-            return result.SalesArrangement?.OfferId is not null
-                && result.RefinancingState == RefinancingStates.RozpracovanoVNoby
-                && result.ActivePriceException is null;
-        }
-    }
-
-    private async Task<string> getSigningDocumentName(RefinancingTypes refinancingType, int? eaCode)
-    {
-        var code = (await _codebookService.EaCodesMain()).FirstOrDefault(t => t.Id == eaCode);
-        if (code is not null)
-        {
-            return code.Name;
-        }
-        else
-        {
-            return refinancingType switch
-            {
-                RefinancingTypes.MortgageRetention => "RefinancingType",//??? co sem?
-                RefinancingTypes.MortgageRefixation => "Dodatek - Refixace",
-                _ => "Unknown"
-            };
-        }
+        return response;
     }
 
     public async Task<GetRefinancingDataResult> GetRefinancingData(long caseId, long? processId, RefinancingTypes refinancingType, CancellationToken cancellationToken)
@@ -119,6 +91,24 @@ public sealed class MortgageRefinancingDataService(
         result.ActivePriceException = await getPriceExceptionData(tasks, cancellationToken);
 
         return result;
+    }
+
+    private async Task<string> getSigningDocumentName(RefinancingTypes refinancingType, int? eaCode)
+    {
+        var code = (await _codebookService.EaCodesMain()).FirstOrDefault(t => t.Id == eaCode);
+        if (code is not null)
+        {
+            return code.Name;
+        }
+        else
+        {
+            return refinancingType switch
+            {
+                RefinancingTypes.MortgageRetention => "RefinancingType",//??? co sem?
+                RefinancingTypes.MortgageRefixation => "Dodatek - Refixace",
+                _ => "Unknown"
+            };
+        }
     }
 
     private async Task<AmendmentPriceException?> getPriceExceptionData(List<DomainServices.CaseService.Contracts.WorkflowTask> tasks, CancellationToken cancellationToken)
