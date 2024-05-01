@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
-using NOBY.Dto.Refinancing;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Offer;
