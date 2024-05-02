@@ -44,6 +44,7 @@ internal sealed class SendEmailHandler(
             HashAlgorithm = request.DocumentHash?.HashAlgorithm,  
             CreatedTime = _dateTime.GetLocalNow().DateTime,
             CreatedUserName = _serviceUser.UserName,
+            Mandant = senderType
         };
         _dbContext.Add(notificationInstance);
         // ulozit do databaze
@@ -64,6 +65,7 @@ internal sealed class SendEmailHandler(
             ReplyTo = request.ReplyTo,
             Format = request.Content.Format,
             Language = request.Content.Language,
+            IsAuditable = request.IsAuditable,
             Attachments = request.Attachments?.Select(t => new Database.DocumentDataEntities.EmailData.EmailAttachment
             {
                 Filename = t.Filename,
@@ -153,7 +155,7 @@ internal sealed class SendEmailHandler(
                     createAuditLog(request, _serviceUser.ConsumerId, notificationInstance.Id, false, ex.Message);
                 }
                 
-                throw;
+                throw new CIS.Core.Exceptions.ExternalServices.CisExternalServiceUnavailableException(0, "MCS"); ;
             }
         }
         

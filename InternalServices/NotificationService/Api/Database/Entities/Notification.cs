@@ -35,6 +35,8 @@ internal sealed class Notification
 
     public List<NotificationError>? Errors { get; set; }
 
+    public Mandants? Mandant { get; set; }
+
     public bool Resend { get; set; }
 }
 

@@ -49,6 +49,7 @@ CREATE TABLE [dbo].[Notification](
 	[CreatedTime] [datetime] NOT NULL,
 	[ResultTime] [datetime] NULL,
 	[Errors] [nvarchar](max) NULL,
+	[Mandant] tinyint NULL,
 	[Resend] bit NOT NULL
  CONSTRAINT [PK_Notification] PRIMARY KEY CLUSTERED 
 (

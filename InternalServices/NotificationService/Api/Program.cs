@@ -10,6 +10,8 @@ using CIS.Infrastructure.Messaging;
 using Microsoft.FeatureManagement;
 using Microsoft.AspNetCore.Grpc.JsonTranscoding;
 using System.Text.Json;
+using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
+using CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -64,10 +66,10 @@ SharedComponents.GrpcServiceBuilder
 
         #region registrace background jobu
         // odeslani MPSS emailu
-        /*builder.AddCisBackgroundService<SendEmailsJob, SendEmailsJobConfiguration>(new SendEmailsJobConfigurationValidator());
+        builder.AddCisBackgroundService<SendEmailsJob, SendEmailsJobConfiguration>(new SendEmailsJobConfigurationValidator());
 
         // zruseni odesilani MPSS emailu po expiraci platnosti
-        builder.AddCisBackgroundService<SetExpiredEmailsJob, SetExpiredEmailsJobConfiguration>(new SetExpiredEmailsJobConfigurationValidator());*/
+        builder.AddCisBackgroundService<SetExpiredEmailsJob, SetExpiredEmailsJobConfiguration>(new SetExpiredEmailsJobConfigurationValidator());
         #endregion registrace background jobu
 
         #region legacy code

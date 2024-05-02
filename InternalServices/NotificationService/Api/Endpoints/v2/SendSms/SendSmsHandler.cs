@@ -93,7 +93,7 @@ internal sealed class SendSmsHandler(
         {
             // nastavit stav v databazi
             notificationInstance.State = NotificationStates.Error;
-            notificationInstance.Errors = [ new() { Code = "1", Message = "Unable to send message to Kafka" } ];
+            notificationInstance.Errors = [ new() { Code = "KAFKA-ERROR", Message = "Unable to send message to Kafka" } ];
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             _logger.NotificationFailedToSend(notificationInstance.Id, NotificationChannels.Sms, ex);

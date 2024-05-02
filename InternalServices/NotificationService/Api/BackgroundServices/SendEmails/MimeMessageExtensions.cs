@@ -72,7 +72,7 @@ internal static class MimeMessageExtensions
     {
         var bodyBuilder = new BodyBuilder();
 
-        if (format.ToLower(CultureInfo.InvariantCulture).Contains("html"))
+        if (format.Contains("html", StringComparison.CurrentCultureIgnoreCase))
         {
             bodyBuilder.HtmlBody = content;
         }

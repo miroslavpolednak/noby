@@ -25,6 +25,8 @@ internal sealed class EmailData
 
     public Contracts.v2.SendEmailRequest.Types.EmailLanguages Language { get; set; }
 
+    public bool IsAuditable { get; set; }
+
     public List<EmailAttachment>? Attachments { get; set; } = new();
 
     public sealed class EmailAttachment

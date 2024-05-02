@@ -9,6 +9,12 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, string, Exception> _kafkaNotificationResultIdEmpty;
     private static readonly Action<ILogger, Guid, Exception> _kafkaNotificationResultNotificationNotFound;
     private static readonly Action<ILogger, string, Guid, Exception> _kafkaNotificationResultUnknownState;
+    private static readonly Action<ILogger, int, Exception> _sendEmailsJobStart;
+    private static readonly Action<ILogger, Guid, Exception> _sendEmailsJobPayloadFailed;
+    private static readonly Action<ILogger, Guid, Exception> _sendEmailsJobValidationError;
+    private static readonly Action<ILogger, Guid, Exception> _sendEmailsJobFailedToSend;
+    private static readonly Action<ILogger, int, Exception> _sendEmailsJobEnd;
+    private static readonly Action<ILogger, int, int, Exception> _setExpiredEmailsJob;
 
     static LoggerExtensions()
     {
@@ -46,6 +52,36 @@ internal static class LoggerExtensions
             LogLevel.Warning,
             new EventId(LoggerEventIdCodes.KafkaNotificationResultUnknownState, nameof(KafkaNotificationResultUnknownState)),
             "Kafka consumer NotificationReport: unknown state '{State}' for notification {NotificationId}");
+
+        _sendEmailsJobStart = LoggerMessage.Define<int>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.SendEmailsJobStart, nameof(SendEmailsJobStart)),
+            "Number of emails to send: {Count}");
+
+        _sendEmailsJobPayloadFailed = LoggerMessage.Define<Guid>(
+            LogLevel.Error,
+            new EventId(LoggerEventIdCodes.SendEmailsJobPayloadFailed, nameof(SendEmailsJobPayloadFailed)),
+            "Original request payload for {NotificationId} not found.");
+
+        _sendEmailsJobValidationError = LoggerMessage.Define<Guid>(
+            LogLevel.Error,
+            new EventId(LoggerEventIdCodes.SendEmailsJobValidationError, nameof(SendEmailsJobValidationError)),
+            "Could not send email {NotificationId} due to validation error.");
+
+        _sendEmailsJobFailedToSend = LoggerMessage.Define<Guid>(
+            LogLevel.Error,
+            new EventId(LoggerEventIdCodes.SendEmailsJobFailedToSend, nameof(SendEmailsJobFailedToSend)),
+            "Send {NotificationId} failed.");
+
+        _sendEmailsJobEnd = LoggerMessage.Define<int>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.SendEmailsJobEnd, nameof(SendEmailsJobEnd)),
+            "Number of emails sent: {Count}");
+
+        _setExpiredEmailsJob = LoggerMessage.Define<int, int>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.SetExpiredEmailsJob, nameof(SetExpiredEmailsJob)),
+            "Number of emails set as expired: {Count}, EmailSlaInMinutes: {EmailSlaInMinutes}");
     }
 
     public static void NotificationRequestReceived(this ILogger logger, in Guid notificationId, in Contracts.v2.NotificationChannels channel)
@@ -68,4 +104,22 @@ internal static class LoggerExtensions
 
     public static void KafkaNotificationResultUnknownState(this ILogger logger, in string state, in Guid notificationId)
         => _kafkaNotificationResultUnknownState(logger, state, notificationId, null!);
+
+    public static void SendEmailsJobStart(this ILogger logger, in int count)
+        => _sendEmailsJobStart(logger, count, null!);
+
+    public static void SendEmailsJobPayloadFailed(this ILogger logger, in Guid notificationId, Exception ex)
+        => _sendEmailsJobPayloadFailed(logger, notificationId, ex);
+
+    public static void SendEmailsJobValidationError(this ILogger logger, in Guid notificationId, Exception ex)
+        => _sendEmailsJobValidationError(logger, notificationId, ex);
+
+    public static void SendEmailsJobFailedToSend(this ILogger logger, in Guid notificationId, Exception ex)
+        => _sendEmailsJobFailedToSend(logger, notificationId, ex);
+
+    public static void SendEmailsJobEnd(this ILogger logger, in int count)
+        => _sendEmailsJobEnd(logger, count, null!);
+
+    public static void SetExpiredEmailsJob(this ILogger logger, in int count, in int emailSlaInMinutes)
+        => _setExpiredEmailsJob(logger, count, emailSlaInMinutes, null!);
 }
