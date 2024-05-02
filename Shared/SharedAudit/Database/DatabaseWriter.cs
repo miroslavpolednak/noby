@@ -16,19 +16,34 @@ internal sealed class DatabaseWriter
         _connectionString = connectionString;
     }
 
-    internal void Write(ref AuditEvent eventObject)
+    internal bool Write(ref AuditEvent eventObject)
     {
-        using (var connection = new SqlConnection(_connectionString))
+        try
         {
-            connection.Execute(_insertSql, eventObject);
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Execute(_insertSql, eventObject);
+            }
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
 
-    internal long GetSequenceId()
+    internal long? GetSequenceId()
     {
-        using (var connection = new SqlConnection(_connectionString))
+        try
         {
-            return connection.QuerySingle<long>(_nextSequenceId);
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                return connection.QuerySingle<long>(_nextSequenceId);
+            }
+        }
+        catch
+        {
+            return null;
         }
     }
 }
