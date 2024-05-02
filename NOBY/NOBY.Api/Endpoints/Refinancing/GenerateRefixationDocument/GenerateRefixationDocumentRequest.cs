@@ -10,7 +10,7 @@ public class GenerateRefixationDocumentRequest : IRequest
     [JsonIgnore]
     internal int SalesArrangementId { get; set; }
 
-    public required int RefinancingDocumentTypeId { get; set; }
+    public required int RefixationDocumentTypeId { get; set; }
 
     /// <summary>
     /// Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
