@@ -94,6 +94,15 @@ public sealed class MortgageRefinancingDataService(
         return result;
     }
 
+    public async Task<AmendmentPriceException?> GetActivePriceException(long caseId, long processId, CancellationToken cancellationToken)   
+    {
+        var tasks = (await _caseService.GetTaskList(caseId, cancellationToken))
+            .Where(t => t.ProcessId == processId)
+            .ToList();
+
+        return await getPriceExceptionData(tasks, cancellationToken);
+    }
+
     private async Task<string> getSigningDocumentName(RefinancingTypes refinancingType, int? eaCode)
     {
         var code = (await _codebookService.EaCodesMain()).FirstOrDefault(t => t.Id == eaCode);

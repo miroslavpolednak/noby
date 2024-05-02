@@ -41,6 +41,11 @@ public sealed class GetCaseMenuFlagsResponse
     /// Změna úrokové sazby 
     /// </summary>
     public GetCaseMenuFlagsItem RefinancingMenuItem { get; set; } = null!;
+
+    /// <summary>
+    /// Mimořádná splátka
+    /// </summary>
+    public GetCaseMenuFlagsItem ExtraPaymentMenuItem { get; set; } = null!;
 }
 
 public sealed class GetCaseMenuFlagsItem

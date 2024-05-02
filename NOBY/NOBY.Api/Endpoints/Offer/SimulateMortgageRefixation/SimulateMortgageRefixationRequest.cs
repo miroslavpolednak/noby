@@ -1,11 +1,10 @@
-﻿using NOBY.Dto.Refinancing;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation;
 
 public sealed class SimulateMortgageRefixationRequest
-    : IRequest<SimulateMortgageRefixationResponse>
+    : IRequest<List<Dto.Refinancing.RefinancingSimulationResult>>
 {
     [JsonIgnore]
     internal long CaseId { get; set; }
@@ -14,13 +13,9 @@ public sealed class SimulateMortgageRefixationRequest
     /// Platnost nové úrokové sazby od.
     /// </summary>
     [Required]
-    public int FixedRatePeriod { get; set; }
+    public List<int> FixedRatePeriods { get; set; } = [];
 
-    /// <summary>
-    /// Sleva ze sazby
-    /// </summary>
-    /// <example>0.09</example>
-    public decimal? InterestRateDiscount { get; set; }
+    public long? ProcessId { get; set; }
 
     internal SimulateMortgageRefixationRequest InfuseId(long caseId)
     {

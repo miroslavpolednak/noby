@@ -20,11 +20,12 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// </summary>
     /// <remarks>
     /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=28D30BA8-03AF-403f-B672-EC163451D45B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DFD62AED-36C2-49f0-A8A4-A245657D5A4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-extra-payments")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(typeof(List<GetMortgageExtraPaymentListResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

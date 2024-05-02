@@ -11,11 +11,12 @@ internal sealed class GetMortgageExtraPaymentListHandler(
 {
     public async Task<List<GetMortgageExtraPaymentListResponse>> Handle(GetMortgageExtraPaymentListRequest request, CancellationToken cancellationToken)
     {
-        // vsechny SA
-        var saList = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
         // vsechny procesy
         var allProcesses = await _caseService.GetProcessList(request.CaseId, cancellationToken);
 
+        // vsechny SA
+        var saList = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
+        
         // vyber extra paymenty, ktere nejsou zrusene
         var extraPayments = allProcesses
             .Where(t => t.ProcessTypeId == (int)RefinancingTypes.MortgageExtraPayment && !t.Cancelled && t.AmendmentsCase == DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase.MortgageExtraPayment)
@@ -30,6 +31,7 @@ internal sealed class GetMortgageExtraPaymentListHandler(
 
             return new GetMortgageExtraPaymentListResponse
             {
+                SalesArrangementId = currentProcessSA?.SalesArrangementId,
                 CreatedOn = process.CreatedOn,
                 ExtraPaymentAmount = process.MortgageExtraPayment.ExtraPaymentAmountIncludingFee,
                 PrincipalAmount = process.MortgageExtraPayment.ExtraPaymentAmount,

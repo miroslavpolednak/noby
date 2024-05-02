@@ -47,6 +47,10 @@ internal sealed class GetCaseMenuFlagsHandler(
             RefinancingMenuItem = new()
             {
                 IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)CaseStates.InDisbursement or (int)CaseStates.InAdministration)
+            },
+            ExtraPaymentMenuItem = new()
+            {
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)CaseStates.InDisbursement or (int)CaseStates.InAdministration)
             }
         };
     }

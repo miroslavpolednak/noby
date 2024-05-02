@@ -3,6 +3,11 @@
 public sealed class GetMortgageExtraPaymentListResponse
 {
     /// <summary>
+    /// ID SA pokud existuje
+    /// </summary>
+    public int? SalesArrangementId { get; set; }
+
+    /// <summary>
     /// datum vytvoření
     /// </summary>
     public DateTime CreatedOn { get; set; }
