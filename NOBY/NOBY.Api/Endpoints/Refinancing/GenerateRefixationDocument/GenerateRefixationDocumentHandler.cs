@@ -54,7 +54,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         await UpdateRefixationProcess(salesArrangement, offer, cancellationToken);
         await _salesArrangementService.LinkModelationToSalesArrangement(salesArrangement.SalesArrangementId, offer.Data.OfferId, cancellationToken);
 
-        if (request.RefinancingDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix)
+        if (request.RefixationDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix)
             await GenerateHedgeAppendixDocument(salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
         else
             await GenerateInterestRateNotificationDocument(salesArrangement, offer, cancellationToken);
@@ -67,8 +67,8 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         var signatureTypeDetails = await _codebookService.SignatureTypeDetails(cancellationToken);
 
         if (signatureTypeDetails.Any(s => s.Id == request.SignatureTypeDetailId &&
-                                          (s.IsHedgeAvailable && request.RefinancingDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix) ||
-                                          (s.IsIndividualAvailable && request.RefinancingDocumentTypeId == (int)RefixationDocumentTypes.InterestRateNotification)))
+                                          (s.IsHedgeAvailable && request.RefixationDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix) ||
+                                          (s.IsIndividualAvailable && request.RefixationDocumentTypeId == (int)RefixationDocumentTypes.InterestRateNotification)))
         {
             return;
         }
