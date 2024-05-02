@@ -16,13 +16,14 @@ public sealed class MortgageRefinancingDataService(
     ISalesArrangementServiceClient _salesArrangementService,
     WorkflowMapper.IWorkflowMapperService _workflowMapper)
 {
-    public async Task<Dto.Refinancing.RefinancingDocument> CreateSigningDocument(GetRefinancingDataResult result, RefinancingTypes refinancingType, int? eaCode)
+    public async Task<Dto.Refinancing.RefinancingDocument> CreateSigningDocument(GetRefinancingDataResult result, RefinancingTypes refinancingType, int? eaCode, string? documentId)
     {
         // aktivni podepisovaci task
         var activeSigningTask = result.Tasks?.FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.Signing && !t.Cancelled);
 
         var response = new Dto.Refinancing.RefinancingDocument
         {
+            DocumentId = documentId,
             IsContinueEnabled = refinancingType == RefinancingTypes.MortgageRetention || (refinancingType == RefinancingTypes.MortgageRefixation && eaCode is (605353 or 604587)),
             DocumentName = await getSigningDocumentName(refinancingType, eaCode),
             SignatureTypeDetailId = result.SalesArrangement?.Retention?.SignatureTypeDetailId, // pouze pro retence

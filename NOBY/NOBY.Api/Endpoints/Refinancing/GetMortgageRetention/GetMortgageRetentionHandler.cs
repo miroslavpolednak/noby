@@ -20,7 +20,7 @@ internal sealed class GetMortgageRetentionHandler(
 
         // retention specific data
         response.ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, OfferTypes.MortgageRefixation, cancellationToken);
-        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageExtraPayment, data.Process?.MortgageRetention?.DocumentEACode);
+        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageExtraPayment, data.Process?.MortgageRetention?.DocumentEACode, data.Process?.MortgageRetention?.DocumentId);
         response.IndividualPriceCommentLastVersion = data.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion;
         response.Comment = data.SalesArrangement?.Retention?.Comment;
         response.InterestRate = (decimal?)data.Process!.MortgageRetention.LoanInterestRate ?? 0M;

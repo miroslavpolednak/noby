@@ -18,7 +18,7 @@ internal sealed class GetMortgageExtraPaymentHandler(
         var response = data.UpdateBaseResponseModel(new GetMortgageExtraPaymentResponse());
 
         // extr payment specific data
-        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageExtraPayment, data.Process?.MortgageExtraPayment?.DocumentEACode);
+        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageExtraPayment, data.Process?.MortgageExtraPayment?.DocumentEACode, data.Process?.MortgageRefixation?.DocumentId);
         response.IndividualPriceCommentLastVersion = data.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion;
         response.ExtraPaymentAmount = (decimal?)data.Process!.MortgageExtraPayment?.ExtraPaymentAmount ?? 0M;
         response.ExtraPaymentDate = (DateTime?)data.Process.MortgageExtraPayment?.ExtraPaymentDate ?? DateTime.Now;

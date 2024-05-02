@@ -21,7 +21,7 @@ internal sealed class GetMortgageRefixationHandler(
 
         // refixation specific data
         response.ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, OfferTypes.MortgageRefixation, cancellationToken);
-        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageRefixation, data.Process?.MortgageRefixation?.DocumentEACode);
+        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageRefixation, data.Process?.MortgageRefixation?.DocumentEACode, data.Process?.MortgageRefixation?.DocumentId);
         response.IndividualPriceCommentLastVersion = data.SalesArrangement?.Refixation?.IndividualPriceCommentLastVersion;
         response.Comment = data.SalesArrangement?.Refixation?.Comment;
 

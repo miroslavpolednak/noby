@@ -39,6 +39,11 @@ public sealed class RefinancingDocument
     public int? SignatureTypeDetailId { get; set; }
 
     /// <summary>
+    /// ID dokumentu
+    /// </summary>
+    public string? DocumentId { get; set; }
+
+    /// <summary>
     /// Označuje zda má být aktivní button Generovat dokument
     /// </summary>
     public bool IsGenerateDocumentEnabled { get; set; }
