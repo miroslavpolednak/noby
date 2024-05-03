@@ -14,10 +14,6 @@
 	<AnalysisMode>Recommended</AnalysisMode>
 </PropertyGroup>
 
-<ItemGroup>
-  <None Remove="Messages\SearchProducts.proto" />
-</ItemGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.26.1" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.62.0" />
@@ -33,6 +29,7 @@
 
 	<ItemGroup>
 		<Protobuf Include="Messages\SearchProducts.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Messages\UpdateMortgagePcpId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="ProductService.v1.proto" GrpcServices="Both" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 
 		<Protobuf Include="Messages/GetCaseId.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />

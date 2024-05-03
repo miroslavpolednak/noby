@@ -4,31 +4,15 @@ using CIS.Core;
 
 namespace DomainServices.ProductService.Api.Endpoints.CreateMortgage;
 
-internal sealed class CreateMortgageHandler : IRequestHandler<CreateMortgageRequest, CreateMortgageResponse>
+internal sealed class CreateMortgageHandler(
+    ExternalServices.Pcp.IPcpClient _pcpClient,
+    ICodebookServiceClient _codebookService,
+    ICaseServiceClient _caseService,
+    LoanRepository _repository,
+    IMpHomeClient _mpHomeClient,
+    IConfiguration _configuration) 
+    : IRequestHandler<CreateMortgageRequest, CreateMortgageResponse>
 {
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly LoanRepository _repository;
-    private readonly IMpHomeClient _mpHomeClient;
-    private readonly IConfiguration _configuration;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ExternalServices.Pcp.IPcpClient _pcpClient;
-
-    public CreateMortgageHandler(
-        ExternalServices.Pcp.IPcpClient pcpClient,
-        ICodebookServiceClient codebookService,
-        ICaseServiceClient caseService,
-        LoanRepository repository,
-        IMpHomeClient mpHomeClient,
-        IConfiguration configuration)
-    {
-        _codebookService = codebookService;
-        _repository = repository;
-        _mpHomeClient = mpHomeClient;
-        _configuration = configuration;
-        _pcpClient = pcpClient;
-        _caseService = caseService;
-    }
-
     public async Task<CreateMortgageResponse> Handle(CreateMortgageRequest request, CancellationToken cancellationToken)
     {
         if (await _repository.LoanExists(request.CaseId, cancellationToken))

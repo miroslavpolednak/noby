@@ -5,13 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.ProductService.Api.Endpoints;
 
 [Authorize]
-internal sealed class ProductService : Contracts.v1.ProductService.ProductServiceBase
+internal sealed class ProductService(IMediator _mediator) 
+    : Contracts.v1.ProductService.ProductServiceBase
 {
-    private readonly IMediator _mediator;
-
-    public ProductService(IMediator mediator)
-        => _mediator = mediator;
-
     public override async Task<GetProductListResponse> GetProductList(GetProductListRequest request, ServerCallContext context)
         => await _mediator.Send(request);
 
@@ -25,6 +21,12 @@ internal sealed class ProductService : Contracts.v1.ProductService.ProductServic
         => await _mediator.Send(request);
 
     public override async Task<Empty> UpdateMortgage(UpdateMortgageRequest request, ServerCallContext context)
+    {
+        await _mediator.Send(request);
+        return new Empty();
+    }
+
+    public override async Task<Empty> UpdateMortgagePcpId(UpdateMortgagePcpIdRequest request, ServerCallContext context)
     {
         await _mediator.Send(request);
         return new Empty();

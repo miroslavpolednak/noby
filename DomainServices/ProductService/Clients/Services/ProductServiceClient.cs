@@ -39,6 +39,14 @@ internal sealed class ProductServiceClient : IProductServiceClient
         }, cancellationToken: cancellationToken);
     }
 
+    public async Task UpdateMortgagePcpId(long productId, CancellationToken cancellationToken = default)
+    {
+        await _service.UpdateMortgagePcpIdAsync(new UpdateMortgagePcpIdRequest
+        {
+            ProductId = productId
+        }, cancellationToken: cancellationToken);
+    }
+
     public async Task CreateContractRelationship(long partnerId, long productId, int contractRelationshipTypeId, CancellationToken cancellationToken = default)
     {
         await _service.CreateContractRelationshipAsync(new CreateContractRelationshipRequest

@@ -55,4 +55,6 @@ public interface IProductServiceClient
     Task CancelMortgage(long caseId, CancellationToken cancellationToken = default);
 
     Task<List<SearchProductsResponse.Types.SearchProductsItem>> SearchProducts(Identity? identity, CancellationToken cancellationToken = default);
+
+    Task UpdateMortgagePcpId(long caseId, CancellationToken cancellationToken = default);
 }
