@@ -648,7 +648,7 @@ internal partial class CodebookService
         var result = await Helpers.GetGenericItems<SharedTypes.Enums.SignatureTypes>(true);
 
         // zmena pro flag
-        int defaultType = await _featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ElectronicSigning)
+        var defaultType = await _featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ElectronicSigning) && await _featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ElectronicWorkflowSigning)
             ? (int)SharedTypes.Enums.SignatureTypes.Electronic
             : (int)SharedTypes.Enums.SignatureTypes.Paper;
 
