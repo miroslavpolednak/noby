@@ -23,9 +23,29 @@ internal partial class CodebookService
     public override Task<SignatureTypeDetailResponse> SignatureTypeDetails(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<SignatureTypeDetailResponse, SignatureTypeDetailResponse.Types.SignatureTypeDetailItem>();
 
-    public override Task<GenericCodebookResponse> RefinancingStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<SharedTypes.Enums.RefinancingStates>(true);
+    public override Task<RefinancingStatesResponse> RefinancingStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+    {
+        var items = FastEnum.GetValues<SharedTypes.Enums.RefinancingStates>()
+           .Where(t => t != SharedTypes.Enums.RefinancingStates.Unknown)
+           .Select(t => new RefinancingStatesResponse.Types.RefinancingStatesItem
+           {
+               Id = (int)t,
+               Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
+               Indicator = t switch 
+               { 
+                   SharedTypes.Enums.RefinancingStates.RozpracovanoVNoby or SharedTypes.Enums.RefinancingStates.PodpisNOBY => 1,
+                   SharedTypes.Enums.RefinancingStates.Zruseno => 2,
+                   SharedTypes.Enums.RefinancingStates.Dokonceno => 3,
+                   SharedTypes.Enums.RefinancingStates.RozpracovanoVSB or SharedTypes.Enums.RefinancingStates.PredanoRC2 or SharedTypes.Enums.RefinancingStates.PodpisSB => 4,
+                   _ => throw new ArgumentException("Can't get indicator for RefinancingState")
+               }
+               
+           })
+           .ToList()!;
 
+        return Task.FromResult((new RefinancingStatesResponse()).AddItems(items));
+    }
+    
     public override Task<GenericCodebookResponse> RefixationDocumentTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context) => 
         Helpers.GetGenericItems<SharedTypes.Enums.RefixationDocumentTypes>(false);
 

@@ -41,7 +41,7 @@ service CodebookService {
 		};
    }
 
-   rpc RefinancingStates (google.protobuf.Empty) returns (GenericCodebookResponse) {
+   rpc RefinancingStates (google.protobuf.Empty) returns (RefinancingStatesResponse) {
 	   option (google.api.http) = {
 			get: "/v1/refinancing-states"
 		};

@@ -18,9 +18,9 @@ public enum RefinancingStates : int
     [EnumMember]
     RozpracovanoVSB = 2,
 
-    [Display(Name = "Podepisování")]
+    [Display(Name = "Podpis v NOBY")]
     [EnumMember]
-    Podepisovani = 3,
+    PodpisNOBY = 3,
 
     [Display(Name = "Dokončeno")]
     [EnumMember]
@@ -32,5 +32,9 @@ public enum RefinancingStates : int
 
     [Display(Name = "Zrušeno")]
     [EnumMember]
-    Zruseno = 6
+    Zruseno = 6,
+
+    [Display(Name = "Podpis v SB")]
+    [EnumMember]
+    PodpisSB = 7
 }

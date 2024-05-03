@@ -1,10 +1,12 @@
 ﻿using DomainServices.CaseService.Clients.v1;
+using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Services.MortgageRefinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList;
 
 internal sealed class GetMortgageExtraPaymentListHandler(
+    ICodebookServiceClient _codebookService,
     ISalesArrangementServiceClient _salesArrangementService,
     ICaseServiceClient _caseService)
     : IRequestHandler<GetMortgageExtraPaymentListRequest, List<GetMortgageExtraPaymentListResponse>>
@@ -21,6 +23,8 @@ internal sealed class GetMortgageExtraPaymentListHandler(
         var extraPayments = allProcesses
             .Where(t => t.ProcessTypeId == (int)RefinancingTypes.MortgageExtraPayment && !t.Cancelled && t.AmendmentsCase == DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase.MortgageExtraPayment)
             .ToList();
+
+        var refinancingStates = await _codebookService.RefinancingStates(cancellationToken);
 
         return extraPayments.Select(process =>
         {
@@ -39,7 +43,7 @@ internal sealed class GetMortgageExtraPaymentListHandler(
                 PaymentState = process.MortgageExtraPayment.PaymentState,
                 IsExtraPaymentFullyRepaid = process.MortgageExtraPayment.IsFinalExtraPayment,
                 RefinancingStateId = refinancingState,
-                //StateIndicator = StateIndicators.Initial //TODO: dodelat!
+                StateIndicator = (StateIndicators)refinancingStates.First(t => t.Id == (int)refinancingState).Indicator
             };
         })
         .ToList();

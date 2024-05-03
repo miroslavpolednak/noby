@@ -4,6 +4,16 @@ option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 
 import "google/protobuf/wrappers.proto";
 
+message RefinancingStatesResponse {
+	repeated RefinancingStatesItem Items = 1;
+
+	message RefinancingStatesItem {
+		int32 Id = 1;
+		string Name = 2;
+		int32 Indicator = 3;
+	}
+}
+
 message ResponseCodeTypesResponse {
 	repeated ResponseCodeTypesItem Items = 1;
 

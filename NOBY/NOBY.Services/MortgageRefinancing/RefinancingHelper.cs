@@ -72,7 +72,7 @@ public static class RefinancingHelper
     public static RefinancingStates GetRefinancingState(in SalesArrangementStates salesArrangementState)
         => salesArrangementState switch
         {
-            SalesArrangementStates.InSigning => RefinancingStates.Podepisovani,
+            SalesArrangementStates.InSigning => RefinancingStates.PodpisNOBY,
             SalesArrangementStates.Finished => RefinancingStates.Dokonceno,
             SalesArrangementStates.Cancelled => RefinancingStates.Zruseno,
             _ => RefinancingStates.RozpracovanoVNoby
@@ -90,7 +90,7 @@ public static class RefinancingHelper
         }
         else if (!process.Cancelled && process.StateIdSB != 30 && managedByRC2 != true && process.ProcessPhaseId == 3)
         {
-            return RefinancingStates.Podepisovani; // 3
+            return RefinancingStates.PodpisNOBY; // 3
         }
         else if (!process.Cancelled && process.StateIdSB == 30)
         {
