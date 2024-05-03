@@ -132,6 +132,7 @@ public class NotificationController : ControllerBase
     /// Specs: <a target="_blank" href="https://wiki.kb.cz/display/HT/Notification+Service">https://wiki.kb.cz/display/HT/Notification+Service</a>
     /// </remarks>
     [HttpGet("result/detailed-statistics")]
+    [Obsolete("Replaced with v2")]
     [SwaggerOperation(Tags = new[] { "Notification Business Case" })]
     [ProducesResponseType(typeof(GetDetailedStatisticsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
