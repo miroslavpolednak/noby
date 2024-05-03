@@ -1,8 +1,10 @@
-﻿using DomainServices.CaseService.Clients.v1;
+﻿using CIS.Core;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Dto.Refinancing;
 using NOBY.Services.MortgageRefinancing;
 
@@ -20,25 +22,23 @@ internal sealed class GetRefinancingParametersHandler(
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
 
         if (caseInstance.State is not (int)CaseStates.InDisbursement and (int)CaseStates.InAdministration)
+        {
             throw new NobyValidationException(90032);
+        }
 
         var mortgage = (await _productService.GetMortgage(request.CaseId, cancellationToken)).Mortgage;
 
-        var saList = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
-
+        var saList = (await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken)).SalesArrangements.ToList();
+        
         var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
-
-        var saFiltered = saList.SalesArrangements.Where(s => s.SalesArrangementTypeId is (int)SalesArrangementTypes.MortgageRetention or (int)SalesArrangementTypes.MortgageRefixation);
-
-        var saFilteredWithDetail = await Task.WhenAll(saFiltered.Select(d => _salesArrangementService.GetSalesArrangement(d.SalesArrangementId)));
 
         var refinancingProcessList = (await _caseService.GetProcessList(request.CaseId, cancellationToken))
                                      .Where(p => p.ProcessTypeId is (int)WorkflowProcesses.Refinancing).ToList();
 
-        var mergeOfSaAndProcess = refinancingProcessList.Select(pr => new
+        var mergeOfSaAndProcess = await refinancingProcessList.SelectAsync(async pr => new
         {
             Process = pr,
-            Sa = Array.Find(saFilteredWithDetail, sa => sa.ProcessId == pr.ProcessId)
+            Sa = await getSalesArrangement(saList, pr.ProcessId)
         });
 
         var eaCodesMain = await _codebookService.EaCodesMain(cancellationToken);
@@ -76,6 +76,17 @@ internal sealed class GetRefinancingParametersHandler(
         };
     }
 
+    private async Task<DomainServices.SalesArrangementService.Contracts.SalesArrangement?> getSalesArrangement(List<DomainServices.SalesArrangementService.Contracts.SalesArrangement> salesArrangements, long processId)
+    {
+        int? saId = salesArrangements.FirstOrDefault(t => t.ProcessId == processId)?.SalesArrangementId;
+        if (saId.HasValue)
+        {
+            var sa = await _salesArrangementService.GetSalesArrangement(saId.Value);
+            return sa;
+        }
+        return null;
+    }
+
     private static ProcessDetail getProcessDetail(
         ProcessTask process, 
         DomainServices.SalesArrangementService.Contracts.SalesArrangement? sa,
@@ -88,7 +99,7 @@ internal sealed class GetRefinancingParametersHandler(
             ProcessId = process.ProcessId,
             RefinancingTypeId = RefinancingHelper.GetRefinancingType(process),
             RefinancingTypeText = RefinancingHelper.GetRefinancingTypeText(eaCodesMain, process, refinancingTypes),
-            RefinancingStateId = (int)RefinancingHelper.GetRefinancingState(sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, sa?.ProcessId, process),
+            RefinancingStateId = RefinancingHelper.GetRefinancingState(sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, process.ProcessId, process),
             CreatedTime = process.CreatedOn,
             LoanInterestRateValidTo = fixedRateValidTo
         };

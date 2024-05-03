@@ -20,7 +20,7 @@ public sealed class ResponseCodesService(
             .ToList();
 
         return allCodes
-            .Where(t => availableCodes.Any(x => x.Id == t.ResponseCodeTypeId))
+            .Where(t => t.ResponseCodeCategory == ResponseCodeCategories.BusinessResponseCode && availableCodes.Any(x => x.Id == t.ResponseCodeTypeId))
             .Select(t =>
             {
                 var cb = availableCodes.First(x => x.Id == t.ResponseCodeTypeId);

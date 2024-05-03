@@ -1,6 +1,5 @@
 ﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
-using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Services.MortgageRefinancing;
 
@@ -36,19 +35,19 @@ public static class RefinancingHelper
         return text;
     }
 
-    public static bool IsAnotherSalesArrangementInProgress(GetSalesArrangementListResponse saList)
+    public static bool IsAnotherSalesArrangementInProgress(List<DomainServices.SalesArrangementService.Contracts.SalesArrangement> saList)
     {
-        var activeSas = saList.SalesArrangements.Where(s => s.State is (int)SalesArrangementStates.InProgress
-                                                                  or (int)SalesArrangementStates.InApproval
-                                                                  or (int)SalesArrangementStates.NewArrangement
-                                                                  or (int)SalesArrangementStates.InSigning
-                                                                  or (int)SalesArrangementStates.ToSend
-                                                                  or (int)SalesArrangementStates.RC2);
+        var activeSas = saList.Where(s => (SalesArrangementStates)s.State is SalesArrangementStates.InProgress
+                                                                  or SalesArrangementStates.InApproval
+                                                                  or SalesArrangementStates.NewArrangement
+                                                                  or SalesArrangementStates.InSigning
+                                                                  or SalesArrangementStates.ToSend
+                                                                  or SalesArrangementStates.RC2);
 
-        return activeSas.Any(s => s.SalesArrangementTypeId is (int)SalesArrangementTypes.GeneralChange
-                                                           or (int)SalesArrangementTypes.HUBN
-                                                           or (int)SalesArrangementTypes.CustomerChange
-                                                           or (int)SalesArrangementTypes.CustomerChange3602A);
+        return activeSas.Any(s => (SalesArrangementTypes)s.SalesArrangementTypeId is SalesArrangementTypes.GeneralChange
+                                                           or SalesArrangementTypes.HUBN
+                                                           or SalesArrangementTypes.CustomerChange
+                                                           or SalesArrangementTypes.CustomerChange3602A);
     }
 
     public static RefinancingTypes GetRefinancingType(ProcessTask process)

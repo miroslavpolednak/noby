@@ -147,6 +147,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpGet("case/{caseId:long}/refinancing-parameters")]
     [Produces("application/json")]
+    [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(typeof(GetRefinancingParametersResponse), StatusCodes.Status200OK)]
