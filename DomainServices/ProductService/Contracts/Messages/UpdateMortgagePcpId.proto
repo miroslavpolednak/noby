@@ -2,6 +2,12 @@
 package DomainServices.ProductService;
 option csharp_namespace = "DomainServices.ProductService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+
 message UpdateMortgagePcpIdRequest {
     int64 ProductId = 1;
+}
+
+message UpdateMortgagePcpIdResponse {
+    google.protobuf.StringValue PcpId = 1;
 }

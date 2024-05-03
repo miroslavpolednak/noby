@@ -45,5 +45,5 @@ service ProductService {
 
    rpc SearchProducts (SearchProductsRequest) returns (SearchProductsResponse);
 
-   rpc UpdateMortgagePcpId (UpdateMortgagePcpIdRequest) returns (google.protobuf.Empty);
+   rpc UpdateMortgagePcpId (UpdateMortgagePcpIdRequest) returns (UpdateMortgagePcpIdResponse);
 }

@@ -7,7 +7,13 @@ namespace NOBY.Services.CreateCaseFromExternalSources;
 
 // CreateCaseInNobyFromKonsDB
 [TransientService, SelfService]
-public sealed class CreateCaseFromExternalSourcesService
+public sealed class CreateCaseFromExternalSourcesService(
+    ICurrentUserAccessor _currentUser,
+    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService,
+    DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
+    DomainServices.ProductService.Clients.IProductServiceClient _productService,
+    DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
+    DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService)
 {
     public async Task CreateCase(long caseId, CancellationToken cancellationToken)
     {
@@ -25,6 +31,13 @@ public sealed class CreateCaseFromExternalSourcesService
         
         // kontrola na uzivatele a stav
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState);
+
+        // update PCPID pokud neexistuje
+        string? pcpId = mortgageInstance.PcpId;
+        if (string.IsNullOrEmpty(mortgageInstance.PcpId))
+        {
+            pcpId = await _productService.UpdateMortgagePcpId(caseId, cancellationToken);
+        }
 
         // instance uzivatele
         var customerIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
@@ -66,7 +79,7 @@ public sealed class CreateCaseFromExternalSourcesService
             CaseId = caseId,
             ContractNumber = mortgageInstance.ContractNumber,
             SalesArrangementTypeId = 1,
-            PcpId = mortgageInstance.PcpId,
+            PcpId = pcpId,
             State = (int)SalesArrangementStates.InApproval
         };
         await _salesArrangementService.CreateSalesArrangement(saRequest, cancellationToken);
@@ -97,28 +110,5 @@ public sealed class CreateCaseFromExternalSourcesService
             11 => ((DateTime?)mortgageInstance.DrawingFinishedDate).HasValue ? 5 : 4,
             _ => 8
         };
-    }
-
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
-    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-
-    public CreateCaseFromExternalSourcesService(
-        ICurrentUserAccessor currentUser,
-        DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
-        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
-        DomainServices.ProductService.Clients.IProductServiceClient productService,
-        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService,
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
-    {
-        _customerService = customerService;
-        _codebookService = codebookService;
-        _currentUser = currentUser;
-        _productService = productService;
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
     }
 }

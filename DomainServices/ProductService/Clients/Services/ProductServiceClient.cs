@@ -39,12 +39,13 @@ internal sealed class ProductServiceClient : IProductServiceClient
         }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateMortgagePcpId(long productId, CancellationToken cancellationToken = default)
+    public async Task<string?> UpdateMortgagePcpId(long productId, CancellationToken cancellationToken = default)
     {
-        await _service.UpdateMortgagePcpIdAsync(new UpdateMortgagePcpIdRequest
+        return (await _service.UpdateMortgagePcpIdAsync(new UpdateMortgagePcpIdRequest
         {
             ProductId = productId
-        }, cancellationToken: cancellationToken);
+        }, cancellationToken: cancellationToken))
+        .PcpId;
     }
 
     public async Task CreateContractRelationship(long partnerId, long productId, int contractRelationshipTypeId, CancellationToken cancellationToken = default)

@@ -12,9 +12,9 @@ internal sealed class UpdateMortgagePcpIdHandler(
     ICodebookServiceClient _codebookService,
     IPcpClient _pcpClient,
     IMediator _mediator)
-    : IRequestHandler<UpdateMortgagePcpIdRequest>
+    : IRequestHandler<UpdateMortgagePcpIdRequest, UpdateMortgagePcpIdResponse>
 {
-    public async Task Handle(UpdateMortgagePcpIdRequest request, CancellationToken cancellationToken)
+    public async Task<UpdateMortgagePcpIdResponse> Handle(UpdateMortgagePcpIdRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.ProductId, cancellationToken);
 
@@ -37,6 +37,15 @@ internal sealed class UpdateMortgagePcpIdHandler(
 
             // create in konsdb
             await _mpHomeClient.UpdateLoan(request.ProductId, mortgage.Mortgage.ToMortgageRequest(pcpId), cancellationToken);
+
+            return new UpdateMortgagePcpIdResponse
+            {
+                PcpId = pcpId,
+            };
+        }
+        else
+        {
+            return new UpdateMortgagePcpIdResponse();
         }
     }
 }

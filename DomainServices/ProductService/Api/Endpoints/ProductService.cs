@@ -26,11 +26,8 @@ internal sealed class ProductService(IMediator _mediator)
         return new Empty();
     }
 
-    public override async Task<Empty> UpdateMortgagePcpId(UpdateMortgagePcpIdRequest request, ServerCallContext context)
-    {
-        await _mediator.Send(request);
-        return new Empty();
-    }
+    public override async Task<UpdateMortgagePcpIdResponse> UpdateMortgagePcpId(UpdateMortgagePcpIdRequest request, ServerCallContext context)
+        => await _mediator.Send(request);
 
     public override async Task<Empty> CreateContractRelationship(CreateContractRelationshipRequest request, ServerCallContext context)
     {

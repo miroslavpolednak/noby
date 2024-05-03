@@ -53,5 +53,5 @@ public partial class SearchProductsRequest
 { }
 
 public partial class UpdateMortgagePcpIdRequest
-    : MediatR.IRequest, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<UpdateMortgagePcpIdResponse>, CIS.Core.Validation.IValidatableRequest
 { }
