@@ -4,6 +4,7 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "ModificationStamp.proto";
+import "Messages/Types.proto";
 
 message GetResponseCodeListRequest {
 	int64 CaseId = 1;
@@ -16,6 +17,7 @@ message GetResponseCodeListResponse {
 		int32 ResponseCodeId = 1;
 		google.protobuf.Int32Value ResponseCodeTypeId = 2;
 		google.protobuf.StringValue Data = 3;
+		ResponseCodeCategories ResponseCodeCategory = 4;
 		cis.types.ModificationStamp Created = 7;
 	}
 }

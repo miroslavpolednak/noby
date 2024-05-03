@@ -15,4 +15,6 @@ internal sealed class ResponseCode
     public int? ResponseCodeTypeId { get; set; }
 
     public string? Data { get; set; }
+
+    public int ResponseCodeCategory { get; set; }
 }

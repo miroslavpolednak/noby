@@ -8,7 +8,7 @@ public sealed class RefinancingResponseCode
     public int Id { get; set; }
 
     /// <summary>
-    /// Typ response k=odu
+    /// Typ response kodu
     /// </summary>
     public int? ResponseCodeTypeId { get; set; }
 

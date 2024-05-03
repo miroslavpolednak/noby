@@ -851,7 +851,7 @@
         </member>
         <member name="P:NOBY.Dto.Refinancing.RefinancingResponseCode.ResponseCodeTypeId">
             <summary>
-            Typ response k=odu
+            Typ response kodu
             </summary>
         </member>
         <member name="P:NOBY.Dto.Refinancing.RefinancingResponseCode.CreatedTime">

@@ -60,5 +60,6 @@ public interface IOfferServiceClient
     Task<int> CreateResponseCode(CreateResponseCodeRequest request, CancellationToken cancellationToken = default);
 
     Task<List<Contracts.GetResponseCodeListResponse.Types.GetResponseCodeItem>> GetResponseCodeList(long caseId, CancellationToken cancellationToken = default);
+
     Task DeleteOfferList(IEnumerable<int> offerIds, CancellationToken cancellationToken = default);
 }

@@ -5,7 +5,9 @@ using DomainServices.OfferService.Contracts;
 namespace NOBY.Services.ResponseCodes;
 
 [ScopedService, SelfService]
-public sealed class ResponseCodesService
+public sealed class ResponseCodesService(
+    IOfferServiceClient _offerService, 
+    ICodebookServiceClient _codebookService)
 {
     public async Task<List<Dto.Refinancing.RefinancingResponseCode>> GetMortgageResponseCodes(long caseId, OfferTypes offerType, CancellationToken cancellationToken)
     {
@@ -47,14 +49,5 @@ public sealed class ResponseCodesService
                 return item;
             })
             .ToList();
-    }
-
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly IOfferServiceClient _offerService;
-
-    public ResponseCodesService(IOfferServiceClient offerService, ICodebookServiceClient codebookService)
-    {
-        _offerService = offerService;
-        _codebookService = codebookService;
     }
 }

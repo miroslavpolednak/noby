@@ -8,6 +8,11 @@ import "NullableGrpcDecimal.proto";
 import "NullableGrpcDate.proto";
 import "ModificationStamp.proto";
 
+enum ResponseCodeCategories {
+	BusinessResponseCode = 0;
+	NewFixedRatePeriod = 1;
+}
+
 enum OfferTypes {
 	None = 0;
 	Mortgage = 1;

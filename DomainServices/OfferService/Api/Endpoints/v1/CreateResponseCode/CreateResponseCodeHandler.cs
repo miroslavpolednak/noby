@@ -1,93 +1,29 @@
-﻿using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Api.Database.Entities;
-using DomainServices.OfferService.Contracts;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
+﻿using DomainServices.OfferService.Contracts;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.CreateResponseCode;
 
-internal sealed class CreateResponseCodeHandler(Database.OfferServiceDbContext _dbContext, ICodebookServiceClient _codebookService)
+internal sealed class CreateResponseCodeHandler(Database.OfferServiceDbContext _dbContext)
         : IRequestHandler<CreateResponseCodeRequest, CreateResponseCodeResponse>
 {
-    private const string _newFq = "New_Fq";
-    private const string _respCode = "Resp_Code";
-    private const string _postpone = "Postpone";
-    private const string _newBnk = "NewBnk";
-
     public async Task<CreateResponseCodeResponse> Handle(CreateResponseCodeRequest request, CancellationToken cancellationToken)
     {
-        var responseCode = new ResponseCode
+        var entity = new Database.Entities.ResponseCode
         {
             ResponseCodeTypeId = request.ResponseCodeTypeId,
             CaseId = request.CaseId,
-            Data = request.Data,
+            ResponseCodeCategory = (int)request.ResponseCodeCategory,
+            Data = request.Data
         };
+        _dbContext.ResponseCodes.Add(entity);
 
-        var caseIdAccountNumber = await _dbContext.CaseIdAccountNumbers.FirstOrDefaultAsync(c => c.CaseId == request.CaseId, cancellationToken)
-                           ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.CaseIdNotFoundInKonsDb);
-
-        var applicationEvents = request.ResponseCodeCategory switch
-        {
-            ResponseCodeCategories.BusinessResponseCode => await CreateBusinessAppEvents(request, caseIdAccountNumber, cancellationToken),
-            ResponseCodeCategories.NewFixedRatePeriod => CreateNewFixedRatePeriodAppEvents(request, caseIdAccountNumber),
-            _ => throw new ArgumentException("Not supported ResponseCodeCategories")
-        };
-
-        await _dbContext.ResponseCodes.AddAsync(responseCode, cancellationToken);
-        await _dbContext.ApplicationEvents.AddRangeAsync(applicationEvents, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
+
+        //TODO: zalozit do BDP
+
 
         return new CreateResponseCodeResponse
         {
-            ResponseCodeId = responseCode.ResponseCodeId
+            ResponseCodeId = entity.ResponseCodeId
         };
-    }
-
-    private static IEnumerable<ApplicationEvent> CreateNewFixedRatePeriodAppEvents(CreateResponseCodeRequest request, CaseIdAccountNumberKonstDb caseIdAccountNumber)
-    {
-        yield return
-            new ApplicationEvent
-            {
-                AccountNbr = caseIdAccountNumber.AreaCodeAccountNumber,
-                EventDate = DateTime.Now,
-                EventType = _newFq,
-                EventValue = request.Data
-            };
-    }
-
-    private async Task<List<ApplicationEvent>> CreateBusinessAppEvents(CreateResponseCodeRequest request, CaseIdAccountNumberKonstDb caseIdAccountNumber, CancellationToken cancellationToken)
-    {
-        var responseCode = (await _codebookService.ResponseCodeTypes(cancellationToken))
-           .First(t => t.Id == request.ResponseCodeTypeId);
-
-        List<ApplicationEvent> applicationEvents =
-            [
-             new ApplicationEvent
-             {
-                 AccountNbr = caseIdAccountNumber.AreaCodeAccountNumber,
-                 EventDate = DateTime.Now,
-                 EventType = _respCode,
-                 EventValue = responseCode.Id.ToString(CultureInfo.InvariantCulture)
-             }
-            ];
-
-        if (responseCode.DataType is CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.BankCode
-            or CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date)
-        {
-            applicationEvents.Add(new ApplicationEvent
-            {
-                AccountNbr = caseIdAccountNumber.AreaCodeAccountNumber,
-                EventDate = DateTime.Now,
-                EventType = responseCode.DataType switch
-                {
-                    CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date => _postpone,
-                    CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.BankCode => _newBnk,
-                    _ => throw new ArgumentException("Not supported ResponseCodesItemDataTypes")
-                },
-                EventValue = request.Data
-            });
-        }
-
-        return applicationEvents;
     }
 }
