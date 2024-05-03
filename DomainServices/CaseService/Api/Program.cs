@@ -53,6 +53,7 @@ SharedComponents.GrpcServiceBuilder
                                                .AddHandler<InformationRequestProcessChangedHandler>()
                                                .AddHandler<MainLoanProcessChangedHandler>()
                                                .AddHandler<WithdrawalProcessChangedHandler>()
+                                               .AddHandler<LoanExtraPaymentProcessChangedHandler>()
                                                .AddHandler<LoanRetentionProcessChangedHandler>();
                                    });
 

@@ -13,7 +13,7 @@ using _contract = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument;
 
-internal class GenerateExtraPaymentDocumentHandler : IRequestHandler<GenerateExtraPaymentDocumentRequest>
+internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<GenerateExtraPaymentDocumentRequest>
 {
     private readonly ICodebookServiceClient _codebookService;
     private readonly ICaseServiceClient _caseService;

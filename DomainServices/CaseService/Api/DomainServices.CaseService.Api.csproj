@@ -37,4 +37,8 @@
 	<ItemGroup>
 		<InternalsVisibleTo Include="DomainServices.CaseService.Tests" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Messaging\LoanExtraPaymentProcessChanged\Dto\" />
+	</ItemGroup>
 </Project>

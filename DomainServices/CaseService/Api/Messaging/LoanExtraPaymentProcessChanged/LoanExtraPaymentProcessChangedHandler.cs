@@ -4,12 +4,12 @@ using KafkaFlow;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
-internal sealed class LoanRetentionProcessChangedHandler(
-    ISalesArrangementServiceClient _salesArrangementService, 
-    ILogger<LoanRetentionProcessChangedHandler> _logger) 
-    : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.LoanRetentionProcessChanged>
+internal sealed class LoanExtraPaymentProcessChangedHandler(
+    ISalesArrangementServiceClient _salesArrangementService,
+    ILogger<LoanRetentionProcessChangedHandler> _logger)
+    : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.LoanExtraPaymentProcessChanged>
 {
-    public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.LoanRetentionProcessChanged message)
+    public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.LoanExtraPaymentProcessChanged message)
     {
         if (message.state is not (cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED
             or cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.TERMINATED))
@@ -17,13 +17,13 @@ internal sealed class LoanRetentionProcessChangedHandler(
 
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
-            _logger.KafkaMessageCaseIdIncorrectFormat(nameof(LoanRetentionProcessChangedHandler), message.@case.caseId.id);
+            _logger.KafkaMessageCaseIdIncorrectFormat(nameof(LoanExtraPaymentProcessChangedHandler), message.@case.caseId.id);
             return;
         }
 
         if (!long.TryParse(message.id, out var processId))
         {
-            _logger.KafkaMessageCurrentTaskIdIncorrectFormat(nameof(LoanRetentionProcessChangedHandler), message.id);
+            _logger.KafkaMessageCurrentTaskIdIncorrectFormat(nameof(LoanExtraPaymentProcessChangedHandler), message.id);
             return;
         }
 
@@ -35,11 +35,11 @@ internal sealed class LoanRetentionProcessChangedHandler(
         }
         catch (CisNotFoundException)
         {
-            _logger.KafkaCaseIdNotFound(nameof(LoanRetentionProcessChangedHandler), caseId);
+            _logger.KafkaCaseIdNotFound(nameof(LoanExtraPaymentProcessChangedHandler), caseId);
 
             return;
         }
-        
+
 
         if (sa is not null)
         {
