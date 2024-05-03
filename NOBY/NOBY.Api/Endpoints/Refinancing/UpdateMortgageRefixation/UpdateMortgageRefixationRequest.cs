@@ -26,7 +26,7 @@ public sealed class UpdateMortgageRefixationRequest
     /// Sleva ze sazby
     /// </summary>
     /// <example>0.2</example>
-    public decimal? InterestRateDiscount { get; set; }
+    public decimal InterestRateDiscount { get; set; }
 
     internal UpdateMortgageRefixationRequest InfuseId(long caseId, int salesArrangementId)
     {

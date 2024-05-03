@@ -9,6 +9,8 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
 {
     public async Task<SimulateMortgageRefixationOfferListResponse> Handle(SimulateMortgageRefixationOfferListRequest request, CancellationToken cancellationToken)
     {
+        decimal? interestRateDiscount = request.InterestRateDiscount == 0 ? null : request.InterestRateDiscount;
+
         var offers = (await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken))
             .Where(t => !(t.Data.ValidTo < _timeProvider.GetLocalNow().Date))
             .ToList();
@@ -19,7 +21,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
         {
             // IC je rozdilna mezi ulozenou offer a requestem
             if (!((OfferFlagTypes)offer.Data.Flags).HasFlag(OfferFlagTypes.LegalNotice)
-                && offer.MortgageRefixation.SimulationInputs.InterestRateDiscount != request.InterestRateDiscount)
+                && offer.MortgageRefixation.SimulationInputs.InterestRateDiscount != interestRateDiscount)
             {
                 var simulateRequest = new DomainServices.OfferService.Contracts.SimulateMortgageRefixationRequest
                 {
@@ -29,7 +31,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
                     SimulationInputs = offer.MortgageRefixation.SimulationInputs,
                     BasicParameters = offer.MortgageRefixation.BasicParameters
                 };
-                simulateRequest.SimulationInputs.InterestRateDiscount = request.InterestRateDiscount;
+                simulateRequest.SimulationInputs.InterestRateDiscount = interestRateDiscount;
 
                 var result = await _offerService.SimulateMortgageRefixation(simulateRequest, cancellationToken);
                 
@@ -46,7 +48,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
         }
 
         // validace rate
-        if (request.InterestRateDiscount.GetValueOrDefault() > 0 && (finalOffers.Min(t => t.InterestRate) - request.InterestRateDiscount!.Value) < 0.1M)
+        if (request.InterestRateDiscount > 0 && (finalOffers.Min(t => t.InterestRate) - request.InterestRateDiscount) < 0.1M)
         {
             throw new NobyValidationException(90060);
         }

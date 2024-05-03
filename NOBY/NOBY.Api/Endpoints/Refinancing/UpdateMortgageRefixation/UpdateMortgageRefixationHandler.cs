@@ -15,13 +15,15 @@ internal sealed class UpdateMortgageRefixationHandler(
 {
     public async Task<UpdateMortgageRefixationResponse> Handle(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
+        decimal? interestRateDiscount = request.InterestRateDiscount == 0 ? null : request.InterestRateDiscount;
+
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         var mortgageParameters = new MortgageRefinancingWorkflowParameters
         {
             CaseId = salesArrangement.CaseId,
             ProcessId = salesArrangement.ProcessId!.Value,
-            LoanInterestRateDiscount = request.InterestRateDiscount
+            LoanInterestRateDiscount = interestRateDiscount
         };
 
         // vytvorit / updatovat IC task pokud je treba
@@ -31,7 +33,7 @@ internal sealed class UpdateMortgageRefixationHandler(
         await updateSalesArrangementParameters(request, salesArrangement, cancellationToken);
 
         // presimulovat modelace
-        await updateOffers(request, cancellationToken);
+        await updateOffers(request, interestRateDiscount, cancellationToken);
 
         return new UpdateMortgageRefixationResponse
         {
@@ -39,7 +41,7 @@ internal sealed class UpdateMortgageRefixationHandler(
         };
     }
 
-    private async Task updateOffers(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
+    private async Task updateOffers(UpdateMortgageRefixationRequest request, decimal? interestRateDiscount, CancellationToken cancellationToken)
     {
         var offers = await _offerService.GetOfferList(request.CaseId, OfferTypes.MortgageRefixation, false, cancellationToken);
 
@@ -47,7 +49,7 @@ internal sealed class UpdateMortgageRefixationHandler(
         {
             // mame ulozenou jinou slevu ze sazby nez je v requestu
             if (!((OfferFlagTypes)offer.Data.Flags).HasFlag(OfferFlagTypes.LegalNotice)
-                && offer.MortgageRefixation.SimulationInputs.InterestRateDiscount != request.InterestRateDiscount)
+                && offer.MortgageRefixation.SimulationInputs.InterestRateDiscount != interestRateDiscount)
             {
                 var simulationRequest = new SimulateMortgageRefixationRequest
                 {
@@ -56,7 +58,7 @@ internal sealed class UpdateMortgageRefixationHandler(
                     BasicParameters = offer.MortgageRefixation.BasicParameters,
                     SimulationInputs = offer.MortgageRefixation.SimulationInputs
                 };
-                simulationRequest.SimulationInputs.InterestRateDiscount = request.InterestRateDiscount;
+                simulationRequest.SimulationInputs.InterestRateDiscount = interestRateDiscount;
 
                 // presimulovat
                 await _offerService.SimulateMortgageRefixation(simulationRequest, cancellationToken);

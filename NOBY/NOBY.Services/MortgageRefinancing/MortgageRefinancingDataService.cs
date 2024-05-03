@@ -112,12 +112,7 @@ public sealed class MortgageRefinancingDataService(
         }
         else
         {
-            return refinancingType switch
-            {
-                RefinancingTypes.MortgageRetention => "RefinancingType",//??? co sem?
-                RefinancingTypes.MortgageRefixation => "Dodatek - Refixace",
-                _ => "Unknown"
-            };
+            return (await _codebookService.RefinancingTypes()).First(t => t.Id == (int)refinancingType).Name;
         }
     }
 
@@ -125,7 +120,7 @@ public sealed class MortgageRefinancingDataService(
     {
         // toto je aktivni IC task!
         var activePriceExceptionTaskIdSb = tasks
-            .FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled && t.DecisionId != 2 && t.PhaseTypeId == 2)
+            .FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled && (t.PhaseTypeId == 1 || (t.DecisionId != 2 && t.PhaseTypeId == 2)))
             ?.TaskIdSb;
 
         // detail IC tasku

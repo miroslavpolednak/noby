@@ -23,6 +23,6 @@ public enum RefinancingTypes : byte
     MortgageLegalNotice = 3,
 
     [EnumMember]
-    [Display(Name = "Mimořádná splátka")]
+    [Display(Name = "Dokument mimořádné splátky")]
     MortgageExtraPayment = 4
 }

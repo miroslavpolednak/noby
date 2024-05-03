@@ -1,9 +1,7 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
-using Namotion.Reflection;
 using NOBY.Services.MortgageRefinancing;
-using System.Collections.Generic;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation;
 

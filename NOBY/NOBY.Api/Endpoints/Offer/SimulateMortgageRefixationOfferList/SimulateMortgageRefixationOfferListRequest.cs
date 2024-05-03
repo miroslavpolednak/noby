@@ -12,7 +12,7 @@ public sealed class SimulateMortgageRefixationOfferListRequest
     /// Sleva ze sazby
     /// </summary>
     /// <example>0.09</example>
-    public decimal? InterestRateDiscount { get; set; }
+    public decimal InterestRateDiscount { get; set; }
 
     internal SimulateMortgageRefixationOfferListRequest InfuseId(long caseId)
     {
