@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Helpers;
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Legacy.Helpers;

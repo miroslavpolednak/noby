@@ -157,6 +157,9 @@ internal sealed class SendEmailHandler(
                 
                 throw new CIS.Core.Exceptions.ExternalServices.CisExternalServiceUnavailableException(0, "MCS"); ;
             }
+        } else if (request.IsAuditable) // mpss vetev - jen logujeme, email odesle job
+        {
+            createAuditLog(request, _serviceUser.ConsumerId, notificationInstance.Id, true);
         }
         
         return new NotificationIdResponse

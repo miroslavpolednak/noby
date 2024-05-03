@@ -69,7 +69,7 @@ internal sealed class SendSmsHandler(
                 nationalPhoneNumber = nationalNumber
             },
             type = smsType.McsCode,
-            text = request.Text,
+            text = request.Text.ToGSMString(), // zmenit text podle spec GSM 03.38
             processingPriority = request.ProcessingPriority,
             notificationConsumer = new()
             {

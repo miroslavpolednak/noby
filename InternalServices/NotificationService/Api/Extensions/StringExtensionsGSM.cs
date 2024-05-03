@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace CIS.InternalServices.NotificationService.Api.Helpers;
+namespace CIS.InternalServices.NotificationService.Api;
 
-public static class GSMExtensions
+internal static partial class StringExtensions
 {
     //GSM 03.38 character set
     private static readonly HashSet<char> _gsmChars = new HashSet<char>
