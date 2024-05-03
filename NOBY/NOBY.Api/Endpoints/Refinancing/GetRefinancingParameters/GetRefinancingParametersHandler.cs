@@ -28,9 +28,7 @@ internal sealed class GetRefinancingParametersHandler(
 
         var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
-        var saFiltered = saList.SalesArrangements.Where(s => s.SalesArrangementTypeId is (int)SalesArrangementTypes.MortgageRetention
-                                                                                      or (int)SalesArrangementTypes.MortgageRefixation
-                                                                                      or (int)SalesArrangementTypes.MortgageExtraPayment);
+        var saFiltered = saList.SalesArrangements.Where(s => s.SalesArrangementTypeId is (int)SalesArrangementTypes.MortgageRetention or (int)SalesArrangementTypes.MortgageRefixation);
 
         var saFilteredWithDetail = await Task.WhenAll(saFiltered.Select(d => _salesArrangementService.GetSalesArrangement(d.SalesArrangementId)));
 

@@ -19,10 +19,11 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Rozscestník mimořádných splátek 
     /// </summary>
     /// <remarks>
+    /// Seznam nezrušených mimořádných splátek
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DFD62AED-36C2-49f0-A8A4-A245657D5A4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpGet("case/{caseId:long}/mortgage-extra-payments")]
+    [HttpGet("case/{caseId:long}/mortgage-extra-payment-list")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
@@ -91,7 +92,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <remarks>
     /// Operace slouží k získání informací o vybraném procesu mimořádné splátky.
     /// 
-    /// <a href=""><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=87469E98-536F-47b6-853F-077E5BC7FF4A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-extra-payment/{processId:long}")]
     [Produces("application/json")]
@@ -99,7 +100,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(typeof(GetMortgageExtraPaymentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetMortgageExtraPaymentResponse> GetMortgageExtraPayment([FromRoute] long caseId, [FromQuery] long processId)
+    public async Task<GetMortgageExtraPaymentResponse> GetMortgageExtraPayment([FromRoute] long caseId, [FromRoute] long processId)
         => await _mediator.Send(new GetMortgageExtraPaymentRequest(caseId, processId));
 
     /// <summary>

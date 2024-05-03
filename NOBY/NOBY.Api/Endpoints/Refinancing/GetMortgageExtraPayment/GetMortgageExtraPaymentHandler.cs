@@ -18,10 +18,10 @@ internal sealed class GetMortgageExtraPaymentHandler(
         var response = data.UpdateBaseResponseModel(new GetMortgageExtraPaymentResponse());
 
         // extr payment specific data
-        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageExtraPayment, data.Process?.MortgageExtraPayment?.DocumentEACode, data.Process?.MortgageRefixation?.DocumentId);
-        response.IndividualPriceCommentLastVersion = data.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion;
+        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageExtraPayment, data.Process?.MortgageExtraPayment?.DocumentEACode, data.Process?.MortgageExtraPayment?.DocumentId);
+        response.IndividualPriceCommentLastVersion = data.SalesArrangement?.ExtraPayment?.IndividualPriceCommentLastVersion;
         response.ExtraPaymentAmount = (decimal?)data.Process!.MortgageExtraPayment?.ExtraPaymentAmount ?? 0M;
-        response.ExtraPaymentDate = (DateTime?)data.Process.MortgageExtraPayment?.ExtraPaymentDate ?? DateTime.Now;
+        response.ExtraPaymentDate = (DateTime?)data.Process.MortgageExtraPayment?.ExtraPaymentDate ?? DateTime.MinValue;
         response.IsExtraPaymentFullyRepaid = data.Process.MortgageExtraPayment?.IsFinalExtraPayment ?? false;
         response.PrincipalAmount = (decimal?)data.Process.MortgageExtraPayment?.ExtraPaymentAmount ?? 0M;
     
@@ -60,7 +60,7 @@ internal sealed class GetMortgageExtraPaymentHandler(
             var offerInstance = await _offerService.GetOffer(data.SalesArrangement.OfferId.Value, cancellationToken);
             response.SimulationResults = offerInstance.MortgageExtraPayment.SimulationResults.ToDto(offerInstance.Data.Created.DateTime, response.FeeAmountDiscount);
 
-            response.ContainsInconsistentIndividualPriceData = offerInstance.MortgageRetention.BasicParameters.FeeAmountDiscounted != response.FeeAmountDiscount;
+            response.ContainsInconsistentIndividualPriceData = offerInstance.MortgageExtraPayment.BasicParameters.FeeAmountDiscount != response.FeeAmountDiscount;
         }
 
         return response;

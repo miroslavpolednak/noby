@@ -1,4 +1,4 @@
-﻿namespace NOBY.Dto.Workflow;
+﻿namespace SharedTypes.Enums;
 
 public enum StateIndicators
 {

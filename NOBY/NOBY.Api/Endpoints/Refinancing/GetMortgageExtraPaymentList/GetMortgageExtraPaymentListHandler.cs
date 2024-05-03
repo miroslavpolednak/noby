@@ -38,7 +38,8 @@ internal sealed class GetMortgageExtraPaymentListHandler(
                 ExtraPaymentDate = DateOnly.FromDateTime(process.MortgageExtraPayment.ExtraPaymentDate),
                 PaymentState = process.MortgageExtraPayment.PaymentState,
                 IsExtraPaymentFullyRepaid = process.MortgageExtraPayment.IsFinalExtraPayment,
-                RefinancingStateId = (int)refinancingState
+                RefinancingStateId = refinancingState,
+                //StateIndicator = StateIndicators.Initial //TODO: dodelat!
             };
         })
         .ToList();

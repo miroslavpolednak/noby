@@ -71,5 +71,5 @@ public sealed class WorkflowTask
     /// Indikátor barvy Noby stavu
     /// </summary>
     /// <example>1</example>
-    public StateIndicators StateIndicator { get; set; }
+    public SharedTypes.Enums.StateIndicators StateIndicator { get; set; }
 }

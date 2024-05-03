@@ -35,10 +35,12 @@ public sealed class GetMortgageExtraPaymentListResponse
     /// <summary>
     /// Stav
     /// </summary>
-    public int RefinancingStateId { get; set; }
+    public RefinancingStates RefinancingStateId { get; set; }
 
     /// <summary>
     /// Uhrazeno; 0 - Unknown; 1 - Uhrazeno; 2 - Neuhrazeno
     /// </summary>
     public int PaymentState { get; set; }
+
+    public StateIndicators StateIndicator { get; set; }
 }
