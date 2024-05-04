@@ -64,6 +64,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.Fees(ct));
         AddCodebook((s, ct) => s.FixedRatePeriods(ct));
         AddCodebook((s, ct) => s.Genders(ct));
+        AddCodebook((s, ct) => s.HandoverTypeDetails(ct));
         AddCodebook((s, ct) => s.HouseholdTypes(ct));
         AddCodebook((s, ct) => s.IdentificationDocumentTypes(ct));
         AddCodebook((s, ct) => s.IdentificationSubjectMethods(ct));
