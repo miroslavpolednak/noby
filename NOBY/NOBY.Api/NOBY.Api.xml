@@ -900,6 +900,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800055209">FeeChangeRequests</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405524365">Genders</a>
+             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813">HandoverTypeDetails</a>
              - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> 
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=392871926">IdentificationDocumentTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/IdentificationSubjectMethod+%28CB_IdentificationMethodType%29+-+MOCK">IdentificationSubjectMethods</a>
@@ -3358,7 +3359,7 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.HandoverTypeDetailId">
             <summary>
-            Způsob předání dokumentu vyčíslení klientovi. Číselník HandoverTypeDetail https://wiki.kb.cz/pages/viewpage.action?pageId=857276813
+            Způsob předání dokumentu vyčíslení klientovi. Číselník <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813">HandoverTypeDetails</a>
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.ClientKbId">
@@ -3368,7 +3369,7 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.RefixationDocumentTypeId">
             <summary>
-            Typ dokumentu, který se má vygenerovat pro refixace. Číselník RefixationDocumentType https://wiki.kb.cz/display/HT/RefixationDocumentType
+            Typ dokumentu, který se má vygenerovat pro refixace. Číselník <a href="https://wiki.kb.cz/display/HT/RefixationDocumentType">RefixationDocumentTypes</a> 
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.SignatureTypeDetailId">

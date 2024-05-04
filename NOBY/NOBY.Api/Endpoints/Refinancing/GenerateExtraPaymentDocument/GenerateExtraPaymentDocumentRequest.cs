@@ -12,7 +12,7 @@ public class GenerateExtraPaymentDocumentRequest : IRequest
     internal int SalesArrangementId { get; set; }
 
     /// <summary>
-    /// Způsob předání dokumentu vyčíslení klientovi. Číselník HandoverTypeDetail https://wiki.kb.cz/pages/viewpage.action?pageId=857276813
+    /// Způsob předání dokumentu vyčíslení klientovi. Číselník <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813">HandoverTypeDetails</a>
     /// </summary>
     [Required]
     public int HandoverTypeDetailId { get; set; }

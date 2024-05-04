@@ -11,7 +11,7 @@ public class GenerateRefixationDocumentRequest : IRequest
     internal int SalesArrangementId { get; set; }
 
     /// <summary>
-    /// Typ dokumentu, který se má vygenerovat pro refixace. Číselník RefixationDocumentType https://wiki.kb.cz/display/HT/RefixationDocumentType
+    /// Typ dokumentu, který se má vygenerovat pro refixace. Číselník <a href="https://wiki.kb.cz/display/HT/RefixationDocumentType">RefixationDocumentTypes</a> 
     /// </summary>
     public required int RefixationDocumentTypeId { get; set; }
 
