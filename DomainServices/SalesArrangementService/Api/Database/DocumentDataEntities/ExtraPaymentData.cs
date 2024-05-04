@@ -11,7 +11,7 @@ internal sealed class ExtraPaymentData
 
     public int? HandoverTypeDetailId { get; set; }
 
-    public int? ClientKBId { get; set; }
+    public long? ClientKBId { get; set; }
 
     public string? ClientFirstName { get; set; }
 

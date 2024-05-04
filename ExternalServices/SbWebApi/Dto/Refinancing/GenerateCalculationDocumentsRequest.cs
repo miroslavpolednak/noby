@@ -8,7 +8,7 @@ public class GenerateCalculationDocumentsRequest
 
     public DateTime ExtraPaymentDate { get; set; }
 
-    public int ClientKbId { get; set; }
+    public long ClientKbId { get; set; }
 
     public decimal ExtraPaymentAmount { get; set; }
 

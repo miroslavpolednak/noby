@@ -3356,6 +3356,21 @@
             Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.HandoverTypeDetailId">
+            <summary>
+            Způsob předání dokumentu vyčíslení klientovi. Číselník HandoverTypeDetail https://wiki.kb.cz/pages/viewpage.action?pageId=857276813
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.ClientKbId">
+            <summary>
+            KB ID klienta, kterému se bude předávat dokument vyčíslení.
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.RefixationDocumentTypeId">
+            <summary>
+            Typ dokumentu, který se má vygenerovat pro refixace. Číselník RefixationDocumentType https://wiki.kb.cz/display/HT/RefixationDocumentType
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.SignatureTypeDetailId">
             <summary>
             Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce

@@ -1,14 +1,15 @@
-﻿using DomainServices.CaseService.Clients.v1;
-using DomainServices.CaseService.Contracts;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
+using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
+using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using ExternalServices.SbWebApi.Dto.Refinancing;
 using ExternalServices.SbWebApi.V1;
 using NOBY.Services.MortgageRefinancing;
-using NOBY.Services.WorkflowTask;
+using SharedTypes.GrpcTypes;
 using _contract = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument;
@@ -16,24 +17,27 @@ namespace NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument;
 internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<GenerateExtraPaymentDocumentRequest>
 {
     private readonly ICodebookServiceClient _codebookService;
-    private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
+    private readonly IProductServiceClient _productService;
+    private readonly ICustomerServiceClient _customerService;
     private readonly ISbWebApiClient _sbWebApi;
     private readonly MortgageRefinancingDocumentService _refinancingDocumentService;
 
     public GenerateExtraPaymentDocumentHandler(
         ICodebookServiceClient codebookService,
-        ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
+        IProductServiceClient productService,
+        ICustomerServiceClient customerService,
         ISbWebApiClient sbWebApi,
         MortgageRefinancingDocumentService refinancingDocumentService)
     {
         _codebookService = codebookService;
-        _caseService = caseService;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
+        _productService = productService;
+        _customerService = customerService;
         _sbWebApi = sbWebApi;
         _refinancingDocumentService = refinancingDocumentService;
     }
@@ -50,7 +54,9 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
         if (offerIndividualPrice.HasIndividualPrice && !await _refinancingDocumentService.IsIndividualPriceValid(salesArrangement, offerIndividualPrice, cancellationToken))
             throw new NobyValidationException(90048);
 
-        await UpdateSaParams(request, salesArrangement, cancellationToken);
+        var customerDetail = await LoadAndValidateClient(salesArrangement.CaseId, request.ClientKbId, cancellationToken);
+
+        await UpdateSaParams(request, salesArrangement, customerDetail, cancellationToken);
 
         await GenerateCalculationDocuments(request, salesArrangement, offer, cancellationToken);
 
@@ -99,12 +105,30 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
         return offer;
     }
 
-    private async Task UpdateSaParams(GenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    private async Task<CustomerDetailResponse> LoadAndValidateClient(long caseId, long clientKbId, CancellationToken cancellationToken)
     {
-        //Parameters 
+        var customersOnProduct = await _productService.GetCustomersOnProduct(caseId, cancellationToken);
+
+        if (!customersOnProduct.Customers.Any(c => c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb && i.IdentityId == clientKbId)))
+            throw new NobyValidationException(90032);
+
+        return await _customerService.GetCustomerDetail(new Identity(clientKbId, IdentitySchemes.Kb), cancellationToken);
+    }
+
+    private async Task UpdateSaParams(GenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, CustomerDetailResponse customerDetail, CancellationToken cancellationToken)
+    {
+        salesArrangement.ExtraPayment.HandoverTypeDetailId = request.HandoverTypeDetailId;
+        salesArrangement.ExtraPayment.Client = new SalesArrangementParametersExtraPayment.Types.SalesArrangementParametersExtraPaymentClient
+        {
+            KBId = request.ClientKbId,
+            FirstName = customerDetail.NaturalPerson.FirstName,
+            LastName = customerDetail.NaturalPerson.LastName,
+        };
+
         var saRequest = new UpdateSalesArrangementParametersRequest
         {
-
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            ExtraPayment = salesArrangement.ExtraPayment
         };
 
         await _salesArrangementService.UpdateSalesArrangementParameters(saRequest, cancellationToken);

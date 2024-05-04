@@ -10,7 +10,7 @@ message SalesArrangementParametersExtraPayment {
 	SalesArrangementParametersExtraPaymentClient Client = 3;
 
 	message SalesArrangementParametersExtraPaymentClient {
-		int32 KBId = 1;
+		int64 KBId = 1;
 		string FirstName = 2;
 		string LastName = 3;
 	}

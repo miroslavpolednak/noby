@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument;
 
@@ -10,9 +11,17 @@ public class GenerateExtraPaymentDocumentRequest : IRequest
     [JsonIgnore]
     internal int SalesArrangementId { get; set; }
 
+    /// <summary>
+    /// Způsob předání dokumentu vyčíslení klientovi. Číselník HandoverTypeDetail https://wiki.kb.cz/pages/viewpage.action?pageId=857276813
+    /// </summary>
+    [Required]
     public int HandoverTypeDetailId { get; set; }
     
-    public int ClientKbId { get; set; }
+    /// <summary>
+    /// KB ID klienta, kterému se bude předávat dokument vyčíslení.
+    /// </summary>
+    [Required]
+    public long ClientKbId { get; set; }
 
     internal GenerateExtraPaymentDocumentRequest Infuse(long caseId, int salesArrangementId)
     {

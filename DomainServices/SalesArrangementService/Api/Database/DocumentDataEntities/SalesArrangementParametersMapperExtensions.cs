@@ -114,9 +114,9 @@ internal static class SalesArrangementParametersMapperExtensions
         {
             IndividualPriceCommentLastVersion = extraPayment.IndividualPriceCommentLastVersion,
             HandoverTypeDetailId = extraPayment.HandoverTypeDetailId,
+            ClientKBId = extraPayment.Client?.KBId,
             ClientFirstName = extraPayment.Client?.FirstName,
-            ClientLastName = extraPayment.Client?.LastName,
-            ClientKBId = extraPayment.Client?.KBId
+            ClientLastName = extraPayment.Client?.LastName
         };
     }
 
