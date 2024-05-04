@@ -1,161 +1,119 @@
-using System.IO.Compression;
-using SharedAudit;
-using CIS.Infrastructure.Security;
-using CIS.Infrastructure.gRPC;
 using CIS.Infrastructure.StartupExtensions;
-using CIS.Infrastructure.Telemetry;
-using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Api.Endpoints.v1;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services.S3;
-using ProtoBuf.Grpc.Server;
-using DomainServices;
-using CIS.InternalServices;
 using CIS.InternalServices.NotificationService.Api;
-using CIS.InternalServices.NotificationService.Api.ErrorHandling;
-using CIS.InternalServices.NotificationService.Api.Services.AuditLog;
-using CIS.InternalServices.NotificationService.Api.Services.Messaging;
-using CIS.InternalServices.NotificationService.Api.Services.User;
-using CIS.InternalServices.NotificationService.Api.Swagger;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SharedComponents.DocumentDataStorage;
-using CIS.InternalServices.NotificationService.Api.BackgroundServices;
+using SharedComponents.Storage;
+using CIS.InternalServices.NotificationService.Api.Legacy.ErrorHandling;
+using CIS.InternalServices.NotificationService.Api.Database;
+using CIS.InternalServices.NotificationService.Api.Legacy;
+using CIS.InternalServices.NotificationService.Api.Services.S3;
+using CIS.Infrastructure.Messaging;
+using Microsoft.FeatureManagement;
+using Microsoft.AspNetCore.Grpc.JsonTranscoding;
+using System.Text.Json;
+using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
+using CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
 
-var winSvc = args.Any(t => t.Equals("winsvc"));
-var webAppOptions = winSvc
-    ?  new WebApplicationOptions { Args = args, ContentRootPath = AppContext.BaseDirectory }
-    :  new WebApplicationOptions { Args = args };
-
-var builder = WebApplication.CreateBuilder(webAppOptions);
-
-var log = builder.CreateStartupLogger();
-
-try
-{
-    // Configuration
-    builder.Configure();
-
-    // Mvc
-    builder.Services
-        .AddHsts(options =>
-        {
-            options.Preload = true;
-            options.MaxAge = TimeSpan.FromDays(360);
-        })
-        .AddControllers()
-        .ConfigureApiBehaviorOptions(options =>
-        {
-            options.SuppressMapClientErrors = true;
-            options.AddCustomInvalidModelStateResponseFactory();
-        });
-
-    // Cis
-    builder.AddCisEnvironmentConfiguration();
-    builder
-        .AddCisCoreFeatures(true, true)
-        .AddCisLogging()
-        .AddCisLoggingPayloadBehavior()
-        .AddCisTracing()
-        .AddCisAudit()
-        .AddCisServiceAuthentication()
-        .AddCisServiceUserContext()
-        .Services
+SharedComponents.GrpcServiceBuilder
+    .CreateGrpcService(args, typeof(Program))
+    .AddApplicationConfiguration<CIS.InternalServices.NotificationService.Api.Configuration.AppConfiguration>(new CIS.InternalServices.NotificationService.Api.Configuration.AppConfigurationValidator())
+    .AddErrorCodeMapper(ErrorCodeMapper.Init())
+    .AddRequiredServices(services =>
+    {
+        services
             .AddUserService()
-            .AddCisGrpcInfrastructure(typeof(Program), ErrorCodeMapper.Init())
-            .AddAttributedServices(typeof(Program));
-
-    // gRPC
-    builder.Services
-        .AddCodeFirstGrpcReflection()
-        .AddCodeFirstGrpc(config =>
+            .AddCodebookService();
+    })
+    .EnableJsonTranscoding(options =>
+    {
+        options.OpenApiTitle = "Notification Service API";
+        options.OpenApiVersion = "v2";
+        options.OpenApiEndpointVersion = "2.0";
+        options.AddOpenApiXmlCommentFromBaseDirectory("CIS.InternalServices.NotificationService.Contracts.xml");
+    })
+    .Build((builder, configuration) =>
+    {
+        // case insensitive nastaveni pro GRPC transcoding
+        builder.Services.PostConfigure<GrpcJsonTranscodingOptions>(options =>
         {
-            config.ResponseCompressionLevel = CompressionLevel.Optimal;
-            config.Interceptors.Add<GenericServerExceptionInterceptor>();
+            string[] opts = [ "UnarySerializerOptions", "ServerStreamingSerializerOptions" ];
+            foreach (var name in opts)
+            {
+                var prop = options.GetType().GetProperty(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var serializerOptions = prop!.GetValue(options) as JsonSerializerOptions;
+                serializerOptions!.PropertyNameCaseInsensitive = true;
+            }
         });
 
-    // codebook client
-    builder.Services.AddCodebookService();
+        // file storage
+        builder
+            .AddCisStorageServices()
+            .AddStorageClient<IMcsStorage>();
 
-    // audit logger
-    builder.AddSmsAuditLogger();
-    
-    // repository
-    builder.AddRepository();
+        // entity framework
+        builder.AddEntityFramework<NotificationDbContext>();
 
-    // messaging - kafka consumers and producers
-    builder.AddMessaging();
+        // ukladani payloadu - document data storage
+        builder.AddDocumentDataStorage();
 
-    // user
-    builder.AddUserAdapter();
-    
-    // s3 client
-    builder.AddS3Client();
+        // messaging - kafka consumers and producers
+        builder.AddCisMessaging()
+            .AddKafkaFlow(msg =>
+            {
+                msg.AddConsumerAvro<CIS.InternalServices.NotificationService.Api.Messaging.NotificationReport.NotificationReportHandler>(configuration.KafkaTopics.McsResult);
+                msg.AddProducerAvro<cz.kb.osbs.mcs.sender.sendapi.v4.email.SendEmail>(configuration.KafkaTopics.McsSender);
+                msg.AddProducerAvro<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS>(configuration.KafkaTopics.McsSender);
+            });
 
-    // registrace background jobu
-    builder.AddBackroundJobs();
+        #region registrace background jobu
+        // odeslani MPSS emailu
+        builder.AddCisBackgroundService<SendEmailsJob, SendEmailsJobConfiguration>(new SendEmailsJobConfigurationValidator());
 
-    // ukladani payloadu - document data storage
-    builder.AddDocumentDataStorage();
+        // zruseni odesilani MPSS emailu po expiraci platnosti
+        builder.AddCisBackgroundService<SetExpiredEmailsJob, SetExpiredEmailsJobConfiguration>(new SetExpiredEmailsJobConfigurationValidator());
+        #endregion registrace background jobu
 
-    // swagger
-    builder.AddCustomSwagger();
-
-    // kestrel
-    builder.UseKestrelWithCustomConfiguration();
-
-    if (winSvc)
-    {
-        builder.Host.UseWindowsService();
-    }
-
-    builder.Services.AddHealthChecks();
-    // ---------------------------------------------------------------------------------
-
-    var app = builder.Build();
-    log.ApplicationBuilt();
-
-    app.UseMiddleware<AuditRequestResponseMiddleware>();
-
-    app.UseHsts();
-
-    app.UseHttpsRedirection();
-
-    app.UseServiceDiscovery();
-
-    app
-        .UseCustomSwagger()
-        .UseGrpc2WebApiException()
-        .UseRouting()
-        .UseAuthentication()
-        .UseAuthorization()
-        .UseCisServiceUserContext();
-
-    app.MapCodeFirstGrpcHealthChecks();
-    app.MapGrpcService<NotificationService>();
-    app.MapCodeFirstGrpcReflectionService();
-    app.MapControllers();
-    app.MapHealthChecks(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl, new HealthCheckOptions
-    {
-        ResultStatusCodes =
+        #region legacy code
+        bool enableLegacyEndpoints = builder.Configuration.GetValue<bool>("FeatureManagement:LegacyEndpoints", false);
+        if (enableLegacyEndpoints)
         {
-            [HealthStatus.Healthy] = StatusCodes.Status200OK,
-            [HealthStatus.Degraded] = StatusCodes.Status200OK,
-            [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+            builder.Services
+                .AddControllers()
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.SuppressMapClientErrors = true;
+                    options.AddCustomInvalidModelStateResponseFactory();
+                });
         }
-    });
 
-    log.ApplicationRun();
-    app.Run();
-}
-catch (Exception ex)
-{
-    log.CatchedException(ex);
-}
-finally
-{
-    LoggingExtensions.CloseAndFlush();
-}
+        builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+        builder.Services.AddScoped<CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction.ISmsAuditLogger, CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.SmsAuditLogger>();
+        builder.Services.AddScoped<CIS.InternalServices.NotificationService.Api.Services.User.Abstraction.IUserAdapterService, CIS.InternalServices.NotificationService.Api.Services.User.UserAdapterService>();
+        builder.AddS3Client();
+        #endregion legacy code
+
+    })
+    #region legacy code
+    .UseMiddlewares((app, _) =>
+    {
+        var manager = app.Services.GetRequiredService<IFeatureManager>();
+        if (manager.IsEnabledAsync("LegacyEndpoints").GetAwaiter().GetResult())
+        {
+            app.UseWhen(x => x.Request.Path.StartsWithSegments("/v1"), app2 =>
+            {
+                app2.UseMiddleware<AuditRequestResponseMiddleware>();
+            });
+            app.MapWhen(x => x.Request.Path.StartsWithSegments("/v1"), app2 =>
+            {
+                app2.UseEndpoints(t => t.MapControllers());
+            });
+        }
+    })
+    #endregion legacy code
+    .MapGrpcServices((app, _) =>
+    {
+        app.MapGrpcService<CIS.InternalServices.NotificationService.Api.Endpoints.v2.NotificationService>();
+    })
+    .Run();
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

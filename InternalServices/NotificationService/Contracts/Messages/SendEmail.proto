@@ -1,0 +1,71 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.NotificationService.v2;
+option csharp_namespace = "CIS.InternalServices.NotificationService.Contracts.v2";
+
+import "UserIdentity.proto";
+import "Messages/Types.proto";
+import "google/protobuf/wrappers.proto";
+
+message SendEmailRequest {
+	EmailAddress From = 1;
+	repeated EmailAddress To = 2;
+	repeated EmailAddress Bcc = 3;
+	repeated EmailAddress Cc = 4;
+	EmailAddress ReplyTo = 5;
+	string Subject = 6;
+	EmailContent Content = 7;
+	repeated EmailAttachment Attachments = 8;
+	cis.types.UserIdentity Identifier = 9;
+	google.protobuf.Int64Value CaseId = 10;
+	google.protobuf.StringValue CustomId = 11;
+	google.protobuf.StringValue DocumentId = 12;
+	DocumentHash DocumentHash = 13;
+	bool IsAuditable = 14;
+
+	message EmailContent
+	{
+		EmailFormats Format = 1;
+		EmailLanguages Language = 2;
+		string Text = 3;
+	}
+
+	message EmailAddress
+	{
+		string Value = 1;
+		PartyData Party = 2;
+
+		message PartyData
+		{
+			LegalPerson LegalPerson = 1;
+			NaturalPerson NaturalPerson = 2;   
+		}
+
+		message LegalPerson
+		{
+			string Name = 1;
+		}
+
+		message NaturalPerson
+		{
+			string FirstName = 1;
+			google.protobuf.StringValue MiddleName = 2;
+			string Surname = 3;
+		}
+	}
+
+	message EmailAttachment
+	{
+		bytes Binary = 1;
+		string Filename = 2;
+	}
+
+	enum EmailLanguages {
+		Cs = 0;
+		En = 1;
+	}
+
+	enum EmailFormats {
+		Html = 0;
+		PlainText = 1;
+	}
+}

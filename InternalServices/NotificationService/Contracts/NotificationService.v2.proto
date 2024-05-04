@@ -1,0 +1,66 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.NotificationService.v2;
+option csharp_namespace = "CIS.InternalServices.NotificationService.Contracts.v2";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "Messages/SendSms.proto";
+import "Messages/SendEmail.proto";
+import "Messages/SearchResults.proto";
+import "Messages/GetResult.proto";
+import "Messages/GetStatistics.proto";
+import "Messages/GetDetailedStatistics.proto";
+import "Messages/Resend.proto";
+import "Messages/NotificationIdResponse.proto";
+import "Messages/Types.proto";
+
+service NotificationService {
+	// Odeslat sms notifikaci.
+	rpc SendSms(SendSmsRequest) returns (NotificationIdResponse) {
+		option (google.api.http) = {
+			post: "/v2/sms",
+			body: "*"
+		};
+	}
+
+   rpc SendEmail(SendEmailRequest) returns (NotificationIdResponse) {
+	   option (google.api.http) = {
+			post: "/v2/email",
+			body: "*"
+	   };
+   }
+
+   rpc GetResult(GetResultRequest) returns (ResultData) {
+	   option (google.api.http) = {
+			get: "/v2/result/{NotificationId}"
+	   };
+   }
+
+   rpc SearchResults(SearchResultsRequest) returns (SearchResultsResponse) {
+	   option (google.api.http) = {
+			post: "/v2/results",
+			body: "*"
+	   };
+   }
+
+   rpc GetStatistics(GetStatisticsRequest) returns (GetStatisticsResponse) {
+	   option (google.api.http) = {
+			post: "/v2/statistics",
+			body: "*"
+	   };
+   }
+
+   rpc GetDetailedStatistics(GetDetailedStatisticsRequest) returns (GetDetailedStatisticsResponse) {
+	   option (google.api.http) = {
+			post: "/v2/statistics-detailed",
+			body: "*"
+	   };
+   }
+
+   rpc Resend(ResendRequest) returns (google.protobuf.Empty) {
+	   option (google.api.http) = {
+			post: "/v2/resend",
+			body: "*"
+	   };
+   }
+}

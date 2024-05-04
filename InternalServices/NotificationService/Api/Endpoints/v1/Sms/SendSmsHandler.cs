@@ -1,21 +1,19 @@
-﻿using CIS.Core;
-using CIS.Core.Exceptions;
-using CIS.InternalServices.NotificationService.Api.Helpers;
-using CIS.InternalServices.NotificationService.Api.Messaging.Mappers;
-using CIS.InternalServices.NotificationService.Api.Messaging.Producers.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.AuditLog.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+﻿using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Legacy;
+using CIS.InternalServices.NotificationService.Api.Legacy.AuditLog.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Legacy.Helpers;
+using CIS.InternalServices.NotificationService.Api.Legacy.Mappers;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
-using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
 using DomainServices.CodebookService.Clients;
-using MediatR;
+using KafkaFlow;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms;
 
-public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
+internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 {
     private readonly TimeProvider _dateTime;
-    private readonly IMcsSmsProducer _mcsSmsProducer;
+    private readonly IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS> _mcsSmsProducer;
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;
     private readonly ICodebookServiceClient _codebookService;
@@ -24,7 +22,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
 
     public SendSmsHandler(
         TimeProvider dateTime,
-        IMcsSmsProducer mcsSmsProducer,
+        IMessageProducer<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS> mcsSmsProducer,
         IUserAdapterService userAdapterService,
         INotificationRepository repository,
         ICodebookServiceClient codebookService,
@@ -51,12 +49,10 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         var smsType = smsTypes.FirstOrDefault(s => s.Code == request.Type) ??
         throw new CisValidationException($"Invalid Type = '{request.Type}'. Allowed Types: {smsTypeCodes}");
 
-        var hashAlgorithms = await _codebookService.HashAlgorithms(cancellationToken);
-        var hashAlgorithmCodes = string.Join(", ", hashAlgorithms.Select(s => s.Code));
-        var hashAlgorithm = string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm)
-            ? null
-            : hashAlgorithms.FirstOrDefault(s => s.Code == request.DocumentHash.HashAlgorithm) ?? 
-        throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash.HashAlgorithm}'. Allowed HashAlgorithms: {hashAlgorithmCodes}");
+        if (!string.IsNullOrEmpty(request.DocumentHash?.HashAlgorithm) && !HashAlgorithms.Algorithms.Contains(request.DocumentHash.HashAlgorithm))
+        {
+            throw new CisValidationException($"Invalid HashAlgorithm = '{request.DocumentHash?.HashAlgorithm}'.");
+        }
 
         // zmenit text podle spec GSM 03.38
         request.Text = request.Text.ToGSMString();
@@ -86,7 +82,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         catch (Exception e)
         {
             _logger.LogError(e, $"Could not create SmsResult.");
-            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.CreateSmsResultFailed, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorCodeMapper.CreateSmsResultFailed, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
         }
         
         var consumerId = _userAdapterService.GetConsumerId();
@@ -103,7 +99,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         
         try
         {
-            await _mcsSmsProducer.SendSms(sendSms, cancellationToken);
+            await _mcsSmsProducer.ProduceAsync(sendSms.id, sendSms);
             _smsAuditLogger.LogKafkaProduced(smsType, result.Id, username,
                 request.Identifier?.Identity,
                 request.Identifier?.IdentityScheme,
@@ -126,7 +122,7 @@ public class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
                 request.DocumentHash?.HashAlgorithm);
             _repository.DeleteResult(result);
             await _repository.SaveChanges(cancellationToken);
-            throw new CisServiceServerErrorException(ErrorHandling.ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
+            throw new CisServiceServerErrorException(ErrorCodeMapper.ProduceSendSmsError, nameof(SendSmsHandler), "SendSms request failed due to internal server error.");
         }
 
         return new SendSmsResponse { NotificationId = result.Id };

@@ -1,19 +1,17 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Configuration;
-using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Email.Dto;
 using FluentValidation;
-using Microsoft.Extensions.Options;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Validators;
 
-public class EmailAddressFromValidator : AbstractValidator<EmailAddress>
+internal sealed class EmailAddressFromValidator : AbstractValidator<EmailAddress>
 {
     // todo: error code for emailAddress.Value
     private static readonly Func<string, string> _normalForm = e => e.ToLowerInvariant();
-    public EmailAddressFromValidator(IOptions<AppConfiguration> options)
+    public EmailAddressFromValidator(AppConfiguration appConfiguration)
     {
-        var senders = options.Value.EmailSenders;
-        var allowedDomainNames = senders.Mcs
-            .Union(senders.Mpss)
+        var allowedDomainNames = appConfiguration.EmailSenders.Mcs
+            .Union(appConfiguration.EmailSenders.Mpss)
             .Select(_normalForm)
             .ToHashSet();
 

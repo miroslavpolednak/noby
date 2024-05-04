@@ -1,17 +1,17 @@
 using AutoFixture;
 using AutoFixture.AutoMoq;
 using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Database;
+using CIS.InternalServices.NotificationService.Api.Database.Entities;
 using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email;
 using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Result;
 using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities.Abstraction;
 using CIS.InternalServices.NotificationService.Api.Tests.Mocks;
-using CIS.InternalServices.NotificationService.Contracts.Common;
-using CIS.InternalServices.NotificationService.Contracts.Email;
-using CIS.InternalServices.NotificationService.Contracts.Email.Dto;
-using CIS.InternalServices.NotificationService.Contracts.Result;
-using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.InternalServices.NotificationService.LegacyContracts.Common;
+using CIS.InternalServices.NotificationService.LegacyContracts.Email;
+using CIS.InternalServices.NotificationService.LegacyContracts.Email.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result;
+using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
 using CIS.Testing.Common;
 using Moq;
 

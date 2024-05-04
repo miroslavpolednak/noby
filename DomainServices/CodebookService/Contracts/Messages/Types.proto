@@ -407,15 +407,6 @@ message GetOperatorResponse {
 	int32 PerformerCode = 3;
 }
 
-message HashAlgorithmsResponse {
-	repeated HashAlgorithmItem Items = 1;
-
-	message HashAlgorithmItem {
-	   string Code = 1;
-	   google.protobuf.StringValue Description = 2;
-	}
-}
-
 message HouseholdTypesResponse {
 	repeated HouseholdTypeItem Items = 1;
 

@@ -674,18 +674,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem.FormatFieldNumber">
             <summary>Field number for the "Format" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.HashAlgorithmsResponse.ItemsFieldNumber">
-            <summary>Field number for the "Items" field.</summary>
-        </member>
-        <member name="T:DomainServices.CodebookService.Contracts.v1.HashAlgorithmsResponse.Types">
-            <summary>Container for nested types declared in the HashAlgorithmsResponse message type.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.HashAlgorithmsResponse.Types.HashAlgorithmItem.CodeFieldNumber">
-            <summary>Field number for the "Code" field.</summary>
-        </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.HashAlgorithmsResponse.Types.HashAlgorithmItem.DescriptionFieldNumber">
-            <summary>Field number for the "Description" field.</summary>
-        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.HouseholdTypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>

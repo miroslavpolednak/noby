@@ -1,5 +1,5 @@
 ﻿using CIS.Infrastructure.CisMediatR.GrpcValidation;
-using CIS.InternalServices.NotificationService.Api.Helpers;
+using CIS.InternalServices.NotificationService.Api.Legacy.Helpers;
 using FluentValidation;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Sms.Validators;
@@ -10,8 +10,8 @@ public class PhoneNumberValidator : AbstractValidator<string>
     {
         RuleFor(phoneNumber => phoneNumber.ParsePhone())
             .NotNull()
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.PhoneInvalid)
+                .WithErrorCode(ErrorCodeMapper.PhoneInvalid)
             .SetValidator(new PhoneValidator())
-                .WithErrorCode(ErrorHandling.ErrorCodeMapper.PhoneInvalid);
+                .WithErrorCode(ErrorCodeMapper.PhoneInvalid);
     }
 }

@@ -3,7 +3,7 @@ using MimeKit;
 
 namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 
-public static class MimeMessageExtensions
+internal static class MimeMessageExtensions
 {
     public static MimeMessage Create() => new();
 
@@ -72,7 +72,7 @@ public static class MimeMessageExtensions
     {
         var bodyBuilder = new BodyBuilder();
 
-        if (format.ToLower(CultureInfo.InvariantCulture).Contains("html"))
+        if (format.Contains("html", StringComparison.CurrentCultureIgnoreCase))
         {
             bodyBuilder.HtmlBody = content;
         }

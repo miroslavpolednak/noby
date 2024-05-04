@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.NotificationService.v2;
+option csharp_namespace = "CIS.InternalServices.NotificationService.Contracts.v2";
+
+import "google/protobuf/timestamp.proto";
+import "Messages/Types.proto";
+
+message GetDetailedStatisticsRequest {
+    repeated NotificationStates States = 1;
+    repeated NotificationChannels Channels = 2;
+    google.protobuf.Timestamp StatisticsDate = 3;
+}
+
+message GetDetailedStatisticsResponse {
+    StatisticsData Statistics = 1;
+    repeated ResultData Results = 2;
+}

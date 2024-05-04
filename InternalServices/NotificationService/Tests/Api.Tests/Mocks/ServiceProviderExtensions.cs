@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+using CIS.InternalServices.NotificationService.Api.Database;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 

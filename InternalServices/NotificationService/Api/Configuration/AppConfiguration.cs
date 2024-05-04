@@ -1,52 +1,37 @@
 ﻿namespace CIS.InternalServices.NotificationService.Api.Configuration;
 
-public class AppConfiguration
+internal sealed class AppConfiguration
 {
     public List<Consumer> Consumers { get; set; } = new();
 
     public EmailSenders EmailSenders { get; set; } = null!;
 
-    public HashSet<string> EmailFormats { get; set; } = new();
-    
-    public HashSet<string> EmailLanguageCodes { get; set; } = new();
+    [Obsolete]
+    public List<string> EmailFormats { get; set; } = new();
+
+    [Obsolete]
+    public List<string> EmailLanguageCodes { get; set; } = new();
     
     public KafkaTopics KafkaTopics { get; set; } = null!;
-
-    public S3Buckets S3Buckets { get; set; } = null!;
 }
 
-public class Consumer
+internal sealed class Consumer
 {
     public string Username { get; set; } = null!;
 
     public string ConsumerId { get; set; } = null!;
-
-    public bool CanSendEmail { get; set; } = false;
-    
-    public bool CanSendSms { get; set; } = false;
-    
-    public bool CanReadResult { get; set; } = false;
-
-    public bool CanReceiveStatistics { get; set; }
-
-    public bool CanResendNotifications { get; set; }
 }
 
-public class EmailSenders
+internal sealed class EmailSenders
 {
-    public HashSet<string> Mcs { get; set; } = new();
+    public List<string> Mcs { get; set; } = new();
 
-    public HashSet<string> Mpss { get; set; } = new();
+    public List<string> Mpss { get; set; } = new();
 }
 
-public class KafkaTopics
+internal sealed class KafkaTopics
 {
     public string McsResult { get; set; } = null!;
     
     public string McsSender { get; set; } = null!;
-}
-
-public class S3Buckets
-{
-    public string Mcs { get; set; } = null!;
 }

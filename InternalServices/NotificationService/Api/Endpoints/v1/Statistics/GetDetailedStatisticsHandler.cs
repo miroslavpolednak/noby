@@ -1,7 +1,7 @@
-﻿using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services.Repositories.Entities;
+﻿using CIS.InternalServices.NotificationService.Api.Database;
+using CIS.InternalServices.NotificationService.Api.Database.Entities;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
-using CIS.InternalServices.NotificationService.Contracts.Statistics;
+using CIS.InternalServices.NotificationService.LegacyContracts.Statistics;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +38,7 @@ internal sealed class GetDetailedStatisticsHandler
             query = query.Where(t => request.Channels.Contains(t.Channel));
 
         var data = await query
-            .Select(t => new Contracts.Statistics.Dto.Result
+            .Select(t => new LegacyContracts.Statistics.Dto.Result
             {
                 NotificationId = t.Id,
                 Channel = t.Channel,

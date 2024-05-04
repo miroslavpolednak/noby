@@ -5,9 +5,9 @@ using CIS.Core.Security;
 using CIS.Infrastructure.Security.ContextUser;
 using CIS.InternalServices.NotificationService.Clients;
 using CIS.InternalServices.NotificationService.Clients.Interfaces;
-using CIS.InternalServices.NotificationService.Contracts.Common;
-using CIS.InternalServices.NotificationService.Contracts.Result;
-using CIS.InternalServices.NotificationService.Contracts.Sms;
+using CIS.InternalServices.NotificationService.LegacyContracts.Common;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result;
+using CIS.InternalServices.NotificationService.LegacyContracts.Sms;
 using Console_NotificationService;
 using Microsoft.Extensions.DependencyInjection;
 
