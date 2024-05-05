@@ -42,8 +42,11 @@ internal static class MimeMessageExtensions
         return message;
     }
 
-    public static MimeMessage AddCc(this MimeMessage message, IEnumerable<string> cc)
+    public static MimeMessage AddCc(this MimeMessage message, IEnumerable<string>? cc)
     {
+        if (cc is null || !cc.Any())
+            return message;
+
         foreach (var c in cc)
         {
             if (!string.IsNullOrEmpty(c))
@@ -55,8 +58,11 @@ internal static class MimeMessageExtensions
         return message;
     }
 
-    public static MimeMessage AddBcc(this MimeMessage message, IEnumerable<string> bcc)
+    public static MimeMessage AddBcc(this MimeMessage message, IEnumerable<string>? bcc)
     {
+        if (bcc is null || !bcc.Any())
+            return message;
+
         foreach (var b in bcc)
         {
             if (!string.IsNullOrEmpty(b))
@@ -68,7 +74,7 @@ internal static class MimeMessageExtensions
         return message;
     }
 
-    public static MimeMessage AddContent(this MimeMessage message, string format, string content, IEnumerable<Dto.SmtpAttachment> attachments)
+    public static MimeMessage AddContent(this MimeMessage message, string format, string content, IEnumerable<Dto.SmtpAttachment>? attachments)
     {
         var bodyBuilder = new BodyBuilder();
 
@@ -81,10 +87,13 @@ internal static class MimeMessageExtensions
             bodyBuilder.TextBody = content;
         }
 
-        foreach (var attachment in attachments)
+        if (attachments != null && attachments.Any())
         {
-            bodyBuilder.Attachments.Add(attachment.Filename, attachment.Binary);
-        }
+            foreach (var attachment in attachments)
+            {
+                bodyBuilder.Attachments.Add(attachment.Filename, attachment.Binary);
+            }
+        }        
 
         message.Body = bodyBuilder.ToMessageBody();
 
