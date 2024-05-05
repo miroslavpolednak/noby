@@ -44,7 +44,7 @@ CREATE TABLE [dbo].[Notification](
 	[CustomId] [varchar](450) NULL,
 	[DocumentId] [varchar](450) NULL,
 	[DocumentHash] [varchar](max) NULL,
-	[HashAlgorithm] tinyint NULL,
+	[HashAlgorithm] [int] NULL,
 	[CreatedUserName] [varchar](100) NOT NULL,
 	[CreatedTime] [datetime] NOT NULL,
 	[ResultTime] [datetime] NULL,
