@@ -4,8 +4,10 @@ using DomainServices.DocumentOnSAService.Clients;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.CompleteTask;
 
-internal sealed class CompleteTaskHandler
-    : IRequestHandler<CompleteTaskRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class CompleteTaskHandler(
+    ISbWebApiClient _sbWebApiClient,
+    IDocumentOnSAServiceClient _documentOnSAService)
+        : IRequestHandler<CompleteTaskRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(CompleteTaskRequest request, CancellationToken cancellationToken)
     {
@@ -50,15 +52,4 @@ internal sealed class CompleteTaskHandler
             9 => "ukol_retence_pozadavek",
             _ => throw new NotImplementedException()
         };
-
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ISbWebApiClient _sbWebApiClient;
-
-    public CompleteTaskHandler(
-        ISbWebApiClient sbWebApiClient,
-        IDocumentOnSAServiceClient documentOnSAService)
-    {
-        _documentOnSAService = documentOnSAService;
-        _sbWebApiClient = sbWebApiClient;
-    }
 }

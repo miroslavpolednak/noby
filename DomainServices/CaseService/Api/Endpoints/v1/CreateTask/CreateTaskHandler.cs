@@ -5,8 +5,12 @@ using DomainServices.SalesArrangementService.Clients;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.CreateTask;
 
-internal sealed class CreateTaskHandler
-    : IRequestHandler<CreateTaskRequest, CreateTaskResponse>
+internal sealed class CreateTaskHandler(
+    ISbWebApiClient _sbWebApi,
+    ISalesArrangementServiceClient _salesArrangementService,
+    Database.CaseServiceDbContext _dbContext,
+    ICodebookServiceClient _codebookService)
+        : IRequestHandler<CreateTaskRequest, CreateTaskResponse>
 {
     public async Task<CreateTaskResponse> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
     {
@@ -152,22 +156,5 @@ internal sealed class CreateTaskHandler
             "POJIST_NEM" => 4,
             _ => null
         };
-    }
-
-    private readonly ISbWebApiClient _sbWebApi;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly Database.CaseServiceDbContext _dbContext;
-
-    public CreateTaskHandler(
-        ISbWebApiClient sbWebApi,
-        ISalesArrangementServiceClient salesArrangementService,
-        Database.CaseServiceDbContext dbContext,
-        ICodebookServiceClient codebookService)
-    {
-        _salesArrangementService = salesArrangementService;
-        _sbWebApi = sbWebApi;
-        _dbContext = dbContext;
-        _codebookService = codebookService;
     }
 }

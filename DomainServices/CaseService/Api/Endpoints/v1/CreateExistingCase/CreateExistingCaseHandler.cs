@@ -4,8 +4,12 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.CreateExistingCase;
 
-internal sealed class CreateExistingCaseHandler
-    : IRequestHandler<CreateExistingCaseRequest, CreateCaseResponse>
+internal sealed class CreateExistingCaseHandler(
+    UserService.Clients.IUserServiceClient _userService,
+    CaseServiceDbContext _dbContext,
+    ILogger<CreateCaseHandler> _logger,
+    TimeProvider _timeProvider)
+        : IRequestHandler<CreateExistingCaseRequest, CreateCaseResponse>
 {
     public async Task<CreateCaseResponse> Handle(CreateExistingCaseRequest request, CancellationToken cancellation)
     {
@@ -61,22 +65,5 @@ internal sealed class CreateExistingCaseHandler
             CustomerIdentityScheme = (IdentitySchemes)Convert.ToInt32(request.Customer?.Identity?.IdentityScheme, CultureInfo.InvariantCulture),
             CustomerIdentityId = request.Customer?.Identity?.IdentityId
         };
-    }
-
-    private readonly TimeProvider _timeProvider;
-    private readonly CaseServiceDbContext _dbContext;
-    private readonly ILogger<CreateCaseHandler> _logger;
-    private readonly UserService.Clients.IUserServiceClient _userService;
-
-    public CreateExistingCaseHandler(
-        UserService.Clients.IUserServiceClient userService,
-        CaseServiceDbContext dbContext,
-        ILogger<CreateCaseHandler> logger,
-        TimeProvider timeProvider)
-    {
-        _userService = userService;
-        _dbContext = dbContext;
-        _logger = logger;
-        _timeProvider = timeProvider;
     }
 }

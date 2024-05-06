@@ -5,8 +5,14 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.NotifyStarbuild;
 
-internal sealed class NotifyStarbuildHandler
-    : IRequestHandler<NotifyStarbuildRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class NotifyStarbuildHandler(
+    IDistributedCache _distributedCache,
+    Database.CaseServiceDbContext _dbContext,
+    CodebookService.Clients.ICodebookServiceClient _codebookService,
+    UserService.Clients.IUserServiceClient _userService,
+    ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient,
+    SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService)
+        : IRequestHandler<NotifyStarbuildRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(NotifyStarbuildRequest request, CancellationToken cancellationToken)
     {
@@ -64,28 +70,5 @@ internal sealed class NotifyStarbuildHandler
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient;
-    private readonly UserService.Clients.IUserServiceClient _userService;
-    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly Database.CaseServiceDbContext _dbContext;
-    private readonly IDistributedCache _distributedCache;
-
-    public NotifyStarbuildHandler(
-        IDistributedCache distributedCache,
-        Database.CaseServiceDbContext dbContext,
-        CodebookService.Clients.ICodebookServiceClient codebookService,
-        UserService.Clients.IUserServiceClient userService,
-        ExternalServices.SbWebApi.V1.ISbWebApiClient sbWebApiClient,
-        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
-    {
-        _distributedCache = distributedCache;
-        _dbContext = dbContext;
-        _codebookService = codebookService;
-        _userService = userService;
-        _sbWebApiClient = sbWebApiClient;
-        _salesArrangementService = salesArrangementService;
     }
 }

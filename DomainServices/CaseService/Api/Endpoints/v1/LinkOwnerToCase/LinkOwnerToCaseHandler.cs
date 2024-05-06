@@ -3,8 +3,10 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.LinkOwnerToCase;
 
-internal sealed class LinkOwnerToCaseHandler
-    : IRequestHandler<LinkOwnerToCaseRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class LinkOwnerToCaseHandler(
+    UserService.Clients.IUserServiceClient _userService,
+    CaseServiceDbContext _dbContext)
+        : IRequestHandler<LinkOwnerToCaseRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(LinkOwnerToCaseRequest request, CancellationToken cancellation)
     {
@@ -24,16 +26,5 @@ internal sealed class LinkOwnerToCaseHandler
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly UserService.Clients.IUserServiceClient _userService;
-    private readonly CaseServiceDbContext _dbContext;
-
-    public LinkOwnerToCaseHandler(
-        UserService.Clients.IUserServiceClient userService,
-        CaseServiceDbContext dbContext)
-    {
-        _userService = userService;
-        _dbContext = dbContext;
     }
 }

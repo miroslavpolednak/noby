@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.CaseService.Api.Endpoints.v1;
 
 [Authorize]
-internal sealed class CaseService
-    : Contracts.v1.CaseService.CaseServiceBase
+internal sealed class CaseService(IMediator _mediator)
+        : Contracts.v1.CaseService.CaseServiceBase
 {
     public override async Task<Empty> CompleteTask(CompleteTaskRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
@@ -71,8 +71,4 @@ internal sealed class CaseService
 
     public override async Task<Empty> UpdateTask(UpdateTaskRequest request, ServerCallContext context)
        => await _mediator.Send(request, context.CancellationToken);
-
-    private readonly IMediator _mediator;
-    public CaseService(IMediator mediator)
-        => _mediator = mediator;
 }

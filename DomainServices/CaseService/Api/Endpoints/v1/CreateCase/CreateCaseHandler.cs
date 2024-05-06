@@ -5,8 +5,16 @@ using ExternalServices.Eas.V1;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.CreateCase;
 
-internal sealed class CreateCaseHandler
-    : IRequestHandler<CreateCaseRequest, CreateCaseResponse>
+internal sealed class CreateCaseHandler(
+    IRollbackBag _bag,
+    IMediator _mediator,
+    UserService.Clients.IUserServiceClient _userService,
+    CodebookService.Clients.ICodebookServiceClient _codebookService,
+    IEasClient _easClient,
+    CaseServiceDbContext _dbContext,
+    ILogger<CreateCaseHandler> _logger,
+    TimeProvider _timeProvider)
+        : IRequestHandler<CreateCaseRequest, CreateCaseResponse>
 {
     public async Task<CreateCaseResponse> Handle(CreateCaseRequest request, CancellationToken cancellation)
     {
@@ -92,34 +100,5 @@ internal sealed class CreateCaseHandler
         entity.PhoneNumberForOffer = request.OfferContacts?.PhoneNumberForOffer?.PhoneNumber;
 
         return entity;
-    }
-
-    private readonly IRollbackBag _bag;
-    private readonly IMediator _mediator;
-    private readonly CaseServiceDbContext _dbContext;
-    private readonly ILogger<CreateCaseHandler> _logger;
-    private readonly IEasClient _easClient;
-    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly UserService.Clients.IUserServiceClient _userService;
-    private readonly TimeProvider _timeProvider;
-
-    public CreateCaseHandler(
-        IRollbackBag bag,
-        IMediator mediator,
-        UserService.Clients.IUserServiceClient userService,
-        CodebookService.Clients.ICodebookServiceClient codebookService,
-        IEasClient easClient,
-        CaseServiceDbContext dbContext,
-        ILogger<CreateCaseHandler> logger,
-        TimeProvider timeProvider)
-    {
-        _bag = bag;
-        _mediator = mediator;
-        _userService = userService;
-        _easClient = easClient;
-        _dbContext = dbContext;
-        _logger = logger;
-        _codebookService = codebookService;
-        _timeProvider = timeProvider;
     }
 }

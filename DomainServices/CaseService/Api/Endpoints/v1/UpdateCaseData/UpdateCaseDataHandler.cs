@@ -3,8 +3,12 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.UpdateCaseData;
 
-internal sealed class UpdateCaseDataHandler
-    : IRequestHandler<UpdateCaseDataRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateCaseDataHandler(
+    ILogger<UpdateCaseDataHandler> _logger,
+    IMediator _mediator,
+    CodebookService.Clients.ICodebookServiceClient _codebookService,
+    CaseServiceDbContext _dbContext)
+        : IRequestHandler<UpdateCaseDataRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateCaseDataRequest request, CancellationToken cancellation)
     {
@@ -48,22 +52,5 @@ internal sealed class UpdateCaseDataHandler
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly ILogger<UpdateCaseDataHandler> _logger;
-    private readonly IMediator _mediator;
-    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly CaseServiceDbContext _dbContext;
-
-    public UpdateCaseDataHandler(
-        ILogger<UpdateCaseDataHandler> logger,
-        IMediator mediator,
-        CodebookService.Clients.ICodebookServiceClient codebookService,
-        CaseServiceDbContext dbContext)
-    {
-        _logger = logger;
-        _mediator = mediator;
-        _codebookService = codebookService;
-        _dbContext = dbContext;
     }
 }

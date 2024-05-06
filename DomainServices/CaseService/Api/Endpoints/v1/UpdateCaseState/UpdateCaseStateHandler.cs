@@ -1,11 +1,14 @@
 ﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
-using SharedTypes.Enums;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.UpdateCaseState;
 
-internal sealed class UpdateCaseStateHandler
-    : IRequestHandler<UpdateCaseStateRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateCaseStateHandler(
+    IMediator _mediator,
+    CodebookService.Clients.ICodebookServiceClient _codebookService,
+    CaseServiceDbContext _dbContext,
+    TimeProvider _timeProvider)
+        : IRequestHandler<UpdateCaseStateRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateCaseStateRequest request, CancellationToken cancellation)
     {
@@ -56,23 +59,6 @@ internal sealed class UpdateCaseStateHandler
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private static int[] _starbuildStateUpdateStates = new[] { 1, 2, 7, 9 };
-
-    private readonly TimeProvider _timeProvider;
-    private readonly IMediator _mediator;
-    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly CaseServiceDbContext _dbContext;
-
-    public UpdateCaseStateHandler(
-        IMediator mediator,
-        CodebookService.Clients.ICodebookServiceClient codebookService,
-        CaseServiceDbContext dbContext,
-        TimeProvider timeProvider)
-    {
-        _mediator = mediator;
-        _codebookService = codebookService;
-        _dbContext = dbContext;
-        _timeProvider = timeProvider;
-    }
+    private static int[] _starbuildStateUpdateStates = [1, 2, 7, 9];
 }
 

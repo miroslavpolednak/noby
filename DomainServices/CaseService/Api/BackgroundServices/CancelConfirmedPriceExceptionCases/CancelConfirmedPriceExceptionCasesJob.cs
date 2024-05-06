@@ -8,7 +8,7 @@ internal sealed class CancelConfirmedPriceExceptionCasesJob
 {
     public async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
-        var d = _timeProvider.GetLocalNow().Date.AddDays(-45);
+        var d = DateOnly.FromDateTime(_timeProvider.GetLocalNow().Date.AddDays(-45));
 
         var list = await _dbContext
             .ConfirmedPriceExceptions

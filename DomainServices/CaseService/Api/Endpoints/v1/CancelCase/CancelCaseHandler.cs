@@ -7,8 +7,18 @@ using DomainServices.DocumentOnSAService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.CancelCase;
 
-internal sealed class CancelCaseHandler
-    : IRequestHandler<CancelCaseRequest, CancelCaseResponse>
+internal sealed class CancelCaseHandler(
+    IAuditLogger _auditLogger,
+    IMediator _mediator,
+    ICurrentUserAccessor _currentUser,
+    RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService,
+    HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService,
+    HouseholdService.Clients.IHouseholdServiceClient _householdService,
+    DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSAService,
+    SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    ProductService.Clients.IProductServiceClient _productService,
+    CaseServiceDbContext _dbContext)
+        : IRequestHandler<CancelCaseRequest, CancelCaseResponse>
 {
     public async Task<CancelCaseResponse> Handle(CancelCaseRequest request, CancellationToken cancellation)
     {
@@ -86,10 +96,10 @@ internal sealed class CancelCaseHandler
         _auditLogger.Log(
             AuditEventTypes.Noby004,
             "Případ byl stornován",
-            products: new List<AuditLoggerHeaderItem>
-            {
+            products:
+            [
                 new(AuditConstants.ProductNamesCase, request.CaseId)
-            },
+            ],
             bodyBefore: new Dictionary<string, string>
             {
                 { "button_label", "Storno žádosti" }
@@ -140,41 +150,6 @@ internal sealed class CancelCaseHandler
             .FirstOrDefault(t => t.HouseholdTypeId == (int)HouseholdTypes.Main)
             ?.HouseholdId;
 
-        return householdId.HasValue ? documents.Any(t => t.IsSigned && t.HouseholdId == householdId) : false;
-    }
-
-    private readonly IAuditLogger _auditLogger;
-    private readonly IMediator _mediator;
-    private readonly CaseServiceDbContext _dbContext;
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService;
-    private readonly HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly HouseholdService.Clients.IHouseholdServiceClient _householdService;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ProductService.Clients.IProductServiceClient _productService;
-
-    public CancelCaseHandler(
-        IAuditLogger auditLogger,
-        IMediator mediator,
-        ICurrentUserAccessor currentUser,
-        RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
-        HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
-        HouseholdService.Clients.IHouseholdServiceClient householdService,
-        DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSAService,
-        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        ProductService.Clients.IProductServiceClient productService,
-        CaseServiceDbContext dbContext)
-    {
-        _auditLogger = auditLogger;
-        _currentUser = currentUser;
-        _riskBusinessCaseService = riskBusinessCaseService;
-        _customerOnSAService = customerOnSAService;
-        _householdService = householdService;
-        _mediator = mediator;
-        _dbContext = dbContext;
-        _documentOnSAService = documentOnSAService;
-        _salesArrangementService = salesArrangementService;
-        _productService = productService;
+        return householdId.HasValue && documents.Any(t => t.IsSigned && t.HouseholdId == householdId);
     }
 }

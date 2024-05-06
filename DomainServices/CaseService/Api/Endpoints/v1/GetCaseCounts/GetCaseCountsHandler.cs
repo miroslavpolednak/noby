@@ -3,8 +3,8 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.GetCaseCounts;
 
-internal sealed class GetCaseCountsHandler
-    : IRequestHandler<GetCaseCountsRequest, GetCaseCountsResponse>
+internal sealed class GetCaseCountsHandler(CaseServiceDbContext _dbContext)
+        : IRequestHandler<GetCaseCountsRequest, GetCaseCountsResponse>
 {
     public async Task<GetCaseCountsResponse> Handle(GetCaseCountsRequest request, CancellationToken cancellation)
     {
@@ -24,14 +24,6 @@ internal sealed class GetCaseCountsHandler
             .ToList()
         );
 
-
         return result;
-    }
-
-    private readonly CaseServiceDbContext _dbContext;
-
-    public GetCaseCountsHandler(CaseServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

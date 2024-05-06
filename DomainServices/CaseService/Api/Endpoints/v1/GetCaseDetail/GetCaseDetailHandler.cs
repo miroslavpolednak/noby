@@ -6,8 +6,13 @@ using CIS.Core.Configuration;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.GetCaseDetail;
 
-internal sealed class GetCaseDetailHandler
-    : IRequestHandler<GetCaseDetailRequest, Case>
+internal sealed class GetCaseDetailHandler(
+    ICisEnvironmentConfiguration _cisEnvironmentConfiguration,
+    IServiceUserAccessor _serviceUser,
+    CaseServiceDbContext _dbContext,
+    IAuditLogger _auditLogger,
+    ICurrentUserAccessor _currentUser)
+        : IRequestHandler<GetCaseDetailRequest, Case>
 {
     /// <summary>
     /// Vraci detail Case-u
@@ -31,33 +36,13 @@ internal sealed class GetCaseDetailHandler
             _auditLogger.Log(
                 AuditEventTypes.Noby009,
                 "Přístup na případ, kde přistupující není majitelem případu",
-                products: new List<AuditLoggerHeaderItem>
-                {
+                products:
+                [
                     new(AuditConstants.ProductNamesCase, request.CaseId)
-                }
+                ]
             );
         }
 
         return model;
-    }
-
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly IAuditLogger _auditLogger;
-    private readonly CaseServiceDbContext _dbContext;
-    private readonly ICisEnvironmentConfiguration _cisEnvironmentConfiguration;
-    private readonly IServiceUserAccessor _serviceUser;
-
-    public GetCaseDetailHandler(
-        ICisEnvironmentConfiguration cisEnvironmentConfiguration,
-        IServiceUserAccessor serviceUser,
-        CaseServiceDbContext dbContext,
-        IAuditLogger auditLogger,
-        ICurrentUserAccessor currentUser)
-    {
-        _cisEnvironmentConfiguration = cisEnvironmentConfiguration;
-        _serviceUser = serviceUser;
-        _currentUser = currentUser;
-        _auditLogger = auditLogger;
-        _dbContext = dbContext;
     }
 }

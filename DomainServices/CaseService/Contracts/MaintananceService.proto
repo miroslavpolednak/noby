@@ -2,7 +2,7 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
-import "GrpcDateTime.proto";
+import "GrpcDate.proto";
 import "google/protobuf/empty.proto";
 
 service MaintananceService {
@@ -11,7 +11,7 @@ service MaintananceService {
 }
 
 message GetConfirmedPriceExceptionsRequest {
-	cis.types.GrpcDateTime OlderThan = 1;
+	cis.types.GrpcDate OlderThan = 1;
 }
 
 message GetConfirmedPriceExceptionsResponse {

@@ -6,8 +6,10 @@ using System.Text.RegularExpressions;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.GetTaskDetail;
 
-internal sealed class GetTaskDetailHandler
-    : IRequestHandler<GetTaskDetailRequest, GetTaskDetailResponse>
+internal sealed partial class GetTaskDetailHandler(
+    ISbWebApiClient _sbWebApiClient, 
+    ICodebookServiceClient _codebookService)
+        : IRequestHandler<GetTaskDetailRequest, GetTaskDetailResponse>
 {
     public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
@@ -83,7 +85,7 @@ internal sealed class GetTaskDetailHandler
             if (string.IsNullOrEmpty(text))
                 return;
 
-            var matches = _messagePatternRegex.Matches(text);
+            var matches = getMessagePatternRegex().Matches(text);
 
             for (var i = 0; i < matches.Count; i += 2)
             {
@@ -108,14 +110,6 @@ internal sealed class GetTaskDetailHandler
         }
     }
 
-    private static readonly Regex _messagePatternRegex = new(@"#Separator(?:Response|Request)#\s*([\s\S]*?)(?=\s*#Separator(?:Response|Request)#|$)", RegexOptions.Compiled);
-
-    private readonly ISbWebApiClient _sbWebApiClient;
-    private readonly ICodebookServiceClient _codebookService;
-
-    public GetTaskDetailHandler(ISbWebApiClient sbWebApiClient, ICodebookServiceClient codebookService)
-    {
-        _sbWebApiClient = sbWebApiClient;
-        _codebookService = codebookService;
-    }
+    [GeneratedRegex(@"#Separator(?:Response|Request)#\s*([\s\S]*?)(?=\s*#Separator(?:Response|Request)#|$)", RegexOptions.Compiled)]
+    private static partial Regex getMessagePatternRegex();
 }

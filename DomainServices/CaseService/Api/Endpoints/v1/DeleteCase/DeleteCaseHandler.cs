@@ -3,8 +3,10 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.DeleteCase;
 
-internal sealed class DeleteCaseHandler
-    : IRequestHandler<DeleteCaseRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class DeleteCaseHandler(
+    SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    CaseServiceDbContext _dbContext)
+        : IRequestHandler<DeleteCaseRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteCaseRequest request, CancellationToken cancellation)
     {
@@ -25,16 +27,5 @@ internal sealed class DeleteCaseHandler
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly CaseServiceDbContext _dbContext;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-
-    public DeleteCaseHandler(
-        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        CaseServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
-        _salesArrangementService = salesArrangementService;
     }
 }

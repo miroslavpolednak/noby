@@ -4,32 +4,17 @@ using DomainServices.CaseService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using KafkaFlow;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
-internal class IndividualPricingProcessChangedHandler : IMessageHandler<IndividualPricingProcessChanged>
+internal class IndividualPricingProcessChangedHandler(
+    IMediator _mediator,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ActiveTasksService _activeTasksService,
+    ILogger<IndividualPricingProcessChangedHandler> _logger,
+    Database.CaseServiceDbContext _dbContext) 
+    : IMessageHandler<IndividualPricingProcessChanged>
 {
-    private readonly IMediator _mediator;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ActiveTasksService _activeTasksService;
-    private readonly ILogger<IndividualPricingProcessChangedHandler> _logger;
-    private readonly Database.CaseServiceDbContext _dbContext;
-
-    public IndividualPricingProcessChangedHandler(
-        IMediator mediator,
-        ISalesArrangementServiceClient salesArrangementService,
-        ActiveTasksService activeTasksService,
-        ILogger<IndividualPricingProcessChangedHandler> logger,
-        Database.CaseServiceDbContext dbContext)
-    {
-        _mediator = mediator;
-        _salesArrangementService = salesArrangementService;
-        _activeTasksService = activeTasksService;
-        _logger = logger;
-        _dbContext = dbContext;
-    }
-
     public async Task Handle(IMessageContext context, IndividualPricingProcessChanged message)
     {
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
@@ -46,37 +31,38 @@ internal class IndividualPricingProcessChangedHandler : IMessageHandler<Individu
 
         if (message.state is not (ProcessStateEnum.ACTIVE or ProcessStateEnum.TERMINATED or ProcessStateEnum.COMPLETED))
         {
-            _logger.KafkaMessageCurrentTaskIdIncorrectFormat(nameof(IndividualPricingProcessChangedHandler), message.currentTask.id);
+            _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, currentTaskId, 0);
             return;
         }
 
         // detail tasku
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId });
 
-        if (message.state is ProcessStateEnum.COMPLETED && taskDetail.TaskObject.DecisionId == 1)
-        {
-            var existingConfirmedEntity = _dbContext.ConfirmedPriceExceptions.FirstOrDefault(t => t.TaskIdSB == currentTaskId);
-            if (existingConfirmedEntity is null)
-            {
-                existingConfirmedEntity = new Database.Entities.ConfirmedPriceException
-                {
-                    TaskIdSB = currentTaskId,
-                    CaseId = caseId
-                };
-            }
-            existingConfirmedEntity.ConfirmedDate = message.occurredOn;
-            existingConfirmedEntity.CreatedTime = DateTime.Now;
-            _dbContext.SaveChanges();
-        }
-
-        if (taskDetail.TaskObject.ProcessTypeId != 1)
+        if (message.state is (ProcessStateEnum.ACTIVE or ProcessStateEnum.TERMINATED) && taskDetail.TaskObject.ProcessTypeId != 1)
         {
             _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, currentTaskId, taskDetail.TaskObject.ProcessTypeId);
             return;
         }
 
+        // schvalena IC
+        if (message.state is ProcessStateEnum.COMPLETED && taskDetail.TaskObject.DecisionId == 1)
+        {
+            await saveEntity(currentTaskId, caseId, message.occurredOn, null);
+
+            if (taskDetail.TaskObject.ProcessTypeId != 1)
+            {
+                _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, currentTaskId, taskDetail.TaskObject.ProcessTypeId);
+                return;
+            }
+        }
+        else if (message.state is ProcessStateEnum.COMPLETED && taskDetail.TaskObject.ProcessTypeId == 3)
+        {
+            await saveEntity(currentTaskId, caseId, null, message.occurredOn);
+        }
+
         await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, currentTaskId, CancellationToken.None);
 
+        // nastaveni flow switches
         var flowSwitches = (message.state switch
         {
             ProcessStateEnum.COMPLETED => GetFlowSwitchesForCompleted(taskDetail.TaskObject.DecisionId),
@@ -93,6 +79,23 @@ internal class IndividualPricingProcessChangedHandler : IMessageHandler<Individu
                 await _salesArrangementService.SetFlowSwitches(salesArrangement.SalesArrangementId, flowSwitches);
             }
         }
+    }
+
+    private async Task saveEntity(int taskIdSB, long caseId, DateTime? confirmedDate, DateTime? declinedDate)
+    {
+        var existingConfirmedEntity = _dbContext.ConfirmedPriceExceptions.FirstOrDefault(t => t.TaskIdSB == taskIdSB);
+
+        existingConfirmedEntity ??= new Database.Entities.ConfirmedPriceException
+            {
+                TaskIdSB = taskIdSB,
+                CaseId = caseId
+            };
+
+        existingConfirmedEntity.ConfirmedDate = confirmedDate.HasValue ? DateOnly.FromDateTime(confirmedDate.Value) : null;
+        existingConfirmedEntity.DeclinedDate = declinedDate.HasValue ? DateOnly.FromDateTime(declinedDate.Value) : null;
+        existingConfirmedEntity.CreatedTime = DateTime.Now;
+
+        await _dbContext.SaveChangesAsync();
     }
 
     private static IEnumerable<EditableFlowSwitch> GetFlowSwitchesForCompleted(int? decisionId)

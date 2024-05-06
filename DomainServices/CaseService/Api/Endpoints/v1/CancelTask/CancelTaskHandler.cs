@@ -5,8 +5,13 @@ using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.CancelTask;
 
-internal sealed class CancelTaskHandler
-    : IRequestHandler<CancelTaskRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class CancelTaskHandler(
+    IMediator _mediator,
+    ISbWebApiClient _sbWebApi,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICodebookServiceClient _codebookService,
+    Database.CaseServiceDbContext _dbContext)
+        : IRequestHandler<CancelTaskRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(CancelTaskRequest request, CancellationToken cancellationToken)
     {
@@ -25,34 +30,14 @@ internal sealed class CancelTaskHandler
         if (taskDetail.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.PriceException && entity.State == (int)CaseStates.InProgress && mandant == (int)Mandants.Kb)
         {
             var saId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First().SalesArrangementId;
-            await _salesArrangementService.SetFlowSwitches(saId, new()
-            {
+            await _salesArrangementService.SetFlowSwitches(saId,
+            [
                 new() { FlowSwitchId = (int)FlowSwitches.DoesWflTaskForIPExist, Value = false },
                 new() { FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPApproved, Value = false },
                 new() { FlowSwitchId = (int)FlowSwitches.IsWflTaskForIPNotApproved, Value = false }
-            }, cancellationToken);
+            ], cancellationToken);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly IMediator _mediator;
-    private readonly ISbWebApiClient _sbWebApi;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly Database.CaseServiceDbContext _dbContext;
-
-    public CancelTaskHandler(
-        IMediator mediator,
-        ISbWebApiClient sbWebApi,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICodebookServiceClient codebookService,
-        Database.CaseServiceDbContext dbContext)
-    {
-        _mediator = mediator;
-        _sbWebApi = sbWebApi;
-        _salesArrangementService = salesArrangementService;
-        _codebookService = codebookService;
-        _dbContext = dbContext;
     }
 }

@@ -3,8 +3,8 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.ValidateCaseId;
 
-internal sealed class ValidateCaseIdHandler
-    : IRequestHandler<ValidateCaseIdRequest, ValidateCaseIdResponse>
+internal sealed class ValidateCaseIdHandler(CaseServiceDbContext _dbContext)
+        : IRequestHandler<ValidateCaseIdRequest, ValidateCaseIdResponse>
 {
     public async Task<ValidateCaseIdResponse> Handle(ValidateCaseIdRequest request, CancellationToken cancellationToken)
     {
@@ -25,12 +25,5 @@ internal sealed class ValidateCaseIdHandler
             OwnerUserId = instance?.OwnerUserId,
             State = instance?.State
         };
-    }
-
-    private readonly CaseServiceDbContext _dbContext;
-
-    public ValidateCaseIdHandler(CaseServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

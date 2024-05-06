@@ -7,8 +7,12 @@ using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.GetTaskList;
 
-internal sealed class GetTaskListHandler
-    : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
+internal sealed class GetTaskListHandler(
+    CaseServiceDbContext _dbContext,
+    ISbWebApiClient _sbWebApiClient,
+    ActiveTasksService _activeTasks,
+    ICodebookServiceClient _codebookService)
+        : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
 {
     public async Task<GetTaskListResponse> Handle(GetTaskListRequest request, CancellationToken cancellationToken)
     {
@@ -44,22 +48,5 @@ internal sealed class GetTaskListHandler
         var response = new GetTaskListResponse();
         response.Tasks.AddRange(tasks);
         return response;
-    }
-
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ActiveTasksService _activeTasks;
-    private readonly CaseServiceDbContext _dbContext;
-    private readonly ISbWebApiClient _sbWebApiClient;
-
-    public GetTaskListHandler(
-        CaseServiceDbContext dbContext,
-        ISbWebApiClient sbWebApiClient,
-        ActiveTasksService activeTasks,
-        ICodebookServiceClient codebookService)
-    {
-        _dbContext = dbContext;
-        _sbWebApiClient = sbWebApiClient;
-        _activeTasks = activeTasks;
-        _codebookService = codebookService;
     }
 }
