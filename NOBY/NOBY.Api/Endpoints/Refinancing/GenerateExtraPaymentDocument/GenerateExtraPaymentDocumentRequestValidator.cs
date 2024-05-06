@@ -10,5 +10,7 @@ internal sealed class GenerateExtraPaymentDocumentRequestValidator : AbstractVal
         RuleFor(t => t)
           .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ExtraPayment))
           .WithErrorCode(90058);
+
+        RuleFor(r => r.ClientKbId).NotNull().WithErrorCode(90032);
     }
 }

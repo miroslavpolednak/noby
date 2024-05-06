@@ -12,16 +12,15 @@ public class GenerateExtraPaymentDocumentRequest : IRequest
     internal int SalesArrangementId { get; set; }
 
     /// <summary>
-    /// Způsob předání dokumentu vyčíslení klientovi. Číselník <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813">HandoverTypeDetails</a>
+    /// Způsoby předání podle číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813">HandoverTypeDetail (SB CalculationDocuments Service enum).</a>
     /// </summary>
     [Required]
     public int HandoverTypeDetailId { get; set; }
     
     /// <summary>
-    /// KB ID klienta, kterému se bude předávat dokument vyčíslení.
+    /// KBID klienta, kterému se bude předávat vygenerovaný dokument vyčíslení (a případné vygenerované dokumenty souhlasů)).
     /// </summary>
-    [Required]
-    public long ClientKbId { get; set; }
+    public long? ClientKbId { get; set; }
 
     internal GenerateExtraPaymentDocumentRequest Infuse(long caseId, int salesArrangementId)
     {
