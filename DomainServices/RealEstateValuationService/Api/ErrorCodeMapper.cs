@@ -23,6 +23,7 @@ internal sealed class ErrorCodeMapper
     public const int MaxValuationsForCase = 22015;
     public const int MissingRealEstateId = 22016;
     public const int RevaluationFailed = 22017;
+    public const int LocalSurveyDetailsIsEmpty = 22018;
     public const int LuxpiKbModelStatusFailed = 22202;
 
     public static IErrorCodesDictionary Init()
@@ -46,8 +47,9 @@ internal sealed class ErrorCodeMapper
             { UnsopportedEstateType, "Unsupported RealEstateTypeId ({PropertyValue})" },
             { RevaluationFailed, "Revaluation failed" },
             { MissingRealEstateId, "Missing RealEstateId" },
-            { MaxValuationsForCase, "Příliš mnoho Ocenění s isLoanRealEstate true" },
+            { MaxValuationsForCase, "Too many RealEstateValuations where isLoanRealEstate is true" },
             { LuxpiKbModelStatusFailed, "KB Model Status Knocked Out" },
+            { LocalSurveyDetailsIsEmpty, "LocalSurveyDetails object is empty" }
         });
 
         return Messages;
