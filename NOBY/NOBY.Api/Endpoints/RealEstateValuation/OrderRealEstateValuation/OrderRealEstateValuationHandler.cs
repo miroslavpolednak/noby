@@ -1,9 +1,10 @@
 ﻿using DomainServices.RealEstateValuationService.Clients;
+using Microsoft.IdentityModel.Tokens;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation;
 
-internal sealed class OrderRealEstateValuationHandler
-    : IRequestHandler<OrderRealEstateValuationRequest>
+internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServiceClient _realEstateValuationService)
+        : IRequestHandler<OrderRealEstateValuationRequest>
 {
     public async Task Handle(OrderRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
@@ -24,14 +25,9 @@ internal sealed class OrderRealEstateValuationHandler
                     throw new NobyValidationException(90032, "Valuation:Online OrderId or PreorderId already set or state is out of allowed range");
                 }
 
-                if (revInstance.IsRevaluationRequired 
-                    && (string.IsNullOrEmpty(request.LocalSurveyPerson?.FunctionCode)
-                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.FirstName)
-                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.LastName)
-                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.MobilePhone?.PhoneNumber)
-                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.EmailAddress?.EmailAddress)))
+                if (revInstance.IsRevaluationRequired)
                 {
-                    throw new NobyValidationException(90032, "Valuation:Online LocalSurveyPerson is not filled");
+                    validateLocalSurvey(request.LocalSurveyPerson);
                 }
 
                 await _realEstateValuationService.OrderOnlineValuation(new DomainServices.RealEstateValuationService.Contracts.OrderOnlineValuationRequest
@@ -46,6 +42,11 @@ internal sealed class OrderRealEstateValuationHandler
                     || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(revInstance.ValuationStateId))
                 {
                     throw new NobyValidationException(90032, "Valuation:Standard OrderId already set or state is out of allowed range");
+                }
+
+                if (revInstance.IsRevaluationRequired)
+                {
+                    validateLocalSurvey(request.LocalSurveyPerson);
                 }
 
                 await _realEstateValuationService.OrderStandardValuation(new DomainServices.RealEstateValuationService.Contracts.OrderStandardValuationRequest
@@ -67,6 +68,19 @@ internal sealed class OrderRealEstateValuationHandler
         }
     }
 
+    public static void validateLocalSurvey(Dto.RealEstateValuation.LocalSurveyData? localSurvey)
+    {
+        if (string.IsNullOrEmpty(localSurvey?.FunctionCode)
+            || string.IsNullOrEmpty(localSurvey?.FirstName)
+            || string.IsNullOrEmpty(localSurvey?.LastName)
+            || string.IsNullOrEmpty(localSurvey?.MobilePhone?.PhoneIDC)
+            || string.IsNullOrEmpty(localSurvey?.MobilePhone?.PhoneNumber)
+            || string.IsNullOrEmpty(localSurvey?.EmailAddress?.EmailAddress))
+        {
+            throw new NobyValidationException(90032, "LocalSurveyPerson is not filled");
+        }
+    }
+
     private static DomainServices.RealEstateValuationService.Contracts.LocalSurveyData createData(OrderRealEstateValuationRequest request)
         => new DomainServices.RealEstateValuationService.Contracts.LocalSurveyData
         {
@@ -77,11 +91,4 @@ internal sealed class OrderRealEstateValuationHandler
             PhoneIDC = request.LocalSurveyPerson?.MobilePhone?.PhoneIDC ?? "",
             PhoneNumber = request.LocalSurveyPerson?.MobilePhone?.PhoneNumber ?? ""
         };
-
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public OrderRealEstateValuationHandler(IRealEstateValuationServiceClient realEstateValuationService)
-    {
-        _realEstateValuationService = realEstateValuationService;
-    }
 }
