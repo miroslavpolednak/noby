@@ -94,8 +94,7 @@ public sealed class CreateCaseFromExternalSourcesService(
             && mortgageData.CaseOwnerUserCurrentId.HasValue
             && mortgageData.PartnerId > 0
             && !string.IsNullOrEmpty(mortgageData.ContractNumber)
-            && mortgageData.ProductTypeId > 0
-            && !string.IsNullOrEmpty(mortgageData.PcpId);
+            && mortgageData.ProductTypeId > 0;
     }
 
     private static int getState(MortgageData mortgageInstance)

@@ -3655,7 +3655,7 @@
             SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetExtraPaymentList(System.Int64)">
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetMortgageExtraPaymentList(System.Int64)">
             <summary>
             Rozscestník mimořádných splátek 
             </summary>
