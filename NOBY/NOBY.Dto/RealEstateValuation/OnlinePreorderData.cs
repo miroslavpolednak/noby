@@ -8,7 +8,7 @@ public class OnlinePreorderData
     /// <example>1</example>
     [Required]
     [MinLength(1)]
-    public string BuildingTechnicalStateCode { get; set; } = string.Empty;
+    public string? BuildingTechnicalStateCode { get; set; } = string.Empty;
 
     /// <summary>
     /// Konstrukční materiál budovy, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingMaterialStructure">RealEstateValuationBuildingMaterialStructure</a>
@@ -16,7 +16,7 @@ public class OnlinePreorderData
     /// <example>CIHLA</example>
     [Required]
     [MinLength(1)]
-    public string BuildingMaterialStructureCode { get; set; } = string.Empty;
+    public string? BuildingMaterialStructureCode { get; set; } = string.Empty;
 
     /// <summary>
     /// Dispozice, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationFlatSchema">RealEstateValuationFlatSchema</a>
@@ -24,14 +24,14 @@ public class OnlinePreorderData
     /// <example>1+1</example>
     [Required]
     [MinLength(1)]
-    public string FlatSchemaCode { get; set; } = string.Empty;
+    public string? FlatSchemaCode { get; set; } = string.Empty;
 
     /// <summary>
     /// Čistá podlahová plocha bytu
     /// </summary>
     /// <example>55</example>
     [Required]
-    public decimal FlatArea { get; set; }
+    public decimal? FlatArea { get; set; }
 
     /// <summary>
     /// Stáří budovy, hodnota z číselníku <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingAge">RealEstateValuationBuildingAge</a>
@@ -39,5 +39,5 @@ public class OnlinePreorderData
     /// <example>99</example>
     [Required]
     [MinLength(1)]
-    public string BuildingAgeCode { get; set; } = string.Empty;
+    public string? BuildingAgeCode { get; set; } = string.Empty;
 }
