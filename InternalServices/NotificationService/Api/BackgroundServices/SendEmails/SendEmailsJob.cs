@@ -133,25 +133,24 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
         if (emails.Count == 0)
             return;
         
-        await SendEmails<SendEmail>(
+        await SendEmails<Database.DocumentDataEntities.EmailData>(
            client: client,
            emails.Select(t => t.Id).ToList(),
            createEmail: (id, payload) =>
            {
-               var data = payload.Data;
                // vytvorit zpravu
                var email = MimeMessageExtensions
                .Create()
-               .AddFrom(data!.From.Value)
-               .AddReplyTo(data!.ReplyTo?.Value ?? "")
-               .AddSubject(data!.Subject)
-               .AddTo(data!.To.Select(t => t.Value))
-               .AddCc(data!.Cc.Select(t => t.Value))
-               .AddBcc(data!.Bcc.Select(t => t.Value))
-               .AddContent(data!.Content.Format, data!.Content.Text, data!.Attachments.Select(t => new Dto.SmtpAttachment
+               .AddFrom(payload.Sender.Value)
+               .AddReplyTo(payload.ReplyTo?.Value ?? "")
+               .AddSubject(payload.Subject)
+               .AddTo(payload.To.Select(t => t.Value))
+               .AddCc(payload.Cc?.Select(t => t.Value))
+               .AddBcc(payload.Bcc?.Select(t => t.Value))
+               .AddContent(payload.Format == Contracts.v2.SendEmailRequest.Types.EmailFormats.PlainText ? "text/plain" : "text/html", payload.Text, payload.Attachments?.Select(t => new Dto.SmtpAttachment
                {
                    Filename = t.Filename,
-                   Binary = Convert.FromBase64String(t.Binary)
+                   Binary = Convert.FromBase64String(t.Data)
                }));
 
                return email;
