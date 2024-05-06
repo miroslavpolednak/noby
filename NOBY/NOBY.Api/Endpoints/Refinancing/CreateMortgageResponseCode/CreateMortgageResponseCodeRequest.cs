@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace NOBY.Api.Endpoints.Refinancing.SendMortgageResponseCode;
+namespace NOBY.Api.Endpoints.Refinancing.CreateMortgageResponseCode;
 
-public sealed class SendMortgageResponseCodeRequest
+public sealed class CreateMortgageResponseCodeRequest
     : IRequest
 {
     [JsonIgnore]
@@ -16,7 +16,7 @@ public sealed class SendMortgageResponseCodeRequest
 
     public string? DataString { get; set; }
 
-    internal SendMortgageResponseCodeRequest InfuseId(long caseId)
+    internal CreateMortgageResponseCodeRequest InfuseId(long caseId)
     {
         this.CaseId = caseId;
         return this;

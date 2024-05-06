@@ -1,12 +1,12 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 
-namespace NOBY.Api.Endpoints.Refinancing.SendMortgageResponseCode;
+namespace NOBY.Api.Endpoints.Refinancing.CreateMortgageResponseCode;
 
-internal sealed class SendMortgageResponseCodeHandler
-    : IRequestHandler<SendMortgageResponseCodeRequest>
+internal sealed class CreateMortgageResponseCodeHandler
+    : IRequestHandler<CreateMortgageResponseCodeRequest>
 {
-    public async Task Handle(SendMortgageResponseCodeRequest request, CancellationToken cancellationToken)
+    public async Task Handle(CreateMortgageResponseCodeRequest request, CancellationToken cancellationToken)
     {
         var responseCode = (await _codebookService.ResponseCodeTypes(cancellationToken))
             .First(t => t.Id == request.ResponseCodeTypeId);
@@ -30,7 +30,7 @@ internal sealed class SendMortgageResponseCodeHandler
     private readonly IOfferServiceClient _offerService;
     private readonly ICodebookServiceClient _codebookService;
 
-    public SendMortgageResponseCodeHandler(IOfferServiceClient offerService, ICodebookServiceClient codebookService)
+    public CreateMortgageResponseCodeHandler(IOfferServiceClient offerService, ICodebookServiceClient codebookService)
     {
         _offerService = offerService;
         _codebookService = codebookService;

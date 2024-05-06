@@ -2,12 +2,12 @@
 using FluentValidation;
 using Microsoft.FeatureManagement;
 
-namespace NOBY.Api.Endpoints.Refinancing.SendMortgageResponseCode;
+namespace NOBY.Api.Endpoints.Refinancing.CreateMortgageResponseCode;
 
-internal sealed class SendMortgageResponseCodeRequestValidator
-    : AbstractValidator<SendMortgageResponseCodeRequest>
+internal sealed class CreateMortgageResponseCodeRequestValidator
+    : AbstractValidator<CreateMortgageResponseCodeRequest>
 {
-    public SendMortgageResponseCodeRequestValidator(ICodebookServiceClient codebookService, IFeatureManager featureManager)
+    public CreateMortgageResponseCodeRequestValidator(ICodebookServiceClient codebookService, IFeatureManager featureManager)
     {
         RuleFor(t => t.ResponseCodeTypeId)
             .Cascade(CascadeMode.Stop)

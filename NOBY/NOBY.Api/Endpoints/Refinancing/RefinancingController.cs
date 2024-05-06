@@ -34,7 +34,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
         => await _mediator.Send(new GetMortgageExtraPaymentListRequest(caseId));
 
     /// <summary>
-    /// Seznam dostupných délek fixací pro refixace
+    /// Seznam dostupných délek fixací pro refixace. Délky fixace jsou uvedeny v měsících.
     /// </summary>
     /// <remarks>
     /// Délky fixace jsou uvedeny v měsících.
@@ -51,30 +51,31 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
         => await _mediator.Send(new GetAvailableFixedRatePeriodsRequest(caseId));
 
     /// <summary>
-    /// Vytvoří odpovědní kód
+    /// Uloží odpovědní kód ke case a k odeslání do BDP (Big Data Platform)
     /// </summary>
     /// <remarks>
     /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BA03AE2F-C91E-4308-9C92-C24A7CF66D08"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8251FF4A-E3C6-46c8-883E-D70C884A859D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPut("case/{caseId:long}/mortgage/send-response-code")]
+    [HttpPut("case/{caseId:long}/mortgage/create-mortgage-response-code")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> SendMortgageResponseCode([FromRoute] long caseId, [FromBody] SendMortgageResponseCode.SendMortgageResponseCodeRequest? request)
+    public async Task<IActionResult> CreateMortgageResponseCode([FromRoute] long caseId, [FromBody] CreateMortgageResponseCode.CreateMortgageResponseCodeRequest? request)
     {
-        await _mediator.Send((request ?? new SendMortgageResponseCode.SendMortgageResponseCodeRequest()).InfuseId(caseId));
+        await _mediator.Send((request ?? new CreateMortgageResponseCode.CreateMortgageResponseCodeRequest()).InfuseId(caseId));
         return NoContent();
     }
 
     /// <summary>
-    /// 
+    /// Uložení změny individuální cenotvorby a komentáře
     /// </summary>
     /// <remarks>
+    /// Uloží změny ve výši slevy ze sazby včetně komentáře ke slevě. Dále uloží komentář k refixaci.
     /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=32807AA6-9D09-4c6e-9BBB-F21A962437FE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D2F4DD7B-54B9-4c86-BEE0-8673DBBDE5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:long}/update-mortgage-refixation")]
     [Produces("application/json")]
@@ -160,7 +161,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vrátí kolekci možných platností sazby od pro konkrétní úvěr.
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=138F1225-E4D6-4a7c-B316-882C35CE2C74"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/interest-rates-valid-from")]
     [Produces("application/json")]
