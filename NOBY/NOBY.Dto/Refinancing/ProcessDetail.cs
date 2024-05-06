@@ -1,7 +1,8 @@
 ﻿using SharedTypes.Enums;
 
 namespace NOBY.Dto.Refinancing;
-public class ProcessDetail
+
+public sealed class ProcessDetail
 {
     /// <summary>
     /// Noby proces ID daného procesu Refinancí. Jde o ID sady úkolů generované Starbuildem.
@@ -20,7 +21,10 @@ public class ProcessDetail
     /// </summary>
     public RefinancingStates RefinancingStateId { get; set; }
 
-    public DateTime CreatedTime { get; set; }
+    /// <summary>
+    /// Datum vzniku proces
+    /// </summary>
+    public DateOnly CreatedOn { get; set; }
 
     /// <summary>
     /// Úroková sazba poskytnutá (včetně slevy)
@@ -28,22 +32,32 @@ public class ProcessDetail
     public decimal? LoanInterestRateProvided { get; set; }
 
     /// <summary>
-    /// Platnost nové úrokové sazby od.
+    /// Platnost nové úrokové sazby od
     /// </summary>
     public DateOnly? LoanInterestRateValidFrom { get; set; }
 
     /// <summary>
-    /// Platnost nové úrokové sazby do (datum následující refixace).
+    /// Platnost nové úrokové sazby do (datum následující refixace)
     /// </summary>
-    public DateTime? LoanInterestRateValidTo { get; set; }
+    public DateOnly? LoanInterestRateValidTo { get; set; }
 
     /// <summary>
     /// Datum účinnosti (kdy byl požadavek podepsán a finalizován ve SB)
     /// </summary>
-    public DateTime? EffectiveDate { get; set; }
+    public DateOnly? EffectiveDate { get; set; }
 
     /// <summary>
     /// Slouží k náhledu na dokumenty
     /// </summary>
     public string? DocumentId { get; set; }
+
+    /// <summary>
+    /// Název stavu procesu Refinancí
+    /// </summary>
+    public string RefinancingStateName { get; set; } = null!;
+
+    /// <summary>
+    /// Indikátor barvy stavu
+    /// </summary>
+    public int RefinancingStateIndicator { get; set; }
 }

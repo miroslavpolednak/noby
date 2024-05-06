@@ -3570,6 +3570,76 @@
             Dokumentu refinancování
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamCurrent.LoanAmount">
+            <summary>
+            Výše úvěru
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamCurrent.Principal">
+            <summary>
+            Aktuální zůstatek jistiny
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamCurrent.LoanDueDate">
+            <summary>
+            Datum splatnosti - předpoklad/skutečnost
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamCurrent.LoanInterestRate">
+            <summary>
+            Aktuální úroková sazba
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamCurrent.FixedRatePeriod">
+            <summary>
+            Délka fixace úrokové sazby
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamCurrent.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamCurrent.FixedRateValidFrom">
+            <summary>
+            Platnost úrokové sazby od (spočítaná jako fixedRateValidTo mínus fixedRatePeriod)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamCurrent.FixedRateValidTo">
+            <summary>
+            Platnost úrokové sazby do
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamFuture.LoanInterestRate">
+            <summary>
+            Aktuální úroková sazba
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamFuture.FixedRatePeriod">
+            <summary>
+            Délka fixace úrokové sazby
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamFuture.LoanPaymentAmount">
+            <summary>
+            Výše měsíční splátky
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamFuture.FixedRateValidFrom">
+            <summary>
+            Platnost úrokové sazby od
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingParamFuture.FixedRateValidTo">
+            <summary>
+            Platnost úrokové sazby do
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.Dto.RefinancingProcess.SalesArrangementId">
+            <summary>
+            SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.GetRefinancingParametersResponse.IsAnotherSalesArrangementInProgress">
             <summary>
             True, pokud existuje rozpracovaná relevantní žádost
@@ -3583,76 +3653,6 @@
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.GetRefinancingParametersResponse.CustomerChurnRisk">
             <summary>
             Riziko odchodovosti klienta
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamFuture.LoanInterestRate">
-            <summary>
-            Aktuální úroková sazba.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamFuture.FixedRatePeriod">
-            <summary>
-            Délka fixace úrokové sazby.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamFuture.LoanPaymentAmount">
-            <summary>
-            Výše měsíční splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamFuture.FixedRateValidFrom">
-            <summary>
-            Platnost úrokové sazby od (spočítaná jako fixedRateValidTo mínus fixedRatePeriod).
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamFuture.FixedRateValidTo">
-            <summary>
-            Platnost úrokové sazby do.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamCurrent.LoanAmount">
-            <summary>
-            Výše úvěru.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamCurrent.Principal">
-            <summary>
-            Aktuální zůstatek jistiny.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamCurrent.LoanDueDate">
-            <summary>
-            Datum splatnosti - předpoklad/skutečnost.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamCurrent.LoanInterestRate">
-            <summary>
-            Aktuální úroková sazba.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamCurrent.FixedRatePeriod">
-            <summary>
-            Délka fixace úrokové sazby.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamCurrent.LoanPaymentAmount">
-            <summary>
-            Výše měsíční splátky.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamCurrent.FixedRateValidFrom">
-            <summary>
-            Platnost úrokové sazby od (spočítaná jako fixedRateValidTo mínus fixedRatePeriod).
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingParamCurrent.FixedRateValidTo">
-            <summary>
-            Platnost úrokové sazby do.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters.RefinancingProcess.SalesArrangementId">
-            <summary>
-            SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetMortgageExtraPaymentList(System.Int64)">

@@ -78,7 +78,7 @@ message ProcessTask {
 	message TaskAmendmentMortgageLegalNotice {
 		cis.types.NullableGrpcDecimal LoanInterestRateProvided = 1;
 		cis.types.NullableGrpcDecimal LoanPaymentAmountFinal = 2;
-		cis.types.NullableGrpcDecimal FixedRatePeriod = 3;
+		google.protobuf.Int32Value FixedRatePeriod = 3;
 		google.protobuf.StringValue DocumentId = 5;
 		google.protobuf.Int32Value DocumentEACode = 6;
 	}

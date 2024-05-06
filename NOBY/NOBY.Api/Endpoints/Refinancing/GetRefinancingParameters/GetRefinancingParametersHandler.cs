@@ -3,6 +3,7 @@ using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
+using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Dto.Refinancing;
@@ -43,6 +44,7 @@ internal sealed class GetRefinancingParametersHandler(
 
         var eaCodesMain = await _codebookService.EaCodesMain(cancellationToken);
         var refinancingTypes = await _codebookService.RefinancingTypes(cancellationToken);
+        var refinancingStates = await _codebookService.RefinancingStates(cancellationToken);
 
         return new()
         {
@@ -68,10 +70,10 @@ internal sealed class GetRefinancingParametersHandler(
                 FixedRateValidFrom = RefinancingHelper.GetFixedRateValidFrom(mortgage.LoanInterestRateValidToRefinancing, mortgage.FixedRatePeriodRefinancing),
                 FixedRateValidTo = mortgage.LoanInterestRateValidToRefinancing
             },
-            RefinancingProcesses = mergeOfSaAndProcess.Select(s => new RefinancingProcess
+            RefinancingProcesses = mergeOfSaAndProcess.Select(s => new Dto.RefinancingProcess
             {
                 SalesArrangementId = s.Sa?.SalesArrangementId,
-                ProcessDetail = getProcessDetail(s.Process, s.Sa, mortgage.FixedRateValidTo, eaCodesMain, refinancingTypes)
+                ProcessDetail = getProcessDetail(s.Process, s.Sa, mortgage, eaCodesMain, refinancingTypes, refinancingStates)
             }).ToList()
         };
     }
@@ -90,18 +92,23 @@ internal sealed class GetRefinancingParametersHandler(
     private static ProcessDetail getProcessDetail(
         ProcessTask process, 
         DomainServices.SalesArrangementService.Contracts.SalesArrangement? sa,
-        DateTime? fixedRateValidTo,
+        MortgageData? mortgage,
         List<DomainServices.CodebookService.Contracts.v1.EaCodesMainResponse.Types.EaCodesMainItem> eaCodesMain,
-        List<DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem> refinancingTypes)
+        List<DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem> refinancingTypes,
+        List<DomainServices.CodebookService.Contracts.v1.RefinancingStatesResponse.Types.RefinancingStatesItem> refinancingStates)
     {
+        var state = RefinancingHelper.GetRefinancingState(sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, process.ProcessId, process);
+
         ProcessDetail detail = new()
         {
             ProcessId = process.ProcessId,
             RefinancingTypeId = RefinancingHelper.GetRefinancingType(process),
             RefinancingTypeText = RefinancingHelper.GetRefinancingTypeText(eaCodesMain, process, refinancingTypes),
-            RefinancingStateId = RefinancingHelper.GetRefinancingState(sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, process.ProcessId, process),
-            CreatedTime = process.CreatedOn,
-            LoanInterestRateValidTo = fixedRateValidTo
+            CreatedOn = DateOnly.FromDateTime(process.CreatedOn),
+            
+            RefinancingStateId = state,
+            RefinancingStateIndicator = refinancingStates.First(t => t.Id == (int)state).Indicator,
+            RefinancingStateName = refinancingStates.First(t => t.Id == (int)state).Name
         };
 
         switch (process.AmendmentsCase)
@@ -109,14 +116,24 @@ internal sealed class GetRefinancingParametersHandler(
             case ProcessTask.AmendmentsOneofCase.MortgageRetention:
                 detail.LoanInterestRateProvided = process.MortgageRetention.LoanInterestRateProvided ?? process.MortgageRetention.LoanInterestRate;
                 detail.LoanInterestRateValidFrom = process.MortgageRetention.InterestRateValidFrom!;
+                detail.LoanInterestRateValidTo = mortgage?.FixedRateValidTo != null ? DateOnly.FromDateTime(mortgage.FixedRateValidTo) : null;
                 detail.EffectiveDate = process.MortgageRetention.EffectiveDate;
                 detail.DocumentId = process.MortgageRetention.DocumentId;
                 break;
 
             case ProcessTask.AmendmentsOneofCase.MortgageRefixation:
-                detail.LoanInterestRateProvided = process.MortgageRefixation.LoanInterestRateProvided ?? process.MortgageRetention.LoanInterestRate;
+                detail.LoanInterestRateProvided = process.MortgageRefixation.LoanInterestRateProvided ?? process.MortgageRefixation.LoanInterestRate;
                 detail.EffectiveDate = process.MortgageRefixation.EffectiveDate;
+                detail.LoanInterestRateValidFrom = mortgage?.FixedRateValidTo != null ? DateOnly.FromDateTime(((DateTime)mortgage.FixedRateValidTo).AddDays(1)) : null;
+                detail.LoanInterestRateValidTo = mortgage?.FixedRateValidTo != null ? DateOnly.FromDateTime(((DateTime)mortgage.FixedRateValidTo).AddMonths(process.MortgageRefixation.FixedRatePeriod.GetValueOrDefault())) : null;
                 detail.DocumentId = process.MortgageRefixation.DocumentId;
+                break;
+
+            case ProcessTask.AmendmentsOneofCase.MortgageLegalNotice:
+                detail.LoanInterestRateProvided = process.MortgageLegalNotice.LoanInterestRateProvided;
+                detail.LoanInterestRateValidFrom = mortgage?.FixedRateValidTo != null ? DateOnly.FromDateTime(((DateTime)mortgage.FixedRateValidTo).AddDays(1)) : null;
+                detail.LoanInterestRateValidTo = mortgage?.FixedRateValidTo != null ? DateOnly.FromDateTime(((DateTime)mortgage.FixedRateValidTo).AddMonths(process.MortgageLegalNotice.FixedRatePeriod.GetValueOrDefault())) : null;
+                detail.DocumentId = process.MortgageLegalNotice.DocumentId;
                 break;
         }
 

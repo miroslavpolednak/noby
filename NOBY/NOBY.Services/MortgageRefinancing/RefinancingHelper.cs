@@ -24,6 +24,7 @@ public static class RefinancingHelper
             ProcessTask.AmendmentsOneofCase.MortgageRetention => process.MortgageRetention.DocumentEACode,
             ProcessTask.AmendmentsOneofCase.MortgageRefixation => process.MortgageRetention.DocumentEACode,
             ProcessTask.AmendmentsOneofCase.MortgageExtraPayment => process.MortgageRetention.DocumentEACode,
+            ProcessTask.AmendmentsOneofCase.MortgageLegalNotice => process.MortgageLegalNotice.DocumentEACode,
             _ => null
         };
         var text = eaCodesMain.Find(e => e.Id == eacode)?.Name;
@@ -37,17 +38,13 @@ public static class RefinancingHelper
 
     public static bool IsAnotherSalesArrangementInProgress(List<DomainServices.SalesArrangementService.Contracts.SalesArrangement> saList)
     {
-        var activeSas = saList.Where(s => (SalesArrangementStates)s.State is SalesArrangementStates.InProgress
-                                                                  or SalesArrangementStates.InApproval
-                                                                  or SalesArrangementStates.NewArrangement
-                                                                  or SalesArrangementStates.InSigning
-                                                                  or SalesArrangementStates.ToSend
-                                                                  or SalesArrangementStates.RC2);
-
-        return activeSas.Any(s => (SalesArrangementTypes)s.SalesArrangementTypeId is SalesArrangementTypes.GeneralChange
-                                                           or SalesArrangementTypes.HUBN
-                                                           or SalesArrangementTypes.CustomerChange
-                                                           or SalesArrangementTypes.CustomerChange3602A);
+        return saList.Any(t => _activeSalesArrangementStates.Contains(t.State) 
+            && (SalesArrangementTypes)t.SalesArrangementTypeId is (SalesArrangementTypes.GeneralChange
+                or SalesArrangementTypes.HUBN
+                or SalesArrangementTypes.CustomerChange
+                or SalesArrangementTypes.CustomerChange3602A
+                or SalesArrangementTypes.CustomerChange3602B
+                or SalesArrangementTypes.CustomerChange3602C));
     }
 
     public static RefinancingTypes GetRefinancingType(ProcessTask process)
@@ -57,6 +54,7 @@ public static class RefinancingHelper
             ProcessTask.AmendmentsOneofCase.MortgageRetention => RefinancingTypes.MortgageRetention,
             ProcessTask.AmendmentsOneofCase.MortgageRefixation => RefinancingTypes.MortgageRefixation,
             ProcessTask.AmendmentsOneofCase.MortgageExtraPayment => RefinancingTypes.MortgageExtraPayment,
+            ProcessTask.AmendmentsOneofCase.MortgageLegalNotice => RefinancingTypes.MortgageLegalNotice,
             _ => RefinancingTypes.Unknown
         };
     }
@@ -108,4 +106,14 @@ public static class RefinancingHelper
             throw new ArgumentException("Unsupported RefinancingStates");
         }
     }
+
+    private static int[] _activeSalesArrangementStates = [
+        (int)SalesArrangementStates.InProgress,
+        (int)SalesArrangementStates.InApproval,
+        (int)SalesArrangementStates.IsSigned,
+        (int)SalesArrangementStates.NewArrangement,
+        (int)SalesArrangementStates.InSigning,
+        (int)SalesArrangementStates.ToSend,
+        (int)SalesArrangementStates.RC2,
+    ];
 }

@@ -722,6 +722,11 @@
             Číselník: <a href="https://wiki.kb.cz/display/HT/RefinancingState">RefinancingState</a>
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.CreatedOn">
+            <summary>
+            Datum vzniku proces
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.LoanInterestRateProvided">
             <summary>
             Úroková sazba poskytnutá (včetně slevy)
@@ -729,12 +734,12 @@
         </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.LoanInterestRateValidFrom">
             <summary>
-            Platnost nové úrokové sazby od.
+            Platnost nové úrokové sazby od
             </summary>
         </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.LoanInterestRateValidTo">
             <summary>
-            Platnost nové úrokové sazby do (datum následující refixace).
+            Platnost nové úrokové sazby do (datum následující refixace)
             </summary>
         </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.EffectiveDate">
@@ -745,6 +750,16 @@
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.DocumentId">
             <summary>
             Slouží k náhledu na dokumenty
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.RefinancingStateName">
+            <summary>
+            Název stavu procesu Refinancí
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Refinancing.ProcessDetail.RefinancingStateIndicator">
+            <summary>
+            Indikátor barvy stavu
             </summary>
         </member>
         <member name="P:NOBY.Dto.Refinancing.RefinancingDocument.TaskId">
