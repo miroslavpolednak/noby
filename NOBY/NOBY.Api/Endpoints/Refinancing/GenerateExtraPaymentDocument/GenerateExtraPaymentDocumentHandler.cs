@@ -54,7 +54,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
         if (offerIndividualPrice.HasIndividualPrice && !await _refinancingDocumentService.IsIndividualPriceValid(salesArrangement, offerIndividualPrice, cancellationToken))
             throw new NobyValidationException(90048);
 
-        var customerDetail = await LoadAndValidateClient(salesArrangement.CaseId, request.ClientKbId, cancellationToken);
+        var customerDetail = await LoadAndValidateClient(salesArrangement.CaseId, request.ClientKbId!.Value, cancellationToken);
 
         await UpdateSaParams(request, salesArrangement, customerDetail, cancellationToken);
 
@@ -120,7 +120,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
         salesArrangement.ExtraPayment.HandoverTypeDetailId = request.HandoverTypeDetailId;
         salesArrangement.ExtraPayment.Client = new SalesArrangementParametersExtraPayment.Types.SalesArrangementParametersExtraPaymentClient
         {
-            KBId = request.ClientKbId,
+            KBId = request.ClientKbId!.Value,
             FirstName = customerDetail.NaturalPerson.FirstName,
             LastName = customerDetail.NaturalPerson.LastName,
         };
@@ -141,7 +141,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
             CaseId = salesArrangement.CaseId,
             IsExtraPaymentComplete = offer.MortgageExtraPayment.SimulationInputs.IsExtraPaymentFullyRepaid,
             ExtraPaymentDate = offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate,
-            ClientKbId = request.ClientKbId,
+            ClientKbId = request.ClientKbId!.Value,
             ExtraPaymentAmount = offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentAmount,
             FeeAmount = offer.MortgageExtraPayment.SimulationResults.FeeAmount,
             PrincipalAmount = offer.MortgageExtraPayment.SimulationResults.PrincipalAmount,

@@ -20,8 +20,7 @@ public class GenerateExtraPaymentDocumentRequest : IRequest
     /// <summary>
     /// KB ID klienta, kterému se bude předávat dokument vyčíslení.
     /// </summary>
-    [Required]
-    public long ClientKbId { get; set; }
+    public long? ClientKbId { get; set; }
 
     internal GenerateExtraPaymentDocumentRequest Infuse(long caseId, int salesArrangementId)
     {
