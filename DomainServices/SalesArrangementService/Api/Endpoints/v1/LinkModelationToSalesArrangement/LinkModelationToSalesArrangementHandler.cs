@@ -22,7 +22,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // kontrola zda SA uz neni nalinkovan na stejnou Offer na kterou je request
         if (salesArrangementInstance.OfferId == request.OfferId)
         {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AlreadyLinkedToOffer, request.SalesArrangementId);
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AlreadyLinkedToOffer, request.SalesArrangementId);
         }
         int? offerIdToRemoveSAId = salesArrangementInstance.OfferId;
 
