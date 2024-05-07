@@ -23,8 +23,7 @@ public sealed class SimulateMortgageExtraPaymentRequest
     /// <summary>
     /// Částka mimořádné splátky
     /// </summary>
-    [Required]
-    public decimal ExtraPaymentAmount { get; set;}
+    public decimal? ExtraPaymentAmount { get; set;}
 
     /// <summary>
     /// Důvod mimořádné splátky

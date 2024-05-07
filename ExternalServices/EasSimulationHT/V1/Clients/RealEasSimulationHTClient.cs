@@ -19,7 +19,7 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
 
     protected override string ServiceName => StartupExtensions.ServiceName;
 
-    public async Task<Dto.MortgageExtraPaymentResult> RunSimulationExtraPayment(long caseId, DateTime extraPaymentDate, decimal extraPaymentAmount, int extraPaymentReasonId, bool isExtraPaymentFullyRepaid, CancellationToken cancellationToken)
+    public async Task<Dto.MortgageExtraPaymentResult> RunSimulationExtraPayment(long caseId, DateTime extraPaymentDate, decimal? extraPaymentAmount, int extraPaymentReasonId, bool isExtraPaymentFullyRepaid, CancellationToken cancellationToken)
     {
         var result = await callMethod(async () =>
         {
@@ -31,7 +31,7 @@ public class RealEasSimulationHTClient : SoapClientBase<HT_WS_SB_ServicesClient,
                     mode = 2,
                     typMimoradneSplatky = isExtraPaymentFullyRepaid,
                     duvodMimoradneSplatky = extraPaymentReasonId,
-                    sumaMimoradneSplatky = extraPaymentAmount,
+                    sumaMimoradneSplatky = extraPaymentAmount ?? 0,
                     datumMimoradneSplatky = extraPaymentDate
                 }
             };

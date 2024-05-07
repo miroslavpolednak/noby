@@ -12,7 +12,7 @@ message MortgageExtraPaymentBasicParameters {
 
 message MortgageExtraPaymentSimulationInputs {
 	cis.types.GrpcDate ExtraPaymentDate = 1;
-	cis.types.GrpcDecimal ExtraPaymentAmount = 2;
+	cis.types.NullableGrpcDecimal ExtraPaymentAmount = 2;
 	int32 ExtraPaymentReasonId = 3;
 	bool IsExtraPaymentFullyRepaid = 4;
 }

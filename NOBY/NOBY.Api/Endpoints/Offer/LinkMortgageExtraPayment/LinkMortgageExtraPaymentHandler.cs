@@ -84,8 +84,8 @@ internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMort
             MortgageExtraPayment = new UpdateTaskRequest.Types.TaskAmendmentMortgageExtraPayment
             {
                 ExtraPaymentDate = extraPayment.SimulationInputs.ExtraPaymentDate,
-                ExtraPaymentAmount = extraPayment.SimulationInputs.ExtraPaymentAmount,
-                ExtraPaymentAmountIncludingFee = extraPayment.SimulationInputs.ExtraPaymentAmount + extraPayment.SimulationResults.FeeAmount - ((decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? 0)
+                ExtraPaymentAmount = extraPayment.SimulationResults.ExtraPaymentAmount,
+                ExtraPaymentAmountIncludingFee = extraPayment.SimulationResults.ExtraPaymentAmount + extraPayment.SimulationResults.FeeAmount - ((decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? 0)
             }
         };
 

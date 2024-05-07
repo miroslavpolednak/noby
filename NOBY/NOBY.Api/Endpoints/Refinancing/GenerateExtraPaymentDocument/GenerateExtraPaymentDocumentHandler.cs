@@ -142,7 +142,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
             IsExtraPaymentComplete = offer.MortgageExtraPayment.SimulationInputs.IsExtraPaymentFullyRepaid,
             ExtraPaymentDate = offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate,
             ClientKbId = request.ClientKbId!.Value,
-            ExtraPaymentAmount = offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentAmount,
+            ExtraPaymentAmount = offer.MortgageExtraPayment.SimulationResults.ExtraPaymentAmount,
             FeeAmount = offer.MortgageExtraPayment.SimulationResults.FeeAmount,
             PrincipalAmount = offer.MortgageExtraPayment.SimulationResults.PrincipalAmount,
             InterestAmount = offer.MortgageExtraPayment.SimulationResults.InterestAmount,

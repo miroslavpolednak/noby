@@ -14,7 +14,7 @@ internal sealed class MortgageExtraPaymentData
     public sealed class SimulationInputsData
     {
         public DateTime ExtraPaymentDate { get; set; }
-        public decimal ExtraPaymentAmount { get; set; }
+        public decimal? ExtraPaymentAmount { get; set; }
         public int ExtraPaymentReasonId { get; set; }
         public bool IsExtraPaymentFullyRepaid { get; set; }
     }
