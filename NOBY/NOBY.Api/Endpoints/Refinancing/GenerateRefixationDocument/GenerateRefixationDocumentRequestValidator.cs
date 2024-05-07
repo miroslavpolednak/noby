@@ -7,10 +7,14 @@ internal sealed class GenerateRefixationDocumentRequestValidator : AbstractValid
 {
     public GenerateRefixationDocumentRequestValidator(IFeatureManager featureManager)
     {
-        RuleFor(x => x.SignatureDeadline)
-            .GreaterThanOrEqualTo(DateTime.UtcNow.AddDays(1).Date.ToLocalTime())
-            .WithErrorCode(90032)
-            .WithMessage("SignatureDeadline is lower than current time");
+        When(x => x.SignatureDeadline is not null,
+             () =>
+             {
+                 RuleFor(x => x.SignatureDeadline)
+                     .GreaterThanOrEqualTo(DateTime.UtcNow.AddDays(1).Date.ToLocalTime())
+                     .WithErrorCode(90032)
+                     .WithMessage("SignatureDeadline is lower than current time");
+             });
         
         RuleFor(t => t)
          .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Refixation))
