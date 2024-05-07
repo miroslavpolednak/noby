@@ -45,7 +45,7 @@ internal sealed class GetMortgageRefixationHandler(
             .OrderBy(t => t.FixedRatePeriod)
             .ToList();
         response.CommunicatedOffersValidTo = offers?.FirstOrDefault(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated))?.Data.ValidTo;
-        response.LegalNoticeGeneratedDate = offers?.FirstOrDefault(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated))?.MortgageRefixation?.BasicParameters?.LegalNoticeGeneratedDate;
+        response.LegalNoticeGeneratedDate = offers?.FirstOrDefault(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.LegalNotice))?.MortgageRefixation?.BasicParameters?.LegalNoticeGeneratedDate;
         response.ContainsInconsistentIndividualPriceData = !(response.Offers?.All(t => t.IsLegalNotice || t.InterestRateDiscount == icRate) ?? true);
 
         return response;
