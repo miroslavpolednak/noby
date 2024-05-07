@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InternalServices", "InternalServices", "{0DC96AF3-B121-4ACA-92C2-1064CADBC228}"
+	ProjectSection(SolutionItems) = preProject
+		InternalServices\README.md = InternalServices\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceDiscovery", "ServiceDiscovery", "{376AF902-B4C3-4C31-9CA1-63F154C18A4C}"
 EndProject
@@ -317,7 +320,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\CaseService\DatabaseMigrations\00004-indexes.sql = DomainServices\CaseService\DatabaseMigrations\00004-indexes.sql
 		DomainServices\CaseService\DatabaseMigrations\00005-HFICH-10063.sql = DomainServices\CaseService\DatabaseMigrations\00005-HFICH-10063.sql
 		DomainServices\CaseService\DatabaseMigrations\00006-HFICH-10687.sql = DomainServices\CaseService\DatabaseMigrations\00006-HFICH-10687.sql
-		DomainServices\CaseService\DatabaseMigrations\00007-HACH-11402.sql = DomainServices\CaseService\DatabaseMigrations\00007-HACH-11402.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DA6B2E80-1075-4DE9-A090-A0711F4F92F1}"
@@ -455,7 +457,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\NotificationService\DatabaseMigrations\00002-HFICH-5458-drop_text.sql = InternalServices\NotificationService\DatabaseMigrations\00002-HFICH-5458-drop_text.sql
 		InternalServices\NotificationService\DatabaseMigrations\00003-HFICH-8192-CaseId-DocumentHash.sql = InternalServices\NotificationService\DatabaseMigrations\00003-HFICH-8192-CaseId-DocumentHash.sql
 		InternalServices\NotificationService\DatabaseMigrations\00004-HFICH-9609.sql = InternalServices\NotificationService\DatabaseMigrations\00004-HFICH-9609.sql
-		InternalServices\NotificationService\DatabaseMigrations\00005-v2.sql = InternalServices\NotificationService\DatabaseMigrations\00005-v2.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{D5315192-5730-455C-B586-D964F840F401}"
@@ -603,6 +604,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00003-HACH-10688.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00003-HACH-10688.sql
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00004-ImportFromDatamartJob.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00004-ImportFromDatamartJob.sql
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00005-HACH-10962-DeleteOfferOlderThan.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00005-HACH-10962-DeleteOfferOlderThan.sql
+		InternalServices\TaskSchedulingService\DatabaseMigrations\00006-HACH-11402-JobRename.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00006-HACH-11402-JobRename.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.SbWebApi", "ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj", "{FA184421-6232-4157-BDEC-DE7D03D3B88C}"

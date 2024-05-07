@@ -10,13 +10,12 @@ internal sealed class GetConfirmedPriceExceptionsHandler(CaseServiceDbContext _d
     {
         var list = await _dbContext
             .ConfirmedPriceExceptions
-            .AsNoTracking()
-            .Where(t => t.ConfirmedDate < request.OlderThan)
-            .Select(t => t.CaseId)
+            .Where(t => t.ConfirmedDate != null || t.DeclinedDate < request.OlderThan)
+            .Select(t => new { t.CaseId, t.TaskIdSB })
             .ToListAsync(cancellationToken);
-        
+
         var response = new GetConfirmedPriceExceptionsResponse();
-        response.CaseId.AddRange(list);
+        response.ConfirmedPriceExp.AddRange(list.Select(s => new ConfirmedPriceException { CaseId = s.CaseId, TaskIdSB = s.TaskIdSB }));
         return response;
     }
 }

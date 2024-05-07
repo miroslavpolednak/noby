@@ -15,9 +15,14 @@ message GetConfirmedPriceExceptionsRequest {
 }
 
 message GetConfirmedPriceExceptionsResponse {
-	repeated int64 CaseId = 1;
+	repeated ConfirmedPriceException ConfirmedPriceExp = 1;
 }
 
 message DeleteConfirmedPriceExceptionRequest {
 	int64 CaseId = 1;
+}
+
+message ConfirmedPriceException {
+	 int64 CaseId = 1;
+	 int32 TaskIdSB = 2;
 }

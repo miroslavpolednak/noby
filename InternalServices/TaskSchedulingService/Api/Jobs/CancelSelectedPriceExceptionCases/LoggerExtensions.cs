@@ -1,4 +1,4 @@
-﻿namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.CancelConfirmedPriceExceptionCases;
+﻿namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.CancelSelectedPriceExceptionCases;
 
 internal static class LoggerExtensions
 {
