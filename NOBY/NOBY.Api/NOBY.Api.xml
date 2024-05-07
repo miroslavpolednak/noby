@@ -3359,12 +3359,12 @@
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.HandoverTypeDetailId">
             <summary>
-            Způsob předání dokumentu vyčíslení klientovi. Číselník <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813">HandoverTypeDetails</a>
+            Způsoby předání podle číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813">HandoverTypeDetail (SB CalculationDocuments Service enum).</a>
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.ClientKbId">
             <summary>
-            KB ID klienta, kterému se bude předávat dokument vyčíslení.
+            KBID klienta, kterému se bude předávat vygenerovaný dokument vyčíslení (a případné vygenerované dokumenty souhlasů)).
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument.GenerateRefixationDocumentRequest.RefixationDocumentTypeId">
