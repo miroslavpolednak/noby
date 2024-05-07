@@ -37,7 +37,7 @@ public sealed class ProcessDetail
     public DateOnly? LoanInterestRateValidFrom { get; set; }
 
     /// <summary>
-    /// Platnost nové úrokové sazby do (datum následující refixace)
+    /// Platnost nové úrokové sazby do
     /// </summary>
     public DateOnly? LoanInterestRateValidTo { get; set; }
 
