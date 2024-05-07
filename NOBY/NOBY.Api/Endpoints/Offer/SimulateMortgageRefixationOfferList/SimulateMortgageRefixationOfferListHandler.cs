@@ -55,7 +55,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
 
         return new SimulateMortgageRefixationOfferListResponse
         {
-            Offers = finalOffers
+            Offers = finalOffers.OrderBy(t => t.FixedRatePeriod).ToList()
         };
     }
 }
