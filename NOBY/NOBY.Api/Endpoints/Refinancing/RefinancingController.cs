@@ -33,15 +33,15 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     public async Task<List<GetMortgageExtraPaymentListResponse>> GetMortgageExtraPaymentList([FromRoute] long caseId)
         => await _mediator.Send(new GetMortgageExtraPaymentListRequest(caseId));
 
-    /// <summary>
-    /// Seznam dostupných délek fixací pro refixace. Délky fixace jsou uvedeny v měsících.
-    /// </summary>
-    /// <remarks>
-    /// Délky fixace jsou uvedeny v měsících.
-    /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-    /// </remarks>
-    [HttpGet("case/{caseId:long}/mortgage-refixation/available-fixed-rate-periods")]
+	/// <summary>
+	/// Seznam dostupných délek fixací pro refixace
+	/// </summary>
+	/// <remarks>
+	/// Seznam dostupných délek fixací pro refixace. Délky fixace jsou uvedeny v měsících.
+	/// 
+	/// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+	/// </remarks>
+	[HttpGet("case/{caseId:long}/mortgage-refixation/available-fixed-rate-periods")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
@@ -51,14 +51,15 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     public async Task<GetAvailableFixedRatePeriodsResponse> GetAvailableFixedRatePeriods([FromRoute] long caseId)
         => await _mediator.Send(new GetAvailableFixedRatePeriodsRequest(caseId));
 
-    /// <summary>
-    /// Uloží odpovědní kód ke case a k odeslání do BDP (Big Data Platform)
-    /// </summary>
-    /// <remarks>
+	/// <summary>
+	/// Vytvoří odpovědní kód
+	/// </summary>
+	/// <remarks>
+	/// Uloží odpovědní kód ke case a k odeslání do BDP (Big Data Platform)
     /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8251FF4A-E3C6-46c8-883E-D70C884A859D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-    /// </remarks>
-    [HttpPut("case/{caseId:long}/mortgage/create-mortgage-response-code")]
+	/// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8251FF4A-E3C6-46c8-883E-D70C884A859D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+	/// </remarks>
+	[HttpPut("case/{caseId:long}/mortgage/create-mortgage-response-code")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
