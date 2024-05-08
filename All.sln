@@ -264,6 +264,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00021-OfferDeleteFix.sql = DomainServices\OfferService\DatabaseMigrations\00021-OfferDeleteFix.sql
 		DomainServices\OfferService\DatabaseMigrations\00022-ResponseCode_ResponseCodeTypeId_Nullable.sql = DomainServices\OfferService\DatabaseMigrations\00022-ResponseCode_ResponseCodeTypeId_Nullable.sql
 		DomainServices\OfferService\DatabaseMigrations\00023-RefixationJsonBdpEdit.sql = DomainServices\OfferService\DatabaseMigrations\00023-RefixationJsonBdpEdit.sql
+		DomainServices\OfferService\DatabaseMigrations\00024-BdpImport_FixedRemovingCurrentState.sql = DomainServices\OfferService\DatabaseMigrations\00024-BdpImport_FixedRemovingCurrentState.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
