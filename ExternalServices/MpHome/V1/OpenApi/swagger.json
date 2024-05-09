@@ -6,6 +6,226 @@
     "version": "1.1 FOMS"
   },
   "paths": {
+    "/api/1.1/foms/Case/{caseId}/exists": {
+      "get": {
+        "tags": [
+          "Case"
+        ],
+        "operationId": "FomsGetCaseExistsAsync",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/1.1/foms/Case/search": {
+      "post": {
+        "tags": [
+          "Case"
+        ],
+        "operationId": "FomsSearchCaseAsync",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaseSearchRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaseSearchRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaseSearchRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaseSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/1.1/foms/Loan/{loanId}": {
       "put": {
         "tags": [
@@ -162,6 +382,126 @@
         "responses": {
           "200": {
             "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Loan"
+        ],
+        "operationId": "FomsGetLoanDetail",
+        "parameters": [
+          {
+            "name": "loanId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanDetail"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanDetail"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanDetail"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request",
@@ -630,6 +970,368 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/1.1/foms/Loan/{loanId}/conditions": {
+      "get": {
+        "tags": [
+          "Loan"
+        ],
+        "operationId": "FomsGetLoanConditions",
+        "parameters": [
+          {
+            "name": "loanId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LoanCondition"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LoanCondition"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LoanCondition"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/1.1/foms/Loan/{loanId}/retentionRefixation": {
+      "get": {
+        "tags": [
+          "Loan"
+        ],
+        "operationId": "FomsGetLoanRetention",
+        "parameters": [
+          {
+            "name": "loanId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanRetentionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanRetentionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanRetentionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/1.1/foms/Loan/{loanId}/pcpInstId": {
+      "post": {
+        "tags": [
+          "Loan"
+        ],
+        "operationId": "FomsUpdateLoanPcpInstId",
+        "parameters": [
+          {
+            "name": "loanId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanPcpInstIdRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanPcpInstIdRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanPcpInstIdRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanPcpInstIdRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -2068,6 +2770,232 @@
         }
       }
     },
+    "/api/1.1/foms/Partner/search": {
+      "post": {
+        "tags": [
+          "Partner"
+        ],
+        "operationId": "FomsSearchPartnersAsync",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartnerSearchRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartnerSearchRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartnerSearchRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartnerSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PartnerResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PartnerResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PartnerResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/1.1/foms/Partner/{partnerId}/exists": {
+      "get": {
+        "tags": [
+          "Partner"
+        ],
+        "operationId": "FomsGetPartnerExistsAsync",
+        "parameters": [
+          {
+            "name": "partnerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelErrorWrapper"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/1.1/foms/Savings/loan/{loanId}": {
       "put": {
         "tags": [
@@ -2404,6 +3332,28 @@
         ],
         "type": "string"
       },
+      "CaseSearchRequest": {
+        "type": "object",
+        "properties": {
+          "contractNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountPrefix": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "pcpInstId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChangeResponse": {
         "type": "object",
         "properties": {
@@ -2617,7 +3567,8 @@
           "EForms",
           "MPHome_eId",
           "MPHome_UnsecuredLoan",
-          "StarBuildHF"
+          "StarBuildHF",
+          "NDB"
         ],
         "type": "string"
       },
@@ -2802,6 +3753,83 @@
         "additionalProperties": false,
         "description": "Informace o dokladu"
       },
+      "IdentificationDocumentSearch": {
+        "required": [
+          "issuingCountry",
+          "number",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/IdentificationCardType"
+          },
+          "number": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string",
+            "description": "Číslo dokladu"
+          },
+          "issuingCountry": {
+            "maxLength": 2,
+            "minLength": 1,
+            "type": "string",
+            "description": "ISO kod krajiny, která vydala doklad"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Informace o dokladu"
+      },
+      "LoanCondition": {
+        "type": "object",
+        "properties": {
+          "loanId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sequenceNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "textNameForClient": {
+            "type": "string",
+            "nullable": true
+          },
+          "textExplanatoryDocument": {
+            "type": "string",
+            "nullable": true
+          },
+          "textLoanContract": {
+            "type": "string",
+            "nullable": true
+          },
+          "doneFlag": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "contractTypeOrderLetter": {
+            "type": "string",
+            "nullable": true
+          },
+          "contractType": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "phaseOrder": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LoanContractRelationship": {
         "required": [
           "contractRelationshipType",
@@ -2817,6 +3845,246 @@
           },
           "contractRelationshipType": {
             "$ref": "#/components/schemas/ContractRelationshipType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "partnerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "productUvCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "contractNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "monthInstallment": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "interestRate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "fixationPeriod": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanKindId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "estimated1stDrawDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "applicationSignDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "consultantId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "originalConsultantId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "amountLeft": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "balanceTotal": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "drawEndDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "contractDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "interestFixationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "firstAnnuityInstallmentDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "estimatedDuePaymentDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountPrefixNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "principal": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "totalDebtOverdue": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "receivableFeeAfter": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "bankingDaysOverdue": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rateFromOverdue": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "installmentDay": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "serviceBranchConsultantId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "directDebitAccountPrefix": {
+            "type": "string",
+            "nullable": true
+          },
+          "directDebitAccountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "directDebitAccountBank": {
+            "type": "string",
+            "nullable": true
+          },
+          "hfStatementFrequency": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "hfStatementType": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "hfStatementZodb": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "statementEmail1": {
+            "type": "string",
+            "nullable": true
+          },
+          "statementEmail2": {
+            "type": "string",
+            "nullable": true
+          },
+          "inactive": {
+            "type": "boolean"
+          },
+          "hfStatus": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "finalDrawDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "pcpInstId": {
+            "type": "string",
+            "nullable": true
+          },
+          "street": {
+            "type": "string",
+            "nullable": true
+          },
+          "streetNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "houseNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "postCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "countrySubcategory": {
+            "type": "string",
+            "nullable": true
+          },
+          "realEstates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanRealEstate"
+            },
+            "nullable": true
+          },
+          "purposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanPurpose"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2866,6 +4134,16 @@
         },
         "additionalProperties": false
       },
+      "LoanPcpInstIdRequest": {
+        "type": "object",
+        "properties": {
+          "pcpInstId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LoanPurpose": {
         "type": "object",
         "properties": {
@@ -2878,6 +4156,56 @@
             "type": "integer",
             "description": "ID účelu úvěru",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanRealEstate": {
+        "type": "object",
+        "properties": {
+          "realEstateId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "purposeCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanRefixation": {
+        "type": "object",
+        "properties": {
+          "interestRate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "fixationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "interestRateValidTo": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "fixationPeriod": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "nextType": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2924,9 +4252,6 @@
             "description": "Perioda fixace",
             "format": "int32",
             "nullable": true
-          },
-          "loanType": {
-            "$ref": "#/components/schemas/LoanType"
           },
           "loanEventCode": {
             "type": "integer",
@@ -3021,6 +4346,9 @@
             "format": "date-time",
             "nullable": true
           },
+          "loanType": {
+            "$ref": "#/components/schemas/LoanType"
+          },
           "savingId": {
             "minimum": 1,
             "type": "integer",
@@ -3052,6 +4380,53 @@
             },
             "description": "definuje vztah úvěru k dalším osobám",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanRetention": {
+        "type": "object",
+        "properties": {
+          "interestRate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "monthInstallment": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "from": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanRetentionResponse": {
+        "type": "object",
+        "properties": {
+          "loanId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "refixation": {
+            "$ref": "#/components/schemas/LoanRefixation"
+          },
+          "retention": {
+            "$ref": "#/components/schemas/LoanRetention"
           }
         },
         "additionalProperties": false
@@ -3142,9 +4517,6 @@
             "format": "int32",
             "nullable": true
           },
-          "loanType": {
-            "$ref": "#/components/schemas/LoanType"
-          },
           "loanEventCode": {
             "type": "integer",
             "description": "AkceUveruId",
@@ -3237,6 +4609,9 @@
             "description": "Datum první anuitní splátky",
             "format": "date-time",
             "nullable": true
+          },
+          "loanType": {
+            "$ref": "#/components/schemas/LoanType"
           },
           "relationships": {
             "type": "array",
@@ -3654,6 +5029,36 @@
               "$ref": "#/components/schemas/ContactResponse"
             },
             "description": "Seznam kontaktů"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartnerSearchRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Jméno",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Příjmení",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narození",
+            "format": "date-time",
+            "nullable": true
+          },
+          "birthNumber": {
+            "type": "string",
+            "description": "Rodné číslo",
+            "nullable": true
+          },
+          "identificationDocument": {
+            "$ref": "#/components/schemas/IdentificationDocumentSearch"
           }
         },
         "additionalProperties": false

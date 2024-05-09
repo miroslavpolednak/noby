@@ -5,41 +5,47 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace ExternalServices.MpHome.V1;
 
-internal sealed class RealMpHomeClient 
-    : IMpHomeClient
+internal sealed class RealMpHomeClient(HttpClient _httpClient)
+		: IMpHomeClient
 {
-    public async Task UpdateLoan(long loanId, MortgageRequest mortgageRequest, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task<LoanDetail?> GetMortgage(long productId, CancellationToken cancellationToken)
+    {
+		var response =  await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}", cancellationToken);
+		return await response.EnsureSuccessStatusAndReadJson<Contracts.LoanDetail>(StartupExtensions.ServiceName, cancellationToken);
+	}
+
+    public async Task UpdateLoan(long productId, MortgageRequest mortgageRequest, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{loanId}", mortgageRequest, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}", mortgageRequest, cancellationToken)
             .ConfigureAwait(false);
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 
-    public async Task CancelLoan(long loanId, CancellationToken cancellationToken = default)
+    public async Task CancelLoan(long productId, CancellationToken cancellationToken = default)
     {
-        var response = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/foms/Loan/{loanId}", cancellationToken);
+        var response = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/foms/Loan/{productId}", cancellationToken);
 
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 
-    public async Task UpdateLoanPartnerLink(long loanId, long partnerId, LoanLinkRequest loanLinkRequest, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateLoanPartnerLink(long productId, long partnerId, LoanLinkRequest loanLinkRequest, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{loanId}/link/{partnerId}", loanLinkRequest, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/link/{partnerId}", loanLinkRequest, cancellationToken)
             .ConfigureAwait(false);
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 
-    public async Task DeletePartnerLoanLink(long loanId, long partnerId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeletePartnerLoanLink(long productId, long partnerId, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .DeleteAsync(_httpClient.BaseAddress + $"/foms/Loan/{loanId}/link/{partnerId}", cancellationToken)
+            .DeleteAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/link/{partnerId}", cancellationToken)
             .ConfigureAwait(false);
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 
-    public async Task UpdatePartner(long partnerId, PartnerRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdatePartner(long partnerId, PartnerRequest request, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
             .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}", request, cancellationToken)
@@ -55,8 +61,4 @@ internal sealed class RealMpHomeClient
 
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
-
-    private readonly HttpClient _httpClient;
-    public RealMpHomeClient(HttpClient httpClient)
-        => _httpClient = httpClient;
 }

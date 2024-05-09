@@ -4,21 +4,16 @@ using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetCustomersOnProduct;
 
-internal sealed class GetCustomersOnProductHandler : IRequestHandler<GetCustomersOnProductRequest, GetCustomersOnProductResponse>
+internal sealed class GetCustomersOnProductHandler(
+    IMpHomeClient _mpHomeClient, 
+    ICodebookServiceClient _codebookService)
+    : IRequestHandler<GetCustomersOnProductRequest, GetCustomersOnProductResponse>
 {
-    private readonly LoanRepository _repository;
-    private readonly ICodebookServiceClient _codebookService;
-
-    public GetCustomersOnProductHandler(LoanRepository repository, ICodebookServiceClient codebookService)
-    {
-        _repository = repository;
-        _codebookService = codebookService;
-    }
-
     public async Task<GetCustomersOnProductResponse> Handle(GetCustomersOnProductRequest request, CancellationToken cancellationToken)
     {
-        var loan = await _repository.GetLoan(request.ProductId, cancellationToken)
-            ?? throw ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+        
+        var loan = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken)
+			?? throw ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
 
         // Kontrola, zda se jedná o KB produkt, chyba pokud ne vyhodit chybu
         await CheckIfProductIsKb(loan.ProductTypeId, cancellationToken);

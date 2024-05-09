@@ -5,17 +5,17 @@ namespace ExternalServices.MpHome.V1;
 internal sealed class MockMpHomeClient 
     : IMpHomeClient
 {
-    public Task UpdateLoan(long loanId, MortgageRequest mortgageRequest, CancellationToken cancellationToken = default(CancellationToken))
+    public Task UpdateLoan(long productId, MortgageRequest mortgageRequest, CancellationToken cancellationToken = default(CancellationToken))
     {
         return Task.CompletedTask;
     }
 
-    public Task UpdateLoanPartnerLink(long loanId, long partnerId, LoanLinkRequest loanLinkRequest, CancellationToken cancellationToken = default(CancellationToken))
+    public Task UpdateLoanPartnerLink(long productId, long partnerId, LoanLinkRequest loanLinkRequest, CancellationToken cancellationToken = default(CancellationToken))
     {
         return Task.CompletedTask;
     }
 
-    public Task DeletePartnerLoanLink(long loanId, long partnerId, CancellationToken cancellationToken = default(CancellationToken))
+    public Task DeletePartnerLoanLink(long productId, long partnerId, CancellationToken cancellationToken = default(CancellationToken))
     {
         return Task.CompletedTask;
     }
@@ -30,7 +30,7 @@ internal sealed class MockMpHomeClient
         return Task.CompletedTask;
     }
 
-    public Task CancelLoan(long loanId, CancellationToken cancellationToken = default)
+    public Task CancelLoan(long productId, CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
     }

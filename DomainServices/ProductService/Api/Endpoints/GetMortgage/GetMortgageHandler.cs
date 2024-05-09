@@ -2,19 +2,13 @@
 
 namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
 
-internal sealed class GetMortgageHandler : IRequestHandler<GetMortgageRequest, GetMortgageResponse>
+internal sealed class GetMortgageHandler(IMpHomeClient _mpHomeClient)
+    : IRequestHandler<GetMortgageRequest, GetMortgageResponse>
 {
-    private readonly LoanRepository _repository;
-
-    public GetMortgageHandler(LoanRepository repository)
-    {
-        _repository = repository;
-    }
-
     public async Task<GetMortgageResponse> Handle(GetMortgageRequest request, CancellationToken cancellationToken)
     {
-        var loan = await _repository.GetLoan(request.ProductId, cancellationToken) 
-                   ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+        var loan = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken)
+            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
 
         var relationships = await _repository.GetRelationships(request.ProductId, cancellationToken);
 
@@ -46,13 +40,13 @@ internal sealed class GetMortgageHandler : IRequestHandler<GetMortgageRequest, G
         };
     }
 
-    private async Task<IEnumerable<LoanRealEstate>> GetLoanRealEstates(long caseId, CancellationToken cancellationToken)
+    private async Task<IEnumerable<Contracts.LoanRealEstate>> GetLoanRealEstates(long caseId, CancellationToken cancellationToken)
     {
         var realEstates = await _repository.GetLoanRealEstates(caseId, cancellationToken);
 
         if (realEstates.Count == 0)
         {
-            return Enumerable.Empty<LoanRealEstate>();
+            return Enumerable.Empty<Contracts.LoanRealEstate>();
         }
 
         var collateral = await _repository.GetCollateral(caseId, cancellationToken);
@@ -61,7 +55,7 @@ internal sealed class GetMortgageHandler : IRequestHandler<GetMortgageRequest, G
         {
             var col = collateral.FirstOrDefault(c => c.RealEstateId == r.RealEstateId);
 
-            return new LoanRealEstate
+            return new Contracts.LoanRealEstate
             {
                 RealEstateTypeId = (int)r.RealEstateTypeId,
                 RealEstatePurchaseTypeId = r.RealEstatePurchaseTypeId,
