@@ -4,6 +4,7 @@ using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Infrastructure.ErrorHandling;
+using SharedTypes.Enums;
 
 namespace NOBY.Services.MortgageRefinancing;
 
@@ -52,10 +53,12 @@ public sealed class MortgageRefinancingDataService(
             RefinancingState = RefinancingStates.Unknown
         };
 
-        if (processId.HasValue)
+        var processes = await _caseService.GetProcessList(caseId, cancellationToken);
+
+		if (processId.HasValue)
         {
             // detail procesu
-            result.Process = (await _caseService.GetProcessList(caseId, cancellationToken))
+            result.Process = processes
                 .FirstOrDefault(p => p.ProcessId == processId)
                 ?? throw new NobyValidationException(90043, $"ProccesId {processId} not found in list");
 
@@ -76,6 +79,10 @@ public sealed class MortgageRefinancingDataService(
             result.SalesArrangement = salesArrangement;
             result.RefinancingState = refinancingState;
         }
+        else if (processes?.Any(t => !t.Cancelled && t.ProcessTypeId == (int)WorkflowProcesses.Refinancing && t.RefinancingType == (int)refinancingType) ?? false)
+        {
+			throw new NobyValidationException(90032, $"ProcessId is null but active Refinancing process already exists");
+		}
 
         // vsechny tasky z WF, potom vyfiltrovat jen na konkretni processId
         var tasks = (await _caseService.GetTaskList(caseId, cancellationToken))
