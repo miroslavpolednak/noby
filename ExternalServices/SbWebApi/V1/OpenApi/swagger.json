@@ -1,4 +1,4 @@
-// 20240306222805
+// 20240509
 // https://sb2-test-server.vsskb.cz/WebApi/FAT/swagger/docs/v1
 
 {
@@ -19,9 +19,7 @@
 					"BookOfTerms"
 				],
 				"operationId": "BookOfTerms_GetBookOfTermsAndLoanPurpose",
-				"consumes": [
-
-				],
+				"consumes": [],
 				"produces": [
 					"application/json",
 					"text/json",
@@ -1548,9 +1546,7 @@
 					"RefixationServices"
 				],
 				"operationId": "RefixationServices_RS_GetInterestRate",
-				"consumes": [
-
-				],
+				"consumes": [],
 				"produces": [
 					"application/json",
 					"text/json",
@@ -1604,9 +1600,7 @@
 					"SupportService"
 				],
 				"operationId": "SupportService_GetVersionInfo",
-				"consumes": [
-
-				],
+				"consumes": [],
 				"produces": [
 					"application/json",
 					"text/json",
@@ -1645,9 +1639,7 @@
 					"Transactions"
 				],
 				"operationId": "Transactions_GetTransactions",
-				"consumes": [
-
-				],
+				"consumes": [],
 				"produces": [
 					"application/json",
 					"text/json",
@@ -3327,6 +3319,10 @@
 				"new_payment_amount": {
 					"format": "double",
 					"type": "number"
+				},
+				"print_signature_form": {
+					"format": "int32",
+					"type": "integer"
 				}
 			}
 		},
