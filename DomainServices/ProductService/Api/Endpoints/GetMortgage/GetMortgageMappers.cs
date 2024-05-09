@@ -2,7 +2,7 @@
 
 internal static class GetMortgageMappers
 {
-	public static void MapToProductServiceResponse(LoanDetail loan)
+	public static MortgageData MapToProductServiceContract(this LoanDetail loan)
 	{
 		var mortgage = new MortgageData
 		{
@@ -17,7 +17,7 @@ internal static class GetMortgageMappers
 			ProductTypeId = loan.ProductUvCode.GetValueOrDefault(),
 			LoanPaymentAmount = loan.MonthInstallment.ToDecimal(),
 			CurrentAmount = loan.AmountLeft.HasValue ? Math.Abs(loan.AmountLeft.ToDecimal(0)) : default,
-			DrawingDateTo = loan.DrawEndDate,//???
+			DrawingDateTo = loan.DrawEndDate,
 			ContractSignedDate = loan.ContractDate,
 			FixedRateValidTo = loan.InterestFixationDate,
 			AvailableForDrawing = loan.BalanceTotal.ToDecimal(),
@@ -40,8 +40,28 @@ internal static class GetMortgageMappers
 			Statement = parseStatementObject(loan),
 			IsCancelled = loan.Inactive,
 			MortgageState = loan.HfStatus,
-			DrawingFinishedDate = loan.FinalDrawDate
+			DrawingFinishedDate = loan.FinalDrawDate,
+			PcpId = loan.PcpInstId
 		};
+
+		if (loan.Purposes?.Any() ?? false)
+		{
+			mortgage.LoanPurposes.AddRange(loan.Purposes.Select(t => new Contracts.LoanPurpose
+			{
+				LoanPurposeId = t.LoanPurposeId,
+				Sum = t.Amount.ToDecimal()
+			}));
+		}
+
+		if (loan.RealEstates?.Any() ?? false)
+		{
+			mortgage.LoanRealEstates.AddRange(loan.RealEstates.Select(t => new Contracts.LoanRealEstate
+			{
+				IsCollateral = false,//???
+				RealEstatePurchaseTypeId = t.PurposeCode.GetValueOrDefault(),
+				RealEstateTypeId = 1//???
+			}));
+		}
 
 		if (relationships.Count != 0)
 		{

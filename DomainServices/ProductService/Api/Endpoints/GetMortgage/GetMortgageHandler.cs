@@ -10,11 +10,8 @@ internal sealed class GetMortgageHandler(IMpHomeClient _mpHomeClient)
         var loan = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
 
-        var relationships = await _repository.GetRelationships(request.ProductId, cancellationToken);
+        var mortgage = loan.MapToProductServiceContract();
 
-        var mortgage = loan.ToMortgage(relationships);
-
-        mortgage.PcpId = await _repository.GetPcpIdByCaseId(request.ProductId, cancellationToken);
         mortgage.Statement.Address = await GetStatementAddress(request.ProductId, cancellationToken);
         mortgage.LoanRealEstates.AddRange(await GetLoanRealEstates(request.ProductId, cancellationToken));
         mortgage.LoanPurposes.AddRange(await GetLoanPurposes(request.ProductId, cancellationToken));
