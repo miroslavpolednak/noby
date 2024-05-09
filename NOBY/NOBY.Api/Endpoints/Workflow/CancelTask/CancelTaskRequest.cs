@@ -19,6 +19,5 @@ public sealed class CancelTaskRequest
         return this;
     }
 
-    [Required]
     public int? TaskIdSB { get; set; }
 }
