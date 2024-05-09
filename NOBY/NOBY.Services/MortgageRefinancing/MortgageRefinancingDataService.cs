@@ -3,9 +3,7 @@ using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using NOBY.Dto.Workflow;
 using NOBY.Infrastructure.ErrorHandling;
-using System.Threading.Tasks;
 
 namespace NOBY.Services.MortgageRefinancing;
 
