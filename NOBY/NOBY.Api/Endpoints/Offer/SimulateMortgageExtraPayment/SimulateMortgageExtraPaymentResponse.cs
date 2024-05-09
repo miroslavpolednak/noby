@@ -10,10 +10,5 @@ public sealed class SimulateMortgageExtraPaymentResponse
     /// <summary>
     /// Původní simulace nalinkovaná na SA
     /// </summary>
-    public Dto.Refinancing.ExtraPaymentSimulationResult? OldOffer { get; set; }
-
-    /// <summary>
-    /// Nově nasimolovaná nabídka
-    /// </summary>
-    public Dto.Refinancing.ExtraPaymentSimulationResult NewOffer { get; set; } = null!;
+    public Dto.Refinancing.ExtraPaymentSimulationResult? SimulationResults { get; set; }
 }

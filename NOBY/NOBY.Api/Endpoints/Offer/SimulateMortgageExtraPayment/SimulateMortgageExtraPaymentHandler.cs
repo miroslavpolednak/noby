@@ -3,9 +3,7 @@ using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment;
 
-internal sealed class SimulateMortgageExtraPaymentHandler(
-    ISalesArrangementServiceClient _salesArrangementService,
-    IOfferServiceClient _offerService)
+internal sealed class SimulateMortgageExtraPaymentHandler(IOfferServiceClient _offerService)
     : IRequestHandler<SimulateMortgageExtraPaymentRequest, SimulateMortgageExtraPaymentResponse>
 {
     public async Task<SimulateMortgageExtraPaymentResponse> Handle(SimulateMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
@@ -29,25 +27,10 @@ internal sealed class SimulateMortgageExtraPaymentHandler(
         // spocitat simulaci
         var result = await _offerService.SimulateMortgageExtraPayment(dsRequest, cancellationToken);
 
-        var response = new SimulateMortgageExtraPaymentResponse
+        return new SimulateMortgageExtraPaymentResponse
         {
             OfferId = result.OfferId,
-            NewOffer = result.SimulationResults.ToDto(DateTime.Now, request.FeeAmountDiscount)
+			SimulationResults = result.SimulationResults.ToDto(DateTime.Now, request.FeeAmountDiscount)
         };
-
-        // najit puvodni simulaci
-        var salesArrangements = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
-        int? offerId = salesArrangements
-            .SalesArrangements
-            .FirstOrDefault(t => t.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageExtraPayment && t.OfferId.HasValue && t.State == (int)SalesArrangementStates.InApproval)
-            ?.OfferId;
-
-        if (offerId.HasValue)
-        {
-            var oldOffer = await _offerService.GetOffer(offerId.Value, cancellationToken);
-            response.OldOffer = oldOffer.MortgageExtraPayment.SimulationResults.ToDto(oldOffer.Data.Created.DateTime, oldOffer.MortgageExtraPayment.BasicParameters.FeeAmountDiscount);
-        }
-
-        return response;
     }
 }

@@ -2727,14 +2727,9 @@
             ID vytvorene simulace.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OldOffer">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.SimulationResults">
             <summary>
             Původní simulace nalinkovaná na SA
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.NewOffer">
-            <summary>
-            Nově nasimolovaná nabídka
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest.InterestRateDiscount">
