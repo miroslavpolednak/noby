@@ -8,7 +8,11 @@ using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Offer.LinkMortgageOffer;
 
-internal sealed class LinkMortgageOfferHandler : IRequestHandler<LinkMortgageOfferRequest>
+internal sealed class LinkMortgageOfferHandler(
+    ICaseServiceClient _caseService, 
+    ISalesArrangementServiceClient _salesArrangementService, 
+    IOfferServiceClient _offerService) 
+    : IRequestHandler<LinkMortgageOfferRequest, NOBY.Dto.Refinancing.RefinancingLinkResult>
 {
     private static readonly MortgageOfferLinkValidator _validator = new()
     {
@@ -18,18 +22,7 @@ internal sealed class LinkMortgageOfferHandler : IRequestHandler<LinkMortgageOff
         ValidStates = { SalesArrangementStates.InSigning, SalesArrangementStates.ToSend }
     };
 
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-
-    public LinkMortgageOfferHandler(ICaseServiceClient caseService, ISalesArrangementServiceClient salesArrangementService, IOfferServiceClient offerService)
-    {
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-    }
-
-    public async Task Handle(LinkMortgageOfferRequest request, CancellationToken cancellationToken)
+	public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> Handle(LinkMortgageOfferRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
@@ -40,6 +33,11 @@ internal sealed class LinkMortgageOfferHandler : IRequestHandler<LinkMortgageOff
         await UpdateCustomerData(salesArrangement.CaseId, request, cancellationToken);
 
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
+
+        return new Dto.Refinancing.RefinancingLinkResult
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId
+        };
     }
 
     private async Task UpdateOfferContracts(long caseId, Dto.ContactsDto? contacts, CancellationToken cancellationToken)

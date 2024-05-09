@@ -2664,7 +2664,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageRetentionOffer(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageRetentionOffer(System.Int64,NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest)">
             <summary>
             Nalinkuje retenční nabídku na stávající SA.
             </summary>
@@ -2673,7 +2673,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=92B4B98B-3F57-4541-9828-EB8CFDFA9035"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageExtraPayment(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageExtraPayment(System.Int64,NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest)">
             <summary>
             Nalinkuje mimořádnou splátku na stávající SA.
             </summary>
@@ -3680,7 +3680,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8251FF4A-E3C6-46c8-883E-D70C884A859D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.UpdateMortgageRefixation(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest)">
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.UpdateMortgageRefixation(System.Int64,NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest)">
             <summary>
             Uložení změny individuální cenotvorby a komentáře
             </summary>
@@ -3800,11 +3800,6 @@
             Sleva ze sazby
             </summary>
             <example>0.2</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationResponse.ProcessId">
-            <summary>
-            ID refixacniho procesu
-            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
             <summary>

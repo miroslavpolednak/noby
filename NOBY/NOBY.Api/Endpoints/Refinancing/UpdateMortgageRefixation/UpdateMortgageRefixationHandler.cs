@@ -8,18 +8,20 @@ using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 namespace NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 
 internal sealed class UpdateMortgageRefixationHandler(
-    IOfferServiceClient _offerService, 
-    ISalesArrangementServiceClient _salesArrangementService, 
-    MortgageRefinancingWorkflowService _retentionWorkflowService)
-        : IRequestHandler<UpdateMortgageRefixationRequest, UpdateMortgageRefixationResponse>
+    IOfferServiceClient _offerService,
+	ISalesArrangementServiceClient _salesArrangementService,
+	ApiServices.MortgageRefinancingSalesArrangementCreateService _salesArrangementCreateService,
+	MortgageRefinancingWorkflowService _retentionWorkflowService)
+        : IRequestHandler<UpdateMortgageRefixationRequest, NOBY.Dto.Refinancing.RefinancingLinkResult>
 {
-    public async Task<UpdateMortgageRefixationResponse> Handle(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
+    public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> Handle(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         decimal? interestRateDiscount = request.InterestRateDiscount == 0 ? null : request.InterestRateDiscount;
 
-        var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+		// ziskat existujici nebo zalozit novy SA
+		var salesArrangement = await _salesArrangementCreateService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageRefixation, cancellationToken);
 
-        var mortgageParameters = new MortgageRefinancingWorkflowParameters
+		var mortgageParameters = new MortgageRefinancingWorkflowParameters
         {
             CaseId = salesArrangement.CaseId,
             ProcessId = salesArrangement.ProcessId!.Value,
@@ -35,8 +37,9 @@ internal sealed class UpdateMortgageRefixationHandler(
         // presimulovat modelace
         await updateOffers(request, interestRateDiscount, cancellationToken);
 
-        return new UpdateMortgageRefixationResponse
-        {
+        return new NOBY.Dto.Refinancing.RefinancingLinkResult
+		{
+            SalesArrangementId = salesArrangement.SalesArrangementId,
             ProcessId = salesArrangement.ProcessId!.Value
         };
     }

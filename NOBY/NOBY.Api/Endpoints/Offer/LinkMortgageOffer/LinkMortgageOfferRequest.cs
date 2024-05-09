@@ -1,14 +1,18 @@
 ﻿using NOBY.Api.Endpoints.Offer.SharedDto.LinkModelation;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Offer.LinkMortgageOffer;
 
 public class LinkMortgageOfferRequest : LinkMortgageBaseRequest<LinkMortgageOfferRequest>
 {
-    /// <summary>
-    /// Jméno
-    /// </summary>
-    /// <example>Jonatán</example>
-    public string? FirstName { get; set; }
+    [JsonIgnore]
+    internal int SalesArrangementId { get; set; }
+
+	/// <summary>
+	/// Jméno
+	/// </summary>
+	/// <example>Jonatán</example>
+	public string? FirstName { get; set; }
 
     /// <summary>
     /// Příjmení
@@ -24,5 +28,13 @@ public class LinkMortgageOfferRequest : LinkMortgageBaseRequest<LinkMortgageOffe
 
     public Dto.ContactsDto? OfferContacts { get; set; }
 
-    protected override LinkMortgageOfferRequest GetRequestInstance() => this;
+	internal LinkMortgageOfferRequest InfuseId(long caseId, int salesArrangementId)
+	{
+		CaseId = caseId;
+        SalesArrangementId = salesArrangementId;
+
+		return this;
+	}
+
+	protected override LinkMortgageOfferRequest GetRequestInstance() => this;
 }

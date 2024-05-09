@@ -1,21 +1,18 @@
-﻿using System.Text.Json.Serialization;
+﻿using NOBY.Dto.Refinancing;
+using System.Text.Json.Serialization;
 
 namespace NOBY.Api.Endpoints.Offer.SharedDto.LinkModelation;
 
-public abstract class LinkMortgageBaseRequest<TLinkMortgageRequest> : IRequest
+public abstract class LinkMortgageBaseRequest<TLinkMortgageRequest> : IRequest<RefinancingLinkResult>
 {
     [JsonIgnore]
     internal long CaseId { get; set; }
 
-    [JsonIgnore]
-    internal int SalesArrangementId { get; set; }
-
     public int OfferId { get; set; }
 
-    internal TLinkMortgageRequest InfuseId(long caseId, int salesArrangementId)
+    internal TLinkMortgageRequest InfuseId(long caseId)
     {
         CaseId = caseId;
-        SalesArrangementId = salesArrangementId;
 
         return GetRequestInstance();
     }

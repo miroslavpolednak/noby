@@ -11,7 +11,14 @@ using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer;
 
-internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMortgageRetentionOfferRequest>
+internal sealed class LinkMortgageRetentionOfferHandler(
+	ICodebookServiceClient _codebookService,
+	ISalesArrangementServiceClient _salesArrangementService,
+	ApiServices.MortgageRefinancingSalesArrangementCreateService _salesArrangementCreateService,
+	IOfferServiceClient _offerService,
+	MortgageRefinancingWorkflowService _refinancingWorkflowService,
+	ICaseServiceClient _caseService) 
+    : IRequestHandler<LinkMortgageRetentionOfferRequest, NOBY.Dto.Refinancing.RefinancingLinkResult>
 {
     private static readonly MortgageOfferLinkValidator _validator = new()
     {
@@ -20,29 +27,11 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
         AdditionalValidation = AdditionalValidation
     };
 
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly MortgageRefinancingWorkflowService _refinancingWorkflowService;
-    private readonly ICaseServiceClient _caseService;
-
-    public LinkMortgageRetentionOfferHandler(
-        ICodebookServiceClient codebookService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        MortgageRefinancingWorkflowService refinancingWorkflowService,
-        ICaseServiceClient caseService)
+	public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> Handle(LinkMortgageRetentionOfferRequest request, CancellationToken cancellationToken)
     {
-        _codebookService = codebookService;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _refinancingWorkflowService = refinancingWorkflowService;
-        _caseService = caseService;
-    }
+		// ziskat existujici nebo zalozit novy SA
+		var salesArrangement = await _salesArrangementCreateService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageRetention, cancellationToken);
 
-    public async Task Handle(LinkMortgageRetentionOfferRequest request, CancellationToken cancellationToken)
-    {
-        var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
 
         await _validator.Validate(salesArrangement, offer, cancellationToken);
@@ -52,7 +41,13 @@ internal sealed class LinkMortgageRetentionOfferHandler : IRequestHandler<LinkMo
         await UpdateSalesArrangementParameters(request, salesArrangement, cancellationToken);
 
         await _salesArrangementService.LinkModelationToSalesArrangement(salesArrangement.SalesArrangementId, offer.Data.OfferId, cancellationToken);
-    }
+
+        return new NOBY.Dto.Refinancing.RefinancingLinkResult
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            ProcessId = salesArrangement.ProcessId
+        };
+	}
 
     private async Task ProcessWorkflow(LinkMortgageRetentionOfferRequest request, MortgageRetentionFullData retention, _SA salesArrangement, CancellationToken cancellationToken)
     {

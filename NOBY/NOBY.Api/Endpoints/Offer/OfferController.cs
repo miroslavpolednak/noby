@@ -101,7 +101,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<SimulateMortgage.SimulateMortgageResponse> SimulateMortgage([FromBody] SimulateMortgage.SimulateMortgageRequest request)
@@ -117,7 +117,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("offer/mortgage/sales-arrangement/{salesArrangementId:int}")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SharedDto.GetMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<SharedDto.GetMortgageResponse> GetMortgageBySalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
@@ -140,7 +140,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.DASHBOARD_CreateNewCase)]
-    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<CreateMortgageCase.CreateMortgageCaseResponse> CreateMortgageCase([FromBody] CreateMortgageCase.CreateMortgageCaseRequest request)
@@ -155,7 +155,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPut("offer/mortgage/sales-arrangement/{salesArrangementId:int}/link")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [Obsolete("Use LinkMortgageOffer endpoint")]
     public async Task LinkModelation([FromRoute] int salesArrangementId, [FromBody] LinkModelation.LinkModelationRequest request)
@@ -183,7 +183,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <returns>Plný splátkový kalendář simulace.</returns>
     [HttpGet("offer/mortgage/{offerId:int}/full-payment-schedule")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SharedDto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -202,7 +202,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPost("offer/mortgage/developer-project/search")]
     [Produces("application/json")]
-    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(DeveloperSearch.DeveloperSearchResponse), StatusCodes.Status200OK)]
     public async Task<DeveloperSearch.DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearch.DeveloperSearchRequest request)
         => await _mediator.Send(request ?? new DeveloperSearch.DeveloperSearchRequest());
@@ -217,9 +217,9 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-offer")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = [ "Modelace" ])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task LinkMortgageOffer([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageOffer.LinkMortgageOfferRequest request)
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [ProducesResponseType(typeof(NOBY.Dto.Refinancing.RefinancingLinkResult), StatusCodes.Status200OK)]
+    public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> LinkMortgageOffer([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageOffer.LinkMortgageOfferRequest request)
         => await _mediator.Send(request.InfuseId(caseId, salesArrangementId));
 
     /// <summary>
@@ -229,13 +229,13 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// Nalinkuje retenční nabídku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=92B4B98B-3F57-4541-9828-EB8CFDFA9035"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-retention-offer")]
+    [HttpPut("case/{caseId:long}/link-mortgage-retention-offer")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
     [SwaggerOperation(Tags = [ "Modelace" ])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task LinkMortgageRetentionOffer([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest request)
-        => await _mediator.Send(request.InfuseId(caseId, salesArrangementId));
+    [ProducesResponseType(typeof(NOBY.Dto.Refinancing.RefinancingLinkResult), StatusCodes.Status200OK)]
+    public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> LinkMortgageRetentionOffer([FromRoute] long caseId, [FromBody][Required] LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest request)
+        => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>
     /// Nalinkuje mimořádnou splátku na stávající SA.
@@ -244,11 +244,11 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// Nalinkuje mimořádnou splátku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=138F178A-72B5-46f6-85B2-D8414F5043B3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-extra-payment")]
+    [HttpPut("case/{caseId:long}/link-mortgage-extra-payment")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
     [SwaggerOperation(Tags = [ "Modelace" ])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task LinkMortgageExtraPayment([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody][Required] LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest request)
-        => await _mediator.Send(request.InfuseId(caseId, salesArrangementId));
+    [ProducesResponseType(typeof(NOBY.Dto.Refinancing.RefinancingLinkResult), StatusCodes.Status200OK)]
+    public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> LinkMortgageExtraPayment([FromRoute] long caseId,  [FromBody][Required] LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest request)
+        => await _mediator.Send(request.InfuseId(caseId));
 }

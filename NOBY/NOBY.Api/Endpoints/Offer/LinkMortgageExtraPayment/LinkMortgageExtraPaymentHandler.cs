@@ -11,14 +11,15 @@ using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment;
 
-internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMortgageExtraPaymentRequest>
+internal sealed class LinkMortgageExtraPaymentHandler(
+	ICodebookServiceClient _codebookService,
+	ICaseServiceClient _caseService,
+	ISalesArrangementServiceClient _salesArrangementService,
+	ApiServices.MortgageRefinancingSalesArrangementCreateService _salesArrangementCreateService,
+	IOfferServiceClient _offerService,
+	MortgageRefinancingWorkflowService _refinancingWorkflowService)
+		: IRequestHandler<LinkMortgageExtraPaymentRequest, NOBY.Dto.Refinancing.RefinancingLinkResult>
 {
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly MortgageRefinancingWorkflowService _refinancingWorkflowService;
-
     private static readonly MortgageOfferLinkValidator _validator = new()
     {
         SalesArrangementType = SalesArrangementTypes.MortgageExtraPayment,
@@ -26,24 +27,12 @@ internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMort
         AdditionalValidation = AdditionalValidation
     };
 
-    public LinkMortgageExtraPaymentHandler(
-        ICodebookServiceClient codebookService,
-        ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        MortgageRefinancingWorkflowService refinancingWorkflowService)
+	public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> Handle(LinkMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
     {
-        _codebookService = codebookService;
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _refinancingWorkflowService = refinancingWorkflowService;
-    }
+		// ziskat existujici nebo zalozit novy SA
+		var salesArrangement = await _salesArrangementCreateService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageExtraPayment, cancellationToken);
 
-    public async Task Handle(LinkMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
-    {
-        var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
-        var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
+		var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
 
         await _validator.Validate(salesArrangement, offer, cancellationToken);
 
@@ -51,7 +40,13 @@ internal sealed class LinkMortgageExtraPaymentHandler : IRequestHandler<LinkMort
 
         await UpdateSalesArrangementParameters(request, salesArrangement, cancellationToken);
 
-        await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
+        await _salesArrangementService.LinkModelationToSalesArrangement(salesArrangement.SalesArrangementId, request.OfferId, cancellationToken);
+
+        return new Dto.Refinancing.RefinancingLinkResult
+        {
+            SalesArrangementId = salesArrangement.SalesArrangementId,
+            ProcessId = salesArrangement.ProcessId
+        };
     }
 
     private async Task ProcessWorkflow(LinkMortgageExtraPaymentRequest request, MortgageExtraPaymentFullData extraPayment, _SA salesArrangement, CancellationToken cancellationToken)
