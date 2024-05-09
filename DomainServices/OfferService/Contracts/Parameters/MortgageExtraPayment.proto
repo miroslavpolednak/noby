@@ -27,7 +27,7 @@ message MortgageExtraPaymentSimulationResults {
 	cis.types.GrpcDecimal InterestOnLate = 7;
 	cis.types.GrpcDecimal InterestCovid = 8;
 	bool IsLoanOverdue = 9;
-	bool IsPaymentReduced = 10;
+	bool IsInstallmentReduced = 10;
 	cis.types.GrpcDate NewMaturityDate = 11;
 	cis.types.GrpcDecimal NewPaymentAmount = 12;
 	int32 FeeTypeId = 13;

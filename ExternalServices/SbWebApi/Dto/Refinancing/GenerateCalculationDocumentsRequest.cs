@@ -26,7 +26,7 @@ public class GenerateCalculationDocumentsRequest
 
     public bool IsLoanOverdue { get; set; }
 
-    public bool IsPaymentReduced { get; set; }
+    public bool IsInstallmentReduced { get; set; }
 
     public DateTime NewMaturityDate { get; set; }
 

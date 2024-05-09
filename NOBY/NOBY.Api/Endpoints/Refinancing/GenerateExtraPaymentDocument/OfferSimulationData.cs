@@ -13,7 +13,7 @@ public record OfferSimulationData
         InterestOnLate = simulationResults.InterestOnLate;
         InterestCovid = simulationResults.InterestCovid;
         IsLoanOverdue = simulationResults.IsLoanOverdue;
-        IsPaymentReduced = simulationResults.IsPaymentReduced;
+		IsInstallmentReduced = simulationResults.IsInstallmentReduced;
         NewMaturityDate = simulationResults.NewMaturityDate;
         NewPaymentAmount =simulationResults.NewPaymentAmount;
     }
@@ -32,7 +32,7 @@ public record OfferSimulationData
 
     public bool IsLoanOverdue { get; }
 
-    public bool IsPaymentReduced { get; }
+    public bool IsInstallmentReduced { get; }
 
     public DateTime NewMaturityDate { get; }
 

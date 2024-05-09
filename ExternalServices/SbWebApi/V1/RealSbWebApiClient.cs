@@ -314,7 +314,7 @@ internal sealed class RealSbWebApiClient
             Interest_on_late = (double?)request.InterestOnLate,
             Interest_covid = (double?)request.InterestCovid,
             Loan_overdue = request.IsLoanOverdue,
-            Payment_reduction = request.IsPaymentReduced,
+            Payment_reduction = request.IsInstallmentReduced,
             New_maturity_date = request.NewMaturityDate,
             New_payment_amount = (double?)request.NewPaymentAmount
         };

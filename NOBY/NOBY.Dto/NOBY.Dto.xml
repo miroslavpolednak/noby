@@ -642,7 +642,7 @@
             Příznak, zda je úvěr po splatnosti
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.IsPaymentReduced">
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.IsInstallmentReduced">
             <summary>
             Příznak, zda se snižuje výše pravidelné splátky
             </summary>
@@ -739,7 +739,7 @@
         </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.LoanInterestRateValidTo">
             <summary>
-            Platnost nové úrokové sazby do (datum následující refixace)
+            Platnost nové úrokové sazby do
             </summary>
         </member>
         <member name="P:NOBY.Dto.Refinancing.ProcessDetail.EffectiveDate">

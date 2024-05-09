@@ -13,7 +13,7 @@ internal static class MortgageExtraPaymentExtensions
             IsExtraPaymentComplete = result.IsExtraPaymentFullyRepaid,
             NewMaturityDate = result.NewMaturityDate,
             IsLoanOverdue = result.IsLoanOverdue,
-            IsPaymentReduced = result.IsPaymentReduced,
+			IsInstallmentReduced = result.IsInstallmentReduced,
             NewPaymentAmount = result.NewPaymentAmount,
             OtherUnpaidFees = result.OtherUnpaidFees,
             PrincipalAmount = result.PrincipalAmount,

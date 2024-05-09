@@ -150,7 +150,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
             InterestOnLate = offer.MortgageExtraPayment.SimulationResults.InterestOnLate,
             InterestCovid = offer.MortgageExtraPayment.SimulationResults.InterestCovid,
             IsLoanOverdue = offer.MortgageExtraPayment.SimulationResults.IsLoanOverdue,
-            IsPaymentReduced = offer.MortgageExtraPayment.SimulationResults.IsPaymentReduced,
+			IsInstallmentReduced = offer.MortgageExtraPayment.SimulationResults.IsInstallmentReduced,
             NewMaturityDate = offer.MortgageExtraPayment.SimulationResults.NewMaturityDate,
             NewPaymentAmount = offer.MortgageExtraPayment.SimulationResults.NewPaymentAmount,
         }, cancellationToken);
