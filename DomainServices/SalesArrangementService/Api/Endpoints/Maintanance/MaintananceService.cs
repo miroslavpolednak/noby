@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Contracts;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 
@@ -8,6 +9,9 @@ namespace DomainServices.SalesArrangementService.Api.Endpoints.Maintanance;
 internal sealed class MaintananceService
     : Contracts.MaintananceService.MaintananceServiceBase
 {
+    public override async Task<Empty> CancelNotFinishedExtraPayments(CancelNotFinishedExtraPaymentsRequest request, ServerCallContext context)
+      => await _mediator.Send(request, context.CancellationToken);
+
     public override async Task<GetCancelCaseJobIdsResponse> GetCancelCaseJobIds(GetCancelCaseJobIdsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 

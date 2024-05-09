@@ -4,6 +4,8 @@ namespace DomainServices.SalesArrangementService.Clients;
 
 public interface IMaintananceService
 {
+    Task CancelNotFinishedExtraPayments(CancellationToken cancellationToken = default);
+    
     Task<long[]> GetCancelCaseJobIds(CancellationToken cancellationToken = default);
 
     Task<int[]> GetCancelServiceSalesArrangementsIds(CancellationToken cancellationToken = default);

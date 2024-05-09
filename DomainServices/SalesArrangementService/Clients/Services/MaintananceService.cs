@@ -5,6 +5,11 @@ namespace DomainServices.SalesArrangementService.Clients;
 internal sealed class MaintananceService(Contracts.MaintananceService.MaintananceServiceClient _service)
     : IMaintananceService
 {
+    public async Task CancelNotFinishedExtraPayments(CancellationToken cancellationToken = default)
+    {
+        await _service.CancelNotFinishedExtraPaymentsAsync(new(), cancellationToken: cancellationToken);
+    }
+
     public async Task<long[]> GetCancelCaseJobIds(CancellationToken cancellationToken = default)
     {
         var result = await _service.GetCancelCaseJobIdsAsync(new(), cancellationToken: cancellationToken);
