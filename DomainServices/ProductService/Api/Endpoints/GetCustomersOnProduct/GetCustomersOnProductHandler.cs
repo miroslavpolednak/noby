@@ -11,7 +11,6 @@ internal sealed class GetCustomersOnProductHandler(
 {
     public async Task<GetCustomersOnProductResponse> Handle(GetCustomersOnProductRequest request, CancellationToken cancellationToken)
     {
-        
         var loan = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken)
 			?? throw ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
 

@@ -105,7 +105,7 @@ internal static class GetMortgageMappers
 			Street = loan.Street ?? string.Empty,
 			StreetNumber = loan.StreetNumber ?? string.Empty,
 			HouseNumber = loan.HouseNumber ?? string.Empty,
-			Postcode = loan.Postcode ?? string.Empty,
+			Postcode = loan.PostCode ?? string.Empty,
 			City = loan.City ?? string.Empty,
 			AddressPointId = loan.AddressPointId ?? string.Empty,
 			CountryId = loan.CountryId
