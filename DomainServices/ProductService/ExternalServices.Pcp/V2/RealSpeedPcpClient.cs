@@ -82,7 +82,7 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
                               kBCustomer = new() { id = customerKbId.ToString(CultureInfo.InvariantCulture) },
                               partyInProductInstanceRole = new()
                               {
-                                  partyInproductInstanceRoleCode = new() { code ="A", @class = "CB_CustomerLoanProductRole"}
+                                  partyInproductInstanceRoleCode = new() { code ="A", @class = "CB_CustomerInMortgageInstanceRole"}
                               }
                             }
                                 ],
