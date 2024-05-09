@@ -8,14 +8,13 @@ internal sealed class CreateMortgageHandler(
     ExternalServices.Pcp.IPcpClient _pcpClient,
     ICodebookServiceClient _codebookService,
     ICaseServiceClient _caseService,
-    LoanRepository _repository,
     IMpHomeClient _mpHomeClient,
     IConfiguration _configuration) 
     : IRequestHandler<CreateMortgageRequest, CreateMortgageResponse>
 {
     public async Task<CreateMortgageResponse> Handle(CreateMortgageRequest request, CancellationToken cancellationToken)
     {
-        if (await _repository.LoanExists(request.CaseId, cancellationToken))
+        if (await _mpHomeClient.CaseExists(request.CaseId, cancellationToken))
         {
             throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.AlreadyExists12005, request.CaseId);
         }

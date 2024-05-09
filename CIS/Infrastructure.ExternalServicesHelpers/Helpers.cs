@@ -56,7 +56,6 @@ public static class Helpers
         string serviceName, 
         CancellationToken cancellationToken = default,
         [CallerMemberName] string callerName = "")
-        where TResponse : class, new()
     {
         await response.EnsureSuccessStatusCode(serviceName, cancellationToken: cancellationToken);
 
@@ -70,7 +69,6 @@ public static class Helpers
         Dictionary<System.Net.HttpStatusCode, int> customErrorCodes,
         CancellationToken cancellationToken = default,
         [CallerMemberName] string callerName = "")
-        where TResponse : class, new()
     {
         await response.EnsureSuccessStatusCodeWithCustomErrorCodes(serviceName, customErrorCodes, cancellationToken);
 

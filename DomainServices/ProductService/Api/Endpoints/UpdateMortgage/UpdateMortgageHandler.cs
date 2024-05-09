@@ -6,8 +6,13 @@ using SharedTypes.Enums;
 
 namespace DomainServices.ProductService.Api.Endpoints.UpdateMortgage;
 
-internal sealed class UpdateMortgageHandler 
-    : IRequestHandler<UpdateMortgageRequest>
+internal sealed class UpdateMortgageHandler(
+	IMpHomeClient _mpHomeClient,
+	ICustomerOnSAServiceClient _customerOnSAService,
+	ISalesArrangementServiceClient _salesArrangementService,
+	IOfferServiceClient _offerService,
+	ICaseServiceClient _caseService)
+		: IRequestHandler<UpdateMortgageRequest>
 {
     public async Task Handle(UpdateMortgageRequest request, CancellationToken cancellationToken)
     {
@@ -61,25 +66,5 @@ internal sealed class UpdateMortgageHandler
         };
 
         await _mpHomeClient.UpdateLoan(request.ProductId, mortgageRequest, cancellationToken);
-    }
-
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly IMpHomeClient _mpHomeClient;
-
-    public UpdateMortgageHandler(
-        IMpHomeClient mpHomeClient,
-        ICustomerOnSAServiceClient customerOnSAService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        ICaseServiceClient caseService)
-    {
-        _customerOnSAService = customerOnSAService;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _mpHomeClient = mpHomeClient;
-        _caseService = caseService;
     }
 }

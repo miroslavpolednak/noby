@@ -6,9 +6,33 @@ using Microsoft.AspNetCore.WebUtilities;
 namespace ExternalServices.MpHome.V1;
 
 internal sealed class RealMpHomeClient(HttpClient _httpClient)
-		: IMpHomeClient
+    : IMpHomeClient
 {
-    public async Task<LoanDetail?> GetMortgage(long productId, CancellationToken cancellationToken)
+	public async Task<long?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Case/search", request, cancellationToken);
+		return await response.EnsureSuccessStatusAndReadJson<long>(StartupExtensions.ServiceName, cancellationToken);
+	}
+
+	public async Task<List<LoanCondition>> GetCovenants(long productId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/conditions", cancellationToken);
+		return await response.EnsureSuccessStatusAndReadJson<List<LoanCondition>>(StartupExtensions.ServiceName, cancellationToken);
+	}
+
+	public async Task<bool> PartnerExists(long partnerId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}/exists", cancellationToken);
+		return await response.EnsureSuccessStatusAndReadJson<bool>(StartupExtensions.ServiceName, cancellationToken);
+	}
+
+	public async Task<bool> CaseExists(long caseId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Case/{caseId}/exists", cancellationToken);
+		return await response.EnsureSuccessStatusAndReadJson<bool>(StartupExtensions.ServiceName, cancellationToken);
+	}
+
+	public async Task<LoanDetail?> GetMortgage(long productId, CancellationToken cancellationToken = default)
     {
 		var response =  await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}", cancellationToken);
 		return await response.EnsureSuccessStatusAndReadJson<Contracts.LoanDetail>(StartupExtensions.ServiceName, cancellationToken);

@@ -1,22 +1,16 @@
 ﻿namespace DomainServices.ProductService.Api.Endpoints.CancelMortgage;
 
-internal sealed class CancelMortgageHandler : IRequestHandler<CancelMortgageRequest>
+internal sealed class CancelMortgageHandler(
+    IMpHomeClient _mpHomeClient, 
+    ILogger<CancelMortgageHandler> _logger) 
+    : IRequestHandler<CancelMortgageRequest>
 {
-    private readonly IMpHomeClient _mpHomeClient;
-    private readonly LoanRepository _repository;
-    private readonly ILogger<CancelMortgageHandler> _logger;
-
-    public CancelMortgageHandler(IMpHomeClient mpHomeClient, LoanRepository repository, ILogger<CancelMortgageHandler> logger)
+	public async Task Handle(CancelMortgageRequest request, CancellationToken cancellationToken)
     {
-        _mpHomeClient = mpHomeClient;
-        _repository = repository;
-        _logger = logger;
-    }
-
-    public async Task Handle(CancelMortgageRequest request, CancellationToken cancellationToken)
-    {
-        if (!await _repository.LoanExists(request.ProductId, cancellationToken))
+        if (!await _mpHomeClient.CaseExists(request.ProductId, cancellationToken))
+        {
             throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+        }
 
         try
         {

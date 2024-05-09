@@ -1,7 +1,7 @@
 ﻿namespace DomainServices.ProductService.Api.Endpoints.SearchProducts;
 
-internal sealed class SearchProductsHandler
-    : IRequestHandler<SearchProductsRequest, SearchProductsResponse>
+internal sealed class SearchProductsHandler(LoanRepository _repository)
+		: IRequestHandler<SearchProductsRequest, SearchProductsResponse>
 {
     public async Task<SearchProductsResponse> Handle(SearchProductsRequest request, CancellationToken cancellationToken)
     {
@@ -10,12 +10,5 @@ internal sealed class SearchProductsHandler
         SearchProductsResponse response = new();
         response.Products.AddRange(result);
         return response;
-    }
-
-    private readonly LoanRepository _repository;
-
-    public SearchProductsHandler(LoanRepository repository)
-    {
-        _repository = repository;
     }
 }

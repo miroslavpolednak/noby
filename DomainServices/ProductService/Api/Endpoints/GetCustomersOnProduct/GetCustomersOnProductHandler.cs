@@ -15,7 +15,7 @@ internal sealed class GetCustomersOnProductHandler(
 			?? throw ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
 
         // Kontrola, zda se jedná o KB produkt, chyba pokud ne vyhodit chybu
-        await CheckIfProductIsKb(loan.ProductTypeId, cancellationToken);
+        await CheckIfProductIsKb(loan.ProductUvCode, cancellationToken);
 
         // Zjištění seznamu klientů na produktu, vyhodit tvrdou chybu pokud je množina prázdná (nesmí se stávat, pokud není nekonzistence dat)
         var customers = await _repository.GetRelationships(request.ProductId, cancellationToken);
