@@ -1,4 +1,6 @@
-﻿namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
+﻿using DomainServices.ProductService.Api.Database.Models;
+
+namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
 
 internal static class GetMortgageMappers
 {
@@ -97,6 +99,16 @@ internal static class GetMortgageMappers
 		SubscriptionTypeId = loan.HfStatementZodb,
 		FrequencyId = loan.HfStatementFrequency,
 		EmailAddress1 = loan.StatementEmail1,
-		EmailAddress2 = loan.StatementEmail2
+		EmailAddress2 = loan.StatementEmail2,
+		Address = new SharedTypes.GrpcTypes.GrpcAddress
+		{
+			Street = loan.Street ?? string.Empty,
+			StreetNumber = loan.StreetNumber ?? string.Empty,
+			HouseNumber = loan.HouseNumber ?? string.Empty,
+			Postcode = loan.Postcode ?? string.Empty,
+			City = loan.City ?? string.Empty,
+			AddressPointId = loan.AddressPointId ?? string.Empty,
+			CountryId = loan.CountryId
+		}
 	};
 }
