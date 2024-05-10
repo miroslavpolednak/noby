@@ -24,7 +24,7 @@ grpcurl -insecure -d "{\"SalesArrangementId\":20000,\"FlowSwitches\":[{\"FlowSwi
 grpcurl -insecure -d "{\"CaseId\":3047708}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30009 DomainServices.SalesArrangementService.v1.SalesArrangementService/GetProductSalesArrangement
 
 grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:30009 DomainServices.SalesArrangementService.MaintananceService/GetCancelCaseJobIds
-
+grpcurl -insecure -H "Authorization: Basic YTph" 127.0.0.1:31009 DomainServices.SalesArrangementService.MaintananceService/CancelNotFinishedExtraPayments
 ## run batch
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\InternalServices\ServiceDiscovery\Api\CIS.InternalServices.ServiceDiscovery.Api.csproj"
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\CodebookService\Api\DomainServices.CodebookService.Api.csproj"
