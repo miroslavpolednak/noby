@@ -2,6 +2,7 @@
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
+using System.Threading;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
@@ -40,10 +41,9 @@ internal sealed class SimulateMortgageHandler(
             guaranteeDateFrom = saInstance.OfferGuaranteeDateFrom;
         }
 
-        var user = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
-
         // predelat na DS request
-        var model = request.ToDomainServiceRequest(guaranteeDateFrom, user.UserInfo.IsUserVIP);
+        bool vipFlag = await getVipFlag(request.SalesArrangementId, cancellationToken);
+		var model = request.ToDomainServiceRequest(guaranteeDateFrom, vipFlag);
 
         // zavolat DS
         var result = await _offerService.SimulateMortgage(model, cancellationToken);
@@ -57,4 +57,21 @@ internal sealed class SimulateMortgageHandler(
             CreditWorthinessSimpleResults = result.CreditWorthinessSimpleResults.ToApiResponse()
         };
     }
+
+    private async Task<bool> getVipFlag(int? salesArrangementId, CancellationToken cancellationToken)
+    {
+        int? userId = null;
+        if (salesArrangementId.HasValue)
+        {
+			var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId.Value, cancellationToken);
+			userId = saInstance.Created?.UserId ?? _userAccessor.User!.Id;
+        }
+		else
+        {
+            userId = _userAccessor.User!.Id;
+		}
+
+		var user = await _userService.GetUser(userId.Value, cancellationToken);
+		return user.UserInfo.IsUserVIP;
+	}
 }
