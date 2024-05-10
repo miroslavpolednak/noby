@@ -58,4 +58,4 @@ OUTER APPLY (
 			OR PlatnostDo < GetDate()
 			)
 	) contact
-WHERE Id IN @partnerIds
+WHERE a.Neaktivni=0 AND Id IN @partnerIds

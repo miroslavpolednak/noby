@@ -25,7 +25,7 @@ internal sealed class LoanRepository
         inner join [dbo].[Partner] p on p.Id = vu.PartnerId
         inner join [dbo].[Uver] u on u.Id = vu.UverId
         where  vu.Neaktivni = 0 
-               and u.Neaktivni = 0 
+               and u.Neaktivni = 0 and p.Neaktivni = 0 
                and ((@schema=2 and p.KBId=@id) or (@schema=1 and p.Id=@id))
 
         union all
@@ -36,7 +36,7 @@ internal sealed class LoanRepository
         from [dbo].[VztahSporeni] vs
         inner join [dbo].[Partner] p on p.Id = vs.PartnerId
         inner join [dbo].[Sporeni] s on s.Id = vs.SporeniId 
-        where  vs.Neaktivni = 0 and ((@schema=2 and p.KBId=@id) or (@schema=1 and p.Id=@id))
+        where  vs.Neaktivni = 0 and p.Neaktivni = 0 and ((@schema=2 and p.KBId=@id) or (@schema=1 and p.Id=@id))
         """;
 
         if (identity is not null)
@@ -143,7 +143,7 @@ internal sealed class LoanRepository
     public Task<List<Models.Relationship>> GetRelationships(long caseId, CancellationToken cancellationToken)
     {
         const string Query =
-            """
+			"""
             SELECT [PartnerId] as PartnerId,
                    [VztahId] as ContractRelationshipTypeId,
                    [KbId] as KbId,
@@ -151,7 +151,7 @@ internal sealed class LoanRepository
                    [StavKyc] as Kyc
             FROM [dbo].[VztahUver] A
             LEFT JOIN [dbo].[Partner] B ON A.PartnerId = B.Id
-            WHERE [UverId] = @caseId AND A.[Neaktivni] = 0
+            WHERE [UverId] = @caseId AND A.[Neaktivni] = 0 AND B.Neaktivni = 0
             """;
         
         return _connectionProvider.ExecuteDapperRawSqlToListAsync<Models.Relationship>(Query, param: new { caseId }, cancellationToken);
@@ -294,7 +294,7 @@ internal sealed class LoanRepository
 
     public Task<bool> PartnerExists(long partnerId, CancellationToken cancellationToken)
     {
-	    const string Query = "SELECT COUNT(1) FROM [dbo].[Partner] WHERE [Id] = @partnerId";
+	    const string Query = "SELECT COUNT(1) FROM [dbo].[Partner] WHERE Neaktivni = 0 and [Id] = @partnerId";
 
 	    return _connectionProvider.ExecuteDapperScalarAsync<bool>(Query, param: new { partnerId }, cancellationToken);
     }

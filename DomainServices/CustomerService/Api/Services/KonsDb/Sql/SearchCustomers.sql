@@ -15,7 +15,7 @@
 	PreukazPlatnostDo IdentificationDocumentValidTo,
 	KBId KbId
 FROM dbo.PARTNER
-WHERE (@SearchByIds = 0 OR Id IN @partnerIds)
+WHERE Neaktivni=0 AND (@SearchByIds = 0 OR Id IN @partnerIds)
     AND (@firstName IS NULL OR Jmeno = @firstName)
 	AND (@lastName IS NULL OR Prijmeni = @lastName)
     AND (@birthNumber IS NULL OR RodneCisloIco = @birthNumber)
