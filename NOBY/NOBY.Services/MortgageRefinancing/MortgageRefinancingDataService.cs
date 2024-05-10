@@ -81,7 +81,7 @@ public sealed class MortgageRefinancingDataService(
         }
         else if (processes?.Any(t => !t.Cancelled && t.ProcessTypeId == (int)WorkflowProcesses.Refinancing && t.RefinancingType == (int)refinancingType) ?? false)
         {
-			throw new NobyValidationException(90032, $"ProcessId is null but active Refinancing process already exists");
+			throw new NobyValidationException(90061, "Nestandardní přístup do kalkulace bez kontextu žádosti", "Vstupujete do kalkulace nestandardním způsobem a bez navázaného kontextu žádosti. Vraťte se na Rozcestník a vstupte standardním způsobem.");
 		}
 
         // vsechny tasky z WF, potom vyfiltrovat jen na konkretni processId
