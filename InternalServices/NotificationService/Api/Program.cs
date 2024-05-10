@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Grpc.JsonTranscoding;
 using System.Text.Json;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.SetExpiredEmails;
+using CIS.Infrastructure.gRPC;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -35,7 +36,7 @@ SharedComponents.GrpcServiceBuilder
         // case insensitive nastaveni pro GRPC transcoding
         builder.Services.PostConfigure<GrpcJsonTranscodingOptions>(options =>
         {
-            string[] opts = [ "UnarySerializerOptions", "ServerStreamingSerializerOptions" ];
+            string[] opts = ["UnarySerializerOptions", "ServerStreamingSerializerOptions"];
             foreach (var name in opts)
             {
                 var prop = options.GetType().GetProperty(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -92,7 +93,7 @@ SharedComponents.GrpcServiceBuilder
         #endregion legacy code
 
     })
-    #region legacy code
+#region legacy code
     .UseMiddlewares((app, _) =>
     {
         var manager = app.Services.GetRequiredService<IFeatureManager>();
@@ -101,6 +102,7 @@ SharedComponents.GrpcServiceBuilder
             app.UseWhen(x => x.Request.Path.StartsWithSegments("/v1"), app2 =>
             {
                 app2.UseMiddleware<AuditRequestResponseMiddleware>();
+                app2.UseGrpc2WebApiException();
             });
             app.MapWhen(x => x.Request.Path.StartsWithSegments("/v1"), app2 =>
             {
