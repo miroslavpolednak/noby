@@ -42,5 +42,13 @@ public sealed class GetMortgageExtraPaymentListResponse
     /// </summary>
     public int PaymentState { get; set; }
 
-    public StateIndicators StateIndicator { get; set; }
+	/// <summary>
+	/// Indikátor barvy stavu
+	/// </summary>
+	public StateIndicators StateIndicator { get; set; }
+
+	/// <summary>
+	/// Název stavu procesu Refinancí
+	/// </summary>
+	public string? StateName { get; set; }
 }

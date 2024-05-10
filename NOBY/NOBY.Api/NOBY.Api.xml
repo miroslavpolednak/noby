@@ -3457,6 +3457,16 @@
             Uhrazeno; 0 - Unknown; 1 - Uhrazeno; 2 - Neuhrazeno
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.StateIndicator">
+            <summary>
+            Indikátor barvy stavu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.StateName">
+            <summary>
+            Název stavu procesu Refinancí
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.Document">
             <summary>
             Dokumentu refinancování
