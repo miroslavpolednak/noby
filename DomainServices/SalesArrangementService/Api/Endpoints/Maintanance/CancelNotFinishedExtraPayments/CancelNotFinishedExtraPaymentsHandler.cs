@@ -19,24 +19,29 @@ internal sealed class CancelNotFinishedExtraPaymentsHandler(
     public async Task<Empty> Handle(CancelNotFinishedExtraPaymentsRequest request, CancellationToken cancellationToken)
     {
         var newExtraPaymentsSA = await _dbContext.SalesArrangements
-                                    .AsNoTracking()
                                     .Where(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageExtraPayment
                                                 && s.State == (int)SalesArrangementStates.NewArrangement)
+                                    .Select(s => new
+                                    {
+                                        s.SalesArrangementId,
+                                        s.CaseId,
+                                        s.ProcessId
+                                    })
                                     .ToListAsync(cancellationToken);
 
         foreach (var epSa in newExtraPaymentsSA)
         {
-            var existNonCancelExtraPaymentInSb = (await _caseService.GetTaskList(epSa.CaseId, cancellationToken))
+            var existNonCancelEPTaskInSb = (await _caseService.GetTaskList(epSa.CaseId, cancellationToken))
                 .Any(wf => wf.ProcessId == epSa.ProcessId
                           && wf.TaskTypeId == (int)WorkflowTaskTypes.PriceException
                           && !wf.Cancelled);
 
-            if (!existNonCancelExtraPaymentInSb)
+            if (!existNonCancelEPTaskInSb)
             {
-                var task = (await caseService.GetTaskList(epSa.CaseId, cancellationToken))
-                            .First(t => t.TaskId == epSa.ProcessId);
+                var process = (await caseService.GetProcessList(epSa.CaseId, cancellationToken))
+                            .First(t => t.ProcessId == epSa.ProcessId);
 
-                await _caseService.CancelTask(epSa.CaseId, task.TaskIdSb, cancellationToken: cancellationToken);
+                await _caseService.CancelTask(epSa.CaseId, process.ProcessIdSb, cancellationToken: cancellationToken);
 
                 await _mediator.Send(new UpdateSalesArrangementStateRequest(
                     new() { SalesArrangementId = epSa.SalesArrangementId, State = (int)SalesArrangementStates.Cancelled }),
