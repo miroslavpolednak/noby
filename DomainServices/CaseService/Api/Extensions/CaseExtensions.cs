@@ -188,9 +188,18 @@ internal static class CaseExtensions
                 case 1:
                     taskDetail.Request = new()
                     {
-                        SentToCustomer = taskData.GetValueOrDefault("ukol_dozadani_prijemce_typ") == "1",
                         OrderId = taskData.GetValueOrDefault("ukol_dozadani_typ") == "5" ? taskData.GetNInteger("ukol_dozadani_order_id") : null
                     };
+
+                    switch (taskData.GetValueOrDefault("ukol_dozadani_prijemce_typ"))
+                    {
+                        case "0": 
+                            taskDetail.Request.SentToCustomer = false;
+                            break;
+                        case "1" or "2" or "3":
+							taskDetail.Request.SentToCustomer = true;
+							break;
+                    }
                     break;
 
                 // price exception
