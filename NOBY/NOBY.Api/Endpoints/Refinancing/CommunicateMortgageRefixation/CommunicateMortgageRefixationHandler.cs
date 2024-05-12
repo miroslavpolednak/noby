@@ -28,7 +28,7 @@ internal sealed class CommunicateMortgageRefixationHandler(
             {
                 OfferId = offer.Data.OfferId,
                 ValidTo = new[] { DateTime.UtcNow.AddDays(45), (DateTime)offer.MortgageRefixation.BasicParameters.FixedRateValidTo }.Min(),
-                Flags = (offer.Data.Flags & (int)OfferFlagTypes.Communicated) == 0 ? offer.Data.Flags | (int)OfferFlagTypes.Communicated : null
+                Flags = (int)OfferFlagTypes.Current | (int)OfferFlagTypes.Communicated
             };
 
             if (offer.Data.Origin is not OfferOrigins.BigDataPlatform)
