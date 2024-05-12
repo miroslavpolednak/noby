@@ -3,6 +3,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.Servi
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData;
 
+[TransientService, SelfService]
 internal class ApplicationTerminationTemplateData : AggregatedData
 {
     private readonly CaseServiceWrapper _caseServiceWrapper;
