@@ -82,7 +82,7 @@ internal sealed class RealSbWebApiClient
 
         var responseObject = await RequestHelper.ProcessResponse<WFS_Manage_CreateTask_Response>(httpResponse,
                                                                                                  x => x.Result,
-                                                                                                 returnVal2ErrorCodesMapping: [(6792, ErrorCodeMapper.RefinancingError)],
+                                                                                                 returnVal2ErrorCodesMapping: [(6792, ErrorCodeMapper.RefinancingError), (6982, ErrorCodeMapper.RefinancingError)],
                                                                                                  cancellationToken: cancellationToken);
 
         return new Dto.CreateTask.CreateTaskResponse
