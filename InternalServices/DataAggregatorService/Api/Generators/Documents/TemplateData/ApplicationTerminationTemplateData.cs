@@ -61,8 +61,8 @@ internal class ApplicationTerminationTemplateData : AggregatedData
 
     public override async Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
-        await _caseServiceWrapper.LoadData(parameters, this, cancellationToken);
         await _salesArrangementServiceWrapper.LoadData(parameters, this, cancellationToken);
+        await _caseServiceWrapper.LoadData(parameters, this, cancellationToken);
     }
 
     private GrpcAddress GetPermanentAddress() => Customer.Addresses.First(a => a.AddressTypeId == (int)AddressTypes.Permanent);
