@@ -229,6 +229,9 @@ internal partial class CodebookService
     public override Task<GenericCodebookResponse> EmploymentTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 
+    public override Task<GenericCodebookResponse> ExtraPaymentTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context) => 
+        Helpers.GetGenericItems<SharedTypes.Enums.ExtraPaymentTypes>(false);
+
     public override Task<FeesResponse> Fees(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<FeesResponse, FeesResponse.Types.FeeItem>();
 
