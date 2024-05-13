@@ -12,6 +12,7 @@ SharedComponents.GrpcServiceBuilder
     .AddRequiredServices(services =>
     {
         services
+            .AddCaseService()
             .AddRiskIntegrationService()
             .AddCodebookService()
             .AddUserService();
