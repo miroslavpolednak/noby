@@ -31,7 +31,7 @@ internal class DataServicesLoader
             SetInputParameters(status);
         }
 
-        await aggregatedData.LoadAdditionalData(cancellationToken);
+        await aggregatedData.LoadAdditionalData(parameters, cancellationToken);
     }
 
     private Task ProcessRemainingDataSources(DataLoaderStatus status, CancellationToken cancellationToken)

@@ -57,7 +57,7 @@ internal class AggregatedData
         return ((ICodebookManagerConfigurator)_codebookManager).Load(codebookService, cancellationToken);
     }
 
-    public virtual Task LoadAdditionalData(CancellationToken cancellationToken) => Task.CompletedTask;
+    public virtual Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken) => Task.CompletedTask;
 
     protected virtual void ConfigureCodebooks(ICodebookManagerConfigurator configurator) { }
 }

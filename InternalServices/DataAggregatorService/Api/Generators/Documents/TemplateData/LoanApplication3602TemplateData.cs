@@ -26,9 +26,9 @@ internal class LoanApplication3602TemplateData : LoanApplicationBaseTemplateData
 
     public string SignatureType => GetSignatureType();
 
-    public override async Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override async Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
-        await base.LoadAdditionalData(cancellationToken);
+        await base.LoadAdditionalData(parameters, cancellationToken);
 
         AgentName = await LoadAgentName(cancellationToken);
     }

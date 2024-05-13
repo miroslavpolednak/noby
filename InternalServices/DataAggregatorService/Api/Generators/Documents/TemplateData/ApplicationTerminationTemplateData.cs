@@ -7,10 +7,12 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.Te
 internal class ApplicationTerminationTemplateData : AggregatedData
 {
     private readonly CaseServiceWrapper _caseServiceWrapper;
+    private readonly SalesArrangementServiceWrapper _salesArrangementServiceWrapper;
 
-    public ApplicationTerminationTemplateData(CaseServiceWrapper caseServiceWrapper)
+    public ApplicationTerminationTemplateData(CaseServiceWrapper caseServiceWrapper, SalesArrangementServiceWrapper salesArrangementServiceWrapper)
     {
         _caseServiceWrapper = caseServiceWrapper;
+        _salesArrangementServiceWrapper = salesArrangementServiceWrapper;
     }
 
     public string FullName => CustomerHelper.FullName(Customer.Source, _codebookManager.DegreesBefore);
@@ -57,9 +59,10 @@ internal class ApplicationTerminationTemplateData : AggregatedData
         configurator.DegreesBefore();
     }
 
-    public override async Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override async Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
-        await _caseServiceWrapper.LoadData(new InputParameters { SalesArrangementId = SalesArrangement.SalesArrangementId }, this, cancellationToken);
+        await _caseServiceWrapper.LoadData(parameters, this, cancellationToken);
+        await _salesArrangementServiceWrapper.LoadData(parameters, this, cancellationToken);
     }
 
     private GrpcAddress GetPermanentAddress() => Customer.Addresses.First(a => a.AddressTypeId == (int)AddressTypes.Permanent);

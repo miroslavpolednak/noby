@@ -17,7 +17,7 @@ internal abstract class LoanApplicationBaseFormData : AggregatedData
 
     public IEnumerable<HouseholdDto> HouseholdList => [HouseholdData.HouseholdDto];
 
-    public override Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
         DefaultValues3601 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3601, SalesArrangementTypes.Mortgage, _codebookManager.DocumentTypes);
         DefaultValues3602 = EasFormTypeFactory.CreateDefaultValues(EasFormType.F3602, (SalesArrangementTypes)SalesArrangement.SalesArrangementTypeId,_codebookManager.DocumentTypes);

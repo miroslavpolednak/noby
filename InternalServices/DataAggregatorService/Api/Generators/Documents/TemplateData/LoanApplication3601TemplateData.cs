@@ -51,9 +51,9 @@ internal class LoanApplication3601TemplateData : LoanApplicationBaseTemplateData
 
     public string RealEstatePurchaseTypes => string.Join("; ", GetRealEstatePurchaseTypes());
 
-    public override async Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override async Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
-        await base.LoadAdditionalData(cancellationToken);
+        await base.LoadAdditionalData(parameters, cancellationToken);
 
         AgentName = await LoadAgentName(cancellationToken);
     }

@@ -30,7 +30,7 @@ internal class DrawingFormData : AggregatedData
 
     public bool IsAgent => SalesArrangement.Drawing.Agent?.IsActive ?? false;
 
-    public override async Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override async Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
         var customers = await _productService.GetCustomersOnProduct(SalesArrangement.CaseId, cancellationToken);
 

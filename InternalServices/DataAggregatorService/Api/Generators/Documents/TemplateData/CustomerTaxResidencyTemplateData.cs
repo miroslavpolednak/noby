@@ -37,7 +37,7 @@ internal class CustomerTaxResidencyTemplateData : AggregatedData
 
     public string[] TaxResidencyCountriesMissingTinReason { get; private set; } = Array.Empty<string>();
 
-    public override Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
         TaxResidencyCountries = GetTaxResidencyCountries().Select(country => country?.LongName ?? "N/A").ToArray();
 
