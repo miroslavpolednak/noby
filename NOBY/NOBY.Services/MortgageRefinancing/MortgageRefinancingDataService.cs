@@ -26,7 +26,7 @@ public sealed class MortgageRefinancingDataService(
             IsContinueEnabled = refinancingType == RefinancingTypes.MortgageRetention || (refinancingType == RefinancingTypes.MortgageRefixation && eaCode is (605353 or 604587)),
             DocumentName = await getSigningDocumentName(refinancingType, eaCode),
             SignatureTypeDetailId = result.SalesArrangement?.Retention?.SignatureTypeDetailId, // pouze pro retence
-            IsGenerateDocumentEnabled = result.SalesArrangement?.OfferId is not null
+            IsGenerateDocumentEnabled = (refinancingType == RefinancingTypes.MortgageRefixation || result.SalesArrangement?.OfferId is not null)
                 && result.RefinancingState == RefinancingStates.RozpracovanoVNoby
                 && result.ActivePriceException is null
         };
