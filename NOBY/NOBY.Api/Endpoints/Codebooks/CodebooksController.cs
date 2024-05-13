@@ -47,6 +47,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216233">EmploymentTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835723767">ExtraPaymentReasons</a>
+    /// - <a href="https://wiki.kb.cz/display/HT/ExtraPaymentType">ExtraPaymentTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800055209">FeeChangeRequests</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
