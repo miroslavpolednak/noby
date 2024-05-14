@@ -150,7 +150,7 @@ internal sealed class RealESignaturesClient
                 FormId = request.DocumentData.FormId,
                 ContractNumber = request.DocumentData.ContractNumber,
                 AutoSendToCmp = true,
-                EaCodeMain = docType.EACodeMainId?.ToString(CultureInfo.InvariantCulture)
+                // EaCodeMain = docType.EACodeMainId?.ToString(CultureInfo.InvariantCulture) ToDo for Luboš testing 
             },
             ClientData = new()
             {
