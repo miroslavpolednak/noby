@@ -4,18 +4,25 @@ using KafkaFlow;
 
 namespace NOBY.Api.Messaging.DocumentOnSA.V1;
 
-public class DocumentStateChangedHandler(ILogger<DocumentStateChangedHandler> logger, IDocumentOnSAServiceClient documentOnSAService) : IMessageHandler<DocumentStateChanged>
+public class DocumentStateChangedHandler(IDocumentOnSAServiceClient documentOnSAService) : IMessageHandler<DocumentStateChanged>
 {
-    private readonly ILogger<DocumentStateChangedHandler> _logger = logger;
     private readonly IDocumentOnSAServiceClient _documentOnSAService = documentOnSAService;
 
     public async Task Handle(IMessageContext context, DocumentStateChanged message)
     {
-        if (string.IsNullOrWhiteSpace(message.documentExternalId))
+        switch (message.state)
         {
-            //ToDo log
+            case DocumentStateEnum.SIGNED or DocumentStateEnum.VERIFIED or DocumentStateEnum.SENT:
+                await _documentOnSAService.RefreshElectronicDocExternalId(new() { ExternalIdESignatures = message.documentExternalId, Operation = DomainServices.DocumentOnSAService.Contracts.Operation.SignDocument });
+                break;
+            case DocumentStateEnum.DELETED:
+                await _documentOnSAService.RefreshElectronicDocExternalId(new() { ExternalIdESignatures = message.documentExternalId, Operation = DomainServices.DocumentOnSAService.Contracts.Operation.StopSigning });
+                break;
+            case DocumentStateEnum.NEW or DocumentStateEnum.IN_PROGRESS or DocumentStateEnum.APPROVED:
+                // Ignore
+                break;
+            default:
+                throw new ArgumentException(nameof(message.state));
         }
-
-
     }
 }

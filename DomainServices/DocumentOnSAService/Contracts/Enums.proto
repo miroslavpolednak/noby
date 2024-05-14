@@ -9,7 +9,6 @@ enum Source {
 }
 
 enum Operation{
-	Unknown = 0;
-	SignDocument = 1;
-	StopSigning = 2;
+	SignDocument = 0;
+	StopSigning = 1;
 } 
