@@ -17,6 +17,15 @@ public sealed class MortgageRefinancingWorkflowService(
     public Task<WorkflowTaskByTaskId.WorkflowProcessByProcessIdResult> GetProcessInfoByProcessId(long caseId, long processId, CancellationToken cancellationToken) => 
         _caseService.GetProcessByProcessId(caseId, processId, cancellationToken);
 
+    public void ValidateIndividualPriceExceptionComment(string? individualPriceExceptionComment, decimal? interestRateDiscount, decimal? feeAmountDiscount)
+    {
+        if (interestRateDiscount is null or 0 && feeAmountDiscount is null or 0)
+            return;
+
+        if (string.IsNullOrWhiteSpace(individualPriceExceptionComment))
+            throw new NobyValidationException(90032, "Unable to update discount without comment");
+    }
+
     public async Task<MortgageRefinancingIndividualPrice> GetIndividualPrices(long caseId, long processId, CancellationToken cancellationToken)
     {
         var taskList = await _caseService.GetTaskList(caseId, cancellationToken);
@@ -50,9 +59,6 @@ public sealed class MortgageRefinancingWorkflowService(
         }
 
         ValidatePermission();
-
-        if (string.IsNullOrWhiteSpace(taskRequest))
-            throw new NobyValidationException(90032, "IndividualPriceCommentLastVersion is empty");
 
         var createTaskRequest = new CreateTaskRequest
         {

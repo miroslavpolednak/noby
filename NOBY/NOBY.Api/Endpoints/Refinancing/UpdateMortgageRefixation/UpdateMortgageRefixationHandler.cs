@@ -18,6 +18,8 @@ internal sealed class UpdateMortgageRefixationHandler(
     {
         decimal? interestRateDiscount = request.InterestRateDiscount == 0 ? null : request.InterestRateDiscount;
 
+        _retentionWorkflowService.ValidateIndividualPriceExceptionComment(request.IndividualPriceCommentLastVersion, interestRateDiscount, default);
+
 		// ziskat existujici nebo zalozit novy SA
 		var salesArrangement = await _salesArrangementCreateService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageRefixation, cancellationToken);
 
