@@ -149,7 +149,8 @@ internal sealed class RealESignaturesClient
                 Name = request.DocumentData.FileName,
                 FormId = request.DocumentData.FormId,
                 ContractNumber = request.DocumentData.ContractNumber,
-                AutoSendToCmp = true
+                AutoSendToCmp = true,
+                EaCodeMain = docType.EACodeMainId?.ToString(CultureInfo.InvariantCulture)
             },
             ClientData = new()
             {
