@@ -319,11 +319,11 @@ internal static class CaseExtensions
     {
         if (taskData.GetBoolean("ukol_stornovano"))
         {
-            return "ZRUŠENO";
+            return "Zrušeno";
         }
         else if (taskData.GetInteger("ukol_stav_poz") == 30)
         {
-            return "DOKONČENO";
+            return "Dokončeno";
         }
         else
         {
