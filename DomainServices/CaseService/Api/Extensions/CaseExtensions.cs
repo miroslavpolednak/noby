@@ -30,6 +30,7 @@ internal static class CaseExtensions
             6 => taskData.GetInteger("ukol_podpis_stav"),
             3 or 4 or 7 or 8 => 1,
             9 => taskData.GetInteger("ukol_faze_rt_procesu"),
+            10 => taskData.GetInteger("ukol_faze_mspl_procesu"),
             _ => throw new ArgumentOutOfRangeException(nameof(task.PhaseTypeId), "PhaseTypeId can not be set")
         };
 
