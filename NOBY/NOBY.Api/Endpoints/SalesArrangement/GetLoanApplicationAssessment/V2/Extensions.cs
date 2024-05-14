@@ -218,7 +218,7 @@ internal static class Extensions
     public static LoanApplication ToLoanApplicationApiResponse(this cRS.V1.LoanApplicationAssessmentResponse response, cOffer.GetOfferResponse? offer)
         => new LoanApplication
         {
-            Score = string.IsNullOrEmpty(response.Detail?.Score?.Scale) ? null : $"{response.Detail.Score.Scale}-{response.Detail.Score.Value}",
+            Score = string.IsNullOrEmpty(response.Detail?.Score?.Scale) ? null : $"{response.Detail.Score.Scale} {response.Detail.Score.Value}",
             CollateralLimit = response.Detail?.Limit?.CollateralLimit?.Amount,
             Limit = response.Detail?.Limit?.Limit?.Amount,
             InstallmentLimit = response.Detail?.Limit?.InstallmentLimit?.Amount,
