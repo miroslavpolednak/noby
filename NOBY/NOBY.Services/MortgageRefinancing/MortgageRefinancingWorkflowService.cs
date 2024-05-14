@@ -44,7 +44,7 @@ public sealed class MortgageRefinancingWorkflowService(
         var taskList = await _caseService.GetTaskList(mortgageParameters.CaseId, cancellationToken);
 
         if (!await CancelExistingPriceExceptions(taskList, mortgageParameters, cancellationToken)
-            || (mortgageParameters.LoanInterestRateDiscount is (null or 0) && (mortgageParameters.Fee?.FeeFinalSum ?? 0) == 0))
+            || (mortgageParameters.LoanInterestRateDiscount is (null or 0) && (mortgageParameters.Fee?.DiscountPercentage ?? 0) == 0))
         {
             return;
         }
@@ -75,7 +75,7 @@ public sealed class MortgageRefinancingWorkflowService(
                 FeeId = mortgageParameters.Fee.FeeId,
                 TariffSum = mortgageParameters.Fee.FeeSum,
                 FinalSum = mortgageParameters.Fee.FeeFinalSum,
-                DiscountPercentage = 100 * (mortgageParameters.Fee.FeeSum - mortgageParameters.Fee.FeeFinalSum) / mortgageParameters.Fee.FeeSum
+                DiscountPercentage = mortgageParameters.Fee.DiscountPercentage
             });
         }
 
