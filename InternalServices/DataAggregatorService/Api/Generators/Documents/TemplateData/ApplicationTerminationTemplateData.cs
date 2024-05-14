@@ -43,7 +43,7 @@ internal class ApplicationTerminationTemplateData : AggregatedData
     {
         get
         {
-            if (Custom.DocumentOnSa.DocumentsOnSa.Any(d => d.IsSigned))
+            if (Custom.DocumentOnSa.DocumentsOnSa.Any(d => d.DocumentTypeId is (int)DocumentTypes.ZADOSTHU or (int)DocumentTypes.ZADOSTHD && d.IsSigned))
             {
                 
                 return $"dovolujeme si Vás informovat, že žádost o poskytnutí úvěru ve výši {((decimal)Case.Data.TargetAmount).ToString("C0", CultureProvider.GetProvider())} " +

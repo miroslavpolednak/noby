@@ -29,12 +29,14 @@ internal sealed class LinkMortgageExtraPaymentHandler(
 
 	public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> Handle(LinkMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
     {
-		// ziskat existujici nebo zalozit novy SA
-		var salesArrangement = await _salesArrangementCreateService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageExtraPayment, cancellationToken);
+        // ziskat existujici nebo zalozit novy SA
+        var salesArrangement = await _salesArrangementCreateService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageExtraPayment, cancellationToken);
 
-		var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
+        var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
 
         await _validator.Validate(salesArrangement, offer, cancellationToken);
+
+        _refinancingWorkflowService.ValidateIndividualPriceExceptionComment(request.IndividualPriceCommentLastVersion, default, offer.MortgageExtraPayment.BasicParameters.FeeAmountDiscount);
 
         await ProcessWorkflow(request, offer.MortgageExtraPayment, salesArrangement, cancellationToken);
 
@@ -107,6 +109,6 @@ internal sealed class LinkMortgageExtraPaymentHandler(
 
     private static Task<bool> AdditionalValidation(_SA salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
-        return Task.FromResult(salesArrangement.CaseId == offer.Data.CaseId && (DateTime.UtcNow - offer.Data.Created.DateTime).TotalDays >= 1);
+        return Task.FromResult(salesArrangement.CaseId == offer.Data.CaseId && (offer.Data.Created.DateTime - DateTime.UtcNow).TotalDays < 1);
     }
 }

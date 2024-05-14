@@ -36,6 +36,8 @@ internal sealed class LinkMortgageRetentionOfferHandler(
 
         await _validator.Validate(salesArrangement, offer, cancellationToken);
 
+        _refinancingWorkflowService.ValidateIndividualPriceExceptionComment(request.IndividualPriceCommentLastVersion, offer.MortgageRetention.SimulationInputs.InterestRateDiscount, offer.MortgageRetention.BasicParameters.FeeAmountDiscounted);
+
         await ProcessWorkflow(request, offer.MortgageRetention, salesArrangement, cancellationToken);
 
         await UpdateSalesArrangementParameters(request, salesArrangement, cancellationToken);

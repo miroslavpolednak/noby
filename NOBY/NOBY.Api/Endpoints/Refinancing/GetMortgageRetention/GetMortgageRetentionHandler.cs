@@ -19,15 +19,15 @@ internal sealed class GetMortgageRetentionHandler(
         var response = data.UpdateBaseResponseModel(new GetMortgageRetentionResponse());
 
         // retention specific data
-        response.ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, OfferTypes.MortgageRefixation, cancellationToken);
-        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageExtraPayment, data.Process?.MortgageRetention?.DocumentEACode, data.Process?.MortgageRetention?.DocumentId);
+        response.ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, OfferTypes.MortgageRetention, cancellationToken);
+        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageRetention, data.Process?.MortgageRetention?.DocumentEACode, data.Process?.MortgageRetention?.DocumentId);
         response.IndividualPriceCommentLastVersion = data.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion;
         response.Comment = data.SalesArrangement?.Retention?.Comment;
         response.InterestRate = (decimal?)data.Process!.MortgageRetention.LoanInterestRate ?? 0M;
         response.LoanPaymentAmount = (decimal?)data.Process.MortgageRetention.LoanPaymentAmount ?? 0M;
         response.FeeAmount = (decimal?)data.Process.MortgageRetention.FeeSum ?? 0M;
         
-        if (((decimal?)data.Process.MortgageRetention.LoanPaymentAmountFinal ?? 0) > 0)
+        if ((decimal?)data.Process.MortgageRetention.LoanPaymentAmount != data.Process.MortgageRetention.LoanPaymentAmountFinal)
         {
             response.LoanPaymentAmountDiscounted = data.Process.MortgageRetention.LoanPaymentAmountFinal;
         }
