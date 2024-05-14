@@ -22,7 +22,7 @@ internal sealed class GetRefinancingParametersHandler(
     {
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
 
-        if (caseInstance.State is not (int)CaseStates.InDisbursement and (int)CaseStates.InAdministration)
+        if (caseInstance.State is not (int)CaseStates.InDisbursement and not (int)CaseStates.InAdministration)
         {
             throw new NobyValidationException(90032);
         }
