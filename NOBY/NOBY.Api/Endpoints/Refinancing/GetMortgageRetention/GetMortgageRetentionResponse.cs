@@ -41,7 +41,7 @@ public sealed class GetMortgageRetentionResponse
     /// Sleva ze sazby
     /// </summary>
     /// <example>4.5</example>
-    public decimal? InterestRateDiscounted { get => InterestRateDiscount.HasValue ? InterestRate - InterestRateDiscount : null; }
+    public decimal? InterestRateDiscounted => InterestRateDiscount.HasValue && InterestRateDiscount != 0 ? InterestRate - InterestRateDiscount : null;
 
     /// <summary>
     /// Výše měsíční splátky.

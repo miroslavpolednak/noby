@@ -51,6 +51,9 @@ public sealed class MortgageRefinancingWorkflowService(
 
         ValidatePermission();
 
+        if (string.IsNullOrWhiteSpace(taskRequest))
+            throw new NobyValidationException(90032, "IndividualPriceCommentLastVersion is empty");
+
         var createTaskRequest = new CreateTaskRequest
         {
             CaseId = mortgageParameters.CaseId,
