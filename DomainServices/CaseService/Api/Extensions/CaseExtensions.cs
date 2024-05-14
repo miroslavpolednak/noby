@@ -330,5 +330,5 @@ internal static class CaseExtensions
         }
     }
 
-    private static int[] _allowedConsultationTypes = new[] { 1, 7 };
+    private static readonly int[] _allowedConsultationTypes = [1, 7];
 }
