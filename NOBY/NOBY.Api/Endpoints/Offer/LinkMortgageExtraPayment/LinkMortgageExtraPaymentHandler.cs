@@ -107,6 +107,6 @@ internal sealed class LinkMortgageExtraPaymentHandler(
 
     private static Task<bool> AdditionalValidation(_SA salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
-        return Task.FromResult(salesArrangement.CaseId == offer.Data.CaseId && (DateTime.UtcNow - offer.Data.Created.DateTime).TotalDays >= 1);
+        return Task.FromResult(salesArrangement.CaseId == offer.Data.CaseId && (offer.Data.Created.DateTime - DateTime.UtcNow).TotalDays < 1);
     }
 }
