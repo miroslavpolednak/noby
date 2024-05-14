@@ -13,10 +13,10 @@ public class DocumentStateChangedHandler(IDocumentOnSAServiceClient documentOnSA
         switch (message.state)
         {
             case DocumentStateEnum.SIGNED or DocumentStateEnum.VERIFIED or DocumentStateEnum.SENT:
-                await _documentOnSAService.RefreshElectronicDocExternalId(new() { ExternalIdESignatures = message.documentExternalId, Operation = DomainServices.DocumentOnSAService.Contracts.Operation.SignDocument });
+                await _documentOnSAService.RefreshElectronicDocExternalId(new() { ExternalIdESignatures = message.documentExternalId ?? string.Empty, Operation = DomainServices.DocumentOnSAService.Contracts.Operation.SignDocument });
                 break;
             case DocumentStateEnum.DELETED:
-                await _documentOnSAService.RefreshElectronicDocExternalId(new() { ExternalIdESignatures = message.documentExternalId, Operation = DomainServices.DocumentOnSAService.Contracts.Operation.StopSigning });
+                await _documentOnSAService.RefreshElectronicDocExternalId(new() { ExternalIdESignatures = message.documentExternalId ?? string.Empty, Operation = DomainServices.DocumentOnSAService.Contracts.Operation.StopSigning });
                 break;
             case DocumentStateEnum.NEW or DocumentStateEnum.IN_PROGRESS or DocumentStateEnum.APPROVED:
                 // Ignore
