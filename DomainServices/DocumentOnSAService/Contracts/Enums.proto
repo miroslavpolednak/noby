@@ -7,3 +7,9 @@ enum Source {
 	Noby = 1;
     Workflow = 2;
 }
+
+enum Operation{
+	Unknown = 0;
+	SignDocument = 1;
+	StopSigning = 2;
+} 
