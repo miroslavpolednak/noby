@@ -27,7 +27,7 @@ internal sealed class GetMortgageRetentionHandler(
         response.LoanPaymentAmount = (decimal?)data.Process.MortgageRetention.LoanPaymentAmount ?? 0M;
         response.FeeAmount = (decimal?)data.Process.MortgageRetention.FeeSum ?? 0M;
         
-        if (((decimal?)data.Process.MortgageRetention.LoanPaymentAmountFinal ?? 0) > 0)
+        if ((decimal?)data.Process.MortgageRetention.LoanPaymentAmount != data.Process.MortgageRetention.LoanPaymentAmountFinal)
         {
             response.LoanPaymentAmountDiscounted = data.Process.MortgageRetention.LoanPaymentAmountFinal;
         }
