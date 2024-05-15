@@ -12,6 +12,8 @@ using SharedAudit;
 using SharedComponents.Storage;
 using CIS.Infrastructure.Messaging;
 using NOBY.Api.Endpoints.Codebooks.CodebookMap;
+using Microsoft.EntityFrameworkCore.Migrations;
+using NOBY.Api.Messaging.DocumentOnSA.V1;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,6 +94,8 @@ try
     {
         builder.AddCisMessaging().AddKafkaFlowDashboard();
     }
+
+    builder.AddCisMessaging().AddKafkaFlow(msg => msg.AddConsumerAvro<DocumentStateChangedHandler>(appConfiguration.ESignatureDocumentStateChangedTopic));
 
     // podpora SPA
     builder.Services.AddSpaStaticFiles(configuration =>

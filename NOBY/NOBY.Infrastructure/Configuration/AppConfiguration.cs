@@ -2,6 +2,8 @@
 
 public sealed class AppConfiguration
 {
+    public string ESignatureDocumentStateChangedTopic { get; set; } = null!;
+
     /// <summary>
     /// Zapnuti logovani rozdilu mezi rozdilem a modelem
     /// </summary>
