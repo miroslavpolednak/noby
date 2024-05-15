@@ -6,7 +6,6 @@ using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using ExternalServices.ESignatures.V1;
 using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
-using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -56,7 +55,6 @@ void bgServices(WebApplicationBuilder builder)
 {
     builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
     builder.AddCisBackgroundService<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
-    builder.AddCisBackgroundService<UpdateDocumentStatusJob>();
 }
 
 #pragma warning disable CA1050 // Declare types in namespaces
