@@ -27,7 +27,8 @@ internal sealed class GetMortgageRetentionHandler(
         response.LoanPaymentAmount = (decimal?)data.Process.MortgageRetention.LoanPaymentAmount ?? 0M;
         response.FeeAmount = (decimal?)data.Process.MortgageRetention.FeeSum ?? 0M;
         
-        if ((decimal?)data.Process.MortgageRetention.LoanPaymentAmount != data.Process.MortgageRetention.LoanPaymentAmountFinal)
+        // sleva na rate
+        if (response.LoanPaymentAmount != data.Process.MortgageRetention.LoanPaymentAmountFinal)
         {
             response.LoanPaymentAmountDiscounted = data.Process.MortgageRetention.LoanPaymentAmountFinal;
         }
@@ -39,7 +40,7 @@ internal sealed class GetMortgageRetentionHandler(
         }
 
         // IC poplatek
-        if ((data.ActivePriceException?.Fees?.Count ?? 0) != 0)
+        if ((data.ActivePriceException?.Fees?.Count ?? 0) != 0 && data.ActivePriceException!.Fees![0].FinalSum != response.FeeAmount)
         {
             response.FeeAmountDiscounted = data.ActivePriceException!.Fees![0].FinalSum;
         }
