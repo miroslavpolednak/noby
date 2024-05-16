@@ -7,12 +7,10 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.Te
 internal class ApplicationTerminationTemplateData : AggregatedData
 {
     private readonly CaseServiceWrapper _caseServiceWrapper;
-    private readonly SalesArrangementServiceWrapper _salesArrangementServiceWrapper;
 
-    public ApplicationTerminationTemplateData(CaseServiceWrapper caseServiceWrapper, SalesArrangementServiceWrapper salesArrangementServiceWrapper)
+    public ApplicationTerminationTemplateData(CaseServiceWrapper caseServiceWrapper)
     {
         _caseServiceWrapper = caseServiceWrapper;
-        _salesArrangementServiceWrapper = salesArrangementServiceWrapper;
     }
 
     public string FullName => CustomerHelper.FullName(Customer.Source, _codebookManager.DegreesBefore);
@@ -43,14 +41,15 @@ internal class ApplicationTerminationTemplateData : AggregatedData
     {
         get
         {
-            if (Custom.DocumentOnSa.DocumentsOnSa.Any(d => d.DocumentTypeId is (int)DocumentTypes.ZADOSTHU or (int)DocumentTypes.ZADOSTHD && d.IsSigned))
-            {
-                
-                return $"dovolujeme si Vás informovat, že žádost o poskytnutí úvěru ve výši {((decimal)Case.Data.TargetAmount).ToString("C0", CultureProvider.GetProvider())} " +
-                       $"ze dne {((DateTime)SalesArrangement.Created.DateTime).ToString("d", CultureProvider.GetProvider())}, vedená pod registračním číslem {Case.Data.ContractNumber} byla ukončena na základě Vaší žádosti.";
-            }
+            if (!Custom.DocumentOnSa.DocumentsOnSa.Any(d => d.DocumentTypeId is (int)DocumentTypes.ZADOSTHU or (int)DocumentTypes.ZADOSTHD && d.IsSigned))
+                return $"dovolujeme si Vás informovat, že na základě Vašeho požadavku bylo jednání o žádosti o poskytnutí úvěru ve výši {((decimal)Case.Data.TargetAmount).ToString("C0", CultureProvider.GetProvider())} ukončeno.";
+            
+            var signedDate = Custom.DocumentOnSa.DocumentsOnSa.Where(d => d.DocumentTypeId is (int)DocumentTypes.ZADOSTHU or (int)DocumentTypes.ZADOSTHD && d.IsSigned).Max(d => d.SignatureDateTime);
 
-            return $"dovolujeme si Vás informovat, že na základě Vašeho požadavku bylo jednání o žádosti o poskytnutí úvěru ve výši {((decimal)Case.Data.TargetAmount).ToString("C0", CultureProvider.GetProvider())} ukončeno.";
+            return $"dovolujeme si Vás informovat, že žádost o poskytnutí úvěru ve výši {((decimal)Case.Data.TargetAmount).ToString("C0", CultureProvider.GetProvider())} " +
+                   $"ze dne {(signedDate?.ToDateTime() ?? (DateTime)Case.Created.DateTime).ToString("d", CultureProvider.GetProvider())}, " +
+                   $"vedená pod registračním číslem {Case.Data.ContractNumber} byla ukončena na základě Vaší žádosti.";
+
         }
     }
 
@@ -61,7 +60,6 @@ internal class ApplicationTerminationTemplateData : AggregatedData
 
     public override async Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
-        await _salesArrangementServiceWrapper.LoadData(parameters, this, cancellationToken);
         await _caseServiceWrapper.LoadData(parameters, this, cancellationToken);
     }
 
