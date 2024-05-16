@@ -7,6 +7,7 @@ using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment;
 using NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 using NOBY.Api.Endpoints.Refinancing.GetAvailableFixedRatePeriods;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList;
+using NOBY.Dto.Refinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing;
 
@@ -80,16 +81,16 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// 
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D2F4DD7B-54B9-4c86-BEE0-8673DBBDE5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:long}/update-mortgage-refixation")]
+    [HttpPut("case/{caseId:long}/update-mortgage-refixation")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(UpdateMortgageRefixationResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingLinkResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<UpdateMortgageRefixationResponse> UpdateMortgageRefixation([FromRoute] long caseId, [FromRoute] int salesArrangementId, [FromBody] UpdateMortgageRefixationRequest? request)
-        => await _mediator.Send((request ?? new()).InfuseId(caseId, salesArrangementId));
+    public async Task<RefinancingLinkResult> UpdateMortgageRefixation([FromRoute] long caseId, [FromBody] UpdateMortgageRefixationRequest? request)
+        => await _mediator.Send((request ?? new()).InfuseId(caseId));
 
     /// <summary>
     /// Detail mimořádné splátky
@@ -207,8 +208,8 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(CommunicateMortgageRefixation.CommunicateMortgageRefixationResponse), StatusCodes.Status200OK)]
-    public async Task<CommunicateMortgageRefixation.CommunicateMortgageRefixationResponse> CommunicateMortgageRefixation(long caseId) => 
+    [ProducesResponseType(typeof(RefinancingLinkResult), StatusCodes.Status200OK)]
+    public async Task<RefinancingLinkResult> CommunicateMortgageRefixation(long caseId) => 
         await _mediator.Send(new CommunicateMortgageRefixation.CommunicateMortgageRefixationRequest { CaseId = caseId});
 
     /// <summary>

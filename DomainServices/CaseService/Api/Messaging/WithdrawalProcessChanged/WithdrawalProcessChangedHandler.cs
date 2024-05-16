@@ -6,26 +6,14 @@ using KafkaFlow;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
-internal class WithdrawalProcessChangedHandler : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.WithdrawalProcessChanged>
+internal class WithdrawalProcessChangedHandler(
+	IMediator _mediator,
+	ISalesArrangementServiceClient _salesArrangementService,
+	IDocumentOnSAServiceClient _documentOnSAService,
+	ILogger<WithdrawalProcessChangedHandler> _logger) 
+    : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.WithdrawalProcessChanged>
 {
-    private readonly IMediator _mediator;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ILogger<WithdrawalProcessChangedHandler> _logger;
-
-    public WithdrawalProcessChangedHandler(
-        IMediator mediator,
-        ISalesArrangementServiceClient salesArrangementService,
-        IDocumentOnSAServiceClient documentOnSAService,
-        ILogger<WithdrawalProcessChangedHandler> logger)
-    {
-        _mediator = mediator;
-        _salesArrangementService = salesArrangementService;
-        _documentOnSAService = documentOnSAService;
-        _logger = logger;
-    }
-
-    public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.WithdrawalProcessChanged message)
+	public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.WithdrawalProcessChanged message)
     {
         var code = message.processData.@private.withdrawalProcessData.processPhase.code;
         if (code != 1 && code != 3)

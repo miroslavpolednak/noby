@@ -17,6 +17,15 @@ public sealed class MortgageRefinancingWorkflowService(
     public Task<WorkflowTaskByTaskId.WorkflowProcessByProcessIdResult> GetProcessInfoByProcessId(long caseId, long processId, CancellationToken cancellationToken) => 
         _caseService.GetProcessByProcessId(caseId, processId, cancellationToken);
 
+    public void ValidateIndividualPriceExceptionComment(string? individualPriceExceptionComment, decimal? interestRateDiscount, decimal? feeAmountDiscount)
+    {
+        if (interestRateDiscount is null or 0 && feeAmountDiscount is null or 0)
+            return;
+
+        if (string.IsNullOrWhiteSpace(individualPriceExceptionComment))
+            throw new NobyValidationException(90032, "Unable to update discount without comment");
+    }
+
     public async Task<MortgageRefinancingIndividualPrice> GetIndividualPrices(long caseId, long processId, CancellationToken cancellationToken)
     {
         var taskList = await _caseService.GetTaskList(caseId, cancellationToken);
@@ -44,7 +53,7 @@ public sealed class MortgageRefinancingWorkflowService(
         var taskList = await _caseService.GetTaskList(mortgageParameters.CaseId, cancellationToken);
 
         if (!await CancelExistingPriceExceptions(taskList, mortgageParameters, cancellationToken)
-            || (mortgageParameters.LoanInterestRateDiscount is (null or 0) && (mortgageParameters.Fee?.FeeFinalSum ?? 0) == 0))
+            || (mortgageParameters.LoanInterestRateDiscount is (null or 0) && (mortgageParameters.Fee?.DiscountPercentage ?? 0) == 0))
         {
             return;
         }
@@ -75,7 +84,7 @@ public sealed class MortgageRefinancingWorkflowService(
                 FeeId = mortgageParameters.Fee.FeeId,
                 TariffSum = mortgageParameters.Fee.FeeSum,
                 FinalSum = mortgageParameters.Fee.FeeFinalSum,
-                DiscountPercentage = 100 * (mortgageParameters.Fee.FeeSum - mortgageParameters.Fee.FeeFinalSum) / mortgageParameters.Fee.FeeSum
+                DiscountPercentage = mortgageParameters.Fee.DiscountPercentage
             });
         }
 

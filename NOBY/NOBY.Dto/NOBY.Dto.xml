@@ -642,7 +642,7 @@
             Příznak, zda je úvěr po splatnosti
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.IsPaymentReduced">
+        <member name="P:NOBY.Dto.Refinancing.ExtraPaymentSimulationResult.IsInstallmentReduced">
             <summary>
             Příznak, zda se snižuje výše pravidelné splátky
             </summary>

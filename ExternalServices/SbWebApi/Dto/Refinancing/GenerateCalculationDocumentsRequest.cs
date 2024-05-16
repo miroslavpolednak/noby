@@ -4,7 +4,7 @@ public class GenerateCalculationDocumentsRequest
 {
     public long CaseId { get; set; }
 
-    public bool IsExtraPaymentComplete { get; set; }
+    public bool IsExtraPaymentFullyRepaid { get; set; }
 
     public DateTime ExtraPaymentDate { get; set; }
 
@@ -26,11 +26,11 @@ public class GenerateCalculationDocumentsRequest
 
     public bool IsLoanOverdue { get; set; }
 
-    public bool IsPaymentReduced { get; set; }
+    public bool IsInstallmentReduced { get; set; }
 
     public DateTime NewMaturityDate { get; set; }
 
     public decimal NewPaymentAmount { get; set; }
 
-    public int SignatureTypeDetailId { get; set; }
+    public int HandoverTypeDetailCode { get; set; }
 }

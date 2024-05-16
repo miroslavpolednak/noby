@@ -3,13 +3,10 @@
 namespace NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 
 public sealed class UpdateMortgageRefixationRequest
-    : IRequest<UpdateMortgageRefixationResponse>
+    : IRequest<NOBY.Dto.Refinancing.RefinancingLinkResult>
 {
     [JsonIgnore]
     internal long CaseId { get; set; }
-
-    [JsonIgnore]
-    internal int SalesArrangementId { get; set; }
 
     /// <summary>
     /// Komentář k Cenové výjimce
@@ -28,9 +25,8 @@ public sealed class UpdateMortgageRefixationRequest
     /// <example>0.2</example>
     public decimal InterestRateDiscount { get; set; }
 
-    internal UpdateMortgageRefixationRequest InfuseId(long caseId, int salesArrangementId)
+    internal UpdateMortgageRefixationRequest InfuseId(long caseId)
     {
-        this.SalesArrangementId = salesArrangementId;
         this.CaseId = caseId;
         return this;
     }

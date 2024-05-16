@@ -114,7 +114,8 @@ internal sealed class CreateTaskHandler(
             if (priceException.LoanInterestRate.LoanInterestRateAnnouncedType is not null)
                 metadata.Add("ukol_overeni_ic_sazba_typ", priceException.LoanInterestRate.LoanInterestRateAnnouncedType.Value.ToString(CultureInfo.InvariantCulture));
 
-            metadata.Add("ukol_overeni_ic_sazba_sleva", priceException.LoanInterestRate.LoanInterestRateDiscount.ToSbFormat());
+            if (priceException.LoanInterestRate.LoanInterestRateDiscount is not null)
+                metadata.Add("ukol_overeni_ic_sazba_sleva", priceException.LoanInterestRate.LoanInterestRateDiscount.ToSbFormat());
         }
 
         if (priceException.ProductTypeId is not null)

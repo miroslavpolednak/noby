@@ -32,8 +32,9 @@ internal sealed class GetMortgageExtraPaymentListHandler(
             
             //TODO: co s timhle?
             var refinancingState = currentProcessSA is null ? RefinancingHelper.GetRefinancingState(false, null, process) : RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State);
+            var state = refinancingStates.First(t => t.Id == (int)refinancingState);
 
-            return new GetMortgageExtraPaymentListResponse
+			return new GetMortgageExtraPaymentListResponse
             {
                 SalesArrangementId = currentProcessSA?.SalesArrangementId,
                 CreatedOn = process.CreatedOn,
@@ -43,8 +44,9 @@ internal sealed class GetMortgageExtraPaymentListHandler(
                 PaymentState = process.MortgageExtraPayment.PaymentState,
                 IsExtraPaymentFullyRepaid = process.MortgageExtraPayment.IsFinalExtraPayment,
                 RefinancingStateId = refinancingState,
-                StateIndicator = (StateIndicators)refinancingStates.First(t => t.Id == (int)refinancingState).Indicator
-            };
+                StateIndicator = (StateIndicators)state.Indicator,
+				StateName = state.Name
+			};
         })
         .ToList();
     }

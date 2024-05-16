@@ -71,8 +71,8 @@ internal sealed class UpdateParametersHelper
                     throw new NobyValidationException(90032);
                 }
 
-                if ((m.PayoutList?.Any(t => !_bankAccountValidator.IsBankAccoungAndCodeValid(t)) ?? false)
-                    || !_bankAccountValidator.IsBankAccoungAndCodeValid(m.RepaymentAccount))
+                if ((m.PayoutList?.Any(t => !_bankAccountValidator.IsBankAccountAndCodeValid(t)) ?? false)
+                    || !_bankAccountValidator.IsBankAccountAndCodeValid(m.RepaymentAccount))
                 {
                     throw new NobyValidationException(90032, "Invalid bank account");
                 }

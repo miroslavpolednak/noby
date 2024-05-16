@@ -6,20 +6,13 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
-internal class CaseStateChangedProcessingCompletedHandler : IMessageHandler<CaseStateChanged_ProcessingCompleted>
+internal class CaseStateChangedProcessingCompletedHandler(
+    CaseServiceDbContext _dbContext, 
+    IDistributedCache _distributedCache, 
+    ILogger<CaseStateChangedProcessingCompletedHandler> _logger) 
+    : IMessageHandler<CaseStateChanged_ProcessingCompleted>
 {
-    private readonly CaseServiceDbContext _dbContext;
-    private readonly IDistributedCache _distributedCache;
-    private readonly ILogger<CaseStateChangedProcessingCompletedHandler> _logger;
-
-    public CaseStateChangedProcessingCompletedHandler(CaseServiceDbContext dbContext, IDistributedCache distributedCache, ILogger<CaseStateChangedProcessingCompletedHandler> logger)
-    {
-        _dbContext = dbContext;
-        _distributedCache = distributedCache;
-        _logger = logger;
-    }
-
-    public async Task Handle(IMessageContext context, CaseStateChanged_ProcessingCompleted message)
+	public async Task Handle(IMessageContext context, CaseStateChanged_ProcessingCompleted message)
     {
         var cache = await _distributedCache.GetObjectAsync<SharedDto.CaseStateChangeRequestId>($"CaseStateChanged_{message.workflowInputProcessingContext.requestId}");
         if (cache is null)

@@ -44,4 +44,4 @@ LEFT JOIN (
 			OR PlatnostDo < GetDate()
 			)
 	) b ON a.Id = b.PartnerId
-WHERE a.Id = @partnerId
+WHERE a.Id = @partnerId AND a.Neaktivni=0

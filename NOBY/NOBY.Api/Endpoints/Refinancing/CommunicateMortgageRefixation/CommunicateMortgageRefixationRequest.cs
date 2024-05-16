@@ -1,6 +1,8 @@
-﻿namespace NOBY.Api.Endpoints.Refinancing.CommunicateMortgageRefixation;
+﻿using NOBY.Dto.Refinancing;
 
-public class CommunicateMortgageRefixationRequest : IRequest<CommunicateMortgageRefixationResponse>
+namespace NOBY.Api.Endpoints.Refinancing.CommunicateMortgageRefixation;
+
+public class CommunicateMortgageRefixationRequest : IRequest<RefinancingLinkResult>
 {
     internal long CaseId { get; init; }
 }

@@ -89,4 +89,6 @@ public interface IDocumentOnSAServiceClient
     /// Vrátí hodnoty potřebné k určení stavu dokumentu
     /// </summary>
     Task<GetDocumentOnSAStatusResponse> GetDocumentOnSAStatus(int salesArrangementId, int documentOnSAId, CancellationToken cancellationToken = default);
+
+    Task RefreshElectronicDocExternalId(RefreshElectronicDocExternalIdRequest request, CancellationToken cancellationToken = default);
 }

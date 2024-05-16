@@ -3,11 +3,8 @@ using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using NOBY.Dto.Workflow;
 using NOBY.Infrastructure.ErrorHandling;
 using SharedTypes.Enums;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace NOBY.Services.MortgageRefinancing;
 
@@ -29,7 +26,7 @@ public sealed class MortgageRefinancingDataService(
             IsContinueEnabled = refinancingType == RefinancingTypes.MortgageRetention || (refinancingType == RefinancingTypes.MortgageRefixation && eaCode is (605353 or 604587)),
             DocumentName = await getSigningDocumentName(refinancingType, eaCode),
             SignatureTypeDetailId = result.SalesArrangement?.Retention?.SignatureTypeDetailId, // pouze pro retence
-            IsGenerateDocumentEnabled = result.SalesArrangement?.OfferId is not null
+            IsGenerateDocumentEnabled = (refinancingType == RefinancingTypes.MortgageRefixation || result.SalesArrangement?.OfferId is not null)
                 && result.RefinancingState == RefinancingStates.RozpracovanoVNoby
                 && result.ActivePriceException is null
         };
@@ -56,18 +53,17 @@ public sealed class MortgageRefinancingDataService(
             RefinancingState = RefinancingStates.Unknown
         };
 
-        // procesy potrebujeme vzdy
         var processes = await _caseService.GetProcessList(caseId, cancellationToken);
-        var activeRefinancingProcess = getActiveRefinancingProcess(processes, refinancingType);
 
 		if (processId.HasValue)
         {
             // detail procesu
-            result.Process = processes.FirstOrDefault(p => !p.Cancelled && p.ProcessId == processId)
+            result.Process = processes
+                .FirstOrDefault(p => p.ProcessId == processId)
                 ?? throw new NobyValidationException(90043, $"ProccesId {processId} not found in list");
 
             // validace typu procesu
-            if (result.Process.AmendmentsCase != getRequiredAmendmentCase(refinancingType) || activeRefinancingProcess?.ProcessId != processId)
+            if (result.Process.AmendmentsCase != getRequiredAmendmentCase(refinancingType))
             {
                 throw new NobyValidationException(90032, $"ProcessTypeId!=3 or RefinancingType!={refinancingType}");
             }
@@ -83,9 +79,9 @@ public sealed class MortgageRefinancingDataService(
             result.SalesArrangement = salesArrangement;
             result.RefinancingState = refinancingState;
         }
-        else if (activeRefinancingProcess is not null)
+        else if (processes?.Any(t => !t.Cancelled && t.ProcessTypeId == (int)WorkflowProcesses.Refinancing && t.RefinancingType == (int)refinancingType) ?? false)
         {
-			throw new NobyValidationException(90032, $"ProcessId not defined but refinancing process of type {refinancingType} exists");
+			throw new NobyValidationException(90061, "Nestandardní přístup do kalkulace bez kontextu žádosti", "Vstupujete do kalkulace nestandardním způsobem a bez navázaného kontextu žádosti. Vraťte se na Rozcestník a vstupte standardním způsobem.");
 		}
 
         // vsechny tasky z WF, potom vyfiltrovat jen na konkretni processId
@@ -111,11 +107,6 @@ public sealed class MortgageRefinancingDataService(
 
         return await getPriceExceptionData(tasks, cancellationToken);
     }
-
-    private static ProcessTask? getActiveRefinancingProcess(IList<ProcessTask>? processes, RefinancingTypes refinancingType)
-	{
-        return processes?.FirstOrDefault(t => !t.Cancelled && t.ProcessTypeId == (int)WorkflowProcesses.Refinancing && t.RefinancingType == (int)refinancingType);
-	}
 
     private async Task<string> getSigningDocumentName(RefinancingTypes refinancingType, int? eaCode)
     {

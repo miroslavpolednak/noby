@@ -10,7 +10,7 @@ public static class RefinancingHelper
     {
         response.RefinancingStateId = result.RefinancingState;
         response.SalesArrangementId = result.SalesArrangement?.SalesArrangementId;
-        response.IsReadOnly = result.RefinancingState != RefinancingStates.RozpracovanoVNoby;
+        response.IsReadOnly = result.RefinancingState != RefinancingStates.RozpracovanoVNoby && result.Process is not null;
         response.IsPriceExceptionActive = result.ActivePriceException is not null;
         response.Tasks = result.Tasks;
 
@@ -22,8 +22,8 @@ public static class RefinancingHelper
         int? eacode = process.AmendmentsCase switch
         {
             ProcessTask.AmendmentsOneofCase.MortgageRetention => process.MortgageRetention.DocumentEACode,
-            ProcessTask.AmendmentsOneofCase.MortgageRefixation => process.MortgageRetention.DocumentEACode,
-            ProcessTask.AmendmentsOneofCase.MortgageExtraPayment => process.MortgageRetention.DocumentEACode,
+            ProcessTask.AmendmentsOneofCase.MortgageRefixation => process.MortgageRefixation.DocumentEACode,
+            ProcessTask.AmendmentsOneofCase.MortgageExtraPayment => process.MortgageExtraPayment.DocumentEACode,
             ProcessTask.AmendmentsOneofCase.MortgageLegalNotice => process.MortgageLegalNotice.DocumentEACode,
             _ => null
         };

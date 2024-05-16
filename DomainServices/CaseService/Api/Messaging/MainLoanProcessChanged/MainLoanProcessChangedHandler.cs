@@ -3,20 +3,12 @@ using KafkaFlow;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
-internal class MainLoanProcessChangedHandler : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.MainLoanProcessChanged>
+internal class MainLoanProcessChangedHandler(
+		IMediator _mediator,
+		ILogger<MainLoanProcessChangedHandler> _logger) 
+    : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.MainLoanProcessChanged>
 {
-    private readonly IMediator _mediator;
-    private readonly ILogger<MainLoanProcessChangedHandler> _logger;
-    
-    public MainLoanProcessChangedHandler(
-        IMediator mediator,
-        ILogger<MainLoanProcessChangedHandler> logger)
-    {
-        _mediator = mediator;
-        _logger = logger;
-    }
-
-    public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.MainLoanProcessChanged message)
+	public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.MainLoanProcessChanged message)
     {
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {

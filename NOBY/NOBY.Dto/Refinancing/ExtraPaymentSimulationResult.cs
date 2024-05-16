@@ -55,7 +55,7 @@ public sealed class ExtraPaymentSimulationResult
     /// <summary>
     /// Příznak, zda se snižuje výše pravidelné splátky
     /// </summary>
-    public bool IsPaymentReduced { get; set; }
+    public bool IsInstallmentReduced { get; set; }
 
     /// <summary>
     /// Nové datum splatnosti, pokud se zkracuje splacením mimořádné splátky

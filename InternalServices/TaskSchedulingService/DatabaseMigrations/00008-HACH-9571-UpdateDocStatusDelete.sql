@@ -1,0 +1,3 @@
+
+  DELETE j FROM dbo.ScheduleJob j WHERE j.ScheduleJobId = '5D05112E-59B8-42A4-9230-CAB34D476A06'
+  DELETE t FROM dbo.ScheduleTrigger t WHERE t.ScheduleJobId = '5D05112E-59B8-42A4-9230-CAB34D476A06'

@@ -14,11 +14,11 @@ internal class CustomerChange3602FormData : LoanApplicationBaseFormData
 
     public int ContractSignatureTypeId => 1;
 
-    public override Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
         HouseholdData.IsSpouseInDebt = GetIsSpouseIsDebt();
 
-        return base.LoadAdditionalData(cancellationToken);
+        return base.LoadAdditionalData(parameters,cancellationToken);
     }
 
     private bool? GetIsSpouseIsDebt()

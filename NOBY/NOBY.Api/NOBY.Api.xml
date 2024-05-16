@@ -896,6 +896,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=419562802">EducationLevels</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=430216233">EmploymentTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835723767">ExtraPaymentReasons</a>
+             - <a href="https://wiki.kb.cz/display/HT/ExtraPaymentType">ExtraPaymentTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800055209">FeeChangeRequests</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
@@ -2664,7 +2665,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageRetentionOffer(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageRetentionOffer(System.Int64,NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest)">
             <summary>
             Nalinkuje retenční nabídku na stávající SA.
             </summary>
@@ -2673,7 +2674,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=92B4B98B-3F57-4541-9828-EB8CFDFA9035"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageExtraPayment(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageExtraPayment(System.Int64,NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest)">
             <summary>
             Nalinkuje mimořádnou splátku na stávající SA.
             </summary>
@@ -2727,14 +2728,9 @@
             ID vytvorene simulace.
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OldOffer">
+        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.SimulationResults">
             <summary>
             Původní simulace nalinkovaná na SA
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.NewOffer">
-            <summary>
-            Nově nasimolovaná nabídka
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest.InterestRateDiscount">
@@ -3462,6 +3458,16 @@
             Uhrazeno; 0 - Unknown; 1 - Uhrazeno; 2 - Neuhrazeno
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.StateIndicator">
+            <summary>
+            Indikátor barvy stavu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList.GetMortgageExtraPaymentListResponse.StateName">
+            <summary>
+            Název stavu procesu Refinancí
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment.GetMortgageExtraPaymentResponse.Document">
             <summary>
             Dokumentu refinancování
@@ -3685,7 +3691,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8251FF4A-E3C6-46c8-883E-D70C884A859D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.UpdateMortgageRefixation(System.Int64,System.Int32,NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest)">
+        <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.UpdateMortgageRefixation(System.Int64,NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationRequest)">
             <summary>
             Uložení změny individuální cenotvorby a komentáře
             </summary>
@@ -3805,11 +3811,6 @@
             Sleva ze sazby
             </summary>
             <example>0.2</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation.UpdateMortgageRefixationResponse.ProcessId">
-            <summary>
-            ID refixacniho procesu
-            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
             <summary>
@@ -4119,6 +4120,16 @@
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.LoanApplication.MonthlyInstallmentsInCBCB">
             <summary>
             Celkové nalezené splátky (ext. registry)
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.LoanApplication.CollateralLimit">
+            <summary>
+            Limit úvěru bez vlivu na výši zajištění
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.LoanApplication.Score">
+            <summary>
+            Výsledné pásmo žádosti
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse.RiskBusinesscaseExpirationDate">

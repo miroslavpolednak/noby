@@ -62,7 +62,17 @@ public class LoanApplication
     /// </summary>
     public decimal? MonthlyInstallmentsInCBCB { get; set; }
 
-    public decimal? DTI { get; set; }
+	/// <summary>
+	/// Limit úvěru bez vlivu na výši zajištění
+	/// </summary>
+	public decimal? CollateralLimit { get; set; }
+
+	/// <summary>
+	/// Výsledné pásmo žádosti
+	/// </summary>
+	public string? Score { get; set; }
+
+	public decimal? DTI { get; set; }
     public decimal? DSTI { get; set; }
     public decimal? CIR { get; set; }
     public decimal? LTV { get; set; }

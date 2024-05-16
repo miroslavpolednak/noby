@@ -136,23 +136,26 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
 
     private async Task GenerateCalculationDocuments(GenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
+        var handoverTypeDetails = await _codebookService.HandoverTypeDetails(cancellationToken);
+
         await _sbWebApi.GenerateCalculationDocuments(new GenerateCalculationDocumentsRequest
         {
             CaseId = salesArrangement.CaseId,
-            IsExtraPaymentComplete = offer.MortgageExtraPayment.SimulationInputs.IsExtraPaymentFullyRepaid,
+            IsExtraPaymentFullyRepaid = offer.MortgageExtraPayment.SimulationInputs.IsExtraPaymentFullyRepaid,
             ExtraPaymentDate = offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate,
             ClientKbId = request.ClientKbId!.Value,
-            ExtraPaymentAmount = offer.MortgageExtraPayment.SimulationResults.ExtraPaymentAmount,
-            FeeAmount = offer.MortgageExtraPayment.SimulationResults.FeeAmount,
+            ExtraPaymentAmount = offer.MortgageExtraPayment.SimulationResults.ExtraPaymentAmount - ((decimal?)offer.MortgageExtraPayment.BasicParameters.FeeAmountDiscount ?? 0m),
+            FeeAmount = offer.MortgageExtraPayment.SimulationResults.FeeAmount -  ((decimal?)offer.MortgageExtraPayment.BasicParameters.FeeAmountDiscount ?? 0m),
             PrincipalAmount = offer.MortgageExtraPayment.SimulationResults.PrincipalAmount,
             InterestAmount = offer.MortgageExtraPayment.SimulationResults.InterestAmount,
             OtherUnpaidFees = offer.MortgageExtraPayment.SimulationResults.OtherUnpaidFees,
             InterestOnLate = offer.MortgageExtraPayment.SimulationResults.InterestOnLate,
             InterestCovid = offer.MortgageExtraPayment.SimulationResults.InterestCovid,
             IsLoanOverdue = offer.MortgageExtraPayment.SimulationResults.IsLoanOverdue,
-            IsPaymentReduced = offer.MortgageExtraPayment.SimulationResults.IsPaymentReduced,
+			IsInstallmentReduced = offer.MortgageExtraPayment.SimulationResults.IsInstallmentReduced,
             NewMaturityDate = offer.MortgageExtraPayment.SimulationResults.NewMaturityDate,
             NewPaymentAmount = offer.MortgageExtraPayment.SimulationResults.NewPaymentAmount,
+            HandoverTypeDetailCode = int.Parse(handoverTypeDetails.First(h => h.Id == request.HandoverTypeDetailId).Code)
         }, cancellationToken);
     }
 }

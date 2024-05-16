@@ -156,8 +156,7 @@ class SVC {
         # set recovery
         $reset_m = 60; # 60 mins
         $restart_ms = 3 * 60000; # 3 mins in miliseconds
-        $run_ms = 1 * 60000; # 1 min in miliseconds
-        SC.exe FAILURE $win_svc_name reset=$reset_m actions= restart/$restart_ms/run/$run_ms///; # two slashs = NoAction
+        SC.exe FAILURE $win_svc_name reset=$reset_m actions= restart/$restart_ms/restart/$restart_ms///; # two slashs = NoAction
 
         # start
         $this.Start();
@@ -194,7 +193,7 @@ class SVC {
 }
 
 function GetEnvironments() {
-    return @("DEV", "FAT", "SIT1", "UAT", "QUALITY", "PREPROD", "PROD");
+    return @("DEV", "FAT", "FAT2", "SIT1", "UAT", "QUALITY", "PREPROD", "PROD");
 }
 
 function GetServices([string]$env) {
@@ -202,22 +201,23 @@ function GetServices([string]$env) {
     $service_discovery = [SVC]::New('ServiceDiscovery', $env).Internal($true);
 
     [SVC[]] $services = @(
-        $service_discovery
-        , [SVC]::New('NotificationService', $env).DependsOn(@($service_discovery)).Internal($true)
-        , [SVC]::New('DataAggregatorService', $env).DependsOn(@($service_discovery)).Internal($true)
-        , [SVC]::New('DocumentGeneratorService', $env).DependsOn(@($service_discovery)).Internal($true)
-        , [SVC]::New('HouseholdService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('CaseService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('CodebookService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('CustomerService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('OfferService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('ProductService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('RiskIntegrationService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('SalesArrangementService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('UserService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('DocumentArchiveService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('DocumentOnSAService', $env).DependsOn(@($service_discovery))
-        , [SVC]::New('RealEstateValuationService', $env).DependsOn(@($service_discovery))
+        $service_discovery, 
+        [SVC]::New('NotificationService', $env).DependsOn(@($service_discovery)).Internal($true), 
+        [SVC]::New('DataAggregatorService', $env).DependsOn(@($service_discovery)).Internal($true),
+        [SVC]::New('DocumentGeneratorService', $env).DependsOn(@($service_discovery)).Internal($true),
+        [SVC]::New('TaskSchedulingService', $env).DependsOn(@($service_discovery)).Internal($true),
+        [SVC]::New('HouseholdService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('CaseService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('CodebookService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('CustomerService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('OfferService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('ProductService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('RiskIntegrationService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('SalesArrangementService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('UserService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('DocumentArchiveService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('DocumentOnSAService', $env).DependsOn(@($service_discovery)),
+        [SVC]::New('RealEstateValuationService', $env).DependsOn(@($service_discovery))
     );
 
     return $services;

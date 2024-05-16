@@ -41,11 +41,11 @@ internal class ProductFormData : LoanApplicationBaseFormData
 
     public string? ContractSegment => HouseholdData.CustomersHasPRIV ? "PRIV" : default;
 
-    public override Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
         ConditionalFormValues = new ConditionalFormValues(SpecificJsonKeys.Create(Case.Data.ProductTypeId, Offer.SimulationInputs.LoanKindId), this);
 
-        return Task.WhenAll(base.LoadAdditionalData(cancellationToken), LoadPerformerData(cancellationToken));
+        return Task.WhenAll(base.LoadAdditionalData(parameters, cancellationToken), LoadPerformerData(cancellationToken));
     }
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)

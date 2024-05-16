@@ -9,7 +9,6 @@ namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.DeleteCusto
 internal sealed class DeleteCustomerHandler(
     IDocumentDataStorage _documentDataStorage,
     SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
-    SulmService.ISulmClientHelper _sulmClient,
     Database.HouseholdServiceDbContext _dbContext,
     IDocumentOnSAServiceClient _documentOnSAServiceClient)
         : IRequestHandler<DeleteCustomerRequest, Google.Protobuf.WellKnownTypes.Empty>
@@ -29,16 +28,6 @@ internal sealed class DeleteCustomerHandler(
         var kbIdentity = customer
             .Identities?
             .FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);
-
-        // SULM
-        if (kbIdentity is not null)
-        {
-            // zahodit chybu
-            try
-            {
-                await _sulmClient.StartUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMLAX, cancellationToken);
-            } catch { }
-        }
 
         // Invalidate DocumentsOnSa Crs
         var documentsOnSaToSing = await _documentOnSAServiceClient.GetDocumentsToSignList(customer.SalesArrangementId, cancellationToken);

@@ -7,12 +7,12 @@ namespace SharedTypes.Enums;
 [DataContract]
 public enum HandoverTypeDetail
 {
-    [EnumMember, Display(Name = "pošta")]
+    [EnumMember, Display(Name = "pošta", ShortName = "1")]
     Mail = 1,
 
-    [EnumMember, Display(Name = "email")]
+    [EnumMember, Display(Name = "email", ShortName = "13")]
     Email = 2,
 
-    [EnumMember, CisDefaultValue, Display(Name = "tisk na pobočce")]
+    [EnumMember, CisDefaultValue, Display(Name = "tisk na pobočce", ShortName = "0")]
     PrintingAtBranch = 3
 }

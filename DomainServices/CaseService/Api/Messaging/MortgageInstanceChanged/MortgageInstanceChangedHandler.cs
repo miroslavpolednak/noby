@@ -2,18 +2,12 @@
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
-internal class MortgageInstanceChangedHandler : IMessageHandler<cz.kb.api.mortgageservicingevents.v3.MortgageInstanceChanged>
+internal class MortgageInstanceChangedHandler(
+    Database.CaseServiceDbContext _dbContext, 
+    ILogger<MortgageInstanceChangedHandler> _logger) 
+    : IMessageHandler<cz.kb.api.mortgageservicingevents.v3.MortgageInstanceChanged>
 {
-    private readonly ILogger<MortgageInstanceChangedHandler> _logger;
-    private readonly Database.CaseServiceDbContext _dbContext;
-
-    public MortgageInstanceChangedHandler(Database.CaseServiceDbContext dbContext, ILogger<MortgageInstanceChangedHandler> logger)
-    {
-        _dbContext = dbContext;
-        _logger = logger;
-    }
-
-    public async Task Handle(IMessageContext context, cz.kb.api.mortgageservicingevents.v3.MortgageInstanceChanged message)
+	public async Task Handle(IMessageContext context, cz.kb.api.mortgageservicingevents.v3.MortgageInstanceChanged message)
     {
         _logger.KafkaConsumerStarted(nameof(MortgageInstanceChangedHandler));
         

@@ -23,11 +23,17 @@ service CodebookService {
 		};
    }
 
+   rpc ExtraPaymentTypes (google.protobuf.Empty) returns (GenericCodebookResponse) {
+	   option (google.api.http) = {
+			get: "/v1/extra-payment-types"
+		};
+   }
+
 	rpc ResponseCodeTypes (google.protobuf.Empty) returns (ResponseCodeTypesResponse) {
 	   option (google.api.http) = {
 			get: "/v1/response-code-types"
 		};
-   }
+	}
 
    rpc FeeChangeRequests (google.protobuf.Empty) returns (FeeChangeRequestsResponse) {
 	   option (google.api.http) = {

@@ -82,7 +82,7 @@ internal sealed class RealSbWebApiClient
 
         var responseObject = await RequestHelper.ProcessResponse<WFS_Manage_CreateTask_Response>(httpResponse,
                                                                                                  x => x.Result,
-                                                                                                 returnVal2ErrorCodesMapping: [(6792, ErrorCodeMapper.RefinancingError)],
+                                                                                                 returnVal2ErrorCodesMapping: [(6792, ErrorCodeMapper.RefinancingError), (6982, ErrorCodeMapper.RefinancingError)],
                                                                                                  cancellationToken: cancellationToken);
 
         return new Dto.CreateTask.CreateTaskResponse
@@ -302,7 +302,7 @@ internal sealed class RealSbWebApiClient
         var sbRequest = new CalculationDocuments_request
         {
             Case_id = (int?)request.CaseId,
-            Full_repayment = request.IsExtraPaymentComplete,
+            Full_repayment = request.IsExtraPaymentFullyRepaid,
             Calculation_date = DateTime.UtcNow,
             Extra_payment_date = request.ExtraPaymentDate,
             Client_id = request.ClientKbId.ToString(CultureInfo.InvariantCulture),
@@ -314,9 +314,10 @@ internal sealed class RealSbWebApiClient
             Interest_on_late = (double?)request.InterestOnLate,
             Interest_covid = (double?)request.InterestCovid,
             Loan_overdue = request.IsLoanOverdue,
-            Payment_reduction = request.IsPaymentReduced,
+            Payment_reduction = request.IsInstallmentReduced,
             New_maturity_date = request.NewMaturityDate,
-            New_payment_amount = (double?)request.NewPaymentAmount
+            New_payment_amount = (double?)request.NewPaymentAmount,
+            Print_signature_form = request.HandoverTypeDetailCode
         };
 
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/api/refixationservices/calculationdocuments", sbRequest, cancellationToken);

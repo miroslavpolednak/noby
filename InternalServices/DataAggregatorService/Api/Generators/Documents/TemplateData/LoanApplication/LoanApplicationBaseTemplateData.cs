@@ -37,7 +37,7 @@ internal abstract class LoanApplicationBaseTemplateData : AggregatedData
     
     public string BrokerEmailAndPhone => string.Join(" | ", new[] { User.Info.PhoneNumber, User.Info.Email }.Where(str => !string.IsNullOrWhiteSpace(str)));
 
-    public override Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
         var identity1 = CurrentHousehold.CustomerOnSa1?.CustomerIdentifiers?.FirstOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb) ??
                              throw new CisValidationException($"CustomerOnSa 1 {CurrentHousehold.CustomerOnSa1?.CustomerOnSAId} does not have KB identifier.");

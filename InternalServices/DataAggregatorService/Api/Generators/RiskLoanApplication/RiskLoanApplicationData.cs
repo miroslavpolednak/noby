@@ -35,7 +35,7 @@ internal class RiskLoanApplicationData : AggregatedData
 
     public IEnumerable<object> Collaterals => new[] { new { Amount = Offer.SimulationInputs.CollateralAmount } };
 
-    public override async Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override async Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
         var households = await _householdService.GetHouseholdList(SalesArrangement.SalesArrangementId, cancellationToken);
         var customersOnSa = await LoadCustomersOnSA(SalesArrangement.SalesArrangementId, cancellationToken);

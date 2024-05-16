@@ -34,12 +34,7 @@ internal sealed class CancelServiceSalesArrangementJob
         var salesArrangementTypes = (await _codebookService.SalesArrangementTypes(cancellationToken)).Where(s => s.SalesArrangementCategory == 2);
         var saIdsForDelete = await _dbContext.SalesArrangements.Where(s =>
         salesArrangementTypes.Select(r => r.Id).Contains(s.SalesArrangementTypeId)
-        &&
-          (
-            (s.FirstSignatureDate == null && s.CreatedTime < _dateTimeService.GetLocalNow().AddDays(-90))
-            ||
-            (s.FirstSignatureDate != null && s.FirstSignatureDate < _dateTimeService.GetLocalNow().AddDays(-40) && s.State != 2) // State = 2 (Předáno ke zpracování)
-          )
+        && s.FirstSignatureDate == null && s.CreatedTime < _dateTimeService.GetLocalNow().AddDays(-90)
         )
         .Select(sa => sa.SalesArrangementId)
         .ToListAsync(cancellationToken);

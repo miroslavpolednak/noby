@@ -3,20 +3,12 @@ using KafkaFlow;
 
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
-internal class CollateralValuationProcessChangedHandler : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged>
+internal class CollateralValuationProcessChangedHandler(
+	ActiveTasksService _activeTasksService,
+	ILogger<CollateralValuationProcessChangedHandler> _logger) 
+    : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged>
 {
-    private readonly ActiveTasksService _activeTasksService;
-    private readonly ILogger<CollateralValuationProcessChangedHandler> _logger;
-
-    public CollateralValuationProcessChangedHandler(
-        ActiveTasksService activeTasksService,
-        ILogger<CollateralValuationProcessChangedHandler> logger)
-    {
-        _activeTasksService = activeTasksService;
-        _logger = logger;
-    }
-
-    public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged message)
+	public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged message)
     {
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
