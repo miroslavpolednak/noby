@@ -22,7 +22,7 @@ public sealed class GetMortgageExtraPaymentResponse
 
     public decimal PrincipalAmount { get; set; }
 
-    public DateTime ExtraPaymentDate { get; set; }
+    public DateOnly ExtraPaymentDate { get; set; }
 
     public bool IsExtraPaymentFullyRepaid { get; set; }
 
