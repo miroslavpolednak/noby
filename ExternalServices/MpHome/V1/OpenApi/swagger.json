@@ -1001,26 +1001,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LoanCondition"
-                  }
+                  "$ref": "#/components/schemas/LoanConditionsResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LoanCondition"
-                  }
+                  "$ref": "#/components/schemas/LoanConditionsResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LoanCondition"
-                  }
+                  "$ref": "#/components/schemas/LoanConditionsResponse"
                 }
               }
             }
@@ -3783,48 +3774,98 @@
       "LoanCondition": {
         "type": "object",
         "properties": {
-          "loanId": {
-            "type": "integer",
-            "format": "int64"
-          },
           "sequenceNumber": {
             "type": "integer",
+            "description": "PoradoveCislo",
             "format": "int32"
           },
           "textNameForClient": {
             "type": "string",
+            "description": "TextNazevProKlienta",
             "nullable": true
           },
           "textExplanatoryDocument": {
             "type": "string",
+            "description": "TextVysvetlujiciDokument",
             "nullable": true
           },
           "textLoanContract": {
             "type": "string",
+            "description": "TextDoUveroveSmlouvy",
             "nullable": true
           },
           "doneFlag": {
             "type": "integer",
+            "description": "PriznakSplnena",
             "format": "int32",
             "nullable": true
           },
           "dueDate": {
             "type": "string",
+            "description": "SplnitDo",
             "format": "date-time",
             "nullable": true
           },
           "contractTypeOrderLetter": {
             "type": "string",
+            "description": "TypSmlouvaPoradiPismeno",
             "nullable": true
           },
           "contractType": {
             "type": "integer",
+            "description": "TypSmlouvy",
             "format": "int32",
             "nullable": true
           },
           "phaseOrder": {
             "type": "integer",
+            "description": "FazePoradi",
             "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanConditionPhase": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "type": "integer",
+            "description": "Poradi",
+            "format": "int32"
+          },
+          "orderLetter": {
+            "type": "string",
+            "description": "PoradiPismeno",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Nazev",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanConditionsResponse": {
+        "type": "object",
+        "properties": {
+          "loanId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanCondition"
+            },
+            "nullable": true
+          },
+          "phases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanConditionPhase"
+            },
             "nullable": true
           }
         },
@@ -4176,36 +4217,43 @@
         "additionalProperties": false
       },
       "LoanRefixation": {
+        "required": [
+          "effectiveDate",
+          "fixationDate",
+          "fixationPeriod",
+          "interestRate",
+          "interestRateValidTo",
+          "nextType",
+          "refixFutureMonthInstallment"
+        ],
         "type": "object",
         "properties": {
           "interestRate": {
             "type": "number",
-            "format": "double",
-            "nullable": true
+            "format": "double"
           },
           "fixationDate": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "format": "date-time"
           },
           "interestRateValidTo": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "format": "date-time"
           },
           "fixationPeriod": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "effectiveDate": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "format": "date-time"
           },
           "nextType": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
+          },
+          "refixFutureMonthInstallment": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -4385,32 +4433,34 @@
         "additionalProperties": false
       },
       "LoanRetention": {
+        "required": [
+          "effectiveDate",
+          "from",
+          "interestRate",
+          "monthInstallment",
+          "to"
+        ],
         "type": "object",
         "properties": {
           "interestRate": {
             "type": "number",
-            "format": "double",
-            "nullable": true
+            "format": "double"
           },
           "monthInstallment": {
             "type": "number",
-            "format": "double",
-            "nullable": true
+            "format": "double"
           },
           "from": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "format": "date-time"
           },
           "to": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "format": "date-time"
           },
           "effectiveDate": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "format": "date-time"
           }
         },
         "additionalProperties": false

@@ -707,36 +707,109 @@ namespace ExternalServices.MpHome.V1.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class LoanCondition
     {
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanId")]
-        public long LoanId { get; set; } = default!;
+        /// <summary>
+        /// PoradoveCislo
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("sequenceNumber")]
         public int SequenceNumber { get; set; } = default!;
 
+        /// <summary>
+        /// TextNazevProKlienta
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("textNameForClient")]
         public string? TextNameForClient { get; set; } = default!;
+
+        /// <summary>
+        /// TextVysvetlujiciDokument
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("textExplanatoryDocument")]
         public string? TextExplanatoryDocument { get; set; } = default!;
 
+        /// <summary>
+        /// TextDoUveroveSmlouvy
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("textLoanContract")]
         public string? TextLoanContract { get; set; } = default!;
+
+        /// <summary>
+        /// PriznakSplnena
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("doneFlag")]
         public int? DoneFlag { get; set; } = default!;
 
+        /// <summary>
+        /// SplnitDo
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("dueDate")]
         public System.DateTime? DueDate { get; set; } = default!;
+
+        /// <summary>
+        /// TypSmlouvaPoradiPismeno
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("contractTypeOrderLetter")]
         public string? ContractTypeOrderLetter { get; set; } = default!;
 
+        /// <summary>
+        /// TypSmlouvy
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("contractType")]
         public int? ContractType { get; set; } = default!;
 
+        /// <summary>
+        /// FazePoradi
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("phaseOrder")]
         public int? PhaseOrder { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class LoanConditionPhase
+    {
+        /// <summary>
+        /// Poradi
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("order")]
+        public int Order { get; set; } = default!;
+
+        /// <summary>
+        /// PoradiPismeno
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("orderLetter")]
+        public string? OrderLetter { get; set; } = default!;
+
+        /// <summary>
+        /// Nazev
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string? Name { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class LoanConditionsResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanId")]
+        public long LoanId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("conditions")]
+        public System.Collections.Generic.ICollection<LoanCondition>? Conditions { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("phases")]
+        public System.Collections.Generic.ICollection<LoanConditionPhase>? Phases { get; set; } = default!;
 
     }
 
@@ -992,22 +1065,25 @@ namespace ExternalServices.MpHome.V1.Contracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("interestRate")]
-        public double? InterestRate { get; set; } = default!;
+        public double InterestRate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("fixationDate")]
-        public System.DateTime? FixationDate { get; set; } = default!;
+        public System.DateTime FixationDate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("interestRateValidTo")]
-        public System.DateTime? InterestRateValidTo { get; set; } = default!;
+        public System.DateTime InterestRateValidTo { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("fixationPeriod")]
-        public int? FixationPeriod { get; set; } = default!;
+        public int FixationPeriod { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("effectiveDate")]
-        public System.DateTime? EffectiveDate { get; set; } = default!;
+        public System.DateTime EffectiveDate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("nextType")]
-        public string? NextType { get; set; } = default!;
+        public string NextType { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("refixFutureMonthInstallment")]
+        public double RefixFutureMonthInstallment { get; set; } = default!;
 
     }
 
@@ -1214,19 +1290,19 @@ namespace ExternalServices.MpHome.V1.Contracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("interestRate")]
-        public double? InterestRate { get; set; } = default!;
+        public double InterestRate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("monthInstallment")]
-        public double? MonthInstallment { get; set; } = default!;
+        public double MonthInstallment { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("from")]
-        public System.DateTime? From { get; set; } = default!;
+        public System.DateTime From { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("to")]
-        public System.DateTime? To { get; set; } = default!;
+        public System.DateTime To { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("effectiveDate")]
-        public System.DateTime? EffectiveDate { get; set; } = default!;
+        public System.DateTime EffectiveDate { get; set; } = default!;
 
     }
 
