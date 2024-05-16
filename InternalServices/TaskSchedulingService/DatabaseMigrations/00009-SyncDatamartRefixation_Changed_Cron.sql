@@ -1,0 +1,1 @@
+UPDATE ScheduleTrigger SET Cron = '0 7 * * *' WHERE ScheduleTriggerId = '504DB35B-C7BA-49AC-9A7E-8C1FA8E847DF'
