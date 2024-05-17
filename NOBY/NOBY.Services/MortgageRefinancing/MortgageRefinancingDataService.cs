@@ -125,13 +125,16 @@ public sealed class MortgageRefinancingDataService(
     {
         // toto je aktivni IC task!
         var activePriceExceptionTaskIdSb = tasks
-            .FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled && t.PhaseTypeId == 1)
+            .FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled)
             ?.TaskIdSb;
 
         // detail IC tasku
         if (activePriceExceptionTaskIdSb.HasValue)
         {
-            return (await _caseService.GetTaskDetail(activePriceExceptionTaskIdSb.Value, cancellationToken))?.TaskDetail?.PriceException;
+            var taskDetail = await _caseService.GetTaskDetail(activePriceExceptionTaskIdSb.Value, cancellationToken);
+
+            if (taskDetail.TaskObject.PhaseTypeId == 2 && taskDetail.TaskObject.DecisionId == 1)
+                return null;
         }
 
         return null;
