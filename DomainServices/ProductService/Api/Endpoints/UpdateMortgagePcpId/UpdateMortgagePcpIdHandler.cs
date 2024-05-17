@@ -36,7 +36,7 @@ internal sealed class UpdateMortgagePcpIdHandler(
             var pcpId = await _pcpClient.CreateProduct(request.ProductId, caseInstance.Customer.Identity.IdentityId, pcpProductIdOrObjectCode, cancellationToken);
 
             // create in konsdb
-            await _mpHomeClient.UpdateLoan(request.ProductId, mortgage.Mortgage.ToMortgageRequest(pcpId), cancellationToken);
+            await _mpHomeClient.UpdatePcpId(request.ProductId, pcpId, cancellationToken);
 
             return new UpdateMortgagePcpIdResponse
             {

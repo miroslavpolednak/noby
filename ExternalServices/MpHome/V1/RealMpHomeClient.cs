@@ -8,6 +8,14 @@ namespace ExternalServices.MpHome.V1;
 internal sealed class RealMpHomeClient(HttpClient _httpClient)
     : IMpHomeClient
 {
+	public async Task UpdatePcpId(long productId, string pcpId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient
+            .PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/pcpInstId", new LoanPcpInstIdRequest { PcpInstId = pcpId }, cancellationToken)
+			.ConfigureAwait(false);
+		await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+	}
+
 	public async Task<long?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
 	{
 		var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Case/search", request, cancellationToken);
