@@ -1,17 +1,13 @@
-using DomainServices.CaseService.Clients.v1;
-
 namespace DomainServices.ProductService.Api.Endpoints.GetCovenantDetail;
 
-internal sealed class GetCovenantDetailHandler(
-	ICaseServiceClient _caseService,
-    IMpHomeClient _mpHomeClient) 
+internal sealed class GetCovenantDetailHandler(IMpHomeClient _mpHomeClient) 
     : IRequestHandler<GetCovenantDetailRequest, GetCovenantDetailResponse>
 {
 	public async Task<GetCovenantDetailResponse> Handle(GetCovenantDetailRequest request, CancellationToken cancellationToken)
     {
-        await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
+        var (covenants, _) = await _mpHomeClient.GetCovenants(request.CaseId, cancellationToken);
 
-        var covenant = (await _mpHomeClient.GetCovenants(request.CaseId, cancellationToken))?.FirstOrDefault(t => t.SequenceNumber == request.Order)
+		var covenant = covenants?.FirstOrDefault(t => t.SequenceNumber == request.Order)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12024);
 
         return new GetCovenantDetailResponse

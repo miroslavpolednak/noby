@@ -10,26 +10,12 @@ internal sealed class CreateContractRelationshipHandler(
 {
 	public async Task Handle(CreateContractRelationshipRequest request, CancellationToken cancellation)
     {
-		// check if partner exists (against KonsDB)
-		if (!await _mpHomeClient.PartnerExists(request.Relationship.PartnerId, cancellation))
-		{
-			throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12012, request.Relationship.PartnerId);
-		}
-
-        // detail produktu
-		var mortgage = await _mpHomeClient.GetMortgage(request.ProductId, cancellation)
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
-
-		// check if relationship already exists
-		if (await _repository.RelationshipExists(request.ProductId, request.Relationship.PartnerId, cancellation))
-			throw ErrorCodeMapper.CreateAlreadyExistsException(ErrorCodeMapper.AlreadyExists12011, request.ProductId, request.Relationship.PartnerId);
-
-        var relationshipTypeItem = await GetContractRelationshipType(request.Relationship.ContractRelationshipTypeId);
+		var relationshipTypeItem = await getContractRelationshipType(request.Relationship.ContractRelationshipTypeId);
 
         // create request
         var loanLinkRequest = new LoanLinkRequest
         {
-            Type = ParseRelationshipType(relationshipTypeItem.MpDigiApiCode)
+            Type = parseRelationshipType(relationshipTypeItem.MpDigiApiCode)
         };
 
         await _mpHomeClient.UpdateLoanPartnerLink(request.ProductId, request.Relationship.PartnerId, loanLinkRequest, cancellation);
@@ -38,7 +24,7 @@ internal sealed class CreateContractRelationshipHandler(
     /// <summary>
     /// Returns RelationshipCustomerProductType codebook item by ID
     /// </summary>
-    private async Task<RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem> GetContractRelationshipType(int contractRelationshipTypeId)
+    private async Task<RelationshipCustomerProductTypesResponse.Types.RelationshipCustomerProductTypeItem> getContractRelationshipType(int contractRelationshipTypeId)
     {
         var list = await _codebookService.RelationshipCustomerProductTypes();
 
@@ -46,7 +32,7 @@ internal sealed class CreateContractRelationshipHandler(
                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12013, contractRelationshipTypeId);
     }
 
-    private ContractRelationshipType ParseRelationshipType(string mpDigiApiCode)
+    private static ContractRelationshipType parseRelationshipType(string mpDigiApiCode)
     {
         if (Enum.TryParse(mpDigiApiCode, out ContractRelationshipType relationshipType))
             return relationshipType;

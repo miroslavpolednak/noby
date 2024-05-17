@@ -7,15 +7,14 @@ internal sealed class CancelMortgageHandler(
 {
 	public async Task Handle(CancelMortgageRequest request, CancellationToken cancellationToken)
     {
-        if (!await _mpHomeClient.CaseExists(request.ProductId, cancellationToken))
-        {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
-        }
-
         try
         {
             await _mpHomeClient.CancelLoan(request.ProductId, cancellationToken);
         }
+        catch (CisNotFoundException)
+        {
+			throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+		}
         catch (Exception ex)
         {
             _logger.CancelMortgageFailed(request.ProductId, ex);

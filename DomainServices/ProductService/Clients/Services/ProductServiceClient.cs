@@ -3,7 +3,8 @@ using SharedTypes.GrpcTypes;
 
 namespace DomainServices.ProductService.Clients.Services;
 
-internal sealed class ProductServiceClient : IProductServiceClient
+internal sealed class ProductServiceClient(Contracts.v1.ProductService.ProductServiceClient _service) 
+    : IProductServiceClient
 {
     public async Task<List<SearchProductsResponse.Types.SearchProductsItem>> SearchProducts(Identity? identity, CancellationToken cancellationToken = default)
         => (await _service.SearchProductsAsync(new SearchProductsRequest
@@ -93,12 +94,5 @@ internal sealed class ProductServiceClient : IProductServiceClient
     public async Task CancelMortgage(long caseId, CancellationToken cancellationToken = default)
     {
         await _service.CancelMortgageAsync(new CancelMortgageRequest { ProductId = caseId }, cancellationToken: cancellationToken);
-    }
-
-    private readonly Contracts.v1.ProductService.ProductServiceClient _service;
-
-    public ProductServiceClient(Contracts.v1.ProductService.ProductServiceClient service)
-    {
-        _service = service;
     }
 }

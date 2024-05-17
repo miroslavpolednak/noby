@@ -1,21 +1,11 @@
 ﻿namespace DomainServices.ProductService.Api.Endpoints.GetProductObligationList;
 
-internal sealed class GetProductObligationListHandler : IRequestHandler<GetProductObligationListRequest, GetProductObligationListResponse>
+internal sealed class GetProductObligationListHandler(IMpHomeClient _mpHomeClient)
+    : IRequestHandler<GetProductObligationListRequest, GetProductObligationListResponse>
 {
-    private readonly LoanRepository _loanRepository;
-
-    public GetProductObligationListHandler(LoanRepository loanRepository)
-    {
-        _loanRepository = loanRepository;
-    }
-
     public async Task<GetProductObligationListResponse> Handle(GetProductObligationListRequest request, CancellationToken cancellationToken)
     {
-        // check if loan exists (against KonsDB)
-        if (!await _loanRepository.LoanExists(request.ProductId, cancellationToken))
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
-
-        var obligations = await _loanRepository.GetObligations(request.ProductId, cancellationToken);
+        var product = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken);
 
         var responseItems = obligations.Select(obligation =>
         {
@@ -42,6 +32,9 @@ internal sealed class GetProductObligationListHandler : IRequestHandler<GetProdu
             return item;
         });
 
-        return new GetProductObligationListResponse { ProductObligations = { responseItems } };
+        return new GetProductObligationListResponse 
+        { 
+            ProductObligations = { responseItems } 
+        };
     }
 }

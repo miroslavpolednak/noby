@@ -8,9 +8,6 @@ internal sealed class GetProductListHandler(IMpHomeClient _mpHomeClient)
         //TODO nechat vytvorit ekonomictejsi endpoint MPHOME
         var loan = await _mpHomeClient.GetMortgage(request.CaseId, cancellationToken);
         
-        if (loan is null)
-            return new GetProductListResponse();
-
         return new GetProductListResponse
         {
             Products =
@@ -18,10 +15,9 @@ internal sealed class GetProductListHandler(IMpHomeClient _mpHomeClient)
                 new GetProductListItem
                 {
                     ProductId = request.CaseId,
-                    ProductTypeId = loan.ProductUvCode.GetValueOrDefault()
+                    ProductTypeId = loan!.ProductUvCode.GetValueOrDefault()
                 }
             }
         };
     }
-
 }

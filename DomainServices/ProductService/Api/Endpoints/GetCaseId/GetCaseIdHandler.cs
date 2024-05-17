@@ -1,7 +1,7 @@
 ﻿namespace DomainServices.ProductService.Api.Endpoints.GetCaseId;
 
 internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
-		: IRequestHandler<GetCaseIdRequest, GetCaseIdResponse>
+    : IRequestHandler<GetCaseIdRequest, GetCaseIdResponse>
 {
 	public async Task<GetCaseIdResponse> Handle(GetCaseIdRequest request, CancellationToken cancellationToken)
     {
@@ -10,7 +10,6 @@ internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
             GetCaseIdRequest.RequestParametersOneofCase.ContractNumber => await getCaseIdByContractNumber(request.ContractNumber.ContractNumber, cancellationToken),
             GetCaseIdRequest.RequestParametersOneofCase.PaymentAccount => await getCaseIdByPaymentAccount(request.PaymentAccount, cancellationToken),
             GetCaseIdRequest.RequestParametersOneofCase.PcpId => await getCaseIdByPcpId(request.PcpId.PcpId, cancellationToken),
-            GetCaseIdRequest.RequestParametersOneofCase.None => throw new NotImplementedException(),
             _ => throw new NotImplementedException()
         };
 
