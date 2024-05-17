@@ -38,6 +38,7 @@ message MortgageExtraPaymentSimulationResults {
 	cis.types.GrpcDate AnnualSanctionFreePeriodFrom = 18;
 	cis.types.GrpcDate AnnualSanctionFreePeriodTo = 19;
 	cis.types.GrpcDecimal SanctionFreeAmount = 20;
+	int32 ExtraPaymentReasonId = 21;
 }
 
 message MortgageExtraPaymentFullData {

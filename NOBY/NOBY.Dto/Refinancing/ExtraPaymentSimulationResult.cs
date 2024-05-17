@@ -2,6 +2,8 @@
 
 public sealed class ExtraPaymentSimulationResult
 {
+    public int ExtraPaymentReasonId { get; set; }
+
     /// <summary>
     /// Čas vytvoření Offer
     /// </summary>

@@ -39,7 +39,7 @@ internal sealed class MortgageExtraPaymentDataMapper
         };
     }
 
-    public SimulationOutputsData MapToDataOutputs(ExternalServices.EasSimulationHT.Dto.MortgageExtraPaymentResult result)
+    public SimulationOutputsData MapToDataOutputs(ExternalServices.EasSimulationHT.Dto.MortgageExtraPaymentResult result, __Contracts.MortgageExtraPaymentSimulationInputs inputs)
     {
         return new()
         {
@@ -62,7 +62,8 @@ internal sealed class MortgageExtraPaymentDataMapper
             FeeCalculationBase = result.FeeCalculationBase,
             FeeTypeId = result.FeeTypeId,
             AnnualSanctionFreePeriodFrom = result.AnnualSanctionFreePeriodFrom,
-            AnnualSanctionFreePeriodTo = result.AnnualSanctionFreePeriodTo
+            AnnualSanctionFreePeriodTo = result.AnnualSanctionFreePeriodTo,
+            ExtraPaymentReasonId = inputs.ExtraPaymentReasonId
         };
     }
 
@@ -108,7 +109,8 @@ internal sealed class MortgageExtraPaymentDataMapper
             FeeCalculationBase = output.FeeCalculationBase,
             FeeTypeId = output.FeeTypeId,
             AnnualSanctionFreePeriodFrom = output.AnnualSanctionFreePeriodFrom,
-            AnnualSanctionFreePeriodTo = output.AnnualSanctionFreePeriodTo
+            AnnualSanctionFreePeriodTo = output.AnnualSanctionFreePeriodTo,
+            ExtraPaymentReasonId = output.ExtraPaymentReasonId
         };
     }
 }

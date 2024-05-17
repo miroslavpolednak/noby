@@ -23,7 +23,7 @@ internal sealed class SimulateMortgageExtraPaymentHandler(
         {
             BasicParameters = _offerMapper.MapToDataBasicParameters(request.BasicParameters),
             SimulationInputs = _offerMapper.MapToDataInputs(request.SimulationInputs),
-            SimulationOutputs = _offerMapper.MapToDataOutputs(easSimulationRes)
+            SimulationOutputs = _offerMapper.MapToDataOutputs(easSimulationRes, request.SimulationInputs)
         };
 
         // save to DB
