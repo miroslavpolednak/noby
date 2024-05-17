@@ -1,5 +1,4 @@
 ﻿using DomainServices.CaseService.Clients.v1;
-using DomainServices.ProductService.Api.Database.Models;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetCovenantList;
 
@@ -12,14 +11,13 @@ internal sealed class GetCovenantListHandler(
     {
         await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
 
-        var covenants = await _mpHomeClient.GetCovenants(request.CaseId, cancellationToken);
-        var covenantPhases = await _repository.GetCovenantPhases(request.CaseId, cancellationToken);
-
+        var (conditions, phases) = await _mpHomeClient.GetCovenants(request.CaseId, cancellationToken);
+        
         GetCovenantListResponse response = new();
 
-        if (covenants is not null)
+        if (conditions is not null)
         {
-            response.Covenants.AddRange(covenants.Select(t => new CovenantListItem
+            response.Covenants.AddRange(conditions.Select(t => new CovenantListItem
             {
                 Name = t.TextNameForClient ?? string.Empty,
                 FulfillDate = t.DueDate,
@@ -31,14 +29,16 @@ internal sealed class GetCovenantListHandler(
             }));
         }
 
+        if (phases is not null)
+        {
+            response.Phases.AddRange(phases.Select(t => new PhaseListItem
+            {
+                Name = t.Name ?? string.Empty,
+                Order = t.Order,
+                OrderLetter = t.OrderLetter ?? string.Empty
+			}));
+        }
+
         return response;
     }
-
-    private static PhaseListItem MapCovenantPhase(CovenantPhase covenantPhase) =>
-        new()
-        {
-            Name = covenantPhase.Name ?? string.Empty,
-            Order = covenantPhase.Order,
-            OrderLetter = covenantPhase.OrderLetter ?? string.Empty
-        };
 }

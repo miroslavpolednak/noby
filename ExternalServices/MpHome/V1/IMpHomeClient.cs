@@ -36,7 +36,7 @@ public interface IMpHomeClient
 
     Task<bool> CaseExists(long caseId, CancellationToken cancellationToken = default);
 
-    Task<List<LoanCondition>> GetCovenants(long productId, CancellationToken cancellationToken = default);
+    Task<(List<LoanCondition>? Conditions, List<LoanConditionPhase>? Phases)> GetCovenants(long productId, CancellationToken cancellationToken = default);
 
     Task<bool> PartnerExists(long partnerId, CancellationToken cancellationToken = default);
 

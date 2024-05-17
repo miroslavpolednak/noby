@@ -14,10 +14,11 @@ internal sealed class RealMpHomeClient(HttpClient _httpClient)
 		return await response.EnsureSuccessStatusAndReadJson<long>(StartupExtensions.ServiceName, cancellationToken);
 	}
 
-	public async Task<List<LoanCondition>> GetCovenants(long productId, CancellationToken cancellationToken = default)
+	public async Task<(List<LoanCondition>? Conditions, List<LoanConditionPhase>? Phases)> GetCovenants(long productId, CancellationToken cancellationToken = default)
 	{
 		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/conditions", cancellationToken);
-		return await response.EnsureSuccessStatusAndReadJson<List<LoanCondition>>(StartupExtensions.ServiceName, cancellationToken);
+		var result = await response.EnsureSuccessStatusAndReadJson<LoanConditionsResponse>(StartupExtensions.ServiceName, cancellationToken);
+        return (result.Conditions?.ToList(), result.Phases?.ToList());
 	}
 
 	public async Task<bool> PartnerExists(long partnerId, CancellationToken cancellationToken = default)
