@@ -82,17 +82,16 @@ public class StartSigningMapper
         };
     }
 
-    public async Task<PrepareDocumentRequest> MapPrepareDocumentRequest(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    public async Task<PrepareDocumentRequest> MapPrepareDocumentRequest(DocumentOnSa documentOnSa, long caseId, CancellationToken cancellationToken)
     {
         var currentUser = await _userServiceClient.GetUser(_currentUser.User!.Id, cancellationToken);
-        var saUser = await _userServiceClient.GetUser(salesArrangement.Created.UserId!.Value, cancellationToken);
         var documentType = (await _codebookServiceClient.DocumentTypes(cancellationToken)).Single(s => s.Id == documentOnSa.DocumentTypeId);
-        var caseObj = await _caseServiceClient.GetCaseDetail(salesArrangement.CaseId, cancellationToken);
+        var caseObj = await _caseServiceClient.GetCaseDetail(caseId, cancellationToken);
 
         var request = new PrepareDocumentRequest
         {
-            ExternalId = await GetExternalId(salesArrangement.CaseId, cancellationToken),
-            AdditionalData = $"case_id:{salesArrangement.CaseId}",
+            ExternalId = await GetExternalId(caseId, cancellationToken),
+            AdditionalData = $"case_id:{caseId}",
             CurrentUserInfo = new()
             {
                 Cpm = currentUser.UserInfo.Cpm,
@@ -101,10 +100,10 @@ public class StartSigningMapper
             },
             CreatorInfo = new()
             {
-                Cpm = saUser.UserInfo.Cpm,
-                Icp = saUser.UserInfo.Icp,
-                FullName = $"{saUser.UserInfo.FirstName} {saUser.UserInfo.LastName}"
-            },
+				Cpm = currentUser.UserInfo.Cpm,
+				Icp = currentUser.UserInfo.Icp,
+				FullName = $"{currentUser.UserInfo.FirstName} {currentUser.UserInfo.LastName}"
+			},
             DocumentData = new()
             {
                 DocumentTypeId = documentOnSa.DocumentTypeId!.Value,
