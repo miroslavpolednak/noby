@@ -6,10 +6,12 @@ using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using ExternalServices.ESignatures.V1;
 using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
+using CIS.Infrastructure.Messaging;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
-    .AddErrorCodeMapper(DomainServices.DocumentOnSAService.Api.ErrorCodeMapper.Init())
+	.AddApplicationConfiguration<DomainServices.DocumentOnSAService.Api.Configuration.AppConfiguration>()
+	.AddErrorCodeMapper(DomainServices.DocumentOnSAService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
         services
@@ -24,7 +26,7 @@ SharedComponents.GrpcServiceBuilder
             .AddUserService()
             .AddDocumentGeneratorService();
     })
-    .Build(builder =>
+    .Build((builder, appConfiguration) =>
     {
         // EAS svc
         builder.AddExternalService<IEasClient>();
@@ -41,9 +43,16 @@ SharedComponents.GrpcServiceBuilder
         // dbcontext
         builder.AddEntityFramework<DomainServices.DocumentOnSAService.Api.Database.DocumentOnSAServiceDbContext>();
 
-        bgServices(builder);
+		builder
+            .AddCisMessaging()
+            .AddKafkaFlow(msg =>
+            {
+                msg.AddConsumerAvro<DomainServices.DocumentOnSAService.Api.Messaging.DocumentStateChanged.DocumentStateChangedHandler>(appConfiguration.ESignatureDocumentStateChangedTopic);
+			});
+
+		bgServices(builder);
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, appConfiguration) =>
     {
         app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.DocumentOnSAServiceGrpc>();
         app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.MaintananceService>();

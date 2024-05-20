@@ -1,4 +1,4 @@
-﻿namespace cz.mpss.api.epodpisy.digitalsigning.documentsigningevents.v1;
+﻿namespace DomainServices.DocumentOnSAService.Api.Messaging.DocumentStateChanged;
 
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
 public enum DocumentStateEnum
@@ -35,5 +35,5 @@ public class DocumentStateChanged
     public DocumentStateEnum state { get; set; }
 
     /// <summary>Previous runtime state of the document within ePodpisy.</summary>
-    public global::cz.mpss.api.epodpisy.digitalsigning.documentsigningevents.v1.DocumentStateEnum? previousState { get; set; }
+    public global::DomainServices.DocumentOnSAService.Api.Messaging.DocumentStateChanged.DocumentStateEnum? previousState { get; set; }
 }
