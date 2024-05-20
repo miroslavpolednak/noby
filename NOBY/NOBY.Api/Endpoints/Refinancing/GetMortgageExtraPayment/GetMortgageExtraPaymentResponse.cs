@@ -20,7 +20,9 @@ public sealed class GetMortgageExtraPaymentResponse
 
     public decimal ExtraPaymentAmount { get; set; }
 
-    public decimal PrincipalAmount { get; set; }
+	public decimal ExtraPaymentAmountIncludingFee { get; set; }
+
+	public decimal PrincipalAmount { get; set; }
 
     public DateOnly ExtraPaymentDate { get; set; }
 
