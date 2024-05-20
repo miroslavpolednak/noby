@@ -37,7 +37,7 @@ internal sealed class CancelTaskHandler
         await _caseService.CancelTask(request.CaseId, taskIdSb, cancellationToken);
 
         // cancel SA in NOBY
-        if (task.TaskObject?.TaskTypeId is (int)WorkflowTaskTypes.Retention or (int)WorkflowTaskTypes.ExtraPayment)
+        if (task.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.Retention)
         {
             await cancelRetentionSalesArrangement(request.CaseId, task.TaskObject.ProcessId, cancellationToken);
         }
