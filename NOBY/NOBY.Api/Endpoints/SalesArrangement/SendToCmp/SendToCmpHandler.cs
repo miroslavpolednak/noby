@@ -81,20 +81,32 @@ internal sealed class SendToCmpHandler
 
             await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
 
-            // odeslat do SB
-            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
+			await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
+
+			// odeslat do SB
+			await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
 
             // update case state
             await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
         }
         else
         {
-            // odeslat do SB
-            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
+			await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
+
+			// odeslat do SB
+			await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
         }
     }
 
-    private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)
+	private async Task ArchiveElectronicDocumets(int salesArrangementId, CancellationToken cancellationToken)
+	{
+		var digitallySignedDocuments = (await _documentOnSAService.GetDocumentsOnSAList(salesArrangementId, cancellationToken))
+									   .DocumentsOnSA.Where(d => d.IsSigned && d.SignatureTypeId == (int)SignatureTypes.Electronic);
+
+		await Task.WhenAll(digitallySignedDocuments.Select(doc => _documentOnSAService.SetDocumentOnSAArchived(doc.DocumentOnSAId!.Value, cancellationToken)));
+	}
+
+	private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)
     {
         var flowSwitches = await _salesArrangementService.GetFlowSwitches(salesArrangementId, cancellationToken);
         var sections = await _mediator.Send(new GetFlowSwitchesRequest(salesArrangementId), cancellationToken);
