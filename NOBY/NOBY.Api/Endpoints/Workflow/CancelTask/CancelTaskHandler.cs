@@ -63,8 +63,7 @@ internal sealed class CancelTaskHandler
         [
             (int)WorkflowTaskTypes.PriceException,
             (int)WorkflowTaskTypes.Consultation,
-            (int)WorkflowTaskTypes.Retention,
-            (int)WorkflowTaskTypes.ExtraPayment
+            (int)WorkflowTaskTypes.Retention
         ];
 
     private readonly ICurrentUserAccessor _currentUserAccessor;
