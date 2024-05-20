@@ -104,9 +104,4 @@ public class DocumentOnSAService : IDocumentOnSAServiceClient
     {
         return await _client.GetDocumentOnSAStatusAsync(new() { SalesArrangementId = salesArrangementId, DocumentOnSAId = documentOnSAId }, cancellationToken: cancellationToken);
     }
-
-    public async Task RefreshElectronicDocExternalId(RefreshElectronicDocExternalIdRequest request, CancellationToken cancellationToken = default)
-    {
-        await _client.RefreshElectronicDocExternalIdAsync(request, cancellationToken: cancellationToken);
-    }
 }

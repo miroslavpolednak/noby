@@ -148,8 +148,7 @@ internal sealed class RealESignaturesClient
                 TemplateVersion = docVersion.TemplateProcessingType,
                 Name = request.DocumentData.FileName,
                 FormId = request.DocumentData.FormId,
-                ContractNumber = request.DocumentData.ContractNumber,
-                AutoSendToCmp = true,
+                ContractNumber = request.DocumentData.ContractNumber
                 // EaCodeMain = docType.EACodeMainId?.ToString(CultureInfo.InvariantCulture) ToDo for Luboš testing 
             },
             ClientData = new()

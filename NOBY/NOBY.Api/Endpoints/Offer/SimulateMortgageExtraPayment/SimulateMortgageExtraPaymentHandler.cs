@@ -1,5 +1,4 @@
 ﻿using DomainServices.OfferService.Clients.v1;
-using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment;
 
@@ -17,7 +16,7 @@ internal sealed class SimulateMortgageExtraPaymentHandler(IOfferServiceClient _o
             },
             SimulationInputs = new()
             {
-                ExtraPaymentAmount = request.ExtraPaymentAmount,
+                ExtraPaymentAmount = request.IsExtraPaymentFullyRepaid ? null : request.ExtraPaymentAmount,
                 ExtraPaymentDate = request.ExtraPaymentDate,
                 ExtraPaymentReasonId = request.ExtraPaymentReasonId,
                 IsExtraPaymentFullyRepaid = request.IsExtraPaymentFullyRepaid

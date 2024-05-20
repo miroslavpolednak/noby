@@ -5620,24 +5620,6 @@
         <member name="M:NOBY.Api.StartupExtensions.NobySwagger.SwaggerDefaultValues.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
             <inheritdoc />
         </member>
-        <member name="T:cz.mpss.api.epodpisy.digitalsigning.documentsigningevents.v1.DocumentStateChanged">
-            <summary>Schema belongs to API DocumentSigningEvents.v1. Schema represents an event of changing the state of document within ePodpisy application.</summary>
-        </member>
-        <member name="P:cz.mpss.api.epodpisy.digitalsigning.documentsigningevents.v1.DocumentStateChanged.eventId">
-            <summary>Unique identifier of event.</summary>
-        </member>
-        <member name="P:cz.mpss.api.epodpisy.digitalsigning.documentsigningevents.v1.DocumentStateChanged.occurredOn">
-            <summary>Date and time when event occurred.</summary>
-        </member>
-        <member name="P:cz.mpss.api.epodpisy.digitalsigning.documentsigningevents.v1.DocumentStateChanged.documentExternalId">
-            <summary>Externally defined unique identifier of document within ePodpisy.</summary>
-        </member>
-        <member name="P:cz.mpss.api.epodpisy.digitalsigning.documentsigningevents.v1.DocumentStateChanged.state">
-            <summary>Current runtime state of the document within ePodpisy.</summary>
-        </member>
-        <member name="P:cz.mpss.api.epodpisy.digitalsigning.documentsigningevents.v1.DocumentStateChanged.previousState">
-            <summary>Previous runtime state of the document within ePodpisy.</summary>
-        </member>
         <member name="T:System.Text.RegularExpressions.Generated.handlerByFormIdRegex_0">
             <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the handlerByFormIdRegex method.</summary>
         </member>

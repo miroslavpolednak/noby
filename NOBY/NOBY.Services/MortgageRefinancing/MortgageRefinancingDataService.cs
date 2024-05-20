@@ -135,6 +135,8 @@ public sealed class MortgageRefinancingDataService(
 
             if (taskDetail.TaskObject.PhaseTypeId == 2 && taskDetail.TaskObject.DecisionId == 1)
                 return null;
+
+            return taskDetail.TaskDetail?.PriceException;
         }
 
         return null;
