@@ -28,4 +28,12 @@ public static class CustomerHelper
 
         return address is null ? string.Empty : address.SingleLineAddressPoint;
     }
+
+    public static string FormatPostCode(GrpcAddress? address)
+    {
+        if (address is null)
+            return string.Empty;
+
+        return address.CountryId != 16 ? address.Postcode : address.Postcode.Insert(3, " ");
+    }
 }

@@ -37,7 +37,7 @@ internal class ApplicationTerminationTemplateData : AggregatedData
         {
             var address = GetPermanentAddress();
 
-            return $"{address.Postcode}, {address.City}";
+            return $"{CustomerHelper.FormatPostCode(address)} {address.City}";
         }
     }
 
@@ -48,7 +48,7 @@ internal class ApplicationTerminationTemplateData : AggregatedData
             if (!Custom.DocumentOnSa.DocumentsOnSa.Any(d => d.DocumentTypeId is (int)DocumentTypes.ZADOSTHU or (int)DocumentTypes.ZADOSTHD && d.IsSigned))
                 return $"dovolujeme si Vás informovat, že na základě Vašeho požadavku bylo jednání o žádosti o poskytnutí úvěru ve výši {((decimal)Case.Data.TargetAmount).ToString("C0", CultureProvider.GetProvider())} ukončeno.";
             
-            var signedDate = Custom.DocumentOnSa.DocumentsOnSa.Where(d => d.DocumentTypeId is (int)DocumentTypes.ZADOSTHU or (int)DocumentTypes.ZADOSTHD && d.IsSigned).Max(d => d.SignatureDateTime);
+            var signedDate = Custom.DocumentOnSa.DocumentsOnSa.Where(d => d.DocumentTypeId is (int)DocumentTypes.ZADOSTHU or (int)DocumentTypes.ZADOSTHD && d.IsSigned).Min(d => d.SignatureDateTime);
 
             return $"dovolujeme si Vás informovat, že žádost o poskytnutí úvěru ve výši {((decimal)Case.Data.TargetAmount).ToString("C0", CultureProvider.GetProvider())} " +
                    $"ze dne {(signedDate?.ToDateTime() ?? (DateTime)Case.Created.DateTime).ToString("d", CultureProvider.GetProvider())}, " +

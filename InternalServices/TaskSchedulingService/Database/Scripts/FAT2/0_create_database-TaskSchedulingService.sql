@@ -5,9 +5,9 @@ GO
 CREATE DATABASE [TaskSchedulingService]
  CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'TaskSchedulingService', FILENAME = N'H:\MSSQL15.MSSQLSERVER\MSSQL\Data_Silver_18_SQL\TaskSchedulingService.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'TaskSchedulingService', FILENAME = N'H:\Program Files\Microsoft SQL Server\MSSQL15.FAT2\MSSQL\Data_Silver_04_SQL\TaskSchedulingService.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'TaskSchedulingService_log', FILENAME = N'H:\MSSQL15.MSSQLSERVER\MSSQL\Data_Silver_16_SQL\TaskSchedulingService_log.ldf' , SIZE = 73728KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'TaskSchedulingService_log', FILENAME = N'H:\Program Files\Microsoft SQL Server\MSSQL15.FAT2\MSSQL\Data_Silver_01_SQL\TaskSchedulingService_log.ldf' , SIZE = 73728KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
  WITH CATALOG_COLLATION = DATABASE_DEFAULT
 GO
 
