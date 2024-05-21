@@ -491,6 +491,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingDurationsResponse.Types.DrawingDurationItem.IsDefaultFieldNumber">
             <summary>Field number for the "IsDefault" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingDurationsResponse.Types.DrawingDurationItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.DrawingTypesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
