@@ -3,6 +3,7 @@ using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
+using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using ExternalServices.SbWebApi.V1;
@@ -18,6 +19,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
     private readonly ICaseServiceClient _caseService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
+    private readonly IProductServiceClient _productService;
     private readonly ISbWebApiClient _sbWebApi;
     private readonly MortgageRefinancingDocumentService _refinancingDocumentService;
 
@@ -26,6 +28,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         ICaseServiceClient caseService,
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
+        IProductServiceClient productService,
         ISbWebApiClient sbWebApi,
         MortgageRefinancingDocumentService refinancingDocumentService)
     {
@@ -33,6 +36,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         _caseService = caseService;
         _salesArrangementService = salesArrangementService;
         _offerService = offerService;
+        _productService = productService;
         _sbWebApi = sbWebApi;
         _refinancingDocumentService = refinancingDocumentService;
     }
@@ -127,6 +131,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
     private async Task GenerateHedgeAppendixDocument(_SA salesArrangement, GetOfferListResponse.Types.GetOfferListItem offer, bool hasIndividualPrice, CancellationToken cancellationToken)
     {
         var user = await _refinancingDocumentService.LoadUserInfo(cancellationToken);
+        var product = await _productService.GetMortgage(salesArrangement.CaseId, cancellationToken);
 
         var simulationInputs = offer.MortgageRefixation.SimulationInputs;
         var simulationResults = offer.MortgageRefixation.SimulationResults;
@@ -135,7 +140,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         {
             CaseId = salesArrangement.CaseId,
             InterestRateProvided = simulationInputs.InterestRate - ((decimal?)simulationInputs.InterestRateDiscount).GetValueOrDefault(),
-            FixedRateValidTo = simulationInputs.InterestRateValidFrom,
+            FixedRateValidTo = product.Mortgage.FixedRateValidTo,
             PaymentAmount = (decimal?)simulationResults.LoanPaymentAmountDiscounted ?? simulationResults.LoanPaymentAmount,
             SignatureTypeDetailId = salesArrangement.Refixation.SignatureTypeDetailId!.Value,
             Cpm = user.Cpm,
@@ -151,6 +156,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
     private async Task GenerateInterestRateNotificationDocument(_SA salesArrangement, GetOfferListResponse.Types.GetOfferListItem offer, CancellationToken cancellationToken)
     {
         var user = await _refinancingDocumentService.LoadUserInfo(cancellationToken);
+        var product = await _productService.GetMortgage(salesArrangement.CaseId, cancellationToken);
 
         var simulationInputs = offer.MortgageRefixation.SimulationInputs;
         var simulationResults = offer.MortgageRefixation.SimulationResults;
@@ -159,7 +165,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         {
             CaseId = salesArrangement.CaseId,
             InterestRateProvided = simulationInputs.InterestRate - ((decimal?)simulationInputs.InterestRateDiscount).GetValueOrDefault(),
-            FixedRateValidTo = simulationInputs.InterestRateValidFrom,
+            FixedRateValidTo = product.Mortgage.FixedRateValidTo,
             PaymentAmount = (decimal?)simulationResults.LoanPaymentAmountDiscounted ?? simulationResults.LoanPaymentAmount,
             SignatureTypeDetailId = salesArrangement.Refixation.SignatureTypeDetailId!.Value,
             Cpm = user.Cpm,
