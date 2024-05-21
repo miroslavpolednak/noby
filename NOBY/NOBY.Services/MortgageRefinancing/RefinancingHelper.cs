@@ -11,7 +11,7 @@ public static class RefinancingHelper
         response.RefinancingStateId = result.RefinancingState;
         response.SalesArrangementId = result.SalesArrangement?.SalesArrangementId;
         response.IsReadOnly = result.RefinancingState != RefinancingStates.RozpracovanoVNoby && result.Process is not null;
-        response.IsPriceExceptionActive = result.ActivePriceException is not null;
+        response.IsPriceExceptionActive = result.ActivePriceException is not null && !result.IsActivePriceExceptionCompleted;
         response.Tasks = result.Tasks;
 
         return response;

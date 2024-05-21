@@ -25,4 +25,9 @@ public sealed class GetRefinancingDataResult
     /// Aktivni cenova vyjimka
     /// </summary>
     public AmendmentPriceException? ActivePriceException { get; set; }
+
+    /// <summary>
+    /// Příznak, jestli je aktivní cenová výjimka aktivní
+    /// </summary>
+    public bool IsActivePriceExceptionCompleted { get; set; }
 }

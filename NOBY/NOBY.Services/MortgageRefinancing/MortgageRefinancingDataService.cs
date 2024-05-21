@@ -27,8 +27,8 @@ public sealed class MortgageRefinancingDataService(
             DocumentName = await getSigningDocumentName(refinancingType, eaCode),
             SignatureTypeDetailId = result.SalesArrangement?.Retention?.SignatureTypeDetailId, // pouze pro retence
             IsGenerateDocumentEnabled = (refinancingType == RefinancingTypes.MortgageRefixation || result.SalesArrangement?.OfferId is not null)
-                && result.RefinancingState == RefinancingStates.RozpracovanoVNoby
-                && result.ActivePriceException is null
+                                        && result.RefinancingState == RefinancingStates.RozpracovanoVNoby
+                                        && (result.ActivePriceException is null || result.IsActivePriceExceptionCompleted)
         };
 
         // pokud existuje aktivni task na podepisovani
@@ -94,7 +94,10 @@ public sealed class MortgageRefinancingDataService(
             .ToList();
 
         // toto je aktivni IC task
-        result.ActivePriceException = await getPriceExceptionData(tasks, cancellationToken);
+        var priceExceptionData = await getPriceExceptionData(tasks, cancellationToken);
+
+        result.ActivePriceException = priceExceptionData.priceException;
+        result.IsActivePriceExceptionCompleted = priceExceptionData.completed;
 
         return result;
     }
@@ -105,7 +108,9 @@ public sealed class MortgageRefinancingDataService(
             .Where(t => t.ProcessId == processId)
             .ToList();
 
-        return await getPriceExceptionData(tasks, cancellationToken);
+        var result = await getPriceExceptionData(tasks, cancellationToken);
+
+        return result.priceException;
     }
 
     private async Task<string> getSigningDocumentName(RefinancingTypes refinancingType, int? eaCode)
@@ -121,25 +126,22 @@ public sealed class MortgageRefinancingDataService(
         }
     }
 
-    private async Task<AmendmentPriceException?> getPriceExceptionData(List<DomainServices.CaseService.Contracts.WorkflowTask> tasks, CancellationToken cancellationToken)
+    private async Task<(bool completed, AmendmentPriceException? priceException)> getPriceExceptionData(List<DomainServices.CaseService.Contracts.WorkflowTask> tasks, CancellationToken cancellationToken)
     {
         // toto je aktivni IC task!
         var activePriceExceptionTaskIdSb = tasks
-            .FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled)
+            .FirstOrDefault(t => t is { TaskTypeId: (int)WorkflowTaskTypes.PriceException, Cancelled: false })
             ?.TaskIdSb;
 
+        if (!activePriceExceptionTaskIdSb.HasValue) 
+            return default;
+
         // detail IC tasku
-        if (activePriceExceptionTaskIdSb.HasValue)
-        {
-            var taskDetail = await _caseService.GetTaskDetail(activePriceExceptionTaskIdSb.Value, cancellationToken);
+        var taskDetail = await _caseService.GetTaskDetail(activePriceExceptionTaskIdSb.Value, cancellationToken);
+        var isCompleted = taskDetail.TaskObject.PhaseTypeId == 2 && taskDetail.TaskObject.DecisionId == 1;
 
-            if (taskDetail.TaskObject.PhaseTypeId == 2 && taskDetail.TaskObject.DecisionId == 1)
-                return null;
+        return (isCompleted, taskDetail.TaskDetail?.PriceException);
 
-            return taskDetail.TaskDetail?.PriceException;
-        }
-
-        return null;
     }
 
     private static ProcessTask.AmendmentsOneofCase getRequiredAmendmentCase(RefinancingTypes refinancingType)
