@@ -259,6 +259,7 @@ message DrawingDurationsResponse {
 		int32 DrawingDuration = 2;
 		bool IsValid = 3;
 		bool IsDefault = 4;
+		google.protobuf.Int32Value MandantId = 5;
 	}
 }
 
