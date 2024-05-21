@@ -56,7 +56,9 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         await UpdateSAParameters(request, salesArrangement, cancellationToken);
 
         await UpdateRefixationProcess(salesArrangement, offer, cancellationToken);
-        await _salesArrangementService.LinkModelationToSalesArrangement(salesArrangement.SalesArrangementId, offer.Data.OfferId, cancellationToken);
+
+        if (salesArrangement.OfferId != offer.Data.OfferId)
+            await _salesArrangementService.LinkModelationToSalesArrangement(salesArrangement.SalesArrangementId, offer.Data.OfferId, cancellationToken);
 
         if (request.RefixationDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix)
             await GenerateHedgeAppendixDocument(salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
