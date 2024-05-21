@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangementId;
 
-internal sealed class ValidateSalesArrangementIdHandler
-    : IRequestHandler<ValidateSalesArrangementIdRequest, ValidateSalesArrangementIdResponse>
+internal sealed class ValidateSalesArrangementIdHandler(SalesArrangementServiceDbContext _dbContext)
+		: IRequestHandler<ValidateSalesArrangementIdRequest, ValidateSalesArrangementIdResponse>
 {
     public async Task<ValidateSalesArrangementIdResponse> Handle(ValidateSalesArrangementIdRequest request, CancellationToken cancellationToken)
     {
@@ -26,12 +26,5 @@ internal sealed class ValidateSalesArrangementIdHandler
             State = instance?.State,
             SalesArrangementTypeId = instance?.SalesArrangementTypeId,
         };
-    }
-
-    private readonly SalesArrangementServiceDbContext _dbContext;
-    
-    public ValidateSalesArrangementIdHandler(SalesArrangementServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.GetSalesArrangementList;
 
-internal sealed class GetSalesArrangementsListHandler
-    : IRequestHandler<GetSalesArrangementListRequest, GetSalesArrangementListResponse>
+internal sealed class GetSalesArrangementsListHandler(
+    SalesArrangementServiceDbContext _dbContext, 
+    CaseService.Clients.v1.ICaseServiceClient _caseService)
+		: IRequestHandler<GetSalesArrangementListRequest, GetSalesArrangementListResponse>
 {
     public async Task<GetSalesArrangementListResponse> Handle(GetSalesArrangementListRequest request, CancellationToken cancellation)
     {
@@ -25,14 +27,5 @@ internal sealed class GetSalesArrangementsListHandler
         GetSalesArrangementListResponse model = new();
         model.SalesArrangements.AddRange(list);
         return model;
-    }
-
-    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
-    private readonly SalesArrangementServiceDbContext _dbContext;
-
-    public GetSalesArrangementsListHandler(SalesArrangementServiceDbContext dbContext, CaseService.Clients.v1.ICaseServiceClient caseService)
-    {
-        _dbContext = dbContext;
-        _caseService = caseService;
     }
 }

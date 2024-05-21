@@ -3,8 +3,8 @@ using SharedTypes.Enums;
 
 namespace DomainServices.RealEstateValuationService.Clients.Services;
 
-internal sealed class RealEstateValuationServiceClient
-    : IRealEstateValuationServiceClient
+internal sealed class RealEstateValuationServiceClient(Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient _service)
+		: IRealEstateValuationServiceClient
 {
     public async Task<int> CreateRealEstateValuation(CreateRealEstateValuationRequest request, CancellationToken cancellationToken = default)
     {
@@ -197,9 +197,4 @@ internal sealed class RealEstateValuationServiceClient
 
     private RealEstateValuationDetail? _cacheGetRealEstateValuationDetail = null!;
     private ValidateRealEstateValuationIdResponse? _cacheValidateRealEstateValuationId;
-
-    private readonly Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient _service;
-
-    public RealEstateValuationServiceClient(Contracts.v1.RealEstateValuationService.RealEstateValuationServiceClient service)
-        => _service = service;
 }

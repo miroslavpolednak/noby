@@ -8,8 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateLoanAssessmentParameters;
 
-internal sealed class UpdateLoanAssessmentParametersHandler
-    : IRequestHandler<UpdateLoanAssessmentParametersRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateLoanAssessmentParametersHandler(
+    SalesArrangementServiceDbContext _dbContext, 
+    ICaseServiceClient _caseService, 
+    ICurrentUserAccessor _userAccessor, 
+    ICodebookServiceClient _codebookService, 
+    IUserServiceClient _userService)
+		: IRequestHandler<UpdateLoanAssessmentParametersRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateLoanAssessmentParametersRequest request, CancellationToken cancellation)
     {
@@ -80,20 +85,5 @@ internal sealed class UpdateLoanAssessmentParametersHandler
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly ICaseServiceClient _caseService;
-    private readonly ICurrentUserAccessor _userAccessor;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly IUserServiceClient _userService;
-    private readonly SalesArrangementServiceDbContext _dbContext;
-
-    public UpdateLoanAssessmentParametersHandler(SalesArrangementServiceDbContext dbContext, ICaseServiceClient caseService, ICurrentUserAccessor userAccessor, ICodebookServiceClient codebookService, IUserServiceClient userService)
-    {
-        _dbContext = dbContext;
-        _caseService = caseService;
-        _userAccessor = userAccessor;
-        _codebookService = codebookService;
-        _userService = userService;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients.v1;
-using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Api.Database;
 using DomainServices.SalesArrangementService.Contracts;
@@ -8,28 +7,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SetContractNumber;
 
-internal sealed class SetContractNumberHandler : IRequestHandler<SetContractNumberRequest, SetContractNumberResponse>
+internal sealed class SetContractNumberHandler(
+    SalesArrangementServiceDbContext _dbContext,
+	ICustomerOnSAServiceClient _customerOnSAService,
+	Eas.IEasClient _easClient,
+	ICaseServiceClient _caseService,
+	IMediator _mediator) 
+    : IRequestHandler<SetContractNumberRequest, SetContractNumberResponse>
 {
-    private readonly SalesArrangementServiceDbContext _dbContext;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly Eas.IEasClient _easClient;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IMediator _mediator;
-
-    public SetContractNumberHandler(SalesArrangementServiceDbContext dbContext,
-                                    ICustomerOnSAServiceClient customerOnSAService,
-                                    Eas.IEasClient easClient,
-                                    ICaseServiceClient caseService,
-                                    IMediator mediator)
-    {
-        _dbContext = dbContext;
-        _customerOnSAService = customerOnSAService;
-        _easClient = easClient;
-        _caseService = caseService;
-        _mediator = mediator;
-    }
-
-    public async Task<SetContractNumberResponse> Handle(SetContractNumberRequest request, CancellationToken cancellationToken)
+	public async Task<SetContractNumberResponse> Handle(SetContractNumberRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
 

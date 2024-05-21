@@ -8,8 +8,15 @@ using DomainServices.SalesArrangementService.Api.Database.Entities;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.LinkModelationToSalesArrangement;
 
-internal sealed class LinkModelationToSalesArrangementHandler
-    : IRequestHandler<__SA.LinkModelationToSalesArrangementRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class LinkModelationToSalesArrangementHandler(
+	ProductService.Clients.IProductServiceClient _productService,
+	IRealEstateValuationServiceClient _realEstateValuationService,
+	IMediator _mediator,
+	CaseService.Clients.v1.ICaseServiceClient _caseService,
+	Database.SalesArrangementServiceDbContext _dbContext,
+	OfferService.Clients.v1.IOfferServiceClient _offerService,
+	IDocumentDataStorage _documentDataStorage)
+		: IRequestHandler<__SA.LinkModelationToSalesArrangementRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(__SA.LinkModelationToSalesArrangementRequest request, CancellationToken cancellation)
     {
@@ -250,31 +257,5 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         if (hasChanged) 
             await _documentDataStorage.AddOrUpdateByEntityId(salesArrangementInstance.SalesArrangementId, SalesArrangementParametersConst.TableName, parametersModel, cancellation);
-    }
-
-    private readonly ProductService.Clients.IProductServiceClient _productService;
-    private readonly CaseService.Clients.v1.ICaseServiceClient _caseService;
-    private readonly OfferService.Clients.v1.IOfferServiceClient _offerService;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-    private readonly IMediator _mediator;
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public LinkModelationToSalesArrangementHandler(
-        ProductService.Clients.IProductServiceClient productService,
-        IRealEstateValuationServiceClient realEstateValuationService,
-        IMediator mediator,
-        CaseService.Clients.v1.ICaseServiceClient caseService,
-        Database.SalesArrangementServiceDbContext dbContext,
-        OfferService.Clients.v1.IOfferServiceClient offerService,
-        IDocumentDataStorage documentDataStorage)
-    {
-        _productService = productService;
-        _realEstateValuationService = realEstateValuationService;
-        _mediator = mediator;
-        _caseService = caseService;
-        _dbContext = dbContext;
-        _offerService = offerService;
-        _documentDataStorage = documentDataStorage;
     }
 }

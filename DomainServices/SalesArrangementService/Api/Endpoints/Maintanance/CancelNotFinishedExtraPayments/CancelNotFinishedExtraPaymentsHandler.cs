@@ -7,15 +7,11 @@ using Microsoft.EntityFrameworkCore;
 namespace DomainServices.SalesArrangementService.Api.Endpoints.Maintanance.CancelNotFinishedExtraPayments;
 
 internal sealed class CancelNotFinishedExtraPaymentsHandler(
-    SalesArrangementServiceDbContext dbContext,
-    ICaseServiceClient caseService,
-    IMediator mediator)
+    SalesArrangementServiceDbContext _dbContext,
+    ICaseServiceClient _caseService,
+    IMediator _mediator)
     : IRequestHandler<CancelNotFinishedExtraPaymentsRequest, Empty>
 {
-    private readonly SalesArrangementServiceDbContext _dbContext = dbContext;
-    private readonly ICaseServiceClient _caseService = caseService;
-    private readonly IMediator _mediator = mediator;
-
     public async Task<Empty> Handle(CancelNotFinishedExtraPaymentsRequest request, CancellationToken cancellationToken)
     {
         var newExtraPaymentsSA = await _dbContext.SalesArrangements
@@ -38,7 +34,7 @@ internal sealed class CancelNotFinishedExtraPaymentsHandler(
 
             if (!existNonCancelEPTaskInSb)
             {
-                var process = (await caseService.GetProcessList(epSa.CaseId, cancellationToken))
+                var process = (await _caseService.GetProcessList(epSa.CaseId, cancellationToken))
                             .First(t => t.ProcessId == epSa.ProcessId);
 
                 await _caseService.CancelTask(epSa.CaseId, process.ProcessIdSb, cancellationToken: cancellationToken);

@@ -4,8 +4,10 @@ using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.GetProductSalesArrangement;
 
-internal sealed class GetProductSalesArrangementsHandler
-    : IRequestHandler<__SA.GetProductSalesArrangementsRequest, __SA.GetProductSalesArrangementsResponse>
+internal sealed class GetProductSalesArrangementsHandler(
+    Database.SalesArrangementServiceDbContext _dbContext, 
+    ICodebookServiceClient _codebookService)
+		: IRequestHandler<__SA.GetProductSalesArrangementsRequest, __SA.GetProductSalesArrangementsResponse>
 {
     public async Task<__SA.GetProductSalesArrangementsResponse> Handle(__SA.GetProductSalesArrangementsRequest request, CancellationToken cancellationToken)
     {
@@ -30,14 +32,5 @@ internal sealed class GetProductSalesArrangementsHandler
         }));
 
         return result;
-    }
-
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-    private readonly ICodebookServiceClient _codebookService;
-
-    public GetProductSalesArrangementsHandler(Database.SalesArrangementServiceDbContext dbContext, ICodebookServiceClient codebookService) 
-    {
-        _dbContext = dbContext;
-        _codebookService = codebookService;
     }
 }

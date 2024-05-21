@@ -5,15 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.SalesArrangementService.Api.Endpoints.v1;
 
 [Authorize]
-internal sealed class SalesArrangementService
-    : Contracts.v1.SalesArrangementService.SalesArrangementServiceBase
+internal sealed class SalesArrangementService(IMediator _mediator)
+		: Contracts.v1.SalesArrangementService.SalesArrangementServiceBase
 {
-    private readonly IMediator _mediator;
-
-    public SalesArrangementService(IMediator mediator)
-        => _mediator = mediator;
-
-    public override async Task<GetProductSalesArrangementsResponse> GetProductSalesArrangements(GetProductSalesArrangementsRequest request, ServerCallContext context)
+	public override async Task<GetProductSalesArrangementsResponse> GetProductSalesArrangements(GetProductSalesArrangementsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
     public override async Task<CreateSalesArrangementResponse> CreateSalesArrangement(CreateSalesArrangementRequest request, ServerCallContext context)
