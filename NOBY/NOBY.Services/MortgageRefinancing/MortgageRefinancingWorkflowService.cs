@@ -37,7 +37,7 @@ public sealed class MortgageRefinancingWorkflowService(
 
         var priceExceptionTask = priceExceptionTasks.SingleOrDefault() ?? throw new NobyValidationException(90050);
 
-        if (priceExceptionTask.StateIdSb != 30)
+        if (priceExceptionTask.StateIdSb != 30 && priceExceptionTask.PhaseTypeId != 2)
             throw new NobyValidationException(90049);
 
         var priceExceptionDetail = await _caseService.GetTaskDetail(priceExceptionTask.TaskIdSb, cancellationToken);
