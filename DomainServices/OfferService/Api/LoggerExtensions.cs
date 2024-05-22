@@ -6,6 +6,7 @@ public static class LoggerExtensions
 {
     private static readonly Action<ILogger, string, string, Exception> _kafkaMessageCaseIdIncorrectFormat;
     private static readonly Action<ILogger, string, string, Exception> _kafkaMessageCurrentTaskIdIncorrectFormat;
+    private static readonly Action<ILogger, string, long, Exception> _kafkaCaseIdNotFound;
 
     static LoggerExtensions()
     {
@@ -18,6 +19,11 @@ public static class LoggerExtensions
             LogLevel.Error,
             new EventId(LoggerEventIdCodes.KafkaMessageCurrentTaskIdIncorrectFormat, nameof(KafkaMessageCurrentTaskIdIncorrectFormat)),
             "Kafka message processing in {Consumer}: CurrentTaskId {CurrentTaskId} is not in valid format");
+
+        _kafkaCaseIdNotFound = LoggerMessage.Define<string, long>(
+            LogLevel.Warning,
+            new EventId(LoggerEventIdCodes.KafkaCaseIdNotFound, nameof(KafkaCaseIdNotFound)),
+            "Kafka message processing in {Consumer}: Case {CaseId} not found");
     }
 
     public static void KafkaMessageCaseIdIncorrectFormat(this ILogger logger, string consumerTypeName, string caseId)
@@ -25,4 +31,7 @@ public static class LoggerExtensions
 
     public static void KafkaMessageCurrentTaskIdIncorrectFormat(this ILogger logger, string consumerTypeName, string currentTaskId)
         => _kafkaMessageCurrentTaskIdIncorrectFormat(logger, consumerTypeName, currentTaskId, null!);
+
+    public static void KafkaCaseIdNotFound(this ILogger logger, string consumerTypeName, long caseId)
+        => _kafkaCaseIdNotFound(logger, consumerTypeName, caseId, null!);
 }
