@@ -59,7 +59,7 @@ internal sealed class LoanRetentionProcessChangedHandler : IMessageHandler<cz.mp
 
         var refixationOffers = await _dbContext.Offers
                                                .Where(o => o.CaseId == caseId
-                                                           && o.OfferType == (int)OfferTypes.MortgageRefixation && o.ValidTo > DateTime.UtcNow.ToLocalTime()
+                                                           && o.OfferType == (int)OfferTypes.MortgageRefixation && o.ValidTo > DateTime.Now
                                                            && !((OfferFlagTypes)o.Flags).HasFlag(OfferFlagTypes.LegalNotice))
                                                .ToListAsync();
 
