@@ -56,5 +56,5 @@ public interface IProductServiceClient
 
     Task<List<SearchProductsResponse.Types.SearchProductsItem>> SearchProducts(Identity? identity, CancellationToken cancellationToken = default);
 
-    Task<string?> UpdateMortgagePcpId(long caseId, CancellationToken cancellationToken = default);
+    Task<string?> UpdateMortgagePcpId(UpdateMortgagePcpIdRequest request, CancellationToken cancellationToken = default);
 }

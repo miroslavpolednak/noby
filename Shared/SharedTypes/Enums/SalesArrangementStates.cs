@@ -27,11 +27,6 @@ public enum SalesArrangementStates : byte
     Cancelled = 3,
 
     [EnumMember]
-    [Display(Name = "Podepsáno")]
-    [CisStarbuildId(1)]
-    IsSigned = 4,
-
-    [EnumMember]
     [CisDefaultValue]
     [Display(Name = "Nová")]
     [CisStarbuildId(1)]

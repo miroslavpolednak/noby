@@ -107,10 +107,10 @@ public static class RefinancingHelper
         }
     }
 
-    private static int[] _activeSalesArrangementStates = [
+    private static readonly int[] _activeSalesArrangementStates = 
+    [
         (int)SalesArrangementStates.InProgress,
         (int)SalesArrangementStates.InApproval,
-        (int)SalesArrangementStates.IsSigned,
         (int)SalesArrangementStates.NewArrangement,
         (int)SalesArrangementStates.InSigning,
         (int)SalesArrangementStates.ToSend,
