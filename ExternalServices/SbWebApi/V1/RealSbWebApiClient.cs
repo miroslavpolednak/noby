@@ -271,7 +271,7 @@ internal sealed class RealSbWebApiClient
             Individual_pricing = request.IndividualPricing
         };
 
-        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/api/refixationservices/hedgrefixationappendix", sbRequest, cancellationToken);
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/api/refixationservices/hedgerefixationappendix", sbRequest, cancellationToken);
         var responseObject = await RequestHelper.ProcessResponse<HedgeRefixationAppendix_response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
 
         return responseObject.Ea_number;
