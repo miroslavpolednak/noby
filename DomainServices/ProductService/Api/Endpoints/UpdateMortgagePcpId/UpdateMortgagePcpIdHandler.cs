@@ -8,15 +8,11 @@ internal sealed class UpdateMortgagePcpIdHandler(
     IConfiguration _configuration,
     IMpHomeClient _mpHomeClient,
     ICodebookServiceClient _codebookService,
-    IPcpClient _pcpClient,
-    IMediator _mediator)
+    IPcpClient _pcpClient)
     : IRequestHandler<UpdateMortgagePcpIdRequest, UpdateMortgagePcpIdResponse>
 {
     public async Task<UpdateMortgagePcpIdResponse> Handle(UpdateMortgagePcpIdRequest request, CancellationToken cancellationToken)
     {
-        // instance hypo
-        var mortgage = await _mediator.Send(new GetMortgageRequest() { ProductId = request.ProductId }, cancellationToken);
-
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
         var pcpCurrentVersion = _configuration[$"{CisGlobalConstants.ExternalServicesConfigurationSectionName}:{ExternalServices.Pcp.IPcpClient.ServiceName}:VersionInUse"];
 
@@ -30,11 +26,11 @@ internal sealed class UpdateMortgagePcpIdHandler(
         var pcpId = await _pcpClient.CreateProduct(request.ProductId, request.Identity.IdentityId, pcpProductIdOrObjectCode, cancellationToken);
 
         // create in konsdb
-        await _mpHomeClient.UpdateLoan(request.ProductId, mortgage.Mortgage.ToMortgageRequest(pcpId), cancellationToken);
+        await _mpHomeClient.UpdatePcpId(request.ProductId, pcpId, cancellationToken);
 
         return new UpdateMortgagePcpIdResponse
         {
-            PcpId = pcpId,
+            PcpId = pcpId
         };
     }
 }
