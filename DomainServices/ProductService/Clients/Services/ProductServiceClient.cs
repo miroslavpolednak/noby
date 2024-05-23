@@ -40,13 +40,9 @@ internal sealed class ProductServiceClient(Contracts.v1.ProductService.ProductSe
         }, cancellationToken: cancellationToken);
     }
 
-    public async Task<string?> UpdateMortgagePcpId(long productId, CancellationToken cancellationToken = default)
+    public async Task<string?> UpdateMortgagePcpId(UpdateMortgagePcpIdRequest request, CancellationToken cancellationToken = default)
     {
-        return (await _service.UpdateMortgagePcpIdAsync(new UpdateMortgagePcpIdRequest
-        {
-            ProductId = productId
-        }, cancellationToken: cancellationToken))
-        .PcpId;
+        return (await _service.UpdateMortgagePcpIdAsync(request, cancellationToken: cancellationToken)).PcpId;
     }
 
     public async Task CreateContractRelationship(long partnerId, long productId, int contractRelationshipTypeId, CancellationToken cancellationToken = default)

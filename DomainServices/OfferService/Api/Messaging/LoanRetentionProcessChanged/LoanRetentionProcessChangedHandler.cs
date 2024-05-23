@@ -43,6 +43,14 @@ internal sealed class LoanRetentionProcessChangedHandler : IMessageHandler<cz.mp
             return;
         }
 
+        var caseIdValidation = await _caseService.ValidateCaseId(caseId);
+
+        if (!caseIdValidation.Exists)
+        {
+            _logger.KafkaCaseIdNotFound(nameof(LoanRetentionProcessChangedHandler), caseId);
+            return;
+        }
+
         var processes = await _caseService.GetProcessList(caseId);
         var refixationProcess = processes.FirstOrDefault(p => p.ProcessId == processId && p.RefinancingType == (int)RefinancingTypes.MortgageRefixation);
 
@@ -51,7 +59,7 @@ internal sealed class LoanRetentionProcessChangedHandler : IMessageHandler<cz.mp
 
         var refixationOffers = await _dbContext.Offers
                                                .Where(o => o.CaseId == caseId
-                                                           && o.OfferType == (int)OfferTypes.MortgageRefixation && o.ValidTo > DateTime.UtcNow.ToLocalTime()
+                                                           && o.OfferType == (int)OfferTypes.MortgageRefixation && o.ValidTo > DateTime.Now
                                                            && !((OfferFlagTypes)o.Flags).HasFlag(OfferFlagTypes.LegalNotice))
                                                .ToListAsync();
 

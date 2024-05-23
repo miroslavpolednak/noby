@@ -37,13 +37,13 @@ public sealed class MortgageRefinancingWorkflowService(
 
         var priceExceptionTask = priceExceptionTasks.SingleOrDefault() ?? throw new NobyValidationException(90050);
 
-        if (priceExceptionTask.StateIdSb != 30)
+        if (priceExceptionTask.StateIdSb != 30 && priceExceptionTask.PhaseTypeId != 2)
             throw new NobyValidationException(90049);
 
-        if (priceExceptionTask.DecisionId != 1)
-            throw new NobyValidationException(90032, "Not exist DecisionId == 1");
-
         var priceExceptionDetail = await _caseService.GetTaskDetail(priceExceptionTask.TaskIdSb, cancellationToken);
+
+        if (priceExceptionDetail.TaskObject.DecisionId != 1)
+            throw new NobyValidationException(90032, "Not exist DecisionId == 1");
 
         return new MortgageRefinancingIndividualPrice(priceExceptionDetail.TaskDetail.PriceException);
     }

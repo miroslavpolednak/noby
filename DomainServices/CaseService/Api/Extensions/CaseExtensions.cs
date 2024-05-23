@@ -147,33 +147,43 @@ internal static class CaseExtensions
     }
     
     private static Contracts.ProcessTask.Types.TaskAmendmentMortgageRetention GetRetentionProcess(IReadOnlyDictionary<string, string> taskData)
-        => new()
-        {
-            InterestRateValidFrom = taskData.GetDate("ukol_retence_sazba_dat_od"),
-            LoanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk"),
-            LoanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl"),
-            LoanPaymentAmount = taskData.GetNInteger("ukol_retence_splatka_kalk"),
-            LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
-            FeeSum = taskData.GetNInteger("ukol_retence_popl_kalk"),
-            FeeFinalSum = taskData.GetNInteger("ukol_retence_popl_vysl"),
-            DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
-            DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
-            EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
-        };
+    {
+        var loanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk");
+        var loanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl");
 
+		return new()
+		{
+			InterestRateValidFrom = taskData.GetDate("ukol_retence_sazba_dat_od"),
+			LoanInterestRate = loanInterestRate.GetValueOrDefault() > 0 ? loanInterestRate : null,
+			LoanInterestRateProvided = loanInterestRateProvided.GetValueOrDefault() > 0 ? loanInterestRateProvided : null,
+			LoanPaymentAmount = taskData.GetNInteger("ukol_retence_splatka_kalk"),
+			LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
+			FeeSum = taskData.GetNInteger("ukol_retence_popl_kalk"),
+			FeeFinalSum = taskData.GetNInteger("ukol_retence_popl_vysl"),
+			DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+			DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
+			EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
+		};
+	}
+    
     private static Contracts.ProcessTask.Types.TaskAmendmentMortgageRefixation GetRefixationProcess(IReadOnlyDictionary<string, string> taskData)
-        => new()
-        {
-            LoanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk"),
-            LoanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl"),
-            LoanPaymentAmount = taskData.GetNInteger("ukol_retence_splatka_kalk"),
-            LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
-            FixedRatePeriod = taskData.GetInteger("ukol_retence_perioda_fixace"),
-            DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
-            DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
-            EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
-        };
+    {
+		var loanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk");
+		var loanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl");
 
+		return new()
+		{
+			LoanInterestRate = loanInterestRate.GetValueOrDefault() > 0 ? loanInterestRate : null,
+			LoanInterestRateProvided = loanInterestRateProvided.GetValueOrDefault() > 0 ? loanInterestRateProvided : null,
+			LoanPaymentAmount = taskData.GetNInteger("ukol_retence_splatka_kalk"),
+			LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
+			FixedRatePeriod = taskData.GetInteger("ukol_retence_perioda_fixace"),
+			DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+			DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
+			EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
+		};
+	}
+    
     public static TaskDetailItem ToTaskDetail(this IReadOnlyDictionary<string, string> taskData)
     {
         var taskDetail = new TaskDetailItem

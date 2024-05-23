@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.Maintanance.GetOfferGuaranteeDateToCheck;
 
-internal sealed class GetOfferGuaranteeDateToCheckHandler
-    : IRequestHandler<GetOfferGuaranteeDateToCheckRequest, GetOfferGuaranteeDateToCheckResponse>
+internal sealed class GetOfferGuaranteeDateToCheckHandler(
+    SalesArrangementServiceDbContext _dbContext, 
+    TimeProvider _dateTime)
+		: IRequestHandler<GetOfferGuaranteeDateToCheckRequest, GetOfferGuaranteeDateToCheckResponse>
 {
     public async Task<GetOfferGuaranteeDateToCheckResponse> Handle(GetOfferGuaranteeDateToCheckRequest request, CancellationToken cancellationToken)
     {
@@ -35,13 +37,4 @@ internal sealed class GetOfferGuaranteeDateToCheckHandler
         (int)SalesArrangementStates.InSigning, 
         (int)SalesArrangementStates.ToSend 
     ];
-
-    private readonly TimeProvider _dateTime;
-    private readonly SalesArrangementServiceDbContext _dbContext;
-
-    public GetOfferGuaranteeDateToCheckHandler(SalesArrangementServiceDbContext dbContext, TimeProvider dateTime)
-    {
-        _dbContext = dbContext;
-        _dateTime = dateTime;
-    }
 }

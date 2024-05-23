@@ -3,47 +3,47 @@ GO
 
 TRUNCATE TABLE [dbo].[ServiceDiscovery]
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:DataAggregatorService', N'https://ds-dataaggregator-fat2.vsskb.cz:31020', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:DataAggregatorService', N'https://ds-dataaggregator-fat2.vsskb.cz:31120', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:DocumentGeneratorService', N'https://ds-documentgenerator-fat2.vsskb.cz:31014', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:DocumentGeneratorService', N'https://ds-documentgenerator-fat2.vsskb.cz:31114', 1, 1)
 
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:GlobalCache:Redis', N'redis-review-sentinel.service.ist.consul-nprod.kb.cz:6379,checkCertificateRevocation=false,connectRetry=1,abortConnect=false,ssl=true,user=xx_redis_mpss_fat2,password=MpssFatPass,allowAdmin=false,tieBreaker=', 3, 0)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:NotificationService', N'https://ds-notification-fat2.vsskb.cz:31015', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:NotificationService', N'https://ds-notification-fat2.vsskb.cz:31115', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:NotificationService', N'https://ds-notification-fat2.vsskb.cz:31016', 2, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:NotificationService', N'https://ds-notification-fat2.vsskb.cz:31116', 2, 0)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:ServiceDiscovery', N'https://ds-discovery-fat2.vsskb.cz:31000', 1, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'CIS:ServiceDiscovery', N'https://ds-discovery-fat2.vsskb.cz:31100', 1, 0)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:CaseService', N'https://ds-case-fat2.vsskb.cz:31001', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:CaseService', N'https://ds-case-fat2.vsskb.cz:31101', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:CodebookService', N'https://ds-codebook-fat2.vsskb.cz:31003', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:CodebookService', N'https://ds-codebook-fat2.vsskb.cz:31103', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:CodebookService', N'https://ds-codebook-fat2.vsskb.cz:31002', 2, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:CodebookService', N'https://ds-codebook-fat2.vsskb.cz:31102', 2, 0)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:CustomerService', N'https://ds-customer-fat2.vsskb.cz:31004', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:CustomerService', N'https://ds-customer-fat2.vsskb.cz:31104', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:DocumentArchiveService', N'https://ds-documentarchive-fat2.vsskb.cz:31005', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:DocumentArchiveService', N'https://ds-documentarchive-fat2.vsskb.cz:31105', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:DocumentArchiveService', N'https://ds-documentarchive-fat2.vsskb.cz:31017', 2, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:DocumentArchiveService', N'https://ds-documentarchive-fat2.vsskb.cz:31117', 2, 0)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:DocumentOnSAService', N'https://ds-documentonsa-fat2.vsskb.cz:31019', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:DocumentOnSAService', N'https://ds-documentonsa-fat2.vsskb.cz:31119', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:HouseholdService', N'https://ds-household-fat2.vsskb.cz:31018', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:HouseholdService', N'https://ds-household-fat2.vsskb.cz:31118', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:OfferService', N'https://ds-offer-fat2.vsskb.cz:31006', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:OfferService', N'https://ds-offer-fat2.vsskb.cz:31106', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:ProductService', N'https://ds-product-fat2.vsskb.cz:31007', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:ProductService', N'https://ds-product-fat2.vsskb.cz:31107', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:RealEstateValuationService', N'https://ds-realestatevaluation-fat2.vsskb.cz:31021', 1, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:RealEstateValuationService', N'https://ds-realestatevaluation-fat2.vsskb.cz:31121', 1, 0)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:RiskIntegrationService', N'https://ds-riskintegration-fat2.vsskb.cz:31012', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:RiskIntegrationService', N'https://ds-riskintegration-fat2.vsskb.cz:31112', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:RiskIntegrationService', N'https://ds-riskintegration-fat2.vsskb.cz:31013', 2, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:RiskIntegrationService', N'https://ds-riskintegration-fat2.vsskb.cz:31113', 2, 0)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:SalesArrangementService', N'https://ds-salesarrangement-fat2.vsskb.cz:31009', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:SalesArrangementService', N'https://ds-salesarrangement-fat2.vsskb.cz:31109', 1, 1)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:UserService', N'https://ds-user-fat2.vsskb.cz:31010', 1, 1)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'DS:UserService', N'https://ds-user-fat2.vsskb.cz:31110', 1, 1)
 
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT2', N'ES:AcvEnumService:V1', N'https://api.stage.car.kbcloud/v1/enums', 3, 0)
 

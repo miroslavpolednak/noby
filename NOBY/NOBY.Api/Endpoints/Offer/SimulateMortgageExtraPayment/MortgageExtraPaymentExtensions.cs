@@ -26,6 +26,7 @@ internal static class MortgageExtraPaymentExtensions
             AnnualSanctionFreePeriodFrom = result.AnnualSanctionFreePeriodFrom,
             AnnualSanctionFreePeriodTo = result.AnnualSanctionFreePeriodTo,
             CreatedOn = createdOn,
+			ExtraPaymentReasonId = result.ExtraPaymentReasonId,
 
             FeeAmountTotal = result.FeeAmount - feeAmountDiscounted.GetValueOrDefault(),
             ExtraPaymentAmountTotal = result.ExtraPaymentAmount + result.FeeAmount - feeAmountDiscounted.GetValueOrDefault()

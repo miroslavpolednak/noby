@@ -2,6 +2,8 @@
 
 public sealed class GetMortgageExtraPaymentListResponse
 {
+    public long ProcessId { get; set; }
+
     /// <summary>
     /// ID SA pokud existuje
     /// </summary>

@@ -36,6 +36,7 @@ internal sealed class GetMortgageExtraPaymentListHandler(
 
 			return new GetMortgageExtraPaymentListResponse
             {
+                ProcessId = process.ProcessId,
                 SalesArrangementId = currentProcessSA?.SalesArrangementId,
                 CreatedOn = process.CreatedOn,
                 ExtraPaymentAmount = process.MortgageExtraPayment.ExtraPaymentAmountIncludingFee,

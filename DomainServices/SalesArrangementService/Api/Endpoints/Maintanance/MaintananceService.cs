@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.SalesArrangementService.Api.Endpoints.Maintanance;
 
 [Authorize]
-internal sealed class MaintananceService
-    : Contracts.MaintananceService.MaintananceServiceBase
+internal sealed class MaintananceService(IMediator _mediator)
+		: Contracts.MaintananceService.MaintananceServiceBase
 {
     public override async Task<Empty> CancelNotFinishedExtraPayments(CancelNotFinishedExtraPaymentsRequest request, ServerCallContext context)
       => await _mediator.Send(request, context.CancellationToken);
@@ -20,9 +20,4 @@ internal sealed class MaintananceService
 
     public override async Task<GetOfferGuaranteeDateToCheckResponse> GetOfferGuaranteeDateToCheck(GetOfferGuaranteeDateToCheckRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
-
-    private readonly IMediator _mediator;
-
-    public MaintananceService(IMediator mediator)
-        => _mediator = mediator;
 }

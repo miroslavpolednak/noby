@@ -32,26 +32,31 @@ public sealed class CreateCaseFromExternalSourcesService(
         // kontrola na uzivatele a stav
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState);
 
-        // update PCPID pokud neexistuje
-        string? pcpId = mortgageInstance.PcpId;
-        if (string.IsNullOrEmpty(mortgageInstance.PcpId))
-        {
-            pcpId = await _productService.UpdateMortgagePcpId(caseId, cancellationToken);
-        }
-
         // instance uzivatele
         var customerIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
         var customer = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);
 
-        // prioritne chceme pouzit customera z CM
-        var kbIdentity = customer.Identities.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb);
+		// prioritne chceme pouzit customera z CM
+		var kbIdentity = customer.Identities.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb);
         if (productType.MandantId == (int)Mandants.Kb && kbIdentity is not null)
         {
-            customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);
-        }
-        
-        // vytvorit case
-        var createCaseRequest = new DomainServices.CaseService.Contracts.CreateExistingCaseRequest
+            customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);	
+		}
+
+		// update PCPID pokud neexistuje
+		string? pcpId = mortgageInstance.PcpId;
+		if (string.IsNullOrEmpty(mortgageInstance.PcpId) && kbIdentity is not null)
+		{
+			pcpId = await _productService.UpdateMortgagePcpId(new UpdateMortgagePcpIdRequest
+			{
+				Identity = kbIdentity,
+				ProductId = caseId,
+				ProductTypeId = mortgageInstance.ProductTypeId
+			}, cancellationToken);
+		}
+
+		// vytvorit case
+		var createCaseRequest = new DomainServices.CaseService.Contracts.CreateExistingCaseRequest
         {
             CaseId = caseId,
             State = caseState,

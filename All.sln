@@ -608,6 +608,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00006-HACH-11402-JobRename.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00006-HACH-11402-JobRename.sql
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00007-HACH-11110-CancelEPJob.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00007-HACH-11110-CancelEPJob.sql
 		InternalServices\TaskSchedulingService\DatabaseMigrations\00008-HACH-9571-UpdateDocStatusDelete.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00008-HACH-9571-UpdateDocStatusDelete.sql
+		InternalServices\TaskSchedulingService\DatabaseMigrations\00009-SyncDatamartRefixation_Changed_Cron.sql = InternalServices\TaskSchedulingService\DatabaseMigrations\00009-SyncDatamartRefixation_Changed_Cron.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.SbWebApi", "ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj", "{FA184421-6232-4157-BDEC-DE7D03D3B88C}"

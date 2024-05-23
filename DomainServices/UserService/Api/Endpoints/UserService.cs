@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.UserService.Api.Endpoints;
 
 [Authorize]
-internal sealed class UserService 
+internal sealed class UserService(IMediator _mediator)
     : Contracts.v1.UserService.UserServiceBase
 {
     public override async Task<User> GetUser(GetUserRequest request, ServerCallContext context)
@@ -19,8 +19,4 @@ internal sealed class UserService
 
     public override async Task<UserRIPAttributes> GetUserRIPAttributes(GetUserRIPAttributesRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
-
-    private readonly IMediator _mediator;
-    public UserService(IMediator mediator)
-        => _mediator = mediator;
 }

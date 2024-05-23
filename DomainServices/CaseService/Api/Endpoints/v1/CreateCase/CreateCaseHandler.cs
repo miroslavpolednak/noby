@@ -42,7 +42,7 @@ internal sealed class CreateCaseHandler(
 
             _logger.EntityCreated(nameof(Database.Entities.Case), newCaseId);
         }
-        catch (DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException && ((Microsoft.Data.SqlClient.SqlException)ex.InnerException).Number == 2627)
+        catch (DbUpdateException ex) when (ex.InnerException is Microsoft.Data.SqlClient.SqlException ex2 && ex2.Number == 2627)
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateAlreadyExistsException(ErrorCodeMapper.CaseAlreadyExist, newCaseId);
         }

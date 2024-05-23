@@ -41,7 +41,8 @@ internal sealed class MortgageExtraPaymentData
         public DateTime AnnualSanctionFreePeriodFrom { get; set; }
         public DateTime AnnualSanctionFreePeriodTo { get; set; }
         public decimal SanctionFreeAmount { get; set; }
-    }
+		public int ExtraPaymentReasonId { get; set; }
+	}
 
     public sealed class BasicParametersData
     {

@@ -18,7 +18,7 @@ public sealed class SimulateMortgageExtraPaymentRequest
     /// Datum mimořádné splátky
     /// </summary>
     [Required]
-    public DateTime ExtraPaymentDate { get; set; }
+    public DateOnly ExtraPaymentDate { get; set; }
 
     /// <summary>
     /// Částka mimořádné splátky

@@ -76,7 +76,7 @@ public class SalesArrangementController : ControllerBase
     [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
     [ApiVersion("2")]
     [Produces("application/json")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.SCORING_Perform)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
