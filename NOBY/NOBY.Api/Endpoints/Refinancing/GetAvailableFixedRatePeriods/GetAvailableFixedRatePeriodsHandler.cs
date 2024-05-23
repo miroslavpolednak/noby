@@ -31,7 +31,7 @@ internal sealed class GetAvailableFixedRatePeriodsHandler(
 
         // mozne periody pro dany produkt
         var availablePeriods = (await _codebookService.FixedRatePeriods(cancellationToken))
-            .Where(t => t.IsValid && t.MandantId == (int)Mandants.Kb && t.ProductTypeId == productInstance.Mortgage.ProductTypeId)
+            .Where(t => t.IsValid && t.MandantId == (int)Mandants.Kb && t.ProductTypeId == productInstance.Mortgage.ProductTypeId && !t.IsNewProduct)
             .ToList();
 
         DateTime productFixedRateValidTo = (DateTime)productInstance.Mortgage.FixedRateValidTo;
