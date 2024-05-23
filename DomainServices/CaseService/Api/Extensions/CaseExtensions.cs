@@ -106,14 +106,19 @@ internal static class CaseExtensions
     }
 
     private static Contracts.ProcessTask.Types.TaskAmendmentMortgageLegalNotice GetLegalNoticeProcess(IReadOnlyDictionary<string, string> taskData)
-        => new()
-        {
-            LoanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl"),
-            LoanPaymentAmountFinal = taskData.GetNDecimal("ukol_retence_splatka_vysl"),
-            FixedRatePeriod = taskData.GetNInteger("ukol_retence_perioda_fixace"),
-            DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
-            DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod")
-        };
+    {
+		var fixedRatePeriod = taskData.GetInteger("ukol_retence_perioda_fixace");
+
+		return new()
+		{
+			LoanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl"),
+			LoanPaymentAmountFinal = taskData.GetNDecimal("ukol_retence_splatka_vysl"),
+			FixedRatePeriod = fixedRatePeriod > 0 ? fixedRatePeriod : null,
+			DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+			DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod")
+		};
+	}
+        
 
     private static Contracts.ProcessTask.Types.TaskAmendmentMortgageExtraPayment GetExtraPaymentProcess(IReadOnlyDictionary<string, string> taskData)
     {
@@ -170,6 +175,7 @@ internal static class CaseExtensions
     {
 		var loanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk");
 		var loanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl");
+        var fixedRatePeriod = taskData.GetInteger("ukol_retence_perioda_fixace");
 
 		return new()
 		{
@@ -177,7 +183,7 @@ internal static class CaseExtensions
 			LoanInterestRateProvided = loanInterestRateProvided.GetValueOrDefault() > 0 ? loanInterestRateProvided : null,
 			LoanPaymentAmount = taskData.GetNInteger("ukol_retence_splatka_kalk"),
 			LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
-			FixedRatePeriod = taskData.GetInteger("ukol_retence_perioda_fixace"),
+			FixedRatePeriod = fixedRatePeriod > 0 ? fixedRatePeriod : null,
 			DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
 			DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
 			EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
