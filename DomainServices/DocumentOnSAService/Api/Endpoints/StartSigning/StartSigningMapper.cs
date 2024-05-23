@@ -365,7 +365,7 @@ public class StartSigningMapper
                 identities.Add(GetIdentity(salesArrangement.HUBN.Applicant));
                 break;
             case SalesArrangement.ParametersOneofCase.CustomerChange:
-                identities.AddRange(salesArrangement.CustomerChange.Applicants.SelectMany(s => s.Identity));
+                identities.AddRange(salesArrangement.CustomerChange.Applicants.Select(s => GetIdentity(s.Identity)));
                 break;
         }
 
