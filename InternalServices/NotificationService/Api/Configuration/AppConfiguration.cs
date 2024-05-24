@@ -34,4 +34,6 @@ internal sealed class KafkaTopics
     public string McsResult { get; set; } = null!;
     
     public string McsSender { get; set; } = null!;
+
+    public static string McsIdPrefix { get => "NOBYNS-"; }
 }

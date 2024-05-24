@@ -62,7 +62,7 @@ internal sealed class SendSmsHandler(
         // pripravit zpravu do MCS
         var message = new McsSendApi.v4.sms.SendSMS
         {
-            id = notificationInstance.Id.ToString(),
+            id = Configuration.KafkaTopics.McsIdPrefix + notificationInstance.Id.ToString(),
             phone = new()
             {
                 countryCode = countryCode,
@@ -104,7 +104,7 @@ internal sealed class SendSmsHandler(
 
         return new NotificationIdResponse 
         { 
-            NotificationId = message.id
+            NotificationId = notificationInstance.Id.ToString()
         };
     }
 

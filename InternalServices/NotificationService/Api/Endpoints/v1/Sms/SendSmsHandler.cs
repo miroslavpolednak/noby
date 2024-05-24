@@ -89,7 +89,7 @@ internal class SendSmsHandler : IRequestHandler<SendSmsRequest, SendSmsResponse>
         
         var sendSms = new McsSendApi.v4.sms.SendSMS
         {
-            id = result.Id.ToString(),
+            id = Configuration.KafkaTopics.McsIdPrefix + result.Id.ToString(),
             phone = phone.Map(),
             type = smsType.McsCode,
             text = request.Text,

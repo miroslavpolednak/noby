@@ -116,7 +116,7 @@ internal sealed class SendEmailHandler : IRequestHandler<SendEmailRequest, SendE
 
                 var sendEmail = new McsSendApi.v4.email.SendEmail
                 {
-                    id = result.Id.ToString(),
+                    id = Configuration.KafkaTopics.McsIdPrefix + result.Id.ToString(),
                     notificationConsumer = McsEmailMappers.MapToMcs(consumerId),
                     sender = request.From.MapToMcs(),
                     to = request.To.MapToMcs().ToList(),

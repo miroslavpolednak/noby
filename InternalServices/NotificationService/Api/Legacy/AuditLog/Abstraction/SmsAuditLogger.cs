@@ -10,5 +10,5 @@ public interface ISmsAuditLogger
 
     void LogKafkaProduceError(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, string consumer, string? identity, string? identityScheme, long? caseId, string? customId, string? documentId, string? documentHash, string? hashAlgorithm);
 
-    void LogKafkaResultReceived(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, NotificationReport report);
+    void LogKafkaResultReceived(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, NotificationReport report, Guid notificationId);
 }

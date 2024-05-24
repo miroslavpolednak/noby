@@ -99,7 +99,7 @@ internal sealed class SendEmailHandler(
 
             var message = new McsSendApi.v4.email.SendEmail
             {
-                id = notificationInstance.Id.ToString(),
+                id = Configuration.KafkaTopics.McsIdPrefix + notificationInstance.Id.ToString(),
                 notificationConsumer = new()
                 {
                     consumerId = _serviceUser.ConsumerId
