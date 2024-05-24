@@ -1,4 +1,6 @@
 ﻿using CIS.Core;
+using SharedTypes.Types;
+using System.ComponentModel.DataAnnotations;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.HttpHandlers;
 
@@ -14,13 +16,22 @@ public sealed class KbPartyHeaderHttpHandler
     // vim ze to neni hezke, ale nenapada me jak jinak
     private readonly IServiceProvider _serviceProvider;
 
-    public KbPartyHeaderHttpHandler(IServiceProvider serviceProvider)
+    // identita ktera se ma pouzit, pokud neni k dispozici kontext prihlaseneho uzivatele
+    private readonly FallbackIdentity? _fallbackIdentity;
+
+    public KbPartyHeaderHttpHandler(IServiceProvider serviceProvider, UserIdentity? fallbackIdentity = null)
     {
         _serviceProvider = serviceProvider;
+
+        if (fallbackIdentity is not null)
+        {
+            _fallbackIdentity = new(fallbackIdentity.Scheme.GetAttribute<DisplayAttribute>()!.Name!, fallbackIdentity.Identity);
+        }
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        bool useFallback = true;
         var login = _serviceProvider.GetService<CIS.Core.Security.ICurrentUserAccessor>()?.User?.Login;
 
         if (!string.IsNullOrEmpty(login))
@@ -29,9 +40,17 @@ public sealed class KbPartyHeaderHttpHandler
             if (index > 0)
             {
                 request.Headers.Replace("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"idScheme":"{{login[..index]}}","id":"{{login[(index + 1)..]}}"},"usg":"AUTH"}]}""");
+                useFallback = false;
             }
         }
-        
+
+        if (useFallback && _fallbackIdentity is not null)
+        {
+			request.Headers.Replace("X-KB-Party-Identity-In-Service", $$"""{"partyIdIS":[{"partyId":{"idScheme":"{{_fallbackIdentity.Schema}}","id":"{{_fallbackIdentity.Id}}"},"usg":"AUTH"}]}""");
+		}
+
         return await base.SendAsync(request, cancellationToken);
     }
+
+    private record FallbackIdentity(string Schema, string Id) { }
 }

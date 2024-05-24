@@ -20,20 +20,12 @@ public static class StartupExtensions
 
         switch (version, configuration.ImplementationType)
         {
-            case (CustomerManagement.V1.ICustomerManagementClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<CustomerManagement.V1.ICustomerManagementClient, CustomerManagement.V1.MockCustomerManagementClient>();
-                break;
-
-            case (CustomerManagement.V1.ICustomerManagementClient.Version, ServiceImplementationTypes.Real):
-                AddRestClient<CustomerManagement.V1.ICustomerManagementClient, CustomerManagement.V1.RealCustomerManagementClient>(builder);
-                break;
-
             case (CustomerManagement.V2.ICustomerManagementClient.Version, ServiceImplementationTypes.Mock):
-                builder.Services.AddTransient<CustomerManagement.V1.ICustomerManagementClient, CustomerManagement.V1.MockCustomerManagementClient>();
+                builder.Services.AddTransient<CustomerManagement.V2.ICustomerManagementClient, CustomerManagement.V2.MockCustomerManagementClient>();
                 break;
 
             case (CustomerManagement.V2.ICustomerManagementClient.Version, ServiceImplementationTypes.Real):
-                AddRestClient<CustomerManagement.V2.ICustomerManagementClient, CustomerManagement.V2.RealCustomerManagementClient>(builder);
+                AddRestClient<CustomerManagement.V2.ICustomerManagementClient, CustomerManagement.V2.RealCustomerManagementClient>(builder, configuration.Username!);
                 break;
             default:
                 throw new NotImplementedException($"{ServiceName} version {typeof(TClient)} client not implemented");
@@ -42,13 +34,13 @@ public static class StartupExtensions
         return builder;
     }
 
-    private static void AddRestClient<TClient, TImplementation>(WebApplicationBuilder builder)
+    private static void AddRestClient<TClient, TImplementation>(WebApplicationBuilder builder, in string fallbackUsername)
         where TClient : class, IExternalServiceClient
         where TImplementation : class, TClient
     {
         builder.AddExternalServiceRestClient<TClient, TImplementation>()
                .AddExternalServicesKbHeaders()
-               .AddExternalServicesKbPartyHeaders()
-               .AddExternalServicesErrorHandling(ServiceName);
+			   .AddExternalServicesKbPartyHeadersWithFallback(new SharedTypes.Types.UserIdentity(fallbackUsername, UserIdentitySchemes.KbUms))
+			   .AddExternalServicesErrorHandling(ServiceName);
     }
 }

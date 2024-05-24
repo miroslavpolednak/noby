@@ -29,8 +29,8 @@ public static class StartupExtensions
                 builder
                     .AddExternalServiceRestClient<Kyc.V1.IKycClient, Kyc.V1.RealKycClient>()
                     .AddExternalServicesKbHeaders()
-                    .AddExternalServicesKbPartyHeaders()
-                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
+					.AddExternalServicesKbPartyHeadersWithFallback(new SharedTypes.Types.UserIdentity(configuration.Username!, UserIdentitySchemes.KbUms))
+					.AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
             default:
