@@ -24,6 +24,12 @@ public static class HttpHandlersExtensions
     public static IHttpClientBuilder AddExternalServicesKbPartyHeaders(this IHttpClientBuilder builder)
         => builder.AddHttpMessageHandler(b => new HttpHandlers.KbPartyHeaderHttpHandler(b));
 
+	/// <summary>
+	/// Prida do kazdeho requestu HttpClienta hlavicku s aktualnim uzivatelem vyzadovanou v KB.
+	/// </summary>
+    /// <remarks>
+    /// Pokud neexistuje kontext aktualniho uzivatele, fallbackuje na identitu zadanou v parametru.
+    /// </remarks>
 	public static IHttpClientBuilder AddExternalServicesKbPartyHeadersWithFallback(this IHttpClientBuilder builder, UserIdentity fallbackIdentity)
 		=> builder.AddHttpMessageHandler(b => new HttpHandlers.KbPartyHeaderHttpHandler(b, fallbackIdentity));
 
