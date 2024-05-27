@@ -260,6 +260,8 @@ internal sealed class RealSbWebApiClient
         var sbRequest = new HedgeRefixationAppendix_request
         {
             Case_id = (int?)request.CaseId,
+            Count_of_payments = request.LoanPaymentsCount,
+            Maturity_date = request.MaturityDate,
             Interest_rate = (double?)request.InterestRateProvided,
             Date_from = DateOnly.FromDateTime(request.FixedRateValidTo),
             Fixation_time = request.FixedRatePeriod,
