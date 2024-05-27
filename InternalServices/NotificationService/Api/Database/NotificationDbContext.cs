@@ -20,7 +20,8 @@ internal sealed class NotificationDbContext(BaseDbContextAggregate<NotificationD
     {
         modelBuilder
             .Entity<Notification>()
-            .OwnsMany(notification => notification.Errors, b => b.ToJson());
+            .OwnsMany(notification => notification.Errors, b => b.ToJson())
+            .OwnsMany(notification => notification.DocumentHashes, b => b.ToJson());
 
         #region legacy code
         modelBuilder.Entity<Result>()

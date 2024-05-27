@@ -16,8 +16,8 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.IdentifierFieldNumber">
             <summary>Field number for the "Identifier" field.</summary>
         </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.CaseIdFieldNumber">
-            <summary>Field number for the "CaseId" field.</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.ProductFieldNumber">
+            <summary>Field number for the "Product" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.CustomIdFieldNumber">
             <summary>Field number for the "CustomId" field.</summary>
@@ -25,8 +25,8 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.DocumentIdFieldNumber">
             <summary>Field number for the "DocumentId" field.</summary>
         </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.DocumentHashFieldNumber">
-            <summary>Field number for the "DocumentHash" field.</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.DocumentHashesFieldNumber">
+            <summary>Field number for the "DocumentHashes" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsRequest.TextFieldNumber">
             <summary>Field number for the "Text" field.</summary>
@@ -58,8 +58,8 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.IdentifierFieldNumber">
             <summary>Field number for the "Identifier" field.</summary>
         </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.CaseIdFieldNumber">
-            <summary>Field number for the "CaseId" field.</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.ProductFieldNumber">
+            <summary>Field number for the "Product" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.CustomIdFieldNumber">
             <summary>Field number for the "CustomId" field.</summary>
@@ -67,11 +67,8 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.DocumentIdFieldNumber">
             <summary>Field number for the "DocumentId" field.</summary>
         </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.DocumentHashFieldNumber">
-            <summary>Field number for the "DocumentHash" field.</summary>
-        </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.IsAuditableFieldNumber">
-            <summary>Field number for the "IsAuditable" field.</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.DocumentHashesFieldNumber">
+            <summary>Field number for the "DocumentHashes" field.</summary>
         </member>
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.SendEmailRequest.Types">
             <summary>Container for nested types declared in the SendEmailRequest message type.</summary>
@@ -124,8 +121,8 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.IdentifierFieldNumber">
             <summary>Field number for the "Identifier" field.</summary>
         </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.CaseIdFieldNumber">
-            <summary>Field number for the "CaseId" field.</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.ProductIdFieldNumber">
+            <summary>Field number for the "ProductId" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.SearchResultsRequest.CustomIdFieldNumber">
             <summary>Field number for the "CustomId" field.</summary>
@@ -220,6 +217,15 @@
         <member name="P:CIS.InternalServices.NotificationService.Contracts.v2.TypesReflection.Descriptor">
             <summary>File descriptor for Messages/Types.proto</summary>
         </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.Product.ProductIdFieldNumber">
+            <summary>Field number for the "ProductId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.Product.ProductTypeFieldNumber">
+            <summary>Field number for the "ProductType" field.</summary>
+        </member>
+        <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.Product.Types">
+            <summary>Container for nested types declared in the Product message type.</summary>
+        </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.DocumentHash.HashFieldNumber">
             <summary>Field number for the "Hash" field.</summary>
         </member>
@@ -271,8 +277,8 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.IdentifierFieldNumber">
             <summary>Field number for the "Identifier" field.</summary>
         </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.CaseIdFieldNumber">
-            <summary>Field number for the "CaseId" field.</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.ProductFieldNumber">
+            <summary>Field number for the "Product" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.CustomIdFieldNumber">
             <summary>Field number for the "CustomId" field.</summary>
@@ -280,8 +286,8 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.DocumentIdFieldNumber">
             <summary>Field number for the "DocumentId" field.</summary>
         </member>
-        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.DocumentHashFieldNumber">
-            <summary>Field number for the "DocumentHash" field.</summary>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.DocumentHashesFieldNumber">
+            <summary>Field number for the "DocumentHashes" field.</summary>
         </member>
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.RequestTimestampFieldNumber">
             <summary>Field number for the "RequestTimestamp" field.</summary>

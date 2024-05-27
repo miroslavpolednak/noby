@@ -33,9 +33,9 @@ internal sealed class SendSmsRequestValidator
             .When(t => t.Identifier is not null)
             .WithErrorCode(ErrorCodeMapper.IdentifierInvalid);
 
-        RuleFor(request => request.CaseId)
-            .GreaterThan(0)
-            .When(t => t.CaseId.HasValue)
+        RuleFor(request => request.Product)
+            .SetValidator (new ProductValidator())
+            .When(t => t.Product is not null)
             .WithErrorCode(ErrorCodeMapper.CaseIdInvalid);
         
         RuleFor(request => request.CustomId)
@@ -48,9 +48,9 @@ internal sealed class SendSmsRequestValidator
             .When(t => !string.IsNullOrEmpty(t.DocumentId))
             .WithErrorCode(ErrorCodeMapper.DocumentIdInvalid);
     
-        RuleFor(request => request.DocumentHash)
+        RuleForEach(request => request.DocumentHashes)
             .SetValidator(new DocumentHashValidator())
-            .When(t => t.DocumentHash is not null)
+            .When(t => t.DocumentHashes is not null && t.DocumentHashes.Count > 0)
             .WithErrorCode(ErrorCodeMapper.DocumentHashInvalid);
     }
 }
