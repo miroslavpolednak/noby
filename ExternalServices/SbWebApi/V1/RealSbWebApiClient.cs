@@ -261,7 +261,7 @@ internal sealed class RealSbWebApiClient
         {
             Case_id = (int?)request.CaseId,
             Interest_rate = (double?)request.InterestRateProvided,
-            Date_from = request.FixedRateValidTo,
+            Date_from = DateOnly.FromDateTime(request.FixedRateValidTo),
             Fixation_time = request.FixedRatePeriod,
             Payment_amount = (double?)request.PaymentAmount,
             Print_signature_form = request.SignatureTypeDetailId,
@@ -283,7 +283,7 @@ internal sealed class RealSbWebApiClient
         {
             Case_id = (int?)documentRequest.CaseId,
             Interest_rate = (double?)documentRequest.InterestRateProvided,
-            Date_from = documentRequest.FixedRateValidTo,
+            Date_from = DateOnly.FromDateTime(documentRequest.FixedRateValidTo),
             Fixation_time = documentRequest.FixedRatePeriod,
             Payment_amount = (double?)documentRequest.PaymentAmount,
             Print_signature_form = documentRequest.SignatureTypeDetailId,
