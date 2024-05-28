@@ -1,0 +1,1 @@
+UPDATE ScheduleTrigger SET IsDisabled = 1 WHERE TriggerName IN ('SyncDatamartRefixation', 'DeleteRefixationOfferOlderThan')
