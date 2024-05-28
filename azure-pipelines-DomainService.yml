@@ -6,10 +6,9 @@ trigger: none
 pool:
   name: MPSS Common
 
-#Sonar does not work old value: $[or(eq(lower(variables['Build.SourceBranchName']), 'stage'), eq(lower(variables['Build.SourceBranchName']), 'production'), ne(lower(variables['USESONARQUBE']), 'false'))]
 variables:
   - name: runSonarQube
-    value: $[or(eq(lower(variables['Build.SourceBranchName']), 'production'), ne(lower(variables['USESONARQUBE']), 'false'))]
+    value: $[or(eq(lower(variables['Build.SourceBranchName']), 'stage'), eq(lower(variables['Build.SourceBranchName']), 'production'), ne(lower(variables['USESONARQUBE']), 'false'))]
   - template: azure-pipelines-vars.yml
 
 # custom BuildNumber
