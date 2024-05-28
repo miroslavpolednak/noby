@@ -125,14 +125,14 @@ internal sealed class GetRefinancingParametersHandler(
                 detail.LoanInterestRateProvided = process.MortgageRefixation.LoanInterestRateProvided ?? process.MortgageRefixation.LoanInterestRate;
                 detail.EffectiveDate = process.MortgageRefixation.EffectiveDate;
                 detail.LoanInterestRateValidFrom = mortgage?.FixedRateValidTo != null ? DateOnly.FromDateTime(((DateTime)mortgage.FixedRateValidTo).AddDays(1)) : null;
-                detail.LoanInterestRateValidTo = mortgage?.FixedRateValidTo != null ? DateOnly.FromDateTime(((DateTime)mortgage.FixedRateValidTo).AddMonths(process.MortgageRefixation.FixedRatePeriod.GetValueOrDefault())) : null;
+                detail.LoanInterestRateValidTo = mortgage?.FixedRateValidTo != null && process.MortgageRefixation.FixedRatePeriod.HasValue ? DateOnly.FromDateTime(((DateTime)mortgage.FixedRateValidTo).AddMonths(process.MortgageRefixation.FixedRatePeriod.Value)) : null;
                 detail.DocumentId = process.MortgageRefixation.DocumentId;
                 break;
 
             case ProcessTask.AmendmentsOneofCase.MortgageLegalNotice:
                 detail.LoanInterestRateProvided = process.MortgageLegalNotice.LoanInterestRateProvided;
                 detail.LoanInterestRateValidFrom = mortgage?.FixedRateValidTo != null ? DateOnly.FromDateTime(((DateTime)mortgage.FixedRateValidTo).AddDays(1)) : null;
-                detail.LoanInterestRateValidTo = mortgage?.FixedRateValidTo != null ? DateOnly.FromDateTime(((DateTime)mortgage.FixedRateValidTo).AddMonths(process.MortgageLegalNotice.FixedRatePeriod.GetValueOrDefault())) : null;
+                detail.LoanInterestRateValidTo = mortgage?.FixedRateValidTo != null && process.MortgageLegalNotice.FixedRatePeriod.HasValue ? DateOnly.FromDateTime(((DateTime)mortgage.FixedRateValidTo).AddMonths(process.MortgageLegalNotice.FixedRatePeriod.Value)) : null;
                 detail.DocumentId = process.MortgageLegalNotice.DocumentId;
                 break;
         }
