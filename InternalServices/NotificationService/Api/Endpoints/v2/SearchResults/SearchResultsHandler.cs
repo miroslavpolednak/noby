@@ -42,9 +42,9 @@ internal sealed class SearchResultsHandler(
             query = query.Where(t => t.Identity == request.Identifier.Identity && t.IdentityScheme == request.Identifier.IdentityScheme);
         }
 
-        if (request.CaseId.HasValue)
+        if (!string.IsNullOrEmpty(request.ProductId))
         {
-            query = query.Where(t => t.CaseId == request.CaseId);
+            query = query.Where(t => t.ProductId == request.ProductId);
         }
 
         if (!string.IsNullOrEmpty(request.CustomId))

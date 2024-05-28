@@ -11,7 +11,7 @@ internal sealed class SearchResultsRequestValidator
     {
         RuleFor(request => request)
             .Must(request =>
-                request.CaseId.HasValue ||
+                !string.IsNullOrEmpty(request.ProductId) ||
                 !string.IsNullOrEmpty(request.CustomId) ||
                 !string.IsNullOrEmpty(request.DocumentId) ||
                 request.Identifier is not null)
@@ -21,13 +21,6 @@ internal sealed class SearchResultsRequestValidator
             .SetValidator(new IdentifierValidator())
             .When(t => t.Identifier is not null)
             .WithErrorCode(ErrorCodeMapper.IdentifierInvalid);
-
-        When(request => request.CaseId.HasValue, () =>
-        {
-            RuleFor(request => request.CaseId!.Value)
-                .GreaterThan(0)
-                    .WithErrorCode(ErrorCodeMapper.CaseIdInvalid);
-        });
 
         When(request => request.CustomId is not null, () =>
         {

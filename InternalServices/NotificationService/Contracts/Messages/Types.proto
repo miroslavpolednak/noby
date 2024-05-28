@@ -24,6 +24,19 @@ enum NotificationChannels
     Email = 2;
 }
 
+message Product
+{
+    string ProductId = 1;
+    ProductTypes ProductType = 2;
+
+    enum ProductTypes {
+        Unknown = 0;
+        MortgageCaseId = 1;
+        MortgageFormId = 2;
+        MortgageSalesArrangementId = 3;
+    }
+}
+
 message DocumentHash
 {
     string Hash = 1;
@@ -61,10 +74,10 @@ message ResultData
     NotificationChannels Channel = 3;
     repeated ResultError Errors = 4;
     cis.types.UserIdentity Identifier = 5;
-    google.protobuf.Int64Value CaseId = 6;
+	Product Product = 6;
     google.protobuf.StringValue CustomId = 7;
     google.protobuf.StringValue DocumentId = 8;
-    DocumentHash DocumentHash = 9;
+    repeated DocumentHash DocumentHashes = 9;
     google.protobuf.Timestamp RequestTimestamp = 10;
     google.protobuf.Timestamp ResultTimestamp = 11;
     string CreatedBy = 12;

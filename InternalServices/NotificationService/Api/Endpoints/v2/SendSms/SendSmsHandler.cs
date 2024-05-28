@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Exceptions;
+using CIS.InternalServices.NotificationService.Api.Database;
 using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 using DomainServices.CodebookService.Clients;
@@ -6,7 +7,7 @@ using DomainServices.CodebookService.Contracts.v1;
 using KafkaFlow;
 using SharedAudit;
 using SharedComponents.DocumentDataStorage;
-using System.Globalization;
+using System.Text.Json;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendSms;
 
@@ -37,11 +38,11 @@ internal sealed class SendSmsHandler(
             Channel = NotificationChannels.Sms,
             Identity = request.Identifier?.Identity,
             IdentityScheme = request.Identifier?.IdentityScheme,
-            CaseId = request.CaseId,
+            ProductId = request.Product?.ProductId,
+            ProductType = request.Product?.ProductType,
             CustomId = request.CustomId,
             DocumentId = request.DocumentId,
-            DocumentHash = request.DocumentHash?.Hash,
-            HashAlgorithm = request.DocumentHash?.HashAlgorithm,//.ToString(),
+            DocumentHashes = request.DocumentHashes,
             CreatedTime = _dateTime.GetLocalNow().DateTime,
             CreatedUserName = _serviceUser.UserName
         };
@@ -116,41 +117,36 @@ internal sealed class SendSmsHandler(
         in bool isSuccesful,
         in string? errorMessage = null)
     {
-        if (smsType.IsAuditLogEnabled)
-        {
-            var bodyBefore = new Dictionary<string, string>
+        var bodyBefore = new Dictionary<string, string>
             {
                 { "smsType", smsType.Code },
-                { "consumer", consumerId },
-                { "serviceUserName", _serviceUser.UserName },
                 { "phoneNumber", request.PhoneNumber },
-                { "processingPriority", request.ProcessingPriority?.ToString(CultureInfo.InvariantCulture) ?? "" },
-                { "type", request.Type },
-                { "text", request.Text },
+                { "consumer", consumerId },
                 { "identityId", request.Identifier?.Identity ?? string.Empty },
                 { "identityScheme", request.Identifier?.IdentityScheme.ToString() ?? string.Empty },
-                { "caseId", request.CaseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
                 { "customId", request.CustomId ?? string.Empty },
                 { "documentId", request.DocumentId ?? string.Empty },
-                { "documentHash", request.DocumentHash?.Hash ?? string.Empty },
-                { "documentHashAlgorithm", request.DocumentHash?.HashAlgorithm.ToString() ?? string.Empty }
+                { "documentHashes", addValue(request.DocumentHashes) }
             };
 
-            if (!isSuccesful)
-            {
-                bodyBefore.Add("errorMessage", errorMessage ?? "");
-            }
-
-            _auditLogger.Log(
-                AuditEventTypes.Noby013,
-                isSuccesful ? "Produced message SendSMS to KAFKA" : "Could not produce message SendSMS to KAFKA",
-                bodyBefore: bodyBefore,
-                bodyAfter: new Dictionary<string, string>
-                {
-                    { "notificationId", notificationId.ToString() }
-                }
-            );
+        if (!isSuccesful)
+        {
+            bodyBefore.Add("errorMessage", errorMessage ?? "");
         }
+
+        _auditLogger.Log(
+            AuditEventTypes.Noby013,
+            isSuccesful ? "Produced message SendSMS to KAFKA" : "Could not produce message SendSMS to KAFKA",
+            products: request.Product?.ToAuditLoggerHeaderItems(),
+            bodyBefore: bodyBefore,
+            bodyAfter: new Dictionary<string, string>
+            {
+                    { "notificationId", notificationId.ToString() }
+            }
+        );
+
+        string addValue<TData>(TData? data)
+            => data != null ? JsonSerializer.Serialize(data, EntitiesExtensions._jsonSerializerOptions) : string.Empty;
     }
 
     /// <summary>

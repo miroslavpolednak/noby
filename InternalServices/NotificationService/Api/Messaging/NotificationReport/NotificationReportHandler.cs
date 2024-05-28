@@ -43,6 +43,9 @@ internal sealed class NotificationReportHandler
             if (notificationInstance.Channel == Contracts.v2.NotificationChannels.Sms)
             {
                 await auditLogSmsResult(message, notificationId.ToString());
+            } else
+            {
+                auditLogEmailResult(message, notificationId.ToString());
             }
 
             if (_statusesMap.TryGetValue(message.state, out Contracts.v2.NotificationStates state))
@@ -72,26 +75,43 @@ internal sealed class NotificationReportHandler
         var smsData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.SmsData, string>(notificationId);
         var smsType = (await _codebookService.SmsNotificationTypes()).First(s => s.Code == smsData?.Data?.SmsType);
 
-        if (smsType.IsAuditLogEnabled)
-        {
-            var bodyBefore = new Dictionary<string, string>
+        var bodyBefore = new Dictionary<string, string>
             {
                 { "smsType", smsType.Code },
                 { "notificationId", notificationId },
                 { "state", message.state }
             };
 
-            if (message.notificationErrors is not null && message.notificationErrors.Count > 0)
-            {
-                bodyBefore.Add("errors", System.Text.Json.JsonSerializer.Serialize(message.notificationErrors));
-            }
-
-            _auditLogger.Log(
-                AuditEventTypes.Noby014,
-                "Received notification report for sms",
-                bodyBefore: bodyBefore
-            );
+        if (message.notificationErrors is not null && message.notificationErrors.Count > 0)
+        {
+            bodyBefore.Add("errors", System.Text.Json.JsonSerializer.Serialize(message.notificationErrors));
         }
+
+        _auditLogger.Log(
+            AuditEventTypes.Noby014,
+            "Received notification report for sms",
+            bodyBefore: bodyBefore
+        );
+    }
+
+    private void auditLogEmailResult(cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport message, string notificationId)
+    {
+        var bodyBefore = new Dictionary<string, string>
+            {
+                { "notificationId", notificationId },
+                { "state", message.state }
+            };
+
+        if (message.notificationErrors is not null && message.notificationErrors.Count > 0)
+        {
+            bodyBefore.Add("errors", System.Text.Json.JsonSerializer.Serialize(message.notificationErrors));
+        }
+
+        _auditLogger.Log(
+            AuditEventTypes.Noby014,
+            "Received notification report for email",
+            bodyBefore: bodyBefore
+        );
     }
 
     private static readonly Dictionary<string, Contracts.v2.NotificationStates> _statusesMap = new()
