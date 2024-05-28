@@ -3,4 +3,6 @@
 public class ConsumeResultRequest : IRequest<ConsumeResultResponse>
 {
     public cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport NotificationReport { get; set; } = null!;
+
+    public Guid Id { get; set; }
 }

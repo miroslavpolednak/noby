@@ -38,7 +38,7 @@ internal sealed class CustomerChangeBuilder
 
             foreach (var customer in applicants)
             {
-                var identity = customer.CustomerIdentifiers.First();
+                var identity = customer.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb, customer.CustomerIdentifiers.First());
                 var customerDetail = await customerService.GetCustomerDetail(identity, cancellationToken);
                 loadedCustomers.Add(customerDetail);
 
@@ -56,7 +56,8 @@ internal sealed class CustomerChangeBuilder
                         Number = customerDetail.IdentificationDocument?.Number ?? ""
                     }
                 };
-                applicant.Identity.Add(identity);
+
+                applicant.Identity.AddRange(customer.CustomerIdentifiers);
 
                 Request.CustomerChange.Applicants.Add(applicant);
             }

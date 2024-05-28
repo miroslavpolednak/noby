@@ -114,6 +114,10 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int SmsTemplatePlaceholdersRequired = 384;
     public const int SmsTemplatePlaceholdersInvalid = 385;
 
+    // product
+    public const int ProductIdRequired = 386;
+    public const int ProductTypeRequired = 387;
+
     // TODO Internal
     public const int ResultNotFound = 390;
     public const string CreateEmailResultFailed = "391";
@@ -207,6 +211,9 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
 
             { SmsTemplatePlaceholdersRequired, $"{nameof(SendSmsFromTemplateRequest.Placeholders)} required." },
             { SmsTemplatePlaceholdersInvalid, $"{nameof(SendSmsFromTemplateRequest.Placeholders)} must contain non-empty values." },
+
+            { ProductIdRequired, $"{nameof(Contracts.v2.Product.ProductId)} required." },
+            { ProductTypeRequired, $"{nameof(Contracts.v2.Product.ProductType)} required." },
             
             // { ResultNotFound, "TODO" },
             // { CreateEmailResultFailed, "TODO" },

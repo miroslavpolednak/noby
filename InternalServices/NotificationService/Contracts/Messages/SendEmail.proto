@@ -16,11 +16,10 @@ message SendEmailRequest {
 	EmailContent Content = 7;
 	repeated EmailAttachment Attachments = 8;
 	cis.types.UserIdentity Identifier = 9;
-	google.protobuf.Int64Value CaseId = 10;
+	Product Product = 10;
 	google.protobuf.StringValue CustomId = 11;
 	google.protobuf.StringValue DocumentId = 12;
-	DocumentHash DocumentHash = 13;
-	bool IsAuditable = 14;
+	repeated DocumentHash DocumentHashes = 13;
 
 	message EmailContent
 	{

@@ -129,7 +129,7 @@ public class SmsAuditLogger : ISmsAuditLogger
         }
     }
 
-    public void LogKafkaResultReceived(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, NotificationReport report)
+    public void LogKafkaResultReceived(SmsNotificationTypesResponse.Types.SmsNotificationTypeItem smsType, NotificationReport report, Guid notificationId)
     {
         if (smsType.IsAuditLogEnabled)
         {
@@ -139,7 +139,7 @@ public class SmsAuditLogger : ISmsAuditLogger
                 bodyBefore: new Dictionary<string, string>
                 {
                     { "smsType", smsType.Code },
-                    { "notificationId", report.id },
+                    { "notificationId", notificationId.ToString() },
                     { "state", report.state },
                     { "errors", ToLiteral(JsonConvert.SerializeObject(report.notificationErrors)) }
                 });

@@ -29,8 +29,8 @@ public static class StartupExtensions
                 builder
                     .AddExternalServiceRestClient<IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient, IdentifiedSubjectBr.V1.RealIdentifiedSubjectBrClient>()
                     .AddExternalServicesKbHeaders()
-                    .AddExternalServicesKbPartyHeaders()
-                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
+					.AddExternalServicesKbPartyHeadersWithFallback(new SharedTypes.Types.UserIdentity(configuration.Username!, UserIdentitySchemes.KbUms))
+					.AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
             default:

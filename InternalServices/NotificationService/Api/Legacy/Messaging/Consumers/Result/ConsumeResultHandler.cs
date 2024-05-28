@@ -42,17 +42,12 @@ public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, Consum
     public async Task<ConsumeResultResponse> Handle(ConsumeResultRequest request, CancellationToken cancellationToken)
     {
         var report = request.NotificationReport;
-        if (!Guid.TryParse(report.id, out var id))
-        {
-            _logger.LogTrace("Skipped for notificationId: {id}", report.id);
-            return new ConsumeResultResponse();
-        }
-
+     
         try
         {
             await using var scope = _provider.CreateAsyncScope();
             var repository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
-            var result = await repository.GetResult(id, cancellationToken);
+            var result = await repository.GetResult(request.Id, cancellationToken);
             result.ResultTimestamp = _dateTime.GetLocalNow().DateTime;
             result.State = _map[report.state];
 
@@ -60,7 +55,7 @@ public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, Consum
             {
                 var smsTypes = await _codebookService.SmsNotificationTypes(cancellationToken);
                 var smsType = smsTypes.First(s => s.Code == smsResult.Type);
-                _smsAuditLogger.LogKafkaResultReceived(smsType, report);
+                _smsAuditLogger.LogKafkaResultReceived(smsType, report, request.Id);
             }
             
             var errorCodes = report.notificationErrors?
@@ -78,15 +73,15 @@ public class ConsumeResultHandler : IRequestHandler<ConsumeResultRequest, Consum
 
             await repository.SaveChanges(cancellationToken);
 
-            _logger.LogDebug($"Result updated for notificationId: {id}");
+            _logger.LogDebug($"Result updated for notificationId: {request.Id}");
         }
         catch (CisNotFoundException)
         {
-            _logger.LogTrace("Result not found for notificationId: {id}", report.id);
+            _logger.LogTrace("Result not found for notificationId: {id}", request.Id);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Update result failed for notificationId: {id}", report.id);
+            _logger.LogError(e, "Update result failed for notificationId: {id}", request.Id);
         }
 
         return new ConsumeResultResponse();

@@ -260,8 +260,10 @@ internal sealed class RealSbWebApiClient
         var sbRequest = new HedgeRefixationAppendix_request
         {
             Case_id = (int?)request.CaseId,
+            Count_of_payments = request.LoanPaymentsCount,
+            Maturity_date = request.MaturityDate,
             Interest_rate = (double?)request.InterestRateProvided,
-            Date_from = request.FixedRateValidTo,
+            Date_from = DateOnly.FromDateTime(request.FixedRateValidTo),
             Fixation_time = request.FixedRatePeriod,
             Payment_amount = (double?)request.PaymentAmount,
             Print_signature_form = request.SignatureTypeDetailId,
@@ -271,7 +273,7 @@ internal sealed class RealSbWebApiClient
             Individual_pricing = request.IndividualPricing
         };
 
-        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/api/refixationservices/hedgrefixationappendix", sbRequest, cancellationToken);
+        var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/api/refixationservices/hedgerefixationappendix", sbRequest, cancellationToken);
         var responseObject = await RequestHelper.ProcessResponse<HedgeRefixationAppendix_response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
 
         return responseObject.Ea_number;
@@ -283,7 +285,7 @@ internal sealed class RealSbWebApiClient
         {
             Case_id = (int?)documentRequest.CaseId,
             Interest_rate = (double?)documentRequest.InterestRateProvided,
-            Date_from = documentRequest.FixedRateValidTo,
+            Date_from = DateOnly.FromDateTime(documentRequest.FixedRateValidTo),
             Fixation_time = documentRequest.FixedRatePeriod,
             Payment_amount = (double?)documentRequest.PaymentAmount,
             Print_signature_form = documentRequest.SignatureTypeDetailId,

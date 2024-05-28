@@ -1,11 +1,12 @@
 ﻿using CIS.Core.Exceptions.ExternalServices;
+using CIS.InternalServices.NotificationService.Api.Database;
 using CIS.InternalServices.NotificationService.Api.Services;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 using KafkaFlow;
 using SharedAudit;
 using SharedComponents.DocumentDataStorage;
 using SharedComponents.Storage;
-using System.Globalization;
+using System.Text.Json;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendEmail;
 
@@ -37,11 +38,11 @@ internal sealed class SendEmailHandler(
             State = NotificationStates.InProgress,
             Identity = request.Identifier?.Identity,
             IdentityScheme = request.Identifier?.IdentityScheme,
-            CaseId = request.CaseId,
+            ProductId = request.Product?.ProductId,
+            ProductType = request.Product?.ProductType,
             CustomId = request.CustomId,
             DocumentId = request.DocumentId,
-            DocumentHash = request.DocumentHash?.Hash,
-            HashAlgorithm = request.DocumentHash?.HashAlgorithm,  
+            DocumentHashes = request.DocumentHashes,
             CreatedTime = _dateTime.GetLocalNow().DateTime,
             CreatedUserName = _serviceUser.UserName,
             Mandant = senderType
@@ -65,7 +66,6 @@ internal sealed class SendEmailHandler(
             ReplyTo = request.ReplyTo,
             Format = request.Content.Format,
             Language = request.Content.Language,
-            IsAuditable = request.IsAuditable,
             Attachments = request.Attachments?.Select(t => new Database.DocumentDataEntities.EmailData.EmailAttachment
             {
                 Filename = t.Filename,
@@ -99,7 +99,7 @@ internal sealed class SendEmailHandler(
 
             var message = new McsSendApi.v4.email.SendEmail
             {
-                id = notificationInstance.Id.ToString(),
+                id = Configuration.KafkaTopics.McsIdPrefix + notificationInstance.Id.ToString(),
                 notificationConsumer = new()
                 {
                     consumerId = _serviceUser.ConsumerId
@@ -138,10 +138,8 @@ internal sealed class SendEmailHandler(
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
                 _logger.NotificationSent(notificationInstance.Id, NotificationChannels.Email);
-                if (request.IsAuditable)
-                {
-                    createAuditLog(request, _serviceUser.ConsumerId, notificationInstance.Id, true);
-                }
+
+                createAuditLog(request, _serviceUser.ConsumerId, notificationInstance.Id, true);
             }
             catch (Exception ex)
             {
@@ -150,14 +148,12 @@ internal sealed class SendEmailHandler(
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
                 _logger.NotificationFailedToSend(notificationInstance.Id, NotificationChannels.Email, ex);
-                if (request.IsAuditable)
-                {
-                    createAuditLog(request, _serviceUser.ConsumerId, notificationInstance.Id, false, ex.Message);
-                }
-                
+
+                createAuditLog(request, _serviceUser.ConsumerId, notificationInstance.Id, false, ex.Message);
+
                 throw new CIS.Core.Exceptions.ExternalServices.CisExternalServiceUnavailableException(0, "MCS"); ;
             }
-        } else if (request.IsAuditable) // mpss vetev - jen logujeme, email odesle job
+        } else // mpss vetev - jen logujeme, email odesle job
         {
             createAuditLog(request, _serviceUser.ConsumerId, notificationInstance.Id, true);
         }
@@ -177,24 +173,16 @@ internal sealed class SendEmailHandler(
     {
         var bodyBefore = new Dictionary<string, string>
         {
-            { "subject", request.Subject },
-            { "text", request.Content.Text },
+            { "from", request.From.Value },
+            { "to", addValue(request.To.Select(t => t.Value)) },
             { "consumer", consumerId },
             { "serviceUserName", _serviceUser.UserName },
             { "identityId", request.Identifier?.Identity ?? string.Empty },
             { "identityScheme", request.Identifier?.IdentityScheme.ToString() ?? string.Empty },
-            { "caseId", request.CaseId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty },
             { "customId", request.CustomId ?? string.Empty },
             { "documentId", request.DocumentId ?? string.Empty },
-            { "documentHash", request.DocumentHash?.Hash ?? string.Empty },
-            { "documentHashAlgorithm", request.DocumentHash?.HashAlgorithm.ToString() ?? string.Empty }
+            { "documentHashes", addValue(request.DocumentHashes) },
         };
-
-        addToBody("from", request.From);
-        addToBody("to", request.To);
-        addToBody("cc", request.Cc);
-        addToBody("bcc", request.Bcc);
-        addToBody("replyTo", request.ReplyTo);
 
         if (!isSuccesful)
         {
@@ -204,6 +192,7 @@ internal sealed class SendEmailHandler(
         _auditLogger.Log(
             AuditEventTypes.Noby013,
             isSuccesful ? "Produced message SendEmail to KAFKA" : "Could not produce message SendEmail to KAFKA",
+            products: request.Product?.ToAuditLoggerHeaderItems(),
             bodyBefore: bodyBefore,
             bodyAfter: new Dictionary<string, string>
             {
@@ -211,13 +200,8 @@ internal sealed class SendEmailHandler(
             }
         );
 
-        void addToBody<TData>(in string key, TData? data)
-        {
-            if (data is not null)
-            {
-                bodyBefore.Add(key, System.Text.Json.JsonSerializer.Serialize(data));
-            }
-        }
+        string addValue<TData>(TData? data)
+            => JsonSerializer.Serialize(data, EntitiesExtensions._jsonSerializerOptions) ?? string.Empty;
     }
 
     private static string getLanguage(Contracts.v2.SendEmailRequest.Types.EmailLanguages language)

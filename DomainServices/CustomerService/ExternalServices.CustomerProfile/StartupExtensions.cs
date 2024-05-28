@@ -29,8 +29,8 @@ public static class StartupExtensions
                 builder
                     .AddExternalServiceRestClient<CustomerProfile.V1.ICustomerProfileClient, CustomerProfile.V1.RealCustomerProfileClient>()
                     .AddExternalServicesKbHeaders()
-                    .AddExternalServicesKbPartyHeaders()
-                    .AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
+					.AddExternalServicesKbPartyHeadersWithFallback(new SharedTypes.Types.UserIdentity(configuration.Username!, UserIdentitySchemes.KbUms))
+					.AddExternalServicesErrorHandling(StartupExtensions.ServiceName);
                 break;
 
             default:

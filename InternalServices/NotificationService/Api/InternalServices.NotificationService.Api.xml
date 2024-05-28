@@ -65,7 +65,7 @@
             Ziskat typ notifikace z ciselniku
             </summary>
         </member>
-        <member name="M:CIS.InternalServices.NotificationService.Api.Messaging.NotificationReport.NotificationReportHandler.auditLogSmsResult(cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport)">
+        <member name="M:CIS.InternalServices.NotificationService.Api.Messaging.NotificationReport.NotificationReportHandler.auditLogSmsResult(cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport,System.String)">
             <summary>
             Auditni log
             </summary>

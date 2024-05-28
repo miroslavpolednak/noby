@@ -1352,7 +1352,7 @@ namespace ExternalServices.SbWebApi.V1.Contracts
         public double? Interest_rate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("date_from")]
-        public System.DateTime? Date_from { get; set; } = default!;
+        public System.DateOnly? Date_from { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("fixation_time")]
         public int? Fixation_time { get; set; } = default!;
@@ -1472,7 +1472,7 @@ namespace ExternalServices.SbWebApi.V1.Contracts
         public double? Interest_rate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("date_from")]
-        public System.DateTime? Date_from { get; set; } = default!;
+        public System.DateOnly? Date_from { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("fixation_time")]
         public int? Fixation_time { get; set; } = default!;

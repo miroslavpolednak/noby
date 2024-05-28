@@ -28,6 +28,8 @@ public class KafkaFlowConfiguration
 
     public int TimeBetweenTriesMs { get; set; } = 1000;
 
+    public int BufferSize { get; set; } = 2;
+
     public AdminConfiguration? Admin { get; set; }
 
     public bool LogConsumingMessagePayload { get; set; } = true;

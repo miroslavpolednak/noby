@@ -21,4 +21,8 @@ public class GenerateRefixationDocumentRequest
     public DateTime? SignatureDeadline { get; set; }
 
     public bool IndividualPricing { get; set; }
+
+    public int? LoanPaymentsCount { get; set; }
+
+    public DateTime? MaturityDate { get; set; }
 }

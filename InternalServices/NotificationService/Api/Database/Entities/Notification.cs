@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Google.Protobuf.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CIS.InternalServices.NotificationService.Api.Database.Entities;
@@ -17,15 +19,16 @@ internal sealed class Notification
 
     public SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes? IdentityScheme { get; set; }
 
-    public long? CaseId { get; set; }
+    public string? ProductId { get; set; }
+
+    public Contracts.v2.Product.Types.ProductTypes? ProductType { get; set; }
 
     public string? CustomId { get; set; }
 
     public string? DocumentId { get; set; }
 
-    public string? DocumentHash { get; set; }
-
-    public Contracts.v2.DocumentHash.Types.HashAlgorithms? HashAlgorithm { get; set; }
+    //public string? DocumentHashes { get; set; }
+    public RepeatedField<Contracts.v2.DocumentHash>? DocumentHashes { get; set; }
 
     public string? CreatedUserName { get; set; }
 

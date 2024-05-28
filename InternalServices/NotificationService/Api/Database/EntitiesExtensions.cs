@@ -1,5 +1,8 @@
 ﻿using CIS.InternalServices.NotificationService.Contracts.v2;
+using Google.Protobuf.Collections;
 using SharedComponents.DocumentDataStorage;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 
 namespace CIS.InternalServices.NotificationService.Api.Database;
 
@@ -12,12 +15,20 @@ internal static class EntitiesExtensions
             NotificationId = notification.Id.ToString(),
             State = notification.State,
             Channel = notification.Channel,
-            CaseId = notification.CaseId,
             CustomId = notification.CustomId,
             DocumentId = notification.DocumentId,
             RequestTimestamp = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(notification.CreatedTime.ToUniversalTime()),
             CreatedBy = notification.CreatedUserName
         };
+
+        if (!string.IsNullOrEmpty(notification.ProductId) && notification.ProductType != null)
+        {
+            result.Product = new Product
+            {
+                ProductId = notification.ProductId,
+                ProductType = notification.ProductType ?? default
+            };
+        }
 
         // cas ziskani resultu
         if (notification.ResultTime.HasValue)
@@ -41,14 +52,14 @@ internal static class EntitiesExtensions
             result.Identifier = new SharedTypes.GrpcTypes.UserIdentity { Identity = notification.Identity, IdentityScheme = notification.IdentityScheme.Value };
         }
 
-        // doc hash
-        if (notification.HashAlgorithm != null && !string.IsNullOrEmpty(notification.DocumentHash))
+        // kolekce hashes
+        if (notification.DocumentHashes is not null)
         {
-            result.DocumentHash = new Contracts.v2.DocumentHash
+            result.DocumentHashes.AddRange(notification.DocumentHashes.Select(t => new Contracts.v2.DocumentHash
             {
-                Hash = notification.DocumentHash,
-                HashAlgorithm = notification.HashAlgorithm.Value
-            };
+                Hash = t.Hash,
+                HashAlgorithm = t.HashAlgorithm
+            }));
         }
 
         return result;
@@ -69,4 +80,12 @@ internal static class EntitiesExtensions
             };
         }
     }
+
+    internal static readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        IgnoreReadOnlyFields = true,
+        IgnoreReadOnlyProperties = true,
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
 }

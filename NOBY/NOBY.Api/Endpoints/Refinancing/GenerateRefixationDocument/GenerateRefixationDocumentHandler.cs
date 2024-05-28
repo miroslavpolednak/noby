@@ -149,7 +149,9 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
             Icp = user.Icp,
             SignatureDeadline = salesArrangement.Refixation.SignatureDeadline,
             IndividualPricing = hasIndividualPrice,
-            FixedRatePeriod = simulationInputs.FixedRatePeriod
+            FixedRatePeriod = simulationInputs.FixedRatePeriod,
+            LoanPaymentsCount = simulationResults.LoanPaymentsCount,
+            MaturityDate = simulationResults.MaturityDate
         };
 
         await _sbWebApi.GenerateHedgeAppendixDocument(request, cancellationToken);

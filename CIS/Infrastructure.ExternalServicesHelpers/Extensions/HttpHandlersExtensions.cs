@@ -1,4 +1,6 @@
-﻿namespace CIS.Infrastructure.ExternalServicesHelpers;
+﻿using SharedTypes.Types;
+
+namespace CIS.Infrastructure.ExternalServicesHelpers;
 
 public static class HttpHandlersExtensions
 {
@@ -22,10 +24,19 @@ public static class HttpHandlersExtensions
     public static IHttpClientBuilder AddExternalServicesKbPartyHeaders(this IHttpClientBuilder builder)
         => builder.AddHttpMessageHandler(b => new HttpHandlers.KbPartyHeaderHttpHandler(b));
 
-    /// <summary>
-    /// Doplňuje do každého requestu Correlation Id z OT.
-    /// </summary>
-    /// <param name="headerKey">Klíč v hlavičce, kam se má Id zapsat. Pokud není vyplněno, ne nastavena na "X-Correlation-ID".</param>
-    public static IHttpClientBuilder AddExternalServicesCorrelationIdForwarding(this IHttpClientBuilder builder, string? headerKey = null)
+	/// <summary>
+	/// Prida do kazdeho requestu HttpClienta hlavicku s aktualnim uzivatelem vyzadovanou v KB.
+	/// </summary>
+    /// <remarks>
+    /// Pokud neexistuje kontext aktualniho uzivatele, fallbackuje na identitu zadanou v parametru.
+    /// </remarks>
+	public static IHttpClientBuilder AddExternalServicesKbPartyHeadersWithFallback(this IHttpClientBuilder builder, UserIdentity fallbackIdentity)
+		=> builder.AddHttpMessageHandler(b => new HttpHandlers.KbPartyHeaderHttpHandler(b, fallbackIdentity));
+
+	/// <summary>
+	/// Doplňuje do každého requestu Correlation Id z OT.
+	/// </summary>
+	/// <param name="headerKey">Klíč v hlavičce, kam se má Id zapsat. Pokud není vyplněno, ne nastavena na "X-Correlation-ID".</param>
+	public static IHttpClientBuilder AddExternalServicesCorrelationIdForwarding(this IHttpClientBuilder builder, string? headerKey = null)
         => builder.AddHttpMessageHandler(b => new HttpHandlers.CorrelationIdForwardingHttpHandler(headerKey));
 }

@@ -8,7 +8,7 @@ import "google/protobuf/wrappers.proto";
 
 message SearchResultsRequest {
 	cis.types.UserIdentity Identifier = 1;
-    google.protobuf.Int64Value CaseId = 2;
+    google.protobuf.StringValue ProductId = 2;
     google.protobuf.StringValue CustomId = 3;
     google.protobuf.StringValue DocumentId = 4;
 }

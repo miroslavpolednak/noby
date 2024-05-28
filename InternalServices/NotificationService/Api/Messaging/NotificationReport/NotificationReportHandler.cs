@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.NotificationService.Api.Messaging.Consumers.Result;
+﻿using CIS.InternalServices.NotificationService.Api.Database.Entities;
+using CIS.InternalServices.NotificationService.Api.Messaging.Consumers.Result;
 using DomainServices.CodebookService.Clients;
 using KafkaFlow;
 using SharedAudit;
@@ -11,7 +12,7 @@ internal sealed class NotificationReportHandler
 {
     public async Task Handle(IMessageContext context, cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport message)
     {
-        if (!Guid.TryParse(message.id, out var notificationId))
+        if (!message.id.StartsWith(Configuration.KafkaTopics.McsIdPrefix, StringComparison.InvariantCultureIgnoreCase) || !Guid.TryParse(message.id.AsSpan(Configuration.KafkaTopics.McsIdPrefix.Length), out var notificationId))
         {
             _logger.KafkaNotificationResultIdEmpty(message.id);
             return;
@@ -33,7 +34,7 @@ internal sealed class NotificationReportHandler
         #region legacy code
         if (notificationInstance is null)
         {
-            await _mediator.Send(new ConsumeResultRequest { NotificationReport = message });
+            await _mediator.Send(new ConsumeResultRequest { NotificationReport = message, Id = notificationId });
         }
         #endregion legacy code
         else
@@ -41,7 +42,10 @@ internal sealed class NotificationReportHandler
             // audit log
             if (notificationInstance.Channel == Contracts.v2.NotificationChannels.Sms)
             {
-                await auditLogSmsResult(message);
+                await auditLogSmsResult(message, notificationId.ToString());
+            } else
+            {
+                auditLogEmailResult(message, notificationId.ToString());
             }
 
             if (_statusesMap.TryGetValue(message.state, out Contracts.v2.NotificationStates state))
@@ -66,31 +70,48 @@ internal sealed class NotificationReportHandler
     /// <summary>
     /// Auditni log
     /// </summary>
-    private async Task auditLogSmsResult(cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport message)
+    private async Task auditLogSmsResult(cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport message, string notificationId)
     {
-        var smsData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.SmsData, string>(message.id);
+        var smsData = await _documentDataStorage.FirstOrDefaultByEntityId<Database.DocumentDataEntities.SmsData, string>(notificationId);
         var smsType = (await _codebookService.SmsNotificationTypes()).First(s => s.Code == smsData?.Data?.SmsType);
 
-        if (smsType.IsAuditLogEnabled)
-        {
-            var bodyBefore = new Dictionary<string, string>
+        var bodyBefore = new Dictionary<string, string>
             {
                 { "smsType", smsType.Code },
-                { "notificationId", message.id },
+                { "notificationId", notificationId },
                 { "state", message.state }
             };
 
-            if (message.notificationErrors is not null && message.notificationErrors.Count > 0)
-            {
-                bodyBefore.Add("errors", System.Text.Json.JsonSerializer.Serialize(message.notificationErrors));
-            }
-
-            _auditLogger.Log(
-                AuditEventTypes.Noby014,
-                "Received notification report for sms",
-                bodyBefore: bodyBefore
-            );
+        if (message.notificationErrors is not null && message.notificationErrors.Count > 0)
+        {
+            bodyBefore.Add("errors", System.Text.Json.JsonSerializer.Serialize(message.notificationErrors));
         }
+
+        _auditLogger.Log(
+            AuditEventTypes.Noby014,
+            "Received notification report for sms",
+            bodyBefore: bodyBefore
+        );
+    }
+
+    private void auditLogEmailResult(cz.kb.osbs.mcs.notificationreport.eventapi.v3.report.NotificationReport message, string notificationId)
+    {
+        var bodyBefore = new Dictionary<string, string>
+            {
+                { "notificationId", notificationId },
+                { "state", message.state }
+            };
+
+        if (message.notificationErrors is not null && message.notificationErrors.Count > 0)
+        {
+            bodyBefore.Add("errors", System.Text.Json.JsonSerializer.Serialize(message.notificationErrors));
+        }
+
+        _auditLogger.Log(
+            AuditEventTypes.Noby014,
+            "Received notification report for email",
+            bodyBefore: bodyBefore
+        );
     }
 
     private static readonly Dictionary<string, Contracts.v2.NotificationStates> _statusesMap = new()
