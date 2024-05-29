@@ -18,8 +18,5 @@ internal sealed class SendEmailsJobConfigurationValidator
 
         RuleFor(t => t.NumberOfEmailsAtOnce)
             .NotEmpty();
-
-        RuleFor(t => t.EmailDomainWhitelist)
-            .NotEmpty();
     }
 }
