@@ -19,6 +19,9 @@ public sealed class MortgageRefinancingWorkflowParameters
         public decimal FeeSum { get; set; }
 
         public decimal FeeFinalSum { get; set; }
+
+        public decimal FeeDiscount => FeeFinalSum - FeeSum;
+
         public decimal DiscountPercentage => FeeSum == 0m ? 0m : 100 * (FeeSum - FeeFinalSum) / FeeSum;
     }
 }

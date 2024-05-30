@@ -101,7 +101,7 @@ public sealed class MortgageRefinancingWorkflowService(
 
             var taskIndividualPrice = new MortgageRefinancingIndividualPrice(priceExceptionTaskDetail.TaskDetail.PriceException);
 
-            if (new MortgageRefinancingIndividualPrice(mortgageParameters.LoanInterestRateDiscount, mortgageParameters.Fee?.FeeFinalSum).Equals(taskIndividualPrice))
+            if (new MortgageRefinancingIndividualPrice(mortgageParameters.LoanInterestRateDiscount, mortgageParameters.Fee?.FeeDiscount).Equals(taskIndividualPrice))
             {
                 priceExceptionWasCancelled = false;
 
