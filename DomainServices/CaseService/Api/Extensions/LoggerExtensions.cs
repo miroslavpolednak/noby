@@ -88,7 +88,7 @@ internal static class LoggerExtensions
             "Kafka message processing in {Consumer}: Case {CaseId} not found");
 
         _requestNotFoundInCache = LoggerMessage.Define<long>(
-            LogLevel.Error,
+            LogLevel.Information,
             new EventId(LoggerEventIdCodes.RequestNotFoundInCache, nameof(RequestNotFoundInCache)),
             "Kafka message processing in CaseStateChanged_ProcessingCompletedConsumer: Request {RequestId} not found in cache");
         
