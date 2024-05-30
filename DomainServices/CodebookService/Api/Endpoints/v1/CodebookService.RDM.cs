@@ -9,7 +9,7 @@ internal partial class CodebookService
         => Helpers.GetItems(() =>
         {
             var mappings1 = _db.SelfDb.GetRdmMappings("MAP_CB_CmEpProfessionCategory_CB_CmEpProfession");
-			var mappings2 = _db.SelfDb.GetRdmMappings("CB_SourceOfEarningsVsProfessionCategory");
+			var mappings2 = _db.SelfDb.GetRdmItems("CB_SourceOfEarningsVsProfessionCategory");
 			var items = _db.SelfDb.GetRdmItems("CB_CmEpProfessionCategory");
 			var sb = _db.GetDynamicList(nameof(ProfessionCategories), 1);
             var extensions = _db.GetDynamicList(nameof(ProfessionCategories), 2);
@@ -36,18 +36,17 @@ internal partial class CodebookService
                     .ToArray();
                 obj.ProfessionTypeIds.AddRange(foundMappings);
 
+				// AML
+				var aml = mappings2
+					.Where(t => t.Properties["profession_category_code"] == item.Code)
+					.Select(t => Convert.ToInt32(t.Properties["source_of_earnings_code"], CultureInfo.InvariantCulture))
+					.Cast<int>()
+					.ToArray();
+				obj.IncomeMainTypeAMLIds.AddRange(aml);
+
                 // nase ext
-                var ext = extensions.FirstOrDefault(x => x.ProfessionCategoryId == obj.Id);
-                if (ext is not null)
-                {
-                    obj.IsValidNoby = ext.IsValidNoby;
-
-                    if (!string.IsNullOrEmpty(ext.IncomeMainTypeAMLIds))
-                    {
-                        obj.IncomeMainTypeAMLIds.AddRange(((string)ext.IncomeMainTypeAMLIds).ParseIDs());
-                    }
-                }
-
+				obj.IsValidNoby = extensions.FirstOrDefault(x => x.ProfessionCategoryId == obj.Id)?.IsValidNoby ?? false;
+            
                 return obj;
             });
 
