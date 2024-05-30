@@ -53,15 +53,51 @@ internal partial class CodebookService
             return (new ProfessionCategoriesResponse()).AddItems(finalItems);
         });
 
-    public override Task<SigningMethodsForNaturalPersonResponse> SigningMethodsForNaturalPerson(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+	public override Task<CountryCodePhoneIdcResponse> CountryCodePhoneIdc(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+		=> Helpers.GetItems(() =>
+		{
+			var items = _db.SelfDb.GetRdmItems("CB_CmCoPhoneIdc");
+			
+			var finalItems = items
+                .Select(item => new CountryCodePhoneIdcResponse.Types.CountryCodePhoneIdcItem
+				{
+					IsValid = item.IsValid,
+					Name = item.Properties["COUNTRY_CODE"],
+					Id = item.Code,
+                    Idc = item.Properties["PHONE_IDC"],
+                    IsDefault = item.Properties["COUNTRY_CODE"] == "CZ",
+                    IsPriority = item.Properties["IS_PRIORITY"] == "1"
+				})
+                .OrderBy(t => t.Name);
+
+			return (new CountryCodePhoneIdcResponse()).AddItems(finalItems);
+		});
+
+	public override Task<GenericCodebookResponse> IdentificationSubjectMethods(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+		=> Helpers.GetItems(() =>
+		{
+			var items = _db.SelfDb.GetRdmItems("CB_CmCoPhoneIdc");
+
+			var finalItems = items
+				.Select(item => new GenericCodebookResponse.Types.GenericCodebookItem
+				{
+					IsValid = item.IsValid,
+					Name = item.Properties["Name"],
+					Id = Convert.ToInt32(item.Code, CultureInfo.InvariantCulture)
+				})
+				.OrderBy(t => t.Id);
+
+			return (new GenericCodebookResponse()).AddItems(finalItems);
+		});
+
+	public override Task<SigningMethodsForNaturalPersonResponse> SigningMethodsForNaturalPerson(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
             var items = _db.SelfDb.GetRdmItems("CB_StandardMethodOfArrAcceptanceByNPType");
             var extensions = _db.GetDynamicList(nameof(SigningMethodsForNaturalPerson));
 
-            var finalItems = items.Select(item =>
-            {
-                var obj = new SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem
+            var finalItems = items
+                .Select(item => new SigningMethodsForNaturalPersonResponse.Types.SigningMethodsForNaturalPersonItem
                 {
                     IsValid = item.IsValid,
                     Name = item.Properties["Name"],
@@ -69,16 +105,38 @@ internal partial class CodebookService
                     Order = item.SortOrder,
                     Code = item.Code,
                     StarbuildEnumId = extensions.FirstOrDefault(x => x.Code == item.Code)?.StarbuildEnumId ?? 2
-                };
-
-                return obj;
-            });
+                });
 
             return (new SigningMethodsForNaturalPersonResponse()).AddItems(finalItems);
         });
 
     public override Task<ResponseCodeTypesResponse> ResponseCodeTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() =>
+		=> Helpers.GetItems(() =>
+		{
+			var items = _db.SelfDb.GetRdmItems("CB_StandardMethodOfArrAcceptanceByNPType");
+			var extensions = _db.GetDynamicList(nameof(SigningMethodsForNaturalPerson));
+
+			var finalItems = items
+				.Select(item => new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem
+				{
+					IsValid = item.IsValid,
+					Name = item.Properties["Name"],
+					Id = Convert.ToInt32(item.Code, CultureInfo.InvariantCulture),
+                    IsAvailableForRefixation = item.Properties["CampaingType"] == "Ref",
+					IsAvailableForRetention = item.Properties["CampaingType"] == "Ret",
+                    MandantId = Convert.ToInt32(item.Properties["Mandant"], CultureInfo.InvariantCulture),
+					DataType = item.Properties["Meta"] switch
+                    {
+                        "10" => ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.BankCode,
+                        "01" => ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date,
+						_ => ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.String
+					}
+				});
+
+			return (new ResponseCodeTypesResponse()).AddItems(finalItems);
+		});
+
+        /*=> Helpers.GetItems(() =>
         {
             // MOCK
             List<ResponseCodeTypesResponse.Types.ResponseCodeTypesItem> items = 
@@ -96,5 +154,5 @@ internal partial class CodebookService
             ];
 
             return (new ResponseCodeTypesResponse()).AddItems(items);
-        });
+        });*/
 }

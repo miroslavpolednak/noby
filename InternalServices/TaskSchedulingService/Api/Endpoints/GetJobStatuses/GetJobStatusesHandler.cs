@@ -32,7 +32,7 @@ internal sealed class GetJobStatusesHandler(Database.TaskSchedulingServiceDbCont
                 StatusChangedAt = t.StatusChangedAt,
                 JobId = t.ScheduleJobId.ToString(),
                 JobName = t.Job.JobName,
-                TraceId = t.TraceId,
+                TraceId = t.TraceId ?? "",
                 TriggerId = t.ScheduleTriggerId == null ? null : t.ScheduleTriggerId.ToString(),
                 TriggerName = t.Trigger == null ? null : t.Trigger.TriggerName
             })

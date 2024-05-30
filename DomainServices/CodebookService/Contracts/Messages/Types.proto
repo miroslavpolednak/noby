@@ -24,6 +24,7 @@ message ResponseCodeTypesResponse {
 		bool IsAvailableForRetention = 4;
 		bool IsAvailableForRefixation = 5;
 		bool IsValid = 6;
+		int32 MandantId = 7;
 	}
 
 	enum ResponseCodesItemDataTypes {

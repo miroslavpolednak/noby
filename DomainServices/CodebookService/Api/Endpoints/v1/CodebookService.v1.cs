@@ -112,9 +112,6 @@ internal partial class CodebookService
     public override Task<CountriesResponse> Countries(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<CountriesResponse, CountriesResponse.Types.CountryItem>();
 
-    public override Task<CountryCodePhoneIdcResponse> CountryCodePhoneIdc(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => _db.GetItems<CountryCodePhoneIdcResponse, CountryCodePhoneIdcResponse.Types.CountryCodePhoneIdcItem>();
-
     public override Task<CurrenciesResponse> Currencies(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<CurrenciesResponse, CurrenciesResponse.Types.CurrencyItem>();
 
@@ -317,16 +314,6 @@ internal partial class CodebookService
             });
             return (new IdentificationDocumentTypesResponse()).AddItems(items);
         });
-
-    public override Task<GenericCodebookResponse> IdentificationSubjectMethods(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetItems(() => (new GenericCodebookResponse()).AddItems(
-            new List<GenericCodebookResponse.Types.GenericCodebookItem>
-            {
-                new() { Id = 1, Name = "za fyzické přítomnosti", IsValid = true },
-                new() { Id = 3, Name = "ověření notářem, krajským nebo obecním úřadem", IsValid = true },
-                new() { Id = 8, Name = "zástupce MPSS", IsValid = true }
-            })
-        );
 
     public override Task<IdentitySchemesResponse> IdentitySchemes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new IdentitySchemesResponse()).AddItems(

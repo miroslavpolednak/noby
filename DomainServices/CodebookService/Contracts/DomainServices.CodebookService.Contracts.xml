@@ -76,6 +76,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodeTypesItem.IsValidFieldNumber">
             <summary>Field number for the "IsValid" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodeTypesItem.MandantIdFieldNumber">
+            <summary>Field number for the "MandantId" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.FeeChangeRequestsResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
