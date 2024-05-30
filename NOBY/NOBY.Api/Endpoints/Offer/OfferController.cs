@@ -5,7 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace NOBY.Api.Endpoints.Offer;
 
 [ApiController]
-[Route("api")]
+[Route("api/v{v:apiVersion}")]
 [ApiVersion(1)]
 public sealed class OfferController(IMediator _mediator) : ControllerBase
 {

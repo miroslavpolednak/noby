@@ -5,7 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace NOBY.Api.Endpoints.GeneralDocument;
 
 [ApiController]
-[Route("api/general-documents")]
+[Route("api/v{v:apiVersion}/general-documents")]
 [ApiVersion(1)]
 public class GeneralDocumentController : ControllerBase
 {

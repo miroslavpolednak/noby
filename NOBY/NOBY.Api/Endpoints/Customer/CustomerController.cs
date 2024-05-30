@@ -5,7 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace NOBY.Api.Endpoints.Customer;
 
 [ApiController]
-[Route("api")]
+[Route("api/v{v:apiVersion}")]
 [ApiVersion(1)]
 public class CustomerController : ControllerBase
 {

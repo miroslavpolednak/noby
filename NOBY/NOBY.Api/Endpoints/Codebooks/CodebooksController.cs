@@ -6,7 +6,7 @@ namespace NOBY.Api.Endpoints.Codebooks;
 
 [ApiController]
 [ApiVersion(1)]
-[Route("api/codebooks")]
+[Route("api/v{v:apiVersion}/codebooks")]
 public class CodebooksController : ControllerBase
 {
     private readonly IMediator _mediator;

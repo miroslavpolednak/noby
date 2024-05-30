@@ -4,16 +4,18 @@ using Asp.Versioning;
 namespace NOBY.Api.Endpoints.Test;
 
 [ApiController]
-[Route("api/test")]
+[Route("api/v{v:apiVersion}/test")]
 [AllowAnonymous]
 [ApiVersion(1)]
 public class TestController : ControllerBase
 {
-    /*public async Task<string> T1()
-    {
-        var manager = _context.HttpContext.RequestServices.GetRequiredService<IFeatureManager>();
-        return await manager.IsEnabledAsync(FeatureFlagsConstants.BlueBang) ? "true" : "false";
-    }*/
+
+    //[ApiVersion(2)]
+    //[HttpGet("test2")]
+    //public async Task<string> T2()
+    //{
+    //    return "test v2";
+    //}
 
     private readonly IHttpContextAccessor _context;
     private readonly IMediator _mediator;

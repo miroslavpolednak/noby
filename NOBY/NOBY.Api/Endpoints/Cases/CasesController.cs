@@ -6,7 +6,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace NOBY.Api.Endpoints.Cases;
 
 [ApiController]
-[Route("api/case")]
+[Route("api/v{v:apiVersion}/case")]
 [ApiVersion(1)]
 public class CasesController : ControllerBase
 {

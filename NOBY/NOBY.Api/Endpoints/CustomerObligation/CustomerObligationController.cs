@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace NOBY.Api.Endpoints.CustomerObligation;
 
 [ApiController]
-[Route("api/customer-on-sa")]
+[Route("api/v{v:apiVersion}/customer-on-sa")]
 [ApiVersion(1)]
 public class CustomerObligationController : ControllerBase
 {

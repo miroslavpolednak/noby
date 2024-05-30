@@ -6,7 +6,7 @@ using System.Net.Mime;
 namespace NOBY.Api.Endpoints.RealEstateValuation;
 
 [ApiController]
-[Route("api/case")]
+[Route("api/v{v:apiVersion}/case")]
 [ApiVersion(1)]
 public sealed class RealEstateValuationController 
     : ControllerBase
