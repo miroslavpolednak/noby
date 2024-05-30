@@ -156,7 +156,7 @@ oin.Interest_Rate AS SimulationInputs_InterestRate,
 oin.Fixation_Period AS SimulationInputs_FixedRatePeriod,
 oin.Interest_Rate_Valid_To AS Offer_ValidTo
 FROM bdp.D_CUST_RETENTION_OFFER oin 
-INNER JOIN bdp.D_CUST_RETENTION_ACCOUNT ain ON ain.Was_Processed_By_Noby = 0 AND oin.Account_Nbr = ain.Account_Nbr AND ain.Batch_Id = oin.Batch_Id
+INNER JOIN bdp.D_CUST_RETENTION_ACCOUNT ain ON oin.Was_Processed_By_Noby = 0 AND oin.Account_Nbr = ain.Account_Nbr AND ain.Batch_Id = oin.Batch_Id
 LEFT JOIN dbo.KONSTDB_UVER_S k ON k.Neaktivni = 0 AND CAST(CAST(CONCAT(k.PredcisliUctu, RIGHT(REPLICATE('0', 10) + CONVERT(NVARCHAR(10), k.CisloUctu), 10)) AS BIGINT) AS VARCHAR) = CAST(CAST(oin.Account_Nbr AS BIGINT) AS VARCHAR) 
 WHERE oin.Batch_Id = @BatchId
 )
@@ -271,7 +271,7 @@ BEGIN TRY
 	
 	COMMIT TRANSACTION;
 	-- If all data per BatchId from datamart was processed , we set Was_Processed_By_Noby to true for whole batch (so datamart knows, that can import new batch and we knows, that whole batch was processed) 
-	IF (SELECT COUNT(*) FROM bdp.D_CUST_RETENTION_ACCOUNT a WHERE a.Batch_Id = @BatchId AND a.Was_Processed_By_Noby = 0) = 0
+	IF (SELECT COUNT(*) FROM bdp.D_CUST_RETENTION_OFFER a WHERE a.Batch_Id = @BatchId AND a.Was_Processed_By_Noby = 0) = 0
 		BEGIN
 		UPDATE b
 		SET b.Was_Processed_By_Noby = 1
