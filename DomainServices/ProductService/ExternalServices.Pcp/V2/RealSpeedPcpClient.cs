@@ -43,7 +43,28 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
         });
     }
 
-    protected override Binding CreateBinding()
+	public async Task<string> UpdateProduct(string pcpId, List<long> customersKbIds, CancellationToken cancellationToken = default)
+	{
+		return await callMethod(async () =>
+		{
+			var systemIdetity = CreateSystemIdentity();
+
+			var traceContext = CreateTraceContext();
+
+			var request = UpdateRequest(pcpId, customersKbIds);
+
+			using (new OperationContextScope(Client.InnerChannel))
+			{
+				OperationContext.Current.OutgoingMessageHeaders.Add(
+					 new WsseSoapSecurityHeader(Configuration.Username!, Configuration.Password!, NonceGenerator.GetNonce(), DateTime.Now));
+
+				await Client.updateAsync(systemIdetity, traceContext, request).WithCancellation(cancellationToken);
+                return "";
+			}
+		});
+	}
+
+	protected override Binding CreateBinding()
     {
         var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
         binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
@@ -56,7 +77,42 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
         return binding;
     }
 
-    private static createRequest CreateRequest(long caseId, long customerKbId, string pcpObjectCode)
+	private static updateRequest UpdateRequest(string pcpId, List<long> customersKbIds)
+    {
+        return new updateRequest
+        {
+            productInstance = new ProductInstance3
+            {
+                customerInProductInstanceList = customersKbIds.Select(t => new CustomerInProductInstance
+                {
+                    kBCustomer = new KBCustomer
+                    {
+                        id = t.ToString(CultureInfo.InvariantCulture)
+                    },
+                    partyInProductInstanceRole = new PartyInProductInstanceRole
+                    {
+                        partyInproductInstanceRoleCode = new PartyInproductInstanceRoleCode
+                        {
+                            code = "A",
+                            @class = "CB_CustomerLoanProductRole"
+						}
+                    }
+                }).ToArray(),
+                mktItemInstanceState = new MktItemInstanceState
+                {
+                    state = "2",
+                    @class = "CB_MortgageInstanceState"
+				},
+                referentialMktItemInstanceId = new ReferentialMktItemInstanceId
+                {
+                    id = pcpId
+                },
+                lastModifiedOn = DateTime.Now
+            }
+        };
+    }
+
+	private static createRequest CreateRequest(long caseId, long customerKbId, string pcpObjectCode)
     {
         return new createRequest
         {

@@ -7,7 +7,9 @@ public interface IPcpClient
 {
     Task<string> CreateProduct(long caseId, long customerKbId, string pcpProductIdOrObjectCode, CancellationToken cancellationToken = default);
 
-    const string ServiceName = "Pcp";
+	Task<string> UpdateProduct(string pcpId, List<long> customersKbIds, CancellationToken cancellationToken = default);
+
+	const string ServiceName = "Pcp";
 
     const string Version = "V1";
     const string Version2 = "V2";
