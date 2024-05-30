@@ -8,9 +8,10 @@ internal partial class CodebookService
     public override Task<ProfessionCategoriesResponse> ProfessionCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() =>
         {
-            var mappings = _db.SelfDb.GetRdmMappings("MAP_CB_CmEpProfessionCategory_CB_CmEpProfession");
-            var items = _db.SelfDb.GetRdmItems("CB_CmEpProfessionCategory");
-            var sb = _db.GetDynamicList(nameof(ProfessionCategories), 1);
+            var mappings1 = _db.SelfDb.GetRdmMappings("MAP_CB_CmEpProfessionCategory_CB_CmEpProfession");
+			var mappings2 = _db.SelfDb.GetRdmMappings("CB_SourceOfEarningsVsProfessionCategory");
+			var items = _db.SelfDb.GetRdmItems("CB_CmEpProfessionCategory");
+			var sb = _db.GetDynamicList(nameof(ProfessionCategories), 1);
             var extensions = _db.GetDynamicList(nameof(ProfessionCategories), 2);
 
             var finalItems = items.Select(item =>
@@ -23,7 +24,7 @@ internal partial class CodebookService
                 };
 
                 // rdm-sb mapping
-                var foundMappings = mappings
+                var foundMappings = mappings1
                     .Where(t => t.Source == item.Code)
                     .Select(t =>
                     {
@@ -76,7 +77,7 @@ internal partial class CodebookService
 	public override Task<GenericCodebookResponse> IdentificationSubjectMethods(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
 		=> Helpers.GetItems(() =>
 		{
-			var items = _db.SelfDb.GetRdmItems("CB_CmCoPhoneIdc");
+			var items = _db.SelfDb.GetRdmItems("CB_IdentificationMethodType");
 
 			var finalItems = items
 				.Select(item => new GenericCodebookResponse.Types.GenericCodebookItem
@@ -85,6 +86,7 @@ internal partial class CodebookService
 					Name = item.Properties["Name"],
 					Id = Convert.ToInt32(item.Code, CultureInfo.InvariantCulture)
 				})
+				.Where(t => t.Id is 1 or 3 or 8)
 				.OrderBy(t => t.Id);
 
 			return (new GenericCodebookResponse()).AddItems(finalItems);
@@ -113,8 +115,7 @@ internal partial class CodebookService
     public override Task<ResponseCodeTypesResponse> ResponseCodeTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
 		=> Helpers.GetItems(() =>
 		{
-			var items = _db.SelfDb.GetRdmItems("CB_StandardMethodOfArrAcceptanceByNPType");
-			var extensions = _db.GetDynamicList(nameof(SigningMethodsForNaturalPerson));
+			var items = _db.SelfDb.GetRdmItems("CB_HyporetenceResponse");
 
 			var finalItems = items
 				.Select(item => new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem
@@ -122,8 +123,8 @@ internal partial class CodebookService
 					IsValid = item.IsValid,
 					Name = item.Properties["Name"],
 					Id = Convert.ToInt32(item.Code, CultureInfo.InvariantCulture),
-                    IsAvailableForRefixation = item.Properties["CampaingType"] == "Ref",
-					IsAvailableForRetention = item.Properties["CampaingType"] == "Ret",
+                    IsAvailableForRefixation = item.Properties["CampaignType"] == "Ref",
+					IsAvailableForRetention = item.Properties["CampaignType"] == "Ret",
                     MandantId = Convert.ToInt32(item.Properties["Mandant"], CultureInfo.InvariantCulture),
 					DataType = item.Properties["Meta"] switch
                     {
@@ -136,23 +137,41 @@ internal partial class CodebookService
 			return (new ResponseCodeTypesResponse()).AddItems(finalItems);
 		});
 
-        /*=> Helpers.GetItems(() =>
-        {
-            // MOCK
-            List<ResponseCodeTypesResponse.Types.ResponseCodeTypesItem> items = 
-            [
-                new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem { Id = 1, Name = "Nabídka nezaujala", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
-                new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem { Id = 2, Name = "Klient nezastižen", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
-                new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem { Id = 3, Name = "Nabídka zaujala s příslibem", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
-                new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem { Id = 4, Name = "Aktivně řešení v jiné Bance", DataType = ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.BankCode, IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
-                new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem { Id = 5, Name = "Pro teď nemá zájem řešit", DataType = ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date, IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
-                new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem { Id = 6, Name = "Nerelevantní nabídka, nedošlo ke kontaktu", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
-                new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem { Id = 7, Name = "Jiný důvod (Ukončit událost/kampaň)", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
-                new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem { Id = 8, Name = "Nabídka zaujala, klient spokojen", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
-                new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem { Id = 9, Name = "Špatné telefonní číslo", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true },
-                new ResponseCodeTypesResponse.Types.ResponseCodeTypesItem { Id = 10, Name = "Otevřít prodejní aplikaci", IsAvailableForRefixation = false, IsAvailableForRetention = true, IsValid = true }
-            ];
+	public override Task<TinFormatsByCountryResponse> TinFormatsByCountry(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+		=> Helpers.GetItems(() =>
+		{
+			var items = _db.SelfDb.GetRdmItems("CB_CmTrTinFormat");
 
-            return (new ResponseCodeTypesResponse()).AddItems(items);
-        });*/
+			var finalItems = items
+				.Select(item => new TinFormatsByCountryResponse.Types.TinFormatsByCountryItem
+				{
+					IsValid = item.IsValid,
+					Id = Convert.ToInt32(item.Code, CultureInfo.InvariantCulture),
+                    CountryCode = item.Properties["country_code"],
+                    IsForFo = item.Properties["is_for_foo"] == "true",
+                    RegularExpression = item.Properties["regular_expression"],
+                    Tooltip = item.Properties["tooltip"]
+				})
+				.OrderBy(t => t.Id);
+
+			return (new TinFormatsByCountryResponse()).AddItems(finalItems);
+		});
+
+	public override Task<TinNoFillReasonsByCountryResponse> TinNoFillReasonsByCountry(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+		=> Helpers.GetItems(() =>
+		{
+			var items = _db.SelfDb.GetRdmItems("CB_CmTrTinCountry");
+
+			var finalItems = items
+				.Select(item => new TinNoFillReasonsByCountryResponse.Types.TinNoFillReasonsByCountryItem
+				{
+					IsValid = item.IsValid,
+					Id = item.Code,
+					IsTinMandatory = item.Properties["is_tin_mandatory"] == "true",
+					ReasonForBlankTin = item.Properties["reason_for_blank_tin"]
+				})
+				.OrderBy(t => t.Id);
+
+			return (new TinNoFillReasonsByCountryResponse()).AddItems(finalItems);
+		});
 }
