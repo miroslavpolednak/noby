@@ -17,11 +17,7 @@ internal sealed class GetCustomersOnProductHandler(
         // Kontrola, zda se jedná o KB produkt, chyba pokud ne vyhodit chybu
         await CheckIfProductIsKb(loan.ProductUvCode, cancellationToken);
 
-        return new GetCustomersOnProductResponse();
-		// Zjištění seznamu klientů na produktu, vyhodit tvrdou chybu pokud je množina prázdná (nesmí se stávat, pokud není nekonzistence dat)
-		/*var customers = await _repository.GetRelationships(request.ProductId, cancellationToken);
-
-        if (customers.Count == 0)
+        if (!(loan.LoanRelationships?.Any() ?? false))
         {
             throw ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.InvalidArgument12020);
         }
@@ -30,13 +26,13 @@ internal sealed class GetCustomersOnProductHandler(
         {
             Customers =
             {
-                customers.Select(c =>
+                loan.LoanRelationships.Select(c =>
                 {
                     var customerResponse = new GetCustomersOnProductResponseItem
                     {
-                        RelationshipCustomerProductTypeId = c.ContractRelationshipTypeId,
+                        RelationshipCustomerProductTypeId = c.PartnerRelationshipId,
                         Agent = c.Agent ?? false,
-                        IsKYCSuccessful = c.Kyc ?? false
+                        IsKYCSuccessful = c.KycStatus.GetValueOrDefault() == 1
                     };
 
                     customerResponse.CustomerIdentifiers.Add(new SharedTypes.GrpcTypes.Identity(c.PartnerId, IdentitySchemes.Mp));
@@ -47,7 +43,7 @@ internal sealed class GetCustomersOnProductHandler(
                     return customerResponse;
                 })
             }
-        };*/
+        };
 	}
 
     private async Task CheckIfProductIsKb(int? productTypeId, CancellationToken cancellationToken)

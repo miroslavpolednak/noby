@@ -34,6 +34,13 @@ internal sealed class RealMpHomeClient(HttpClient _httpClient)
         return (result.Conditions?.ToList(), result.Phases?.ToList());
 	}
 
+	public async Task<(LoanRetention? Retention, LoanRefixation? Refixation)> GetRefinancing(long productId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/retentionRefixation", cancellationToken);
+		var result = await response.EnsureSuccessStatusAndReadJson<LoanRetentionResponse>(StartupExtensions.ServiceName, cancellationToken);
+		return (result.Retention, result.Refixation);
+	}
+
 	public async Task<bool> PartnerExists(long partnerId, CancellationToken cancellationToken = default)
 	{
 		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}/exists", cancellationToken);

@@ -1,6 +1,4 @@
-﻿using DomainServices.ProductService.Api.Database.Models;
-
-namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
+﻿namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
 
 internal static class GetMortgageMappers
 {

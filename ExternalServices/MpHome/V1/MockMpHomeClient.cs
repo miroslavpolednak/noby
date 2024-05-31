@@ -69,4 +69,9 @@ internal sealed class MockMpHomeClient
 	{
 		throw new NotImplementedException();
 	}
+
+	public Task<(LoanRetention? Retention, LoanRefixation? Refixation)> GetRefinancing(long productId, CancellationToken cancellationToken = default)
+	{
+		throw new NotImplementedException();
+	}
 }

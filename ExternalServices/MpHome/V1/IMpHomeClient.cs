@@ -45,4 +45,6 @@ public interface IMpHomeClient
     Task UpdatePcpId(long productId, string pcpId, CancellationToken cancellationToken = default);
 
     Task<PartnerResponse?> GetCustomer(long partnerId, CancellationToken cancellationToken = default);
+
+    Task<(LoanRetention? Retention, LoanRefixation? Refixation)> GetRefinancing(long productId, CancellationToken cancellationToken = default);
 }

@@ -11,9 +11,34 @@ internal sealed class GetMortgageHandler(
     {
         var loan = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken);
         var partner = await _mpHomeClient.GetCustomer(loan!.PartnerId!.Value, cancellationToken);
+		var (retention, refixation) = await _mpHomeClient.GetRefinancing(request.ProductId, cancellationToken);
 
         var mappedLoan = loan!.MapToProductServiceContract();
 		mappedLoan.Statement.Address = await getStatementAddress(partner!, cancellationToken);
+		
+		// retence
+		if (retention is not null && retention.MonthInstallment > 0)
+		{
+			mappedLoan.Retention = new MortgageData.Types.RetentionData
+			{
+				LoanInterestRate = retention.InterestRate.ToDecimal(),
+				LoanInterestRateValidFrom = retention.From,
+				LoanInterestRateValidTo = retention.To,
+				LoanPaymentAmount = retention.MonthInstallment.ToDecimal()
+			};
+		}
+		
+		// refixace
+		if (refixation is not null && refixation.FixationPeriod > 0)
+		{
+			mappedLoan.Refixation = new MortgageData.Types.RefixationData
+			{
+				FixedRatePeriod = refixation.FixationPeriod,
+				LoanInterestRate = refixation.InterestRate.ToDecimal(),
+				LoanInterestRateValidTo = refixation.InterestRateValidTo,
+				LoanPaymentAmount = refixation.RefixFutureMonthInstallment.ToDecimal()
+			};
+		}
 
 		return new GetMortgageResponse 
         { 
