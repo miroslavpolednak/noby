@@ -136,8 +136,6 @@ internal sealed class GetRealEstateValuationTypesHandler
 
         if (!detail.RealEstateStateId.HasValue)
             throw new NobyValidationException(90032, "RealEstateStateId must not be null.");
-
-        throw new NobyValidationException("RealEstateStateId is required");
     }
 }
 

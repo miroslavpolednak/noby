@@ -8,7 +8,7 @@ namespace NOBY.Api.Endpoints.Household;
 /// Prace s domacnostmi a customery
 /// </summary>
 [ApiController]
-[Route("api")]
+[Route("api/v{v:apiVersion}")]
 [ApiVersion(1)]
 public class HouseholdController : ControllerBase
 {

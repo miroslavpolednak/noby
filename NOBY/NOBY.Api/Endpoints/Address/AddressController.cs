@@ -6,7 +6,7 @@ namespace NOBY.Api.Endpoints.Address;
 
 [ApiController]
 [ApiVersion(1)]
-[Route("api")]
+[Route("api/v{v:apiVersion}")]
 public class AddressController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -7,7 +7,7 @@ using System.Globalization;
 namespace NOBY.Api.Endpoints.Workflow;
 
 [ApiController]
-[Route("api/case")]
+[Route("api/v{v:apiVersion}/case")]
 [ApiVersion(1)]
 public class WorkflowController(IMediator _mediator) : ControllerBase
 {

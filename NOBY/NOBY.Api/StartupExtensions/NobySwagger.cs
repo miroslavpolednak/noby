@@ -136,14 +136,33 @@ internal static class NobySwagger
         /// <inheritdoc />
         public void Configure(SwaggerGenOptions options)
         {
-            // add a swagger document for each discovered API version
-            // note: you might choose to skip or document deprecated API versions differently
-            foreach (var description in _provider.ApiVersionDescriptions)
+            options.SwaggerDoc(Constants.OpenApiDocName, CreateInfoForApiVersionAll());
+
+            options.DocInclusionPredicate((openApiDocName, apiDesc) =>
             {
-                options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
-            }
+                // Here we can decide if api endpoint should be in specific open api json file. (Currently we have only one file and all api versions gone be in one file)
+                return true;
+            });
         }
 
+        private static OpenApiInfo CreateInfoForApiVersionAll()
+        {
+            var text = new StringBuilder("Obecná specifikace <b>error handlingu</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=589534698](https://wiki.kb.cz/pages/viewpage.action?pageId=589534698)</li></ul>Specifikace <b>HTTP hlaviček</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)</li></ul>");
+
+            var info = new OpenApiInfo()
+            {
+                Title = "NOBY FRONTEND API",
+                Version = "All version"
+            };
+
+            info.Description = text.ToString();
+
+            return info;
+        }
+
+        /// <summary>
+        /// For api versioning to multiple documents according versions
+        /// </summary>
         private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
         {
             var text = new StringBuilder("Obecná specifikace <b>error handlingu</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=589534698](https://wiki.kb.cz/pages/viewpage.action?pageId=589534698)</li></ul>Specifikace <b>HTTP hlaviček</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)</li></ul>");

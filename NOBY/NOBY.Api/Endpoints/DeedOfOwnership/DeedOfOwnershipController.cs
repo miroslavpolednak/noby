@@ -5,7 +5,7 @@ using System.Net.Mime;
 namespace NOBY.Api.Endpoints.DeedOfOwnership;
 
 [ApiController]
-[Route("api/deed-of-ownership")]
+[Route("api/v{v:apiVersion}/deed-of-ownership")]
 [ApiVersion(1)]
 public sealed class DeedOfOwnershipController : ControllerBase
 {

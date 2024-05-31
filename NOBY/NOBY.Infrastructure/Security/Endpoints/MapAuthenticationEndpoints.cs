@@ -18,7 +18,7 @@ public static class MapAuthenticationEndpoints
         {
             var aut = t.NewVersionedApi();
             // sign in
-            aut.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, () =>
+            aut.MapGet("/api/v{version:apiVersion}/" + AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, () =>
             {
             })
                 .RequireAuthorization()
@@ -35,7 +35,7 @@ public static class MapAuthenticationEndpoints
                 });
 
             // Odhlášení přihlášeného uživatele
-            aut.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint,
+            aut.MapGet("/api/v{version:apiVersion}/" + AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint,
                 ([FromServices] IHttpContextAccessor context,
                 [FromServices] AppConfiguration configuration,
                 [FromServices] IAuditLogger logger,

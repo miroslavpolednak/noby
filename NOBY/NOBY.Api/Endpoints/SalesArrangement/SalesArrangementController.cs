@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace NOBY.Api.Endpoints.SalesArrangement;
 
 [ApiController]
-[Route("api/sales-arrangement")]
+[Route("api/v{v:apiVersion}/sales-arrangement")]
 [ApiVersion(1)]
 public class SalesArrangementController : ControllerBase
 {
@@ -74,7 +74,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="newAssessmentRequired">Požadováno nové posouzení</param>
     /// <returns><see cref="GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
     [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
-    [ApiVersion("2")]
+    [ApiVersion(2)]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.SCORING_Perform)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]

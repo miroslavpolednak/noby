@@ -7,7 +7,7 @@ using NOBY.Api.Endpoints.Document.SharedDto;
 namespace NOBY.Api.Endpoints.Document;
 
 [ApiController]
-[Route("api/document")]
+[Route("api/v{v:apiVersion}/document")]
 [ApiVersion(1)]
 public class DocumentController : ControllerBase
 {

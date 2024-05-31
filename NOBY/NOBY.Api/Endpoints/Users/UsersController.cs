@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace NOBY.Api.Endpoints.Users;
 
 [ApiController]
-[Route("api")]
+[Route("api/v{v:apiVersion}")]
 [ApiVersion(1)]
 public class UsersController : ControllerBase
 {
