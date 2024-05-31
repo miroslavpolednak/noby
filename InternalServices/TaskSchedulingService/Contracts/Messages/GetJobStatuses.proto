@@ -31,10 +31,10 @@ message GetJobStatusesResponse {
 		string JobName = 2;
 
 		// ID triggeru
-		string TriggerId = 3;
+		google.protobuf.StringValue TriggerId = 3;
 
 		// Název triggeru
-		string TriggerName = 4;
+		google.protobuf.StringValue TriggerName = 4;
 
 		// Status provádění jobu: InProgress, Finished, Failed, FailedBecauseOfLock, Stale
 		string Status = 5;
