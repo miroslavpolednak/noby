@@ -45,7 +45,7 @@ internal static class GetMortgageMappers
 			DrawingFinishedDate = loan.FinalDrawDate,
 			PcpId = loan.PcpInstId
 		};
-
+		
 		if (loan.Purposes?.Any() ?? false)
 		{
 			mortgage.LoanPurposes.AddRange(loan.Purposes.Select(t => new Contracts.LoanPurpose
