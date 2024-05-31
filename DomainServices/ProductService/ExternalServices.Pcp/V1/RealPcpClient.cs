@@ -106,7 +106,12 @@ internal sealed class RealPcpClient
       </v1:systemIdentity>
    </soapenv:Header>";
 
-    private readonly HttpClient _httpClient;
+	public Task<string> UpdateProduct(string pcpId, List<long> customersKbIds, CancellationToken cancellationToken = default)
+	{
+		throw new NotImplementedException();
+	}
+
+	private readonly HttpClient _httpClient;
     private readonly IExternalServiceConfiguration<IPcpClient> _configuration;
     private readonly ILogger<RealPcpClient> _logger;
 

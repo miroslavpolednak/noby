@@ -1,4 +1,5 @@
-﻿namespace DomainServices.ProductService.ExternalServices.Pcp.V1;
+﻿
+namespace DomainServices.ProductService.ExternalServices.Pcp.V1;
 
 internal sealed class MockPcpClient
     : IPcpClient
@@ -7,4 +8,9 @@ internal sealed class MockPcpClient
     {
         return Task.FromResult("nejake id");
     }
+
+	public Task<string> UpdateProduct(string pcpId, List<long> customersKbIds, CancellationToken cancellationToken = default)
+	{
+		throw new NotImplementedException();
+	}
 }

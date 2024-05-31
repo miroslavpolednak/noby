@@ -317,7 +317,7 @@ service CodebookService {
 		};
    }
 
-   rpc IdentificationSubjectMethods (google.protobuf.Empty) returns (GenericCodebookResponse) {
+   rpc IdentificationSubjectMethods (google.protobuf.Empty) returns (IdentificationSubjectMethodsResponse) {
 	   option (google.api.http) = {
 			get: "/v1/identification-subject-methods"
 		};
