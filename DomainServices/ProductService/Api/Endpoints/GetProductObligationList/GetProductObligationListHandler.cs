@@ -7,30 +7,37 @@ internal sealed class GetProductObligationListHandler(IMpHomeClient _mpHomeClien
     {
         var product = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken);
 
-        var responseItems = obligations.Select(obligation =>
-        {
-            var item = new GetProductObligationItem
+        var responseItems = product?
+            .Obligations?
+            .Select(obligation =>
             {
-                ObligationTypeId = obligation.ObligationTypeId,
-                Amount = obligation.Amount,
-                CreditorName = obligation.CreditorName
-            };
-
-            if (!string.IsNullOrWhiteSpace(obligation.AccountNumber))
-            {
-                item.PaymentAccount = new PaymentAccount
+                var item = new GetProductObligationItem
                 {
-                    Prefix = obligation.AccountNumberPrefix ?? string.Empty,
-                    Number = obligation.AccountNumber ?? string.Empty,
-                    BankCode = obligation.BankCode ?? string.Empty
+                    ObligationTypeId = obligation.ObligationType,
+                    Amount = Convert.ToDecimal(obligation.Amount),
+                    CreditorName = obligation.Creditor
                 };
-            }
 
-            if (!string.IsNullOrWhiteSpace(obligation.VariableSymbol))
-                item.PaymentSymbols = new PaymentSymbols { VariableSymbol = obligation.VariableSymbol };
+                if (!string.IsNullOrWhiteSpace(obligation.AccountNumber))
+                {
+                    item.PaymentAccount = new PaymentAccount
+                    {
+                        Prefix = obligation.AccountPrefix ?? string.Empty,
+                        Number = obligation.AccountNumber ?? string.Empty,
+                        BankCode = obligation.BankCode ?? string.Empty
+                    };
+                }
 
-            return item;
-        });
+                if (!string.IsNullOrWhiteSpace(obligation.VariableSymbol))
+                {
+					item.PaymentSymbols = new PaymentSymbols 
+                    { 
+                        VariableSymbol = obligation.VariableSymbol 
+                    };
+				}
+                
+                return item;
+            });
 
         return new GetProductObligationListResponse 
         { 

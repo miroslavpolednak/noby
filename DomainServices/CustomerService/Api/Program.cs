@@ -12,6 +12,7 @@ SharedComponents.GrpcServiceBuilder
             .AddCodebookService()
             .AddHouseholdService()
             .AddSalesArrangementService()
+            .AddUserService()
             .AddCaseService();
     })
     .Build((builder, appConfiguration) =>

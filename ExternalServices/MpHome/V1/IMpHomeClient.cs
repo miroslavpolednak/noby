@@ -43,4 +43,6 @@ public interface IMpHomeClient
     Task<long?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default);
 
     Task UpdatePcpId(long productId, string pcpId, CancellationToken cancellationToken = default);
+
+    Task<PartnerResponse?> GetCustomer(long partnerId, CancellationToken cancellationToken = default);
 }

@@ -19,7 +19,12 @@ internal sealed class RealMpHomeClient(HttpClient _httpClient)
 	public async Task<long?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
 	{
 		var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Case/search", request, cancellationToken);
-		return await response.EnsureSuccessStatusAndReadJson<long>(StartupExtensions.ServiceName, cancellationToken);
+		await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+        if (long.TryParse(await response.SafeReadAsStringAsync(cancellationToken), out long id))
+        {
+            return id;
+        }
+        return null;
 	}
 
 	public async Task<(List<LoanCondition>? Conditions, List<LoanConditionPhase>? Phases)> GetCovenants(long productId, CancellationToken cancellationToken = default)
@@ -38,7 +43,14 @@ internal sealed class RealMpHomeClient(HttpClient _httpClient)
 	public async Task<bool> CaseExists(long caseId, CancellationToken cancellationToken = default)
 	{
 		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Case/{caseId}/exists", cancellationToken);
-		return await response.EnsureSuccessStatusAndReadJson<bool>(StartupExtensions.ServiceName, cancellationToken);
+        await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+        return (await response.SafeReadAsStringAsync(cancellationToken)) == "true";
+	}
+
+	public async Task<PartnerResponse?> GetCustomer(long partnerId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}", cancellationToken);
+		return await response.EnsureSuccessStatusAndReadJson<PartnerResponse>(StartupExtensions.ServiceName, cancellationToken);
 	}
 
 	public async Task<LoanDetail?> GetMortgage(long productId, CancellationToken cancellationToken = default)

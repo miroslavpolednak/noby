@@ -17,8 +17,9 @@ internal sealed class GetCustomersOnProductHandler(
         // Kontrola, zda se jedná o KB produkt, chyba pokud ne vyhodit chybu
         await CheckIfProductIsKb(loan.ProductUvCode, cancellationToken);
 
-        // Zjištění seznamu klientů na produktu, vyhodit tvrdou chybu pokud je množina prázdná (nesmí se stávat, pokud není nekonzistence dat)
-        var customers = await _repository.GetRelationships(request.ProductId, cancellationToken);
+        return new GetCustomersOnProductResponse();
+		// Zjištění seznamu klientů na produktu, vyhodit tvrdou chybu pokud je množina prázdná (nesmí se stávat, pokud není nekonzistence dat)
+		/*var customers = await _repository.GetRelationships(request.ProductId, cancellationToken);
 
         if (customers.Count == 0)
         {
@@ -46,8 +47,8 @@ internal sealed class GetCustomersOnProductHandler(
                     return customerResponse;
                 })
             }
-        };
-    }
+        };*/
+	}
 
     private async Task CheckIfProductIsKb(int? productTypeId, CancellationToken cancellationToken)
     {

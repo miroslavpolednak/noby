@@ -3899,7 +3899,8 @@
           },
           "partnerId": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "nullable": true
           },
           "productUvCode": {
             "type": "integer",
@@ -4084,35 +4085,6 @@
             "type": "string",
             "nullable": true
           },
-          "street": {
-            "type": "string",
-            "nullable": true
-          },
-          "streetNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "houseNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "postCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "countrySubcategory": {
-            "type": "string",
-            "nullable": true
-          },
           "realEstates": {
             "type": "array",
             "items": {
@@ -4124,6 +4096,20 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/LoanPurpose"
+            },
+            "nullable": true
+          },
+          "obligations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanObligation"
+            },
+            "nullable": true
+          },
+          "loanRelationships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoanRelationship"
             },
             "nullable": true
           }
@@ -4171,6 +4157,44 @@
             "items": {
               "$ref": "#/components/schemas/LoanLink"
             }
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanObligation": {
+        "type": "object",
+        "properties": {
+          "obligationType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "loanPurposeInt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "creditor": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountPrefix": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "bankCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "variableSymbol": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4254,6 +4278,34 @@
           "refixFutureMonthInstallment": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoanRelationship": {
+        "type": "object",
+        "properties": {
+          "partnerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "agent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "kycStatus": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "kbId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "partnerRelationshipId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

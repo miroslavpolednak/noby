@@ -39,7 +39,7 @@ internal sealed class CreateMortgageHandler(
             pcpId = await _pcpClient.CreateProduct(request.CaseId, caseInstance.Customer.Identity.IdentityId, pcpProductIdOrObjectCode, cancellationToken);
 
             // create in konsdb
-            await _mpHomeClient.UpdateLoan(request.CaseId, request.Mortgage.ToMortgageRequest(pcpId), cancellationToken);
+            await _mpHomeClient.UpdateLoan(request.CaseId, toMortgageRequest(request.Mortgage, pcpId), cancellationToken);
         }
 
         return new CreateMortgageResponse
@@ -48,4 +48,38 @@ internal sealed class CreateMortgageHandler(
             PcpId = pcpId
         };
     }
+
+	private static MortgageRequest toMortgageRequest(MortgageData mortgage, string? pcpId)
+	{
+		var request = new MortgageRequest
+		{
+			PcpInstId = pcpId,
+			LoanType = LoanType.KBMortgage,
+			ProductCodeUv = mortgage.ProductTypeId,
+			PartnerId = mortgage.PartnerId,
+			LoanContractNumber = mortgage.ContractNumber,
+			LoanAmount = mortgage.LoanAmount,
+			InterestRate = mortgage.LoanInterestRate,
+			FixationPeriod = mortgage.FixedRatePeriod,
+			MonthlyInstallment = mortgage.LoanPaymentAmount,
+			LoanKind = mortgage.LoanKindId.GetValueOrDefault(),
+			InstallmentDay = mortgage.PaymentDay,
+			Expected1stDrawDate = mortgage.ExpectedDateOfDrawing,
+			RepaymentAccountBank = mortgage.RepaymentAccount?.BankCode,
+			RepaymentAccountNumber = mortgage.RepaymentAccount?.Number,
+			RepaymentAccountPrefix = mortgage.RepaymentAccount?.Prefix,
+			EstimatedDuePaymentDate = mortgage.LoanDueDate,
+			FirstAnnuityInstallmentDate = mortgage.FirstAnnuityPaymentDate,
+			ServiceBranchId = mortgage.BranchConsultantId,
+			ConsultantId = mortgage.CaseOwnerUserCurrentId,
+			FirstRequestSignDate = mortgage.FirstSignatureDate,
+			LoanPurposes = mortgage.LoanPurposes?.Select(t => new global::ExternalServices.MpHome.V1.Contracts.LoanPurpose
+			{
+				Amount = Convert.ToDouble((decimal)t.Sum),
+				LoanPurposeId = t.LoanPurposeId
+			}).ToList()
+		};
+
+		return request;
+	}
 }

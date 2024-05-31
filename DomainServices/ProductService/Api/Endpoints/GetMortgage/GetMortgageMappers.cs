@@ -8,7 +8,7 @@ internal static class GetMortgageMappers
 	{
 		var mortgage = new MortgageData
 		{
-			PartnerId = loan.PartnerId,
+			PartnerId = loan.PartnerId.GetValueOrDefault(),
 			BranchConsultantId = loan.ServiceBranchConsultantId,
 			CaseOwnerUserCurrentId = loan.ConsultantId,
 			CaseOwnerUserOrigId = loan.OriginalConsultantId,
@@ -65,9 +65,13 @@ internal static class GetMortgageMappers
 			}));
 		}
 
-		if (relationships.Count != 0)
+		if (loan.LoanRelationships?.Any() ?? false)
 		{
-			mortgage.Relationships.AddRange(relationships.Select(ToRelationship));
+			mortgage.Relationships.AddRange(loan.LoanRelationships.Select(t => new Contracts.Relationship
+			{
+				ContractRelationshipTypeId = t.PartnerRelationshipId,
+				PartnerId = t.PartnerId
+			}));
 		}
 
 		return mortgage;
@@ -99,16 +103,6 @@ internal static class GetMortgageMappers
 		SubscriptionTypeId = loan.HfStatementZodb,
 		FrequencyId = loan.HfStatementFrequency,
 		EmailAddress1 = loan.StatementEmail1,
-		EmailAddress2 = loan.StatementEmail2,
-		Address = new SharedTypes.GrpcTypes.GrpcAddress
-		{
-			Street = loan.Street ?? string.Empty,
-			StreetNumber = loan.StreetNumber ?? string.Empty,
-			HouseNumber = loan.HouseNumber ?? string.Empty,
-			Postcode = loan.PostCode ?? string.Empty,
-			City = loan.City ?? string.Empty,
-			AddressPointId = loan.AddressPointId ?? string.Empty,
-			CountryId = loan.CountryId
-		}
+		EmailAddress2 = loan.StatementEmail2
 	};
 }
