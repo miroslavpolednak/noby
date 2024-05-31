@@ -1,9 +1,10 @@
-﻿using NOBY.Infrastructure.Security.Endpoints;
-using NOBY.Infrastructure.Configuration;
+﻿using Asp.Versioning.ApiExplorer;
 using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Http.Extensions;
+using NOBY.Infrastructure.Configuration;
+using NOBY.Infrastructure.Security.Endpoints;
 using NOBY.Infrastructure.Security.Middleware;
-using Asp.Versioning.ApiExplorer;
+using NOBY.Infrastructure.Swagger;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -58,7 +59,7 @@ internal static class NobyAppBuilder
             {
                 appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.RequestBufferingMiddleware>();
             }
-            
+
             // autorizace
             appBuilder
                 .UseMiddleware<NobySecurityMiddleware>()
@@ -90,14 +91,7 @@ internal static class NobyAppBuilder
         .UseSwagger()
         .UseSwaggerUI(c =>
         {
-            // build a swagger endpoint for each discovered API version
-            foreach (var description in descriptions)
-            {
-                var url = $"/swagger/{description.GroupName}/swagger.json";
-                var name = description.GroupName.ToUpperInvariant();
-                c.SwaggerEndpoint(url, name);
-            }
-
+            c.SwaggerEndpoint($"/swagger/{Constants.OpenApiDocName}/swagger.json", "API all versions");
             c.DisplayOperationId();
         });
 

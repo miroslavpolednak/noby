@@ -19,7 +19,7 @@ using NOBY.Api.Endpoints.DocumentOnSA.SendDocumentOnSAPreview;
 namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 [ApiController]
-[Route("api")]
+[Route("api/v{v:apiVersion}")]
 [ApiVersion(1)]
 public class DocumentOnSAController : ControllerBase
 {

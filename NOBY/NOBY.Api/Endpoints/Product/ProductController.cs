@@ -6,7 +6,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace NOBY.Api.Endpoints.Product;
 
 [ApiController]
-[Route("api/product")]
+[Route("api/v{v:apiVersion}/product")]
 [ApiVersion(1)]
 public sealed class ProductController : ControllerBase
 {

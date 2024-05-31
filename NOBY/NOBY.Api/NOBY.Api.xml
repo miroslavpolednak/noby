@@ -5610,6 +5610,11 @@
         <member name="M:NOBY.Api.StartupExtensions.NobySwagger.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <inheritdoc />
         </member>
+        <member name="M:NOBY.Api.StartupExtensions.NobySwagger.ConfigureSwaggerOptions.CreateInfoForApiVersion(Asp.Versioning.ApiExplorer.ApiVersionDescription)">
+            <summary>
+            For api versioning to multiple documents according versions
+            </summary>
+        </member>
         <member name="T:NOBY.Api.StartupExtensions.NobySwagger.SwaggerDefaultValues">
             <summary>
             Represents the OpenAPI/Swashbuckle operation filter used to document information provided, but not used.

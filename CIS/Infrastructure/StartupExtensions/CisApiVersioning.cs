@@ -10,10 +10,9 @@ public static class CisApiVersioning
         builder.Services.AddApiVersioning(
           options =>
           {
+              options.DefaultApiVersion = new ApiVersion(1, 0);
               options.ReportApiVersions = true;
               options.AssumeDefaultVersionWhenUnspecified = true;
-              options.ApiVersionReader = new HeaderApiVersionReader("api-version");
-
           }).AddApiExplorer(options =>
                     {
                         // Add the versioned API explorer, which also adds IApiVersionDescriptionProvider service

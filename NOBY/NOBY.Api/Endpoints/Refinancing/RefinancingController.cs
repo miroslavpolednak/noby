@@ -12,7 +12,7 @@ using NOBY.Dto.Refinancing;
 namespace NOBY.Api.Endpoints.Refinancing;
 
 [ApiController]
-[Route("api")]
+[Route("api/v{v:apiVersion}")]
 [ApiVersion(1)]
 public sealed class RefinancingController(IMediator _mediator) : ControllerBase
 {
@@ -219,7 +219,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k vygenerování dokumentu Retenčního dodatku<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("/api/case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/retention-document")]
+    [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/retention-document")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
@@ -236,7 +236,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k vygenerování dokumentu pro Refixace nebo Individuální sdělení<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A415BC33-46AF-40f9-B50C-5F7297DC0B26"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("/api/case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/refixation-document")]
+    [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/refixation-document")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
@@ -253,7 +253,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k vygenerování dokumentu mimořádné splátky<br /><br />
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6ABBB7A4-03E8-4cd2-8D6B-FAD3C407AC20"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
-    [HttpPost("/api/case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/extra-payment-document")]
+    [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/extra-payment-document")]
     [Produces("application/json")]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
