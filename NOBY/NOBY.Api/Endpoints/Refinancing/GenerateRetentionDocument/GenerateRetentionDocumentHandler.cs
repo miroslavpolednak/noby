@@ -38,7 +38,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
         var salesArrangement = await _refinancingDocumentService.LoadAndValidateSA(request.SalesArrangementId, SalesArrangementTypes.MortgageRetention, cancellationToken);
         var offer = await LoadAndValidateOffer(salesArrangement.OfferId!.Value, cancellationToken);
 
-        var offerIndividualPrice = new MortgageRefinancingIndividualPrice(offer.MortgageRetention.SimulationInputs.InterestRateDiscount, offer.MortgageRetention.BasicParameters.FeeAmountDiscounted);
+        var offerIndividualPrice = new MortgageRefinancingIndividualPrice(offer.MortgageRetention.SimulationInputs.InterestRateDiscount, GetFeeDiscount(offer.MortgageRetention.BasicParameters));
 
         if (offerIndividualPrice.HasIndividualPrice && !await _refinancingDocumentService.IsIndividualPriceValid(salesArrangement, offerIndividualPrice, cancellationToken))
             throw new NobyValidationException(90048);
@@ -103,5 +103,13 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
         };
 
         await _salesArrangementService.UpdateSalesArrangementParameters(saRequest, cancellationToken);
+    }
+
+    private static decimal? GetFeeDiscount(MortgageRetentionBasicParameters retention)
+    {
+        if (retention.FeeAmountDiscounted is null || (decimal?)retention.FeeAmountDiscounted - (decimal)retention.FeeAmount < 0)
+            return default;
+
+        return (decimal?)retention.FeeAmountDiscounted - (decimal)retention.FeeAmount;
     }
 }

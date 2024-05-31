@@ -134,8 +134,8 @@ internal sealed class GetRealEstateValuationTypesHandler
         if (detail.SpecificDetailCase != RealEstateValuationDetail.SpecificDetailOneofCase.None)
             throw new NobyValidationException(90032, "SpecificDetails is not null");
 
-        if (detail.RealEstateStateId.HasValue)
-            throw new NobyValidationException(90032, "RealEstateStateId has to be null.");
+        if (!detail.RealEstateStateId.HasValue)
+            throw new NobyValidationException(90032, "RealEstateStateId must not be null.");
 
         throw new NobyValidationException("RealEstateStateId is required");
     }
