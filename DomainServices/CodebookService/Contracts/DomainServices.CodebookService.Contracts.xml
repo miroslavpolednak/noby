@@ -37,6 +37,24 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationSubjectMethodsResponse.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="T:DomainServices.CodebookService.Contracts.v1.IdentificationSubjectMethodsResponse.Types">
+            <summary>Container for nested types declared in the IdentificationSubjectMethodsResponse message type.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationSubjectMethodsResponse.Types.IdentificationSubjectMethodsItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationSubjectMethodsResponse.Types.IdentificationSubjectMethodsItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationSubjectMethodsResponse.Types.IdentificationSubjectMethodsItem.IsValidFieldNumber">
+            <summary>Field number for the "IsValid" field.</summary>
+        </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.IdentificationSubjectMethodsResponse.Types.IdentificationSubjectMethodsItem.IsValidNobyFieldNumber">
+            <summary>Field number for the "IsValidNoby" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.RefinancingStatesResponse.ItemsFieldNumber">
             <summary>Field number for the "Items" field.</summary>
         </member>

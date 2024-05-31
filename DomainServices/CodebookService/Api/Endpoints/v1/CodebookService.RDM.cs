@@ -73,22 +73,22 @@ internal partial class CodebookService
 			return (new CountryCodePhoneIdcResponse()).AddItems(finalItems);
 		});
 
-	public override Task<GenericCodebookResponse> IdentificationSubjectMethods(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+	public override Task<IdentificationSubjectMethodsResponse> IdentificationSubjectMethods(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
 		=> Helpers.GetItems(() =>
 		{
 			var items = _db.SelfDb.GetRdmItems("CB_IdentificationMethodType");
 
 			var finalItems = items
-				.Select(item => new GenericCodebookResponse.Types.GenericCodebookItem
+				.Select(item => new IdentificationSubjectMethodsResponse.Types.IdentificationSubjectMethodsItem
 				{
 					IsValid = item.IsValid,
 					Name = item.Properties["Name"],
-					Id = Convert.ToInt32(item.Code, CultureInfo.InvariantCulture)
+					Id = Convert.ToInt32(item.Code, CultureInfo.InvariantCulture),
+					IsValidNoby = item.Code is "1" or "3" or "8"
 				})
-				.Where(t => t.Id is 1 or 3 or 8)
 				.OrderBy(t => t.Id);
 
-			return (new GenericCodebookResponse()).AddItems(finalItems);
+			return (new IdentificationSubjectMethodsResponse()).AddItems(finalItems);
 		});
 
 	public override Task<SigningMethodsForNaturalPersonResponse> SigningMethodsForNaturalPerson(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
