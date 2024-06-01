@@ -11,7 +11,7 @@ public interface IMpHomeClient
     /// <summary>
     /// Vraci detail uveru z tabulky dbo.Uver
     /// </summary>
-    Task<LoanDetail?> GetMortgage(long productId, CancellationToken cancellationToken = default);
+    Task<LoanDetail> GetMortgage(long productId, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// inserts/updates row in table dbo.Uver in KonsDB (according to provided data)

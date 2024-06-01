@@ -60,7 +60,7 @@ internal sealed class RealMpHomeClient(HttpClient _httpClient)
 		return await response.EnsureSuccessStatusAndReadJson<PartnerResponse>(StartupExtensions.ServiceName, cancellationToken);
 	}
 
-	public async Task<LoanDetail?> GetMortgage(long productId, CancellationToken cancellationToken = default)
+	public async Task<LoanDetail> GetMortgage(long productId, CancellationToken cancellationToken = default)
     {
 		var response =  await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}", cancellationToken);
 		return await response.EnsureSuccessStatusAndReadJson<Contracts.LoanDetail>(StartupExtensions.ServiceName, cancellationToken);
