@@ -1,34 +1,3 @@
---Creates tables for view
-EXECUTE [dbo].[sp_CopyNobyData] 
-
-CREATE OR ALTER VIEW [dbo].[vw_CaseWithArchived] AS
-
-WITH CombinedRecords AS (
-    SELECT * FROM [Case] FOR SYSTEM_TIME ALL
-),
-RankedRecords AS (
-    SELECT *, ROW_NUMBER() OVER (PARTITION BY CaseId ORDER BY ValidTo DESC) AS rn
-    FROM CombinedRecords
-)
-
-SELECT * FROM RankedRecords WHERE rn = 1;
-
-GO
-
-CREATE OR ALTER VIEW [dbo].[vw_SalesArrangementWithArchived] AS
-
-WITH CombinedRecords AS (
-    SELECT * FROM [SalesArrangement] FOR SYSTEM_TIME ALL
-),
-RankedRecords AS (
-    SELECT *, ROW_NUMBER() OVER (PARTITION BY SalesArrangementId ORDER BY ValidTo DESC) AS rn
-    FROM CombinedRecords
-)
-
-SELECT * FROM RankedRecords WHERE rn = 1;
-
-GO
-
 CREATE OR ALTER PROCEDURE [dbo].[sp_CopyNobyData] AS 
 BEGIN
 
@@ -86,13 +55,46 @@ BEGIN
 	EXEC sp_rename 'SalesArrangementHistory_new', 'SalesArrangementHistory';
 	EXEC sp_rename 'Offer_new', 'Offer';
     EXEC sp_rename 'OfferMortgageData_new', 'OfferMortgageData';
-
-	--Turn on versioning (enable SELECT with SYSTEM_TIME ALL)
+    
+    --Turn on versioning (enable SELECT with SYSTEM_TIME ALL)
 	ALTER TABLE [dbo].[Case] SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[CaseHistory]));
 	ALTER TABLE [dbo].[SalesArrangement] SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[SalesArrangementHistory]));
 
-	COMMIT
+    COMMIT
 END
+
+GO
+
+--Creates tables for view
+EXECUTE [dbo].[sp_CopyNobyData] 
+
+GO
+
+CREATE OR ALTER VIEW [dbo].[vw_CaseWithArchived] AS
+
+WITH CombinedRecords AS (
+    SELECT * FROM [Case] FOR SYSTEM_TIME ALL
+),
+RankedRecords AS (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY CaseId ORDER BY ValidTo DESC) AS rn
+    FROM CombinedRecords
+)
+
+SELECT * FROM RankedRecords WHERE rn = 1;
+
+GO
+
+CREATE OR ALTER VIEW [dbo].[vw_SalesArrangementWithArchived] AS
+
+WITH CombinedRecords AS (
+    SELECT * FROM [SalesArrangement] FOR SYSTEM_TIME ALL
+),
+RankedRecords AS (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY SalesArrangementId ORDER BY ValidTo DESC) AS rn
+    FROM CombinedRecords
+)
+
+SELECT * FROM RankedRecords WHERE rn = 1;
 
 GO
 
