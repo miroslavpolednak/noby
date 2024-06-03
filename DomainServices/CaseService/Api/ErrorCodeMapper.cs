@@ -40,6 +40,7 @@ internal sealed class ErrorCodeMapper
     public const int FeeFinalSumEmpty = 13043;
     public const int RetentionNull = 13044;
     public const int PriceExceptionLoanInterestRateOrFeesFillIn = 13045;
+
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
