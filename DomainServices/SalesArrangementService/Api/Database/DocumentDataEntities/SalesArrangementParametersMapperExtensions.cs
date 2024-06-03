@@ -79,8 +79,10 @@ internal static class SalesArrangementParametersMapperExtensions
         {
             Comment = refixationData.Comment,
             IndividualPriceCommentLastVersion = refixationData.IndividualPriceCommentLastVersion,
-            ManagedByRC2 = refixationData.ManagedByRC2
-        };
+            ManagedByRC2 = refixationData.ManagedByRC2,
+			SignatureDeadline = refixationData.SignatureDeadline,
+			SignatureTypeDetailId = refixationData.SignatureTypeDetailId
+		};
     }
 
     public static RefixationData MapRefixation(this SalesArrangementParametersRefixation refixationData)
@@ -89,8 +91,10 @@ internal static class SalesArrangementParametersMapperExtensions
         {
             Comment = refixationData.Comment,
             IndividualPriceCommentLastVersion = refixationData.IndividualPriceCommentLastVersion,
-            ManagedByRC2 = refixationData.ManagedByRC2
-        };
+            ManagedByRC2 = refixationData.ManagedByRC2,
+			SignatureDeadline = refixationData.SignatureDeadline,
+			SignatureTypeDetailId = refixationData.SignatureTypeDetailId
+		};
     }
 
     public static SalesArrangementParametersExtraPayment MapExtraPayment(this ExtraPaymentData extraPayment)
