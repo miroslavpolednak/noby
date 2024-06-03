@@ -22,7 +22,6 @@ internal sealed class ErrorCodeMapper
     public const int UnsopportedEstateType = 22014;
     public const int MaxValuationsForCase = 22015;
     public const int MissingRealEstateId = 22016;
-    public const int RevaluationFailed = 22017;
     public const int LocalSurveyDetailsIsEmpty = 22018;
     public const int LuxpiKbModelStatusFailed = 22202;
 
@@ -45,7 +44,6 @@ internal sealed class ErrorCodeMapper
             { OrderDataValidation, "Some of required fields are missing: '{PropertyValue}'" },
             { AddressPointIdNotFound, "AddressPointId not found in any DeedOfOwnershipDocuments" },
             { UnsopportedEstateType, "Unsupported RealEstateTypeId ({PropertyValue})" },
-            { RevaluationFailed, "Revaluation failed" },
             { MissingRealEstateId, "Missing RealEstateId" },
             { MaxValuationsForCase, "Too many RealEstateValuations where isLoanRealEstate is true" },
             { LuxpiKbModelStatusFailed, "KB Model Status Knocked Out" },

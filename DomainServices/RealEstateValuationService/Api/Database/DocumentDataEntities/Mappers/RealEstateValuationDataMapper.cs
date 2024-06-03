@@ -131,7 +131,8 @@ internal sealed class RealEstateValuationDataMapper
         {
             realEstateValuation.ParcelDetails = new()
             {
-                ParcelNumbers = { 
+                ParcelNumbers = 
+                {
                     data.Parcel!.ParcelNumbers!.Select(t => new Contracts.SpecificDetailParcelNumber
                     {
                         Number = t.Number,
