@@ -1,4 +1,5 @@
-﻿using SharedTypes.Types;
+﻿using CIS.Core.Security;
+using SharedTypes.Types;
 using NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto;
 using DomainServices.SalesArrangementService.Contracts;
 
@@ -11,8 +12,9 @@ internal sealed class GetCaseParametersHandler(
     DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService,
     DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
     DomainServices.UserService.Clients.IUserServiceClient _userService,
-    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService
-        ) 
+    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService,
+    ICurrentUserAccessor _currentUserAccessor
+    ) 
     : IRequestHandler<GetCaseParametersRequest, GetCaseParametersResponse>
 {
     public async Task<GetCaseParametersResponse> Handle(GetCaseParametersRequest request, CancellationToken cancellationToken)
@@ -129,12 +131,15 @@ internal sealed class GetCaseParametersHandler(
             InterestInArrears = mortgageData.InterestInArrears,
             LoanDueDate = mortgageData.LoanDueDate,
             PaymentDay = mortgageData.PaymentDay,
-            LoanInterestRateRefix = mortgageData.LoanInterestRateRefix,
-            LoanInterestRateValidFromRefix = mortgageData.LoanInterestRateValidFromRefix,
-            FixedRatePeriodRefix = mortgageData.FixedRatePeriodRefix,
             CaseOwnerOrigUser = getCaseOwnerOrigUser(caseOwnerOrig, caseOwnerCurrent)
         };
-        
+
+        if (_currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage))
+        {
+            parameters.LoanInterestRateRefixation = mortgageData.Refixation?.LoanInterestRate;
+            parameters.LoanInterestRateValidFromRefixation = ((DateTime?)mortgageData.FixedRateValidTo)?.AddDays(1);
+            parameters.FixedRatePeriodRefixation = mortgageData.Refixation?.FixedRatePeriod;
+        }
 
         if (mortgageData.Statement is not null)
         {

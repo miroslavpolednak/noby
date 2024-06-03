@@ -119,17 +119,17 @@ public sealed class CaseParameters
     /// <summary>
     /// Nová úroková sazba.
     /// </summary>
-    public decimal? LoanInterestRateRefix { get; set; }
+    public decimal? LoanInterestRateRefixation { get; set; }
 
     /// <summary>
     /// Platnost nové úrokové sazby od.
     /// </summary>
-    public DateTime? LoanInterestRateValidFromRefix { get; set; }
+    public DateTime? LoanInterestRateValidFromRefixation { get; set; }
 
     /// <summary>
     /// Délka nové fixace v měsících.
     /// </summary>
-    public int? FixedRatePeriodRefix { get; set; }
+    public int? FixedRatePeriodRefixation { get; set; }
 
     public CaseOwnerUserDto? CaseOwnerOrigUser { get; set; }
 

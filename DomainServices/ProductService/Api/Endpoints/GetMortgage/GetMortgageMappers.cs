@@ -31,9 +31,6 @@ internal static class GetMortgageMappers
 			InterestInArrears = loan.RateFromOverdue.ToDecimal(),
 			LoanDueDate = loan.EstimatedDuePaymentDate,
 			PaymentDay = loan.InstallmentDay,
-			LoanInterestRateRefix = null, // ???
-			LoanInterestRateValidFromRefix = null, // ???
-			FixedRatePeriodRefix = null, // ???
 			FirstAnnuityPaymentDate = loan.FirstAnnuityInstallmentDate,
 			FirstSignatureDate = loan.ApplicationSignDate,
 			RepaymentAccount = parseRepaymentAccount(loan),
