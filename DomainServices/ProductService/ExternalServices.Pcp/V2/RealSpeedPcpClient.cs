@@ -43,7 +43,7 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
         });
     }
 
-	public async Task<string> UpdateProduct(string pcpId, List<long> customersKbIds, CancellationToken cancellationToken = default)
+	public async Task<string> UpdateProduct(string pcpId, long customerKbId, CancellationToken cancellationToken = default)
 	{
 		return await callMethod(async () =>
 		{
@@ -51,7 +51,7 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
 
 			var traceContext = CreateTraceContext();
 
-			var request = UpdateRequest(pcpId, customersKbIds);
+			var request = UpdateRequest(pcpId, customerKbId);
 
 			using (new OperationContextScope(Client.InnerChannel))
 			{
@@ -77,28 +77,31 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
         return binding;
     }
 
-	private static updateRequest UpdateRequest(string pcpId, List<long> customersKbIds)
+	private static updateRequest UpdateRequest(string pcpId, long customerKbId)
     {
         return new updateRequest
         {
             productInstance = new ProductInstance3
             {
-                customerInProductInstanceList = customersKbIds.Select(t => new CustomerInProductInstance
-                {
-                    kBCustomer = new KBCustomer
+                customerInProductInstanceList =
+				[
+					new CustomerInProductInstance()
                     {
-                        id = t.ToString(CultureInfo.InvariantCulture)
-                    },
-                    partyInProductInstanceRole = new PartyInProductInstanceRole
-                    {
-                        partyInproductInstanceRoleCode = new PartyInproductInstanceRoleCode
+                        kBCustomer = new KBCustomer
                         {
-                            code = "A",
-                            @class = "CB_CustomerLoanProductRole"
-						}
+                            id = customerKbId.ToString(CultureInfo.InvariantCulture)
+                        },
+                        partyInProductInstanceRole = new PartyInProductInstanceRole
+                        {
+                            partyInproductInstanceRoleCode = new PartyInproductInstanceRoleCode
+                            {
+                                @class = "CB_CustomerInMortgageInstanceRole",
+                                code = "A"
+							}
+                        }
                     }
-                }).ToArray(),
-                mktItemInstanceState = new MktItemInstanceState
+				],
+				mktItemInstanceState = new MktItemInstanceState
                 {
                     state = "2",
                     @class = "CB_MortgageInstanceState"

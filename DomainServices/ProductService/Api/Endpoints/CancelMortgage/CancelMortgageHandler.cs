@@ -17,16 +17,16 @@ internal sealed class CancelMortgageHandler(
             await _mpHomeClient.CancelLoan(request.ProductId, cancellationToken);
 
             // klienti s KB ID na produktu
-			var clientIds = mortgage
+			var clientId = mortgage
 				.LoanRelationships?
-				.Where(t => t.KbId.HasValue)
+				.Where(t => t.KbId.HasValue && t.PartnerRelationshipId == 1)
 				.Select(t => t.KbId!.Value)
-				.ToList();
-
+				.FirstOrDefault();
+            
 			// update v KB
-			if (!string.IsNullOrEmpty(mortgage.PcpInstId) && (clientIds?.Any() ?? false))
+			if (!string.IsNullOrEmpty(mortgage.PcpInstId) && clientId.HasValue)
             {
-				await _pcpClient.UpdateProduct(mortgage.PcpInstId, clientIds, cancellationToken);
+				await _pcpClient.UpdateProduct(mortgage.PcpInstId, clientId.Value, cancellationToken);
 			}
         }
         catch (CisNotFoundException)

@@ -106,7 +106,7 @@ internal sealed class RealPcpClient
       </v1:systemIdentity>
    </soapenv:Header>";
 
-	public Task<string> UpdateProduct(string pcpId, List<long> customersKbIds, CancellationToken cancellationToken = default)
+	public Task<string> UpdateProduct(string pcpId, long customerKbId, CancellationToken cancellationToken = default)
 	{
 		throw new NotImplementedException();
 	}

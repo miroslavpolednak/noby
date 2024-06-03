@@ -9,7 +9,7 @@ internal sealed class MockPcpClient
         return Task.FromResult("nejake id");
     }
 
-	public Task<string> UpdateProduct(string pcpId, List<long> customersKbIds, CancellationToken cancellationToken = default)
+	public Task<string> UpdateProduct(string pcpId, long customerKbId, CancellationToken cancellationToken = default)
 	{
 		throw new NotImplementedException();
 	}
