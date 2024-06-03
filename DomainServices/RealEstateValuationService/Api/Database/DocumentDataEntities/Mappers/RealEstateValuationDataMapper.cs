@@ -126,6 +126,21 @@ internal sealed class RealEstateValuationDataMapper
                 }
             };
         }
+
+        if (data?.Parcel?.ParcelNumbers is not null)
+        {
+            realEstateValuation.ParcelDetails = new()
+            {
+                ParcelNumbers = 
+                {
+                    data.Parcel!.ParcelNumbers!.Select(t => new Contracts.SpecificDetailParcelNumber
+                    {
+                        Number = t.Number,
+                        Prefix = t.Prefix
+                    })
+                }
+            };
+        }
     }
 
     public RealEstateValudationData.OnlinePreorderData? MapPreorderDetails(Contracts.OnlinePreorderData? onlinePreorderDetails)
