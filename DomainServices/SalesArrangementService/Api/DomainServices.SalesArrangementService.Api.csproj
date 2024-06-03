@@ -21,8 +21,8 @@
 		<PackageReference Include="dbup-core" Version="5.0.87" />
 		<PackageReference Include="MediatR" Version="12.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
-		<PackageReference Include="Grpc.AspNetCore" Version="2.62.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.62.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.63.0" />
 		<PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
 	</ItemGroup>
 
