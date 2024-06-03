@@ -66,7 +66,7 @@ internal sealed class GetRefinancingParametersHandler(
             {
                 LoanInterestRate = mortgage.Retention?.LoanInterestRate ?? mortgage.Refixation?.LoanInterestRate,
 				LoanPaymentAmount = mortgage.Retention?.LoanPaymentAmount ?? mortgage.Refixation?.LoanPaymentAmount,
-                FixedRateValidFrom = mortgage.Retention?.LoanInterestRateValidFrom ?? mortgage.FixedRateValidTo,
+                FixedRateValidFrom = getFixedRateValidFrom(),
                 FixedRateValidTo = getFixedRateValidTo(),
 				FixedRatePeriod = mortgage.Refixation?.FixedRatePeriod
 			},
@@ -77,12 +77,32 @@ internal sealed class GetRefinancingParametersHandler(
             }).ToList()
         };
 
-        DateTime? getFixedRateValidTo()
+        DateTime? getFixedRateValidFrom()
         {
+			// retence
+			if (mortgage.Retention?.LoanInterestRate is not null)
+			{
+				return mortgage.Retention.LoanInterestRateValidFrom;
+			}
+			// refixace
+			else if (mortgage.Refixation?.FixedRatePeriod is not null && mortgage.FixedRateValidTo is not null)
+			{
+                return ((DateTime)mortgage.FixedRateValidTo).AddDays(1);
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		DateTime? getFixedRateValidTo()
+        {
+            // retence
             if (mortgage.Retention?.LoanInterestRate is not null)
             {
                 return mortgage.FixedRateValidTo;
 			}
+            // refixace
             else if (mortgage.Refixation?.FixedRatePeriod is not null && mortgage.FixedRateValidTo is not null)
             {
                 return ((DateTime)mortgage.FixedRateValidTo).AddMonths(mortgage.Refixation.FixedRatePeriod.Value);
