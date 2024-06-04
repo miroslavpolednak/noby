@@ -70,9 +70,10 @@ public class GetDocumentOnSADetailHandler : IRequestHandler<GetDocumentOnSADetai
                     Source = documentOnSa.Source.MapToCisEnum(),
                     SalesArrangementTypeId = salesArrangementTypeId,
                     EArchivIdsLinked = documentOnSa.EArchivIdsLinked,
-                    SignatureTypeId = documentOnSa.SignatureTypeId ?? 0
+                    SignatureTypeId = documentOnSa.SignatureTypeId ?? 0,
+                    EaCodeMainId = documentOnSa.EACodeMainId
                 },
-              signatureStates),
+                signatureStates),
                 EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
                     new() { DocumentTypeId = documentOnSa.DocumentTypeId, EACodeMainId = documentOnSa.EACodeMainId }, documentTypes, eACodeMains),
                 CustomerOnSa = new()

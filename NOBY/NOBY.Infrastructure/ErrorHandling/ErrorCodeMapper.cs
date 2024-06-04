@@ -70,7 +70,9 @@ public sealed class ErrorCodeMapper
             { 90058, new("Mimořádná splátka je zakázaná") },
             { 90059, new("Interní refinancování je zakázáno") },
             { 90060, new("Sleva na úrokové sazbě je vyšší než úroková sazba.") },
-            { 90061, new("") }
+            { 90061, new("") },
+            { 90062, new("Nelze generovat dokument - blíží se termín refixace", "Není povoleno generovat dokument ve lhůtě 14 dní do nadcházející refixace.") },
+            { 90063, new("Nelze dohledat podepsaný dokument") }
         };
 
         Messages = messages.AsReadOnly();
