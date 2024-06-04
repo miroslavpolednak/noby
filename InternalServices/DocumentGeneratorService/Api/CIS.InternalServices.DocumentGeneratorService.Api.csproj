@@ -17,7 +17,7 @@
 	
   <ItemGroup>
     <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="10.43.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.62.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.63.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
   </ItemGroup>
 
