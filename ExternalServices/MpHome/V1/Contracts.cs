@@ -115,9 +115,93 @@ namespace ExternalServices.MpHome.V1.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CaseSearchRequest
     {
+        /// <summary>
+        /// Číslo smlouvy
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("contractNumber")]
         public string? ContractNumber { get; set; } = default!;
+
+        /// <summary>
+        /// Předčíslí účtu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("accountPrefix")]
+        public string? AccountPrefix { get; set; } = default!;
+
+        /// <summary>
+        /// Číslo účtu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("accountNumber")]
+        public string? AccountNumber { get; set; } = default!;
+
+        /// <summary>
+        /// PcpInstId
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("pcpInstId")]
+        public string? PcpInstId { get; set; } = default!;
+
+        /// <summary>
+        /// Jméno
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string? FirstName { get; set; } = default!;
+
+        /// <summary>
+        /// Příjmení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string? LastName { get; set; } = default!;
+
+        /// <summary>
+        /// Rodné číslo
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("identificationNumber")]
+        public string? IdentificationNumber { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("partnerId")]
+        public long? PartnerId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("kbId")]
+        public long? KbId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CaseSearchResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("caseId")]
+        public long CaseId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("state")]
+        public int? State { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("contractRelationshipTypeId")]
+        public int? ContractRelationshipTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("productTypeId")]
+        public int? ProductTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetAmount")]
+        public double? TargetAmount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("contractNumber")]
+        public string? ContractNumber { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("partnerId")]
+        public long? PartnerId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("isLoan")]
+        public bool IsLoan { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("pcpInstId")]
+        public string? PcpInstId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("accountPrefix")]
         public string? AccountPrefix { get; set; } = default!;
@@ -125,8 +209,17 @@ namespace ExternalServices.MpHome.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("accountNumber")]
         public string? AccountNumber { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("pcpInstId")]
-        public string? PcpInstId { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("kbId")]
+        public long? KbId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string? FirstName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string? LastName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("identificationNumber")]
+        public string? IdentificationNumber { get; set; } = default!;
 
     }
 
@@ -1281,10 +1374,6 @@ namespace ExternalServices.MpHome.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("firstAnnuityInstallmentDate")]
         public System.DateTime? FirstAnnuityInstallmentDate { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("loanType")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public LoanType LoanType { get; set; } = default!;
-
         /// <summary>
         /// ID spoření
         /// </summary>
@@ -1355,24 +1444,6 @@ namespace ExternalServices.MpHome.V1.Contracts
 
         [System.Text.Json.Serialization.JsonPropertyName("retention")]
         public LoanRetention Retention { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum LoanType
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Unspecified")]
-        Unspecified = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"PDU")]
-        PDU = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"PKU")]
-        PKU = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"KBMortgage")]
-        KBMortgage = 3,
 
     }
 
@@ -1558,10 +1629,6 @@ namespace ExternalServices.MpHome.V1.Contracts
 
         [System.Text.Json.Serialization.JsonPropertyName("firstAnnuityInstallmentDate")]
         public System.DateTime? FirstAnnuityInstallmentDate { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("loanType")]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public LoanType LoanType { get; set; } = default!;
 
         /// <summary>
         /// definuje vztah úvěru k dalším osobám

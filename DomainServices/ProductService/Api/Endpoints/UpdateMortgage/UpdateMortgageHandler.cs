@@ -32,7 +32,7 @@ internal sealed class UpdateMortgageHandler(
                 ?.CustomerIdentifiers
                 .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)
                 ?.IdentityId ?? 0,
-            LoanType = LoanType.KBMortgage,
+            //LoanType = LoanType.KBMortgage,
             ConsultantId = caseInstance.OwnerUserId,
             LoanContractNumber = salesArrangement.ContractNumber,
             MonthlyInstallment = offer.MortgageOffer.SimulationResults.LoanPaymentAmount,

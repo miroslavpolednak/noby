@@ -1,7 +1,5 @@
 using CIS.Core;
-using CIS.Infrastructure.StartupExtensions;
 using ExternalServices;
-using Google.Rpc;
 
 SharedComponents
     .GrpcServiceBuilder
@@ -33,8 +31,6 @@ SharedComponents
             builder.AddExternalServiceV2<DomainServices.ProductService.ExternalServices.Pcp.IPcpClient>();
         else
             throw new ArgumentException("Unsupported pcp version");
-
-        builder.Services.AddDapper(builder.Configuration.GetConnectionString("konsDb") ?? throw new ArgumentException("Missing connection string konsDb."));
     })
     .MapGrpcServices(app =>
     {

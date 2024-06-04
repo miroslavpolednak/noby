@@ -54,7 +54,7 @@ internal sealed class CreateMortgageHandler(
 		var request = new MortgageRequest
 		{
 			PcpInstId = pcpId,
-			LoanType = LoanType.KBMortgage,
+			//LoanType = LoanType.KBMortgage,
 			ProductCodeUv = mortgage.ProductTypeId,
 			PartnerId = mortgage.PartnerId,
 			LoanContractNumber = mortgage.ContractNumber,

@@ -35,7 +35,7 @@ internal sealed class MockMpHomeClient
         return Task.CompletedTask;
     }
 
-	public Task<LoanDetail?> GetMortgage(long productId, CancellationToken cancellationToken = default)
+	public Task<LoanDetail> GetMortgage(long productId, CancellationToken cancellationToken = default)
 	{
 		throw new NotImplementedException();
 	}
@@ -55,11 +55,6 @@ internal sealed class MockMpHomeClient
 		throw new NotImplementedException();
 	}
 
-	public Task<long?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
-	{
-		throw new NotImplementedException();
-	}
-
 	public Task UpdatePcpId(long productId, string pcpId, CancellationToken cancellationToken = default)
 	{
 		throw new NotImplementedException();
@@ -74,4 +69,9 @@ internal sealed class MockMpHomeClient
 	{
 		throw new NotImplementedException();
 	}
+
+    public Task<List<CaseSearchResponse>?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }

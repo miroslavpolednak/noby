@@ -145,20 +145,26 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int64"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CaseSearchResponse"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int64"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CaseSearchResponse"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int64"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CaseSearchResponse"
+                  }
                 }
               }
             }
@@ -3328,6 +3334,93 @@
         "properties": {
           "contractNumber": {
             "type": "string",
+            "description": "Číslo smlouvy",
+            "nullable": true
+          },
+          "accountPrefix": {
+            "type": "string",
+            "description": "Předčíslí účtu",
+            "nullable": true
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "Číslo účtu",
+            "nullable": true
+          },
+          "pcpInstId": {
+            "type": "string",
+            "description": "PcpInstId",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Jméno",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Příjmení",
+            "nullable": true
+          },
+          "identificationNumber": {
+            "type": "string",
+            "description": "Rodné číslo",
+            "nullable": true
+          },
+          "partnerId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "kbId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CaseSearchResponse": {
+        "type": "object",
+        "properties": {
+          "caseId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "state": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "contractRelationshipTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "productTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "targetAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "contractNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "partnerId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "isLoan": {
+            "type": "boolean"
+          },
+          "pcpInstId": {
+            "type": "string",
             "nullable": true
           },
           "accountPrefix": {
@@ -3338,7 +3431,20 @@
             "type": "string",
             "nullable": true
           },
-          "pcpInstId": {
+          "kbId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "identificationNumber": {
             "type": "string",
             "nullable": true
           }
@@ -4446,9 +4552,6 @@
             "format": "date-time",
             "nullable": true
           },
-          "loanType": {
-            "$ref": "#/components/schemas/LoanType"
-          },
           "savingId": {
             "minimum": 1,
             "type": "integer",
@@ -4532,15 +4635,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "LoanType": {
-        "enum": [
-          "Unspecified",
-          "PDU",
-          "PKU",
-          "KBMortgage"
-        ],
-        "type": "string"
       },
       "ModelErrorWrapper": {
         "type": "object",
@@ -4711,9 +4805,6 @@
             "description": "Datum první anuitní splátky",
             "format": "date-time",
             "nullable": true
-          },
-          "loanType": {
-            "$ref": "#/components/schemas/LoanType"
           },
           "relationships": {
             "type": "array",

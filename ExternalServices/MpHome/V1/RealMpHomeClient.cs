@@ -16,16 +16,12 @@ internal sealed class RealMpHomeClient(HttpClient _httpClient)
 		await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
 	}
 
-	public async Task<long?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
+	public async Task<List<CaseSearchResponse>?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
 	{
 		var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Case/search", request, cancellationToken);
 		await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
-        if (long.TryParse(await response.SafeReadAsStringAsync(cancellationToken), out long id))
-        {
-            return id;
-        }
-        return null;
-	}
+        return await response.EnsureSuccessStatusAndReadJson<List<CaseSearchResponse>>(StartupExtensions.ServiceName, cancellationToken);
+    }
 
 	public async Task<(List<LoanCondition>? Conditions, List<LoanConditionPhase>? Phases)> GetCovenants(long productId, CancellationToken cancellationToken = default)
 	{

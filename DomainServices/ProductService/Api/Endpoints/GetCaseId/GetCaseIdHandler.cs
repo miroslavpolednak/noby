@@ -21,19 +21,31 @@ internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
 
     private async Task<long> getCaseIdByContractNumber(string contractNumber, CancellationToken cancellationToken)
     {
-        var caseId = await _mpHomeClient.SearchCases(new CaseSearchRequest { ContractNumber = contractNumber }, cancellationToken);
-        return caseId ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ContractNumberNotFound, contractNumber);
+        var results = await _mpHomeClient.SearchCases(new CaseSearchRequest { ContractNumber = contractNumber }, cancellationToken);
+        return extractCaseId(results) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ContractNumberNotFound, contractNumber);
     }
 
     private async Task<long> getCaseIdByPaymentAccount(PaymentAccountObject paymentAccount, CancellationToken cancellationToken)
     {
-		var caseId = await _mpHomeClient.SearchCases(new CaseSearchRequest { AccountPrefix = paymentAccount.Prefix, AccountNumber = paymentAccount.AccountNumber }, cancellationToken);
-		return caseId ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, paymentAccount.AccountNumber);
+		var results = await _mpHomeClient.SearchCases(new CaseSearchRequest { AccountPrefix = paymentAccount.Prefix, AccountNumber = paymentAccount.AccountNumber }, cancellationToken);
+		return extractCaseId(results) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, paymentAccount.AccountNumber);
     }
 
     private async Task<long> getCaseIdByPcpId(string pcpId, CancellationToken cancellationToken)
     {
-		var caseId = await _mpHomeClient.SearchCases(new CaseSearchRequest { PcpInstId = pcpId }, cancellationToken);
-		return caseId ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PcpIdNotFound, pcpId);
+        var results = await _mpHomeClient.SearchCases(new CaseSearchRequest { PcpInstId = pcpId }, cancellationToken);
+        return extractCaseId(results) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PcpIdNotFound, pcpId);
+    }
+
+    private static long? extractCaseId(List<CaseSearchResponse>? results)
+    {
+        if (!results?.Any() ?? false)
+        {
+            return null;
+        }
+        else
+        {
+            return results![0].CaseId;
+        }
     }
 }
