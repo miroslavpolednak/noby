@@ -42,7 +42,8 @@ public static class RefinancingHelper
             && (SalesArrangementTypes)t.SalesArrangementTypeId is (SalesArrangementTypes.GeneralChange
                 or SalesArrangementTypes.HUBN
                 or SalesArrangementTypes.CustomerChange
-                or SalesArrangementTypes.CustomerChange3602A
+				or SalesArrangementTypes.Drawing
+				or SalesArrangementTypes.CustomerChange3602A
                 or SalesArrangementTypes.CustomerChange3602B
                 or SalesArrangementTypes.CustomerChange3602C));
     }
@@ -110,7 +111,6 @@ public static class RefinancingHelper
     private static readonly int[] _activeSalesArrangementStates = 
     [
         (int)SalesArrangementStates.InProgress,
-        (int)SalesArrangementStates.InApproval,
         (int)SalesArrangementStates.NewArrangement,
         (int)SalesArrangementStates.InSigning,
         (int)SalesArrangementStates.ToSend,
