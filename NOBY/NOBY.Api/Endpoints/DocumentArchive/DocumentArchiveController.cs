@@ -67,7 +67,7 @@ public class DocumentArchiveController : ControllerBase
     /// <param name="caseId">ID Case-u</param>
     /// <param name="formId">Businessové ID dokumentu, na které chceme zafiltrovat.</param>
     [HttpGet("case/{caseId:long}/documents")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Dokument" ])]
     [ProducesResponseType(typeof(GetDocumentListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

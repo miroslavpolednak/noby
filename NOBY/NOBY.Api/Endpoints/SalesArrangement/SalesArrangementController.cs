@@ -17,7 +17,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("{salesArrangementId:int}/flow")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(GetFlowSwitches.GetFlowSwitchesResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -33,7 +33,7 @@ public class SalesArrangementController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91FE5011-5C25-486e-B425-002C76448D66"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("{salesArrangementId:int}/validate")]
-        [Produces("application/json")]
+        [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(ValidateSalesArrangement.ValidateSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -52,7 +52,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="salesArrangementId">ID</param>
     [HttpDelete("{salesArrangementId:int}")]
     [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access)]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -75,7 +75,7 @@ public class SalesArrangementController : ControllerBase
     /// <returns><see cref="GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
     [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
     [ApiVersion(2)]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.SCORING_Perform)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
@@ -92,7 +92,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="salesArrangementId">Sales arrangement</param>
     /// <returns><see cref="GetCreditWorthiness.GetCreditWorthinessResponse"/> Výsledek výpočtu</returns>
     [HttpGet("{salesArrangementId:int}/credit-worthiness")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(GetCreditWorthiness.GetCreditWorthinessResponse), StatusCodes.Status200OK)]
@@ -110,7 +110,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="caseId">ID Case-u</param>
     /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
     [HttpGet("list/{caseId:long}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(List<SharedDto.SalesArrangementListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -127,7 +127,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
     [HttpGet("{salesArrangementId:int}/customers")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(List<SharedDto.CustomerListItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -143,7 +143,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("{salesArrangementId:int}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(typeof(GetSalesArrangement.GetSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -159,7 +159,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/parameters")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -177,7 +177,7 @@ public class SalesArrangementController : ControllerBase
     /// <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
     [HttpPost("{salesArrangementId:int}/send")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Send, UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -194,7 +194,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangementu</param>
     [HttpGet("{salesArrangementId:int}/comment")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -211,7 +211,7 @@ public class SalesArrangementController : ControllerBase
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/comment")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]

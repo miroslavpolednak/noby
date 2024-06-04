@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Customer;
@@ -7,7 +6,7 @@ namespace NOBY.Api.Endpoints.Customer;
 [ApiController]
 [Route("api/v{v:apiVersion}")]
 [ApiVersion(1)]
-public class CustomerController : ControllerBase
+public class CustomerController(IMediator _mediator) : ControllerBase
 {
     /// <summary>
     /// Založení nového klienta
@@ -18,10 +17,10 @@ public class CustomerController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identity")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.CLIENT_Modify)]
-    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(typeof(CreateCustomer.CreateCustomerResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -41,9 +40,9 @@ public class CustomerController : ControllerBase
     /// <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
     [HttpPost("customer/search")]
     [NobyAuthorize(UserPermissions.CLIENT_SearchPerson)]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    [SwaggerOperation(Tags = new [] { "Klient" })]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(typeof(SearchCustomers.SearchCustomersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<SearchCustomers.SearchCustomersResponse?> SearchCustomers([FromBody] SearchCustomers.SearchCustomersRequest request, CancellationToken cancellationToken)
@@ -58,10 +57,10 @@ public class CustomerController : ControllerBase
     /// </remarks>
     /// <returns>Kompletní detail klienta vrácený z KB CM nebo KonsDb.</returns>
     [HttpPost("customer/get")]
-    [Consumes("application/json")]
-    [Produces("application/json")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new [] { "Klient" })]
+    [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(typeof(GetCustomerDetail.GetCustomerDetailResponse), StatusCodes.Status200OK)]
     public async Task<GetCustomerDetail.GetCustomerDetailResponse> GetCustomerDetail([FromBody] SharedTypes.Types.CustomerIdentity request) 
         => await _mediator.Send(new GetCustomerDetail.GetCustomerDetailRequest(request.Id, request.Scheme));
@@ -75,10 +74,10 @@ public class CustomerController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identify-by-identity")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.CLIENT_Modify)]
-    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] IdentifyByIdentity.IdentifyByIdentityRequest request)
@@ -94,9 +93,9 @@ public class CustomerController : ControllerBase
     /// </remarks>
     [HttpPost("customer/identify")]
     [NobyAuthorize(UserPermissions.CLIENT_IdentifyPerson)]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(typeof(SearchCustomers.Dto.CustomerInList), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -111,9 +110,9 @@ public class CustomerController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("contact/validate")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(typeof(ValidateContact.ValidateContactResponse), StatusCodes.Status200OK)]
     public async Task<ValidateContact.ValidateContactResponse> ValidateContact([FromBody] ValidateContact.ValidateContactRequest request)
         => await _mediator.Send(request);
@@ -126,9 +125,9 @@ public class CustomerController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F2992BC4-A1DB-4e57-B037-5F99244CC1D4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer/profile-check")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(typeof(ProfileCheck.ProfileCheckResponse), StatusCodes.Status200OK)]
     public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] SharedTypes.Types.CustomerIdentity request)
         => await _mediator.Send(new ProfileCheck.ProfileCheckRequest(request.Id, request.Scheme));
@@ -142,8 +141,8 @@ public class CustomerController : ControllerBase
     /// </remarks>
     [HttpGet("customer-on-sa/{customerOnSAId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces("application/json")]
-    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [Produces(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(typeof(GetCustomerDetailWithChanges.GetCustomerDetailWithChangesResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -158,14 +157,11 @@ public class CustomerController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BB5766C4-CCC7-487e-B482-1B1C86D999F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("customer-on-sa/{customerOnSAId:int}")]
-    [Consumes("application/json")]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.CLIENT_Modify)]
-    [SwaggerOperation(Tags = new[] { "Klient" })]
+    [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task UpdateCustomerDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest request)
         => await _mediator.Send(request.InfuseId(customerOnSAId));
-
-    private readonly IMediator _mediator;
-    public CustomerController(IMediator mediator) =>  _mediator = mediator;
 }

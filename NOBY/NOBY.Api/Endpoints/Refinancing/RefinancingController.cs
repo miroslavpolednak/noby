@@ -25,7 +25,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DFD62AED-36C2-49f0-A8A4-A245657D5A4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-extra-payment-list")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -43,7 +43,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
 	/// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
 	/// </remarks>
 	[HttpGet("case/{caseId:long}/mortgage-refixation/available-fixed-rate-periods")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -61,7 +61,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
 	/// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8251FF4A-E3C6-46c8-883E-D70C884A859D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
 	/// </remarks>
 	[HttpPut("case/{caseId:long}/mortgage/create-mortgage-response-code")]
-    [Consumes("application/json")]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -82,8 +82,8 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D2F4DD7B-54B9-4c86-BEE0-8673DBBDE5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("case/{caseId:long}/update-mortgage-refixation")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -101,7 +101,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=87469E98-536F-47b6-853F-077E5BC7FF4A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-extra-payment/{processId:long}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -119,7 +119,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=06834209-6BE1-42bf-8C6A-DD4D4371B14F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-refixation")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -137,7 +137,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=E0F5C17D-A6F5-4713-93DC-73E06D98AD09"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-retention/{processId:long}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -155,7 +155,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EBF744FA-9F0F-421e-89F8-CFFFAEC76BB1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/refinancing-parameters")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
@@ -173,7 +173,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=138F1225-E4D6-4a7c-B316-882C35CE2C74"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/interest-rates-valid-from")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [ProducesResponseType(typeof(GetInterestRatesValidFrom.GetInterestRatesValidFromResponse), StatusCodes.Status200OK)]
@@ -189,7 +189,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/interest-rate")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [ProducesResponseType(typeof(GetInterestRate.GetInterestRateResponse), StatusCodes.Status200OK)]
@@ -220,7 +220,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/retention-document")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -237,7 +237,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A415BC33-46AF-40f9-B50C-5F7297DC0B26"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/refixation-document")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -254,7 +254,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6ABBB7A4-03E8-4cd2-8D6B-FAD3C407AC20"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/extra-payment-document")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

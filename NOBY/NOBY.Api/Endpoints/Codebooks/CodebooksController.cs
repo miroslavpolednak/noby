@@ -1,17 +1,15 @@
 ﻿using Asp.Versioning;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
+using NOBY.Infrastructure.Swagger;
 
 namespace NOBY.Api.Endpoints.Codebooks;
 
 [ApiController]
 [ApiVersion(1)]
 [Route("api/v{v:apiVersion}/codebooks")]
-public class CodebooksController : ControllerBase
+public class CodebooksController(IMediator _mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    public CodebooksController(IMediator mediator) =>  _mediator = mediator;
-
     /// <summary>Kolekce vyžadaných číselniků.</summary>
     /// <remarks>
     /// Vrací číselníky identifikované query parametrem "q". Jednotlivé číselniky jsou oddělené čárkou.<br/>
@@ -116,13 +114,16 @@ public class CodebooksController : ControllerBase
     /// <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
     /// <returns>Kolekce vyzadanych ciselniku.</returns>
     [HttpGet("get-all")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(List<GetAll.GetAllResponseItem>), StatusCodes.Status200OK)]
     public async Task<List<GetAll.GetAllResponseItem>> GetAll([FromQuery(Name = "q")] string codebookTypes, CancellationToken cancellationToken)
         => await _mediator.Send(new GetAll.GetAllRequest(codebookTypes), cancellationToken);
 
+    /// <summary>
+    /// Vraci seznam podporovanych codebooks na FE API
+    /// </summary>
     [HttpGet("supported")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(List<CodebookMap.SupportedCodebook>), StatusCodes.Status200OK)]
     public List<CodebookMap.SupportedCodebook> GetSupported([FromServices] CodebookMap.ICodebookMap codebookMap)
     {
@@ -138,7 +139,7 @@ public class CodebooksController : ControllerBase
     /// </summary>
     /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
     [HttpGet("product-loan-kinds")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(List<GenericCodebookResponse.Types.GenericCodebookItem>), StatusCodes.Status200OK)]
     public async Task<List<GenericCodebookResponse.Types.GenericCodebookItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
@@ -157,7 +158,7 @@ public class CodebooksController : ControllerBase
     /// Vrací seznam všedních dnů, které jsou svátky
     /// </summary>
     [HttpPost("banking-days")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
     public async Task<List<DateOnly>> GetNonBankingDays([FromBody] Dto.GetNonBankingDaysRequest request, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.GetNonBankingDays(request.DateFrom, request.DateTo, cancellationToken)).ToList();
@@ -170,7 +171,7 @@ public class CodebooksController : ControllerBase
     /// </remarks>
     /// <param name="productTypeId">ID typu produktu</param>
     [HttpGet("fixed-rate-periods")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(List<FixedRatePeriodsResponse.Types.FixedRatePeriodItem>), StatusCodes.Status200OK)]
     public async Task<List<FixedRatePeriodsResponse.Types.FixedRatePeriodItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
@@ -181,14 +182,14 @@ public class CodebooksController : ControllerBase
     /// Detail developera
     /// </summary>
     /// <remarks>
-    /// Vrátí detail developera dle developerId na vstupu.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Vrátí detail developera dle developerId na vstupu.
     /// </remarks>
     /// <param name="developerId">ID developera</param>
     [HttpGet("developer/{developerId:int}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(Dto.Developer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34")]
     public async Task<Dto.Developer> GetDeveloper([FromRoute] int developerId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         var developer = await svc.GetDeveloper(developerId, cancellationToken);
@@ -210,14 +211,14 @@ public class CodebooksController : ControllerBase
     /// Detail developeského projektu
     /// </summary>
     /// <remarks>
-    /// Vrátí detail developerského projektu dle developerProjectId na vstupu.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Vrátí detail developerského projektu dle developerProjectId na vstupu.
     /// </remarks>
     /// <param name="developerId">ID developera</param>
     [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetDeveloperProjectResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=9429D814-AAFA-42df-8782-DFF85B96CFDB")]
     public async Task<GetDeveloperProjectResponse> GetDeveloperProject([FromRoute] int developerId, [FromRoute] int developerProjectId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         return await svc.GetDeveloperProject(developerId, developerProjectId, cancellationToken);
