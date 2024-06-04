@@ -120,7 +120,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
                 Description = t.Description,
                 EaCodeMainId = t.EaCodeMainId,
                 TempFileId = t.Guid!.Value,
-                FormId = taskDetail.TaskObject.TaskTypeId == 6 ? taskDetail.TaskDetail?.Signing?.FormId : null
+                FormId = taskDetail.TaskObject.TaskTypeId == 6 && !string.IsNullOrWhiteSpace(taskDetail.TaskDetail?.Signing?.FormId) ? taskDetail.TaskDetail?.Signing?.FormId : null
             })
             .ToList();
     }

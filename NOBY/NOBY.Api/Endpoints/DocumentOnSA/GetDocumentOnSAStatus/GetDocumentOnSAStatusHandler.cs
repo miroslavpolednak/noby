@@ -45,7 +45,8 @@ public class GetDocumentOnSAStatusHandler : IRequestHandler<GetDocumentOnSAStatu
                 Source = docOnSaStatusData.Source.MapToCisEnum(),
                 SalesArrangementTypeId = salesArrangement.SalesArrangementTypeId,
                 EArchivIdsLinked = docOnSaStatusData.EArchivIdsLinked,
-                SignatureTypeId = docOnSaStatusData.SignatureTypeId
+                SignatureTypeId = docOnSaStatusData.SignatureTypeId,
+                EaCodeMainId = docOnSaStatusData.EACodeMainId
             },
           signatureStates)
         };

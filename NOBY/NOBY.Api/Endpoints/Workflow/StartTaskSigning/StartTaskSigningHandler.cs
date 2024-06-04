@@ -8,7 +8,6 @@ using _SaDomain = DomainServices.SalesArrangementService.Contracts;
 using NOBY.Api.Endpoints.DocumentOnSA;
 using NOBY.Api.Extensions;
 using DomainServices.SalesArrangementService.Contracts;
-using FastEnumUtility;
 using DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Workflow.StartTaskSigning;
@@ -130,7 +129,8 @@ internal sealed class StartTaskSigningHandler(
                 Source = documentOnSa.Source.MapToCisEnum(),
                 SalesArrangementTypeId = salesArrangementTypeId,
                 EArchivIdsLinked = documentOnSa.EArchivIdsLinked,
-                SignatureTypeId = documentOnSa.SignatureTypeId ?? 0
+                SignatureTypeId = documentOnSa.SignatureTypeId ?? 0,
+                EaCodeMainId = documentOnSa.EACodeMainId
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
@@ -160,7 +160,8 @@ internal sealed class StartTaskSigningHandler(
                 Source = signingResponse.DocumentOnSa.Source.MapToCisEnum(),
                 SalesArrangementTypeId = salesArrangementTypeId,
                 EArchivIdsLinked = Array.Empty<string>(),
-                SignatureTypeId = signingResponse.DocumentOnSa.SignatureTypeId ?? 0
+                SignatureTypeId = signingResponse.DocumentOnSa.SignatureTypeId ?? 0,
+                EaCodeMainId = signingResponse.DocumentOnSa.EACodeMainId
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(

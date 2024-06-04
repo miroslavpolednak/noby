@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
@@ -202,7 +201,8 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
                 Source = result.DocumentOnSa.Source.MapToCisEnum(),
                 SalesArrangementTypeId = salesArrangementTypeId,
                 EArchivIdsLinked = Array.Empty<string>(),
-                SignatureTypeId = result.DocumentOnSa.SignatureTypeId ?? 0
+                SignatureTypeId = result.DocumentOnSa.SignatureTypeId ?? 0,
+                EaCodeMainId = result.DocumentOnSa.EACodeMainId
             },
               signatureStates),
             EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
