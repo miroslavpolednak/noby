@@ -58,7 +58,8 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                     Source = s.Source.MapToCisEnum(),
                     SalesArrangementTypeId = salesArrangement?.SalesArrangementTypeId,
                     EArchivIdsLinked = s.EArchivIdsLinked,
-                    SignatureTypeId = s.SignatureTypeId ?? 0
+                    SignatureTypeId = s.SignatureTypeId ?? 0,
+                    EaCodeMainId = s.EACodeMainId
                 },
               signatureStates),
                 EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
