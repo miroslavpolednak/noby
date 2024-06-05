@@ -74,7 +74,7 @@ internal sealed class UploadDocumentToArchiveService
             }
         }
 
-        throw new NobyValidationException(90063, $"FormId:{formId}");
+        throw new NobyValidationException(90063);
     }
 
     private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
