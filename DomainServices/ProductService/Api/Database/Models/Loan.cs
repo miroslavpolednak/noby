@@ -53,7 +53,7 @@ internal sealed class Loan
 
 	public double? RetentionLoanInterestRate { get; set; }
 
-	public decimal RetentionLoanPaymentAmount { get; set; }
+	public decimal? RetentionLoanPaymentAmount { get; set; }
 
 	public DateTime? RetentionLoanInterestRateValidFrom { get; set; }
 
