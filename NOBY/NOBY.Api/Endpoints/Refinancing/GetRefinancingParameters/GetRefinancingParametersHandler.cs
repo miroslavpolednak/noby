@@ -64,11 +64,11 @@ internal sealed class GetRefinancingParametersHandler(
             },
             RefinancingParametersFuture = new()
             {
-                LoanInterestRate = mortgage.LoanInterestRateRefinancing,
-                FixedRatePeriod = mortgage.FixedRatePeriodRefinancing,
-                LoanPaymentAmount = mortgage.LoanPaymentAmountRefinancing,
-                FixedRateValidFrom = RefinancingHelper.GetFixedRateValidFrom(mortgage.LoanInterestRateValidToRefinancing, mortgage.FixedRatePeriodRefinancing),
-                FixedRateValidTo = mortgage.LoanInterestRateValidToRefinancing
+                LoanInterestRate = mortgage.Retention?.LoanInterestRate ?? mortgage.Refixation?.LoanInterestRate,
+                LoanPaymentAmount = mortgage.Retention?.LoanPaymentAmount ?? mortgage.Refixation?.LoanPaymentAmount,
+                FixedRateValidFrom = getFixedRateValidFrom(),
+                FixedRateValidTo = getFixedRateValidTo(),
+                FixedRatePeriod = mortgage.Refixation?.FixedRatePeriod
             },
             RefinancingProcesses = mergeOfSaAndProcess.Select(s => new Dto.RefinancingProcess
             {
@@ -76,6 +76,42 @@ internal sealed class GetRefinancingParametersHandler(
                 ProcessDetail = getProcessDetail(s.Process, s.Sa, mortgage, eaCodesMain, refinancingTypes, refinancingStates)
             }).ToList()
         };
+
+        DateTime? getFixedRateValidFrom()
+        {
+            // retence
+            if (mortgage.Retention?.LoanInterestRate is not null)
+            {
+                return mortgage.Retention.LoanInterestRateValidFrom;
+            }
+            // refixace
+            else if (mortgage.Refixation?.FixedRatePeriod is not null && mortgage.FixedRateValidTo is not null)
+            {
+                return ((DateTime)mortgage.FixedRateValidTo).AddDays(1);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        DateTime? getFixedRateValidTo()
+        {
+            // retence
+            if (mortgage.Retention?.LoanInterestRate is not null)
+            {
+                return mortgage.FixedRateValidTo;
+            }
+            // refixace
+            else if (mortgage.Refixation?.FixedRatePeriod is not null && mortgage.FixedRateValidTo is not null)
+            {
+                return ((DateTime)mortgage.FixedRateValidTo).AddMonths(mortgage.Refixation.FixedRatePeriod.Value);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 
     private async Task<DomainServices.SalesArrangementService.Contracts.SalesArrangement?> getSalesArrangement(List<DomainServices.SalesArrangementService.Contracts.SalesArrangement> salesArrangements, long processId)

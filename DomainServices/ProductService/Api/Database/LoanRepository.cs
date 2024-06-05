@@ -90,7 +90,15 @@ internal sealed class LoanRepository
                    [VypisEmail2] as EmailAddress2,
                    [Neaktivni] as IsCancelled,
                    StavHU as MortgageState,
-                   DatumDocerpani as DrawingFinishedDate
+                   DatumDocerpani as DrawingFinishedDate,
+                   RefixDalsiRadnaSazba as RefixationLoanInterestRate,
+                   RefixBudouciMesicniSplatka as RefixationLoanPaymentAmount,
+                   RefixDalsiDatumFixace as RefixationLoanInterestRateValidTo,
+                   RetenceDalsiRadnaSazba as RetentionLoanInterestRate,
+                   RefixDalsiPeriodaFixace as RefixationFixedRatePeriod,
+                   RetenceDalsiMesicniSplatka as RetentionLoanPaymentAmount,
+                   RetenceDalsiUSDatumOd as RetentionLoanInterestRateValidFrom,
+                   RetenceDalsiUSDatumDo as RetentionLoanInterestRateValidTo
             FROM [dbo].[Uver]
             WHERE [Id] = @caseId AND [Neaktivni] = 0
             """;

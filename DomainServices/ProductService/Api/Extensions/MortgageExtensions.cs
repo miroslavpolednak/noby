@@ -71,16 +71,27 @@ internal static class MortgageExtensions
             InterestInArrears = loan.InterestInArrears,
             LoanDueDate = loan.LoanDueDate,
             PaymentDay = loan.PaymentDay,
-            LoanInterestRateRefix = null, // ???
-            LoanInterestRateValidFromRefix = null, // ???
-            FixedRatePeriodRefix = null, // ???
             FirstAnnuityPaymentDate = loan.FirstAnnuityPaymentDate,
             FirstSignatureDate = loan.FirstSignatureDate,
             RepaymentAccount = ParseRepaymentAccount(loan),
             Statement = ParseStatementObject(loan),
             IsCancelled = loan.IsCancelled,
             MortgageState = loan.MortgageState,
-            DrawingFinishedDate = loan.DrawingFinishedDate
+            DrawingFinishedDate = loan.DrawingFinishedDate,
+            Refixation = new MortgageData.Types.RefixationData
+            {
+                LoanInterestRate = (decimal?)loan.RefixationLoanInterestRate,
+                LoanPaymentAmount = loan.RefixationLoanPaymentAmount,
+                FixedRatePeriod = loan.RefixationFixedRatePeriod,
+                LoanInterestRateValidTo = loan.RefixationLoanInterestRateValidTo
+            },
+            Retention = new MortgageData.Types.RetentionData
+            {
+                LoanInterestRate = (decimal?)loan.RetentionLoanInterestRate,
+                LoanPaymentAmount = loan.RetentionLoanPaymentAmount,
+                LoanInterestRateValidFrom = loan.RetentionLoanInterestRateValidFrom,
+                LoanInterestRateValidTo = loan.RetentionLoanInterestRateValidTo
+            }
         };
 
         if (relationships.Count != 0)

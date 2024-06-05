@@ -32,9 +32,6 @@ message MortgageData {
 	cis.types.NullableGrpcDecimal InterestInArrears = 22;
 	cis.types.NullableGrpcDate LoanDueDate = 23;
 	google.protobuf.Int32Value PaymentDay = 24;
-	cis.types.NullableGrpcDecimal LoanInterestRateRefix = 25;
-	cis.types.NullableGrpcDate LoanInterestRateValidFromRefix = 26;
-	google.protobuf.Int32Value FixedRatePeriodRefix = 27;
 	google.protobuf.Int64Value BranchConsultantId = 28;
 	google.protobuf.Int64Value CaseOwnerUserCurrentId = 29;
 	google.protobuf.Int64Value CaseOwnerUserOrigId = 30;
@@ -52,4 +49,21 @@ message MortgageData {
 	cis.types.NullableGrpcDate LoanInterestRateValidToRefinancing = 42;
 	cis.types.NullableGrpcDecimal LoanPaymentAmountRefinancing = 43;
 	google.protobuf.Int32Value FixedRatePeriodRefinancing = 44;
+
+	RetentionData Retention = 45;
+	RefixationData Refixation = 46;
+	
+	message RetentionData {
+		cis.types.NullableGrpcDecimal LoanInterestRate = 1;
+		cis.types.NullableGrpcDecimal LoanPaymentAmount = 2;
+		cis.types.NullableGrpcDate LoanInterestRateValidFrom = 3;
+		cis.types.NullableGrpcDate LoanInterestRateValidTo = 4;
+	}
+
+	message RefixationData {
+		cis.types.NullableGrpcDecimal LoanInterestRate = 1;
+		cis.types.NullableGrpcDecimal LoanPaymentAmount = 2;
+		cis.types.NullableGrpcDate LoanInterestRateValidTo = 3;
+		google.protobuf.Int32Value FixedRatePeriod = 4;
+	}
 }

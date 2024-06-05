@@ -42,4 +42,20 @@ internal sealed class Loan
     public bool IsCancelled { get; set; }
     public int? MortgageState { get; set; }
 	public DateTime? DrawingFinishedDate { get; set; }
+
+	public double? RefixationLoanInterestRate { get; set; }
+
+	public decimal? RefixationLoanPaymentAmount { get; set; }
+
+	public DateTime? RefixationLoanInterestRateValidTo { get; set; }
+
+	public int? RefixationFixedRatePeriod { get; set; }
+
+	public double? RetentionLoanInterestRate { get; set; }
+
+	public decimal RetentionLoanPaymentAmount { get; set; }
+
+	public DateTime? RetentionLoanInterestRateValidFrom { get; set; }
+
+	public DateTime? RetentionLoanInterestRateValidTo { get; set; }
 }
