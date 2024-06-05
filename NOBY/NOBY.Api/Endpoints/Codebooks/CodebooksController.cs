@@ -99,6 +99,7 @@ public class CodebooksController : ControllerBase
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingAge">RealEstateValuationBuildingAges</a>
     /// - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingTechnicalState">RealEstateValuationBuildingTechnicalStates</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=664578092">RealEstateValuationLocalSurveyFunctions</a>
+    /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835727392">ResponseCodeTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235789">StatementSubscriptionTypes</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
     /// - <a href="https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK">TinFormatsByCountry</a>
