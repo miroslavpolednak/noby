@@ -8,6 +8,7 @@ using NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 using NOBY.Api.Endpoints.Refinancing.GetAvailableFixedRatePeriods;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList;
 using NOBY.Dto.Refinancing;
+using NOBY.Infrastructure.Swagger;
 
 namespace NOBY.Api.Endpoints.Refinancing;
 
@@ -115,8 +116,6 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// </summary>
     /// <remarks>
     /// Operace slouží k získání informací o vybraném refixačním procesu.
-    /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=06834209-6BE1-42bf-8C6A-DD4D4371B14F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-refixation")]
     [Produces("application/json")]
@@ -125,6 +124,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(typeof(GetMortgageRefixationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=1EF978B1-265D-40d0-8B1C-B0E07D9D8031")]
     public async Task<GetMortgageRefixationResponse> GetMortgageRefixation([FromRoute] long caseId, [FromQuery] long? processId = null)
         => await _mediator.Send(new GetMortgageRefixationRequest(caseId, processId));
 

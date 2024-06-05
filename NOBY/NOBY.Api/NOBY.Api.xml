@@ -948,7 +948,6 @@
              - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingAge">RealEstateValuationBuildingAges</a>
              - <a href="https://wiki.kb.cz/display/HT/RealEstateValuationBuildingTechnicalState">RealEstateValuationBuildingTechnicalStates</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=664578092">RealEstateValuationLocalSurveyFunctions</a>
-             - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=835727392">ResponseCodeTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=589235789">StatementSubscriptionTypes</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=417284324">StatementTypes</a>
              - <a href="https://wiki.kb.cz/display/HT/TinFormatByCountry+%28CB_CmTrTinFormat%29+-+MOCK">TinFormatsByCountry</a>
@@ -3718,8 +3717,6 @@
             </summary>
             <remarks>
             Operace slouží k získání informací o vybraném refixačním procesu.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=06834209-6BE1-42bf-8C6A-DD4D4371B14F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Refinancing.RefinancingController.GetMortgageRetention(System.Int64,System.Int64)">

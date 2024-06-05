@@ -55,11 +55,16 @@ public sealed class MortgageRefinancingDataService(
 
         var processes = await _caseService.GetProcessList(caseId, cancellationToken);
 
-		if (processId.HasValue)
+        if (processes?.Any(t => t.ProcessId != processId && (t.StateIdSB is not (4 or 5)) && t.ProcessTypeId == (int)WorkflowProcesses.Refinancing && t.RefinancingType == (int)refinancingType) ?? false)
+        {
+            throw new NobyValidationException(90061, "Nestandardní přístup do kalkulace bez kontextu žádosti", "Vstupujete do kalkulace nestandardním způsobem a bez navázaného kontextu žádosti. Vraťte se na Rozcestník a vstupte standardním způsobem.");
+        }
+
+        if (processId.HasValue)
         {
             // detail procesu
             result.Process = processes
-                .FirstOrDefault(p => p.ProcessId == processId)
+                ?.FirstOrDefault(p => p.ProcessId == processId)
                 ?? throw new NobyValidationException(90043, $"ProccesId {processId} not found in list");
 
             // validace typu procesu
@@ -79,11 +84,7 @@ public sealed class MortgageRefinancingDataService(
             result.SalesArrangement = salesArrangement;
             result.RefinancingState = refinancingState;
         }
-        else if (processes?.Any(t => !t.Cancelled && t.ProcessTypeId == (int)WorkflowProcesses.Refinancing && t.RefinancingType == (int)refinancingType) ?? false)
-        {
-			throw new NobyValidationException(90061, "Nestandardní přístup do kalkulace bez kontextu žádosti", "Vstupujete do kalkulace nestandardním způsobem a bez navázaného kontextu žádosti. Vraťte se na Rozcestník a vstupte standardním způsobem.");
-		}
-
+        
         // vsechny tasky z WF, potom vyfiltrovat jen na konkretni processId
         var tasks = (await _caseService.GetTaskList(caseId, cancellationToken))
             .Where(t => t.ProcessId == processId)
