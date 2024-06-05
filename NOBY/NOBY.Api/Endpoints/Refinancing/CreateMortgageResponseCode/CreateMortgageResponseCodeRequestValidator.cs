@@ -40,6 +40,6 @@ internal sealed class CreateMortgageResponseCodeRequestValidator
                     return false;
                 }
             })
-            .WithMessage("Retence nebo refixace musejí být povoleny");
+            .WithErrorCode(90032);
     }
 }
