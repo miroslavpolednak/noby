@@ -115,6 +115,21 @@
             Příznak potvrzeného kontaktu
             </summary>
         </member>
+        <member name="P:NOBY.Dto.FeBannerItem.Title">
+            <summary>
+            Nadpis upozornění
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.FeBannerItem.Text">
+            <summary>
+            Obsah upozornění
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.FeBannerItem.Severity">
+            <summary>
+            Úroveň závažnosti upozornění
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Household.CustomerObligationCorrectionDto.CorrectionTypeId">
             <summary>
             Z číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324">ObligationCorrectionType (CIS_KOREKCE_ZAVAZKU)</a>

@@ -9,8 +9,7 @@
             Našeptávání adresy z AddressWhispererBEService
             </summary>
             <remarks>
-            Provolá AddressWhispererBEService na IIB a vrátí stránkovaný seznam adres. Dotazujeme se zprostředkovaně do RUIAN pro CZ/SK adresy a přes službu Google pro ostatní.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=046F9631-86E1-4f17-9527-C518700030CE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
+            Provolá AddressWhispererBEService na IIB a vrátí stránkovaný seznam adres. Dotazujeme se zprostředkovaně do RUIAN pro CZ/SK adresy a přes službu Google pro ostatní.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Address.AddressController.GetAddressDetail(NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest)">
@@ -18,8 +17,7 @@
             Získání detailu adresy přes AddressWhispererBEService
             </summary>
             <remarks>
-            Provolánám získáme přes AddressWhispererBEService na IIB detail konkrétní adresy.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=312CA931-1DA0-4be2-AF0D-4D71962845F2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20"/>Diagram v EA</a>
+            Provolánám získáme přes AddressWhispererBEService na IIB detail konkrétní adresy.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Address.AddressController.KatuzSearch(NOBY.Api.Endpoints.Address.KatuzSearch.KatuzSearchRequest,System.Threading.CancellationToken)">
@@ -27,10 +25,8 @@
             Našeptávání katastrálních území (KATUZ)
             </summary>
             <remarks>
-            Provolá  CREM službu RUIAN:FindTerritory a vrátí stránkovaný seznam katuz setřízený abecedně podle jména katastrálního území.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=46994CE5-FC35-4ad8-97D6-5217CFBE2F27"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Provolá  CREM službu RUIAN:FindTerritory a vrátí stránkovaný seznam katuz setřízený abecedně podle jména katastrálního území.
             </remarks>
-            <returns></returns>
         </member>
         <member name="P:NOBY.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.SessionId">
             <summary>
@@ -167,8 +163,7 @@
             Stornování case-u
             </summary>
             <remarks>
-            Stornování case-u. Slouží k stornování obchodního případu, který je ještě ve fázi žádosti v NOBY. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B13A9B30-5896-4319-A96E-0982FE5A9045"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Stornování case-u. Slouží k stornování obchodního případu, který je ještě ve fázi žádosti v NOBY.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.GetCustomersOnCase(System.Int64,System.Threading.CancellationToken)">
@@ -179,8 +174,7 @@
             Vrací se seznam detailů customerů - filtruje se  na dlužníky a spoludlužníky.<br />
             Dlužník na prvním místě, dále spoludlužníci řazeni dle příjmení a jména.<br /><br />
             <i>DS:</i> SalesArrangementService/getSalesArrangementList<br /><i>DS:</i> SalesArrangementService/GetCustomerList (onSA)<br />
-            <i>DS:</i> ProductService/GetCustomersOnProduct<br /><i>DS:</i> CustomerService/GetList<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            <i>DS:</i> ProductService/GetCustomersOnProduct<br /><i>DS:</i> CustomerService/GetList
             </remarks>
             <param name="caseId">ID Case-u</param>
         </member>
@@ -189,8 +183,8 @@
             Vytvoření servisního SalesArrangement-u
             </summary>
             <remarks>
-            Vytvoří nový servisní sales arrangement dle zadaného typu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B3D75222-1F0D-4dc6-A228-BD237F42CA44"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20"/>Diagram v EA</a><br /><br />
+            Vytvoří nový servisní sales arrangement dle zadaného typu.
+            
             Jako error handling vrací FE API textaci chyby pro zobrazení  na FE přímo v title.<br/><br/>
             Pokud typ žádosti je žádost o čerpání (SalesArrangementTypeId = 6) dochází k replikaci čísla účtu pro splácení a nastavování příznaku IsAccountNumberMissing podle toho, jestli při vytváření sales arrangementu číslo účtu v KonsDB existuje.
             </remarks>
@@ -200,7 +194,7 @@
             Detail Case-u.
             </summary>
             <remarks>
-            Načtení detailu Case-u<br /><br /><br /><a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CCF1229F-2E77-4de4-8E4A-665594BCD9CA"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Načtení detailu Case-u
             </remarks>
             <param name="caseId">ID Case-u</param>
             <returns>Zakladni informace o Case-u.</returns>
@@ -211,8 +205,6 @@
             </summary>
             <remarks>
             Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2FDB0893-BE64-4f37-A196-DDECBB910CB3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.SearchCases(NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest)">
@@ -225,8 +217,6 @@
             - zobrazit pouze Cases v požadovaném stavu<br />
             - nastavit stránkovaní<br />
             - nastavit řazení [povolené: stateUpdated, customerName]
-            
-            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=62A33551-BC77-401d-80DB-E8DFA5081719" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width= "20" height= "20" /> Diagram v EA</a>
             </remarks>
             <param name="request">Nastavení možnosti filtrovaní, strankovaní a řazení.</param>
             <returns>Seznam Cases + informace o použitém stránkovaní/řazení.</returns>
@@ -243,8 +233,6 @@
             - ID obchodního případu (vždy 1 case)
             - čísla smlouvy (vždy 1 case)
             - identity klienta (vrací kolekci case-s)
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=60DB6DA4-D938-4901-98DC-0C8DF8011589"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="request">Typ kritéria a jeho hodnota pro vyhledávání.</param>
         </member>
@@ -253,8 +241,7 @@
             Parametry Case-u.
             </summary>
             <remarks>
-            Vrátí parametry case s ohledem na stav case. Před předáním žádosti vrací lokálně uložená data. Po předání žádosti vrací data z KonsDB. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EEB4BBAA-9996-43ff-BB50-61514A2B6107"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Vrátí parametry case s ohledem na stav case. Před předáním žádosti vrací lokálně uložená data. Po předání žádosti vrací data z KonsDB.
             </remarks>
             <returns>Parametry Case-u (Hodnoty parametrů se načítají z různých zdrojů dle stavu Case).</returns>
         </member>
@@ -263,9 +250,7 @@
             Příznaky v menu Case detailu
             </summary>
             <remarks>
-             Implementováno pro položku menu Documents<br /><br />
-             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2E9DAC5D-A7F3-49a4-804D-770418854A10">
-             <img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+             Implementováno pro položku menu Documents
             </remarks>
             <param name="caseId">ID Case-u</param>
         </member>
@@ -274,8 +259,7 @@
             Podmínky ke splnění Case-u
             </summary>
             <remarks>
-            Seznam Podmínek ke splnění pro Case<br /><br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4378EDFB-2A3D-46f6-8C51-0241A3436D5E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Seznam Podmínek ke splnění pro Case
             </remarks>
             <param name="caseId">ID Case-u</param>
         </member>
@@ -284,8 +268,7 @@
             Detail Podmínky ke splnění Case-u
             </summary>
             <remarks>
-            Detail Podmínky ke splnění pro Case<br /><br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=56FAFD66-E483-475d-9868-6B90A4ED889B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Detail Podmínky ke splnění pro Case
             </remarks>
             <param name="caseId">ID Case-u</param>
             <param name="covenantOrder">Pořadí podmínky ke splnění</param>
@@ -965,6 +948,11 @@
              <param name="codebookTypes">Kody pozadovanych ciselniku oddelene carkou. Nazvy NEjsou case-sensitive. Example: q=productTypes,actionCodesSavings</param>
              <returns>Kolekce vyzadanych ciselniku.</returns>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetSupported(NOBY.Api.Endpoints.Codebooks.CodebookMap.ICodebookMap)">
+            <summary>
+            Vraci seznam podporovanych codebooks na FE API
+            </summary>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetProductLoanKinds(System.Int32,DomainServices.CodebookService.Clients.ICodebookServiceClient,System.Threading.CancellationToken)">
             <summary>
             Číselník druhu úveru.
@@ -990,8 +978,7 @@
             Detail developera
             </summary>
             <remarks>
-            Vrátí detail developera dle developerId na vstupu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Vrátí detail developera dle developerId na vstupu.
             </remarks>
             <param name="developerId">ID developera</param>
         </member>
@@ -1000,8 +987,7 @@
             Detail developeského projektu
             </summary>
             <remarks>
-            Vrátí detail developerského projektu dle developerProjectId na vstupu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=9429D814-AAFA-42df-8782-DFF85B96CFDB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Vrátí detail developerského projektu dle developerProjectId na vstupu.
             </remarks>
             <param name="developerId">ID developera</param>
         </member>
@@ -5363,7 +5349,6 @@
             </summary>
             <remarks>
             Vrací o uživateli data z XXVVSS - základní údaje, identity (počítáme s tím, že je alespoň jedna, vetšinou více) a set oprávnění pro identitu, kterou se přihlásil. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=FC765415-4D2E-4b7c-B1C8-3F4B78A005DD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <returns>Instance přihlášeného uživatele.</returns>
         </member>
@@ -5383,6 +5368,14 @@
             Endpoint vrací obsah MPSS.Security cookie, která slouží pro autentizaci ePodpisů na základě údajů získaných z UserService. Cookie je generovaná z projektu MPSS.Security.Noby, což je klon standardní MPSS.Security dll.
             </remarks>
             <returns>BASE64 obsah cookie, který se musí předat ePodpis widgetu</returns>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetCurrentBannerList(System.Threading.CancellationToken)">
+            <summary>
+            Seznam upozornění na úvodní obrazovce
+            </summary>
+            <remarks>
+            Vrátí kolekci upozornění pro uživatele seřazené dle závažnosti (závažnější dříve) a data konce viditelnosti. Vrátí se pouze prvních 5 upozornění.
+            </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Workflow.CancelTask.CancelTaskHandler.cancelRetentionSalesArrangement(System.Int64,System.Int64,System.Threading.CancellationToken)">
             <summary>

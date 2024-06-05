@@ -15,4 +15,5 @@ public sealed class FeApiDbContext
     public DbSet<FlowSwitch2Group> FlowSwitches2Groups { get; set; }
     public DbSet<FlowSwitchGroup> FlowSwitchGroups { get; set; }
     public DbSet<TempFile> TempFiles { get; set; }
+    public DbSet<FeBanner> FeBanners { get; set; }
 }

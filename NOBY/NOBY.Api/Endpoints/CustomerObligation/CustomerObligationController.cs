@@ -37,7 +37,7 @@ public class CustomerObligationController : ControllerBase
     /// </returns>
     [HttpGet("{customerOnSAId:int}/obligation/{obligationId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(typeof(SharedDto.ObligationFullDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -54,7 +54,7 @@ public class CustomerObligationController : ControllerBase
     /// <param name="obligationId">ID závazku</param>
     [HttpPut("{customerOnSAId:int}/obligation/{obligationId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Consumes("application/json")]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -70,7 +70,7 @@ public class CustomerObligationController : ControllerBase
     /// <param name="customerOnSAId">ID customera</param>
     [HttpPost("{customerOnSAId:int}/obligation")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Consumes("application/json")]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Klient - závazek" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

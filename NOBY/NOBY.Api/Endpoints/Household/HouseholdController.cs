@@ -22,7 +22,7 @@ public class HouseholdController : ControllerBase
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
     /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
     [HttpGet("household/list/{salesArrangementId:long}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new [] { "Domácnost" })]
     [ProducesResponseType(typeof(List<SharedDto.HouseholdInList>), StatusCodes.Status200OK)]
@@ -40,7 +40,7 @@ public class HouseholdController : ControllerBase
     /// <param name="householdId">ID domacnosti</param>
     /// <returns><see cref="GetHousehold.GetHouseholdResponse"/> Detail domacnosti</returns>
     [HttpGet("household/{householdId:long}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(GetHousehold.GetHouseholdResponse), StatusCodes.Status200OK)]
@@ -58,7 +58,7 @@ public class HouseholdController : ControllerBase
     /// <param name="householdId">ID domacnosti</param>
     /// <returns>ID smazané domacnosti</returns>
     [HttpDelete("household/{householdId:int}")]
-    [Consumes("application/json")]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
@@ -74,7 +74,7 @@ public class HouseholdController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=72EEBC25-A403-42e9-9AFD-A48CCEBC179F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId:int}/household")]
-    [Consumes("application/json")]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(typeof(SharedDto.HouseholdInList), StatusCodes.Status200OK)]
@@ -89,7 +89,7 @@ public class HouseholdController : ControllerBase
     /// </remarks>
     /// <param name="householdId">ID domácnosti</param>
     [HttpPut("household/{householdId:int}")]
-    [Consumes("application/json")]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -109,7 +109,7 @@ public class HouseholdController : ControllerBase
     /// <param name="householdId">ID domácnosti</param>
     /// <returns>CustomerOnSAId nalinkovanych customeru</returns>
     [HttpPut("household/{householdId:int}/customers")]
-    [Consumes("application/json")]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [ProducesResponseType(typeof(UpdateCustomers.UpdateCustomersResponse), StatusCodes.Status200OK)]
