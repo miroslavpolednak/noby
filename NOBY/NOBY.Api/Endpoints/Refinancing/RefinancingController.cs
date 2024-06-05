@@ -24,7 +24,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Seznam nezrušených mimořádných splátek
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-extra-payment-list")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -41,7 +41,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
 	/// Seznam dostupných délek fixací pro refixace. Délky fixace jsou uvedeny v měsících.
 	/// </remarks>
 	[HttpGet("case/{caseId:long}/mortgage-refixation/available-fixed-rate-periods")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -58,7 +58,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
 	/// Uloží odpovědní kód ke case a k odeslání do BDP (Big Data Platform)
 	/// </remarks>
 	[HttpPut("case/{caseId:long}/mortgage/create-mortgage-response-code")]
-    [Consumes("application/json")]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -78,8 +78,8 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Uloží změny ve výši slevy ze sazby včetně komentáře ke slevě. Dále uloží komentář k refixaci.
     /// </remarks>
     [HttpPut("case/{caseId:long}/update-mortgage-refixation")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -96,7 +96,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k získání informací o vybraném procesu mimořádné splátky.
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-extra-payment/{processId:long}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -113,13 +113,13 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k získání informací o vybraném refixačním procesu.
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-refixation")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(typeof(GetMortgageRefixationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=06834209-6BE1-42bf-8C6A-DD4D4371B14F")]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=1EF978B1-265D-40d0-8B1C-B0E07D9D8031")]
     public async Task<GetMortgageRefixationResponse> GetMortgageRefixation([FromRoute] long caseId, [FromQuery] long? processId = null)
         => await _mediator.Send(new GetMortgageRefixationRequest(caseId, processId));
 
@@ -130,7 +130,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k získání informací o vybraném retenčním procesu.
     /// </remarks>
     [HttpGet("case/{caseId:long}/mortgage-retention/{processId:long}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
@@ -147,7 +147,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k získání informací a žádostí ke změnám sazeb.
     /// </remarks>
     [HttpGet("case/{caseId:long}/refinancing-parameters")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
@@ -165,7 +165,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Vrátí kolekci možných platností sazby od pro konkrétní úvěr.
     /// </remarks>
     [HttpGet("case/{caseId:long}/interest-rates-valid-from")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [ProducesResponseType(typeof(GetInterestRatesValidFrom.GetInterestRatesValidFromResponse), StatusCodes.Status200OK)]
@@ -181,7 +181,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k získání informací o aktuální úrokové sazbě.
     /// </remarks>
     [HttpGet("case/{caseId:long}/interest-rate")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [ProducesResponseType(typeof(GetInterestRate.GetInterestRateResponse), StatusCodes.Status200OK)]
@@ -212,7 +212,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k vygenerování dokumentu Retenčního dodatku
     /// </remarks>
     [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/retention-document")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -229,7 +229,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k vygenerování dokumentu pro Refixace nebo Individuální sdělení
     /// </remarks>
     [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/refixation-document")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -246,7 +246,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// Operace slouží k vygenerování dokumentu mimořádné splátky
     /// </remarks>
     [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/extra-payment-document")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

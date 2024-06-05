@@ -17,7 +17,7 @@ public class GeneralDocumentController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EA4655D8-5314-469b-8C92-5D2324EF1824"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpGet]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Dokument" })]
     [ProducesResponseType(typeof(List<GetGeneralDocuments.Document>), StatusCodes.Status200OK)]
     public async Task<List<GetGeneralDocuments.Document>> GetGeneralDocuments(CancellationToken cancellationToken)

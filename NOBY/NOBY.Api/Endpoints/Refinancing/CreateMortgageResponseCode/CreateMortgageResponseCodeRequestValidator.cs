@@ -23,26 +23,23 @@ internal sealed class CreateMortgageResponseCodeRequestValidator
                     _ => true
                 };
             })
-            .WithMessage("Unknown ResponseCodeTypeId");
-
-
-        RuleFor(t => t)
-         .MustAsync(async (req, c) =>
-         {
-             var cb = (await codebookService.ResponseCodeTypes(c)).First(t => t.Id == req.ResponseCodeTypeId);
-             if (cb.IsAvailableForRetention && await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Retention))
-             {
-                 return true;
-             }
-             else if (cb.IsAvailableForRefixation && await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Refixation))
-             {
-                 return true;
-             }
-             else
-             {
-                 return false;
-             }
-         })
-         .WithMessage("Retence nebo refixace musejí být povoleny");
+            .WithMessage("Unknown ResponseCodeTypeId")
+            .MustAsync(async (req, id, c) =>
+            {
+                var cb = (await codebookService.ResponseCodeTypes(c)).First(t => t.Id == id);
+                if (cb.IsAvailableForRetention && await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Retention))
+                {
+                    return true;
+                }
+                else if (cb.IsAvailableForRefixation && await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.Refixation))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            })
+            .WithErrorCode(90032);
     }
 }

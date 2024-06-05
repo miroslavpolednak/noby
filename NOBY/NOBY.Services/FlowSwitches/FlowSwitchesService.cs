@@ -5,8 +5,11 @@ using Microsoft.EntityFrameworkCore;
 namespace NOBY.Services.FlowSwitches;
 
 [TransientService, AsImplementedInterfacesService]
-internal sealed class FlowSwitchesService
-    : IFlowSwitchesService
+internal sealed class FlowSwitchesService(
+    Database.FeApiDbContext _dbContext, 
+    IAppCache _cache, 
+    ISalesArrangementServiceClient _salesArrangementService)
+        : IFlowSwitchesService
 {
     public async Task<List<DomainServices.SalesArrangementService.Contracts.FlowSwitch>> GetFlowSwitchesForSA(int salesArrangementId, CancellationToken cancellationToken = default)
     {
@@ -72,7 +75,11 @@ internal sealed class FlowSwitchesService
     {
         return _cache.GetOrAdd("FlowSwitches", () =>
         {
-            return _dbContext.FlowSwitches.AsNoTracking().Select(t => new FlowSwitchDefault(t.FlowSwitchId, t.DefaultValue)).ToArray();
+            return _dbContext
+                .FlowSwitches
+                .AsNoTracking()
+                .Select(t => new FlowSwitchDefault(t.FlowSwitchId, t.DefaultValue))
+                .ToArray();
         }, DateTime.Now.AddDays(1));
     }
 
@@ -116,16 +123,5 @@ internal sealed class FlowSwitchesService
 
             return groups;
         }, DateTime.Now.AddDays(1));
-    }
-
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly Database.FeApiDbContext _dbContext;
-    private readonly IAppCache _cache;
-    
-    public FlowSwitchesService(Database.FeApiDbContext dbContext, IAppCache cache, ISalesArrangementServiceClient salesArrangementService)
-    {
-        _salesArrangementService = salesArrangementService;
-        _dbContext = dbContext;
-        _cache = cache;
     }
 }

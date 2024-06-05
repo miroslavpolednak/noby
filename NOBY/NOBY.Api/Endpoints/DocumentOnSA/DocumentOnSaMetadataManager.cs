@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CodebookService.Contracts.v1;
+﻿using DomainServices.CodebookService.Contracts.v1;
 using FastEnumUtility;
 using NOBY.Dto.Signing;
 
@@ -7,6 +6,8 @@ namespace NOBY.Api.Endpoints.DocumentOnSA;
 
 public static class DocumentOnSaMetadataManager
 {
+    private const int _individualCommunication = 605353;
+
     public static EACodeMainItem GetEaCodeMainItem(DocIdentificator docIdentificator, List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypeItems, List<EaCodesMainResponse.Types.EaCodesMainItem> eaCodeMainItems)
     {
         EaCodesMainResponse.Types.EaCodesMainItem eaCodeMain;
@@ -35,9 +36,27 @@ public static class DocumentOnSaMetadataManager
         // InTheProcess (v procesu) 2
         DocumentOnSAInfo doc when doc.IsValid && doc.DocumentOnSAId is not null && doc.IsSigned == false => GetSignatureState(2, signatureStates),
         // WaitingForScan (čeká na sken) 3
-        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && doc.SignatureTypeId == SignatureTypes.Paper.ToByte() && doc.EArchivIdsLinked.Count == 0 && doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() && doc.Source != Source.Workflow => GetSignatureState(3, signatureStates),
+        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && doc.SignatureTypeId == SignatureTypes.Paper.ToByte() && doc.EArchivIdsLinked.Count == 0 && doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() &&
+        (
+         (doc.Source == Source.Noby)
+         ||
+         (doc.Source == Source.Workflow && doc.EaCodeMainId == _individualCommunication)
+        )
+        => GetSignatureState(3, signatureStates),
         // Signed (podepsáno) 4
-        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned && (doc.EArchivIdsLinked.Count != 0 || doc.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() || doc.Source == Source.Workflow || doc.SignatureTypeId == SignatureTypes.Electronic.ToByte()) => GetSignatureState(4, signatureStates),
+        DocumentOnSAInfo doc when doc.IsValid && doc.IsSigned &&
+        (
+          (doc.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte())
+          ||
+          (doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() && doc.Source == Source.Workflow && doc.EaCodeMainId != _individualCommunication)
+          ||
+          (doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() && doc.Source == Source.Workflow && doc.EaCodeMainId == _individualCommunication && doc.SignatureTypeId == SignatureTypes.Paper.ToByte() && doc.EArchivIdsLinked.Count > 0)
+          ||
+          (doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() && doc.Source == Source.Noby && doc.SignatureTypeId == SignatureTypes.Electronic.ToByte())
+          ||
+          (doc.SalesArrangementTypeId != SalesArrangementTypes.Drawing.ToByte() && doc.Source == Source.Noby && doc.SignatureTypeId == SignatureTypes.Paper.ToByte() && doc.EArchivIdsLinked.Count > 0)
+        )
+        => GetSignatureState(4, signatureStates),
         // Canceled (zrušeno) 5 
         _ => GetSignatureState(5, signatureStates)
     };
@@ -69,6 +88,8 @@ public class DocumentOnSAInfo
     public int? SalesArrangementTypeId { get; set; }
 
     public int SignatureTypeId { get; set; }
+
+    public int? EaCodeMainId { get; set; }
 
     public IReadOnlyCollection<string> EArchivIdsLinked { get; set; } = null!;
 }

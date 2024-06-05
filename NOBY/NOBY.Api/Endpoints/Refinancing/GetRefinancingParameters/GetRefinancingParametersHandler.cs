@@ -65,11 +65,11 @@ internal sealed class GetRefinancingParametersHandler(
             RefinancingParametersFuture = new()
             {
                 LoanInterestRate = mortgage.Retention?.LoanInterestRate ?? mortgage.Refixation?.LoanInterestRate,
-				LoanPaymentAmount = mortgage.Retention?.LoanPaymentAmount ?? mortgage.Refixation?.LoanPaymentAmount,
+                LoanPaymentAmount = mortgage.Retention?.LoanPaymentAmount ?? mortgage.Refixation?.LoanPaymentAmount,
                 FixedRateValidFrom = getFixedRateValidFrom(),
                 FixedRateValidTo = getFixedRateValidTo(),
-				FixedRatePeriod = mortgage.Refixation?.FixedRatePeriod
-			},
+                FixedRatePeriod = mortgage.Refixation?.FixedRatePeriod
+            },
             RefinancingProcesses = mergeOfSaAndProcess.Select(s => new Dto.RefinancingProcess
             {
                 SalesArrangementId = s.Sa?.SalesArrangementId,
@@ -79,34 +79,34 @@ internal sealed class GetRefinancingParametersHandler(
 
         DateTime? getFixedRateValidFrom()
         {
-			// retence
-			if (mortgage.Retention?.LoanInterestRate is not null)
-			{
-				return mortgage.Retention.LoanInterestRateValidFrom;
-			}
-			// refixace
-			else if (mortgage.Refixation?.FixedRatePeriod is not null && mortgage.FixedRateValidTo is not null)
-			{
+            // retence
+            if (mortgage.Retention?.LoanInterestRate is not null)
+            {
+                return mortgage.Retention.LoanInterestRateValidFrom;
+            }
+            // refixace
+            else if (mortgage.Refixation?.FixedRatePeriod is not null && mortgage.FixedRateValidTo is not null)
+            {
                 return ((DateTime)mortgage.FixedRateValidTo).AddDays(1);
-			}
-			else
-			{
-				return null;
-			}
-		}
+            }
+            else
+            {
+                return null;
+            }
+        }
 
-		DateTime? getFixedRateValidTo()
+        DateTime? getFixedRateValidTo()
         {
             // retence
             if (mortgage.Retention?.LoanInterestRate is not null)
             {
                 return mortgage.FixedRateValidTo;
-			}
+            }
             // refixace
             else if (mortgage.Refixation?.FixedRatePeriod is not null && mortgage.FixedRateValidTo is not null)
             {
                 return ((DateTime)mortgage.FixedRateValidTo).AddMonths(mortgage.Refixation.FixedRatePeriod.Value);
-			}
+            }
             else
             {
                 return null;

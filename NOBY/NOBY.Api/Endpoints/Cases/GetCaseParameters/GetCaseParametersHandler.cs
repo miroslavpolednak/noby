@@ -13,8 +13,7 @@ internal sealed class GetCaseParametersHandler(
     DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
     DomainServices.UserService.Clients.IUserServiceClient _userService,
     DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService,
-    ICurrentUserAccessor _currentUserAccessor
-    ) 
+    ICurrentUserAccessor _currentUserAccessor) 
     : IRequestHandler<GetCaseParametersRequest, GetCaseParametersResponse>
 {
     public async Task<GetCaseParametersResponse> Handle(GetCaseParametersRequest request, CancellationToken cancellationToken)

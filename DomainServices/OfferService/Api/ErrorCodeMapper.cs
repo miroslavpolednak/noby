@@ -1,4 +1,5 @@
-﻿using CIS.Core.ErrorCodes;
+﻿using Amazon.Runtime.Internal.Transform;
+using CIS.Core.ErrorCodes;
 
 namespace DomainServices.OfferService.Api;
 
@@ -23,8 +24,9 @@ internal sealed class ErrorCodeMapper
     public const int MortgageRetentionAmountIndividualPriceNotValid = 10027;
     public const int CaseIdNotFoundOnOffer = 10029;
     public const int CaseIdIsEmpty = 10030;
+    public const int ResponseCodeTypeIdNotFound = 10031;
     public const int CaseIdNotFoundInKonsDb = 10032;
-
+    
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
@@ -47,6 +49,7 @@ internal sealed class ErrorCodeMapper
             { MortgageRetentionAmountNotValid, "SimulateMortgageRetentionRequest.BasicParameters.Amount is not valid" },
             { MortgageRetentionAmountIndividualPriceNotValid, "SimulateMortgageRetentionRequest.BasicParameters.AmountIndividualPrice is not valid" },
             { CaseIdNotFoundOnOffer, "Offer.CaseId is empty" },
+            { ResponseCodeTypeIdNotFound, "ResponseCodeTypeId not found in codebook" },
             { CaseIdNotFoundInKonsDb, "CaseId not found in konsDb view" }
         });
 

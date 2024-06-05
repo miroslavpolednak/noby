@@ -4,6 +4,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.ProductService.Clients;
+using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using ExternalServices.SbWebApi.V1;
@@ -43,6 +44,11 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
 
     public async Task Handle(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken)
     {
+        var product = await _productService.GetMortgage(request.CaseId, cancellationToken);
+
+        if (DateTime.Now.AddDays(14) > ((DateTime?)product.Mortgage.FixedRateValidTo ?? DateTime.Now))
+            throw new NobyValidationException(90062);
+
         await ValidateSignatureTypeDetailId(request, cancellationToken);
 
         var salesArrangement = await _refinancingDocumentService.LoadAndValidateSA(request.SalesArrangementId, SalesArrangementTypes.MortgageRefixation, cancellationToken);
@@ -61,7 +67,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
             await _salesArrangementService.LinkModelationToSalesArrangement(salesArrangement.SalesArrangementId, offer.Data.OfferId, cancellationToken);
 
         if (request.RefixationDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix)
-            await GenerateHedgeAppendixDocument(salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
+            await GenerateHedgeAppendixDocument(salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, product, cancellationToken);
         else
             await GenerateInterestRateNotificationDocument(salesArrangement, offer, cancellationToken);
 
@@ -130,10 +136,9 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         await _salesArrangementService.UpdateSalesArrangementParameters(updateRequest, cancellationToken);
     }
 
-    private async Task GenerateHedgeAppendixDocument(_SA salesArrangement, GetOfferListResponse.Types.GetOfferListItem offer, bool hasIndividualPrice, CancellationToken cancellationToken)
+    private async Task GenerateHedgeAppendixDocument(_SA salesArrangement, GetOfferListResponse.Types.GetOfferListItem offer, bool hasIndividualPrice, GetMortgageResponse product, CancellationToken cancellationToken)
     {
         var user = await _refinancingDocumentService.LoadUserInfo(cancellationToken);
-        var product = await _productService.GetMortgage(salesArrangement.CaseId, cancellationToken);
 
         var simulationInputs = offer.MortgageRefixation.SimulationInputs;
         var simulationResults = offer.MortgageRefixation.SimulationResults;

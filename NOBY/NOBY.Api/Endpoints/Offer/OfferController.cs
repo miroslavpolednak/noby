@@ -17,8 +17,8 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DAE69855-3C72-4ec4-8332-81E91814FA47"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/simulate-mortgage-refixation-offer-list")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobySkipCaseStateAndProductSAValidation]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
@@ -37,8 +37,8 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F3564317-C787-445d-AB54-A6B4FE1847C0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/simulate-mortgage-extra-payment-offer")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobySkipCaseStateAndProductSAValidation]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
@@ -57,8 +57,8 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B794F3FC-3B89-4280-AF28-449F0442ACFD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/simulate-mortgage-refixation-offer")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobySkipCaseStateAndProductSAValidation]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
@@ -77,8 +77,8 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BFEF73A4-5876-4b5b-940B-8F65FEB5F660"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("case/{caseId:long}/simulate-mortgage-retention-offer")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobySkipCaseStateAndProductSAValidation]
     [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
@@ -98,8 +98,8 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <param name="request">Nastaveni simulace.</param>
     /// <returns>ID vytvořené simulace a její výsledky.</returns>
     [HttpPost("offer/mortgage")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SimulateMortgage.SimulateMortgageResponse), StatusCodes.Status200OK)]
@@ -116,7 +116,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     /// <returns>Vstupy a výstupy uložené simulace.</returns>
     [HttpGet("offer/mortgage/sales-arrangement/{salesArrangementId:int}")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SharedDto.GetMortgageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -137,8 +137,8 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <param name="request">Identifikace klienta a ID simulace.</param>
     /// <returns>ID nově vytvořeného Case</returns>
     [HttpPost("offer/mortgage/create-case")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.DASHBOARD_CreateNewCase)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
@@ -154,7 +154,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("offer/mortgage/sales-arrangement/{salesArrangementId:int}/link")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [Obsolete("Use LinkMortgageOffer endpoint")]
@@ -167,7 +167,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <remarks>
     /// </remarks>
     [HttpPut("case/{caseId:long}/offer/{offerId:int}/flags")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task SetOfferFlags([FromRoute] long caseId, [FromRoute] int offerId, [FromBody] SetOfferFlags.SetOfferFlagsRequest request)
@@ -182,7 +182,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     /// <returns>Plný splátkový kalendář simulace.</returns>
     [HttpGet("offer/mortgage/{offerId:int}/full-payment-schedule")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(SharedDto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -201,7 +201,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D43515EA-4014-47a1-AD45-0E80EE43AEB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("offer/mortgage/developer-project/search")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(DeveloperSearch.DeveloperSearchResponse), StatusCodes.Status200OK)]
     public async Task<DeveloperSearch.DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearch.DeveloperSearchRequest request)
@@ -215,7 +215,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-offer")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(NOBY.Dto.Refinancing.RefinancingLinkResult), StatusCodes.Status200OK)]
@@ -230,7 +230,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=92B4B98B-3F57-4541-9828-EB8CFDFA9035"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("case/{caseId:long}/link-mortgage-retention-offer")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(NOBY.Dto.Refinancing.RefinancingLinkResult), StatusCodes.Status200OK)]
@@ -245,7 +245,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=138F178A-72B5-46f6-85B2-D8414F5043B3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPut("case/{caseId:long}/link-mortgage-extra-payment")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(NOBY.Dto.Refinancing.RefinancingLinkResult), StatusCodes.Status200OK)]

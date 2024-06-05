@@ -78,7 +78,7 @@ public sealed class RefinancingOfferDetail
             InterestRate = offer.MortgageRefixation.SimulationInputs.InterestRate,
             InterestRateDiscount = offer.MortgageRefixation.SimulationInputs.InterestRateDiscount,
             LoanPaymentAmount = offer.MortgageRefixation.SimulationResults.LoanPaymentAmount,
-            LoanPaymentAmountDiscounted = offer.MortgageRefixation.SimulationResults.LoanPaymentAmountDiscounted
+            LoanPaymentAmountDiscounted = offer.MortgageRefixation.SimulationResults.LoanPaymentAmountDiscounted !=offer.MortgageRefixation.SimulationResults.LoanPaymentAmount ? offer.MortgageRefixation.SimulationResults.LoanPaymentAmountDiscounted : null
         };
         SetFlags(result, offer.Data.Flags);
         return result;

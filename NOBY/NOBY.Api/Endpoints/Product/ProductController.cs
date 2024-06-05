@@ -23,7 +23,7 @@ public sealed class ProductController : ControllerBase
     /// <returns>Seznam klientů na produktu</returns>
     [HttpGet("{caseId:long}/customers")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<GetCustomersOnProduct.GetCustomersOnProductCustomer>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -40,7 +40,7 @@ public sealed class ProductController : ControllerBase
     /// <returns>Seznam závazků na produktu</returns>
     [HttpGet("{caseId:long}/obligations")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Produkt" })]
     [ProducesResponseType(typeof(List<ProductObligation>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

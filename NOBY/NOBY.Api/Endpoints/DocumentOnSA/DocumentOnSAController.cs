@@ -40,7 +40,7 @@ public class DocumentOnSAController : ControllerBase
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/document-list")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(typeof(GetDocumentsSignListResponse), StatusCodes.Status200OK)]
@@ -60,7 +60,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="salesArrangementId"> ID Sales Arrangement </param>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/start")]
     [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(typeof(StartSigningResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

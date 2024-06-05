@@ -3,6 +3,7 @@ package DomainServices.DocumentOnSAService.GetDocumentOnSAStatus;
 option csharp_namespace = "DomainServices.DocumentOnSAService.Contracts";
 
 import "Enums.proto";
+import "google/protobuf/wrappers.proto";
 
 message GetDocumentOnSAStatusRequest {
 	
@@ -18,4 +19,5 @@ message GetDocumentOnSAStatusResponse {
 	DomainServices.DocumentOnSAService.Enums.Source Source = 4;
 	repeated string EArchivIdsLinked = 5;
 	int32 SignatureTypeId = 6;
+	google.protobuf.Int32Value EACodeMainId = 7;
 }
