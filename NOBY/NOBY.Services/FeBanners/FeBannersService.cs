@@ -23,7 +23,7 @@ public sealed class FeBannersService(
                 .Take(5)
                 .Select(t => new FeBannerItem
                 {
-                    Text = t.Text,
+                    Description = t.Description,
                     Title = t.Title,
                     Severity = (FeBannerItem.FeBannersSeverity)t.Severity
                 })

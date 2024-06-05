@@ -10,7 +10,7 @@ public sealed class FeBannerItem
     /// <summary>
     /// Obsah upozornění
     /// </summary>
-    public string Text { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
 
     /// <summary>
     /// Úroveň závažnosti upozornění

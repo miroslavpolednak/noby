@@ -4,7 +4,7 @@ GO
 CREATE TABLE [dbo].[FeBanner](
 	[FeBannerId] [int] IDENTITY(1,1) NOT NULL,
 	[Title] [nvarchar](max) NOT NULL,
-	[Text] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
 	[Severity] [int] NOT NULL,
 	[VisibleFrom] [datetime] NOT NULL,
 	[VisibleTo] [datetime] NOT NULL,
