@@ -64,25 +64,18 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
         var salesArrangementType = await _commonSigning.GetSalesArrangementType(salesArrangement, cancellationToken);
 
-        DocumentOnSa documentOnSaEntity;
-        if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ProductRequest.ToByte())
+        var documentOnSaEntity = request switch
         {
-            if (request.TaskIdSb is not null) // workflow
-                documentOnSaEntity = await ProcessWorkflowRequest(request, cancellationToken);
-            else if (request.DocumentTypeId == _crsDocumentType) //CRS request
-                documentOnSaEntity = await ProcessCrsRequest(request, salesArrangement, cancellationToken);
-            else // Product request
-                documentOnSaEntity = await ProcessProductRequest(request, salesArrangement, cancellationToken);
-        }
-        else if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte())
-        {
-            if (request.DocumentTypeId == _crsDocumentType) // CRS request can be service request too
-                documentOnSaEntity = await ProcessCrsRequest(request, salesArrangement, cancellationToken);
-            else
-                documentOnSaEntity = await ProcessServiceRequest(request, salesArrangement, cancellationToken);
-        }
-        else
-            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedKindOfSigningRequest);
+            //Workflow
+            _ when request.TaskIdSb is not null => await ProcessWorkflowRequest(request, cancellationToken),
+            //CRS request
+            _ when request.DocumentTypeId == _crsDocumentType => await ProcessCrsRequest(request, salesArrangement, cancellationToken),
+            // Product request
+            _ when salesArrangementType.SalesArrangementCategory ==  SalesArrangementCategories.ProductRequest.ToByte() => await ProcessProductRequest(request, salesArrangement, cancellationToken),
+            // Service request
+            _ when salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte() => await ProcessServiceRequest(request, salesArrangement, cancellationToken),
+            _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedKindOfSigningRequest)
+        };
 
         try
         {
