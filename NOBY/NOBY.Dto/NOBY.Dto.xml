@@ -120,7 +120,7 @@
             Nadpis upozornění
             </summary>
         </member>
-        <member name="P:NOBY.Dto.FeBannerItem.Text">
+        <member name="P:NOBY.Dto.FeBannerItem.Description">
             <summary>
             Obsah upozornění
             </summary>
