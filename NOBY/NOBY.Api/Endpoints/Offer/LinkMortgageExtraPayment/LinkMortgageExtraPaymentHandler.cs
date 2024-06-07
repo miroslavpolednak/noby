@@ -80,6 +80,7 @@ internal sealed class LinkMortgageExtraPaymentHandler(
             TaskIdSb = taskIdSb,
             MortgageExtraPayment = new UpdateTaskRequest.Types.TaskAmendmentMortgageExtraPayment
             {
+                IsFinalExtraPayment = extraPayment.SimulationInputs.IsExtraPaymentFullyRepaid,
                 ExtraPaymentDate = extraPayment.SimulationInputs.ExtraPaymentDate,
                 ExtraPaymentAmount = extraPayment.SimulationResults.PrincipalAmount,
                 ExtraPaymentAmountIncludingFee = extraPayment.SimulationResults.PrincipalAmount + extraPayment.SimulationResults.FeeAmount - ((decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? 0)
