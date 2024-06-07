@@ -55,7 +55,7 @@ public sealed class MortgageRefinancingDataService(
 
         var processes = await _caseService.GetProcessList(caseId, cancellationToken);
 
-        if (processes?.Any(t => t.ProcessId != processId && (t.StateIdSB is not (4 or 5)) && t.ProcessTypeId == (int)WorkflowProcesses.Refinancing && t.RefinancingType == (int)refinancingType) ?? false)
+        if (processes?.Any(t => t.ProcessId != processId && (t.StateIdSB is not 30) && t.ProcessTypeId == (int)WorkflowProcesses.Refinancing && t.RefinancingType == (int)refinancingType) ?? false)
         {
             throw new NobyValidationException(90061, "Nestandardní přístup do kalkulace bez kontextu žádosti", "Vstupujete do kalkulace nestandardním způsobem a bez navázaného kontextu žádosti. Vraťte se na Rozcestník a vstupte standardním způsobem.");
         }
