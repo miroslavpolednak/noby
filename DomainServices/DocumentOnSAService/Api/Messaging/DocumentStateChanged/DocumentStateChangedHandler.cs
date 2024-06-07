@@ -2,22 +2,23 @@
 using DomainServices.DocumentOnSAService.Contracts;
 using KafkaFlow;
 using Microsoft.EntityFrameworkCore;
+using E = cz.mpss.api.epodpisy.digitalsigning.documentsigningevents.v1;
 
 namespace DomainServices.DocumentOnSAService.Api.Messaging.DocumentStateChanged;
 
 public sealed class DocumentStateChangedHandler(
 	DocumentOnSAServiceDbContext _context, 
 	IMediator _mediator) 
-    : IMessageHandler<DocumentStateChanged>
+    : IMessageHandler<E.DocumentStateChanged>
 {
-    public async Task Handle(IMessageContext context, DocumentStateChanged message)
+    public async Task Handle(IMessageContext context, E.DocumentStateChanged message)
     {
         switch (message.state)
         {
-            case DocumentStateEnum.SIGNED or DocumentStateEnum.VERIFIED or DocumentStateEnum.SENT:
+            case E.DocumentStateEnum.SIGNED or E.DocumentStateEnum.VERIFIED or E.DocumentStateEnum.SENT:
 				await signDocument(message.documentExternalId, Operations.SignDocument);
                 break;
-            case DocumentStateEnum.DELETED:
+            case E.DocumentStateEnum.DELETED:
 				await signDocument(message.documentExternalId, Operations.StopSigning);
                 break;
         }
