@@ -3281,31 +3281,31 @@
             "$ref": "#/components/schemas/AddressType"
           },
           "street": {
-            "maxLength": 30,
+            "maxLength": 100,
             "type": "string",
             "description": "Ulice",
             "nullable": true
           },
           "buildingIdentificationNumber": {
-            "maxLength": 8,
+            "maxLength": 5,
             "type": "string",
             "description": "Orientační číslo budovy",
             "nullable": true
           },
           "landRegistryNumber": {
-            "maxLength": 8,
+            "maxLength": 16,
             "minLength": 1,
             "type": "string",
             "description": "Číslo popisné"
           },
           "postCode": {
-            "maxLength": 8,
+            "maxLength": 16,
             "minLength": 1,
             "type": "string",
             "description": "PSČ"
           },
           "city": {
-            "maxLength": 50,
+            "maxLength": 100,
             "minLength": 1,
             "type": "string",
             "description": "Obec"
@@ -4342,6 +4342,14 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "typeCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isSecured": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -4552,6 +4560,9 @@
             "format": "date-time",
             "nullable": true
           },
+          "loanType": {
+            "$ref": "#/components/schemas/LoanType"
+          },
           "savingId": {
             "minimum": 1,
             "type": "integer",
@@ -4635,6 +4646,15 @@
           }
         },
         "additionalProperties": false
+      },
+      "LoanType": {
+        "enum": [
+          "Unspecified",
+          "PDU",
+          "PKU",
+          "KBMortgage"
+        ],
+        "type": "string"
       },
       "ModelErrorWrapper": {
         "type": "object",
@@ -4805,6 +4825,9 @@
             "description": "Datum první anuitní splátky",
             "format": "date-time",
             "nullable": true
+          },
+          "loanType": {
+            "$ref": "#/components/schemas/LoanType"
           },
           "relationships": {
             "type": "array",

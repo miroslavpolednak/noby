@@ -54,9 +54,9 @@ internal static class GetMortgageMappers
 		{
 			mortgage.LoanRealEstates.AddRange(loan.RealEstates.Select(t => new Contracts.LoanRealEstate
 			{
-				IsCollateral = false,//???
+				IsCollateral = t.IsSecured,
 				RealEstatePurchaseTypeId = t.PurposeCode.GetValueOrDefault(),
-				RealEstateTypeId = 1//???
+				RealEstateTypeId = t.TypeCode.GetValueOrDefault(),
 			}));
 		}
 

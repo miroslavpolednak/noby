@@ -1167,6 +1167,12 @@ namespace ExternalServices.MpHome.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("purposeCode")]
         public int? PurposeCode { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("typeCode")]
+        public int? TypeCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("isSecured")]
+        public bool IsSecured { get; set; } = default!;
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1374,6 +1380,10 @@ namespace ExternalServices.MpHome.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("firstAnnuityInstallmentDate")]
         public System.DateTime? FirstAnnuityInstallmentDate { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("loanType")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public LoanType LoanType { get; set; } = default!;
+
         /// <summary>
         /// ID spoření
         /// </summary>
@@ -1444,6 +1454,24 @@ namespace ExternalServices.MpHome.V1.Contracts
 
         [System.Text.Json.Serialization.JsonPropertyName("retention")]
         public LoanRetention Retention { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum LoanType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Unspecified")]
+        Unspecified = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"PDU")]
+        PDU = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"PKU")]
+        PKU = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"KBMortgage")]
+        KBMortgage = 3,
 
     }
 
@@ -1629,6 +1657,10 @@ namespace ExternalServices.MpHome.V1.Contracts
 
         [System.Text.Json.Serialization.JsonPropertyName("firstAnnuityInstallmentDate")]
         public System.DateTime? FirstAnnuityInstallmentDate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanType")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public LoanType LoanType { get; set; } = default!;
 
         /// <summary>
         /// definuje vztah úvěru k dalším osobám
