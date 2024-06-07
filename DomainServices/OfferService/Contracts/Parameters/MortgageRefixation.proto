@@ -2,9 +2,11 @@
 package DomainServices.OfferService;
 option csharp_namespace = "DomainServices.OfferService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "GrpcDecimal.proto";
 import "NullableGrpcDecimal.proto";
 import "GrpcDate.proto";
+import "NullableGrpcDate.proto";
 
 message MortgageRefixationBasicParameters {
 	cis.types.GrpcDate FixedRateValidTo = 1;
@@ -21,8 +23,8 @@ message MortgageRefixationSimulationInputs {
 message MortgageRefixationSimulationResults {
 	cis.types.GrpcDecimal LoanPaymentAmount = 1;
 	cis.types.NullableGrpcDecimal LoanPaymentAmountDiscounted = 2;
-	int32 LoanPaymentsCount = 3;
-	cis.types.GrpcDate MaturityDate = 4;
+	google.protobuf.Int32Value LoanPaymentsCount = 3;
+	cis.types.NullableGrpcDate MaturityDate = 4;
 }
 
 message MortgageRefixationFullData {

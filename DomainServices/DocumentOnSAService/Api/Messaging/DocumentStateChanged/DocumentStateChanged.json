@@ -50,7 +50,12 @@
     },
     {
       "name": "previousState",
-      "type": [ "null", "DocumentStateEnum" ],
+      "type": [
+        "null",
+        {
+          "type": "DocumentStateEnum"
+        }
+      ],
       "default": null,
       "doc": "Previous runtime state of the document within ePodpisy."
     }

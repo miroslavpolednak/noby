@@ -29,6 +29,6 @@ internal static class MortgageExtraPaymentExtensions
 			ExtraPaymentReasonId = result.ExtraPaymentReasonId,
 
             FeeAmountTotal = result.FeeAmount - feeAmountDiscounted.GetValueOrDefault(),
-            ExtraPaymentAmountTotal = result.ExtraPaymentAmount + result.FeeAmount - feeAmountDiscounted.GetValueOrDefault()
+            ExtraPaymentAmountTotal = result.PrincipalAmount + result.FeeAmount - feeAmountDiscounted.GetValueOrDefault()
         };
 }

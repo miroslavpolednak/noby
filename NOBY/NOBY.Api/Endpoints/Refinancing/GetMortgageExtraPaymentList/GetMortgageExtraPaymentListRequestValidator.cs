@@ -10,6 +10,6 @@ internal sealed class GetMortgageExtraPaymentListRequestValidator
     {
         RuleFor(t => t)
             .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ExtraPayment))
-            .WithErrorCode(90057);
+            .WithErrorCode(90058);
     }
 }

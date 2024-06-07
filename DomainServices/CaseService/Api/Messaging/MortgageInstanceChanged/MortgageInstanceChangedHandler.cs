@@ -11,7 +11,7 @@ internal class MortgageInstanceChangedHandler(
     {
         _logger.KafkaConsumerStarted(nameof(MortgageInstanceChangedHandler));
         
-        if (long.TryParse(message.New.Starbuild.id, out var caseId))
+        if (long.TryParse(message.New?.Starbuild?.id, out var caseId))
         {
             var instance = await _dbContext.Cases.FirstOrDefaultAsync(t => t.CaseId == caseId);
             if (instance is not null)
@@ -29,7 +29,7 @@ internal class MortgageInstanceChangedHandler(
         }
         else
         {
-            _logger.KafkaMessageCaseIdIncorrectFormat(nameof(MortgageInstanceChangedHandler), message.New.Starbuild.id);
+            _logger.KafkaMessageCaseIdIncorrectFormat(nameof(MortgageInstanceChangedHandler), message.New?.Starbuild?.id ?? string.Empty);
         }
     }
 }

@@ -20,6 +20,7 @@ public sealed class GetMortgageExtraPaymentResponse
 
     public decimal ExtraPaymentAmount { get; set; }
 
+    [Obsolete("nemelo by se pouzivat, smazeme az nadejde cas")]
 	public decimal ExtraPaymentAmountIncludingFee { get; set; }
 
 	public decimal PrincipalAmount { get; set; }
