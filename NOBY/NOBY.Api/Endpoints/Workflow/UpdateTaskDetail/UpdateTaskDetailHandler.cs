@@ -67,7 +67,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         if (saId.HasValue)
         {
             // musim vytahnout cely parametrs objekt a zase ho preulozit s upravenym atributem
-            var saInstance = await _salesArrangementService.GetSalesArrangement(1, cancellationToken);
+            var saInstance = await _salesArrangementService.GetSalesArrangement(saId.Value, cancellationToken);
 
             saInstance.Retention.ManagedByRC2 = true;
             var saRequest = new DomainServices.SalesArrangementService.Contracts.UpdateSalesArrangementParametersRequest
