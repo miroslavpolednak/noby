@@ -111,7 +111,7 @@ public static class RefinancingHelper
     private static readonly int[] _activeSalesArrangementStates = 
     [
         (int)SalesArrangementStates.InProgress,
-        (int)SalesArrangementStates.NewArrangement,
+        //(int)SalesArrangementStates.NewArrangement, tmp HACH-11963
         (int)SalesArrangementStates.InSigning,
         (int)SalesArrangementStates.ToSend,
         (int)SalesArrangementStates.RC2,
