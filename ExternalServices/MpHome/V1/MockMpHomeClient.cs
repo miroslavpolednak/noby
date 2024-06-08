@@ -60,7 +60,7 @@ internal sealed class MockMpHomeClient
 		throw new NotImplementedException();
 	}
 
-	public Task<PartnerResponse?> GetCustomer(long partnerId, CancellationToken cancellationToken = default)
+	public Task<PartnerResponse?> GetPartner(long partnerId, CancellationToken cancellationToken = default)
 	{
 		throw new NotImplementedException();
 	}

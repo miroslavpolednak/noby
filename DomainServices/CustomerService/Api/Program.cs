@@ -1,11 +1,11 @@
 using CIS.Infrastructure.Messaging;
-using CIS.Infrastructure.StartupExtensions;
 using DomainServices.CustomerService.ExternalServices;
 using ExternalServices;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .AddApplicationConfiguration<DomainServices.CustomerService.Api.Configuration.AppConfiguration>()
+    .AddErrorCodeMapper(DomainServices.CustomerService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
         services
@@ -18,8 +18,6 @@ SharedComponents.GrpcServiceBuilder
     .Build((builder, appConfiguration) =>
     {
         appConfiguration.Validate();
-
-        builder.Services.AddDapper(builder.Configuration.GetConnectionString("KonsDb")!);
 
         builder.AddExternalService<DomainServices.CustomerService.ExternalServices.CustomerManagement.V2.ICustomerManagementClient>();
         builder.AddExternalService<DomainServices.CustomerService.ExternalServices.Contacts.V1.IContactClient>();
@@ -41,6 +39,6 @@ SharedComponents.GrpcServiceBuilder
     })
     .MapGrpcServices((app, _) =>
     {
-        app.MapGrpcService<DomainServices.CustomerService.Api.Endpoints.CustomerService>();
+        app.MapGrpcService<DomainServices.CustomerService.Api.Endpoints.v1.CustomerService>();
     })
     .Run();

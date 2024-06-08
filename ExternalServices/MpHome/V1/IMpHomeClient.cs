@@ -8,6 +8,8 @@ public interface IMpHomeClient
 {
     const string Version = "V1";
 
+    Task<List<PartnerResponse>?> SearchPartners(PartnerSearchRequest request, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Vraci detail uveru z tabulky dbo.Uver
     /// </summary>
@@ -44,7 +46,7 @@ public interface IMpHomeClient
 
     Task UpdatePcpId(long productId, string pcpId, CancellationToken cancellationToken = default);
 
-    Task<PartnerResponse?> GetCustomer(long partnerId, CancellationToken cancellationToken = default);
+    Task<PartnerResponse?> GetPartner(long partnerId, CancellationToken cancellationToken = default);
 
     Task<(LoanRetention? Retention, LoanRefixation? Refixation)> GetRefinancing(long productId, CancellationToken cancellationToken = default);
 }

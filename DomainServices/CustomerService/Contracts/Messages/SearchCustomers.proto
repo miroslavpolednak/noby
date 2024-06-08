@@ -6,23 +6,18 @@ import "google/protobuf/wrappers.proto";
 
 import "Identity.proto";
 import "Mandants.proto";
+import "GrpcAddress.proto";
 import "Messages/NaturalPerson.proto";
 import "Messages/IdentificationDocument.proto";
 import "Messages/Contacts.proto";
 
 message SearchCustomersRequest {
     cis.types.Identity Identity = 1;
-
     cis.types.Mandants Mandant = 2;
-
     NaturalPersonSearch NaturalPerson = 3;
-
     IdentificationDocumentSearch IdentificationDocument = 4;
-
     EmailAddressItem Email = 5;
-
     MobilePhoneItem MobilePhone = 6;
-
     google.protobuf.BoolValue SearchOnlyIdentified = 7;
 }
 
@@ -32,16 +27,7 @@ message SearchCustomersResponse {
 
 message SearchCustomersItem {
     cis.types.Identity Identity = 1;
-
     NaturalPersonBasicInfo NaturalPerson = 2;
-
     IdentificationDocument IdentificationDocument = 3;
-
-    string Street = 4;
-   
-    string Postcode = 5;
-
-    string City = 6;
-
-    google.protobuf.Int32Value CountryId = 7;
+    cis.types.GrpcAddress Address = 4;
 }

@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using FastEnumUtility;
+﻿using FastEnumUtility;
 using __MpHome = ExternalServices.MpHome.V1.Contracts;
 
 namespace DomainServices.CustomerService.Api;
@@ -11,12 +10,12 @@ public static class CMExtensions
         return string.IsNullOrWhiteSpace(str) ? null : str;
     }
 
-    public static DomainServices.CustomerService.Contracts.Contact ToContract(this Services.KonsDb.Dto.PartnerContact contact)
+    public static Contact ToContract(this __MpHome.ContactResponse contact)
     {
         var item = new Contact
         {
-            IsPrimary = contact.IsPrimaryContact,
-            ContactTypeId = contact.ContactType
+            IsPrimary = contact.Primary,
+            ContactTypeId = (int)contact.Type
         };
 
         switch (item.ContactTypeId)
@@ -41,7 +40,7 @@ public static class CMExtensions
         return item;
     }
 
-    public static __MpHome.ContactRequest ToExternalService(this DomainServices.CustomerService.Contracts.Contact contact, List<CodebookService.Contracts.v1.ContactTypesResponse.Types.ContactTypeItem> contactTypes)
+    public static __MpHome.ContactRequest ToExternalService(this Contact contact, List<CodebookService.Contracts.v1.ContactTypesResponse.Types.ContactTypeItem> contactTypes)
     {
         var item = new __MpHome.ContactRequest
         {

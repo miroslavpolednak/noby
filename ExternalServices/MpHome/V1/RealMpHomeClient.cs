@@ -16,7 +16,14 @@ internal sealed class RealMpHomeClient(HttpClient _httpClient)
 		await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
 	}
 
-	public async Task<List<CaseSearchResponse>?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
+    public async Task<List<PartnerResponse>?> SearchPartners(PartnerSearchRequest request, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Partner/search", request, cancellationToken);
+        await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+        return await response.EnsureSuccessStatusAndReadJson<List<PartnerResponse>>(StartupExtensions.ServiceName, cancellationToken);
+    }
+
+    public async Task<List<CaseSearchResponse>?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
 	{
 		var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Case/search", request, cancellationToken);
 		await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
@@ -50,7 +57,7 @@ internal sealed class RealMpHomeClient(HttpClient _httpClient)
         return (await response.SafeReadAsStringAsync(cancellationToken)) == "true";
 	}
 
-	public async Task<PartnerResponse?> GetCustomer(long partnerId, CancellationToken cancellationToken = default)
+	public async Task<PartnerResponse?> GetPartner(long partnerId, CancellationToken cancellationToken = default)
 	{
 		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}", cancellationToken);
 		return await response.EnsureSuccessStatusAndReadJson<PartnerResponse>(StartupExtensions.ServiceName, cancellationToken);

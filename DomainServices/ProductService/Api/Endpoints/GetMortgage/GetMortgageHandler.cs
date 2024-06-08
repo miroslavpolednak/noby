@@ -10,7 +10,7 @@ internal sealed class GetMortgageHandler(
     public async Task<GetMortgageResponse> Handle(GetMortgageRequest request, CancellationToken cancellationToken)
     {
         var loan = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken);
-        var partner = await _mpHomeClient.GetCustomer(loan!.PartnerId!.Value, cancellationToken);
+        var partner = await _mpHomeClient.GetPartner(loan!.PartnerId!.Value, cancellationToken);
 		var (retention, refixation) = await _mpHomeClient.GetRefinancing(request.ProductId, cancellationToken);
 
         var mappedLoan = loan!.MapToProductServiceContract();
