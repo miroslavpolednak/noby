@@ -14,11 +14,6 @@ internal sealed class GetMortgageExtraPaymentHandler(
         // sesbirat vsechna potrebna data
         var data = await _refinancingDataService.GetRefinancingData(request.CaseId, request.ProcessId, RefinancingTypes.MortgageExtraPayment, cancellationToken);
 
-        if (data.RefinancingState is RefinancingStates.RozpracovanoVNoby or RefinancingStates.Dokonceno or RefinancingStates.Zruseno)
-        {
-            throw new NobyValidationException(90032);
-        }
-
         // vytvorit a naplnit zaklad response modelu
         var response = data.UpdateBaseResponseModel(new GetMortgageExtraPaymentResponse());
 

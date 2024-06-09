@@ -76,7 +76,12 @@ public sealed class MortgageRefinancingDataService(
             // zjistit refinancingState
             var (salesArrangement, refinancingState) = await getRefinancingStateId(caseId, result.Process, cancellationToken);
 
-            if (refinancingState is (RefinancingStates.Zruseno or RefinancingStates.Dokonceno))
+            // validace stavu refinancovani
+            if (refinancingType == RefinancingTypes.MortgageExtraPayment && refinancingState is (RefinancingStates.RozpracovanoVNoby or RefinancingStates.Dokonceno or RefinancingStates.Zruseno))
+            {
+                throw new NobyValidationException(90032);
+            }
+            else if (refinancingType != RefinancingTypes.MortgageExtraPayment && refinancingState is (RefinancingStates.Zruseno or RefinancingStates.Dokonceno))
             {
                 throw new NobyValidationException(90032, $"RefinancingState is not allowed: {refinancingState}");
             }
