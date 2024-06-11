@@ -5,12 +5,12 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NOBY_Case') A
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NOBY_Case_S') AND type in (N'SN'))
 	DROP SYNONYM [dbo].[NOBY_Case_S]
 
-CREATE SYNONYM [dbo].[NOBY_Case_S] FOR [ADPRA175].[CaseService].[dbo].[Case]
+CREATE SYNONYM [dbo].[NOBY_Case_S] FOR [BABETA].[CaseService].[dbo].[Case]
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NOBY_CaseHistory_S') AND type in (N'SN'))
 	DROP SYNONYM [dbo].[NOBY_CaseHistory_S]
 
-CREATE SYNONYM [dbo].[NOBY_CaseHistory_S] FOR [ADPRA175].[CaseService].[dbo].[CaseHistory]
+CREATE SYNONYM [dbo].[NOBY_CaseHistory_S] FOR [BABETA].[CaseService].[dbo].[CaseHistory]
 
 --Offer
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NOBY_Offer]') AND type in (N'SN'))
@@ -22,12 +22,12 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NOBY_O
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NOBY_Offer_S]') AND type in (N'SN'))
 	DROP SYNONYM [dbo].[NOBY_Offer_S]
 
-CREATE SYNONYM [dbo].[NOBY_Offer_S] FOR [ADPRA175].[OfferService].[dbo].[Offer]
+CREATE SYNONYM [dbo].[NOBY_Offer_S] FOR [BABETA].[OfferService].[dbo].[Offer]
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NOBY_OfferMortgageData_S]') AND type in (N'SN'))
 	DROP SYNONYM [dbo].[NOBY_OfferMortgageData_S]
 
-CREATE SYNONYM [dbo].[NOBY_OfferMortgageData_S] FOR [ADPRA175].[OfferService].[DDS].[MortgageOfferData]
+CREATE SYNONYM [dbo].[NOBY_OfferMortgageData_S] FOR [BABETA].[OfferService].[DDS].[MortgageOfferData]
 
 --SA
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NOBY_SalesArrangement]') AND type in (N'SN'))
@@ -36,9 +36,9 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NOBY_S
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NOBY_SalesArrangement_S]') AND type in (N'SN'))
 	DROP SYNONYM [dbo].[NOBY_SalesArrangement_S]
 
-CREATE SYNONYM [dbo].[NOBY_SalesArrangement_S] FOR [ADPRA175].[SalesArrangementService].[dbo].[SalesArrangement]
+CREATE SYNONYM [dbo].[NOBY_SalesArrangement_S] FOR [BABETA].[SalesArrangementService].[dbo].[SalesArrangement]
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[NOBY_SalesArrangementHistory_S]') AND type in (N'SN'))
 	DROP SYNONYM [dbo].[NOBY_SalesArrangementHistory_S]
 
-CREATE SYNONYM [dbo].[NOBY_SalesArrangementHistory_S] FOR [ADPRA175].[SalesArrangementService].[dbo].[SalesArrangementHistory]
+CREATE SYNONYM [dbo].[NOBY_SalesArrangementHistory_S] FOR [BABETA].[SalesArrangementService].[dbo].[SalesArrangementHistory]
