@@ -121,9 +121,9 @@ BEGIN
 	ALTER TABLE [dbo].[Case] SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[CaseHistory]));
 	ALTER TABLE [dbo].[SalesArrangement] SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[SalesArrangementHistory]));
 
-	EXEC [dbo].[sp_SyncV33Users]
-
 	COMMIT
+
+	EXEC [dbo].[sp_SyncV33Users]
 END
 
 GO
