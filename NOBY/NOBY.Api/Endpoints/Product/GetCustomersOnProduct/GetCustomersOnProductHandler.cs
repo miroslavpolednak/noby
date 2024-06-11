@@ -12,7 +12,11 @@ internal sealed class GetCustomersOnProductHandler
         var customers = await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken);
 
         // detail customeru z customerService
-        var identifiedCustomers = customers.Customers.Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).ToList();
+        var identifiedCustomers = customers
+            .Customers
+            .Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb) && t.RelationshipCustomerProductTypeId is (1 or 2))
+            .ToList();
+
         var customerDetails = new List<_Cust.CustomerDetailResponse>();
         if (identifiedCustomers.Count != 0)
         {
