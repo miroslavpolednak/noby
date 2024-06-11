@@ -168,7 +168,7 @@ public sealed class MortgageRefinancingDataService(
         if (currentProcessSA is not null)
         {
             currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
-            if (currentProcessSA.Retention?.ManagedByRC2 ?? currentProcessSA.Refixation?.ManagedByRC2 ?? false)
+            if (currentProcessSADetail.Retention?.ManagedByRC2 ?? currentProcessSADetail.Refixation?.ManagedByRC2 ?? false)
             {
                 // ref.state staci vzit pouze z SA
                 return (currentProcessSADetail, RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State));
