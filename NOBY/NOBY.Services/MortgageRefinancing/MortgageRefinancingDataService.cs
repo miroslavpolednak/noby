@@ -164,17 +164,18 @@ public sealed class MortgageRefinancingDataService(
         DomainServices.SalesArrangementService.Contracts.SalesArrangement? currentProcessSADetail = null;
         var allSalesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
 
+        SalesArrangementStates helperState = SalesArrangementStates.Unknown;
+        bool helperManagedByRC2 = false;
+
         var currentProcessSA = allSalesArrangements.SalesArrangements.FirstOrDefault(t => t.ProcessId == process.ProcessId);
         if (currentProcessSA is not null)
         {
             currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
-            if (currentProcessSADetail.Retention?.ManagedByRC2 ?? currentProcessSADetail.Refixation?.ManagedByRC2 ?? false)
-            {
-                // ref.state staci vzit pouze z SA
-                return (currentProcessSADetail, RefinancingHelper.GetRefinancingState(true, currentProcessSA?.ProcessId, process));
-            }
+
+            helperState = (SalesArrangementStates)currentProcessSA.State;
+            helperManagedByRC2 = currentProcessSADetail.Retention?.ManagedByRC2 ?? currentProcessSADetail.Refixation?.ManagedByRC2 ?? false;
         }
 
-        return (currentProcessSADetail, RefinancingHelper.GetRefinancingState(false, currentProcessSA?.ProcessId, process));
+        return (currentProcessSADetail, RefinancingHelper.GetRefinancingState(helperState, helperManagedByRC2, process));
     }
 }
