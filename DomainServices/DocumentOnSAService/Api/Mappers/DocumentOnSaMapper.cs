@@ -1,7 +1,6 @@
 ﻿using CIS.Core.Attributes;
 using SharedTypes.Enums;
 using SharedTypes.GrpcTypes;
-using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Api.Extensions;
@@ -17,7 +16,7 @@ public interface IDocumentOnSaMapper
 {
     IEnumerable<DocumentOnSAToSign> MapDocumentOnSaToSign(IEnumerable<DocumentOnSa> documentOnSas);
 
-    DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypesResponse.Types.DocumentTypeItem documentTypeItem, int salesArrangementId);
+    DocumentOnSAToSign CreateDocumentOnSaToSign(int? documentTypeId, int salesArrangementId);
 
     /// <summary>
     /// For CRS
@@ -87,11 +86,11 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
         }
     }
 
-    public DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypesResponse.Types.DocumentTypeItem documentTypeItem, int salesArrangementId)
+    public DocumentOnSAToSign CreateDocumentOnSaToSign(int? documentTypeId, int salesArrangementId)
     {
         return new DocumentOnSAToSign
         {
-            DocumentTypeId = documentTypeItem.Id,
+            DocumentTypeId = documentTypeId,
             SalesArrangementId = salesArrangementId,
             IsValid = true,
             IsSigned = false,
