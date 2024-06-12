@@ -171,7 +171,7 @@ public sealed class MortgageRefinancingDataService(
             if (currentProcessSADetail.Retention?.ManagedByRC2 ?? currentProcessSADetail.Refixation?.ManagedByRC2 ?? false)
             {
                 // ref.state staci vzit pouze z SA
-                return (currentProcessSADetail, RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State));
+                return (currentProcessSADetail, RefinancingHelper.GetRefinancingState(true, currentProcessSA?.ProcessId, process));
             }
         }
 
