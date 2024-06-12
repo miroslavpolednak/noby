@@ -9,12 +9,14 @@ internal sealed class GetCustomersOnProductHandler
     public async Task<List<GetCustomersOnProductCustomer>> Handle(GetCustomersOnProductRequest request, CancellationToken cancellationToken)
     {
         // dostat seznam klientu z konsDb
-        var customers = await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken);
+        var customers = (await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken))
+            .Customers
+            .Where(t => t.RelationshipCustomerProductTypeId is 1 or 2)
+            .ToList();
 
         // detail customeru z customerService
         var identifiedCustomers = customers
-            .Customers
-            .Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb) && t.RelationshipCustomerProductTypeId is (1 or 2))
+            .Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
             .ToList();
 
         var customerDetails = new List<_Cust.CustomerDetailResponse>();
@@ -23,7 +25,7 @@ internal sealed class GetCustomersOnProductHandler
             customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)), cancellationToken)).Customers.ToList();
         }
 
-        return customers.Customers.Select(t =>
+        return customers.Select(t =>
         {
             var c = customerDetails.FirstOrDefault(x => x.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId == t.CustomerIdentifiers.FirstOrDefault(x2 => x2.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId);
 
