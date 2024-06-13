@@ -44,9 +44,9 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         await _caseService.CompleteTask(completeTaskRequest, cancellationToken);
 
         // retence
-        if (taskDetail.TaskObject.TaskTypeId == (int)WorkflowTaskTypes.Retention)
+        if (taskDetail.TaskObject.TaskTypeId == (int)WorkflowTaskTypes.RetentionRefixation)
         {
-            await updateRetentionSalesArrangementParameters(request, taskDetail.TaskObject.ProcessId, cancellationToken);
+            await updateRetentionRefixationSalesArrangementParameters(request, taskDetail.TaskObject.ProcessId, cancellationToken);
         }
 
         if (attachments?.Any() ?? false)
@@ -58,7 +58,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
     /// <summary>
     /// update RC2 atributu na retenci
     /// </summary>
-    private async Task updateRetentionSalesArrangementParameters(UpdateTaskDetailRequest request, long processId, CancellationToken cancellationToken)
+    private async Task updateRetentionRefixationSalesArrangementParameters(UpdateTaskDetailRequest request, long processId, CancellationToken cancellationToken)
     {
         // najit retencni SA
         var saList = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
@@ -69,12 +69,22 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             // musim vytahnout cely parametrs objekt a zase ho preulozit s upravenym atributem
             var saInstance = await _salesArrangementService.GetSalesArrangement(saId.Value, cancellationToken);
 
-            saInstance.Retention.ManagedByRC2 = true;
             var saRequest = new DomainServices.SalesArrangementService.Contracts.UpdateSalesArrangementParametersRequest
             {
-                SalesArrangementId = saInstance.SalesArrangementId,
-                Retention = saInstance.Retention
+                SalesArrangementId = saInstance.SalesArrangementId
             };
+
+            if (saInstance.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention)
+            {
+                saInstance.Retention.ManagedByRC2 = true;
+                saRequest.Retention = saInstance.Retention;
+            }
+            else if (saInstance.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation)
+            {
+                saInstance.Refixation.ManagedByRC2 = true;
+                saRequest.Refixation = saInstance.Refixation;
+            }
+
             await _salesArrangementService.UpdateSalesArrangementParameters(saRequest, cancellationToken);
         }
         else
@@ -99,7 +109,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
 
         // retence
-        if (taskTypeId == (int)WorkflowTaskTypes.Retention)
+        if (taskTypeId == (int)WorkflowTaskTypes.RetentionRefixation)
         {
             if (!_currentUserAccessor!.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage))
             {
@@ -175,7 +185,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         [
             (int)WorkflowTaskTypes.Dozadani,
             (int)WorkflowTaskTypes.Signing,
-            (int)WorkflowTaskTypes.Retention
+            (int)WorkflowTaskTypes.RetentionRefixation
         ];
 
     private readonly ILogger<UpdateTaskDetailHandler> _logger;

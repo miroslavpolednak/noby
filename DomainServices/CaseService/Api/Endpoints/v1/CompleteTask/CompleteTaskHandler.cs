@@ -28,7 +28,7 @@ internal sealed class CompleteTaskHandler(
             sbRequest.Metadata.Add("ukol_podpis_odpoved_typ", (request.TaskResponseTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
             sbRequest.Metadata.Add("ukol_podpis_zpusob_ukonceni", (request.CompletionTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
         }
-        else if (request.TaskTypeId == (int)WorkflowTaskTypes.Retention) // Retence
+        else if (request.TaskTypeId == (int)WorkflowTaskTypes.RetentionRefixation) // Retence
         {
             sbRequest.Metadata.Add("ukol_retence_priprava_zpusob_uk", (request.CompletionTypeId ?? 0).ToString(CultureInfo.InvariantCulture));
         }

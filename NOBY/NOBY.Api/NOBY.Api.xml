@@ -5434,7 +5434,7 @@
             Metoda podpisu (manuální/elektronický). Číselník SignatureType.
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailHandler.updateRetentionSalesArrangementParameters(NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest,System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailHandler.updateRetentionRefixationSalesArrangementParameters(NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest,System.Int64,System.Threading.CancellationToken)">
             <summary>
             update RC2 atributu na retenci
             </summary>

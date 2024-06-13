@@ -42,7 +42,7 @@ internal sealed class CreateTaskHandler(
                 metadata.Add("ukol_konzultace_order_id", $"{request.OrderId}");
             }
         }
-        else if (request.TaskTypeId == (int)WorkflowTaskTypes.Retention)
+        else if (request.TaskTypeId == (int)WorkflowTaskTypes.RetentionRefixation)
         {
             metadata.Add("ukol_retence_druh", $"{request.TaskSubtypeId}");
         }
@@ -55,7 +55,7 @@ internal sealed class CreateTaskHandler(
 
         var result = await _sbWebApi.CreateTask(new ExternalServices.SbWebApi.Dto.CreateTask.CreateTaskRequest
         {
-            ProcessId = request.ProcessId is not null && request.TaskTypeId != (int)WorkflowTaskTypes.Retention ? Convert.ToInt32(request.ProcessId, CultureInfo.InvariantCulture) : null,
+            ProcessId = request.ProcessId is not null && request.TaskTypeId != (int)WorkflowTaskTypes.RetentionRefixation ? Convert.ToInt32(request.ProcessId, CultureInfo.InvariantCulture) : null,
             TaskTypeId = request.TaskTypeId,
             Metadata = metadata
         }, cancellationToken);
