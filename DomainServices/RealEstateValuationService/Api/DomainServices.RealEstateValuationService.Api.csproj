@@ -17,7 +17,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MediatR" Version="12.2.0" />
+		<PackageReference Include="MediatR" Version="12.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.6" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />

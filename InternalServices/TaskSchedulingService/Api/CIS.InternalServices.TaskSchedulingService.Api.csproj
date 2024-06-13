@@ -16,7 +16,7 @@
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore.Server" Version="2.63.0" />
 		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.63.0" />
-		<PackageReference Include="MediatR" Version="12.2.0" />
+		<PackageReference Include="MediatR" Version="12.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
 		<PackageReference Include="NCrontab.Scheduler" Version="1.2.10" />
 	</ItemGroup>
