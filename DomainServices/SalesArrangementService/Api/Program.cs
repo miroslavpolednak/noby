@@ -36,8 +36,6 @@ SharedComponents.GrpcServiceBuilder
         builder.AddEntityFramework<DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.DocumentArchiveServiceDbContext>(connectionStringKey: "documentArchiveDb");
 
         builder.AddDocumentDataStorage();
-
-        bgServices(builder);
     })
     .MapGrpcServices(app =>
     {
@@ -45,14 +43,6 @@ SharedComponents.GrpcServiceBuilder
         app.MapGrpcService<MaintananceService>();
     })
     .Run();
-
-[Obsolete("Odstranit po nasazeni scheduling service")]
-void bgServices(WebApplicationBuilder builder)
-{
-    builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckJob>();
-    builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelCase.CancelCaseJob>();
-    builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelServiceSalesArrangement.CancelServiceSalesArrangementJob>();
-}
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program

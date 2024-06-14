@@ -5,7 +5,6 @@ using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositori
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using ExternalServices.ESignatures.V1;
-using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using CIS.Infrastructure.Messaging;
 
 SharedComponents.GrpcServiceBuilder
@@ -49,8 +48,6 @@ SharedComponents.GrpcServiceBuilder
             {
                 msg.AddConsumerAvro<DomainServices.DocumentOnSAService.Api.Messaging.DocumentStateChanged.DocumentStateChangedHandler>(appConfiguration.ESignatureDocumentStateChangedTopic);
 			});
-
-		bgServices(builder);
     })
     .MapGrpcServices((app, appConfiguration) =>
     {
@@ -58,13 +55,6 @@ SharedComponents.GrpcServiceBuilder
         app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.MaintananceService>();
     })
     .Run();
-
-[Obsolete("Odstranit po nasazeni scheduling service")]
-void bgServices(WebApplicationBuilder builder)
-{
-    builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
-    builder.AddCisBackgroundService<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
-}
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public partial class Program
