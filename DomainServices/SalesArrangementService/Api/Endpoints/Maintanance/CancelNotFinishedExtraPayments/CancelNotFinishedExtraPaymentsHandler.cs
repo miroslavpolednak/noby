@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DomainServices.SalesArrangementService.Api.Endpoints.Maintanance.CancelNotFinishedExtraPayments;
 
 internal sealed class CancelNotFinishedExtraPaymentsHandler(
+    ILogger<CancelNotFinishedExtraPaymentsHandler> _logger,
     SalesArrangementServiceDbContext _dbContext,
     ICaseServiceClient _caseService,
     IMediator _mediator)
@@ -27,21 +28,29 @@ internal sealed class CancelNotFinishedExtraPaymentsHandler(
 
         foreach (var epSa in newExtraPaymentsSA)
         {
-            var existNonCancelEPTaskInSb = (await _caseService.GetTaskList(epSa.CaseId, cancellationToken))
-                .Any(wf => wf.ProcessId == epSa.ProcessId
-                          && wf.TaskTypeId == (int)WorkflowTaskTypes.PriceException
-                          && !wf.Cancelled);
-
-            if (!existNonCancelEPTaskInSb)
+            try
             {
-                var process = (await _caseService.GetProcessList(epSa.CaseId, cancellationToken))
-                            .First(t => t.ProcessId == epSa.ProcessId);
+                var existNonCancelEPTaskInSb = (await _caseService.GetTaskList(epSa.CaseId, cancellationToken))
+                    .Any(wf => wf.ProcessId == epSa.ProcessId
+                              && wf.TaskTypeId == (int)WorkflowTaskTypes.PriceException
+                              && !wf.Cancelled);
 
-                await _caseService.CancelTask(epSa.CaseId, process.ProcessIdSb, cancellationToken: cancellationToken);
+                if (!existNonCancelEPTaskInSb)
+                {
+                    var process = (await _caseService.GetProcessList(epSa.CaseId, cancellationToken))
+                                .First(t => t.ProcessId == epSa.ProcessId);
 
-                await _mediator.Send(new UpdateSalesArrangementStateRequest(
-                    new() { SalesArrangementId = epSa.SalesArrangementId, State = (int)SalesArrangementStates.Cancelled }),
-                    cancellationToken);
+                    await _caseService.CancelTask(epSa.CaseId, process.ProcessIdSb, cancellationToken: cancellationToken);
+
+                    await _mediator.Send(new UpdateSalesArrangementStateRequest(
+                        new() { SalesArrangementId = epSa.SalesArrangementId, State = (int)SalesArrangementStates.Cancelled }),
+                        cancellationToken);
+                }
+            }
+            catch (Exception ex)
+            {
+                // muze se stat, ze task neni nalezen a pak pada zpracovani vsech ostatnich SA
+                _logger.CancelNotFinishedExtraPaymentsFailed(epSa.CaseId, ex.Message, ex);
             }
         }
 

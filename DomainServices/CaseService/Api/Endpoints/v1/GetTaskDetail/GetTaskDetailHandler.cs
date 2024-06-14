@@ -27,7 +27,7 @@ internal sealed partial class GetTaskDetailHandler(
 
         if (!tasks.Any())
         {
-            throw new CisValidationException(ErrorCodeMapper.TaskIdNotFound, CIS.Core.ErrorCodes.ErrorCodeMapperBase.GetMessage(ErrorCodeMapper.TaskIdNotFound, request.TaskIdSb));
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.TaskIdNotFound, request.TaskIdSb);
         }
 
         // pry nikdy nemuze byt vic tasku
