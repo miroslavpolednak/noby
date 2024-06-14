@@ -693,6 +693,41 @@
             Nazev produktu slovne - ciselnik CaseStates
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.CaseOwnerName">
+            <summary>
+            Jméno a příjmení vlastníka case
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.CreatedOn">
+            <summary>
+            Timestamp vytvoreni Case
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.StateUpdatedOn">
+            <summary>
+            Datum a cas posledni zmeny Case
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemCustomer.FirstName">
+            <summary>
+            Jméno customera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemCustomer.LastName">
+            <summary>
+            Příjmení customera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemCustomer.Identity">
+            <summary>
+            Identita klienta
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemCustomer.DateOfBirth">
+            <summary>
+            Datum narození FO
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount.Prefix">
             <summary>
             Prefix čísla úvěrového účtu, podle kterého se má vyhledávat

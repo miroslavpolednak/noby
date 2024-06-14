@@ -42,19 +42,32 @@ internal sealed partial class IdentifyCaseHandler(
     private async Task<IdentifyCaseResponse> handleByCustomerIdentity(Identity? identity, CancellationToken cancellationToken)
     {
         var result = await _productServiceClient.SearchProducts(identity, cancellationToken);
-        
+        List<long> idsToRemove = [];
+
         // projit a dozalozit pripadne chybejici produkty
         foreach (var item in result)
         {
-            await handleByCaseId(item.CaseId, cancellationToken);
+            try
+            {
+                await handleByCaseId(item.CaseId, cancellationToken);
+            }
+            // vime ze to v nekterych pripadech muze spadnout na chybu (vetsinou na pravech) - takovy case pak nezobrazime uzivateli
+            catch (CisAuthorizationException)
+            {
+                idsToRemove.Add(item.CaseId);
+            }
+            catch (NobyValidationException ex) when (ex.Errors[0].ErrorCode == 90032)
+            {
+                idsToRemove.Add(item.CaseId);
+            }
         }
 
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
         var caseStates = await _codebookService.CaseStates(cancellationToken);
 
-        IdentifyCaseResponse response = new() { Cases = new(result.Count) };
+        IdentifyCaseResponse response = new() { Cases = new(result.Count - idsToRemove.Count) };
 
-        foreach (var product in result)
+        foreach (var product in result.Where(t => !idsToRemove.Contains(t.CaseId)))
         {
             var caseInstance = await _caseServiceClient.GetCaseDetail(product.CaseId, cancellationToken);
 
@@ -66,7 +79,25 @@ internal sealed partial class IdentifyCaseHandler(
                 State = (CaseStates)caseInstance.State,
                 TargetAmount = caseInstance.Data.TargetAmount,
                 StateName = caseStates.First(x => x.Id == caseInstance.State).Name,
-                ProductName = productTypes.First(x => x.Id == caseInstance.Data.ProductTypeId).Name
+                ProductName = productTypes.First(x => x.Id == caseInstance.Data.ProductTypeId).Name,
+                CaseOwnerName = caseInstance.CaseOwner.UserName,
+                CreatedOn = caseInstance.Created.DateTime,
+                StateUpdatedOn = caseInstance.StateUpdatedOn,
+                Customer = new Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemCustomer
+                {
+                    FirstName = caseInstance.Customer.FirstNameNaturalPerson,
+                    LastName = caseInstance.Customer.Name,
+                    DateOfBirth = caseInstance.Customer.DateOfBirthNaturalPerson,
+                    Identity = new SharedTypes.Types.CustomerIdentity(caseInstance.Customer.Identity.IdentityId, (int)caseInstance.Customer.Identity.IdentityScheme)
+                },
+                ActiveTasks = caseInstance.Tasks?
+                    .GroupBy(t => t.TaskTypeId)
+                    .Select(t => new Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemTask
+                    {
+                        CategoryId = t.Key,
+                        TaskCount = t.Count()
+                    })
+                    .ToList()
             });
         }
 
