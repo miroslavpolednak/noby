@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DomainServices.OfferService.Api.Endpoints.v1.GetResponseCodeList;
 
 internal sealed class GetResponseCodeListHandler(OfferServiceDbContext _dbContext)
-        : IRequestHandler<GetResponseCodeListRequest, GetResponseCodeListResponse>
+    : IRequestHandler<GetResponseCodeListRequest, GetResponseCodeListResponse>
 {
     public async Task<GetResponseCodeListResponse> Handle(GetResponseCodeListRequest request, CancellationToken cancellationToken)
     {

@@ -15,6 +15,7 @@ internal sealed class CreateResponseCodeRequestValidator
 
         RuleFor(t => t.ResponseCodeTypeId)
             .MustAsync(async (id, c) => (await codebookService.ResponseCodeTypes(c)).Any(t => t.Id == id))
-            .WithErrorCode(ErrorCodeMapper.ResponseCodeTypeIdNotFound);
+            .WithErrorCode(ErrorCodeMapper.ResponseCodeTypeIdNotFound)
+            .When(t => t.ResponseCodeTypeId.HasValue);
     }
 }
