@@ -31,6 +31,9 @@ internal sealed class LoanRetentionProcessChangedHandler : IMessageHandler<cz.mp
             or cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.TERMINATED))
             return;
 
+        if (message.state is cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED && message.processData?.@private?.loanRetentionProcessData?.processPhase?.code != 3)
+            return;
+
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
             _logger.KafkaMessageCaseIdIncorrectFormat(nameof(LoanRetentionProcessChangedHandler), message.@case.caseId.id);
