@@ -79,7 +79,7 @@ public static class RefinancingHelper
                 _ => RefinancingStates.RozpracovanoVNoby
             };
         }
-        else if (salesArrangementState == SalesArrangementStates.Unknown || (salesArrangementState != SalesArrangementStates.Unknown && !managedByRC2))
+        else if (salesArrangementState == SalesArrangementStates.Unknown || (salesArrangementState != SalesArrangementStates.Unknown && managedByRC2))
         {
             if (!process.Cancelled && process.StateIdSB != 30 && process.ProcessPhaseId == 2 && salesArrangementState == SalesArrangementStates.Unknown)
             {
