@@ -32,10 +32,7 @@ public sealed class MortgageRefinancingWorkflowService(
 
         var priceExceptionTasks = GetPriceExceptionTasks(taskList, processId).ToList();
 
-        if (priceExceptionTasks.Count == 0)
-            throw new NobyValidationException(90032, "Empty collection");
-
-        var priceExceptionTask = priceExceptionTasks.SingleOrDefault() ?? throw new NobyValidationException(90050);
+        var priceExceptionTask = priceExceptionTasks.Count == 1 ? priceExceptionTasks.Single() : throw new NobyValidationException(90050);
 
         if (priceExceptionTask.StateIdSb != 30 && priceExceptionTask.PhaseTypeId != 2)
             throw new NobyValidationException(90049);
