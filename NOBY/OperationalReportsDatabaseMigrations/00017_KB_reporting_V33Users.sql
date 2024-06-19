@@ -1,61 +1,44 @@
 CREATE OR ALTER PROCEDURE [dbo].[sp_SyncV33Users] AS
 BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
 
-	DECLARE @V33ID INT;
-	DECLARE v33UserCursor CURSOR FOR SELECT DISTINCT CreatedUserId FROM [dbo].[vw_CaseWithArchived]
+    DECLARE @V33ID INT;
+    DECLARE v33UserCursor CURSOR FOR SELECT DISTINCT CreatedUserId FROM [dbo].[vw_CaseWithArchived];
 
-	DROP TABLE IF EXISTS [dbo].[V33Users] 
+    DROP TABLE IF EXISTS [dbo].[V33Users];
 
-	CREATE TABLE [dbo].[V33Users] (
-		V33Id INT NOT NULL,
-		CPM VARCHAR(8) NULL,
-		ICP VARCHAR(9) NULL
-	);
+    CREATE TABLE [dbo].[V33Users] (
+        V33Id INT NOT NULL,
+        CPM VARCHAR(8) NULL,
+        ICP VARCHAR(9) NULL
+    );
 
-	BEGIN TRY
-		 -- Dočasná tabulka pro uložení všech sloupců vrácených uloženou procedurou
-		CREATE TABLE #TempProcedureResult(
-			firstname VARCHAR(255),
-			surname VARCHAR(255),
-			kbuid VARCHAR(32),  -- posílá ITIM, počítá se z OSCIS KB
-			brokerId BIGINT,   -- prodejce (vázaný zástupce ) z EVITA - 3.strana KB
-			m04id INT,
-			m17id INT,
-			v33id INT,
-			cpm VARCHAR(8),
-			icp VARCHAR(9),
-			ic VARCHAR(8), -- IČO
-			oscis  NUMERIC(10,0),  -- ID z EGJE
-			kbad VARCHAR(150),   -- AD login KB (DS\)
-			mpad VARCHAR(150)    -- AD login MPSS (VSSKB\)
-		)
+    -- Dočasná tabulka pro uložení všech sloupců vrácených uloženou procedurou
+    CREATE TABLE #TempProcedureResult(
+        v33id INT,
+        v33cpm VARCHAR(8),
+        v33icp VARCHAR(9),
+    );
 
-		OPEN v33UserCursor;
-		FETCH NEXT FROM v33UserCursor INTO @V33ID;
+    OPEN v33UserCursor;
+    FETCH NEXT FROM v33UserCursor INTO @V33ID;
 
-		WHILE @@FETCH_STATUS = 0
-		BEGIN
-			INSERT INTO #TempProcedureResult EXEC [dbo].[xxvvss_GetUserIdentities_S] 'v33id', @V33ID;
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+		INSERT INTO #TempProcedureResult SELECT v33id, v33cpm, v33icp FROM [xxvvss_v33PMP_User_S] WHERE v33id = @V33ID
 
-			FETCH NEXT FROM v33UserCursor INTO @V33ID;
-		END
+        FETCH NEXT FROM v33UserCursor INTO @V33ID;
+    END;
 
-		INSERT INTO [dbo].[V33Users] SELECT v33id, cpm, icp FROM #TempProcedureResult
+    INSERT INTO [dbo].[V33Users] (V33Id, CPM, ICP)
+    SELECT v33id, v33cpm, v33icp FROM #TempProcedureResult;
 
-		DROP TABLE #TempProcedureResult;
-		CLOSE v33UserCursor;
-		DEALLOCATE v33UserCursor;
-	END TRY
-	BEGIN CATCH
-		CLOSE v33UserCursor;
-		DEALLOCATE v33UserCursor;
-
-		DROP TABLE IF EXISTS #TempProcedureResult;
-	END CATCH
-END
+    DROP TABLE #TempProcedureResult;
+    CLOSE v33UserCursor;
+    DEALLOCATE v33UserCursor;
+END;
 
 GO
 
