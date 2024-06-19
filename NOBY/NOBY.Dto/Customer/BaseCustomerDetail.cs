@@ -1,6 +1,4 @@
-﻿using NOBY.Dto;
-
-namespace NOBY.Api.Endpoints.Customer.SharedDto;
+﻿namespace NOBY.Dto.Customer;
 
 public abstract class BaseCustomerDetail
 {
@@ -48,13 +46,13 @@ public abstract class BaseCustomerDetail
     public bool? IsUSPerson { get; set; }
 }
 
-internal interface ICustomerDetailConfirmedContacts
+public interface ICustomerDetailConfirmedContacts
 {
     PhoneNumberConfirmedDto? MobilePhone { get; set; }
     EmailAddressConfirmedDto? EmailAddress { get; set; }
 }
 
-internal interface ICustomerDetailContacts
+public interface ICustomerDetailContacts
 {
     PhoneNumberDto? MobilePhone { get; set; }
     EmailAddressDto? EmailAddress { get; set; }

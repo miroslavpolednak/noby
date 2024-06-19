@@ -4,7 +4,6 @@ using NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 using NOBY.Api.Endpoints.DocumentOnSA.StopSigning;
 using NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSA;
-using System.Net.Mime;
 using NOBY.Api.Endpoints.DocumentOnSA.Search;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;

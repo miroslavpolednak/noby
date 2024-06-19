@@ -1,4 +1,4 @@
-﻿namespace NOBY.Api.Endpoints.Customer.SharedDto;
+﻿namespace NOBY.Dto.Customer;
 
 public sealed class LegalCapacityItem
 {

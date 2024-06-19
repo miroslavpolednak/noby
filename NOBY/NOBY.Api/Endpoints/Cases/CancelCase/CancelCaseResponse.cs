@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Cases.CancelCase;
 

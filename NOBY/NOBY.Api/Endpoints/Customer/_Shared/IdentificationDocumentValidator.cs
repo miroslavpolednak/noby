@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using NOBY.Dto;
 
-namespace NOBY.Api.Endpoints.Customer.SharedDto;
+namespace NOBY.Api.Endpoints.Customer.Shared;
 
 internal sealed class IdentificationDocumentValidator : AbstractValidator<IdentificationDocumentFull>
 {

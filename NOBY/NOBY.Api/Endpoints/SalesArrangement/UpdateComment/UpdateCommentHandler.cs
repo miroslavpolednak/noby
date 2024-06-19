@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.SalesArrangementService.Clients;
+﻿using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateComment;

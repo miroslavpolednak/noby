@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using SharedTypes.GrpcTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Clients;
@@ -9,7 +8,7 @@ using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using Mandants = SharedTypes.GrpcTypes.Mandants;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using NOBY.Api.Endpoints.Customer.SharedDto;
+using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 

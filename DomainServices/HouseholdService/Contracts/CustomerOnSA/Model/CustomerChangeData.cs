@@ -1,11 +1,11 @@
 ﻿using SharedTypes.Types;
 
-namespace DomainServices.HouseholdService.Contracts.Dto;
+namespace DomainServices.HouseholdService.Contracts.Model;
 
 /// <summary>
 /// Vim ze je to takto blbe na dvou mistech, ale nechce se mi sdilet ty objekty mezi DS a FE API. Museli by se v tom zaroven resit OpenApi popisky, nekter subdto se na FE API pouzivaji na vice mistech... byl by to bordel.
 /// </summary>
-public class CustomerChangeDataDelta
+public class CustomerChangeData
 {
     public NaturalPersonDelta? NaturalPerson { get; set; }
 

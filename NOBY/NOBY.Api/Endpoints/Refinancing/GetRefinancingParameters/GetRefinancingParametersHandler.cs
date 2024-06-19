@@ -5,7 +5,6 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Dto.Refinancing;
 using NOBY.Services.MortgageRefinancing;
 

@@ -1,6 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.HouseholdService.Contracts;
-using __SA = DomainServices.SalesArrangementService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
 using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;

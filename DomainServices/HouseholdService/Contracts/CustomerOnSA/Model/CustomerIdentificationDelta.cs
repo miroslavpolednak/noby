@@ -1,4 +1,4 @@
-﻿namespace DomainServices.HouseholdService.Contracts.Dto;
+﻿namespace DomainServices.HouseholdService.Contracts.Model;
 
 public class CustomerIdentificationDelta
 {

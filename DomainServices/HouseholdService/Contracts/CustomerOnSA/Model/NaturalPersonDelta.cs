@@ -1,6 +1,6 @@
 ﻿using SharedTypes.Enums;
 
-namespace DomainServices.HouseholdService.Contracts.Dto;
+namespace DomainServices.HouseholdService.Contracts.Model;
 
 public class NaturalPersonDelta
 {

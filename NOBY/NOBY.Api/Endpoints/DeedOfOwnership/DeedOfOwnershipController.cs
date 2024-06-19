@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Net.Mime;
 
 namespace NOBY.Api.Endpoints.DeedOfOwnership;
 

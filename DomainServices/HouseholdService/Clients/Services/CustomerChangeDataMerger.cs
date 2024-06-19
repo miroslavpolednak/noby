@@ -3,100 +3,43 @@ using SharedTypes.Types;
 using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Contracts;
-using DomainServices.HouseholdService.Contracts.Dto;
 using Google.Protobuf.Collections;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using DomainServices.HouseholdService.Clients.Services.Internal;
+using DomainServices.HouseholdService.Contracts.Model;
 
 namespace DomainServices.HouseholdService.Clients.Services;
 
 public class CustomerChangeDataMerger : ICustomerChangeDataMerger
 {
-    public JsonSerializerOptions JsonSerializationOptions { get; set; } = new()
-    {
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
-    };
-
-    /// <summary>
-    /// Throw away locally stored CRS (TaxResidences) data and keep client changes
-    /// </summary>
-    /// <returns>json string</returns>
-    public string? TrowAwayLocallyStoredCrsData(CustomerOnSA customerOnSA)
-    {
-        var currentDelta = CustomerChangeData.TryCreate(customerOnSA.CustomerChangeData)?.Delta;
-        var taxResidences = currentDelta?.NaturalPerson?.TaxResidences;
-        if (taxResidences is not null)
-        {
-            currentDelta!.NaturalPerson!.TaxResidences = null;
-        }
-
-        return JsonSerializer.Serialize(currentDelta, JsonSerializationOptions);
-    }
-
-    /// <summary>
-    /// Throw away locally stored Client data (keep CRS changes)
-    /// </summary>
-    /// <returns>json string</returns>
-    public string? TrowAwayLocallyStoredClientData(CustomerOnSA customerOnSA)
-    {
-        var currentDelta = CustomerChangeData.TryCreate(customerOnSA.CustomerChangeData)?.Delta;
-        var currentDeltaTaxResidences = currentDelta?.NaturalPerson?.TaxResidences;
-
-        if (currentDeltaTaxResidences is not null)
-        {
-            var deltaWithCrsOnly = new CustomerChangeDataDelta
-            {
-                NaturalPerson = new NaturalPersonDelta
-                {
-                    TaxResidences = new NaturalPersonDelta.TaxResidenceDelta
-                    {
-                        ValidFrom = currentDeltaTaxResidences.ValidFrom,
-                        ResidenceCountries = currentDeltaTaxResidences.ResidenceCountries is not null && currentDeltaTaxResidences.ResidenceCountries.Count != 0
-                            ? new List<NaturalPersonDelta.TaxResidenceDelta.TaxResidenceItemDelta>(currentDeltaTaxResidences.ResidenceCountries!)
-                            : new List<NaturalPersonDelta.TaxResidenceDelta.TaxResidenceItemDelta>()
-                    }
-                }
-            };
-
-            return JsonSerializer.Serialize(deltaWithCrsOnly, JsonSerializationOptions);
-        }
-        else
-        {
-            return default;
-        }
-    }
-
     public void MergeAll(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
     {
-        var customerChangeData = CustomerChangeData.TryCreate(customerOnSA.CustomerChangeData);
+        var customerChangeData = customerOnSA.GetCustomerChangeDataObject();
 
         if (customerChangeData is null)
             return;
 
         MergeClientData(customerChangeData, customer.NaturalPerson, customer.Addresses, customer.Contacts);
 
-        customer.NaturalPerson.TaxResidence = MapDeltaToTaxResidence(customerChangeData.Delta.NaturalPerson?.TaxResidences) ?? customer.NaturalPerson.TaxResidence;
-        customer.IdentificationDocument = MapDeltaToIdentificationDocument(customerChangeData.Delta.IdentificationDocument) ?? customer.IdentificationDocument;
-        customer.CustomerIdentification = MapDeltaToCustomerIdentification(customerChangeData.Delta.CustomerIdentification) ?? customer.CustomerIdentification;
+        customer.NaturalPerson.TaxResidence = MapDeltaToTaxResidence(customerChangeData.NaturalPerson?.TaxResidences) ?? customer.NaturalPerson.TaxResidence;
+        customer.IdentificationDocument = MapDeltaToIdentificationDocument(customerChangeData.IdentificationDocument) ?? customer.IdentificationDocument;
+        customer.CustomerIdentification = MapDeltaToCustomerIdentification(customerChangeData.CustomerIdentification) ?? customer.CustomerIdentification;
     }
 
     public void MergeClientData(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
     {
-        var customerChangeData = CustomerChangeData.TryCreate(customerOnSA.CustomerChangeData);
+        var customerChangeData = customerOnSA.GetCustomerChangeDataObject();
 
         if (customerChangeData is null)
             return;
 
         MergeClientData(customerChangeData, customer.NaturalPerson, customer.Addresses, customer.Contacts);
 
-        customer.IdentificationDocument = MapDeltaToIdentificationDocument(customerChangeData.Delta.IdentificationDocument) ?? customer.IdentificationDocument;
-        customer.CustomerIdentification = MapDeltaToCustomerIdentification(customerChangeData.Delta.CustomerIdentification) ?? customer.CustomerIdentification;
+        customer.IdentificationDocument = MapDeltaToIdentificationDocument(customerChangeData.IdentificationDocument) ?? customer.IdentificationDocument;
+        customer.CustomerIdentification = MapDeltaToCustomerIdentification(customerChangeData.CustomerIdentification) ?? customer.CustomerIdentification;
     }
 
     public void MergeTaxResidence(NaturalPerson naturalPerson, CustomerOnSA customerOnSA)
     {
-        var delta = CustomerChangeData.TryCreate(customerOnSA.CustomerChangeData)?.Delta.NaturalPerson?.TaxResidences;
+        var delta = customerOnSA.GetCustomerChangeDataObject()?.NaturalPerson?.TaxResidences;
 
         naturalPerson.TaxResidence = MapDeltaToTaxResidence(delta) ?? naturalPerson.TaxResidence;
     }
@@ -104,19 +47,19 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
     private static void MergeClientData(CustomerChangeData customerChangeData, NaturalPerson naturalPerson, RepeatedField<GrpcAddress> addresses, RepeatedField<Contact> contacts)
     {
         RewriteWithDelta(naturalPerson, customerChangeData);
-        RewriteWithDelta(addresses, customerChangeData.Delta.Addresses);
-        RewriteWithDelta(contacts, customerChangeData.Delta.MobilePhone, customerChangeData.Delta.EmailAddress);
+        RewriteWithDelta(addresses, customerChangeData.Addresses);
+        RewriteWithDelta(contacts, customerChangeData.MobilePhone, customerChangeData.EmailAddress);
     }
 
     private static void RewriteWithDelta(NaturalPerson naturalPerson, CustomerChangeData customerChangeData)
     {
-        var delta = customerChangeData.Delta.NaturalPerson;
+        var delta = customerChangeData.NaturalPerson;
 
         if (delta is null)
             return;
 
         naturalPerson.BirthNumber = delta.BirthNumber ?? naturalPerson.BirthNumber;
-        naturalPerson.DegreeBeforeId = customerChangeData.GetNaturalPersonAttributeOrDefault(nameof(delta.DegreeBeforeId), naturalPerson.DegreeBeforeId);
+        naturalPerson.DegreeBeforeId = delta.DegreeBeforeId ?? naturalPerson.DegreeBeforeId;
         naturalPerson.FirstName = delta.FirstName ?? naturalPerson.FirstName;
         naturalPerson.LastName = delta.LastName ?? naturalPerson.LastName;
         naturalPerson.DateOfBirth = delta.DateOfBirth ?? naturalPerson.DateOfBirth;
@@ -126,10 +69,10 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         naturalPerson.GenderId = delta.Gender != Genders.Unknown ? (int)delta.Gender : naturalPerson.GenderId;
         naturalPerson.MaritalStatusStateId = delta.MaritalStatusId ?? naturalPerson.MaritalStatusStateId;
         naturalPerson.EducationLevelId = delta.EducationLevelId ?? naturalPerson.EducationLevelId;
-        naturalPerson.ProfessionCategoryId = customerChangeData.GetNaturalPersonAttributeOrDefault(nameof(delta.ProfessionCategoryId), naturalPerson.ProfessionCategoryId);
-        naturalPerson.ProfessionId = customerChangeData.GetNaturalPersonAttributeOrDefault(nameof(delta.ProfessionId), naturalPerson.ProfessionId);
-        naturalPerson.NetMonthEarningAmountId = customerChangeData.GetNaturalPersonAttributeOrDefault(nameof(delta.NetMonthEarningAmountId), naturalPerson.NetMonthEarningAmountId);
-        naturalPerson.NetMonthEarningTypeId = customerChangeData.GetNaturalPersonAttributeOrDefault(nameof(delta.NetMonthEarningTypeId), naturalPerson.NetMonthEarningTypeId);
+        naturalPerson.ProfessionCategoryId = delta.ProfessionCategoryId ?? naturalPerson.ProfessionCategoryId;
+        naturalPerson.ProfessionId = delta.ProfessionId ?? naturalPerson.ProfessionId;
+        naturalPerson.NetMonthEarningAmountId = delta.NetMonthEarningAmountId ?? naturalPerson.NetMonthEarningAmountId;
+        naturalPerson.NetMonthEarningTypeId = delta.NetMonthEarningTypeId ?? naturalPerson.NetMonthEarningTypeId;
 
         if (delta.CitizenshipCountriesId is not null)
         {

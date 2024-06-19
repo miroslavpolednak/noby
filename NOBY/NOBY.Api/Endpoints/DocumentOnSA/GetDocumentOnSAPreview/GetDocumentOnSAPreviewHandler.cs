@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Net.Mime;
 using SharedAudit;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.DocumentGeneratorService.Clients;

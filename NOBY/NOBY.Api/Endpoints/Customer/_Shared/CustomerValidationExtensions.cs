@@ -4,7 +4,7 @@ using DomainServices.CustomerService.Contracts;
 using FluentValidation;
 using NOBY.Dto;
 
-namespace NOBY.Api.Endpoints.Customer.SharedDto;
+namespace NOBY.Api.Endpoints.Customer.Shared;
 
 internal static class CustomerValidationExtensions
 {

@@ -1,5 +1,4 @@
 ﻿using Asp.Versioning;
-using DomainServices.SalesArrangementService.Contracts;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Household;

@@ -1,5 +1,4 @@
 ﻿using Microsoft.OpenApi.Models;
-using NOBY.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation;

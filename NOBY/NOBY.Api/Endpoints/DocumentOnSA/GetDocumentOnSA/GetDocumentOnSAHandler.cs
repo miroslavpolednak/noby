@@ -4,7 +4,6 @@ using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using System.Globalization;
-using System.Net.Mime;
 using DomainServices.SalesArrangementService.Clients;
 using _DocOnSaSource = DomainServices.DocumentOnSAService.Contracts;
 

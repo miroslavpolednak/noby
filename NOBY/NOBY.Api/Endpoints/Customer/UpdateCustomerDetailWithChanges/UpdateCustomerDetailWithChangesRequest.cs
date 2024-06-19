@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using NOBY.Dto.Customer;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
 public sealed class UpdateCustomerDetailWithChangesRequest
-    : SharedDto.BaseCustomerDetail, SharedDto.ICustomerDetailContacts, IRequest
+    : BaseCustomerDetail, ICustomerDetailContacts, IRequest
 {
     [JsonIgnore]
     public int CustomerOnSAId { get; set; }

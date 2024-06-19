@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using NOBY.Api.Endpoints.Customer.SharedDto;
+using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -13,14 +13,13 @@ internal sealed class CreateCustomerRequestValidator : AbstractValidator<CreateC
         RuleFor(r => r.FirstName).NotEmpty().WithErrorCode(CustomerValidationErrorCode);
         RuleFor(r => r.LastName).NotEmpty().WithErrorCode(CustomerValidationErrorCode);
 
-        RuleFor(r => r.BirthDate).BirthDateValidation(CustomerValidationErrorCode);
+        CustomerValidationExtensions.BirthDateValidation(RuleFor(r => r.BirthDate), CustomerValidationErrorCode);
 
         When(r => !string.IsNullOrWhiteSpace(r.BirthNumber),
              () =>
              {
-                 RuleFor(r => r.BirthNumber)
-                     .Cascade(CascadeMode.Stop)
-                     .BirthNumberValidation(r => r.BirthDate, CustomerValidationErrorCode);
+                 CustomerValidationExtensions.BirthNumberValidation(RuleFor(r => r.BirthNumber)
+                                                                        .Cascade(CascadeMode.Stop), r => r.BirthDate, CustomerValidationErrorCode);
              });
 
         When(r => !string.IsNullOrWhiteSpace(r.BirthPlace),

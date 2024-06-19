@@ -1568,12 +1568,12 @@
             (tj. pole, ktera jsou primo na entite, nikoliv v JSON datech)
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createMetadata(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,System.Object)">
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createMetadata(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,DomainServices.HouseholdService.Contracts.Model.CustomerChangeData)">
             <summary>
             Vytvori metadata CustomerOnSA
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createDelta(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.CreateDelta(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
             <summary>
             Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
             </summary>
@@ -1610,61 +1610,6 @@
         <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactResponse.IsMobile">
             <summary>
             Je to mobilní číslo?
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.LegalCapacity">
-            <summary>
-            Objekt právního omezení	
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.IsBrSubscribed">
-            <summary>
-            Přihlášen k aktualizaci dat ze základních registrů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.HasRelationshipWithKB">
-            <summary>
-            Zvláštní vztah ke Komerční bance
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.HasRelationshipWithKBEmployee">
-            <summary>
-            Osoba blízká zaměstnanci KB
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.HasRelationshipWithCorporate">
-            <summary>
-            Propojení s obchodní korporací
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.IsPoliticallyExposed">
-            <summary>
-            Politicky exponovaná osoba
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.IsUSPerson">
-            <summary>
-            Americký občan (FATCA)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.LegalCapacityItem.RestrictionTypeId">
-            <summary>
-            Typ právního omezení klienta
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.LegalCapacityItem.RestrictionUntil">
-            <summary>
-            Datum platnosti právního omezení klienta do
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.NaturalPerson.EducationLevelId">
-            <summary>
-            Stupeň vzdělání
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.NaturalPerson.ProfessionCategoryId">
-            <summary>
-            Kategorie profese, validováno oproti číselníku ProfessionCategory (se zohledněním validních hodnot - IsValid a IsValidNoby)
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipIds(System.Int64,System.Threading.CancellationToken)">
