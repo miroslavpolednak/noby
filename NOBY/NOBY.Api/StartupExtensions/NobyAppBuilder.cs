@@ -16,12 +16,19 @@ internal static class NobyAppBuilder
         {
             appBuilder.UseSpaStaticFiles();
             appBuilder.UseStaticFiles("/docs");
-            var provider = new FileExtensionContentTypeProvider();
-            provider.Mappings[".avif"] = "image/avif";
+
             app.UseStaticFiles(new StaticFileOptions
             {
-                ContentTypeProvider = provider
+                ContentTypeProvider = new FileExtensionContentTypeProvider
+                {
+                    Mappings =
+                    {
+                        [".avif"] = "image/avif",
+                        [".webp"] = "image/webp"
+                    }
+                }
             });
+
             appBuilder.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "wwwroot";
