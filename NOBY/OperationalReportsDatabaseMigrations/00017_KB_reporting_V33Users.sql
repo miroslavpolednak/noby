@@ -9,35 +9,7 @@ BEGIN
 
     DROP TABLE IF EXISTS [dbo].[V33Users];
 
-    CREATE TABLE [dbo].[V33Users] (
-        V33Id INT NOT NULL,
-        CPM VARCHAR(8) NULL,
-        ICP VARCHAR(9) NULL
-    );
-
-    -- Dočasná tabulka pro uložení všech sloupců vrácených uloženou procedurou
-    CREATE TABLE #TempProcedureResult(
-        v33id INT,
-        v33cpm VARCHAR(8),
-        v33icp VARCHAR(9),
-    );
-
-    OPEN v33UserCursor;
-    FETCH NEXT FROM v33UserCursor INTO @V33ID;
-
-    WHILE @@FETCH_STATUS = 0
-    BEGIN
-		INSERT INTO #TempProcedureResult SELECT v33id, v33cpm, v33icp FROM [xxvvss_v33PMP_User_S] WHERE v33id = @V33ID
-
-        FETCH NEXT FROM v33UserCursor INTO @V33ID;
-    END;
-
-    INSERT INTO [dbo].[V33Users] (V33Id, CPM, ICP)
-    SELECT v33id, v33cpm, v33icp FROM #TempProcedureResult;
-
-    DROP TABLE #TempProcedureResult;
-    CLOSE v33UserCursor;
-    DEALLOCATE v33UserCursor;
+	SELECT * INTO [dbo].[V33Users] FROM [dbo].[xxvvss_v33PMP_User_S] WHERE v33id IN (SELECT DISTINCT CreatedUserId FROM [dbo].[vw_CaseWithArchived])
 END;
 
 GO
@@ -119,8 +91,9 @@ CREATE OR ALTER   VIEW [dbo].[vw_Report_KB_NobyLoanInitialOffer] AS
 SELECT sa.CaseId,
     c.CreatedUserId,
     c.CreatedUserName,
-	usr.CPM,
-	usr.ICP,
+	usr.v33OSCIS,
+	usr.v33cpm,
+	usr.v33icp,
     c.FirstNameNaturalPerson + ' ' + c.Name as CustomerFullName,
     CASE WHEN c.CustomerIdentityScheme = 1 THEN 'MP' WHEN c.CustomerIdentityScheme = 2 THEN 'KB' ELSE NULL END as CustomerIdentityScheme,
     c.CustomerIdentityId,
