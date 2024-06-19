@@ -14,5 +14,6 @@ internal sealed class LoggerEventIdCodes
     public const int SendEmailsJobValidationError = 309;
     public const int SendEmailsJobFailedToSend = 310;
     public const int SendEmailsJobEnd = 311;
-    public const int SetExpiredEmailsJob = 312;
+    public const int SetExpiredEmails = 312;
+    public const int CleanInProgress = 313;
 }

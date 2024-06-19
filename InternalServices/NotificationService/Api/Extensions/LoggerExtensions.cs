@@ -14,7 +14,8 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, Guid, Exception> _sendEmailsJobValidationError;
     private static readonly Action<ILogger, Guid, Exception> _sendEmailsJobFailedToSend;
     private static readonly Action<ILogger, int, Exception> _sendEmailsJobEnd;
-    private static readonly Action<ILogger, int, int, Exception> _setExpiredEmailsJob;
+    private static readonly Action<ILogger, int, int, Exception> _setExpiredEmails;
+    private static readonly Action<ILogger, int, int, Exception> _cleanInProgress;
 
     static LoggerExtensions()
     {
@@ -78,10 +79,15 @@ internal static class LoggerExtensions
             new EventId(LoggerEventIdCodes.SendEmailsJobEnd, nameof(SendEmailsJobEnd)),
             "Number of emails sent: {Count}");
 
-        _setExpiredEmailsJob = LoggerMessage.Define<int, int>(
+        _setExpiredEmails = LoggerMessage.Define<int, int>(
             LogLevel.Information,
-            new EventId(LoggerEventIdCodes.SetExpiredEmailsJob, nameof(SetExpiredEmailsJob)),
+            new EventId(LoggerEventIdCodes.SetExpiredEmails, nameof(SetExpiredEmails)),
             "Number of emails set as expired: {Count}, EmailSlaInMinutes: {EmailSlaInMinutes}");
+
+        _cleanInProgress = LoggerMessage.Define<int, int>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.CleanInProgress, nameof(CleanInProgress)),
+            "Number of inProgress notifications set as error: {Count}, CleanInProgressInMinutes: {CleanInProgressInMinutes}");
     }
 
     public static void NotificationRequestReceived(this ILogger logger, in Guid notificationId, in Contracts.v2.NotificationChannels channel)
@@ -120,6 +126,9 @@ internal static class LoggerExtensions
     public static void SendEmailsJobEnd(this ILogger logger, in int count)
         => _sendEmailsJobEnd(logger, count, null!);
 
-    public static void SetExpiredEmailsJob(this ILogger logger, in int count, in int emailSlaInMinutes)
-        => _setExpiredEmailsJob(logger, count, emailSlaInMinutes, null!);
+    public static void SetExpiredEmails(this ILogger logger, in int count, in int emailSlaInMinutes)
+        => _setExpiredEmails(logger, count, emailSlaInMinutes, null!);
+
+    public static void CleanInProgress(this ILogger logger, in int count, in int emailSlaInMinutes)
+        => _cleanInProgress(logger, count, emailSlaInMinutes, null!);
 }
