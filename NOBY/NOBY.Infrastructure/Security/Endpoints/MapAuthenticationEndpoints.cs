@@ -16,16 +16,14 @@ public static class MapAuthenticationEndpoints
     {
         return appBuilder.UseEndpoints(t =>
         {
-            var aut = t.NewVersionedApi();
             // sign in
-            aut.MapGet("/api/v{version:apiVersion}/" + AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, () =>
+            t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, () =>
             {
             })
                 .RequireAuthorization()
                 .Produces(302)
                 .WithDescription("Přihlášení uživatele / redirect na auth provider.")
                 .WithTags("Users")
-                .HasApiVersion(1.0)
                 .WithName("loginUserGet")
                 .WithOpenApi(generatedOperation =>
                 {
@@ -35,7 +33,7 @@ public static class MapAuthenticationEndpoints
                 });
 
             // Odhlášení přihlášeného uživatele
-            aut.MapGet("/api/v{version:apiVersion}/" + AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint,
+            t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint,
                 ([FromServices] IHttpContextAccessor context,
                 [FromServices] AppConfiguration configuration,
                 [FromServices] IAuditLogger logger,
@@ -63,7 +61,6 @@ public static class MapAuthenticationEndpoints
                 .RequireAuthorization()
                 .Produces(302)
                 .WithTags("Users")
-                .HasApiVersion(1.0)
                 .WithName("signoutUserGet")
                 .WithOpenApi(generatedOperation =>
                 {

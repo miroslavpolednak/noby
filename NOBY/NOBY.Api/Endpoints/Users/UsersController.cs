@@ -1,6 +1,4 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using NOBY.Infrastructure.Swagger;
 
@@ -37,21 +35,6 @@ public class UsersController(IMediator _mediator) : ControllerBase
     public async Task SignIn([FromBody] SignIn.SignInRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 
-    /// <summary>
-    /// Odhlaseni uzivatele v pripade Simple Authentication provider
-    /// </summary>
-    /// /// <remarks>
-    /// Slouží pro odsranění auth cookie v případe, že aplikace není napojena na CAAS.
-    /// </remarks>
-    [HttpGet("users/signout")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> SignOut([FromServices] HttpContextAccessor context)
-    {
-        await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return Redirect("/");
-    }
-       
-    
     /// <summary>
     /// Získání obsahu auth cookie pro ePodpisy.
     /// </summary>
