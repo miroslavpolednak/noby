@@ -189,6 +189,8 @@ internal sealed class WorkflowMapperService
         task.PhaseTypeId switch
         {
             1 => WorkflowTaskStates.Sent,
+            2 when task.DecisionId == 1 => WorkflowTaskStates.Schvaleno,
+            2 when task.DecisionId == 2 => WorkflowTaskStates.Zametnuto,
             2 => WorkflowTaskStates.Completed,
             _ => throw new NobyValidationException($"PhaseTypeId {task.PhaseTypeId} out of range")
         };
