@@ -22,6 +22,6 @@ public sealed class MortgageRefinancingWorkflowParameters
 
         public decimal FeeDiscount => FeeFinalSum - FeeSum;
 
-        public decimal DiscountPercentage => FeeSum == 0m ? 0m : 100 * (FeeSum - FeeFinalSum) / FeeSum;
+        public decimal DiscountPercentage => FeeSum == 0m ? 0m : Math.Round(100 * (FeeSum - FeeFinalSum) / FeeSum, 0);
     }
 }

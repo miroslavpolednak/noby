@@ -23,7 +23,7 @@ public enum WorkflowTaskTypes : byte
     Drawing = 8,
 
     [Display(Name = "Retence")]
-    Retention = 9,
+    RetentionRefixation = 9,
         
     [Display(Name = "Mimořádná splátka")]
     ExtraPayment = 10

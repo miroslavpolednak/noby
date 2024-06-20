@@ -32,7 +32,7 @@ internal sealed class GetMortgageRetentionHandler(
         {
             response.LoanPaymentAmountDiscounted = data.Process.MortgageRetention.LoanPaymentAmountFinal;
         }
-
+        
         // IC rate
         if (((decimal?)data.ActivePriceException?.LoanInterestRate?.LoanInterestRateDiscount ?? 0) > 0)
         {

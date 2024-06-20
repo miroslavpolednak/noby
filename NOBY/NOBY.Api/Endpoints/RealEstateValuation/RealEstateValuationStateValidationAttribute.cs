@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.RealEstateValuationService.Clients;
+﻿using DomainServices.RealEstateValuationService.Clients;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Globalization;
 

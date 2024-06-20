@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using NOBY.Api.Endpoints.Product.GetProductObligationList.Dto;
 using Swashbuckle.AspNetCore.Annotations;
 

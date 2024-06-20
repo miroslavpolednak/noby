@@ -3,7 +3,6 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using SharedTypes.Enums;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using SharedTypes.GrpcTypes;
 using DomainServices.ProductService.Clients;

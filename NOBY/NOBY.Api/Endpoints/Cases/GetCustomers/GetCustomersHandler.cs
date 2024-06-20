@@ -3,7 +3,7 @@ using _Cust = DomainServices.CustomerService.Contracts;
 using SharedTypes.GrpcTypes;
 using System.ComponentModel.DataAnnotations;
 using CIS.Core;
-using NOBY.Api.Extensions;
+using NOBY.Services.Customer;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomers;
 

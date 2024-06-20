@@ -6,7 +6,10 @@ namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.CancelCaseBySalesA
 /// <summary>
 /// Original SalesArrangementService.CancelCase
 /// </summary>
-internal sealed class CancelCaseBySalesArrangementConditionsHandler
+internal sealed class CancelCaseBySalesArrangementConditionsHandler(
+    ICaseServiceClient _caseServiceClient, 
+    ILogger<CancelCaseBySalesArrangementConditionsHandler> _logger, 
+    DomainServices.SalesArrangementService.Clients.IMaintananceService _maintananceService)
     : IJob
 {
     public async Task Execute(string? jobData, CancellationToken cancellationToken)
@@ -39,16 +42,5 @@ internal sealed class CancelCaseBySalesArrangementConditionsHandler
                 _logger.CancelCaseJobFailed(caseId, e.Message, e);
             }
         }
-    }
-
-    private readonly DomainServices.SalesArrangementService.Clients.IMaintananceService _maintananceService;
-    private readonly ICaseServiceClient _caseServiceClient;
-    private readonly ILogger<CancelCaseBySalesArrangementConditionsHandler> _logger;
-
-    public CancelCaseBySalesArrangementConditionsHandler(ICaseServiceClient caseServiceClient, ILogger<CancelCaseBySalesArrangementConditionsHandler> logger, DomainServices.SalesArrangementService.Clients.IMaintananceService maintananceService)
-    {
-        _caseServiceClient = caseServiceClient;
-        _logger = logger;
-        _maintananceService = maintananceService;
     }
 }

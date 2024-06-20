@@ -2,8 +2,12 @@
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.CancelSelectedPriceExceptionCases;
 
-internal sealed class CancelSelectedPriceExceptionCasesHandler
-    : IJob
+internal sealed class CancelSelectedPriceExceptionCasesHandler(
+    DomainServices.CaseService.Clients.IMaintananceClient _maintananceClient, 
+    DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService, 
+    TimeProvider _timeProvider, 
+    ILogger<CancelSelectedPriceExceptionCasesHandler> _logger)
+        : IJob
 {
     public async Task Execute(string? jobData, CancellationToken cancellationToken)
     {
@@ -27,18 +31,5 @@ internal sealed class CancelSelectedPriceExceptionCasesHandler
                 _logger.FailedToCancelCase(priceException.CaseId, ex);
             }
         }
-    }
-
-    private readonly ILogger<CancelSelectedPriceExceptionCasesHandler> _logger;
-    private readonly TimeProvider _timeProvider;
-    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
-    private readonly DomainServices.CaseService.Clients.IMaintananceClient _maintananceClient;
-
-    public CancelSelectedPriceExceptionCasesHandler(DomainServices.CaseService.Clients.IMaintananceClient maintananceClient, DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService, TimeProvider timeProvider, ILogger<CancelSelectedPriceExceptionCasesHandler> logger)
-    {
-        _maintananceClient = maintananceClient;
-        _caseService = caseService;
-        _timeProvider = timeProvider;
-        _logger = logger;
     }
 }

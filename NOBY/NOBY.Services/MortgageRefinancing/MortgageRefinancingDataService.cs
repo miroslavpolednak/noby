@@ -76,7 +76,12 @@ public sealed class MortgageRefinancingDataService(
             // zjistit refinancingState
             var (salesArrangement, refinancingState) = await getRefinancingStateId(caseId, result.Process, cancellationToken);
 
-            if (refinancingState is (RefinancingStates.Zruseno or RefinancingStates.Dokonceno))
+            // validace stavu refinancovani
+            if (refinancingType == RefinancingTypes.MortgageExtraPayment && refinancingState is not (RefinancingStates.RozpracovanoVNoby or RefinancingStates.Dokonceno or RefinancingStates.Zruseno))
+            {
+                throw new NobyValidationException(90032);
+            }
+            else if (refinancingType != RefinancingTypes.MortgageExtraPayment && refinancingState is (RefinancingStates.Zruseno or RefinancingStates.Dokonceno))
             {
                 throw new NobyValidationException(90032, $"RefinancingState is not allowed: {refinancingState}");
             }
@@ -130,15 +135,13 @@ public sealed class MortgageRefinancingDataService(
     private async Task<(bool completed, AmendmentPriceException? priceException)> getPriceExceptionData(List<DomainServices.CaseService.Contracts.WorkflowTask> tasks, CancellationToken cancellationToken)
     {
         // toto je aktivni IC task!
-        var activePriceExceptionTaskIdSb = tasks
-            .FirstOrDefault(t => t is { TaskTypeId: (int)WorkflowTaskTypes.PriceException, Cancelled: false })
-            ?.TaskIdSb;
+        var activePriceExceptionTask = tasks.FirstOrDefault(t => t is { TaskTypeId: (int)WorkflowTaskTypes.PriceException, Cancelled: false });
 
-        if (!activePriceExceptionTaskIdSb.HasValue) 
+        if (activePriceExceptionTask is null || activePriceExceptionTask.DecisionId == 2) 
             return default;
 
         // detail IC tasku
-        var taskDetail = await _caseService.GetTaskDetail(activePriceExceptionTaskIdSb.Value, cancellationToken);
+        var taskDetail = await _caseService.GetTaskDetail(activePriceExceptionTask.TaskIdSb, cancellationToken);
         var isCompleted = taskDetail.TaskObject.PhaseTypeId == 2 && taskDetail.TaskObject.DecisionId == 1;
 
         return (isCompleted, taskDetail.TaskDetail?.PriceException);
@@ -159,17 +162,18 @@ public sealed class MortgageRefinancingDataService(
         DomainServices.SalesArrangementService.Contracts.SalesArrangement? currentProcessSADetail = null;
         var allSalesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
 
+        SalesArrangementStates helperState = SalesArrangementStates.Unknown;
+        bool helperManagedByRC2 = false;
+
         var currentProcessSA = allSalesArrangements.SalesArrangements.FirstOrDefault(t => t.ProcessId == process.ProcessId);
         if (currentProcessSA is not null)
         {
             currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
-            if (currentProcessSA.Retention?.ManagedByRC2 ?? currentProcessSA.Refixation?.ManagedByRC2 ?? false)
-            {
-                // ref.state staci vzit pouze z SA
-                return (currentProcessSADetail, RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State));
-            }
+
+            helperState = (SalesArrangementStates)currentProcessSA.State;
+            helperManagedByRC2 = currentProcessSADetail.Retention?.ManagedByRC2 ?? currentProcessSADetail.Refixation?.ManagedByRC2 ?? false;
         }
 
-        return (currentProcessSADetail, RefinancingHelper.GetRefinancingState(false, currentProcessSA?.ProcessId, process));
+        return (currentProcessSADetail, RefinancingHelper.GetRefinancingState(helperState, helperManagedByRC2, process));
     }
 }

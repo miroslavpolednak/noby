@@ -1,11 +1,13 @@
 ﻿using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
-using DomainServices.DocumentOnSAService.Clients;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.CheckDocumentsArchived;
 
-internal sealed class CheckDocumentsArchivedHandler
+internal sealed class CheckDocumentsArchivedHandler(
+    DomainServices.DocumentOnSAService.Clients.IMaintananceService _maintananceService, 
+    IDocumentArchiveServiceClient _documentArchiveService, 
+    ILogger<CheckDocumentsArchivedHandler> _logger)
     : IJob
 {
     public async Task Execute(string? jobData, CancellationToken cancellationToken)
@@ -47,15 +49,4 @@ internal sealed class CheckDocumentsArchivedHandler
     }
 
     private const short _successfullyArchivedStatus = 400;
-
-    private readonly ILogger<CheckDocumentsArchivedHandler> _logger;
-    private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly IMaintananceService _maintananceService;
-
-    public CheckDocumentsArchivedHandler(IMaintananceService maintananceService, IDocumentArchiveServiceClient documentArchiveService, ILogger<CheckDocumentsArchivedHandler> logger)
-    {
-        _maintananceService = maintananceService;
-        _documentArchiveService = documentArchiveService;
-        _logger = logger;
-    }
 }

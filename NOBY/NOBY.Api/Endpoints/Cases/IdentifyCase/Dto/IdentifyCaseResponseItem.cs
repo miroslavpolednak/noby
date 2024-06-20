@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Cases.IdentifyCase.Dto;
+﻿using SharedTypes.Types;
+
+namespace NOBY.Api.Endpoints.Cases.IdentifyCase.Dto;
 
 public sealed record IdentifyCaseResponseItem
 {
@@ -15,7 +17,7 @@ public sealed record IdentifyCaseResponseItem
     /// <summary>
 	/// Stav Case - ciselnik CaseStates
 	/// </summary>
-	public SharedTypes.Enums.CaseStates? State { get; set; }
+	public CaseStates? State { get; set; }
 
     /// <summary>
     /// Slovne nazev stavu Case.
@@ -37,10 +39,59 @@ public sealed record IdentifyCaseResponseItem
     /// </summary>
     public string? ProductName { get; set; }
 
+    /// <summary>
+    /// Jméno a příjmení vlastníka case
+    /// </summary>
+    public string? CaseOwnerName { get; set; }
+
+    /// <summary>
+    /// Timestamp vytvoreni Case
+    /// </summary>
+    public DateTime CreatedOn { get; set; }
+
+    /// <summary>
+    /// Datum a cas posledni zmeny Case
+    /// </summary>
+    public DateTime StateUpdatedOn { get; set; }
+
+    public IdentifyCaseResponseItemCustomer Customer { get; set; } = null!;
+
+    public List<IdentifyCaseResponseItemTask>? ActiveTasks { get; set; }
+
     public IdentifyCaseResponseItem() { }
 
     public IdentifyCaseResponseItem(long caseId)
     {
         CaseId = caseId;
+    }
+
+    public sealed class IdentifyCaseResponseItemCustomer
+    {
+        /// <summary>
+        /// Jméno customera
+        /// </summary>
+        public string FirstName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Příjmení customera
+        /// </summary>
+        public string LastName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Identita klienta
+        /// </summary>
+        public CustomerIdentity? Identity { get; set; }
+
+        /// <summary>
+        /// Datum narození FO
+        /// </summary>
+        public DateOnly? DateOfBirth { get; set; }
+    }
+
+    public sealed class IdentifyCaseResponseItemTask
+    {
+        public int CategoryId { get; set; }
+
+        public int TaskCount { get; set; }
     }
 }

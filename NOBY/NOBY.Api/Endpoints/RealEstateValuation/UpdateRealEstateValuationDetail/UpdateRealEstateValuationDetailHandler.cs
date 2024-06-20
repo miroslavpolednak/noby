@@ -120,8 +120,7 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
             case RealEstateVariants.Parcel: checkParcelDetails(request);
                 break;
 
-            case RealEstateVariants.Other: checkOtherDetails(request);
-                break;
+            case RealEstateVariants.Other: break;
 
             default: throw new NotImplementedException();
         }
@@ -176,13 +175,5 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
 
         if (request.RealEstateStateId.HasValue)
             throw new NobyValidationException("RealEstateStateId has to be null for the parcel variant");
-    }
-
-    private static void checkOtherDetails(UpdateRealEstateValuationDetailRequest request)
-    {
-        if (request.RealEstateStateId.HasValue)
-            return;
-
-        throw new NobyValidationException("RealEstateStateId is required");
     }
 }

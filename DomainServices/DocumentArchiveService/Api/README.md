@@ -29,6 +29,10 @@ grpcurl -insecure -d "{\"EArchivIds\":[\"KBHXXD00000000000000000000007\",\"KBHXX
 ```
 grpcurl -insecure -d "{\"EArchivId\":\"KBHXXD00000000000000000000001\",\"StatusInQueue\":302}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.v1.DocumentArchiveService/SetDocumentStatusInQueue
 ```
+### DeleteBinaryDataFromArchiveQueue
+```
+grpcurl -insecure -d "{}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 127.0.0.1:30005 DomainServices.DocumentArchiveService.MaintananceService/DeleteDocumentDataFromArchiveQueue
+```
 ### Run batch
 ```
 dotnet run --project "d:\Visual Studio Projects\MPSS-FOMS\DomainServices\DocumentArchiveService\Api\DomainServices.DocumentArchiveService.Api.csproj"

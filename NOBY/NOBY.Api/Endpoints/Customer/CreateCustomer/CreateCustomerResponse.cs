@@ -1,5 +1,6 @@
 ﻿using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using NOBY.Api.Endpoints.Customer.GetCustomerDetail.Dto;
+using NOBY.Dto.Customer;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -16,9 +17,9 @@ public sealed class CreateCustomerResponse
 
     public NaturalPersonModel? NaturalPerson { get; set; }
 
-    public SharedDto.JuridicalPerson? JuridicalPerson { get; set; }
+    public JuridicalPerson? JuridicalPerson { get; set; }
 
-    public SharedDto.LegalCapacityItem? LegalCapacity { get; set; }
+    public LegalCapacityItem? LegalCapacity { get; set; }
 
     public List<SharedTypes.Types.Address>? Addresses { get; set; }
 

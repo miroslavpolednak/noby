@@ -1,5 +1,4 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
-using System.Net.Mime;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using Asp.Versioning;
 using NOBY.Api.Endpoints.Document.SharedDto;

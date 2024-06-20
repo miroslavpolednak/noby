@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using CIS.InternalServices.DataAggregatorService.Contracts;
+﻿using CIS.InternalServices.DataAggregatorService.Contracts;
 
 namespace NOBY.Api.Endpoints.Document.SharedDto;
 

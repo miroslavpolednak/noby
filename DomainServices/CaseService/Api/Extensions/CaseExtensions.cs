@@ -128,8 +128,8 @@ internal static class CaseExtensions
             ExtraPaymentAmount = taskData.GetNDecimal("ukol_mspl_suma"),
             ExtraPaymentAmountIncludingFee = taskData.GetNDecimal("ukol_mspl_suma_celkem"),
             IsFinalExtraPayment = taskData.GetBool("ukol_mspl_typ"),
-            DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
-            DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
+            DocumentId = taskData.GetValueOrDefault("ukol_mspl_dokument_ea_cis") ?? "",
+            DocumentEACode = taskData.GetNInteger("ukol_mspl_dokument_ea_kod"),
             PaymentState = taskData.GetInteger("ukol_mspl_stav_zauct_noby"),
         };
 

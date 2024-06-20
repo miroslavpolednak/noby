@@ -1,6 +1,7 @@
 ﻿using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Clients;
-using NOBY.Api.Extensions;
+using NOBY.Dto.Customer;
+using NOBY.Services.Customer;
 
 namespace NOBY.Api.Endpoints.Customer.GetCustomerDetail;
 
@@ -20,7 +21,7 @@ internal sealed class GetCustomerDetailHandler
         {
             NaturalPerson = person,
             JuridicalPerson = null,
-            LegalCapacity = result.NaturalPerson?.LegalCapacity is null ? null : new SharedDto.LegalCapacityItem
+            LegalCapacity = result.NaturalPerson?.LegalCapacity is null ? null : new LegalCapacityItem
             {
                 RestrictionTypeId = result.NaturalPerson.LegalCapacity.RestrictionTypeId,
                 RestrictionUntil = result.NaturalPerson.LegalCapacity.RestrictionUntil

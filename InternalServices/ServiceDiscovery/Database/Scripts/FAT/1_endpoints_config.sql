@@ -91,7 +91,7 @@ INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl],
 
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT', N'ES:PreorderService:V1', N'https://api.fat.car.kbcloud/v1/preorder', 3, 0)
 
-INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT', N'ES:RDM:V1', N'https://codebooks-dev.kb.cz/int-codebooks-rest/api/v3', 3, 0)
+INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT', N'ES:RDM:V1', N'https://codebooks-uat.kb.cz/int-codebooks-rest/api/v3', 3, 0)
 
 INSERT [dbo].[ServiceDiscovery] ([EnvironmentName], [ServiceName], [ServiceUrl], [ServiceType], [AddToGlobalHealthCheck]) VALUES (N'FAT', N'ES:RuianAddress:V1', N'https://api.fat.crem.kbcloud/v1/ruian/api', 3, 0)
 

@@ -3,7 +3,9 @@ using NOBY.Services.WorkflowMapper;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskList;
 
-internal sealed class GetTaskListHandler 
+internal sealed class GetTaskListHandler(
+    ICaseServiceClient _caseService, 
+    IWorkflowMapperService _mapper)
     : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
 {
     public async Task<GetTaskListResponse> Handle(GetTaskListRequest request, CancellationToken cancellationToken)
@@ -26,17 +28,15 @@ internal sealed class GetTaskListHandler
         return response;
     }
 
-    private readonly ICaseServiceClient _caseService;
-    private readonly IWorkflowMapperService _mapper;
-
-    private static int[] _allowedProcessTypes =
+    private static readonly int[] _allowedProcessTypes =
         [
             (int)WorkflowProcesses.Main,
             (int)WorkflowProcesses.Change,
-            (int)WorkflowProcesses.Refinancing
+            (int)WorkflowProcesses.Refinancing,
+            (int)WorkflowProcesses.ExtraPayment
         ];
     
-    private static int[] _allowedTaskTypes =
+    private static readonly int[] _allowedTaskTypes =
         [
             (int)WorkflowTaskTypes.Dozadani,
             (int)WorkflowTaskTypes.PriceException,
@@ -44,10 +44,4 @@ internal sealed class GetTaskListHandler
             (int)WorkflowTaskTypes.Signing,
             (int)WorkflowTaskTypes.PredaniNaSpecialitu
         ];
-
-    public GetTaskListHandler(ICaseServiceClient caseService, IWorkflowMapperService mapper)
-    {
-        _caseService = caseService;
-        _mapper = mapper;
-    }
 }

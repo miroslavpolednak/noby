@@ -14,7 +14,7 @@ internal sealed class ErrorCodeMapper
         SetMessages(new Dictionary<int, string>()
         {
             { ContractNumberSbNotFound, "Contract number not found in SB" },
-            { TaskIdNotFound, "TaskId {PropertyValue} not found" },
+            { TaskIdNotFound, "TaskId was not found" },
             { RefinancingError, "Not possible to have more active Retention/Refixation processes" }
         });
 

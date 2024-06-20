@@ -4,7 +4,6 @@ using NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 using NOBY.Api.Endpoints.DocumentOnSA.StopSigning;
 using NOBY.Api.Endpoints.DocumentOnSA.SignDocumentManually;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSA;
-using System.Net.Mime;
 using NOBY.Api.Endpoints.DocumentOnSA.Search;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSADetail;
 using NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAPreview;
@@ -270,6 +269,7 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="documentOnSAId"></param>
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/status")]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
+    [NobySkipCaseStateAndProductSAValidation]
     [ProducesResponseType(typeof(GetDocumentOnSAStatusResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<GetDocumentOnSAStatusResponse> GetDocumentOnSAStatus(

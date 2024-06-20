@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;

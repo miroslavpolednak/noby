@@ -5,7 +5,6 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Dto.Refinancing;
 using NOBY.Services.MortgageRefinancing;
 
@@ -133,7 +132,7 @@ internal sealed class GetRefinancingParametersHandler(
         List<DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem> refinancingTypes,
         List<DomainServices.CodebookService.Contracts.v1.RefinancingStatesResponse.Types.RefinancingStatesItem> refinancingStates)
     {
-        var state = RefinancingHelper.GetRefinancingState(sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, process.ProcessId, process);
+        var state = RefinancingHelper.GetRefinancingState((SalesArrangementStates)(sa?.State ?? 0), sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, process);
 
         ProcessDetail detail = new()
         {

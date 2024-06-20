@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;

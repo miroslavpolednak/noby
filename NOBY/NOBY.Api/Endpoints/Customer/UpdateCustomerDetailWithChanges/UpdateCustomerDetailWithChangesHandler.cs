@@ -2,71 +2,70 @@
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
-using Newtonsoft.Json;
-using __Household = DomainServices.HouseholdService.Contracts;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
-using NOBY.Api.Endpoints.Customer.SharedDto;
+using DomainServices.HouseholdService.Contracts;
+using DomainServices.HouseholdService.Contracts.Model;
+using NOBY.Api.Endpoints.Customer.Shared;
+using NOBY.Dto.Customer;
+using NOBY.Services.Customer;
 using NOBY.Services.SigningHelper;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
-internal sealed class UpdateCustomerDetailWithChangesHandler
-    : IRequestHandler<UpdateCustomerDetailWithChangesRequest>
+internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<UpdateCustomerDetailWithChangesRequest>
 {
+    private readonly IHouseholdServiceClient _householdService;
+    private readonly ICustomerServiceClient _customerService;
+    private readonly ICodebookServiceClient _codebookService;
+    private readonly ISigningHelperService _signingHelperService;
+    private readonly CustomerWithChangedDataService _customerChangedDataService;
+    private readonly IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly ICaseServiceClient _caseService;
+    private readonly ISalesArrangementServiceClient _salesArrangementService;
+    private readonly ICustomerOnSAServiceClient _customerOnSAService;
+    private readonly IUserServiceClient _userServiceClient;
+    private readonly ICurrentUserAccessor _userAccessor;
+
+    public UpdateCustomerDetailWithChangesHandler(
+        ICaseServiceClient caseService,
+        ISalesArrangementServiceClient salesArrangementService,
+        ICustomerOnSAServiceClient customerOnSAService,
+        IUserServiceClient userServiceClient,
+        IDocumentOnSAServiceClient documentOnSAService,
+        ICurrentUserAccessor userAccessor,
+        IHouseholdServiceClient householdService,
+        ICustomerServiceClient customerService,
+        ICodebookServiceClient codebookService,
+        ISigningHelperService signingHelperService,
+        CustomerWithChangedDataService customerChangedDataService)
+    {
+        _documentOnSAService = documentOnSAService;
+        _caseService = caseService;
+        _salesArrangementService = salesArrangementService;
+        _customerOnSAService = customerOnSAService;
+        _userServiceClient = userServiceClient;
+        _userAccessor = userAccessor;
+        _householdService = householdService;
+        _customerService = customerService;
+        _codebookService = codebookService;
+        _signingHelperService = signingHelperService;
+        _customerChangedDataService = customerChangedDataService;
+    }
+
     public async Task Handle(UpdateCustomerDetailWithChangesRequest request, CancellationToken cancellationToken)
     {
         await _customerService.ValidateMobilePhone(request.MobilePhone, cancellationToken);
         await _customerService.ValidateEmail(request.EmailAddress, cancellationToken);
 
-        // customer instance
-        var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
+        var customerInfo =  await _customerChangedDataService.GetCustomerInfo(request.CustomerOnSAId, cancellationToken);
+        var originalModel = CustomerMapper.MapCustomerToResponseDto<UpdateCustomerDetailWithChangesRequest>(customerInfo.CustomerDetail, customerInfo.CustomerOnSA);
 
-        // customer from KB CM
-        var (originalModel, customerIdentification) = await _changedDataService.GetCustomerFromCM<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
+        await UpdateBasicCustomerData(request, customerInfo.CustomerOnSA, cancellationToken);
 
-        // ----- update zakladnich udaju nasi instance customera
-        // pokud se zmenili zakladni udaje jako jmeno, prijmeni, tak je potreba tuto zmenu
-        // propsat take na CustomerOnSA (jedna se o props primo na entite, nikoliv v JSON datech) a Case
-        if (isStoredModelDifferentToRequest(customerOnSA, request))
-        {
-            var updateBaseRequest = new __Household.UpdateCustomerRequest
-            {
-                CustomerOnSAId = customerOnSA.CustomerOnSAId,
-                Customer = new __Household.CustomerOnSABase
-                {
-                    MaritalStatusId = request.NaturalPerson?.MaritalStatusId,
-                    Name = request.NaturalPerson?.LastName ?? "",
-                    FirstNameNaturalPerson = request.NaturalPerson?.FirstName ?? "",
-                    DateOfBirthNaturalPerson = request.NaturalPerson?.DateOfBirth,
-                    LockedIncomeDateTime = customerOnSA.LockedIncomeDateTime
-                }
-            };
-            if (customerOnSA.CustomerIdentifiers is not null)
-                updateBaseRequest.Customer.CustomerIdentifiers.AddRange(customerOnSA.CustomerIdentifiers);
-
-            //
-
-            await _customerOnSAService.UpdateCustomer(updateBaseRequest, cancellationToken);
-
-            // update na CASE, pokud se jedna o hlavniho dluznika
-            if (customerOnSA.CustomerRoleId == (int)CustomerRoles.Debtor)
-            {
-                var caseId = (await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken)).CaseId;
-
-                await _caseService.UpdateCustomerData(caseId, new DomainServices.CaseService.Contracts.CustomerData
-                {
-                    DateOfBirthNaturalPerson = request.NaturalPerson?.DateOfBirth,
-                    FirstNameNaturalPerson = request.NaturalPerson?.FirstName ?? "",
-                    Name = request.NaturalPerson?.LastName ?? "",
-                    Identity = customerOnSA.CustomerIdentifiers?[0]
-                }, cancellationToken);
-            }
-        }
-
-        if (customerIdentification != 1 && customerIdentification != 8)
+        if (customerInfo.CustomerDetail.CustomerIdentification?.IdentificationMethodId is not 1 and 8)
         {
             var user = await _userServiceClient.GetUser(_userAccessor.User!.Id, cancellationToken);
 
@@ -78,30 +77,17 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
             };
         }
 
-        request.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Other);
-        RemoveContactAddressIfNotConfirmedAndContactsAreConfirmed(originalModel, request);
-        await RemoveTinMissingReasonIfTinIsNotRequired(originalModel?.NaturalPerson?.TaxResidences, cancellationToken);
+        var delta = await PrepareDelta(request, originalModel, cancellationToken);
 
-        // ----- update naseho detailu instance customera
-        // updatujeme CustomerChangeData a CustomerAdditionalData na nasi entite CustomerOnSA
-        var delta = createDelta(originalModel, request);
-
-        //Update SingleLine address if address was changed
-        if (((IDictionary<string, object>)delta).ContainsKey("Addresses"))
+        var updateRequest = new UpdateCustomerDetailRequest
         {
-            foreach (var requestAddress in request.Addresses!)
-            {
-                requestAddress.SingleLineAddressPoint = await _customerService.FormatAddress(requestAddress!, cancellationToken);
-            }
-        }
-
-        var updateRequest = new __Household.UpdateCustomerDetailRequest
-        {
-            CustomerOnSAId = customerOnSA.CustomerOnSAId,
-            CustomerChangeData = createJsonFromDelta(delta),
+            CustomerOnSAId = customerInfo.CustomerOnSA.CustomerOnSAId,
             CustomerChangeMetadata = createMetadata(originalModel, request, delta),
-            CustomerAdditionalData = createAdditionalData(customerOnSA, request)
+            CustomerAdditionalData = createAdditionalData(customerInfo.CustomerOnSA, request)
         };
+
+        updateRequest.UpdateCustomerChangeDataObject(delta);
+
         await _customerOnSAService.UpdateCustomerDetail(updateRequest, cancellationToken);
 
         // jestlize se na klientovi neco menilo
@@ -111,24 +97,87 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
 
             if (wasCRSChanged)
             {
-                var savedCustomerData = await _changedDataService.GetCustomerWithChangedData<UpdateCustomerDetailWithChangesRequest>(customerOnSA, cancellationToken);
+                //Original delta (before save)
+                var previousDelta = customerInfo.CustomerOnSA.GetCustomerChangeDataObject();
 
                 //Do not cancel CRS document if exists and tax residences ware not changed again in this request (They were changed in previous one).
-                wasCRSChanged = request.IsUSPerson != savedCustomerData.IsUSPerson || !ModelComparers.AreObjectsEqual(request.NaturalPerson?.TaxResidences, savedCustomerData?.NaturalPerson?.TaxResidences);
+                wasCRSChanged = request.IsUSPerson != customerInfo.CustomerOnSA.CustomerAdditionalData?.IsUSPerson || !ModelComparers.AreObjectsEqual(delta?.NaturalPerson?.TaxResidences, previousDelta?.NaturalPerson?.TaxResidences);
             }
 
             await cancelSigning(
-                customerOnSA,
+                customerInfo.CustomerOnSA,
                 updateRequest.CustomerChangeMetadata.WereClientDataChanged,
                 wasCRSChanged,
                 cancellationToken);
         }
 
-        await _documentOnSAService.RefreshSalesArrangementState(customerOnSA.SalesArrangementId, cancellationToken);
+        await _documentOnSAService.RefreshSalesArrangementState(customerInfo.CustomerOnSA.SalesArrangementId, cancellationToken);
+    }
+
+    // ----- update zakladnich udaju nasi instance customera
+    // pokud se zmenili zakladni udaje jako jmeno, prijmeni, tak je potreba tuto zmenu
+    // propsat take na CustomerOnSA (jedna se o props primo na entite, nikoliv v JSON datech) a Case
+    private async Task UpdateBasicCustomerData(UpdateCustomerDetailWithChangesRequest request, CustomerOnSA customerOnSa, CancellationToken cancellationToken)
+    {
+        if (isStoredModelDifferentToRequest(customerOnSa, request))
+        {
+            var updateBaseRequest = new UpdateCustomerRequest
+            {
+                CustomerOnSAId = customerOnSa.CustomerOnSAId,
+                Customer = new CustomerOnSABase
+                {
+                    MaritalStatusId = request.NaturalPerson?.MaritalStatusId,
+                    Name = request.NaturalPerson?.LastName ?? "",
+                    FirstNameNaturalPerson = request.NaturalPerson?.FirstName ?? "",
+                    DateOfBirthNaturalPerson = request.NaturalPerson?.DateOfBirth,
+                    LockedIncomeDateTime = customerOnSa.LockedIncomeDateTime
+                }
+            };
+            if (customerOnSa.CustomerIdentifiers is not null)
+                updateBaseRequest.Customer.CustomerIdentifiers.AddRange(customerOnSa.CustomerIdentifiers);
+
+            await _customerOnSAService.UpdateCustomer(updateBaseRequest, cancellationToken);
+
+            // update na CASE, pokud se jedna o hlavniho dluznika
+            if (customerOnSa.CustomerRoleId == (int)CustomerRoles.Debtor)
+            {
+                var caseId = (await _salesArrangementService.GetSalesArrangement(customerOnSa.SalesArrangementId, cancellationToken)).CaseId;
+
+                await _caseService.UpdateCustomerData(caseId, new DomainServices.CaseService.Contracts.CustomerData
+                {
+                    DateOfBirthNaturalPerson = request.NaturalPerson?.DateOfBirth,
+                    FirstNameNaturalPerson = request.NaturalPerson?.FirstName ?? "",
+                    Name = request.NaturalPerson?.LastName ?? "",
+                    Identity = customerOnSa.CustomerIdentifiers?[0]
+                }, cancellationToken);
+            }
+        }
+    }
+
+    private async Task<CustomerChangeData?> PrepareDelta(UpdateCustomerDetailWithChangesRequest request, UpdateCustomerDetailWithChangesRequest originalModel, CancellationToken cancellationToken)
+    {
+        request.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Other);
+        RemoveContactAddressIfNotConfirmedAndContactsAreConfirmed(originalModel, request);
+        await RemoveTinMissingReasonIfTinIsNotRequired(originalModel.NaturalPerson?.TaxResidences, cancellationToken);
+
+        // ----- update naseho detailu instance customera
+        // updatujeme CustomerChangeData a CustomerAdditionalData na nasi entite CustomerOnSA
+        var delta = CreateDelta(request, originalModel);
+
+        //Update SingleLine address if address was changed
+        if (delta.Addresses is not null)
+        {
+            foreach (var requestAddress in request.Addresses!)
+            {
+                requestAddress.SingleLineAddressPoint = await _customerService.FormatAddress(requestAddress!, cancellationToken);
+            }
+        }
+
+        return delta;
     }
 
     private async Task cancelSigning(
-        __Household.CustomerOnSA customerOnSA,
+        CustomerOnSA customerOnSA,
         bool wereClientDataChanged,
         bool wasCRSChanged,
         CancellationToken cancellationToken)
@@ -178,7 +227,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     /// Vraci true, pokud se zmenily zakladni udaje CustomerOnSA instance 
     /// (tj. pole, ktera jsou primo na entite, nikoliv v JSON datech)
     /// </summary>
-    private static bool isStoredModelDifferentToRequest(__Household.CustomerOnSA customerOnSA, UpdateCustomerDetailWithChangesRequest request)
+    private static bool isStoredModelDifferentToRequest(CustomerOnSA customerOnSA, UpdateCustomerDetailWithChangesRequest request)
     {
         return !customerOnSA.Name.Equals(request.NaturalPerson?.LastName, StringComparison.Ordinal)
             || !customerOnSA.FirstNameNaturalPerson.Equals(request.NaturalPerson?.FirstName, StringComparison.Ordinal)
@@ -189,9 +238,9 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
     /// <summary>
     /// Vytvori metadata CustomerOnSA
     /// </summary>
-    private static __Household.CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request, dynamic? delta)
+    private static CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request, CustomerChangeData? delta)
     {
-        var metadata = new __Household.CustomerChangeMetadata
+        var metadata = new CustomerChangeMetadata
         {
             WasCRSChanged = (request.IsUSPerson ?? false) ||
                             !ModelComparers.AreObjectsEqual(request.NaturalPerson?.TaxResidences, originalModel?.NaturalPerson?.TaxResidences)
@@ -200,8 +249,12 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         if (metadata.WasCRSChanged && request.NaturalPerson?.TaxResidences?.ResidenceCountries?.Count > 8)
             throw new NobyValidationException(90042);
 
-        if (delta is not null)
+        if (delta?.NaturalPerson?.TaxResidences is not null)
         {
+
+
+            metadata.WereClientDataChanged = true;
+
             var dict = (IDictionary<string, Object>)delta;
             if (dict.Count > 0 &&
                 (dict.Count > 1
@@ -216,47 +269,43 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         return metadata;
     }
 
-    private static string? createJsonFromDelta(dynamic? delta)
-    {
-        if (delta is not null && ((IDictionary<string, Object>)delta).Count > 0)
-        {
-            return JsonConvert.SerializeObject(delta);
-        }
-        return null;
-    }
-
     /// <summary>
     /// Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
     /// </summary>
-    private static dynamic createDelta(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request)
+    private static CustomerChangeData? CreateDelta(UpdateCustomerDetailWithChangesRequest request, UpdateCustomerDetailWithChangesRequest? originalModel)
     {
-        // compare objects
-        dynamic delta = new System.Dynamic.ExpandoObject();
+        var requestCustomerChangeData = CustomerMapper.MapCustomerDtoToChangeData(request);
+        var originalCustomerChangeData = CustomerMapper.MapCustomerDtoToChangeData(originalModel);
 
-        ModelComparers.ComparePerson(request.NaturalPerson, originalModel?.NaturalPerson, delta);
-        ModelComparers.CompareObjects(request.IdentificationDocument, originalModel?.IdentificationDocument, "IdentificationDocument", delta);
-        ModelComparers.CompareObjects(request.CustomerIdentification, originalModel?.CustomerIdentification, "CustomerIdentification", delta);
-        ModelComparers.CompareObjects(request.Addresses, originalModel?.Addresses, "Addresses", delta);
-        //ModelComparers.CompareObjects(request.Contacts, originalModel.Contacts, "Contacts", delta);
+        var delta = new CustomerChangeData();
+
+        var hasDifferences = ModelComparers.ComparePerson(requestCustomerChangeData?.NaturalPerson, originalCustomerChangeData?.NaturalPerson, delta);
+        ModelComparers.CompareObjects(requestCustomerChangeData?.IdentificationDocument, originalCustomerChangeData?.IdentificationDocument, ref hasDifferences, obj => delta.IdentificationDocument = obj);
+        ModelComparers.CompareObjects(requestCustomerChangeData?.CustomerIdentification, originalCustomerChangeData?.CustomerIdentification, ref hasDifferences, obj => delta.CustomerIdentification = obj);
+        ModelComparers.CompareObjects(requestCustomerChangeData?.Addresses, originalCustomerChangeData?.Addresses, ref hasDifferences, obj => delta.Addresses = obj);
 
         // tohle je zajimavost - do delty ukladame zmeny jen u kontaktu, ktere nejsou v CM jako IsConfirmed=true
         if (!(originalModel?.EmailAddress?.IsConfirmed ?? false))
-            ModelComparers.CompareObjects(request.EmailAddress, originalModel!.EmailAddress, "EmailAddress", delta);
-        if (!(originalModel?.MobilePhone?.IsConfirmed ?? false))
-            ModelComparers.CompareObjects(request.MobilePhone, originalModel!.MobilePhone, "MobilePhone", delta);
+            ModelComparers.CompareObjects(requestCustomerChangeData?.EmailAddress, originalCustomerChangeData?.EmailAddress, ref hasDifferences, obj => delta.EmailAddress = obj);
 
-        return delta;
+        if (!(originalModel?.MobilePhone?.IsConfirmed ?? false))
+            ModelComparers.CompareObjects(requestCustomerChangeData?.MobilePhone, originalCustomerChangeData?.MobilePhone, ref hasDifferences, obj => delta.MobilePhone = obj);
+
+        if (hasDifferences)
+            return delta;
+
+        return default;
     }
 
     /// <summary>
     /// Vytvori / upravi JSON data v prop CustomerAdditionalData
     /// Data se upravuji na zaklade toho, co prijde v requestu.
     /// </summary>
-    private static __Household.CustomerAdditionalData createAdditionalData(
-        __Household.CustomerOnSA customerOnSA,
+    private static CustomerAdditionalData createAdditionalData(
+        CustomerOnSA customerOnSA,
         UpdateCustomerDetailWithChangesRequest request)
     {
-        var additionalData = customerOnSA.CustomerAdditionalData ?? new __Household.CustomerAdditionalData();
+        var additionalData = customerOnSA.CustomerAdditionalData ?? new CustomerAdditionalData();
 
         // https://jira.kb.cz/browse/HFICH-4200
         // docasne reseni nez se CM rozmysli jak na to
@@ -301,43 +350,5 @@ internal sealed class UpdateCustomerDetailWithChangesHandler
         {
             taxResidency.TaxResidency.TinMissingReasonDescription = null;
         }
-    }
-
-    private readonly CustomerWithChangedDataService _changedDataService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISigningHelperService _signingHelperService;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly IUserServiceClient _userServiceClient;
-    private readonly ICurrentUserAccessor _userAccessor;
-
-    public UpdateCustomerDetailWithChangesHandler(
-        ICaseServiceClient caseService,
-        CustomerWithChangedDataService changedDataService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICustomerOnSAServiceClient customerOnSAService,
-        IUserServiceClient userServiceClient,
-        IDocumentOnSAServiceClient documentOnSAService,
-        ICurrentUserAccessor userAccessor,
-        IHouseholdServiceClient householdService,
-        ICustomerServiceClient customerService,
-        ICodebookServiceClient codebookService,
-        ISigningHelperService signingHelperService)
-    {
-        _documentOnSAService = documentOnSAService;
-        _caseService = caseService;
-        _changedDataService = changedDataService;
-        _salesArrangementService = salesArrangementService;
-        _customerOnSAService = customerOnSAService;
-        _userServiceClient = userServiceClient;
-        _userAccessor = userAccessor;
-        _householdService = householdService;
-        _customerService = customerService;
-        _codebookService = codebookService;
-        _signingHelperService = signingHelperService;
     }
 }

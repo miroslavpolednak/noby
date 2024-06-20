@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using SharedTypes.GrpcTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Clients;
@@ -9,7 +8,7 @@ using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using Mandants = SharedTypes.GrpcTypes.Mandants;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using NOBY.Api.Endpoints.Customer.SharedDto;
+using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -105,18 +104,11 @@ internal sealed class CreateCustomerHandler
         else
         {
             // pokud je vse OK, zalozit customera v konsDb
-            try
-            {
-                await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResponse.CustomerIdentifiers, cancellationToken);
+            await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResponse.CustomerIdentifiers, cancellationToken);
 
-                var relationshipTypeId = customerOnSA.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
-                var partnerId = updateResponse.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
-                await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(ex, "Can not create customer in KonsDB");
-            }
+            var relationshipTypeId = customerOnSA.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
+            var partnerId = updateResponse.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
+            await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
         }
 
         if (saCategory.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)

@@ -17,7 +17,7 @@ namespace DomainServices.DocumentArchiveService.Api.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -50,7 +50,6 @@ namespace DomainServices.DocumentArchiveService.Api.Database.Migrations
                         .HasColumnName("DESCRIPTION");
 
                     b.Property<byte[]>("DocumentData")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)")
                         .HasColumnName("DOCUMENT_DATA");
 

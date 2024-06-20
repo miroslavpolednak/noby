@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using NOBY.Api.Endpoints.CustomerObligation.SharedDto;
+﻿using NOBY.Api.Endpoints.CustomerObligation.SharedDto;
 using NOBY.Dto;
 using NOBY.Dto.Household;
 using System.Text.Json.Serialization;

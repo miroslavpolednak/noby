@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using NOBY.Dto.Signing;
+﻿using NOBY.Dto.Signing;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
 

@@ -1,5 +1,4 @@
 ﻿using DomainServices.RealEstateValuationService.Clients;
-using Microsoft.IdentityModel.Tokens;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation;
 

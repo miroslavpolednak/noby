@@ -24,10 +24,21 @@ internal sealed class UpdateSalesArrangementHandler(Database.SalesArrangementSer
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SalesArrangementCantDelete, entity.State);
         }
 
-        entity.ContractNumber = !string.IsNullOrWhiteSpace(request.ContractNumber) ? request.ContractNumber : entity.ContractNumber;
-        entity.FirstSignatureDate = request.FirstSignatureDate is not null ? request.FirstSignatureDate.ToDateTime() : entity.FirstSignatureDate;
-        entity.ProcessId = request.ProcessId.HasValue ? request.ProcessId.Value : null;
-
+        if (!string.IsNullOrWhiteSpace(request.ContractNumber))
+        {
+            entity.ContractNumber = request.ContractNumber;
+        }
+        
+        if (request.FirstSignatureDate is not null)
+        {
+            entity.FirstSignatureDate = request.FirstSignatureDate.ToDateTime();
+        }
+        
+        if (request.ProcessId.HasValue)
+        {
+            entity.ProcessId = request.ProcessId.Value;
+        }
+        
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();

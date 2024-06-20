@@ -36,9 +36,6 @@ SharedComponents.GrpcServiceBuilder
             return new SqlQueryCollection(data);
         });
 
-        bgServices(builder);
-
-
         builder.AddExternalService<IAcvEnumServiceClient>();
         builder.AddExternalService<IRDMClient>();
     })
@@ -48,12 +45,6 @@ SharedComponents.GrpcServiceBuilder
         app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.Maintanance.MaintananceService>();
     })
     .Run();
-
-[Obsolete("Odstranit po nasazeni scheduling service")]
-static void bgServices(WebApplicationBuilder builder)
-{
-    builder.AddCisBackgroundService<DomainServices.CodebookService.Api.BackgroundServices.DownloadRdmCodebooksJob.DownloadRdmCodebooksJob>();
-}
 
 public partial class Program
 {

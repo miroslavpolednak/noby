@@ -1,5 +1,4 @@
 ﻿using DomainServices.HouseholdService.Clients;
-using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.CustomerObligation.GetObligation;
 

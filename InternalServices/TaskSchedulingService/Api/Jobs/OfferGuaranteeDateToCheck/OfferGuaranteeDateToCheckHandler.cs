@@ -7,7 +7,11 @@ namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.OfferGuaranteeDate
 /// <summary>
 /// Original SalesArrangement.OfferGuaranteeDateToCheckHandler
 /// </summary>
-internal sealed class OfferGuaranteeDateToCheckHandler
+internal sealed class OfferGuaranteeDateToCheckHandler(
+    ICaseServiceClient _caseService, 
+    IMaintananceService _maintananceService, 
+    ILogger<OfferGuaranteeDateToCheckHandler> _logger, 
+    ISalesArrangementServiceClient _salesArrangementService)
     : IJob
 {
     public async Task Execute(string? jobData, CancellationToken cancellationToken)
@@ -21,26 +25,20 @@ internal sealed class OfferGuaranteeDateToCheckHandler
 
             if (task is not null)
             {
-                await _caseService.CancelTask(flowSwitch.CaseId, task.TaskIdSb, cancellationToken);
-                _logger.OfferGuaranteeDateToCheckJobCancelTask(flowSwitch.CaseId, task.TaskIdSb);
+                try
+                {
+                    await _caseService.CancelTask(flowSwitch.CaseId, task.TaskIdSb, cancellationToken);
+                    _logger.OfferGuaranteeDateToCheckJobCancelTask(flowSwitch.CaseId, task.TaskIdSb);
+                }
+                catch
+                {
+                    // zhucelo to asi na neexistujicim tasku, ale to je jedno
+                }
             }
 
             await _salesArrangementService.SetFlowSwitch(flowSwitch.SalesArrangementId, FlowSwitches.IsOfferGuaranteed, false, cancellationToken);
 
             _logger.OfferGuaranteeDateToCheckJobFinished(flowSwitch.SalesArrangementId);
         }
-    }
-
-    private readonly ILogger<OfferGuaranteeDateToCheckHandler> _logger;
-    private readonly DomainServices.SalesArrangementService.Clients.IMaintananceService _maintananceService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-
-    public OfferGuaranteeDateToCheckHandler(ICaseServiceClient caseService, IMaintananceService maintananceService, ILogger<OfferGuaranteeDateToCheckHandler> logger, ISalesArrangementServiceClient salesArrangementService)
-    {
-        _caseService = caseService;
-        _maintananceService = maintananceService;
-        _logger = logger;
-        _salesArrangementService = salesArrangementService;
     }
 }

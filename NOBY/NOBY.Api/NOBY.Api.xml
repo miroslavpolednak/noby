@@ -693,6 +693,41 @@
             Nazev produktu slovne - ciselnik CaseStates
             </summary>
         </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.CaseOwnerName">
+            <summary>
+            Jméno a příjmení vlastníka case
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.CreatedOn">
+            <summary>
+            Timestamp vytvoreni Case
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.StateUpdatedOn">
+            <summary>
+            Datum a cas posledni zmeny Case
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemCustomer.FirstName">
+            <summary>
+            Jméno customera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemCustomer.LastName">
+            <summary>
+            Příjmení customera
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemCustomer.Identity">
+            <summary>
+            Identita klienta
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemCustomer.DateOfBirth">
+            <summary>
+            Datum narození FO
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount.Prefix">
             <summary>
             Prefix čísla úvěrového účtu, podle kterého se má vyhledávat
@@ -1533,12 +1568,12 @@
             (tj. pole, ktera jsou primo na entite, nikoliv v JSON datech)
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createMetadata(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,System.Object)">
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createMetadata(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,DomainServices.HouseholdService.Contracts.Model.CustomerChangeData)">
             <summary>
             Vytvori metadata CustomerOnSA
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createDelta(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.CreateDelta(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
             <summary>
             Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
             </summary>
@@ -1575,61 +1610,6 @@
         <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactResponse.IsMobile">
             <summary>
             Je to mobilní číslo?
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.LegalCapacity">
-            <summary>
-            Objekt právního omezení	
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.IsBrSubscribed">
-            <summary>
-            Přihlášen k aktualizaci dat ze základních registrů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.HasRelationshipWithKB">
-            <summary>
-            Zvláštní vztah ke Komerční bance
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.HasRelationshipWithKBEmployee">
-            <summary>
-            Osoba blízká zaměstnanci KB
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.HasRelationshipWithCorporate">
-            <summary>
-            Propojení s obchodní korporací
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.IsPoliticallyExposed">
-            <summary>
-            Politicky exponovaná osoba
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.BaseCustomerDetail.IsUSPerson">
-            <summary>
-            Americký občan (FATCA)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.LegalCapacityItem.RestrictionTypeId">
-            <summary>
-            Typ právního omezení klienta
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.LegalCapacityItem.RestrictionUntil">
-            <summary>
-            Datum platnosti právního omezení klienta do
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.NaturalPerson.EducationLevelId">
-            <summary>
-            Stupeň vzdělání
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SharedDto.NaturalPerson.ProfessionCategoryId">
-            <summary>
-            Kategorie profese, validováno oproti číselníku ProfessionCategory (se zohledněním validních hodnot - IsValid a IsValidNoby)
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipIds(System.Int64,System.Threading.CancellationToken)">
@@ -5434,7 +5414,7 @@
             Metoda podpisu (manuální/elektronický). Číselník SignatureType.
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailHandler.updateRetentionSalesArrangementParameters(NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest,System.Int64,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailHandler.updateRetentionRefixationSalesArrangementParameters(NOBY.Api.Endpoints.Workflow.UpdateTaskDetail.UpdateTaskDetailRequest,System.Int64,System.Threading.CancellationToken)">
             <summary>
             update RC2 atributu na retenci
             </summary>

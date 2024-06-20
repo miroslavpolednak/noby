@@ -252,6 +252,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00022-ResponseCode_ResponseCodeTypeId_Nullable.sql = DomainServices\OfferService\DatabaseMigrations\00022-ResponseCode_ResponseCodeTypeId_Nullable.sql
 		DomainServices\OfferService\DatabaseMigrations\00023-RefixationJsonBdpEdit.sql = DomainServices\OfferService\DatabaseMigrations\00023-RefixationJsonBdpEdit.sql
 		DomainServices\OfferService\DatabaseMigrations\00024-BdpImport_FixedRemovingCurrentState.sql = DomainServices\OfferService\DatabaseMigrations\00024-BdpImport_FixedRemovingCurrentState.sql
+		DomainServices\OfferService\DatabaseMigrations\00025-HACH-12003_UpdateInterestratePrecision.sql = DomainServices\OfferService\DatabaseMigrations\00025-HACH-12003_UpdateInterestratePrecision.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
@@ -437,6 +438,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00003-AddFormInstanceInterface.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00003-AddFormInstanceInterface.sql
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00004-CreatedAtRename.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00004-CreatedAtRename.sql
 		DomainServices\DocumentArchiveService\DatabaseMigrations\00005-HFICH-8278_FormIdentifier.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00005-HFICH-8278_FormIdentifier.sql
+		DomainServices\DocumentArchiveService\DatabaseMigrations\00006-HACH-11855_NullableDocumentData.sql = DomainServices\DocumentArchiveService\DatabaseMigrations\00006-HACH-11855_NullableDocumentData.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{6D676B53-6AD7-4828-922D-B52A42B5AD4F}"
@@ -1617,7 +1619,7 @@ Global
 		{43BFC200-CD0E-40D0-A4F1-42B4C5BA0872} = {89BF60E5-43F5-403F-A3A7-B85A42806358}
 		{D82D72DD-125A-4023-8A6F-D950BE363BD2} = {FD432970-0CA5-4632-9121-6A24C1B5A967}
 		{525199C6-C932-4365-BC9C-3E92A07C8BD2} = {D82D72DD-125A-4023-8A6F-D950BE363BD2}
-		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E} = {CD425435-2BA9-44DF-9AC5-945D08380C08}
+		{634B32AE-A55A-4C21-9A61-CCEAC0BFBF8E} = {D07D1FE1-DFC2-404C-9D4B-9A8732945D84}
 		{2FB17E85-DD83-4D49-835B-331A7056BB40} = {376AF902-B4C3-4C31-9CA1-63F154C18A4C}
 		{CF32FE07-6D1B-47E9-B96B-91DBD0BCD9A0} = {2FB17E85-DD83-4D49-835B-331A7056BB40}
 		{81F64DB6-77D4-4EFF-920C-CAC9FCE5EEC8} = {4184CEDA-0D2B-4BEC-8EE1-7D50B6A3E22E}

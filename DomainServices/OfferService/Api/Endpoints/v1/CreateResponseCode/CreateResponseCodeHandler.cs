@@ -63,7 +63,7 @@ internal sealed class CreateResponseCodeHandler(
 	private async Task<List<ApplicationEvent>> CreateBussinesAppEvents(CreateResponseCodeRequest request, CaseIdAccountNumberKonstDb caseIdAccountNumber, CancellationToken cancellationToken)
 	{
 		var responseCode = (await _codebookService.ResponseCodeTypes(cancellationToken))
-		   .First(t => t.Id == request.ResponseCodeTypeId);
+		   .FirstOrDefault(t => t.Id == request.ResponseCodeTypeId);
 
 		List<ApplicationEvent> applicationEvents =
 			[
@@ -72,11 +72,11 @@ internal sealed class CreateResponseCodeHandler(
 				 AccountNbr = caseIdAccountNumber.AreaCodeAccountNumber,
 				 EventDate = DateTime.Now,
 				 EventType = _respCode,
-				 EventValue = responseCode.Id.ToString(CultureInfo.InvariantCulture)
+				 EventValue = responseCode?.Id.ToString(CultureInfo.InvariantCulture)
 			 }
 			];
 
-		if (responseCode.DataType is CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.BankCode
+		if (responseCode is not null && responseCode.DataType is CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.BankCode
 			or CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date)
 		{
 			applicationEvents.Add(new ApplicationEvent

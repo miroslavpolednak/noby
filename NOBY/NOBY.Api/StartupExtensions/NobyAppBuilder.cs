@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning.ApiExplorer;
 using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.StaticFiles;
 using NOBY.Infrastructure.Configuration;
 using NOBY.Infrastructure.Security.Endpoints;
 using NOBY.Infrastructure.Security.Middleware;
@@ -15,6 +16,19 @@ internal static class NobyAppBuilder
         {
             appBuilder.UseSpaStaticFiles();
             appBuilder.UseStaticFiles("/docs");
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = new FileExtensionContentTypeProvider
+                {
+                    Mappings =
+                    {
+                        [".avif"] = "image/avif",
+                        [".webp"] = "image/webp"
+                    }
+                }
+            });
+
             appBuilder.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "wwwroot";

@@ -3,8 +3,6 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using FastEnumUtility;
-using NOBY.Api.Endpoints.Customer;
-using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
@@ -12,6 +10,7 @@ using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using _DocOnSA = DomainServices.DocumentOnSAService.Contracts;
 using ValidateSalesArrangementRequest = NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement.ValidateSalesArrangementRequest;
 using NOBY.Api.Extensions;
+using NOBY.Services.Customer;
 using NOBY.Services.SalesArrangementAuthorization;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
@@ -153,7 +152,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
     private async Task<_DocOnSA.SigningIdentity> MapCustomerOnSAIdentity(int customerOnSAId, string signatureAnchor, CancellationToken cancellationToken)
     {
         var customerOnSa = await _customerOnSAServiceClient.GetCustomer(customerOnSAId, cancellationToken);
-        var detailWithChangedData = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
+        var customerInfo = await _changedDataService.GetCustomerWithChangedData(customerOnSAId, cancellationToken);
 
         var signingIdentity = new _DocOnSA.SigningIdentity();
 
@@ -166,15 +165,18 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
 
         signingIdentity.CustomerOnSAId = customerOnSAId;
         signingIdentity.SignatureDataCode = signatureAnchor;
-        signingIdentity.FirstName = detailWithChangedData.NaturalPerson?.FirstName;
-        signingIdentity.LastName = detailWithChangedData.NaturalPerson?.LastName;
+        signingIdentity.FirstName = customerInfo.CustomerWithChangedData.NaturalPerson?.FirstName;
+        signingIdentity.LastName = customerInfo.CustomerWithChangedData.NaturalPerson?.LastName;
+
+        var mobile = customerInfo.CustomerWithChangedData.Contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil)?.Mobile;
+
         signingIdentity.MobilePhone = new _DocOnSA.MobilePhone
         {
-            PhoneNumber = detailWithChangedData.MobilePhone?.PhoneNumber,
-            PhoneIDC = detailWithChangedData.MobilePhone?.PhoneIDC
+            PhoneNumber = mobile?.PhoneNumber,
+            PhoneIDC = mobile?.PhoneIDC
         };
-        signingIdentity.EmailAddress = detailWithChangedData.EmailAddress?.EmailAddress;
-        signingIdentity.BirthNumber = detailWithChangedData.NaturalPerson?.BirthNumber;
+        signingIdentity.EmailAddress = customerInfo.CustomerWithChangedData.Contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email)?.Email?.EmailAddress;
+        signingIdentity.BirthNumber = customerInfo.CustomerWithChangedData.NaturalPerson?.BirthNumber;
         return signingIdentity;
     }
 

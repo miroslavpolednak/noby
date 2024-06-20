@@ -5,7 +5,8 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, int, long, int?, Exception> _createSalesArrangementStarted;
     private static readonly Action<ILogger, int, int, Exception> _linkToModelationStarted;
     private static readonly Action<ILogger, int, int, Exception> _updateStateStarted;
-    
+    private static readonly Action<ILogger, long, string, Exception> _cancelNotFinishedExtraPaymentsFailed;
+
     static LoggerExtensions()
     {
         _createSalesArrangementStarted = LoggerMessage.Define<int, long, int?>(
@@ -22,6 +23,11 @@ internal static class LoggerExtensions
             LogLevel.Debug,
             new EventId(LoggerEventIdCodes.UpdateStateStarted, nameof(UpdateStateStarted)),
             "Update SA #{SalesArrangementId} State to {State}");
+
+        _cancelNotFinishedExtraPaymentsFailed = LoggerMessage.Define<long, string>(
+            LogLevel.Warning,
+            new EventId(LoggerEventIdCodes.CancelNotFinishedExtraPaymentsFailed, nameof(CancelNotFinishedExtraPaymentsFailed)),
+            "CancelNotFinishedExtraPayments exception for Case #{CaseId}: {Message}");
     }
 
     public static void CreateSalesArrangementStarted(this ILogger logger, int salesArrangementTypeId, long caseId, int? offerId)
@@ -32,4 +38,7 @@ internal static class LoggerExtensions
 
     public static void UpdateStateStarted(this ILogger logger, int salesArrangementId, int state)
         => _updateStateStarted(logger, salesArrangementId, state, null!);
+
+    public static void CancelNotFinishedExtraPaymentsFailed(this ILogger logger, long caseId, string message, Exception ex)
+        => _cancelNotFinishedExtraPaymentsFailed(logger, caseId, message, ex);
 }

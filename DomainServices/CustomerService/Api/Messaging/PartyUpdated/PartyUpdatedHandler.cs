@@ -47,11 +47,7 @@ internal sealed class PartyUpdatedHandler : IMessageHandler<PartyUpdatedV1>
         foreach (var customerOnSa in customerOnSas)
         {
             // ziskat rozdilovou deltu pokud existuje
-            HouseholdService.Contracts.Dto.CustomerChangeDataDelta? delta = null;
-            if (!string.IsNullOrEmpty(customerOnSa.CustomerChangeData))
-            {
-                delta = System.Text.Json.JsonSerializer.Deserialize<HouseholdService.Contracts.Dto.CustomerChangeDataDelta>(customerOnSa.CustomerChangeData);
-            }
+            var delta = customerOnSa.GetCustomerChangeDataObject();
 
             // Update Case
             if (customerOnSa.CustomerRoleId == 1)

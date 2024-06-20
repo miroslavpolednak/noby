@@ -3,7 +3,8 @@ using DomainServices.OfferService.Clients.Interfaces;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.DeleteRefixationOfferOlderThan;
 
-public class DeleteRefixationOfferOlderThanHandler(IMaintananceService maintanance) : IJob
+public class DeleteRefixationOfferOlderThanHandler(IMaintananceService maintanance)
+    : IJob
 {
     private readonly IMaintananceService _maintanance = maintanance;
 

@@ -28,7 +28,7 @@ internal sealed class CancelTaskHandler
         // overeni prav mimo spolecnou logiku
         if (!_allowedTypeIds.Contains(task.TaskObject?.TaskTypeId ?? 0) 
             || task.TaskObject?.TaskIdSb == 30
-            || (task.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.Retention && task.TaskObject?.PhaseTypeId != 1))
+            || (task.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.RetentionRefixation && task.TaskObject?.PhaseTypeId != 1))
         {
             throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
@@ -37,7 +37,7 @@ internal sealed class CancelTaskHandler
         await _caseService.CancelTask(request.CaseId, taskIdSb, cancellationToken);
 
         // cancel SA in NOBY
-        if (task.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.Retention)
+        if (task.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.RetentionRefixation)
         {
             await cancelRetentionSalesArrangement(request.CaseId, task.TaskObject.ProcessId, cancellationToken);
         }
@@ -63,7 +63,7 @@ internal sealed class CancelTaskHandler
         [
             (int)WorkflowTaskTypes.PriceException,
             (int)WorkflowTaskTypes.Consultation,
-            (int)WorkflowTaskTypes.Retention
+            (int)WorkflowTaskTypes.RetentionRefixation
         ];
 
     private readonly ICurrentUserAccessor _currentUserAccessor;

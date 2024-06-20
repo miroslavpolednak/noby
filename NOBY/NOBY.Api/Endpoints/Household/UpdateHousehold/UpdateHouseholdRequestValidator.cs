@@ -1,5 +1,4 @@
-﻿using CIS.Core.Validation;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace NOBY.Api.Endpoints.Household.UpdateHousehold;
 

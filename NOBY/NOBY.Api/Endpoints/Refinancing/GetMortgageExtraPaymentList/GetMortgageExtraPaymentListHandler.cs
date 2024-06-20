@@ -31,7 +31,7 @@ internal sealed class GetMortgageExtraPaymentListHandler(
             var currentProcessSA = saList.SalesArrangements.FirstOrDefault(t => t.ProcessId == process.ProcessId);
             
             //TODO: co s timhle?
-            var refinancingState = currentProcessSA is null ? RefinancingHelper.GetRefinancingState(false, null, process) : RefinancingHelper.GetRefinancingState((SalesArrangementStates)currentProcessSA.State);
+            var refinancingState = RefinancingHelper.GetRefinancingState((SalesArrangementStates)(currentProcessSA?.State ?? 0), false, process);
             var state = refinancingStates.First(t => t.Id == (int)refinancingState);
 
 			return new GetMortgageExtraPaymentListResponse

@@ -59,6 +59,61 @@
             Státní příslušnost/občanství
             </summary>
         </member>
+        <member name="P:NOBY.Dto.Customer.BaseCustomerDetail.LegalCapacity">
+            <summary>
+            Objekt právního omezení	
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Customer.BaseCustomerDetail.IsBrSubscribed">
+            <summary>
+            Přihlášen k aktualizaci dat ze základních registrů
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Customer.BaseCustomerDetail.HasRelationshipWithKB">
+            <summary>
+            Zvláštní vztah ke Komerční bance
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Customer.BaseCustomerDetail.HasRelationshipWithKBEmployee">
+            <summary>
+            Osoba blízká zaměstnanci KB
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Customer.BaseCustomerDetail.HasRelationshipWithCorporate">
+            <summary>
+            Propojení s obchodní korporací
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Customer.BaseCustomerDetail.IsPoliticallyExposed">
+            <summary>
+            Politicky exponovaná osoba
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Customer.BaseCustomerDetail.IsUSPerson">
+            <summary>
+            Americký občan (FATCA)
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Customer.LegalCapacityItem.RestrictionTypeId">
+            <summary>
+            Typ právního omezení klienta
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Customer.LegalCapacityItem.RestrictionUntil">
+            <summary>
+            Datum platnosti právního omezení klienta do
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Customer.NaturalPerson.EducationLevelId">
+            <summary>
+            Stupeň vzdělání
+            </summary>
+        </member>
+        <member name="P:NOBY.Dto.Customer.NaturalPerson.ProfessionCategoryId">
+            <summary>
+            Kategorie profese, validováno oproti číselníku ProfessionCategory (se zohledněním validních hodnot - IsValid a IsValidNoby)
+            </summary>
+        </member>
         <member name="P:NOBY.Dto.Documents.DocumentInformation.Guid">
             <summary>
             GUID dokumentu v dočasném úložišti
