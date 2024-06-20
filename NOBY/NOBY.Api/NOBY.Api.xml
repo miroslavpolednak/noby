@@ -5320,6 +5320,14 @@
             Slouží pro vytvoření auth cookie v případe, že aplikace není napojena na CAAS.
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Users.UsersController.SignOut(System.Threading.CancellationToken)">
+            <summary>
+            Odhlaseni uzivatele v pripade Simple Authentication provider
+            </summary>
+            /// <remarks>
+            Slouží pro odsranění auth cookie v případe, že aplikace není napojena na CAAS.
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Users.UsersController.GetMpssSecurityCookie(System.Threading.CancellationToken)">
             <summary>
             Získání obsahu auth cookie pro ePodpisy.

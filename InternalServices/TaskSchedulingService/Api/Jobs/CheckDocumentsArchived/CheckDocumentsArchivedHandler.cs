@@ -1,12 +1,11 @@
 ﻿using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
-using DomainServices.DocumentOnSAService.Clients;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.CheckDocumentsArchived;
 
 internal sealed class CheckDocumentsArchivedHandler(
-    IMaintananceService _maintananceService, 
+    DomainServices.DocumentOnSAService.Clients.IMaintananceService _maintananceService, 
     IDocumentArchiveServiceClient _documentArchiveService, 
     ILogger<CheckDocumentsArchivedHandler> _logger)
     : IJob

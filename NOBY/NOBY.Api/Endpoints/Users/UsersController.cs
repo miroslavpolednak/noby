@@ -36,6 +36,18 @@ public class UsersController(IMediator _mediator) : ControllerBase
         => await _mediator.Send(request, cancellationToken);
 
     /// <summary>
+    /// Odhlaseni uzivatele v pripade Simple Authentication provider
+    /// </summary>
+    /// /// <remarks>
+    /// Slouží pro odsranění auth cookie v případe, že aplikace není napojena na CAAS.
+    /// </remarks>
+    [HttpGet("users/signout")]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task SignOut(CancellationToken cancellationToken)
+        => await _mediator.Send(new SignOut.SignOutRequest(), cancellationToken);
+    
+    /// <summary>
     /// Získání obsahu auth cookie pro ePodpisy.
     /// </summary>
     /// <remarks>
