@@ -16,7 +16,5 @@ internal sealed class SignOutHandler(
         }
 
         await _httpContext.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-        _httpContext.HttpContext!.Response.Redirect("/");
     }
 }

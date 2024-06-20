@@ -5320,7 +5320,7 @@
             Slouží pro vytvoření auth cookie v případe, že aplikace není napojena na CAAS.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Users.UsersController.SignOut(System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Users.UsersController.SignOut(Microsoft.AspNetCore.Http.HttpContextAccessor)">
             <summary>
             Odhlaseni uzivatele v pripade Simple Authentication provider
             </summary>
