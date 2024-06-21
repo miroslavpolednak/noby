@@ -135,15 +135,13 @@ public sealed class MortgageRefinancingDataService(
     private async Task<(bool completed, AmendmentPriceException? priceException)> getPriceExceptionData(List<DomainServices.CaseService.Contracts.WorkflowTask> tasks, CancellationToken cancellationToken)
     {
         // toto je aktivni IC task!
-        var activePriceExceptionTaskIdSb = tasks
-            .FirstOrDefault(t => t is { TaskTypeId: (int)WorkflowTaskTypes.PriceException, Cancelled: false })
-            ?.TaskIdSb;
+        var activePriceExceptionTask = tasks.FirstOrDefault(t => t is { TaskTypeId: (int)WorkflowTaskTypes.PriceException, Cancelled: false });
 
-        if (!activePriceExceptionTaskIdSb.HasValue) 
+        if (activePriceExceptionTask is null || activePriceExceptionTask.DecisionId == 2) 
             return default;
 
         // detail IC tasku
-        var taskDetail = await _caseService.GetTaskDetail(activePriceExceptionTaskIdSb.Value, cancellationToken);
+        var taskDetail = await _caseService.GetTaskDetail(activePriceExceptionTask.TaskIdSb, cancellationToken);
         var isCompleted = taskDetail.TaskObject.PhaseTypeId == 2 && taskDetail.TaskObject.DecisionId == 1;
 
         return (isCompleted, taskDetail.TaskDetail?.PriceException);
