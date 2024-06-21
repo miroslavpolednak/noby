@@ -2955,6 +2955,39 @@
             Den splátky úvěru
             </summary>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Party.PartyController.SearchParties(NOBY.Api.Endpoints.Party.SearchParties.SearchPartiesRequest,System.Threading.CancellationToken)">
+            <summary>
+            Našeptávač jmen a IČ
+            </summary>
+            <remarks>
+            Provoláním získáme 0-N dvojic jméno-IČ
+            </remarks>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Party.SearchParties.SearchPartiesRequest.CountryId">
+            <summary>
+            Id země z číselníku států
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Party.SearchParties.SearchPartiesRequest.Cin">
+            <summary>
+            IČ společnosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Party.SearchParties.SearchPartiesRequest.SearchText">
+            <summary>
+            Pattern, podle kterého vyhledáváme
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Party.SearchParties.SearchPartiesResponse.Name">
+            <summary>
+            Název společnosti
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.Party.SearchParties.SearchPartiesResponse.Cin">
+            <summary>
+            IČO
+            </summary>
+        </member>
         <member name="P:NOBY.Api.Endpoints.Product.GetCustomersOnProduct.GetCustomersOnProductCustomer.FirstName">
             <summary>
             Jméno
