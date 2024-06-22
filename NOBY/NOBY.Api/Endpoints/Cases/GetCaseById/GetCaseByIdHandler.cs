@@ -5,11 +5,11 @@ internal sealed class GetCaseByIdHandler(
     CasesModelConverter _converter,
     DomainServices.UserService.Clients.IUserServiceClient _userService,
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService)
-        : IRequestHandler<GetCaseByIdRequest, SharedDto.CaseModel>
+        : IRequestHandler<GetCaseByIdRequest, CasesSharedCaseModel>
 {
-    public async Task<SharedDto.CaseModel> Handle(GetCaseByIdRequest request, CancellationToken cancellationToken)
+    public async Task<CasesSharedCaseModel> Handle(GetCaseByIdRequest request, CancellationToken cancellationToken)
     {
-        DomainServices.CaseService.Contracts.Case? caseInstance = null;
+        DomainServices.CaseService.Contracts.Case? caseInstance;
 
         try
         {
@@ -26,7 +26,7 @@ internal sealed class GetCaseByIdHandler(
         
         // case owner
         var userInstance = await _userService.GetUser(caseInstance!.CaseOwner.UserId, cancellationToken);
-        model.CaseOwner = new SharedDto.CaseOwnerModel
+        model.CaseOwner = new CasesSharedCaseOwnerModel
         {
             Cpm = userInstance.UserInfo.Cpm,
             Icp = userInstance.UserInfo.Icp

@@ -20,9 +20,9 @@ public class AddressController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(typeof(AddressSearch.AddressSearchResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AddressAddressSearchResponse), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=046F9631-86E1-4f17-9527-C518700030CE")]
-    public async Task<AddressSearch.AddressSearchResponse> AddressSearch([FromBody] AddressSearch.AddressSearchRequest request)
+    public async Task<AddressAddressSearchResponse> AddressSearch([FromBody] ApiContracts.AddressAddressSearchRequest request)
         => await _mediator.Send(request);
 
     /// <summary>
@@ -35,9 +35,9 @@ public class AddressController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(typeof(GetAddressDetail.GetAddressDetailResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AddressGetAddressDetailResponse), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=312CA931-1DA0-4be2-AF0D-4D71962845F2")]
-    public async Task<GetAddressDetail.GetAddressDetailResponse> GetAddressDetail([FromBody] GetAddressDetail.GetAddressDetailRequest request)
+    public async Task<AddressGetAddressDetailResponse> GetAddressDetail([FromBody] AddressGetAddressDetailRequest request)
         => await _mediator.Send(request);
 
     /// <summary>
@@ -51,8 +51,8 @@ public class AddressController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Real Estate Valuation"])]
-    [ProducesResponseType<KatuzSearch.KatuzSearchResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<AddressKatuzSearchResponse>(StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=46994CE5-FC35-4ad8-97D6-5217CFBE2F27")]
-    public async Task<KatuzSearch.KatuzSearchResponse> KatuzSearch([FromBody] KatuzSearch.KatuzSearchRequest request, CancellationToken cancellationToken) => 
+    public async Task<AddressKatuzSearchResponse> KatuzSearch([FromBody] AddressKatuzSearchRequest request, CancellationToken cancellationToken) => 
         await _mediator.Send(request, cancellationToken);
 }

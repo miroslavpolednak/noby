@@ -13,9 +13,9 @@ internal sealed class GetCaseMenuFlagsHandler(
     IProductServiceClient _productService,
     IDocumentArchiveServiceClient _documentArchiveServiceClient,
     IDocumentHelperService _documentHelper)
-        : IRequestHandler<GetCaseMenuFlagsRequest, GetCaseMenuFlagsResponse>
+        : IRequestHandler<GetCaseMenuFlagsRequest, CasesGetCaseMenuFlagsResponse>
 {
-    public async Task<GetCaseMenuFlagsResponse> Handle(GetCaseMenuFlagsRequest request, CancellationToken cancellationToken)
+    public async Task<CasesGetCaseMenuFlagsResponse> Handle(GetCaseMenuFlagsRequest request, CancellationToken cancellationToken)
     {
         // instance case
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
@@ -28,18 +28,18 @@ internal sealed class GetCaseMenuFlagsHandler(
         getDocumentsInQueueRequest.StatusesInQueue.AddRange(_values);
         var documentsInQueue = await _documentArchiveServiceClient.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
 
-        return new GetCaseMenuFlagsResponse
+        return new CasesGetCaseMenuFlagsResponse
         {
             ParametersMenuItem = new(),
             DebtorsItem = new(),
             TasksMenuItem = new(),
-            ChangeRequestsMenuItem = new GetCaseMenuFlagsItem
+            ChangeRequestsMenuItem = new CasesGetCaseMenuFlagsItem
             {
                 IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.InProgress && caseInstance.State != (int)CaseStates.ToBeCancelled
             },
-            RealEstatesMenuItem = new GetCaseMenuFlagsItem
+            RealEstatesMenuItem = new CasesGetCaseMenuFlagsItem
             {
-                Flag = GetCaseMenuFlagsTypes.NoFlag,
+                Flag = CasesGetCaseMenuFlagsItemFlag.NoFlag,
                 IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.InProgress && caseInstance.State != (int)CaseStates.ToBeCancelled
             },
             DocumentsMenuItem = await getDocuments(documentsInQueue, cancellationToken),
@@ -55,9 +55,9 @@ internal sealed class GetCaseMenuFlagsHandler(
         };
     }
 
-    private async Task<GetCaseMenuFlagsItem> getCovenants(long caseId, CancellationToken cancellationToken)
+    private async Task<CasesGetCaseMenuFlagsItem> getCovenants(long caseId, CancellationToken cancellationToken)
     {
-        var response = new GetCaseMenuFlagsItem();
+        var response = new CasesGetCaseMenuFlagsItem();
 
         if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
         {
@@ -79,22 +79,22 @@ internal sealed class GetCaseMenuFlagsHandler(
         return response;
     }
 
-    private async Task<GetCaseMenuFlagsItem> getDocuments(GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
+    private async Task<CasesGetCaseMenuFlagsItem> getDocuments(GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
     {
         var getDocumentsInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(documentsInQueue);
         var documentsInQueueFiltered = await _documentHelper.FilterDocumentsVisibleForKb(getDocumentsInQueueMetadata, cancellationToken);
 
-        var response = new GetCaseMenuFlagsItem();
+        var response = new CasesGetCaseMenuFlagsItem();
 
         if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
         {
             if (documentsInQueue.QueuedDocuments.Any(t => t.StatusInQueue == 300))
             {
-                response.Flag = GetCaseMenuFlagsTypes.ExclamationMark;
+                response.Flag = CasesGetCaseMenuFlagsItemFlag.ExclamationMark;
             }
             else if (documentsInQueue.QueuedDocuments.Any(t => _requiredStatusesInDocumentQueue.Contains(t.StatusInQueue)))
             {
-                response.Flag = GetCaseMenuFlagsTypes.InProcessing;
+                response.Flag = CasesGetCaseMenuFlagsItemFlag.InProcessing;
             }
         }
 

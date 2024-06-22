@@ -4,7 +4,7 @@
         <name>NOBY.Api</name>
     </assembly>
     <members>
-        <member name="M:NOBY.Api.Endpoints.Address.AddressController.AddressSearch(NOBY.Api.Endpoints.Address.AddressSearch.AddressSearchRequest)">
+        <member name="M:NOBY.Api.Endpoints.Address.AddressController.AddressSearch(NOBY.ApiContracts.AddressAddressSearchRequest)">
             <summary>
             Našeptávání adresy z AddressWhispererBEService
             </summary>
@@ -12,7 +12,7 @@
             Provolá AddressWhispererBEService na IIB a vrátí stránkovaný seznam adres. Dotazujeme se zprostředkovaně do RUIAN pro CZ/SK adresy a přes službu Google pro ostatní.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Address.AddressController.GetAddressDetail(NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest)">
+        <member name="M:NOBY.Api.Endpoints.Address.AddressController.GetAddressDetail(NOBY.ApiContracts.AddressGetAddressDetailRequest)">
             <summary>
             Získání detailu adresy přes AddressWhispererBEService
             </summary>
@@ -20,143 +20,13 @@
             Provolánám získáme přes AddressWhispererBEService na IIB detail konkrétní adresy.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Address.AddressController.KatuzSearch(NOBY.Api.Endpoints.Address.KatuzSearch.KatuzSearchRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Address.AddressController.KatuzSearch(NOBY.ApiContracts.AddressKatuzSearchRequest,System.Threading.CancellationToken)">
             <summary>
             Našeptávání katastrálních území (KATUZ)
             </summary>
             <remarks>
             Provolá  CREM službu RUIAN:FindTerritory a vrátí stránkovaný seznam katuz setřízený abecedně podle jména katastrálního území.
             </remarks>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.SessionId">
-            <summary>
-            SessionId generované přímo na frontendu (unikátní GUID)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.SearchText">
-            <summary>
-            Pattern, podle kterého vyhledáváme
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.CountryId">
-            <summary>
-            Id státu z číselníku Country
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.AddressSearch.AddressSearchRequest.PageSize">
-            <summary>
-            Počet vrácených záznamů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.AddressSearch.AddressSearchResponse.PageSize">
-            <summary>
-            Počet vrácených záznamů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.AddressSearch.Dto.AddressLine.Title">
-            <summary>
-            Textová reprezentace adresy
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.AddressSearch.Dto.AddressLine.Id">
-            <summary>
-            Id adresy
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.SessionId">
-            <summary>
-            SessionId generované přímo na frontendu (unikátní GUID)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.AddressId">
-            <summary>
-            Id adresy
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.Title">
-            <summary>
-            Parametr title našeptávače adres
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailRequest.CountryId">
-            <summary>
-            Id státu z číselníku Country
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.GetAddressDetail.GetAddressDetailResponse.CountryId">
-            <summary>
-            Stát - AddressWhispererBEService|country
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.KatuzId">
-            <summary>
-            Id katastrálního území (KATUZ)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.Dto.KatuzLine.KatuzTitle">
-            <summary>
-            Textová reprezentace katastrálního území
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.KatuzSearchRequest.SearchText">
-            <summary>
-            Pattern, podle kterého vyhledáváme
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.KatuzSearchRequest.PageSize">
-            <summary>
-            Počet vrácených záznamů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Address.KatuzSearch.KatuzSearchResponse.PageSize">
-            <summary>
-            Počet vrácených záznamů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CancelCase.CancelCaseResponse.State">
-            <summary>
-            Stavy Case
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CancelCase.CancelCaseResponse.StateName">
-            <summary>
-            Slovne nazev stavu Case
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CancelCase.CancelCaseResponse.CustomersOnSa">
-            <summary>
-            Účely úvěru
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CancelCase.CustomerOnSAItem.CustomerOnSAId">
-            <summary>
-            Id customera na sales arrangementu
-            </summary>
-            <example>123456</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CancelCase.CustomerOnSAItem.FirstName">
-            <summary>
-            Jméno
-            </summary>
-            <example>Jidáš</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CancelCase.CustomerOnSAItem.LastName">
-            <summary>
-            Příjmení
-            </summary>
-            <example>Skočdopole</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CancelCase.CustomerOnSAItem.BirthDate">
-            <summary>
-            Datum narození
-            </summary>
-            <example>2000-02-01</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.CancelCase.CustomerOnSAItem.DocumentId">
-            <summary>
-            eArchiv ID dokumentu s potvrzení pro daného klienta
-            </summary>
-            <example>KBH00000000000000000123456789</example>
         </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CancelCase(System.Int64)">
             <summary>
@@ -207,7 +77,7 @@
             Počty Cases pro přihlášeného uživatele zgrupované podle nastavených filtrů.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.SearchCases(NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest)">
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.SearchCases(NOBY.ApiContracts.CasesSearchCasesRequest)">
             <summary>
             Seznam Cases pro přihlášeného uživatele.
             </summary>
@@ -272,56 +142,6 @@
             </remarks>
             <param name="caseId">ID Case-u</param>
             <param name="covenantOrder">Pořadí podmínky ke splnění</param>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.DocumentsMenuItem">
-            <summary>
-            Položka menu Dokumenty
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.CovenantsMenuItem">
-            <summary>
-            Položka menu Podmínky ke splnění
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.RealEstatesMenuItem">
-            <summary>
-            Položka menu Nemovitosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.ParametersMenuItem">
-            <summary>
-            Položka menu Parametry
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.DebtorsItem">
-            <summary>
-            Položka menu Žadatelé
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.ChangeRequestsMenuItem">
-            <summary>
-            Položka menu Požadavky a změny
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.TasksMenuItem">
-            <summary>
-            Položka menu Úkoly
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.RefinancingMenuItem">
-            <summary>
-            Změna úrokové sazby 
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsResponse.ExtraPaymentMenuItem">
-            <summary>
-            Mimořádná splátka
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag.GetCaseMenuFlagsItem.Flag">
-            <summary>
-            Příznak
-            </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Cases.GetCaseParameters.Dto.CaseOwnerUserDto.BranchName">
             <summary>
@@ -786,96 +606,6 @@
         <member name="P:NOBY.Api.Endpoints.Cases.IdentifyCase.IdentifyCaseResponse.Cases">
             <summary>
             Nalezene case-s
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest.FilterId">
-            <summary>
-            [optional] ID pozadovaneho stavu filtru.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest.Term">
-            <summary>
-            [optional] Klicove slovo pro vyhledavani nad Cases.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesRequest.Pagination">
-            <summary>
-            Nastaveni strankovani a razeni kolekce Cases.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesResponse.Pagination">
-            <summary>
-            Informace o strankovani a razeni.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SearchCases.SearchCasesResponse.Rows">
-            <summary>
-            Kolekce nalezenych Case-s.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.CaseId">
-            <summary>
-            Unikátní Id obchodního případu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.CustomerIdentity">
-            <summary>
-            Id klienta
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.FirstName">
-            <summary>
-            FO/FOP/Cizinec/Nezletilec: Jméno
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.LastName">
-            <summary>
-            FO/FOP/Cizinec/Nezletilec: Příjmení
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.DateOfBirth">
-            <summary>
-            FO/FOP/Cizinec/Nezletilec: Datum narození klienta
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.State">
-            <summary>
-            Stav Case - ciselnik CaseStates
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.StateName">
-            <summary>
-            Slovne nazev stavu Case.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.ContractNumber">
-            <summary>
-            ČÍslo smlouvy. Odpovídá smlouvě uzavřené pro zřízení stavebního spoření, nebo hypotéky. Úvěry ze SS mají jiné číslo smlouvy (jiný suffix), ale nezobrazuje se na case.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.TargetAmount">
-            <summary>
-            Cílová částka zobrazující se na dashboardu.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.ProductName">
-            <summary>
-            Nazev produktu slovne - ciselnik CaseStates
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.CreatedTime">
-            <summary>
-            Datum vytvoreni Case
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.CreatedBy">
-            <summary>
-            Jmeno a prijmeni uzivatele, ktery vytvoril Case
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Cases.SharedDto.CaseModel.StateUpdated">
-            <summary>
-            Datum a cas posledni zmeny Case.
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Codebooks.CodebooksController.GetAll(System.String,System.Threading.CancellationToken)">
