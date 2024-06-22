@@ -25,7 +25,6 @@ internal sealed class ErrorCodeMapper
     public const int CMError2 = 11024;
     public const int CMError3 = 11025;
     public const int CMError4 = 11026;
-    public const int RequestMustContainBothIdentities = 11026;
     public const int CantSetPEP = 11027;
     public const int CantSetUS = 11028;
     public const int DateOfBirthSearchInvalid = 11029;
@@ -35,6 +34,7 @@ internal sealed class ErrorCodeMapper
     public const int ContactTypeUnsupported = 11033;
     public const int AddressDataMissing = 11034;
     public const int KbIdentityMissing = 11035;
+    public const int RequestMustContainBothIdentities = 11036;
 
     public static IErrorCodesDictionary Init()
     {

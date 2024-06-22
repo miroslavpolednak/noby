@@ -73,9 +73,9 @@ internal static class Extensions
     {
         customer.FirstName = result.NaturalPerson?.FirstName;
         customer.LastName = result.NaturalPerson?.LastName;
-        customer.Street = result.Street;
-        customer.City = result.City;
-        customer.Postcode = result.Postcode;
+        customer.Street = result.Address?.Street;
+        customer.City = result.Address?.City;
+        customer.Postcode = result.Address?.Postcode;
         customer.BirthNumber = result.NaturalPerson?.BirthNumber;
         customer.DateOfBirth = result.NaturalPerson?.DateOfBirth;
         

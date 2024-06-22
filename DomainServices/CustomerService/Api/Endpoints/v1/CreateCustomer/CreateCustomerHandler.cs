@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using CIS.Core.Exceptions;
 using DomainServices.CustomerService.Api.Services.CustomerManagement;
 using ExternalServices.MpHome.V1;
 
@@ -27,7 +26,7 @@ internal sealed class CreateCustomerHandler(
 
         if (await _mpHomeClient.PartnerExists(mpIdentity.IdentityId, cancellationToken))
         {
-            throw new CisAlreadyExistsException(11017, "Partner already exists in KonsDB.");
+            //throw new CisAlreadyExistsException(11017, "Partner already exists in KonsDB.");
         }
 
         var partnerRequest = await _mpHomeMapper.MapUpdateRequest(request.NaturalPerson, request.Identities, request.IdentificationDocument, request.Addresses, request.Contacts, cancellationToken);

@@ -21,7 +21,7 @@ internal sealed class MpHomeDetailMapper(
         {
             var p = new SearchCustomersItem
             {
-                Identity = new SharedTypes.GrpcTypes.Identity(partner.PartnerId, IdentitySchemes.Mp),
+                Identity = new SharedTypes.GrpcTypes.Identity(partner.Id, IdentitySchemes.Mp),
                 NaturalPerson = new NaturalPersonBasicInfo
                 {
                     BirthNumber = partner.BirthNumber,
@@ -30,8 +30,8 @@ internal sealed class MpHomeDetailMapper(
                     GenderId = (int)(partner.Gender == GenderEnum.Male ? Genders.Male : Genders.Female),
                     DateOfBirth = partner.DateOfBirth
                 },
-                IdentificationDocument = await mapIdentificationDocument(partner, cancellationToken),
-                Address = partner.Addresses.FirstOrDefault()
+                IdentificationDocument = mapIdentificationDocument(partner),
+                Address = await mapAddress(partner.Addresses.FirstOrDefault(), cancellationToken)
             };
         }
 
@@ -40,13 +40,12 @@ internal sealed class MpHomeDetailMapper(
 
     public async Task<CustomerDetailResponse> MapDetailResponse(PartnerResponse partner, CancellationToken cancellationToken)
     {
-        var countries = await _codebookService.Countries(cancellationToken);
         var titles1 = await _codebookService.AcademicDegreesBefore(cancellationToken);
         var titles2 = await _codebookService.AcademicDegreesAfter(cancellationToken);
 
         CustomerDetailResponse customer = new()
         {
-            Identities = { getIdentities(partner.PartnerId, partner.KbId) },
+            Identities = { getIdentities(partner.Id, partner.KbId) },
             NaturalPerson = new()
             {
                 BirthNumber = partner.BirthNumber,
@@ -60,13 +59,12 @@ internal sealed class MpHomeDetailMapper(
                 IsPoliticallyExposed = partner.Pep,
                 IsUSPerson = partner.UsPerson
             },
-            IdentificationDocument = await mapIdentificationDocument(partner, cancellationToken)
+            IdentificationDocument = mapIdentificationDocument(partner)
         };
-
-        var nationalityId = countries.FirstOrDefault(t => t.ShortName == partner.Nationality)?.Id;
-        if (nationalityId.HasValue)
+        
+        if (partner.NationalityId.HasValue)
         {
-            customer.NaturalPerson.CitizenshipCountriesId.Add(nationalityId.Value);
+            customer.NaturalPerson.CitizenshipCountriesId.Add(partner.NationalityId.Value);
         }
 
         if (partner.Addresses is not null)
@@ -85,7 +83,7 @@ internal sealed class MpHomeDetailMapper(
         return customer;
     }
 
-    private async Task<Contracts.IdentificationDocument?> mapIdentificationDocument(PartnerResponse partner, CancellationToken cancellationToken)
+    private static Contracts.IdentificationDocument? mapIdentificationDocument(PartnerResponse partner)
     {
         var idDoc = partner.IdentificationDocuments?.FirstOrDefault();
         if (idDoc is null)
@@ -93,15 +91,13 @@ internal sealed class MpHomeDetailMapper(
             return null;
         }
 
-        var countries = await _codebookService.Countries(cancellationToken);
-        
         return new()
         {
             Number = idDoc.Number ?? string.Empty,
             IdentificationDocumentTypeId = (int)idDoc.Type,
             IssuedOn = idDoc.IssuedOn,
             IssuedBy = idDoc.IssuedBy ?? string.Empty,
-            IssuingCountryId = countries.FirstOrDefault(t => t.ShortName == idDoc.IssuingCountry)?.Id,
+            IssuingCountryId = idDoc.IssuingCountryId,
             ValidTo = idDoc.ValidTo
         };
     }
@@ -114,9 +110,12 @@ internal sealed class MpHomeDetailMapper(
             yield return new SharedTypes.GrpcTypes.Identity(kbId.Value, IdentitySchemes.Kb);
     }
 
-    private async Task<SharedTypes.GrpcTypes.GrpcAddress> mapAddress(AddressData address, CancellationToken cancellationToken)
+    private async Task<SharedTypes.GrpcTypes.GrpcAddress?> mapAddress(AddressData? address, CancellationToken cancellationToken)
     {
-        var countries = await _codebookService.Countries(cancellationToken);
+        if (address is null)
+        {
+            return null;
+        }
 
         var result = new SharedTypes.GrpcTypes.GrpcAddress
         {
@@ -126,7 +125,7 @@ internal sealed class MpHomeDetailMapper(
             HouseNumber = address.LandRegistryNumber ?? string.Empty,
             Postcode = address.PostCode ?? string.Empty,
             City = address.City ?? string.Empty,
-            CountryId = string.IsNullOrEmpty(address.Country) ? 16 : countries.FirstOrDefault(c => c.ShortName == address.Country)?.Id
+            CountryId = address.CountryId
         };
 
         if (!string.IsNullOrWhiteSpace(address.City))

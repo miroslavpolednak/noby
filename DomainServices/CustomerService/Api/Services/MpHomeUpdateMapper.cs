@@ -16,8 +16,7 @@ internal sealed class MpHomeUpdateMapper(ICodebookServiceClient _codebookService
         CancellationToken cancellationToken)
     {
         var titles = await _codebookService.AcademicDegreesBefore(cancellationToken);
-        var countries = await _codebookService.Countries(cancellationToken);
-
+        
         return new PartnerRequest
         {
             Name = naturalPerson.FirstName,
@@ -27,8 +26,8 @@ internal sealed class MpHomeUpdateMapper(ICodebookServiceClient _codebookService
             DateOfBirth = naturalPerson.DateOfBirth,
             PlaceOfBirth = naturalPerson.PlaceOfBirth,
             Gender = (GenderEnum)naturalPerson.GenderId,
-            Nationality = countries.FirstOrDefault(c => c.Id == naturalPerson.CitizenshipCountriesId.FirstOrDefault())?.ShortName,
-            Addresses = await mapAddresses(addresses, cancellationToken),
+            NationalityId = naturalPerson.CitizenshipCountriesId.FirstOrDefault(),
+            Addresses = mapAddresses(addresses),
             Contacts = await mapContacts(contacts, cancellationToken),
             KbId = identities.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId,
             IdentificationDocuments = await mapIdentificationDocument(identificationDocument, cancellationToken)
@@ -51,7 +50,6 @@ internal sealed class MpHomeUpdateMapper(ICodebookServiceClient _codebookService
         if (identificationDocument is null)
             return null;
 
-        var countries = await _codebookService.Countries(cancellationToken);
         var docTypes = await _codebookService.IdentificationDocumentTypes(cancellationToken);
 
         return
@@ -63,17 +61,13 @@ internal sealed class MpHomeUpdateMapper(ICodebookServiceClient _codebookService
                 ValidTo = identificationDocument.ValidTo,
                 IssuedBy = identificationDocument.IssuedBy,
                 IssuedOn = identificationDocument.IssuedOn,
-                IssuingCountry = countries.FirstOrDefault(c => c.Id == identificationDocument.IssuingCountryId)?.ShortName ?? ""
+                IssuingCountryId = identificationDocument.IssuingCountryId ?? 0
             }
         ];
     }
 
-    private async Task<List<AddressData>?> mapAddresses(
-        IList<SharedTypes.GrpcTypes.GrpcAddress>? addresses,
-        CancellationToken cancellationToken)
+    private static List<AddressData>? mapAddresses(IList<SharedTypes.GrpcTypes.GrpcAddress>? addresses)
     {
-        var countries = await _codebookService.Countries(cancellationToken);
-
         return addresses?.Select(address => new AddressData
             {
                 Type = (AddressType)(address.AddressTypeId ?? (int)AddressType.Permanent),
@@ -82,7 +76,7 @@ internal sealed class MpHomeUpdateMapper(ICodebookServiceClient _codebookService
                 LandRegistryNumber = string.IsNullOrWhiteSpace(address.EvidenceNumber) ? address.HouseNumber : address.EvidenceNumber,
                 PostCode = address.Postcode,
                 City = address.City,
-                Country = countries.FirstOrDefault(c => c.Id == address.CountryId)?.ShortName
+                CountryId = address.CountryId
             })
             .ToList();
     }

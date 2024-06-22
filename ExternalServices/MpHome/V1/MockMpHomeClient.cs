@@ -74,4 +74,9 @@ internal sealed class MockMpHomeClient
     {
         throw new NotImplementedException();
     }
+
+    public Task<List<PartnerResponse>?> SearchPartners(PartnerSearchRequest request, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }
