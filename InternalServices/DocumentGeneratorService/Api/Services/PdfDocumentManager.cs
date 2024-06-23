@@ -51,6 +51,7 @@ internal class PdfDocumentManager
                 var pdfFieldMap = _pdfFieldMap.GetPdfMap(template.Name, template.Version, template.Variant);
 
                 document = _pdfAcroFormWriterFactory.CreateWriter(documentPart.Data).WriteToDocument(template.PdfDocument, pdfFieldMap, documentPart.Data);
+                document.Form.Output = FormOutput.Remove;
 
                 new PdfElements.PdfFooter().FillFooter(template, document, pdfFieldMap, request);
             }
