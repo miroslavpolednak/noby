@@ -27,4 +27,10 @@
     <ProjectReference Include="..\Contracts\CIS.InternalServices.DocumentGeneratorService.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="NewFolder\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

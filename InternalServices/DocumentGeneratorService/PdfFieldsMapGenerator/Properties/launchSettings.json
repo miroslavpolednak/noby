@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PdfFieldsMapGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "-s \"D:\\MPSS\\TEMPLATES\""
+    }
+  }
+}

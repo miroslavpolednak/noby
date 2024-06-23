@@ -1,4 +1,5 @@
 ﻿using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFieldFormat;
+using CIS.InternalServices.DocumentGeneratorService.Api.Services.PdfWriter;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 
@@ -21,6 +22,16 @@ public class PdfAcroFormWriterFactory
 
         //True when Table exists in request
         return tables.Any() ? CreateTableWriter(tables, otherValues) : CreateBasic(otherValues);
+    }
+
+    public IPdfWriter CreateWriter(ICollection<GenerateDocumentPartData> values)
+    {
+        if (values.Any(v => v.ValueCase == GenerateDocumentPartData.ValueOneofCase.Table))
+        {
+            return new PdfTableWriter(_fieldFormatProvider, new PdfTextWriter(_fieldFormatProvider));
+        }
+
+        return new PdfTextWriter(_fieldFormatProvider);
     }
 
     private IAcroFormWriter CreateBasic(IEnumerable<GenerateDocumentPartData> values) => new BasicAcroFormWriter(_fieldFormatProvider, values);
