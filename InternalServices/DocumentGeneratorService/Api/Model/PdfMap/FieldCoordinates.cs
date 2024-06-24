@@ -15,4 +15,8 @@ public record FieldCoordinates
     public float XWithOffset() => X + Offset;
 
     public float YWithOffset() => Y + Offset;
+
+    public float WidthWithOffset() => Width - Offset;
+
+    public float HeightWithOffset() => Height - Offset;
 }

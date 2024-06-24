@@ -33,7 +33,7 @@ public class PdfFooter
         var textField = new TextArea(identifiersText,
                                      identifiersField.Coordinates.X,
                                      identifiersField.Coordinates.Y,
-                                     identifiersField.Coordinates.Width,
+                                     identifiersField.Coordinates.WidthWithOffset(),
                                      identifiersField.Coordinates.Height,
                                      FontHelper.ParseOpenTypeFont(identifiersField.FontName),
                                      identifiersField.FontSize,
@@ -59,7 +59,7 @@ public class PdfFooter
             Font = GeneratorVariables.Arial.GetFont()
         };
 
-        barcode.X += barcodeField.Coordinates.Width - 2 - barcode.GetSymbolWidth();
+        barcode.X += barcodeField.Coordinates.WidthWithOffset() - barcode.GetSymbolWidth();
 
         mergeDocument.Template.Elements.Add(barcode);
     }
@@ -74,7 +74,7 @@ public class PdfFooter
         var pageNumberingLabel = new PageNumberingLabel(PageNumberFormat,
                                                         pageNumberField.Coordinates.X,
                                                         pageNumberField.Coordinates.Y,
-                                                        pageNumberField.Coordinates.Width - 2,
+                                                        pageNumberField.Coordinates.WidthWithOffset(),
                                                         pageNumberField.Coordinates.Height,
                                                         FontHelper.ParseOpenTypeFont(pageNumberField.FontName),
                                                         pageNumberField.FontSize,
