@@ -38,7 +38,7 @@ internal sealed class CustomerChangeBuilder
 
             foreach (var customer in applicants)
             {
-                var identity = customer.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb, customer.CustomerIdentifiers.First());
+                var identity = customer.CustomerIdentifiers.GetIdentity(Identity.Types.IdentitySchemes.Kb);
                 var customerDetail = await customerService.GetCustomerDetail(identity, cancellationToken);
                 loadedCustomers.Add(customerDetail);
 
@@ -63,7 +63,7 @@ internal sealed class CustomerChangeBuilder
             }
 
             // agent
-            var agent = customers.FirstOrDefault(t => t.Agent ?? false)?.CustomerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+            var agent = customers.FirstOrDefault(t => t.Agent ?? false)?.CustomerIdentifiers?.GetKbIdentityOrDefault();
             if (agent is not null)
             {
                 var agentCustomer = loadedCustomers.FirstOrDefault(t => t.Identities.Any(t => t.IdentityScheme == agent.IdentityScheme && t.IdentityId == agent.IdentityId));

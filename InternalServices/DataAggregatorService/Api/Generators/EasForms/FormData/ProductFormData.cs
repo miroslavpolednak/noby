@@ -74,9 +74,6 @@ internal class ProductFormData : LoanApplicationBaseFormData
     {
         var customer = HouseholdData.CustomersOnSa.FirstOrDefault(c => c.CustomerOnSAId == SalesArrangement.Mortgage?.Agent);
 
-        return customer?.CustomerIdentifiers
-                       .Where(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp)
-                       .Select(c => (long?)c.IdentityId)
-                       .SingleOrDefault();
+        return customer?.CustomerIdentifiers?.GetMpIdentityOrDefault()?.IdentityId;
     }
 }

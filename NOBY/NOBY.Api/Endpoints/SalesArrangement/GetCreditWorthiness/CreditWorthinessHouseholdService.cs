@@ -66,7 +66,7 @@ internal sealed class CreditWorthinessHouseholdService
         {
             PrimaryCustomerId = customer
                 .CustomerIdentifiers
-                .FirstOrDefault(x => x.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
+                .GetKbIdentityOrDefault()
                 ?.IdentityId
                 .ToString(System.Globalization.CultureInfo.InvariantCulture),
             MaritalStateId = customer.MaritalStatusId

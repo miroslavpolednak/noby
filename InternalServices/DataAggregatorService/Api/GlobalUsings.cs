@@ -11,3 +11,4 @@ global using CIS.InternalServices.DataAggregatorService.Api.Services.Codebook;
 global using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.Result;
 global using CIS.InternalServices.DataAggregatorService.Contracts;
 global using MediatR;
+global using SharedTypes.Extensions;

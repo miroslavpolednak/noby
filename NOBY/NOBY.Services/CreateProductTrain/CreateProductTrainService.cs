@@ -20,8 +20,8 @@ internal sealed class CreateProductTrainService
 
         await _product.Run(caseId, salesArrangementId, customerOnSAId, customerIdentifiers, cancellationToken);
 
-        long? mpId = customerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)?.IdentityId;
-        long? kbId = customerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId;
+        long? mpId = customerIdentifiers?.GetMpIdentityOrDefault()?.IdentityId;
+        long? kbId = customerIdentifiers?.GetKbIdentityOrDefault()?.IdentityId;
         if (mpId.HasValue && kbId.HasValue)
         {
             await _createRiskBusinessCase.Run(salesArrangementId, cancellationToken);

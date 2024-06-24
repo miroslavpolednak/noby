@@ -116,7 +116,7 @@ internal class HouseholdData
 
         var result = await _customerService.GetCustomerList(customerIds.Select(id => new Identity(id, IdentitySchemes.Kb)), cancellationToken);
 
-        return result.Customers.ToDictionary(c => c.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId, c => c);
+        return result.Customers.ToDictionary(c => c.Identities.GetKbIdentity().IdentityId, c => c);
     }
 
     private async Task<Dictionary<int, Income>> LoadIncomes(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)
@@ -162,7 +162,7 @@ internal class HouseholdData
 
         static long GetCustomerId(CustomerOnSA customerOnSa)
         {
-            var customerIdentity = customerOnSa.CustomerIdentifiers.SingleOrDefault(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb) ??
+            var customerIdentity = customerOnSa.CustomerIdentifiers.GetKbIdentityOrDefault() ??
                            throw new InvalidOperationException($"CustomerOnSa {customerOnSa.CustomerOnSAId} does not have KB ID");
 
             return customerIdentity.IdentityId;

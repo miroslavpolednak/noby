@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Attributes;
-using SharedTypes.GrpcTypes;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
+using SharedTypes.Extensions;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement.ValidationStrategy;
 
@@ -19,7 +19,7 @@ internal sealed class ServiceAgreementValidation : ISalesArrangementValidationSt
     {
         var customers = await _customerOnSAService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
 
-        if (customers.Any(c => c.CustomerIdentifiers.All(i => i.IdentityScheme != Identity.Types.IdentitySchemes.Kb)))
+        if (customers.Any(c => !c.CustomerIdentifiers.HasKbIdentity()))
             throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.NotAllCustomersOnSaAreIdentified);
 
         CheckIfApplicantIsSet(salesArrangement);

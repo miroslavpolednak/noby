@@ -6,6 +6,7 @@ using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
+using SharedTypes.Extensions;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement.ValidationStrategy;
 
@@ -39,7 +40,7 @@ internal sealed class CheckFormWithCustomerDetailValidationStrategy : ISalesArra
 
         foreach (var customerOnSA in customersOnSa)
         {
-            var kbId = customerOnSA.CustomerIdentifiers.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId;
+            var kbId = customerOnSA.CustomerIdentifiers.GetKbIdentity().IdentityId;
 
             var customerOnSaDetail = await _customerOnSAService.GetCustomer(customerOnSA.CustomerOnSAId, cancellationToken);
             var customer = customerDetails.Customers.First(c => c.Identities.Any(i => i.IdentityId == kbId && i.IdentityScheme == Identity.Types.IdentitySchemes.Kb));
@@ -127,9 +128,5 @@ internal sealed class CheckFormWithCustomerDetailValidationStrategy : ISalesArra
     }
 
     private static IEnumerable<Identity> GetCustomerIdentities(IEnumerable<CustomerOnSA> customersOnSa) =>
-        customersOnSa.Select(c =>
-        {
-            return c.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb) ??
-                   throw new CisValidationException($"CustomerOnSa {c.CustomerOnSAId} does not have KB ID");
-        });
+        customersOnSa.Select(c => c.CustomerIdentifiers.GetKbIdentityOrDefault() ?? throw new CisValidationException($"CustomerOnSa {c.CustomerOnSAId} does not have KB ID"));
 }
