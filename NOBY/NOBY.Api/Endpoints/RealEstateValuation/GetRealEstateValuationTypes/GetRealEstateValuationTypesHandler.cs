@@ -81,7 +81,7 @@ internal sealed class GetRealEstateValuationTypesHandler
         if (!detail.RealEstateSubtypeId.HasValue)
             throw new NobyValidationException(90032);
 
-        var variant = RealEstateVariantHelper.GetRealEstateVariant(detail.RealEstateTypeId);
+        var variant = RealEstateValuationHelpers.GetRealEstateVariant(detail.RealEstateTypeId);
 
         switch (variant)
         {

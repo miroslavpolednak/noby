@@ -1,11 +1,9 @@
 ﻿using DomainServices.RealEstateValuationService.Clients;
 
-#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
-
 namespace NOBY.Api.Endpoints.RealEstateValuation.DeleteDeedOfOwnershipDocument;
 
-internal sealed class DeleteDeedOfOwnershipDocumentHandler
-    : IRequestHandler<DeleteDeedOfOwnershipDocumentRequest>
+internal sealed class DeleteDeedOfOwnershipDocumentHandler(IRealEstateValuationServiceClient _realEstateValuationService)
+        : IRequestHandler<DeleteDeedOfOwnershipDocumentRequest>
 {
     public async Task Handle(DeleteDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
     {
@@ -16,12 +14,5 @@ internal sealed class DeleteDeedOfOwnershipDocumentHandler
         }
 
         await _realEstateValuationService.DeleteDeedOfOwnershipDocument(request.DeedOfOwnershipDocumentId, cancellationToken);
-    }
-
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public DeleteDeedOfOwnershipDocumentHandler(IRealEstateValuationServiceClient realEstateValuationService)
-    {
-        _realEstateValuationService = realEstateValuationService;
     }
 }

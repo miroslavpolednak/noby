@@ -28,6 +28,250 @@ namespace NOBY.ApiContracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RealEstateValuationAddDeedOfOwnershipDocumentRequest
+    {
+        /// <summary>
+        /// Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("deedOfOwnershipDocument")]
+        public RealEstateValuationSharedDeedOfOwnershipDocument DeedOfOwnershipDocument { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Identifikační údaje nemovitosti k Ocenění (bez Noby ID)
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RealEstateValuationSharedDeedOfOwnershipDocument
+    {
+        /// <summary>
+        /// ID staženého dokumentu listu vlastnictví (LV)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("cremDeedOfOwnershipDocumentId")]
+        public long CremDeedOfOwnershipDocumentId { get; set; } = default!;
+
+        /// <summary>
+        /// KATUZ ID, pětimístné číslo katastrálního území
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("katuzId")]
+        public int KatuzId { get; set; } = default!;
+
+        /// <summary>
+        /// KATUZ, název katastrálního území, RUIAN katastrální území - AddressWhispererBEService|cadastralArea
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("katuzTitle")]
+        public string? KatuzTitle { get; set; } = default!;
+
+        /// <summary>
+        /// ISKN ID listu vlastnictví (LV), technický identifikátor katastru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("deedOfOwnershipId")]
+        public long? DeedOfOwnershipId { get; set; } = default!;
+
+        /// <summary>
+        /// Číslo listu vlastnictví (LV)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("deedOfOwnershipNumber")]
+        public int DeedOfOwnershipNumber { get; set; } = default!;
+
+        /// <summary>
+        /// Adresa nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("address")]
+        public string? Address { get; set; } = default!;
+
+        /// <summary>
+        /// Unikátní ID nemovitosti ze systému CREM
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateIds")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<long> RealEstateIds { get; set; } = new List<long>();
+
+        /// <summary>
+        /// ID adresního bodu z našeptávače adres
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("addressPointId")]
+        public long? AddressPointId { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Atributy k nově zakládanému Ocenění nemovitosti
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RealEstateValuationCreateRealEstateValuationRequest
+    {
+        /// <summary>
+        /// ID typu nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateTypeId")]
+        public int RealEstateTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// True pokud jde o nemovitost, která je objektem úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isLoanRealEstate")]
+        public bool IsLoanRealEstate { get; set; } = default!;
+
+        /// <summary>
+        /// True pokud je aplikované hromadné ocenění z developerského projektu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("developerApplied")]
+        public bool DeveloperApplied { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Objednávka ocenění: přehledové údaje
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RealEstateValuationSharedRealEstateValuationListItem
+    {
+        /// <summary>
+        /// ID Ocenění nemovitosti v Noby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateValuationId")]
+        public int? RealEstateValuationId { get; set; } = default!;
+
+        /// <summary>
+        /// Číslo objednávky ocenění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("orderId")]
+        public long? OrderId { get; set; } = default!;
+
+        /// <summary>
+        /// ID obchodního případu (caseId)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("caseId")]
+        public long CaseId { get; set; } = default!;
+
+        /// <summary>
+        /// ID typu nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateTypeId")]
+        public int RealEstateTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateTypeIcon")]
+        public EnumRealEstateValuationTypeIcons RealEstateTypeIcon { get; set; } = default!;
+
+        /// <summary>
+        /// ID stavu Ocenění nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("valuationStateId")]
+        public int ValuationStateId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("valuationStateIndicator")]
+        public EnumRealEstateValuationStateIndicators ValuationStateIndicator { get; set; } = default!;
+
+        /// <summary>
+        /// Název stavu Ocenění nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("valuationStateName")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ValuationStateName { get; set; } = default!;
+
+        /// <summary>
+        /// True pokud jde o nemovitost, která je objektem úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isLoanRealEstate")]
+        public bool IsLoanRealEstate { get; set; } = default!;
+
+        /// <summary>
+        /// ID stavu nemovitosti. 1 - Dokončená, 2 - V rekonstrukci, 3 - Projekt, 4 - Výstavba
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateStateId")]
+        public int? RealEstateStateId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("valuationTypeId")]
+        public EnumRealEstateValuationTypes ValuationTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Adresa nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("address")]
+        public string? Address { get; set; } = default!;
+
+        /// <summary>
+        /// Datum odeslání žádosti o Ocenění nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("valuationSentDate")]
+        public DateOnly? ValuationSentDate { get; set; } = default!;
+
+        /// <summary>
+        /// True pokud je potřeba kontrolní ocenění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isRevaluationRequired")]
+        public bool? IsRevaluationRequired { get; set; } = default!;
+
+        /// <summary>
+        /// Informace o tom, zda byl na modelaci použit developer a zda je možné využít hromadné ocenění.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("developerAllowed")]
+        public bool DeveloperAllowed { get; set; } = default!;
+
+        /// <summary>
+        /// True pokud je aplikované hromadné ocenění z developerského projektu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("developerApplied")]
+        public bool DeveloperApplied { get; set; } = default!;
+
+        /// <summary>
+        /// Možné typy ocenění (výsledek ACV trychtýře), 1 - online, 2 - dts, 3 - standard
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("possibleValuationTypeId")]
+        public List<EnumRealEstateValuationTypes>? PossibleValuationTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("prices")]
+        public List<RealEstateValuationSharedRealEstateValuationListItemPriceDetail>? Prices { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RealEstateValuationSharedRealEstateValuationListItemPriceDetail
+    {
+        /// <summary>
+        /// Výsledná cena nemovitosti v Kč
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("price")]
+        public int Price { get; set; } = default!;
+
+        /// <summary>
+        /// Název ceny pro Noby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("priceTypeName")]
+        public string PriceTypeName { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class AddressAddressSearchRequest
     {
         /// <summary>
@@ -1942,6 +2186,144 @@ namespace NOBY.ApiContracts
 
     }
 
+    /// <summary>
+    /// Informace z listu vlastnictví
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DeedOfOwnershipGetDeedOfOwnershipDocumentContentResponse
+    {
+        /// <summary>
+        /// Číslo listu vlastnictví (LV)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("deedOfOwnershipNumber")]
+        public int? DeedOfOwnershipNumber { get; set; } = default!;
+
+        /// <summary>
+        /// CREM ID staženého dokumentu listu vlastnictví (LV)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("cremDeedOfOwnershipDocumentId")]
+        public long CremDeedOfOwnershipDocumentId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("owners")]
+        public List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentOwners>? Owners { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("legalRelations")]
+        public List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelations>? LegalRelations { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstates")]
+        public List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentRealEstates>? RealEstates { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Omezení vlastnických práv na listu vlastnictví
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelations
+    {
+        /// <summary>
+        /// Textový popis omezení vlastnického práva
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("legalRelationDescription")]
+        public string LegalRelationDescription { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Popis vlastníka na listu vlastnictví
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DeedOfOwnershipGetDeedOfOwnershipDocumentContentOwners
+    {
+        /// <summary>
+        /// Formátovaný popis vlastníka (jméno + adresa)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("ownerDescription")]
+        public string OwnerDescription { get; set; } = default!;
+
+        /// <summary>
+        /// Podíl vlastnictví nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("ownershipRatio")]
+        public string OwnershipRatio { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Nemovitost z listu vlastnictví
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DeedOfOwnershipGetDeedOfOwnershipDocumentContentRealEstates
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateId")]
+        public long RealEstateId { get; set; } = default!;
+
+        /// <summary>
+        /// Textový popis nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateDescription")]
+        public string RealEstateDescription { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Id položek z listu vlastnicví
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DeedOfOwnershipGetDeedOfOwnershipIdsResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("flats")]
+        public List<DeedOfOwnershipGetDeedOfOwnershipIdsFlat>? Flats { get; set; } = default!;
+
+        /// <summary>
+        /// ISKN ID listu vlastnictví(LV), technický identifikátor katastru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("deedOfOwnershipId")]
+        public long DeedOfOwnershipId { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Byt
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DeedOfOwnershipGetDeedOfOwnershipIdsFlat
+    {
+        /// <summary>
+        /// Číslo bytu včetně čísla domu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("flatNumber")]
+        public string FlatNumber { get; set; } = default!;
+
+        /// <summary>
+        /// ISKN ID listu vlastnictví (LV), technický identifikátor katastru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("deedOfOwnershipId")]
+        public long DeedOfOwnershipId { get; set; } = default!;
+
+        /// <summary>
+        /// Způsob využití bytu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("mannerOfUseFlatShortName")]
+        public string MannerOfUseFlatShortName { get; set; } = default!;
+
+    }
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class UsersGetCurrentBannerListResponse
     {
@@ -3351,6 +3733,69 @@ namespace NOBY.ApiContracts
         Warning = 5,
 
         Initial = 6,
+
+    }
+
+    /// <summary>
+    /// Id ikony typu nemovitosti. 1 - house, 2 - location city, 3 - custom, 4 - domain
+    /// <br/>
+    /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;1 - House&lt;/li&gt;&lt;li&gt;2 - LocationCity&lt;/li&gt;&lt;li&gt;3 - Custom&lt;/li&gt;&lt;li&gt;4 - Domain&lt;/li&gt;&lt;/ul&gt;
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum EnumRealEstateValuationTypeIcons
+    {
+
+        House = 1,
+
+        LocationCity = 2,
+
+        Custom = 3,
+
+        Domain = 4,
+
+    }
+
+    /// <summary>
+    /// Indikátor stavu Ocenění nemovitosti, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial
+    /// <br/>
+    /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Active&lt;/li&gt;&lt;li&gt;2 - Cancelled&lt;/li&gt;&lt;li&gt;3 - OK&lt;/li&gt;&lt;li&gt;4 - Passive&lt;/li&gt;&lt;li&gt;5 - Warning&lt;/li&gt;&lt;li&gt;6 - Initial&lt;/li&gt;&lt;/ul&gt;
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum EnumRealEstateValuationStateIndicators
+    {
+
+        Unknown = 0,
+
+        Active = 1,
+
+        Cancelled = 2,
+
+        OK = 3,
+
+        Passive = 4,
+
+        Warning = 5,
+
+        Initial = 6,
+
+    }
+
+    /// <summary>
+    /// Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
+    /// <br/>
+    /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Online&lt;/li&gt;&lt;li&gt;2 - Dts&lt;/li&gt;&lt;li&gt;3 - Standard&lt;/li&gt;&lt;/ul&gt;
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum EnumRealEstateValuationTypes
+    {
+
+        Unknown = 0,
+
+        Online = 1,
+
+        DTS = 2,
+
+        Standard = 3,
 
     }
 

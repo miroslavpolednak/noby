@@ -769,86 +769,6 @@
             <param name="deedOfOwnershipId">ISKN ID listu vlastnictví (LV), technický identifikátor katastru</param>
             <param name="deedOfOwnershipDocumentId">Noby ID daného záznamu. Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</param>
         </member>
-        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse">
-            <summary>
-            Informace z listu vlastnictví
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse.DeedOfOwnershipNumber">
-            <summary>
-            Číslo listu vlastnictví (LV)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponse.CremDeedOfOwnershipDocumentId">
-            <summary>
-            CREM ID staženého dokumentu listu vlastnictví (LV)
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseOwners">
-            <summary>
-            Popis vlastníka na listu vlastnictví
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseOwners.OwnerDescription">
-            <summary>
-            Formátovaný popis vlastníka (jméno + adresa)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseOwners.OwnershipRatio">
-            <summary>
-            Podíl vlastnictví nemovitosti
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseLegalRelations">
-            <summary>
-            Omezení vlastnických práv na listu vlastnictví
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseLegalRelations.LegalRelationDescription">
-            <summary>
-            Textový popis omezení vlastnického práva
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseRealEstates">
-            <summary>
-            Nemovitost z listu vlastnictví
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentResponseRealEstates.RealEstateDescription">
-            <summary>
-            Textový popis nemovitosti
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponse">
-            <summary>
-            Id položek z listu vlastnicví
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponse.DeedOfOwnershipId">
-            <summary>
-            ISKN ID listu vlastnictví(LV), technický identifikátor katastru
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat">
-            <summary>
-            Byt
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat.FlatNumber">
-            <summary>
-            Číslo bytu včetně čísla domu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat.DeedOfOwnershipId">
-            <summary>
-            ISKN ID listu vlastnictví (LV), technický identifikátor katastru
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds.GetDeedOfOwnershipIdsResponseFlat.MannerOfUseFlatShortName">
-            <summary>
-            Způsob využití bytu
-            </summary>
-        </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.GetDocument(NOBY.Dto.Documents.FileContentDispositions,NOBY.Api.Endpoints.DocumentArchive.GetDocument.Source,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Načtení dokumentu z archivu nebo starbuildu
@@ -2191,29 +2111,6 @@
             </remarks>
             <param name="pcpId">PCP ID</param>
         </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest">
-            <summary>
-            Atributy k nově zakládanému Ocenění nemovitosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest.RealEstateTypeId">
-            <summary>
-            ID typu nemovitosti
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest.IsLoanRealEstate">
-            <summary>
-            True pokud jde o nemovitost, která je objektem úvěru
-            </summary>
-            <example>true</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest.DeveloperApplied">
-            <summary>
-            True pokud je aplikované hromadné ocenění z developerského projektu
-            </summary>
-            <example>false</example>
-        </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationList.GetRealEstateValuationListHandler.getComputedValuations(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Ziskat dopocitane nemovitosti - tj. ty, ktere jsou zadane na Offer pro dany SA
@@ -2280,14 +2177,12 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=740D6F1C-FF1E-437e-96BD-01C6553C0F9A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.CreateRealEstateValuation(System.Int64,NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation.CreateRealEstateValuationRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.CreateRealEstateValuation(System.Int64,NOBY.ApiContracts.RealEstateValuationCreateRealEstateValuationRequest,System.Threading.CancellationToken)">
             <summary>
             Založení Ocenění nemovitosti
             </summary>
             <remarks>
             Operace založí nové Ocenění nemovitosti k danému case ID. Jde buď o založení Ocenění nemovitosti k objektu úvěru ze žádosti o úvěr nebo o manuální založení dalšího objektu zajištění.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5A275F67-67AC-4851-8FE9-51F2B685B990"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteRealEstateValuation(System.Int64,System.Int32,System.Threading.CancellationToken)">
@@ -2296,8 +2191,6 @@
             </summary>
             <remarks>
             Smazání Ocenění konkrétní nemovitosti ještě před odesláním do ACV.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6525504B-D598-4113-AA2A-846571769C40"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.GetRealEstateValuationDetail(System.Int64,System.Int32,System.Threading.CancellationToken)">
@@ -2314,8 +2207,7 @@
             Získání seznamu Ocenění nemovitostí
             </summary>
             <remarks>
-            Operace vrací seznam všech ocenění nemovitostí k danému case ID. Seznam je sloučením ocenění objektů úvěru ze žádosti o úvěr a manuálně zadaných dalších objektů zajištění. Operace nevrací objednávky ocenění, které nevznikly v Noby.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0DCD023D-ACF8-4744-B198-FE4FC2A84223"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Operace vrací seznam všech ocenění nemovitostí k danému case ID. Seznam je sloučením ocenění objektů úvěru ze žádosti o úvěr a manuálně zadaných dalších objektů zajištění. Operace nevrací objednávky ocenění, které nevznikly v Noby.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.UpdateRealEstateValuationDetail(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail.UpdateRealEstateValuationDetailRequest,System.Threading.CancellationToken)">
@@ -2363,17 +2255,15 @@
             Smazání přílohy ocenění nemovitosti
             </summary>
             <remarks>
-            Smazání již nahrané přílohy ocenění z databáze NOBY a ACV.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=4EFAC9BD-B78E-4219-A801-39E983D3EDAF"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Smazání již nahrané přílohy ocenění z databáze NOBY a ACV.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.AddDeedOfOwnershipDocument(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.AddDeedOfOwnershipDocument.AddDeedOfOwnershipDocumentRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.AddDeedOfOwnershipDocument(System.Int64,System.Int32,NOBY.ApiContracts.RealEstateValuationAddDeedOfOwnershipDocumentRequest,System.Threading.CancellationToken)">
             <summary>
             Uložení údajů identifikace nemovitosti k danému Ocenění nemovitosti
             </summary>
             <remarks>
-            Uložení údajů identifikace nemovitosti k danému Ocenění nemovitosti.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=536CD827-3140-4a41-8AC2-AF6BB6700539"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Uložení údajů identifikace nemovitosti k danému Ocenění nemovitosti.
             </remarks>
             <response code="200">DeedOfOwnershipDocumentId: Noby ID daného záznamu. Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
         </member>

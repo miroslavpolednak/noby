@@ -105,7 +105,7 @@ public class UpdateRealEstateValuationDetailHandler : IRequestHandler<UpdateReal
             throw new NobyValidationException(90032, "PossibleValuationTypeId is not empty");
         }
 
-        var variant = RealEstateVariantHelper.GetRealEstateVariant(valuationDetail.RealEstateTypeId);
+        var variant = RealEstateValuationHelpers.GetRealEstateVariant(valuationDetail.RealEstateTypeId);
 
         parseAndSetSpecificDetails(request, variant);
 

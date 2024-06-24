@@ -127,7 +127,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
             OrderId = valuationDetail.OrderId,
             CaseId = valuationDetail.CaseId,
             RealEstateTypeId = valuationDetail.RealEstateTypeId,
-            RealEstateTypeIcon = __Contracts.Helpers.GetRealEstateTypeIcon(valuationDetail.RealEstateTypeId),
+            RealEstateTypeIcon = (int)RealEstateValuationHelpers.GetRealEstateTypeIcon(valuationDetail.RealEstateTypeId),
             ValuationStateId = valuationDetail.ValuationStateId,
             ValuationStateIndicator = (ValuationStateIndicators)state.Indicator,
             ValuationStateName = state.Name,
@@ -154,7 +154,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
 
     private static string GetRealEstateVariant(int realEstateTypeId)
     {
-        return RealEstateVariantHelper.GetRealEstateVariant(realEstateTypeId) switch
+        return RealEstateValuationHelpers.GetRealEstateVariant(realEstateTypeId) switch
         {
             RealEstateVariants.HouseAndFlat => "HF",
             RealEstateVariants.OnlyFlat => "HF+F",

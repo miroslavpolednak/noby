@@ -39,7 +39,7 @@ public sealed class RealEstateValuationListItem
     /// </summary>
     /// <example>1</example>
     [Required]
-    public RealEstateTypeIcons RealEstateTypeIcon { get; set; }
+    public int RealEstateTypeIcon { get; set; }
 
     /// <summary>
     /// ID stavu Ocenění nemovitosti
