@@ -13,6 +13,8 @@ internal sealed class AppConfiguration
     public List<string> EmailLanguageCodes { get; set; } = new();
     
     public KafkaTopics KafkaTopics { get; set; } = null!;
+
+    public RateLimit RateLimit { get; set; } = null!;
 }
 
 internal sealed class Consumer
@@ -36,4 +38,11 @@ internal sealed class KafkaTopics
     public string McsSender { get; set; } = null!;
 
     public static string McsIdPrefix { get => "NOBYNS-"; }
+}
+
+internal sealed class RateLimit
+{
+    public int PermitLimit { get; set; }
+
+    public int WindowDurationInSeconds { get; set; }
 }

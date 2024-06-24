@@ -2,6 +2,7 @@
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2;
 
@@ -20,6 +21,7 @@ internal sealed class NotificationService(IMediator _mediator)
     public override async Task<ResultData> GetResult(GetResultRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
+    [EnableRateLimiting("fixed")]
     [Authorize(Roles = UserRoles.ReadResult)]
     public override async Task<SearchResultsResponse> SearchResults(SearchResultsRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);

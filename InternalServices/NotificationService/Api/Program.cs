@@ -13,6 +13,7 @@ using System.Text.Json;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 using CIS.Infrastructure.gRPC;
 using CIS.InternalServices.NotificationService.Api.BackgroundServices.Cleaning;
+using Microsoft.AspNetCore.RateLimiting;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -65,6 +66,17 @@ SharedComponents.GrpcServiceBuilder
                 msg.AddProducerAvro<cz.kb.osbs.mcs.sender.sendapi.v4.sms.SendSMS>(configuration.KafkaTopics.McsSender);
             });
 
+        // limitovani requestu
+        builder.Services.AddRateLimiter(limiterOptions =>
+        {
+            limiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+            limiterOptions.AddFixedWindowLimiter(policyName: "fixed", options =>
+            {
+                options.PermitLimit = configuration.RateLimit.PermitLimit;
+                options.Window = TimeSpan.FromSeconds(configuration.RateLimit.WindowDurationInSeconds);
+            });
+        });        
+
         #region registrace background jobu
         // odeslani MPSS emailu
         builder.AddCisBackgroundService<SendEmailsJob, SendEmailsJobConfiguration>(new SendEmailsJobConfigurationValidator());
@@ -93,9 +105,12 @@ SharedComponents.GrpcServiceBuilder
         #endregion legacy code
 
     })
-#region legacy code
     .UseMiddlewares((app, _) =>
     {
+        // zapnuti limitovani requestu
+        app.UseRateLimiter();
+
+        #region legacy code
         var manager = app.Services.GetRequiredService<IFeatureManager>();
         if (manager.IsEnabledAsync("LegacyEndpoints").GetAwaiter().GetResult())
         {
@@ -109,8 +124,8 @@ SharedComponents.GrpcServiceBuilder
                 app2.UseEndpoints(t => t.MapControllers());
             });
         }
+        #endregion legacy code
     })
-    #endregion legacy code
     .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<CIS.InternalServices.NotificationService.Api.Endpoints.v2.NotificationService>();

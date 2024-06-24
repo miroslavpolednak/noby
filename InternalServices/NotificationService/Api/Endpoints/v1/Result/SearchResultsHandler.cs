@@ -2,7 +2,6 @@
 using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
 using CIS.InternalServices.NotificationService.LegacyContracts.Result;
-using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Result;
 
