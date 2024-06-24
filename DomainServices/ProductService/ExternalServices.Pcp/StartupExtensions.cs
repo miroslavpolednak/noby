@@ -7,6 +7,10 @@ namespace ExternalServices;
 
 public static class StartupExtensions
 {
+    public static WebApplicationBuilder AddExternalServiceV3<TClient>(this WebApplicationBuilder builder)
+        where TClient : class, DomainServices.ProductService.ExternalServices.Pcp.IPcpClient
+        => builder.AddPcpClient<TClient>(DomainServices.ProductService.ExternalServices.Pcp.IPcpClient.Version3);
+
     public static WebApplicationBuilder AddExternalServiceV2<TClient>(this WebApplicationBuilder builder)
           where TClient : class, DomainServices.ProductService.ExternalServices.Pcp.IPcpClient
           => builder.AddPcpClient<TClient>(DomainServices.ProductService.ExternalServices.Pcp.IPcpClient.Version2);
@@ -38,6 +42,9 @@ public static class StartupExtensions
                     .AddExternalServicesErrorHandling(DomainServices.ProductService.ExternalServices.Pcp.IPcpClient.ServiceName);
                 break;
             case (DomainServices.ProductService.ExternalServices.Pcp.IPcpClient.Version2, ServiceImplementationTypes.Real):
+                builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(RealSpeedPcpClient), ServiceLifetime.Scoped));
+                break;
+            case (DomainServices.ProductService.ExternalServices.Pcp.IPcpClient.Version3, ServiceImplementationTypes.Real):
                 builder.Services.Add(new ServiceDescriptor(typeof(TClient), typeof(RealSpeedPcpClient), ServiceLifetime.Scoped));
                 break;
             default:
