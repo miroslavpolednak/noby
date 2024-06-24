@@ -1,11 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Workflow.GetCurrentHandoverTask;
 
-public class GetCurrentHandoverTaskRequest : IRequest<GetCurrentHandoverTaskResponse>
+internal sealed record GetCurrentHandoverTaskRequest(long CaseId)
+    : IRequest<WorkflowGetCurrentHandoverTaskResponse>
 {
-    public GetCurrentHandoverTaskRequest(long caseId)
-    {
-        CaseId = caseId;
-    }
-
-    public long CaseId { get; }
 }

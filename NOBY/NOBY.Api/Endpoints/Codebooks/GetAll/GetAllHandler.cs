@@ -3,12 +3,15 @@ using NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
 namespace NOBY.Api.Endpoints.Codebooks.GetAll;
 
-internal sealed class GetAllHandler
-    : IRequestHandler<GetAllRequest, List<GetAllResponseItem>>
+internal sealed class GetAllHandler(
+    ICodebookServiceClient _codebooks, 
+    ICodebookMap _codebookMap, 
+    ILogger<GetAllHandler> _logger)
+        : IRequestHandler<GetAllRequest, List<CodebooksGetAllResponseItem>>
 {
-    public async Task<List<GetAllResponseItem>> Handle(GetAllRequest request, CancellationToken cancellationToken)
+    public async Task<List<CodebooksGetAllResponseItem>> Handle(GetAllRequest request, CancellationToken cancellationToken)
     {
-        List<GetAllResponseItem> model = new();
+        List<CodebooksGetAllResponseItem> model = [];
 
         _logger.CodebooksGetAllStarted(request.CodebookCodes);
 
@@ -16,23 +19,16 @@ internal sealed class GetAllHandler
         {
             var objects = await _codebookMap[key].GetObjects(_codebooks, cancellationToken);
 
-            model.Add(new GetAllResponseItem(original, objects));
+            model.Add(new CodebooksGetAllResponseItem
+            {
+                Code = original,
+                Codebook = objects.ToList()
+            });
         }
 
         //foreach (var code in request.CodebookCodes)
         //    model.Add(await fillCodebook(code.Key, code.Original, cancellationToken));
         
         return model;
-    }
-
-    private readonly ICodebookServiceClient _codebooks;
-    private readonly ICodebookMap _codebookMap;
-    private readonly ILogger<GetAllHandler> _logger;
-
-    public GetAllHandler(ICodebookServiceClient codebooks, ICodebookMap codebookMap, ILogger<GetAllHandler> logger)
-    {
-        _logger = logger;
-        _codebooks = codebooks;
-        _codebookMap = codebookMap;
     }
 }

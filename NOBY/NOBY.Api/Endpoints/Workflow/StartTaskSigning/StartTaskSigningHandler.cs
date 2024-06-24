@@ -13,19 +13,14 @@ using DomainServices.CaseService.Contracts;
 namespace NOBY.Api.Endpoints.Workflow.StartTaskSigning;
 
 internal sealed class StartTaskSigningHandler(
-    ICodebookServiceClient codebookService,
-    IDocumentOnSAServiceClient documentOnSaService,
-    ISalesArrangementServiceClient salesArrangementService,
-    ICaseServiceClient caseService,
-    Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization) : IRequestHandler<StartTaskSigningRequest, StartTaskSigningResponse>
+    ICodebookServiceClient _codebookService,
+    IDocumentOnSAServiceClient _documentOnSaService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICaseServiceClient _caseService,
+    Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization) 
+    : IRequestHandler<StartTaskSigningRequest, WorkflowStartTaskSigningResponse>
 {
-    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization = salesArrangementAuthorization;
-    private readonly ICodebookServiceClient _codebookService = codebookService;
-    private readonly IDocumentOnSAServiceClient _documentOnSaService = documentOnSaService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService = salesArrangementService;
-    private readonly ICaseServiceClient _caseService = caseService;
-
-    public async Task<StartTaskSigningResponse> Handle(StartTaskSigningRequest request, CancellationToken cancellationToken)
+    public async Task<WorkflowStartTaskSigningResponse> Handle(StartTaskSigningRequest request, CancellationToken cancellationToken)
     {
         var caseId = request.CaseId;
         var taskId = request.TaskId;
@@ -108,7 +103,7 @@ internal sealed class StartTaskSigningHandler(
         return saList.SalesArrangements.Single(s => s.SalesArrangementTypeId == salesArrangementType.Id);
     }
 
-    private static StartTaskSigningResponse Map(
+    private static WorkflowStartTaskSigningResponse Map(
         DocumentOnSAToSign documentOnSa,
         List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes,
         List<EaCodesMainResponse.Types.EaCodesMainItem> eACodeMains,
@@ -133,13 +128,13 @@ internal sealed class StartTaskSigningHandler(
                 EaCodeMainId = documentOnSa.EACodeMainId
             },
               signatureStates),
-            EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
+            EaCodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
             new() { DocumentTypeId = documentOnSa.DocumentTypeId, EACodeMainId = documentOnSa.EACodeMainId },
             documentTypes,
             eACodeMains)
         };
 
-    private static StartTaskSigningResponse Map(
+    private static WorkflowStartTaskSigningResponse Map(
         StartSigningResponse signingResponse,
         List<DocumentTypesResponse.Types.DocumentTypeItem> documentTypes,
         List<EaCodesMainResponse.Types.EaCodesMainItem> eACodeMains,
@@ -164,7 +159,7 @@ internal sealed class StartTaskSigningHandler(
                 EaCodeMainId = signingResponse.DocumentOnSa.EACodeMainId
             },
               signatureStates),
-            EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
+            EaCodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
              new() { DocumentTypeId = signingResponse.DocumentOnSa.DocumentTypeId, EACodeMainId = signingResponse.DocumentOnSa.EACodeMainId },
             documentTypes,
             eACodeMains)

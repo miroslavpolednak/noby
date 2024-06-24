@@ -6,11 +6,11 @@ namespace NOBY.Api.Endpoints.Workflow.GetTaskList;
 internal sealed class GetTaskListHandler(
     ICaseServiceClient _caseService, 
     IWorkflowMapperService _mapper)
-    : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
+    : IRequestHandler<GetTaskListRequest, WorkflowGetTaskListResponse>
 {
-    public async Task<GetTaskListResponse> Handle(GetTaskListRequest request, CancellationToken cancellationToken)
+    public async Task<WorkflowGetTaskListResponse> Handle(GetTaskListRequest request, CancellationToken cancellationToken)
     {
-        var response = new GetTaskListResponse();
+        var response = new WorkflowGetTaskListResponse();
 
         var tasks = (await _caseService.GetTaskList(request.CaseId, cancellationToken))
             .Where(t => _allowedTaskTypes.Contains(t.TaskTypeId))

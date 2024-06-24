@@ -1,39 +1,30 @@
-﻿using NOBY.Dto.Documents;
-using __Contract = DomainServices.DocumentArchiveService.Contracts;
+﻿using __Contract = DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.UserService.Contracts;
 using CIS.Core.Security;
 using NOBY.Infrastructure.ErrorHandling;
+using NOBY.ApiContracts;
 
 namespace NOBY.Services.DocumentHelper;
 
 [ScopedService, AsImplementedInterfacesService]
-internal sealed class DocumentHelperService
-    : IDocumentHelperService
+internal sealed class DocumentHelperService(
+    ICodebookServiceClient _codebookService,
+    ICurrentUserAccessor _currentUserAccessor)
+        : IDocumentHelperService
 {
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-
     public List<EaCodesMainResponse.Types.EaCodesMainItem> EaCodeMainItems { get; set; } = null!;
 
-    public DocumentHelperService(
-        ICodebookServiceClient codebookService,
-        ICurrentUserAccessor currentUserAccessor)
-    {
-        _codebookService = codebookService;
-        _currentUserAccessor = currentUserAccessor;
-    }
-
-    public IEnumerable<DocumentsMetadata> MergeDocuments(IEnumerable<DocumentsMetadata> documentList, IEnumerable<DocumentsMetadata> documentInQueue)
+    public IEnumerable<SharedTypesDocumentsMetadata> MergeDocuments(IEnumerable<SharedTypesDocumentsMetadata> documentList, IEnumerable<SharedTypesDocumentsMetadata> documentInQueue)
     {
         return documentList.Concat(documentInQueue.Where(d => !documentList.Select(l => l.DocumentId)
                                                                         .Contains(d.DocumentId)));
     }
 
-    public IEnumerable<DocumentsMetadata> MapGetDocumentsInQueueMetadata(__Contract.GetDocumentsInQueueResponse getDocumentsInQueueResult)
+    public IEnumerable<SharedTypesDocumentsMetadata> MapGetDocumentsInQueueMetadata(__Contract.GetDocumentsInQueueResponse getDocumentsInQueueResult)
     {
-        return getDocumentsInQueueResult.QueuedDocuments.Select(s => new DocumentsMetadata
+        return getDocumentsInQueueResult.QueuedDocuments.Select(s => new SharedTypesDocumentsMetadata
         {
             DocumentId = s.EArchivId,
             EaCodeMainId = s.EaCodeMainId,
@@ -45,9 +36,9 @@ internal sealed class DocumentHelperService
         });
     }
 
-    public IEnumerable<DocumentsMetadata> MapGetDocumentListMetadata(__Contract.GetDocumentListResponse getDocumentListResult)
+    public IEnumerable<SharedTypesDocumentsMetadata> MapGetDocumentListMetadata(__Contract.GetDocumentListResponse getDocumentListResult)
     {
-        return getDocumentListResult.Metadata.Select(s => new DocumentsMetadata
+        return getDocumentListResult.Metadata.Select(s => new SharedTypesDocumentsMetadata
         {
             DocumentId = s.DocumentId,
             EaCodeMainId = s.EaCodeMainId,
@@ -59,7 +50,7 @@ internal sealed class DocumentHelperService
         });
     }
 
-    public async Task<IEnumerable<DocumentsMetadata>> FilterDocumentsVisibleForKb(IEnumerable<DocumentsMetadata> docMetadata, CancellationToken cancellationToken)
+    public async Task<IEnumerable<SharedTypesDocumentsMetadata>> FilterDocumentsVisibleForKb(IEnumerable<SharedTypesDocumentsMetadata> docMetadata, CancellationToken cancellationToken)
     {
         EaCodeMainItems = await _codebookService.EaCodesMain(cancellationToken);
 
@@ -74,7 +65,7 @@ internal sealed class DocumentHelperService
         return query.Select(s => s.docData);
     }
 
-    public async Task<IReadOnlyCollection<CategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<DocumentsMetadata> documentsMetadata, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<SharedTypesDocumentsCategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<SharedTypesDocumentsMetadata> documentsMetadata, CancellationToken cancellationToken)
     {
         EaCodeMainItems ??= await _codebookService.EaCodesMain(cancellationToken);
 
@@ -88,16 +79,18 @@ internal sealed class DocumentHelperService
 
         var eaCodeMainCategories = dataWithEaCodeMain.Select(s => s.eACodeMainObj!.Category.Trim()).Distinct().ToList();
 
-        var categoryEaCodeMains = new List<CategoryEaCodeMain>();
+        var categoryEaCodeMains = new List<SharedTypesDocumentsCategoryEaCodeMain>();
 
         foreach (var eaCodeMainCategory in eaCodeMainCategories)
         {
-            var categoryEaCodeMain = new CategoryEaCodeMain
+            var categoryEaCodeMain = new SharedTypesDocumentsCategoryEaCodeMain
             {
                 Name = eaCodeMainCategory,
                 DocumentCountInCategory = dataWithEaCodeMain.Count(c => c.eACodeMainObj!.Category == eaCodeMainCategory),
-                EaCodeMainIdList = dataWithEaCodeMain.Where(c => c.eACodeMainObj!.Category == eaCodeMainCategory)
-                                                     .Select(s => s.docData.EaCodeMainId).Distinct().ToList(),
+                EaCodeMainIdList = dataWithEaCodeMain.Where(c => c.docData.EaCodeMainId.HasValue && c.eACodeMainObj!.Category == eaCodeMainCategory)
+                                                     .Select(s => s.docData.EaCodeMainId!.Value)
+                                                     .Distinct()
+                                                     .ToList(),
             };
 
             categoryEaCodeMains.Add(categoryEaCodeMain);
@@ -118,11 +111,11 @@ internal sealed class DocumentHelperService
             throw new CisNotFoundException(ErrorCodeMapper.DefaultExceptionCode, "Cannot get NOBY user identifier");
     }
 
-    private static UploadStatuses getUploadStatus(int stateInQueue) => stateInQueue switch
+    private static SharedTypesDocumentsMetadataUploadStatus getUploadStatus(int stateInQueue) => stateInQueue switch
     {
-        100 or 110 or 200 => UploadStatuses.InProgress,
-        300 => UploadStatuses.Error,
-        400 => UploadStatuses.SaveInEArchive,
+        100 or 110 or 200 => SharedTypesDocumentsMetadataUploadStatus.InProgress,
+        300 => SharedTypesDocumentsMetadataUploadStatus.Error,
+        400 => SharedTypesDocumentsMetadataUploadStatus.SaveInEArchive,
         _ => throw new ArgumentException("StatusInDocumentInterface is not supported")
     };
 }

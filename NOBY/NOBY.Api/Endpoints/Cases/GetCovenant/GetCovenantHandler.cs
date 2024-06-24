@@ -3,13 +3,13 @@
 namespace NOBY.Api.Endpoints.Cases.GetCovenant;
 
 internal sealed class GetCovenantHandler(IProductServiceClient _productService)
-        : IRequestHandler<GetCovenantRequest, GetCovenantResponse>
+        : IRequestHandler<GetCovenantRequest, CasesGetCovenantResponse>
 {
-    public async Task<GetCovenantResponse> Handle(GetCovenantRequest request, CancellationToken cancellationToken)
+    public async Task<CasesGetCovenantResponse> Handle(GetCovenantRequest request, CancellationToken cancellationToken)
     {
         var covenant = await _productService.GetCovenantDetail(request.CaseId, request.CovenantOrder, cancellationToken);
 
-        return new GetCovenantResponse
+        return new CasesGetCovenantResponse
         {
             Name = covenant.Name,
             IsFulfilled = covenant.IsFulfilled,

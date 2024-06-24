@@ -5,7 +5,6 @@ using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.CreateTask;
 
-#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 internal sealed class CreateTaskHandler(
     ICurrentUserAccessor _currentUserAccessor,
     ICaseServiceClient _caseService,
@@ -13,9 +12,9 @@ internal sealed class CreateTaskHandler(
     IOfferServiceClient _offerService,
     SharedComponents.Storage.ITempStorage _tempFileManager,
     Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive)
-        : IRequestHandler<CreateTaskRequest, long>
+        : IRequestHandler<WorkflowCreateTaskRequest, long>
 {
-    public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
+    public async Task<long> Handle(WorkflowCreateTaskRequest request, CancellationToken cancellationToken)
     {
         // kontrola existence Case
         DomainServices.CaseService.Contracts.Case caseInstance;
@@ -37,7 +36,7 @@ internal sealed class CreateTaskHandler(
             await validatePriceException(caseInstance.CaseId, cancellationToken);
         }
 
-        List<string>? documentIds = new();
+        List<string>? documentIds = [];
         var attachments = request
             .Attachments?
             .Select(t => new Services.UploadDocumentToArchive.DocumentMetadata

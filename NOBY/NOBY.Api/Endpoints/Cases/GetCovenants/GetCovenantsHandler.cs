@@ -6,19 +6,19 @@ namespace NOBY.Api.Endpoints.Cases.GetCovenants;
 internal sealed class GetCovenantsHandler(
     IProductServiceClient _productService, 
     ICodebookServiceClient _codebookService)
-        : IRequestHandler<GetCovenantsRequest, GetCovenantsResponse>
+        : IRequestHandler<GetCovenantsRequest, CasesGetCovenantsResponse>
 {
-    public async Task<GetCovenantsResponse> Handle(GetCovenantsRequest request, CancellationToken cancellationToken)
+    public async Task<CasesGetCovenantsResponse> Handle(GetCovenantsRequest request, CancellationToken cancellationToken)
     {
         var sectionsCodebook = await _codebookService.CovenantTypes(cancellationToken);
         var list = await _productService.GetCovenantList(request.CaseId, cancellationToken);
         var covenantGroups = list.Covenants.GroupBy(t => t.CovenantTypeId);
 
-        return new GetCovenantsResponse
+        return new CasesGetCovenantsResponse
         {
             Sections = covenantGroups.Select(group =>
             {
-                return new GetCovenantsResponseSection
+                return new CasesGetCovenantsResponseSection
                 {
                     CovenantTypeId = group.Key,
                     Phases = group
@@ -28,7 +28,7 @@ internal sealed class GetCovenantsHandler(
                         {
                             var phase = list.Phases.FirstOrDefault(p => p.Order == t.Key);
 
-                            return new GetCovenantsResponsePhase()
+                            return new CasesGetCovenantsResponsePhase
                             {
                                 Name = phase?.Name,
                                 OrderLetter = phase?.OrderLetter,
@@ -43,9 +43,9 @@ internal sealed class GetCovenantsHandler(
         };
     }
 
-    static Func<DomainServices.ProductService.Contracts.CovenantListItem, GetCovenantsResponseCovenant> mapCovenant()
+    static Func<DomainServices.ProductService.Contracts.CovenantListItem, CasesGetCovenantsResponseCovenant> mapCovenant()
     {
-        return t => new GetCovenantsResponseCovenant
+        return t => new CasesGetCovenantsResponseCovenant
         {
             FulfillDate = t.FulfillDate,
             IsFulfilled = t.IsFulfilled,

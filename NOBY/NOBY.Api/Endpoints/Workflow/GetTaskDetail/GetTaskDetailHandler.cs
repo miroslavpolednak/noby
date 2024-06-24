@@ -4,10 +4,13 @@ using NOBY.Services.WorkflowTask;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 
-internal sealed class GetTaskDetailHandler
-    : IRequestHandler<GetTaskDetailRequest, GetTaskDetailResponse>
+internal sealed class GetTaskDetailHandler(
+    ICurrentUserAccessor _currentUserAccessor,
+    ICaseServiceClient _caseService,
+    IWorkflowTaskService _workflowTaskService)
+        : IRequestHandler<GetTaskDetailRequest, WorkflowGetTaskDetailResponse>
 {
-    public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
+    public async Task<WorkflowGetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
         var taskResult = await _caseService.GetTaskByTaskId(request.CaseId, request.TaskId, cancellationToken);
         var task = taskResult.Task;
@@ -46,7 +49,7 @@ internal sealed class GetTaskDetailHandler
 
         var (taskDto, taskDetailDto, documents) = await _workflowTaskService.GetTaskDetail(request.CaseId, task.TaskIdSb, cancellationToken);
 
-        return new GetTaskDetailResponse
+        return new WorkflowGetTaskDetailResponse
         {
             TaskDetail = taskDetailDto,
             Task = taskDto,
@@ -54,10 +57,7 @@ internal sealed class GetTaskDetailHandler
         };
     }
 
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IWorkflowTaskService _workflowTaskService;
-    private static int[] _allowedTaskTypeIds =
+    private static readonly int[] _allowedTaskTypeIds =
         [
             (int)WorkflowTaskTypes.Dozadani,
             (int)WorkflowTaskTypes.PriceException,
@@ -65,14 +65,4 @@ internal sealed class GetTaskDetailHandler
             (int)WorkflowTaskTypes.Signing,
             (int)WorkflowTaskTypes.PredaniNaSpecialitu
         ];
-
-    public GetTaskDetailHandler(
-        ICurrentUserAccessor currentUserAccessor,
-        ICaseServiceClient caseService,
-        IWorkflowTaskService workflowTaskService)
-    {
-        _currentUserAccessor = currentUserAccessor;
-        _caseService = caseService;
-        _workflowTaskService = workflowTaskService;
-    }
 }

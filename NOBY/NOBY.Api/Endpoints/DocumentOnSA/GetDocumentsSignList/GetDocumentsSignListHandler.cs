@@ -50,7 +50,7 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                 FormId = s.FormId,
                 SignatureTypeId = s.SignatureTypeId,
                 SignatureDateTime = s.SignatureDateTime?.ToDateTime(),
-                SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
+                SignatureState = DocumentOnSaMetadataManagerOld.GetSignatureState(new()
                 {
                     IsValid = s.IsValid,
                     DocumentOnSAId = s.DocumentOnSAId,
@@ -62,7 +62,7 @@ public class GetDocumentsSignListHandler : IRequestHandler<GetDocumentsSignListR
                     EaCodeMainId = s.EACodeMainId
                 },
               signatureStates),
-                EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
+                EACodeMainItem = DocumentOnSaMetadataManagerOld.GetEaCodeMainItem(
                     new() { DocumentTypeId = s.DocumentTypeId, EACodeMainId = s.EACodeMainId }, documentTypes, eACodeMains),
                 CustomerOnSa = new()
                 {

@@ -1,6 +1,7 @@
 ﻿namespace NOBY.Api.Endpoints.Codebooks.GetAll;
 
-internal sealed class GetAllRequest : IRequest<List<GetAllResponseItem>>
+internal sealed class GetAllRequest 
+    : IRequest<List<CodebooksGetAllResponseItem>>
 {
     public List<(string Original, string Key)> CodebookCodes { get; init; }
 

@@ -1,31 +1,31 @@
 ﻿using FluentValidation;
-using NOBY.Api.Endpoints.Cases.IdentifyCase;
 
 namespace NOBY.Api.Endpoints.Cases.SearchCases;
 
-internal sealed class IdentifyCaseRequestValidator : AbstractValidator<IdentifyCaseRequest>
+internal sealed class IdentifyCaseRequestValidator 
+    : AbstractValidator<CasesIdentifyCaseRequest>
 {
     public IdentifyCaseRequestValidator()
     {
-        When(request => request.Criterion == Criterion.CaseId, () =>
+        When(request => request.Criterion == CasesIdentifyCaseRequestCriterion.CaseId, () =>
         {
             RuleFor(r => r.CaseId)
                 .NotNull();
         });
         
-        When(request => request.Criterion == Criterion.ContractNumber, () =>
+        When(request => request.Criterion == CasesIdentifyCaseRequestCriterion.ContractNumber, () =>
         {
             RuleFor(r => r.ContractNumber)
                 .NotEmpty();
         });
         
-        When(request => request.Criterion == Criterion.FormId, () =>
+        When(request => request.Criterion == CasesIdentifyCaseRequestCriterion.FormId, () =>
         {
             RuleFor(r => r.FormId)
                 .NotEmpty();
         });
         
-        When(request => request.Criterion == Criterion.PaymentAccount, () =>
+        When(request => request.Criterion == CasesIdentifyCaseRequestCriterion.PaymentAccount, () =>
         {
             RuleFor(r => r.Account)
                 .NotNull()
@@ -41,13 +41,13 @@ internal sealed class IdentifyCaseRequestValidator : AbstractValidator<IdentifyC
                 });
         });
 
-        When(request => request.Criterion == Criterion.CustomerIdentity, () =>
+        When(request => request.Criterion == CasesIdentifyCaseRequestCriterion.CustomerIdentity, () =>
         {
             RuleFor(r => r.CustomerIdentity)
                 .NotNull()
                 .ChildRules(identity =>
                 {
-                    identity.RuleFor(t => t!.IdentityId)
+                    identity.RuleFor(t => t!.Id)
                         .NotEmpty();
                 });
         });

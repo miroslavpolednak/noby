@@ -27,7 +27,7 @@ internal static class Extensions
             MaritalStatusId = model.MaritalStatusId,
             LockedIncome = model.LockedIncomeDateTime is not null,
             LockedIncomeDateTime = model.LockedIncomeDateTime,
-            Incomes = model.Incomes is null ? null : model.Incomes.Select(x => new CustomerIncome.SharedDto.IncomeBaseData
+            Incomes = model.Incomes is null ? null : model.Incomes.Select(x => new IncomeBaseData
             {
                 Sum = x.Sum,
                 CurrencyCode = x.CurrencyCode,

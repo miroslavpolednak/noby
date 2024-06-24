@@ -12,14 +12,14 @@ public partial class NullableGrpcDecimal
 
     public static implicit operator double?(NullableGrpcDecimal? grpcDecimal)
     {
-        if (grpcDecimal == null) return default(double?);
+        if (grpcDecimal == null) return default;
 
         return Convert.ToDouble(grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor);
     }
 
     public static implicit operator decimal?(NullableGrpcDecimal? grpcDecimal)
     {
-        if (grpcDecimal == null) return default(decimal?);
+        if (grpcDecimal == null) return default;
 
         return grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor;
     }
@@ -33,7 +33,7 @@ public partial class NullableGrpcDecimal
 
     public static implicit operator NullableGrpcDecimal?(decimal? value)
     {
-        if (!value.HasValue) return default(NullableGrpcDecimal);
+        if (!value.HasValue) return default;
         
         var units = decimal.ToInt64(value.Value);
         var nanos = decimal.ToInt32((value.Value - units) * NanoFactor);

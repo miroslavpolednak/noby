@@ -1,11 +1,11 @@
-﻿namespace NOBY.Api.Endpoints.Cases.GetTotalsByStates;
+﻿namespace NOBY.Api.Endpoints.Cases.GetDashboardFilters;
 
 internal sealed class GetDashboardFiltersHandler(
     CIS.Core.Security.ICurrentUserAccessor _userAccessor,
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService)
-        : IRequestHandler<GetDashboardFiltersRequest, List<GetDashboardFiltersResponse>>
+        : IRequestHandler<GetDashboardFiltersRequest, List<CasesGetDashboardFiltersResponseItem>>
 {
-    public async Task<List<GetDashboardFiltersResponse>> Handle(GetDashboardFiltersRequest request, CancellationToken cancellationToken)
+    public async Task<List<CasesGetDashboardFiltersResponseItem>> Handle(GetDashboardFiltersRequest request, CancellationToken cancellationToken)
     {
         // zavolat BE sluzbu
         var result = await _caseService.GetCaseCounts(_userAccessor.User!.Id, cancellationToken);
@@ -15,11 +15,36 @@ internal sealed class GetDashboardFiltersHandler(
         // rucne vytvorena kolekce podle Motalika
         return
         [
-            new(1, "Vše", result.Select(t => t.Count).Sum()),
-            new(2, "Žádosti o úvěr", result.Where(t => t.State is 1 or 2 or 8).Select(t => t.Count).Sum()),
-            new(3, "Podepisování smluv", result.Where(t => t.State == 3).Select(t => t.Count).Sum()),
-            new(4, "Čerpání", result.Where(t => t.State == 4).Select(t => t.Count).Sum()),
-            new(5, "Správa", result.Where(t => t.State == 5).Select(t => t.Count).Sum())
+            new CasesGetDashboardFiltersResponseItem
+            {
+                FilterId = 1,
+                Text = "Vše",
+                CaseCount = result.Select(t => t.Count).Sum()
+            },
+            new CasesGetDashboardFiltersResponseItem
+            {
+                FilterId = 2,
+                Text = "Žádosti o úvěr",
+                CaseCount = result.Where(t => t.State is 1 or 2 or 8).Select(t => t.Count).Sum()
+            },
+            new CasesGetDashboardFiltersResponseItem
+            {
+                FilterId = 3,
+                Text = "Podepisování smluv",
+                CaseCount = result.Where(t => t.State == 3).Select(t => t.Count).Sum()
+            },
+            new CasesGetDashboardFiltersResponseItem
+            {
+                FilterId = 4,
+                Text = "Čerpání",
+                CaseCount = result.Where(t => t.State == 4).Select(t => t.Count).Sum()
+            },
+            new CasesGetDashboardFiltersResponseItem
+            {
+                FilterId = 5,
+                Text = "Správa",
+                CaseCount = result.Where(t => t.State == 5).Select(t => t.Count).Sum()
+            }
         ];
     }
 }

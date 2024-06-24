@@ -1,13 +1,13 @@
-﻿using _Case = DomainServices.CaseService.Contracts;
-using _Dto = NOBY.Dto.Workflow;
+﻿using NOBY.ApiContracts;
+using _Case = DomainServices.CaseService.Contracts;
 
 namespace NOBY.Services.WorkflowMapper;
 
 public interface IWorkflowMapperService
 {
-    _Dto.WorkflowProcess MapProcess(_Case.ProcessTask task);
+    SharedTypesWorkflowProcess MapProcess(_Case.ProcessTask task);
 
-    Task<_Dto.WorkflowTask> MapTask(_Case.WorkflowTask task, CancellationToken cancellationToken = default);
+    Task<SharedTypesWorkflowTask> MapTask(_Case.WorkflowTask task, CancellationToken cancellationToken = default);
 
-    Task<_Dto.WorkflowTaskDetail> MapTaskDetail(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem, CancellationToken cancellationToken = default);
+    Task<SharedTypesWorkflowTaskDetail> MapTaskDetail(_Case.WorkflowTask task, _Case.TaskDetailItem taskDetailItem, CancellationToken cancellationToken = default);
 }

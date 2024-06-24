@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Workflow.CreateTask;
 
 internal sealed class CreateTaskRequestValidator
-    : AbstractValidator<CreateTaskRequest>
+    : AbstractValidator<WorkflowCreateTaskRequest>
 {
     public CreateTaskRequestValidator()
     {
@@ -22,7 +22,7 @@ internal sealed class CreateTaskRequestValidator
             .WithErrorCode(90046);
     }
 
-    private static int[] _allowedTaskTypes = 
+    private static readonly int[] _allowedTaskTypes = 
         [
             (int)WorkflowTaskTypes.PriceException,
             (int)WorkflowTaskTypes.Consultation,

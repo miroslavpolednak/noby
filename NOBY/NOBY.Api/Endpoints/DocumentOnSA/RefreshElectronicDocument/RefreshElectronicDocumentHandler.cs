@@ -62,7 +62,7 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                 FormId = docOnSa.FormId,
                 SignatureTypeId = docOnSa.SignatureTypeId,
                 SignatureDateTime = docOnSa.SignatureDateTime?.ToDateTime(),
-                SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
+                SignatureState = DocumentOnSaMetadataManagerOld.GetSignatureState(new()
                 {
                     IsValid = docOnSa.IsValid,
                     DocumentOnSAId = docOnSa.DocumentOnSAId,
@@ -74,7 +74,7 @@ public class RefreshElectronicDocumentHandler : IRequestHandler<RefreshElectroni
                     EaCodeMainId = docOnSa.EACodeMainId
                 },
               signatureStates),
-                EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
+                EACodeMainItem = DocumentOnSaMetadataManagerOld.GetEaCodeMainItem(
                     new() { DocumentTypeId = docOnSa.DocumentTypeId, EACodeMainId = docOnSa.EACodeMainId }, documentTypes, eACodeMains),
                 CustomerOnSa = new()
                 {

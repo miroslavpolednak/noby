@@ -1,13 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Workflow.StartTaskSigning;
 
-public sealed class StartTaskSigningRequest : IRequest<StartTaskSigningResponse>
+internal sealed record StartTaskSigningRequest(long CaseId, long TaskId)
+    : IRequest<WorkflowStartTaskSigningResponse>
 {
-    public long CaseId { get; }
-    public long TaskId { get; }
-    
-    public StartTaskSigningRequest(long caseId, long taskId)
-    {
-        CaseId = caseId;
-        TaskId = taskId;
-    }
 }

@@ -26,7 +26,7 @@ public class SaveDocumentToArchiveHandler
     private readonly ICaseServiceClient _caseService;
     private readonly IUserServiceClient _userService;
     private readonly ICodebookServiceClient _codebookService;
-    private readonly IDocumentHelperService _documentHelper;
+    private readonly IDocumentHelperServiceOld _documentHelper;
     private readonly IEaCodeMainHelper _eaCodeMainHelper;
     
     public SaveDocumentToArchiveHandler(
@@ -39,7 +39,7 @@ public class SaveDocumentToArchiveHandler
         ICaseServiceClient caseService,
         IUserServiceClient userService,
         ICodebookServiceClient codebookService,
-        IDocumentHelperService documentHelper,
+        IDocumentHelperServiceOld documentHelper,
         IEaCodeMainHelper eaCodeMainHelper
         )
     {

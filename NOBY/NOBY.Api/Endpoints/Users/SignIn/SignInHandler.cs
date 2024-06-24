@@ -12,9 +12,9 @@ internal sealed class SignInHandler(
     IHttpContextAccessor _httpContext,
     Infrastructure.Configuration.AppConfiguration _configuration,
     IAuditLogger _auditLogger)
-        : IRequestHandler<SignInRequest>
+        : IRequestHandler<UsersSignInRequest>
 {
-    public async Task Handle(SignInRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UsersSignInRequest request, CancellationToken cancellationToken)
     {
         _auditLogger.Log(AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
 
@@ -52,7 +52,7 @@ internal sealed class SignInHandler(
         logAuditEvent(request);
     }
 
-    private void logAuditEvent(SignInRequest request)
+    private void logAuditEvent(UsersSignInRequest request)
     {
         if (string.IsNullOrEmpty(_appVersion))
         {

@@ -4,17 +4,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NOBY.Api.Endpoints.Users.GetLoggedInUser;
 
-internal sealed class GetLoggedInUserHandler
-    : IRequestHandler<GetLoggedInUserRequest, GetLoggedInUserResponse>
+internal sealed class GetLoggedInUserHandler(
+    Database.FeApiDbContext _dbContext,
+    IAppCache _cache,
+    CIS.Core.Security.ICurrentUserAccessor _userAccessor,
+    DomainServices.UserService.Clients.IUserServiceClient _userService)
+        : IRequestHandler<GetLoggedInUserRequest, UsersGetLoggedInUserResponse>
 {
-    public async Task<GetLoggedInUserResponse> Handle(GetLoggedInUserRequest request, CancellationToken cancellationToken)
+    public async Task<UsersGetLoggedInUserResponse> Handle(GetLoggedInUserRequest request, CancellationToken cancellationToken)
     {
         var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
-        return new GetLoggedInUserResponse
+        return new UsersGetLoggedInUserResponse
         {
             UserId = userInstance.UserId,
-            UserInfo = new GetLoggedInUserResponseUserInfo
+            UserInfo = new()
             {
                 FirstName = userInstance.UserInfo.FirstName,
                 LastName = userInstance.UserInfo.LastName,
@@ -26,35 +30,18 @@ internal sealed class GetLoggedInUserHandler
                 IsUserVIP = userInstance.UserInfo?.IsUserVIP ?? false,
                 IsInternal = userInstance.UserInfo?.IsInternal ?? false
             },
-            UserIdentifiers = userInstance.UserIdentifiers.Select(t => (SharedTypes.Types.UserIdentity)t!).ToList(),
+            UserIdentifiers = userInstance.UserIdentifiers.Select(t => (SharedTypesUserIdentity)t!).ToList(),
             UserPermissions = getPermissions(userInstance.UserPermissions)
         };
     }
 
-    private int[]? getPermissions(RepeatedField<int> permissions)
+    private List<int>? getPermissions(RepeatedField<int> permissions)
     {
         var allowedPermissions = _cache.GetOrAdd(nameof(GetLoggedInUserHandler), () =>
         {
             return _dbContext.FeAvailableUserPermissions.AsNoTracking().Select(t => t.PermissionCode).ToArray();
         }, DateTime.Now.AddDays(1));
 
-        return permissions.Intersect(allowedPermissions).ToArray();
-    }
-
-    private readonly IAppCache _cache;
-    private readonly Database.FeApiDbContext _dbContext;
-    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-
-    public GetLoggedInUserHandler(
-        Database.FeApiDbContext dbContext,
-        IAppCache cache,
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        DomainServices.UserService.Clients.IUserServiceClient userService)
-    {
-        _dbContext = dbContext;
-        _cache = cache;
-        _userAccessor = userAccessor;
-        _userService = userService;
+        return permissions.Intersect(allowedPermissions).ToList();
     }
 }

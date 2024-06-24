@@ -3,10 +3,10 @@ using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.CustomerObligation.CreateObligation;
 
-internal sealed class CreateObligationHandler
-    : IRequestHandler<CreateObligationRequest, int>
+internal sealed class CreateObligationHandler(ICustomerOnSAServiceClient _customerService)
+    : IRequestHandler<CustomerObligationCreateObligationRequest, int>
 {
-    public async Task<int> Handle(CreateObligationRequest request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CustomerObligationCreateObligationRequest request, CancellationToken cancellationToken)
     {
         var model = new _HO.CreateObligationRequest
         {
@@ -16,31 +16,11 @@ internal sealed class CreateObligationHandler
             InstallmentAmount = request.InstallmentAmount,
             LoanPrincipalAmount = request.LoanPrincipalAmount,
             AmountConsolidated = request.AmountConsolidated,
-            CreditCardLimit = request.CreditCardLimit
+            CreditCardLimit = request.CreditCardLimit,
+            Creditor = request.Creditor?.ToDomainServiceRequest(),
+            Correction = request.Correction?.ToDomainServiceRequest()
         };
-        if (request.Creditor is not null)
-            model.Creditor = new _HO.ObligationCreditor
-            {
-                CreditorId = request.Creditor.CreditorId ?? "",
-                IsExternal = request.Creditor.IsExternal,
-                Name = request.Creditor.Name ?? ""
-            };
-        if (request.Correction is not null)
-            model.Correction = new _HO.ObligationCorrection
-            {
-                CorrectionTypeId = request.Correction.CorrectionTypeId,
-                CreditCardLimitCorrection = request.Correction.CreditCardLimitCorrection,
-                InstallmentAmountCorrection = request.Correction.InstallmentAmountCorrection,
-                LoanPrincipalAmountCorrection = request.Correction.LoanPrincipalAmountCorrection
-            };
 
         return await _customerService.CreateObligation(model, cancellationToken);
-    }
-
-    private readonly ICustomerOnSAServiceClient _customerService;
-
-    public CreateObligationHandler(ICustomerOnSAServiceClient customerService)
-    {
-        _customerService = customerService;
     }
 }

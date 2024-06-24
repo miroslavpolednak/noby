@@ -198,7 +198,7 @@ internal sealed class LinkModelationHandler
     }
 
     private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
-    private readonly IWorkflowTaskService _workflowTaskService;
+    private readonly IWorkflowTaskServiceOld _workflowTaskService;
     private readonly InterestRatesValidFromService _interestRatesValidFromService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
     private readonly IOfferServiceClient _offerService;
@@ -209,7 +209,7 @@ internal sealed class LinkModelationHandler
         ISalesArrangementServiceClient salesArrangementService,
         IOfferServiceClient offerService,
         Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization,
-        IWorkflowTaskService workflowTaskService,
+        IWorkflowTaskServiceOld workflowTaskService,
         InterestRatesValidFromService interestRatesValidFromService)
     {
         _caseService = caseService;
