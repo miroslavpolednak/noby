@@ -164,7 +164,7 @@ internal sealed class WorkflowMapperService
         if (task.Cancelled)
             return WorkflowTaskStates.Cancelled;
 
-        if (task.StateIdSb == 30)
+        if (task.StateIdSb == 30 && task.TaskTypeId != (int)WorkflowTaskTypes.PriceException)
             return WorkflowTaskStates.Completed;
 
         return task.TaskTypeId switch
@@ -188,6 +188,7 @@ internal sealed class WorkflowMapperService
     private static WorkflowTaskStates getPriceExceptionState(_Case.WorkflowTask task) =>
         task.PhaseTypeId switch
         {
+            1 when task.StateIdSb == 30 => WorkflowTaskStates.Completed,
             1 => WorkflowTaskStates.Sent,
             2 when task.DecisionId == 1 => WorkflowTaskStates.Schvaleno,
             2 when task.DecisionId == 2 => WorkflowTaskStates.Zametnuto,
