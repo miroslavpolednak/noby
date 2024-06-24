@@ -107,9 +107,9 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
 
     private static decimal? GetFeeDiscount(MortgageRetentionBasicParameters retention)
     {
-        if (retention.FeeAmountDiscounted is null || (decimal?)retention.FeeAmountDiscounted - (decimal)retention.FeeAmount < 0)
+        if (retention.FeeAmountDiscounted is null || (decimal)retention.FeeAmount - (decimal?)retention.FeeAmountDiscounted < 0)
             return default;
 
-        return (decimal?)retention.FeeAmountDiscounted - (decimal)retention.FeeAmount;
+        return (decimal)retention.FeeAmount - (decimal?)retention.FeeAmountDiscounted;
     }
 }

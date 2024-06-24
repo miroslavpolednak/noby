@@ -46,6 +46,6 @@ public class MortgageRefinancingIndividualPrice
         if (fee is null)
             return default;
 
-        return fee.FinalSum - fee.TariffSum;
+        return fee.TariffSum - fee.FinalSum;
     }
 }
