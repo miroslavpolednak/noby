@@ -44,8 +44,8 @@ public class PdfTextWriter : IPdfWriter
     private TextArea CreateTextField(FieldInfo fieldInfo, GenerateDocumentPartData fieldData)
     {
         return new TextArea(GetText(fieldData),
-                            fieldInfo.Coordinates.X,
-                            fieldInfo.Coordinates.Y,
+                            fieldInfo.Coordinates.XWithOffset(),
+                            fieldInfo.Coordinates.YWithOffset(),
                             fieldInfo.Coordinates.Width,
                             fieldInfo.Coordinates.Height,
                             FontHelper.ParseOpenTypeFont(fieldInfo.FontName),

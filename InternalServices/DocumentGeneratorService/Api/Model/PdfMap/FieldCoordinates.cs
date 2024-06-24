@@ -2,6 +2,8 @@
 
 public record FieldCoordinates
 {
+    public const float Offset = 2f;
+
     public required float X { get; init; }
 
     public required float Y { get; init; }
@@ -10,4 +12,7 @@ public record FieldCoordinates
 
     public required float Height { get; init; }
 
+    public float XWithOffset() => X + Offset;
+
+    public float YWithOffset() => Y + Offset;
 }
