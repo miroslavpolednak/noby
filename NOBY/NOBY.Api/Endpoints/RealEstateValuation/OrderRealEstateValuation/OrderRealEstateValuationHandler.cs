@@ -13,7 +13,7 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
         {
             throw new NobyValidationException(90032, "PossibleValuationTypeId does not contain ValuationTypeId");
         }
-
+        
         switch (request.ValuationTypeId)
         {
             case RealEstateValuationTypes.Online:
@@ -22,6 +22,11 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
                     || revInstance.ValuationStateId != (int)RealEstateValuationStates.DoplneniDokumentu)
                 {
                     throw new NobyValidationException(90032, "Valuation:Online OrderId or PreorderId already set or state is out of allowed range");
+                }
+
+                if ((revInstance.Attachments?.Count ?? 0) == 0)
+                {
+                    throw new NobyValidationException(90065);
                 }
 
                 if (revInstance.IsRevaluationRequired)
@@ -60,6 +65,11 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
                     || revInstance.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
                 {
                     throw new NobyValidationException(90032, "Valuation:Dts OrderId already set or state is out of allowed range");
+                }
+
+                if ((revInstance.Attachments?.Count ?? 0) == 0)
+                {
+                    throw new NobyValidationException(90064);
                 }
 
                 await _realEstateValuationService.OrderDTSValuation(request.RealEstateValuationId, cancellationToken);
