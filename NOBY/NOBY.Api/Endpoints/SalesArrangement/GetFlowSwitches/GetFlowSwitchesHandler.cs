@@ -1,11 +1,14 @@
 ﻿using CIS.Core.Security;
 
-#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
-
 namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 
-internal sealed class GetFlowSwitchesHandler
-    : IRequestHandler<GetFlowSwitchesRequest, GetFlowSwitchesResponse>
+internal sealed class GetFlowSwitchesHandler(
+    ICurrentUserAccessor _currentUserAccessor,
+    DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    DomainServices.RealEstateValuationService.Clients.IRealEstateValuationServiceClient _realEstateValuationService,
+    Services.FlowSwitches.IFlowSwitchesService _flowSwitches,
+    DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSaService)
+        : IRequestHandler<GetFlowSwitchesRequest, GetFlowSwitchesResponse>
 {
     public async Task<GetFlowSwitchesResponse> Handle(GetFlowSwitchesRequest request, CancellationToken cancellationToken)
     {
@@ -161,24 +164,4 @@ internal sealed class GetFlowSwitchesHandler
     }
 
     private List<DomainServices.DocumentOnSAService.Contracts.DocumentOnSAToSign>? _documentsOnSAToSign;
-
-    private ICurrentUserAccessor _currentUserAccessor;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly Services.FlowSwitches.IFlowSwitchesService _flowSwitches;
-    private readonly DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSaService;
-    private readonly DomainServices.RealEstateValuationService.Clients.IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public GetFlowSwitchesHandler(
-        ICurrentUserAccessor currentUserAccessor,
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient arrangementServiceClient,
-        DomainServices.RealEstateValuationService.Clients.IRealEstateValuationServiceClient realEstateValuationService,
-        Services.FlowSwitches.IFlowSwitchesService flowSwitches,
-        DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient documentOnSaService)
-    {
-        _currentUserAccessor = currentUserAccessor;
-        _realEstateValuationService = realEstateValuationService;
-        _flowSwitches = flowSwitches;
-        _documentOnSaService = documentOnSaService;
-        _salesArrangementService = arrangementServiceClient;
-    }
 }

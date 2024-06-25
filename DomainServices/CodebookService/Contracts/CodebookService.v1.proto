@@ -10,6 +10,13 @@ import "Messages/GetACVAndBagmanRealEstateType.proto";
 import "Messages/GetNonBankingDays.proto";
 
 service CodebookService {
+	rpc FlowSwitchStates (google.protobuf.Empty) returns (FlowSwitchStatesResponse) {
+	   option (google.api.http) = {
+			post: "/v1/flow-switch-states",
+			body: "*"
+		};
+   }
+
 	rpc GetNonBankingDays (GetNonBankingDaysRequest) returns (GetNonBankingDaysResponse) {
 	   option (google.api.http) = {
 			post: "/v1/non-banking-days",
