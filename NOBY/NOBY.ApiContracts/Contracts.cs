@@ -65,10 +65,6 @@ namespace NOBY.ApiContracts
         [System.Text.Json.Serialization.JsonPropertyName("loanPurposeDetails")]
         public RealEstateValuationSharedLoanPurposeDetail? LoanPurposeDetails { get; set; } = default!;
 
-        /// <summary>
-        /// Objekty SpecificDetails jsou řízeny business logikou &lt;a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135"&gt;Ocenění nemovitosti - varianty nemovitostí&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.&lt;br /&gt;&lt;br /&gt;Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.&lt;br /&gt;&lt;br /&gt;Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
-        /// </summary>
-
         [System.Text.Json.Serialization.JsonPropertyName("specificDetails")]
         public RealEstateValuationSharedSpecificDetails? SpecificDetails { get; set; } = default!;
 
@@ -425,6 +421,9 @@ namespace NOBY.ApiContracts
 
     }
 
+    /// <summary>
+    /// Objekty SpecificDetails jsou řízeny business logikou &lt;a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135"&gt;Ocenění nemovitosti - varianty nemovitostí&lt;/a&gt;.&lt;br /&gt;Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.&lt;br /&gt;Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.&lt;br /&gt;Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class RealEstateValuationSharedSpecificDetails
     {
@@ -432,10 +431,10 @@ namespace NOBY.ApiContracts
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
         public string Discriminator { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("HouseAndFlat")]
+        [System.Text.Json.Serialization.JsonPropertyName("houseAndFlat")]
         public RealEstateValuationSharedSpecificDetailsHouseAndFlat HouseAndFlat { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("Parcel")]
+        [System.Text.Json.Serialization.JsonPropertyName("parcel")]
         public RealEstateValuationSharedSpecificDetailsParcel Parcel { get; set; } = default!;
 
         private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
@@ -758,10 +757,6 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("loanPurposeDetails")]
         public RealEstateValuationSharedLoanPurposeDetail? LoanPurposeDetails { get; set; } = default!;
-
-        /// <summary>
-        /// Objekty SpecificDetails jsou řízeny business logikou &lt;a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135"&gt;Ocenění nemovitosti - varianty nemovitostí&lt;/a&gt;.&lt;br /&gt;Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.&lt;br /&gt;Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.&lt;br /&gt;Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
-        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("specificDetails")]
         public RealEstateValuationSharedSpecificDetails? SpecificDetails { get; set; } = default!;
