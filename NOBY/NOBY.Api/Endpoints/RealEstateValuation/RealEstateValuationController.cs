@@ -8,27 +8,26 @@ namespace NOBY.Api.Endpoints.RealEstateValuation;
 [ApiController]
 [Route("api/v{v:apiVersion}/case")]
 [ApiVersion(1)]
-public sealed class RealEstateValuationController 
-    : ControllerBase
+public sealed class RealEstateValuationController(IMediator _mediator)
+        : ControllerBase
 {
     /// <summary>
     /// Uložení detailů pro online ocenění
     /// </summary>
     /// <remarks>
     /// Průběžné uložení detailů nutných k online ocenění pro pozdější použití.
-    /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=526BB471-CC8D-4bad-8B6C-E0DC6F4872C1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/online-preorder-details")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
     [RealEstateValuationStateValidation]
-    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=526BB471-CC8D-4bad-8B6C-E0DC6F4872C1")]
     public async Task<IActionResult> SaveOnlinePreorderDetails(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] SaveOnlinePreorderDetails.SaveOnlinePreorderDetailsRequest request,
+        [FromBody] RealEstateValuationSaveOnlinePreorderDetailsRequest request,
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
@@ -40,19 +39,18 @@ public sealed class RealEstateValuationController
     /// </summary>
     /// <remarks>
     /// Průběžné uložení konktaktů pro místní šetření pro pozdější použití.
-    /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C6362E7C-7CC7-4b1c-86BA-D08BD84FFCA7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/local-survey-data")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
     [RealEstateValuationStateValidation]
-    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C6362E7C-7CC7-4b1c-86BA-D08BD84FFCA7")]
     public async Task<IActionResult> SaveLocalSurveyDetails(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] SaveLocalSurveyDetails.SaveLocalSurveyDetailsRequest request,
+        [FromBody] RealEstateValuationSaveLocalSurveyDetailsRequest request,
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
@@ -133,16 +131,16 @@ public sealed class RealEstateValuationController
     /// Získání detailu Ocenění nemovitostí
     /// </summary>
     /// <remarks>
-    /// Operace vrací detail Ocenění nemovitostí.<br/><br/>
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7301EE13-E1C2-4795-A5FA-F8A646C4D057"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Operace vrací detail Ocenění nemovitostí.
     /// </remarks>
     [HttpGet("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
     [Produces(MediaTypeNames.Application.Json)]
-    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
-    [ProducesResponseType(typeof(GetRealEstateValuationDetail.GetRealEstateValuationDetailResponse), StatusCodes.Status200OK)]
+    [SwaggerOperation(Tags = ["Real Estate Valuation"])]
+    [ProducesResponseType(typeof(RealEstateValuationGetRealEstateValuationDetailResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetRealEstateValuationDetail.GetRealEstateValuationDetailResponse> GetRealEstateValuationDetail(
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=7301EE13-E1C2-4795-A5FA-F8A646C4D057")]
+    public async Task<RealEstateValuationGetRealEstateValuationDetailResponse> GetRealEstateValuationDetail(
         long caseId, 
         int realEstateValuationId, 
         CancellationToken cancellationToken) 
@@ -195,18 +193,17 @@ public sealed class RealEstateValuationController
     /// </summary>
     /// <remarks>
     /// Patch toggle developera na Ocenění konkrétní nemovitosti ještě před odesláním do ACV.
-    /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPatch("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/developer")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
-    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58")]
     public async Task<IActionResult> PatchDeveloperOnRealEstateValuation(
         [FromRoute] long caseId, 
         [FromRoute] int realEstateValuationId, 
-        [Required] [FromBody] PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest request, 
+        [Required] [FromBody] RealEstateValuationPatchDeveloperOnRealEstateValuationRequest request, 
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
@@ -312,15 +309,15 @@ public sealed class RealEstateValuationController
     /// Získání typu Ocenění
     /// </summary>
     /// <remarks>
-    /// Získání typu Ocenění provoláním systému ACV.<br/><br/>
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0FE0440C-1614-47b0-8136-42BF508CE369"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Získání typu Ocenění provoláním systému ACV.
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/valuation-types")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
     [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
-    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0FE0440C-1614-47b0-8136-42BF508CE369")]
     public async Task<List<int>> GetRealEstateValuationTypes(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
@@ -355,19 +352,19 @@ public sealed class RealEstateValuationController
     /// Předobjednávka online ocenění
     /// </summary>
     /// <remarks>
-    /// Předobjednávka online ocenění.<br/><br/>
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CA6B233C-6BE0-45ff-B5F6-F47F9A3ABA62"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Předobjednávka online ocenění.
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/preorder-online")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
     [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
-    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=CA6B233C-6BE0-45ff-B5F6-F47F9A3ABA62")]
     public async Task<IActionResult> PreorderOnlineValuation(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] [Required] PreorderOnlineValuation.PreorderOnlineValuationRequest request,
+        [FromBody] [Required] RealEstateValuationPreorderOnlineValuationRequest request,
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
@@ -379,25 +376,21 @@ public sealed class RealEstateValuationController
     /// </summary>
     /// <remarks>
     /// Objedná ocenění nemovitosti daného typu.
-    /// 
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=68C49245-60DD-48a4-9681-B328C52D86F4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/order")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
     [RealEstateValuationStateValidation]
-    [SwaggerOperation(Tags = new[] { "Real Estate Valuation" })]
+    [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=68C49245-60DD-48a4-9681-B328C52D86F4")]
     public async Task<IActionResult> OrderRealEstateValuation(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] [Required] OrderRealEstateValuation.OrderRealEstateValuationRequest request,
+        [FromBody] [Required] RealEstateValuationOrderRealEstateValuationRequest request,
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);
         return NoContent();
     }
-
-    private readonly IMediator _mediator;
-    public RealEstateValuationController(IMediator mediator) => _mediator = mediator;
 }

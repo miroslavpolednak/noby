@@ -2,10 +2,10 @@
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation;
 
-internal sealed class PatchDeveloperOnRealEstateValuationHandler
-    : IRequestHandler<PatchDeveloperOnRealEstateValuationRequest>
+internal sealed class PatchDeveloperOnRealEstateValuationHandler(IRealEstateValuationServiceClient _realEstateValuationService)
+    : IRequestHandler<RealEstateValuationPatchDeveloperOnRealEstateValuationRequest>
 {
-    public async Task Handle(PatchDeveloperOnRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RealEstateValuationPatchDeveloperOnRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
         var instance = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
@@ -32,12 +32,5 @@ internal sealed class PatchDeveloperOnRealEstateValuationHandler
         }
 
         await _realEstateValuationService.PatchDeveloperOnRealEstateValuation(request.RealEstateValuationId, valuationStateId.Value, request.DeveloperApplied, cancellationToken);
-    }
-
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public PatchDeveloperOnRealEstateValuationHandler(IRealEstateValuationServiceClient realEstateValuationService)
-    {
-        _realEstateValuationService = realEstateValuationService;
     }
 }

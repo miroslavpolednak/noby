@@ -4,10 +4,10 @@ public partial class CustomerObligationUpdateObligationRequest
     : IRequest
 {
     [JsonIgnore]
-    public int ObligationId { get; set; }
+    public int ObligationId { get; private set; }
 
     [JsonIgnore]
-    public int CustomerOnSAId { get; set; }
+    public int CustomerOnSAId { get; private set; }
 
     public CustomerObligationUpdateObligationRequest InfuseId(int customerOnSAId, int incomeId)
     {

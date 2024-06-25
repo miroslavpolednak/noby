@@ -2121,50 +2121,20 @@
             Ziskat realne ulozene nemovitosti, ktere mame u nas v DB
             </summary>
         </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationRequest">
-            <summary>
-            Údaje nutné k objednání ocenění
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationRequest.ValuationTypeId">
-            <summary>
-            Název typu Ocenění nemovitosti. 1 - Online, 2 - DTS, 3 - Standard
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest">
-            <summary>
-            Editovatelný toggle developera na Ocenění nemovitosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest.DeveloperApplied">
-            <summary>
-            True pokud je aplikované hromadné ocenění z developerského projektu
-            </summary>
-            <example>false</example>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation.PreorderOnlineValuationRequest">
-            <summary>
-            Upřesňující údaje k předobjednávce online ocenění
-            </summary>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveOnlinePreorderDetails(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SaveOnlinePreorderDetails.SaveOnlinePreorderDetailsRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveOnlinePreorderDetails(System.Int64,System.Int32,NOBY.ApiContracts.RealEstateValuationSaveOnlinePreorderDetailsRequest,System.Threading.CancellationToken)">
             <summary>
             Uložení detailů pro online ocenění
             </summary>
             <remarks>
             Průběžné uložení detailů nutných k online ocenění pro pozdější použití.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=526BB471-CC8D-4bad-8B6C-E0DC6F4872C1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveLocalSurveyDetails(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SaveLocalSurveyDetails.SaveLocalSurveyDetailsRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SaveLocalSurveyDetails(System.Int64,System.Int32,NOBY.ApiContracts.RealEstateValuationSaveLocalSurveyDetailsRequest,System.Threading.CancellationToken)">
             <summary>
             Uložení dat pro místní šetření
             </summary>
             <remarks>
             Průběžné uložení konktaktů pro místní šetření pro pozdější použití.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C6362E7C-7CC7-4b1c-86BA-D08BD84FFCA7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SetValuationTypeId(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SetValuationTypeId.SetValuationTypeIdRequest,System.Threading.CancellationToken)">
@@ -2198,8 +2168,7 @@
             Získání detailu Ocenění nemovitostí
             </summary>
             <remarks>
-            Operace vrací detail Ocenění nemovitostí.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7301EE13-E1C2-4795-A5FA-F8A646C4D057"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Operace vrací detail Ocenění nemovitostí.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.GetRealEstateValuationList(System.Int64,System.Threading.CancellationToken)">
@@ -2219,14 +2188,12 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=39883A18-AA29-4f7d-9E4E-BC2D5F81B115"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.PatchDeveloperOnRealEstateValuation(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.PatchDeveloperOnRealEstateValuation.PatchDeveloperOnRealEstateValuationRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.PatchDeveloperOnRealEstateValuation(System.Int64,System.Int32,NOBY.ApiContracts.RealEstateValuationPatchDeveloperOnRealEstateValuationRequest,System.Threading.CancellationToken)">
             <summary>
             Patch developera Ocenění nemovitosti
             </summary>
             <remarks>
             Patch toggle developera na Ocenění konkrétní nemovitosti ještě před odesláním do ACV.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=2BD3A207-7DFB-4c5c-B81C-95E99C2D0C58"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.DeleteDeedOfOwnershipDocument(System.Int64,System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -2272,8 +2239,7 @@
             Získání typu Ocenění
             </summary>
             <remarks>
-            Získání typu Ocenění provoláním systému ACV.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0FE0440C-1614-47b0-8136-42BF508CE369"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Získání typu Ocenění provoláním systému ACV.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.UpdateDeedOfOwnershipDocument(System.Int64,System.Int32,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.UpdateDeedOfOwnershipDocument.UpdateDeedOfOwnershipDocumentRequest,System.Threading.CancellationToken)">
@@ -2285,29 +2251,21 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=22C309A5-60C5-4ca2-96DE-129CA8178977"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.PreorderOnlineValuation(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation.PreorderOnlineValuationRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.PreorderOnlineValuation(System.Int64,System.Int32,NOBY.ApiContracts.RealEstateValuationPreorderOnlineValuationRequest,System.Threading.CancellationToken)">
             <summary>
             Předobjednávka online ocenění
             </summary>
             <remarks>
-            Předobjednávka online ocenění.<br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=CA6B233C-6BE0-45ff-B5F6-F47F9A3ABA62"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Předobjednávka online ocenění.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.OrderRealEstateValuation(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation.OrderRealEstateValuationRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.OrderRealEstateValuation(System.Int64,System.Int32,NOBY.ApiContracts.RealEstateValuationOrderRealEstateValuationRequest,System.Threading.CancellationToken)">
             <summary>
             Objednání ocenění
             </summary>
             <remarks>
             Objedná ocenění nemovitosti daného typu.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=68C49245-60DD-48a4-9681-B328C52D86F4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.SaveOnlinePreorderDetails.SaveOnlinePreorderDetailsRequest">
-            <summary>
-            Detaily k online ocenění
-            </summary>
         </member>
         <member name="F:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsHandler._maxAllowedFileSize">
             <summary>

@@ -4,10 +4,10 @@ public partial class CustomerIncomeUpdateIncomeRequest
     : IRequest
 {
     [JsonIgnore]
-    public int IncomeId { get; set; }
+    public int IncomeId { get; private set; }
 
     [JsonIgnore]
-    public int CustomerOnSAId { get; set; }
+    public int CustomerOnSAId { get; private set; }
 
     public CustomerIncomeUpdateIncomeRequest InfuseId(int customerOnSAId, int incomeId)
     {

@@ -1,7 +1,7 @@
 ﻿namespace NOBY.ApiContracts;
 
-public partial class RealEstateValuationAddDeedOfOwnershipDocumentRequest
-    : IRequest<int>
+public partial class RealEstateValuationSaveLocalSurveyDetailsRequest
+    : IRequest
 {
     [JsonIgnore]
     public long CaseId { get; private set; }
@@ -9,7 +9,7 @@ public partial class RealEstateValuationAddDeedOfOwnershipDocumentRequest
     [JsonIgnore]
     public int RealEstateValuationId { get; private set; }
 
-    public RealEstateValuationAddDeedOfOwnershipDocumentRequest InfuseId(long caseId, int realEstateValuationId)
+    public RealEstateValuationSaveLocalSurveyDetailsRequest InfuseId(long caseId, int realEstateValuationId)
     {
         CaseId = caseId;
         RealEstateValuationId = realEstateValuationId;

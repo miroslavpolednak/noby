@@ -2,10 +2,10 @@
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.SaveOnlinePreorderDetails;
 
-internal sealed class SaveOnlinePreorderDetailsHandler
-    : IRequestHandler<SaveOnlinePreorderDetailsRequest>
+internal sealed class SaveOnlinePreorderDetailsHandler(IRealEstateValuationServiceClient _realEstateValuationService)
+    : IRequestHandler<RealEstateValuationSaveOnlinePreorderDetailsRequest>
 {
-    public async Task Handle(SaveOnlinePreorderDetailsRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RealEstateValuationSaveOnlinePreorderDetailsRequest request, CancellationToken cancellationToken)
     {
         var revDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
@@ -51,12 +51,5 @@ internal sealed class SaveOnlinePreorderDetailsHandler
         };
 
         await _realEstateValuationService.UpdateRealEstateValuationDetail(dsRequest, cancellationToken);
-    }
-
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public SaveOnlinePreorderDetailsHandler(IRealEstateValuationServiceClient realEstateValuationService)
-    {
-        _realEstateValuationService = realEstateValuationService;
     }
 }

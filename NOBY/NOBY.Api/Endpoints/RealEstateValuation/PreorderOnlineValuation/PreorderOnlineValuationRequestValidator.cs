@@ -4,7 +4,7 @@ using FluentValidation;
 namespace NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation;
 
 internal sealed class PreorderOnlineValuationRequestValidator
-    : AbstractValidator<PreorderOnlineValuationRequest>
+    : AbstractValidator<RealEstateValuationPreorderOnlineValuationRequest>
 {
     public PreorderOnlineValuationRequestValidator(ICodebookServiceClient codebookService)
     {

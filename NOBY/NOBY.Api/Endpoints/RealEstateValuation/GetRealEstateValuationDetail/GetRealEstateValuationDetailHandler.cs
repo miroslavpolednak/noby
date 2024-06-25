@@ -4,9 +4,7 @@ using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.RealEstateValuationService.Clients;
 using Google.Protobuf.Collections;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
-using NOBY.Dto.Documents;
 using NOBY.Dto.RealEstateValuation;
-using NOBY.Dto.RealEstateValuation.SpecificDetails;
 using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail;
@@ -15,9 +13,10 @@ internal sealed class GetRealEstateValuationDetailHandler(
     IMediator _mediator, 
     ICaseServiceClient _caseService, 
     IRealEstateValuationServiceClient _realEstateValuationService, 
-    ICodebookServiceClient _codebookService) : IRequestHandler<GetRealEstateValuationDetailRequest, GetRealEstateValuationDetailResponse>
+    ICodebookServiceClient _codebookService) 
+    : IRequestHandler<GetRealEstateValuationDetailRequest, RealEstateValuationGetRealEstateValuationDetailResponse>
 {
-    public async Task<GetRealEstateValuationDetailResponse> Handle(GetRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
+    public async Task<RealEstateValuationGetRealEstateValuationDetailResponse> Handle(GetRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         var valuationDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
@@ -32,47 +31,50 @@ internal sealed class GetRealEstateValuationDetailHandler(
         var categories = await _codebookService.AcvAttachmentCategories(cancellationToken);
         var priceTypes = await _codebookService.RealEstatePriceTypes(cancellationToken);
 
-        return new GetRealEstateValuationDetailResponse
+        return new RealEstateValuationGetRealEstateValuationDetailResponse
         {
             RealEstateValuationListItem = getListItem(valuationDetail, state, priceTypes),
-            RealEstateValuationDetail = new RealEstateValuationDetail
+            RealEstateValuationDetail = new()
             {
                 CaseInProgress = caseInstance.State == (int)CaseStates.InProgress,
-                RealEstateVariant = GetRealEstateVariant(valuationDetail.RealEstateTypeId),
+                RealEstateVariant = getRealEstateVariant(valuationDetail.RealEstateTypeId),
                 RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
-                LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new LoanPurposeDetail { LoanPurposes = [.. valuationDetail.LoanPurposeDetails.LoanPurposes] },
-                SpecificDetails = GetSpecificDetailsObject(valuationDetail)
+                LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new RealEstateValuationSharedLoanPurposeDetail 
+                { 
+                    LoanPurposes = [.. valuationDetail.LoanPurposeDetails.LoanPurposes] 
+                },
+                SpecificDetails = getSpecificDetailsObject(valuationDetail)
             },
-            LocalSurveyDetails = valuationDetail.LocalSurveyDetails is null ? null : new LocalSurveyData
+            LocalSurveyDetails = valuationDetail.LocalSurveyDetails is null ? null : new RealEstateValuationSharedLocalSurveyData
             {
                 FirstName = valuationDetail.LocalSurveyDetails?.FirstName ?? "",
                 LastName = valuationDetail.LocalSurveyDetails?.LastName ?? "",
                 FunctionCode  = valuationDetail.LocalSurveyDetails?.RealEstateValuationLocalSurveyFunctionCode ?? "",
-                EmailAddress = new Dto.EmailAddressDto
+                EmailAddress = new()
                 {
                     EmailAddress = valuationDetail.LocalSurveyDetails?.Email ?? ""
                 },
-                MobilePhone = new Dto.PhoneNumberDto
+                MobilePhone = new()
                 {
                     PhoneIDC = valuationDetail.LocalSurveyDetails?.PhoneIDC ?? "",
                     PhoneNumber = valuationDetail.LocalSurveyDetails?.PhoneNumber ?? ""
                 }
             },
-            OnlinePreorderDetails = valuationDetail.OnlinePreorderDetails is null ? null : new OnlinePreorderData
+            OnlinePreorderDetails = valuationDetail.OnlinePreorderDetails is null ? null : new RealEstateValuationSharedOnlinePreorderData
             {
                 BuildingMaterialStructureCode = valuationDetail.OnlinePreorderDetails.BuildingMaterialStructureCode,
-                FlatArea = valuationDetail.OnlinePreorderDetails.FlatArea,
+                FlatArea = (decimal?)valuationDetail.OnlinePreorderDetails.FlatArea ?? 0,
                 BuildingTechnicalStateCode = valuationDetail.OnlinePreorderDetails.BuildingTechnicalStateCode,
                 BuildingAgeCode = valuationDetail.OnlinePreorderDetails.BuildingAgeCode,
                 FlatSchemaCode = valuationDetail.OnlinePreorderDetails.FlatSchemaCode
             },
             Attachments = getAttachments(valuationDetail.Attachments, categories),
             DeedOfOwnershipDocuments = getDeedOfOwnerships(deeds),
-            Documents = await GetDocuments(request.CaseId, valuationDetail.Documents, cancellationToken)
+            Documents = await getDocuments(request.CaseId, valuationDetail.Documents, cancellationToken)
         };
     }
 
-    private async Task<List<DocumentsMetadata>?> GetDocuments(long caseId, RepeatedField<__Contracts.RealEstateValuationDocument> realEstateValuationDocuments, CancellationToken cancellationToken)
+    private async Task<List<SharedTypesDocumentsMetadata>?> getDocuments(long caseId, RepeatedField<__Contracts.RealEstateValuationDocument> realEstateValuationDocuments, CancellationToken cancellationToken)
     {
         var documentIds = realEstateValuationDocuments.SelectMany(rd => new[] { rd.DocumentInfoPrice, rd.DocumentRecommendationForClient }.Where(str => !string.IsNullOrWhiteSpace(str))).ToArray();
 
@@ -81,13 +83,26 @@ internal sealed class GetRealEstateValuationDetailHandler(
 
         var documentList = await _mediator.Send(new GetDocumentListRequest(caseId, default), cancellationToken);
 
-        return documentList.DocumentsMetadata.Where(d => documentIds.Contains(d.DocumentId)).ToList();
+        //TODO odstranit po kompletnim prevedeni na OPenAPI generovani
+        //return documentList.DocumentsMetadata.Where(d => documentIds.Contains(d.DocumentId)).ToList();
+
+        var list = documentList.DocumentsMetadata.Where(d => documentIds.Contains(d.DocumentId)).ToList();
+        return list.Select(t => new SharedTypesDocumentsMetadata
+        {
+            UploadStatus = (SharedTypesDocumentsMetadataUploadStatus)t.UploadStatus,
+            CreatedOn = t.CreatedOn,
+            DocumentId = t.DocumentId,
+            Description = t.Description,
+            EaCodeMainId = t.EaCodeMainId,
+            FileName = t.FileName,
+            FormId = t.FormId
+        }).ToList();
     }
 
-    private static List<RealEstateValuationAttachment>? getAttachments(IEnumerable<__Contracts.RealEstateValuationAttachment> attachments, List<GenericCodebookResponse.Types.GenericCodebookItem> categories)
+    private static List<RealEstateValuationGetRealEstateValuationDetailAttachment>? getAttachments(IEnumerable<__Contracts.RealEstateValuationAttachment> attachments, List<GenericCodebookResponse.Types.GenericCodebookItem> categories)
         => attachments?
             .OrderByDescending(t => (DateTime)t.CreatedOn)
-            .Select(t => new RealEstateValuationAttachment
+            .Select(t => new RealEstateValuationGetRealEstateValuationDetailAttachment
             {
                 CreatedOn = t.CreatedOn,
                 RealEstateValuationAttachmentId = t.RealEstateValuationAttachmentId,
@@ -98,8 +113,8 @@ internal sealed class GetRealEstateValuationDetailHandler(
             })
             .ToList();
 
-    private static List<DeedOfOwnershipDocumentWithId>? getDeedOfOwnerships(List<__Contracts.DeedOfOwnershipDocument> deeds)
-        => deeds?.Select(t => new DeedOfOwnershipDocumentWithId
+    private static List<RealEstateValuationSharedDeedOfOwnershipDocumentWithId>? getDeedOfOwnerships(List<__Contracts.DeedOfOwnershipDocument> deeds)
+        => deeds?.Select(t => new RealEstateValuationSharedDeedOfOwnershipDocumentWithId
         {
             DeedOfOwnershipDocumentId = t.DeedOfOwnershipDocumentId,
             DeedOfOwnershipDocument = new()
@@ -111,38 +126,38 @@ internal sealed class GetRealEstateValuationDetailHandler(
                 KatuzId = t.KatuzId,
                 KatuzTitle = t.KatuzTitle,
                 AddressPointId = t.AddressPointId,
-                RealEstateIds = t.RealEstateIds?.Select(t => t).ToList()
+                RealEstateIds = t.RealEstateIds?.Select(t => t).ToList() ?? []
             }
         })
         .ToList();
 
-    private static RealEstateValuationListItem getListItem(
+    private static RealEstateValuationSharedRealEstateValuationListItem getListItem(
         __Contracts.RealEstateValuationDetail valuationDetail, 
         WorkflowTaskStatesNobyResponse.Types.WorkflowTaskStatesNobyItem state,
         List<GenericCodebookResponse.Types.GenericCodebookItem> priceTypes)
     {
-        var model = new RealEstateValuationListItem
+        var model = new RealEstateValuationSharedRealEstateValuationListItem
         {
             RealEstateValuationId = valuationDetail.RealEstateValuationId,
             OrderId = valuationDetail.OrderId,
             CaseId = valuationDetail.CaseId,
             RealEstateTypeId = valuationDetail.RealEstateTypeId,
-            RealEstateTypeIcon = (int)RealEstateValuationHelpers.GetRealEstateTypeIcon(valuationDetail.RealEstateTypeId),
+            RealEstateTypeIcon = RealEstateValuationHelpers.GetRealEstateTypeIcon(valuationDetail.RealEstateTypeId),
             ValuationStateId = valuationDetail.ValuationStateId,
-            ValuationStateIndicator = (ValuationStateIndicators)state.Indicator,
+            ValuationStateIndicator = (EnumRealEstateValuationStateIndicators)state.Indicator,
             ValuationStateName = state.Name,
             IsLoanRealEstate = valuationDetail.IsLoanRealEstate,
             RealEstateStateId = valuationDetail.RealEstateStateId,
-            ValuationTypeId = valuationDetail.ValuationTypeId,
+            ValuationTypeId = (EnumRealEstateValuationTypes)valuationDetail.ValuationTypeId,
             Address = valuationDetail.Address,
             ValuationSentDate = valuationDetail.ValuationSentDate,
             IsRevaluationRequired = valuationDetail.IsRevaluationRequired,
             DeveloperAllowed = valuationDetail.DeveloperAllowed,
             DeveloperApplied = valuationDetail.DeveloperApplied,
             PossibleValuationTypeId = valuationDetail.PossibleValuationTypeId
-                ?.Select(t => (RealEstateValuationValuationTypes)t)
+                ?.Select(t => (EnumRealEstateValuationTypes)t)
                 ?.ToList(),
-            Prices = valuationDetail.Prices?.Select(x => new RealEstatePriceDetail
+            Prices = valuationDetail.Prices?.Select(x => new RealEstateValuationSharedRealEstateValuationListItemPriceDetail
             {
                 Price = x.Price,
                 PriceTypeName = priceTypes.FirstOrDefault(xx => xx.Code == x.PriceSourceType)?.Name ?? x.PriceSourceType
@@ -152,7 +167,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
         return model;
     }
 
-    private static string GetRealEstateVariant(int realEstateTypeId)
+    private static string getRealEstateVariant(int realEstateTypeId)
     {
         return RealEstateValuationHelpers.GetRealEstateVariant(realEstateTypeId) switch
         {
@@ -164,33 +179,33 @@ internal sealed class GetRealEstateValuationDetailHandler(
         };
     }
 
-    private static object? GetSpecificDetailsObject(__Contracts.RealEstateValuationDetail valuationDetail)
+    private static RealEstateValuationSharedSpecificDetails? getSpecificDetailsObject(__Contracts.RealEstateValuationDetail valuationDetail)
     {
         return valuationDetail.SpecificDetailCase switch
         {
-            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.HouseAndFlatDetails => CreateHouseAndFlatDetails(valuationDetail.HouseAndFlatDetails),
-            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.ParcelDetails => CreateParcelDetails(valuationDetail.ParcelDetails),
+            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.HouseAndFlatDetails => RealEstateValuationSharedSpecificDetails.Create(createHouseAndFlatDetails(valuationDetail.HouseAndFlatDetails)),
+            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.ParcelDetails => RealEstateValuationSharedSpecificDetails.Create(createParcelDetails(valuationDetail.ParcelDetails)),
             __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.None => default,
             _ => throw new NotImplementedException()
         };
     }
 
-    private static HouseAndFlatDetails CreateHouseAndFlatDetails(__Contracts.SpecificDetailHouseAndFlatObject houseAndFlat)
+    private static RealEstateValuationSharedSpecificDetailsHouseAndFlat createHouseAndFlatDetails(__Contracts.SpecificDetailHouseAndFlatObject houseAndFlat)
     {
-        return new HouseAndFlatDetails
+        return new RealEstateValuationSharedSpecificDetailsHouseAndFlat
         {
             PoorCondition = houseAndFlat.PoorCondition,
             OwnershipRestricted = houseAndFlat.OwnershipRestricted,
             FlatOnlyDetails = houseAndFlat.FlatOnlyDetails is null
                 ? default
-                : new HouseAndFlatDetails.FlatOnlyDetailsDto
+                : new RealEstateValuationSharedSpecificDetailsHouseAndFlatFlatOnly
                 {
                     SpecialPlacement = houseAndFlat.FlatOnlyDetails.SpecialPlacement,
                     Basement = houseAndFlat.FlatOnlyDetails.Basement
                 },
             FinishedHouseAndFlatDetails = houseAndFlat.FinishedHouseAndFlatDetails is null
                 ? default
-                : new HouseAndFlatDetails.FinishedHouseAndFlatDetailsDto
+                : new RealEstateValuationSharedSpecificDetailsHouseAndFlatFinished
                 {
                     Leased = houseAndFlat.FinishedHouseAndFlatDetails.Leased,
                     LeaseApplicable = houseAndFlat.FinishedHouseAndFlatDetails.LeaseApplicable
@@ -198,11 +213,11 @@ internal sealed class GetRealEstateValuationDetailHandler(
         };
     }
 
-    private static ParcelDetails CreateParcelDetails(__Contracts.SpecificDetailParcelObject parcel)
+    private static RealEstateValuationSharedSpecificDetailsParcel createParcelDetails(__Contracts.SpecificDetailParcelObject parcel)
     {
-        return new ParcelDetails
+        return new RealEstateValuationSharedSpecificDetailsParcel
         {
-            ParcelNumbers = parcel?.ParcelNumbers?.Select(t => new ParcelNumber
+            ParcelNumbers = parcel?.ParcelNumbers?.Select(t => new RealEstateValuationSharedSpecificDetailsParcelNumber
             {
                 Number = t.Number,
                 Prefix = t.Prefix

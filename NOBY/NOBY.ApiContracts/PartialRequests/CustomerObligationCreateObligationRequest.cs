@@ -4,7 +4,7 @@ public partial class CustomerObligationCreateObligationRequest
     : IRequest<int>
 {
     [JsonIgnore]
-    public int? CustomerOnSAId;
+    public int? CustomerOnSAId { get; private set; }
 
     public CustomerObligationCreateObligationRequest InfuseId(int customerOnSAId)
     {

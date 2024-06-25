@@ -3,9 +3,9 @@
 namespace NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation;
 
 internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServiceClient _realEstateValuationService)
-        : IRequestHandler<OrderRealEstateValuationRequest>
+    : IRequestHandler<RealEstateValuationOrderRealEstateValuationRequest>
 {
-    public async Task Handle(OrderRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RealEstateValuationOrderRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
         var revInstance = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
@@ -16,7 +16,7 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
 
         switch (request.ValuationTypeId)
         {
-            case RealEstateValuationTypes.Online:
+            case EnumRealEstateValuationTypes.Online:
                 if (!revInstance.PreorderId.HasValue 
                     || revInstance.OrderId.HasValue 
                     || revInstance.ValuationStateId != (int)RealEstateValuationStates.DoplneniDokumentu)
@@ -36,7 +36,7 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
                 }, cancellationToken);
                 break;
 
-            case RealEstateValuationTypes.Standard:
+            case EnumRealEstateValuationTypes.Standard:
                 if (revInstance.OrderId.HasValue 
                     || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(revInstance.ValuationStateId))
                 {
@@ -55,7 +55,7 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
                 }, cancellationToken);
                 break;
 
-            case RealEstateValuationTypes.Dts:
+            case EnumRealEstateValuationTypes.DTS:
                 if (revInstance.OrderId.HasValue 
                     || revInstance.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
                 {
@@ -67,7 +67,7 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
         }
     }
 
-    public static void validateLocalSurvey(Dto.RealEstateValuation.LocalSurveyData? localSurvey)
+    private static void validateLocalSurvey(RealEstateValuationSharedLocalSurveyData? localSurvey)
     {
         if (string.IsNullOrEmpty(localSurvey?.FunctionCode)
             || string.IsNullOrEmpty(localSurvey?.FirstName)
@@ -80,8 +80,8 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
         }
     }
 
-    private static DomainServices.RealEstateValuationService.Contracts.LocalSurveyData createData(OrderRealEstateValuationRequest request)
-        => new DomainServices.RealEstateValuationService.Contracts.LocalSurveyData
+    private static DomainServices.RealEstateValuationService.Contracts.LocalSurveyData createData(RealEstateValuationOrderRealEstateValuationRequest request)
+        => new()
         {
             RealEstateValuationLocalSurveyFunctionCode = request.LocalSurveyPerson?.FunctionCode ?? "",
             FirstName = request.LocalSurveyPerson?.FirstName ?? "",
