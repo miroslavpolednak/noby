@@ -44,7 +44,7 @@ internal class LoanApplicationCustomer
 
     public int InternalCustomerId => _customerOnSA.CustomerOnSAId;
 
-    public string CustomerId => _customerOnSA.CustomerIdentifiers.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId.ToString(CultureInfo.InvariantCulture);
+    public string CustomerId => _customerOnSA.CustomerIdentifiers.GetKbIdentity().IdentityId.ToString(CultureInfo.InvariantCulture);
 
     public int CustomerRoleId => _customerOnSA.CustomerRoleId;
 

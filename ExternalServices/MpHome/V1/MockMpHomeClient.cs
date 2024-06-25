@@ -60,7 +60,7 @@ internal sealed class MockMpHomeClient
 		throw new NotImplementedException();
 	}
 
-	public Task<PartnerResponse?> GetCustomer(long partnerId, CancellationToken cancellationToken = default)
+	public Task<PartnerResponse?> GetPartner(long partnerId, CancellationToken cancellationToken = default)
 	{
 		throw new NotImplementedException();
 	}
@@ -71,6 +71,11 @@ internal sealed class MockMpHomeClient
 	}
 
     public Task<List<CaseSearchResponse>?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<PartnerResponse>?> SearchPartners(PartnerSearchRequest request, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

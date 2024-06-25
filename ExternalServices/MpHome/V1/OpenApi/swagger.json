@@ -3316,6 +3316,11 @@
             "type": "string",
             "description": "Země - ISO code",
             "nullable": true
+          },
+          "countryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -3809,6 +3814,7 @@
           "issuedBy",
           "issuedOn",
           "issuingCountry",
+          "issuingCountryId",
           "number",
           "type",
           "validTo"
@@ -3836,6 +3842,10 @@
             "type": "string",
             "description": "ISO kod krajiny, která vydala doklad"
           },
+          "issuingCountryId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "issuedOn": {
             "type": "string",
             "description": "Datum vydání dokladu",
@@ -3851,11 +3861,6 @@
         "description": "Informace o dokladu"
       },
       "IdentificationDocumentSearch": {
-        "required": [
-          "issuingCountry",
-          "number",
-          "type"
-        ],
         "type": "object",
         "properties": {
           "type": {
@@ -3863,15 +3868,15 @@
           },
           "number": {
             "maxLength": 40,
-            "minLength": 1,
             "type": "string",
-            "description": "Číslo dokladu"
+            "description": "Číslo dokladu",
+            "nullable": true
           },
-          "issuingCountry": {
-            "maxLength": 2,
-            "minLength": 1,
-            "type": "string",
-            "description": "ISO kod krajiny, která vydala doklad"
+          "issuingCountryId": {
+            "type": "integer",
+            "description": "ID země, která vydala doklad",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -4937,6 +4942,11 @@
             "description": "Státní příslušnost - ISO code",
             "nullable": true
           },
+          "nationalityId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "resident": {
             "type": "boolean",
             "description": "Rezident - `true` ak má partner bydlisko v CZ"
@@ -5057,6 +5067,11 @@
             "description": "Státní příslušnost - ISO code",
             "nullable": true
           },
+          "nationalityId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "resident": {
             "type": "boolean",
             "description": "Rezident - `true` ak má partner bydlisko v CZ"
@@ -5123,6 +5138,7 @@
           "dataSource",
           "ecommunication",
           "gender",
+          "id",
           "identificationDocuments",
           "lastname",
           "name",
@@ -5190,6 +5206,11 @@
             "description": "Státní příslušnost - ISO code",
             "nullable": true
           },
+          "nationalityId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "resident": {
             "type": "boolean",
             "description": "Rezident - `true` ak má partner bydlisko v CZ"
@@ -5221,6 +5242,11 @@
             "description": "KYC Status",
             "format": "int32",
             "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "description": "ID partnera",
+            "format": "int64"
           },
           "dataSource": {
             "$ref": "#/components/schemas/EtlDataSourceType"
@@ -5275,6 +5301,25 @@
           },
           "identificationDocument": {
             "$ref": "#/components/schemas/IdentificationDocumentSearch"
+          },
+          "mobile": {
+            "type": "string",
+            "description": "Mobil",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "description": "Email",
+            "nullable": true
+          },
+          "partnerIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Seznam ID partnerů",
+            "nullable": true
           }
         },
         "additionalProperties": false

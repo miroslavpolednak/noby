@@ -26,7 +26,7 @@ public class CustomerWithChangedDataService
         var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
 
         //KB CM identity must exist
-        var kbIdentity = customerOnSa.CustomerIdentifiers.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
+        var kbIdentity = customerOnSa.CustomerIdentifiers.GetKbIdentityOrDefault()
                          ?? throw new CisValidationException("Customer is missing KB identity");
 
         //KB CM

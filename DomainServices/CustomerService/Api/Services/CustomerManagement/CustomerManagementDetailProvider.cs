@@ -63,7 +63,7 @@ internal sealed class CustomerManagementDetailProvider
     {
         var response = new CustomerDetailResponse
         {
-            Identities = { new Identity(customer.CustomerId, IdentitySchemes.Kb) },
+            Identities = { new SharedTypes.GrpcTypes.Identity(customer.CustomerId, IdentitySchemes.Kb) },
             NaturalPerson = CreateNaturalPerson(customer, customer.IsLegallyIncapable),
             IdentificationDocument = CreateIdentificationDocument(customer.PrimaryIdentificationDocument),
             CustomerIdentification = CreateCustomerIdentification(customer.CustomerIdentification)
@@ -192,12 +192,12 @@ internal sealed class CustomerManagementDetailProvider
         };
     }
 
-    private async Task AddAddress(AddressTypes addressType, Action<GrpcAddress> onAddAddress, CM.Contracts.ComponentAddressPoint? componentAddress, bool? isConfirmed, CancellationToken cancellationToken)
+    private async Task AddAddress(AddressTypes addressType, Action<SharedTypes.GrpcTypes.GrpcAddress> onAddAddress, CM.Contracts.ComponentAddressPoint? componentAddress, bool? isConfirmed, CancellationToken cancellationToken)
     {
         if (componentAddress is null)
             return;
 
-        var address = new GrpcAddress
+        var address = new SharedTypes.GrpcTypes.GrpcAddress
         {
             AddressTypeId = (int)addressType,
             StreetNumber = componentAddress.StreetNumber ?? string.Empty,

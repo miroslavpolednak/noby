@@ -95,6 +95,9 @@ namespace ExternalServices.MpHome.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("country")]
         public string? Country { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("countryId")]
+        public int? CountryId { get; set; } = default!;
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -755,6 +758,9 @@ namespace ExternalServices.MpHome.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("issuingCountry")]
         public string IssuingCountry { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("issuingCountryId")]
+        public int IssuingCountryId { get; set; } = default!;
+
         /// <summary>
         /// Datum vydání dokladu
         /// </summary>
@@ -787,14 +793,14 @@ namespace ExternalServices.MpHome.V1.Contracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("number")]
-        public string Number { get; set; } = default!;
+        public string? Number { get; set; } = default!;
 
         /// <summary>
-        /// ISO kod krajiny, která vydala doklad
+        /// ID země, která vydala doklad
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("issuingCountry")]
-        public string IssuingCountry { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("issuingCountryId")]
+        public int? IssuingCountryId { get; set; } = default!;
 
     }
 
@@ -1775,6 +1781,9 @@ namespace ExternalServices.MpHome.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("nationality")]
         public string? Nationality { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("nationalityId")]
+        public int? NationalityId { get; set; } = default!;
+
         /// <summary>
         /// Rezident - `true` ak má partner bydlisko v CZ
         /// </summary>
@@ -1911,6 +1920,9 @@ namespace ExternalServices.MpHome.V1.Contracts
 
         [System.Text.Json.Serialization.JsonPropertyName("nationality")]
         public string? Nationality { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("nationalityId")]
+        public int? NationalityId { get; set; } = default!;
 
         /// <summary>
         /// Rezident - `true` ak má partner bydlisko v CZ
@@ -2061,6 +2073,9 @@ namespace ExternalServices.MpHome.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("nationality")]
         public string? Nationality { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("nationalityId")]
+        public int? NationalityId { get; set; } = default!;
+
         /// <summary>
         /// Rezident - `true` ak má partner bydlisko v CZ
         /// </summary>
@@ -2109,6 +2124,13 @@ namespace ExternalServices.MpHome.V1.Contracts
 
         [System.Text.Json.Serialization.JsonPropertyName("kycStatus")]
         public int? KycStatus { get; set; } = default!;
+
+        /// <summary>
+        /// ID partnera
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+        public long Id { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("dataSource")]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
@@ -2170,6 +2192,27 @@ namespace ExternalServices.MpHome.V1.Contracts
 
         [System.Text.Json.Serialization.JsonPropertyName("identificationDocument")]
         public IdentificationDocumentSearch IdentificationDocument { get; set; } = default!;
+
+        /// <summary>
+        /// Mobil
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("mobile")]
+        public string? Mobile { get; set; } = default!;
+
+        /// <summary>
+        /// Email
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("email")]
+        public string? Email { get; set; } = default!;
+
+        /// <summary>
+        /// Seznam ID partnerů
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("partnerIds")]
+        public System.Collections.Generic.ICollection<long>? PartnerIds { get; set; } = default!;
 
     }
 

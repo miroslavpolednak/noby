@@ -38,4 +38,10 @@ public static class FeatureFlagsConstants
     /// zapíná/vypíná endpointy související s interním refinancováním
     /// </summary>
     public const string InternalRefinancing = "InternalRefinancing";
+
+    /// <summary>
+    /// zapíná/vypíná použití vygenerované mapy AcroFieldů v DocumentDataGenerator službě.
+    /// </summary>
+    public const string UseFieldsMap = "UseFieldsMap";
+
 }

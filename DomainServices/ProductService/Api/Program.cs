@@ -26,11 +26,8 @@ SharedComponents
 
         if (pcpCurrentVersion == DomainServices.ProductService.ExternalServices.Pcp.IPcpClient.Version)
             builder.AddExternalService<DomainServices.ProductService.ExternalServices.Pcp.IPcpClient>();
-
-        else if (pcpCurrentVersion == DomainServices.ProductService.ExternalServices.Pcp.IPcpClient.Version2)
-            builder.AddExternalServiceV2<DomainServices.ProductService.ExternalServices.Pcp.IPcpClient>();
         else
-            throw new ArgumentException("Unsupported pcp version");
+            builder.AddExternalServiceV3<DomainServices.ProductService.ExternalServices.Pcp.IPcpClient>();
     })
     .MapGrpcServices(app =>
     {

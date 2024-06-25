@@ -57,6 +57,8 @@
 
 [Unit a integrační testy](./topics/test.md)
 
+[Generování FE API kontraktů z OpenApi specifikace](./topics/feapi-openapi-contracts.md)
+
 ## Struktura solution - projekty a adresáře
 
 ### CIS

@@ -22,23 +22,18 @@ internal sealed class CustomerManagementErrorMap
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.CREATED:
                 return response.CreatedSubject.CustomerId;
 
+            // nemame jak vratit ID (nevracime Result object), takze do zpravy...
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED when response.IdentifiedSubjects.Count == 1:
-                {
-                    // nemame jak vratit ID (nevracime Result object), takze do zpravy...
-                    throw new CisValidationException(11023, response.IdentifiedSubjects.First().CustomerId.ToString(System.Globalization.CultureInfo.InvariantCulture));
-                }
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CMError1, response.IdentifiedSubjects.First().CustomerId.ToString(System.Globalization.CultureInfo.InvariantCulture));
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.IDENTIFIED:
-                {
-                    var message = $"KB CM: Duplicity already exist. List of customerIds = {string.Join(", ", response.IdentifiedSubjects.Select(x => x.CustomerId))}";
-                    throw new CisValidationException(11024, message);
-                }
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CMError2, string.Join(", ", response.IdentifiedSubjects.Select(x => x.CustomerId)));
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.NOT_FOUND_IN_BR:
-                throw new CisValidationException(11025, "KB CM: Unable to identify customer in state registry ");
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CMError3);
 
             case __Contracts.CreateIdentifiedSubjectResponseResponseCode.UNAVAILABLE_BR:
-                throw new CisValidationException(11026, "KB CM: State registry is unavailable");
+                throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CMError4);
 
             default:
                 throw new InvalidEnumArgumentException(nameof(response.ResponseCode), (int)(response.ResponseCode ?? 0), typeof(__Contracts.CreateIdentifiedSubjectResponseResponseCode));

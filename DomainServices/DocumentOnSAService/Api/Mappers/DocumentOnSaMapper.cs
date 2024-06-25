@@ -9,6 +9,7 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;
+using SharedTypes.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Mappers;
 
@@ -105,7 +106,7 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
         {
             // Merge customer with customerOnSa
             var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
-            var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+            var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.GetKbIdentity(), cancellationToken);
             _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
             documentsToSignList.Add(new()
             {

@@ -169,6 +169,11 @@
             zapíná/vypíná endpointy související s interním refinancováním
             </summary>
         </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.UseFieldsMap">
+            <summary>
+            zapíná/vypíná použití vygenerované mapy AcroFieldů v DocumentDataGenerator službě.
+            </summary>
+        </member>
         <member name="F:SharedTypes.GrpcTypes.GrpcAddress.StreetFieldNumber">
             <summary>Field number for the "Street" field.</summary>
         </member>

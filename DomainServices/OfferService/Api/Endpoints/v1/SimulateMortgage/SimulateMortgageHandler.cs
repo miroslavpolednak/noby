@@ -9,6 +9,7 @@ using System.Globalization;
 using SharedComponents.DocumentDataStorage;
 using ExternalServices.EasSimulationHT.V1.EasSimulationHTWrapper;
 using DomainServices.OfferService.Api.Database.DocumentDataEntities;
+using SharedTypes.Extensions;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgage;
 
@@ -141,7 +142,7 @@ internal sealed class SimulateMortgageHandler(
 
     private async Task<MortgageCreditWorthinessSimpleData> calculateCreditWorthinessSimple(int offerId, SimulateMortgageRequest request, SimulationHTResponse simulationResults, CancellationToken cancellationToken)
     {
-        var kbCustomerIdentity = request.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        var kbCustomerIdentity = request.Identities.GetKbIdentityOrDefault();
 
         CreditWorthinessSimpleCalculateResponse? result = null;
 

@@ -32,7 +32,7 @@ internal sealed class CustomerManagementSearchProvider
                              {
                                  var item = new SearchCustomersItem
                                  {
-                                     Identity = new Identity(c.CustomerId, IdentitySchemes.Kb),
+                                     Identity = new SharedTypes.GrpcTypes.Identity(c.CustomerId, IdentitySchemes.Kb),
                                      NaturalPerson = CreateNaturalPerson(c.Party.NaturalPersonAttributes),
                                      IdentificationDocument = CreateIdentificationDocument(c.PrimaryIdentificationDocument)
                                  };
@@ -120,10 +120,13 @@ internal sealed class CustomerManagementSearchProvider
     {
         if (address is null)
             return;
-        
-        result.Street = address.Street ?? string.Empty;
-        result.City = address.City ?? string.Empty;
-        result.Postcode = address.PostCode ?? string.Empty;
-        result.CountryId = _countries.FirstOrDefault(t => t.ShortName == address.CountryCode)?.Id;
+
+        result.Address = new SharedTypes.GrpcTypes.GrpcAddress
+        {
+            Street = address.Street ?? string.Empty,
+            City = address.City ?? string.Empty,
+            Postcode = address.PostCode ?? string.Empty,
+            CountryId = _countries.FirstOrDefault(t => t.ShortName == address.CountryCode)?.Id
+        };
     }
 }

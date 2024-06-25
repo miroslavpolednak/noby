@@ -16,18 +16,18 @@ internal sealed class GetCustomersOnProductHandler
 
         // detail customeru z customerService
         var identifiedCustomers = customers
-            .Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb))
+            .Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.HasKbIdentity())
             .ToList();
 
         var customerDetails = new List<_Cust.CustomerDetailResponse>();
         if (identifiedCustomers.Count != 0)
         {
-            customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)), cancellationToken)).Customers.ToList();
+            customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.CustomerIdentifiers.GetKbIdentity()), cancellationToken)).Customers.ToList();
         }
 
         return customers.Select(t =>
         {
-            var c = customerDetails.FirstOrDefault(x => x.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId == t.CustomerIdentifiers.FirstOrDefault(x2 => x2.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId);
+            var c = customerDetails.FirstOrDefault(x => x.Identities.GetKbIdentity().IdentityId == t.CustomerIdentifiers.GetKbIdentityOrDefault()?.IdentityId);
 
             return new GetCustomersOnProductCustomer
             {

@@ -50,7 +50,7 @@ internal sealed class IdentifiedSubjectService
 
         return new CreateCustomerResponse
         {
-            CreatedCustomerIdentity = new Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response.Result!), IdentitySchemes.Kb),
+            CreatedCustomerIdentity = new SharedTypes.GrpcTypes.Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response.Result!), IdentitySchemes.Kb),
             IsVerified = response.Result?.CreatedSubject?.VerifiedInBr ?? false
         };
     }
@@ -59,12 +59,11 @@ internal sealed class IdentifiedSubjectService
     {
         await InitializeCodebooks(cancellationToken);
 
-        var customerId = request.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        var customerId = request.Identities.FirstOrDefault(i => i.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb);
 
         if (customerId is null)
         {
-            // todo: error_code
-            throw new CisArgumentException(9999999, "Customer does not have KB Identity", "IdentityId");
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.KbIdentityMissing);
         }
 
         var customer = await _customerManagement.GetDetail(customerId.IdentityId, cancellationToken);
@@ -224,7 +223,7 @@ internal sealed class IdentifiedSubjectService
         };
     }
 
-    private TAddress? CreateAddress<TAddress>(IEnumerable<GrpcAddress> addresses, AddressTypes addressType, Func<GrpcAddress, __Contracts.Address, DateTime?, TAddress> factory)
+    private TAddress? CreateAddress<TAddress>(IEnumerable<SharedTypes.GrpcTypes.GrpcAddress> addresses, AddressTypes addressType, Func<SharedTypes.GrpcTypes.GrpcAddress, __Contracts.Address, DateTime?, TAddress> factory)
     {
         var address = addresses.FirstOrDefault(a => a.AddressTypeId == (int)addressType);
 
@@ -250,14 +249,14 @@ internal sealed class IdentifiedSubjectService
         return factory(address, parsedAddress, address.PrimaryAddressFrom);
     }
 
-    private static __Contracts.PrimaryAddress CreatePrimaryAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
+    private static __Contracts.PrimaryAddress CreatePrimaryAddress(SharedTypes.GrpcTypes.GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom) =>
         new()
         {
             Address = address,
             PrimaryAddressFrom = primaryAddressFrom
         };  
     
-    private static __Contracts.ContactAddress? CreateContactAddress(GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom)
+    private static __Contracts.ContactAddress? CreateContactAddress(SharedTypes.GrpcTypes.GrpcAddress requestAddress, __Contracts.Address address, DateTime? primaryAddressFrom)
     {
         if (requestAddress.IsAddressConfirmed ?? false)
             return default;

@@ -37,7 +37,7 @@ public sealed class CreateCaseFromExternalSourcesService(
         var customer = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);
 
 		// prioritne chceme pouzit customera z CM
-		var kbIdentity = customer.Identities.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb);
+        var kbIdentity = customer.Identities.GetKbIdentityOrDefault();
         if (productType.MandantId == (int)Mandants.Kb && kbIdentity is not null)
         {
             customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);	

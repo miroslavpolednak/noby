@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Exceptions;
+using CIS.InternalServices.DocumentGeneratorService.Api.Model;
 using DomainServices.CodebookService.Clients;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Storage;
@@ -17,13 +18,19 @@ public class TemplateManager : IDisposable
         _codebookService = codebookService;
     }
 
-    public async Task<PdfDocument> LoadTemplate(int documentTypeId, int templateVersionId, int? templateVariantId)
+    public async Task<PdfTemplate> LoadTemplate(int documentTypeId, int templateVersionId, int? templateVariantId)
     {
         var templateTypeName = await LoadTemplateTypeName(documentTypeId);
         var versionName = await LoadTemplateVersionName(documentTypeId, templateVersionId);
         var variantName = await LoadTemplateVariantName(templateVersionId, templateVariantId);
 
-        return _fileStorage.LoadTemplateFile(templateTypeName, versionName, variantName);
+        return new PdfTemplate
+        {
+            Name = templateTypeName,
+            Version = versionName,
+            Variant = variantName,
+            PdfDocument = _fileStorage.LoadTemplateFile(templateTypeName, versionName, variantName)
+        };
     }
 
     public void DrawTemplate(Document template)

@@ -34,7 +34,7 @@ internal sealed class DeleteHouseholdHandler
 
         var partnerId = customer
             .CustomerIdentifiers
-            .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)
+            .GetMpIdentityOrDefault()
             ?.IdentityId;
 
         if (partnerId.HasValue)
