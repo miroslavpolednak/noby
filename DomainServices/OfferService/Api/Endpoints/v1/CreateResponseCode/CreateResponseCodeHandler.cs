@@ -24,6 +24,7 @@ internal sealed class CreateResponseCodeHandler(
 			CaseId = request.CaseId,
 			ResponseCodeCategory = (int)request.ResponseCodeCategory,
 			Data = request.Data,
+			ValidTo = request.ValidTo
 		};
 
 		var responseCodes = await _codebookService.ResponseCodeTypes(cancellationToken);

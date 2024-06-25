@@ -6,13 +6,16 @@ namespace NOBY.Services.ResponseCodes;
 
 [ScopedService, SelfService]
 public sealed class ResponseCodesService(
+    TimeProvider _timeProvider,
     IOfferServiceClient _offerService, 
     ICodebookServiceClient _codebookService)
 {
     public async Task<List<Dto.Refinancing.RefinancingResponseCode>> GetMortgageResponseCodes(long caseId, OfferTypes offerType, CancellationToken cancellationToken)
     {
         // uplne vsechny response kody
-        var allCodes = await _offerService.GetResponseCodeList(caseId, cancellationToken);
+        var allCodes = (await _offerService.GetResponseCodeList(caseId, cancellationToken))
+            .Where(t => t.ValidTo > _timeProvider.GetLocalNow().DateTime)
+            .ToList();
         
         // dostupne response kody podle codebooku
         var availableCodes = (await _codebookService.ResponseCodeTypes(cancellationToken))

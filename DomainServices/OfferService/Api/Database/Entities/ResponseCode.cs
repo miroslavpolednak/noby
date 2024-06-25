@@ -17,4 +17,6 @@ internal sealed class ResponseCode
     public string? Data { get; set; }
 
     public int ResponseCodeCategory { get; set; }
+
+    public DateTime ValidTo { get; set; }
 }

@@ -119,6 +119,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [SwaggerOperation(Tags = ["Refinancing"])]
     [ProducesResponseType(typeof(GetMortgageRefixationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerConfluenceLink("https://wiki.kb.cz/display/HT/Refixace")]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=1EF978B1-265D-40d0-8B1C-B0E07D9D8031")]
     public async Task<GetMortgageRefixationResponse> GetMortgageRefixation([FromRoute] long caseId, [FromQuery] long? processId = null)
         => await _mediator.Send(new GetMortgageRefixationRequest(caseId, processId));
