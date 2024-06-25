@@ -29,11 +29,11 @@ internal sealed class CancelCaseHandler(
     ICurrentUserAccessor _currentUserAccessor,
     IDocumentHelperService _documentHelper,
     IUserServiceClient _userService) 
-    : IRequestHandler<CancelCaseRequest, CancelCaseResponse>
+    : IRequestHandler<CancelCaseRequest, CasesCancelCaseResponse>
 {
     const DocumentTypes _documentType = DocumentTypes.ODSTOUP;
     
-    public async Task<CancelCaseResponse> Handle(CancelCaseRequest request, CancellationToken cancellationToken)
+    public async Task<CasesCancelCaseResponse> Handle(CancelCaseRequest request, CancellationToken cancellationToken)
     {
         var documentTypeItem = await getDocumentType(_documentType, cancellationToken);
         
@@ -42,11 +42,11 @@ internal sealed class CancelCaseHandler(
         var customerOnSas = await _customerOnSaService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
         var caseState = (await _codebookService.CaseStates(cancellationToken)).First(s => s.Id == caseDetail.State);
 
-        var responseModel = new CancelCaseResponse
+        var responseModel = new CasesCancelCaseResponse
         {
-            State = (CaseStates)caseDetail.State,
+            State = (CasesCancelCaseResponseState)caseDetail.State,
             StateName = caseState.Name,
-            CustomersOnSa = new List<CustomerOnSAItem>(customerOnSas.Count)
+            CustomersOnSa = new List<CasesCancelCaseCustomerOnSAItem>(customerOnSas.Count)
         };
 
         foreach (var customerOnSa in customerOnSas.Where(t => (t.CustomerIdentifiers?.Any() ?? false)))
@@ -88,7 +88,7 @@ internal sealed class CancelCaseHandler(
             await _documentArchiveService.UploadDocument(uploadRequest, cancellationToken);
 
             // pridat do resonse modelu
-            responseModel.CustomersOnSa.Add(new CustomerOnSAItem
+            responseModel.CustomersOnSa.Add(new CasesCancelCaseCustomerOnSAItem
             {
                 CustomerOnSAId = customerOnSa.CustomerOnSAId,
                 BirthDate = customerOnSa.DateOfBirthNaturalPerson,

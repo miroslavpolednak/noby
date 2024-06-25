@@ -156,8 +156,8 @@ internal sealed class SendToCmpHandler
         {
             ValidateCustomerIdentifiers(customerOnSa.CustomerIdentifiers, customerOnSa.CustomerOnSAId);
 
-            var identityMp = customerOnSa.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
-            var identityKb = customerOnSa.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+            var identityMp = customerOnSa.CustomerIdentifiers.GetMpIdentity();
+            var identityKb = customerOnSa.CustomerIdentifiers.GetKbIdentity();
 
             return new CustomerOnSaExtended
             {
@@ -184,7 +184,7 @@ internal sealed class SendToCmpHandler
         {
             var customerMp = await _customerService.GetCustomerDetail(customerOnSa.IdentityMp, cancellationToken);
 
-            if (customerMp.Identities.All(c => c.IdentityScheme != Identity.Types.IdentitySchemes.Kb))
+            if (!customerMp.Identities.HasKbIdentity())
             {
                 var updateTask = _customerService.UpdateCustomerIdentifiers(new UpdateCustomerIdentifiersRequest
                 {
@@ -248,7 +248,7 @@ internal sealed class SendToCmpHandler
     {
         foreach (var redundantCustomerOnProduct in redundantCustomersOnProduct)
         {
-            await _productService.DeleteContractRelationship(redundantCustomerOnProduct.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId, caseId, cancellationToken);
+            await _productService.DeleteContractRelationship(redundantCustomerOnProduct.CustomerIdentifiers.GetMpIdentity().IdentityId, caseId, cancellationToken);
         }
     }
 

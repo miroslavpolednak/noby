@@ -36,6 +36,7 @@ using _CustomerService = DomainServices.CustomerService.Contracts;
 using Source = DomainServices.DocumentOnSAService.Api.Database.Enums.Source;
 using DomainServices.DocumentOnSAService.Api.Extensions;
 using DomainServices.HouseholdService.Contracts.Model;
+using SharedTypes.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocument;
 
@@ -208,7 +209,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         {
             try
             {
-                var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+                var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.GetKbIdentity(), cancellationToken);
                 _customerChangeDataMerger.MergeTaxResidence(customerDetail.NaturalPerson!, customerOnSa);
                 var updateCustomerRequest = MapUpdateCustomerRequest((int)SharedTypes.Enums.Mandants.Kb, customerDetail);
                 await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
@@ -249,7 +250,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             {
                 try
                 {
-                    var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+                    var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.GetKbIdentity(), cancellationToken);
                     _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
 
                     //Do not update TaxResidence (event do not send TaxResidence already set in CM)
@@ -434,7 +435,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
         CustomersOnSABuffer.Add(customerOnSa);
 
-        var kbIdentity = customerOnSa.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        var kbIdentity = customerOnSa.CustomerIdentifiers.GetKbIdentity();
         await _sulmClientHelper.StartUse(kbIdentity.IdentityId, ISulmClient.PurposeMLAP, cancellationToken);
     }
 

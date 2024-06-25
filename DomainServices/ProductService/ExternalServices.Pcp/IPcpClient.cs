@@ -13,4 +13,5 @@ public interface IPcpClient
 
     const string Version = "V1";
     const string Version2 = "V2";
+    const string Version3 = "V3";
 }

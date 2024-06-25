@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<Version>1.0.0.0</Version>
+	<Product>Common Infrastructure Solution</Product>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	<DocumentationFile>InternalServices.DocumentGeneratorService.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<PublishReadyToRun>true</PublishReadyToRun>
+	</PropertyGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="10.43.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.63.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
+    <ProjectReference Include="..\Contracts\CIS.InternalServices.DocumentGeneratorService.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="NewFolder\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+</Project>

@@ -5,12 +5,13 @@ SharedComponents.GrpcServiceBuilder
     .AddApplicationConfiguration<CIS.InternalServices.DocumentGeneratorService.Api.Configuration.AppConfiguration>()
     .AddRequiredServices(services =>
     {
-        services
-            .AddCodebookService();
+        services.AddCodebookService();
     })
     .Build((builder, appConfiguration) =>
     {
         CIS.InternalServices.DocumentGeneratorService.Api.GeneratorVariables.Init(appConfiguration);
+
+        builder.Services.AddSingleton(CIS.InternalServices.DocumentGeneratorService.Api.Services.PdfFieldMap.CreateInstance());
     })
     .MapGrpcServices((app, _) =>
     {

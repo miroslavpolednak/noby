@@ -105,7 +105,7 @@ internal static class CreateCustomerExtensions
         };
         if (customerOnSA.CustomerIdentifiers is not null)
             model.Customer.CustomerIdentifiers.AddRange(customerOnSA.CustomerIdentifiers);
-        model.Customer.CustomerIdentifiers.Add(customerKb.Identities.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb));
+        model.Customer.CustomerIdentifiers.Add(customerKb.Identities.GetKbIdentity());
 
         return model;
     }

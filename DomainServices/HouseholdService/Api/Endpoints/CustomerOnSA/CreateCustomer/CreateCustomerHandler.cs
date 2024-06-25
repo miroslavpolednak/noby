@@ -5,8 +5,8 @@ using DomainServices.HouseholdService.Api.Database.Entities;
 using DomainServices.HouseholdService.Api.Services;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using SharedComponents.DocumentDataStorage;
+using SharedTypes.Extensions;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.CreateCustomer;
 
@@ -40,15 +40,8 @@ internal sealed class CreateCustomerHandler(
             Identities = request.Customer?.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()
         };
 
-        var kbIdentity = request
-            .Customer?
-            .CustomerIdentifiers?
-            .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb);
-
-        bool containsMpIdentity = request
-            .Customer?
-            .CustomerIdentifiers?
-            .Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp) ?? false;
+        var kbIdentity = request.Customer?.CustomerIdentifiers?.GetKbIdentityOrDefault();
+        var containsMpIdentity = request.Customer?.CustomerIdentifiers?.HasMpIdentity() ?? false;
 
         // kontrola zda customer existuje v CM
         if (kbIdentity is not null)

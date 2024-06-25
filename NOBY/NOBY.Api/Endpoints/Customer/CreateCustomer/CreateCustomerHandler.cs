@@ -29,7 +29,7 @@ internal sealed class CreateCustomerHandler
 
         if (saCategory.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest && customerOnSA.CustomerRoleId != (int)CustomerRoles.Debtor)
         {
-            if (!customerOnSaList.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
+            if (!customerOnSaList.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
                 throw new NobyValidationException(90001, "Main customer is not identified");
         }
 
@@ -107,7 +107,7 @@ internal sealed class CreateCustomerHandler
             await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResponse.CustomerIdentifiers, cancellationToken);
 
             var relationshipTypeId = customerOnSA.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
-            var partnerId = updateResponse.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
+            var partnerId = updateResponse.CustomerIdentifiers.GetMpIdentity().IdentityId;
             await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
         }
 
@@ -143,7 +143,7 @@ internal sealed class CreateCustomerHandler
             return customerDetails
                    .First(t => t.CustomerOnSAId == secondCustomerOnHouseholdId)
                    .CustomerIdentifiers?
-                   .Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb && t.IdentityId > 0)
+                   .HasKbIdentity()
                    ?? false;
         }
     }

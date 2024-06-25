@@ -1,40 +1,43 @@
 ﻿using CIS.Core.Security;
 using CIS.Core.Types;
-using CIS.Infrastructure.WebApi.Types;
 
 namespace NOBY.Api.Endpoints.Cases.SearchCases;
 
-#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 internal sealed class SearchCasesHandler(
     ICurrentUserAccessor _userAccessor,
     CasesModelConverter _converter,
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService)
-        : IRequestHandler<SearchCasesRequest, SearchCasesResponse>
+        : IRequestHandler<CasesSearchCasesRequest, CasesSearchCasesResponse>
 {
-    public async Task<SearchCasesResponse> Handle(SearchCasesRequest request, CancellationToken cancellationToken)
+    public async Task<CasesSearchCasesResponse> Handle(CasesSearchCasesRequest request, CancellationToken cancellationToken)
     {
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
             .FromRequest(request.Pagination)
-            .EnsureAndTranslateSortFields(sortingMapper);
+            .EnsureAndTranslateSortFields(_sortingMapper);
 
         var filterStates = getStatesFilter(request.FilterId);
 
-        if (filterStates is not null && !_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing)) 
+        if (filterStates is not null && !_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
+        {
             filterStates.Remove((int)CaseStates.InAdministration);
+        }
 
         DomainServices.CaseService.Contracts.SearchCasesResponse result;
 
         if (filterStates?.Any() ?? true)
             result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken);
         else
-            result = new DomainServices.CaseService.Contracts.SearchCasesResponse { Pagination = new() };
+            result = new DomainServices.CaseService.Contracts.SearchCasesResponse 
+            { 
+                Pagination = new() 
+            };
 
             // transform
-        return new SearchCasesResponse
+        return new CasesSearchCasesResponse
         {
             Rows = await _converter.FromContracts(result.Cases),
-            Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Pagination.RecordsTotalSize)
+            Pagination = new SharedTypesPaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Pagination.RecordsTotalSize)
         };
     }
 
@@ -49,7 +52,7 @@ internal sealed class SearchCasesHandler(
             _ => throw new NotImplementedException($"Filter {filterId} is not implemented")
         };
 
-    static readonly List<Paginable.MapperField> sortingMapper =
+    static readonly List<Paginable.MapperField> _sortingMapper =
     [
         new ("stateUpdated", "StateUpdatedOn"),
         new ("customerName", "Name")

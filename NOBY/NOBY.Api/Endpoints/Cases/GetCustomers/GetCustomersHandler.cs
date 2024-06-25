@@ -39,7 +39,7 @@ internal sealed class GetCustomersHandler(
             customerIdentities = customers
                 .Where(t => _allowedCustomerRoles.Contains(t.CustomerRoleId))
                 .Select(t => (
-                    t.CustomerIdentifiers?.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb),
+                    t.CustomerIdentifiers?.GetKbIdentityOrDefault(),
                     (_HO.CustomerOnSA?)t,
                     t.CustomerRoleId,
                     ((SharedTypes.Enums.CustomerRoles)t.CustomerRoleId).GetAttribute<DisplayAttribute>()!.Name ?? "",
@@ -59,7 +59,7 @@ internal sealed class GetCustomersHandler(
                 .Customers
                 .Where(t => _allowedCustomerRoles.Contains(t.RelationshipCustomerProductTypeId))
                 .Select(t => (
-                    Identity: t.CustomerIdentifiers.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb),
+                    Identity: t.CustomerIdentifiers.GetKbIdentityOrDefault(),
                     CustomerOnSA: default(_HO.CustomerOnSA),
                     Role: t.RelationshipCustomerProductTypeId,
                     RoleName: roles.FirstOrDefault(x => x.Id == t.RelationshipCustomerProductTypeId)?.NameNoby ?? "",
@@ -98,7 +98,7 @@ internal sealed class GetCustomersHandler(
                 Agent = t.Agent,
                 IsKYCSuccessful = t.IsKYCSuccessful,
                 Contacts = new(),
-                KBID = customer.Identities.FirstOrDefault(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                KBID = customer.Identities.GetKbIdentityOrDefault()?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 RoleName = t.RoleName,
                 RoleId = t.Role,
                 DateOfBirth = customer.NaturalPerson?.DateOfBirth,

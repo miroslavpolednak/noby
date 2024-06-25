@@ -3,6 +3,7 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using SharedTypes.Enums;
+using SharedTypes.Extensions;
 
 namespace DomainServices.ProductService.Api.Endpoints.UpdateMortgage;
 
@@ -30,8 +31,7 @@ internal sealed class UpdateMortgageHandler(
             PartnerId = customers
                 .FirstOrDefault(t => t.CustomerRoleId == (int)CustomerRoles.Debtor)
                 ?.CustomerIdentifiers
-                .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)
-                ?.IdentityId ?? 0,
+                .GetMpIdentityOrDefault()?.IdentityId ?? 0,
             ConsultantId = caseInstance.OwnerUserId,
             LoanContractNumber = salesArrangement.ContractNumber,
             MonthlyInstallment = offer.MortgageOffer.SimulationResults.LoanPaymentAmount,
@@ -52,11 +52,11 @@ internal sealed class UpdateMortgageHandler(
             PcpInstId = salesArrangement.PcpId,
             FirstAnnuityInstallmentDate = offer.MortgageOffer.SimulationResults.AnnuityPaymentsDateFrom,
             Relationships = customers
-                .Where(t => t.CustomerIdentifiers.Any(tt => tt.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp))
+                .Where(t => t.CustomerIdentifiers.HasMpIdentity())
                 .Select(t => new LoanContractRelationship
                 {
                     ContractRelationshipType = (ContractRelationshipType)t.CustomerRoleId,
-                    PartnerId = t.CustomerIdentifiers.First(tt => tt.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp).IdentityId
+                    PartnerId = t.CustomerIdentifiers.GetMpIdentity().IdentityId
                 })
                 .ToList()
         };

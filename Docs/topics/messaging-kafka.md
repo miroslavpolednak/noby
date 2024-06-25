@@ -1,18 +1,12 @@
 ﻿# Messaging - Kafka
-Podpora asynchroních front je umístěna v projektu `CIS.Infrastructure.Messaging`.
-Aktuálně se jedná o jedinou KB podporovanou službu - **Kafka**.
 
-Pro komunikaci s Kafkou používáme infrastrukturu KB připravenou pro SPEED, jmenovitě [`KB.Speed.MassTransit.Kafka`](https://speed.kb.cz/documentation/net-sdk/features/static/src/kb.speed.masstransit.kafka).  
-SPEED Nuget používáme hlavně proto, že KB má "specifickou" implementaci Kafky, pro kterou bychom museli vytvářet vlastní infra, kterou nám jinak poskytuje `KB.Speed.MassTransit.Kafka`.
-Tento Nuget interně používá [MassTransit](https://masstransit.io/), tj. naše implementace je vlastně implementací MassTransitu a můžeme vycházet z jeho dokumentace. Balíček je dostupný v [Nexus3 KB](https://nexus3.kb.cz) v repozitáří nuget-all-v3.
-
-> Ale pokud by se dalo časem toho KB Nugetu zbavit, bylo by to super! Nebylo by nic těžkého to přepsat, chce to jen čas. Primárně by šlo o implementaci Avro serializace a deserializace pomocí schema registry
+Podpora asynchronních front je umístěna v projektu `CIS.Infrastructure.Messaging`. Aktuálně se jedná o jedinou KB podporovanou službu - **Kafka**. Pro komunikaci s Kafkou se využívá projekt [KafkaFlow](https://farfetch.github.io/kafkaflow/), který je postaven nad Confluent Kafka.
 
 V KB nyní existují dvě instance Kafky v neprodukčním prostředí:
 - Business Kafka
 - Logman Kafka
 
-Logman kafka je stará instance Kafky, která nyní slouží primárně pro logování a postupně se migruje do Business Kafky. Pro nahlížení do Kafky slouží kukátko AKHQ, případně aplikace [Offset Explorer](https://www.kafkatool.com/download.html).
+Logman Kafka je stará instance Kafky, která nyní slouží primárně pro logování a postupně se migruje do Business Kafky. Pro nahlížení do Kafky slouží kukátko AKHQ, případně aplikace [Offset Explorer](https://www.kafkatool.com/download.html).
 
 ## AKHQ
 
@@ -21,29 +15,29 @@ Logman kafka je stará instance Kafky, která nyní slouží primárně pro logo
 
 ### Nodes
 
-V této sekci AKHQ je seznam nodů v rámci Kafky. Jednotlivé topicy mohou být přidelené k více nodům, které se navíc mohou dynamicky měnit. Je potřeba zajistit prostup na všechny Kafka nody, abychom předešly nedeterministickým chování. V detailu topicu je seznam IDček nodů
+V této sekci AKHQ je seznam nodů v rámci Kafky. Jednotlivé topicy mohou být přidělené k více nodům, které se navíc mohou dynamicky měnit. Je potřeba zajistit prostup na všechny Kafka nody, abychom předešli nedeterministickému chování. V detailu topicu je seznam ID nodů.
 
 Dvojitým kliknutím se přejde do nastavení jednotlivého nodu.
 
 ### Topics
 
-V této sekci AKHQ je seznam topiců v Kafce. V horní části je textové políčko pro full-textové vyhledávání.
+V této sekci AKHQ je seznam topiců v Kafce. V horní části je textové políčko pro fulltextové vyhledávání.
 
-Po dvojitým kliknutí na topic se přejde do detailu topicu, kde je 6 tabů
-- `Data` - obsahuje kafka zprávy
-- `Partitions` - slouží pro znázornění vztahů jednolivých nodů pro daný topic
-- `Consumer groups` - obsahuje groupy konzumentů, jednotlivá groupa obdrží kafka zprávu jen jednou, konzumenti v dané groupě se střídají o zprávy
+Po dvojitém kliknutí na topic se přejde do detailu topicu, kde je 6 záložek:
+- `Data` - obsahuje Kafka zprávy
+- `Partitions` - slouží pro znázornění vztahů jednotlivých nodů pro daný topic
+- `Consumer groups` - obsahuje skupiny konzumentů, jednotlivá skupina obdrží Kafka zprávu jen jednou, konzumenti v dané skupině se střídají o zprávy
 - `Configs` - slouží pro konfiguraci topicu
 - `ACLS` - obsahuje práva daných `CN certifikátů`
 - `Logs` - obsahuje logy
 
 ## Certifikáty
 
-Pro připojení do Kafky je potřeba mít `klientský CN certifikát`, kterým se autorizujeme vůči topicům a potřebujeme důvěřovat `serverovskému kořenovému certifikátu` pro vytvoření zabezpečeného spojení.
+Pro připojení do Kafky je potřeba mít `klientský CN certifikát`, kterým se autorizujeme vůči topicům, a potřebujeme důvěřovat `serverovskému kořenovému certifikátu` pro vytvoření zabezpečeného spojení.
 
-Pomocí java toolu `keytool` lze vygenerovat certifikáty .crt.
+Pomocí Java toolu `keytool` lze vygenerovat certifikáty .crt.
 
-Následující příkaz přečtě aliasy z .jks souboru
+Následující příkaz přečte aliasy z .jks souboru:
 ```
 > cd C:\Program Files (x86)\Java\jre8\bin
 > keytool -list -keystore "C:\certs\KAFKA-BC.truststore.test.jks"
@@ -56,47 +50,46 @@ Pro každý alias (v ukázce je "kafka") se vygeneruje pomocí následujícího 
 > keytool -export -alias "kafka" -file "C:\certs\broker1.crt" -keystore "C:\certs\KAFKA-BC.truststore.test.jks"
 ```
 
-## Schema registry - apicurio
+## Schema Registry - Apicurio
 
-Pro registraci schémat slouží schema registry [Apicurio test](https://test.schema-registry.kbcloud/ui/artifacts)
+Pro registraci schémat slouží schema registry [Apicurio Test](https://test.schema-registry.kbcloud/ui/artifacts). Je potřeba si stáhnout a nainstalovat CA root certifikát (např. přes browser) pro správné fungování.
 
-Je potřeba si stáhnout a nainstalovat CA root certifikát (např. přes browser) pro správné fungování.
-
-V KB se používá schemata dvojího typu
+V KB se používají schémata dvojího typu:
 - Avro
 - Json
 
-Schemata se identifikují pomocí
-- Id (Groupa + Název), verze
+Schémata se identifikují pomocí:
+- ID (Skupina + Název), verze
 - ContentId
 - GlobalId
 
-> pozn. Groupa slouží podobně jako namespace, přičemž je potřeba si dát pozor na naming. V některých případech je schema zaregistravané v defaultní groupě, nicméně název schematu obsahuje zmíněnou groupu, což může vést k omylům.*
+> pozn. Skupina slouží podobně jako namespace, přičemž je potřeba si dát pozor na pojmenování. V některých případech je schema zaregistrováno v defaultní skupině, nicméně název schématu obsahuje zmíněnou skupinu, což může vést k omylům.
 
-Schémata se dají vygenerovat pomocí toolů
+Schémata se dají vygenerovat pomocí nástrojů:
 - pro Avro - Avrogen 1.11.1
 - pro Json - KB.Speed.Dotnet.Tool.Jsonschema.Generator 0.3.0.1
 
 ### Avrogen
 [Link ke stažení](https://www.nuget.org/packages/Apache.Avro/1.11.1)
 
-Příklad pro vygenerování C# tříd pomocí avrogen
+Příklad pro vygenerování C# tříd pomocí avrogen:
 ```
 avrogen -s .\Schema_Stazene_Z_Apicurio.json .
 ```
 
-### Jsonschema generator
+### Jsonschema Generator
 
 [Dokumentace](https://speed.kb.cz/documentation/net-sdk/tools/features/static/src/kb.speed.dotnet.tool.jsonschema.generator/)
 
 [Link ke stažení](https://nexus3.kb.cz/repository/nuget-all-v3/KB.Speed.Dotnet.Tool.Jsonschema.Generator/0.3.0.1)
 
 ## Příprava projektu pro komunikaci s Kafkou
+
 Ve všech projektech používáme stejný pattern implementace Kafky:
 
 ### Adresářová struktura
-V rootu aplikace je nutné založit adresář Messaging. Pod tímto adresářem se vytvářejí podadresáře pro každý typ zprávy - tyto adresáře mají název typu zprávy.
 
+V rootu aplikace je nutné založit adresář `Messaging`. Pod tímto adresářem se vytvářejí podadresáře pro každý typ zprávy - tyto adresáře mají název typu zprávy.
 ```
 Projekt.Api
  |-- Messaging
@@ -104,155 +97,102 @@ Projekt.Api
            |-- Dto
            |-- TypZpravy1.json
            |-- TypZpravy1.cs
-           |-- TypZpravy1Consumer.cs 
+           |-- TypZpravy1Handler.cs 
       |-- TypZpravy2
            |-- Dto
            |-- TypZpravy2.json
            |-- TypZpravy2.cs
-           |-- TypZpravy2Consumer.cs
+           |-- TypZpravy2Handler.cs
 ... 
 ```
+
 ### Konfigurace Messaging projektu
-Messaging, tj. i Kafka implementace, má svou vlastní konfiguraci v *appsettings.json*.
-Tato konfigurace se nachází v objektu `CisMessaging` v rootu konfiguračního souboru a má následující strkuturu:
+
+Messaging, tj. i Kafka implementace, má svou vlastní konfiguraci v *appsettings.json*. Tato konfigurace se nachází v objektu `CisMessaging` v rootu konfiguračního souboru a má následující strukturu:
 
 ```json
 "CisMessaging": {
-    "Kafka": {
-        "BootstrapServers": "<!-- add Kafka servers -->",
-        "SslKeyLocation": "",
-        "SslKeyPassword": "",
-        "SecurityProtocol": "Ssl",
-        "SslCertificateLocation": "",
-        "SslCaCertificateStores": "Root,CA,Trust"
-    }
-},
-
-"Apicurio": {
-    "Url": "",
-    "UseGroups": true,
-    "SchemaIdentificationType": "ContentId"
-},
-
-"AvroSerializer": {
-    "SerializerType": "Confluent",
-    "BufferBytes": 100,
-    "SubjectNameStrategy": "Record",
-    "AutoRegisterSchemas": false,
-    "UseLatestVersion": false
-},
-
-"AvroDeserializer": {
-    "DeserializerType": "Confluent"
+  "Kafka": {
+    "Brokers": [ "<!-- Kafka servers -->" ],
+    "SchemaRegistry": {
+      "SchemaRegistryUrl": "<!-- Schema registry URL (https://test.schema-registry.kbcloud) -->",
+      "SchemaIdentificationType": "ContentId"
+    },
+    "RetryPolicy": "Default",
+    "LogConsumingMessagePayload": true,
+    "Admin": {
+      "Broker": "<!-- Kafka server pro telemetry a správu Kafky přes Dashboard (pouze non-PROD) - primárně kafkabc-test-broker.service.ist.consul-nprod.kb.cz:9443 -->",
+      "Topic": "<!-- Topic NOBY_DS-PERF_MCS_mock_result-event-priv -->"
+    },
+    "SslKeyLocation": "",
+    "SslKeyPassword": "",
+    "SecurityProtocol": "Ssl",
+    "SslCertificateLocation": ""
+  }
 }
 ```
 
-### Napojení na MassTransit
-Do topicu může chodit více typů zpráv. Pro každý topic je potřeba definovat značkovací interface. Pro produkování/konzumaci zpráv definujeme partial class k třídám, které chceme generovat do daného topicu. Tyto partial class implementují definovaný značkovací interface.
+#### RetryPolicy
+RetryPolicy nastavuje, jak se konzument má zachovat, pokud dojde k neošetřené chybě. Aktuálně jsou podporované dvě možnosti:
 
-př. chceme-li produkovat zprávy typu `namespaceA.MessageA` a `namespaceB.MessageB` do topicu `TopicExample`
+1. Default - výchozí chování, kdy v případě chyby dojde k opakovanému provolání v určitém intervalu.
+2. Durable - funkčnost podobná DeadLetter queue, která vyžaduje SQL databázi. Chybně zpracované zprávy se ukládají a pokračuje se v konzumaci dalších zpráv. Na pozadí běží job, který pravidelně zkouší nezpracovanou zprávu znovu zkonzumovat.
 
-1. defingujeme marker interface `ITopicExample` pro topic `TopicExample`
-2. registrujeme v DI topic producer
-3. definujeme partial class `MessageA` a `MessageB`, které implementují `ITopicExample`
+### Napojení na Kafku
+Každý topic může produkovat buď AVRO, nebo JSON zprávy. V jednom topic může chodit více druhů zpráv stejného typu (avro/json). 
+Při vygenerování zprávy je důležité, aby namespace včetně názvu třídy odpovídal celému názvu, který je uvedený v registru schémat.
 
+Pro konzumaci zprávy je potřeba vytvořit třídu, která implemenujte rozhraní `IMessageHandler<>`, kam se jako parametr dává typ zprávy, kterou má konzumovat.
 ```csharp
-// Partials.cs
-public interface ITopicExample {}
-
-namespace Example.NamespaceA
+internal class MessageObjectHandler : IMessageHandler<MessageObject>
 {
-    public partial class MessageA : ITopicExample {}
+    ...
 }
-
-namespace Example.NamespaceB
-{
-    public partial class MessageB : ITopicExample {}
-}
-
-....
 ```
 
-K napojení na messaging infrastrukturu dochází během startupu aplikace.
-
+Konfigurace Kafky se provádí ve start-upu aplikace. Pro každý topic se specifikuje, jaké handlery má použít.
 ```csharp
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .Build((builder, appConfiguration) =>
     {
         builder.AddCisMessaging()
-            .AddKafka(typeof(Program).Assembly)
-            .AddConsumer<MessageAConsumer>() // register consumer implementation
-            .AddConsumer<MessageBConsumer>() // register consumer implementation
-            // ... more consumer implementations
+                .AddKafkaFlow(msg =>
+                {
+                    msg.AddConsumerAvro<CaseStateChangedProcessingCompletedHandler>(appConfiguration.SbWorkflowInputProcessingTopic!);
 
-            .AddConsumerTopicAvro<ITopicExample>("TopicExample") // register topic for consuming
-            // ... more topics for consuming
-            
-            .AddProducerAvro<ITopicExample>("TopicExample") // register topic for producing
-            // ... more topics for producing
-            .Build();
+                    msg.AddConsumerAvro(
+                        appConfiguration.MortgageServicingMortgageChangesTopic!,
+                        handlers =>
+                        {
+                            handlers.AddHandler<MortgageInstanceChangedHandler>()
+                                    .AddHandler<MortgageApplicationChangedHandler>();
+                        });
+                });
     })
 ```
 
 ### Produkování zpráv
 
-Pro produkování zpráv `MessageA` a `MessageB` do topicu `TopicExample` pod značkovacím interfacem `ITopicExample` je potřeba si injectnout `ITopicProducer<ITopicExample>` do naší služby:
-
+Pro produkování zpráv do topicu je třeba registrovat Producera s daným typem zprávy, která se má posílat. Jako parametr se předává výchozí topic, kam se zprávy mají posílat. V samotné službě pro publikování zpráv je každopádně možné zadat jiný topic, kam se zpráva má odeslat.
 ```csharp
-public class MyService : IMyService
-{
-    private readonly ITopicProducer<ITopicExample> _exampleProducer;
-
-    public MyService(ITopicProducer<ITopicExample> exampleProducer)
-    {
-        _exampleProducer = exampleProducer;
-    }
-
-    public async Task ExecuteSomethingAsync(CancellationToken cancellationToken)
-    {
-        var headers = new Headers() { ... };
-        var pipe = new ProducerPipe<ITopicExample>(headers);
-
-        // producing Message A to topic ExampleTopic
-        await _exampleProducer.Produce(new MessageA(), headers, cancellationToken);
-        
-        // producing Message B to topic ExampleTopic
-        await _exampleProducer.Produce(new MessageB(), headers, cancellationToken);
-    }
-}
+builder.AddCisMessaging()
+            .AddKafkaFlow(msg =>
+            {
+                msg.AddProducerAvro<MessageObjectToSend>(defaultTopic);
+            });
 ```
 
-### Konzumace zpráv
-
-Pro konzumaci zpráv `MessageA` a `MessageB` do topicu `TopicExample` pod značkovacím interfacem `ITopicExample` je potřeba naimplementovat třídy, které dědí od `IConsumer<MessageA>` a `IConsumer<MessageB>`. Tyto implementace je potřeba zaregistrovat v DI containeru.
-
+Pro získání producera v objektu stačí přes DI si zavolat objekt s generickým rozhraním `IMessageProducer<>`, kde se specifikuje typ zprávy, co se má posílat.
 ```csharp
-// Consuming Message A from topic ExampleTopic
-public class MessageAConsumer : IConsumer<MessageA>
-{
-    public MessageAConsumer ( ... ) { ... }
+IMessageProducer<MessageToSend> producer
+```
 
-    public async Task Consume(ConsumeContext<MessageA> context)
-    {
-        var messageA = context.Message;
-        var cancellationToken = context.CancellationToken;
-        
-        await ExecuteSomethingAsync(messageA, cancellationToken);
-    }
-}
+Odeslání zprávy se poté provede zavoláním metody `ProduceAsync<>`.
+```csharp
+// Metodě se předává ID zprávy (nepovinné - může být null) a objekt zprávy. Topic se zde neuvádí a tím se využije výchozí, který se nastavuje konfigurací ve startupu.
+await _mcsEmailProducer.ProduceAsync(message.id, message);
 
-// Consuming Message B from topic ExampleTopic
-public class MessageBConsumer : IConsumer<MessageB>
-{
-    public MessageBConsumer ( ... ) { ... }
-
-    public async Task Consume(ConsumeContext<MessageB> context)
-    {
-        var messageB = context.Message;
-        var cancellationToken = context.CancellationToken;
-        
-        await ExecuteSomethingAsync(messageB, cancellationToken);
-    }
-}
+// Pokud se má zpráva poslat do jiného topicu, než je výchozí, tak stačí využít string parametr na prvním místě.
+await _mcsEmailProducer.ProduceAsync(topicName, message.id, message);
 ```

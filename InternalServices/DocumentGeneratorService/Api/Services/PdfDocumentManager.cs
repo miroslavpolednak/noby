@@ -4,6 +4,8 @@ using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm;
 using CIS.InternalServices.DocumentGeneratorService.Api.AcroForm.AcroFormWriter;
 using CIS.InternalServices.DocumentGeneratorService.Api.Storage;
 using Google.Protobuf;
+using Microsoft.FeatureManagement;
+using SharedTypes;
 
 namespace CIS.InternalServices.DocumentGeneratorService.Api.Services;
 
@@ -13,17 +15,21 @@ internal class PdfDocumentManager
     private readonly PdfAcroFormWriterFactory _pdfAcroFormWriterFactory;
     private readonly TemplateManager _templateManager;
     private readonly PdfFooter _pdfFooter;
+    private readonly PdfFieldMap _pdfFieldMap;
+    private readonly IFeatureManager _featureManager;
 
-    public PdfDocumentManager(PdfAcroFormWriterFactory pdfAcroFormWriterFactory, TemplateManager templateManager, PdfFooter pdfFooter)
+    public PdfDocumentManager(PdfAcroFormWriterFactory pdfAcroFormWriterFactory, TemplateManager templateManager, PdfFooter pdfFooter, PdfFieldMap pdfFieldMap, IFeatureManager featureManager)
     {
         _pdfAcroFormWriterFactory = pdfAcroFormWriterFactory;
         _templateManager = templateManager;
         _pdfFooter = pdfFooter;
+        _pdfFieldMap = pdfFieldMap;
+        _featureManager = featureManager;
     }
 
     public async Task<Contracts.Document> GenerateDocument(GenerateDocumentRequest request)
     {
-        await ProcessParts(request.Parts);
+        await ProcessParts(request);
 
         var finalPdf = await PrepareFinalPdf(request.OutputType, request);
 
@@ -33,14 +39,27 @@ internal class PdfDocumentManager
         };
     }
 
-    private async Task ProcessParts(IEnumerable<GenerateDocumentPart> parts)
+    private async Task ProcessParts(GenerateDocumentRequest request)
     {
-        foreach (var documentPart in parts)
+        foreach (var documentPart in request.Parts)
         {
             var template = await _templateManager.LoadTemplate(documentPart.DocumentTypeId, documentPart.DocumentTemplateVersionId, documentPart.DocumentTemplateVariantId);
 
-            var document = _pdfAcroFormWriterFactory.Create(documentPart.Data).Write(template);
-            
+            MergeDocument document;
+            if (await _featureManager.IsEnabledAsync(FeatureFlagsConstants.UseFieldsMap))
+            {
+                var pdfFieldMap = _pdfFieldMap.GetPdfMap(template.Name, template.Version, template.Variant);
+
+                document = _pdfAcroFormWriterFactory.CreateWriter(documentPart.Data).WriteToDocument(template.PdfDocument, pdfFieldMap, documentPart.Data);
+                document.Form.Output = FormOutput.Remove;
+
+                new PdfElements.PdfFooter().FillFooter(template, document, pdfFieldMap, request);
+            }
+            else
+            {
+                document = _pdfAcroFormWriterFactory.Create(documentPart.Data).Write(template.PdfDocument);
+            }
+
             _templateManager.DrawTemplate(document);
         }
     }
@@ -49,7 +68,14 @@ internal class PdfDocumentManager
     {
         var finalDocument = await _templateManager.CreateFinalDocument(request.DocumentTypeId, request.DocumentTemplateVersionId, request.DocumentTemplateVariantId);
 
-        await _pdfFooter.FillFooter(finalDocument, request);
+        if (await _featureManager.IsEnabledAsync(FeatureFlagsConstants.UseFieldsMap))
+        {
+            finalDocument.Document.Form.Output = FormOutput.Remove;
+        }
+        else
+        {
+            await _pdfFooter.FillFooter(finalDocument, request);
+        }
 
         if (request.ForPreview ?? true)
             AddWatermark(finalDocument.Document);

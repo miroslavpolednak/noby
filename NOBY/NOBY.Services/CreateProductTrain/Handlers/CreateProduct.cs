@@ -19,7 +19,7 @@ internal sealed class CreateProduct
         IEnumerable<Identity>? customerIdentifiers,
         CancellationToken cancellationToken)
     {
-        var mpIdentity = customerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+        var mpIdentity = customerIdentifiers?.GetMpIdentityOrDefault();
         long? mpId = mpIdentity?.IdentityId;
         if (!mpId.HasValue)
         {

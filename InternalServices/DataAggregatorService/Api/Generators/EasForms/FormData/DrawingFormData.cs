@@ -24,9 +24,9 @@ internal class DrawingFormData : AggregatedData
         }
     }
 
-    public long IdentityKb => _applicantIdentities.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId;
+    public long IdentityKb => _applicantIdentities.GetKbIdentity().IdentityId;
 
-    public long IdentityMp => _applicantIdentities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
+    public long IdentityMp => _applicantIdentities.GetMpIdentity().IdentityId;
 
     public bool IsAgent => SalesArrangement.Drawing.Agent?.IsActive ?? false;
 

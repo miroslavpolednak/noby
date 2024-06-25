@@ -4,6 +4,7 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Api.Database;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
+using SharedTypes.Extensions;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SetContractNumber;
 
@@ -53,7 +54,7 @@ internal sealed class SetContractNumberHandler(
     {
         var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
 
-        var identityMp = customerOnSa.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp) ??
+        var identityMp = customerOnSa.CustomerIdentifiers.GetMpIdentityOrDefault() ??
                          throw new InvalidOperationException($"CustomerOnSa {customerOnSaId} does not have MP ID");
 
         return await _easClient.GetContractNumber(identityMp.IdentityId, (int)caseId, cancellationToken);

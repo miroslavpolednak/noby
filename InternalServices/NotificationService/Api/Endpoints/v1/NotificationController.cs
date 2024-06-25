@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Asp.Versioning;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1;
 
@@ -94,6 +95,7 @@ public class NotificationController : ControllerBase
     [ProducesResponseType(typeof(List<LegacyContracts.Result.Dto.Result>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EnableRateLimiting("fixed")]
     public async Task<List<LegacyContracts.Result.Dto.Result>> SearchResults([FromQuery] string? identity, [FromQuery] string? identityScheme,
         [FromQuery] long? caseId, [FromQuery] string? customId, [FromQuery] string? documentId, CancellationToken token)
     {
