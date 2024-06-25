@@ -15,6 +15,16 @@ message IdentificationSubjectMethodsResponse {
 	}
 }
 
+message FlowSwitchStatesResponse {
+	repeated FlowSwitchStatesItem Items = 1;
+
+	message FlowSwitchStatesItem {
+		int32 Id = 1;
+		string Name = 2;
+		int32 Indicator = 3;
+	}
+}
+
 message RefinancingStatesResponse {
 	repeated RefinancingStatesItem Items = 1;
 

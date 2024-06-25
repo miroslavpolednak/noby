@@ -11,6 +11,20 @@ namespace DomainServices.CodebookService.Api.Endpoints.v1;
 internal partial class CodebookService
     : Contracts.v1.CodebookService.CodebookServiceBase
 {
+    public override Task<FlowSwitchStatesResponse> FlowSwitchStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+    => Helpers.GetItems(() =>
+    {
+        var items = new List<FlowSwitchStatesResponse.Types.FlowSwitchStatesItem>
+        {
+            new() { Id = 1, Name = "Zadáno", Indicator = 3 },
+            new() { Id = 2, Name = "Nezadáno", Indicator = 1 },
+            new() { Id = 3, Name = "Schváleno", Indicator = 3 },
+            new() { Id = 4, Name = "Zamítnuto", Indicator = 5 },
+            new() { Id = 5, Name = "Čeká na schválení", Indicator = 1 }
+        };
+        return (new FlowSwitchStatesResponse()).AddItems(items);
+    });
+
     public override Task<FeeChangeRequestsResponse> FeeChangeRequests(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
     => Helpers.GetItems(() =>
         {

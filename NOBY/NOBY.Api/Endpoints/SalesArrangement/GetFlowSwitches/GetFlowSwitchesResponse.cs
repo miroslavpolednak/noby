@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
+﻿using DomainServices.CodebookService.Contracts.v1;
+
+namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 
 public sealed class GetFlowSwitchesResponse
 {
@@ -33,7 +35,12 @@ public sealed class GetFlowSwitchesResponseItem
     public bool IsActive { get; set; }
 
     /// <summary>
-    /// Je v sekci vše splněné?
+    /// Hodnota z číselníku FlowSwitchState
     /// </summary>
-    public bool IsCompleted { get; set; }
+    public int State { get; set; }
+
+    /// <summary>
+    /// Indikátor stavu knedlíku, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial
+    /// </summary>
+    public StateIndicators StateIndicator { get; set; }
 }
