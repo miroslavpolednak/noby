@@ -36,7 +36,7 @@ internal sealed class IdentifyByIdentityHandler
         //Debtor has to be identified first
         if (saInstance.IsProductSalesArrangement()
             && customerOnSaInstance.CustomerRoleId is not (int)CustomerRoles.Debtor 
-            && !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
+            && !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
         {
             throw new NobyValidationException("Main customer has to be identified first.");
         }
@@ -65,7 +65,7 @@ internal sealed class IdentifyByIdentityHandler
 
                 try
                 {
-                    var partnerId = updateResult.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
+                    var partnerId = updateResult.CustomerIdentifiers.GetMpIdentity().IdentityId;
                     var relationshipTypeId = customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
 
                     await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
@@ -103,7 +103,7 @@ internal sealed class IdentifyByIdentityHandler
             return customerDetails
                 .First(t => t.CustomerOnSAId == secondCustomerOnHouseholdId)
                 .CustomerIdentifiers?
-                .Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb && t.IdentityId > 0)
+                .HasKbIdentity()
                 ?? false;
         }
     }

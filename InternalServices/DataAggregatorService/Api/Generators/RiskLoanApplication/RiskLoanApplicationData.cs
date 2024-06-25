@@ -53,7 +53,7 @@ internal class RiskLoanApplicationData : AggregatedData
                 Household = household,
                 Customers = householdCustomers.Select(customerOnSA =>
                                               {
-                                                  var customerDetail = customers[customerOnSA.CustomerIdentifiers.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId];
+                                                  var customerDetail = customers[customerOnSA.CustomerIdentifiers.GetKbIdentity().IdentityId];
 
                                                   return new LoanApplicationCustomer(customerOnSA, customerDetail, incomes, _codebookManager.DegreesBefore)
                                                   {
@@ -76,7 +76,7 @@ internal class RiskLoanApplicationData : AggregatedData
 
         var customersWithDetail = new Dictionary<int, CustomerOnSA>(customers.Count);
 
-        foreach (var customerId in customers.Where(c => c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).Select(c => c.CustomerOnSAId))
+        foreach (var customerId in customers.Where(c => c.CustomerIdentifiers.HasKbIdentity()).Select(c => c.CustomerOnSAId))
         {
             var customerDetail = await _customerOnSAService.GetCustomer(customerId, cancellationToken);
             customersWithDetail.Add(customerId, customerDetail);
@@ -94,7 +94,7 @@ internal class RiskLoanApplicationData : AggregatedData
 
         var result = await _customerService.GetCustomerList(customerIds.Select(id => new Identity(id, IdentitySchemes.Kb)), cancellationToken);
 
-        return result.Customers.ToDictionary(c => c.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId, c => c);
+        return result.Customers.ToDictionary(c => c.Identities.GetKbIdentity().IdentityId, c => c);
     }
 
     private async Task<Dictionary<int, Income>> LoadIncomes(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)

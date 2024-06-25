@@ -1,5 +1,6 @@
 ﻿using DomainServices.CustomerService.Contracts;
 using DomainServices.RealEstateValuationService.Contracts;
+using SharedTypes.Extensions;
 
 namespace DomainServices.RealEstateValuationService.Api.Extensions;
 
@@ -21,7 +22,7 @@ internal static class OrderRequestExtensions
         model.ProductCode = "01";
         model.Cpm = Convert.ToInt64(currentUser.UserInfo.Cpm, CultureInfo.InvariantCulture);
         model.Icp = Convert.ToInt64(currentUser.UserInfo.Icp, CultureInfo.InvariantCulture);
-        model.ClientID = customer.Identities?.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId;
+        model.ClientID = customer.Identities?.GetKbIdentityOrDefault()?.IdentityId;
         model.ClientName = $"{customer.NaturalPerson?.FirstName} {customer.NaturalPerson?.LastName}";
         model.ClientEmail = customer.Contacts?.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email)?.Email?.EmailAddress;
 

@@ -12,7 +12,7 @@ internal class DeleteBinaryDataFromArchiveQueueHandler(IConnectionProvider<IXxvD
 {
     private readonly IConnectionProvider<IXxvDapperConnectionProvider> _provider = provider;
 
-    private const int _batchSize = 10000;
+    private const int _batchSize = 5000;
     private const int _olderThanDays = 30;
 
     private const string _sql = """
@@ -28,6 +28,8 @@ internal class DeleteBinaryDataFromArchiveQueueHandler(IConnectionProvider<IXxvD
 
     public async Task<Empty> Handle(DeleteDataFromArchiveQueueRequest request, CancellationToken cancellationToken)
     {
+        Dapper.SqlMapper.Settings.CommandTimeout = 1000;
+
         var parameters = new DynamicParameters();
         parameters.Add("@BatchSize", _batchSize, DbType.Int32, ParameterDirection.Input);
         parameters.Add("@DateTime", DateTime.Now.AddDays(_olderThanDays), DbType.DateTime, ParameterDirection.Input);

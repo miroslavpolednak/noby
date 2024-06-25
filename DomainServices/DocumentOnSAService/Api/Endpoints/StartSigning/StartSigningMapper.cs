@@ -26,6 +26,7 @@ using SharedTypes.Enums;
 using FastEnumUtility;
 using DomainServices.ProductService.Clients;
 using Google.Protobuf.Collections;
+using SharedTypes.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
@@ -164,7 +165,7 @@ public class StartSigningMapper
             var kbIdentityId = identityOnCase!.IdentityId;
             var customersResponse = await _productServiceClient.GetCustomersOnProduct(caseId, cancellationToken);
             var customer = customersResponse.Customers.Single(c => c.CustomerIdentifiers.Any(i => i.IdentityId == kbIdentityId));
-            var mpIndentity = customer.CustomerIdentifiers.Single(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+            var mpIndentity = customer.CustomerIdentifiers.GetKbIdentity();
             return mpIndentity.IdentityId.ToString(CultureInfo.InvariantCulture);
         }
     }
@@ -355,28 +356,20 @@ public class StartSigningMapper
         switch (salesArrangement.ParametersCase)
         {
             case SalesArrangement.ParametersOneofCase.Drawing:
-                identities.Add(
-                    GetIdentity(salesArrangement.Drawing.Applicant));
+                identities.Add(salesArrangement.Drawing.Applicant.GetIdentity(Identity.Types.IdentitySchemes.Kb));
                 break;
             case SalesArrangement.ParametersOneofCase.GeneralChange:
-                identities.Add(GetIdentity(salesArrangement.GeneralChange.Applicant));
+                identities.Add(salesArrangement.GeneralChange.Applicant.GetIdentity(Identity.Types.IdentitySchemes.Kb));
                 break;
             case SalesArrangement.ParametersOneofCase.HUBN:
-                identities.Add(GetIdentity(salesArrangement.HUBN.Applicant));
+                identities.Add(salesArrangement.HUBN.Applicant.GetIdentity(Identity.Types.IdentitySchemes.Kb));
                 break;
             case SalesArrangement.ParametersOneofCase.CustomerChange:
-                identities.AddRange(salesArrangement.CustomerChange.Applicants.Select(s => GetIdentity(s.Identity)));
+                identities.AddRange(salesArrangement.CustomerChange.Applicants.Select(s => s.Identity.GetIdentity(Identity.Types.IdentitySchemes.Kb)));
                 break;
         }
 
         return identities;
-    }
-
-    private static Identity GetIdentity(RepeatedField<Identity> identities)
-    {
-        return identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
-                            ?? identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp)
-                            ?? throw new NotSupportedException();
     }
 
     private static void MapSigningIdentities(StartSigningRequest request, DocumentOnSa entity)
