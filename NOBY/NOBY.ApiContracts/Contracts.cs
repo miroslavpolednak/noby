@@ -28,6 +28,125 @@ namespace NOBY.ApiContracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RealEstateValuationUpdateRealEstateValuationDetailRequest
+    {
+        /// <summary>
+        /// True pokud jde o nemovitost, která je objektem úvěru. Default: false
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isLoanRealEstate")]
+        public bool IsLoanRealEstate { get; set; } = false;
+
+        /// <summary>
+        /// ID stavu nemovitosti.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateStateId")]
+        public int? RealEstateStateId { get; set; } = default!;
+
+        /// <summary>
+        /// Adresa nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("address")]
+        public string? Address { get; set; } = default!;
+
+        /// <summary>
+        /// ID Upřesnění typu nemovitosti. Slouží jako podklad pro překlad typu nemovitosti do ACV.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateSubtypeId")]
+        public int? RealEstateSubtypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Objekt je použit pouze pokud jde o Ocenění na case, který není v procesu (tedy pokud jde o HUBN nebo změnu).
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurposeDetails")]
+        public RealEstateValuationSharedLoanPurposeDetail? LoanPurposeDetails { get; set; } = default!;
+
+        /// <summary>
+        /// Objekty SpecificDetails jsou řízeny business logikou &lt;a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135"&gt;Ocenění nemovitosti - varianty nemovitostí&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.&lt;br /&gt;&lt;br /&gt;Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.&lt;br /&gt;&lt;br /&gt;Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("specificDetails")]
+        public RealEstateValuationSharedSpecificDetails? SpecificDetails { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// RealEstateIds, které uživatel vybral k Ocenění
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RealEstateValuationUpdateDeedOfOwnershipDocumentRequest
+    {
+        /// <summary>
+        /// Unikátní ID nemovitosti ze systému CREM
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateIds")]
+        public List<long> RealEstateIds { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Hodnota valuationTypeId
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RealEstateValuationSetValuationTypeIdRequest
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("valuationTypeId")]
+        public EnumRealEstateValuationTypes ValuationTypeId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RealEstateValuationSaveRealEstateValuationAttachmentsResponseItem
+    {
+        /// <summary>
+        /// ID uploadnutého dočasného souboru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("tempFileId")]
+        public System.Guid TempFileId { get; set; } = default!;
+
+        /// <summary>
+        /// ID nově vytvořené přílohy ocenění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateValuationAttachmentId")]
+        public int RealEstateValuationAttachmentId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RealEstateValuationSaveRealEstateValuationAttachmentsRequestItem
+    {
+        /// <summary>
+        /// ID uploadovaného souboru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("tempFileId")]
+        public System.Guid TempFileId { get; set; } = default!;
+
+        /// <summary>
+        /// Popis souboru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("title")]
+        public string Title { get; set; } = default!;
+
+        /// <summary>
+        /// ID kategorie přílohy
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("acvAttachmentCategoryId")]
+        public int AcvAttachmentCategoryId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class RealEstateValuationAddDeedOfOwnershipDocumentRequest
     {
         /// <summary>

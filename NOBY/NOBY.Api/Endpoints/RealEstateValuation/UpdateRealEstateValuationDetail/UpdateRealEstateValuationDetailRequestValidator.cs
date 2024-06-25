@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail;
 
 internal sealed class UpdateRealEstateValuationDetailRequestValidator
-    : AbstractValidator<UpdateRealEstateValuationDetailRequest>
+    : AbstractValidator<RealEstateValuationUpdateRealEstateValuationDetailRequest>
 {
     public UpdateRealEstateValuationDetailRequestValidator()
     {

@@ -2,12 +2,14 @@
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments;
 
-internal sealed class SaveRealEstateValuationAttachmentsHandler
-    : IRequestHandler<SaveRealEstateValuationAttachmentsRequest, List<SaveRealEstateValuationAttachmentsResponseItem>>
+internal sealed class SaveRealEstateValuationAttachmentsHandler(
+    IRealEstateValuationServiceClient _realEstateValuationService, 
+    SharedComponents.Storage.ITempStorage _tempFileManager)
+        : IRequestHandler<SaveRealEstateValuationAttachmentsRequest, List<RealEstateValuationSaveRealEstateValuationAttachmentsResponseItem>>
 {
-    public async Task<List<SaveRealEstateValuationAttachmentsResponseItem>> Handle(SaveRealEstateValuationAttachmentsRequest request, CancellationToken cancellationToken)
+    public async Task<List<RealEstateValuationSaveRealEstateValuationAttachmentsResponseItem>> Handle(SaveRealEstateValuationAttachmentsRequest request, CancellationToken cancellationToken)
     {
-        List<SaveRealEstateValuationAttachmentsResponseItem> newIds = new(request.Attachments!.Count);
+        List<RealEstateValuationSaveRealEstateValuationAttachmentsResponseItem> newIds = new(request.Attachments!.Count);
 
         foreach (var attachment in request.Attachments)
         {
@@ -42,15 +44,8 @@ internal sealed class SaveRealEstateValuationAttachmentsHandler
         return newIds;
     }
 
-    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
     /// <summary>
     /// [MB]
     /// </summary>
     private const int _maxAllowedFileSize = 8;
-    public SaveRealEstateValuationAttachmentsHandler(IRealEstateValuationServiceClient realEstateValuationService, SharedComponents.Storage.ITempStorage tempFileManager)
-    {
-        _tempFileManager = tempFileManager;
-        _realEstateValuationService = realEstateValuationService;
-    }
 }
