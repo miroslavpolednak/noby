@@ -22,7 +22,7 @@ internal sealed class CreateMortgageResponseCodeHandler(
             CaseId = request.CaseId,
             ResponseCodeTypeId = request.ResponseCodeTypeId,
             ResponseCodeCategory = DomainServices.OfferService.Contracts.ResponseCodeCategories.BusinessResponseCode,
-            ValidTo = (DateTime?)mortgage.Mortgage.FixedRateValidTo ?? DateTime.Now.AddYears(1),
+            ValidTo = (DateTime?)mortgage.Mortgage.FixedRateValidTo ?? DateTime.Now.AddYears(3),
             Data = responseCode.DataType switch
             {
                 DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date => request.DataDateTime!.Value.ToString("s"),
