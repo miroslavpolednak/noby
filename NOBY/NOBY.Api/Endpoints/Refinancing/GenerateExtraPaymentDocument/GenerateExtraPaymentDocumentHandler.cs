@@ -75,7 +75,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
     {
         var offer = await _offerService.GetOffer(offerId, cancellationToken);
 
-        if (offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate < DateTime.UtcNow.ToLocalTime())
+        if (offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate < DateTime.UtcNow.ToLocalTime().Date)
             throw new NobyValidationException(90055);
 
         var simulationRequest = new SimulateMortgageExtraPaymentRequest
