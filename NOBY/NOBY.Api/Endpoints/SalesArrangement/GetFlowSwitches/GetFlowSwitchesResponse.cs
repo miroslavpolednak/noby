@@ -1,6 +1,4 @@
-﻿using DomainServices.CodebookService.Contracts.v1;
-
-namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
+﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 
 public sealed class GetFlowSwitchesResponse
 {

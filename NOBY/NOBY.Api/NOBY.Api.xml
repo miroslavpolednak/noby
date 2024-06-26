@@ -3549,9 +3549,14 @@
             Je sekce aktivní/neaktivní (lze prokliknout)?
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.IsCompleted">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.State">
             <summary>
-            Je v sekci vše splněné?
+            Hodnota z číselníku FlowSwitchState
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.StateIndicator">
+            <summary>
+            Indikátor stavu knedlíku, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.AssessmentReason.Code">
