@@ -45,7 +45,7 @@ internal static class Extensions
                 PhoneNumberForOffer = new()
                 {
                     PhoneNumber = request.OfferContacts?.MobilePhone?.PhoneNumber ?? "",
-                    PhoneIDC = request.OfferContacts?.MobilePhone?.PhoneNumber ?? ""
+                    PhoneIDC = request.OfferContacts?.MobilePhone?.PhoneIDC ?? ""
                 }
             },
             Data = new _Case.CaseData
