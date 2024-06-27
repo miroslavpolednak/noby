@@ -30,9 +30,9 @@ internal sealed class GetCaseMenuFlagsHandler(
 
         return new CasesGetCaseMenuFlagsResponse
         {
-            ParametersMenuItem = new(),
-            DebtorsItem = new(),
-            TasksMenuItem = new(),
+            ParametersMenuItem = new() { IsActive = true },
+            DebtorsItem = new() { IsActive = true },
+            TasksMenuItem = new() { IsActive = true },
             ChangeRequestsMenuItem = new CasesGetCaseMenuFlagsItem
             {
                 IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.InProgress && caseInstance.State != (int)CaseStates.ToBeCancelled
@@ -84,7 +84,10 @@ internal sealed class GetCaseMenuFlagsHandler(
         var getDocumentsInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(documentsInQueue);
         var documentsInQueueFiltered = await _documentHelper.FilterDocumentsVisibleForKb(getDocumentsInQueueMetadata, cancellationToken);
 
-        var response = new CasesGetCaseMenuFlagsItem();
+        var response = new CasesGetCaseMenuFlagsItem()
+        {
+            IsActive = true
+        };
 
         if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
         {
